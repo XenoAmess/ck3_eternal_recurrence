@@ -1,0 +1,43 @@
+{
+  "schema": "lyd.root.factory-ordering-apply.v1",
+  "at": "2026-10-06T23:52:15.525818+00:00",
+  "source_sha256": "134914236784622f51582ec9ee0a256e0347aea7be8b3fd1d3c646eec4cd41cf",
+  "authored_only_patch_sha256": "d41b4f2344050c5436e632cdcfa8794abbd7650a9b27b56d96606347e67c6d0e",
+  "generated_excluded": "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+  "before": {
+    "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in": "fd438b2d2dee8102bf9a8b45241e7ad9f244d248062705c834d4b641205eb263",
+    "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt": "fd438b2d2dee8102bf9a8b45241e7ad9f244d248062705c834d4b641205eb263",
+    "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt": "6ad85b8f73a48077befa78b68b51c7930177d93b537904c905b6c9a704ad1d66",
+    "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py": "d7aeea810bc6fdcf957fd5eec8875b05c6ab4982fa517636feb2f76d36051cfa"
+  },
+  "after_authored_apply": {
+    "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in": "b0596b58d30e6313cc290ed0c29c6b02cace7739657956423081e1c74ab3687a",
+    "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt": "b0596b58d30e6313cc290ed0c29c6b02cace7739657956423081e1c74ab3687a",
+    "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt": "6ad85b8f73a48077befa78b68b51c7930177d93b537904c905b6c9a704ad1d66",
+    "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py": "5d2563432ee3c779f0580db30f7a4fcfa557e6e807fdf601af41c2532c368455"
+  },
+  "operations": [
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-root-factory-ordering-apply-20261007-001\\AUTHORED-ONLY.patch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-root-factory-ordering-apply-20261007-001\\AUTHORED-ONLY.patch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "runtime_pass": null
+}

@@ -1,0 +1,23 @@
+{
+  "producer": {
+    "path": "C:/lyd16-numeric-link-supplement-20261007-001/native-msvc-result.json",
+    "bytes": 1810,
+    "sha256": "55a28ff98b94dced9a4e93b059b74be50d3412422699fb4487dafffea756ec78"
+  },
+  "status": "settings_failed",
+  "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+  "refs": {
+    "manifest": {
+      "path": "C:/lyd16-numeric-link-supplement-20261007-001/defender-exe-exclusions/20261006T224048Z-f1d09253/manifest.json",
+      "bytes": 1958,
+      "sha256": "1c18cd7703245e9262755e31910d1eedacaa350e382e7e86799d0a9cafc0d603"
+    },
+    "receipt": {
+      "path": "C:/lyd16-numeric-link-supplement-20261007-001/defender-exe-exclusions/20261006T224048Z-f1d09253/receipt.json",
+      "bytes": 1776,
+      "sha256": "80f8359fb9259f9f8a5d9e15c6f190f6d4bddfcd84cc04a5f2b995113477441f"
+    }
+  },
+  "successful_registration": false,
+  "system_enable_attempted": false
+}

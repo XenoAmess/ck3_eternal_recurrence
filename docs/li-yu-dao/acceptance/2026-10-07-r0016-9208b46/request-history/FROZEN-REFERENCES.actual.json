@@ -1,0 +1,84 @@
+{
+  "author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/next-cold-checkpoint-author-grant-numeric-sourceonly-20261007-001/source-004/author_actual_checkpoint.py",
+    "bytes": 41133,
+    "sha256": "d01a3f972149204f5711de4665efa844f589f3e7fc92d9f5b32d364375037bfe"
+  },
+  "grant_helper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/next-cold-checkpoint-author-grant-numeric-sourceonly-20261007-001/source-004/qualification/grant_metadata_semantics.py",
+    "bytes": 7322,
+    "sha256": "f603ce5395a2a6ca857bce925438e45ad93c51b9da5ca2b4d1224572f894d46b"
+  },
+  "INPUTS": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/INPUTS.json",
+    "bytes": 1131562,
+    "sha256": "e1f1245892767e6fc60b5c589fcd2d8a8d377cc4739d947e15fc6cc54268cdb0"
+  },
+  "profile": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/root-profile-request-001/native-profile-fresh-001/native-profile.json",
+    "bytes": 884,
+    "sha256": "f74c0e2f3cfacd9c6342dadc8cf62c7883278072a117e3449e5829e193fee214"
+  },
+  "guard": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/root-profile-request-001/native-profile-fresh-001/guard-profile.json",
+    "bytes": 2017,
+    "sha256": "fbeaf21dec4cf3fff2f914aeabcce252ed85ad3af469d122c1b77d374ada75d6"
+  },
+  "metadata": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/RESULT.json",
+    "bytes": 7133,
+    "sha256": "12b575b1f4eda40a9cc7d269002a83f9e20f0b22f835381fd993fe150e556574"
+  },
+  "export": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-head-export-20261007-006/REPORT.json",
+    "bytes": 23168,
+    "sha256": "a280ff49d3336e8bf96ab614c630bc51e2a4583135debcacdc27fe7c1a3b5f04"
+  },
+  "compiled": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/RESULT.json",
+    "bytes": 1005579,
+    "sha256": "5ad7a2a676ab1aa2d23f58e0576f259ea0d54184401c84e07d7a6d703f47a386"
+  },
+  "native_clean_qualification": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/NATIVE-CLEAN-QUALIFICATION.actual.json",
+    "bytes": 980259,
+    "sha256": "0f8c0e34bda377b6ccfffc84c3a65fb3ee038ccb4fb87837bf42619b85505260"
+  },
+  "diagnostic_packet": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-004/BASELINE-RED-B5.actual-input.json",
+    "bytes": 2215,
+    "sha256": "d0fe32c4f6a7e4cf2cb1db0fcb77b9ac771482c2381b52cce76a303678277baa"
+  },
+  "original0240": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r13-formal-route23-20261006-001/inputs/i3b-0240-native-preparation-20261006-001/BASELINE-0240.json",
+    "bytes": 426067,
+    "sha256": "e08d6f60d54085594297d227dc0213343fd86e372ff4c6cea558e847f5064323"
+  },
+  "source_windows": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/FIVE-SOURCE-WINDOWS.expected.json",
+    "bytes": 10378,
+    "sha256": "f86beb0ee3ff38308e871fdf1c89e1aadf702fe7a9487771a08e6f2e1b2b0973"
+  },
+  "source_window_proof": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/SOURCE-WINDOW-BINDING.actual.json",
+    "bytes": 2187,
+    "sha256": "85c3b2bd5fb7e5fe50259300d7b4a0687fc0acb47a227d9f2de197d691e66158"
+  },
+  "business_registry": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/business-registry/BUSINESS-MIGRATION-REGISTRY.actual.json",
+    "bytes": 3082,
+    "sha256": "d717bee1dc2f1c68b5b53ec29a60d91f0f52e3459a321ed26f5659f1e955f816"
+  },
+  "framework": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/AUTHOR-FRAMEWORK.actual-source.pending-checkpoint.json",
+    "bytes": 2343,
+    "sha256": "01fcf77da5d87c13425f4745c0bd2fb0f2e0f0d61bf16e48acafd990d8aa9b2a"
+  },
+  "PREPARED_at_framework_freeze": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/PREPARED.json",
+    "bytes": 7182,
+    "sha256": "e0a5d5a05576eec21e68c43e45040d9bc4ffa0c7ae984589cc0d91102126c1b1"
+  },
+  "fresh_native_save_G2_G3_credit": null,
+  "actual_pass": null
+}

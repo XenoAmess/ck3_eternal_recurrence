@@ -1,0 +1,33 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-inputs-20261007-001/CHECK.argv.json",
+    "bytes": 512,
+    "sha256": "dd1c00e222d02e508ced2ab270cc12032996f33830d366f6a260177ca2be8941"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-actual-bound-close-source-20261007-001\\author_closed_boundary.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-actual-closed-boundary-inputs-20261007-001\\ROOT-INPUTS.actual.json",
+    "--sha256",
+    "b32ead0797a24b181f49da0b689b333d4da04a28363e7388986ec33022771d74",
+    "--check"
+  ],
+  "started_at_utc": "2026-10-06T23:45:10.450893+00:00",
+  "finished_at_utc": "2026-10-06T23:45:10.742891+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-check-execution-20261007-001/stdout",
+    "bytes": 822,
+    "sha256": "213de4a9370116b0cd9b530310adc58ab3baca23156274542cf4f6f29693bf2e"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-check-execution-20261007-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

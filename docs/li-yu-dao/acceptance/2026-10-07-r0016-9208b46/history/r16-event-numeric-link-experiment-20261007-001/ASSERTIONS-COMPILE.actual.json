@@ -1,0 +1,105 @@
+{
+  "schema": "lyd.r16.numeric-supplement-assertion-compile-readback.actual.v1",
+  "ninja": {
+    "path": "C:/lyd16-numeric-link-supplement-20261007-001/build.ninja",
+    "bytes": 78429,
+    "sha256": "185ccc3644180a7b9a84f4e492bc3e9f694ce8525f45e31f249ea9530bb1f111"
+  },
+  "fixture": {
+    "path": "C:/lr16s5/ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context_test.cpp",
+    "bytes": 53950,
+    "sha256": "c1a2dab847e44a980e4e2867bc2bf8f64d52cc9de3c99921a2a49fdf14ca0b89"
+  },
+  "actual_compile_block": [
+    {
+      "line": 52,
+      "text": "build CMakeFiles\\xar_ck3_12002_event_window_context_test.dir\\C_\\lr16s5\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_event_window_context_test.cpp.obj: CXX_COMPILER__xar_ck3_12002_event_window_context_test_unscanned_Release C$:\\lr16s5\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_event_window_context_test.cpp || cmake_object_order_depends_target_xar_ck3_12002_event_window_context_test"
+    },
+    {
+      "line": 53,
+      "text": "  CONFIG = Release"
+    },
+    {
+      "line": 54,
+      "text": "  DEFINES = -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_BRIDGE_VERSION=\\\"0.1.0\\\" -DXAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1=1 -DXAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1=1 -DXAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1=1 -DXAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1 -DXAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1=1 -DXAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1=0 -DXAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=1 -DXAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1=1 -DXAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=1 -DXAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1=1 -DXAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1 -D_UNICODE"
+    },
+    {
+      "line": 55,
+      "text": "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /UNDEBUG /W4 /permissive- /EHsc /Gy"
+    },
+    {
+      "line": 56,
+      "text": "  INCLUDES = -IC:\\lr16s5\\ck3_autonomous_player\\native_bridge\\include -IC:\\lr16s5\\ck3_autonomous_player\\native_bridge\\src -IC:\\lr16s5\\ck3_autonomous_player\\native_bridge\\research"
+    },
+    {
+      "line": 57,
+      "text": "  OBJECT_DIR = CMakeFiles\\xar_ck3_12002_event_window_context_test.dir"
+    },
+    {
+      "line": 58,
+      "text": "  OBJECT_FILE_DIR = CMakeFiles\\xar_ck3_12002_event_window_context_test.dir\\C_\\lr16s5\\ck3_autonomous_player\\native_bridge\\src"
+    },
+    {
+      "line": 59,
+      "text": "  TARGET_COMPILE_PDB = CMakeFiles\\xar_ck3_12002_event_window_context_test.dir\\"
+    },
+    {
+      "line": 60,
+      "text": "  TARGET_PDB = xar_ck3_12002_event_window_context_test.pdb"
+    },
+    {
+      "line": 61,
+      "text": "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_ck3_12002_event_window_context_test.dir"
+    }
+  ],
+  "actual_compile_FLAGS": "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /UNDEBUG /W4 /permissive- /EHsc /Gy",
+  "MSVC_UNDEBUG_after_DNDEBUG": true,
+  "NDEBUG_not_defined_for_fixture": true,
+  "numeric_scope_source_snippets": [
+    {
+      "line": 1037,
+      "text": "} // namespace"
+    },
+    {
+      "line": 1038,
+      "text": "int main(int argc, char **argv) {"
+    },
+    {
+      "line": 1039,
+      "text": "  if (argc == 2 && std::string_view(argv[1]) == \"--numeric-value-scope\") {"
+    },
+    {
+      "line": 1040,
+      "text": "    return TestNumericSavedScope() ? 0 : 1;"
+    },
+    {
+      "line": 1041,
+      "text": "  }"
+    },
+    {
+      "line": 1042,
+      "text": "  if (argc == 2 && std::string_view(argv[1]) == \"--combined-title-faction-scopes\") {"
+    },
+    {
+      "line": 1043,
+      "text": "    return TestCombinedTitleAndFactionSavedScope() ? 0 : 1;"
+    },
+    {
+      "line": 1044,
+      "text": "  }"
+    },
+    {
+      "line": 1045,
+      "text": "  if (argc == 2 && std::string_view(argv[1]) == \"--landed-title-scope\") {"
+    }
+  ],
+  "existing_actual_run": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/RESULT.actual.json",
+    "bytes": 2653,
+    "sha256": "bc2fcc73546dd467b26509b8983d289b30af67ce01686c4d202a1d2b6c977712"
+  },
+  "numeric_exit_code": 0,
+  "compiler_or_test_rerun": false,
+  "clean_qualification": null,
+  "runtime_credit": null
+}

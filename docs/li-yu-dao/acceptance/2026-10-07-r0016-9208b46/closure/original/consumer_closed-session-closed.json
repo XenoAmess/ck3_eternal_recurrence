@@ -1,0 +1,24 @@
+{
+  "closed_at_utc": "2026-10-06T23:42:07.215447+00:00",
+  "claimed_requests": [
+    "r16-001-list.request.json",
+    "r16-002-attach.request.json",
+    "r16-003-snapshot.request.json",
+    "r16-004-G2.request.json",
+    "r16-005-G3.request.json",
+    "r16-006-G4.request.json",
+    "r16-007-save.request.json",
+    "r16-008-G2-after-save.request.json",
+    "r16-009-G3-after-save.request.json",
+    "r16-010-exit-snapshot.request.json",
+    "r16-011-exit-context.request.json",
+    "r16-012-exit-prepare.request.json",
+    "r16-013-exit-context-after-prepare.request.json",
+    "r16-014-exit-continue.request.json",
+    "r16-015-exit-context-before-confirm.request.json",
+    "r16-016-exit-confirm.request.json",
+    "r16-017-exit-observer.request.json",
+    "r16-root-close-988fe5e1ddc645479303e0fd7932948b.request.json"
+  ],
+  "attach_requested": true
+}

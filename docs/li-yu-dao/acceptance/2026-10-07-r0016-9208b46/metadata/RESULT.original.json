@@ -1,0 +1,157 @@
+{
+  "status": "ACTUAL_OFFICIAL_CLIENT_METADATA_AND_FRESH_CODE_INVENTORY",
+  "head": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+  "sdk_version": "2.0.0",
+  "pydantic_version": "2.13.5",
+  "tool_count": 28,
+  "tool_names": [
+    "ck3_query_native_profile_v1",
+    "ck3_attach_profile_bridge_v1",
+    "ck3_resume_profile_bridge_v1",
+    "ck3_take_profile_native_snapshot_v1",
+    "ck3_query_profile_character_interaction_ordinary_v1",
+    "ck3_initiate_profile_character_interaction_ordinary_v1",
+    "ck3_observe_profile_normal_exit_v1",
+    "ck3_query_normal_exit_context_v1",
+    "ck3_request_normal_exit_v1",
+    "ck3_query_profile_current_actor_stress_adjustment_v1",
+    "ck3_query_profile_event_window_v1",
+    "ck3_query_profile_pending_interaction_v1",
+    "ck3_reply_profile_pending_interaction_v1",
+    "ck3_set_profile_simulation_v1",
+    "ck3_pause_profile_simulation_v1",
+    "ck3_select_profile_event_option_v1",
+    "ck3_save_profile_checkpoint_v1",
+    "ck3_query_profile_decision_item_v1",
+    "ck3_open_profile_decisions_v1",
+    "ck3_select_profile_decision_item_v1",
+    "ck3_confirm_profile_decision_outcome_v1",
+    "ck3_query_profile_confucian_assembly_predicates_v1",
+    "ck3_query_profile_confucian_religious_title_v1",
+    "ck3_query_profile_confucian_challenger_graph_v1",
+    "ck3_query_profile_grant_title_picker_v1",
+    "ck3_prepare_profile_grant_title_picker_v1",
+    "ck3_select_profile_grant_title_picker_v1",
+    "ck3_send_profile_grant_title_picker_v1"
+  ],
+  "metadata": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/ACTUAL-grant28-profile-all-tools.json",
+    "bytes": 29956,
+    "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+  },
+  "default_tool_count": 21,
+  "default_metadata": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/ACTUAL-default21-profile-all-tools.json",
+    "bytes": 20312,
+    "sha256": "1ab8945cf322da4800edd7c5baa4a50a7e8972d6d6c7c93cd6b7e4d64649f098"
+  },
+  "readonly_tool_count": 23,
+  "readonly_metadata": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/ACTUAL-private23-profile-all-tools.json",
+    "bytes": 22399,
+    "sha256": "4c97e3866eb9e14c98834ab192eb851ccde9585c0bdcb04f5fd01d7c01538da4"
+  },
+  "sdk_references": {
+    "default21": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/REFERENCE-default21-TOOLS.json",
+      "bytes": 20312,
+      "sha256": "1ab8945cf322da4800edd7c5baa4a50a7e8972d6d6c7c93cd6b7e4d64649f098"
+    },
+    "private23": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/REFERENCE-private23-TOOLS.json",
+      "bytes": 22399,
+      "sha256": "4c97e3866eb9e14c98834ab192eb851ccde9585c0bdcb04f5fd01d7c01538da4"
+    },
+    "challenger24": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/REFERENCE-challenger24-TOOLS.json",
+      "bytes": 23777,
+      "sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9"
+    },
+    "grant28": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/REFERENCE-grant28-TOOLS.json",
+      "bytes": 29956,
+      "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+    }
+  },
+  "source_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/SOURCE-INVENTORY.actual.json",
+    "bytes": 747943,
+    "sha256": "08b71c41736e1302dcc7855f33bc1bde61915f9ea77d7c68df6150ac210401df"
+  },
+  "source_file_count": 3680,
+  "actual_export_report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-head-export-20261007-006/REPORT.json",
+    "bytes": 23168,
+    "sha256": "a280ff49d3336e8bf96ab614c630bc51e2a4583135debcacdc27fe7c1a3b5f04"
+  },
+  "native_clean_qualification": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/NATIVE-CLEAN-QUALIFICATION.actual.json",
+    "bytes": 980259,
+    "sha256": "0f8c0e34bda377b6ccfffc84c3a65fb3ee038ccb4fb87837bf42619b85505260"
+  },
+  "compiled_verification": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/RESULT.json",
+    "bytes": 1005579,
+    "sha256": "5ad7a2a676ab1aa2d23f58e0576f259ea0d54184401c84e07d7a6d703f47a386"
+  },
+  "actual_imported_origins": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/ACTUAL-IMPORTED-SOURCE-ORIGINS.json",
+    "bytes": 863,
+    "sha256": "be4d98de51f2182066efd6560b5e8fc9b768aaf98e7f46bc4a9365f43d47823a"
+  },
+  "source_tool_declarations": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/SOURCE-TOOL-DECLARATIONS.actual.json",
+    "bytes": 2346,
+    "sha256": "8b7085c27a9ecfa4656847e44f1a6b0288bd0cedec273c75bcb3025e7ae44ce0"
+  },
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-request-20261007-002/REQUEST.actual.json",
+    "bytes": 1887,
+    "sha256": "2f7782169d927845d46604b15ae2a809132f2eeec284046c2cde856b4bdd1d48"
+  },
+  "private_bundle": "CONFUCIAN_CHALLENGER_GRANT_28",
+  "grant_title_picker_opt_in": true,
+  "challenger_tool_count": 24,
+  "challenger_metadata": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/ACTUAL-challenger24-profile-all-tools.json",
+    "bytes": 23777,
+    "sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9"
+  },
+  "factory_opt_in": {
+    "confucian_readonly_tools": false,
+    "confucian_challenger_tools": true,
+    "player_control_tools": false,
+    "grant_title_picker_tools": true
+  },
+  "baseline": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+      "bytes": 91669783,
+      "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d"
+    },
+    "readback": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-actual-detach-second-post-readback-20261006-001/REPORT.json",
+      "bytes": 10200,
+      "sha256": "9da63fb2b9eb045c6c9609638edec6071411bbd1592cee20be8bbce772701239"
+    },
+    "readback_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-actual-detach-second-post-readback-20261006-001/INDEX.json",
+      "bytes": 7320,
+      "sha256": "1d2170e5e97044d8546e78b9b2f3d1c45b880ea9a57bfcc7a54688a5cd67d304"
+    }
+  },
+  "previous_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3114,
+    "sha256": "c519e2c30c051df45afce80ee10f6d025c59d9e4943894fa0e9cc1e6808bf158"
+  },
+  "closure_verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/verify_r15_previous_boundary.py",
+    "bytes": 11128,
+    "sha256": "f92037872d6fa921980501a4adbd69010f24edd99cd2d0656ff88765b9dbd9ec"
+  },
+  "business_callbacks": 0,
+  "game_calls": 0,
+  "actual_game_client_started": false,
+  "runtime_acceptance": "NOT_RUN"
+}

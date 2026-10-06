@@ -1,0 +1,2084 @@
+{
+  "schema": "lyd.r16.permanent-archive-raw-ref-index.v1",
+  "exact_original_to_proposed_tracked_copies": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/RESULT.json",
+        "bytes": 997891,
+        "sha256": "2862922f15675377b6295b70cfccf0b052f6acb3a8606a86d430567f445e5d9f"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/001/RESULT.original.json",
+        "bytes": 997891,
+        "sha256": "2862922f15675377b6295b70cfccf0b052f6acb3a8606a86d430567f445e5d9f"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/001/RESULT.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/build.stdout",
+        "bytes": 37189,
+        "sha256": "8512ddbf8ccb1dcd70b6a51ed1588c2052d27598b0a1e14e89815191c691e8cc"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/001/build.stdout",
+        "bytes": 37189,
+        "sha256": "8512ddbf8ccb1dcd70b6a51ed1588c2052d27598b0a1e14e89815191c691e8cc"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/001/build.stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/build.stderr",
+        "bytes": 506,
+        "sha256": "c7dde9ed3b72ff0b47633950e88c007f3db36933255e0717788244b5abebd0bf"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/001/build.stderr",
+        "bytes": 506,
+        "sha256": "c7dde9ed3b72ff0b47633950e88c007f3db36933255e0717788244b5abebd0bf"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/001/build.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/ROOT-INVOCATION.json",
+        "bytes": 300,
+        "sha256": "d2610f42d73aaf60cd7f9e56294186cf5f831854cf22a07db18d5e42581918f7"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/001/ROOT-INVOCATION.json",
+        "bytes": 300,
+        "sha256": "d2610f42d73aaf60cd7f9e56294186cf5f831854cf22a07db18d5e42581918f7"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/001/ROOT-INVOCATION.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/lr16b3/native-msvc-result.json",
+        "bytes": 1857,
+        "sha256": "aa80f892915992105650dc7d6edc8db466fbed8fd96f05492508db7e5c7d1a85"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/001/native-producer.original.json",
+        "bytes": 1857,
+        "sha256": "aa80f892915992105650dc7d6edc8db466fbed8fd96f05492508db7e5c7d1a85"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/001/native-producer.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/RESULT.json",
+        "bytes": 998733,
+        "sha256": "7aebde9110d357a8d36caa9c75b9b5288e976543ba121a804ba785de061b42bc"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/002/RESULT.original.json",
+        "bytes": 998733,
+        "sha256": "7aebde9110d357a8d36caa9c75b9b5288e976543ba121a804ba785de061b42bc"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/002/RESULT.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/build.stdout",
+        "bytes": 71139,
+        "sha256": "16f81b56f9601a2daa5624a5b428e71bcf92625c16b04cf511dd7e5374c39b90"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/002/build.stdout",
+        "bytes": 71139,
+        "sha256": "16f81b56f9601a2daa5624a5b428e71bcf92625c16b04cf511dd7e5374c39b90"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/002/build.stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/build.stderr",
+        "bytes": 515,
+        "sha256": "f2b9e7be7ce1dadfe28b4fe519758ebd973d07a460298f277f97da746ab4daa8"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/002/build.stderr",
+        "bytes": 515,
+        "sha256": "f2b9e7be7ce1dadfe28b4fe519758ebd973d07a460298f277f97da746ab4daa8"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/002/build.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/ROOT-INVOCATION.json",
+        "bytes": 300,
+        "sha256": "1809763e6134d7430c60fa5ddfcd423b1f5254d6a73c558f4f82c3b573d966e5"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/002/ROOT-INVOCATION.json",
+        "bytes": 300,
+        "sha256": "1809763e6134d7430c60fa5ddfcd423b1f5254d6a73c558f4f82c3b573d966e5"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/002/ROOT-INVOCATION.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/lr16b4/native-msvc-result.json",
+        "bytes": 1866,
+        "sha256": "78adb764521c9f721d29c092c29966b92726a0253840d235635e7eb63663f7fb"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/002/native-producer.original.json",
+        "bytes": 1866,
+        "sha256": "78adb764521c9f721d29c092c29966b92726a0253840d235635e7eb63663f7fb"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/002/native-producer.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-003/RESULT.json",
+        "bytes": 999201,
+        "sha256": "2f700317442a15daa71902a69eb5538591c33c90eb814dc52ec2eb03cdc7000f"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/003/RESULT.original.json",
+        "bytes": 999201,
+        "sha256": "2f700317442a15daa71902a69eb5538591c33c90eb814dc52ec2eb03cdc7000f"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/003/RESULT.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-003/build.stdout",
+        "bytes": 90977,
+        "sha256": "5c1182ca41ffa45975ae41e1e0576831152bb00db7db6fe99944bd523bee5cca"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/003/build.stdout",
+        "bytes": 90977,
+        "sha256": "5c1182ca41ffa45975ae41e1e0576831152bb00db7db6fe99944bd523bee5cca"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/003/build.stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-003/build.stderr",
+        "bytes": 515,
+        "sha256": "55bba7e87c518dd467041c1dcdf094c1f1c91aa8151d84adfeb4859221c89f0e"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/003/build.stderr",
+        "bytes": 515,
+        "sha256": "55bba7e87c518dd467041c1dcdf094c1f1c91aa8151d84adfeb4859221c89f0e"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/003/build.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-003/ROOT-INVOCATION.json",
+        "bytes": 300,
+        "sha256": "c97bc24bfd361fec3a8ed8bb670d630085d51433fe105937e90f4fc8301f1b9f"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/003/ROOT-INVOCATION.json",
+        "bytes": 300,
+        "sha256": "c97bc24bfd361fec3a8ed8bb670d630085d51433fe105937e90f4fc8301f1b9f"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/003/ROOT-INVOCATION.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/lr16b5/native-msvc-result.json",
+        "bytes": 1866,
+        "sha256": "7c1e0dc7ae83b5cf5831f0e62b1c5f173b45c0c2e7081e601c18a4b0365b2471"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/003/native-producer.original.json",
+        "bytes": 1866,
+        "sha256": "7c1e0dc7ae83b5cf5831f0e62b1c5f173b45c0c2e7081e601c18a4b0365b2471"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/003/native-producer.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/RESULT.json",
+        "bytes": 1005579,
+        "sha256": "5ad7a2a676ab1aa2d23f58e0576f259ea0d54184401c84e07d7a6d703f47a386"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/RESULT.original.json",
+        "bytes": 1005579,
+        "sha256": "5ad7a2a676ab1aa2d23f58e0576f259ea0d54184401c84e07d7a6d703f47a386"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/RESULT.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/build.stdout",
+        "bytes": 68596,
+        "sha256": "440fc85d55ad182b7d8b4041968708f0a0968d5535aa90631f49876d7d398fa0"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/build.stdout",
+        "bytes": 68596,
+        "sha256": "440fc85d55ad182b7d8b4041968708f0a0968d5535aa90631f49876d7d398fa0"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/build.stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/build.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/build.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/build.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/ROOT-INVOCATION.json",
+        "bytes": 300,
+        "sha256": "f4245788753e8fa1d6c44385dd99158d4604ed57d02ef0f235857e73066e3e9c"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/ROOT-INVOCATION.json",
+        "bytes": 300,
+        "sha256": "f4245788753e8fa1d6c44385dd99158d4604ed57d02ef0f235857e73066e3e9c"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/ROOT-INVOCATION.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/lr16b6/native-msvc-result.json",
+        "bytes": 1836,
+        "sha256": "9212eb8beb80ba09720263b6b7bfc7f4ac3ce5a150c8fd88ba8f0e7d73ba3c63"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/native-producer.original.json",
+        "bytes": 1836,
+        "sha256": "9212eb8beb80ba09720263b6b7bfc7f4ac3ce5a150c8fd88ba8f0e7d73ba3c63"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/native-producer.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_assembly_predicates_v1_test.stdout",
+        "bytes": 69,
+        "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_confucian_assembly_predicates_v1_test.stdout",
+        "bytes": 69,
+        "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_confucian_assembly_predicates_v1_test.stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_assembly_predicates_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_confucian_assembly_predicates_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_confucian_assembly_predicates_v1_test.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_religious_title_readback_v1_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_confucian_religious_title_readback_v1_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_confucian_religious_title_readback_v1_test.stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_religious_title_readback_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_confucian_religious_title_readback_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_confucian_religious_title_readback_v1_test.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_challenger_graph_v1_test.stdout",
+        "bytes": 71,
+        "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_confucian_challenger_graph_v1_test.stdout",
+        "bytes": 71,
+        "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_confucian_challenger_graph_v1_test.stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_challenger_graph_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_confucian_challenger_graph_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_confucian_challenger_graph_v1_test.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+        "bytes": 153,
+        "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+        "bytes": 153,
+        "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_12002_event_window_context_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_ck3_12002_event_window_context_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_ck3_12002_event_window_context_test.stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_12002_event_window_context_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/focused/xar_ck3_12002_event_window_context_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/focused/xar_ck3_12002_event_window_context_test.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/lr16b6/defender-exe-exclusions/20261006T230217Z-aab09956/receipt.json",
+        "bytes": 3673,
+        "sha256": "a2fb19dd477828fa858101f576fd4cb5719e5241f76c620ae6550495c40b8afc"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/Defender-receipt.original.json",
+        "bytes": 3673,
+        "sha256": "a2fb19dd477828fa858101f576fd4cb5719e5241f76c620ae6550495c40b8afc"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/Defender-receipt.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/lr16b6/defender-exe-exclusions/20261006T230217Z-aab09956/manifest.json",
+        "bytes": 5825,
+        "sha256": "422fff0f0ffa4dd1643a7a972c5af63c4b5b1c79925e9a2d5b07b83d6927a069"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/builds/004/Defender-manifest.original.json",
+        "bytes": 5825,
+        "sha256": "422fff0f0ffa4dd1643a7a972c5af63c4b5b1c79925e9a2d5b07b83d6927a069"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/builds/004/Defender-manifest.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-trigger-cv-fix-sourceonly-20261007-001/INDEX.json",
+        "bytes": 1417,
+        "sha256": "b63b55637c78bd945701ff7cba8420e466bdfa4c146cf870d652c53993446a07"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-grant-trigger-cv-fix-sourceonly-20261007-001/INDEX.json",
+        "bytes": 1417,
+        "sha256": "b63b55637c78bd945701ff7cba8420e466bdfa4c146cf870d652c53993446a07"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-grant-trigger-cv-fix-sourceonly-20261007-001/INDEX.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-C2664-READBACK.json",
+        "bytes": 3079,
+        "sha256": "e5983886e5099592faeea7896565eba867aecfa36ed7dfb9430acd78b123398f"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-C2664-READBACK.json",
+        "bytes": 3079,
+        "sha256": "e5983886e5099592faeea7896565eba867aecfa36ed7dfb9430acd78b123398f"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-C2664-READBACK.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-FIX-READBACK.json",
+        "bytes": 1709,
+        "sha256": "9fd23afccf9d11904d062ab17c2c11fc1146af9953daa63109df58ed29bdce86"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-FIX-READBACK.json",
+        "bytes": 1709,
+        "sha256": "9fd23afccf9d11904d062ab17c2c11fc1146af9953daa63109df58ed29bdce86"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-FIX-READBACK.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/INDEX.json",
+        "bytes": 2691,
+        "sha256": "2fd0e8256591de814bb87abec2e5309b7618f8b6bd6417acfdcfd799fe8e49ce"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-event-numeric-link-closure-sourceonly-20261007-001/INDEX.json",
+        "bytes": 2691,
+        "sha256": "2fd0e8256591de814bb87abec2e5309b7618f8b6bd6417acfdcfd799fe8e49ce"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-event-numeric-link-closure-sourceonly-20261007-001/INDEX.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/INTEGRATION-MANIFEST.json",
+        "bytes": 3610,
+        "sha256": "66f95f448f9439e69487ef6b31b1a45f512afbeae1111997721f9077a462c3aa"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-event-numeric-link-closure-sourceonly-20261007-001/INTEGRATION-MANIFEST.json",
+        "bytes": 3610,
+        "sha256": "66f95f448f9439e69487ef6b31b1a45f512afbeae1111997721f9077a462c3aa"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-event-numeric-link-closure-sourceonly-20261007-001/INTEGRATION-MANIFEST.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INDEX.json",
+        "bytes": 5568,
+        "sha256": "dfba762df3eeb5c583dc9f231ebbadfaa49e345abcc8afdd772070538a476554"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-event-numeric-link-experiment-20261007-001/INDEX.json",
+        "bytes": 5568,
+        "sha256": "dfba762df3eeb5c583dc9f231ebbadfaa49e345abcc8afdd772070538a476554"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-event-numeric-link-experiment-20261007-001/INDEX.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INTEGRATION-MANIFEST.json",
+        "bytes": 4447,
+        "sha256": "795b9023c9f5a4f7c8883fe5074a457b13448416c7c329af37542aed1bcf6005"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-event-numeric-link-experiment-20261007-001/INTEGRATION-MANIFEST.json",
+        "bytes": 4447,
+        "sha256": "795b9023c9f5a4f7c8883fe5074a457b13448416c7c329af37542aed1bcf6005"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-event-numeric-link-experiment-20261007-001/INTEGRATION-MANIFEST.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/RESULT.actual.json",
+        "bytes": 2653,
+        "sha256": "bc2fcc73546dd467b26509b8983d289b30af67ce01686c4d202a1d2b6c977712"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-event-numeric-link-experiment-20261007-001/RESULT.actual.json",
+        "bytes": 2653,
+        "sha256": "bc2fcc73546dd467b26509b8983d289b30af67ce01686c4d202a1d2b6c977712"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-event-numeric-link-experiment-20261007-001/RESULT.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INPUTS.json",
+        "bytes": 52932,
+        "sha256": "951ba36e83b9f9fc40500e6dc27c32560afd55ea539a10934dee99466024f9e1"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-event-numeric-link-experiment-20261007-001/INPUTS.json",
+        "bytes": 52932,
+        "sha256": "951ba36e83b9f9fc40500e6dc27c32560afd55ea539a10934dee99466024f9e1"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-event-numeric-link-experiment-20261007-001/INPUTS.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/ASSERTIONS-COMPILE.actual.json",
+        "bytes": 4438,
+        "sha256": "4f8a5e09b7826e91b1cbb304fa4b28a79c015fe15bac79be3d080bd6dada9fab"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-event-numeric-link-experiment-20261007-001/ASSERTIONS-COMPILE.actual.json",
+        "bytes": 4438,
+        "sha256": "4f8a5e09b7826e91b1cbb304fa4b28a79c015fe15bac79be3d080bd6dada9fab"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-event-numeric-link-experiment-20261007-001/ASSERTIONS-COMPILE.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/DEFENDER.actual-readback.json",
+        "bytes": 952,
+        "sha256": "19d9c557c6868c21654c1344dc5128aa185e25b6cf32477909a64dac2cd0b1ec"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-event-numeric-link-experiment-20261007-001/DEFENDER.actual-readback.json",
+        "bytes": 952,
+        "sha256": "19d9c557c6868c21654c1344dc5128aa185e25b6cf32477909a64dac2cd0b1ec"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-event-numeric-link-experiment-20261007-001/DEFENDER.actual-readback.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/VERIFIED-REAL-LINK-CLOSURE.incremental.patch",
+        "bytes": 1768,
+        "sha256": "8e04fd6fa86f44c5d3790123be000b08cd6584ba5e8f18fca149a3b36d5628f0"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-event-numeric-link-experiment-20261007-001/VERIFIED-REAL-LINK-CLOSURE.incremental.patch",
+        "bytes": 1768,
+        "sha256": "8e04fd6fa86f44c5d3790123be000b08cd6584ba5e8f18fca149a3b36d5628f0"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-event-numeric-link-experiment-20261007-001/VERIFIED-REAL-LINK-CLOSURE.incremental.patch",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/INDEX.json",
+        "bytes": 6205,
+        "sha256": "035fb636caca896becda154d5ee39c85636a945be684ed4ac109e11059452aed"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-grant-metadata-annotations-successor-20261007-001/INDEX.json",
+        "bytes": 6205,
+        "sha256": "035fb636caca896becda154d5ee39c85636a945be684ed4ac109e11059452aed"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-grant-metadata-annotations-successor-20261007-001/INDEX.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/FOCUSED-ANNOTATIONS.actual.json",
+        "bytes": 1777,
+        "sha256": "9c48c0b84729c7461f312d99c7f118417c67bc5d1214ce99125c977723dbf76a"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-grant-metadata-annotations-successor-20261007-001/FOCUSED-ANNOTATIONS.actual.json",
+        "bytes": 1777,
+        "sha256": "9c48c0b84729c7461f312d99c7f118417c67bc5d1214ce99125c977723dbf76a"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-grant-metadata-annotations-successor-20261007-001/FOCUSED-ANNOTATIONS.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-OFFICIAL-GRANT28-METADATA.json",
+        "bytes": 29956,
+        "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-OFFICIAL-GRANT28-METADATA.json",
+        "bytes": 29956,
+        "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-OFFICIAL-GRANT28-METADATA.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-HINTS-AND-FROZEN-AST.json",
+        "bytes": 9342,
+        "sha256": "e7e47d796d71df0ef2677618fbbe3f80008adbae442366cdee9d2b10e4d4c648"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-HINTS-AND-FROZEN-AST.json",
+        "bytes": 9342,
+        "sha256": "e7e47d796d71df0ef2677618fbbe3f80008adbae442366cdee9d2b10e4d4c648"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-HINTS-AND-FROZEN-AST.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-check-actual-20261007-001/RESULT.actual.json",
+        "bytes": 1670,
+        "sha256": "b147f9d4f92e3dc05d52441cb94635089754673c73b8571d170d10bda879b488"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-check-actual-20261007-001/RESULT.actual.json",
+        "bytes": 1670,
+        "sha256": "b147f9d4f92e3dc05d52441cb94635089754673c73b8571d170d10bda879b488"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-check-actual-20261007-001/RESULT.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-check-actual-20261007-001/stdout",
+        "bytes": 1043798,
+        "sha256": "30e365aa9965cc306ccf7b5790a2dd746bc22fb6c661dd2e2826ddfb73489437"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-check-actual-20261007-001/stdout",
+        "bytes": 1043798,
+        "sha256": "30e365aa9965cc306ccf7b5790a2dd746bc22fb6c661dd2e2826ddfb73489437"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-check-actual-20261007-001/stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-check-actual-20261007-001/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-check-actual-20261007-001/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-check-actual-20261007-001/stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-create-actual-20261007-001/RESULT.actual.json",
+        "bytes": 1671,
+        "sha256": "2e9ade5fbc7115350799f1062127c4e1f9b2fe8d350bfa33f01be03def44f7a9"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-create-actual-20261007-001/RESULT.actual.json",
+        "bytes": 1671,
+        "sha256": "2e9ade5fbc7115350799f1062127c4e1f9b2fe8d350bfa33f01be03def44f7a9"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-create-actual-20261007-001/RESULT.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-create-actual-20261007-001/stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-create-actual-20261007-001/stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-create-actual-20261007-001/stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-create-actual-20261007-001/stderr",
+        "bytes": 2754,
+        "sha256": "e2083fae03d5f853e629b5fd8bd6401506b814775800ef9ae3865f9311bd8daf"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-create-actual-20261007-001/stderr",
+        "bytes": 2754,
+        "sha256": "e2083fae03d5f853e629b5fd8bd6401506b814775800ef9ae3865f9311bd8daf"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-create-actual-20261007-001/stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-check-actual-20261007-002/RESULT.actual.json",
+        "bytes": 1663,
+        "sha256": "b28a9d94142758ebe0e9c89ef5eb6f7787f004317320238ffe2c450a2b07c2fa"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-check-actual-20261007-002/RESULT.actual.json",
+        "bytes": 1663,
+        "sha256": "b28a9d94142758ebe0e9c89ef5eb6f7787f004317320238ffe2c450a2b07c2fa"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-check-actual-20261007-002/RESULT.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-check-actual-20261007-002/stdout",
+        "bytes": 1043798,
+        "sha256": "30e365aa9965cc306ccf7b5790a2dd746bc22fb6c661dd2e2826ddfb73489437"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-check-actual-20261007-002/stdout",
+        "bytes": 1043798,
+        "sha256": "30e365aa9965cc306ccf7b5790a2dd746bc22fb6c661dd2e2826ddfb73489437"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-check-actual-20261007-002/stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-check-actual-20261007-002/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-check-actual-20261007-002/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-check-actual-20261007-002/stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-create-actual-20261007-002/RESULT.actual.json",
+        "bytes": 1663,
+        "sha256": "031bf1a72315090c27345f5fd75863ed12c79ad4c3093313f3efaa08c9c059dc"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-create-actual-20261007-002/RESULT.actual.json",
+        "bytes": 1663,
+        "sha256": "031bf1a72315090c27345f5fd75863ed12c79ad4c3093313f3efaa08c9c059dc"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-create-actual-20261007-002/RESULT.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-create-actual-20261007-002/stdout",
+        "bytes": 567,
+        "sha256": "225834e6e46c33a151f2bd324f01007328b10327175491569d54a598c68c03ac"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-create-actual-20261007-002/stdout",
+        "bytes": 567,
+        "sha256": "225834e6e46c33a151f2bd324f01007328b10327175491569d54a598c68c03ac"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-create-actual-20261007-002/stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-create-actual-20261007-002/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/r16-root-metadata-create-actual-20261007-002/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/r16-root-metadata-create-actual-20261007-002/stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/RESULT.json",
+        "bytes": 7133,
+        "sha256": "12b575b1f4eda40a9cc7d269002a83f9e20f0b22f835381fd993fe150e556574"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/metadata/RESULT.original.json",
+        "bytes": 7133,
+        "sha256": "12b575b1f4eda40a9cc7d269002a83f9e20f0b22f835381fd993fe150e556574"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/metadata/RESULT.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/ACTUAL-grant28-profile-all-tools.json",
+        "bytes": 29956,
+        "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/metadata/ACTUAL-grant28-profile-all-tools.json",
+        "bytes": 29956,
+        "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/metadata/ACTUAL-grant28-profile-all-tools.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/ACTUAL-challenger24-profile-all-tools.json",
+        "bytes": 23777,
+        "sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/metadata/ACTUAL-challenger24-profile-all-tools.json",
+        "bytes": 23777,
+        "sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/metadata/ACTUAL-challenger24-profile-all-tools.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/NATIVE-CLEAN-QUALIFICATION.actual.json",
+        "bytes": 980259,
+        "sha256": "0f8c0e34bda377b6ccfffc84c3a65fb3ee038ccb4fb87837bf42619b85505260"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/metadata/NATIVE-CLEAN-QUALIFICATION.actual.json",
+        "bytes": 980259,
+        "sha256": "0f8c0e34bda377b6ccfffc84c3a65fb3ee038ccb4fb87837bf42619b85505260"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/metadata/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/ACTUAL-MATERIALIZER-001.json",
+        "bytes": 4838,
+        "sha256": "c946980d4a9a74a4e1fb6b366b4beb2a7d25cf2660a92d7923039e1ecfe12110"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/ACTUAL-MATERIALIZER-001.json",
+        "bytes": 4838,
+        "sha256": "c946980d4a9a74a4e1fb6b366b4beb2a7d25cf2660a92d7923039e1ecfe12110"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/ACTUAL-MATERIALIZER-001.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/actual-materializer-001.stderr",
+        "bytes": 1036,
+        "sha256": "1c4c1e39d4dfd144dd0266fa75df38d59d71af4acb2ec0d677d9e054a319b0b3"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/actual-materializer-001.stderr",
+        "bytes": 1036,
+        "sha256": "1c4c1e39d4dfd144dd0266fa75df38d59d71af4acb2ec0d677d9e054a319b0b3"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/actual-materializer-001.stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/ACTUAL-MATERIALIZER-002.json",
+        "bytes": 4840,
+        "sha256": "717b6b95c1ddffd6ad6b7f8b9c0b6f1b52e3f1dfbecfc0548d6d8b188bdc8f36"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/ACTUAL-MATERIALIZER-002.json",
+        "bytes": 4840,
+        "sha256": "717b6b95c1ddffd6ad6b7f8b9c0b6f1b52e3f1dfbecfc0548d6d8b188bdc8f36"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/ACTUAL-MATERIALIZER-002.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/PREPARED-FINAL10-PROFILE-SUCCESSOR.actual.json",
+        "bytes": 2733,
+        "sha256": "dbf165e7c9dd21595f5d6f61a1a4526b0f675a5c24e16f82e001d25d7b65465e"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/PREPARED-FINAL10-PROFILE-SUCCESSOR.actual.json",
+        "bytes": 2733,
+        "sha256": "dbf165e7c9dd21595f5d6f61a1a4526b0f675a5c24e16f82e001d25d7b65465e"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/PREPARED-FINAL10-PROFILE-SUCCESSOR.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/FROZEN-REFERENCES.actual.json",
+        "bytes": 4251,
+        "sha256": "e68d0d0969a9315fbb7475c3b3c6e8c95a5798dc00a7b62c5282e83ae6ff898b"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/FROZEN-REFERENCES.actual.json",
+        "bytes": 4251,
+        "sha256": "e68d0d0969a9315fbb7475c3b3c6e8c95a5798dc00a7b62c5282e83ae6ff898b"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/FROZEN-REFERENCES.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/FROZEN-REFERENCES.actual.002.json",
+        "bytes": 4979,
+        "sha256": "05aa9fe7a8d1972591fc4bb729ba725dd077275e568f170b0fbeb502f9fee8af"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/FROZEN-REFERENCES.actual.002.json",
+        "bytes": 4979,
+        "sha256": "05aa9fe7a8d1972591fc4bb729ba725dd077275e568f170b0fbeb502f9fee8af"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/FROZEN-REFERENCES.actual.002.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/INDEX.actual002.json",
+        "bytes": 2931,
+        "sha256": "2ece4c2e01548c173f262c8316822f004fea8fec8e968ff14fcd7812de9a90f4"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/INDEX.actual002.json",
+        "bytes": 2931,
+        "sha256": "2ece4c2e01548c173f262c8316822f004fea8fec8e968ff14fcd7812de9a90f4"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/INDEX.actual002.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/SOURCE-ONLY-MANIFEST.actual002.json",
+        "bytes": 3891,
+        "sha256": "0cfad28dd42bf9b7a1adab9cd7ed90451f074174c93430cfeacebbcd91cfa897"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/SOURCE-ONLY-MANIFEST.actual002.json",
+        "bytes": 3891,
+        "sha256": "0cfad28dd42bf9b7a1adab9cd7ed90451f074174c93430cfeacebbcd91cfa897"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/SOURCE-ONLY-MANIFEST.actual002.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/SEAL002-MECHANICAL-FIELD-FAILURE.preserved.json",
+        "bytes": 561,
+        "sha256": "6320cd260643a18ef7357297e1e6e3552fed7929a2eb0bc92fbd589624af8ece"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/SEAL002-MECHANICAL-FIELD-FAILURE.preserved.json",
+        "bytes": 561,
+        "sha256": "6320cd260643a18ef7357297e1e6e3552fed7929a2eb0bc92fbd589624af8ece"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/SEAL002-MECHANICAL-FIELD-FAILURE.preserved.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/compare_political_heirs_v5.py",
+        "bytes": 5969,
+        "sha256": "333dbcab59374fae5538c2996cb35c7eafc4a72f07b5d92af9e933cdc3c48293"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/compare_political_heirs_v5.py",
+        "bytes": 5969,
+        "sha256": "333dbcab59374fae5538c2996cb35c7eafc4a72f07b5d92af9e933cdc3c48293"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/compare_political_heirs_v5.py",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/PREPARED.json",
+        "bytes": 7182,
+        "sha256": "e0a5d5a05576eec21e68c43e45040d9bc4ffa0c7ae984589cc0d91102126c1b1"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/PREPARED.json",
+        "bytes": 7182,
+        "sha256": "e0a5d5a05576eec21e68c43e45040d9bc4ffa0c7ae984589cc0d91102126c1b1"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/PREPARED.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/native-profile-with-exit-inventory.json",
+        "bytes": 1104,
+        "sha256": "38d54bd94502de17874ca2b5269955fa495a0598793ff5ae06ce25b781ac2dfb"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/native-profile-with-exit-inventory.json",
+        "bytes": 1104,
+        "sha256": "38d54bd94502de17874ca2b5269955fa495a0598793ff5ae06ce25b781ac2dfb"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/native-profile-with-exit-inventory.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/root-profile-request-001/native-profile-fresh-001/native-profile.json",
+        "bytes": 884,
+        "sha256": "f74c0e2f3cfacd9c6342dadc8cf62c7883278072a117e3449e5829e193fee214"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/request-history/native-profile-original9.json",
+        "bytes": 884,
+        "sha256": "f74c0e2f3cfacd9c6342dadc8cf62c7883278072a117e3449e5829e193fee214"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/request-history/native-profile-original9.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/RESULT.json",
+        "bytes": 1039866,
+        "sha256": "7ac8656e70f9c2b703aada791faa8e460c1f5fefdd7192707cfc9031eb9c88b4"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/RESULT.original.json",
+        "bytes": 1039866,
+        "sha256": "7ac8656e70f9c2b703aada791faa8e460c1f5fefdd7192707cfc9031eb9c88b4"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/RESULT.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/CHECKPOINT-TRANSITION.actual.json",
+        "bytes": 27376,
+        "sha256": "1dab51c6f847f0c2d78072cae7b87625caf93a35dc52a3762c7d7c3f7fedf364"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/CHECKPOINT-TRANSITION.actual.json",
+        "bytes": 27376,
+        "sha256": "1dab51c6f847f0c2d78072cae7b87625caf93a35dc52a3762c7d7c3f7fedf364"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/CHECKPOINT-TRANSITION.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/CONVERSION-REQUEST.actual-or-pending.json",
+        "bytes": 10161,
+        "sha256": "f920ee29d0cdf23614802aebadfc8bb385e988c3d4432d9a84b799868da9ddf3"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/CONVERSION-REQUEST.actual-or-pending.json",
+        "bytes": 10161,
+        "sha256": "f920ee29d0cdf23614802aebadfc8bb385e988c3d4432d9a84b799868da9ddf3"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/CONVERSION-REQUEST.actual-or-pending.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/INPUT.exact.json",
+        "bytes": 2995,
+        "sha256": "0ea14db50fb6b010e8ec549397f8e8d620695295f64dafc3b07cd38df684331e"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/INPUT.exact.json",
+        "bytes": 2995,
+        "sha256": "0ea14db50fb6b010e8ec549397f8e8d620695295f64dafc3b07cd38df684331e"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/INPUT.exact.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+        "bytes": 980259,
+        "sha256": "0f8c0e34bda377b6ccfffc84c3a65fb3ee038ccb4fb87837bf42619b85505260"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/NATIVE-CLEAN-QUALIFICATION.actual.json",
+        "bytes": 980259,
+        "sha256": "0f8c0e34bda377b6ccfffc84c3a65fb3ee038ccb4fb87837bf42619b85505260"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/native-qualification/QUALIFIED-NATIVE.json",
+        "bytes": 90514,
+        "sha256": "69f96081a5836e2a909c7bc2b9e123b951d340a6ed6943d1e222e565a41ef564"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/native-qualification/QUALIFIED-NATIVE.json",
+        "bytes": 90514,
+        "sha256": "69f96081a5836e2a909c7bc2b9e123b951d340a6ed6943d1e222e565a41ef564"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/native-qualification/QUALIFIED-NATIVE.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/PROVENANCE.actual-or-pending.json",
+        "bytes": 10962,
+        "sha256": "96f0ea79c66ac791cade06bb87d0f77c1d3d63cab70e2c1e5c2d3462b20a1efc"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/PROVENANCE.actual-or-pending.json",
+        "bytes": 10962,
+        "sha256": "96f0ea79c66ac791cade06bb87d0f77c1d3d63cab70e2c1e5c2d3462b20a1efc"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/PROVENANCE.actual-or-pending.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/STATE.json",
+        "bytes": 1373648,
+        "sha256": "bc8b8918bde9e1ce39657d156138c86c294186de1dcf5f6aa716187c876e53f4"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/STATE.json",
+        "bytes": 1373648,
+        "sha256": "bc8b8918bde9e1ce39657d156138c86c294186de1dcf5f6aa716187c876e53f4"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/STATE.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/TYPED-PROTECTION.json",
+        "bytes": 1003997,
+        "sha256": "3bf5dfc37b001c5b9e4b85b6dfce51320df49f1da1d5a3a2e5455feb619d984f"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/TYPED-PROTECTION.json",
+        "bytes": 1003997,
+        "sha256": "3bf5dfc37b001c5b9e4b85b6dfce51320df49f1da1d5a3a2e5455feb619d984f"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/TYPED-PROTECTION.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0007-r16-007-save.native-01.json",
+        "bytes": 30479,
+        "sha256": "c74284e17ddfb1a79bb8b729591b42f9c9015cb011873330efd27eb610809158"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/original-native/0007-r16-007-save.native-01.json",
+        "bytes": 30479,
+        "sha256": "c74284e17ddfb1a79bb8b729591b42f9c9015cb011873330efd27eb610809158"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/original-native/0007-r16-007-save.native-01.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0008-r16-008-G2-after-save.native-01.json",
+        "bytes": 29020,
+        "sha256": "883ff8e7a140a7163b55b4a7cb99bfbc5ded045542711041da697ddac12a0e88"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/original-native/0008-r16-008-G2-after-save.native-01.json",
+        "bytes": 29020,
+        "sha256": "883ff8e7a140a7163b55b4a7cb99bfbc5ded045542711041da697ddac12a0e88"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/original-native/0008-r16-008-G2-after-save.native-01.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0009-r16-009-G3-after-save.native-01.json",
+        "bytes": 4209,
+        "sha256": "3ad062abad0e9a726f962c6dd10d719f377905fc2d55b1873014ef787955530b"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/original-native/0009-r16-009-G3-after-save.native-01.json",
+        "bytes": 4209,
+        "sha256": "3ad062abad0e9a726f962c6dd10d719f377905fc2d55b1873014ef787955530b"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/original-native/0009-r16-009-G3-after-save.native-01.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0007-r16-007-save.sdk-result.json",
+        "bytes": 64429,
+        "sha256": "276ac941f328738aa4257d4a5b4bd9752a425ce8804cdc2c2c669299c6649b69"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/original-SDK/0007-r16-007-save.sdk-result.json",
+        "bytes": 64429,
+        "sha256": "276ac941f328738aa4257d4a5b4bd9752a425ce8804cdc2c2c669299c6649b69"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/original-SDK/0007-r16-007-save.sdk-result.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0008-r16-008-G2-after-save.sdk-result.json",
+        "bytes": 61859,
+        "sha256": "d6a500c9c880e70c5901ec9e0070f994b2a47b99e5c63a5f042859fe2d2d3cd2"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/original-SDK/0008-r16-008-G2-after-save.sdk-result.json",
+        "bytes": 61859,
+        "sha256": "d6a500c9c880e70c5901ec9e0070f994b2a47b99e5c63a5f042859fe2d2d3cd2"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/original-SDK/0008-r16-008-G2-after-save.sdk-result.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0009-r16-009-G3-after-save.sdk-result.json",
+        "bytes": 9213,
+        "sha256": "691b534e2209815b8f31177386d7cd4e0a5b0da5b35879f8edbe7fe3e2d03e52"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/original-SDK/0009-r16-009-G3-after-save.sdk-result.json",
+        "bytes": 9213,
+        "sha256": "691b534e2209815b8f31177386d7cd4e0a5b0da5b35879f8edbe7fe3e2d03e52"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/original-SDK/0009-r16-009-G3-after-save.sdk-result.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/AUTHOR-INPUT.actual.json",
+        "bytes": 2995,
+        "sha256": "0ea14db50fb6b010e8ec549397f8e8d620695295f64dafc3b07cd38df684331e"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/request/AUTHOR-INPUT.actual.json",
+        "bytes": 2995,
+        "sha256": "0ea14db50fb6b010e8ec549397f8e8d620695295f64dafc3b07cd38df684331e"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/request/AUTHOR-INPUT.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/AUTHOR-ARGV.actual.json",
+        "bytes": 550,
+        "sha256": "b64bca72d6751a15429b992c5c1788431aca5b6873c0e53e6f6826755a14a53f"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/request/AUTHOR-ARGV.actual.json",
+        "bytes": 550,
+        "sha256": "b64bca72d6751a15429b992c5c1788431aca5b6873c0e53e6f6826755a14a53f"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/request/AUTHOR-ARGV.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/REQUEST-BINDING.actual.json",
+        "bytes": 32696,
+        "sha256": "158944efcb1c204ea32a5be0cae1109dc35f8aff4b38b299d3d3a86efea79571"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/request/REQUEST-BINDING.actual.json",
+        "bytes": 32696,
+        "sha256": "158944efcb1c204ea32a5be0cae1109dc35f8aff4b38b299d3d3a86efea79571"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/request/REQUEST-BINDING.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-execution-20261007-001/RESULT.actual.json",
+        "bytes": 1358,
+        "sha256": "2afcc7f83a50e4e1d759d030db550e2113df1da1ba3e3126d1c71e92e984716f"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/execution/RESULT.actual.json",
+        "bytes": 1358,
+        "sha256": "2afcc7f83a50e4e1d759d030db550e2113df1da1ba3e3126d1c71e92e984716f"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/execution/RESULT.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-execution-20261007-001/stdout",
+        "bytes": 220,
+        "sha256": "53d9e13c8ae6c8649af447feda8c456e267cda56aebeee6fb105402fa56d741f"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/execution/stdout",
+        "bytes": 220,
+        "sha256": "53d9e13c8ae6c8649af447feda8c456e267cda56aebeee6fb105402fa56d741f"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/execution/stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-execution-20261007-001/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/execution/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/execution/stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-checkpoint-001/PRESERVED.actual.json",
+        "bytes": 778,
+        "sha256": "6d6ed8d6a088a49f63f79589d39d24cb4a77094548b499dca81c35fe4c553c93"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/readback/PRESERVED.original.json",
+        "bytes": 778,
+        "sha256": "6d6ed8d6a088a49f63f79589d39d24cb4a77094548b499dca81c35fe4c553c93"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/readback/PRESERVED.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-three-way-political-heir-comparison-20261007-001/REPORT.json",
+        "bytes": 43073,
+        "sha256": "4528b49daca309c90c406f8f888efcca9b6d2c189473ec8d42fba14492f8f6d3"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/comparison/REPORT.original.json",
+        "bytes": 43073,
+        "sha256": "4528b49daca309c90c406f8f888efcca9b6d2c189473ec8d42fba14492f8f6d3"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/comparison/REPORT.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-three-way-political-heir-comparison-execution-20261007-001/RESULT.actual.json",
+        "bytes": 2733,
+        "sha256": "b3f0a940e10a73b7114a3a18ff47a2c90758944bbd22e0e6a555e69cfa23ac62"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/comparison/execution/RESULT.actual.json",
+        "bytes": 2733,
+        "sha256": "b3f0a940e10a73b7114a3a18ff47a2c90758944bbd22e0e6a555e69cfa23ac62"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/comparison/execution/RESULT.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-three-way-political-heir-comparison-execution-20261007-001/stdout",
+        "bytes": 249,
+        "sha256": "b62b37cd30ff73ea140cbd0a6c60c213485952cc55f3e9b7b94565ea60be54b2"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/comparison/execution/stdout",
+        "bytes": 249,
+        "sha256": "b62b37cd30ff73ea140cbd0a6c60c213485952cc55f3e9b7b94565ea60be54b2"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/comparison/execution/stdout",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-three-way-political-heir-comparison-execution-20261007-001/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/comparison/execution/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/comparison/execution/stderr",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+        "bytes": 3082,
+        "sha256": "b09f54dcac006d9dd355b567a42dc8bc811b0b0be2f6fcd5db85b5a72326a1b2"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/PREVIOUS-BOUNDARY.actual.json",
+        "bytes": 3082,
+        "sha256": "b09f54dcac006d9dd355b567a42dc8bc811b0b0be2f6fcd5db85b5a72326a1b2"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/PREVIOUS-BOUNDARY.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/VERIFIED.actual.json",
+        "bytes": 4285,
+        "sha256": "6268aa021325cfa62f6a0007afb412afa1fca010a95d3ad5e46189da09ff4cf6"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/VERIFIED.actual.json",
+        "bytes": 4285,
+        "sha256": "6268aa021325cfa62f6a0007afb412afa1fca010a95d3ad5e46189da09ff4cf6"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/VERIFIED.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/HELPERS-CLOSED.actual.json",
+        "bytes": 5308,
+        "sha256": "99d8b5f73002bfbb58a1f0a86d722156c071714cfd92b328cc4ac881ac4ca76a"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/HELPERS-CLOSED.actual.json",
+        "bytes": 5308,
+        "sha256": "99d8b5f73002bfbb58a1f0a86d722156c071714cfd92b328cc4ac881ac4ca76a"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/HELPERS-CLOSED.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/DEPENDENCIES.json",
+        "bytes": 936,
+        "sha256": "9280e5f1dd6e975debcca69dac7eec60e2fedb3484ceddaffa15de758c31a932"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/DEPENDENCIES.json",
+        "bytes": 936,
+        "sha256": "9280e5f1dd6e975debcca69dac7eec60e2fedb3484ceddaffa15de758c31a932"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/DEPENDENCIES.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/INDEX.json",
+        "bytes": 1604,
+        "sha256": "be6c3272645723d2fbed9193f79953711362b4a978c3a4e7fd0fd0fc2f8c8be5"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/INDEX.json",
+        "bytes": 1604,
+        "sha256": "be6c3272645723d2fbed9193f79953711362b4a978c3a4e7fd0fd0fc2f8c8be5"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/INDEX.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/verify_previous_boundary.py",
+        "bytes": 12623,
+        "sha256": "cb1b47c78fe99212ee0a082e3e7cec85aa51aea7c345f17ef75e6a2109289e77"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/verify_previous_boundary.py",
+        "bytes": 12623,
+        "sha256": "cb1b47c78fe99212ee0a082e3e7cec85aa51aea7c345f17ef75e6a2109289e77"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/verify_previous_boundary.py",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/launch.json",
+        "bytes": 2355,
+        "sha256": "ebefdbaa9c291f1f749708444718af3c696eff021eb32f714dc8428b5927bd2e"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/launch-launch.json",
+        "bytes": 2355,
+        "sha256": "ebefdbaa9c291f1f749708444718af3c696eff021eb32f714dc8428b5927bd2e"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/launch-launch.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0017-r16-017-exit-observer.sdk-result.json",
+        "bytes": 12813,
+        "sha256": "0bdea1227c0e2084210f90ca159d3b1b34b4d165f50d3d76d357da3298dea0d5"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/original_handle_observation-0017-r16-017-exit-observer.sdk-result.json",
+        "bytes": 12813,
+        "sha256": "0bdea1227c0e2084210f90ca159d3b1b34b4d165f50d3d76d357da3298dea0d5"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/original_handle_observation-0017-r16-017-exit-observer.sdk-result.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0017-r16-017-exit-observer.native-01.json",
+        "bytes": 5905,
+        "sha256": "44e9af8b008b6f1d78353455fede26027158049144538a5f6caeef091c195c18"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/original_native_observation-0017-r16-017-exit-observer.native-01.json",
+        "bytes": 5905,
+        "sha256": "44e9af8b008b6f1d78353455fede26027158049144538a5f6caeef091c195c18"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/original_native_observation-0017-r16-017-exit-observer.native-01.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/HELPERS-CLOSED.actual.json",
+        "bytes": 5308,
+        "sha256": "99d8b5f73002bfbb58a1f0a86d722156c071714cfd92b328cc4ac881ac4ca76a"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/helpers_closed-HELPERS-CLOSED.actual.json",
+        "bytes": 5308,
+        "sha256": "99d8b5f73002bfbb58a1f0a86d722156c071714cfd92b328cc4ac881ac4ca76a"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/helpers_closed-HELPERS-CLOSED.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-inputs-20261007-001/PROCESS-ABSENCE.actual.json",
+        "bytes": 1457,
+        "sha256": "a1dbd1790f42604f63654b70bc34f83112c256f2d5729e8e7f9512ea972e9e1c"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/process_absence-PROCESS-ABSENCE.actual.json",
+        "bytes": 1457,
+        "sha256": "a1dbd1790f42604f63654b70bc34f83112c256f2d5729e8e7f9512ea972e9e1c"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/process_absence-PROCESS-ABSENCE.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0016/FINAL.json",
+        "bytes": 401,
+        "sha256": "e1d7f26b2ca32d376e34bbd5f9836498fb54502ff3eeb9691d2a0ff57eda74b1"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/keeper_final-FINAL.json",
+        "bytes": 401,
+        "sha256": "e1d7f26b2ca32d376e34bbd5f9836498fb54502ff3eeb9691d2a0ff57eda74b1"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/keeper_final-FINAL.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-release-screen-actual-20261007-001/RELEASE.actual.json",
+        "bytes": 1300,
+        "sha256": "23158411fef50dd078ab1eaa5cf268546fafe85e3945ddd437b4240cccfb176d"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/release_receipt-RELEASE.actual.json",
+        "bytes": 1300,
+        "sha256": "23158411fef50dd078ab1eaa5cf268546fafe85e3945ddd437b4240cccfb176d"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/release_receipt-RELEASE.actual.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-release-screen-actual-20261007-001/BUS-AFTER-RELEASE.parsed.json",
+        "bytes": 102301,
+        "sha256": "baed599b3923b6786d847a03f5805b19e183dcff1a3e0140f29828607b847c2b"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/after_list-BUS-AFTER-RELEASE.parsed.json",
+        "bytes": 102301,
+        "sha256": "baed599b3923b6786d847a03f5805b19e183dcff1a3e0140f29828607b847c2b"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/after_list-BUS-AFTER-RELEASE.parsed.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/session-closed.json",
+        "bytes": 881,
+        "sha256": "deaa6e404420c59edf8a2ce5053aa166f52b74df2046254dfc709af88fae228f"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/consumer_closed-session-closed.json",
+        "bytes": 881,
+        "sha256": "deaa6e404420c59edf8a2ce5053aa166f52b74df2046254dfc709af88fae228f"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/consumer_closed-session-closed.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/session.json",
+        "bytes": 1240,
+        "sha256": "982a434bf838266d5d71b33d31a47a1aa5369e55c57dd54193a6d5337adb044d"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/consumer_session-session.json",
+        "bytes": 1240,
+        "sha256": "982a434bf838266d5d71b33d31a47a1aa5369e55c57dd54193a6d5337adb044d"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/consumer_session-session.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0018-r16-root-close-988fe5e1ddc645479303e0fd7932948b.response.json",
+        "bytes": 528,
+        "sha256": "66d4371739e279c29e48a0a19d24885dba159b529f82862ed4c7ae11919eff79"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original/consumer_close_result-0018-r16-root-close-988fe5e1ddc645479303e0fd7932948b.response.json",
+        "bytes": 528,
+        "sha256": "66d4371739e279c29e48a0a19d24885dba159b529f82862ed4c7ae11919eff79"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original/consumer_close_result-0018-r16-root-close-988fe5e1ddc645479303e0fd7932948b.response.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-retained-helper-handles-actual-20261007-001/CAPTURED.actual.json",
+        "bytes": 6052,
+        "sha256": "2b6bfb738430645138ed47e9873bcabfc2c398c908d161a11d24903ea7738227"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/retained-original_capture.json",
+        "bytes": 6052,
+        "sha256": "2b6bfb738430645138ed47e9873bcabfc2c398c908d161a11d24903ea7738227"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/retained-original_capture.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-retained-helper-handles-actual-20261007-001/FINAL.actual.json",
+        "bytes": 4294,
+        "sha256": "8bd228a8be16c162061ea0e8c10d50ac5621083b48c1f19c0f046fcdfc24e479"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/retained-retained_holder_final.json",
+        "bytes": 4294,
+        "sha256": "8bd228a8be16c162061ea0e8c10d50ac5621083b48c1f19c0f046fcdfc24e479"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/retained-retained_holder_final.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-original-exec-completions-20261007-001/holder.actual.json",
+        "bytes": 595,
+        "sha256": "19c6252d0476cd2d233bd7b03432723e5960680ce21ae30bf6b48de5df9e2b8e"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original-exec-holder.json",
+        "bytes": 595,
+        "sha256": "19c6252d0476cd2d233bd7b03432723e5960680ce21ae30bf6b48de5df9e2b8e"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original-exec-holder.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-original-exec-completions-20261007-001/keeper.actual.json",
+        "bytes": 3710,
+        "sha256": "aacdffa6f58736e43c2cfc370e25dece76fcd453923548f563c83f99f447940b"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/original-exec-keeper.json",
+        "bytes": 3710,
+        "sha256": "aacdffa6f58736e43c2cfc370e25dece76fcd453923548f563c83f99f447940b"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/original-exec-keeper.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-close-client-execution-20261007-001/RESULT.actual.json",
+        "bytes": 1727,
+        "sha256": "00a7c011be5fee6c27dbc0ec64d2f431d9d61e5fd1604249606d46c1271b7ece"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/execution/client.original.json",
+        "bytes": 1727,
+        "sha256": "00a7c011be5fee6c27dbc0ec64d2f431d9d61e5fd1604249606d46c1271b7ece"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/execution/client.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-release-screen-execution-20261007-001/RESULT.actual.json",
+        "bytes": 1736,
+        "sha256": "24f33ef1f308853222dfe7af68a6a4d89b67b51eeb9bdb2c34aba14866161be3"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/execution/release.original.json",
+        "bytes": 1736,
+        "sha256": "24f33ef1f308853222dfe7af68a6a4d89b67b51eeb9bdb2c34aba14866161be3"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/execution/release.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-check-execution-20261007-001/RESULT.actual.json",
+        "bytes": 1361,
+        "sha256": "8ee0bae34dc3ae4ba0679fe84022eb4584187b24ff07191ff6623d8fc38c0164"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/execution/boundary-check.original.json",
+        "bytes": 1361,
+        "sha256": "8ee0bae34dc3ae4ba0679fe84022eb4584187b24ff07191ff6623d8fc38c0164"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/execution/boundary-check.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-create-execution-20261007-001/RESULT.actual.json",
+        "bytes": 1470,
+        "sha256": "caa1b8787919b310298308a807cc674225f26911bb7377e08a1dc3c062debe59"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/closure/execution/boundary-create.original.json",
+        "bytes": 1470,
+        "sha256": "caa1b8787919b310298308a807cc674225f26911bb7377e08a1dc3c062debe59"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/closure/execution/boundary-create.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/INDEX.json",
+        "bytes": 7322,
+        "sha256": "8ad6a637b67c2afc0be9c8ed40739bee5fc2c244b316ea71a77ed64f0a34a963"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/draft006.INDEX.original.json",
+        "bytes": 7322,
+        "sha256": "8ad6a637b67c2afc0be9c8ed40739bee5fc2c244b316ea71a77ed64f0a34a963"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/draft006.INDEX.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/REPORT.actual-canonical004-native-complete.runtime-null.draft.json",
+        "bytes": 78882,
+        "sha256": "783292dffadd7ca615876c1e6626444d669bea4bca1a7be568aa46d61ff457b2"
+      },
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-007/archive/history/draft006.REPORT.original.json",
+        "bytes": 78882,
+        "sha256": "783292dffadd7ca615876c1e6626444d669bea4bca1a7be568aa46d61ff457b2"
+      },
+      "target_relative_path": "docs/li-yu-dao/acceptance/2026-10-07-r0016-9208b46/history/draft006.REPORT.original.json",
+      "before": null,
+      "operation": "ADD_EXACT_BYTES"
+    }
+  ],
+  "source_current_summary": {
+    "lifecycle": "GENUINELY_CLOSED_RELEASED",
+    "whole_product_status": "NOT_GREEN",
+    "I3b": "NOT_GREEN_POLITICAL_FULL_AST_RED_PERSISTED",
+    "C3": "NOT_RUN",
+    "I4": "NOT_RUN",
+    "formal_acceptance": null,
+    "actual_pass": null,
+    "source_HEAD": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+    "diagnostic_scope": "Existing failed R15 B5 cold only, no advance/event/decision/grant; single new save and actual G2/G3 same-after-frame observation",
+    "actual_compilation": true,
+    "actual_focused_tests": true,
+    "products": 7,
+    "focused_exit0_count": 5,
+    "canonical_outer_exit": 1,
+    "Defender_status": "settings_failed",
+    "Defender_registration_succeeded": false,
+    "actual_metadata28": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/RESULT.json",
+      "bytes": 7133,
+      "sha256": "12b575b1f4eda40a9cc7d269002a83f9e20f0b22f835381fd993fe150e556574"
+    },
+    "metadata_business_callbacks": 0,
+    "profile_final10": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/native-profile-with-exit-inventory.json",
+      "bytes": 1104,
+      "sha256": "38d54bd94502de17874ca2b5269955fa495a0598793ff5ae06ce25b781ac2dfb"
+    },
+    "author_execution": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-execution-20261007-001/RESULT.actual.json",
+      "bytes": 1358,
+      "sha256": "2afcc7f83a50e4e1d759d030db550e2113df1da1ba3e3126d1c71e92e984716f"
+    },
+    "author_RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/RESULT.json",
+      "bytes": 1039866,
+      "sha256": "7ac8656e70f9c2b703aada791faa8e460c1f5fefdd7192707cfc9031eb9c88b4"
+    },
+    "save_body_reads_by_ROOT_author": 1,
+    "strict_formal_reader_executed": false,
+    "STATE": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/STATE.json",
+      "bytes": 1373648,
+      "sha256": "bc8b8918bde9e1ce39657d156138c86c294186de1dcf5f6aa716187c876e53f4"
+    },
+    "TYPED": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/TYPED-PROTECTION.json",
+      "bytes": 1003997,
+      "sha256": "3bf5dfc37b001c5b9e4b85b6dfce51320df49f1da1d5a3a2e5455feb619d984f"
+    },
+    "original_reader_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+    "original_TYPED_match_count": 79,
+    "original_TYPED_check_count": 87,
+    "original_TYPED_false_names": [
+      "political_2230_full_AST",
+      "political_2231_full_AST",
+      "political_2235_full_AST",
+      "political_2262_full_AST",
+      "political_2264_full_AST",
+      "actor_complete_protected_landed_projection",
+      "actor_actual_all_held_title_set_except_actual_new_religious_T",
+      "rites_169_complete_tenet_status_projection"
+    ],
+    "three_way_comparison": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-three-way-political-heir-comparison-20261007-001/REPORT.json",
+      "bytes": 43073,
+      "sha256": "4528b49daca309c90c406f8f888efcca9b6d2c189473ec8d42fba14492f8f6d3"
+    },
+    "all7_new_cold_AST_equal_saved_B5": true,
+    "political_heir_tails_still_differ_original0240": [
+      2230,
+      2231,
+      2235,
+      2262,
+      2264
+    ],
+    "original0240_same_two_titles": [
+      2232,
+      2263
+    ],
+    "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+    "G3_status": "BOUND_NATIVE_TITLE_FIELDS_OBSERVATION",
+    "native_credit_scope": "Actual same-frame fields observed via frozen static ABI, not independently qualified formal event/reference/scalar mandate",
+    "new_cold_checkpoint_original_descriptor_not_opened": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-checkpoint-001/content-56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc.ck3",
+      "bytes": 91676559,
+      "sha256": "56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc"
+    },
+    "native_session": "3f4fc4cafba44dc88b85f99ba4ac1caa",
+    "consumer_session": "56ceb473d6c148819c8a046167c4d926",
+    "after_frame": {
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53144712,
+      "game_pid": 16416,
+      "connection_generation": 1,
+      "played_character_id": 31254,
+      "snapshot_id": "native:2"
+    },
+    "closure_boundary": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 3082,
+      "sha256": "b09f54dcac006d9dd355b567a42dc8bc811b0b0be2f6fcd5db85b5a72326a1b2"
+    },
+    "closure_verified_original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/VERIFIED.actual.json",
+      "bytes": 4285,
+      "sha256": "6268aa021325cfa62f6a0007afb412afa1fca010a95d3ad5e46189da09ff4cf6"
+    },
+    "process_absence": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-inputs-20261007-001/PROCESS-ABSENCE.actual.json",
+      "bytes": 1457,
+      "sha256": "a1dbd1790f42604f63654b70bc34f83112c256f2d5729e8e7f9512ea972e9e1c"
+    },
+    "absence_utc": "2026-10-06T23:45:10.288196+00:00",
+    "released_task_state": "done",
+    "released_task_resources": [],
+    "ROOT_reported_original_exec_sessions": {
+      "client": 58869,
+      "holder": 71370,
+      "keeper": 9352
+    },
+    "original_HANDLE_game_and_helpers_exit0": true,
+    "physical_political_heir_remediation_verified": null,
+    "head_before_holder_candidate": "NOT_SELECTED",
+    "open_kaishek": "N/A for MSVC/native-host-memory/CK3 engine runtime; exact .3 EXE/source refs retained in historical report"
+  },
+  "save_or_large_product_copies": 0,
+  "no_source_or_raw_rewrites": true
+}

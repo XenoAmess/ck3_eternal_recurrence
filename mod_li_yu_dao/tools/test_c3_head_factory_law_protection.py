@@ -144,6 +144,27 @@ class FactoryLawProtectionTests(unittest.TestCase):
         original = replace(original, entries=[e for e in original.entries
                             if e is not None and e.key != 'save_scope_value_as'
                             and not (e.key == 'if' and (entries(e.value, 'save_scope_value_as') or entries(e.value, 'remove_realm_law')))])
+        # Only this declared candidate reordering is normalized back before
+        # comparison to the frozen original factory. No effect value may change.
+        body = list(original.entries)
+        faith_heads = [(i, e) for i, e in enumerate(body)
+                       if e.key == 'faith' and entries(e.value, 'set_religious_head_title')]
+        holder_scopes = [(i, e) for i, e in enumerate(body)
+                         if e.key == 'scope:new_title' and entries(e.value, 'change_title_holder')]
+        self.assertEqual(len(faith_heads), 1)
+        self.assertEqual(len(holder_scopes), 1)
+        fi, faith_entry = faith_heads[0]
+        hi, holder_entry = holder_scopes[0]
+        self.assertEqual([e.key for e in holder_entry.value.entries], ['change_title_holder'])
+        self.assertEqual(hi, fi + 1)
+        self.assertEqual(body[fi - 1].key, 'scope:new_title')
+        props = body[fi - 1]
+        combined = replace(props, value=replace(props.value,
+                           entries=[*props.value.entries, *holder_entry.value.entries]))
+        body[fi - 1:hi + 1] = [combined]
+        ri = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
+        body.insert(ri + 1, faith_entry)
+        original = replace(original, entries=body)
         actual = hashlib.sha256(json.dumps(fingerprint(original), ensure_ascii=True, separators=(',',':')).encode()).hexdigest()
         self.assertEqual(actual, 'd79fad675555e5ed4082f48a16086615e1a5ed5e7e6cd8b0308e201991c8e213')
 
@@ -158,6 +179,27 @@ class FactoryLawProtectionTests(unittest.TestCase):
         mutant_cleanup = entries(factory_body(unsafe_text), 'if')[1].value
         mutant = single(mutant_cleanup, 'limit')
         self.assertTrue(should_cleanup(mutant, {}, {LAW}))
+
+    def test_declared_head_before_holder_ordering_keeps_law_after_resolve(self):
+        body = self.body.entries
+        fi = next(i for i,e in enumerate(body)
+                  if e.key == 'faith' and entries(e.value, 'set_religious_head_title'))
+        hi = next(i for i,e in enumerate(body)
+                  if e.key == 'scope:new_title' and entries(e.value, 'change_title_holder'))
+        ri = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
+        li = next(i for i,e in enumerate(body)
+                  if e.key == 'scope:new_title' and entries(e.value, 'add_title_law'))
+        self.assertLess(fi, hi)
+        self.assertLess(hi, ri)
+        self.assertLess(ri, li)
+        props = body[fi - 1]
+        self.assertEqual(props.key, 'scope:new_title')
+        self.assertEqual([e.key for e in props.value.entries],
+            ['set_variable','set_variable','set_destroy_if_invalid_heir',
+             'set_no_automatic_claims','set_definitive_form','set_always_follows_primary_heir'])
+        self.assertEqual([single(e.value,'name') for e in props.value.entries if e.key == 'set_variable'],
+                         ['lyd_c2_owned_head_title','lyd_c2_owner_faith'])
+        self.assertEqual(single(body[li].value, 'add_title_law'), 'temporal_head_of_faith_succession_law')
 
 if __name__ == '__main__':
     unittest.main()

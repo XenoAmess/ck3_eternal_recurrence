@@ -1,0 +1,1186 @@
+{
+  "head": "fd411c3122bdfb4706322052c3639589422963ca",
+  "source": "C:/lr16s5/ck3_autonomous_player/native_bridge",
+  "fixture": {
+    "path": "C:/lr16s5/ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context_test.cpp",
+    "bytes": 53950,
+    "sha256": "c1a2dab847e44a980e4e2867bc2bf8f64d52cc9de3c99921a2a49fdf14ca0b89"
+  },
+  "old_build": "C:/lr16b5",
+  "old_producer": {
+    "path": "C:/lr16b5/native-msvc-result.json",
+    "bytes": 1866,
+    "sha256": "7c1e0dc7ae83b5cf5831f0e62b1c5f173b45c0c2e7081e601c18a4b0365b2471"
+  },
+  "old_build_cache": {
+    "path": "C:/lr16b5/CMakeCache.txt",
+    "bytes": 38218,
+    "sha256": "7924ed148b31cebc2f9e3053e6704584871e6374ea2a6d697851f9a90cbfdc6a"
+  },
+  "bridge_codemodel": {
+    "path": "C:/lr16b5/.cmake/api/v1/reply/target-xar_ck3_bridge-Release-9eb22e45976929c325e2.json",
+    "bytes": 44497,
+    "sha256": "0c9db7ce39bb2f9a4c86aab22bccb16f9b2ec132090b087a434f97eb1dfa71ed"
+  },
+  "runtime": {
+    "path": "C:/lr16b5/xar_ck3_12002_runtime.lib",
+    "bytes": 85853100,
+    "sha256": "93b6c37e76cb30199fa0b68ee47c97f7ccda5357c3419572f57138836a7b0993"
+  },
+  "protocol": {
+    "path": "C:/lr16b5/xar_bridge_protocol.lib",
+    "bytes": 119138,
+    "sha256": "bf89d33ca83d8e490e69aad5751757d73f04237ad87398e6296590e404e9df56"
+  },
+  "bridge_objects": [
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/research/domain_construction_candidate_cost_legality_decoder_v1.cpp.obj",
+      "bytes": 46237,
+      "sha256": "9137d3ff5ae6abdaee0e0b2aa8c7b7a015f8d47acdb9a5a9ba02e4d623905d12"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/research/domain_construction_candidate_identity_decoder_v1.cpp.obj",
+      "bytes": 79603,
+      "sha256": "a865749ec2a6947d687aefa4007d96c4bafa64846c938cb1ecb8a153f3a41c56"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/research/domain_construction_cost_legality_collector_source_adapter_v1.cpp.obj",
+      "bytes": 51227,
+      "sha256": "b7072fddcc821bd70641ab952ca94f5bdedb1255e3a1881e6483a26032a0fde9"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/research/domain_construction_cost_legality_live_observer_v1.cpp.obj",
+      "bytes": 69542,
+      "sha256": "14b67a20858bb6c860faf08845c4bb6b2254b8cc8443543c62b994cb8513d78f"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/research/domain_construction_native_submit_adapter_v1.cpp.obj",
+      "bytes": 76896,
+      "sha256": "ec811cc4e9cbc932c8168bce4de03e2664fd76656802fde22289da2f7273ad2a"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/research/domain_construction_semantic_action_core_v1.cpp.obj",
+      "bytes": 212977,
+      "sha256": "76c8f559ba7429513481d497b9ba3c85a515f9b44c261d40e2028fa9637f5860"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/actual_contact_scope_v1_mailbox.cpp.obj",
+      "bytes": 90981,
+      "sha256": "7ab0dfe4a2607dec5d8cf4850f5a166ef1cb714510935b847ce0640b3b5c4b6e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/aub_business_state_v1.cpp.obj",
+      "bytes": 364291,
+      "sha256": "40160b9a24a80cb972edee18c1f1aca1f01fbb75ff9f03ee092316f3fae9b745"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/aub_policy_options_mailbox_v1.cpp.obj",
+      "bytes": 402406,
+      "sha256": "ffe2f793109ae76e92a59494315a4140af1c81b8f1279803995920b14f2ebf70"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/aub_policy_options_v1.cpp.obj",
+      "bytes": 251204,
+      "sha256": "1b0d68a79f3e6f17d1adfad4ec2f42bee998676655e4c6ed203eb1bc5b2b60b2"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/battle_control_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 1108432,
+      "sha256": "61e86f1ccf6a2c5c3220dcff6b71ca2f57d3457aa7dc5fe3fca27650e522ff83"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/battle_reinforcement_assignment_v1_mailbox.cpp.obj",
+      "bytes": 484518,
+      "sha256": "da2337ccd6563d05c490e73b89289e7e2f0d08b374a4fde4c20aa1842f4b3d4d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/battle_terminal_journal_v1.cpp.obj",
+      "bytes": 102289,
+      "sha256": "5ff8989c3576b6b653f9b20f2a207b073ea010340739a131c4798c4d35884aef"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/battle_terminal_transition_v1_mailbox.cpp.obj",
+      "bytes": 4433793,
+      "sha256": "c9868483be1d4182014ad82ad62afd9d7c7d293fa37868f86ca389059d3626e4"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/battle_transition_v1_mailbox.cpp.obj",
+      "bytes": 835177,
+      "sha256": "a4900deb5dc4d11d4168d1392485eae116afb4043fd49553946481191168ea41"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj",
+      "bytes": 11112243,
+      "sha256": "daa618c05f057c773757a77f40f08ce09e86564a735f5d35fa21263a353425e8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/campaign_root_context_v1.cpp.obj",
+      "bytes": 979631,
+      "sha256": "3b8cb29d40bf81dda5bef10d784199c4629b9f2c60aa67cfc7412df05720dae6"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/campaign_root_context_v1_mailbox.cpp.obj",
+      "bytes": 297942,
+      "sha256": "a47e59afec5547d3f0d76508cd756f1b7ca2b2011efce117dff392a6b14856bb"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/campaign_root_context_v1_serializer.cpp.obj",
+      "bytes": 257702,
+      "sha256": "383891db1b90811b12f1dffbf2ad37b27e800b54bcb2b9bdc33da7a4cad3598e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/ck3_11906.cpp.obj",
+      "bytes": 10703641,
+      "sha256": "149a7443084c98e62144574b75d763e264bf0da48704b45ac258b697c5c67770"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/ck3_11906_adapter.cpp.obj",
+      "bytes": 204435,
+      "sha256": "11678283881850db276ec760cf1f9b2f1ef91b3bef46e88738be9ae99ec850ef"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/ck3_12003_steward_develop_county.cpp.obj",
+      "bytes": 391881,
+      "sha256": "88e0cfc26de0d77400d54acead9135caadf3057610a725dc96182612332c0f9c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/ck3_12003_succession_modal.cpp.obj",
+      "bytes": 30139,
+      "sha256": "e2da966969a380d583abfe5c9ad779a1a796787e0bb6ea8f66bfdfbafa68c63e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/coat_of_arms_designer_probe_v1.cpp.obj",
+      "bytes": 95376,
+      "sha256": "0afaf569bbd2e5f8b1f01219b4728dd32a1f32e06c77a530ca994805fa576213"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/cold_map_vfs_observer_v1.cpp.obj",
+      "bytes": 46576,
+      "sha256": "401b4dcca9de446fdf0174eeb29e88e5982c9de7ffab66a5276f1dbebc3f40d0"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_advantage_components_observer_v1.cpp.obj",
+      "bytes": 170582,
+      "sha256": "3d3cdb176dc4d14e10d1c668bd29813c8e2ce148f1f820dfafbcc949a354c09a"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_counter_output_detour_v1.cpp.obj",
+      "bytes": 14214,
+      "sha256": "ca9b2be9c5c7536a5908d2fbb8955d28802a64f603d79e9b77f271abf66e1c28"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_counter_output_readout_v1.cpp.obj",
+      "bytes": 2305,
+      "sha256": "3d9ece1cf450d2c81ee77a09e27e896515f92c7405fd22cbd8cb049ac3c0bcc8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_phase_event_trace_detour_v1.cpp.obj",
+      "bytes": 43675,
+      "sha256": "c0197a72bfa398b8e7868ee19243887799a3e66637e9a571dd3b7a591635330b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_phase_event_trace_managed_v1.cpp.obj",
+      "bytes": 363724,
+      "sha256": "7d92e14e33ceb01a3e767fb373a8d7a52136cd590d2aa7c86c491fd9d2c4d794"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_phase_event_trace_ring_v1.cpp.obj",
+      "bytes": 165041,
+      "sha256": "0cd68f8e0aea72e17b7ab5bad221aef336be39e4386055f7de8c7261fce01d6b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_phase_event_trace_v1.cpp.obj",
+      "bytes": 726958,
+      "sha256": "fd75676de7b417ae63b8d8c99f9c12aec7f243b7f30e75b59ebe2bc6ae307660"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_phase_event_trace_v1_mailbox.cpp.obj",
+      "bytes": 293611,
+      "sha256": "743a41343d45ff3b4789639ec799fc03ae396c6eabf632fac891fc73ea2b1d2c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_phase_event_trace_wire_v1.cpp.obj",
+      "bytes": 165186,
+      "sha256": "38795cc707f51baad96315ef6ead26cf78a50138843832253409cd5d2ab147ea"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_scoped_transition_chain_v1.cpp.obj",
+      "bytes": 206374,
+      "sha256": "bc3940df92e84128f78ec6d48236bca0c2e569b8d46bd02f66b8878e51df8dae"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_scoped_transition_chain_v1_wire.cpp.obj",
+      "bytes": 157000,
+      "sha256": "2307fda9d5e565b3daeec02f31c83342befd42c2ed151ede5d9f3c5d353fdb42"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_simulation_inputs_v3_mailbox.cpp.obj",
+      "bytes": 767485,
+      "sha256": "b55fb24f3e314846e04a07c8bd0d447cbe849a5f1b72b36bd7e40220680a09ca"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_v3.cpp.obj",
+      "bytes": 1984473,
+      "sha256": "fd01aa3dbdc1b88cdef84bf5df20a360006010985169ec5792a01b7bbb4b6baf"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_v3_serializer.cpp.obj",
+      "bytes": 176100,
+      "sha256": "e12f03278b0316b906c8ec149192f91f867ffada15da140b038650090a0560bc"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/combat_v3_test_only.cpp.obj",
+      "bytes": 146946,
+      "sha256": "1a27b2d65ef87cdd640c09159611d7f11a0c12cc881ccafeeb2eab27771b2222"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_application_main_private_transport_v1.cpp.obj",
+      "bytes": 408585,
+      "sha256": "78aac4ddd6a038c328a2af3681630cf9f33efad9bbc7a4d6a3d096585462b6c0"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_application_main_v1.cpp.obj",
+      "bytes": 259983,
+      "sha256": "a7397fee0fb9bb095939019a3bdb8cfbe2f88a8539c65bf9b981e06c647c2437"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_assign_councillor_action_v1.cpp.obj",
+      "bytes": 104058,
+      "sha256": "f0a0339f96b73efb6d133e48010a172f2458b8356b06ba6836d9b9713bd8da4d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_assign_councillor_native_submit_adapter_v1.cpp.obj",
+      "bytes": 6475,
+      "sha256": "fb991116f19d4f8b7ed5efcec9237796636d0d853d90754f31467e4a668f7b93"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_composition_candidate_observer_v1.cpp.obj",
+      "bytes": 51700,
+      "sha256": "06300b63578dba91b1bb158cf8ac741c765e758ee58f562e8477b5bf4857d9c7"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_composition_candidate_observer_v1_serializer.cpp.obj",
+      "bytes": 75802,
+      "sha256": "5de17f7bfc5833266d3817ec70867921abba19dc994a3f92400bee75c2b87cde"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_composition_candidates_enrichment_v1.cpp.obj",
+      "bytes": 38272,
+      "sha256": "c2e204b9115d7757483314154e890fbb1535273592be067562236f2d7d81d762"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_composition_candidates_public_v1.cpp.obj",
+      "bytes": 35747,
+      "sha256": "d1435f42d87529607b08fa20830d9ec309f990795a74c91caaeb8303bca8ada2"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_composition_candidates_public_v1_serializer.cpp.obj",
+      "bytes": 107877,
+      "sha256": "2cc4f2aa29ecabb09b2cb9722bbb4220a27793a8f4086ba1a5f19593ce754c7c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_composition_steward_candidates_binding_v1.cpp.obj",
+      "bytes": 48778,
+      "sha256": "e8f078ddc85b9b32a45e217918ee1d8092ea8316d50d3bb8635b713afa326870"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_composition_steward_candidates_reader_v1.cpp.obj",
+      "bytes": 103039,
+      "sha256": "9773f023398b2e182da460c6d9f29b9f34be4980961fd46dabdbd1465168e28a"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_production_final_gates_v1.cpp.obj",
+      "bytes": 22962,
+      "sha256": "1b03062f93e4d93a0279b2caa4417c1e3c4bf79883cf5212fffc773b2d65b038"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/council_replacement_fireability_v1.cpp.obj",
+      "bytes": 6336,
+      "sha256": "15d92d9cad781545398263fcc5cd6e96c5d8967a21275d0c70c5cc97cca5341c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/current_actor_stress_adjustment_v1.cpp.obj",
+      "bytes": 280200,
+      "sha256": "70ed5db15a3a4a7e09974eac3e3d1ffd5a7ee3151df99b78c7a600c2e5d2d437"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/current_actor_stress_adjustment_v1_mailbox.cpp.obj",
+      "bytes": 6603,
+      "sha256": "3719941551319636f4b30d7f5648a817aef2c5a332016c117b29ee4aa33a7f0e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/current_first_heir_relationship_v1.cpp.obj",
+      "bytes": 1929,
+      "sha256": "d8eb0852baa2fafc7245a44306d1d1cc01fd08fabef98f4aa34f41fea7ced82d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/current_timeline_blocker_context_v1.cpp.obj",
+      "bytes": 139349,
+      "sha256": "49fac3479f0460c33d907936967218a166367d70644294843a1cc3e8c3590940"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/current_timeline_blocker_context_v1_mailbox.cpp.obj",
+      "bytes": 144414,
+      "sha256": "c46e4df883ae91e1915b406b7804cd8943b9acef628b17919d187cf422e9a761"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/current_timeline_blocker_context_v1_native.cpp.obj",
+      "bytes": 20524,
+      "sha256": "0cd064e253cec967b006e269a74c178dd16399805b3ef35a2a5b6ad23f3f8730"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/death_succession_modal_continue_v1.cpp.obj",
+      "bytes": 82842,
+      "sha256": "b20239a0b7c57fbbc37a4ab6b007d19021edd2be5a0cc067ec972d8de290c8b4"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/death_succession_modal_continue_v1_mailbox.cpp.obj",
+      "bytes": 151140,
+      "sha256": "3d85eedbed2b6a955f541657efe54d15e9573c40094af2a0527d9607e8f84a5c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/domain_construction_application_main_runtime_v1.cpp.obj",
+      "bytes": 153242,
+      "sha256": "c94f77f7e7495367fa603e6b1a8134fd2dd5852c5ff7fa33ba29577e098c0b23"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/domain_construction_shared_glue_v1.cpp.obj",
+      "bytes": 59449,
+      "sha256": "f225ea61c75b75c2f19927b2c118a63615bef9a661da3cdbb0ec9e5eeaa3c319"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/event_window_context_v1.cpp.obj",
+      "bytes": 452922,
+      "sha256": "15505d010a1297ea10ef1ae4c89325b60b78e936e81e73fa745510fb07caaa79"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/event_window_context_v1_mailbox.cpp.obj",
+      "bytes": 204494,
+      "sha256": "e18bbd00dce2193b9ecb81269ba6319317ebb25acf63865d5fdd50910eb6e226"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/event_window_context_v1_serializer.cpp.obj",
+      "bytes": 157814,
+      "sha256": "fe255e448897fb884ce88b21ce953807b81cc72fb07f43ab1d0415ff66c27570"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/frontend_bookmark_model_probe_v1.cpp.obj",
+      "bytes": 126252,
+      "sha256": "784d0258403b0a3ffefab6a480ea876afec5090524292645e8df2766d061722a"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/frontend_game_rules_v1.cpp.obj",
+      "bytes": 727693,
+      "sha256": "b318c87609b22444ad7cb8f532c454b13681013a182bc606de859a35c4e4f654"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/frontend_gui_route_v1.cpp.obj",
+      "bytes": 258595,
+      "sha256": "bae2bcdc48931318617fc2e32e464b4979bdf40b8e342dd60f977a3325c213e6"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/g2_truce_native_callsite_observer_v1.cpp.obj",
+      "bytes": 48595,
+      "sha256": "ae4933fd37b5286d53ad3d5108673b9bc2f62610a7712622e54eff7dda7f45f1"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/g2_truce_preview_entry_observer_v1.cpp.obj",
+      "bytes": 33931,
+      "sha256": "208c4161a746c295e2c9189d92c094f0086c02a8884b3b879fe22e0b18820a49"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/game_adapter.cpp.obj",
+      "bytes": 256090,
+      "sha256": "e702b40bbeef8db467ac2742cdb7fe9549b042ad40a819ee818bead39ef1f2bf"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/government_runtime_adapter_bridge_binder_v1.cpp.obj",
+      "bytes": 275742,
+      "sha256": "4b53b26866b2b071812b0c0fc24547902f35db5533edf769e68e5860b756d126"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/government_runtime_adapter_observer_v1.cpp.obj",
+      "bytes": 386790,
+      "sha256": "35d6e160b53e9792b5f350b5e901724b86d5d23605eae14289d0acce6717d4e5"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/government_runtime_adapter_source_adapter_v1.cpp.obj",
+      "bytes": 770278,
+      "sha256": "5b95ce9256f65b3ba66243ea0437e70d03fcd1cb4daa0f47e9550171580e186b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/h2743_stock_native_source_adapter_v1.cpp.obj",
+      "bytes": 1168,
+      "sha256": "97321757ad839f602c908ae436880f38617d7a9c6f3734335e0e1db376f2f0db"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/h2743_stock_predicate_reader_v1.cpp.obj",
+      "bytes": 245871,
+      "sha256": "18c17f2a82163087436f024edb66ae79686ba4dcf2e25b402ebdadae5f692e5e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/h2743_stock_private_query_v1.cpp.obj",
+      "bytes": 121835,
+      "sha256": "53a4d9cb07003da43b80d7de11ba6685ae3c8cc6d1bc854ebca819fcd339af73"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/ingame_decision_item_v1.cpp.obj",
+      "bytes": 801672,
+      "sha256": "5b21477af403f63c80e36a08a55e4b7103dacf2e61a42bd0ef906390e1dd893b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/ingame_decisions_opener_v1.cpp.obj",
+      "bytes": 283015,
+      "sha256": "3edc406ebc5655b9c5cc84656e03001281b112e339227aa5aa2f797c2295886d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/ingame_ui_navigation_v1.cpp.obj",
+      "bytes": 751337,
+      "sha256": "19e15be154168b319854f7f20253e4bc5bcf3037f09f71e413157e2c26082185"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/loaded_feature_manifest_v1.cpp.obj",
+      "bytes": 313273,
+      "sha256": "6f2a25d4dae7fd7389e37b689613146c5635660946b5c904a80fc681166f6259"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/loaded_feature_manifest_v1_mailbox.cpp.obj",
+      "bytes": 195185,
+      "sha256": "a41f0e4998f1d47a08d1878caffd39db6c36ed8a8781eba1bf582b01a7d252ce"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/loaded_feature_manifest_v1_serializer.cpp.obj",
+      "bytes": 129988,
+      "sha256": "c549429dd0c2708a1bea8c8e129ead7638131803bd6697299901e180bddfc27b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/main_thread_query_mailbox_v1.cpp.obj",
+      "bytes": 140897,
+      "sha256": "2073e0827ad3d214fdc88c562e04ba85979b144e15e9a01cf1ec058f266daeb3"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/major_decision_found_kingdom_action_core_v1.cpp.obj",
+      "bytes": 94533,
+      "sha256": "af3e3f646865729d7b5f1482ed05f9abd06bc00820fbd1a3de5e6818fc7d8ad3"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/major_decision_found_kingdom_internal_route_v1.cpp.obj",
+      "bytes": 64898,
+      "sha256": "4932a7136ec4b4d637774dd6f6f6c89c5714aced71cb275f113b10a2bd8f6183"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/major_decision_found_kingdom_native_binder_v1.cpp.obj",
+      "bytes": 73935,
+      "sha256": "d20ed0d480f46a55b173108e7996acd19c75eb23c79a7a49aa0a0828b45c9f45"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/major_decision_found_kingdom_native_submit_v1.cpp.obj",
+      "bytes": 57804,
+      "sha256": "7ce20e5bf87739ed81c62d06dbf1d2f564bd60e6cc84e4e1cc44f166840d543f"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/major_decision_found_kingdom_observer_v1.cpp.obj",
+      "bytes": 140379,
+      "sha256": "dc2c0c2d4cab7ee9253f5fcdca80214934d9dd3fdfe3e7d4f01c69addd4006ac"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/major_decision_found_kingdom_shared_glue_v1.cpp.obj",
+      "bytes": 100480,
+      "sha256": "262ba0b28859b3081ea757b56bad1f0e146b4e769e53ce414a360c8a0bc36c19"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/major_decision_found_kingdom_source_adapter_v1.cpp.obj",
+      "bytes": 36851,
+      "sha256": "a094062e6f52c98c198ba6209f558761b4593ff88ed2962640a2afaf1fafe742"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_alliance_projection_adapter_v1.cpp.obj",
+      "bytes": 24747,
+      "sha256": "d72b1b91b8b2a7aa4d778a7127289532fb370c8c861600ef4c5a9cf51809e735"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_alliance_readback_adapter_v1.cpp.obj",
+      "bytes": 18272,
+      "sha256": "f6a598fdce3a10623e4fe423721788a836ec67daf4607a4154f43fe6051f3964"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_application_main_receipt_v1.cpp.obj",
+      "bytes": 18083,
+      "sha256": "58d882b9e246df899196ce47862102037959d92eedc8e80eeb2761fb5fc4d5cb"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_candidate_internal_route_v1.cpp.obj",
+      "bytes": 30639,
+      "sha256": "34d63e71b77b0b516accb0df4e8fb1dc2577afc4153414aece4e30d62758029e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_matchmaking_observer_v1.cpp.obj",
+      "bytes": 134632,
+      "sha256": "76e89a2ff0d869621655d85f4d6b3f77eec256c3f62af1ded2949fbf3d8c52f0"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_matchmaking_source_adapter_v1.cpp.obj",
+      "bytes": 66298,
+      "sha256": "d4963a19a345ca55fe3209c435b34d7cfc09d8ce0c5b36a0bbd9c25f81f22461"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_native_outcome_classifier_v1.cpp.obj",
+      "bytes": 29346,
+      "sha256": "15309761eb30ae1b8c166233ab3d84f5e7ec0b445e1a82013fbcf1e4d964b043"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_proposal_action_core_v1.cpp.obj",
+      "bytes": 101504,
+      "sha256": "b3154dd0495c44d5b34714aafcf372cae5e88f2284747c5123468fd97f214bce"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_proposal_native_binder_v1.cpp.obj",
+      "bytes": 81805,
+      "sha256": "1c277be7d462f6bd33151c5cfa30436a904bebafcdff7e9fc77f7aeb6fa6a649"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_proposal_resolution_journal_v1.cpp.obj",
+      "bytes": 83100,
+      "sha256": "464ee69dbdf6039b5d568221a6cd78813003f08c3874236a01aa607419ffe039"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_ranked_container_adapter_v1.cpp.obj",
+      "bytes": 42310,
+      "sha256": "a79f0932b38d2cb6e6e719525c6fee18e505027313c71185b4f8ee0e7655457d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/marriage_shared_glue_v1.cpp.obj",
+      "bytes": 26587,
+      "sha256": "4db1d56e044c7f9bee9e5de44a1f304f1932a197597b002234e7bc6073ca6c38"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/named_path_583_root_observer_v1.cpp.obj",
+      "bytes": 59757,
+      "sha256": "c9513723a5089aa4f04dc0e5197f846c4029a587f292b186b2f374839b5f1cbe"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/normal_exit_map_request_v1.cpp.obj",
+      "bytes": 275251,
+      "sha256": "74bf078bfcfb2647398c9ee068dc47584baaed8ee50a88ce18a8939cbf4beec8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/normal_exit_map_source_v1.cpp.obj",
+      "bytes": 1110056,
+      "sha256": "08ed69d625b9d116728c7fa71d18abb3c2eb6eb8241827280e5aa0ad1153ace2"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/normal_exit_map_v1.cpp.obj",
+      "bytes": 439380,
+      "sha256": "4f65708cf7f6feeda1f82d0bb5531cb135e9fdfe6b33f9d4d85492ece85f0b03"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/observed_heir_marriage_private_v1.cpp.obj",
+      "bytes": 8445,
+      "sha256": "6ee3ab7fe87e83d77f962990005558b754a50ce0ae7dc2e46287cfe1c8ae5b26"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/ordinary_interaction_mailbox_v1.cpp.obj",
+      "bytes": 182896,
+      "sha256": "309c615cdf4f116efb9cbcc2995e4bf640bcf60fd4841dffbcbd30d9de1c5bb7"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/ordinary_interaction_request_v1.cpp.obj",
+      "bytes": 66563,
+      "sha256": "a305d8080ef494d4ba0f787c20fc6cb8a99a7e42300ad7c4820cf61bb2841e78"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/pdx_paths_583_producer_observer_v1.cpp.obj",
+      "bytes": 66948,
+      "sha256": "58d7dc699e3b1a9408353613af1a3880c38e8928f7eb6887e363ca59f7c0a74a"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/pending_character_interaction_context_v1.cpp.obj",
+      "bytes": 538082,
+      "sha256": "54791d2f3016537570f9dc7525e26ae833e98ccee9a67091366a2c3e22f71c35"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/pending_character_interaction_context_v1_mailbox.cpp.obj",
+      "bytes": 417190,
+      "sha256": "cb1253d5e75fb4107706ee23acc6034fb3e2979660c1bde8ad2275b16e642086"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/pending_character_interaction_context_v1_serializer.cpp.obj",
+      "bytes": 202179,
+      "sha256": "d393252d7b818631b5b9af63a2ff341d991907784ac5ca11961d7d2effdcb6a2"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/phase2_completion_observer_v1.cpp.obj",
+      "bytes": 36593,
+      "sha256": "90087cd3628d1aa03082635611bda66129580b45a782a221f46f1fca1f461f41"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/phase2_post_call_list_identity_observer_v1.cpp.obj",
+      "bytes": 50704,
+      "sha256": "cbbe4321cd80eddd1da3945bcb21b1bd867a381adc94edefdcb1fb070889927b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/phase2_post_call_observer_v1.cpp.obj",
+      "bytes": 35566,
+      "sha256": "0f5112a5f5c1606d2a4aa0350a79a34e98765cf1476c01debeb49dd846756cb4"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/phase2_producer_identity_observer_v1.cpp.obj",
+      "bytes": 41423,
+      "sha256": "d1bb4129898d1b9107d940f6b23e4feb77d9e3d5b582081d5bef2a2a76c17e9d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/phase2_wrapper_consumer_edge_observer_v1.cpp.obj",
+      "bytes": 32906,
+      "sha256": "2fc43745cb4f8096be08331710106663882e59c870f290d122d630eaf56fae59"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/phase2_wrapper_entry_observer_v1.cpp.obj",
+      "bytes": 32001,
+      "sha256": "c146c7473e15526ad0513f1ebcb8961125cf64ac47d804164f50f95cfed3e5e8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/physfs_mounted_data_observer_v1.cpp.obj",
+      "bytes": 93047,
+      "sha256": "68ff80c0a65da2e6f8e066a33f8fa95a3061467ca1b8d52a5c0bc1ff90699194"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_construction_view_probe_v1.cpp.obj",
+      "bytes": 7948,
+      "sha256": "97169a98c7c7a007afb23721c3518d1bfc2d1303ab7a276016f30d5fbdcfc9af"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_construction_view_probe_v1_mailbox.cpp.obj",
+      "bytes": 344524,
+      "sha256": "4a922106ff35ab98fa462ebec2b7cb175668c678a530dcd6cbe6d10829431df0"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_construction_view_probe_v1_process.cpp.obj",
+      "bytes": 17385,
+      "sha256": "975076759cd1388f7523abb9c3b9f96a46ba4877bdfcb55374c24cf081ec41af"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_epidemic_recovery_v1.cpp.obj",
+      "bytes": 200068,
+      "sha256": "26bc8fbdac3c25b82072289fa1275e2966e544b4efc07c85ebf509b993d2060c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_epidemic_recovery_v1_mailbox.cpp.obj",
+      "bytes": 113192,
+      "sha256": "b4c443e5391aabd6d141a8eda6790e8b216f010b594af6bdc1d09b8772edfac6"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_epidemic_treatment_presence_v1.cpp.obj",
+      "bytes": 126428,
+      "sha256": "5958e12cf099edd7dbb6ad9341e354d542447660680c7aa1698edbeedb473330"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_epidemic_treatment_presence_v1_mailbox.cpp.obj",
+      "bytes": 106745,
+      "sha256": "bf44a82264907b858dbb5a648f766c006c5038440b98261f8404fc61f5dbd99e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_faction_alerts_v1.cpp.obj",
+      "bytes": 761830,
+      "sha256": "5b51496c1eacc88504be90e341a29bd0ddd47488a6273b1842bc0dcb6232923a"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_faction_alerts_v1_mailbox.cpp.obj",
+      "bytes": 246272,
+      "sha256": "8d50979a4324ddb9ab3e8a21c392915cfcd0564b7519b1d8a69ba5a3e4424623"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_faction_alerts_v1_serializer.cpp.obj",
+      "bytes": 344388,
+      "sha256": "8fa0ab2eb1059eee99337c0e39a8f4ff1496cc633bbb15c4bdc553b83a5bd288"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_held_construction_model_enumerator_v1.cpp.obj",
+      "bytes": 199855,
+      "sha256": "b1737650560f30fba506a8a6f687b7cb7d85699983d1bd9d844e3ed050f20dd8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_world_building_action_candidate_v1.cpp.obj",
+      "bytes": 34804,
+      "sha256": "9757fe054a30187216885b3658feead6d4c3c6758f10beb0dc8a3b92e13c9b92"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_world_building_definition_source_v1.cpp.obj",
+      "bytes": 597162,
+      "sha256": "40ea24ffd00ae0a7e24922358b686821647711377a7e842fadd56bd8f13cc579"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/player_world_building_definition_source_v1_process.cpp.obj",
+      "bytes": 4454,
+      "sha256": "dd6c54721139de225ef662d1a8a5322043d1935ed221be1a681d5c1ebdd46800"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/projected_contact_scope_v1_serializer.cpp.obj",
+      "bytes": 153166,
+      "sha256": "855e2b3687525ceff69a362b3930bcfb230128499d178173d5da37e449aa3fbb"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/raiktor_actual_truce_expiry_v1.cpp.obj",
+      "bytes": 201356,
+      "sha256": "beed0018d75e600340648bfe750cd4457b7c51dd894bcb69c5d962615a3139d3"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/raiktor_surrender_truce_v1.cpp.obj",
+      "bytes": 27859,
+      "sha256": "2c95211c12076276ac5bb9e86186763ff6f04faaa3245a71d65cb0f1c45721eb"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/raiktor_war_bound_regiment_v1.cpp.obj",
+      "bytes": 135604,
+      "sha256": "6efe303cfa162b1c9313617ea87537c22fd8f4c7b25c8daa3e03f145684aea3e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/realm_law_application_main_v1.cpp.obj",
+      "bytes": 115473,
+      "sha256": "165c893febb49e6e8da58601e063e3cce54b409a5c6dff5902006ab0507323e9"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/realm_law_enact_action_v1.cpp.obj",
+      "bytes": 221044,
+      "sha256": "ed8988ee8fdc955bc2648f60ffa301c37099c5905741c031ef923b44ae0aba07"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/realm_law_enact_mutation_abi_v1.cpp.obj",
+      "bytes": 97319,
+      "sha256": "34036e5b456e503564e4cb545ad486ace94dd91fbb82304c70c968eced2ab8f8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/realm_law_governance_snapshot_v1.cpp.obj",
+      "bytes": 308864,
+      "sha256": "dd15caa6af34851f4e7a8052cee4074dd57440e5c23c52815f77cc59f900d6b9"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/realm_law_governance_source_adapter_v1.cpp.obj",
+      "bytes": 51880,
+      "sha256": "ad86003f07376b4fa1828ea554a7990239f2851dd084712d0a243b6df4c9c706"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/realm_law_native_binder_v1.cpp.obj",
+      "bytes": 134811,
+      "sha256": "0737d3c4fa8eee997d4f5c80dd63fa564b5dc7bae449b742d95c24983f0d6271"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/realm_law_native_shared_glue_v1.cpp.obj",
+      "bytes": 63439,
+      "sha256": "7867e949254cad2107a34a3ae9c32c7f22f7b05b8d9e970ee54a4086ebb6947c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/route_contact_horizon_v1_mailbox.cpp.obj",
+      "bytes": 266967,
+      "sha256": "15c156f3fc66c31b2f55dc58e7339434f97f6d6ea4b2338c4e96e209042bd15d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/scoped_character_variable_monitor_v1.cpp.obj",
+      "bytes": 350980,
+      "sha256": "f223fa91a0b79bc35dd955f6cfe95afa0dbf677e48d981ebbe1250db2666034e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/set_played_character_v1_mailbox.cpp.obj",
+      "bytes": 117251,
+      "sha256": "d79ed5cafd70930a151bb879ec1bc31123926d3575d7a7e550f5114723622ade"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/startup_dx11_render_context_draw_guard_v1.cpp.obj",
+      "bytes": 28591,
+      "sha256": "71d6075e4e1da3b9074d51ccf90fb0e03860aeab7630a2a667b39489a864ff19"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/startup_localize_current_root_guard_v1.cpp.obj",
+      "bytes": 27570,
+      "sha256": "92e8d2fa1bcb4f5e6b35384f4eb05f668873a846d7d76b14a8d6e25ae7fc8445"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/startup_particle2_consumer_null_guard_v1.cpp.obj",
+      "bytes": 29828,
+      "sha256": "41402fbc1f08d51df03738c251409be7ca69c7a2633e1fb2eb6db9c8b572bffe"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/startup_particle2_null_guard_v1.cpp.obj",
+      "bytes": 30732,
+      "sha256": "fbda2a5c2eb2a07cdd9f984e4a86db2b3966a195ebdbd99585f6809c68d51f6a"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/startup_particle2_stage_recorder_v1.cpp.obj",
+      "bytes": 73846,
+      "sha256": "4141d7da2ec99aae992c03dac0f3dc2e41ae009de192378cca8f72376613f6ad"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/startup_rbx_null_call_guard_v1.cpp.obj",
+      "bytes": 27903,
+      "sha256": "f9ea81ac2208bbde57256ddb934557058a247d714bfe5a89bc5dcabc6d3e4834"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/startup_widget_null_flag_call_guard_v1.cpp.obj",
+      "bytes": 28433,
+      "sha256": "1ee604a3de67554d8afc6e9c396162c0390a71a8358ad0a76b2164c9461dd877"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/steward_develop_county_action_v1.cpp.obj",
+      "bytes": 218733,
+      "sha256": "1cdcde20d1568e15e295e27cff09408e8dd65ad7a84bb64d83ac98645382363a"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/steward_develop_county_candidates_v1.cpp.obj",
+      "bytes": 318218,
+      "sha256": "21f6d20914c12fd7b9668ec0c1aea316424aa5178b0ce0702342ef5feaca34af"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/steward_develop_county_candidates_v1_mailbox.cpp.obj",
+      "bytes": 249937,
+      "sha256": "e1cef679e20f6d8ca3cb6c1222edd58029661224cdfe7945a5bf74a33e564841"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/steward_develop_county_candidates_v1_serializer.cpp.obj",
+      "bytes": 182147,
+      "sha256": "48882bbedfa0289068338480b9668e62a811b9756f4bf5bcbe78872dd6beeaa5"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/steward_develop_county_enumerator_observer_v1.cpp.obj",
+      "bytes": 48776,
+      "sha256": "f32d9ad791a83f905eac6d115de7fb277d80455fa596cd508b97828a859feb30"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/tactical_daily_sentinel_v1.cpp.obj",
+      "bytes": 125026,
+      "sha256": "01dcfcbfd99e5faf57901958bf6055f94bf44d1c7d32789375c455ff2984eaaa"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/title_holder_v1_serializer.cpp.obj",
+      "bytes": 135080,
+      "sha256": "3fe5b54a37f7e16c45354c74dc8f6f50c8c56e03a0161faba8430566abc3468d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/title_map_navigation_v1.cpp.obj",
+      "bytes": 104395,
+      "sha256": "14d78746f98fd7571b892ec3a6d4a6898844fd08d60ffb76865b50d64aaf6152"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/title_map_navigation_v1_camera.cpp.obj",
+      "bytes": 109320,
+      "sha256": "b6e4509bd592ba1c7a120dfd478666b7ef5ebc66379ac20c68d8af31da4732d2"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/title_map_navigation_v1_mailbox.cpp.obj",
+      "bytes": 183694,
+      "sha256": "2ba5b8d5523f7e5dcb7f76a631ffbf053695cc960b29fcb954ca4622efaa2b8b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/title_map_navigation_v1_serializer.cpp.obj",
+      "bytes": 142695,
+      "sha256": "407a224958c7c073b1ae9d86e6943e66336d98201ec03351547b4a5fdd247b9e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/vfs_mount_lifecycle_observer_v1.cpp.obj",
+      "bytes": 130033,
+      "sha256": "5809d87426fb4bb0d0fadb2daed312ba66629422666f6defd5b92f1563c87a5b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/war_entry_assessments_v1.cpp.obj",
+      "bytes": 314306,
+      "sha256": "a4f65ad3c69ed689e6a4896c5fc770d38fe7cb4df216f35c2432f7b6ab14177c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/war_entry_assessments_v1_mailbox.cpp.obj",
+      "bytes": 89365,
+      "sha256": "e9d86f57a3e165df3d866a09e28d74b8db5ac2f4daaae89d99d2f57b0febea71"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/war_entry_assessments_v1_serializer.cpp.obj",
+      "bytes": 94863,
+      "sha256": "800f5b5f342a4ef260f8c4463314fb1a483be1cff1e656a59ff1a9c27d8e462d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/war_occupation_targets_v1_serializer.cpp.obj",
+      "bytes": 231365,
+      "sha256": "07fd653ae95442ac8c82b6e41b377520a7e9eb585e974fa96cfa1b7ec9efea9c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/white_control_action_v1.cpp.obj",
+      "bytes": 535761,
+      "sha256": "532962d7ab3736ca8383db07ce9b358983445c957bf1aaf3652b7ec9283593f0"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/white_player_business_variables_v1.cpp.obj",
+      "bytes": 303367,
+      "sha256": "bd240bd2987b992c52ec6d79c75af80dababf4f391277fa771aeb5d5b6eb4ba0"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/white_rendered_text_v1.cpp.obj",
+      "bytes": 347503,
+      "sha256": "f10cdabe6eac146769beb8146b657cf46357fb8a97f9a9fa66e972fa07af99a9"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_ai_owned_case_snapshot_v1.cpp.obj",
+      "bytes": 205476,
+      "sha256": "c634ba03cc22c46b7831d0a41c2a59e2cd058f524ad049654a9663113c8ea330"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_ai_owned_case_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 213904,
+      "sha256": "81f4c4eb895566385641bcd090d94c2fe529d38f957dc068550a42bf918f698c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_ai_owned_case_snapshot_v1_serializer.cpp.obj",
+      "bytes": 165288,
+      "sha256": "2a3039288bfdd94a574748ae97a3df8e26e6469515e9dd7267f50201e4f6e3a8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_b1_cycle_snapshot_v1.cpp.obj",
+      "bytes": 103180,
+      "sha256": "d367544f921327dbca8eab7e3ab4148466cd70c53df6a0719da38382d21b51d8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_b1_cycle_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 189900,
+      "sha256": "27f129260c077280f16ab659a1be94e06257405f33a34bc1dd9c5b79683d4ea8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_b1_cycle_snapshot_v1_serializer.cpp.obj",
+      "bytes": 211157,
+      "sha256": "35a07a61d952420d69821e68d5dd4163c21f5fb00be350a3abaf37beea20e864"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_b2_pip_snapshot_v1.cpp.obj",
+      "bytes": 186180,
+      "sha256": "f03c69a6d36dbb4138d9d8fddf1e5b42592619a5cb1f03d596505575aa761267"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_b2_pip_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 219339,
+      "sha256": "070244b4ebe07f456e3cc0f341975918bb640f07c5af78fdf3fb4e73efa68bb4"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_b2_pip_snapshot_v1_serializer.cpp.obj",
+      "bytes": 170536,
+      "sha256": "e0a1b0758be32fa11f2e1864e98f7cac9fa637ff2e9f0d095ab50cf5662200ef"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_career_hc_workforce_postcondition_v1.cpp.obj",
+      "bytes": 120411,
+      "sha256": "a78b2e54b8770089b4db62b4bad3828499298b12be27b4a76c9190baba7a120f"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_career_hc_workforce_postcondition_v1_mailbox.cpp.obj",
+      "bytes": 224551,
+      "sha256": "1940a12ba81e17d4ff2c05ac6316ac804fe590baf7458aa6303bb3456a0ec8ff"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_career_hc_workforce_postcondition_v1_serializer.cpp.obj",
+      "bytes": 122629,
+      "sha256": "09decf01be943ecae443806b453df4d35299cd796c14c63f51a85ae95ca280f2"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_case_snapshot_v1.cpp.obj",
+      "bytes": 164044,
+      "sha256": "33a750cb7adc8f89f5be7dea49b85ca0654307dbe4cb625f1981a2b14fcf8fb6"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_case_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 207713,
+      "sha256": "d49682195770a8b75cc5f6ebf216dfe63f15408f983fec83b6b2b68fdbd5dd6d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_case_snapshot_v1_serializer.cpp.obj",
+      "bytes": 160735,
+      "sha256": "1fde066b2bc9a75533cfdc25d3f4e6d197befc12c03d1c15da588dbad99854f1"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_compensation_af5_snapshot_v1.cpp.obj",
+      "bytes": 250649,
+      "sha256": "00cc546a62a85511c7b1632f2c5bdc4e0c0d387c93a37406c8ca4e708742c44d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_compensation_af5_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 224212,
+      "sha256": "8d6f9ac442c5e8e5fd1a1befd080b825a3f7dd0f0dcb0fce3b153563e2b196fb"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_incident_snapshot_v1.cpp.obj",
+      "bytes": 175132,
+      "sha256": "c07391331a601900725bdbe8ca2c878591eb926c947184385c535abb16c48e7c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_incident_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 221450,
+      "sha256": "8bf6ccc0b1b14d19899c7ca3c46ec5bf16fe4dfe003f5e6e5d35be578e2162eb"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_incident_snapshot_v1_serializer.cpp.obj",
+      "bytes": 142329,
+      "sha256": "98bcfe537b2c505baa1436b3ab4854fe574f4a9770363eec9808c471b092832e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_manager_governance_snapshot_v1.cpp.obj",
+      "bytes": 182079,
+      "sha256": "fdb00bcf6f2019851fbb49f92b2ff06e465044a97352e47e45acfd0d2e8221b9"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_manager_governance_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 232860,
+      "sha256": "b3dce05efcf2d95902e85db3f5c04c187f271a5b96fa40b915363f8bf9fdc525"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_manager_governance_snapshot_v1_serializer.cpp.obj",
+      "bytes": 172512,
+      "sha256": "f48f16d2a9a2bbca8c9f5c636e06d4d17e8510a9222283640d2d0c6f2ea66d41"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_manager_subordinate_selector_v1.cpp.obj",
+      "bytes": 168795,
+      "sha256": "2a0fb786eb499aa458afbecd31be04c9405a156cf8cc715f0cef54be6cac5cfa"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_manager_subordinate_selector_v1_serializer.cpp.obj",
+      "bytes": 99630,
+      "sha256": "c9e8f929b1b7120331ec5c9f84e44c0725662d5fc50c1097a8888e66cb354074"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_projects_metrics_postcondition_v1.cpp.obj",
+      "bytes": 169904,
+      "sha256": "f858d2e24e1589c12d8ca75a42f642a391ca1c100c3c49a9192451efb86c65e8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_projects_metrics_postcondition_v1_mailbox.cpp.obj",
+      "bytes": 224803,
+      "sha256": "b66a4ffb3a19ee8c3825efdbc4f60ed67337b0bcade026fbbff792cf5b163b9f"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_projects_metrics_postcondition_v1_serializer.cpp.obj",
+      "bytes": 127950,
+      "sha256": "9aa8f2476ab1f611c98c94129a3132bfab24f1ea69f7433234a67cba9876254d"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_promotion_compensation_postcondition_v1.cpp.obj",
+      "bytes": 295051,
+      "sha256": "f45e6e457c0414754af2f917050765c32173dc973d5866cc1039c4721400f53e"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp.obj",
+      "bytes": 224592,
+      "sha256": "63e21d283758d7d626cb5a35120e7db4975b8adbfab162a67f277c7d699a6589"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_promotion_source_progress_v1_mailbox.cpp.obj",
+      "bytes": 228916,
+      "sha256": "9d7bfd3e8627bd4476543d1016f34879a873802c9890dd926517123d11798817"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_result_case_snapshot_v1.cpp.obj",
+      "bytes": 116565,
+      "sha256": "7d0eae0328ab928ca0e5133199e4b2bb7c5e921922d582dc043eff50ad65483b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_result_case_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 219701,
+      "sha256": "589c2df195786399659506d9714bbbe38815bb93da91de30bbe513f51572bf5c"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_result_case_snapshot_v1_serializer.cpp.obj",
+      "bytes": 139306,
+      "sha256": "e0a0c5391c2aa6595fa6dc80861391a8623866f24b42b8b31b7c6f4f9ed21f27"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_scoreboard_action_v1.cpp.obj",
+      "bytes": 186052,
+      "sha256": "5ed89a1ea5f56bbe48565eb1c77187f2bac140011e2143f6f31fa47042a007fa"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_scoreboard_action_v1_mailbox.cpp.obj",
+      "bytes": 206635,
+      "sha256": "26fe7ac707bc0486027c46878d3ec0f8773f5394204f137d3015d73428126c47"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_scoreboard_production_v1.cpp.obj",
+      "bytes": 39145,
+      "sha256": "7d15a87008104faf5d1c0a0435fe8f771b472b531848b75446622844d2d0d4f4"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_scoreboard_state_v1.cpp.obj",
+      "bytes": 658161,
+      "sha256": "ac8225621186b4522165a33d232fee758d5604c8a008f933851e6111139df8be"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_scoreboard_state_v1_mailbox.cpp.obj",
+      "bytes": 177094,
+      "sha256": "af6e6c835b350681ffcaef7d5f2e065bb41660d12b6114e405947467c2a4a662"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_scoreboard_state_v1_serializer.cpp.obj",
+      "bytes": 167590,
+      "sha256": "62bfb0b36e2d6acd27dab1c25b453781a4fa80d4d0cff034cca54d1d2c203c1b"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_workforce_collective_snapshot_v1.cpp.obj",
+      "bytes": 348263,
+      "sha256": "a8ff89baae5d10ca988c64d2a8b657b1b6fd81e59921562b6abf75b695d55432"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_workforce_collective_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 220140,
+      "sha256": "f71dc4791a11c12f5ad1e2eb9600b05e2aa60614f9a2e2252d543bd08d2c71df"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_workforce_collective_snapshot_v1_serializer.cpp.obj",
+      "bytes": 169360,
+      "sha256": "0e9a4041b58cb4cb0fd4dd0fe73382c1acaeb01dfa487b5750b027b9ef644f29"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_workforce_normal_exit_snapshot_v1.cpp.obj",
+      "bytes": 171158,
+      "sha256": "5abf3c358094fdd41d8d8f767f0429218eaeb3f9d3a1a9789ae6940ea7b4085f"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_workforce_normal_exit_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 220148,
+      "sha256": "90cee8e75b84510f08527014cdccb0616d9fd32b030ec71096ab5a89cda43ba8"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_workforce_normal_exit_snapshot_v1_serializer.cpp.obj",
+      "bytes": 156552,
+      "sha256": "55a6b22d5e3310c1bf4d3feed3fb5e884e09826cb3103f80456d38e9451e1d37"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_workforce_owner_snapshot_v1.cpp.obj",
+      "bytes": 293443,
+      "sha256": "591c9ed6250b29391c37b8b6348e37e740190468540250ee385e2e2c37d99f66"
+    },
+    {
+      "path": "C:/lr16b5/CMakeFiles/xar_ck3_bridge.dir/src/zhongguo_workforce_owner_snapshot_v1_mailbox.cpp.obj",
+      "bytes": 224162,
+      "sha256": "9a83fd4cc68e56198baf6b8a095e770e237c6629f116eff840a003fe124d77f1"
+    }
+  ],
+  "fixture_defines": [
+    "NOMINMAX",
+    "UNICODE",
+    "WIN32_LEAN_AND_MEAN",
+    "XAR_BRIDGE_VERSION=\"0.1.0\"",
+    "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1=1",
+    "XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1=1",
+    "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1=1",
+    "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1=1",
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1",
+    "XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1=1",
+    "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1=0",
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=1",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1=1",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=1",
+    "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1=1",
+    "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1",
+    "_UNICODE"
+  ],
+  "project": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/project-001/CMakeLists.txt",
+    "bytes": 22926,
+    "sha256": "9488519f282f6191681c1a25c61888cb7a9108fdbe2782545261fbff8672bbba"
+  },
+  "new_build": "C:/lyd16-numeric-link-supplement-20261007-001",
+  "supplement_only": true,
+  "clean_future_qualification": null,
+  "game_or_sdk_calls": 0
+}

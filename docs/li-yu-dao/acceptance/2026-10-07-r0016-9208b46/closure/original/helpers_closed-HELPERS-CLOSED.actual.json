@@ -1,0 +1,131 @@
+{
+  "results": [
+    {
+      "pid": 1368,
+      "create_time": 1791329483.15128,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-actual-diagnostic-consumer-source-20261007-001\\persistent_native_mcp_queue_28.py",
+        "serve",
+        "--profile",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/native-profile-with-exit-inventory.json",
+        "--queue",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/queue-001",
+        "--output",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001",
+        "--binding",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\mcp-binding-001\\ROOT-BINDING.json",
+        "--binding-sha256",
+        "3fe03de9817ed5f182909592f36fe74e55a95ff274a6a9f95a5295df8af3e99a"
+      ],
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-runtime-and-passive-holder-inputs-20261007-001/CLIENT-LIVE-IDENTITY.psutil.actual.json",
+        "bytes": 1432,
+        "sha256": "46332b506e1ae8f093605a230be18f58a094a8e1698b4c63131cb9d6e01435ed"
+      },
+      "role": "client",
+      "handle_value": 500,
+      "handle_local_to_holder_pid": 17076,
+      "handle_access": 1052672,
+      "process_creation_filetime_100ns": 134358030831512800,
+      "handle_retained_before_close": true,
+      "initial_wait_result": 258,
+      "initial_exit_code": 259,
+      "captured_at_utc": "2026-10-06T23:39:21.872231+00:00",
+      "wait_result": 0,
+      "exit_code": 0,
+      "observed_at_utc": "2026-10-06T23:42:07.498018+00:00",
+      "observation": "ORIGINAL_RETAINED_HANDLE",
+      "close_requested_by_observer": false,
+      "SDK_calls": 0,
+      "game_calls": 0,
+      "status": "ORIGINAL_PROCESS_EXIT_OBSERVED"
+    },
+    {
+      "pid": 5780,
+      "create_time": 1791328558.4882605,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-004/screen_lease_entry_r0016.py",
+        "--expected-head",
+        "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+        "--task-id",
+        "ck3-lyd-r16-political-cold-20261007-001",
+        "--bus-cli-sha256",
+        "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee",
+        "--output",
+        "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0016",
+        "--expected-sequence",
+        "3479"
+      ],
+      "keeper_output": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0016",
+      "READY.json": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0016/READY.json",
+        "bytes": 750,
+        "sha256": "a74775669aad279cd9cf4aac5acfb91dde6b50650edfa2ddd730db97fb7ac595"
+      },
+      "role": "keeper",
+      "handle_value": 504,
+      "handle_local_to_holder_pid": 17076,
+      "handle_access": 1052672,
+      "process_creation_filetime_100ns": 134358021584882606,
+      "handle_retained_before_close": true,
+      "initial_wait_result": 258,
+      "initial_exit_code": 259,
+      "captured_at_utc": "2026-10-06T23:39:21.872817+00:00",
+      "wait_result": 0,
+      "exit_code": 0,
+      "observed_at_utc": "2026-10-06T23:42:15.261846+00:00",
+      "observation": "ORIGINAL_RETAINED_HANDLE",
+      "close_requested_by_observer": false,
+      "SDK_calls": 0,
+      "game_calls": 0,
+      "status": "ORIGINAL_PROCESS_EXIT_OBSERVED",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0016/READY.json",
+        "bytes": 750,
+        "sha256": "a74775669aad279cd9cf4aac5acfb91dde6b50650edfa2ddd730db97fb7ac595"
+      }
+    }
+  ],
+  "original_capture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-retained-helper-handles-actual-20261007-001/CAPTURED.actual.json",
+    "bytes": 6052,
+    "sha256": "2b6bfb738430645138ed47e9873bcabfc2c398c908d161a11d24903ea7738227"
+  },
+  "retained_holder_final": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-retained-helper-handles-actual-20261007-001/FINAL.actual.json",
+    "bytes": 4294,
+    "sha256": "8bd228a8be16c162061ea0e8c10d50ac5621083b48c1f19c0f046fcdfc24e479"
+  },
+  "original_process_results": {
+    "holder": {
+      "session_id": 71370,
+      "pid": 17076,
+      "create_time": 1791329961.7546897,
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-original-exec-completions-20261007-001/holder.actual.json",
+        "bytes": 595,
+        "sha256": "19c6252d0476cd2d233bd7b03432723e5960680ce21ae30bf6b48de5df9e2b8e"
+      }
+    },
+    "keeper": {
+      "session_id": 9352,
+      "pid": 5780,
+      "create_time": 1791328558.4882605,
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-original-exec-completions-20261007-001/keeper.actual.json",
+        "bytes": 3710,
+        "sha256": "aacdffa6f58736e43c2cfc370e25dece76fcd453923548f563c83f99f447940b"
+      }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "review": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3082,
+    "sha256": "b09f54dcac006d9dd355b567a42dc8bc811b0b0be2f6fcd5db85b5a72326a1b2"
+  },
+  "original_native_observation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0017-r16-017-exit-observer.native-01.json",
+    "bytes": 5905,
+    "sha256": "44e9af8b008b6f1d78353455fede26027158049144538a5f6caeef091c195c18"
+  },
+  "helpers_closed": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/HELPERS-CLOSED.actual.json",
+    "bytes": 5308,
+    "sha256": "99d8b5f73002bfbb58a1f0a86d722156c071714cfd92b328cc4ac881ac4ca76a"
+  },
+  "launch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/launch.json",
+    "bytes": 2355,
+    "sha256": "ebefdbaa9c291f1f749708444718af3c696eff021eb32f714dc8428b5927bd2e"
+  },
+  "process_absence": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-inputs-20261007-001/PROCESS-ABSENCE.actual.json",
+    "bytes": 1457,
+    "sha256": "a1dbd1790f42604f63654b70bc34f83112c256f2d5729e8e7f9512ea972e9e1c"
+  },
+  "original_handle_observation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0017-r16-017-exit-observer.sdk-result.json",
+    "bytes": 12813,
+    "sha256": "0bdea1227c0e2084210f90ca159d3b1b34b4d165f50d3d76d357da3298dea0d5"
+  },
+  "consumer_closed": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/session-closed.json",
+    "bytes": 881,
+    "sha256": "deaa6e404420c59edf8a2ce5053aa166f52b74df2046254dfc709af88fae228f"
+  },
+  "consumer_session": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/session.json",
+    "bytes": 1240,
+    "sha256": "982a434bf838266d5d71b33d31a47a1aa5369e55c57dd54193a6d5337adb044d"
+  },
+  "keeper_final": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0016/FINAL.json",
+    "bytes": 401,
+    "sha256": "e1d7f26b2ca32d376e34bbd5f9836498fb54502ff3eeb9691d2a0ff57eda74b1"
+  },
+  "after_list": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-release-screen-actual-20261007-001/BUS-AFTER-RELEASE.parsed.json",
+    "bytes": 102301,
+    "sha256": "baed599b3923b6786d847a03f5805b19e183dcff1a3e0140f29828607b847c2b"
+  },
+  "consumer_close_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0018-r16-root-close-988fe5e1ddc645479303e0fd7932948b.response.json",
+    "bytes": 528,
+    "sha256": "66d4371739e279c29e48a0a19d24885dba159b529f82862ed4c7ae11919eff79"
+  },
+  "release_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-release-screen-actual-20261007-001/RELEASE.actual.json",
+    "bytes": 1300,
+    "sha256": "23158411fef50dd078ab1eaa5cf268546fafe85e3945ddd437b4240cccfb176d"
+  },
+  "actual_prior_identity": {
+    "pid": 16416,
+    "process_create_time": 1791328744.0605772,
+    "process_creation_filetime_100ns": 134358023440605773
+  },
+  "actual_prior_source_head": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+  "actual_prior_task": "ck3-lyd-r16-political-cold-20261007-001",
+  "actual_original_exec_process_results": {
+    "holder": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-original-exec-completions-20261007-001/holder.actual.json",
+      "bytes": 595,
+      "sha256": "19c6252d0476cd2d233bd7b03432723e5960680ce21ae30bf6b48de5df9e2b8e"
+    },
+    "keeper": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-original-exec-completions-20261007-001/keeper.actual.json",
+      "bytes": 3710,
+      "sha256": "aacdffa6f58736e43c2cfc370e25dece76fcd453923548f563c83f99f447940b"
+    }
+  },
+  "actual_exit_observation_limits": {
+    "game_original_HANDLE_exit0_observed": true,
+    "client_exit_code": 0,
+    "keeper_exit_code": 0,
+    "client_OS_exit0_observed": true,
+    "keeper_OS_exit0_observed": true,
+    "holder_original_exec_process_exit0_observed": true,
+    "holder_original_exec_session_id": 71370,
+    "keeper_original_exec_session_id": 9352,
+    "native_session_id": "3f4fc4cafba44dc88b85f99ba4ac1caa",
+    "consumer_session_id": "56ceb473d6c148819c8a046167c4d926",
+    "autosave_verified": false
+  }
+}

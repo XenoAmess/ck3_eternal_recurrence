@@ -1,0 +1,42 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-close-client-001.argv.json",
+    "bytes": 950,
+    "sha256": "e3ed2bb47ff820100d97ed93dcc62473a8993f6478631f358600a04249660eaf"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-actual-bound-close-source-20261007-001\\guarded_helper_close.py",
+    "close-client",
+    "--game-sdk",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\mcp-client-001\\0017-r16-017-exit-observer.sdk-result.json",
+    "--game-sdk-sha256",
+    "0bdea1227c0e2084210f90ca159d3b1b34b4d165f50d3d76d357da3298dea0d5",
+    "--game-native",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\mcp-client-001\\0017-r16-017-exit-observer.native-01.json",
+    "--game-native-sha256",
+    "44e9af8b008b6f1d78353455fede26027158049144538a5f6caeef091c195c18",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-close-client-actual-20261007-001",
+    "--wait-seconds",
+    "10",
+    "--execute-root-authorized"
+  ],
+  "started_at_utc": "2026-10-06T23:42:06.491724+00:00",
+  "finished_at_utc": "2026-10-06T23:42:07.731061+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-close-client-execution-20261007-001/stdout",
+    "bytes": 1374,
+    "sha256": "87827db9086d033c479484ed535fd56f767cebbcc3f2d8378950c1543d04e236"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-close-client-execution-20261007-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

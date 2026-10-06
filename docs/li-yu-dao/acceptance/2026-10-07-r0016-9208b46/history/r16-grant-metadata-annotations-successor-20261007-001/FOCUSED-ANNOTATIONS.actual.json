@@ -1,0 +1,63 @@
+{
+  "actual_grant_tools_accepted": [
+    "ck3_query_profile_grant_title_picker_v1",
+    "ck3_prepare_profile_grant_title_picker_v1",
+    "ck3_select_profile_grant_title_picker_v1",
+    "ck3_send_profile_grant_title_picker_v1"
+  ],
+  "original_helper_rejections_preserved": [
+    "ck3_prepare_profile_grant_title_picker_v1",
+    "ck3_select_profile_grant_title_picker_v1"
+  ],
+  "exact_hint_negative_cases": [
+    {
+      "operation": "prepare",
+      "destructiveHint": true,
+      "rejected": true
+    },
+    {
+      "operation": "prepare",
+      "destructiveHint": false,
+      "rejected": true
+    },
+    {
+      "operation": "select",
+      "destructiveHint": true,
+      "rejected": true
+    },
+    {
+      "operation": "select",
+      "destructiveHint": false,
+      "rejected": true
+    },
+    {
+      "operation": "query",
+      "destructiveHint": null,
+      "rejected": true
+    },
+    {
+      "operation": "send",
+      "destructiveHint": null,
+      "rejected": true
+    },
+    {
+      "operation": "prepare",
+      "destructiveHint": "MISSING",
+      "rejected": true
+    }
+  ],
+  "grant_source_declarations_same": true,
+  "source_AST_function_unchanged": true,
+  "official_metadata_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-OFFICIAL-GRANT28-METADATA.json",
+    "bytes": 29956,
+    "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+  },
+  "probe_proof": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-HINTS-AND-FROZEN-AST.json",
+    "bytes": 9342,
+    "sha256": "e7e47d796d71df0ef2677618fbbe3f80008adbae442366cdee9d2b10e4d4c648"
+  },
+  "SDK_or_game_rerun": false,
+  "native_rebuild": false
+}

@@ -1,0 +1,54 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-three-way-political-heir-comparison-001.argv.json",
+    "bytes": 1899,
+    "sha256": "b474742160a8174ee02ae5cf3468f12c01fb9bdd747880bc5faf6ef11b87ad56"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001\\compare_political_heirs_v5.py",
+    "--cold-state",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\cold-diagnostic-readback-001\\STATE.json",
+    "--cold-state-sha256",
+    "bc8b8918bde9e1ce39657d156138c86c294186de1dcf5f6aa716187c876e53f4",
+    "--cold-input",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-diagnostic-checkpoint-author-inputs-20261007-001\\AUTHOR-INPUT.actual.json",
+    "--cold-input-sha256",
+    "0ea14db50fb6b010e8ec549397f8e8d620695295f64dafc3b07cd38df684331e",
+    "--author-result",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\cold-diagnostic-readback-001\\RESULT.json",
+    "--author-result-sha256",
+    "7ac8656e70f9c2b703aada791faa8e460c1f5fefdd7192707cfc9031eb9c88b4",
+    "--qualified-native",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\cold-diagnostic-readback-001\\native-qualification\\QUALIFIED-NATIVE.json",
+    "--qualified-native-sha256",
+    "69f96081a5836e2a909c7bc2b9e123b951d340a6ed6943d1e222e565a41ef564",
+    "--baseline-input",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-political-heir-diagnostic-source-20261007-004\\BASELINE-RED-B5.actual-input.json",
+    "--baseline-input-sha256",
+    "d0fe32c4f6a7e4cf2cb1db0fcb77b9ac771482c2381b52cce76a303678277baa",
+    "--metadata-result",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-actual-sdk-metadata-20261007-002\\RESULT.json",
+    "--metadata-result-sha256",
+    "12b575b1f4eda40a9cc7d269002a83f9e20f0b22f835381fd993fe150e556574",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-three-way-political-heir-comparison-20261007-001"
+  ],
+  "started_at_utc": "2026-10-06T23:38:47.242436+00:00",
+  "finished_at_utc": "2026-10-06T23:38:47.438211+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-three-way-political-heir-comparison-execution-20261007-001/stdout",
+    "bytes": 249,
+    "sha256": "b62b37cd30ff73ea140cbd0a6c60c213485952cc55f3e9b7b94565ea60be54b2"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-three-way-political-heir-comparison-execution-20261007-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

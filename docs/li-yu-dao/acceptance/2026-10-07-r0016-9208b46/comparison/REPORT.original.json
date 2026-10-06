@@ -1,0 +1,1615 @@
+{
+  "status": "PURE_RETAINED_PARSED_THREE_WAY_POLITICAL_HEIR_COMPARE_NO_FORMAL_PASS",
+  "inputs": {
+    "cold_state": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/STATE.json",
+      "bytes": 1373648,
+      "sha256": "bc8b8918bde9e1ce39657d156138c86c294186de1dcf5f6aa716187c876e53f4"
+    },
+    "cold_input": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/AUTHOR-INPUT.actual.json",
+      "bytes": 2995,
+      "sha256": "0ea14db50fb6b010e8ec549397f8e8d620695295f64dafc3b07cd38df684331e"
+    },
+    "author_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/RESULT.json",
+      "bytes": 1039866,
+      "sha256": "7ac8656e70f9c2b703aada791faa8e460c1f5fefdd7192707cfc9031eb9c88b4"
+    },
+    "qualified_native": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 90514,
+      "sha256": "69f96081a5836e2a909c7bc2b9e123b951d340a6ed6943d1e222e565a41ef564"
+    },
+    "baseline_input": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-004/BASELINE-RED-B5.actual-input.json",
+      "bytes": 2215,
+      "sha256": "d0fe32c4f6a7e4cf2cb1db0fcb77b9ac771482c2381b52cce76a303678277baa"
+    },
+    "metadata_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/RESULT.json",
+      "bytes": 7133,
+      "sha256": "12b575b1f4eda40a9cc7d269002a83f9e20f0b22f835381fd993fe150e556574"
+    }
+  },
+  "native_original_refs": {
+    "checkpoint_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0007-r16-007-save.native-01.json",
+      "bytes": 30479,
+      "sha256": "c74284e17ddfb1a79bb8b729591b42f9c9015cb011873330efd27eb610809158"
+    },
+    "G2_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0008-r16-008-G2-after-save.native-01.json",
+      "bytes": 29020,
+      "sha256": "883ff8e7a140a7163b55b4a7cb99bfbc5ded045542711041da697ddac12a0e88"
+    },
+    "G3_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0009-r16-009-G3-after-save.native-01.json",
+      "bytes": 4209,
+      "sha256": "3ad062abad0e9a726f962c6dd10d719f377905fc2d55b1873014ef787955530b"
+    }
+  },
+  "new_checkpoint_descriptor": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-checkpoint-001/content-56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc.ck3",
+    "bytes": 91676559,
+    "sha256": "56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc"
+  },
+  "baseline_original_refs": {
+    "purpose": "PURE_COLD_POLITICAL_HEIR_DIAGNOSTIC_RED_B5",
+    "source_runtime_head": "fea6a2f9f7233f2e3bab6cdd1329b55aa09ca17c",
+    "checkpoint": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B5-save-001/content-6b96471c080679860b5c110cd1cab95a11928d3f64793fd776f5151c3f659371.ck3",
+      "bytes": 91676566,
+      "sha256": "6b96471c080679860b5c110cd1cab95a11928d3f64793fd776f5151c3f659371"
+    },
+    "source_author_input": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B5-readback-001/INPUT.exact.json",
+      "bytes": 2613,
+      "sha256": "5912c19dbbfe0c6b2b242c953a043ea355b64099c069595cc1e17db3b739a88a"
+    },
+    "state": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B5-readback-001/STATE.json",
+      "bytes": 628599,
+      "sha256": "a58f0980a0b8c7e699f98ac00c64a1001c6bbbcc3f16a52796687249e7b3accf"
+    },
+    "typed_protection": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B5-readback-001/TYPED-PROTECTION.json",
+      "bytes": 1005925,
+      "sha256": "72edcdab91e0ab5edc53a36206c5299bdf4503cae011f3da43211249a3477148"
+    },
+    "original_G2": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B5-save-001/02-native-01.original.json",
+      "bytes": 28086,
+      "sha256": "ec6d74515c4bf65141fee8f3ebc952da5d029c7f224e053af3d4d5a2ca8a509b"
+    },
+    "original_G3": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B5-save-001/03-native-01.original.json",
+      "bytes": 4112,
+      "sha256": "ec6e3db88476ffc959c4fe6240265a7f37c0fc59fe5b7e3172fea39fdc1f89b0"
+    },
+    "original0240_state": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r13-formal-route23-20261006-001/inputs/i3b-0240-native-preparation-20261006-001/BASELINE-0240.json",
+      "bytes": 426067,
+      "sha256": "e08d6f60d54085594297d227dc0213343fd86e372ff4c6cea558e847f5064323"
+    },
+    "genuine_previous_boundary": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 3114,
+      "sha256": "c519e2c30c051df45afce80ee10f6d025c59d9e4943894fa0e9cc1e6808bf158"
+    },
+    "formal_acceptance": null
+  },
+  "political_titles": [
+    {
+      "title_full_id": 2230,
+      "observations": {
+        "original0240": {
+          "holder": "31254",
+          "full_AST_sha256": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "saved_R15_B5_RED": {
+          "holder": 31254,
+          "full_AST_sha256": "c3989692ff88f71cd665ab03bc74e9858bf7994cb12fd5abe8dcadfd733d8a92",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "new_R16_cold": {
+          "holder": 31254,
+          "full_AST_sha256": "c3989692ff88f71cd665ab03bc74e9858bf7994cb12fd5abe8dcadfd733d8a92",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        }
+      },
+      "new_cold_full_AST_equals_saved_B5": true,
+      "new_cold_heir_rows_equal_original0240": false,
+      "new_cold_heir_rows_equal_saved_B5": true
+    },
+    {
+      "title_full_id": 2231,
+      "observations": {
+        "original0240": {
+          "holder": "31254",
+          "full_AST_sha256": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "saved_R15_B5_RED": {
+          "holder": 31254,
+          "full_AST_sha256": "d4a8ba910fec430cb9d1f9a7cb769f697dc98ec9d007f42cdae1d6c17301cb39",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "new_R16_cold": {
+          "holder": 31254,
+          "full_AST_sha256": "d4a8ba910fec430cb9d1f9a7cb769f697dc98ec9d007f42cdae1d6c17301cb39",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        }
+      },
+      "new_cold_full_AST_equals_saved_B5": true,
+      "new_cold_heir_rows_equal_original0240": false,
+      "new_cold_heir_rows_equal_saved_B5": true
+    },
+    {
+      "title_full_id": 2232,
+      "observations": {
+        "original0240": {
+          "holder": "31254",
+          "full_AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+          "heir_raw_rows": [],
+          "succession_result_type": [],
+          "succession_laws": [],
+          "laws": []
+        },
+        "saved_R15_B5_RED": {
+          "holder": 31254,
+          "full_AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+          "heir_raw_rows": [],
+          "succession_result_type": [],
+          "succession_laws": [],
+          "laws": []
+        },
+        "new_R16_cold": {
+          "holder": 31254,
+          "full_AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+          "heir_raw_rows": [],
+          "succession_result_type": [],
+          "succession_laws": [],
+          "laws": []
+        }
+      },
+      "new_cold_full_AST_equals_saved_B5": true,
+      "new_cold_heir_rows_equal_original0240": true,
+      "new_cold_heir_rows_equal_saved_B5": true
+    },
+    {
+      "title_full_id": 2235,
+      "observations": {
+        "original0240": {
+          "holder": "31254",
+          "full_AST_sha256": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "saved_R15_B5_RED": {
+          "holder": 31254,
+          "full_AST_sha256": "996c2580e48f9c8cf9332777d377f704a1d6a9a9cd00f7aee6157a27a43ceab8",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "new_R16_cold": {
+          "holder": 31254,
+          "full_AST_sha256": "996c2580e48f9c8cf9332777d377f704a1d6a9a9cd00f7aee6157a27a43ceab8",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        }
+      },
+      "new_cold_full_AST_equals_saved_B5": true,
+      "new_cold_heir_rows_equal_original0240": false,
+      "new_cold_heir_rows_equal_saved_B5": true
+    },
+    {
+      "title_full_id": 2262,
+      "observations": {
+        "original0240": {
+          "holder": "31254",
+          "full_AST_sha256": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "saved_R15_B5_RED": {
+          "holder": 31254,
+          "full_AST_sha256": "2289c2d2a50f509ea0a94ae7bee5c7bd8396e62587056f953733e1f73f4ec9a9",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "new_R16_cold": {
+          "holder": 31254,
+          "full_AST_sha256": "2289c2d2a50f509ea0a94ae7bee5c7bd8396e62587056f953733e1f73f4ec9a9",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        }
+      },
+      "new_cold_full_AST_equals_saved_B5": true,
+      "new_cold_heir_rows_equal_original0240": false,
+      "new_cold_heir_rows_equal_saved_B5": true
+    },
+    {
+      "title_full_id": 2263,
+      "observations": {
+        "original0240": {
+          "holder": "31254",
+          "full_AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+          "heir_raw_rows": [],
+          "succession_result_type": [],
+          "succession_laws": [],
+          "laws": []
+        },
+        "saved_R15_B5_RED": {
+          "holder": 31254,
+          "full_AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+          "heir_raw_rows": [],
+          "succession_result_type": [],
+          "succession_laws": [],
+          "laws": []
+        },
+        "new_R16_cold": {
+          "holder": 31254,
+          "full_AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+          "heir_raw_rows": [],
+          "succession_result_type": [],
+          "succession_laws": [],
+          "laws": []
+        }
+      },
+      "new_cold_full_AST_equals_saved_B5": true,
+      "new_cold_heir_rows_equal_original0240": true,
+      "new_cold_heir_rows_equal_saved_B5": true
+    },
+    {
+      "title_full_id": 2264,
+      "observations": {
+        "original0240": {
+          "holder": "31254",
+          "full_AST_sha256": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "saved_R15_B5_RED": {
+          "holder": 31254,
+          "full_AST_sha256": "1f0b9df68aa23d329e2740cac9fa62599ed801957f509d2f8ef6fa3fbb73f813",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        },
+        "new_R16_cold": {
+          "holder": 31254,
+          "full_AST_sha256": "1f0b9df68aa23d329e2740cac9fa62599ed801957f509d2f8ef6fa3fbb73f813",
+          "heir_raw_rows": [
+            [
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "33234"
+              },
+              {
+                "key": null,
+                "value": "37702"
+              },
+              {
+                "key": null,
+                "value": "33542"
+              },
+              {
+                "key": null,
+                "value": "34232"
+              },
+              {
+                "key": null,
+                "value": "31538"
+              },
+              {
+                "key": null,
+                "value": "35899"
+              },
+              {
+                "key": null,
+                "value": "40507"
+              },
+              {
+                "key": null,
+                "value": "40843"
+              },
+              {
+                "key": null,
+                "value": "41028"
+              }
+            ]
+          ],
+          "succession_result_type": [
+            "inheritance_child_line"
+          ],
+          "succession_laws": [],
+          "laws": []
+        }
+      },
+      "new_cold_full_AST_equals_saved_B5": true,
+      "new_cold_heir_rows_equal_original0240": false,
+      "new_cold_heir_rows_equal_saved_B5": true
+    }
+  ],
+  "native_frame_qualification": "Retains exact original author native-joined artifacts; comparison adds no qualification",
+  "original_author_status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+  "original_G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+  "original_G3_status": "BOUND_NATIVE_TITLE_FIELDS_OBSERVATION",
+  "formal_acceptance": null,
+  "new_T_acceptance": null,
+  "C3_credit": null,
+  "I4_credit": null,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "save_body_reads": 0,
+  "main_writes": 0
+}

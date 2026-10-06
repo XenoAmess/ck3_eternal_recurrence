@@ -1,0 +1,27 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/static.argv.json",
+    "bytes": 306,
+    "sha256": "31d31cd6de92c651b4438d28b2d1a7d9ac22fb6572380dd2e549b22877a50c46"
+  },
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\validate_static.py",
+    "--report",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-root-factory-ordering-source-checks-20261007-001\\static-report.json"
+  ],
+  "started_at_utc": "2026-10-06T23:52:42.891738+00:00",
+  "finished_at_utc": "2026-10-06T23:52:43.349108+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/static-actual/stdout",
+    "bytes": 9254,
+    "sha256": "cbf72ecfcd7ed547bfab37262514c0c583fe329c5ff40c627f57e8492c0a02cf"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/static-actual/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 18,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\queue-001\\r16-root-close-988fe5e1ddc645479303e0fd7932948b.request.json",
+  "request_sha256": "612e392ded11d901fd50aaa481f8cbc26e1a7e60e77ce12dfc5e917b1667b482",
+  "started_at_utc": "2026-10-06T23:42:07.000384+00:00",
+  "request_id": "r16-root-close-988fe5e1ddc645479303e0fd7932948b",
+  "status": "CLIENT_CLOSE_REQUESTED",
+  "finished_at_utc": "2026-10-06T23:42:07.001276+00:00"
+}

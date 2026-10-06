@@ -1,0 +1,65 @@
+{
+  "schema": "lyd.r16.grant-trigger-cv-actual-c2664-readback.v1",
+  "original_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/build.stdout",
+    "bytes": 37189,
+    "sha256": "8512ddbf8ccb1dcd70b6a51ed1588c2052d27598b0a1e14e89815191c691e8cc"
+  },
+  "excerpt_decode": "UTF-8 with replacement for locale bytes; raw original unchanged",
+  "error_lines": [
+    {
+      "line": 175,
+      "text": "C:\\lr16s3\\ck3_autonomous_player\\native_bridge\\src\\ordinary_character_interaction_v1.cpp(32): error C2664: ��bool (void *,const void *)��: �޷������� 1 �ӡ�const void *��ת��Ϊ��void *��"
+    },
+    {
+      "line": 176,
+      "text": "C:\\lr16s3\\ck3_autonomous_player\\native_bridge\\src\\ordinary_character_interaction_v1.cpp(32): note: ת����ʧ�޶���"
+    },
+    {
+      "line": 177,
+      "text": "C:\\lr16s3\\ck3_autonomous_player\\native_bridge\\src\\ordinary_character_interaction_v1.cpp(32): note: ģ��ʵ����������(�����ʵ����������)Ϊ"
+    },
+    {
+      "line": 178,
+      "text": "C:\\lr16s3\\ck3_autonomous_player\\native_bridge\\src\\ordinary_character_interaction_v1.cpp(314): note: �鿴�����ڱ���ĺ��� ģ�� ʵ������bool xar::ck3_12003::ordinary_interaction::`anonymous-namespace'::Call<bool(__cdecl *)(void *,const void *),bool,const void*,const void*>(Fn,Result &,const void *,const void *) noexcept��������"
+    }
+  ],
+  "lines_175_183": [
+    {
+      "line": 175,
+      "text": "C:\\lr16s3\\ck3_autonomous_player\\native_bridge\\src\\ordinary_character_interaction_v1.cpp(32): error C2664: ��bool (void *,const void *)��: �޷������� 1 �ӡ�const void *��ת��Ϊ��void *��"
+    },
+    {
+      "line": 176,
+      "text": "C:\\lr16s3\\ck3_autonomous_player\\native_bridge\\src\\ordinary_character_interaction_v1.cpp(32): note: ת����ʧ�޶���"
+    },
+    {
+      "line": 177,
+      "text": "C:\\lr16s3\\ck3_autonomous_player\\native_bridge\\src\\ordinary_character_interaction_v1.cpp(32): note: ģ��ʵ����������(�����ʵ����������)Ϊ"
+    },
+    {
+      "line": 178,
+      "text": "C:\\lr16s3\\ck3_autonomous_player\\native_bridge\\src\\ordinary_character_interaction_v1.cpp(314): note: �鿴�����ڱ���ĺ��� ģ�� ʵ������bool xar::ck3_12003::ordinary_interaction::`anonymous-namespace'::Call<bool(__cdecl *)(void *,const void *),bool,const void*,const void*>(Fn,Result &,const void *,const void *) noexcept��������"
+    },
+    {
+      "line": 179,
+      "text": "        with"
+    },
+    {
+      "line": 180,
+      "text": "        ["
+    },
+    {
+      "line": 181,
+      "text": "            Fn=bool (__cdecl *)(void *,const void *),"
+    },
+    {
+      "line": 182,
+      "text": "            Result=bool"
+    },
+    {
+      "line": 183,
+      "text": "        ]"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "schema": "lyd.root.factory-ordering-source-evidence.v1",
+  "files": [
+    {
+      "target": "ROOT-APPLY.actual.json",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-apply-20261007-001/RESULT.actual.json",
+      "bytes": 2241,
+      "sha256": "6dd273f09293e15a178973eafed11f8bf8379126809040e5b601b5e040031817"
+    },
+    {
+      "target": "AUTHORED-ONLY.patch",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-apply-20261007-001/AUTHORED-ONLY.patch",
+      "bytes": 5532,
+      "sha256": "d41b4f2344050c5436e632cdcfa8794abbd7650a9b27b56d96606347e67c6d0e"
+    },
+    {
+      "target": "SOURCE.actual.json",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/SOURCE.actual.json",
+      "bytes": 971,
+      "sha256": "6f1e012a0f2546bbd0d650e6904bdabdcc50bc80d6ab77681fd2d4f372dcc3df"
+    },
+    {
+      "target": "static-report.json",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/static-report.json",
+      "bytes": 9254,
+      "sha256": "cbf72ecfcd7ed547bfab37262514c0c583fe329c5ff40c627f57e8492c0a02cf"
+    },
+    {
+      "target": "R16-IMPORT.actual.json",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-permanent-import-20261007-002/RESULT.actual.json",
+      "bytes": 32645,
+      "sha256": "a057081c2d94e904f8c2a1e36f78b565eeecc20e58aaa0555f3aef58998bd33d"
+    },
+    {
+      "target": "factory-law/RESULT.actual.json",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/factory-law-actual/RESULT.actual.json",
+      "bytes": 1114,
+      "sha256": "47701e244013900e95ed0821dd43dcb4c5013a01ca78fc26a1a535cb1eef3bee"
+    },
+    {
+      "target": "factory-law/stdout",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/factory-law-actual/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "factory-law/stderr",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/factory-law-actual/stderr",
+      "bytes": 116,
+      "sha256": "c55d09a60314ec2667fa1d91b11658870ca2bb4e928ac9e4c1d35878d622829d"
+    },
+    {
+      "target": "static/RESULT.actual.json",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/static-actual/RESULT.actual.json",
+      "bytes": 1217,
+      "sha256": "e3aa765825198990f6c6c7bbfa922a95f977df2f9cc99a44618dff620e6ebe9a"
+    },
+    {
+      "target": "static/stdout",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/static-actual/stdout",
+      "bytes": 9254,
+      "sha256": "cbf72ecfcd7ed547bfab37262514c0c583fe329c5ff40c627f57e8492c0a02cf"
+    },
+    {
+      "target": "static/stderr",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/static-actual/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "release-repro/RESULT.actual.json",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/release-repro-actual/RESULT.actual.json",
+      "bytes": 1113,
+      "sha256": "0616a2e44cc42ef521016dd42761b45b3693e77686d38aaca39794ed2390db59"
+    },
+    {
+      "target": "release-repro/stdout",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/release-repro-actual/stdout",
+      "bytes": 273,
+      "sha256": "5cc0bdec1fcddcfc9cb4e49078ab2665c76adc4cb8506871632f48babcf17f0c"
+    },
+    {
+      "target": "release-repro/stderr",
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/release-repro-actual/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "runtime_pass": null
+}

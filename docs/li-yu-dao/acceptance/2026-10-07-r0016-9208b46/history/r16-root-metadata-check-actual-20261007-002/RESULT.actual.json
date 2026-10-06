@@ -1,0 +1,39 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-request-20261007-002/CHECK-ARGV.json",
+    "bytes": 849,
+    "sha256": "d17e50914905f2b68ddc2567fb51f606ee517fddadd3a4716994d77a02157741"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-grant-metadata-annotations-successor-20261007-001\\source\\metadata\\capture_r14_metadata_root_only.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-request-20261007-002/REQUEST.actual.json",
+    "--sha256",
+    "2f7782169d927845d46604b15ae2a809132f2eeec284046c2cde856b4bdd1d48",
+    "--closure-verifier",
+    "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/verify_r15_previous_boundary.py",
+    "--closure-verifier-sha256",
+    "f92037872d6fa921980501a4adbd69010f24edd99cd2d0656ff88765b9dbd9ec",
+    "--closure-function",
+    "verify_previous_boundary_v3",
+    "--check"
+  ],
+  "started_at_utc": "2026-10-06T23:09:41.559559+00:00",
+  "finished_at_utc": "2026-10-06T23:10:09.544554+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-check-actual-20261007-002/stdout",
+    "bytes": 1043798,
+    "sha256": "30e365aa9965cc306ccf7b5790a2dd746bc22fb6c661dd2e2826ddfb73489437"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-check-actual-20261007-002/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

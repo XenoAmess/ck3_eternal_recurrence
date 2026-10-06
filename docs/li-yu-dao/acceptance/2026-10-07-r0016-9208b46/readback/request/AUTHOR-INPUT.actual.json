@@ -1,0 +1,42 @@
+{
+  "schema": "lyd.next-cold.actual-checkpoint-author-request.grant-numeric.v1",
+  "expected_source_head": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+  "native_clean_qualification": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/NATIVE-CLEAN-QUALIFICATION.actual.json",
+    "bytes": 980259,
+    "sha256": "0f8c0e34bda377b6ccfffc84c3a65fb3ee038ccb4fb87837bf42619b85505260"
+  },
+  "profile": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/native-profile-with-exit-inventory.json",
+  "source_export_report": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-head-export-20261007-006/REPORT.json",
+  "compiled_result": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/RESULT.json",
+  "metadata_result": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/RESULT.json",
+  "original_baseline": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r13-formal-route23-20261006-001/inputs/i3b-0240-native-preparation-20261006-001/BASELINE-0240.json",
+  "reader_request_template": "C:\\lr16s6\\tools\\lyd_i3b_checkpoint_readback\\CHECKPOINT-REQUEST.template.json",
+  "windows": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/FIVE-SOURCE-WINDOWS.expected.json",
+  "sdk_metadata_variant": "grant28",
+  "sdk_metadata_artifact": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/ACTUAL-grant28-profile-all-tools.json",
+    "bytes": 29956,
+    "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+  },
+  "sdk_codec_artifact": {
+    "path": "C:/lr16s6/ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+    "bytes": 23750,
+    "sha256": "9b9e87e1c6981f6b74382d291ad1f9c33c10f1f1e0002e1bfd704ec11e800681"
+  },
+  "business_migration_registry": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/business-registry/BUSINESS-MIGRATION-REGISTRY.actual.json",
+    "bytes": 3082,
+    "sha256": "d717bee1dc2f1c68b5b53ec29a60d91f0f52e3459a321ed26f5659f1e955f816"
+  },
+  "checkpoint_receipt": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0007-r16-007-save.native-01.json",
+  "preserved_checkpoint": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-checkpoint-001/content-56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc.ck3",
+    "bytes": 91676559,
+    "sha256": "56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc"
+  },
+  "G2_receipt": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0008-r16-008-G2-after-save.native-01.json",
+  "G3_receipt": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0009-r16-009-G3-after-save.native-01.json",
+  "window": "baseline",
+  "output": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-readback-001"
+}

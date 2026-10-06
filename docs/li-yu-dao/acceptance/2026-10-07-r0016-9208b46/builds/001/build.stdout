@@ -1,0 +1,247 @@
+{"command": ["C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe", "-S", "C:\\lr16s3\\ck3_autonomous_player\\native_bridge", "-B", "C:\\lr16b3", "-G", "Ninja", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_MAKE_PROGRAM=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe", "-DCMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe", "-DCMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe", "-DBUILD_TESTING:BOOL=ON", "-DXAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_EXECUTABLE_PATH:FILEPATH=C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe", "-DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1:BOOL=ON", "-DXAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1:BOOL=ON", "-DXAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1:BOOL=ON", "-DXAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1:BOOL=OFF"], "log": "C:\\lr16b3\\msvc-configure.log"}
+-- The CXX compiler identification is MSVC 19.51.36260.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe (found version "3.13.15") found components: Interpreter
+-- Configuring done (6.4s)
+-- Generating done (3.3s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_C_COMPILER
+
+
+-- Build files have been written to: C:/lr16b3
+{"command": ["C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe", "--build", "C:\\lr16b3", "--parallel", "64", "--target", "xar_ck3_bridge", "xar_ck3_bridge_injector", "xar_confucian_assembly_predicates_v1_test", "xar_confucian_religious_title_readback_v1_test", "xar_confucian_challenger_graph_v1_test", "xar_ck3_main_thread_query_mailbox_v1_test", "xar_ck3_12002_event_window_context_test"], "log": "C:\\lr16b3\\msvc-build.log"}
+[0/2] Re-checking globbed directories...
+[1/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_actor_resources.cpp.obj
+[2/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_console_fixture.cpp.obj
+[3/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002.cpp.obj
+[4/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_value.cpp.obj
+[5/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_assign.cpp.obj
+[6/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_outbound.cpp.obj
+[7/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_gift_opinion.cpp.obj
+[8/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_feast_outcome_values.cpp.obj
+[9/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_projection.cpp.obj
+[10/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_candidates.cpp.obj
+[11/502] Building CXX object CMakeFiles\xar_bridge_protocol.dir\src\protocol.cpp.obj
+[12/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_runtime.cpp.obj
+[13/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_gates.cpp.obj
+[14/502] Building CXX object CMakeFiles\xar_bridge_injector.dir\src\injector.cpp.obj
+[15/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_mailbox.cpp.obj
+[16/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_subject.cpp.obj
+[17/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_marriage_probe.cpp.obj
+[18/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_context.cpp.obj
+[19/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family.cpp.obj
+[20/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_break.cpp.obj
+[21/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_declarations.cpp.obj
+[22/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_break_penalty.cpp.obj
+[23/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_feature_serializer.cpp.obj
+[24/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_campaign_serializer.cpp.obj
+[25/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_event_window_context_serializer.cpp.obj
+[26/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_stage5_canstart_private_transport_v1.cpp.obj
+[27/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_events.cpp.obj
+[28/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_feast_planner_private_transport_v1.cpp.obj
+[29/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_construction_held.cpp.obj
+[30/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_commands.cpp.obj
+[31/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_features.cpp.obj
+[32/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_campaign.cpp.obj
+[33/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_ranked.cpp.obj
+[34/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_commands.cpp.obj
+[35/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_wire.cpp.obj
+[36/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_military.cpp.obj
+[37/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_diplomacy.cpp.obj
+[38/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_construction.cpp.obj
+[39/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_construction_process.cpp.obj
+[40/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_feast_cost_private_transport_v1.cpp.obj
+[41/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_battle_journal.cpp.obj
+[42/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_lineage.cpp.obj
+[43/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_event_window_context.cpp.obj
+[44/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_faction_gift.cpp.obj
+[45/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_active_collection.cpp.obj
+[46/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_construction_mailbox.cpp.obj
+[47/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_focus.cpp.obj
+[48/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_wire.cpp.obj
+[49/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_faction_alerts.cpp.obj
+[50/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_action.cpp.obj
+[51/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_candidate_collection.cpp.obj
+[52/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_wire.cpp.obj
+[53/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_metrics.cpp.obj
+[54/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_components.cpp.obj
+[55/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_feast_private_transport_v1.cpp.obj
+[56/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_perk.cpp.obj
+[57/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_pending_context_serializer.cpp.obj
+[58/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_enact_command_v1.cpp.obj
+[59/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_final_terms.cpp.obj
+[60/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_culture.cpp.obj
+[61/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_pending_context.cpp.obj
+[62/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_combat.cpp.obj
+[63/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_feast_guest_transport.cpp.obj
+[64/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_council.cpp.obj
+[65/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_realm.cpp.obj
+[66/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_character.cpp.obj
+[67/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_state.cpp.obj
+[68/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_state.cpp.obj
+[69/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_enact_mutation_abi_v1.cpp.obj
+[70/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_title_map_serializer.cpp.obj
+[71/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_war_entry_serializer.cpp.obj
+[72/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_advantage.cpp.obj
+[73/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_war_cash_treasury.cpp.obj
+[74/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_claim_terms.cpp.obj
+[75/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\owned_regiments.cpp.obj
+[76/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_feast_router.cpp.obj
+[77/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_maa_create.cpp.obj
+[78/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_title_map_camera.cpp.obj
+[79/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_faction_mailbox.cpp.obj
+[80/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_mailbox.cpp.obj
+[81/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_thread_runtime.cpp.obj
+[82/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_definitions.cpp.obj
+[83/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_ranked_mailbox.cpp.obj
+[84/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_maa_recruitment.cpp.obj
+[85/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_feast_planner_native.cpp.obj
+[86/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_title_map.cpp.obj
+[87/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_commander_martial.cpp.obj
+[88/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_transport.cpp.obj
+[89/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase.cpp.obj
+[90/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_adapter.cpp.obj
+[91/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_position.cpp.obj
+[92/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_diagnostic.cpp.obj
+[93/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_misc.cpp.obj
+[94/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_government_mailbox.cpp.obj
+[95/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_battle.cpp.obj
+[96/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_candidates.cpp.obj
+[97/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_mercenary_context.cpp.obj
+[98/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_confucian_assembly_predicates.cpp.obj
+[99/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_army.cpp.obj
+[100/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_settlement.cpp.obj
+[101/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_mercenary_wire.cpp.obj
+[102/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_faction_gift_router.cpp.obj
+[103/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner_collection.cpp.obj
+[104/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_war_cash_current_reader.cpp.obj
+[105/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner.cpp.obj
+[106/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner_wire.cpp.obj
+[107/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_command.cpp.obj
+[108/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_composition.cpp.obj
+[109/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_holy_order_current_reinforcement.cpp.obj
+[110/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_final_terms.cpp.obj
+[111/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_mailbox.cpp.obj
+[112/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_province.cpp.obj
+[113/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_routes.cpp.obj
+[114/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_holy_order_context.cpp.obj
+[115/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_router.cpp.obj
+[116/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner_war_retention.cpp.obj
+[117/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\player_lifestyle_window_candidates_v1.cpp.obj
+[118/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law.cpp.obj
+[119/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_source_adapter.cpp.obj
+[120/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_serializer.cpp.obj
+[121/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_battle_current_state.cpp.obj
+[122/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\main_thread_query_mailbox_v1.cpp.obj
+[123/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prewar_muster.cpp.obj
+[124/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_task_position_inputs.cpp.obj
+[125/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_hire_action.cpp.obj
+[126/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\diac_literal_numeric_inputs_12003.cpp.obj
+[127/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_rule43_diac_sources.cpp.obj
+[128/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_army_replenishment_records.cpp.obj
+[129/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_world.cpp.obj
+[130/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_query_mailbox.cpp.obj
+[131/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_war_cash_current_serializer.cpp.obj
+[132/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_title_properties_leaf.cpp.obj
+[133/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_army_reserve.cpp.obj
+[134/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_commander.cpp.obj
+[135/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner_mailbox.cpp.obj
+[136/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_army_supply_timing.cpp.obj
+[137/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_hire_wire.cpp.obj
+[138/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\battle_current_warscore_caps_v1.cpp.obj
+[139/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_title_laws_leaf.cpp.obj
+[140/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_commander_target_roll.cpp.obj
+[141/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_handler.cpp.obj
+[142/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_holy_order_hire_action.cpp.obj
+[143/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_war_entry.cpp.obj
+[144/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_title_holder.cpp.obj
+[145/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\realm_law_12004_native.cpp.obj
+[146/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_family_terminal_events.cpp.obj
+[147/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_semantic_adapter.cpp.obj
+[148/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_war_occupation.cpp.obj
+[149/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_war_cash_current_mailbox.cpp.obj
+[150/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_prisoner_release_preview.cpp.obj
+[151/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_mailbox.cpp.obj
+[152/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_confucian_assembly_mailbox.cpp.obj
+[153/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ordinary_character_interaction_v1.cpp.obj
+FAILED: [code=2] CMakeFiles/xar_ck3_12002_runtime.dir/src/ordinary_character_interaction_v1.cpp.obj 
+"C:\PROGRA~1\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\bin\HostX64\x64\cl.exe"  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1=1 -DXAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1=1 -DXAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1=1 -DXAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1 -DXAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1=1 -DXAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=1 -DXAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1=1 -DXAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=1 -DXAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1=1 -DXAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1 -D_UNICODE -IC:\lr16s3\ck3_autonomous_player\native_bridge\include -IC:\lr16s3\ck3_autonomous_player\native_bridge\src -IC:\lr16s3\ck3_autonomous_player\native_bridge\research /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /showIncludes /FoCMakeFiles\xar_ck3_12002_runtime.dir\src\ordinary_character_interaction_v1.cpp.obj /FdCMakeFiles\xar_ck3_12002_runtime.dir\xar_ck3_12002_runtime.pdb /FS -c C:\lr16s3\ck3_autonomous_player\native_bridge\src\ordinary_character_interaction_v1.cpp
+C:\lr16s3\ck3_autonomous_player\native_bridge\src\ordinary_character_interaction_v1.cpp(32): error C2664: “bool (void *,const void *)”: 无法将参数 1 从“const void *”转换为“void *”
+C:\lr16s3\ck3_autonomous_player\native_bridge\src\ordinary_character_interaction_v1.cpp(32): note: 转换丢失限定符
+C:\lr16s3\ck3_autonomous_player\native_bridge\src\ordinary_character_interaction_v1.cpp(32): note: 模板实例化上下文(最早的实例化上下文)为
+C:\lr16s3\ck3_autonomous_player\native_bridge\src\ordinary_character_interaction_v1.cpp(314): note: 查看对正在编译的函数 模板 实例化“bool xar::ck3_12003::ordinary_interaction::`anonymous-namespace'::Call<bool(__cdecl *)(void *,const void *),bool,const void*,const void*>(Fn,Result &,const void *,const void *) noexcept”的引用
+        with
+        [
+            Fn=bool (__cdecl *)(void *,const void *),
+            Result=bool
+        ]
+[154/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\county_faction_final_12003.cpp.obj
+[155/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_holy_order_hire_wire.cpp.obj
+[156/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_confucian_religious_title_mailbox.cpp.obj
+[157/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_commander_mailbox.cpp.obj
+[158/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_land_resupply.cpp.obj
+[159/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_abi_profile.cpp.obj
+[160/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_religion_bindings.cpp.obj
+[161/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_adapter.cpp.obj
+[162/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_maa_create_private_mailbox.cpp.obj
+[163/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_action_mailbox.cpp.obj
+[164/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_religious_title_readback.cpp.obj
+[165/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\research\ck3_12002_construction_submit_binding.cpp.obj
+[166/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_core_frame_v1.cpp.obj
+[167/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_default_raise_mailbox.cpp.obj
+[168/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_prisoner_release_preview_serializer.cpp.obj
+[169/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_phase_character.cpp.obj
+[170/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_mercenary_hire_mailbox.cpp.obj
+[171/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_mercenary_mailbox.cpp.obj
+[172/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_adapter.cpp.obj
+[173/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_commander_assignment.cpp.obj
+[174/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\battle_current_finalizer_manager_inputs_reader_12003.cpp.obj
+[175/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_land_supply_rate.cpp.obj
+[176/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\grant_title_picker_v1.cpp.obj
+[177/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_assault_removal_reference.cpp.obj
+[178/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_abi_profile.cpp.obj
+[179/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_commander_assignment_mailbox.cpp.obj
+[180/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_holy_order_hire_mailbox.cpp.obj
+[181/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_family_relationships.cpp.obj
+[182/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_province_besieging_contributors.cpp.obj
+[183/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_fixed_chunk0_preparation.cpp.obj
+[184/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_province_supply_contributors.cpp.obj
+[185/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_world.cpp.obj
+[186/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_snapshot_foundation.cpp.obj
+[187/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_scoped_ordered_refill_core.cpp.obj
+[188/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ordinary_holy_war_declaration_context12003_mailbox.cpp.obj
+[189/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ordinary_holy_war_cb_cost_v1.cpp.obj
+[190/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_ordered_besieging_fixed_chunk0_preparation.cpp.obj
+[191/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_context_sources.cpp.obj
+[192/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_hired_troop_shared_bindings.cpp.obj
+[193/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_ordered_besieging_refill_inputs.cpp.obj
+[194/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_diplomacy.cpp.obj
+[195/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_mercenary_bindings.cpp.obj
+[196/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_battle.cpp.obj
+[197/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_family_subject.cpp.obj
+[198/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_war_declarations.cpp.obj
+[199/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_family_actions.cpp.obj
+[200/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_battle_journal.cpp.obj
+[201/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_family.cpp.obj
+[202/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_family_ranked.cpp.obj
+[203/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_family_break_penalty.cpp.obj
+[204/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_daily_assault_loss.cpp.obj
+[205/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_succession_modal.cpp.obj
+[206/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_epidemic.cpp.obj
+[207/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_family_obligations_alliance.cpp.obj
+[208/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_province.cpp.obj
+[209/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_confucian_challenger_graph_mailbox.cpp.obj
+[210/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_army_support.cpp.obj
+[211/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_army.cpp.obj
+[212/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_holy_order_bindings.cpp.obj
+[213/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_war.cpp.obj
+[214/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_war_cash_claim_terms.cpp.obj
+[215/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_challenger_graph_readback.cpp.obj
+[216/502] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12004_commander_mailbox.cpp.obj
+ninja: build stopped: subcommand failed.

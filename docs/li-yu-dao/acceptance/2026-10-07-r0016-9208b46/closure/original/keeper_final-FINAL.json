@@ -1,0 +1,12 @@
+{
+  "schema": "xar.promo.screen-lease-keeper/v1",
+  "task_id": "ck3-lyd-r16-political-cold-20261007-001",
+  "last_sequence": 3488,
+  "failure": null,
+  "thread_exited": true,
+  "journal": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0016\\screen-lease.jsonl",
+  "at_utc": "2026-10-06T23:42:15.081051+00:00",
+  "entry_error": null,
+  "screen_released": false,
+  "game_actions": false
+}
