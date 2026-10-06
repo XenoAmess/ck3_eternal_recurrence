@@ -172,8 +172,8 @@ struct Fixture {
     memory.Deny(reg_positive, 0x38, 4); // Positive type must skip current numeric read.
     memory.Deny(reg_invalid, 0x18, 8); memory.Deny(reg_invalid, 0x38, 4);
     memory.Deny(reg_fallback, 0x18, 8); memory.Deny(reg_fallback, 0x38, 4);
-    memory.Deny(entries, 0 * 0x40 + 0x10, 8);
-    memory.Deny(entries, 4 * 0x40 + 0x10, 8); memory.Deny(entries, 4 * 0x40 + 0x28, 8);
+    // Empty-vector raw data is now a demanded release-header observation.
+    // The dedicated failure scene supplies its three explicit denied headers.
     expected_army_a = army_a; expected_army_b = army_b;
   }
   void Ids(void *header, std::initializer_list<std::uint32_t> ids) {
