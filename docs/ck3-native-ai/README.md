@@ -3,6 +3,9 @@
 ## 2026-10-07：本地更新至 Steam build25734779，MCP 迁移中
 
 [实际安装更新与 MCP 迁移](installed-build-25734779-mcp-migration-2026-10-07.md)：R0051 完成一日路线循环并正常保存 h9613，累计5997；10streams冻结、ownedjob退出并证明进程回收后，Steam已更新。新EXE SHA98702f88…dd518已冻结，native文字确认1.20.0.4，text/rdata均变，实际ABI迁移正在施工。旧g105严格构建RED C4324保留，g106已采用source0597但FIRST未跑；并行迁移各MCP领域，尚无新版live信用。
+## 2026-10-07: Army registered MCP materialization performance candidate
+
+[Army response materialization](army-strengths-mcp-result-serialization-performance-12003.md) records actual native35,683,420 B to registeredSDK140,369,382 B and the later198.265585 s refresh. Installed MCP2.0.0 duplicates the complete Service object into JSON text and structured content. The candidate keeps every structured observation and replaces only text with an aggregate summary; native whole-query/Service semantics stay unchanged. The sole new performance compound is FIRST NOTRUN, research; no actual optimized bytes/time or live uplift is claimed.
 
 
 ### 2026-10-06 late update: actual Army query recovered
