@@ -637,6 +637,19 @@ struct ArmyCurrentProvinceSupplyContributorsV1 {
                          const ArmyCurrentProvinceSupplyContributorsV1 &) = default;
 };
 
+struct ArmyCurrentLandResupplyV1 {
+  std::string status = "unavailable";
+  std::string unavailable_reason;
+  bool current_observation_ready = false;
+  std::optional<std::int32_t> province_id;
+  std::optional<std::int32_t> owner_character_id;
+  std::optional<bool> native_land_branch_applicable;
+  std::optional<bool> native_resupply_eligible;
+  std::optional<std::int64_t> loaded_gain_raw;
+  friend bool operator==(const ArmyCurrentLandResupplyV1 &,
+                         const ArmyCurrentLandResupplyV1 &) = default;
+};
+
 struct ArmyStrengthSnapshot {
   bool available = false;
   std::int32_t army_id = -1;
@@ -687,6 +700,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentHelperDomainInputsV1> monthly_current_helper_domain_inputs_v1;
   std::optional<ArmyCurrentHelperPointStoreInputsV1> monthly_current_helper_point_store_inputs_v1;
   std::optional<ArmyCurrentProvinceSupplyContributorsV1> current_province_supply_contributors_v1;
+  std::optional<ArmyCurrentLandResupplyV1> current_land_resupply_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;

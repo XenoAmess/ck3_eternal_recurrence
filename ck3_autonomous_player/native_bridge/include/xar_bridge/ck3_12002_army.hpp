@@ -2,6 +2,7 @@
 
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/ck3_12003_current_province_supply_contributors.hpp"
+#include "xar_bridge/ck3_12003_current_land_resupply.hpp"
 
 #include <cstdint>
 #include <span>
@@ -160,6 +161,7 @@ struct ArmyBindings {
   bool monthly_current_helper_point_store_inputs_enabled = false;
   ck3_12003::CurrentProvinceSupplyContributorBindings12003
       current_province_supply_contributor_bindings{};
+  ck3_12003::CurrentLandResupplyBindings12003 current_land_resupply_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

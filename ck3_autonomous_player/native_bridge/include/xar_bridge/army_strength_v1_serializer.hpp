@@ -4,6 +4,7 @@
 #include "xar_bridge/owned_regiments_v1_serializer.hpp"
 #include "xar_bridge/army_current_helper_domain_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_current_helper_point_store_inputs_v1_serializer.hpp"
+#include "xar_bridge/army_current_land_resupply_v1_serializer.hpp"
 
 #include <string>
 
@@ -510,6 +511,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"current_province_supply_contributors_v1\":";
     AppendArmyCurrentProvinceSupplyContributorsV1(
         result, *strength.current_province_supply_contributors_v1, number, append_json_string);
+  }
+  if (strength.current_land_resupply_v1) {
+    result += ",\"current_land_resupply_v1\":";
+    AppendArmyCurrentLandResupplyV1(
+        result, *strength.current_land_resupply_v1, number, append_json_string);
   }
   result += ",\"scope_role\":\"";
   switch (strength.scope_role) {

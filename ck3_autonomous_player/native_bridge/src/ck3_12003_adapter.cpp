@@ -294,6 +294,14 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.current_province_supply_contributor_bindings.shares_current_war_side =
         reinterpret_cast<decltype(result.armies.current_province_supply_contributor_bindings.shares_current_war_side)>(
             image_base + ck3_12003::kSupplyContributorCommonWarSideRva12003);
+    auto &resupply = result.armies.current_land_resupply_bindings;
+    resupply.enabled = true;
+    resupply.is_resupply_eligible = reinterpret_cast<ck3_12002::IsHoldingDefender>(
+        image_base + ck3_12003::kCurrentProvinceResupplyEligibleRva12003);
+    resupply.is_army_fleet_supply_active = monthly.is_army_fleet_supply_active;
+    resupply.character_storage_slot = monthly.character_storage_slot;
+    resupply.loaded_gain_raw = reinterpret_cast<const std::int64_t *>(
+        image_base + ck3_12003::kLoadedUnderLimitSupplyGainRva12003);
   }
   if (result.phase.advantage.enabled) {
     // Constructor-faith closure is proven only for exact .3. Keep the .2
