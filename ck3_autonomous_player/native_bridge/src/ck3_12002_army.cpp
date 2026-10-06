@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_military.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
+#include "xar_bridge/ck3_12003_fixed_chunk0_preparation.hpp"
 #include "xar_bridge/ck3_12003_current_helper_domain_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_helper_point_store_inputs.hpp"
 
@@ -1007,6 +1008,8 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
             ck3_12003::ReadArmyRegimentReplenishmentRecordsV1(
                 bindings, Resolve(bindings.regiment_storage_slot, id), id));
       }
+      result.fixed_chunk0_preparation_inputs_v1 =
+          ck3_12003::ReadFixedChunk0PreparationInputsV1(bindings, result);
     }
     if (bindings.scoped_ordered_refill_bindings.enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("scoped_ordered_refill_inputs_readonly");

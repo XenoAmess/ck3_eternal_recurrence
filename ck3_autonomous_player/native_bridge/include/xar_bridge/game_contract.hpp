@@ -13,6 +13,7 @@
 #include "xar_bridge/ck3_12003_army_supply_timing.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp"
+#include "xar_bridge/ck3_12003_fixed_chunk0_preparation.hpp"
 #include "xar_bridge/phase_rite_parameters_v1.hpp"
 #include "xar_bridge/phase_warmonger_core_v1.hpp"
 #include "xar_bridge/phase_berserker_validity_inputs_v1.hpp"
@@ -766,6 +767,9 @@ struct ArmyStrengthSnapshot {
   // Complete stored persistent DATA records, independently readable per record.
   std::optional<std::vector<ArmyRegimentReplenishmentRecordsSnapshotV1>>
       regiment_replenishment_records_v1;
+  // Exact .3 current containing-persistent guard, native physicalchunk0
+  // permission and fresh fraction. This is separate from observed cache148.
+  std::optional<FixedChunk0PreparationInputsV1> fixed_chunk0_preparation_inputs_v1;
   // Exact .3 CArmy native remaining gathering days. Zero is observable while
   // gathering; not_gathering is an observed absence, with no invented days.
   std::optional<ArmySupplyTimingSnapshot> army_update_clock_v1;

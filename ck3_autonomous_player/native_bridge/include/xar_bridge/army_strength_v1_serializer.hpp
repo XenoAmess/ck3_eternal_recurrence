@@ -7,6 +7,7 @@
 #include "xar_bridge/army_current_land_resupply_v1_serializer.hpp"
 #include "xar_bridge/army_current_land_supply_rate_v1_serializer.hpp"
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1_serializer.hpp"
+#include "xar_bridge/army_fixed_chunk0_preparation_v1_serializer.hpp"
 
 #include <string>
 
@@ -613,6 +614,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"scoped_ordered_refill_inputs_v1\":";
     AppendArmyScopedOrderedRefillInputsV1(
         result, *strength.scoped_ordered_refill_inputs_v1, number, append_json_string);
+  }
+  if (strength.fixed_chunk0_preparation_inputs_v1) {
+    result += ",\"fixed_chunk0_preparation_inputs_v1\":";
+    AppendFixedChunk0PreparationInputsV1(
+        result, *strength.fixed_chunk0_preparation_inputs_v1, number, append_json_string);
   }
   result += ",\"scope_role\":\"";
   switch (strength.scope_role) {
