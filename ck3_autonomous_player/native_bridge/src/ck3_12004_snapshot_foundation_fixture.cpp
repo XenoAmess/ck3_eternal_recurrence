@@ -47,6 +47,7 @@ SnapshotMemory *g_memory = nullptr;
 struct SnapshotMemory {
   current::fixture::CoreMemory original_core;
   current::CoreBindings core = original_core.Bindings();
+  std::array<std::byte, 0x300> actor_bytes{};
   std::vector<std::byte> data{current::kEventManagerOffset12004 + 16};
   std::array<std::byte, 0x30> characters{};
   std::vector<std::byte> character_rows{
@@ -81,8 +82,11 @@ struct SnapshotMemory {
 
   SnapshotMemory() {
     g_memory = this;
-    actor = current::ResolveCoreCharacter(core, kRobert);
-    Check(actor != nullptr, "owned core CharacterID failed to resolve");
+    const auto original_actor = current::ResolveCoreCharacter(core, kRobert);
+    Check(original_actor != nullptr, "owned core CharacterID failed to resolve");
+    std::memcpy(actor_bytes.data(), original_actor,
+        current::kCharacterDeathDataOffset + sizeof(void *));
+    actor = actor_bytes.data();
     const auto old_data = Load<void *>(*core.game_state_slot, current::kGameStateDataOffset);
     std::memcpy(data.data(), old_data,
         current::kPlayerCharacterManagerOffset + current::kPlayerManagerCountOffset + 4);
