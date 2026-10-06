@@ -282,3 +282,11 @@ flowchart TD
 ```
 
 The sole next source gap is that normal-return **storage-commit** footprint. `PENDING-STORAGE-COMMIT-METADATA-PLAN.json` proposes only named `11244A0` pdata/header/selected-chain metadata after cache-first reuse. It does not authorize a body, generic allocator/deallocator, exception handler or new observer implementation. The revised whole-DATA plan publishes typed pending records and the new physical `chunk+C` input; no code, test, build or game operation has begun.
+
+## Selected storage-commit metadata
+
+Root approved only the named metadata selection. October 6 **20:43:21 CST**, the exact pdata record at RVA **`5E6B090`** / file offset **`5D02290`**, index **57356**, contains raw `a0441201c644120158f11005`. It selects **`[11244A0,11244C6)` / 38 B** and unwind **`510F158`**. The four-byte header is **`01130800`**: version 1, flags 0, prologue 19 B, eight unwind codes, frame byte 0. There is no selected CHAININFO record. The exact initial extent is not yet a claim that its body or a reached callee is closed.
+
+The actual new metadata cost was **208 B / 18 seeks**, with previously held binary-search records reused. No code, constant, allocator, handler, old body or whole-file hash was read. Cumulative source I/O is now **804 metadata B + 1,420 code B = 2,224 B / 366 seeks**. `PENDING-STORAGE-COMMIT-METADATA-READ-RECEIPT.json` retains every actual record/header and cached record separately.
+
+The unique next proposal is **38 B / 1 seek**, exactly the selected `[11244A0,11244C6)` body. Inspect its actual normal-return header writes, source reload order and direct call/tail boundaries for `11244A0(vector_header, new_buffer, newCount, newCapacity)`. Any reached generic resource routine remains opaque; any separately required gameplay or header-commit continuation needs its own cached-source selection and finite plan. `PENDING-STORAGE-COMMIT-EXACT-BODY-PLAN.json` is **NOTRUN** until Root separately reviews it. The typed-record correction and the independent no-growth append stay closed; growth commit and the proposed observer remain unqualified.
