@@ -8886,6 +8886,20 @@ if(BUILD_TESTING AND WIN32)
     COMMAND xar_ck3_ordinary_interaction_mailbox_v1_test)
 endif()
 
+# Same-query model identity observations; fake memory and no game invocation.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12003_knight_current_model_association_test
+    src/knight_current_model_association_v1_test.cpp)
+  target_include_directories(xar_ck3_12003_knight_current_model_association_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_knight_current_model_association_test PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_knight_current_model_association_test PRIVATE /W4 /WX /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_12003_knight_current_model_association_test
+    COMMAND xar_ck3_12003_knight_current_model_association_test
+      "${CMAKE_CURRENT_BINARY_DIR}/knight_current_model_association_v1_wire.json")
+endif()
+
 # Pure actual-argv regression; no game, UI, pipe or native provider invocation.
 if(BUILD_TESTING AND WIN32)
   add_executable(xar_ck3_normal_exit_map_launch_arguments_v1_test
