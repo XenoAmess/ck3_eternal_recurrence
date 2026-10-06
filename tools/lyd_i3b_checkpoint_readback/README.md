@@ -21,3 +21,7 @@ Only the new tiny fixtures are tested in this export. They cover two active scho
 Shared C3 handoff rows are defined in `OUTPUT.schema.json`: `native_title` includes `title_id`, `holder`, full `entries`, `AST_sha256`, typed `variables`/`lists`, and `qualification`; `protected_titles` is a complete array of the seven corresponding rows plus baseline hashes/holders. `null` native-title qualification remains a gap, not an empty positive proof. C3 can consume this exact row and preserve the same AST/identity binding without selecting a fictional title ID.
 
 `NATIVE-ADDON-CONTRACT.json` isolates the minimal additional read-only native observations required for real G2/G3 credit. It is a proposed source contract, not an available tool or implemented patch. The copied phase-character source explicitly gates its bindings to the 1.20.0.2 executable hash; its human/effective-learning/incapable primitives cannot be extrapolated to the current executable. The existing 1.20.0.3 Title-holder interface supplies a holder read only, without succession-law/four-property getters. No native addresses, provider code or formal 21-tool registry are changed here.
+
+## SDK qualification converter (2026-10-06)
+
+The reviewed [SDK checkpoint qualification converter](SDK-CHECKPOINT-QUALIFICATION.md) now converts the explicit private23 G2/G3 SDK receipts to the reader contracts. The existing checkpoint reader and parser remain unchanged. Fixture tests establish conversion behavior; actual session/checkpoint binding and the formal charter remain pending live acceptance.

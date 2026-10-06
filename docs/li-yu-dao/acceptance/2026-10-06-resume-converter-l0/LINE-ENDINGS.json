@@ -1,0 +1,49 @@
+{
+  "files": [
+    {
+      "path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py",
+      "before_sha256": "81221c5e0bc47a2cf56f2184d66d5199d05931397347d46c96bdd1b9cf0d29cb",
+      "after_sha256": "2b10b19f472273b0a459b77019730453dd484dea958a331ea690e6a578272194",
+      "change": "CRLF to LF only"
+    },
+    {
+      "path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/frozen_business_contract.json",
+      "before_sha256": "e293b46eab19ab043ee66e0f745e9c054110dcf30bb14c2dacdc8ca405fdf186",
+      "after_sha256": "a95b8f65cf46b731c4556ffb12bbce38d47de61ede8222c383f85209c9730643",
+      "change": "CRLF to LF only"
+    },
+    {
+      "path": "tools/lyd_i3b_checkpoint_readback/tests/sdk_fixture_builders.py",
+      "before_sha256": "927a744218f77bd2225d4b7f8e25e83a6195ade893ac67151f193e695f163af3",
+      "after_sha256": "e6c68a06adb154067d4988672fda3847b147e8d9677122d07230998ddda60036",
+      "change": "CRLF to LF only"
+    },
+    {
+      "path": "tools/lyd_i3b_checkpoint_readback/QUALIFIED-NATIVE.schema.json",
+      "before_sha256": "57e30b88bb30b2d8976fb8f8dae7fc7fe4393438d13e8e2993d49bce93067f99",
+      "after_sha256": "65a27bce7c95b9ea8867ba099bb7c3bee1f1451beadd218469134f6be20c1295",
+      "change": "CRLF to LF only"
+    },
+    {
+      "path": "tools/lyd_i3b_checkpoint_readback/CHECKPOINT-BINDING-CONTRACT.json",
+      "before_sha256": "9181ac8351bdbd1f77dd33cc1d9893e6e9da9fabb86de0690f3a5ef34e5c80a3",
+      "after_sha256": "66357c9f66d9c3bf5b61b8031aefbd5f9dc47984cf966f1f32d75c312eaa1d0a",
+      "change": "CRLF to LF only"
+    },
+    {
+      "path": "tools/lyd_i3b_checkpoint_readback/UNBOUND-PROVENANCE.template.json",
+      "before_sha256": "2e9b60654ae5605eddbbf4d5543fec49f3c1b9e77432f7d5524edd462fbbaa10",
+      "after_sha256": "4d7d5753b29ef96ceaad6dd1007ff9633b799b6ed1cc812ecc4d8908dc16601f",
+      "change": "CRLF to LF only"
+    },
+    {
+      "path": "tools/lyd_i3b_checkpoint_readback/CONVERSION-REQUEST.template.json",
+      "before_sha256": "50862cde86b08025d6a72c9edbb83786aa4f3d90ac187c3c402e7c9bdd10f03d",
+      "after_sha256": "676daa6c1e4002480eb023d4fb8433b8d8701eeea9d5c650dd532e70c288b506",
+      "change": "CRLF to LF only"
+    }
+  ],
+  "original_candidates_preserved": true,
+  "new_tests_required": false,
+  "reason": "newline-only source projection; installed converter code and tests already LF"
+}

@@ -1,0 +1,677 @@
+{
+  "schema": "lyd.converter-resume-functional-review.v1",
+  "source_head": "0349ffc5a35a0b582db7dbadf6c1358896ece012",
+  "python": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\EXPORT-MANIFEST.json",
+    "bytes": 4829,
+    "sha256": "cced785b39c7f950aae7637559f8bd8221b870321c83a775bdd11464a475f96d"
+  },
+  "root_only_integration": true,
+  "targets": [
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/reader/sdk_checkpoint_qualification.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\reader\\sdk_checkpoint_qualification.py",
+        "bytes": 19238,
+        "sha256": "cee4573ec1fd8e9151869d2cb63733297b795d1c36acdd82c06631845db588c3"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": false,
+      "target": null
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\reader\\dependencies\\confucian_dto_primitives.py",
+        "bytes": 18315,
+        "sha256": "81221c5e0bc47a2cf56f2184d66d5199d05931397347d46c96bdd1b9cf0d29cb"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": false,
+      "target": null
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/frozen_business_contract.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\reader\\dependencies\\frozen_business_contract.json",
+        "bytes": 8830,
+        "sha256": "e293b46eab19ab043ee66e0f745e9c054110dcf30bb14c2dacdc8ca405fdf186"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": false,
+      "target": null
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/tests/test_sdk_checkpoint_seam.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\tests\\test_sdk_checkpoint_seam.py",
+        "bytes": 12654,
+        "sha256": "54586a1ecfc82f1d03ebb4324ef6f42c0a08892596ab2edb26e82eeb92f4bb57"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": false,
+      "target": null
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/tests/sdk_fixture_builders.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\tests\\sdk_fixture_builders.py",
+        "bytes": 5077,
+        "sha256": "927a744218f77bd2225d4b7f8e25e83a6195ade893ac67151f193e695f163af3"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": false,
+      "target": null
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/QUALIFIED-NATIVE.schema.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\QUALIFIED-NATIVE.schema.json",
+        "bytes": 2216,
+        "sha256": "57e30b88bb30b2d8976fb8f8dae7fc7fe4393438d13e8e2993d49bce93067f99"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": false,
+      "target": null
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/CHECKPOINT-BINDING-CONTRACT.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\CHECKPOINT-BINDING-CONTRACT.json",
+        "bytes": 2684,
+        "sha256": "9181ac8351bdbd1f77dd33cc1d9893e6e9da9fabb86de0690f3a5ef34e5c80a3"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": false,
+      "target": null
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/UNBOUND-PROVENANCE.template.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\UNBOUND-PROVENANCE.template.json",
+        "bytes": 622,
+        "sha256": "2e9b60654ae5605eddbbf4d5543fec49f3c1b9e77432f7d5524edd462fbbaa10"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": false,
+      "target": null
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/CONVERSION-REQUEST.template.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\CONVERSION-REQUEST.template.json",
+        "bytes": 9315,
+        "sha256": "50862cde86b08025d6a72c9edbb83786aa4f3d90ac187c3c402e7c9bdd10f03d"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": false,
+      "target": null
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/README.md",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-sdk-checkpoint-qualification-adapter-20261006-001\\README.md",
+        "bytes": 3655,
+        "sha256": "43f3993ad220bb65f00ec860b2f152b2d9f82cdcc5897c0b2f503eeb049a8229"
+      },
+      "operation": "ADD_ONLY",
+      "target_exists": true,
+      "target": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\lyd_i3b_checkpoint_readback\\README.md",
+        "bytes": 6173,
+        "sha256": "796f27de0fa34393ab0fecffe2ace92afcd2a4c1eb927abb4591b60f6b4a32bf"
+      }
+    }
+  ],
+  "inherited_dependencies": [
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+      "actual": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\lyd_i3b_checkpoint_readback\\reader\\i3b_checkpoint_reader.py",
+        "bytes": 37678,
+        "sha256": "eaf76fda320b6ff8414ac8390c411e42b9b79c94890cfbb5dfd2f7c1f0cd42c9"
+      },
+      "accepted": true,
+      "overwrite": false
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/bounded_save_parser.py",
+      "actual": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1998,
+        "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+      },
+      "accepted": true,
+      "overwrite": false
+    },
+    {
+      "destination": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/save_fields.py",
+      "actual": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "accepted": true,
+      "overwrite": false
+    }
+  ],
+  "source_qualification": {
+    "codec": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\confucian_readonly_private_v1.py",
+      "bytes": 22715,
+      "sha256": "a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969"
+    },
+    "projected_function_AST_matches": {
+      "integer": true,
+      "exact": true,
+      "optional": true,
+      "full_id": true,
+      "nullable_id": true,
+      "reason": true,
+      "_common_payload": true,
+      "_ids": true,
+      "normalize_assembly": true,
+      "normalize_title": true,
+      "project_native_query": true,
+      "normalize_public_query": true
+    },
+    "fixed_business_count": 69,
+    "fixed_business_files": [
+      {
+        "relative_path": "common/character_interactions/lyd_c2_consent_interactions.txt",
+        "actual_sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300",
+        "expected_sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300",
+        "matches": true
+      },
+      {
+        "relative_path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+        "actual_sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7",
+        "expected_sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7",
+        "matches": true
+      },
+      {
+        "relative_path": "common/character_interactions/lyd_i3b_nomination_interactions.txt",
+        "actual_sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98",
+        "expected_sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98",
+        "matches": true
+      },
+      {
+        "relative_path": "common/character_interactions/lyd_interactions.txt",
+        "actual_sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+        "expected_sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+        "matches": true
+      },
+      {
+        "relative_path": "common/decisions/lyd_c2_consent_decisions.txt",
+        "actual_sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549",
+        "expected_sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549",
+        "matches": true
+      },
+      {
+        "relative_path": "common/decisions/lyd_c3_leadership_decisions.txt",
+        "actual_sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba",
+        "expected_sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba",
+        "matches": true
+      },
+      {
+        "relative_path": "common/decisions/lyd_decisions.txt",
+        "actual_sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e",
+        "expected_sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e",
+        "matches": true
+      },
+      {
+        "relative_path": "common/decisions/lyd_i3b_institution_decisions.txt",
+        "actual_sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+        "expected_sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+        "matches": true
+      },
+      {
+        "relative_path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+        "actual_sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b",
+        "expected_sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b",
+        "matches": true
+      },
+      {
+        "relative_path": "common/religion/faith_types/lyd_faiths.txt",
+        "actual_sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+        "expected_sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+        "matches": true
+      },
+      {
+        "relative_path": "common/religion/rite_types/lyd_rites.txt",
+        "actual_sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17",
+        "expected_sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17",
+        "matches": true
+      },
+      {
+        "relative_path": "common/religion/tenet_types/lyd_tenets.txt",
+        "actual_sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e",
+        "expected_sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e",
+        "matches": true
+      },
+      {
+        "relative_path": "common/script_values/lyd_c2_consent_values.txt",
+        "actual_sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae",
+        "expected_sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae",
+        "matches": true
+      },
+      {
+        "relative_path": "common/script_values/lyd_i3b_institution_values.txt",
+        "actual_sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156",
+        "expected_sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c2_close_effects.txt",
+        "actual_sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01",
+        "expected_sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c2_commit_effects.txt",
+        "actual_sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6",
+        "expected_sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c2_head_effects.txt",
+        "actual_sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b",
+        "expected_sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c2_response_effects.txt",
+        "actual_sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47",
+        "expected_sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c2_setup_effects.txt",
+        "actual_sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21",
+        "expected_sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c2_snapshot_effects.txt",
+        "actual_sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73",
+        "expected_sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c2_vote_effects.txt",
+        "actual_sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704",
+        "expected_sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+        "actual_sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b",
+        "expected_sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c3_council_effects.txt",
+        "actual_sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff",
+        "expected_sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c3_head_factory.txt",
+        "actual_sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24",
+        "expected_sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+        "actual_sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88",
+        "expected_sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+        "actual_sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b",
+        "expected_sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_entry_effects.txt",
+        "actual_sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e",
+        "expected_sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+        "actual_sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec",
+        "expected_sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+        "actual_sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+        "expected_sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "actual_sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+        "expected_sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_i3b_terms_effects.txt",
+        "actual_sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633",
+        "expected_sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_10_effects.txt",
+        "actual_sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873",
+        "expected_sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_11_effects.txt",
+        "actual_sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1",
+        "expected_sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_12_effects.txt",
+        "actual_sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949",
+        "expected_sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_13_effects.txt",
+        "actual_sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c",
+        "expected_sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_14_effects.txt",
+        "actual_sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92",
+        "expected_sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_1_effects.txt",
+        "actual_sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+        "expected_sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_2_effects.txt",
+        "actual_sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+        "expected_sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_3_effects.txt",
+        "actual_sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+        "expected_sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_4_effects.txt",
+        "actual_sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52",
+        "expected_sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_5_effects.txt",
+        "actual_sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38",
+        "expected_sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_6_effects.txt",
+        "actual_sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9",
+        "expected_sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_7_effects.txt",
+        "actual_sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f",
+        "expected_sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_8_effects.txt",
+        "actual_sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf",
+        "expected_sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_practice_9_effects.txt",
+        "actual_sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0",
+        "expected_sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_school_2_effects.txt",
+        "actual_sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491",
+        "expected_sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_school_3_effects.txt",
+        "actual_sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab",
+        "expected_sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_school_4_effects.txt",
+        "actual_sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234",
+        "expected_sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_school_5_effects.txt",
+        "actual_sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a",
+        "expected_sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_effects/lyd_school_effects.txt",
+        "actual_sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008",
+        "expected_sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "actual_sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3",
+        "expected_sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+        "actual_sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34",
+        "expected_sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+        "actual_sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+        "expected_sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+        "matches": true
+      },
+      {
+        "relative_path": "common/scripted_triggers/lyd_player_triggers.txt",
+        "actual_sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e",
+        "expected_sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e",
+        "matches": true
+      },
+      {
+        "relative_path": "events/lyd_c2_consent_events.txt",
+        "actual_sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284",
+        "expected_sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284",
+        "matches": true
+      },
+      {
+        "relative_path": "events/lyd_c3_leadership_events.txt",
+        "actual_sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062",
+        "expected_sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062",
+        "matches": true
+      },
+      {
+        "relative_path": "events/lyd_events.txt",
+        "actual_sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24",
+        "expected_sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24",
+        "matches": true
+      },
+      {
+        "relative_path": "events/lyd_i3b_institution_events.txt",
+        "actual_sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+        "expected_sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+        "matches": true
+      },
+      {
+        "relative_path": "history/faiths/lyd_faith_history.txt",
+        "actual_sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d",
+        "expected_sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/english/lyd_c2_consent_l_english.yml",
+        "actual_sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35",
+        "expected_sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/english/lyd_c3_leadership_l_english.yml",
+        "actual_sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77",
+        "expected_sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/english/lyd_content_l_english.yml",
+        "actual_sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78",
+        "expected_sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/english/lyd_i3b_institution_l_english.yml",
+        "actual_sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2",
+        "expected_sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/english/lyd_runtime_l_english.yml",
+        "actual_sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199",
+        "expected_sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+        "actual_sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504",
+        "expected_sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+        "actual_sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6",
+        "expected_sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+        "actual_sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f",
+        "expected_sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+        "actual_sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439",
+        "expected_sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439",
+        "matches": true
+      },
+      {
+        "relative_path": "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+        "actual_sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca",
+        "expected_sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca",
+        "matches": true
+      }
+    ]
+  },
+  "game_calls": 0,
+  "checkpoint_body_reads": 0,
+  "formal_mandate_credit": null,
+  "actual_pass": null,
+  "staging": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging",
+    "existing_readme_preserved": true,
+    "added_files": [
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\reader\\sdk_checkpoint_qualification.py",
+        "bytes": 19238,
+        "sha256": "cee4573ec1fd8e9151869d2cb63733297b795d1c36acdd82c06631845db588c3"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\reader\\dependencies\\confucian_dto_primitives.py",
+        "bytes": 18315,
+        "sha256": "81221c5e0bc47a2cf56f2184d66d5199d05931397347d46c96bdd1b9cf0d29cb"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\reader\\dependencies\\frozen_business_contract.json",
+        "bytes": 8830,
+        "sha256": "e293b46eab19ab043ee66e0f745e9c054110dcf30bb14c2dacdc8ca405fdf186"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\tests\\test_sdk_checkpoint_seam.py",
+        "bytes": 12654,
+        "sha256": "54586a1ecfc82f1d03ebb4324ef6f42c0a08892596ab2edb26e82eeb92f4bb57"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\tests\\sdk_fixture_builders.py",
+        "bytes": 5077,
+        "sha256": "927a744218f77bd2225d4b7f8e25e83a6195ade893ac67151f193e695f163af3"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\QUALIFIED-NATIVE.schema.json",
+        "bytes": 2216,
+        "sha256": "57e30b88bb30b2d8976fb8f8dae7fc7fe4393438d13e8e2993d49bce93067f99"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\CHECKPOINT-BINDING-CONTRACT.json",
+        "bytes": 2684,
+        "sha256": "9181ac8351bdbd1f77dd33cc1d9893e6e9da9fabb86de0690f3a5ef34e5c80a3"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\UNBOUND-PROVENANCE.template.json",
+        "bytes": 622,
+        "sha256": "2e9b60654ae5605eddbbf4d5543fec49f3c1b9e77432f7d5524edd462fbbaa10"
+      },
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\CONVERSION-REQUEST.template.json",
+        "bytes": 9315,
+        "sha256": "50862cde86b08025d6a72c9edbb83786aa4f3d90ac187c3c402e7c9bdd10f03d"
+      }
+    ]
+  },
+  "focused_tests": {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\staging\\tests",
+      "-p",
+      "test_sdk_checkpoint_seam.py",
+      "-v"
+    ],
+    "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+    "exit_code": 0,
+    "stdout": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\focused.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\converter-resume-functional-review-20261006-001\\focused.stderr.log",
+      "bytes": 2549,
+      "sha256": "e54e3199dca9849706a49ec1af5e9f7b6b5cfcd8849e5318e3b560e93b2ea36c"
+    }
+  }
+}

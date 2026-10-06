@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema",
+    "runtime_binding",
+    "native_predicates",
+    "G2_status",
+    "G2_reader_compatibility",
+    "qualified_native_head",
+    "G2_raw_public",
+    "G3_raw_public",
+    "actual_pass",
+    "formal_mandate_credit"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lyd.sdk-checkpoint-qualified-native.v1"
+    },
+    "actual_pass": {
+      "type": "null"
+    },
+    "formal_mandate_credit": {
+      "type": "null"
+    },
+    "business_postcondition_verified": {
+      "const": false
+    },
+    "full_product_acceptance_credit": {
+      "const": false
+    },
+    "G2_status": {
+      "enum": [
+        "UNKNOWN",
+        "READER_SCHEMA_INCOMPATIBLE",
+        "BOUND_COMPLETE_NATIVE_OBSERVATION"
+      ]
+    },
+    "qualified_native_head": {
+      "type": "object",
+      "required": [
+        "schema",
+        "status",
+        "runtime_binding",
+        "capture_epoch",
+        "native_graph",
+        "title_properties",
+        "title_laws",
+        "static_qualification",
+        "mod_owned_marker",
+        "mod_owner_faith_variable",
+        "saved_title_join",
+        "saved_title_ownership_observed",
+        "factory_contract_match",
+        "saved_Title_type_binding",
+        "saved_title_law_property_paths",
+        "reader_compatibility",
+        "actual_pass"
+      ],
+      "properties": {
+        "schema": {
+          "const": "lyd.qualified-native-head.v1"
+        },
+        "status": {
+          "enum": [
+            "UNKNOWN",
+            "BOUND_NATIVE_HEADLESS_OBSERVATION",
+            "BOUND_NATIVE_TITLE_FIELDS_OBSERVATION",
+            "BOUND_NATIVE_FIELDS_SAVED_OWNERSHIP_UNKNOWN"
+          ]
+        },
+        "mod_owned_marker": {
+          "type": "null"
+        },
+        "mod_owner_faith_variable": {
+          "type": "null"
+        },
+        "actual_pass": {
+          "type": "null"
+        },
+        "saved_Title_type_binding": {
+          "type": "null"
+        },
+        "saved_title_law_property_paths": {
+          "type": "null"
+        }
+      }
+    }
+  }
+}

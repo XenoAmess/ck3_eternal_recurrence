@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py",
+      "before_sha256": "2b10b19f472273b0a459b77019730453dd484dea958a331ea690e6a578272194",
+      "after_sha256": "4f63059ad9c7842cc88502366cafb5e2d3701671d40d648e47f40b6c54be1b39",
+      "change": "Remove extra blank EOF line only"
+    },
+    {
+      "path": "tools/lyd_i3b_checkpoint_readback/tests/sdk_fixture_builders.py",
+      "before_sha256": "e6c68a06adb154067d4988672fda3847b147e8d9677122d07230998ddda60036",
+      "after_sha256": "1741635f06bf194c83fb72ce35e3c2795e0c1131b17b6906b320b069f37041e9",
+      "change": "Remove extra blank EOF line only"
+    }
+  ],
+  "first_git_whitespace_check_exit": 2,
+  "first_check_preserved_at": "C:/workspace/ck3_lyd_runtime_20261004/resume-root-20261006-001"
+}

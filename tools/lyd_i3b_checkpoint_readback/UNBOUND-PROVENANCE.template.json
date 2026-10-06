@@ -1,0 +1,20 @@
+{
+  "schema": "lyd.actual-sdk-checkpoint-provenance.v1",
+  "source_head": null,
+  "source_export_sha256": null,
+  "DLL_sha256": null,
+  "session_id": null,
+  "profile_sha256": null,
+  "pipe_name": null,
+  "game_pid": null,
+  "connection_generation": null,
+  "reader_contract_source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "reader_sha256": "eaf76fda320b6ff8414ac8390c411e42b9b79c94890cfbb5dfd2f7c1f0cd42c9",
+  "sdk_metadata_sha256": null,
+  "sdk_codec_sha256": null,
+  "current_business_files": null,
+  "capture_epochs": {
+    "assembly_predicates": null,
+    "religious_title": null
+  }
+}
