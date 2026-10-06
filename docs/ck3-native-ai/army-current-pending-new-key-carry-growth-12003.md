@@ -146,3 +146,38 @@ Growth's minimum same-query raw frame is now concrete: the existing signed occup
 The approved first Stage D used24Bcode +4Bheader +48Bcache-missing pdata:76actual/unique bytes, no duplicate file reads; cumulative A+B+C+D1695B. The actual epilogue takes RCX=table allocator `+20`, RDX=original old buffer, R8D=alignment8 and calls vtable `+10`, then restores RBP before the already held return fragment. This closes the normal-return control/value path without reopening allocator implementation. Its CHAININFO location529D928 is retained and unread, like the earlier two chain records.
 
 The actual `2A9E7F0` pointer helper has exact runtime-function extent `[2A9E7F0,2A9E84D)`93B/unwind5109524. Its unwind header is already held from Stage A and can be reused. `STAGE-E-SOURCE-FIRST-PLAN.md` freezes only93 new code bytes. The helper's body is not yet read, so neither its actual returned pointer nor readonly-call suitability is presumed; the future observer should use the proven raw value/constant rather than invoking any initialization side effect. Existing current qualification and implementation remain frozen.
+
+## Final ordinary tree and readonly implementation entrance
+
+Approved Stage E captured the actual93B helper once, contiguously, with zero new metadata: all stages total1460code +28unwind +300pdata =1788 actual/unique bytes, zero duplicate file-read bytes. A reader-script syntax RED occurred before execution, retained as `STAGE-E-PARSE-RED01.json` plus its original script; only lexical spacing was corrected, and the actual93B source capture was executed once. Earlier shell-plan quoting RED remains retained. No tests/native builds/old wire replays or game operations occurred.
+
+The actual helper always returns imagebase+`5D68BA0`. It includes TLS-epoch/static initialization using guard`5D68B94`; initialization writes control0 at`5D68BA4` and controlFF at`5D68BCC`, then returns the same fixed address. CRT initialization calls`4223AA4/4223A44` remain normal-return boundaries and are not followed. A readonly observer compares captured table data directly with imagebase+`5D68BA0`; it must not invoke this helper or its initialization path. This closes the final functional pointer equality without extra live state or allocator work.
+
+```mermaid
+flowchart TD
+  L[2AA0C40 lookup: existing key or actualnewkey] -->|existing| H[Preserve existing complete/raw-count vector]
+  L -->|new no growth and empty| D[Install empty requested value;count+1]
+  L -->|new no growth nonempty nextempty| F[2AA2400 matched residenttransfer; install requested value;count+1]
+  L -->|new no growth general| C[Exact carried hash/key/control/vector swaps]
+  C -->|empty| D
+  C -->|overflow| X[Exchange carried pair with firstslot]
+  X --> G[Exact86E160 index via24D0]
+  L -->|initialgrowth| G
+  G -->|signedindex>=31| E[Excluded nonreturn exception]
+  G -->|ordinaryindex| A[2A9FC80 allocate normalreturn; sparse zero image +FFterminal;count0]
+  A --> S{Olddata equals fixed5D68BA0 or signedoldcount<=0?}
+  S -->|no| R[Count-driven oldphysicalscan; nonzero records reinserthash/key/vector via2550]
+  S -->|yes| Q[Skip old-record transfer]
+  R --> Q
+  Q --> V[Conditional oldbufferrelease normalreturn; original/carriedpair retry]
+  V --> P[2AA2550 exact value-preserving insertion]
+  P --> T[Selected pending list append; evolving counts; removal/skip]
+  H --> T
+  D --> T
+  F --> T
+  C -.->|required unmatched/unread vector branch| U[Local unsupported transfer boundary]
+```
+
+The ordinary matched normal-return source tree is now closed. `MINIMAL-IMPLEMENTATION-PLAN.md` proposes one nine-file extension of the existing family: same-query physical raw frame/constant equality and count-driven prefix, strict additive normalization, independent record28 pure placement/rebuild helper, minimal existing projection call, one new nonempty production-service compound and one new native fixture. Growth uses sparse derived empty images; it does not allocate a Python array proportional to native capacity. Source-defined mismatched transfer/nonreturn exception or real unread inputs keep a continuous completed conditional prefix. Raw counts stay independent of unread individual reference IDs where the branch only needs count.
+
+No implementation is part of this source delivery. New suffix readiness is `research/source-closed`, while the earlier existing-key/directempty bounded static qualification remains unchanged. Actual pre-date callback, future evolving nonphysical context, tomorrow, full daily/monthly and live stayfalse. Root reviews the frozen concrete plan before code and owns formal qualification, shared reports and publication.
