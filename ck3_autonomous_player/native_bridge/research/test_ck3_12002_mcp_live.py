@@ -960,5 +960,168 @@ class AtomicReportWriteTests(unittest.TestCase):
             self.assertEqual(json.loads(preserved[0].read_text(encoding="utf-8")), report)
 
 
+class FixtureStartupNoticeTests(unittest.TestCase):
+    """Reduced actual a78 frames/root; typed intro response is an offline fixture."""
+
+    def setUp(self):
+        import sys
+        from copy import deepcopy
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+        from xar_autoplayer.bridge.version_identity import CK3_12003
+        from PIL import Image
+        self.copy = deepcopy
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        state_dir = Path(temporary.name)
+        profile = state_dir / "profile"
+        declared = ["dlc_load.json", "mod/fixture.mod", "mod/product.mod", "pdx_settings.txt",
+            "player/game_rules/presets.txt", "tutorial.txt"]
+        for relative in declared:
+            path = profile / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(relative, encoding="utf-8")
+        (state_dir / "preparation.json").write_text(json.dumps({"profile_dir": str(profile),
+            "profile_files": {relative: {} for relative in declared}}), encoding="utf-8")
+        self.args = Namespace(state_dir=state_dir, output=state_dir / "native-report.json")
+        capture = mock.patch("pyautogui.screenshot", return_value=Image.new("RGB", (16, 12)))
+        self.capture = capture.start()
+        self.addCleanup(capture.stop)
+        self.policy = {"required_log_markers": ["XCA: TEST PASS celestial_government_allows_barter",
+            "XCA: TEST PASS switched_to_song_emperor"], "forbidden_log_markers": ["XCA: TEST FAIL", "XCA120: TEST FAIL"],
+            "post_start": {"government_key": "celestial_government", "primary_title_tier_key": "hegemony", "independent": True}}
+        self.submission = {"schema": "ck3-frontend-fixture-robert-start-submission-v1", "schema_version": 1,
+            "status": "acknowledged_verification_pending", "accepted": True, "pre_start_identity_proven": True,
+            "postcondition_verified": False, "fixture_target_identity_proven": False,
+            "requested_character_name_key": "bookmark_rags_to_riches_duke_robert", "uses_ocr": False,
+            "uses_keyboard": False, "uses_mouse": False, "binding": {"bridge_pid": 12492, "connection_generation": 1},
+            "selected_candidate": {"schema": "ck3-frontend-selected-1066-feudal-candidate-v1", "status": "ready",
+                "read_only": True, "selected_bookmark_key": "bm_1066_rags_to_riches",
+                "selected_character_name_key": "bookmark_rags_to_riches_duke_robert",
+                "selected_character_government_key": "feudal_government", "selected_bookmark_start_date_raw": 53144328},
+            "acknowledgement": {"step": "activate-frontend-start-selected-bookmark-v1", "accepted": True,
+                "status": "acknowledged_verification_pending", "backend_id": "native-headless"}}
+        self.before = {"snapshot_id": "native:3", "revision": 4, "native_revision": 3,
+            "date_raw": 53144328, "local_player_id": 1, "episode_projection": "native_campaign", "map_ready": True, "paused": True,
+            "played_character": {"character_id": 34422, "alive": True, "source": "native"},
+            "active_event": {"source": "native", "instance_id": 1, "option_count": 1,
+                "options": [{"index": 0, "option_number": 1, "enabled": True}]},
+            "diagnostics": {**self.submission["binding"],
+                "hello": {"expected_ck3_version": CK3_12003.game_version, "expected_ck3_sha256": CK3_12003.executable_sha256},
+                "last_heartbeat": {"pid": 12492, "main_thread_query_mailbox_v1": {"ready": True,
+                    "stamp_read_success": True, "pump_epochs": 36615, "owner_verified_pump_epochs": 36615,
+                    "owner_tid": 21528, "current_tid": 21528}}}}
+        self.after = deepcopy(self.before)
+        self.after.update(snapshot_id="native:4", revision=5, native_revision=4, active_event=None)
+        self.root = {"backend_id": "native-headless", "campaign_root_context_ready": True,
+            "provenance": {"game_version": CK3_12003.game_version, "executable_sha256": CK3_12003.executable_sha256},
+            "queried_snapshot_id": "native:4", "queried_revision": 5, "queried_native_revision": 4, "date_raw": 53144328,
+            "player_character_id": 34422, "player_character_alive": True, "government": {"key": "celestial_government"},
+            "primary_title": {"title_id": 14022, "tier_raw": 6, "tier_key": "hegemony"},
+            "independent": True, "top_liege_character_id": 34422, "immediate_liege_character_id": None}
+        self.context = {"schema": "current-event-window-context-v1", "schema_version": 1, "status": "available",
+            "window_match_count": 1, "event_definition_key": "tgp_dynastic_cycle.0051", "current_event_instance_id": 1,
+            "snapshot_revision": 3, "date_raw": 53144328, "saved_scopes": [],
+            "provenance": {"backend_id": CK3_12003.backend_id("event-window-v1")},
+            "root_scope": {"status": "available", "type_key": "character", "typed_identity": {
+                "status": "available", "kind": "character", "character_id": 34422}},
+            "options": [{"rendered_index": 0, "native_option_index": 0, "shown": True,
+                "enabled": True, "fallback": False, "cancel": False}]}
+
+    def client(self, *, unknown=False, lost_ack=False):
+        from xar_autoplayer.vanilla_events.registry import query_vanilla_event_knowledge_v1
+        case = self
+        class Client:
+            def __init__(self):
+                self.calls, self.frames, self.selected = [], 0, False
+                self.args = case.args
+            async def fresh(self):
+                self.frames += 1
+                snap = case.copy(case.after if self.selected else case.before)
+                if self.selected:
+                    mailbox = snap["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]
+                    mailbox.update(pump_epochs=125023 + self.frames * 30, owner_verified_pump_epochs=125023 + self.frames * 30)
+                return snap
+            async def call(self, name, arguments):
+                self.calls.append((name, case.copy(arguments)))
+                if name == "ck3_query_engine_log_literals_v1":
+                    return {"schema": "xar.ck3.engine-log-literals/v1", "log_name": "debug.log", "exists": True,
+                        "read_only": True, "case_sensitive": True, "matches": [{"literal": key, "line_count":
+                            int(key in case.policy["required_log_markers"])} for key in arguments["literals"]]}
+                if name == "ck3_query_current_event_window_context_v1":
+                    context = case.copy(case.context)
+                    if unknown:
+                        context["event_definition_key"] = "unreviewed.actual.event"
+                    return {"status": "available", "current_event_window_context_ready": True,
+                        "queried_snapshot_id": "native:3", "queried_revision": 4, "queried_native_revision": 3,
+                        "current_event_window_context": context}
+                if name == "ck3_query_vanilla_event_knowledge_v1":
+                    return query_vanilla_event_knowledge_v1(**arguments)
+                if name == "ck3_select_event_option":
+                    self.selected = True
+                    if lost_ack:
+                        raise RuntimeError("normal callback response lost")
+                    return {"accepted": True}
+                if name == "ck3_query_campaign_root_context_v1":
+                    return case.copy(case.root)
+                raise AssertionError(name)
+        return Client()
+
+    def test_actual_readiness_path_acknowledges_intro_before_original_owner_and_business_gates(self):
+        import run_ck3_12002_mcp_live as harness
+        client, report = self.client(), {}
+        result = asyncio.run(harness.wait_for_fixture_business_context(client, self.policy, self.submission,
+            report=report, write=lambda: None, timeout=10, poll_interval=0))
+        names = [name for name, arguments in client.calls]
+        self.assertEqual(result["status"], "ACTUAL_FIXTURE_QUALIFIED_BUSINESS_CONTEXT_BOUND")
+        self.assertEqual(names.count("ck3_select_event_option"), 1)
+        self.assertLess(names.index("ck3_query_engine_log_literals_v1"), names.index("ck3_query_current_event_window_context_v1"))
+        self.assertLess(names.index("ck3_select_event_option"), names.index("ck3_query_campaign_root_context_v1"))
+        self.assertEqual(result["startup_notice"]["status"], "NORMAL_OPTION_EVENT_GONE_OBSERVED")
+        notice = result["startup_notice"]
+        self.assertEqual(self.capture.call_count, 2)
+        self.assertEqual(notice["before_evidence"]["screenshot"]["size"], [16, 12])
+        self.assertEqual(len(notice["before_evidence"]["declared_profile_files"]), 6)
+        self.assertEqual(notice["before_evidence"]["declared_profile_files"], notice["after_evidence"]["declared_profile_files"])
+        self.assertEqual(notice["before_evidence"]["declared_profile_files"]["tutorial.txt"]["sha256"],
+            hashlib.sha256(b"tutorial.txt").hexdigest())
+        self.assertFalse(notice["after_evidence"]["intro_character_flag_file_readback"]["proven"])
+        self.assertFalse(notice["after_evidence"]["used_for_selection_or_acceptance"])
+        self.assertEqual(notice["visible_buttons_before"][0]["native_option_index"], 0)
+        self.assertEqual(notice["visible_buttons_after"], [])
+        admission = result["first_whole_root_query_admission"]
+        self.assertGreater(admission["current_frame"]["pump_epoch"], admission["previous_frame"]["pump_epoch"])
+        self.assertEqual(result["binding"]["actor_character_id"], 34422)
+        self.assertEqual(result["binding"]["government_key"], "celestial_government")
+        self.assertFalse(result["product_acceptance_proven"])
+        self.assertFalse(result["start_resubmitted"])
+        self.assertFalse(result["fixture_target_identity_proven"])
+
+    def test_unreviewed_actual_event_reaches_failure_hold_without_selection_or_root_query(self):
+        import run_ck3_12002_mcp_live as harness
+        client, report = self.client(unknown=True), {}
+        with self.assertRaisesRegex(RuntimeError, "registry-reviewed acknowledgement"):
+            asyncio.run(harness.wait_for_fixture_business_context(client, self.policy, self.submission,
+                report=report, write=lambda: None, timeout=10, poll_interval=0))
+        names = [name for name, arguments in client.calls]
+        self.assertNotIn("ck3_select_event_option", names)
+        self.assertNotIn("ck3_query_campaign_root_context_v1", names)
+        self.assertEqual(report["frontend_fixture_business_context"]["status"], "FAILED_AFTER_SINGLE_START_NO_RETRY")
+        self.assertEqual(self.capture.call_count, 1)
+
+    def test_lost_normal_option_response_keeps_once_marker_and_does_not_replay(self):
+        import run_ck3_12002_mcp_live as harness
+        client, state = self.client(lost_ack=True), {}
+        with self.assertRaisesRegex(RuntimeError, "response lost"):
+            asyncio.run(harness.acknowledge_fixture_startup_notice(client, self.before, self.submission, state=state, write=lambda: None))
+        with self.assertRaisesRegex(RuntimeError, "cannot be replayed"):
+            asyncio.run(harness.acknowledge_fixture_startup_notice(client, self.before, self.submission, state=state, write=lambda: None))
+        self.assertEqual([name for name, arguments in client.calls].count("ck3_select_event_option"), 1)
+        self.assertTrue(state["startup_notice"]["selection_attempted"])
+        self.assertIn("after_evidence", state["startup_notice"])
+        self.assertIn("after_native_state_unavailable", state["startup_notice"])
+        self.assertNotIn("after_snapshot", state["startup_notice"])
+        self.assertEqual(self.capture.call_count, 2)
+
+
 if __name__ == "__main__":
     unittest.main()

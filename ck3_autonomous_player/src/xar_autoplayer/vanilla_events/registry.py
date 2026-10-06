@@ -346,6 +346,7 @@ def query_vanilla_event_knowledge_v1(
         from .records_religion_rite_growth_12003 import RELIGION_RITE_GROWTH_12003_RECORDS
         from .records_feast_0801_12003 import FEAST_0801_12003_RECORDS
         from .records_coming_age1002_12003 import COMING_AGE1002_12003_RECORDS
+        from .records_dynastic_cycle_intro_12003 import DYNASTIC_CYCLE_INTRO_12003_RECORDS
 
         notice = FACTION_DEMAND1001_12003_RECORDS.get(event_definition_key)
         if notice is None:
@@ -378,6 +379,8 @@ def query_vanilla_event_knowledge_v1(
             notice = FEAST_0801_12003_RECORDS.get(event_definition_key)
         if notice is None:
             notice = COMING_AGE1002_12003_RECORDS.get(event_definition_key)
+        if notice is None:
+            notice = DYNASTIC_CYCLE_INTRO_12003_RECORDS.get(event_definition_key)
         if notice is not None:
             return _knowledge_response(
                 status="available",

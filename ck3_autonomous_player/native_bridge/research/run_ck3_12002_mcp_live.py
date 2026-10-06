@@ -1001,6 +1001,172 @@ async def execute_frontend_rules_plan(client: PlanClient, plan: dict[str, object
 
 
 
+def fixture_whole_root_admission_frame(snapshot: object, submission: dict[str, object]) -> dict[str, object] | None:
+    """Observe a stable owner frame before a query; never qualify product business."""
+    if not isinstance(snapshot, dict) or snapshot.get("map_ready") is not True or snapshot.get("paused") is not True:
+        return None
+    if snapshot.get("active_event") is not None:
+        return None
+    if snapshot.get("episode_projection") != "native_campaign":
+        raise ValueError("fixture pre-query observation would bind a one-life episode")
+    diagnostics = snapshot.get("diagnostics")
+    if not isinstance(diagnostics, dict) or any(diagnostics.get(key) != wanted for key, wanted in submission["binding"].items()):
+        raise ValueError("fixture pre-query map crossed the admitted native frontend process")
+    selected_date = submission["selected_candidate"]["selected_bookmark_start_date_raw"]
+    if snapshot.get("date_raw") != selected_date:
+        raise ValueError("fixture pre-query startup advanced away from the actual bookmark date")
+    played = snapshot.get("played_character")
+    if (not isinstance(played, dict) or type(played.get("character_id")) is not int or played["character_id"] < 1
+            or played.get("alive") is not True or played.get("source") != "native"
+            or type(snapshot.get("local_player_id")) is not int or snapshot["local_player_id"] < 1
+            or not isinstance(snapshot.get("snapshot_id"), str) or not snapshot["snapshot_id"]
+            or type(snapshot.get("native_revision")) is not int or snapshot["native_revision"] < 1):
+        return None
+    heartbeat = diagnostics.get("last_heartbeat")
+    mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
+    if not isinstance(heartbeat, dict) or heartbeat.get("pid") != submission["binding"]["bridge_pid"] or not isinstance(mailbox, dict):
+        return None
+    epoch, owner_epoch = mailbox.get("pump_epochs"), mailbox.get("owner_verified_pump_epochs")
+    if (mailbox.get("ready") is not True or mailbox.get("stamp_read_success") is not True
+            or type(epoch) is not int or epoch < 1 or type(owner_epoch) is not int or owner_epoch != epoch
+            or type(mailbox.get("owner_tid")) is not int or mailbox["owner_tid"] < 1
+            or mailbox.get("current_tid") != mailbox["owner_tid"]):
+        return None
+    return {"actor_character_id": played["character_id"], "date_raw": selected_date,
+            "local_player_id": snapshot["local_player_id"], "snapshot_id": snapshot["snapshot_id"],
+            "native_revision": snapshot["native_revision"], **submission["binding"], "pump_epoch": owner_epoch}
+
+
+def capture_fixture_startup_notice_evidence(client: PlanClient, stage: str, event_id: int) -> dict[str, object]:
+    """Retain raw desktop pixels and declared isolated-userdir files, never classify them."""
+    import pyautogui
+    profile = (client.args.state_dir / "profile").resolve()
+    preparation = json.loads((client.args.state_dir / "preparation.json").read_text(encoding="utf-8-sig"))
+    if Path(preparation["profile_dir"]).resolve() != profile:
+        raise RuntimeError("startup notification evidence crossed the actual fixture profile")
+    directory = client.args.output.parent / "startup-notice-evidence"
+    directory.mkdir(exist_ok=True)
+    path = directory / f"event-{event_id}-{stage}.png"
+    image = pyautogui.screenshot()
+    with path.open("xb") as stream:
+        image.save(stream, format="PNG")
+    files = {}
+    for relative in preparation["profile_files"]:
+        source = (profile / relative).resolve()
+        if not source.is_relative_to(profile):
+            raise RuntimeError("startup notification marker escaped the actual fixture profile")
+        raw = source.read_bytes() if source.is_file() else None
+        files[relative] = {"path": str(source), "exists": raw is not None,
+            "bytes": len(raw) if raw is not None else None,
+            "sha256": hashlib.sha256(raw).hexdigest() if raw is not None else None}
+    return {"captured_at": now(), "screenshot": {"path": str(path), "bytes": path.stat().st_size,
+            "sha256": file_sha(path), "size": list(image.size), "source": "pyautogui.screenshot/raw-desktop"},
+        "profile_dir": str(profile), "declared_profile_files": files,
+        "ocr": {"status": "not-run", "reason": "raw pixels retained; visible button text and decision come from typed event context"},
+        "intro_character_flag_file_readback": {"status": "unavailable", "proven": False,
+            "reason": "the in-memory character intro flag has no declared userdir marker file"},
+        "used_for_selection_or_acceptance": False}
+
+
+async def acknowledge_fixture_startup_notice(client: PlanClient, snapshot: dict[str, object],
+        submission: dict[str, object], *, state: dict[str, object], write: object) -> dict[str, object]:
+    """Consume registry-reviewed startup presentation through the normal option tool once."""
+    from xar_autoplayer.bridge.frontend_fixture_start_contract import EXE_SHA256
+    from xar_autoplayer.bridge.version_identity import CK3_12003
+    event = snapshot.get("active_event")
+    if not isinstance(event, dict):
+        return snapshot
+    if "startup_notice" in state:
+        raise RuntimeError("fixture startup notice request cannot be replayed")
+    diagnostics = snapshot.get("diagnostics", {})
+    hello = diagnostics.get("hello", {})
+    played = snapshot.get("played_character", {})
+    actor, event_id = played.get("character_id"), event.get("instance_id")
+    if (snapshot.get("map_ready") is not True or snapshot.get("paused") is not True
+            or snapshot.get("episode_projection") != "native_campaign"
+            or any(diagnostics.get(key) != wanted for key, wanted in submission["binding"].items())
+            or snapshot.get("date_raw") != submission["selected_candidate"]["selected_bookmark_start_date_raw"]
+            or type(actor) is not int or actor < 1 or played.get("alive") is not True or played.get("source") != "native"
+            or type(event_id) is not int or event_id < 1
+            or hello.get("expected_ck3_version") != "1.20.0.3" or hello.get("expected_ck3_sha256") != EXE_SHA256):
+        raise RuntimeError("fixture startup notice lacks its actual paused exact-build actor frame")
+    notice = {"status": "OBSERVING_TYPED_STARTUP_EVENT", "selection_attempted": False,
+        "retry_allowed": False, "snapshot": snapshot, "product_acceptance_proven": False}
+    state["startup_notice"] = notice
+    write()
+    notice["before_evidence"] = capture_fixture_startup_notice_evidence(client, "before", event_id)
+    write()
+    packet = await client.call("ck3_query_current_event_window_context_v1", {
+        "event_instance_id": event_id, "expected_revision": snapshot["revision"]})
+    notice["event_context"] = packet
+    context = packet.get("current_event_window_context", {})
+    knowledge = await client.call("ck3_query_vanilla_event_knowledge_v1", {
+        "event_definition_key": context.get("event_definition_key"), "ck3_build": "1.20.0.3"})
+    notice["knowledge"] = knowledge
+    write()
+    contract, analysis = knowledge.get("contract") or {}, knowledge.get("analysis") or {}
+    profile = analysis.get("selected_choice_effect_profile") or {}
+    root_scope = context.get("root_scope") or {}
+    identity = root_scope.get("typed_identity") or {}
+    options = context.get("options")
+    public_options = event.get("options")
+    notice["visible_buttons_before"] = options
+    if (packet.get("status") != "available" or packet.get("current_event_window_context_ready") is not True
+            or context.get("schema") != "current-event-window-context-v1" or context.get("schema_version") != 1
+            or context.get("status") != "available" or context.get("window_match_count") != 1
+            or context.get("current_event_instance_id") != event_id
+            or context.get("snapshot_revision") != snapshot["native_revision"] or context.get("date_raw") != snapshot["date_raw"]
+            or context.get("provenance", {}).get("backend_id") != CK3_12003.backend_id("event-window-v1")
+            or any(packet.get(key) != snapshot.get(wanted) for key, wanted in {
+                "queried_snapshot_id": "snapshot_id", "queried_revision": "revision", "queried_native_revision": "native_revision"}.items())
+            or knowledge.get("status") != "available" or knowledge.get("ck3_exe_sha256") != EXE_SHA256
+            or contract.get("startup_acknowledgement") is not True or contract.get("root_character_id") != "$player"
+            or contract.get("option_count") != 1 or contract.get("snapshot_option_count") != 1
+            or contract.get("native_option_indices") != [0] or contract.get("selected_option_number") != 1
+            or contract.get("selected_native_option_index") != 0
+            or profile.get("completeness") != "all-authored-options-and-common-after-source-reviewed"
+            or profile.get("selected_option_effects") != [] or profile.get("common_after_effects") != []
+            or root_scope.get("status") != "available" or root_scope.get("type_key") != "character"
+            or identity.get("status") != "available" or identity.get("kind") != "character" or identity.get("character_id") != actor
+            or not isinstance(options, list) or len(options) != 1
+            or any(options[0].get(key) != wanted for key, wanted in {
+                "rendered_index": 0, "native_option_index": 0, "shown": True, "enabled": True, "fallback": False, "cancel": False}.items())
+            or not isinstance(public_options, list) or len(public_options) != 1
+            or public_options[0].get("option_number") != 1 or public_options[0].get("enabled") is not True):
+        raise RuntimeError("fixture startup event is not the current registry-reviewed acknowledgement")
+    notice.update(status="NORMAL_OPTION_REQUEST_WRITTEN", selection_attempted=True, requested_at=now())
+    write()
+    selection_error = None
+    try:
+        notice["selection_result"] = await client.call("ck3_select_event_option", {
+            "option_number": contract["selected_option_number"], "event_instance_id": event_id,
+            "expected_revision": snapshot["revision"]})
+        after = await client.fresh()
+        notice["after_snapshot"] = after
+        after_event = after.get("active_event")
+        notice["visible_buttons_after"] = after_event.get("options") if isinstance(after_event, dict) else []
+    except BaseException as error:
+        selection_error = error
+        notice["after_native_state_unavailable"] = f"{type(error).__name__}: {error}"
+        raise
+    finally:
+        try:
+            notice["after_evidence"] = capture_fixture_startup_notice_evidence(client, "after", event_id)
+        except Exception as error:
+            notice["after_evidence_error"] = f"{type(error).__name__}: {error}"
+            if selection_error is None:
+                raise
+        finally:
+            write()
+    if (after.get("active_event") is not None or after.get("map_ready") is not True or after.get("paused") is not True
+            or after.get("date_raw") != snapshot["date_raw"] or after.get("played_character", {}).get("character_id") != actor
+            or any(after.get("diagnostics", {}).get(key) != wanted for key, wanted in submission["binding"].items())):
+        raise RuntimeError("normal startup acknowledgement did not independently observe the same paused actor event-free")
+    notice.update(status="NORMAL_OPTION_EVENT_GONE_OBSERVED", finished_at=now())
+    write()
+    return after
+
+
 async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str, object],
         submission: dict[str, object], *, report: dict[str, object], write: object,
         timeout: float, managed_done: threading.Event | None = None,
@@ -1013,7 +1179,7 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
         "start_resubmitted": False, "episode_projection": "native_campaign"}
     report["frontend_fixture_business_context"] = state
     write()
-    baseline = None
+    baseline, admission_baseline = None, None
     deadline = time.monotonic() + timeout
     try:
         while True:
@@ -1021,24 +1187,43 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                 raise RuntimeError("managed session ended before fixture business binding")
             snapshot = await client.fresh()
             root, binding = None, None
-            if snapshot.get("map_ready") is True and snapshot.get("paused") is True:
-                root = await client.call("ck3_query_campaign_root_context_v1", {"expected_revision": snapshot["revision"]})
-                after = await client.fresh()
-                # Native query already binds its own before/after frame; an unrelated
-                # publication after its return is observed again instead of credited.
-                if root.get("queried_snapshot_id") == after.get("snapshot_id") and root.get("queried_revision") == after.get("revision"):
-                    binding = fixture_business_context_binding(after, root, policy, submission)
-                snapshot = after
+            # Qualification precedes both startup presentation and the whole-root query.
             logs = await client.call("ck3_query_engine_log_literals_v1", {"log_name": "debug.log",
                 "literals": policy["required_log_markers"] + policy["forbidden_log_markers"], "sample_limit": 1})
             counts = fixture_qualification_counts(logs, policy)
-            row = {"snapshot": snapshot, "campaign_root": root, "binding": binding, "qualification": logs}
-            state["observations"].append(row)
             if any(counts[key] for key in policy["forbidden_log_markers"]):
                 raise RuntimeError("actual fixture qualification emitted a forbidden marker")
             qualified = all(counts[key] == 1 for key in policy["required_log_markers"])
             if any(counts[key] > 1 for key in policy["required_log_markers"]):
                 raise RuntimeError("fixture initialization was observed more than once")
+            if qualified and snapshot.get("map_ready") is True and snapshot.get("paused") is True and snapshot.get("active_event") is not None:
+                snapshot = await acknowledge_fixture_startup_notice(client, snapshot, submission, state=state, write=write)
+            admission_frame = fixture_whole_root_admission_frame(snapshot, submission) if qualified else None
+            admission = {"status": "WAITING_FOR_ORIGINAL_QUALIFICATION_LOGS" if not qualified else "WAITING_FOR_PAUSED_EVENT_FREE_OWNER_FRAMES",
+                "frame": admission_frame, "product_acceptance_proven": False}
+            if admission_frame is not None:
+                stable_frame = {key: value for key, value in admission_frame.items() if key != "pump_epoch"}
+                if (admission_baseline is not None and admission_baseline[0] == stable_frame
+                        and admission_frame["pump_epoch"] > admission_baseline[1]):
+                    admission["status"] = "STABLE_CURRENT_OWNER_FRAMES_QUERY_ADMITTED"
+                    if "first_whole_root_query_admission" not in state:
+                        state["first_whole_root_query_admission"] = {
+                            "previous_frame": {**admission_baseline[0], "pump_epoch": admission_baseline[1]},
+                            "current_frame": admission_frame, "qualification": logs,
+                            "product_acceptance_proven": False}
+                        write()
+                    root = await client.call("ck3_query_campaign_root_context_v1", {"expected_revision": snapshot["revision"]})
+                    after = await client.fresh()
+                    # Preserve the original full native DTO and exact-frame binder.
+                    if root.get("queried_snapshot_id") == after.get("snapshot_id") and root.get("queried_revision") == after.get("revision"):
+                        binding = fixture_business_context_binding(after, root, policy, submission)
+                    snapshot = after
+                admission_baseline = (stable_frame, admission_frame["pump_epoch"])
+            else:
+                admission_baseline = None
+            row = {"snapshot": snapshot, "campaign_root": root, "binding": binding, "qualification": logs,
+                "root_query_admission": admission}
+            state["observations"].append(row)
             if binding is not None and qualified:
                 stable = {key: value for key, value in binding.items() if key != "pump_epoch"}
                 if baseline is not None and baseline[0] == stable and binding["pump_epoch"] > baseline[1]:
