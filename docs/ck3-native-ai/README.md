@@ -1,5 +1,15 @@
 # CK3 原生 AI 决策树索引
 
+### Oct6 actual诊断与新source提交索引
+
+current21 exact-build当前只读输入/whole Service路径具首次static-ready，9whole/18occ；完整callback与future/changed-stage依赖继续分列。R0050 actual Army响应暴露33445694B>2097152B真实size_limit，same connection generation1诊断可观察并确认bridge healthy；writer diagnostic升级production-live primitive，Army功能尚未恢复。[R0050实际资格增量](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/R0050-ACTUAL-QUALIFICATION-UPDATE.json)、[真实Army size_limit诊断回执](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-after-r0049-response-failure/ROOT-ACTUAL-ARMY-RESULT-WRITE-DIAGNOSIS.json)。
+
+12个source candidate完整commits及cap64 faultfix99878123已完整集成，已集成 source `bcdbc27e972df477cc9b01f167c066a691c23a7b`；FIRST g104 build/native/whole/new live均NOTRUN。ORIGINAL/adopted commit与每包既有原生source/interface依赖见[12包新source与采用commit索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/R0050-TWELVE-FEATURE-COMMIT-INDEX.json)；不以已有专题或旧CI授本批资格。早期current31文档结构修正、realm token0x336F元数据与reinforcement旧empty-route RED维持原scope。
+
+已发布g102 exact0582f912949e63bf6d8f6c7a94efa27ecdcdd356的Official Runner CI37460537515 completed SUCCESS，只授该head官方L0；复用现有fields，不外推给g103/g104、cap64或12包首次资格。
+
+Root实际登记：2026-10-06T21:43:54.058456+08:00；日报与W41持续滚动，未正式收口。
+
 ## 2026-10-06：增援到达与当前既有战斗准入已接线，FIRST 待运行
 
 [增援到达准入](battle-reinforcement-arrival-admission-12003.md)将 current admission、current side、实际 roster/backlink 接入现有 reinforcement 查询，并提供七新 whole-wire 场景与 sole real Service consumer。source integrated / research；编译、Ct、consumer 均 NOTRUN，foreign 仅 observation、future_binding=false。[Oct6/W41 fields](battle-reinforcement-arrival-admission-12003-fields.json)供 Root 报告与下一 joint FIRST 消费。h9593 仅复用 Root 无 active combat、两 stationary armies 摘要，本包零新 game/query。

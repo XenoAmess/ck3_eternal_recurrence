@@ -3072,3 +3072,17 @@ The new candidate mapper serializer explicitly declares that its `.inc.hpp` is i
 R0049 army-strength query initially ended with command_result timeout in11.110078s while its native main-thread wait permits30000ms plus a running2000ms wait. The Python army path inherited the general10s primitive budget. A minimal army-only max(configured,35.0) correction preserves larger configured values and other commands. The new four-scene production-path compound passes after correcting only its final fixture frame-count assertion; original FIRST RED is retained.
 
 The actual hot-SDK retry still returned the same error in11.629072s, below the patched35s budget. Thus the deadline unit pass does not establish live recovery. Production wait can also return None when connection becomes false; the next diagnostics observed a reconnection generation3→4 and healthy samePID92056 mailbox. Exact transport cause remains under concrete diagnosis; do not blindly lengthen the budget or replay the army request. Native DLL remains333; h9591/ten-stream freeze preserves the normal save before the Python hot upgrade. Artifacts: `Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-resume-r0049/python-deadline-hot-upgrade/fixture-repair01/`.
+
+### Oct6原失败夹具最小修复与真实result-write诊断
+
+g103/df87fd85 current21首次native GREEN0.37秒，唯一whole Service compound首次GREEN（9whole/18原始occurrence）。原joint首次1/2、exit8及diagnostic第三场WinError109假设RED继续保留；必要fixture-only修复41347438编译4.7596019秒，只重跑原失败broken_reader场景0.0975969秒/exit0并捕获WinError232，production runtime未重建、仍df87fd85。这些synthetic native/Service结果给current21当前输入static-ready，不授full callback、changed-stage或完整玩法循环。
+
+首次joint1/2 exit8始终保留；fixture-only修复的232实际捕获不等于production runtime改动，前两已通过场景没有重跑。compiled whole producer的唯一Service compound9whole/18occ通过只授静态消费资格。
+
+R0050 SDK request003的exact Army query仍RED：实际响应payload33445694B超过native上限2097152B，耗时10.469秒。request004 diagnostics GREEN，沿用同一connection generation1，size_limit heartbeat且bridge healthy。writer diagnostic已获得production-live primitive资格；Army查询功能尚未恢复，snapshot GREEN及diagnostic GREEN不计作Army响应成功。
+
+此次生产failure明确为native结果尺寸上限，request004同连接diagnostics证据给writer diagnostic actual primitive；真实Army恢复必须由后续Army结果证明。cap64三constants候选99878123及g104新fixture FIRST均未运行，尚无cap64通过结论。
+
+这条是已出现故障的诊断/最小验证记录；复用[g103静态首次资格历史](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/COMPACT-QUALIFICATION-INDEX.json)、[R0050实际资格增量](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/R0050-ACTUAL-QUALIFICATION-UPDATE.json)、[真实Army size_limit诊断回执](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-after-r0049-response-failure/ROOT-ACTUAL-ARMY-RESULT-WRITE-DIAGNOSIS.json)，不重复旧tests/CI或扩展理论审计。
+
+Root实际登记：2026-10-06T21:43:54.058456+08:00；日报与W41持续滚动，未正式收口。

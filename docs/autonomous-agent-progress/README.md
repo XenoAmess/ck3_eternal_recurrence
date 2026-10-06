@@ -1,5 +1,9 @@
 # CK3 自动游玩智能体进度中心
 
+- Oct6最新：R0049 CLOSED/h9593十流保留；R0050已actual allocated并恢复原Robert，PID111932 paused/minimized，snapshot GREEN pub2/native1；新增日0、5996/natural0。Army request003仍RED（33445694B>2097152B/10.469秒），request004 same connection generation1 diagnostics GREEN；writer diagnostic为production-live primitive，Army功能尚未恢复。current21 native+唯一Service9whole/18occ首次static-ready；g104的12包source已完整集成于Root clean bcdbc27e，cap64源候选99878123已采用1ebe3cc5，FIRST/build未运行。[R0050实际资格增量](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/R0050-ACTUAL-QUALIFICATION-UPDATE.json)、[12包新source与采用commit索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/R0050-TWELVE-FEATURE-COMMIT-INDEX.json)。g102 exact官方L0 SUCCESS独立见[0582f912 exact官方L0](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37460537515)。
+
+Root实际登记：2026-10-06T21:43:54.058456+08:00；日报与W41持续滚动，未正式收口。
+
 ## 最新资格增量：source715／42项新nativeCTest（2026-10-06T07:52:08+08:00）
 
 Fresh strictsource715 **2newCTest／累计42（earliest5另计）**、Self1/33＋Diac8/64首次消费static-ready；独立currentknight V3值static-ready，fullperson/Entry/forecast仍partial。原Robert战役已由正常R0048/v74冷续接，实际self-ransom56gold的报价→现有规划器接受一次→独立到账/退出玩家custody/pendingclear→h9543正常保存已闭合。交易cutoff仍5918日/natural0/G2 5/8/NW2 2/4；原战役继续执行，完整Entry/forecast/natural继承仍未完成。 历史C-machine/War117/旧paused保存保留；详见[Oct6日报](Z:/gb0/docs/autonomous-agent-progress/daily/2026-10-06.md)与[qualification archive](Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/source715517be-self-ransom-diac-strict-native-artifacts/FINAL-COMPILED-QUALIFICATION.json)。

@@ -1,6 +1,24 @@
 # G2 v73战争与后台研究：维护者休假交接（2026-10-05）
 
-> 最新实际状态（2026-10-06T20:02:34+08:00）：本机CK3获授权且保持最小化；R0049原Robert暂停，h9591与十完整流已保存，新增日0。g102 current20已通过native/完整Service静态资格，未替换实机333 DLL；Python deadline修正测试GREEN，但实际军队query仍RED，正定位传输提前返回。下方最新增量及原始artifact为准。
+## 最新接续停点：R0050已actual恢复；Army size_limit仍RED
+
+本节为Oct6接续状态，原Oct5交接事实与旧失败attempt保留。R0049已CLOSED，h9593十流、完整driver及旧失败attempt保留。随后Root实际分配并恢复R0050：allocation xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0050，exec 59414f62-ae63-47c0-983f-4d7aa10b8aa1，CK3 PID111932，paused/minimized。实际ck3_take_snapshot GREEN：原Robert29829、date53288232、public revision2/native revision1。本批新增game日0，累计5996/natural0。此为Root封存的实际恢复事实，最新allocator/runtime状态不再pending。
+
+R0050 SDK request003的exact Army query仍RED：实际响应payload33445694B超过native上限2097152B，耗时10.469秒。request004 diagnostics GREEN，沿用同一connection generation1，size_limit heartbeat且bridge healthy。writer diagnostic已获得production-live primitive资格；Army查询功能尚未恢复，snapshot GREEN及diagnostic GREEN不计作Army响应成功。
+
+g103/df87fd85 current21首次native GREEN0.37秒，唯一whole Service compound首次GREEN（9whole/18原始occurrence）。原joint首次1/2、exit8及diagnostic第三场WinError109假设RED继续保留；必要fixture-only修复41347438编译4.7596019秒，只重跑原失败broken_reader场景0.0975969秒/exit0并捕获WinError232，production runtime未重建、仍df87fd85。这些synthetic native/Service结果给current21当前输入static-ready，不授full callback、changed-stage或完整玩法循环。
+
+新12包source candidate完整commits已齐：current31、fleet supply tick、pursuit、fervor、reformation、Tenet、clergy、realm law、prisoner release、faction、commander、reinforcement。Root已完成全部12包source集成，该批已集成 clean source `bcdbc27e972df477cc9b01f167c066a691c23a7b`；首次g104 build/native/whole消费者/新paused-live均NOTRUN。cap64为实际Army size_limit故障的三处source constants修复候选99878123，fixture及FIRST验证NOTRUN。12个ORIGINAL source commit与12个Root adopted短commit分列；cap constants已采用1ebe3cc5、fixturee3c37343、topicdc24f383、registrationbcdbc27e。旧8实现+4计划是较早停点，保留为历史而不再作为最新状态。
+
+已发布g102 exact0582f912949e63bf6d8f6c7a94efa27ecdcdd356的Official Runner CI37460537515 completed SUCCESS，只授该head官方L0；复用现有fields，不外推给g103/g104、cap64或12包首次资格。
+
+Root earlier Steam20:55 offline视觉/既有PID110284/no restart/no globalenv change保留为当时运营证据；最新已由实际R0050恢复receipt确认，后续维护者沿原campaign/h9593保存继续，不再把allocator/prepared写pending。最新source已完整集成、已集成 source `bcdbc27e972df477cc9b01f167c066a691c23a7b`；尚pending的是cap64 FIRST和g104 build/new features资格。
+
+证据：[g103静态首次资格历史](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/COMPACT-QUALIFICATION-INDEX.json)、[R0050实际资格增量](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/R0050-ACTUAL-QUALIFICATION-UPDATE.json)、[R0049 h9593十流收口](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-resume-r0049/ROOT-H9593-NORMAL-CLOSE-TEN-STREAM-FREEZE.json)、[R0050原战役暂停恢复回执](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-after-r0049-response-failure/ROOT-FIRST-ACTUAL-RESTORED-MINIMIZED-PAUSED.json)、[真实Army size_limit诊断回执](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-after-r0049-response-failure/ROOT-ACTUAL-ARMY-RESULT-WRITE-DIAGNOSIS.json)、[12包新source与采用commit索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/R0050-TWELVE-FEATURE-COMMIT-INDEX.json)、[原生AI专题与ABI索引](Z:/gb0/docs/ck3-native-ai/README.md)、[0582f912 exact官方L0](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37460537515)。
+
+Root实际登记：2026-10-06T21:43:54.058456+08:00；日报与W41持续滚动，未正式收口。
+
+> 最新实际状态（2026-10-06T21:43:54.058456+08:00）：R0050已恢复原Robert29829，CK3 PID111932暂停/最小化；累计5996日、自然继承0、新增日0。g103 current21 static-ready；真实Army响应33,445,694B超过2MiB，诊断primitive已实测，64MiB修复及12新观测接口已合入，g104首次联编/消费待执行。
 
 
 > 历史用户游玩保留记录：接手时曾要求“不要开启ck3，我自己要玩。你先只做后台能做的”。该限制已被上方最新允许使用且保持最小化的指令解除；[后台接手施工](2026-10-05-g2-background-successor.md)中的当时0操作记录保留原事实。

@@ -1,5 +1,19 @@
 # 一代人自治：阻塞与能力债账本
 
+### Oct6真实blocker增量：Army响应尺寸，runtime已恢复
+
+R0050 SDK request003的exact Army query仍RED：实际响应payload33445694B超过native上限2097152B，耗时10.469秒。request004 diagnostics GREEN，沿用同一connection generation1，size_limit heartbeat且bridge healthy。writer diagnostic已获得production-live primitive资格；Army查询功能尚未恢复，snapshot GREEN及diagnostic GREEN不计作Army响应成功。
+
+旧R0049失败attempt与h9593收口保持；新R0050已实际allocated且恢复原战役paused/minimized，snapshot GREEN，runtime/allocator恢复待定项已经解除。剩余当前blocker是Army响应33445694B超过2097152B，修复入口99878123三constants cap64，FIRST未运行。
+
+g103/df87fd85 current21首次native GREEN0.37秒，唯一whole Service compound首次GREEN（9whole/18原始occurrence）。原joint首次1/2、exit8及diagnostic第三场WinError109假设RED继续保留；必要fixture-only修复41347438编译4.7596019秒，只重跑原失败broken_reader场景0.0975969秒/exit0并捕获WinError232，production runtime未重建、仍df87fd85。这些synthetic native/Service结果给current21当前输入static-ready，不授full callback、changed-stage或完整玩法循环。
+
+新12包source candidate完整commits已齐：current31、fleet supply tick、pursuit、fervor、reformation、Tenet、clergy、realm law、prisoner release、faction、commander、reinforcement。Root已完成全部12包source集成，该批已集成 clean source `bcdbc27e972df477cc9b01f167c066a691c23a7b`；首次g104 build/native/whole消费者/新paused-live均NOTRUN。cap64为实际Army size_limit故障的三处source constants修复候选99878123，fixture及FIRST验证NOTRUN。12个ORIGINAL source commit与12个Root adopted短commit分列；cap constants已采用1ebe3cc5、fixturee3c37343、topicdc24f383、registrationbcdbc27e。旧8实现+4计划是较早停点，保留为历史而不再作为最新状态。
+
+[真实Army size_limit诊断回执](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-after-r0049-response-failure/ROOT-ACTUAL-ARMY-RESULT-WRITE-DIAGNOSIS.json)、[R0050实际资格增量](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/R0050-ACTUAL-QUALIFICATION-UPDATE.json)、[12包新source与采用commit索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/R0050-TWELVE-FEATURE-COMMIT-INDEX.json)。本增量不新增理论门禁。
+
+Root实际登记：2026-10-06T21:43:54.058456+08:00；日报与W41持续滚动，未正式收口。
+
 ## 第二批后台工作继续执行（2026-10-05T20:28:07+08:00）
 
 第一批八包离线交付并非后台工作耗尽。用户明确继续、保持CK3给自己玩；六条功能线已经并行推进post-A/B、actualEntry、supply资格、loss writer输入、retained几何和holy release。计划、依赖和结果回链[接手续工](../handover/2026-10-05-g2-background-successor.md)。新game/SDK/UI/Steam操作与游戏日均0，5035冻结保持；源码实现、source闭合、static-ready和实机资格分别记账。
