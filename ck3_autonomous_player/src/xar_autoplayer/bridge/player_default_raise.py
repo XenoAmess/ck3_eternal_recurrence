@@ -2,7 +2,7 @@
 from __future__ import annotations
 from collections.abc import Mapping
 from .timeline_blocker_private_transport import _binding
-from .version_identity import CK3_12003, require_exact_native_build
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 STEP = "query-player-default-raise-v1"
 CAPABILITY = "game.command.query-player-default-raise-v1"
@@ -13,11 +13,12 @@ def player_default_raise_frame_binding(snapshot: Mapping[str, object]) -> tuple[
     return _binding(snapshot)
 
 def normalize_player_default_raise_v1(value: object, *, snapshot: Mapping[str, object]) -> dict[str, object]:
-    if not isinstance(value, dict) or value.get("schema") != "ck3_12003_player_default_raise_v1":
+    if not isinstance(value, dict) or value.get("schema") not in (
+            "ck3_12003_player_default_raise_v1", "ck3_12004_player_default_raise_v1"):
         raise ValueError("native default raise schema is malformed")
     build = require_exact_native_build(value.get("game_version"), value.get("executable_sha256"))
     player = snapshot.get("played_character")
-    if (build != CK3_12003 or not isinstance(player, Mapping)
+    if (build not in (CK3_12003, CK3_12004) or not isinstance(player, Mapping)
             or type(value.get("actor_character_id")) is not int
             or value["actor_character_id"] != player.get("character_id")
             or type(value.get("snapshot_revision")) is not int
