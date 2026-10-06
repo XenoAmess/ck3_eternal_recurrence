@@ -130,6 +130,7 @@ struct Fixture {
   alignas(void *) Blob<0x860> external_province{};
   alignas(void *) Blob<0x860> direct_vassal_province{};
   alignas(void *) Blob<0x860> unowned_province{};
+  alignas(void *) Blob<0x860> null_county_province{};
   alignas(void *) Blob<0x48> provinces{};
   alignas(void *) Blob<0x60> player_province_map_node{};
   alignas(void *) Blob<0x60> direct_vassal_province_map_node{};
@@ -179,6 +180,10 @@ struct Fixture {
   std::uint32_t health_calls = 0;
   bool domain_available = true;
   bool title_province_available = true;
+  bool family_county_null = false;
+  bool family_key_changes_between_samples = false;
+  std::uint32_t family_key_reads = 0;
+  const void *failed_read_address = nullptr;
   std::int32_t domain_size = 6;
   std::int32_t domain_limit = 7;
   std::uint32_t domain_size_calls = 0;
@@ -542,6 +547,10 @@ void *__fastcall ResolveTitleProvince(void *title) noexcept {
   if (g_fixture == nullptr || !g_fixture->title_province_available) {
     return nullptr;
   }
+  if (g_fixture->family_county_null &&
+      title == Address(g_fixture->secondary_title)) {
+    return Address(g_fixture->null_county_province);
+  }
   if (title == Address(g_fixture->primary_title) ||
       title == Address(g_fixture->secondary_title)) {
     return g_fixture->resolved_capital;
@@ -743,9 +752,11 @@ bool IsMainThread(void *opaque) noexcept {
   return static_cast<Fixture *>(opaque)->main_thread;
 }
 
-bool ReadMemory(void *, const void *address, void *output,
+bool ReadMemory(void *opaque, const void *address, void *output,
                 std::size_t size) noexcept {
-  if (address == nullptr || output == nullptr || size == 0) {
+  const auto &fixture = *static_cast<Fixture *>(opaque);
+  if (address == nullptr || output == nullptr || size == 0 ||
+      address == fixture.failed_read_address) {
     return false;
   }
   std::memcpy(output, address, size);
@@ -754,13 +765,18 @@ bool ReadMemory(void *, const void *address, void *output,
 
 bool ReadString(void *opaque, const void *address,
                 std::string &output) noexcept {
-  const auto &fixture = *static_cast<Fixture *>(opaque);
+  auto &fixture = *static_cast<Fixture *>(opaque);
   const auto found = fixture.native_strings.find(address);
   if (found == fixture.native_strings.end()) {
     output.clear();
     return false;
   }
   output = found->second;
+  if (fixture.family_key_changes_between_samples &&
+      address == Address(fixture.secondary_title_template, 0x18) &&
+      ++fixture.family_key_reads > 1) {
+    output = "c_changed_family";
+  }
   return true;
 }
 
@@ -999,10 +1015,16 @@ bool TestAvailableAndSerializer() {
       "\"local_player_id\":7,\"player_character_id\":33554433,"
       "\"player_character_alive\":true,"
       "\"player_monthly_gold_income\":{\"raw\":570772,"
-      "\"scale\":100000},\"player_health\":{\"raw\":275000,"
+      "\"scale\":100000},\"player_monthly_piety_v1\":{"
+      "\"status\":\"unavailable\",\"value\":null,"
+      "\"unavailable_reason\":\"monthly_piety_unavailable\"},"
+      "\"player_health\":{\"raw\":275000,"
       "\"scale\":100000},\"player_legitimacy_v1\":{"
       "\"status\":\"available\",\"value\":{\"raw\":8000000,"
       "\"scale\":100000},\"unavailable_reason\":null},"
+      "\"player_max_monthly_gold_maintenance_v1\":{"
+      "\"status\":\"unavailable\",\"value\":null,"
+      "\"unavailable_reason\":\"getter_unavailable\"},"
       "\"player_domain_size\":6,"
       "\"player_domain_limit\":7,"
       "\"player_targeting_faction_count\":2,\"council\":{"
@@ -1013,27 +1035,39 @@ bool TestAvailableAndSerializer() {
       "\"incumbent_character_id\":100663300,\"task_key\":"
       "\"task_foreign_affairs\",\"task_type\":\"general\","
       "\"target\":null,\"frozen\":false,\"progress\":{"
-      "\"kind\":\"infinite\",\"current\":null,\"maximum\":null}},{"
+      "\"kind\":\"infinite\",\"current\":null,\"maximum\":null},"
+      "\"task_owner_monthly_piety_v1\":{\"status\":\"unavailable\","
+      "\"value\":null,\"unavailable_reason\":\"task_owner_monthly_piety_unavailable\"}},{"
       "\"position_key\":\"councillor_court_chaplain\","
       "\"incumbent_character_id\":null,\"task_key\":null,"
       "\"task_type\":null,\"target\":null,\"frozen\":null,"
-      "\"progress\":null},{\"position_key\":\"councillor_marshal\","
+      "\"progress\":null,\"task_owner_monthly_piety_v1\":{"
+      "\"status\":\"unavailable\",\"value\":null,"
+      "\"unavailable_reason\":\"task_owner_monthly_piety_unavailable\"}},{"
+      "\"position_key\":\"councillor_marshal\","
       "\"incumbent_character_id\":null,\"task_key\":null,"
       "\"task_type\":null,\"target\":null,\"frozen\":null,"
-      "\"progress\":null},{\"position_key\":\"councillor_spymaster\","
+      "\"progress\":null,\"task_owner_monthly_piety_v1\":{"
+      "\"status\":\"unavailable\",\"value\":null,"
+      "\"unavailable_reason\":\"task_owner_monthly_piety_unavailable\"}},{"
+      "\"position_key\":\"councillor_spymaster\","
       "\"incumbent_character_id\":100663300,\"task_key\":"
       "\"task_find_secrets\",\"task_type\":\"court\",\"target\":{"
       "\"kind\":\"character\",\"character_id\":167772167},"
       "\"frozen\":false,\"progress\":{\"kind\":\"percentage\","
       "\"current\":{\"raw\":5000000,\"scale\":100000},"
-      "\"maximum\":{\"raw\":10000000,\"scale\":100000}}},{"
+      "\"maximum\":{\"raw\":10000000,\"scale\":100000}},"
+      "\"task_owner_monthly_piety_v1\":{\"status\":\"unavailable\","
+      "\"value\":null,\"unavailable_reason\":\"task_owner_monthly_piety_unavailable\"}},{"
       "\"position_key\":\"councillor_steward\","
       "\"incumbent_character_id\":100663300,\"task_key\":"
       "\"task_develop_county\",\"task_type\":\"county\",\"target\":{"
       "\"kind\":\"province\",\"province_id\":5},\"frozen\":true,"
       "\"progress\":{\"kind\":\"value\",\"current\":{"
       "\"raw\":4200000,\"scale\":100000},\"maximum\":{"
-      "\"raw\":10000000,\"scale\":100000}}}],"
+      "\"raw\":10000000,\"scale\":100000}},"
+      "\"task_owner_monthly_piety_v1\":{\"status\":\"unavailable\","
+      "\"value\":null,\"unavailable_reason\":\"task_owner_monthly_piety_unavailable\"}}],"
       "\"auxiliary_vacancies_complete\":false,"
       "\"unavailable_reason\":null},\"primary_title\":{"
       "\"title_id\":83886081,\"tier_raw\":6,"
@@ -1253,6 +1287,89 @@ bool TestMalformedHeldTitlePartitionIsTypedUnavailable() {
              missing_environment, missing_access, request, result) ==
              xar::game::ReadCampaignRootContextResultV1::unavailable &&
          ClearedUnavailable(result, "held_title_partition_unavailable");
+}
+
+// Synthetic named family county: its Null capital is not its preferred-capital
+// county. Keep the title and its separate heir in the complete partition.
+void ConfigureLandlessFamilyCounty(Fixture &fixture) {
+  fixture.family_county_null = true;
+  Put(fixture.null_county_province, 0x10, std::int32_t{0});
+  Put(fixture.null_county_province, 0x85C, std::uint32_t{0x4E756C6C});
+  Put(fixture.secondary_title, 0x30, std::uint8_t{1});
+  Put(fixture.secondary_title, 0x32, std::uint8_t{1});
+  Put(fixture.secondary_title, 0x11C, std::int32_t{0});
+  fixture.native_strings[Address(fixture.secondary_title_template, 0x18)] =
+      "c_fixture_family";
+}
+
+bool TestLandlessFamilyCountyPreservesPartitionAndWire() {
+  Fixture fixture;
+  ConfigureLandlessFamilyCounty(fixture);
+  xar::game::CampaignRootContextV1 result{};
+  if (xar::ck3_12002::ReadCampaignRootContextV1(
+          Environment(fixture), Access(fixture), {41}, result) !=
+          xar::game::ReadCampaignRootContextResultV1::available ||
+      !AllReadiness(result.readiness, true) ||
+      result.held_title_partition.size() != 2 || result.capital_province_id != 5) {
+    return false;
+  }
+  const auto &primary = result.held_title_partition[0];
+  const auto &family = result.held_title_partition[1];
+  const auto wire = xar::ck3_12002::SerializeCampaignRootContextV1(result);
+  return primary.title.title_id == Fixture::kPrimaryTitleId && primary.primary &&
+         !primary.landless_noble_family_no_province &&
+         primary.native_title_key.empty() &&
+         primary.first_heir_character_id == Fixture::kFirstSuccessorId &&
+         family.title.title_id == Fixture::kSecondaryTitleId &&
+         family.title.tier_raw == 2 && family.title.tier_key == "county" &&
+         family.first_heir_character_id == Fixture::kSecondSuccessorId &&
+         !family.primary && !family.capital_province_id &&
+         family.landless_noble_family_no_province &&
+         family.native_title_key == "c_fixture_family" &&
+         wire.find("\"capital_province_id\":null,\"capital_province_kind\":"
+                   "\"landless_noble_family_no_province\",\"title_key\":"
+                   "\"c_fixture_family\",\"primary\":false") != std::string::npos;
+}
+
+bool TestUnprovenNullCountyFailsClosed() {
+  for (int failure = 0; failure < 16; ++failure) {
+    Fixture fixture;
+    ConfigureLandlessFamilyCounty(fixture);
+    switch (failure) {
+    case 0: Put(fixture.secondary_title, 0x30, std::uint8_t{0}); break;
+    case 1: Put(fixture.secondary_title, 0x32, std::uint8_t{0}); break;
+    case 2: Put(fixture.secondary_title, 0x30, std::uint8_t{2}); break;
+    case 3: Put(fixture.secondary_title, 0x32, std::uint8_t{2}); break;
+    case 4: Put(fixture.secondary_title, 0x11C, std::int32_t{1}); break;
+    case 5: Put(fixture.secondary_title, 0x11C, std::int32_t{-1}); break;
+    case 6: Put(fixture.null_county_province, 0x85C, std::uint32_t{0x50726F76}); break;
+    case 7: Put(fixture.null_county_province, 0x85C, std::uint32_t{0}); break;
+    case 8: Put(fixture.null_county_province, 0x10, std::int32_t{-1}); break;
+    case 9: fixture.native_strings[Address(fixture.secondary_title_template, 0x18)] = ""; break;
+    case 10: fixture.native_strings[Address(fixture.secondary_title_template, 0x18)] = "d_fixture_family"; break;
+    case 11: fixture.native_strings[Address(fixture.secondary_title_template, 0x18)] = "c_bad key"; break;
+    case 12: fixture.failed_read_address = Address(fixture.secondary_title, 0x30); break;
+    case 13: fixture.failed_read_address = Address(fixture.secondary_title, 0x32); break;
+    case 14: fixture.failed_read_address = Address(fixture.secondary_title, 0x11C); break;
+    case 15: fixture.native_strings.erase(Address(fixture.secondary_title_template, 0x18)); break;
+    }
+    xar::game::CampaignRootContextV1 result{};
+    if (xar::ck3_12002::ReadCampaignRootContextV1(
+            Environment(fixture), Access(fixture), {41}, result) !=
+            xar::game::ReadCampaignRootContextResultV1::unavailable ||
+        !ClearedUnavailable(result, "held_title_partition_unavailable")) {
+      std::cerr << "unproven Null county case " << failure << " failed\n";
+      return false;
+    }
+  }
+  Fixture changed;
+  ConfigureLandlessFamilyCounty(changed);
+  changed.family_key_changes_between_samples = true;
+  xar::game::CampaignRootContextV1 result{};
+  return xar::ck3_12002::ReadCampaignRootContextV1(
+             Environment(changed), Access(changed), {41}, result) ==
+             xar::game::ReadCampaignRootContextResultV1::unavailable &&
+         ClearedUnavailable(result, "state_changed");
 }
 
 bool TestMonthlyIncomeFailureIsTypedUnavailable() {
@@ -1629,6 +1746,11 @@ int main(int argc, char **argv) {
   }
   if (!TestMalformedHeldTitlePartitionIsTypedUnavailable()) {
     std::cerr << "malformed held-title partition fixture failed\n";
+    return 1;
+  }
+  if (!TestLandlessFamilyCountyPreservesPartitionAndWire() ||
+      !TestUnprovenNullCountyFailsClosed()) {
+    std::cerr << "landless family county partition fixture failed\n";
     return 1;
   }
   if (!TestMonthlyIncomeFailureIsTypedUnavailable()) {

@@ -19713,5 +19713,41 @@ class SiegeForecastIngressTests(unittest.TestCase):
         self.assertFalse(overmatch_qualified["active_attack_allowed"])
 
 
+class HeldCountyCapitalSelectionTests(unittest.TestCase):
+    def test_geographic_targets_exclude_only_proven_family_counties(self) -> None:
+        from xar_autoplayer.strategy import _complete_player_held_county_capital_province_ids
+
+        ordinary = {
+            "title": {"title_id": 10, "tier_raw": 2, "tier_key": "county"},
+            "first_heir_character_id": 88,
+            "capital_province_id": 45,
+            "primary": True,
+        }
+        family = {
+            "title": {"title_id": 11, "tier_raw": 2, "tier_key": "county"},
+            "first_heir_character_id": 77,
+            "capital_province_id": None,
+            "primary": False,
+            "capital_province_kind": "landless_noble_family_no_province",
+            "title_key": "c_fixture_family",
+        }
+        root = {"readiness": {"held_title_partition_ready": True}, "held_title_partition": [ordinary, family]}
+        original = copy.deepcopy(root)
+        self.assertEqual(_complete_player_held_county_capital_province_ids(root), [45])
+        self.assertEqual(root, original)
+        for update in ({"title_key": ""}, {"capital_province_kind": "unknown"}, {"capital_province_id": 9755}):
+            with self.subTest(malformed_family=update):
+                invalid = copy.deepcopy(root)
+                invalid["held_title_partition"][1].update(update)
+                self.assertIsNone(_complete_player_held_county_capital_province_ids(invalid))
+        for capital in (None, 0, -1):
+            with self.subTest(ordinary_capital=capital):
+                invalid = copy.deepcopy(root)
+                invalid["held_title_partition"][0]["capital_province_id"] = capital
+                self.assertIsNone(_complete_player_held_county_capital_province_ids(invalid))
+        root["held_title_partition"] = [family]
+        self.assertIsNone(_complete_player_held_county_capital_province_ids(root))
+
+
 if __name__ == "__main__":
     unittest.main()

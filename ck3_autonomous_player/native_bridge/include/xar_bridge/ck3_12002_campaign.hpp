@@ -88,13 +88,16 @@ using ReadLoadedFeatureManifestStringV1 = ck3_11906::ReadLoadedFeatureManifestSt
 using LoadedFeatureManifestAccessV1 = ck3_11906::LoadedFeatureManifestAccessV1;
 using LoadedFeatureManifestRequestV1 = ck3_11906::LoadedFeatureManifestRequestV1;
 
+struct HeldTitlePartitionFailure12002;
+
 CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted) noexcept;
 game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     const CampaignRootNativeEnvironmentV1 &environment,
     const CampaignRootAccessV1 &access,
     const CampaignRootContextRequestV1 &request,
-    game::CampaignRootContextV1 &output) noexcept;
+    game::CampaignRootContextV1 &output,
+    HeldTitlePartitionFailure12002 *failure_diagnostic = nullptr) noexcept;
 bool ReadCampaignRootTargetingFactionCountV1(
     const CampaignRootNativeEnvironmentV1 &environment,
     const CampaignRootAccessV1 &access,

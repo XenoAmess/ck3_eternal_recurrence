@@ -127,3 +127,54 @@ already-required G2 paused session should read this field in the same two
 bounded campaign scenes used for the remaining campaign-root extensions. That
 single shared check is sufficient; this field does not need a dedicated long
 run.
+
+## 2026-10-06: Noble-family counties without a province (1.20.0.3)
+
+A county-tier held title does not always represent a geographical county. A
+stock noble-family title can return a non-null **Null Province** object whose
+ID is zero. R14 actually observed title16850, getter completed/non-null and
+tag `0x4E756C6C`, but the old positive-capital guard rejected the whole root.
+This is distinct from a failed getter, an unreadable object or an ordinary
+landed county with an invalid capital.
+
+Source09 admits one explicit variant only: county tier; successful non-null
+getter; province ID exactly0; actual Null tag; actual native `landless_type=1`,
+`noble_family=1`, `children_count=0`; and a valid county title key read from the
+native title template. Any failed read, negative ID, unknown tag or ordinary
+zero-capital county still fails closed. This is a subtype check, not a title
+ID allowlist. Valid ordinary province rows keep their existing contract.
+The family title remains in the inheritance partition; consumers must not
+turn its absent province into a geographical target or drop the title.
+
+The JSON variant has `capital_province_id: null`,
+`capital_province_kind: "landless_noble_family_no_province"` and an actual
+`title_key`. Native/Python validation requires this exact variant instead of
+accepting arbitrary nulls or zeros. R15's actual row was:
+
+```json
+{
+  "title": {"title_id": 16850, "tier_raw": 2, "tier_key": "county"},
+  "first_heir_character_id": 37989,
+  "capital_province_id": null,
+  "capital_province_kind": "landless_noble_family_no_province",
+  "title_key": "c_nf_zhao_8d99_1",
+  "primary": false
+}
+```
+
+[R15 exact initial proof](C:/workspace/ck3-upgrade-20261006/xqol-r15-thin-report-observer-agent-01/ACTUAL_INITIAL_ROOT_THIN_NON_EOF_01.json)
+(19024B, SHA `f6add1d5c856bf918d7362f90a7bb88071fe7474c3b4b1a925bb6edf53c476d2`)
+proves root available/readiness=true and partition-ready in this scene.
+`council_ready=false` and unexposed title-definition flags are retained; the
+DTO's kind/key/null are not a dump of every native flag. This result does not
+prove XQOL defense business success or other campaigns.
+
+The frozen Source09 build11 DLL
+`916bd5a3cccacd05198b4e07d58c6883a9b8bd7dc639e691649bcec8d1029eb4`
+was built successfully and used for R15. The separately migrated five master
+test files passed Python39 normally and with `-O`, native16/17 existing groups,
+and the optional monthly-piety fixture mode. [Regression evidence](C:/workspace/ck3-upgrade-20261006/held-family-master-regression-migration-agent-01/FINAL-REGRESSION-MIGRATION-RECEIPT-01.json)
+(11575B, SHA `703d71aeda5ce2b90c0a9c722f52f30f6dece12802f53b46894122c68f783b6e`)
+uses exact production renderer fragments in bounded executable fixtures;
+it is not a full master DLL build. [R15 product and shutdown boundaries](../xqol-1.20.0.3-defense-maintenance-2026-10-05.md#2026-10-06-r15a69source09读取修复实测d1夹具前置失败)
+retain the pre-war fixture failure, one real day, D5 NOT_RUN and normal OS0.

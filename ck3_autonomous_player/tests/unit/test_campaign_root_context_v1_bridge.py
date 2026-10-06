@@ -16,6 +16,7 @@ from xar_autoplayer.bridge.campaign_root_context_contract import (
     CAMPAIGN_ROOT_CONTEXT_V1_GAME_VERSION,
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+    _PROVENANCE_BY_BUILD,
     normalize_campaign_root_context_v1,
 )
 from xar_autoplayer.bridge.driver import (
@@ -414,6 +415,82 @@ def _semantic_snapshot(
 
 
 class CampaignRootContextV1ContractTests(unittest.TestCase):
+    def test_landless_family_preserves_full_partition_without_inventing_province(self) -> None:
+        frame = _frame()
+        frame["provenance"] = copy.deepcopy(_PROVENANCE_BY_BUILD["1.20.0.3"])
+        for title_id in range(67_892, 67_898):
+            frame["held_title_partition"].append({
+                "title": {"title_id": title_id, "tier_raw": 2, "tier_key": "county"},
+                "first_heir_character_id": 98_765,
+                "capital_province_id": title_id - 67_848,
+                "primary": False,
+            })
+        family = {
+            "title": {"title_id": 67_898, "tier_raw": 2, "tier_key": "county"},
+            "first_heir_character_id": 87_654,
+            "capital_province_id": None,
+            "primary": False,
+            "capital_province_kind": "landless_noble_family_no_province",
+            "title_key": "c_fixture_family",
+        }
+        frame["held_title_partition"].append(family)
+        result = normalize_campaign_root_context_v1(
+            frame, expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertEqual(result["held_title_partition"], frame["held_title_partition"])
+        self.assertEqual(len(result["held_title_partition"]), 9)
+        self.assertTrue(result["readiness"]["held_title_partition_ready"])
+        self.assertEqual(result["held_title_partition"][1]["capital_province_id"], 43)
+        self.assertNotIn("title_key", result["held_title_partition"][1])
+
+    def test_landless_family_rejects_unproven_or_malformed_null_variant(self) -> None:
+        valid = _frame()
+        valid["provenance"] = copy.deepcopy(_PROVENANCE_BY_BUILD["1.20.0.3"])
+        valid["held_title_partition"][1].update(
+            capital_province_id=None,
+            capital_province_kind="landless_noble_family_no_province",
+            title_key="c_fixture_family",
+        )
+        mutations = {
+            "unknown_kind": lambda row: row.update(capital_province_kind="unknown"),
+            "preferred_capital_substitution": lambda row: row.update(capital_province_id=9755),
+            "zero_capital": lambda row: row.update(capital_province_id=0),
+            "missing_key": lambda row: row.pop("title_key"),
+            "missing_classification": lambda row: row.pop("capital_province_kind"),
+            "invalid_native_key": lambda row: row.update(title_key="c_bad key"),
+            "wrong_tier": lambda row: row["title"].update(tier_raw=3, tier_key="duchy"),
+            "holder_is_heir": lambda row: row.update(first_heir_character_id=PLAYER_CHARACTER_ID),
+        }
+        for name, mutation in mutations.items():
+            with self.subTest(name=name):
+                frame = copy.deepcopy(valid)
+                mutation(frame["held_title_partition"][1])
+                with self.assertRaises(ValueError):
+                    normalize_campaign_root_context_v1(
+                        frame, expected_date_raw=DATE_RAW,
+                        expected_snapshot_revision=NATIVE_REVISION,
+                    )
+        for version in ("1.19.0.6", "1.20.0.2"):
+            with self.subTest(unsupported_family_version=version):
+                frame = copy.deepcopy(valid)
+                frame["provenance"] = copy.deepcopy(_PROVENANCE_BY_BUILD[version])
+                with self.assertRaises(ValueError):
+                    normalize_campaign_root_context_v1(
+                        frame, expected_date_raw=DATE_RAW,
+                        expected_snapshot_revision=NATIVE_REVISION,
+                    )
+        for capital in (None, 0, -1):
+            with self.subTest(ordinary_county_capital=capital):
+                frame = _frame()
+                frame["provenance"] = copy.deepcopy(_PROVENANCE_BY_BUILD["1.20.0.3"])
+                frame["held_title_partition"][1]["capital_province_id"] = capital
+                with self.assertRaises(ValueError):
+                    normalize_campaign_root_context_v1(
+                        frame, expected_date_raw=DATE_RAW,
+                        expected_snapshot_revision=NATIVE_REVISION,
+                    )
+
     def test_optional_exact_legitimacy_preserves_legacy_and_unknown(self) -> None:
         legacy = normalize_campaign_root_context_v1(
             _frame(),

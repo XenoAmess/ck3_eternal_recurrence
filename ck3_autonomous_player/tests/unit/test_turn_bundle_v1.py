@@ -209,6 +209,41 @@ def _root(*, available: bool = True) -> dict[str, object]:
 
 
 class TurnBundleV1Tests(unittest.TestCase):
+    def test_family_county_keeps_its_inheritance_vote_without_a_province(self) -> None:
+        for heir, expected_risk in ((77, "split_successors"), (88, "single_successor"), (None, "single_successor")):
+            with self.subTest(family_heir=heir):
+                root = _root()
+                context = root["campaign_root_context"]
+                context["held_title_partition"][1]["first_heir_character_id"] = 88
+                family = {
+                    "title": {"title_id": 92, "tier_raw": 2, "tier_key": "county"},
+                    "first_heir_character_id": heir,
+                    "capital_province_id": None,
+                    "primary": False,
+                    "capital_province_kind": "landless_noble_family_no_province",
+                    "title_key": "c_fixture_family",
+                }
+                context["held_title_partition"].append(family)
+                result = build_turn_bundle_v1(_snapshot(), root)
+                partition = result["succession_state"]["value"]["partition"]["value"]
+                self.assertEqual(partition["title_heirs"], context["held_title_partition"])
+                self.assertEqual(partition["risk_state"], expected_risk)
+                self.assertEqual(partition["titles_to_other_heirs"], [family] if heir == 77 else [])
+                self.assertEqual(partition["titles_without_heir"], [family["title"]] if heir is None else [])
+
+    def test_bundle_rejects_fake_family_geography_or_missing_identity(self) -> None:
+        for update in ({"capital_province_id": 9755}, {"title_key": ""}, {"capital_province_kind": "unknown"}):
+            with self.subTest(update=update):
+                root = _root()
+                root["campaign_root_context"]["held_title_partition"][1].update(
+                    capital_province_id=None,
+                    capital_province_kind="landless_noble_family_no_province",
+                    title_key="c_fixture_family",
+                )
+                root["campaign_root_context"]["held_title_partition"][1].update(update)
+                with self.assertRaises(ValueError):
+                    build_turn_bundle_v1(_snapshot(), root)
+
     def test_available_bundle_preserves_successor_order_and_minimum_alerts(
         self,
     ) -> None:

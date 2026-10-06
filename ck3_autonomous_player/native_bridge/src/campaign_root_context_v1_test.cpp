@@ -1214,6 +1214,48 @@ bool TestMalformedHeldTitlePartitionIsTypedUnavailable() {
          ClearedUnavailable(result, "held_title_partition_unavailable");
 }
 
+// This exercises the shared wire contract, not the legacy native reader's
+// ability to classify a Crozier family title.
+bool TestLandlessFamilySerializerContract() {
+  Fixture fixture;
+  xar::game::CampaignRootContextV1 result{};
+  if (xar::ck3_11906::ReadCampaignRootContextV1(
+          Environment(fixture), Access(fixture), {41}, result) !=
+          xar::game::ReadCampaignRootContextResultV1::available ||
+      result.held_title_partition.size() != 2) {
+    return false;
+  }
+  auto &family = result.held_title_partition[1];
+  family.capital_province_id.reset();
+  family.landless_noble_family_no_province = true;
+  family.native_title_key = "c_fixture_family";
+  const auto wire = xar::ck3_11906::SerializeCampaignRootContextV1(result);
+  if (family.first_heir_character_id != Fixture::kSecondSuccessorId ||
+      wire.find("\"capital_province_id\":null,\"capital_province_kind\":"
+                "\"landless_noble_family_no_province\",\"title_key\":"
+                "\"c_fixture_family\",\"primary\":false") == std::string::npos) {
+    return false;
+  }
+  for (int failure = 0; failure < 7; ++failure) {
+    auto invalid = result;
+    auto &row = invalid.held_title_partition[1];
+    switch (failure) {
+    case 0: row.native_title_key.clear(); break;
+    case 1: row.native_title_key = "d_fixture_family"; break;
+    case 2: row.native_title_key = "c_bad key"; break;
+    case 3: row.capital_province_id = 0; break;
+    case 4: row.capital_province_id = 9755; break;
+    case 5: row.title.tier_raw = 3; row.title.tier_key = "duchy"; break;
+    case 6: row.landless_noble_family_no_province = false; break;
+    }
+    if (!xar::ck3_11906::SerializeCampaignRootContextV1(invalid).empty()) {
+      std::cerr << "invalid family serializer case " << failure << " passed\n";
+      return false;
+    }
+  }
+  return true;
+}
+
 bool TestMonthlyIncomeFailureIsTypedUnavailable() {
   Fixture fixture;
   fixture.monthly_income_available = false;
@@ -1533,6 +1575,10 @@ int main() {
   }
   if (!TestMalformedHeldTitlePartitionIsTypedUnavailable()) {
     std::cerr << "malformed held-title partition fixture failed\n";
+    return 1;
+  }
+  if (!TestLandlessFamilySerializerContract()) {
+    std::cerr << "landless family serializer contract fixture failed\n";
     return 1;
   }
   if (!TestMonthlyIncomeFailureIsTypedUnavailable()) {

@@ -55,6 +55,7 @@
 #include "xar_bridge/ck3_12002_title_map.hpp"
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
+#include "xar_bridge/ck3_12002_nonwar_realm.hpp"
 #include "xar_bridge/ck3_12002_nonwar_metrics.hpp"
 #include "xar_bridge/ck3_12002_pending_context.hpp"
 #include "xar_bridge/ck3_12002_event_window_context.hpp"
@@ -5067,6 +5068,86 @@ std::string TitleMapNavigationFailureDiagnosticFrameV1(
     result += ",\"dispatched\":";
     result += query->command.dispatched ? "true" : "false";
   }
+  return result + "}";
+}
+
+// Reuse the already accepted independent diagnostic transport. The exact
+// seven-key campaign command result and root DTO are deliberately untouched.
+std::string HeldTitlePartitionFailureDiagnosticFrame12002(
+    std::string_view request_id, std::uint64_t revision,
+    std::uint64_t query_sequence, std::uint64_t connection_generation,
+    const xar::game::Snapshot &expected,
+    const xar::ck3_12002::HeldTitlePartitionFailure12002 &detail) {
+  std::string result = "{\"type\":\"snapshot_publish_diagnostic\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"phase\":\"end\",\"status\":\"campaign-root-held-title-partition-unavailable\",\"payload_bytes\":0,\"diagnostic_kind\":\"campaign-root-held-title-partition-failure-v1\",\"revision\":";
+  result += Number(revision);
+  result += ",\"query_sequence\":" + Number(query_sequence);
+  result += ",\"pid\":" + Number(GetCurrentProcessId());
+  result += ",\"connection_generation\":" + Number(connection_generation);
+  result += ",\"date_raw\":" + SignedNumber(expected.date_raw);
+  result += ",\"expected_actor_id\":" + SignedNumber(expected.played_character_id);
+  result += ",\"observed_actor_id\":" + SignedNumber(detail.actor_id);
+  result += ",\"sample\":" + Number(detail.sample);
+  result += ",\"guard\":";
+  AppendJsonString(result, detail.guard);
+  result += ",\"resolver_guard\":";
+  AppendJsonString(result, detail.resolver_guard);
+  result += ",\"index\":" + SignedNumber(detail.index);
+  result += ",\"title_id\":" + SignedNumber(detail.title_id);
+  result += ",\"held_count\":" + SignedNumber(detail.held_count);
+  result += ",\"held_capacity\":" + SignedNumber(detail.held_capacity);
+  result += ",\"holder_id\":" + SignedNumber(detail.holder_id);
+  result += ",\"tier_raw\":" + SignedNumber(detail.tier_raw);
+  result += ",\"successor_count\":" + SignedNumber(detail.successor_count);
+  result += ",\"successor_capacity\":" + SignedNumber(detail.successor_capacity);
+  result += ",\"first_heir_id\":" + SignedNumber(detail.first_heir_id);
+  result += ",\"capital_province_id\":" + SignedNumber(detail.capital_province_id);
+  result += ",\"capital_getter_attempted\":";
+  result += detail.capital_getter_attempted ? "true" : "false";
+  result += ",\"capital_getter_completed\":";
+  result += detail.capital_getter_completed ? "true" : "false";
+  result += ",\"capital_getter_return_address\":" + Number(detail.capital_getter_return_address);
+  result += ",\"capital_getter_return_nonnull\":";
+  result += detail.capital_getter_return_nonnull ? "true" : "false";
+  result += ",\"capital_type_tag_read_attempted\":";
+  result += detail.capital_type_tag_read_attempted ? "true" : "false";
+  result += ",\"capital_type_tag_observed\":";
+  result += detail.capital_type_tag_observed ? "true" : "false";
+  result += ",\"capital_type_tag\":" + Number(detail.capital_type_tag);
+  result += ",\"capital_no_province_by_stock_type_tag_observed\":";
+  result += detail.capital_no_province_by_stock_type_tag_observed ? "true" : "false";
+  result += ",\"capital_no_province_by_stock_type_tag\":";
+  result += detail.capital_no_province_by_stock_type_tag ? "true" : "false";
+  result += ",\"landless_type_read_attempted\":";
+  result += detail.landless_type_read_attempted ? "true" : "false";
+  result += ",\"landless_type_observed\":";
+  result += detail.landless_type_observed ? "true" : "false";
+  result += ",\"landless_type_value\":" + Number(detail.landless_type_value);
+  result += ",\"noble_family_read_attempted\":";
+  result += detail.noble_family_read_attempted ? "true" : "false";
+  result += ",\"noble_family_observed\":";
+  result += detail.noble_family_observed ? "true" : "false";
+  result += ",\"noble_family_value\":" + Number(detail.noble_family_value);
+  result += ",\"children_count_read_attempted\":";
+  result += detail.children_count_read_attempted ? "true" : "false";
+  result += ",\"children_count_observed\":";
+  result += detail.children_count_observed ? "true" : "false";
+  result += ",\"children_count\":" + SignedNumber(detail.children_count);
+  result += ",\"title_key_read_attempted\":";
+  result += detail.title_key_read_attempted ? "true" : "false";
+  result += ",\"title_key_observed\":";
+  result += detail.title_key_observed ? "true" : "false";
+  result += ",\"primary_title_id\":" + SignedNumber(detail.primary_title_id);
+  result += ",\"primary_match_count\":" + SignedNumber(detail.primary_match_count);
+  result += ",\"held_count_observed\":";
+  result += detail.held_count_observed ? "true" : "false";
+  result += ",\"title_id_observed\":";
+  result += detail.title_id_observed ? "true" : "false";
+  result += ",\"successor_count_observed\":";
+  result += detail.successor_count_observed ? "true" : "false";
+  result += ",\"capital_province_id_observed\":";
+  result += detail.capital_province_id_observed ? "true" : "false";
   return result + "}";
 }
 
@@ -10422,6 +10503,7 @@ struct TypedQuery12002 {
   xar::game::BattleTerminalTransitionSnapshotV1 terminal{};
   xar::game::WarEntryAssessmentsV1 war_entry{};
   xar::game::CampaignRootContextV1 campaign{};
+  xar::ck3_12002::HeldTitlePartitionFailure12002 held_partition_failure{};
   xar::game::LoadedFeatureManifestV1 loaded{};
   xar::game::PendingCharacterInteractionContextV1 pending{};
   xar::game::EventWindowContextV1 event{};
@@ -10645,7 +10727,8 @@ bool ExecuteTypedQuery12002(
         xar::ck3_12002::BindNonwarFinance12003(environment, query.image_base);
       }
       xar::ck3_12002::ReadCampaignRootContextV1(
-          environment, access, query.campaign_request, query.campaign);
+          environment, access, query.campaign_request, query.campaign,
+          &query.held_partition_failure);
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::loaded_features) {
       xar::ck3_11906::LoadedFeatureManifestAccessV1 access{};
@@ -12017,7 +12100,9 @@ std::string TypedQueryFailureFrame12002(
 
 std::string RunTypedQuery12002(
     const xar::game::GameAdapter &game, WorkerState &state,
-    std::string_view request_id, std::string_view step, std::string_view payload) {
+    std::string_view request_id, std::string_view step, std::string_view payload,
+    std::string *readonly_diagnostic = nullptr) {
+  if (readonly_diagnostic != nullptr) readonly_diagnostic->clear();
   TypedQuery12002 query{};
   query.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
   query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
@@ -12177,6 +12262,14 @@ std::string RunTypedQuery12002(
   case QueryKind12002::campaign:
     response = CampaignRootContextResultFrame(request_id,
         ++state.campaign_root_context_query_sequence, query.campaign, true);
+    if (readonly_diagnostic != nullptr &&
+        query.campaign.unavailable_reason == "held_title_partition_unavailable" &&
+        !query.held_partition_failure.guard.empty()) {
+      *readonly_diagnostic = HeldTitlePartitionFailureDiagnosticFrame12002(
+          request_id, state.state_revision, state.campaign_root_context_query_sequence,
+          state.connection_generation, query.envelope.expected_snapshot,
+          query.held_partition_failure);
+    }
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
     state.observed_primary_heir_character_id.reset();
     state.observed_primary_heir_revision = state.state_revision;
@@ -13435,8 +13528,11 @@ void RunConnectedSession(
         if (!early_step_dispatched &&
             xar::game::IsReviewedCrozierAdapter(game) &&
             TypedQueryKind12002(step).has_value()) {
-          connected = write_frame(pipe, RunTypedQuery12002(
-              game, state, request_id, step, incoming.payload));
+          std::string readonly_diagnostic;
+          const auto response = RunTypedQuery12002(
+              game, state, request_id, step, incoming.payload, &readonly_diagnostic);
+          if (!readonly_diagnostic.empty()) connected = write_frame(pipe, readonly_diagnostic);
+          if (connected) connected = write_frame(pipe, response);
           early_step_dispatched = true;
         }
         if (!early_step_dispatched) {

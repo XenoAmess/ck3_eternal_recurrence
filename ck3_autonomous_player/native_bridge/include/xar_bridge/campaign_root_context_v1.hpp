@@ -32,10 +32,39 @@ struct CampaignRootHeldTitleSuccessionV1 {
   // Higher-tier titles deliberately expose no synthetic province.
   std::optional<std::int32_t> capital_province_id;
   bool primary = false;
+  // A stock landless noble-family county can legally own no Province.  This
+  // explicit classification retains the title and heir in the full partition.
+  bool landless_noble_family_no_province = false;
+  std::string native_title_key;
 
   friend bool operator==(const CampaignRootHeldTitleSuccessionV1 &,
                          const CampaignRootHeldTitleSuccessionV1 &) = default;
 };
+
+inline bool IsCanonicalCountyTitleKeyV1(std::string_view key) noexcept {
+  if (key.size() < 3 || key.size() > 1024 || key[0] != 'c' || key[1] != '_') {
+    return false;
+  }
+  const auto alphanumeric = [](char value) noexcept {
+    return (value >= 'a' && value <= 'z') || (value >= '0' && value <= '9');
+  };
+  if (!alphanumeric(key[2])) return false;
+  for (const auto value : key.substr(2)) {
+    if (!alphanumeric(value) && value != '_') return false;
+  }
+  return true;
+}
+
+inline bool HasValidCampaignRootHeldTitleCapitalV1(
+    const CampaignRootHeldTitleSuccessionV1 &row) noexcept {
+  if (row.landless_noble_family_no_province) {
+    return row.title.tier_raw == 2 && !row.capital_province_id.has_value() &&
+           IsCanonicalCountyTitleKeyV1(row.native_title_key);
+  }
+  return row.native_title_key.empty() &&
+         ((row.title.tier_raw == 2) == row.capital_province_id.has_value()) &&
+         (!row.capital_province_id.has_value() || *row.capital_province_id > 0);
+}
 
 struct CampaignRootGovernmentV1 {
   std::string key;

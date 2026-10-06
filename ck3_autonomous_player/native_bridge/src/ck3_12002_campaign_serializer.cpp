@@ -216,8 +216,7 @@ bool ValidHeldTitlePartition(
         value.title.title_id == previous_title_id ||
         value.title.tier_raw < 2 || value.title.tier_raw > 6 ||
         TierKey(value.title.tier_raw) != value.title.tier_key ||
-        (value.title.tier_raw == 2) !=
-            value.capital_province_id.has_value() ||
+        !game::HasValidCampaignRootHeldTitleCapitalV1(value) ||
         (value.capital_province_id.has_value() &&
          *value.capital_province_id <= 0) ||
         (value.first_heir_character_id.has_value() &&
@@ -998,6 +997,11 @@ std::string SerializeCampaignRootContextV1(
     AppendOptionalInt32(output, row.first_heir_character_id);
     output += ",\"capital_province_id\":";
     AppendOptionalInt32(output, row.capital_province_id);
+    if (row.landless_noble_family_no_province) {
+      output += ",\"capital_province_kind\":\"landless_noble_family_no_province\"";
+      output += ",\"title_key\":";
+      AppendJsonString(output, row.native_title_key);
+    }
     output += ",\"primary\":";
     output += row.primary ? "true" : "false";
     output.push_back('}');

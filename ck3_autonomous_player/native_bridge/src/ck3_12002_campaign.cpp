@@ -790,7 +790,8 @@ bool ReadMonthlyPiety(const CampaignRootNativeEnvironmentV1 &environment,
 bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
                      const CampaignRootAccessV1 &access,
                      ObservationV1 &output,
-                     std::string_view &failure) noexcept {
+                     std::string_view &failure,
+                     HeldTitlePartitionFailure12002 *failure_diagnostic) noexcept {
   output = {};
   if (!ReadPlayerIdentity(environment, access, output)) {
     failure = "player_identity_unavailable";
@@ -827,7 +828,7 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
       output.primary_title_pointer, output.primary_title,
       output.top_liege_character_id};
   if (!ReadNonwarRealmProjection12002(
-          environment, access, realm_input, output.realm, failure)) {
+          environment, access, realm_input, output.realm, failure, failure_diagnostic)) {
     return false;
   }
   output.selected_game_rule_tokens_available =
@@ -940,7 +941,9 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     const CampaignRootNativeEnvironmentV1 &environment,
     const CampaignRootAccessV1 &access,
     const CampaignRootContextRequestV1 &request,
-    game::CampaignRootContextV1 &output) noexcept {
+    game::CampaignRootContextV1 &output,
+    HeldTitlePartitionFailure12002 *failure_diagnostic) noexcept {
+  if (failure_diagnostic != nullptr) *failure_diagnostic = {};
   output = {};
   output.snapshot_revision = request.expected_snapshot_revision;
   try {
@@ -978,7 +981,8 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     ObservationV1 first{};
     ObservationV1 second{};
     std::string_view failure = "internal_error";
-    if (!ReadObservation(environment, access, first, failure)) {
+    if (failure_diagnostic != nullptr) failure_diagnostic->sample = 1;
+    if (!ReadObservation(environment, access, first, failure, failure_diagnostic)) {
       SetUnavailable(output, failure);
       return game::ReadCampaignRootContextResultV1::unavailable;
     }
@@ -991,7 +995,8 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     const bool first_piety_available =
         ReadMonthlyPiety(environment, first.player_character, first_piety);
     failure = "internal_error";
-    if (!ReadObservation(environment, access, second, failure)) {
+    if (failure_diagnostic != nullptr) failure_diagnostic->sample = 2;
+    if (!ReadObservation(environment, access, second, failure, failure_diagnostic)) {
       SetUnavailable(output, failure);
       return game::ReadCampaignRootContextResultV1::unavailable;
     }

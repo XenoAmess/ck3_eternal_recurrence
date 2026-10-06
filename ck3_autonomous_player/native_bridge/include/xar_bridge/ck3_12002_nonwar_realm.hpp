@@ -4,6 +4,52 @@
 
 namespace xar::ck3_12002 {
 
+// Caller-owned, allocation-free readonly evidence. Never part of root readiness,
+// equality, projection fields or the original campaign result envelope.
+struct HeldTitlePartitionFailure12002 {
+  std::string_view guard;
+  std::string_view resolver_guard;
+  std::uint32_t sample = 0;
+  std::int32_t actor_id = -1;
+  std::int32_t index = -1;
+  std::int32_t title_id = -1;
+  std::int32_t held_count = -1;
+  std::int32_t held_capacity = -1;
+  std::int32_t holder_id = -1;
+  std::int32_t tier_raw = -1;
+  std::int32_t successor_count = -1;
+  std::int32_t successor_capacity = -1;
+  std::int32_t first_heir_id = -1;
+  std::int32_t capital_province_id = -1;
+  // Diagnostic-only values; the address is never dereferenced or reused.
+  bool capital_getter_attempted = false;
+  bool capital_getter_completed = false;
+  std::uint64_t capital_getter_return_address = 0;
+  bool capital_getter_return_nonnull = false;
+  bool capital_type_tag_read_attempted = false;
+  bool capital_type_tag_observed = false;
+  std::uint32_t capital_type_tag = 0;
+  bool capital_no_province_by_stock_type_tag_observed = false;
+  bool capital_no_province_by_stock_type_tag = false;
+  bool landless_type_read_attempted = false;
+  bool landless_type_observed = false;
+  std::uint32_t landless_type_value = 0;
+  bool noble_family_read_attempted = false;
+  bool noble_family_observed = false;
+  std::uint32_t noble_family_value = 0;
+  bool children_count_read_attempted = false;
+  bool children_count_observed = false;
+  std::int32_t children_count = -1;
+  bool title_key_read_attempted = false;
+  bool title_key_observed = false;
+  std::int32_t primary_title_id = -1;
+  std::int32_t primary_match_count = -1;
+  bool held_count_observed = false;
+  bool title_id_observed = false;
+  bool successor_count_observed = false;
+  bool capital_province_id_observed = false;
+};
+
 // Reviewed against the frozen Crozier executable; no 1.19 layout reuse.
 inline constexpr std::uintptr_t kNonwarRealmTitleProvinceRva = 0x230F900;
 inline constexpr std::uintptr_t kNonwarRealmProvinceHolderCharacterIdRva = 0x247D030;
@@ -44,6 +90,7 @@ bool ReadNonwarRealmProjection12002(
     const CampaignRootAccessV1 &access,
     const NonwarRealmInput12002 &input,
     NonwarRealmProjection12002 &output,
-    std::string_view &failure) noexcept;
+    std::string_view &failure,
+    HeldTitlePartitionFailure12002 *failure_diagnostic = nullptr) noexcept;
 
 } // namespace xar::ck3_12002

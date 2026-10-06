@@ -19,6 +19,12 @@ constexpr std::size_t kStorageObjectOffset = 0x08;
 constexpr std::size_t kLandedTitleIdentityOffset = 0x10;
 constexpr std::size_t kLandedTitleTemplateOffset = 0x48;
 constexpr std::size_t kLandedTitleTierOffset = 0x64;
+// Exact .3 stock is_landless_type_title / is_noble_family_title leaves and
+// Title.Capital() child span.  No preferred-capital substitution is made.
+constexpr std::size_t kLandedTitleLandlessTypeOffset = 0x30;
+constexpr std::size_t kLandedTitleNobleFamilyOffset = 0x32;
+constexpr std::size_t kLandedTitleChildrenCountOffset = 0x11C;
+constexpr std::size_t kLandedTitleTemplateKeyOffset = 0x18;
 constexpr std::size_t kLandedTitleSuccessionDataOffset = kNonwarRealmTitleSuccessorDataOffset;
 constexpr std::size_t kLandedTitleSuccessionCapacityOffset = kNonwarRealmTitleSuccessorCapacityOffset;
 constexpr std::size_t kLandedTitleSuccessionCountOffset = kNonwarRealmTitleSuccessorCountOffset;
@@ -87,6 +93,42 @@ bool ReadValue(const CampaignRootAccessV1 &access, const void *base,
          ReadBytes(access, address, &output, sizeof(output));
 }
 
+bool ReadNativeCountyTitleKey(const CampaignRootAccessV1 &access,
+                              const void *title_template,
+                              std::string &output) noexcept {
+  output.clear();
+  const void *native_string = nullptr;
+  if (!CheckedAddress(title_template, kLandedTitleTemplateKeyOffset,
+                      native_string)) return false;
+  if (access.read_string != nullptr) {
+    return access.read_string(access.context, native_string, output) &&
+           game::IsCanonicalCountyTitleKeyV1(output);
+  }
+  // The same guarded MSVC string decoding used by the exact title-map reader.
+  std::uint64_t size = 0;
+  std::uint64_t capacity = 0;
+  if (!ReadValue(access, native_string, 0x10, size) ||
+      !ReadValue(access, native_string, 0x18, capacity) || size == 0 ||
+      size > capacity || size > 1024) return false;
+  const void *bytes = native_string;
+  if (capacity > 15 &&
+      (!ReadValue(access, native_string, 0, bytes) || bytes == nullptr)) {
+    return false;
+  }
+  try {
+    output.resize(static_cast<std::size_t>(size));
+  } catch (...) {
+    output.clear();
+    return false;
+  }
+  if (!ReadBytes(access, bytes, output.data(), output.size()) ||
+      !game::IsCanonicalCountyTitleKeyV1(output)) {
+    output.clear();
+    return false;
+  }
+  return true;
+}
+
 template <typename Value>
 bool ReadSlot(const CampaignRootAccessV1 &access, const Value *slot,
               Value &output) noexcept {
@@ -96,37 +138,36 @@ bool ReadSlot(const CampaignRootAccessV1 &access, const Value *slot,
 void *ResolveComponent(const CampaignRootAccessV1 &access,
                        void *const *storage_slot,
                        void *const *fallback_slot, std::int32_t full_id,
-                       std::size_t identity_offset) noexcept {
-  if (full_id <= 0) {
+                       std::size_t identity_offset,
+                       std::string_view *resolver_failure = nullptr) noexcept {
+  if (resolver_failure != nullptr) *resolver_failure = {};
+  const auto unavailable = [resolver_failure](std::string_view guard) noexcept -> void * {
+    if (resolver_failure != nullptr) *resolver_failure = guard;
     return nullptr;
-  }
+  };
+  if (full_id <= 0) return unavailable("nonpositive_full_id");
   void *storage = nullptr;
   void *fallback = nullptr;
-  if (!ReadSlot(access, storage_slot, storage) ||
-      !ReadSlot(access, fallback_slot, fallback) || storage == nullptr) {
-    return nullptr;
-  }
+  if (!ReadSlot(access, storage_slot, storage)) return unavailable("storage_slot_read");
+  if (!ReadSlot(access, fallback_slot, fallback)) return unavailable("fallback_slot_read");
+  if (storage == nullptr) return unavailable("storage_null");
   void *slots = nullptr;
   std::int32_t capacity = 0;
-  if (!ReadValue(access, storage, kStorageSlotsOffset, slots) ||
-      !ReadValue(access, storage, kStorageCapacityOffset, capacity) ||
-      slots == nullptr || capacity <= 0 || capacity > kMaximumComponentSlots) {
-    return nullptr;
-  }
+  if (!ReadValue(access, storage, kStorageSlotsOffset, slots)) return unavailable("slots_read");
+  if (!ReadValue(access, storage, kStorageCapacityOffset, capacity)) return unavailable("capacity_read");
+  if (slots == nullptr) return unavailable("slots_null");
+  if (capacity <= 0) return unavailable("capacity_nonpositive");
+  if (capacity > kMaximumComponentSlots) return unavailable("capacity_limit");
   const auto index = static_cast<std::uint32_t>(full_id) & 0x00FFFFFFU;
-  if (index >= static_cast<std::uint32_t>(capacity)) {
-    return nullptr;
-  }
+  if (index >= static_cast<std::uint32_t>(capacity)) return unavailable("index_out_of_range");
   void *object = nullptr;
-  const auto offset = static_cast<std::size_t>(index) * kStorageSlotStride +
-                      kStorageObjectOffset;
+  const auto offset = static_cast<std::size_t>(index) * kStorageSlotStride + kStorageObjectOffset;
   std::int32_t observed_id = -1;
-  if (!ReadValue(access, slots, offset, object) || object == nullptr ||
-      object == fallback ||
-      !ReadValue(access, object, identity_offset, observed_id) ||
-      observed_id != full_id) {
-    return nullptr;
-  }
+  if (!ReadValue(access, slots, offset, object)) return unavailable("object_read");
+  if (object == nullptr) return unavailable("object_null");
+  if (object == fallback) return unavailable("object_fallback");
+  if (!ReadValue(access, object, identity_offset, observed_id)) return unavailable("identity_read");
+  if (observed_id != full_id) return unavailable("generation_mismatch");
   return object;
 }
 
@@ -233,139 +274,208 @@ bool ReadPrimaryTitleSuccession(
 bool ReadHeldTitlePartition(
     const CampaignRootNativeEnvironmentV1 &environment,
     const CampaignRootAccessV1 &access, void *land_state,
-    ObservationV1 &output) noexcept {
+    ObservationV1 &output,
+    HeldTitlePartitionFailure12002 *failure_diagnostic) noexcept {
   output.held_title_partition.clear();
+  HeldTitlePartitionFailure12002 detail{};
+  if (failure_diagnostic != nullptr) detail = *failure_diagnostic;
+  const auto fail = [&detail, failure_diagnostic](std::string_view guard) noexcept {
+    detail.guard = guard;
+    if (failure_diagnostic != nullptr) *failure_diagnostic = detail;
+    return false;
+  };
   if (land_state == nullptr) {
-    return !output.primary_title.has_value();
+    if (output.primary_title.has_value()) return fail("land_state_null_with_primary");
+    return true;
   }
-
   void *data = nullptr;
   std::int32_t capacity = 0;
   std::int32_t count = 0;
-  if (!ReadValue(access, land_state, kLandStateHeldTitleIdsOffset, data) ||
-      !ReadValue(access, land_state,
-                 kLandStateHeldTitleIdsOffset + kVectorCapacityOffset,
-                 capacity) ||
-      !ReadValue(access, land_state,
-                 kLandStateHeldTitleIdsOffset + kVectorCountOffset, count) ||
-      capacity < 0 || count < 0 || count > capacity ||
-      count > kMaximumHeldTitles || (count > 0 && data == nullptr)) {
-    return false;
-  }
-
+  if (!ReadValue(access, land_state, kLandStateHeldTitleIdsOffset, data)) return fail("held_data_read");
+  if (!ReadValue(access, land_state, kLandStateHeldTitleIdsOffset + kVectorCapacityOffset, capacity)) return fail("held_capacity_read");
+  detail.held_capacity = capacity;
+  if (!ReadValue(access, land_state, kLandStateHeldTitleIdsOffset + kVectorCountOffset, count)) return fail("held_count_read");
+  detail.held_count = count;
+  detail.held_count_observed = true;
+  if (capacity < 0) return fail("held_capacity_negative");
+  if (count < 0) return fail("held_count_negative");
+  if (count > capacity) return fail("held_count_exceeds_capacity");
+  if (count > kMaximumHeldTitles) return fail("held_count_exceeds_limit");
+  if (count > 0 && data == nullptr) return fail("held_data_null_nonempty");
   try {
     output.held_title_partition.reserve(static_cast<std::size_t>(count));
   } catch (...) {
-    return false;
+    return fail("held_partition_reserve_exception");
   }
   std::vector<std::int32_t> seen_title_ids;
   try {
     seen_title_ids.reserve(static_cast<std::size_t>(count));
   } catch (...) {
-    return false;
+    return fail("seen_title_reserve_exception");
   }
   for (std::int32_t index = 0; index < count; ++index) {
+    detail.index = index;
+    detail.title_id = detail.holder_id = detail.tier_raw = -1;
+    detail.successor_count = detail.successor_capacity = detail.first_heir_id = -1;
+    detail.capital_province_id = -1;
+    detail.capital_getter_attempted = detail.capital_getter_completed = false;
+    detail.capital_getter_return_address = 0;
+    detail.capital_getter_return_nonnull = false;
+    detail.capital_type_tag_read_attempted = detail.capital_type_tag_observed = false;
+    detail.capital_type_tag = 0;
+    detail.capital_no_province_by_stock_type_tag_observed = false;
+    detail.capital_no_province_by_stock_type_tag = false;
+    detail.landless_type_read_attempted = detail.landless_type_observed = false;
+    detail.landless_type_value = 0;
+    detail.noble_family_read_attempted = detail.noble_family_observed = false;
+    detail.noble_family_value = 0;
+    detail.children_count_read_attempted = detail.children_count_observed = false;
+    detail.children_count = -1;
+    detail.title_key_read_attempted = detail.title_key_observed = false;
+    detail.resolver_guard = {};
+    detail.title_id_observed = detail.successor_count_observed = detail.capital_province_id_observed = false;
     std::int32_t title_id = -1;
-    if (!ReadValue(access, data,
-                   static_cast<std::size_t>(index) * sizeof(title_id),
-                   title_id) ||
-        title_id <= 0 ||
-        std::find(seen_title_ids.begin(), seen_title_ids.end(), title_id) !=
-            seen_title_ids.end()) {
-      return false;
-    }
+    if (!ReadValue(access, data, static_cast<std::size_t>(index) * sizeof(title_id), title_id)) return fail("title_id_read");
+    detail.title_id = title_id;
+    detail.title_id_observed = true;
+    if (title_id <= 0) return fail("title_id_nonpositive");
+    if (std::find(seen_title_ids.begin(), seen_title_ids.end(), title_id) != seen_title_ids.end()) return fail("title_id_duplicate");
     seen_title_ids.push_back(title_id);
-    void *title = ResolveComponent(
-        access, environment.landed_title_storage_slot,
-        environment.landed_title_fallback_slot, title_id,
-        kLandedTitleIdentityOffset);
+    void *title = ResolveComponent(access, environment.landed_title_storage_slot,
+        environment.landed_title_fallback_slot, title_id, kLandedTitleIdentityOffset,
+        &detail.resolver_guard);
     void *title_template = nullptr;
     std::int32_t holder_character_id = -1;
     std::int32_t tier_raw = 0;
-    if (title == nullptr ||
-        !ReadValue(access, title, kLandedTitleHolderCharacterIdOffset,
-                   holder_character_id) ||
-        holder_character_id != output.player_character_id ||
-        !ReadValue(access, title, kLandedTitleTemplateOffset,
-                   title_template) ||
-        title_template == nullptr ||
-        !ReadValue(access, title_template, kLandedTitleTierOffset,
-                   tier_raw) ||
-        TierKey(tier_raw).empty()) {
-      return false;
-    }
-    // The stock My Realm partition presentation starts at county titles.
-    // Baronies are validated above, then excluded from this realm projection.
-    if (tier_raw < 2) {
-      continue;
-    }
-
+    if (title == nullptr) return fail("title_component_unavailable");
+    if (!ReadValue(access, title, kLandedTitleHolderCharacterIdOffset, holder_character_id)) return fail("title_holder_read");
+    detail.holder_id = holder_character_id;
+    if (holder_character_id != output.player_character_id) return fail("title_holder_not_player");
+    if (!ReadValue(access, title, kLandedTitleTemplateOffset, title_template)) return fail("title_template_read");
+    if (title_template == nullptr) return fail("title_template_null");
+    if (!ReadValue(access, title_template, kLandedTitleTierOffset, tier_raw)) return fail("title_tier_read");
+    detail.tier_raw = tier_raw;
+    if (TierKey(tier_raw).empty()) return fail("title_tier_unknown");
+    // Exactly the original barony validation/exclusion order; tier6 is accepted.
+    if (tier_raw < 2) continue;
     void *successor_data = nullptr;
     std::int32_t successor_capacity = 0;
     std::int32_t successor_count = 0;
-    if (!ReadValue(access, title, kLandedTitleSuccessionDataOffset,
-                   successor_data) ||
-        !ReadValue(access, title, kLandedTitleSuccessionCapacityOffset,
-                   successor_capacity) ||
-        !ReadValue(access, title, kLandedTitleSuccessionCountOffset,
-                   successor_count) ||
-        successor_capacity < 0 || successor_count < 0 ||
-        successor_count > successor_capacity ||
-        successor_count > kMaximumTitleSuccessors ||
-        (successor_count > 0 && successor_data == nullptr)) {
-      return false;
-    }
+    if (!ReadValue(access, title, kLandedTitleSuccessionDataOffset, successor_data)) return fail("successor_data_read");
+    if (!ReadValue(access, title, kLandedTitleSuccessionCapacityOffset, successor_capacity)) return fail("successor_capacity_read");
+    detail.successor_capacity = successor_capacity;
+    if (!ReadValue(access, title, kLandedTitleSuccessionCountOffset, successor_count)) return fail("successor_count_read");
+    detail.successor_count = successor_count;
+    detail.successor_count_observed = true;
+    if (successor_capacity < 0) return fail("successor_capacity_negative");
+    if (successor_count < 0) return fail("successor_count_negative");
+    if (successor_count > successor_capacity) return fail("successor_count_exceeds_capacity");
+    if (successor_count > kMaximumTitleSuccessors) return fail("successor_count_exceeds_limit");
+    if (successor_count > 0 && successor_data == nullptr) return fail("successor_data_null_nonempty");
     std::optional<std::int32_t> first_heir_character_id;
     if (successor_count > 0) {
       std::int32_t character_id = -1;
-      if (!ReadValue(access, successor_data, 0, character_id) ||
-          character_id <= 0 || character_id == output.player_character_id ||
-          ResolveComponent(access, environment.character_storage_slot,
-                           environment.character_fallback_slot, character_id,
-                           kCharacterIdentityOffset) == nullptr) {
-        return false;
-      }
+      if (!ReadValue(access, successor_data, 0, character_id)) return fail("first_heir_read");
+      detail.first_heir_id = character_id;
+      if (character_id <= 0) return fail("first_heir_nonpositive");
+      if (character_id == output.player_character_id) return fail("first_heir_is_player");
+      if (ResolveComponent(access, environment.character_storage_slot,
+              environment.character_fallback_slot, character_id, kCharacterIdentityOffset,
+              &detail.resolver_guard) == nullptr) return fail("first_heir_component_unavailable");
       first_heir_character_id = character_id;
     }
     std::optional<std::int32_t> capital_province_id;
+    bool landless_noble_family_no_province = false;
+    std::string native_title_key;
     if (tier_raw == 2) {
       void *capital_province = nullptr;
       std::int32_t province_id = -1;
-      if (!InvokeResolver(environment.title_province, title,
-                          capital_province) ||
-          capital_province == nullptr ||
-          !ReadValue(access, capital_province, kProvinceIdentityOffset,
-                     province_id) ||
-          province_id <= 0) {
-        return false;
+      detail.capital_getter_attempted = true;
+      detail.capital_getter_completed = InvokeResolver(environment.title_province, title, capital_province);
+      detail.capital_getter_return_address = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(capital_province));
+      detail.capital_getter_return_nonnull = capital_province != nullptr;
+      if (!detail.capital_getter_completed) return fail("county_capital_getter_failed");
+      if (capital_province == nullptr) return fail("county_capital_null");
+      const auto observe_capital_type_tag = [&]() noexcept {
+        detail.capital_type_tag_read_attempted = true;
+        std::uint32_t province_tag = 0;
+        if (!ReadValue(access, capital_province, 0x85C, province_tag)) return false;
+        detail.capital_type_tag_observed = true;
+        detail.capital_type_tag = province_tag;
+        detail.capital_no_province_by_stock_type_tag_observed = true;
+        detail.capital_no_province_by_stock_type_tag = province_tag != 0x50726F76U;
+        return true;
+      };
+      const auto fail_with_capital_type_tag = [&](std::string_view original_guard) noexcept {
+        if (failure_diagnostic != nullptr) observe_capital_type_tag();
+        return fail(original_guard);
+      };
+      if (!ReadValue(access, capital_province, kProvinceIdentityOffset, province_id)) return fail_with_capital_type_tag("county_capital_id_read");
+      detail.capital_province_id = province_id;
+      detail.capital_province_id_observed = true;
+      if (province_id > 0) {
+        // Geographic counties keep the original positive-ID path and reads.
+        capital_province_id = province_id;
+      } else {
+        if (province_id != 0) return fail_with_capital_type_tag("county_capital_id_nonpositive");
+        // Stock noble-family counties have no barony children and legitimately
+        // return the Null Province.  Every condition is an actual native read;
+        // ordinary Null, unknown tags and malformed titles still fail closed.
+        if (!observe_capital_type_tag() || detail.capital_type_tag != 0x4E756C6CU)
+          return fail("county_capital_id_nonpositive");
+        std::uint8_t landless_type = 0;
+        detail.landless_type_read_attempted = true;
+        if (!ReadValue(access, title, kLandedTitleLandlessTypeOffset, landless_type))
+          return fail("county_landless_type_read");
+        detail.landless_type_observed = true;
+        detail.landless_type_value = landless_type;
+        if (landless_type != 1) return fail("county_capital_id_nonpositive");
+        std::uint8_t noble_family = 0;
+        detail.noble_family_read_attempted = true;
+        if (!ReadValue(access, title, kLandedTitleNobleFamilyOffset, noble_family))
+          return fail("county_noble_family_read");
+        detail.noble_family_observed = true;
+        detail.noble_family_value = noble_family;
+        if (noble_family != 1) return fail("county_capital_id_nonpositive");
+        std::int32_t children_count = -1;
+        detail.children_count_read_attempted = true;
+        if (!ReadValue(access, title, kLandedTitleChildrenCountOffset, children_count))
+          return fail("county_children_count_read");
+        detail.children_count_observed = true;
+        detail.children_count = children_count;
+        if (children_count != 0) return fail("county_capital_id_nonpositive");
+        detail.title_key_read_attempted = true;
+        if (!ReadNativeCountyTitleKey(access, title_template, native_title_key))
+          return fail("county_no_province_title_key_read");
+        detail.title_key_observed = true;
+        landless_noble_family_no_province = true;
       }
-      capital_province_id = province_id;
     }
     try {
       output.held_title_partition.push_back({
           {title_id, tier_raw, std::string(TierKey(tier_raw))},
-          first_heir_character_id,
-          capital_province_id,
-          output.primary_title.has_value() &&
-              output.primary_title->title_id == title_id});
+          first_heir_character_id, capital_province_id,
+          output.primary_title.has_value() && output.primary_title->title_id == title_id,
+          landless_noble_family_no_province, std::move(native_title_key)});
     } catch (...) {
-      return false;
+      return fail("held_partition_push_exception");
     }
   }
-  std::sort(output.held_title_partition.begin(),
-            output.held_title_partition.end(),
-            [](const auto &left, const auto &right) {
-              return left.title.title_id < right.title.title_id;
-            });
+  std::sort(output.held_title_partition.begin(), output.held_title_partition.end(),
+            [](const auto &left, const auto &right) { return left.title.title_id < right.title.title_id; });
   if (!output.primary_title.has_value()) {
-    return output.held_title_partition.empty();
+    if (!output.held_title_partition.empty()) return fail("partition_nonempty_without_primary");
+    return true;
   }
   if (output.primary_title->tier_raw == 1) {
-    return output.held_title_partition.empty();
+    if (!output.held_title_partition.empty()) return fail("partition_nonempty_for_barony_primary");
+    return true;
   }
-  return std::count_if(output.held_title_partition.begin(),
-                       output.held_title_partition.end(),
-                       [](const auto &row) { return row.primary; }) == 1;
+  const auto matches = std::count_if(output.held_title_partition.begin(), output.held_title_partition.end(),
+                                   [](const auto &row) { return row.primary; });
+  detail.primary_match_count = static_cast<std::int32_t>(matches);
+  if (matches != 1) return fail("primary_match_count_not_one");
+  return true;
 }
 
 bool ReadDirectLandedVassals(
@@ -837,8 +947,16 @@ bool ReadNonwarRealmProjection12002(
     const CampaignRootAccessV1 &access,
     const NonwarRealmInput12002 &input,
     NonwarRealmProjection12002 &output,
-    std::string_view &failure) noexcept {
+    std::string_view &failure,
+    HeldTitlePartitionFailure12002 *failure_diagnostic) noexcept {
   output = {};
+  if (failure_diagnostic != nullptr) {
+    const auto sample = failure_diagnostic->sample;
+    *failure_diagnostic = {};
+    failure_diagnostic->sample = sample;
+    failure_diagnostic->actor_id = input.player_character_id;
+    failure_diagnostic->primary_title_id = input.primary_title ? input.primary_title->title_id : -1;
+  }
   try {
     if (!environment.exact_build_admitted ||
         (!environment.offline_fixture_function_overrides &&
@@ -873,13 +991,14 @@ bool ReadNonwarRealmProjection12002(
     if (!ReadValue(access, input.player_character,
                    kNonwarRealmCharacterLandStateOffset, land_state)) {
       failure = "held_title_partition_unavailable";
+      if (failure_diagnostic != nullptr) failure_diagnostic->guard = "player_land_state_read";
       return false;
     }
     if (!ReadPrimaryTitleSuccession(environment, access, observed)) {
       failure = "primary_title_succession_unavailable";
       return false;
     }
-    if (!ReadHeldTitlePartition(environment, access, land_state, observed)) {
+    if (!ReadHeldTitlePartition(environment, access, land_state, observed, failure_diagnostic)) {
       failure = "held_title_partition_unavailable";
       return false;
     }

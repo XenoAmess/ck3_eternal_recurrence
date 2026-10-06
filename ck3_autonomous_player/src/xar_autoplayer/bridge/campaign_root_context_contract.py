@@ -69,6 +69,12 @@ _HELD_TITLE_PARTITION_FIELDS: Final = {
     "capital_province_id",
     "primary",
 }
+_LANDLESS_NOBLE_FAMILY_PARTITION_FIELDS: Final = (
+    _HELD_TITLE_PARTITION_FIELDS | {"capital_province_kind", "title_key"}
+)
+_LANDLESS_NOBLE_FAMILY_NO_PROVINCE: Final = (
+    "landless_noble_family_no_province"
+)
 _LEGACY_HELD_TITLE_PARTITION_FIELDS: Final = (
     _HELD_TITLE_PARTITION_FIELDS - {"capital_province_id"}
 )
@@ -575,12 +581,55 @@ def _normalize_related_character_contexts(
     return normalized
 
 
+def _is_landless_noble_family_no_province_row(value: object) -> bool:
+    """Recognize only the explicit native family-county no-province variant."""
+    if not isinstance(value, dict) or set(value) != (
+        _LANDLESS_NOBLE_FAMILY_PARTITION_FIELDS
+    ):
+        return False
+    title = value.get("title")
+    if not isinstance(title, dict) or set(title) != _PRIMARY_TITLE_FIELDS:
+        return False
+    title_id = title.get("title_id")
+    first_heir = value.get("first_heir_character_id")
+    title_key = value.get("title_key")
+    if (
+        isinstance(title_id, bool)
+        or not isinstance(title_id, int)
+        or not 1 <= title_id <= 2**31 - 1
+        or isinstance(title.get("tier_raw"), bool)
+        or not isinstance(title.get("tier_raw"), int)
+        or title.get("tier_raw") != 2
+        or title.get("tier_key") != "county"
+        or not isinstance(value.get("primary"), bool)
+        or value.get("capital_province_id") is not None
+        or value.get("capital_province_kind") != (
+            _LANDLESS_NOBLE_FAMILY_NO_PROVINCE
+        )
+        or not isinstance(title_key, str)
+        or not 3 <= len(title_key) <= 1024
+        or not title_key.startswith("c_")
+        or title_key[2] not in "abcdefghijklmnopqrstuvwxyz0123456789"
+        or any(
+            character not in "abcdefghijklmnopqrstuvwxyz0123456789_"
+            for character in title_key[2:]
+        )
+    ):
+        return False
+    return first_heir is None or (
+        not isinstance(first_heir, bool)
+        and isinstance(first_heir, int)
+        and 1 <= first_heir <= 2**31 - 1
+    )
+
+
 def _normalize_held_title_partition(
     value: object,
     *,
     primary_title: dict[str, object] | None,
     primary_heir_character_id: int | None,
     player_character_id: int,
+    allow_landless_noble_family: bool = False,
 ) -> list[dict[str, object]]:
     if not isinstance(value, list):
         raise ValueError("held_title_partition must be a list")
@@ -592,11 +641,18 @@ def _normalize_held_title_partition(
         if not isinstance(item, dict) or frozenset(item) not in {
             frozenset(_HELD_TITLE_PARTITION_FIELDS),
             frozenset(_LEGACY_HELD_TITLE_PARTITION_FIELDS),
+            frozenset(_LANDLESS_NOBLE_FAMILY_PARTITION_FIELDS),
         }:
-            raise ValueError(
-                f"{name} must contain exactly the current or legacy v1 fields"
-            )
+            raise ValueError(f"{name} must contain exactly a supported v1 row variant")
         row = item
+        family_no_province = (
+            set(row) == _LANDLESS_NOBLE_FAMILY_PARTITION_FIELDS
+        )
+        if family_no_province and (
+            not allow_landless_noble_family
+            or not _is_landless_noble_family_no_province_row(row)
+        ):
+            raise ValueError(f"{name} has an invalid landless noble-family variant")
         title = _exact_object(
             row.get("title"), _PRIMARY_TITLE_FIELDS, f"{name}.title"
         )
@@ -621,7 +677,7 @@ def _normalize_held_title_partition(
             row.get("capital_province_id"),
             f"{name}.capital_province_id",
         )
-        if "capital_province_id" in row and (
+        if not family_no_province and "capital_province_id" in row and (
             (tier_raw == 2) is not (capital_province_id is not None)
         ):
             raise ValueError(
@@ -640,14 +696,20 @@ def _normalize_held_title_partition(
         if primary and first_heir != primary_heir_character_id:
             raise ValueError("held title primary heir disagrees with primary succession")
         primary_count += int(primary)
-        normalized.append(
-            {
-                "title": normalized_title,
-                "first_heir_character_id": first_heir,
-                "capital_province_id": capital_province_id,
-                "primary": primary,
-            }
-        )
+        normalized_row = {
+            "title": normalized_title,
+            "first_heir_character_id": first_heir,
+            "capital_province_id": capital_province_id,
+            "primary": primary,
+        }
+        if family_no_province:
+            normalized_row.update(
+                {
+                    "capital_province_kind": _LANDLESS_NOBLE_FAMILY_NO_PROVINCE,
+                    "title_key": row["title_key"],
+                }
+            )
+        normalized.append(normalized_row)
         previous_title_id = title_id
     if primary_title is None or primary_title["tier_raw"] == 1:
         if normalized:
@@ -1181,6 +1243,9 @@ def normalize_campaign_root_context_v1(
             else None
         ),
         player_character_id=player_character_id,
+        allow_landless_noble_family=(
+            provenance["game_version"] == CK3_12003.game_version
+        ),
     )
 
     capital_province_id = _optional_positive_int32(

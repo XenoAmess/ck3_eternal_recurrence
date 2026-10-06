@@ -7,6 +7,7 @@ from typing import Final
 
 from .campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
+    _is_landless_noble_family_no_province_row,
 )
 from .player_vitals_contract import build_player_vitals_v1
 
@@ -488,12 +489,15 @@ def build_turn_bundle_v1(
         titles_without_heir: list[dict[str, object]] = []
         primary_rows = 0
         for index, row in enumerate(held_title_partition):
-            if not isinstance(row, dict) or set(row) != {
-                "title",
-                "first_heir_character_id",
-                "capital_province_id",
-                "primary",
-            }:
+            if not isinstance(row, dict) or (
+                set(row) != {
+                    "title",
+                    "first_heir_character_id",
+                    "capital_province_id",
+                    "primary",
+                }
+                and not _is_landless_noble_family_no_province_row(row)
+            ):
                 raise ValueError(f"held-title partition row {index} is malformed")
             title = row.get("title")
             first_heir = row.get("first_heir_character_id")

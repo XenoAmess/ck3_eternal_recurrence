@@ -7,6 +7,9 @@ import json
 from pathlib import Path
 from typing import Iterable
 
+from .bridge.campaign_root_context_contract import (
+    _is_landless_noble_family_no_province_row,
+)
 from .bridge.event_contract import (
     choose_event_option_number,
     event_option_step,
@@ -812,6 +815,10 @@ def _complete_player_held_county_capital_province_ids(
     for row in partition:
         if not isinstance(row, dict):
             return None
+        if "capital_province_kind" in row or "title_key" in row:
+            if _is_landless_noble_family_no_province_row(row):
+                continue
+            return None
         title = row.get("title")
         if not isinstance(title, dict):
             return None
@@ -822,7 +829,7 @@ def _complete_player_held_county_capital_province_ids(
         if tier_raw != 2:
             continue
         province_id = _native_int(row.get("capital_province_id"))
-        if province_id is None:
+        if province_id is None or province_id <= 0:
             return None
         candidates.append((title_id, province_id))
     if not candidates:
