@@ -202,3 +202,39 @@ Root approved those two metadata-only selections. October 6 **19:30:15 CST**, th
 `2C54340` consumed 172 new B / 15 seeks; `2A9BE60` consumed 160 new B / 14 seeks. The date header's flags 2 are preserved as actual metadata, without reading handler data or crediting handler effects as closed. `SELECTED-DATE-PENDING-METADATA-READ-RECEIPT.json` preserves each actual/cached record selection and header. Cumulative frozen-file I/O is now **552 metadata B + 717 code B = 1,269 B / 339 seeks**.
 
 `SELECTED-DATE-PENDING-EXACT-BODY-PLAN.json` proposes only these two exact bodies, **397 + 50 = 447 new B / 2 seeks**, with all metadata and previous code reused. It will publish actual normal-return direct control, output/date construction, manager/chunk writes and callee receivers; any required outside transfer or missing gameplay callee gets a separate finite cache-first plan. Both bodies are currently **NOTRUN**. No generic allocator, capital tree, theoretical consistency audit, new model, test or observer was added.
+
+## Actual date output and reached pending continuation
+
+Root approved that exact two-body read. October 6 **19:36:11 CST**, the reader captured **447 new code B / 2 seeks**. `2C54340` reaches its normal return at `2C544CC` without a direct transfer leaving its 397 B extent. The date header's flags 2 and handler effects remain outside this normal-return contract. **`2A9BE60` is only an initial 50 B fragment:** it reaches conditional target **`2A9BF59`** and fallthrough **`2A9BE92`**, both outside the selected extent, and contains no return. Its metadata start therefore never proved a complete append body. No continuation was read. Cumulative I/O is **552 metadata B + 1,164 code B = 1,716 B / 341 seeks**.
+
+The date constructor uses a local MovePath and local route context:
+
+1. `D1A0B0(local_path)` constructs the temporary path.
+2. `2648060(local_context, actual_Unit)` constructs its current Unit context; local context `+48` is then zeroed.
+3. `2648150(local_context, passed_Province, origin_Province, 2, local_path)` builds that exact native route.
+4. `24AADA0(actual_Unit, output_Qduration, local_path, passed_Province)` returns a pointer to the signed Q100000 duration.
+
+The source rounds the signed duration by adding/subtracting 50,000 according to the original sign with native int64 wrap, then uses signed division by 100,000. Output low32 is **native wrapped caller low32 plus 24 times that rounded duration**. There is no new positive-duration clamp. It derives the output high bytes/word from the resulting low32 using the source epoch `029C55C0`, signed day/year arithmetic and two actual calendar tables; it does not retain or guess the caller's old high half. On normal return, the output buffer is fully written. Nonnull temporary route storage is released through its actual allocator's slot `+10`, argument size 8; this is temporary disposal, not a reason to expand a general allocator tree.
+
+These route operations have an existing production read-only entrance: `ck3_12002_routes.cpp` binds all four exact callbacks at lines 1900/1906–1908, and `ProjectPathTimeline` calls `24AADA0` at lines 504–529, documenting that active first-edge progress is already subtracted. The routes migration topic records the same native constructor/context/builder and Q duration ABIs. **The new observer should reuse the actual primitive behavior, not that timeline wrapper's extra duration filters.** It can capture `2C54340`'s computed full output qword with actual resolved Unit, passed Province, selected original/capital origin and the current frame's date as an explicit conditional entry argument. This removes the need to guess calendar high fields or re-expand already used route getters. Its value is a current-input native calculation, not an observed later detach date.
+
+The pending fragment reads a vector rooted at **actual primary receiver `+468`**: qword buffer `+0`, DWORD **capacity `+8`**, signed DWORD **count `+C`**, allocator pointer `+10`. Count is sign-extended and compared against capacity. Unequal count selects `2A9BF59`; equality follows into `2A9BE92`, after setting an 8-byte element size and converting capacity to float. **The fragment has not yet stored a chunk pointer or changed count/capacity.** Those actual reached continuations are the sole next source need; raw ArmyID queue-append semantics do not substitute for this physical-chunk vector.
+
+```mermaid
+flowchart TD
+    D[2C54340 actual Unit and Provinces] --> P[Local native path and context]
+    P --> Q[Existing native route Qduration getter]
+    Q --> R[Signed rounding then wrapped low32 date]
+    R --> F[Native calendar high fields and full outDate]
+    F --> T[Dispose temporary route on normal return]
+    F --> G{Caller output low32 greater}
+    G -->|no| C[Association and flag clear]
+    G -->|yes| V[2A9BE60 primary plus468 vector]
+    V --> EQ{Signed countC equals capacity8}
+    EQ -->|no| A[Reached2A9BF59]
+    EQ -->|yes| B[Reached2A9BE92]
+    A -.-> U[Unknown actual append and normal return]
+    B -.-> U
+```
+
+`PENDING-REACHED-CONTINUATION-METADATA-PLAN.json` proposes only metadata selectors containing those two actual reached addresses, reusing held pdata records; exact start/range/header/chain facts must precede any continuation code read. `WHOLE-INCOMING-DATA-IMPLEMENTATION-PLAN.json` defines the concrete family/files and alias-order recipe while leaving pending effects unimplemented until this finite source step closes. No test, native build, game operation or policy change was performed.
