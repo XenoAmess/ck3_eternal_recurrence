@@ -1,0 +1,60 @@
+{
+  "Root_four_actual_encoded_reviews": true,
+  "base_a05_unchanged": true,
+  "continuous_clean": false,
+  "controlled_comparison_eligibility": "NOT_GRANTED",
+  "files": [
+    {
+      "bytes": 7796,
+      "path": "Root-four-coded-review.json",
+      "sha256": "c1b2f1120b643981517391122aa078b36f15e3249355851a651993f27179b4af",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-S04-four-actual-coded-review-a01\\receipt.json"
+    },
+    {
+      "bytes": 12162,
+      "path": "unique4-report.json",
+      "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json"
+    },
+    {
+      "bytes": 1079,
+      "path": "closed-recorder.json",
+      "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json"
+    },
+    {
+      "bytes": 4014,
+      "path": "Root-joined-media-delivery.json",
+      "sha256": "974f211f40e871f9518faf5e816288bf27a30c2ef753e723c3d6825355ba4ab5",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\ROOT-DELIVERY03.json"
+    },
+    {
+      "bytes": 21267,
+      "path": "machine-media-delivery.json",
+      "sha256": "ed5c944ca53bd53bcb7accee0250324854f3fbe764700e8f019d2892b32e97b1",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\ROOT-DELIVERY-a01.json"
+    },
+    {
+      "bytes": 5378,
+      "path": "terminal-12s-delivery.json",
+      "sha256": "6e477b4ef422ad9d756377d16d0cf3d4866ef95dc63e67ae2881368863cd3e61",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\ROOT-DELIVERY-a01.json"
+    },
+    {
+      "bytes": 8549,
+      "path": "terminal-12s-report.json",
+      "sha256": "8e86993a9465be0c9c32bbaeb7dc78d9e2bc10c700c85404714d8a8c46437208",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\windows-a01\\c-s04-actual-terminal-state-last360\\report-a01.json"
+    }
+  ],
+  "final_film_certified": false,
+  "human_1x_signoff": false,
+  "machine_S04_reported_PASS": true,
+  "main_native_observation_replayed": false,
+  "native_exact_event_PTS": null,
+  "new_media_audit_credit": 0,
+  "raw_PNG_CSV_probe_read": false,
+  "schema": "ck3.e04.C.S04.metadata-only-addon.v1",
+  "source_terminal_sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817",
+  "winner": null
+}

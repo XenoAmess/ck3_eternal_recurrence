@@ -1,0 +1,149 @@
+{
+  "schema": "ck3.e04.C.S04.Root-original-coded-samples/v1",
+  "status": "ROOT_ACTUAL_FOUR_DIRECT_CODED_ORIGINAL_REVIEWS",
+  "reviewer": "/root",
+  "reviewed_at_utc": "2026-10-06T00:25:29+00:00",
+  "sealed_at_utc": "2026-10-06T00:27:11.180449+00:00",
+  "images": [
+    {
+      "role": "London_arrival_poststate_search",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\encoded-candidates-a01\\r0176-c-s04-arrival-poststate-search\\candidate-index.json",
+        "bytes": 4543,
+        "sha256": "2f4cf32435b5d1f4c487b50cee4664e2b74651ec5adb8030d0b7f780e229933c"
+      },
+      "original_encoded_png": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\encoded-candidates-a01\\r0176-c-s04-arrival-poststate-search\\candidate-00.png",
+        "bytes": 2593868,
+        "sha256": "ca4080a7646d1cf9645d3cdc4e67bec1975b15cf388b02caac3b77299cedc85a"
+      },
+      "frame_index_zero_based": 53700,
+      "PTS": 1790000,
+      "time_base": "1/1000",
+      "source_seconds": "1790",
+      "Root_directly_viewed_exact_original": true,
+      "actual_coded_date": "1067-05-21",
+      "common_day": 77,
+      "actual_paused_pixels": true,
+      "selected_army_label": 6689,
+      "supply_label": "101/300",
+      "attrition_label": "1% red skull",
+      "commander_portrait": "helmet",
+      "army_panel": "land/siege picture with 围攻",
+      "map": "Own6689 marker at London with siege flames; no remaining movement route visible",
+      "exact_native_event_PTS": false
+    },
+    {
+      "role": "terminal_original_first",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\encoded-candidates-a01\\r0176-c-s04-terminal-original-samples\\candidate-index.json",
+        "bytes": 8786,
+        "sha256": "38e7d4512446f89b1caff03143bda230ecdad3db4c7651d5651733b1498925f7"
+      },
+      "original_encoded_png": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\encoded-candidates-a01\\r0176-c-s04-terminal-original-samples\\candidate-00.png",
+        "bytes": 2637543,
+        "sha256": "ac981e720a8339acb6505e89cddc356581cafd91ecdfecf63e794878afe32acf"
+      },
+      "frame_index_zero_based": 56981,
+      "PTS": 1899367,
+      "time_base": "1/1000",
+      "source_seconds": "1899.367",
+      "Root_directly_viewed_exact_original": true,
+      "actual_coded_date": "1067-05-21",
+      "common_day": 77,
+      "actual_paused_pixels": true,
+      "selected_army_label": 6689,
+      "supply_label": "101/300",
+      "attrition_label": "1% red skull",
+      "commander_portrait": "helmet",
+      "army_panel": "land/siege picture with 围攻",
+      "map": "Own6689 marker at London with siege flames; no remaining movement route visible",
+      "exact_native_event_PTS": false
+    },
+    {
+      "role": "terminal_original_middle",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\encoded-candidates-a01\\r0176-c-s04-terminal-original-samples\\candidate-index.json",
+        "bytes": 8786,
+        "sha256": "38e7d4512446f89b1caff03143bda230ecdad3db4c7651d5651733b1498925f7"
+      },
+      "original_encoded_png": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\encoded-candidates-a01\\r0176-c-s04-terminal-original-samples\\candidate-01.png",
+        "bytes": 2605851,
+        "sha256": "a3125cf7198edee6be87f1f267916edba85b0571a0b26ad7227f6053e810b05e"
+      },
+      "frame_index_zero_based": 57161,
+      "PTS": 1905367,
+      "time_base": "1/1000",
+      "source_seconds": "1905.367",
+      "Root_directly_viewed_exact_original": true,
+      "actual_coded_date": "1067-05-21",
+      "common_day": 77,
+      "actual_paused_pixels": true,
+      "selected_army_label": 6689,
+      "supply_label": "101/300",
+      "attrition_label": "1% red skull",
+      "commander_portrait": "helmet",
+      "army_panel": "land/siege picture with 围攻",
+      "map": "Own6689 marker at London with siege flames; no remaining movement route visible",
+      "exact_native_event_PTS": false
+    },
+    {
+      "role": "actual_last_encoded_frame_date_unknown",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\encoded-candidates-a01\\r0176-c-s04-terminal-original-samples\\candidate-index.json",
+        "bytes": 8786,
+        "sha256": "38e7d4512446f89b1caff03143bda230ecdad3db4c7651d5651733b1498925f7"
+      },
+      "original_encoded_png": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\encoded-candidates-a01\\r0176-c-s04-terminal-original-samples\\candidate-02.png",
+        "bytes": 2620202,
+        "sha256": "7d9f090d3fbf0636f2924178364a5172db3a9cad7d3ddc18eaf1a80e73be0ec9"
+      },
+      "frame_index_zero_based": 57340,
+      "PTS": 1911333,
+      "time_base": "1/1000",
+      "source_seconds": "1911.333",
+      "Root_directly_viewed_exact_original": true,
+      "actual_coded_date": "1067-05-21",
+      "common_day": 77,
+      "actual_paused_pixels": true,
+      "selected_army_label": 6689,
+      "supply_label": "101/300",
+      "attrition_label": "1% red skull",
+      "commander_portrait": "helmet",
+      "army_panel": "land/siege picture with 围攻",
+      "map": "Own6689 marker at London with siege flames; no remaining movement route visible",
+      "exact_native_event_PTS": false
+    }
+  ],
+  "actual_terminal": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\terminal.json",
+    "bytes": 6937,
+    "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+  },
+  "closed_recorder": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+    "bytes": 1079,
+    "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+  },
+  "unique_four_media_audit": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 12162,
+    "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a"
+  },
+  "closed_raw_reported_identity_reused_without_read_hash": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+    "bytes": 2754943503,
+    "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+  },
+  "Root_notes": "Root actually directly viewed all four exact original1920x1080 coded PNGs. All show1067May21/paused/Main6689/helmetportrait/S101300/redskull1%/围攻/own6689 London siege marker with flames. Topbar6696 is not asserted as native all-player army strength. Terminalfirst/middle/last correspond to raw last360 sourceframes56981..57340 and distinct natural water/flame context; movement/combat/casualty action not claimed. Actual first arrival interval remains(75,77] from source-four, exact native event PTS/tickNULL. The1790s sample is a coded poststate, not native arrival-event synchronization. Endpoint1percent attrition is a getter rather than an applied death ledger. Source first/mid/last samples accepted only for independent historical replay of paused C London poststate, subject to final narration/overlay row review.",
+  "context_accepted_for_independent_historical_replay": true,
+  "final_story_render_approved": false,
+  "continuous_clean_span": false,
+  "continuous_movement_action_verified": false,
+  "human_full_1x_view_listen": false,
+  "human_signoff": false,
+  "new_RAW_read_stat_hash_probe_decode": 0
+}

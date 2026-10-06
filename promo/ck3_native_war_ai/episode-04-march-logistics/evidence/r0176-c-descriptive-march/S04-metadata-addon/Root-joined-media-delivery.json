@@ -1,0 +1,83 @@
+{
+  "schema": "episode04-C-S04-actual-media-and-Root-encoded-review-append-v1",
+  "created_utc": "2026-10-06T00:30:50.838979+00:00",
+  "state": "SOLE_FOUR_MEDIA_CHECKS_TERMINAL12S_AND_ROOT_FOUR_ORIGINAL_SAMPLE_REVIEW_COMPLETE",
+  "actual_machine_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\ROOT-DELIVERY-a01.json",
+    "bytes": 21267,
+    "sha256": "ed5c944ca53bd53bcb7accee0250324854f3fbe764700e8f019d2892b32e97b1"
+  },
+  "unique_four_audit_report": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 12162,
+    "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a"
+  },
+  "actual_closed_terminal": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+    "bytes": 1079,
+    "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+  },
+  "source_RAW_identity_reused_no_access": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+    "bytes": 2754943503,
+    "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+  },
+  "actual_Root_original_encoded_review_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-S04-four-actual-coded-review-a01\\receipt.json",
+    "bytes": 7796,
+    "sha256": "c1b2f1120b643981517391122aa078b36f15e3249355851a651993f27179b4af"
+  },
+  "Root_confirmed_encoded_sample_dates": [
+    "1067-05-21",
+    "1067-05-21",
+    "1067-05-21",
+    "1067-05-21"
+  ],
+  "Root_confirmed_common_day": 77,
+  "Root_confirmed_context": "paused/Main6689/helmetportrait/S101300/redskull1%/围攻/London own6689 siege marker",
+  "Root_accepted_independent_historical_replay_context": true,
+  "actual_terminal_native_source_pin_from_Root_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\terminal.json",
+    "bytes": 6937,
+    "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+  },
+  "actual_terminal12s_window_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\ROOT-DELIVERY-a01.json",
+    "bytes": 5378,
+    "sha256": "6e477b4ef422ad9d756377d16d0cf3d4866ef95dc63e67ae2881368863cd3e61"
+  },
+  "actual_terminal12s_window_report": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\windows-a01\\c-s04-actual-terminal-state-last360\\report-a01.json",
+    "bytes": 8549,
+    "sha256": "8e86993a9465be0c9c32bbaeb7dc78d9e2bc10c700c85404714d8a8c46437208"
+  },
+  "actual_terminal12s_window_clip_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\windows-a01\\c-s04-actual-terminal-state-last360\\candidate.mp4",
+    "bytes": 16400449,
+    "sha256": "bac1ca7c53f24cff203de3e9e248c6043d45083056e74087c529ec399f62e597"
+  },
+  "actual_terminal360_source_frame_map": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\windows-a01\\c-s04-actual-terminal-state-last360\\source-to-clip-frame-map.csv",
+    "bytes": 14507,
+    "sha256": "90cde1cedb14c96594df41c4ce134a0789c73bfbf635341e5b3bef926555826d"
+  },
+  "original_tail_reused_for_terminal_last_sample": true,
+  "first_arrival_interval": {
+    "source": "Root actual review note/source-four",
+    "common_day_interval": "(75,77]",
+    "exact_native_event_frame_or_tick": null
+  },
+  "limits": {
+    "samples_are_not_whole360_content_review": true,
+    "continuous_clean_span": false,
+    "continuous_movement_action_verified": false,
+    "full_human_1x_view_listen": false,
+    "human_signoff": false,
+    "final_story_render_approved": false,
+    "new_RAW_read_stat_hash_probe_decode": 0,
+    "new_visual_repeat": 0,
+    "old_media_reaudit": 0,
+    "SDK_UI_Game_bus_Git": 0
+  },
+  "prior_machine_and_Agent_pending_receipts_preserved_unchanged": true
+}

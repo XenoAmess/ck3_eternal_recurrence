@@ -1,0 +1,129 @@
+{
+  "schema": "episode04-C-S04-dynamic-candidate-delivery-v1",
+  "at": "2026-10-06T00:24:51.040470+00:00",
+  "state": "PASS_MACHINE_CANDIDATES_ROOT_CONTENT_PENDING",
+  "plan": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\PLAN-a01.json",
+    "bytes": 347670,
+    "sha256": "301a4b1b6e4f74599528f51c56a8d7431bfa6595decd615ad75e8cc08a05e95a"
+  },
+  "ownership": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\MEDIA-OWNERSHIP-a01.json",
+    "bytes": 496,
+    "sha256": "e6976299b907f9c86bcd0ec696c24ddfea77ea1ed6ae0e407686a307f8968ee5"
+  },
+  "script": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\build_closed_C_S04_terminal_window_a01.py",
+    "bytes": 17825,
+    "sha256": "02213a236b11afadb4bb01b691bad540d90faa52fceb20f17140b310a2364742"
+  },
+  "actual_binary_pins": {
+    "ffmpeg": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    },
+    "ffprobe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "bytes": 222026240,
+      "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+    }
+  },
+  "results": [
+    {
+      "id": "C-S04-actual-terminal-state-last360",
+      "state": "PASS_MACHINE_CONDITIONS_ROOT_CONTENT_PENDING",
+      "clip": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\windows-a01\\c-s04-actual-terminal-state-last360\\candidate.mp4",
+        "bytes": 16400449,
+        "sha256": "bac1ca7c53f24cff203de3e9e248c6043d45083056e74087c529ec399f62e597"
+      },
+      "report": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\windows-a01\\c-s04-actual-terminal-state-last360\\report-a01.json",
+        "bytes": 8549,
+        "sha256": "8e86993a9465be0c9c32bbaeb7dc78d9e2bc10c700c85404714d8a8c46437208"
+      },
+      "candidate_frames": [
+        {
+          "position": "first",
+          "clip_frame_zero_based": 0,
+          "clip_pts": 0,
+          "clip_time_base": "1/15360",
+          "clip_seconds": "0",
+          "source_frame_zero_based": 56981,
+          "source_pts": 1899367,
+          "source_time_base": "1/1000",
+          "source_seconds": "1899.367",
+          "PNG_identity": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\windows-a01\\c-s04-actual-terminal-state-last360\\frame-00.png",
+            "bytes": 2270431,
+            "sha256": "2de105ca65f5da9c0184d9aacf78dc79ef559471330349efaeaf616cbd424a3e"
+          },
+          "Root_direct_content_review": null,
+          "native_event_exact_PTS": false
+        },
+        {
+          "position": "middle",
+          "clip_frame_zero_based": 180,
+          "clip_pts": 92160,
+          "clip_time_base": "1/15360",
+          "clip_seconds": "6",
+          "source_frame_zero_based": 57161,
+          "source_pts": 1905367,
+          "source_time_base": "1/1000",
+          "source_seconds": "1905.367",
+          "PNG_identity": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\windows-a01\\c-s04-actual-terminal-state-last360\\frame-01.png",
+            "bytes": 2577861,
+            "sha256": "3e2619fbc8f07abd8c3eb0d3da9d04e5a0bf5e628dac998242357ecba822e3d5"
+          },
+          "Root_direct_content_review": null,
+          "native_event_exact_PTS": false
+        },
+        {
+          "position": "last",
+          "clip_frame_zero_based": 359,
+          "clip_pts": 183808,
+          "clip_time_base": "1/15360",
+          "clip_seconds": "11.96666666666666666666666667",
+          "source_frame_zero_based": 57340,
+          "source_pts": 1911333,
+          "source_time_base": "1/1000",
+          "source_seconds": "1911.333",
+          "PNG_identity": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\windows-a01\\c-s04-actual-terminal-state-last360\\frame-02.png",
+            "bytes": 2631867,
+            "sha256": "047111060e57fad5f23db0d26c1365c036824f583f5e4073bd7a1de0aed0ac27"
+          },
+          "Root_direct_content_review": null,
+          "native_event_exact_PTS": false
+        }
+      ]
+    }
+  ],
+  "experiment_boundaries": {
+    "same_C": true,
+    "experiment_clock_and_budget_not_reset": true,
+    "source_media_PTS_per_segment_independent": true,
+    "C_native_endpoint_reported_by_Root": true,
+    "C_encoded_terminal_content_pending": true,
+    "tail_game_date_pending_actual_pixels": true,
+    "winner": null
+  },
+  "claims": {
+    "UTC_to_native_event_exact_PTS": false,
+    "clean_spans": false,
+    "human_1x": false,
+    "signoff": false,
+    "film_approved": false,
+    "dynamic_loop": false,
+    "PNG_duration_filler": false,
+    "native_event_time_remapped": false
+  },
+  "source_raw_hash_reads": 0,
+  "source_full_probes": 0,
+  "LIVE_media_SDK_UI_Screen_bus_Git_OneDrive": 0,
+  "parent_worker_threads": 1,
+  "codec_threads_each": 1,
+  "filter_threads_each": 1
+}
