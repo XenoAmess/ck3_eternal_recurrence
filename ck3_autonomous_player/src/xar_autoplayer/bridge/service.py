@@ -18,6 +18,7 @@ from .army_post_refill_land_supply_rate_projection import project_observed_post_
 from .army_selected_refill_monthly_assembly import project_selected_refill_monthly_assemblies_v1
 from .army_scoped_ordered_refill_projection import project_scoped_ordered_refills_v1
 from .army_daily_assault_active_table_projection import project_current_daily_assault_group_inputs_many_v1
+from .army_ordered_refill_besieging_assault_projection import project_ordered_refill_besieging_assaults_v1
 from .army_post_refill_besieging_current_projection import project_post_refill_besieging_current_v1
 from .army_fixed_chunk0_preparation_projection import project_fixed_chunk0_preparations_v1
 from .army_prepare_scoped_ordered_refill_assembly import project_fixed_chunk0_prepare_scoped_ordered_refills_v1
@@ -4543,6 +4544,8 @@ class GameplayBridgeService:
                 preparations,
             "current_daily_assault_group_inputs_v1":
                 project_current_daily_assault_group_inputs_many_v1(selected_rows),
+            "same_input_conditional_ordered_refill_besieging_assault_v1":
+                project_ordered_refill_besieging_assaults_v1(selected_rows),
         }
 
     def query_campaign_root_context_v1(

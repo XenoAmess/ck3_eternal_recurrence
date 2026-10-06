@@ -111,6 +111,20 @@ ScopedOrderedRefillBindings12003 BindScopedOrderedRefillInputs12003(
   return b;
 }
 
+game::ArmyOrderedRefillPersistentV1 ReadOrderedRefillPersistent12003(
+    const ck3_12002::ArmyBindings &b, std::int32_t id) {
+  game::ArmyOrderedRefillPersistentV1 persistent{}; persistent.persistent_regiment_id = id;
+  void *object = Resolve(b.persistent_regiment_storage_slot, id);
+  if (!object || Load<std::uint32_t>(object, 0x14) != 0x52656769U) {
+    persistent.unavailable_reason = "requested_persistent_regiment_unresolved";
+  } else {
+    persistent.prepared_fraction_raw = Load<std::int64_t>(object, 0x148);
+    for (std::int32_t index = 0; index < 7; ++index)
+      persistent.chunks.push_back(Chunk(b, static_cast<std::byte *>(object) + 0x18 + index * 0x24, index));
+  }
+  return persistent;
+}
+
 game::ArmyScopedOrderedRefillInputsV1 ReadScopedOrderedRefillInputs12003(
     const ck3_12002::ArmyBindings &b, void *army, void *unit,
     std::span<const game::ArmyRegimentReplenishmentRecordsSnapshotV1> data) {
@@ -148,17 +162,9 @@ game::ArmyScopedOrderedRefillInputsV1 ReadScopedOrderedRefillInputs12003(
     if (Load<std::int32_t>(ids, static_cast<std::size_t>(index) * 4) == r.subject_carmy_id)
       r.army_refresh_occurrence_indices.push_back(index);
   for (const auto id : requested) {
-    game::ArmyOrderedRefillPersistentV1 persistent{}; persistent.persistent_regiment_id = id;
-    void *object = Resolve(b.persistent_regiment_storage_slot, id);
-    if (!object || Load<std::uint32_t>(object, 0x14) != 0x52656769U) {
-      persistent.unavailable_reason = "requested_persistent_regiment_unresolved"; partial = true;
-    } else {
-      persistent.prepared_fraction_raw = Load<std::int64_t>(object, 0x148);
-      for (std::int32_t index = 0; index < 7; ++index) {
-        persistent.chunks.push_back(Chunk(b, static_cast<std::byte *>(object) + 0x18 + index * 0x24, index));
-        partial = partial || !persistent.chunks.back().context_unavailable_reason.empty();
-      }
-    }
+    auto persistent = ReadOrderedRefillPersistent12003(b, id);
+    partial = partial || !persistent.unavailable_reason.empty();
+    for (const auto &chunk : persistent.chunks) partial = partial || !chunk.context_unavailable_reason.empty();
     r.persistent_regiments.push_back(std::move(persistent));
   }
   r.status = partial ? "partial" : "available";

@@ -19,6 +19,8 @@ struct ScopedOrderedRefillBindings12003 {
 };
 ScopedOrderedRefillBindings12003 BindScopedOrderedRefillInputs12003(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
+game::ArmyOrderedRefillPersistentV1 ReadOrderedRefillPersistent12003(
+    const ck3_12002::ArmyBindings &, std::int32_t persistent_full_id);
 game::ArmyScopedOrderedRefillInputsV1 ReadScopedOrderedRefillInputs12003(
     const ck3_12002::ArmyBindings &, void *army, void *unit,
     std::span<const game::ArmyRegimentReplenishmentRecordsSnapshotV1> data);

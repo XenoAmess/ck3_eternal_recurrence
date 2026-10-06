@@ -1019,6 +1019,11 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       result.scoped_ordered_refill_inputs_v1 =
           ck3_12003::ReadScopedOrderedRefillInputs12003(bindings, army, unit, records);
     }
+    if (bindings.ordered_besieging_refill_bindings.enabled && result.current_province_besieging_contributors_v1) {
+      g_army_strength_query_diagnostic_v1.reader.store("ordered_besieging_refill_inputs_readonly");
+      result.ordered_besieging_refill_inputs_v1 = ck3_12003::ReadOrderedBesiegingRefillInputs12003(
+          bindings, army, unit, *result.current_province_besieging_contributors_v1);
+    }
   }
   return result;
 }

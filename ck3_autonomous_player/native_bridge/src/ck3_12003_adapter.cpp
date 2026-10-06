@@ -336,6 +336,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     rate.loaded_divisor_floor_raw = reinterpret_cast<const std::int64_t *>(image_base + 0x5C68F68);
     result.armies.scoped_ordered_refill_bindings =
         ck3_12003::BindScopedOrderedRefillInputs12003(image_base, executable_sha256);
+    result.armies.ordered_besieging_refill_bindings =
+        ck3_12003::BindOrderedBesiegingRefillInputs12003(image_base, executable_sha256);
   }
   if (result.phase.advantage.enabled) {
     // Constructor-faith closure is proven only for exact .3. Keep the .2
