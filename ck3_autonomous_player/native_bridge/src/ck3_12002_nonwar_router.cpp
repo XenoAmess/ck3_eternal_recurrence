@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/faction_gift_mitigation_async_glue_v1.hpp"
+#include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
 #include "active_scheme_sway_private_transport_v1.hpp"
 #include "active_scheme_sway_formal_private_transport_v1.hpp"
 #include "ck3_12002_activity_feast_router.hpp"

@@ -35,6 +35,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--vs-install", type=Path)
     result.add_argument("--configuration", choices=CONFIGURATIONS, default="Release")
     result.add_argument("--jobs", type=int, default=64)
+    result.add_argument("--keep-going", action="store_true", help="Collect independent Ninja build failures in one batch")
     result.add_argument("--target", action="extend", nargs="+")
     result.add_argument("--defender-external-candidate", help="Explicit caller label for this external project candidate source")
     result.add_argument("--cmake-define", action="append", default=[], metavar="NAME=VALUE")
@@ -135,8 +136,11 @@ def configure_command(args: argparse.Namespace, tools: dict[str, str]) -> list[s
 
 def build_command(args: argparse.Namespace, tools: dict[str, str]) -> list[str]:
     targets = args.target or ["xar_ck3_bridge", "xar_ck3_bridge_injector"]
-    return [tools["cmake"], "--build", str(args.build_dir), "--parallel", str(args.jobs),
-            "--target", *targets]
+    command = [tools["cmake"], "--build", str(args.build_dir), "--parallel", str(args.jobs),
+               "--target", *targets]
+    if args.keep_going:
+        command.extend(["--", "-k", "0"])
+    return command
 
 
 def run_logged(command: list[str], log: Path, environment: dict[str, str], cwd: Path) -> None:
