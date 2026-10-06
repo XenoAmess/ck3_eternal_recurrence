@@ -92,3 +92,35 @@ Fresh loaded-target work adds **408 bytes =272 code+120 pdata+16 static data**. 
 `ROOT-MODE-AND-FIRST-CHILD-READ-REQUEST.json` is the next bounded Root-only plan: one byte atM+5D1DADC, then only the selected ordinary header's data8/count4. Modes2/4 stop at their exact named source entry instead. A realempty list requires13 bytes total and no child. A positive list additionally requests only firstchild pointer, vptr and its58/60/C8 targets (40 bytes), maximum53 bytes total. It does not dump all rule children or create another predicate caller. The actual source-selected next input, not a fake zero fixture or a general trigger catalogue, decides further work.
 
 Readiness remains **source-only loaded Rule43 applicability and conjunction shell closure**, with actual mode/list/child admission and prior root-scope validation/CharacterScriptContext association still explicit. No accessor implementation, build, test or policy promotion is delivered by this source continuation. Root's g79 runtime/source remains frozen and untouched.
+
+## Actual single child reference prefix — October6 08:20 onward
+
+Root's next53-byte read at2026-10-06 00:20:41.794694 UTC is `g2-resume-20261006/rule43-mode-first-child-r0048-once.json`. It is bound to pausedframe815/public32/native31/rawdate53288232/PID4692. Actualmode is **0**; the selected Rule43+40 array is2991A4164E0 and its signedcount is **1**. The sole physical child is29919C8B450 with actualvptr **RVA492B470**. Actualslots58→855AB0 (reused without source reread),60→**9CFEE0**,C8→**3730940**. No future restored-session frame is inferred from this receipt.
+
+9CFEE0 complete67B first calls its actual virtual58, zeroes the twoQWORD outputmask, and sets bit(expectedWORD-1) only if expectedWORD is nonzero. Here the observed58 target is the already captured literalzero855AB0, so the actual child's mask isalso0/0 and its372B4E0 applicability is source-definedtrue. This still does not bypass preceding root-scope validation.
+
+3730940 complete171B is a **reference wrapper**. It reads the actualreferentQWORD atchild+40 and checks physicalDWORD**child+74 !=0** (headerat+68). Any nonzero value, including negative, takes the exact unclosed37B6C50 path with referent+E0, a local outputenvironment andchild+68 argument header. A returned environment markedBYTE+4=FF or without QWORD+20 defaults nestedfalse. No parameter binding, variant value or predicate outcome is manufactured.
+
+When actualDWORD74 iszero, the wrapper directly selects **QWORD[referent+110]**. Null means nestedfalse. Nonnull goes through the same cached **372E020(nestedTrigger,originalEvaluationState,false)**. The wrapper returns the exact equality comparison of **rawBYTEchild+80** with nestedAL; when nestedfalse isdefaulted it compares that byte withzero. Preserve the byte0..255 rather than coercing it toBoolean; no expectedtrue default is supplied. The always-present370F2C0 frame-construction call consumes copied child10/20 records; its output does not supply a scalar to the direct-reference branch. The370F200 result's countC is decremented only if nonzero during cleanup. Neither helper is called or expanded by this source-only observer plan.
+
+```mermaid
+flowchart TD
+  F[Rootframe815 mode0 /actualRule43 childcount1] --> C[Onlychild29919C8B450 vptr492B470]
+  C --> A[Reused58 returns0 /9CFEE0 createszero mask]
+  A --> AP[Childapplicabletrue after separate rootvalidation]
+  AP --> P{ActualDWORDchild74 !=0}
+  P -- true --> B[37B6C50 referentE0/localenvironment/header68]
+  B -. exact binding producer unknown .-> X[Precise dependency, no callback]
+  P -- false --> R[QWORDchild40 referent /QWORDreferent110 nestedtrigger]
+  R --> N{Actual nestedpointer null}
+  N -- true --> Z[Nestedfalse]
+  N -- false --> EV[372E020 nested /sameoriginalstate]
+  EV -. actual nested targets/operands unknown .-> V[NestedAL]
+  Z --> EQ[Exact rawBYTEchild80 equality]
+  V --> EQ
+  EQ --> AND[Singlechild decides sourceAND; rootscope/context still required]
+```
+
+This actual-child addition is **274B =238 code+36 pdata**. The complete current Rule43 source lane now totals **850B =654 code+180 pdata+16 static data**. Reused855AB0 and earlier bodies are not reread or charged again. No broader children, callee cascade or trigger catalogue was captured.
+
+`ROOT-FIRST-CHILD-REFERENCE-READ-REQUEST.json` asks Root for a **new paused receipt**: childDWORD74(4B), referentQWORD40(8B), rawcomparisonBYTE80(1B), total13B. Any nonzero74 stops at the exact37B6C50 source dependency. Actual74zero then demands only referentQWORD110(8B); null requires21B total. A nonnull nestedtrigger adds itsvptr and58/60/C8 targets32B, maximum53B. After Root's session restoration, neither the old frame nor source-specific operands are silently treated as current. No wholeRule43 Boolean, fullperson/Entry/live promotion, source implementation, build or test is claimed.
