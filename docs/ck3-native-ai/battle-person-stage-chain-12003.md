@@ -1302,3 +1302,78 @@ branch. Held291F260 ranks, qualifier/list scratch and dynamic/cold/negative
 branches remain conditional; known-zero branches release their undemanded
 inputs. Full final preparation also needs the remaining actual caller. This
 is an input plan, not an exhaustive person-field catalog or a new live gate.
+
+## Source-only following2921350 numerical groups (2026-10-06)
+
+The next source closure is the actual `291CDA3 ->2921350` call, following
+`2920D60` and preceding `291CDAE ->2921020`. Its arguments are the preparation
+model `R13` and Character `R14`; the bounded prospective result is
+`post2921350_pre291CDA8`, requiring an explicit same-Character incoming
+`post2920D60_pre291CD9D` context. This research does not advance the current
+consumer across real Diac admission or rename its earlier verified frontier.
+
+`2C28030 ->2BF1600/2BF1410` collects tier1 Title pointers in native DFS order,
+deduplicating the first full physical pointer. Its Title source is current
+`Character1C0+1E0` or actual inline default5459C88; null carrier is not known
+empty. `230F900` maps each collected Title to Province338, and the caller
+admits magic85C=`50726F76`. Duplicate Province occurrences survive distinct
+Title pointers. Manager slot5C671A8 supplies signed count5C=N. Source-proved
+normal temporary constructors, final slots20 and the existing complete
+`D879E0` typed copy construct N empty numerical group PropertyContainers.
+
+For every ordered Province7A8/+7B4 DWORD occurrence, resolve the full-ID
+opaque source object through5D1EC90/fallback5D1EC48. Its Definition88's signed
+field10 is the native group index. `2560430` probes objectC8/D4/D8 with the
+Province DWORD10 FNV1a32 key; actual map-absent gives operand0, while a found
+payload supplies signed Q64+20. `2560500` scans DefinitionED0/EDC stride548
+thresholds540 in order: first strictly greater selects ordinal-1, otherwise
+count-1. Valid tiers select actual row380 PC; invalid index uses guarded
+5D65B00. A demanded cold `2560620` result remains the precise local gap;
+valid tiers do not demand this unused guard, and an actual initialized
+fallback PC is independently usable.
+
+Inner `2303120(groupPC, tierPC,100000)` retains the existing exact numerical
+merge contract, source order and repeated occurrences. Each nonempty group,
+in manager index order, supplies one outer `291B3D0` unit100000 request into
+model+10. Key count0 skips before labels; a present zero-valued key still
+creates an outer occurrence. Unread or negative counts are not known empty.
+Numerical group outputs require all their actual contributors; sparse rows
+do not prove that an unseen later occurrence cannot alter the same group.
+
+```mermaid
+flowchart TD
+  A[Explicit post2920D60 context and Character] --> T[Ordered DFS; first Title-pointer dedup]
+  T --> P[Prov magic admission; Province duplicates retained]
+  M[Loaded manager; N empty typed-copy groups] --> G[Inner2303120 numerical merges]
+  P --> R[Ordered Province source IDs; Definition group index]
+  R --> S[Actual map operand; strict threshold ordinal-minus1]
+  S -->|valid tier or initialized fallback| G
+  S -. cold2560620 result unknown .-> U[Local missing numerical PC]
+  G --> B[Nonempty groups; outer291B3D0 unit requests in index order]
+  B --> F[Proposed post2921350_pre291CDA8]
+  D[Earlier actual Diac admission and fresh stage association] -. still required .-> A
+  F -. next caller unknown .-> N[2921020 at291CDAE]
+```
+
+The complete new helper body `[2921350,2921AA7)` is1879B, binary SHA-256
+`c3ea47afc3d2f421580e78ece44fed103f74f9bfd6a3fef6d5a7d43f7789412a`.
+The frozen1.20.0.3/Steam25652598 image SHA remains
+`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
+The exclusive source packet is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-stage-chain/following2921350-source/`.
+Its tree, minimum raw-field proposal and future frozen fixture plan cover
+nonempty Province/tier-derived numerical modifiers that can affect the six
+modeled skills. They release a concrete observer seam, not a descriptor-only
+completion claim. The proposal is not a genuine DTO/emitter or a new test.
+
+Physical reads total5273B:4005 unique function-span,44 leaf alignment,
+1200 exact `.pdata`,24 static slots, within the declared6000B budget.
+Cached caller, merge/copy kernels and existing constructors receive0 new
+source credit. Three absent leaf `.pdata` harness-RED attempts are preserved
+before bounded leaf captures; `2BF1410`'s split continuation is included.
+No captured bytes were repeated after the pause; no whole EXE hash/scan,
+unwind reads, allocator/string catalogue or constructor write audit occurred.
+Research only: tests0, native builds0, local game/Steam/SDK/UI/pipe/process
+inspection0, deployment0, native qualification0 and new game days0. Full
+person, full Entry, real Rule43 admission and transfer-to-Entry association
+remain incomplete. Oct6/W41 reporting fields are sent to Root for merging.
