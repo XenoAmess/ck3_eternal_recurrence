@@ -19,6 +19,7 @@ from .army_selected_refill_monthly_assembly import project_selected_refill_month
 from .army_scoped_ordered_refill_projection import project_scoped_ordered_refills_v1
 from .army_post_refill_besieging_current_projection import project_post_refill_besieging_current_v1
 from .army_fixed_chunk0_preparation_projection import project_fixed_chunk0_preparations_v1
+from .army_prepare_scoped_ordered_refill_assembly import project_fixed_chunk0_prepare_scoped_ordered_refills_v1
 
 from .driver import (
     BridgeUnavailableError,
@@ -4416,13 +4417,19 @@ class GameplayBridgeService:
         army_ids: list[int],
         *,
         expected_revision: int | None = None,
+        ordered_refill_entry_mode: str = "observed_prepared",
     ) -> dict[str, object]:
         """Read a requested subset of native base aggregates atomically.
 
         This is deliberately not a combat prediction: soldier totals and the
         AI regiment base-power lane omit terrain, commanders, counters, and
         other encounter context.
+
+        ordered_refill_entry_mode selects the captured prepared148 input or
+        same-query conditional fixed-chunk0 preparation for the scoped model.
         """
+        if ordered_refill_entry_mode not in ("observed_prepared", "fixed_chunk0_prepare"):
+            raise ValueError("unknown ordered_refill_entry_mode")
         requested_ids = normalize_army_strength_request_ids(army_ids)
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True:
@@ -4488,6 +4495,12 @@ class GameplayBridgeService:
             row, selected_physical_chunks=assembly["selected_refill_union"]["physical_chunks"]
             if isinstance(assembly.get("selected_refill_union"), dict) else None)
             for row, assembly in zip(selected_rows, selected_refill_assemblies)]
+        preparations = project_fixed_chunk0_preparations_v1(selected_rows)
+        ordered_refills = (
+            project_fixed_chunk0_prepare_scoped_ordered_refills_v1(selected_rows, preparations)
+            if ordered_refill_entry_mode == "fixed_chunk0_prepare"
+            else project_scoped_ordered_refills_v1(selected_rows)
+        )
         return {
             **result,
             "schema_version": 1,
@@ -4513,6 +4526,7 @@ class GameplayBridgeService:
                 "backend_id": snapshot.get("backend_id"),
             },
             "army_ids": requested_ids,
+            "ordered_refill_entry_mode": ordered_refill_entry_mode,
             "scope_army_ids": scope_ids,
             "army_strengths": selected_rows,
             "same_input_replenishment_v1": project_observed_replenishment_v1(selected_rows),
@@ -4522,10 +4536,10 @@ class GameplayBridgeService:
             "same_input_conditional_selected_refill_monthly_assembly_v1":
                 selected_refill_assemblies,
             "same_input_conditional_scoped_ordered_refill_current_v1":
-                project_scoped_ordered_refills_v1(selected_rows),
+                ordered_refills,
             "same_input_conditional_post_refill_besieging_current_v1": conditional_besieging,
             "same_input_conditional_fixed_chunk0_preparation_v1":
-                project_fixed_chunk0_preparations_v1(selected_rows),
+                preparations,
         }
 
     def query_campaign_root_context_v1(

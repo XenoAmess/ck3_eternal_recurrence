@@ -2542,11 +2542,16 @@ def create_server(
     def ck3_query_army_strengths(
         army_ids: list[PublicCUnitId],
         expected_revision: int | None = None,
+        ordered_refill_entry_mode: Literal["observed_prepared", "fixed_chunk0_prepare"] = "observed_prepared",
     ) -> dict[str, object]:
-        """Read soldiers and AI base power; never interpret them as win odds."""
+        """Read soldiers and AI base power; never interpret them as win odds.
+
+        Choose the observed or conditional preparation entry for scoped refill.
+        """
         return service.query_army_strengths(
             army_ids,
             expected_revision=expected_revision,
+            ordered_refill_entry_mode=ordered_refill_entry_mode,
         )
 
     @server.tool(annotations=read_only_tool)
