@@ -79,3 +79,33 @@ flowchart TD
 ```
 
 Metadata-only exact lookup located `2AA2400..2AA2445`69B/unwind5135C74 and `2AA2550..2AA2883`819B/unwind5136288. `86E160` has no runtime-function record at its exact entry; held search probes bound its pdata-free gap between preceding end86E13B and next start86E1D0. The numeric direct entry needs at most112 instruction bytes through a real return, without reading preceding86E150 or the following function. Those bodies and the two rebuild continuation metadata records are the finite Stage B request in `STAGE-B-SOURCE-FIRST-PLAN.md`. Their semantics are still unknown; no model or new observer is designed from guessed growth capacity or physical scan extent.
+
+## Approved Stage B: matched value transfer and growth index
+
+Root approved Stage B after reading that finite plan. Its first capture used1000Bcode +8Bunwind +36Bnew pdata:1044 actual/unique bytes, zero duplicate file reads. Cumulative Stage A+B new reads are1351 bytes. `STAGE-B-READ-RECEIPT01.json` preserves actual reads, first code hashes, metadata reuse and each independently decoded exact address. There were no new test/build/game operations or source-read failures.
+
+Actual `2AA2400` copies resident hash and key into the immediately empty next record, writes its incremented control, initializes that destination's vector to literal-empty with allocator54DEB68, then calls held `C85A90(destination+10,resident+10)`. On the matched normal-return branch, the complete ordered resident references and raw header move to that successor; the source vector becomes empty. The caller then installs the new key/value in its original first slot. This proves the missing fast path without borrowing another record type.
+
+Actual `2AA2550` is the value-preserving insertion retry: its R9 pair carries keyDWORD at `+0` and a complete DWORD-reference vector at `+8`. Existing-key selection returns inserted=false. A direct empty or shifted slot receives the input vector through `C85A90`; general collisions preserve all scalar/vector exchanges, including the unsigned control comparison, reloading the displaced resident control after a lower-distance swap, byte increment and the asymmetric maximum-distance test. Empty completion increments occupied count once and returns the first selected slot. Overflow exchanges its carried pair with that first slot, invokes actual `2AA24D0`, then recursively retries `2AA2550` with the carried value. Initial retry growth instead invokes `86E160`/`2A9FC80` before recursively retrying the original pair. Required matched transfers empty the moved temporary; allocator cleanup internals stay outside this source package.
+
+The pdata-free numeric leaf `86E160..86E1D0` was captured contiguously through both actual returns,112B. With the actually used second argument1, it returns3 when wrap32(mask+1) interpreted signed is<=1; otherwise its BSR/shift arithmetic yields `max(3,ceil(log2(signed(mask+1)))+1)`. Signed returned index>=31 takes the already identified nonreturning exception boundary. Raw mask, byte distance/count and binary32 density remain the actual caller operands; no guessed capacity rule replaces them.
+
+```mermaid
+flowchart TD
+  N[Missing new key at nonempty stop] --> T{Next physical control0?}
+  T -->|yes| F[2AA2400 matched scalar/header transfer into successor]
+  T -->|no| C[Held caller general carry/swap through empty or overflow]
+  F --> R[Install requested key/value; occupiedcount+1]
+  C -->|empty| R
+  C -->|overflow| G[2AA24D0 exact growth index]
+  I[Initial growth] --> G
+  G -->|signedindex>=31| X[Excluded exception]
+  G -->|signedindex<31| E[2A9FC80 entry]
+  E -.-> U[2A9FC97 actual rebuild fragment unknown]
+  E -.-> V[2A9FDAD actual branch fragment unknown]
+  U -.-> P[2AA2550 value-preserving retry]
+  V -.-> P
+  P --> R
+```
+
+Stage B metadata locates the actual rebuild fragments `[2A9FC97,2A9FD95)`254B/unwind529D904 and `[2A9FDAD,2A9FDB3)`6B/unwind529D938. Their bodies remain unread. `STAGE-C-SOURCE-FIRST-PLAN.md` freezes260 code bytes plus8 header bytes, with independent fragment decoding and no intervening-hole capture. Growth's physical extent, rehash/reset semantics and full current-query collector plan remain the concrete next frontier. The ordinary matched no-growth transfer tree is source-closed; its new observer/model is still unimplemented and research-only.
