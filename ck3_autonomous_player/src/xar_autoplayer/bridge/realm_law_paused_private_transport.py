@@ -19,10 +19,57 @@ GROUPS = ("crown_authority", "succession_order_laws")
 STATUSES = {
     "candidate_kind_rejected", "already_active", "engine_blocked", "can_enact",
 }
+SUCCESSION_PROFILE_STATUSES = {"available", "absent", "unavailable"}
+SUCCESSION_PROFILE_KEYS = {
+    "order", "traversal", "rank", "division",
+    "primary_heir_minimum_share_raw", "primary_heir_minimum_share_scale",
+    "create_primary_tier_titles",
+}
+SUCCESSION_ORDERS = {
+    "inheritance", "election", "appointment", "theocratic", "company",
+    "generate", "generate_from_template", "player_heir", "noble_family",
+}
+SUCCESSION_TRAVERSALS = {"children", "dynasty_house", "dynasty"}
+SUCCESSION_RANKS = {"oldest", "youngest"}
+SUCCESSION_DIVISIONS = {"single_heir", "partition"}
+ROW_KEYS = {
+    "law_key", "active", "final_status", "final_can_enact",
+    "native_reason", "cost_raw",
+}
+SUCCESSION_ROW_KEYS = ROW_KEYS | {
+    "succession_profile_status", "succession_profile",
+}
+
+
+def _valid_optional_selector(value: object, choices: set[str]) -> bool:
+    # Null is the existing native optional-selector sentinel, not a guess.
+    return value is None or (isinstance(value, str) and value in choices)
+
+
+def _valid_succession_profile(row: Mapping[str, object]) -> bool:
+    status = row["succession_profile_status"]
+    profile = row["succession_profile"]
+    if not isinstance(status, str) or status not in SUCCESSION_PROFILE_STATUSES:
+        return False
+    if status != "available":
+        return profile is None
+    if not isinstance(profile, dict) or set(profile) != SUCCESSION_PROFILE_KEYS:
+        return False
+    share = profile["primary_heir_minimum_share_raw"]
+    return (
+        _valid_optional_selector(profile["order"], SUCCESSION_ORDERS)
+        and _valid_optional_selector(profile["traversal"], SUCCESSION_TRAVERSALS)
+        and _valid_optional_selector(profile["rank"], SUCCESSION_RANKS)
+        and _valid_optional_selector(profile["division"], SUCCESSION_DIVISIONS)
+        and type(share) is int and -(1 << 63) <= share < (1 << 63)
+        and type(profile["primary_heir_minimum_share_scale"]) is int
+        and profile["primary_heir_minimum_share_scale"] == 100000
+        and type(profile["create_primary_tier_titles"]) is bool
+    )
 
 
 def _valid_payload(value: object, *, revision: int, date_raw: int,
-                   actor_id: int) -> bool:
+                   actor_id: int, exact_ck3_build: str) -> bool:
     if not isinstance(value, dict) or set(value) != {
         "schema", "snapshot_revision", "date_raw", "actor_character_id",
         "cost_scale", "cost_slots", "groups",
@@ -45,19 +92,25 @@ def _valid_payload(value: object, *, revision: int, date_raw: int,
         rows = group["candidates"]
         if not isinstance(rows, list) or not 1 <= len(rows) <= 8:
             return False
+        profile_rows = (
+            exact_ck3_build == "1.20.0.3"
+            and expected_key == "succession_order_laws"
+        )
+        expected_row_keys = SUCCESSION_ROW_KEYS if profile_rows else ROW_KEYS
         keys: set[str] = set()
         active: list[str] = []
         for row in rows:
-            if not isinstance(row, dict) or set(row) != {
-                "law_key", "active", "final_status", "final_can_enact",
-                "native_reason", "cost_raw",
-            }:
+            if not isinstance(row, dict) or set(row) != expected_row_keys:
+                return False
+            if profile_rows and not _valid_succession_profile(row):
                 return False
             key = row["law_key"]
             if not isinstance(key, str) or not key or key in keys:
                 return False
             keys.add(key)
-            if type(row["active"]) is not bool or row["final_status"] not in STATUSES:
+            if (type(row["active"]) is not bool
+                    or not isinstance(row["final_status"], str)
+                    or row["final_status"] not in STATUSES):
                 return False
             if (type(row["final_can_enact"]) is not bool
                     or row["final_can_enact"] != (row["final_status"] == "can_enact")
@@ -139,7 +192,8 @@ def query_realm_law_final_terms_private_v1(
             or not _valid_payload(envelope.get("realm_law_final_terms"),
                                   revision=native_revision,
                                   date_raw=before["date_raw"],
-                                  actor_id=actor["character_id"])):
+                                  actor_id=actor["character_id"],
+                                  exact_ck3_build=provenance["exact_ck3_build"])):
         raise BridgeUnavailableError("private realm-law native payload malformed")
     after = driver.take_snapshot()
     if (after.get("paused") is not True or after.get("map_ready") is not True

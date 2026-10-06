@@ -6,6 +6,7 @@ struct CaptureContext {
   const private_law::RealmLawActiveCollectionAccess *access;
   const private_law::RealmLawFinalTerms12002Operations *operations;
   RealmLawReadback12002 *output;
+  std::string_view actual_executable_sha256;
 };
 bool Observe(void *opaque, std::size_t group, std::size_t index,
     std::uintptr_t native_law,
@@ -23,6 +24,11 @@ bool Observe(void *opaque, std::size_t group, std::size_t index,
       row.active != (value.terms.status == Status::already_active)) {
     context.output->failure = "native_law_cost_active_or_reason_unavailable";
     return false;
+  }
+  if (group == 1 && context.output->succession_profiles_12003_observed) {
+    context.output->succession_profiles_12003[index] =
+        ck3_12003::private_law::ReadRealmLawSuccessionProfile12003(
+            *context.access, native_law, context.actual_executable_sha256);
   }
   return true;
 }
@@ -56,14 +62,18 @@ bool CaptureRealmLawReadback12002(
     const private_law::RealmLawActiveCollectionAccess &access,
     std::uintptr_t module_base, const RealmLawReadbackFrame12002 &frame,
     const private_law::RealmLawFinalTerms12002Operations &operations,
-    RealmLawReadback12002 &output) noexcept {
+    RealmLawReadback12002 &output,
+    std::string_view actual_executable_sha256) noexcept {
   try {
     output = {};
     output.frame = frame;
+    output.succession_profiles_12003_observed =
+        actual_executable_sha256 == ck3_12003::kExecutableSha256;
     if (frame.snapshot_revision == 0 || frame.actor_character_id <= 0 || module_base == 0) {
       output.failure = "native_law_frame_unavailable"; return false;
     }
-    CaptureContext context{&access, &operations, &output};
+    CaptureContext context{&access, &operations, &output,
+        actual_executable_sha256};
     if (!private_law::ReadRealmLawCandidateCollectionWithObserver12002(
         access, module_base, &context, &Observe, output.collection)) {
       if (output.failure.empty()) {
@@ -108,7 +118,12 @@ std::string SerializeRealmLawReadback12002(const RealmLawReadback12002 &readback
       for (std::size_t slot = 0; slot < terms.terms.cost_raw.size(); ++slot) {
         if (slot != 0) out += ','; out += std::to_string(terms.terms.cost_raw[slot]);
       }
-      out += "]}";
+      out += "]";
+      if (g == 1 && readback.succession_profiles_12003_observed) {
+        ck3_12003::private_law::AppendRealmLawSuccessionProfileFields12003(
+            out, readback.succession_profiles_12003[i]);
+      }
+      out += "}";
     }
     out += "]}";
   }

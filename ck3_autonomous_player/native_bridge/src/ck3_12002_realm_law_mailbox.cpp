@@ -11,6 +11,7 @@ struct Query {
   QueryMailboxEnvelope envelope{};
   CoreBindings bindings{};
   std::uintptr_t module_base = 0;
+  std::string_view actual_executable_sha256{};
   RealmLawReadback12002 readback{};
 };
 bool ReadMemory(void *, std::uintptr_t address, void *output, std::size_t size) noexcept {
@@ -36,7 +37,8 @@ bool ExecuteRealmLawPausedPrivateQuery12002(
       envelope->expected_snapshot.date_raw, envelope->expected_snapshot.played_character_id};
   (void)CaptureRealmLawReadback12002(access, query.module_base, frame,
       private_law::BindRealmLawFinalTermsImage12002(query.module_base,
-          private_law::kRealmLawFinalTermsExecutableSha256), query.readback);
+          private_law::kRealmLawFinalTermsExecutableSha256), query.readback,
+      query.actual_executable_sha256);
   (void)FinishQueryMailbox(*envelope);
   return true;
 }
@@ -54,6 +56,7 @@ bool ReadRealmLawOnApplicationMain12002(
   }
   try {
     Query query{};
+    query.actual_executable_sha256 = adapter.descriptor().executable_sha256;
     query.envelope.game = &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
