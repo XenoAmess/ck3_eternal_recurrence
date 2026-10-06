@@ -191,8 +191,8 @@ void RunAlertWholes(Fixture &fixture, RouterAdapter &adapter,
   Put(fixture.faction_type.data(), 0x28, std::uint64_t{populist.size()});
   Put(fixture.faction_type.data(), 0x30, std::uint64_t{16});
   call("alerts-county-member.command-result.json");
-  CheckRouter(wire.find("\"county_opinion\":0") != std::string::npos);
-  CheckRouter(wire.find("\"native_county_join_score_raw\":0") != std::string::npos);
+  CheckRouter(wire.find("\"county_opinion\":{\"raw\":0,\"scale\":1}") != std::string::npos);
+  CheckRouter(wire.find("\"native_county_join_score\":{\"raw\":0,\"scale\":100000}") != std::string::npos);
   environment.exact_build_admitted = false;
   call("alerts-unavailable.command-result.json");
   CheckRouter(wire.find("exact_build_not_admitted") != std::string::npos);
