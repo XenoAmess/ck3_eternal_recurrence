@@ -3052,3 +3052,7 @@ subprocess.Popen([str(steam_exe), "-silent"], env=launch_env)
 ## Native fixture memory GREEN 与实际服务消费的两次 harness RED (2026-10-06T14:17:02+08:00)
 
 g92 首次两项 native CTest memory assertions GREEN，真实整帧消费仍可在零场景阶段失败：ordered fixture 只在 `argc==3 && argv[1]=="--wire-dir"` 发文件，注册的 positional目录没有输出；table fake associated ArRg `0xAB000001/2/3` 在旧 `regiment_strengths` 非负 signedint32字段成为负数。修正只补输出参数、把这三个假ID改2B，保留其他highDWORD和生产合同。单个修正fixture重编译并链接已资格runtime，随后NEW9+7实际byte→immutable完整service首次全部GREEN。离线 fixture-only源码与复用runtime源码分别记录，原Ct GREEN和两个零场景 RED均留存，不把memory pass冒充service pass或fullruntime重建；[修正收据](C:/codex-ck3-background/ordered-assault-table-batch/fixture-output-repair01/CORRECTED-FIXTURE-CTESTS.json)。
+
+## Daily-loss NEW native fixture/service RED corrections (2026-10-06T14:35:14+08:00)
+
+g93 native FIRST新fixture失败源于假table结束槽control缺失；补0xA5后发NEW6。随后真实完整service拒绝fake persistent CC前缀流入旧非负signedint32字段，六场景均无新投影。只改两个fake ID到4C、不改生产合同，再一次单fixture编译/复用同target生产对象后新Ct与此前失败6个service场景全部GREEN。高位Siege/invalidArRg unsigned新字段保留，fullruntime仍原1f45来源；原失败/修正字节分别保留。Root第一次fixture-repair命令用了symbolicHEAD且子checkout为CRLF、archivedgitblob为LF；独立FIXTURE-HEAD-RESOLUTION补充实际1d8SHA及已编译blobpin、原receipt不回写，无build/test/wire重复；后续helper先解析exactSHA。[最终修正](C:/codex-ck3-background/current-daily-loss-batch/fixture-output-repair02/CORRECTED-NEW-CTEST.json)、[service结果](Z:/ck3_mod_rewrite_process_assets/g2-background-round16-20261006/current-daily-assault-loss-numeric-plan/implementation/compiled-consumer-attempt02/CONSUMER-FIRST-RECEIPT.json)。
