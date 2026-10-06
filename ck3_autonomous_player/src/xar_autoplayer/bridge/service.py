@@ -20,6 +20,7 @@ from .army_scoped_ordered_refill_projection import project_scoped_ordered_refill
 from .army_daily_assault_active_table_projection import project_current_daily_assault_group_inputs_many_v1
 from .army_daily_assault_placement_inputs_projection import project_current_daily_assault_placement_inputs_v1
 from ..simulation.army_daily_assault_roster_admission_12003 import project_current_daily_assault_roster_admission_12003
+from ..simulation.army_pre_date_dated_append_12003 import project_pre_date_dated_append_12003
 from ..simulation.army_pre_date_pending_update_12003 import project_current_pre_date_pending_update_v1
 from .army_ordered_refill_besieging_assault_projection import project_ordered_refill_besieging_assaults_v1
 from .army_daily_assault_loss_projection import project_current_daily_assault_loss_v1
@@ -4588,6 +4589,10 @@ class GameplayBridgeService:
                 project_current_daily_assault_group_inputs_many_v1(selected_rows),
             "current_daily_assault_placement_inputs_v1": [
                 project_current_daily_assault_placement_inputs_v1(row.get("current_daily_assault_table_v1"))
+                for row in selected_rows],
+            "current_pre_date_dated_append_inputs_v1": [
+                {"army_id": row["army_id"], "projection": project_pre_date_dated_append_12003(
+                    row.get("current_pre_date_dated_append_inputs_v1"))}
                 for row in selected_rows],
             "current_daily_assault_roster_admission_inputs_v1": [
                 {"army_id": row["army_id"], "projection": project_current_daily_assault_roster_admission_12003(

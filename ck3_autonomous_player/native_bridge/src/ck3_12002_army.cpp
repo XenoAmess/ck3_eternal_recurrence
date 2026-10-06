@@ -1185,12 +1185,21 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
         bindings, *current_daily_assault_table);
   }
   std::optional<game::ArmyCurrentDailyAssaultRosterAdmissionV1> current_daily_assault_roster_admission;
+  std::optional<game::ArmyPreDateDatedAppendInputsV1> current_pre_date_dated_append;
   std::optional<game::ArmyCurrentPreDatePendingUpdateInputsV1> current_pre_date_pending_update;
   std::optional<game::ArmyCurrentAssaultRemovalReferenceInputsV1> current_assault_removal_references;
   for (const auto &entry : scope) {
     diagnostic.army_id.store(entry.army_id);
     diagnostic.reader.store("scope_row");
     auto row = Strength(bindings, entry);
+    if (!current_pre_date_dated_append && bindings.current_pre_date_dated_append_bindings.common.enabled) {
+      diagnostic.reader.store("pre_date_dated_append_readonly");
+      current_pre_date_dated_append = ck3_12003::ReadPreDateDatedAppend12003(
+          bindings.current_pre_date_dated_append_bindings,
+          row.monthly_first_removal_cleanup_inputs_v1 ? &*row.monthly_first_removal_cleanup_inputs_v1 : nullptr,
+          row.army_update_clock_v1 ? &*row.army_update_clock_v1 : nullptr);
+    }
+    row.current_pre_date_dated_append_inputs_v1 = current_pre_date_dated_append;
     if (!current_daily_assault_roster_admission &&
         bindings.current_daily_assault_roster_admission_bindings.enabled) {
       diagnostic.reader.store("current_daily_assault_roster_admission_readonly");

@@ -10,6 +10,7 @@
 #include "xar_bridge/army_fixed_chunk0_preparation_v1_serializer.hpp"
 #include "xar_bridge/army_daily_assault_active_table_serializer_v1.inc.hpp"
 #include "xar_bridge/army_daily_assault_roster_admission_serializer_v1.inc.hpp"
+#include "xar_bridge/army_pre_date_dated_append_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_serializer_v1.inc.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_ordered_besieging_fixed_chunk0_preparation_v1_serializer.hpp"
@@ -596,6 +597,11 @@ inline void AppendArmyStrengthV1(
   if (strength.current_daily_assault_roster_admission_v1) {
     result += ",\"current_daily_assault_roster_admission_v1\":";
     AppendArmyCurrentDailyAssaultRosterAdmissionV1(result, *strength.current_daily_assault_roster_admission_v1,
+        number, append_json_string);
+  }
+  if (strength.current_pre_date_dated_append_inputs_v1) {
+    result += ",\"current_pre_date_dated_append_inputs_v1\":";
+    AppendArmyPreDateDatedAppendInputsV1(result, *strength.current_pre_date_dated_append_inputs_v1,
         number, append_json_string);
   }
   if (strength.current_assault_removal_reference_inputs_v1) {
