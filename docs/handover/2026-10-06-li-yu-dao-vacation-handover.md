@@ -156,4 +156,4 @@ SHA-256 736f01563e8e82687a9b5bb7d18d988359ea32e69b4b122c9dd3d868b1c96a98
 6. 完成I4矩阵，包括natural expiry与重载。无HoF分支和有HoF分支分别用真实存档，不通过删除已建立领袖来“准备”普通修习。
 7. 每轮保留原始失败、UNKNOWN与过程资产，验收报告落地并提交推送；全一期仍需要实际业务结果才能标GREEN。正式Workshop发布是后续独立交付，本轮未进入发布阶段。
 
-本机只用 Python／cmd 路径，无 PowerShell。MCP-first仍有效；GUI/OCR不能成为游戏状态真值或业务通过证据。所有旧原片、存档、runtime、构建输入、partial和失败 attempt永久保留。最后的交接提交以本文件的 `git log -1 --` 为准，不要求在文档内自引用其提交SHA。
+本机只用 Python／cmd 路径。MCP-first仍有效；GUI/OCR不能成为游戏状态真值或业务通过证据。所有旧原片、存档、runtime、构建输入、partial和失败 attempt永久保留。最后的交接提交以本文件的 `git log -1 --` 为准，不要求在文档内自引用其提交SHA。
