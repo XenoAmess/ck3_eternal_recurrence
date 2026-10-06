@@ -53,3 +53,9 @@ flowchart LR
 ```
 
 The .3 Army-panel live history remains in [army-ui-selection-window-12003.md](army-ui-selection-window-12003.md); its failed tooltip/cache and pixel boundaries remain in [army-tooltip-stack-diagnostics-12003.md](army-tooltip-stack-diagnostics-12003.md). A later application owner turn still does not prove GUI update, refreshed text or rendered pixels. This migration supplies no new tooltip live result, GUI update epoch, campaign start, OODA loop or G2 success. Root owns shared bridge/helper/CMake integration, the single build/SDK entrance and any later Robert live verification.
+
+## Retained first native failure and owned-input correction
+
+Root's `joint-domain-first02/generic_gui` native attempt exited 1 with `actual .4 Snapshot resource reader was not reached`, before the seven whole frames were produced. This is a fixture-input failure: the GUI fixture wrote stress at character `+0x2F8` and allocated only `0x160` bytes for the resource extension. The already qualified actual .4 Snapshot reader instead follows character `+0x1B0` to that extension and reads stress at extension `+0x2F8`; the independent foundation fixture already supplies those operands.
+
+The correction expands the owned extension to `0x300` bytes and stores stress 7 at its actual offset. The production Snapshot reader, gold/prestige/piety inputs, all seven whole-frame assertions, descriptor bindings and existing OFF flags are unchanged. No executable proof was repeated. This source correction has only passed `git diff --check`; Root must rebuild the affected fixture and obtain a fresh native result before either registered consumer can be qualified. It does not claim a live or G2 result.

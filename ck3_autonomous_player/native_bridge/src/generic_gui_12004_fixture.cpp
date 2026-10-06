@@ -110,7 +110,7 @@ struct SnapshotMemory {
   std::vector<std::byte> character_rows{
       static_cast<std::size_t>(kRobert + 1) * current::kCharacterStorageSlotStride};
   std::array<std::byte, 0x30> family{};
-  std::array<std::byte, 0x160> resources{};
+  std::array<std::byte, 0x300> resources{};
   std::array<std::byte, 0x30> pending_storage{}, unit_storage{}, war_storage{};
   std::array<std::byte, 0x20> globals{}, ready_entry{};
   std::array<std::byte, 1> identifier_table{};
@@ -141,7 +141,8 @@ struct SnapshotMemory {
     Store(resources.data(), 0x100, std::int64_t{1234567});
     Store(resources.data(), 0x130, std::int64_t{2345678});
     Store(resources.data(), 0x110, std::int64_t{3456789});
-    Store(actor.data(), 0x2F8, std::int32_t{7});
+    // The actual .4 Snapshot reader follows actor + 0x1B0 before reading stress.
+    Store(resources.data(), 0x2F8, std::int32_t{7});
     // Empty, enabled World registries are read by the full production reader.
     Store(data.data(), xar::ck3_12002::kWorldWarManagerOffset + 0x20, war_storage.data());
     Store(globals.data(), 0x10, ready_entry.data());
