@@ -3042,3 +3042,9 @@ subprocess.Popen([str(steam_exe), "-silent"], env=launch_env)
 ```
 
 这是有实际故障证据的启动修正；既有 Steam/launcher 若已继承该变量，须正常退出后从干净环境重新打开。不要运行 CK3 来验证用户保留的游戏现场；本次恢复确认由用户提供。[父进程环境复现](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/local-launch-diagnostic/PARENT-ENVIRONMENT-SPAWN-REPRODUCTION.json)、[环境大小写确认](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/local-launch-diagnostic/ENVIRONMENT-CASE-CONFIRMATION.json)、[用户恢复回执](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/local-launch-diagnostic/USER-SELF-RESTART-RESOLUTION.json)。
+
+## ArmyBindings 新字段改变聚合初始化位置（2026-10-06 CI 实测）
+
+官方 CI `37417056493` 在 `ck3_12002_army_test.cpp:93` 报两个回调类型不匹配的 C2440。当前 Province B observer 将新增 bindings group 放在 `ArmyBindings` 首部，旧八成员聚合初始化因 brace elision 开始填入该嵌套 group，导致回调错位。具名赋值路径和新独立 observer fixture 的成功不能代替这个既有初始化入口的兼容结果。
+
+本次最小修复 `b9367e30` 只将新增 group 移到结构尾部，保留原成员前缀，未改旧夹具或观测算法。对修正源码执行一次 `check_native_army_routes_ci.py`，GREEN、21.6291008 秒；原官方 RED 保留，已通过的新 CTests 和 wires 没有重复。后续新增 bindings 延续这一布局即可，无需另加门禁或扩大审计。[原失败与日志](Z:/ck3_mod_rewrite_process_assets/g2-background-round17-20261006/ordered-core-assault-batch/root-publication/CI-f1a0bb8b/FINAL-CI-RESULT.json)、[一次定向检查](C:/codex-ck3-background/army-binding-prefix-ci-fix-20261006/ROOT-FIX-VERIFICATION.json)。该检查完全离线，未操作 CK3、Steam 或用户数据。
