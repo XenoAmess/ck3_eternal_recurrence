@@ -444,6 +444,24 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
         self.assertEqual(result["held_title_partition"][1]["capital_province_id"], 43)
         self.assertNotIn("title_key", result["held_title_partition"][1])
 
+    def test_landless_family_preserves_stock_uppercase_identifiers(self) -> None:
+        for key in ("c_nf_li_674E_999", "c_nf_zheng_912D_117", "c_nf_wang_738B_121"):
+            with self.subTest(stock_key=key):
+                frame = _frame()
+                frame["provenance"] = copy.deepcopy(_PROVENANCE_BY_BUILD["1.20.0.3"])
+                frame["held_title_partition"][1].update(
+                    capital_province_id=None,
+                    capital_province_kind="landless_noble_family_no_province",
+                    title_key=key,
+                )
+                result = normalize_campaign_root_context_v1(
+                    frame, expected_date_raw=DATE_RAW,
+                    expected_snapshot_revision=NATIVE_REVISION,
+                )
+                self.assertEqual(result["held_title_partition"], frame["held_title_partition"])
+                self.assertEqual(result["held_title_partition"][1]["title_key"], key)
+                self.assertIsNone(result["held_title_partition"][1]["capital_province_id"])
+
     def test_landless_family_rejects_unproven_or_malformed_null_variant(self) -> None:
         valid = _frame()
         valid["provenance"] = copy.deepcopy(_PROVENANCE_BY_BUILD["1.20.0.3"])

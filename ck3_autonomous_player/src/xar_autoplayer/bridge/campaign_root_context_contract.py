@@ -609,9 +609,9 @@ def _is_landless_noble_family_no_province_row(value: object) -> bool:
         or not isinstance(title_key, str)
         or not 3 <= len(title_key) <= 1024
         or not title_key.startswith("c_")
-        or title_key[2] not in "abcdefghijklmnopqrstuvwxyz0123456789"
+        or title_key[2] not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         or any(
-            character not in "abcdefghijklmnopqrstuvwxyz0123456789_"
+            character not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
             for character in title_key[2:]
         )
     ):

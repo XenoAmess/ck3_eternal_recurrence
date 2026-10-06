@@ -178,3 +178,13 @@ and the optional monthly-piety fixture mode. [Regression evidence](C:/workspace/
 uses exact production renderer fragments in bounded executable fixtures;
 it is not a full master DLL build. [R15 product and shutdown boundaries](../xqol-1.20.0.3-defense-maintenance-2026-10-05.md#2026-10-06-r15a69source09读取修复实测d1夹具前置失败)
 retain the pre-war fixture failure, one real day, D5 NOT_RUN and normal OS0.
+
+## 2026-10-06：原版家族头衔键保留大小写
+
+当前原版 `04_china_noble_families.txt` 存在29个带ASCII大写字符的合法家族县标识，例如 `c_nf_li_674E_999`、`c_nf_zheng_912D_117`、`c_nf_wang_738B_121`。此前native/Python的县键谓词只接受小写，错误拒绝这些原版值。两处谓词现允许ASCII A–Z并原样保存，仍要求精确`c_`前缀及原长度、字符范围、null tag、landless/noble-family/children等门禁；不做大小写折叠。
+
+有限候选验证已通过：原生六组新旧读取对比与一个生产序列化案例，Python普通及-O各40个案例（含29个原版大写标识）；master永久回归覆盖三项完整normalizer输出。旧读取顺序与getter次数保持。候选与原始证据在[冻结包](C:/workspace/ck3-upgrade-20261006/held-family-county-stock-key-case-fix-prep-agent-01/FINAL_CANDIDATE_01.json)。
+
+CCC a75/R0002实际D1在官员29959、县16958处记录`county_no_province_title_key_read`失败；现有53项诊断没有实际raw key或成功读取结果，不能把静态ordinal映射当作实际键，也不能断言此修复已消除该D1失败。D0宋帝县16850的合法空省份读取此前实测通过。该缺口与随后D2真实磁盘写入Errno28分别保存，不据此归结连接关闭的首因。
+
+Source10已由Source09不可变2638文件生成：2636个原字节一致，仅上述两处override。一次fresh MSVC14.51 / jobs4 / BelowNormal构建358个新对象、361 edges，254.14855秒exit0；DLL5565440B，SHA-256 `f150c4cf1aa8a121ab44ab41d3052b0b7db6729644a7958bd53156abf682d754`。[实际build-only包](C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/SOURCE10_BUILD_ONLY_PACKET_01.json)绑定精确源码、消费者、工具链与原日志。状态为BUILD_SUCCESS_ONLY_NOT_LIVE_VALIDATED，旧Source09、旧attempt及失败均保留；下一冷加载仍须实测。

@@ -46,7 +46,8 @@ inline bool IsCanonicalCountyTitleKeyV1(std::string_view key) noexcept {
     return false;
   }
   const auto alphanumeric = [](char value) noexcept {
-    return (value >= 'a' && value <= 'z') || (value >= '0' && value <= '9');
+    return (value >= 'a' && value <= 'z') ||
+           (value >= 'A' && value <= 'Z') || (value >= '0' && value <= '9');
   };
   if (!alphanumeric(key[2])) return false;
   for (const auto value : key.substr(2)) {
