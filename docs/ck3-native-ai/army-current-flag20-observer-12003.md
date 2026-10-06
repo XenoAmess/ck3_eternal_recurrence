@@ -55,3 +55,9 @@ Exactly **one compiled-dependent Service compound** is prepared: `ArmyCurrentFla
 ## Readiness and next work
 
 This candidate supplies the missing **actual current Army20 getter input** once formally qualified. It does not grant future20/21/31, next occurrence, ordered refresh execution, fullcallback/daily/monthly, actual post-stage, futuretick or live credit; those boundaries remainfalse. The shared tail can support21 only after its own actual entrance is independently source-closed. Root manages any minimized local gameplay restoration and shared Oct6/W41 reports/publication; this lane performs only owned source and separately authorized new consumer work.
+
+## First g102 compile RED and typed fixture comparison repair
+
+Root's first g102 full native attempt completed RED at **2026-10-06T11:30:26UTC**, after **131.140795 seconds**. Production595+ translation units compiled without this family's header error. Only the NEW fixture's line222 compared `optional<uint32_t>` to an `int` zero literal, triggering MSVC **C4389/C2220** under `/WX`; the direct template instantiation is retained in `C:/codex-ck3-background/current-flag20-batch/strict01/cache-observers/msvc-build.log` line603 (GBK). No CTest or Service consumer is credited from that failed compile.
+
+The repair changes that comparison to **`std::uint32_t{0}`**; the other full-DWORD comparisons already use typed variables/constants. It changes no production header/hook, source algorithm or flag. Root reuses the original compiled runtime/includes and recompiles only the repaired CPP target, preserving the first full RED. This lane runs no compile/test/old case or runtime operation for the repair. The separate current21 exact API/source plan remains parked, with no implementation.

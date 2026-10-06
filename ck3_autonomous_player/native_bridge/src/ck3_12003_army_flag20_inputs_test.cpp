@@ -219,7 +219,7 @@ int main(int argc, char **argv) {
       samples.emplace_back("zero-1d4-undemanded", Serialize(f)); }
     { Fixture f; f.current_value = std::uint8_t{0}; f.armies.Add(0, f.army); f.Roster(0); f.expected_selected_id = 0;
       auto out = f.Observe(); Ready(f, out, std::uint8_t{0}, true);
-      Check(out.occurrences[0].original_army_resolution.selected_full_id_u32 == 0,
+      Check(out.occurrences[0].original_army_resolution.selected_full_id_u32 == std::uint32_t{0},
             "flag20 must preserve fullgen0 without an added ID gate");
       samples.emplace_back("native-false-fullgen", Serialize(f)); }
     { Fixture f; f.memory.Put(f.army, 0x1D4, std::uint8_t{255}); auto out = f.Observe(); Ready(f, out, std::uint8_t{1}, true);
