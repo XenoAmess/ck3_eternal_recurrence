@@ -53,3 +53,16 @@ Root亲审当场介绍前后原图及D3/生产决议detail，真实点击“翻�
 人工逐图处理耗尽原hold，13:16:18.926299报告自身GREEN/errornull，但独立held OS handle在signaled后读OS1；报告GREEN仅覆盖已排步骤，不授完整source或release。managed thread/cleanup true，库存空；keeper实际exit0/threadexit/末4378后CAS4379 done/resources=[]。[实际库存](C:/workspace/ck3-upgrade-20261006/resume-root-01/a80-final-inventory-01.json)，报告27865494B/SHA `9bfc7d92d702bce0f7fc24a080321311d87858f0907856a32896ab2364b0557a`。
 
 下一步将已审GUI导航连续执行，真实原图保存后由root亲审；模板只定位当前截图中的控件，点击仍经统一坐标map/receipt，真值仍由typed结果、原图与held OS handle证实。复用已有1.20.0.3正常菜单退出模板与0409/focus helper，原budget/source/native/core范围不扩张。
+
+
+## R0008：读碰撞与实际 GUI 定位失败
+
+UI22/profile12/a81/R0008从clean273b092f、Source18/runtime24/原DLL开场。当次Steam离线及nonce e0b7fbc5f24b原图亲审。14:03:06资源快照Cfree19,618,332,672B、commit21,205,581,824/39,359,959,040B、CK3为空；无清理、Steam重启或系统设置变更。
+
+连续caller的base wait直接读取native-report.json遇到PermissionError13退出，游戏与harness仍有效。新外置hot caller复用queue16原1.4秒读碰撞窗口，保留原stdio，不重放Start。14:18:58实际通知正常选择/eventgone/D0成功；D1至D3的原17控制步骤14:23:24.459430至14:23:58.279070全部ok，加初始4步共21，实际官员29959/date53144400。
+
+GUI row matcher未匹配，无该row click intent，Confirm未发生。随后一次Escape未关闭decisions面板，重复同一known-panel被拒绝。Root亲审当前原图、使用统一map/新receipt在实际row(1475,609)点开“定夺贪墨之策”；R7模板来自已选中row，本场实际未选中row图像不同，行位置也不同。位置变化本身不是失败归因，原matching receipt仍保留。后续hotdetail候选交付时现场已结束，未执行；不授Confirm/.f/traits/cooldown或GUI0。
+
+原900秒hold不延长。独立held OS handle14:34:02.410613 signaled后读取exit1；报告14:34:03.756293 finished/GREEN/errornull仅覆盖已排21步，24,858,096B/SHA2a973105ede8ab4897dcf684b5f0efabd28e285c60cb1eb35dc520c55fdd35a1。managed thread/cleanup true，库存空；keeper真实退出0/threadexit/末4424后CAS4425 done/resources=[]。依据：[实际库存](C:/workspace/ck3-upgrade-20261006/resume-root-01/a81-final-inventory-01.json)、[释放](C:/workspace/ck3-upgrade-20261006/resume-root-01/a81-screen-release-01.json)、[GUI失败原件](C:/workspace/ck3-upgrade-20261006/resume-root-01/a81-hot-route-01/actual-gui/route-error-no-replay.json)。
+
+本场再次证明有效业务链只需数十秒，临场修补与前台交接消耗的墙钟会超过原hold。下一输入在启动前备齐：复用原bounded reader、当前未选中row小patch、实际panel X关闭和正常退出；旧freeze和attempt保持。发布仍5/10，不增加核心矩阵或900秒预算。
