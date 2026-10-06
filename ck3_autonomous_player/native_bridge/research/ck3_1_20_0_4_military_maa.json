@@ -1,0 +1,1598 @@
+{
+  "schema_version": 1,
+  "schema": "xar.ck3-12004-existing-military-maa-source/v1",
+  "owner": "/root/army_current31_source/army4_commander_supply",
+  "written_shanghai": "2026-10-07",
+  "week": "2026-W41",
+  "source_base": "329d1e336fe518ae7c8f49b1874a6385b6f9f3c9",
+  "target": {
+    "version": "1.20.0.4",
+    "steam_build": "25734779",
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "status": "SOURCE_COMPLETE",
+  "readiness": "source-complete; formal static-ready compilation/whole qualification pending parent; no fixture-live or production-live credit",
+  "owned_source_files": [
+    "include/xar_bridge/ck3_12004_military.hpp",
+    "src/ck3_12004_military.cpp",
+    "research/ck3_1_20_0_4_military_maa.json"
+  ],
+  "factories": [
+    {
+      "name": "xar::ck3_12004::BindMilitaryImage12004",
+      "arguments": [
+        "uintptr_t image_base",
+        "string_view actual_sha256",
+        "const ck3_12002::CommandBindings& caller_owned_actual4_commands"
+      ],
+      "return": "ck3_12002::MilitaryBindings",
+      "noexcept": true
+    },
+    {
+      "name": "xar::ck3_12004::BindNativeMaaRecruitmentImage12004",
+      "arguments": [
+        "uintptr_t image_base",
+        "string_view actual_sha256"
+      ],
+      "return": "ck3_12003::NativeMaaRecruitmentBindings",
+      "noexcept": true
+    },
+    {
+      "name": "xar::ck3_12004::BindNativeMaaCreateImage12004",
+      "arguments": [
+        "uintptr_t image_base",
+        "string_view actual_sha256"
+      ],
+      "return": "ck3_12003::NativeMaaCreateBindings",
+      "noexcept": true
+    }
+  ],
+  "enabled_flags_and_runtime_readiness": [
+    {
+      "flag": "MilitaryBindings.enabled",
+      "condition": "nonzero base + exact actual4 SHA + enabled caller-owned actual4 CommandBindings",
+      "capability": "existing default raise/move/halt/disband/split/merge/start_assault/stop_assault and route preview",
+      "software": "unchanged ck3_12002_military.cpp functions",
+      "dependency_lifetime": "Commands outlive Military bundle; existing adapter resets submit_context after moving its bindings"
+    },
+    {
+      "flag": "NativeMaaRecruitmentBindings.enabled",
+      "condition": "nonzero base + exact actual4 SHA",
+      "capability": "existing native_maa_recruitment_inputs_v1 on player Army rows",
+      "read_fields": "whole existing DTO: context, owner, catalog, stored type order/index/quantity, native can_create, readiness, reasons, final raw ten resources and missing keys",
+      "runtime_readiness": "Permission false and raw0 are observed; failed callback/invalid producer return remains unavailable/unready; enabled alone is not an observed frame"
+    },
+    {
+      "flag": "NativeMaaCreateBindings.enabled",
+      "condition": "nonzero base + exact actual4 SHA",
+      "capability": "already adopted regular personal MAA create provider only",
+      "runtime_context": "existing Robert29829/current-player and paused owning-thread provider; no title/horde or new action",
+      "result": "Existing queued_pending means queue acceptance/ownership transfer; creation/payment/owned-Regi/raised contribution require separate observed postconditions"
+    }
+  ],
+  "actual4_owned_function_and_field_rows": [
+    {
+      "id": "raise_constructor",
+      "old_rva": "0x298c130",
+      "actual4_rva": "0x298c110",
+      "declared_bytes": 246,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\raise_constructor-DETAIL.json"
+    },
+    {
+      "id": "raise_validator",
+      "old_rva": "0x298c2c0",
+      "actual4_rva": "0x298c2a0",
+      "declared_bytes": 1060,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\raise_validator-DETAIL.json"
+    },
+    {
+      "id": "raise_destructor",
+      "old_rva": "0x11f2e00",
+      "actual4_rva": "0x11f2de0",
+      "declared_bytes": 52,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\raise_destructor-DETAIL.json"
+    },
+    {
+      "id": "move_mode",
+      "old_rva": "0x296a0a0",
+      "actual4_rva": "0x296a080",
+      "declared_bytes": 263,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\move_mode-DETAIL.json"
+    },
+    {
+      "id": "character_command_permission",
+      "old_rva": "0x29675f0",
+      "actual4_rva": "0x29675d0",
+      "declared_bytes": 168,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\character_command_permission-DETAIL.json"
+    },
+    {
+      "id": "army_move_permission",
+      "old_rva": "0x24ac1b0",
+      "actual4_rva": "0x24ac190",
+      "declared_bytes": 243,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\army_move_permission-DETAIL.json"
+    },
+    {
+      "id": "move_permission",
+      "old_rva": "0x2969570",
+      "actual4_rva": "0x2969550",
+      "declared_bytes": 170,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\move_permission-DETAIL.json"
+    },
+    {
+      "id": "move_path_constructor",
+      "old_rva": "0xd1a0b0",
+      "actual4_rva": "0xd1a0b0",
+      "declared_bytes": 130,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\move_path_constructor-DETAIL.json"
+    },
+    {
+      "id": "move_destructor",
+      "old_rva": "0x2969620",
+      "actual4_rva": "0x2969600",
+      "declared_bytes": 52,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\move_destructor-DETAIL.json"
+    },
+    {
+      "id": "path_context_constructor",
+      "old_rva": "0x2648060",
+      "actual4_rva": "0x2648040",
+      "declared_bytes": 228,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\path_context_constructor-DETAIL.json"
+    },
+    {
+      "id": "build_route",
+      "old_rva": "0x2648150",
+      "actual4_rva": "0x2648130",
+      "declared_bytes": 2429,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\build_route-DETAIL.json"
+    },
+    {
+      "id": "disband_validator",
+      "old_rva": "0x296a620",
+      "actual4_rva": "0x296a600",
+      "declared_bytes": 2831,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\disband_validator-DETAIL.json"
+    },
+    {
+      "id": "split_validator",
+      "old_rva": "0x296cf60",
+      "actual4_rva": "0x296cf40",
+      "declared_bytes": 379,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [
+        {
+          "offset": 356,
+          "old_target": "0x296b9b0",
+          "actual_target": "0x296b990"
+        }
+      ],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\split_validator-DETAIL.json"
+    },
+    {
+      "id": "merge_factory",
+      "old_rva": "0x297bcf0",
+      "actual4_rva": "0x297bcd0",
+      "declared_bytes": 87,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\merge_factory-DETAIL.json"
+    },
+    {
+      "id": "merge_validator",
+      "old_rva": "0x296ef90",
+      "actual4_rva": "0x296ef70",
+      "declared_bytes": 219,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [
+        {
+          "offset": 201,
+          "old_target": "0x2c545f0",
+          "actual_target": "0x2c545d0"
+        }
+      ],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\merge_validator-DETAIL.json"
+    },
+    {
+      "id": "halt_merge_destructor",
+      "old_rva": "0x296a220",
+      "actual4_rva": "0x296a200",
+      "declared_bytes": 52,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\halt_merge_destructor-DETAIL.json"
+    },
+    {
+      "id": "halt_constructor",
+      "old_rva": "0x296a1b0",
+      "actual4_rva": "0x296a190",
+      "declared_bytes": 108,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\halt_constructor-DETAIL.json"
+    },
+    {
+      "id": "halt_validator",
+      "old_rva": "0x296a2f0",
+      "actual4_rva": "0x296a2d0",
+      "declared_bytes": 314,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\halt_validator-DETAIL.json"
+    },
+    {
+      "id": "maa_permission",
+      "old_rva": "0x296f9f0",
+      "actual4_rva": "0x296f9d0",
+      "declared_bytes": 401,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\maa_permission-DETAIL.json"
+    },
+    {
+      "id": "maa_final_raw_quote",
+      "old_rva": "0x30bce20",
+      "actual4_rva": "0x30bce00",
+      "declared_bytes": 378,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\maa_final_raw_quote-DETAIL.json"
+    },
+    {
+      "id": "maa_clone",
+      "old_rva": "0x2977810",
+      "actual4_rva": "0x29777f0",
+      "declared_bytes": 152,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\maa_clone-DETAIL.json"
+    },
+    {
+      "id": "route_first",
+      "old_rva": "0x24aa7d0",
+      "actual4_rva": "0x24aa7b0",
+      "declared_bytes": 66,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\route_first-DETAIL.json"
+    },
+    {
+      "id": "route_last",
+      "old_rva": "0x24aa820",
+      "actual4_rva": "0x24aa800",
+      "declared_bytes": 76,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\route_last-DETAIL.json"
+    },
+    {
+      "id": "maa_type_lookup",
+      "old_rva": "0x1ad5540",
+      "actual4_rva": "0x1ad5520",
+      "declared_bytes": 239,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\maa_type_lookup-DETAIL.json"
+    },
+    {
+      "id": "maa_personal_constructor",
+      "old_rva": "0x1338f90",
+      "actual4_rva": "0x1338f70",
+      "declared_bytes": 140,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\maa_personal_constructor-DETAIL.json"
+    },
+    {
+      "id": "raise_clone",
+      "old_rva": "0x11f2e40",
+      "actual4_rva": "0x11f2e20",
+      "declared_bytes": 197,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\raise_clone-DETAIL.json"
+    },
+    {
+      "id": "move_clone",
+      "old_rva": "0x2976e80",
+      "actual4_rva": "0x2976e60",
+      "declared_bytes": 172,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\move_clone-DETAIL.json"
+    },
+    {
+      "id": "disband_clone",
+      "old_rva": "0x29770c0",
+      "actual4_rva": "0x29770a0",
+      "declared_bytes": 123,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\disband_clone-DETAIL.json"
+    },
+    {
+      "id": "split_clone",
+      "old_rva": "0x29772a0",
+      "actual4_rva": "0x2977280",
+      "declared_bytes": 130,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\split_clone-DETAIL.json"
+    },
+    {
+      "id": "merge_clone",
+      "old_rva": "0x29776e0",
+      "actual4_rva": "0x29776c0",
+      "declared_bytes": 184,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\merge_clone-DETAIL.json"
+    },
+    {
+      "id": "start_assault_clone",
+      "old_rva": "0x2977ff0",
+      "actual4_rva": "0x2977fd0",
+      "declared_bytes": 130,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\start_assault_clone-DETAIL.json"
+    },
+    {
+      "id": "stop_assault_clone",
+      "old_rva": "0x29780f0",
+      "actual4_rva": "0x29780d0",
+      "declared_bytes": 130,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\stop_assault_clone-DETAIL.json"
+    },
+    {
+      "id": "split_assault_destructor",
+      "old_rva": "0x9d1560",
+      "actual4_rva": "0x9d1560",
+      "declared_bytes": 43,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\split_assault_destructor-DETAIL.json"
+    },
+    {
+      "id": "maa_destructor",
+      "old_rva": "0x1547ad0",
+      "actual4_rva": "0x1547ab0",
+      "declared_bytes": 43,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\maa_destructor-DETAIL.json"
+    },
+    {
+      "id": "maa_type_registry_slot_use",
+      "old_rva": "0x899e44",
+      "actual4_rva": "0x899e44",
+      "declared_bytes": 7,
+      "extent": "field-use witness only",
+      "full_logical_body": false,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\maa_type_registry_slot_use-DETAIL.json"
+    },
+    {
+      "id": "maa_default_quantity_use",
+      "old_rva": "0x296f310",
+      "actual4_rva": "0x296f2f0",
+      "declared_bytes": 4,
+      "extent": "field-use witness only",
+      "full_logical_body": false,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\maa_default_quantity_use-DETAIL.json"
+    },
+    {
+      "id": "halt_clone",
+      "old_rva": "0x2976f90",
+      "actual4_rva": "0x2976f70",
+      "declared_bytes": 178,
+      "extent": "complete logical function body",
+      "full_logical_body": true,
+      "normalized_code_equal": true,
+      "ordered_edges_and_local_control_topology_equal": true,
+      "member_operands_and_non_relative_immediates_retained": true,
+      "external_native_tailcalls_not_expanded": [],
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\halt-clone05\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\halt-clone05\\halt_clone-DETAIL.json"
+    }
+  ],
+  "actual4_selected_primary_virtual_slots": [
+    {
+      "command": "raise",
+      "actual_primary_vtable": "0x45345d0",
+      "actual_slot": "0x0",
+      "actual_target_rva": "0x11f2de0",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\raise_constructor-DETAIL.json",
+      "source_offset": 30,
+      "selected_old_vtable_RIP_target": "0x45345c0",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-045345D0-045345D8.bin",
+        "cache_begin_rva": 72566224,
+        "reused": true
+      }
+    },
+    {
+      "command": "raise",
+      "actual_primary_vtable": "0x45345d0",
+      "actual_slot": "0x40",
+      "actual_target_rva": "0x11f2e20",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\raise_constructor-DETAIL.json",
+      "source_offset": 30,
+      "selected_old_vtable_RIP_target": "0x45345c0",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-04534610-04534618.bin",
+        "cache_begin_rva": 72566288,
+        "reused": true
+      }
+    },
+    {
+      "command": "move",
+      "actual_primary_vtable": "0x476b178",
+      "actual_slot": "0x0",
+      "actual_target_rva": "0x2969600",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\move_clone-DETAIL.json",
+      "source_offset": 58,
+      "selected_old_vtable_RIP_target": "0x476b168",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B178-0476B180.bin",
+        "cache_begin_rva": 74887544,
+        "reused": true
+      }
+    },
+    {
+      "command": "move",
+      "actual_primary_vtable": "0x476b178",
+      "actual_slot": "0x40",
+      "actual_target_rva": "0x2976e60",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\move_clone-DETAIL.json",
+      "source_offset": 58,
+      "selected_old_vtable_RIP_target": "0x476b168",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B1B8-0476B1C0.bin",
+        "cache_begin_rva": 74887608,
+        "reused": true
+      }
+    },
+    {
+      "command": "halt",
+      "actual_primary_vtable": "0x476b080",
+      "actual_slot": "0x0",
+      "actual_target_rva": "0x296a200",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\halt_constructor-DETAIL.json",
+      "source_offset": 27,
+      "selected_old_vtable_RIP_target": "0x476b070",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B080-0476B088.bin",
+        "cache_begin_rva": 74887296,
+        "reused": true
+      }
+    },
+    {
+      "command": "halt",
+      "actual_primary_vtable": "0x476b080",
+      "actual_slot": "0x40",
+      "actual_target_rva": "0x2976f70",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\halt_constructor-DETAIL.json",
+      "source_offset": 27,
+      "selected_old_vtable_RIP_target": "0x476b070",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B0C0-0476B0C8.bin",
+        "cache_begin_rva": 74887360,
+        "reused": true
+      }
+    },
+    {
+      "command": "disband",
+      "actual_primary_vtable": "0x476ae58",
+      "actual_slot": "0x0",
+      "actual_target_rva": "0x86bf20",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\disband_clone-DETAIL.json",
+      "source_offset": 39,
+      "selected_old_vtable_RIP_target": "0x476ae48",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AE58-0476AE60.bin",
+        "cache_begin_rva": 74886744,
+        "reused": true
+      }
+    },
+    {
+      "command": "disband",
+      "actual_primary_vtable": "0x476ae58",
+      "actual_slot": "0x40",
+      "actual_target_rva": "0x29770a0",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\disband_clone-DETAIL.json",
+      "source_offset": 39,
+      "selected_old_vtable_RIP_target": "0x476ae48",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AE98-0476AEA0.bin",
+        "cache_begin_rva": 74886808,
+        "reused": true
+      }
+    },
+    {
+      "command": "split",
+      "actual_primary_vtable": "0x476af20",
+      "actual_slot": "0x0",
+      "actual_target_rva": "0x9d1560",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\split_clone-DETAIL.json",
+      "source_offset": 39,
+      "selected_old_vtable_RIP_target": "0x476af10",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AF20-0476AF28.bin",
+        "cache_begin_rva": 74886944,
+        "reused": true
+      }
+    },
+    {
+      "command": "split",
+      "actual_primary_vtable": "0x476af20",
+      "actual_slot": "0x40",
+      "actual_target_rva": "0x2977280",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\split_clone-DETAIL.json",
+      "source_offset": 39,
+      "selected_old_vtable_RIP_target": "0x476af10",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AF60-0476AF68.bin",
+        "cache_begin_rva": 74887008,
+        "reused": true
+      }
+    },
+    {
+      "command": "merge",
+      "actual_primary_vtable": "0x476ab30",
+      "actual_slot": "0x0",
+      "actual_target_rva": "0x296a200",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\merge_factory-DETAIL.json",
+      "source_offset": 21,
+      "selected_old_vtable_RIP_target": "0x476ab20",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AB30-0476AB38.bin",
+        "cache_begin_rva": 74885936,
+        "reused": true
+      }
+    },
+    {
+      "command": "merge",
+      "actual_primary_vtable": "0x476ab30",
+      "actual_slot": "0x40",
+      "actual_target_rva": "0x29776c0",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\merge_factory-DETAIL.json",
+      "source_offset": 21,
+      "selected_old_vtable_RIP_target": "0x476ab20",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AB70-0476AB78.bin",
+        "cache_begin_rva": 74886000,
+        "reused": true
+      }
+    },
+    {
+      "command": "start_assault",
+      "actual_primary_vtable": "0x476a298",
+      "actual_slot": "0x0",
+      "actual_target_rva": "0x9d1560",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\start_assault_clone-DETAIL.json",
+      "source_offset": 39,
+      "selected_old_vtable_RIP_target": "0x476a288",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A298-0476A2A0.bin",
+        "cache_begin_rva": 74883736,
+        "reused": true
+      }
+    },
+    {
+      "command": "start_assault",
+      "actual_primary_vtable": "0x476a298",
+      "actual_slot": "0x40",
+      "actual_target_rva": "0x2977fd0",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\start_assault_clone-DETAIL.json",
+      "source_offset": 39,
+      "selected_old_vtable_RIP_target": "0x476a288",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A2D8-0476A2E0.bin",
+        "cache_begin_rva": 74883800,
+        "reused": true
+      }
+    },
+    {
+      "command": "stop_assault",
+      "actual_primary_vtable": "0x476a040",
+      "actual_slot": "0x0",
+      "actual_target_rva": "0x9d1560",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\stop_assault_clone-DETAIL.json",
+      "source_offset": 39,
+      "selected_old_vtable_RIP_target": "0x476a030",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A040-0476A048.bin",
+        "cache_begin_rva": 74883136,
+        "reused": true
+      }
+    },
+    {
+      "command": "stop_assault",
+      "actual_primary_vtable": "0x476a040",
+      "actual_slot": "0x40",
+      "actual_target_rva": "0x29780d0",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\stop_assault_clone-DETAIL.json",
+      "source_offset": 39,
+      "selected_old_vtable_RIP_target": "0x476a030",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A080-0476A088.bin",
+        "cache_begin_rva": 74883200,
+        "reused": true
+      }
+    },
+    {
+      "command": "maa_create",
+      "actual_primary_vtable": "0x476a778",
+      "actual_slot": "0x0",
+      "actual_target_rva": "0x1547ab0",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\maa_personal_constructor-DETAIL.json",
+      "source_offset": 23,
+      "selected_old_vtable_RIP_target": "0x476a768",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A778-0476A780.bin",
+        "cache_begin_rva": 74884984,
+        "reused": true
+      }
+    },
+    {
+      "command": "maa_create",
+      "actual_primary_vtable": "0x476a778",
+      "actual_slot": "0x40",
+      "actual_target_rva": "0x29777f0",
+      "selected_vtable_RIP_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\maa_personal_constructor-DETAIL.json",
+      "source_offset": 23,
+      "selected_old_vtable_RIP_target": "0x476a768",
+      "capture": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A7B8-0476A7C0.bin",
+        "cache_begin_rva": 74885048,
+        "reused": true
+      }
+    }
+  ],
+  "typed_vtable_boundary": "Only selected primary0 deleting destructor and40 clone opened; paired constructor/clone RIP operands close actual selected table identity and secondary18; unused slots/RTTI/executors/helpers not expanded",
+  "ABI_and_read_fields": {
+    "full_generation_storage": "pointer20/count2C/stride16/object8; Character fullID18/tag1C; Unit fullID10/tag14",
+    "unit_owner174": {
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\disband_validator-DETAIL.json",
+      "actual_use": "0x296A6C6",
+      "offset": 198,
+      "operand": "mov eax,dword ptr [rax+174]",
+      "receiver": "full-generation CUnit resolved from storage5D1E380 immediately before this source instruction"
+    },
+    "type_registry": {
+      "slot": "0x5C67558",
+      "slot_detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\maa_type_registry_slot_use-DETAIL.json",
+      "array50_count5C": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\maa_type_lookup-DETAIL.json"
+    },
+    "type_index10_default_quantity70": {
+      "index": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\leaves02\\maa_personal_constructor-DETAIL.json",
+      "quantity": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\dispatch03\\maa_default_quantity_use-DETAIL.json",
+      "quantity_actual_use": "0x296F2F0",
+      "quantity_operand": "mov r14d,dword ptr [rsi+70]"
+    },
+    "type_key": "GDbo key18 /length28/capacity30; inline capacity15; type marker38=4744624F; parent shared layout source reused",
+    "move_progress_cutoff": {
+      "actual_slot": "0x5C699E8",
+      "signed64": true,
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\map01\\move_mode-DETAIL.json",
+      "RIP_use_offset": 113
+    },
+    "command_header": "primary0/flags8/metadataC..14/secondary18; native copies and typed constructors unchanged",
+    "raise": "size50/actor20/entries28,capacity30,count34,allocator38/selected40/kind44/flag48; entry8={ProvinceID,selector=-1}",
+    "move": "size168/kind20/UnitID24/targetProvinceID28/mode2C/routeKind30/directTarget34/path38(size130); path ptr0/cap8/countC/allocator10; context70/Unitptr10",
+    "halt_merge": "size40/kind20/UnitID24/intArray28(ptr0/cap8/countC/allocator10)",
+    "disband_split_assault": "disband28 kind20/CArmyID24; split30 kind20/CharacterID24/CArmyID28; assault30 kind20/CharacterID24/SiegeID28",
+    "regular_MAA": "size38/kind20=1/title24=-1/Character28/current_player54DBC00/typeIndex2C/quantity30=-1/payByte34=1; receiverF0=-1",
+    "regular_MAA_quote": "five arguments Type,out80,Character,quantityFixed,titleScope=false; ten signed64 raw resources Q100000, native stored order retained"
+  },
+  "reused_actual4_proofs_and_injection_dependencies": [
+    {
+      "name": "character_capital",
+      "old_rva": "0x28B1CD0",
+      "actual4_rva": "0x28B1CB0",
+      "full_logical_bytes": 187,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\first01\\character_capital-DETAIL.json"
+      ]
+    },
+    {
+      "name": "default_raise_province",
+      "old_rva": "0x24A51B0",
+      "actual4_rva": "0x24A5190",
+      "full_logical_bytes": 912,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\first01\\default_raise_province-DETAIL.json"
+      ]
+    },
+    {
+      "name": "move_progress",
+      "old_rva": "0x24AB2F0",
+      "actual4_rva": "0x24AB2D0",
+      "full_logical_bytes": 496,
+      "extent": "initial40 + necessary suffix456",
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24AB2F0-DETAIL.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\suffix_24AB2F0-DETAIL.json"
+      ]
+    },
+    {
+      "name": "int_array_append",
+      "old_rva": "0x9E3790",
+      "actual4_rva": "0x9E3790",
+      "full_logical_bytes": 389,
+      "extent": "initial25 + contiguous normal continuation364 through RET9E3914",
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\native_int_array_append-DETAIL.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\continuation01\\native_int_array_append_remaining_normal_code-DETAIL.json"
+      ]
+    },
+    {
+      "name": "start_assault_validator",
+      "old_rva": "0x29738C0",
+      "actual4_rva": "0x29738A0",
+      "full_logical_bytes": 198,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261007\\battle-pursuit\\migration-steam25734779\\actual4-domain\\province-map\\first01\\validate_start_assault-DETAIL.json"
+      ]
+    },
+    {
+      "name": "stop_assault_validator",
+      "old_rva": "0x2973A70",
+      "actual4_rva": "0x2973A50",
+      "full_logical_bytes": 373,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261007\\battle-pursuit\\migration-steam25734779\\actual4-domain\\province-map\\first01\\validate_stop_assault-DETAIL.json"
+      ]
+    },
+    {
+      "name": "disband_virtual_deleting_destructor",
+      "actual4_rva": "0x86BF20",
+      "full_logical_bytes": 43,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\command-layout-core\\NAMED-COMMAND-BODY-PAIRS.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\command-layout-core\\COMMAND-LAYOUT-MAP.json"
+      ]
+    },
+    {
+      "name": "actual_command_manager_and_queue",
+      "actual_manager": "0x5CC1240",
+      "actual_queue": "0x37F06D0",
+      "factory": "xar::ck3_12004::BindCommandImage12004",
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\core-global-slots\\CORE-GLOBAL-MAP.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\command-layout-core\\COMMAND-LAYOUT-MAP.json"
+      ],
+      "source": "src/ck3_12004_snapshot_foundation.cpp; include/xar_bridge/ck3_12004_commands.hpp"
+    },
+    {
+      "name": "Character_and_Unit_full_generation_identity",
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\BASE-READER-SOURCE-CLOSED.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\NATIVE-ROOT-DELIVERY.json"
+      ]
+    },
+    {
+      "name": "GDbo_SSO_and_type_marker",
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\shared-roster-layout\\GDBO-KEY-LAYOUT-SOURCE-CLOSED.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_262C700-DETAIL.json"
+      ]
+    },
+    {
+      "name": "Character_magic_and_fullID",
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2C11C10-DETAIL.json"
+      ]
+    },
+    {
+      "name": "Province_and_Siege_occurrence_layout",
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261007\\battle-pursuit\\migration-steam25734779\\actual4-domain\\province-map\\PROVINCE-PROFILE-SOURCE-CLOSED.json"
+      ]
+    },
+    {
+      "name": "Unit_kind_and_direct_target",
+      "proofs": [
+        "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/default-manifest-sentinel-12004/sentinel-unit30-map01/FAMILY-MAP.json"
+      ]
+    }
+  ],
+  "adopted_source_seams": [
+    "ck3_12002_adapter.cpp:619 Military default-action factory",
+    "ck3_12003_adapter.cpp:154/156 MAA query/create factories",
+    "ck3_12002_adapter.cpp:565 AttachNativeMaaRecruitmentInputsToArmyRowsV1",
+    "ck3_12002_adapter.cpp:487 SubmitRegularMaaCreate",
+    "ArmyStrengthV1 production row serializer remains unchanged"
+  ],
+  "DTO_and_rule_policy": "Existing .2/.3 software DTO lineage, source labels, player/owning-thread scope, default payloads, numeric semantics and actions retained; no old binder/hash delegation and no new capsule/capability/schema",
+  "qualification_recipe": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\WHOLE-QUALIFICATION-FIRST0-RECIPE.json",
+  "pointer_admission_snippet": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\QUALIFY-RESTORED-FACTORIES-SNIPPET.cpp",
+  "cost": {
+    "new_frozen_EXE_bytes": 11968,
+    "new_frozen_EXE_read_calls": 55,
+    "old_frozen_EXE_bytes": 0,
+    "old_frozen_EXE_read_calls": 0,
+    "old_code_source": "Only finite named .3 byte slices from retained exact-build text caches; no whole cache scan",
+    "whole_EXE_reads": 0,
+    "hashes": 0,
+    "PE_reparses": 0,
+    "pdata_EXE_rereads": 0,
+    "neighbor_body_reads": 0,
+    "generic_helper_or_executor_expansion": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_or_SDK_calls": 0,
+    "native_actions": 0,
+    "Git_operations": 0,
+    "physical_read_ledger": [
+      {
+        "kind": "new",
+        "begin_rva": 43565328,
+        "end_rva_exclusive": 43565574,
+        "file_offset": 43562256,
+        "read_bytes": 246,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0298C110-0298C206.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0298C110-0298C206.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43565728,
+        "end_rva_exclusive": 43566788,
+        "file_offset": 43562656,
+        "read_bytes": 1060,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0298C2A0-0298C6C4.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0298C2A0-0298C6C4.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 18820576,
+        "end_rva_exclusive": 18820628,
+        "file_offset": 18817504,
+        "read_bytes": 52,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-011F2DE0-011F2E14.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-011F2DE0-011F2E14.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43425920,
+        "end_rva_exclusive": 43426183,
+        "file_offset": 43422848,
+        "read_bytes": 263,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A080-0296A187.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A080-0296A187.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43414992,
+        "end_rva_exclusive": 43415160,
+        "file_offset": 43411920,
+        "read_bytes": 168,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029675D0-02967678.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029675D0-02967678.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 38453648,
+        "end_rva_exclusive": 38453891,
+        "file_offset": 38450576,
+        "read_bytes": 243,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-024AC190-024AC283.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-024AC190-024AC283.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43423056,
+        "end_rva_exclusive": 43423226,
+        "file_offset": 43419984,
+        "read_bytes": 170,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02969550-029695FA.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02969550-029695FA.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 13738160,
+        "end_rva_exclusive": 13738290,
+        "file_offset": 13735088,
+        "read_bytes": 130,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-00D1A0B0-00D1A132.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-00D1A0B0-00D1A132.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43423232,
+        "end_rva_exclusive": 43423284,
+        "file_offset": 43420160,
+        "read_bytes": 52,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02969600-02969634.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02969600-02969634.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 40140864,
+        "end_rva_exclusive": 40141092,
+        "file_offset": 40137792,
+        "read_bytes": 228,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02648040-02648124.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02648040-02648124.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 40141104,
+        "end_rva_exclusive": 40143533,
+        "file_offset": 40138032,
+        "read_bytes": 2429,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02648130-02648AAD.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02648130-02648AAD.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43427328,
+        "end_rva_exclusive": 43430159,
+        "file_offset": 43424256,
+        "read_bytes": 2831,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A600-0296B10F.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A600-0296B10F.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43437888,
+        "end_rva_exclusive": 43438267,
+        "file_offset": 43434816,
+        "read_bytes": 379,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296CF40-0296D0BB.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296CF40-0296D0BB.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43498704,
+        "end_rva_exclusive": 43498791,
+        "file_offset": 43495632,
+        "read_bytes": 87,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0297BCD0-0297BD27.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0297BCD0-0297BD27.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43446128,
+        "end_rva_exclusive": 43446347,
+        "file_offset": 43443056,
+        "read_bytes": 219,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296EF70-0296F04B.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296EF70-0296F04B.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43426304,
+        "end_rva_exclusive": 43426356,
+        "file_offset": 43423232,
+        "read_bytes": 52,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A200-0296A234.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A200-0296A234.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43426192,
+        "end_rva_exclusive": 43426300,
+        "file_offset": 43423120,
+        "read_bytes": 108,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A190-0296A1FC.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A190-0296A1FC.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43426512,
+        "end_rva_exclusive": 43426826,
+        "file_offset": 43423440,
+        "read_bytes": 314,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A2D0-0296A40A.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296A2D0-0296A40A.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43448784,
+        "end_rva_exclusive": 43449185,
+        "file_offset": 43445712,
+        "read_bytes": 401,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296F9D0-0296FB61.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296F9D0-0296FB61.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 51105280,
+        "end_rva_exclusive": 51105658,
+        "file_offset": 51102208,
+        "read_bytes": 378,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-030BCE00-030BCF7A.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-030BCE00-030BCF7A.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43481072,
+        "end_rva_exclusive": 43481224,
+        "file_offset": 43478000,
+        "read_bytes": 152,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029777F0-02977888.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029777F0-02977888.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 38447024,
+        "end_rva_exclusive": 38447090,
+        "file_offset": 38443952,
+        "read_bytes": 66,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-024AA7B0-024AA7F2.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-024AA7B0-024AA7F2.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 38447104,
+        "end_rva_exclusive": 38447180,
+        "file_offset": 38444032,
+        "read_bytes": 76,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-024AA800-024AA84C.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-024AA800-024AA84C.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 28136736,
+        "end_rva_exclusive": 28136975,
+        "file_offset": 28133664,
+        "read_bytes": 239,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-01AD5520-01AD560F.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-01AD5520-01AD560F.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 20156272,
+        "end_rva_exclusive": 20156412,
+        "file_offset": 20153200,
+        "read_bytes": 140,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-01338F70-01338FFC.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-01338F70-01338FFC.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 18820640,
+        "end_rva_exclusive": 18820837,
+        "file_offset": 18817568,
+        "read_bytes": 197,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-011F2E20-011F2EE5.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-011F2E20-011F2EE5.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43478624,
+        "end_rva_exclusive": 43478796,
+        "file_offset": 43475552,
+        "read_bytes": 172,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02976E60-02976F0C.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02976E60-02976F0C.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43479200,
+        "end_rva_exclusive": 43479323,
+        "file_offset": 43476128,
+        "read_bytes": 123,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029770A0-0297711B.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029770A0-0297711B.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43479680,
+        "end_rva_exclusive": 43479810,
+        "file_offset": 43476608,
+        "read_bytes": 130,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02977280-02977302.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02977280-02977302.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43480768,
+        "end_rva_exclusive": 43480952,
+        "file_offset": 43477696,
+        "read_bytes": 184,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029776C0-02977778.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029776C0-02977778.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43483088,
+        "end_rva_exclusive": 43483218,
+        "file_offset": 43480016,
+        "read_bytes": 130,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02977FD0-02978052.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02977FD0-02978052.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43483344,
+        "end_rva_exclusive": 43483474,
+        "file_offset": 43480272,
+        "read_bytes": 130,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029780D0-02978152.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-029780D0-02978152.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 10294624,
+        "end_rva_exclusive": 10294667,
+        "file_offset": 10291552,
+        "read_bytes": 43,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-009D1560-009D158B.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-009D1560-009D158B.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 22313648,
+        "end_rva_exclusive": 22313691,
+        "file_offset": 22310576,
+        "read_bytes": 43,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-01547AB0-01547ADB.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-01547AB0-01547ADB.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 9018948,
+        "end_rva_exclusive": 9018955,
+        "file_offset": 9015876,
+        "read_bytes": 7,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-00899E44-00899E4B.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-00899E44-00899E4B.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43447024,
+        "end_rva_exclusive": 43447028,
+        "file_offset": 43443952,
+        "read_bytes": 4,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296F2F0-0296F2F4.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0296F2F0-0296F2F4.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 43478896,
+        "end_rva_exclusive": 43479074,
+        "file_offset": 43475824,
+        "read_bytes": 178,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02976F70-02977022.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-02976F70-02977022.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 72566224,
+        "end_rva_exclusive": 72566232,
+        "file_offset": 72561616,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-045345D0-045345D8.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-045345D0-045345D8.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 72566288,
+        "end_rva_exclusive": 72566296,
+        "file_offset": 72561680,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-04534610-04534618.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-04534610-04534618.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74887544,
+        "end_rva_exclusive": 74887552,
+        "file_offset": 74882936,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B178-0476B180.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B178-0476B180.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74887608,
+        "end_rva_exclusive": 74887616,
+        "file_offset": 74883000,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B1B8-0476B1C0.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B1B8-0476B1C0.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74887296,
+        "end_rva_exclusive": 74887304,
+        "file_offset": 74882688,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B080-0476B088.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B080-0476B088.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74887360,
+        "end_rva_exclusive": 74887368,
+        "file_offset": 74882752,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B0C0-0476B0C8.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476B0C0-0476B0C8.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74886744,
+        "end_rva_exclusive": 74886752,
+        "file_offset": 74882136,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AE58-0476AE60.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AE58-0476AE60.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74886808,
+        "end_rva_exclusive": 74886816,
+        "file_offset": 74882200,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AE98-0476AEA0.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AE98-0476AEA0.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74886944,
+        "end_rva_exclusive": 74886952,
+        "file_offset": 74882336,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AF20-0476AF28.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AF20-0476AF28.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74887008,
+        "end_rva_exclusive": 74887016,
+        "file_offset": 74882400,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AF60-0476AF68.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AF60-0476AF68.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74885936,
+        "end_rva_exclusive": 74885944,
+        "file_offset": 74881328,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AB30-0476AB38.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AB30-0476AB38.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74886000,
+        "end_rva_exclusive": 74886008,
+        "file_offset": 74881392,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AB70-0476AB78.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476AB70-0476AB78.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74883736,
+        "end_rva_exclusive": 74883744,
+        "file_offset": 74879128,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A298-0476A2A0.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A298-0476A2A0.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74883800,
+        "end_rva_exclusive": 74883808,
+        "file_offset": 74879192,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A2D8-0476A2E0.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A2D8-0476A2E0.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74883136,
+        "end_rva_exclusive": 74883144,
+        "file_offset": 74878528,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A040-0476A048.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A040-0476A048.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74883200,
+        "end_rva_exclusive": 74883208,
+        "file_offset": 74878592,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A080-0476A088.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A080-0476A088.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74884984,
+        "end_rva_exclusive": 74884992,
+        "file_offset": 74880376,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A778-0476A780.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A778-0476A780.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74885048,
+        "end_rva_exclusive": 74885056,
+        "file_offset": 74880440,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A7B8-0476A7C0.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0476A7B8-0476A7C0.claim"
+      }
+    ],
+    "slot_receipt_formatter_failure_preserved": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\existing-mcp-factories-12004\\military-maa\\SLOT-FIRST-POSTPROCESSING-RED.txt",
+    "slot_receipt_recovery_new_EXE_reads": 0
+  },
+  "missing_native_binding_fields": [],
+  "testsNotRun": true,
+  "noBuild": true,
+  "Git_commit_and_push": "Parent owns integration commit/push; child ran no Git",
+  "remaining": [
+    "Parent integrates factories into actual4 selected adapter and compiles its sole compound target once.",
+    "Fresh whole compound fixture and Service consumption remain pending Root; no native Military or MAA action performed by this lane.",
+    "Actual .4 paused recruitment/read-preview/default-action outcomes and MAA purchase postconditions remain unobserved."
+  ]
+}
