@@ -384,6 +384,7 @@ std::string SerializeGovernmentRuntimeAdapterSourceV1(
   const auto &semantic = result.semantic_result;
   const bool available = result.status == SourceStatus::available;
   const bool migrated = profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002;
+  const bool current = profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12004;
   const auto revision = result.second_snapshot_revision != 0
                             ? result.second_snapshot_revision
                             : expected_revision;
@@ -396,10 +397,12 @@ std::string SerializeGovernmentRuntimeAdapterSourceV1(
   output += ",\"snapshot_revision\":" + std::to_string(revision) +
             ",\"date_raw\":" + std::to_string(result.date_raw) +
             ",\"build\":{\"version\":";
-  AppendGovernmentJsonString(output, migrated ? "1.20.0.2" : "1.19.0.6");
+  AppendGovernmentJsonString(output, current ? "1.20.0.4" : migrated ? "1.20.0.2" : "1.19.0.6");
   output += ",\"exe_sha256\":";
   AppendGovernmentJsonString(
-      output, migrated
+      output, current
+                  ? "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+                  : migrated
                   ? "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"
                   : "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86");
   output += "},\"unavailable_reason\":";
@@ -443,15 +446,18 @@ std::string SerializeGovernmentRuntimeAdapterSourceV1(
   output += core_ready ? "true" : "false";
   output += "},\"provenance\":{\"backend_id\":";
   AppendGovernmentJsonString(
-      output, migrated ? "ck3-1.20.0.2-private-government-runtime-adapter-v1"
+      output, current ? "ck3-1.20.0.4-private-government-runtime-adapter-v1"
+             : migrated ? "ck3-1.20.0.2-private-government-runtime-adapter-v1"
                        : "ck3-1.19.0.6-private-government-runtime-adapter-v1");
   output += ",\"campaign_backend_id\":";
   AppendGovernmentJsonString(
-      output, migrated ? "ck3-1.20.0.2-native-campaign-root-context-v1"
+      output, current ? "ck3-1.20.0.4-native-campaign-root-context-v1"
+             : migrated ? "ck3-1.20.0.2-native-campaign-root-context-v1"
                        : "ck3-1.19.0.6-native-campaign-root-context-v1");
   output += ",\"feature_backend_id\":";
   AppendGovernmentJsonString(
-      output, migrated ? "ck3-1.20.0.2-native-loaded-feature-manifest-v1"
+      output, current ? "ck3-1.20.0.4-native-loaded-feature-manifest-v1"
+             : migrated ? "ck3-1.20.0.2-native-loaded-feature-manifest-v1"
                        : "ck3-1.19.0.6-native-loaded-feature-manifest-v1");
   output += "}}";
   return output;

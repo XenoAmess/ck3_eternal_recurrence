@@ -30,6 +30,7 @@ void RecordStableIdentity(Value value, bool &seen, Value &identity,
 void ResetDetachedBindingState(BindingState &state) noexcept {
   state.campaign_environment = {};
   state.feature_environment = {};
+  state.government_12004 = {};
   state.upstream_government_resolver = nullptr;
   state.upstream_campaign_access = {};
   state.upstream_feature_access = {};
@@ -249,6 +250,12 @@ bool CaptureProductionSample(
   if (!BindingIsApplicationMain(&state)) {
     return false;
   }
+  if (state.feature_profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12004) {
+    return xar::ck3_12004::ReadGovernmentRuntimeCollectorSampleV1(
+        state.government_12004, state.upstream_campaign_access,
+        state.upstream_feature_access, state.expected_revision,
+        state.execution_stamp, output);
+  }
   xar::ck3_11906::CampaignRootAccessV1 campaign{};
   campaign.context = &state;
   campaign.capture_frame = &CampaignProxyCaptureFrame;
@@ -423,7 +430,11 @@ bool BindGovernmentRuntimeAdapterBridgeV1(
           kGovernmentRuntimeAdapterBridgeBinder12002GameVersion &&
       environment.admitted_executable_sha256 ==
           kGovernmentRuntimeAdapterBridgeBinder12002ExecutableSha256;
-  if (!environment.exact_build_admitted || (!legacy_build && !migrated_build)) {
+  const bool current_build =
+      environment.admitted_game_version == xar::ck3_12004::kGameVersion &&
+      environment.admitted_executable_sha256 == xar::ck3_12004::kExecutableSha256;
+  if (!environment.exact_build_admitted ||
+      (!legacy_build && !migrated_build && !current_build)) {
     state.last_failure = BindingFailure::unsupported_build;
     return false;
   }
@@ -452,20 +463,31 @@ bool BindGovernmentRuntimeAdapterBridgeV1(
     }
   }
 
-  state.feature_profile = migrated_build
+  state.feature_profile = current_build
+                              ? GovernmentRuntimeAdapterBuildProfileV1::ck3_12004
+                              : migrated_build
                               ? GovernmentRuntimeAdapterBuildProfileV1::ck3_12002
                               : GovernmentRuntimeAdapterBuildProfileV1::ck3_11906;
-  state.campaign_environment =
+  if (current_build) {
+    state.government_12004 = xar::ck3_12004::BindGovernmentRuntimeImageV1(
+        environment.module_base, environment.admitted_executable_sha256);
+    if (!state.government_12004.enabled) {
+      state.last_failure = BindingFailure::unsupported_build;
+      return false;
+    }
+  } else {
+    state.campaign_environment =
       migrated_build ? xar::ck3_12002::BindCampaignRootNativeEnvironmentV1(
                            environment.module_base, true)
                      : xar::ck3_11906::BindCampaignRootNativeEnvironmentV1(
                            environment.module_base, true);
-  state.feature_environment =
+    state.feature_environment =
       migrated_build ? xar::ck3_12002::BindLoadedFeatureManifestNativeEnvironmentV1(
                            environment.module_base, true)
                      : xar::ck3_11906::BindLoadedFeatureManifestNativeEnvironmentV1(
                            environment.module_base, true);
-  if (!environment.offline_fixture) {
+  }
+  if (!environment.offline_fixture && !current_build) {
     state.upstream_government_resolver = state.campaign_environment.government;
     state.campaign_environment.government = &CampaignGovernmentResolverProxy;
     state.campaign_environment.offline_fixture_function_overrides = true;

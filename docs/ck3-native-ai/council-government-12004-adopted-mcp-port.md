@@ -23,10 +23,10 @@ flowchart TD
     B --> I[Actual Character-to-Government resolver]
     I --> J[Current government flags and actual script token names]
     B --> K[Actual effective feature bitset, native 44-row registry and DLC state]
-    I -. final typed government key source-use closure in progress .-> U[Government stable key]
+    I --> U[Whole current Government key at source-closed plus 0x18]
     J --> W[Existing Government adapter software DTO]
     K --> W
-    U -. source closure required before final binder delivery .-> W
+    U --> W
     Q -. new build native / Service / paused verification owned by Root .-> X[New .4 qualification]
     W -. new build verification owned by Root .-> X
 ```
@@ -39,8 +39,14 @@ The actual assignment helper is `0x115AAA0`. The required shared context and com
 
 Government's actual resolver is `0x28C2DF0`, returning the current Government pointer from a Character receiver. Its complete body proves Character full-ID/death/landed/unlanded behavior and Government fallback slot `0x5D1E2A8`; Character `+0x18` is not a Government key proof. The Government flag caller proves the Government vector at `+0x50`. Token names use complete actual resolver `0x3F4F8E0`; sorted int32 membership helper `0xB9DE80` proves vector data/count/stride, not a standalone count-function return. These facts reuse their owners' actual bodies.
 
-The source-closed feature root is `0x5CB87F8`, actual native registry range `0x47334D0..0x4733580` with 44 entries, and script DLC object `0x5CC15E0`. Current effective feature fields and the used DLC hash-set operands are proved by finite mapped source, with the derived registry data read once. A separate typed Government key getter/caller remains the final active finite source closure; a coincident numeric offset in a Doctrine or Character class is not used as its evidence.
+The Government key is now closed as a combined source and typed runtime field observation. Current `.4` key-operation leaf `0x30A06A0` has the complete 29-byte `add RCX,0x18` / short-or-heap string / `strcmp` path. Root's actual Robert Government pointer leads to primary RTTI `CGovernmentType`, with `CGameDatabaseObject` at member displacement 0. Root then read only the string header and actual heap bytes at this typed object's `+0x18`: length 17, capacity 31, exact bytes `feudal_government`. The reader copies the whole current string for any observed government; it contains no observed-key allowlist. This evidence does not use a coincident Character or Doctrine offset. The mapped generic wrapper is not claimed as a separately proved current Government registration. The selected 128-byte primary-function fragment remains role unknown; failed and adjacent-vtable candidates receive no accessor credit.
+
+The source-closed feature root is `0x5CB87F8`, actual native registry range `0x47334D0..0x4733580` with 44 entries, and script DLC object `0x5CC15E0`. Current effective feature fields and the used DLC hash-set operands are proved by finite mapped source, with the derived registry data read once. All required Government query inputs are implemented through an independent actual `.4` binder and the existing semantic source adapter. It uses only its required campaign fields, not a claim that the entire CampaignRoot or Snapshot has been ported.
+
+Root's source-only paused memory locators are external `upstream-build-migration/government-fallback-live-locator/ROOT-LOCATOR.json` (16 bytes), `government-robert-live-locator/ROOT-LOCATOR.json` (52 bytes) and `government-robert-live-locator/ROOT-GOVERNMENT-KEY.json` (49 bytes). These 117 bytes supply source identity and field corroboration only; they are not a Government MCP query qualification or live-capability credit.
 
 The existing Python private transports already choose exact build identity from the actual attached Hello. Council passes that version/SHA into its existing normalizers; Government checks dynamic native, campaign and feature backend identities. Namespace names of reused software DTOs are not ABI identities. No transport schema expansion is required solely to change the build, and no new facade is introduced.
 
-Current source/ABI receipts are external under `Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/council-government/`, split into `native-candidates`, `native-gates-assign` and `native-government`. Source facts are closed where stated, while final Government key closure and all new-build compiled/Service/live qualification remain explicitly pending. No old suite or prior GREEN has been rerun or credited to `.4`.
+Current source/ABI receipts are external under `Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/council-government/`, split into `native-candidates`, `native-gates-assign` and `native-government`. Council's ten leaves were released in `5a9a086c9be9122ccf8f24df4c1b9b24c90ebae1`; the eight Government leaves now close all required native inputs. A fresh `xar_ck3_12004_government_whole_first` fixture is prepared with two whole native wires. It reads fixture-owned full Character identity, a whole heap key, native flags, the 44-row registry, effective bits and DLC state through the real new collector, then the existing two-sample source adapter and `.4` serializer. Its second case changes the current Government key between captures and expects the existing typed drift result. This is prepared source, not executed or live evidence.
+
+All new-build compiled/Service/live qualification remains explicitly pending and is Root-owned. No old suite or prior GREEN has been rerun or credited to `.4`. The capability readiness is `research` with implemented, source-closed candidates; `static-ready`, `fixture-live` and production readiness are not claimed before their corresponding fresh checks.
