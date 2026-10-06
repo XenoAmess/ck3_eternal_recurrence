@@ -1,4 +1,5 @@
 #include "xar_bridge/religion_doctrine12002_tenet_rows.hpp"
+#include "xar_bridge/tenet_definition_key_copy.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -14,15 +15,7 @@ bool Matches(const void *object, std::uint32_t id) noexcept {
   return object && Load<std::uint32_t>(object, religion::kReferenceIdentityOffset) == id;
 }
 bool Key(const void *definition, std::string &out) {
-  if (!definition || Load<std::uint32_t>(definition, 0x38) != 0x4744624F) return false;
-  const auto *text = static_cast<const std::byte *>(definition) + kTenetDefinitionKeyOffset;
-  const auto size = Load<std::uint64_t>(text, 0x10);
-  const auto capacity = Load<std::uint64_t>(text, 0x18);
-  if (!size || size > capacity || size > 4096) return false;
-  const auto *data = capacity < 16 ? reinterpret_cast<const char *>(text) : Load<const char *>(text, 0);
-  if (!data) return false;
-  out.assign(data, static_cast<std::size_t>(size));
-  return true;
+  return detail::CopyTenetDefinitionKeySource(definition, out);
 }
 std::string Entry(const TenetRowsBindings &b, void *current_rite, const void *definition,
                   TenetEntry &out) {

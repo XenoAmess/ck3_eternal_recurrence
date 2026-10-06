@@ -20,6 +20,7 @@
 #include "xar_bridge/contextual_advantage_v1.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/phase_rite_parameters_v1_serializer.hpp"
+#include "xar_bridge/phase_warmonger_core_v1_serializer.hpp"
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_war_cash_current_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
@@ -3502,6 +3503,10 @@ void AppendCombatKnights(std::string &result,
       if (knight.phase_rite_parameters_v1) {
         result += ",\"phase_rite_parameters_v1\":";
         xar::game::AppendPhaseRiteParametersV1(result, *knight.phase_rite_parameters_v1);
+      }
+      if (knight.phase_warmonger_core_v1) {
+        result += ",\"phase_warmonger_core_v1\":";
+        xar::game::AppendPhaseWarmongerCoreV1(result, *knight.phase_warmonger_core_v1);
       }
       result += ",\"source_regiment_id\":";
       result += SignedNumber(knight.source_regiment_id);

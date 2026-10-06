@@ -73,3 +73,21 @@ Evaluate的缺ref/错generation走 actual fallback，不保证“缺Rite总为fa
 恢复后只新增下一 actual COL /相关 `.pdata` /unwind与缺失函数：Evaluate **196B metadata+134B code**，RHS **52B metadata+117B code**。累计新 EXE读取为 **104,184B metadata +251B code =104,435B**，无 wholeEXE/section/text扫描、wholeEXE hash或 closed native body重读。`.3` PE timestamp `6ABE3CA2` 与冻结身份复用；stock和源码片段各有独立 text pins。
 
 状态仅是 **warmonger predicate source-confirmed / research**。没有新 observer implementation、native/Python测试、compiled DLL、paused observation、实际 event选择或future人物效果。本包消除了 predicate语义unknown并留下可直接施工的同查询数据入口，不升级完整phase readiness，也不增加新策略/权限门禁。Root合并外置Oct6/W41字段和共享索引；本代理只提交本页。
+
+## 后续最小实施计划（2026-10-06，source先封存）
+
+Root已采用上述源树 `accf65a2`，本轮实现基线 `01d98c73ca42b91b5e39c827e32a07b1afe51479`。空间原因使用 C盘 sparse lane。只在现成V2 knight行新增 optional `phase_warmonger_core_v1`；commander、V3、overall/selection/forecast readiness与advertisement不改。新helper解析同一已验证Character、实际adopted Rite、initialized TenetDB与实际key，再按native source调用Core pointer membership。既有 key copier只抽到共享inline header，旧调用委托同一算法，无语义更改。
+
+真实fallback由getter返回值与actual fallback global `5C67670`一致来辨认；本轮不扩展读取fallback Core，保留membership null及具体reason。loaded target未解析同样为null。新strict normalizer和只读 occurrence adapter保留public source Army、Regiment、Character及member index，以实际行位置消费，不能合并重复来源。adapter只返回这一个validity operand，不生成事件选择或完整chance。
+
+先完成源树与本计划，再实施一个new Python focused compound（full V2 normalizer→exact knight occurrence adapter）。新native fixture只运行实际helper与serializer，首个配置/构建/CTest由Root执行；本代理不运行native或旧Boolean测试，不操作本机游戏/进程/SDK/pipe。当前计划与结果分开，资格待首次实际结果追加。
+
+## 同查询最小实现与首次 Python 资格（2026-10-06）
+
+现成V2骑士采集在同一Character occurrence上发布 `phase_warmonger_core_v1`。新增reader只从 actual adopted Rite Core `+758`和实际loaded `tenet_warmonger` definition运行 `A11CC0`；没有读取Boolean `+7B8`、status、Faith main Rite或personal Tenet来代替这个predicate。bindings只绑定 exact `.3`，旧构建省略optional leaf。actual fallback、definition/key未解析或Core读取失败保留null和具体原因，合法Core空集合是false，Rite full generation及零值保留。
+
+新normalizer与 `PhaseWarmongerKnightOccurrence12003` adapter通过public Army、Regiment、Character与native member index定位具体骑士行。现有V2本来就拒绝同查询重复knight CharacterID/RegimentID，本轮保持该合同；测试中的同Character不同Army是两个独立合法query fixture，不能据此声称同帧重复骑士可接纳。一个可用leaf只解锁 `root.rite.tenets.warmonger`，未关闭heritage/religion、trait NOR、chance、phase selection、RNG/effects或完整事件执行。
+
+唯一新compound Python method首次实际执行GREEN：8个operand场景，full production V2 normalizer→exact occurrence adapter，测试用时0.003秒；harness全程1.532692秒。它覆盖Core true/false、合法Rite零值/full generation、actual fallback reason、loaded target/key/Core unavailable，以及legacy缺leaf；全部保留原completeness/forecast边界。测试只消费synthetic Python payload，既有Boolean carrier是独立的对照输入，不能当成真实当前同帧身份互证。attempt01在actual method开始前因sparse checkout缺既有 `tools/build_release.py` import而RED，0个warmonger checks；补齐既有tools源码后的attempt02是第一次实际case，旧tests未运行。失败与成功日志均在外置packet保留。
+
+新增native candidate `tests/phase_warmonger_core_12003_test.cpp` 待Root首编译/CTest：7个source-shaped samples、1个JSON wire，运行实际header reader及production leaf serializer，明确断言实际Core receiver/loaded RHS pointer与fallback不被转为false。CMake recipe仅交Root，尚未编译、未消费genuine native wire、未实机采集。当前是**source-closed observer implementation candidate + FIRST Python focused GREEN**，不是native qualified/static-ready、fixture-live或production-live，也不提升V3/whole-phase readiness。外置packet为 `C:/codex-ck3-background/packets/phase-warmonger-implementation-20261006/`，包含plan、attempt01/02、Root recipe与Oct6/W41字段。此实现新增EXE读取、native build与本机runtime操作均为0。

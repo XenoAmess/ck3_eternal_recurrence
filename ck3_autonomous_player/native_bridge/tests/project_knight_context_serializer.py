@@ -54,6 +54,7 @@ def main() -> None:
     output = (
         '#include "xar_bridge/game_contract.hpp"\n'
         '#include "xar_bridge/phase_rite_parameters_v1_serializer.hpp"\n'
+        '#include "xar_bridge/phase_warmonger_core_v1_serializer.hpp"\n'
         '#include <array>\n#include <charconv>\n#include <cstdint>\n'
         '#include <string>\n#include <string_view>\n#include <system_error>\n'
         'namespace knight_context_wire {\nusing namespace xar;\n' + "\n".join(functions.values()) +

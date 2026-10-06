@@ -842,6 +842,9 @@ bool ReadCombatKnights(
     knight.phase_rite_parameters_v1 = ck3_12003::phase_rite::Read(
         bindings.phase_rite_parameters, character,
         static_cast<std::uint32_t>(knight_character_id));
+    knight.phase_warmonger_core_v1 = ck3_12003::phase_warmonger::Read(
+        bindings.phase_warmonger_core, character,
+        static_cast<std::uint32_t>(knight_character_id));
     knight.source_regiment_id = regiment_row.regiment_id;
     knight.army_id = internal_army_id;
     knight.prowess = LoadAt<std::int32_t>(
