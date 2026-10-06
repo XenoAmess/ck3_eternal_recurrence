@@ -44,6 +44,16 @@ owner full ID, owner match, and model magic. Match current getter provenance
 with the selected Character and `model_inline` branch. Keep the query's own
 public/native revision/date; a separate request is not an atomic part of814.
 
+Root subsequently attempted this recipe as844. It failed before delivering the
+requested contexts: `executor_exception3221225477` (`0xC0000005`), bridge
+RVA`66B8AC`, `waitexecutor_failed`. Root's saved
+`gameplay-responses/844-current-fighter-model-context.json` is an error result;
+the following850 request was busy. The current-context recipe therefore remains
+**RED/unvalidated for this intended delivery**, and no contexts or live credit
+are inferred from it. Root owns the observed driver fault and any later retry;
+this child did not repeat the query or investigate the driver. Saved814's17
+available numeric knight leaves remain independent evidence.
+
 The physical current recipe is Character `+1B0 -> scratch+258 -> model`, with
 owner at model `+8`. Matching owner selects **ADDRESS model+10**. Weighted rows
 are model `+10/+1C`, 16-byte occurrences; aggregate keys are model `+78/+84`
@@ -85,52 +95,87 @@ flowchart TD
   Q --> O[Held model10 source /census identity]
   A[Cached2A3EF00 allocate new0x2F8] --> B[New291BE30 complete240B]
   B --> C[New24387E0 core99B at newmodel10]
-  C -. exact initial weighted state unknown .-> W[11E1350 context header]
-  C -. final key header result unknown .-> K[CachedCA1870 /actual allocator slot20]
-  C -. exact initial values state unknown .-> V[CA18F0 contextD0]
-  W -. required .-> E[Explicit fresh postreset numeric baseline]
-  K -. required .-> E
-  V -. required .-> E
+  C --> W[11E1350 weighted:capacity4 /count0]
+  C --> K[CachedCA1870 keys:capacity32 /count0]
+  C --> V[CA18F0 values:capacity32 /count0]
+  W --> E[Fresh core-constructor numeric context:empty]
+  K --> E
+  V --> E
+  E --> R[Cached291C010 weighted0 preserves empty aggregate]
   B --> P[Cached2A43BE0 new8=old8 then291C0D0 newmodel]
   P --> F[Evolving fresh model10]
   O -. distinct source until proper stage association .-> F
-  E -. no current-final substitution .-> F
+  R --> F
   F -. real selected later branches incl Rule43 remain .-> Z[Full person /Entry unknown]
 ```
 
-## Exact next missing numerical producer
+## Initialized numerical header postimages
 
-The minimum fresh baseline still needs actual initialized header postimages.
-The next direct source entries are **11E1350** for weighted rows and **CA18F0**
-for values. Their exact bodies were not recaptured in this bounded package.
-The ordinary MAA owner is checking whether its fresh scratch cache already
-contains11E1350; no constructor-baseline credit is borrowed from the caller name.
+The source-only follow-up closes the three directly demanded numeric headers on
+**normal constructor return**. It adds complete11E1350`[11E1350,11E13CF)`127 B
+and CA18F0`[CA18F0,CA1972)`130 B, reuses cachedCA1870`[CA1870,CA18EF)`127 B,
+and resolves exactly their actual static slots10/20. Their fixed vptr producers
+and target pointer bytes establish this table without a vtable catalogue:
 
-**CA1870** is already source-captured by the following2920B50 package. Its127 B
-body was reused here, adding zero EXE reads/credit. It explicitly stores zero
-data/capacity/count, then calls its embedded allocator slots10 and20. The final
-numeric result remains a concrete source dependency rather than a generic
-allocator audit. The fixed vptr producer atCA188D is
-`nextIP CA1894 +383D684 = RVA44DEF18`. Therefore the exact two pointer locations
-are **RVA44DEF28 (slot10)** and **RVA44DEF38 (slot20)**. The latter receives
-`RCX=header+18`, `RDX=header`, `R8=&header+8` atCA18D4, after the final direct
-zero stores. A future bounded closure can resolve only these two8-byte static
-pointers and their demanded count effect. No vtable catalogue or callback was
-read/executed here.
+| Header | Constructor / fixed vptr RVA | Static slot10 RVA / target | Static slot20 RVA / target | Final data / capacity / count |
+|---|---|---|---|---|
+| Weighted at model10 |11E1350 /45333E8|45333F8 /855830|4533408 /896B80|model30 /4 /0 at model1C|
+| Keys at model78 |CA1870 /44DEF18|44DEF28 /855830|44DEF38 /86E150|model98 /32 /0 at model84|
+| Values at modelE0 |CA18F0 /44DEF60|44DEF70 /855830|44DEF80 /86E150|model100 /32 /0 at modelEC|
 
-Source proof for a fresh logical baseline must retain the construction model's
-address, owner copied from the selected old model, stage label, and initialized
-weighted/key/value counts. If those counts are observed at the actual stage,
-read only demanded arrays: weighted16 B rows, uint16 keys, and signed Q64 values.
-Weighted count0 does not imply aggregate empty. Current raw model counts are
-current values, not evidence of earlier initialized counts.
+Each constructor follows the same relevant order:
 
-A future frozen fixture can use held model A with nonempty keys and a separate
-new model B for the same owner, exercise the actual initialized B header state,
-then pass that explicit fresh baseline through the existing prefix/branch fold.
-It must retain A for held-source ranks and separately label B's evolving context.
-An empty B is usable only after the real constructor result closes; no fabricated
-rule43 admission, arbitrary gate boolean, or cold default emptiness is introduced.
+1. Install the embedded allocator vptr and its auxiliary source; initialize the
+   header data, capacity and count to zero.
+2. Call slot10 with `RCX=header+18`, `RDX=0`, `R8D=2` for keys or8 for the other
+   two headers. Its actual shared wrapper855830`[855830,85586A)`58 B contains no
+   direct header writes. It performs its release/delegation calls; this package
+   does not execute them or expand global allocator implementation. The result
+   below is the **normal return path**, after that call has returned.
+3. Unconditionally write data0 and **QWORD[header+8]=0** again immediately before
+   slot20. This clears both the capacity DWORD+8 and count DWORD+C after slot10.
+   Exact stores are11E13AA/11E13B0, CA18CA/CA18D0 andCA194D/CA1953.
+4. Call slot20 with `RCX=header+18`, `RDX=header`, `R8=&header+8`. The key/value
+   leaf86E150 writes `QWORD[RDX]=RCX+8` and **DWORD[R8]=32**, then returns.
+   The weighted leaf896B80 writes the same data pointer and **DWORD[R8]=4**,
+   then returns. Both complete leaves are15 B. Neither writes `[R8+4]`, the count.
+5. Return the header with count0. The final data pointer is its **inline buffer**;
+   a nonnull data pointer and positive capacity therefore do not imply entries.
+
+This closes the normal initialized logical context at
+`post24387E0_fresh_context`: weighted occurrences`[]`, uint16 keys`[]`, signed
+Q64 values`[]`, all three count DWORDs0. It is not inferred from a pending byte,
+owner match, allocator name, or pre-callback zero store. No unused buffer bytes
+need reading or initializing for this numerical projection.
+
+## Minimum usable fresh-baseline interface
+
+Retain Character full ID, the **distinct construction model** identity/address,
+the actual copied owner from cached2A43BE0, and constructor source provenance.
+This source result supplies entering numeric counts **(0,0,0)** and an empty
+logical context for a deliberately constructed fresh model. Cached291C010 tests
+the weighted count first; its zero branch preserves the aggregate. Here those
+aggregate counts are independently proved zero, so the fresh logical projection
+at `post_291C010_pre_prefix` is empty. This is the new-construction modeled path,
+not an observation of an older model's historical baseline. Physical cleanup
+success and later transfer/selection are separate source boundaries.
+
+The existing `PersonStageStartBaseline12003` interface in
+`battle_trait_materialized_prefix_12003.py` can express that path with
+`stage="post_291C010_pre_prefix"`, `kind="modeled_new_reset"`,
+`entering_counts=(0,0,0)`, empty context, and the exact construction provenance.
+No new DTO, native callback or arithmetic system is needed. An old held model
+with weighted0/nonempty aggregate must still supply its actual retained arrays;
+these new-construction counts do not override that existing branch.
+
+The proposed next frozen fixture should use held model A with nonempty values
+and a distinct fresh model B for the same Character. Give B the source-closed
+postimages above and entering counts(0,0,0), then feed the real provider prefix
+and existing branch fold. Preserve A as the separate held-source rank input and
+B as the evolving context. Include the existing old-model weighted0/nonempty
+aggregate branch to demonstrate its retention. This fixture is a plan only:
+no tests ran in this source-only increment, no Rule43 admission is fabricated,
+and no cold callback result or whole Entry equivalence is claimed.
 
 ## Receipts and boundary
 
@@ -143,8 +188,26 @@ unique code+288 exact .pdata**. The cached getter, reset, paired dispatcher,
 were duplicated and no unwind/handler, EXE header/full hash/scan, allocator
 catalogue, Rule43 span, runtime field, test, or game operation was added.
 
-This is **research** for fresh numeric initialization and a concrete existing
-current-input query recipe. It does not claim a newly complete baseline,
-fresh person preparation, post-constructor held stability, complete Entry,
-or a new live primitive. The independent current C1..C9 slice remains useful
-and available in814 while these distinct dependencies remain partial.
+The separate initialized-count follow-up lives under `initialization-counts/`.
+Its `SOURCE-PLAN.json` and necessary-callee records precede the reads; final
+`SOURCE-PINS.json`, `READ-COST.json`, `ORDERED-STAGE-LEDGER.json` and
+`ROOT-DELIVERY.json` account for the new bytes independently. Two initial exact
+`.pdata` lookups failed because86E150 and896B80 are leaf functions absent from
+that table. Both **harness RED** attempts and their metadata remain saved; the
+known static targets were then captured once in16 B chunks, covering each15 B
+leaf plus one alignment byte. This is not a capability RED or a runtime test.
+Read-only shell/path errors also remain recorded. No code body was recaptured.
+The follow-up adds **1043 B** of frozen EXE I/O: **345 B unique function code**,
+2 B trailing leaf alignment, **648 B exact .pdata**, and **48 B** for the six
+actual8-byte static slots. Combined with the earlier627 B package, this owned
+fresh-model source line totals1670 B. CachedCA1870 and all earlier caller/reset
+source retain zero new source credit. No unwind, global allocator body, extra
+vtable slot, whole EXE scan/hash, game query, build or test was added.
+
+This is **research/source-closed numerical initialization** and a concrete
+existing current-input query recipe whose Root delivery attempt is RED. The
+fresh normal-return empty logical baseline now has exact source evidence;
+current held inputs, later real gates/selected contributions, full preparation,
+post-constructor held stability and complete Entry remain separate. No new
+static-ready code or live primitive is claimed. The independent current C1..C9
+slice remains useful and available in814.
