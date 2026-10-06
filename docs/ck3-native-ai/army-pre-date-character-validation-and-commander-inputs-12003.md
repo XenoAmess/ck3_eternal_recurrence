@@ -121,3 +121,31 @@ flowchart TD
 必要场景：较早 skip/sentinel 的0谓词调用；非 sentinel owner174先读；Character fallback tag/fullID/death/state早退；首个nonnull state stop；三谓词参数false/true/false与null reason、首个false后0后项调用；selected fallback Character18及actual Army10高位DWORD；重复Army请求保留；initial80 partial而requests可判。非空 compound 组合一个 skip、一个sentinel、一个早期validation failure、一个availability false及一个完整pass，带非空初始80和重复occurrence，避免只验空输入或只镜像字段默认值。后续 Root 新 native whole-wire 应单独首次消费，不能重放已通过 source compound来冒充compiled producer。
 
 本页前沿止于 explicit current prefix 的 logical80 request/admission entrance。尚未获得新的 observer、compiled fixture、完整同查询消费或 paused artifact；`static-ready / fixture-live / production-live` 均不授予。post-admission callback后的逐 occurrence 输入演化、实际下一日、整个 daily update 和任命收益保持各自专题与实际证据边界。Oct6/W41字段交外置 `REPORT-FIELDS.json` 由 Root 合并；共享七报告与索引本包不修改。
+
+## 2026-10-06：最小 observer 源码已创作，FIRST 资格待 Root
+
+Root 采用上述计划为 `7207902f` 后批准九文件施工；新独占树 `C:/g2prefix` 基于 **`58d882f4c55745a38de1b0164a9594839fd10a84`**。本段状态为 **`research / source-authored, FIRST qualification pending`**，保留上方未实现时的计划历史。外置实现包为 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/pre-date-character-prefix-observer/`；实现、source compound、compiled whole-wire 资格逐项记录，当前执行数量均0。
+
+冻结 API：
+
+```cpp
+CurrentPreDateCharacterPrefixBindings12003 BindCurrentPreDateCharacterPrefix12003(
+    std::uintptr_t image_base, std::string_view exact_executable_sha256) noexcept;
+ArmyCurrentPreDateCharacterPrefixInputsV1 ReadCurrentPreDateCharacterPrefixInputs12003(
+    const CurrentPreDateCharacterPrefixBindings12003&,
+    const ArmyCurrentDailyAssaultRosterAdmissionV1& same_query_roster,
+    const ArmyCurrentPreDatePendingUpdateInputsV1* same_query_pending = nullptr,
+    const ArmyFirstRemovalCleanupInputsV1* same_query_globals = nullptr);
+```
+
+只安装 exact .3 的三个 callback，无 .2 绑定。collector 保留原 roster 与 actual Army 选择，非 sentinel 先读取 selected Unit174，再分级读取 Character tag／ownID／death／ordered state presence；三个 native bool 按原 false/true/false 参数及 null reason 调用。缺少 demanded callback时，仅该分支为带明确原因的 partial；已知 false不继续调用后项。observer 不执行 mutator、assignment、logical append helper 或 callback。纯值函数 `project_current_pre_date_character_prefix_v1(army)` 输出 `same_input_conditional_current_pre_date_character_prefix_v1`，读入 actual verdict，不自行调用 native。
+
+native pending DTO 只有 raw inputs，完整 peer skip projection 在 Python；因此只读 native demand shortcut 明确限制为：`pending_mutator_selected=false` 给 known bypass；**已闭 existing-key** 的完整 before-count、原 ArRg count及 branch-observed append 数，按 source signedDWORD wrap 得 after-count并比较；只携带 actual repeated Army 的既有 logical count。来源分别为 `pending_dispatch_bypass`、`same_query_existing_pending_count`；未闭 setup/growth/count 则 `earlier_skip=null/source=unavailable`。这不是调用 `2A92320`，也不是证明 pending mutator 实际已执行。Root 明确批准此最小 shortcut；不新增 insertion／allocator kernel，不修改已资格的 pending schema。service 的完整当前 dispatch join复用原 Python pending projection，当前 prefix的条件输入保持独立。
+
+初始80使用现有 first-cleanup `id_lists['80']` 加 raw8C，按位保留完整 FullID；raw requests 与完整 vector postimage 分开。collector 后续原 roster 的每一 occurrence仍以固定当前输入为条件，不把 callback后输入演化写成已知未来。失败追加 actual Army10，重复保留，admission入口仍到达。
+
+新增目标 **`xar_bridge_pre_date_character_prefix_12003_test`**，一个 fresh CTest fixture，创作 **8** 个 whole Strength wire scenes：11-occurrence 完整源分支；initial80 unavailable；availability callback unavailable；Unit174 required-read failure；fallback Character ownID failure；有效 fallback Character18作为basic实际实参；earlier setup unknown但当前 prefix可判；12-occurrence repeated existing-key count改变 skip。通过真实 `ReadArmyStrengthsForScope` 和 serializer 接线，完整首 scene应有 membership/basic/availability **6/5/4** 次，known skip及sentinel均0谓词调用；有效 fallback 场景独立核验basic未使用Army120原请求ID。这只是声明期望，尚未执行。
+
+新增 source method **`test_pre_date_character_prefix_service.PreDateCharacterPrefixServiceTests.test_nonempty_prefix_false_true_false_failure_requests_and_admission_entrance`**，一个 method、**5** 个新 service query scenes。非空 source场景7个原始 occurrence，期望请求 **`[13,14,13,16]`**，初始80 `[7,7]` 的条件logical结果 `[7,7,13,14,13,16]`，admission入口 occurrence `[1,2,3,4,5,6]`；含真实三谓词输入、earlier known skip、sentinel、fallback、重复与早期失败。constructor 所有完整状态显式 `state(True)`，无生产 parser/kernel 替换或测试运行。
+
+Root 独占共享 DTO/include/query/binder/serializer/normalizer/service hooks与CMake，以及完整冻结树后的首次 source method、formal build和新 CTest。实现包提供外置 integration patch／目标 recipe 与独立 **FIRST whole-wire consumer**，后者只读取实际compiled完整行，经真实normalizer/service/pure路径消费，不重放source method或替换 raw leaf/numeric fields。只有 Root 取得新结果后才可提升静态资格；新 paused/live、next callback/full daily与实际命令收益仍为0。
