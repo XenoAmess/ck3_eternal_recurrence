@@ -55,3 +55,27 @@ For a matched ordinary general no-growth branch, extend the same-query pending p
 Growth's minimum physical extent/rebuild operands are provisional until the exact rebuild bodies close; do not fabricate a complete table from the occupied count or reuse standalone end-marker semantics. The current eight-wire observer and model remain unchanged. Cached metadata proves only `2AA24D0..2AA250C` (60B, unwind5109524) and `2A9FC80..2A9FC97` (23B, unwind510CC5C). The named packet inventories contain no body for them, `2AA2400`, `2AA2550` or `86E160`; the latter three also lack exact metadata in the four checked cache files. This is a finite scoped cache miss, not a universal artifact-absence claim.
 
 The new suffix is currently `research`: the matched general nonoverflow caller order is source-closed, while actual fast transfer, growth/rebuild/reinsert bodies remain the necessary frontier. `CACHE-MISS-READ-PLAN.md` records the finite direct-callee request; no frozen executable is opened before Root approval. No model/code, shared reports/CMake, tests/builds, game/process/Steam/UI/SDK/pipe operations or child push occurs here.
+
+## Approved Stage A and exact remaining frontiers
+
+Root approved the frozen Stage A request after source-plan commit `dc5a1045`. The first read captured83Bcode +8Bunwind +216Bcache-missing pdata:307 actual bytes,307 unique, zero duplicate file-read bytes. `STAGE-A-READ-RECEIPT01.json` retains the actual bytes, metadata probes, cache reuse and first code hashes. Whole-EXE scans/hashes and allocator/exception/downstream body reads stayed zero.
+
+Actual `2AA24D0..2AA250C` closes the ordinary wrapper: read table mask `+14`, increment wrap32, call `86E160` with EDX=1, compare returned EAX signed against31; index<31 tail-jumps to `2A9FC80(table,index)`. Thus carried-overflow growth and initial growth use the same actual rebuild entrance, while their prior physical table/value state differs. The nonreturning exception branch stays outside this ordinary package.
+
+The recorded `2A9FC80..2A9FC97` span is only an entry fragment: it computes index-1, unsigned-compares29, branches to `2A9FDAD` or falls through `2A9FC97`. A metadata extent ending at a fallthrough instruction boundary does not establish full rebuild semantics. Both actual reached continuations remain explicit source frontiers.
+
+```mermaid
+flowchart TD
+  C[Carried overflow: prior physical exchanges retained] --> W[2AA24D0: mask+1,86E160 argument1]
+  I[Initial growth: original requested key] --> N[86E160 actual numeric leaf unknown]
+  W --> N
+  N -->|signedindex>=31| X[Excluded nonreturn exception]
+  N -->|signedindex<31| E[2A9FC80 entry: index-1 unsignedcompare29]
+  E -.->|in range| F[Actual fallthrough2A9FC97 unknown]
+  E -.->|out of range| G[Actual branch2A9FDAD unknown]
+  F -.-> R[Rebuilt physical/value state unknown]
+  G -.-> R
+  R -.-> P[Carried retry2AA2550 unknown or original recursive lookup]
+```
+
+Metadata-only exact lookup located `2AA2400..2AA2445`69B/unwind5135C74 and `2AA2550..2AA2883`819B/unwind5136288. `86E160` has no runtime-function record at its exact entry; held search probes bound its pdata-free gap between preceding end86E13B and next start86E1D0. The numeric direct entry needs at most112 instruction bytes through a real return, without reading preceding86E150 or the following function. Those bodies and the two rebuild continuation metadata records are the finite Stage B request in `STAGE-B-SOURCE-FIRST-PLAN.md`. Their semantics are still unknown; no model or new observer is designed from guessed growth capacity or physical scan extent.
