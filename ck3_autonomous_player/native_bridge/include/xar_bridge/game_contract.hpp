@@ -2,6 +2,7 @@
 
 #include "xar_bridge/battle_context_source_inputs_v1.hpp"
 #include "xar_bridge/battle_current_own_nested_modifier_dto.hpp"
+#include "xar_bridge/knight_current_model_association_v1.hpp"
 
 #include "xar_bridge/ck3_12003_maa_recruitment.hpp"
 #include "xar_bridge/owned_regiments.hpp"
@@ -856,6 +857,7 @@ struct CombatKnightEffectivenessContextSnapshot {
   std::array<std::int64_t, 9> modifier_raw{};
   std::array<std::int64_t, 9> operand_raw{};
   std::string unavailable_reason = "effectiveness_context_unavailable";
+  std::optional<KnightCurrentModelAssociationV1> current_model_association_v1;
 
   friend bool operator==(const CombatKnightEffectivenessContextSnapshot &,
                          const CombatKnightEffectivenessContextSnapshot &) = default;

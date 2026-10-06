@@ -1,0 +1,14 @@
+{
+  "source": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/814-war100663329-combat-v2.json",
+  "linked_character_id": 33435,
+  "effectiveness_context": {
+    "schema": "ck3_12003_knight_effectiveness_context_v1",
+    "status": "available",
+    "character_id": 29829,
+    "modifier_indices": [193, 194, 195, 196, 197, 198, 199, 200, 201],
+    "modifier_raw": [75000, 0, 0, 0, 0, 0, 0, 0, 0],
+    "operand_raw": [100000, 1610000, 0, 700000, 500000, 1200000, 1200000, 2200000, 900000],
+    "scale": 100000,
+    "unavailable_reason": null
+  }
+}

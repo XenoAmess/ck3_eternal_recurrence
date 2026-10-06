@@ -130,6 +130,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
       result.combat, image_base, executable_sha256);
   ck3_12002::EnableMaaRegimentStatInputs12003(
       result.combat, image_base, executable_sha256);
+  ck3_12002::EnableKnightModelAssociation12003(
+      result.combat, image_base, executable_sha256);
   // Current cash uses its actual .3 descriptor identity and native getters.
   // The private MCP remains unadvertised; the .2 binder leaves this disabled.
   result.war_cash_current = ck3_12003::war_cash_current::BindImage(

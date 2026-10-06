@@ -3463,9 +3463,12 @@ def _normalize_knights(
                 }
             if "effectiveness_context" in member:
                 context_name = f"{member_name}.effectiveness_context"
+                context_keys = {"schema", "status", "character_id", "modifier_indices",
+                                "modifier_raw", "operand_raw", "scale", "unavailable_reason"}
+                if isinstance(member["effectiveness_context"], dict) and "current_model_association_v1" in member["effectiveness_context"]:
+                    context_keys.add("current_model_association_v1")
                 context = _exact_object(member["effectiveness_context"],
-                    {"schema", "status", "character_id", "modifier_indices",
-                     "modifier_raw", "operand_raw", "scale", "unavailable_reason"},
+                    context_keys,
                     context_name)
                 if context["schema"] != "ck3_12003_knight_effectiveness_context_v1":
                     raise ValueError(f"native {context_name}.schema is malformed")
@@ -3497,6 +3500,14 @@ def _normalize_knights(
                     "unavailable_reason": _status_reason(context_status,
                         context["unavailable_reason"], context_name),
                 }
+                if "current_model_association_v1" in context:
+                    from .knight_current_model_association_contract import normalize_knight_current_model_association_v1
+
+                    normalized_member["effectiveness_context"]["current_model_association_v1"] = normalize_knight_current_model_association_v1(
+                        context["current_model_association_v1"],
+                        name=context_name + ".current_model_association_v1",
+                        selected_character_id=context_id,
+                    )
             members.append(normalized_member)
             ordering.append((army_id, regiment_id, character_id))
         if ordering != sorted(ordering):

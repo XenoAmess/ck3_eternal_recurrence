@@ -62,6 +62,7 @@ struct CombatBindings {
   void **ordinary_character_fallback_slot = nullptr;
   std::array<const std::int64_t *, 5> ordinary_stat_loaded_bases{};
   bool maa_stat_inputs_enabled = false;
+  bool knight_model_association_enabled = false;
   void **maa_culture_storage_slot = nullptr, **maa_culture_fallback_slot = nullptr;
   void **maa_army_regiment_fallback_slot = nullptr;
   void **maa_accolade_storage_slot = nullptr, **maa_accolade_fallback_slot = nullptr;
@@ -78,6 +79,8 @@ struct CombatBindings {
 void EnableOrdinaryRegimentStatInputs12003(
     CombatBindings &, std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
 void EnableMaaRegimentStatInputs12003(
+    CombatBindings &, std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
+void EnableKnightModelAssociation12003(
     CombatBindings &, std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
 
 // The same owning-thread paused snapshot supplies participant/war scope.

@@ -192,3 +192,61 @@ Actual queued/installed object equality, complete storage postimages and
 transfer-to-Entry temporal association remain explicit. Full person preparation,
 changed-context Entry, native parity, live forecast and whole war loop remain
 unqualified by this increment.
+
+## Minimal observer candidate after the source closure
+
+Root authorized a same-query implementation after source commit
+`d22deeb032ad16de2fe7d3e80950e23655a1c24d`. The concrete producer entrance is
+available: existing `CombatBindings.game_state_slot` already binds RVA5C68C50.
+The cached `28C3D40 → 2A3E220` receiver proves `world=QWORD[root+A0]`, primary
+manager `P=ADDRESS world+CBD8`. No helper invocation or additional EXE read is
+needed to observe its current old/pair headers.
+
+| Current read | Published observation |
+|---|---|
+| selected `+1B0`; carrier `+258`; model `+8` | Carrier/model/owner presence, selected-owner pointer equality, expected getter branch |
+| Existing getter result versus `ADDRESS model+10` | Actual same-query receiver comparison; no raw address in JSON |
+| `P+98` pointer, signed `P+A4` count | Current old-model pointer vector and raw count |
+| `P+78` pointer, signed `P+84` count | Current allocator/model-pair vector and raw count |
+| old row `i*8`, old-model owner `+8` | Actual old occurrence whose owner equals the selected pointer or whose nonnull model equals the installed model |
+| same pair row `i*16+8`, paired-model owner `+8` | Present/absent/unread model, old/installed pointer comparisons and selected-owner comparison |
+
+`knight_current_model_association_v1.hpp` owns the independent DTO, read-only
+collector and literal serializer. `ReadKnightEffectivenessContextSources`
+passes its existing selected pointer, full ID and getter result. The exact .3
+adapter enables the optional observer; .2 keeps it absent. No new public tool,
+capability bit, launch flag, strategy rule or forecast gate is required.
+
+The collector publishes `current_installed` and `queue_census` status
+independently. It preserves native indices and duplicate model occurrences.
+Null pair slots or an index outside an observed pair count are legal absence;
+an unread owner/comparison stays null. Known-empty old count0 differs from
+unknown countnull. Partial enumeration retains observed prior/later independent
+rows where source reads permit them; `first_unread_occurrence` identifies an
+old-vector stop. Larger/negative raw counts remain observed and make only the
+bounded diagnostic census partial. The 4096-row observation bound changes no
+native queue or existing input readiness.
+
+This is a census of **relevant current old occurrences**, not all standalone
+pair rows. The leaf does not establish dispatch cadence, historical queue
+membership, complete generic exchange postimages or a final first-contact
+stage. A paired slot is not automatically fresh, installed or fully prepared;
+the actual comparisons may be true, false or missing.
+
+One new compound Python validation ran **once, GREEN1/1**, at
+2026-10-06 09:24:40 Asia/Shanghai, 0.008529s. It fed the genuine cached814
+enclosing input plus its actual linked33435/selected29829 context through the
+production normalizer with a **synthetic new identity leaf**, then checked
+distinct same-owner models, stored duplicate occurrences, optional omission,
+partial paired-owner reads and zero versus missing counts. Native scalar,
+damage, input observation readiness and existing false Monte Carlo readiness
+were preserved. It ran no forecast or old test.
+
+The focused native source `knight_current_model_association_v1_test.cpp` uses
+the production collector and serializer on fake memory. Target/CTest recipe
+`xar_ck3_12003_knight_current_model_association_test` is external under
+`identity-census/NATIVE-TARGET-RECIPE.cmake`; Root integrates and builds it in a
+later central batch. It has **not** been compiled or executed by this child.
+Candidate qualification is Python-contract-ready/native-pending, with no new
+native-static or live credit. The earlier source-closure counts remain0; this
+separate candidate has Python1/native0/build0/game0/newEXE0.

@@ -511,6 +511,10 @@ CombatKnightEffectivenessContextSnapshot ReadKnightEffectivenessContextSources(
   }
   output.character_id = id;
   void *const model_context = bindings.get_character_modifier_aggregator(context);
+  if (bindings.knight_model_association_enabled) {
+    output.current_model_association_v1 = ReadKnightCurrentModelAssociationV1(
+        context, id, model_context, bindings.game_state_slot);
+  }
   if (model_context == nullptr) {
     output.unavailable_reason = "effectiveness_context_modifiers_unavailable";
     return output;
@@ -1888,6 +1892,14 @@ void EnableMaaRegimentStatInputs12003(
     b.maa_get_type_environment[i] = reinterpret_cast<MaaGetTypeEnvironment>(base + type_rvas[i]);
     b.maa_get_linked_environment[i] = reinterpret_cast<MaaGetLinkedEnvironment>(base + linked_rvas[i]);
   }
+}
+
+void EnableKnightModelAssociation12003(
+    CombatBindings &bindings, std::uintptr_t image_base,
+    std::string_view executable_sha256) noexcept {
+  if (!bindings.enabled || !image_base || executable_sha256 !=
+      "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") return;
+  bindings.knight_model_association_enabled = true;
 }
 
 game::CombatTerrainSnapshot ReadProvinceTerrainSnapshot(
