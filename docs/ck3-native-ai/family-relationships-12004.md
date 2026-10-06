@@ -37,3 +37,5 @@ flowchart TD
 ```
 
 Readiness is source implemented. Root alone performs shared snapshot integration, SDK/build and actual paused Robert29829 qualification. Historical fixtures are not rerun. No next heir, new candidate opportunity or natural succession is claimed.
+
+The rest of the existing family, first-heir, native candidate and obligations query migration is recorded in [adopted family query bindings](family-bindings-12004.md), including the independent actual4 binders and remaining sender/conditional-input boundaries.
