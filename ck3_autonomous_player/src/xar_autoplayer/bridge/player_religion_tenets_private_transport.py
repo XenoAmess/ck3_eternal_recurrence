@@ -19,6 +19,10 @@ from .version_identity import (
 from .target_rite_tenet_comparison_12003 import (
     normalize_target_rite_tenet_comparison_12003,
 )
+from .player_tenet_knowledge_catalogue_12003 import (
+    SIBLING_KEY as KNOWLEDGE_SIBLING_KEY,
+    normalize_player_tenet_knowledge_catalogue_12003,
+)
 
 
 STEP = "query-player-religion-tenets-v1"
@@ -62,9 +66,14 @@ def _rite_tenets(value: object) -> None:
 def normalize_player_religion_tenets_v1(
     value: object, *, snapshot: Mapping[str, object],
     target_rite_id: int | None = None, tenet_key: str | None = None,
+    include_knowledge_catalogue: bool = False,
 ) -> dict[str, object]:
     """Preserve source collections, zero states, absent Rite and native failure."""
+    if type(include_knowledge_catalogue) is not bool:
+        raise ValueError("include_knowledge_catalogue must be a bool")
     expected_keys = _TENET_KEYS | ({"target_rite_tenet_comparison"} if target_rite_id is not None else set())
+    if include_knowledge_catalogue:
+        expected_keys.add(KNOWLEDGE_SIBLING_KEY)
     if not isinstance(value, dict) or set(value) != expected_keys or value.get("schema") != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion Tenets schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
@@ -105,6 +114,10 @@ def normalize_player_religion_tenets_v1(
             value["target_rite_tenet_comparison"], snapshot=snapshot, tenet_rows=value,
             target_rite_id=target_rite_id, tenet_key=tenet_key,
         )
+    if include_knowledge_catalogue:
+        result[KNOWLEDGE_SIBLING_KEY] = normalize_player_tenet_knowledge_catalogue_12003(
+            value[KNOWLEDGE_SIBLING_KEY], snapshot=snapshot, tenet_rows=value,
+        )
     return result
 
 
@@ -124,9 +137,16 @@ def _comparison_request_fields(
 def query_player_religion_tenets_private_v1(
     driver: object, *, expected_revision: int, timeout_seconds: float = 30.0,
     target_rite_id: int | None = None, tenet_key: str | None = None,
+    include_knowledge_catalogue: bool = False,
 ) -> dict[str, object]:
     try:
+        if type(include_knowledge_catalogue) is not bool:
+            raise ValueError("include_knowledge_catalogue must be a bool")
         request_fields = _comparison_request_fields(target_rite_id, tenet_key)
+        if include_knowledge_catalogue:
+            if private_native_build_identity(driver.take_snapshot()) != CK3_12003:
+                raise ValueError("player Tenet knowledge catalogue requires exact CK3 1.20.0.3")
+            request_fields["include_knowledge_catalogue"] = True
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
     before, result = read_private_g2_native_query_v1(
@@ -147,6 +167,7 @@ def query_player_religion_tenets_private_v1(
         value = normalize_player_religion_tenets_v1(
             result.get("player_religion_tenets"), snapshot=before,
             target_rite_id=target_rite_id, tenet_key=tenet_key,
+            include_knowledge_catalogue=include_knowledge_catalogue,
         )
         if result.get("status") != ("observed" if value["available"] else "unavailable"):
             raise ValueError("native player religion Tenets envelope lost its source status")

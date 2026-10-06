@@ -1,6 +1,9 @@
 ﻿#include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12003_current_daily_assault_loss.hpp"
 #include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
+#include "xar_bridge/ck3_12003_captured_target_land_supply_inputs.hpp"
+#include "xar_bridge/ck3_12003_current_daily_supply_dispatch_inputs.hpp"
+#include "xar_bridge/ck3_12003_current_month_first_refill_call_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_province_besieging_contributors.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002.hpp"
@@ -882,6 +885,13 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     if (bindings.timing_bindings.enabled)
       result.army_update_clock_v1 = ck3_12003::ReadArmySupplyTiming(
           bindings, bindings.timing_bindings, army);
+    if (bindings.current_daily_supply_dispatch_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("current_daily_supply_dispatch_inputs_readonly");
+      result.current_daily_supply_dispatch_inputs_v1 =
+          ck3_12003::ReadCurrentDailySupplyDispatchInputs12003(
+              bindings.current_daily_supply_dispatch_bindings, bindings, army, unit,
+              result.army_update_clock_v1 ? &*result.army_update_clock_v1 : nullptr);
+    }
     if (bindings.current_movement_progress_enabled)
       result.current_movement_progress = MovementProgress(bindings, unit);
     if (bindings.get_army_gathering_days_left != nullptr &&
@@ -1024,6 +1034,11 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       result.current_fleet_supply_tick_inputs_v1 = ck3_12003::ReadCurrentFleetSupplyTickInputs12003(
           bindings.current_fleet_supply_tick_bindings, bindings, army, unit, province,
           native_fleet_branch, native_date, divisor_floor, max_loss);
+    }
+    if (bindings.current_month_first_refill_call_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("current_month_first_refill_call_inputs_readonly");
+      result.current_month_first_refill_call_inputs_v1 = ck3_12003::ReadCurrentMonthFirstRefillCallInputs12003(
+          bindings.current_month_first_refill_call_bindings, bindings, army, unit);
     }
     if (bindings.county_entry_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");
@@ -1228,6 +1243,7 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
   std::optional<game::ArmyCurrentFlag20InputsV1> current_army_flag20;
   std::optional<game::ArmyCurrentFlag21InputsV1> current_army_flag21;
   std::optional<game::ArmyCurrentFlag31InputsV1> current_army_flag31;
+  std::optional<game::ArmyCurrentCombatRolesPhaseInputsV1> current_army_combat_roles_phase;
   std::optional<game::ArmyCurrentPreDatePendingUpdateInputsV1> current_pre_date_pending_update;
   std::optional<game::ArmyCurrentPreDateCharacterPrefixInputsV1> current_pre_date_character_prefix;
   std::optional<game::ArmyCurrentAssaultRemovalReferenceInputsV1> current_assault_removal_references;
@@ -1305,6 +1321,13 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
           bindings.current_army_flag31_bindings, *current_post_admission_refresh);
     }
     row.current_army_flag31_inputs_v1 = current_army_flag31;
+    if (!current_army_combat_roles_phase && current_post_admission_refresh &&
+        bindings.current_army_combat_roles_phase_bindings.common.enabled) {
+      diagnostic.reader.store("current_army_combat_roles_phase_readonly");
+      current_army_combat_roles_phase = ck3_12003::ReadCurrentArmyCombatRolesPhaseInputs12003(
+          bindings.current_army_combat_roles_phase_bindings, *current_post_admission_refresh);
+    }
+    row.current_army_combat_roles_phase_inputs_v1 = current_army_combat_roles_phase;
     row.current_post_admission_refresh_inputs_v1 = current_post_admission_refresh;
     row.current_pre_date_pending_update_inputs_v1 = current_pre_date_pending_update;
     if (!current_pre_date_character_prefix && current_daily_assault_roster_admission &&
@@ -1443,6 +1466,17 @@ game::ArmyProvinceSupplySnapshot ReadArmyProvinceSupplyForPreview(
     output.target.role = game::ArmyProvinceSupplyRole::target;
   } else {
     read_province(output.target);
+  }
+  if (output.target.available &&
+      (bindings.current_land_supply_rate_bindings.enabled ||
+       bindings.current_land_resupply_bindings.enabled)) {
+    void *const target_province = world.resolve_province(
+        world.context, output.target.province_id);
+    output.target.captured_target_land_supply_inputs_v1 =
+        ck3_12003::ReadCapturedTargetLandSupplyInputs12003(
+            bindings.current_land_supply_rate_bindings,
+            bindings.current_land_resupply_bindings,
+            army, unit, owner, target_province);
   }
   if (output.current.available && output.target.available) {
     output.status = game::ArmyProvinceSupplyStatus::available;

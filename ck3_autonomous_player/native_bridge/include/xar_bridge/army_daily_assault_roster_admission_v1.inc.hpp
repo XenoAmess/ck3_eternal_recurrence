@@ -87,6 +87,11 @@ struct ArmyDailyAssaultAdmissionGateV1 {
   std::optional<std::uint32_t> associated_unit_character_id_raw_u32;
   ArmyDailyAssaultOperandResolutionV1 associated_character_resolution{};
   std::optional<std::uint32_t> province_character_id_73c_raw_u32;
+  std::optional<std::string> native_2c099f0_character_identity;
+  std::optional<std::string> native_2c099f0_province_identity;
+  std::optional<bool> native_2c099f0_third_argument_is_null;
+  bool native_2c099f0_returned = false;
+  std::optional<std::int32_t> native_2c099f0_classification_raw_i32;
   ArmyDailyAssaultOperandResolutionV1 province_character_resolution{};
   std::optional<std::uint32_t> associated_character_full_id_raw_u32, province_character_full_id_raw_u32;
   ArmyDailyAssaultRelationLookupV1 relation_lookup{};

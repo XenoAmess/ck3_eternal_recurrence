@@ -7,6 +7,8 @@ from .army_daily_assault_roster_admission_contract import (
     _typed as _native_typed, _references, _resolution,
 )
 
+from .army_current_rule24_source_pins_contract import normalize_current_rule24_source_pins_v1
+
 _STATE = {'status': 'string', 'ready': 'bool', 'unavailable_reason': 'string'}
 _SHAPES = {
     'Selection': {
@@ -66,13 +68,22 @@ def _typed(value: object, kind: str, name: str) -> None:
         if type(value) is not int or not 0 <= value < 1 << 64:
             raise ValueError(f'{name} unsigned64 is malformed')
         return
+    if kind == 'Rule24SourcePins':
+        if type(value) is not dict:
+            raise ValueError(f'{name} must retain its captured capsule')
+        normalize_current_rule24_source_pins_v1(value)
+        return
     if kind not in _SHAPES:
         return _native_typed(value, kind, name)
     fields = _SHAPES[kind]
-    if type(value) is not dict or set(value) != set(fields):
+    optional = {'rule24_source_pins_v1': 'Rule24SourcePins'} if kind == 'Occurrence' else {}
+    if type(value) is not dict or not set(fields) <= set(value) <= (set(fields) | set(optional)):
         raise ValueError(f'{name} schema is malformed')
     for field, field_type in fields.items():
         _typed(value[field], field_type, name + '.' + field)
+    for field, field_type in optional.items():
+        if field in value:
+            _typed(value[field], field_type, name + '.' + field)
     if value['status'] not in {'available', 'partial', 'unavailable'}:
         raise ValueError(f'{name}.status is malformed')
     if value['ready'] != (value['status'] == 'available') or value['ready'] == bool(value['unavailable_reason']):

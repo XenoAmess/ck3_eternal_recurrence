@@ -15,11 +15,15 @@ from .nonwar_private_build import (
     private_native_build_identity, private_native_provenance,
     private_native_readback_matches,
 )
+from .player_child_marriage_value_private_transport import (
+    _native_fertility_input_valid,
+)
 from .version_identity import CK3_11906
 
 
 STEP = "query-first-heir-candidate-alliance-projection-v1-private"
 SCHEMA = "xar.ck3.first-heir-candidate-alliance-projection.v1"
+_NATIVE_FERTILITY_FIELDS = ("heir_native_fertility", "candidate_native_fertility")
 _GENERIC_COST_FIELDS = (
     "gold_raw", "prestige_raw", "piety_raw", "renown_raw",
     "influence_raw", "herd_raw", "treasury_raw",
@@ -147,7 +151,8 @@ def query_first_heir_candidate_alliance_projection_private_v1(
             or not isinstance(row.get("projection_failure"), str)
             or not isinstance(row.get("outcome_failure"), str)
             or any(field not in row for field in (*lineage_fields,
-                                                  *sex_selector_fields))
+                                                  *sex_selector_fields,
+                                                  *_NATIVE_FERTILITY_FIELDS))
             or any(field not in row for field in (
                 "effective_matrilineal_if_accepted", "heir_is_adult",
                 "candidate_is_adult", "grand_wedding_option_selected",
@@ -167,6 +172,7 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                 row.get("heir_betrothed_character_id") is not None or
                 row.get("heir_primary_spouse_character_id") is not None or
                 row.get("heir_spouse_character_ids") is not None or
+                any(row[field] is not None for field in _NATIVE_FERTILITY_FIELDS) or
                 any(row[field] is not None for field in (
                     "heir_is_adult", "candidate_is_adult",
                     "grand_wedding_option_selected", "heir_adult_measure_raw",
@@ -186,6 +192,9 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                 {"marriage", "betrothal"} or
             type(row.get("matrilineal_option_selected")) is not bool):
             raise BridgeUnavailableError("available projection lost native option")
+        if any(not _native_fertility_input_valid(row[field])
+               for field in _NATIVE_FERTILITY_FIELDS):
+            raise BridgeUnavailableError("marriage native fertility input malformed")
         costs = row.get("generic_costs")
         if (not isinstance(costs, dict)
             or set(costs) != {*_GENERIC_COST_FIELDS, "raw_scale",

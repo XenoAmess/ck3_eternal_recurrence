@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_commander.hpp"
+#include "xar_bridge/ck3_12003_current_commander_martial.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 
@@ -155,6 +156,11 @@ CommanderBindings BindCommanderImage(
   result.read_unit_current_edge_movement_rate =
       reinterpret_cast<CommanderBindings::MovementRateReader>(
           image_base + 0x24AB5C0);
+  // Reviewed exact .3 total-skill getter; index 1 reads current Character+DC.
+  result.current_total_martial_observer_enabled = true;
+  result.get_current_total_skill =
+      reinterpret_cast<decltype(result.get_current_total_skill)>(
+          image_base + 0x28B16B0);
   return result;
 }
 
@@ -216,15 +222,30 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
   if (output.current_commander_character_id == -1) {
     output.current_commander_status = "absent";
     output.current_commander_unavailable_reason = {};
+    if (bindings.current_total_martial_observer_enabled) {
+      output.current_total_martial = ReadCurrentCommanderTotalMartial(
+          -1, nullptr, bindings.get_current_total_skill);
+    }
   } else {
     void *current = ResolveCharacter(bindings.character_storage_slot,
                                      output.current_commander_character_id);
     if (current != nullptr && bindings.get_army_commander(army) == current) {
       output.current_commander_status = "available";
       output.current_commander_unavailable_reason = {};
+      if (bindings.current_total_martial_observer_enabled) {
+        output.current_total_martial = ReadCurrentCommanderTotalMartial(
+            output.current_commander_character_id, current,
+            bindings.get_current_total_skill);
+      }
     } else {
       output.current_commander_unavailable_reason =
           "current_commander_identity_unavailable";
+      if (bindings.current_total_martial_observer_enabled) {
+        CurrentCommanderTotalMartialSnapshot martial{};
+        martial.source_character_id = output.current_commander_character_id;
+        martial.unavailable_reason = output.current_commander_unavailable_reason;
+        output.current_total_martial = martial;
+      }
     }
   }
 
@@ -300,6 +321,11 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
       ResolveCharacter(bindings.character_storage_slot,
                        output.owner_character_id) != owner) {
     output.current_movement_speed = {};
+    if (output.current_total_martial) {
+      output.current_total_martial->status = "unavailable";
+      output.current_total_martial->value.reset();
+      output.current_total_martial->unavailable_reason = "army_identity_changed";
+    }
     output.unavailable_reason = "army_identity_changed";
     return CommanderCandidatesReadResult::unavailable;
   }

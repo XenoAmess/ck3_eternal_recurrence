@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12002_prisoner_mailbox.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/ck3_12003_prisoner_negotiated_collection.hpp"
 #include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
 #include "xar_bridge/protocol.hpp"
 
@@ -18,6 +19,13 @@ struct CollectionQuery {
   ck3_12003::PrisonerReleasePreviewBindings12003 release_bindings{};
   std::array<ck3_12003::PrisonerReleasePreview12003,
       bridge::kPlayerPrisonerMaximumRowsV1> release_previews{};
+  ck3_12003::PrisonerNativeKinshipBindings12003 kinship_bindings{};
+  std::array<ck3_12003::PrisonerNativeKinship12003,
+      bridge::kPlayerPrisonerMaximumRowsV1> kinship_inputs{};
+  std::uint32_t requested_release_mask = 0;
+  ck3_12003::PrisonerNegotiatedBindings12003 negotiated_bindings{};
+  std::array<ck3_12003::PrisonerNegotiatedPreview12003,
+      bridge::kPlayerPrisonerMaximumRowsV1> negotiated_previews{};
   bridge::PlayerPrisonerCollectionSnapshotV1 collection{};
   std::array<PlayerPrisonerRansomQuoteV1, bridge::kPlayerPrisonerMaximumRowsV1> quotes{};
   bool completed = false;
@@ -150,6 +158,13 @@ bool ExecutePlayerPrisonerCollection12002(void *opaque,
       query.quotes[query.ordinal] = ReadPlayerPrisonerRansomQuotePrivateV1(
           query.bindings, query.module, query.collection.frame.played_character_id,
           static_cast<std::int32_t>(query.collection.rows[query.ordinal].full_character_id));
+      const ck3_12003::PrisonerNativeKinshipAccess12003 kinship_access{
+          access.current_thread_id, stamp.thread_id, envelope,
+          &CapturePrisonerFrame, &ReadPrisonerMemory};
+      (void)ck3_12003::ReadPrisonerNativeKinship12003(query.kinship_bindings,
+          kinship_access, static_cast<std::uint32_t>(query.collection.frame.played_character_id),
+          query.collection.rows[query.ordinal].full_character_id, query.ordinal,
+          query.kinship_inputs[query.ordinal]);
       if (query.release_bindings.enabled) {
         const ck3_12003::PrisonerReleasePreviewAccess12003 release_access{
             access.current_thread_id, stamp.thread_id, envelope,
@@ -159,6 +174,14 @@ bool ExecutePlayerPrisonerCollection12002(void *opaque,
             query.collection.rows[query.ordinal].full_character_id,
             query.release_previews[query.ordinal]);
       }
+    }
+    if (query.requested_release_mask != 0) {
+      const ck3_12003::PrisonerReleasePreviewAccess12003 negotiated_access{
+          access.current_thread_id, stamp.thread_id, envelope,
+          &CapturePrisonerFrame, &ReadPrisonerMemory};
+      (void)ck3_12003::ReadPrisonerNegotiatedCollectionRow12003(
+          query.negotiated_bindings, negotiated_access, query.collection,
+          query.ordinal, query.requested_release_mask, query.negotiated_previews);
     }
   }
   (void)FinishQueryMailbox(*envelope);
@@ -224,14 +247,26 @@ bool HandlePlayerPrisonerPrivate12002(const game::GameAdapter &adapter,
   }
   if (is_collection) {
     CollectionQuery query{};
+    if (!ck3_12003::ParsePrisonerNegotiatedRequestMask12003(
+            payload, query.requested_release_mask)) {
+      failure = "prisoner negotiated release mask is invalid";
+      return true;
+    }
     PrepareEnvelope(query.envelope, adapter, mailbox, published, revision, &query);
     query.module = module; query.bindings = bindings; query.ordinal = ordinal;
     query.release_bindings = ck3_12003::BindPrisonerReleasePreview12003(
         module, adapter.descriptor().executable_sha256);
+    query.kinship_bindings = ck3_12003::BindPrisonerNativeKinship12003(
+        module, adapter.descriptor().executable_sha256);
+    if (query.requested_release_mask != 0)
+      query.negotiated_bindings = ck3_12003::BindPrisonerNegotiatedPreview12003(
+          module, adapter.descriptor().executable_sha256);
     if (!RunMailbox(mailbox, query.envelope, &ExecutePlayerPrisonerCollection12002, failure)) return true;
     const auto value = xar::ck3_12002::SerializePlayerPrisonerCollectionPrivateV1(query.collection, revision,
         query.quotes, query.completed,
-        query.release_bindings.enabled ? &query.release_previews : nullptr);
+        query.release_bindings.enabled ? &query.release_previews : nullptr,
+        query.kinship_bindings.enabled ? &query.kinship_inputs : nullptr,
+        query.requested_release_mask != 0 ? &query.negotiated_previews : nullptr);
     if (value.empty()) { failure = "prisoner collection serialization unavailable"; return true; }
     ++state.query_sequence;
     state.current_quote.reset(); state.quote_revision = state.quote_query_sequence = 0;

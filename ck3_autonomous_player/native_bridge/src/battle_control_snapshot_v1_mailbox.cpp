@@ -1990,6 +1990,8 @@ std::string SerializeBattleControlSnapshotV1(
   output += ",\"current_finalizer_manager_inputs_v1\":";
   bridge::AppendCurrentFinalizerManagerInputsV1(
       output, snapshot.current_finalizer_manager_inputs_v1);
+  output += ",\"current_warscore_caps_v1\":";
+  bridge::AppendCurrentWarscoreCapsV1(output, snapshot.current_warscore_caps_v1);
   if (snapshot.actual_geography_v1) {
     const auto geography =
         bridge::SerializeBattleActualGeographyV1(*snapshot.actual_geography_v1);
@@ -2147,6 +2149,8 @@ std::string SerializeActiveCombatResumeInputsV1(
   output += ",\"current_finalizer_manager_inputs_v1\":";
   bridge::AppendCurrentFinalizerManagerInputsV1(
       output, snapshot.current_finalizer_manager_inputs_v1);
+  output += ",\"current_warscore_caps_v1\":";
+  bridge::AppendCurrentWarscoreCapsV1(output, snapshot.current_warscore_caps_v1);
   output += ",\"side_0_current_roll_points\":";
   if (!AppendNumber(output, snapshot.attacker.current_roll_points)) {
     return {};

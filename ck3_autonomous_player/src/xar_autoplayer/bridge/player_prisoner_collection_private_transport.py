@@ -8,6 +8,10 @@ from collections.abc import Mapping
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import private_native_provenance
 from .prisoner_release_preview_contract_12003 import normalize_prisoner_release_preview_12003
+from .prisoner_native_kinship_contract_12003 import normalize_prisoner_native_kinship_12003
+from .prisoner_negotiated_preview_contract_12003 import (
+    normalize_prisoner_negotiated_preview_12003, release_option_mask_12003,
+)
 from .timeline_blocker_private_transport import _binding
 
 
@@ -54,6 +58,7 @@ def _lineage_id(value: object) -> bool:
 
 def query_player_prisoner_collection_private_v1(
     driver: object, *, expected_revision: int, ransom_ordinal: int = 0,
+    release_option_keys: list[str] | None = None,
     timeout_seconds: float = 30.0,
 ) -> dict[str, object]:
     if getattr(driver, "allow_private_prisoner_collection_query", False) is not True:
@@ -62,6 +67,11 @@ def query_player_prisoner_collection_private_v1(
         raise ValueError("expected_revision must be a positive integer")
     if type(ransom_ordinal) is not int or not 0 <= ransom_ordinal < 64:
         raise ValueError("ransom_ordinal must be an integer from 0 through 63")
+    release_option_mask_bits = None
+    requested_release_option_keys = None
+    if release_option_keys is not None:
+        release_option_mask_bits = release_option_mask_12003(release_option_keys)
+        requested_release_option_keys = list(release_option_keys)
     if isinstance(timeout_seconds, bool) or not isinstance(timeout_seconds, (int, float)) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
     before = driver.take_snapshot()
@@ -83,11 +93,14 @@ def query_player_prisoner_collection_private_v1(
     request_id = "prisoner-collection-" + uuid.uuid4().hex
     provenance = private_native_provenance(before)
     step = STEP if ransom_ordinal == 0 else f"{RANSOM_ORDINAL_STEP_PREFIX}{ransom_ordinal}"
-    driver.endpoint.send({
+    request = {
         "type": "execute_step", "protocol_version": 1,
         "request_id": request_id, "step": step,
         "expected_revision": native_revision,
-    })
+    }
+    if release_option_mask_bits is not None:
+        request["release_option_mask_bits"] = release_option_mask_bits
+    driver.endpoint.send(request)
     frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
     if frame is None:
         raise BridgeUnavailableError("private prisoner collection command_result timed out")
@@ -115,19 +128,20 @@ def query_player_prisoner_collection_private_v1(
         raise BridgeUnavailableError("private prisoner collection envelope is malformed")
     value = envelope.get("player_prisoner_collection")
     if (
-        not isinstance(value, dict) or set(value) != (_VALUE_KEYS_V6 if value.get("schema_version") == 6 else (_VALUE_KEYS_V5 if value.get("schema_version") == 5 else (_VALUE_KEYS_V4 if value.get("schema_version") == 4 else (_VALUE_KEYS_V3 if value.get("schema_version") == 3 else _VALUE_KEYS))))
+        not isinstance(value, dict) or set(value) != (_VALUE_KEYS_V6 if value.get("schema_version") in (6, 7) else (_VALUE_KEYS_V5 if value.get("schema_version") == 5 else (_VALUE_KEYS_V4 if value.get("schema_version") == 4 else (_VALUE_KEYS_V3 if value.get("schema_version") == 3 else _VALUE_KEYS))))
         or value.get("schema") != SCHEMA
-        or value.get("schema_version") not in (1, 2, 3, 4, 5, 6)
+        or value.get("schema_version") not in (1, 2, 3, 4, 5, 6, 7)
         or value.get("snapshot_revision") != native_revision
         or value.get("status") != envelope.get("status")
     ):
         raise BridgeUnavailableError("private prisoner collection payload is malformed")
     if value["status"] == "available":
-        preview_version = value["schema_version"] in (2, 3, 4, 5, 6)
-        lineage_version = value["schema_version"] in (3, 4, 5, 6)
-        ransom_version = value["schema_version"] in (4, 5, 6)
-        child_relation_version = value["schema_version"] in (5, 6)
-        title_tier_version = value["schema_version"] == 6
+        preview_version = value["schema_version"] in (2, 3, 4, 5, 6, 7)
+        lineage_version = value["schema_version"] in (3, 4, 5, 6, 7)
+        ransom_version = value["schema_version"] in (4, 5, 6, 7)
+        child_relation_version = value["schema_version"] in (5, 6, 7)
+        title_tier_version = value["schema_version"] in (6, 7)
+        kinship_version = value["schema_version"] == 7
         count = value.get("total_count")
         rows = value.get("prisoners")
         if (
@@ -151,11 +165,13 @@ def query_player_prisoner_collection_private_v1(
             raise BridgeUnavailableError("private prisoner collection count or binding is malformed")
         if ransom_ordinal and (not ransom_version or ransom_ordinal >= count):
             raise BridgeUnavailableError("requested prisoner ransom ordinal is absent")
+        if release_option_mask_bits is not None and ransom_ordinal >= count:
+            raise BridgeUnavailableError("requested negotiated release ordinal is absent")
         seen: set[int] = set()
         for ordinal, row in enumerate(rows):
             if (
                 not isinstance(row, dict)
-                or set(row) != (_ROW_KEYS | ({"unconditional_release_preview"} if preview_version else set()) | (_LINEAGE_KEYS if lineage_version else set()) | ({"ransom_quote_preview"} if ransom_version else set()) | (_CHILD_RELATION_KEYS if child_relation_version else set()) | (_TITLE_TIER_KEYS if title_tier_version else set()))
+                or set(row) != (_ROW_KEYS | ({"unconditional_release_preview"} if preview_version else set()) | (_LINEAGE_KEYS if lineage_version else set()) | ({"ransom_quote_preview"} if ransom_version else set()) | (_CHILD_RELATION_KEYS if child_relation_version else set()) | (_TITLE_TIER_KEYS if title_tier_version else set()) | ({"native_kinship"} if kinship_version else set()) | ({"negotiated_release_preview"} if release_option_mask_bits is not None else set()))
                 or row.get("source_ordinal") != ordinal
                 or not _positive_int(row.get("prisoner_character_id"))
                 or row["prisoner_character_id"] > 0xFFFFFFFF
@@ -320,6 +336,33 @@ def query_player_prisoner_collection_private_v1(
                         raise BridgeUnavailableError("private ransom unavailable quote is malformed")
                 else:
                     raise BridgeUnavailableError("private ransom quote status is malformed")
+            if kinship_version:
+                try:
+                    row["native_kinship"] = normalize_prisoner_native_kinship_12003(
+                        row["native_kinship"], native_revision=native_revision,
+                        date_raw=date_raw, proof_epoch=envelope["observation_revision"],
+                        player_character_id=played["character_id"],
+                        prisoner_character_id=row["prisoner_character_id"],
+                        source_ordinal=ordinal, selected_ordinal=ransom_ordinal,
+                    )
+                except ValueError as error:
+                    raise BridgeUnavailableError(str(error)) from error
+            if release_option_mask_bits is not None:
+                try:
+                    negotiated = normalize_prisoner_negotiated_preview_12003(
+                        row["negotiated_release_preview"],
+                        native_revision=native_revision, date_raw=date_raw,
+                        player_character_id=played["character_id"],
+                        prisoner_character_id=row["prisoner_character_id"],
+                        requested_option_mask_bits=release_option_mask_bits,
+                    )
+                except ValueError as error:
+                    raise BridgeUnavailableError(str(error)) from error
+                if negotiated.get("status") == "available" and negotiated["proof_epoch"] != envelope["observation_revision"]:
+                    raise BridgeUnavailableError("negotiated release differs from its collection observation")
+                if (negotiated.get("unavailable_reason") == "not_evaluated") is (ordinal == ransom_ordinal):
+                    raise BridgeUnavailableError("negotiated release evaluated the wrong prisoner ordinal")
+                row["negotiated_release_preview"] = negotiated
             seen.add(row["prisoner_character_id"])
         if ransom_version and ransom_ordinal:
             for ordinal, row in enumerate(rows):
@@ -342,7 +385,13 @@ def query_player_prisoner_collection_private_v1(
         raise BridgeUnavailableError("private prisoner collection status is malformed")
     if _binding(driver.take_snapshot()) != _binding(before):
         raise BridgeUnavailableError("private prisoner collection crossed its paused frame")
-    return {**envelope, **provenance,
-            "queried_snapshot_id": before.get("snapshot_id"),
-            "queried_revision": before.get("revision"),
-            "queried_native_revision": native_revision}
+    result = {**envelope, **provenance,
+              "queried_snapshot_id": before.get("snapshot_id"),
+              "queried_revision": before.get("revision"),
+              "queried_native_revision": native_revision}
+    if release_option_mask_bits is not None:
+        result.update({
+            "queried_release_option_keys": requested_release_option_keys,
+            "queried_release_option_mask_bits": release_option_mask_bits,
+        })
+    return result

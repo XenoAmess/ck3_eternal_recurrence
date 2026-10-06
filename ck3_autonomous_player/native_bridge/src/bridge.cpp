@@ -10708,6 +10708,9 @@ bool ExecuteTypedQuery12002(
               bindings, query.image_base, envelope->game->descriptor().executable_sha256);
           xar::ck3_12002::EnableBattleCurrentFinalizerManagerInputs12003(
               bindings, query.image_base, envelope->game->descriptor().executable_sha256);
+          bindings.current_warscore_caps =
+              xar::ck3_12002::BindBattleCurrentWarscoreCaps12003(
+                  query.image_base, envelope->game->descriptor().executable_sha256);
         }
       }
       bindings.province_context = &province;
@@ -18428,6 +18431,7 @@ void RunConnectedSession(
               before.map_ready && before.has_played_character &&
               before.played_character_alive;
           MarriageCandidateAllianceMailboxQueryV1 query{};
+          query.read_fertility = true;
           if (request_valid) {
             for (std::size_t index = 0; index < ids.size(); ++index) {
               const auto matching = std::find_if(

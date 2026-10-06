@@ -3,6 +3,10 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+from .army_current_rule24_source_pins_12003 import (
+    project_current_rule24_source_pins_12003, validate_current_rule24_source_pins_declared_12003,
+)
+
 _LIMITS = ('actual_refresh_execution_ready', 'actual_next_occurrence_ready',
            'full_callback_ready', 'full_daily_assault_ready', 'full_monthly_ready')
 _COMBAT_MAGIC = 0x436F6D62
@@ -75,6 +79,11 @@ def _undemanded_selection(selection: dict) -> bool:
 
 def validate_current_army_flag31_declared_12003(value: dict) -> bool:
     for row in value['occurrences']:
+        if 'rule24_source_pins_v1' in row:
+            pins = row['rule24_source_pins_v1']
+            validate_current_rule24_source_pins_declared_12003(pins)
+            if pins['rule_receiver_identity'] != row['inline_rule_identity']:
+                raise ValueError('Rule24 source pins lost their actual same-query inline receiver')
         ready, derived = _derive(row)
         if (row['ready'] != ready or row['current_flag31_inputs_ready'] != ready
                 or row['derived_current_31_raw_u8'] != derived):
@@ -140,9 +149,13 @@ def project_current_army_flag31_inputs_12003(value: dict | None, *, source_prove
                   current_flag31_inputs_ready=value['current_flag31_inputs_ready'])
     for row in value['occurrences']:
         ready, derived = _derive(row)
-        result['occurrences'].append({
+        projected_occurrence = {
             **deepcopy(row), 'ready': ready, 'derived_current_31_raw_u8': derived,
             'current_flag31_inputs_ready': ready,
             'unavailable_reason': None if ready else row['unavailable_reason'],
-        })
+        }
+        if 'rule24_source_pins_v1' in row:
+            projected_occurrence['rule24_source_pins_projection_v1'] = project_current_rule24_source_pins_12003(
+                row['rule24_source_pins_v1'], source_provenance=source_provenance)
+        result['occurrences'].append(projected_occurrence)
     return result

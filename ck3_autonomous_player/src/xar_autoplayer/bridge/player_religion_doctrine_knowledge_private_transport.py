@@ -125,7 +125,9 @@ def query_player_religion_doctrine_knowledge_private_v1(
         value = normalize_player_religion_doctrine_knowledge_v1(
             result.get("player_religion_doctrine_knowledge"), snapshot=before,
         )
-        if (value["schema"] != (SCHEMA if mode == "learned_rows" else LOOKUP_SCHEMA)
+        if (value["schema"] != private_native_schema(
+                SCHEMA if mode == "learned_rows" else LOOKUP_SCHEMA, before,
+            )
                 or (mode == "by_key" and value["requested_doctrine_key"] != doctrine_key)):
             raise ValueError("native doctrine knowledge differs from the requested lookup")
         if result.get("status") != ("observed" if value["available"] else "unavailable"):

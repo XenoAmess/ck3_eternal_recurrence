@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
+from xar_autoplayer.bridge.version_identity import CK3_12003
 from xar_autoplayer.bridge.marriage_candidate_alliance_private_transport import (
     SCHEMA, STEP, query_first_heir_candidate_alliance_projection_private_v1,
 )
@@ -58,6 +59,16 @@ def _reply(*, unavailable_index: int | None = None) -> dict[str, object]:
             "heir_adult_threshold_raw": None if unavailable else 16,
             "candidate_adult_threshold_raw": None if unavailable else 16,
             "grand_wedding_option_selected": None if unavailable else False,
+            "heir_native_fertility": None if unavailable else {
+                "source": "native_marriage_fertility_input",
+                "extension_present": True, "native_gate_evaluated": True,
+                "native_gate_allows": True, "effective_raw": 40000,
+            },
+            "candidate_native_fertility": None if unavailable else {
+                "source": "native_marriage_fertility_input",
+                "extension_present": True, "native_gate_evaluated": True,
+                "native_gate_allows": True, "effective_raw": 65000,
+            },
             "generic_costs": None if unavailable else {
                 "raw_scale": 100_000, "payer_role": "actor",
                 "application_timing": "on_send", "gold_raw": 0,
@@ -126,6 +137,77 @@ class _Driver:
 
 
 class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
+    def test_paired_native_fertility_is_consumed_by_rich_rows(self) -> None:
+        frame = _frame()
+        frame["diagnostics"] = {"hello": {
+            "expected_ck3_version": CK3_12003.game_version,
+            "expected_ck3_sha256": CK3_12003.executable_sha256,
+        }}
+        legality = _legality()
+        legality.update({"exact_ck3_build": CK3_12003.game_version,
+                         "exe_sha256": CK3_12003.executable_sha256})
+        reply = _reply()
+        native_rows = reply["result"]["rows"]
+        candidate_inputs = [
+            {"source": "native_marriage_fertility_input",
+             "extension_present": True, "native_gate_evaluated": True,
+             "native_gate_allows": True, "effective_raw": 65000},
+            {"source": "native_marriage_fertility_input",
+             "extension_present": True, "native_gate_evaluated": True,
+             "native_gate_allows": False, "effective_raw": 0},
+            {"source": "native_marriage_fertility_input",
+             "extension_present": False, "native_gate_evaluated": False,
+             "native_gate_allows": None, "effective_raw": 0},
+            {"source": "native_marriage_fertility_input",
+             "extension_present": True, "native_gate_evaluated": True,
+             "native_gate_allows": True, "effective_raw": 0},
+            {"source": "native_marriage_fertility_input",
+             "extension_present": True, "native_gate_evaluated": True,
+             "native_gate_allows": True, "effective_raw": -31},
+        ]
+        for row, fertility in zip(native_rows, candidate_inputs):
+            row["candidate_native_fertility"] = fertility
+        result = query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(reply, [deepcopy(frame), deepcopy(frame)]),
+            legality=legality, candidate_character_ids=IDS)
+        self.assertEqual(result["status"], "available")
+        self.assertEqual(result["exact_ck3_build"], CK3_12003.game_version)
+        self.assertEqual(result["exe_sha256"], CK3_12003.executable_sha256)
+        for index, fertility in enumerate(candidate_inputs):
+            with self.subTest(candidate=IDS[index]):
+                self.assertEqual(result["rows"][index]["candidate_native_fertility"],
+                                 fertility)
+                self.assertEqual(result["rows"][index]["heir_native_fertility"],
+                                 native_rows[index]["heir_native_fertility"])
+                self.assertEqual(result["rows"][index]["heir_native_fertility"][
+                    "effective_raw"], 40000)
+
+        partial = _reply(unavailable_index=2)
+        result = query_first_heir_candidate_alliance_projection_private_v1(
+            _Driver(partial, [deepcopy(frame), deepcopy(frame)]),
+            legality=legality, candidate_character_ids=IDS)
+        self.assertEqual(result["status"], "unavailable")
+        self.assertIsNone(result["rows"][2]["heir_native_fertility"])
+        self.assertIsNone(result["rows"][2]["candidate_native_fertility"])
+        self.assertEqual(result["rows"][0]["candidate_native_fertility"][
+            "effective_raw"], 65000)
+
+        missing = _reply()
+        del missing["result"]["rows"][0]["candidate_native_fertility"]
+        with self.assertRaisesRegex(BridgeUnavailableError, "row identity malformed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(missing, [deepcopy(frame)]), legality=legality,
+                candidate_character_ids=IDS)
+
+        invalid = _reply()
+        invalid["result"]["rows"][0]["candidate_native_fertility"].update({
+            "native_gate_allows": False, "effective_raw": 1})
+        with self.assertRaisesRegex(BridgeUnavailableError,
+                                    "native fertility input malformed"):
+            query_first_heir_candidate_alliance_projection_private_v1(
+                _Driver(invalid, [deepcopy(frame)]), legality=legality,
+                candidate_character_ids=IDS)
+
     def test_five_dynamic_legal_ids_are_sent_and_read_without_advertising(self) -> None:
         driver = _Driver(_reply(), [_frame(), _frame()])
         result = query_first_heir_candidate_alliance_projection_private_v1(

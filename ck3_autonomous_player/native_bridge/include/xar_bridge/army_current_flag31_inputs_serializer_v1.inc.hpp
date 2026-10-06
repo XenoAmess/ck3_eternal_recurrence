@@ -1,6 +1,7 @@
 #pragma once
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/army_daily_assault_roster_admission_serializer_v1.inc.hpp"
+#include "xar_bridge/army_current_rule24_source_pins_serializer_v1.inc.hpp"
 namespace xar::game {
 #include "xar_bridge/army_current_flag31_inputs_v1.inc.hpp"
 namespace flag31_json_detail {
@@ -35,6 +36,11 @@ inline void Occurrence(std::string &out, const ArmyFlag31OccurrenceV1 &p, Number
   w.Integer("rule_selector_i32", p.rule_selector_i32); w.Integer("rule_inline_offset_u32", p.rule_inline_offset_u32);
   w.Text("rule_provider_identity", p.rule_provider_identity); w.Text("rule_array_identity", p.rule_array_identity);
   w.Text("inline_rule_identity", p.inline_rule_identity);
+  if (p.rule24_source_pins_v1) {
+    w.Key("rule24_source_pins_v1");
+    AppendArmyCurrentRule24SourcePinsV1(
+        out, *p.rule24_source_pins_v1, number, nullptr, string);
+  }
   w.Integer("root_kind", p.root_kind); w.Integer("root_subtype", p.root_subtype);
   w.Integer("root_payload_u64", p.root_payload_u64); w.Text("root_construction", p.root_construction);
   w.Boolean("native_rule_evaluation_returned", p.native_rule_evaluation_returned);

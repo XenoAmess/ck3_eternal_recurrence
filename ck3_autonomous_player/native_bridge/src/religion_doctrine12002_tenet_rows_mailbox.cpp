@@ -71,6 +71,16 @@ bool ParsePlayerReligionTenetsComparisonRequest12003(std::string_view payload,
   } catch (...) { target_rite_id.reset(); tenet_key.clear(); return false; }
 }
 
+bool ParsePlayerReligionTenetsKnowledgeRequest12003(std::string_view payload,
+    bool &include_knowledge_catalogue) noexcept {
+  include_knowledge_catalogue = false;
+  try {
+    if (!HasField(payload, "include_knowledge_catalogue")) return true;
+    return bridge::JsonBooleanField(payload, "include_knowledge_catalogue",
+        include_knowledge_catalogue);
+  } catch (...) { include_knowledge_catalogue = false; return false; }
+}
+
 bool ExecutePlayerReligionTenetsMailbox12002(
     void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   auto *envelope = static_cast<QueryMailboxEnvelope *>(opaque);
@@ -115,6 +125,20 @@ bool ExecutePlayerReligionTenetsMailbox12002(
       comparison.date_raw = static_cast<std::int32_t>(frame.date_raw);
       comparison.played_character_id = static_cast<std::uint32_t>(frame.played_character_id);
     }
+    if (query.include_knowledge_catalogue) {
+      (void)ck3_12003::religion::tenet_knowledge::ReadPlayedTenetKnowledgeCatalogue12003(
+          query.knowledge_bindings, stamp.pump_epoch, query.knowledge_catalogue);
+      auto &catalogue = query.knowledge_catalogue;
+      if (catalogue.available &&
+          (catalogue.played_character_id != static_cast<std::uint32_t>(frame.played_character_id) ||
+           catalogue.date_raw != frame.date_raw)) {
+        catalogue = {};
+        catalogue.failure = ck3_12003::religion::tenet_knowledge::Failure::state_changed;
+      }
+      catalogue.capture_epoch = stamp.pump_epoch;
+      catalogue.date_raw = static_cast<std::int32_t>(frame.date_raw);
+      catalogue.played_character_id = static_cast<std::uint32_t>(frame.played_character_id);
+    }
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -133,6 +157,12 @@ std::string SerializePlayerReligionTenetsResult12002(
     tenets.pop_back();
     tenets += ",\"target_rite_tenet_comparison\":" +
         ck3_12003::religion::target_tenet::SerializeTargetRiteTenetComparison12003(query.comparison) + "}";
+  }
+  if (query.include_knowledge_catalogue) {
+    tenets.pop_back();
+    tenets += ",\"player_tenet_knowledge_catalogue\":" +
+        ck3_12003::religion::tenet_knowledge::SerializePlayedTenetKnowledgeCatalogue12003(
+            query.knowledge_catalogue) + "}";
   }
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerReligionTenetsPrivateStep12002) +
@@ -194,9 +224,12 @@ bool HandlePlayerReligionTenetsPrivate12002(const game::GameAdapter &adapter,
   std::uint64_t expected = 0;
   std::optional<std::uint32_t> target_rite_id;
   std::string tenet_key;
+  bool include_knowledge_catalogue = false;
   if (!ParsePlayerReligionTenetsRevision12002(payload, expected) ||
       !ParsePlayerReligionTenetsComparisonRequest12003(payload, target_rite_id, tenet_key) ||
-      (target_rite_id.has_value() && !xar::game::IsCk3_12003Descriptor(adapter.descriptor()))) {
+      !ParsePlayerReligionTenetsKnowledgeRequest12003(payload, include_knowledge_catalogue) ||
+      ((target_rite_id.has_value() || include_knowledge_catalogue) &&
+       !xar::game::IsCk3_12003Descriptor(adapter.descriptor()))) {
     failure = "player_religion_tenets_request_invalid"; return false;
   }
   if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
@@ -216,15 +249,23 @@ bool HandlePlayerReligionTenetsPrivate12002(const game::GameAdapter &adapter,
     query.tenet_bindings = religion::doctrine12002::BindTenetRows12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    if (target_rite_id.has_value()) {
-      query.target_rite_id = target_rite_id;
-      query.tenet_key = std::move(tenet_key);
+    if (target_rite_id.has_value() || include_knowledge_catalogue) {
       const auto source = religion_reform::BindCurrentDraftTenetSources12002(
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
           xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
       // Bind only. The current draft reader/window is never invoked.
-      query.comparison_bindings = {query.bindings, source.rite_storage_global,
-          source.tenet_database_global, query.tenet_bindings.tenet_state};
+      if (target_rite_id.has_value()) {
+        query.target_rite_id = target_rite_id;
+        query.tenet_key = std::move(tenet_key);
+        query.comparison_bindings = {query.bindings, source.rite_storage_global,
+            source.tenet_database_global, query.tenet_bindings.tenet_state};
+      }
+      if (include_knowledge_catalogue) {
+        query.include_knowledge_catalogue = true;
+        query.knowledge_bindings = {query.bindings, source.tenet_database_global,
+            source.perk_database_global, source.actor_extra_collection,
+            source.actor_perks_collection, source.contains};
+      }
     }
     return RunPlayerReligionTenetsMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_tenets_handler_exception"; return false; }

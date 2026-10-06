@@ -79,9 +79,14 @@ _SHAPES = {'OperandResolution': {'status': 'string',
                    'associated_army_unit_id_raw_u32': 'u32?',
                    'associated_unit_resolution': 'OperandResolution',
                    'associated_unit_character_id_raw_u32': 'u32?',
-                   'associated_character_resolution': 'OperandResolution',
-                   'province_character_id_73c_raw_u32': 'u32?',
-                   'province_character_resolution': 'OperandResolution',
+                    'associated_character_resolution': 'OperandResolution',
+                    'province_character_id_73c_raw_u32': 'u32?',
+                    'native_2c099f0_character_identity': 'identity?',
+                    'native_2c099f0_province_identity': 'identity?',
+                    'native_2c099f0_third_argument_is_null': 'bool?',
+                    'native_2c099f0_returned': 'bool',
+                    'native_2c099f0_classification_raw_i32': 'i32?',
+                    'province_character_resolution': 'OperandResolution',
                    'associated_character_full_id_raw_u32': 'u32?',
                    'province_character_full_id_raw_u32': 'u32?',
                    'relation_lookup': 'RelationLookup',
@@ -263,10 +268,34 @@ def _resolution(value: dict, requested: int | None, name: str) -> None:
         raise ValueError(f'{name} complete generic metadata is missing')
 
 
+_LEGACY_CLASSIFIER_DEFAULTS = {
+    'native_2c099f0_character_identity': None,
+    'native_2c099f0_province_identity': None,
+    'native_2c099f0_third_argument_is_null': None,
+    'native_2c099f0_returned': False,
+    'native_2c099f0_classification_raw_i32': None,
+}
+
+
+def _with_legacy_classifier_defaults(value: object) -> object:
+    """Accept the previous producer only when its entire extension is absent."""
+    if type(value) is not dict or type(value.get('occurrences')) is not list:
+        return value
+    result = value
+    for index, row in enumerate(value['occurrences']):
+        gate = row.get('gate') if type(row) is dict else None
+        if type(gate) is dict and not (set(gate) & set(_LEGACY_CLASSIFIER_DEFAULTS)):
+            if result is value:
+                result = deepcopy(value)
+            result['occurrences'][index]['gate'].update(_LEGACY_CLASSIFIER_DEFAULTS)
+    return result
+
+
 def normalize_current_daily_assault_roster_admission_v1(value: object) -> dict | None:
     """Preserve genuine raw fields and independently validate derived decisions."""
     if value is None:
         return None
+    value = _with_legacy_classifier_defaults(value)
     name = 'current_daily_assault_roster_admission_v1'
     _typed(value, 'ArmyCurrentDailyAssaultRosterAdmissionV1', name)
     _references(value['original_roster'], name + '.original_roster')

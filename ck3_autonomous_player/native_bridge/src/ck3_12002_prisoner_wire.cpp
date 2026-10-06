@@ -58,14 +58,19 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
     const std::array<PlayerPrisonerRansomQuoteV1, bridge::kPlayerPrisonerMaximumRowsV1> &quotes,
     bool quotes_complete,
     const std::array<ck3_12003::PrisonerReleasePreview12003,
-        bridge::kPlayerPrisonerMaximumRowsV1> *release_previews) {
+        bridge::kPlayerPrisonerMaximumRowsV1> *release_previews,
+    const std::array<ck3_12003::PrisonerNativeKinship12003,
+        bridge::kPlayerPrisonerMaximumRowsV1> *kinship_inputs,
+    const std::array<ck3_12003::PrisonerNegotiatedPreview12003,
+        bridge::kPlayerPrisonerMaximumRowsV1> *negotiated_previews) {
   if (revision == 0 || snapshot.returned_count > bridge::kPlayerPrisonerMaximumRowsV1 ||
       (snapshot.available && (!snapshot.collection_complete ||
           snapshot.failure != bridge::PlayerPrisonerCollectionFailureV1::none ||
           snapshot.total_count != snapshot.returned_count ||
           snapshot.frame.played_character_id <= 0 || !quotes_complete))) return {};
-  std::string value = "{\"schema\":\"player-prisoner-collection-private-v1\",\"schema_version\":6,"
-      "\"snapshot_revision\":" + std::to_string(revision) + ",\"status\":\"" +
+  std::string value = "{\"schema\":\"player-prisoner-collection-private-v1\",\"schema_version\":" +
+      std::string(kinship_inputs != nullptr ? "7" : "6") +
+      ",\"snapshot_revision\":" + std::to_string(revision) + ",\"status\":\"" +
       (snapshot.available ? "available" : "unavailable") + "\",\"unavailable_reason\":";
   value += snapshot.available ? "null" : "\"" + std::string(
       bridge::PlayerPrisonerCollectionFailureNameV1(snapshot.failure)) + "\"";
@@ -109,8 +114,43 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
             "\"advertised\":false,\"action_surface_present\":false,\"status\":\"unavailable\","
             "\"unavailable_reason\":\"release_preview_not_enabled_for_12002_ransom\"}";
       }
+      if (kinship_inputs != nullptr) {
+        auto kinship = (*kinship_inputs)[index];
+        if (kinship.available && (kinship.frame != snapshot.frame ||
+            kinship.source_ordinal != row.source_ordinal ||
+            kinship.jailer_character_id != row.jailer_character_id ||
+            kinship.prisoner_character_id != row.full_character_id)) {
+          kinship = {};
+          kinship.unavailable_reason = "collection_binding_unverified";
+        }
+        value += ",\"native_kinship\":" +
+            ck3_12003::SerializePrisonerNativeKinship12003(kinship);
+      }
       const auto quote = ck3_11906::SerializePlayerPrisonerRansomQuotePrivateV1(
           quotes[index], revision, snapshot.frame.date_raw, snapshot.frame.proof_epoch);
+      if (negotiated_previews != nullptr) {
+        auto preview = (*negotiated_previews)[index];
+        const auto &observed = preview.observation;
+        if (observed.available && (observed.frame != snapshot.frame ||
+            observed.actor_character_id !=
+                static_cast<std::uint32_t>(snapshot.frame.played_character_id) ||
+            observed.puppet_or_actor_character_id !=
+                static_cast<std::uint32_t>(snapshot.frame.played_character_id) ||
+            observed.recipient_character_id != row.full_character_id ||
+            observed.prisoner_character_id != row.full_character_id ||
+            observed.jailer_character_id != row.jailer_character_id ||
+            preview.requested_option_mask_bits == 0 ||
+            preview.requested_option_mask_bits >
+                ck3_12003::kPrisonerReleaseAllOptionMask12003 ||
+            observed.selected_option_mask_bits != preview.requested_option_mask_bits)) {
+          const auto requested_mask = preview.requested_option_mask_bits;
+          preview = {};
+          preview.requested_option_mask_bits = requested_mask;
+          preview.observation.unavailable_reason = "collection_binding_unverified";
+        }
+        value += ",\"negotiated_release_preview\":" +
+            ck3_12003::SerializePrisonerNegotiatedPreview12003(preview);
+      }
       if (quote.empty()) return {};
       value += ",\"ransom_quote_preview\":" + quote + '}';
     }

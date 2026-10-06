@@ -1,0 +1,67 @@
+{
+  "schema": "xar.holy-order-current-reinforcement-input-ledger.v1",
+  "recorded_at": "2026-10-06T23:48:00+08:00",
+  "source_first": true,
+  "source_base": "69a2fe5c560e399ef5a0e98e60a45b0cabbc4b1b",
+  "exact_build": "1.20.0.3",
+  "exe_sha256_reused": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "new_exe_bytes": 0,
+  "stock_tree": "religion-holy-order-systems-native-ai-12003.md",
+  "cached_exact_abi_manifest": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/native-replenishment/abi-lane/native-abi.json",
+    "sha256_reused": "8b2848041af660d158ccea8fe51119d355d2f3a5785df9e3235357eb0c1f4fad",
+    "canonical_source_contract": "army-regiment-replenishment-raised-reserve-12003.md lines104-127",
+    "cached_actual_callers": "D15F96-D15FB6 MaA and D16288-D162AA levy pass actual persistent Regi and inline first chunk+18 to262C700; all-record observer reuses these independent getter ABIs on matched physical chunks"
+  },
+  "getter_bindings": [
+    {
+      "rva": "0x262CAD0",
+      "signature": "std::int64_t *(*)(void *actual_persistent_regi, std::int64_t *output)",
+      "windows_x64_operands": "RCX=actual CRegiment (Regi tag), RDX=int64 output; RAX=that output pointer",
+      "result": "signed Q100000 whole-persistent monthly fraction",
+      "extra_operands": "none; no actor, GUI, reason sink, mode or optional breakdown",
+      "source_contract": "army-regiment-replenishment-raised-reserve-12003.md line112; cached exact native-abi.json above"
+    },
+    {
+      "rva": "0x262BC90",
+      "signature": "std::int32_t (*)(void *actual_persistent_regi)",
+      "windows_x64_operands": "RCX=actual CRegiment (Regi tag); EAX=signed int32 native months",
+      "result": "current native full-strength-time path; monthly fraction0 can return months0",
+      "extra_operands": "none; no output pointer, actor, GUI, mode or breakdown",
+      "source_contract": "army-regiment-replenishment-raised-reserve-12003.md line113; cached exact native-abi.json above"
+    },
+    {
+      "rva": "0x262C700",
+      "signature": "bool (*)(void *actual_persistent_regi, void *actual_inline_chunk)",
+      "windows_x64_operands": "RCX=actual CRegiment, RDX=physical inline Chunk within that same regiment; AL=bool",
+      "result": "independent native permission; non-ObDG branch can returntrue before2657F10",
+      "extra_operands": "none; no actor, out pointer, GUI, mode or breakdown",
+      "source_contract": "army-regiment-replenishment-raised-reserve-12003.md lines114/127; existing ck3_12003_army_replenishment_records.cpp lines62-90"
+    },
+    {
+      "rva": "0x2657F10",
+      "signature": "bool (*)(void *actual_inline_chunk)",
+      "windows_x64_operands": "RCX=physical inline Chunk; AL=bool",
+      "result": "independent chunk permission, not manually ANDed with262C700",
+      "extra_operands": "none; no persistent receiver argument, actor, output, GUI or mode",
+      "source_contract": "army-regiment-replenishment-raised-reserve-12003.md lines115/127; existing ck3_12003_army_replenishment_records.cpp lines62-90"
+    }
+  ],
+  "closed_inputs": [
+    {"input": "order persistent roster", "producer": "261AD10 order+68/+74", "source": "native-leaf/NATIVE-LEAF.md", "complete_source_bytes": 263, "sha256": "bf925deb2f4e9be725e4649c356ef701dbb0967279f006a8bcf67aab0f18e1cf"},
+    {"input": "Regi owner/chunks", "producer": "persistent+12C; seven chunks+18/stride24h", "source": "army-regiment-composition-12003.md"},
+    {"input": "current fraction/months/permissions", "producer": "262CAD0/262BC90/262C700/2657F10", "source": "army-regiment-replenishment-raised-reserve-12003.md"},
+    {"input": "actual Army role association", "producer": "existing troop_association; CArmy+120/+124; Unit+174/+178", "source": "religion-holy-order-player-release-source-and-army-association-12003.md; army-regiment-replenishment-raised-reserve-12003.md lines129/191; ck3_12002_army.cpp lines1379-1387", "materialization_rule": "fullgeneration Army+124 public Unit and Unit+178 == actual CArmy; mismatch copies raw operands with a specific reason"}
+  ],
+  "unknown_inputs": [
+    {"input": "order leader", "next_named_seam": "HolyOrder.GetLeader reflected producer or leader scope resolver", "reason": "No confirmed exact .3 native locator; do not substitute owner/commander"},
+    {"input": "order-attributed upkeep", "next_named_seam": "per-order expense producer reached by actual maintenance caller", "reason": "Actor-global current maintenance cannot establish a per-order bill"},
+    {"input": "aggregate maximum/levy", "next_named_seam": "HiredTroopItem.GetTotalSoldiers ->261AE20", "reason": "Distinct aggregate source, not inferred from chunks"}
+  ],
+  "readiness": "research; independent implementation authored, shared integration/FIRST pending",
+  "compile": "NOTRUN",
+  "native_fixture": "NOTRUN",
+  "compiled_consumer": "NOTRUN",
+  "live": false,
+  "new_game_days": 0
+}

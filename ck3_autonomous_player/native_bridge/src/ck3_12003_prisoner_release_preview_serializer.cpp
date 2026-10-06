@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_prisoner_release_preview.hpp"
+#include "xar_bridge/ck3_12003_prisoner_negotiated_preview.hpp"
 
 namespace xar::ck3_12003 {
 namespace {
@@ -90,4 +91,8 @@ std::string SerializePrisonerReleasePreview12003(
   return output;
 }
 
+#include "ck3_12003_prisoner_negotiated_preview_serializer.inc"
+
 } // namespace xar::ck3_12003
+
+#include "ck3_12003_prisoner_native_kinship_serializer.inc"

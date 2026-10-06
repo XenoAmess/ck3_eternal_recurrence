@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_prisoner_release_preview.hpp"
+#include "xar_bridge/ck3_12003_prisoner_negotiated_preview.hpp"
 
 #include <array>
 #include <limits>
@@ -360,4 +361,8 @@ bool ReadPrisonerReleasePreview12003(const PrisonerReleasePreviewBindings12003 &
   }
 }
 
+#include "ck3_12003_prisoner_negotiated_preview.inc"
+
 } // namespace xar::ck3_12003
+
+#include "ck3_12003_prisoner_native_kinship.inc"

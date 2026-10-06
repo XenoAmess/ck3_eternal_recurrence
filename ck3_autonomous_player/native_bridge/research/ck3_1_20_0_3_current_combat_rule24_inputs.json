@@ -1,0 +1,49 @@
+{
+  "schema": "xar.ck3_1_20_0_3.current-combat-rule24-inputs.v1",
+  "base_commit": "71b729f0cc4894331f1dadb89155920fccd42a00",
+  "build": {
+    "version": "1.20.0.3",
+    "steam_build_id": "25652598",
+    "held_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "size_of_image": 102518784
+  },
+  "kind": "source-closed raw readonly byte bindings; no new native callable ABI",
+  "slots": {
+    "game_state": "5C68C50",
+    "combat_storage": "5D1DE70",
+    "combat_fallback": "5D1DE18",
+    "unit_storage": "5D1E380",
+    "unit_fallback": "5D1E378",
+    "character_storage": "5C67568",
+    "character_fallback": "5C67570",
+    "maneuver_threshold": "5C69BB0",
+    "rules_provider": "5D21DC8",
+    "rules_mode": "5D1DADC"
+  },
+  "layout": {
+    "manager": "GameState+A0 ->domain+2E9D0;secondaryvptr+8 expectedM+477F178;rosterdata28/cap30/count34",
+    "rule24": "borrow QWORD provider+EF0 array;inline24*D0=1380;vptr0/callbacks58,60,C8",
+    "combat": "fullID8/tagC; sides20/368;phase6B0/day6B4/forced700/finalized704/processing705",
+    "sides": "data10/cap18/count1C/primary70/commander74/parentB8"
+  },
+  "cost": {
+    "observer_implementation_new_exe_code": 0,
+    "observer_implementation_new_exe_metadata": 0,
+    "rule24_samecapture_pin_increment": 33,
+    "prior_oct6_D19140_code": 304,
+    "prior_oct6_D19140_metadata": 518,
+    "prior_oct6_D19140_sha256": "7fe02381e68495d89f4d1ec5576e34a6274e951f9f5196ec8a56271960eaa02d"
+  },
+  "new_callable_functions": [],
+  "original_current31_callable_abi_unchanged": [
+    "void*9F9E20(void*,constint32*)",
+    "void87E0E0(void*)",
+    "bool372DF30(constvoid*,void*)"
+  ],
+  "evidence": {
+    "source_packet": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/army-current31/next-current-status/",
+    "before_code_contract": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/current-combat-rule24-implementation/FINAL-DTO-SCENES-SIGNATURES.json",
+    "corrected_before_code_offsets": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/current-combat-rule24-implementation/FINAL-FREEZE-ADDENDUM01.json"
+  },
+  "readiness": "research/integrated candidate; Root new FIRST NOTRUN; earlier independentcurrent31 static-ready unchanged; newlive false"
+}

@@ -15,6 +15,13 @@ Root 在 R0051 原 Robert29829 普通战役、最小化暂停现场，取得完�
 ## 2026-10-06：当前登陆惩罚天数接入同 Army 查询，FIRST NOTRUN
 
 [当前登陆惩罚天数](army-current-disembark-penalty-days-12003.md)已闭合 `Army.GetDisembarkPenaltyDays` literal4736B10 → callback24EA630 → 7B core24AA240，完整 typed registrar与既有实际CArmy provider证明receiver。现有 `ck3_query_army_strengths` 新增 readonly int32 current-days leaf，exact `.3`已绑定，0/-1/34均保留；active/expiry predicate与future landing日期独立。独占基线71b729f0的新whole native producer五source cases与真实strict/Service/registered MCP consumer已编写；build/native/consumer FIRST全部NOTRUN，状态 research/source implemented，零新game/query/日与live信用。既有retained crossing geography资格直接复用。
+## 2026-10-06：首继承人关系迁移与原生生育输入
+
+[首继承人关系生命周期](first-heir-relationship-lifecycle-12003.md)先封原生/observer树，后修已完成订婚履约记录的当前关系分流；唯一新实际Service夹具FIRST GREEN1/1、六分支，static-ready production consumer，旧候选2/2未重跑。[成人配对输入](first-heir-adult-pair-inputs-12003.md)封selected/effective lineality、原生prospective House/Dynasty与既有paired fertility读取发布缺口；[原生生育质量分支](first-heir-native-fertility-quality-12003.md)通过授权唯一523B exact `.3` body闭合candidate fertility score-floor排除，actual loaded threshold数值仍unknown。两项新观察/质量replacement保持research，未新增live/游戏日/自然继承。
+## October7 current Combat/Rule24 candidate
+
+[Current Combat roles/phase](army-current-combat-roles-phase-observer-12003.md) and [demanded Rule24 loaded pins](army-current-rule24-source-pins-observer-12003.md) are integrated source candidates on base71b729f0, with14 new genuine wholequery scenes and one sole full-Service compound prepared; Root joint FIRST is NOTRUN. Rule24 adds33B per actual receiver/query without rereading provider/array. [Complete D19140 native state mapping](army-current-native-state-mapping-12003.md) records no Army31 dependency and invalidArmy→regular; the earlier independentcurrent31 FIRST remains static-ready and is not replayed. Move-readiness remains a source-sealed proposal; Root actual route preview succeeded and no new gate is added.
+
 
 ### Oct6 actual诊断与新source提交索引
 
@@ -1270,3 +1277,4 @@ R0051 snapshot006只授地图/角色/暂停观察，007另授只读Army query pr
 证据入口：[Army007真实恢复](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-ARMY-CAP64-RECOVERY.json)；[恢复事实小索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/LATEST-R0051-ACTUAL-ARMY-RECOVERY-FACTS.json)；[R0050关闭/R0051恢复及历史pending](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/LATEST-R0050-CLOSED-R0051-ARMY-PENDING-FACTS.json)；[Commander新增FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/battle-commander/OCT6-W41-ACTUAL-FIRST-FIELDS.json)；[原始构建、修复与正式archive分层](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/G104-BUILD-FAILURE-REPAIR-INCREMENT.json)。authority由Root/事实兄弟唯一读取，本版消费兄弟小索引并复用已封fields，不重读authority、CI或旧proof。
 
 - [R0051 bounded waypoint: actual order and independent current state](war-bounded-waypoint-r0051-12003.md): public4/native3 actual route; current Army latency evidence, arrival and saved-day still pending.
+2026-10-06 后台新增：[paired native fertility发布候选](first-heir-adult-pair-inputs-12003.md#source-candidate-paired-fertility-publication)沿既有FAMILY48 reader/wire/transport进入正式plan/pending，source candidate / FIRST NOT RUN。新原生build、compiled-wire与sole新transport method资格归Root，不复用relationship1/1或preview2/2替代。

@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12003_commander_target_roll_dto.hpp"
+#include "xar_bridge/ck3_12003_current_commander_martial_dto.hpp"
 #include "xar_bridge/game_contract.hpp"
 
 #include <cstdint>
@@ -81,6 +82,7 @@ struct ArmyCommanderCandidatesSnapshot {
   std::vector<CommanderCandidateSnapshot> candidates;
   std::string_view unavailable_reason = "query_not_read";
   std::optional<std::int32_t> target_province_id;
+  std::optional<CurrentCommanderTotalMartialSnapshot> current_total_martial;
 };
 
 enum class CommanderCandidatesReadResult { unavailable, available, partial };
@@ -101,6 +103,9 @@ struct CommanderBindings {
   MovementRateReader read_unit_land_movement_rate = nullptr;
   MovementRateReader read_unit_naval_movement_rate = nullptr;
   MovementRateReader read_unit_current_edge_movement_rate = nullptr;
+  // Old-prefix fixtures retain omission; the exact production binder enables it.
+  bool current_total_martial_observer_enabled = false;
+  std::int32_t (*get_current_total_skill)(void *, std::int32_t) = nullptr;
 };
 
 CommanderBindings BindCommanderImage(

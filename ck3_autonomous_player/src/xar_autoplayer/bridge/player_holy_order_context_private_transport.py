@@ -10,6 +10,8 @@ from .g2_private_query_transport import (
     read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
+from .player_holy_order_hire_cost_context import validate_holy_order_hire_cost_context
+from .holy_order_current_reinforcement_v1 import normalize_holy_order_current_reinforcement_v1
 from .version_identity import CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
@@ -111,6 +113,16 @@ def normalize_player_holy_order_context_v1(
                     or (sampled and not isinstance(literal, str))
                     or (not sampled and literal is not None)):
                 raise ValueError(f"native holy-order source reason is malformed: {prefix}")
+        # The cost branch is independent of the final native predicates/quote.
+        # Older frozen packets may omit this additive observer.
+        if "hire_cost_context" in terms:
+            validate_holy_order_hire_cost_context(terms["hire_cost_context"])
+        if "current_reinforcement_v1" in terms:
+            normalize_holy_order_current_reinforcement_v1(
+                terms["current_reinforcement_v1"],
+                employer_id=row.get("employer_id"),
+                played_character_id=value["played_character_id"],
+            )
         # Historical frozen packets predate this independent native subgate.
         # It is not a release/persistence predicate and does not change CanHire.
         if "current_war_eligibility" in terms:

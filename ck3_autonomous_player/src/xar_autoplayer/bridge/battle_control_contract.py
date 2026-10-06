@@ -6,6 +6,9 @@ from .battle_actual_geography_contract import normalize_actual_geography_v1
 from .current_finalizer_manager_inputs_contract_v1 import (
     normalize_current_finalizer_manager_inputs_v1,
 )
+from .current_warscore_caps_contract_v1 import (
+    normalize_current_warscore_caps_v1,
+)
 from .public_unit_contract import (
     public_cunit_id as _public_cunit_id,
     public_cunit_ids as _public_cunit_ids,
@@ -67,6 +70,7 @@ _OPTIONAL_SNAPSHOT_KEYS = {
     "roll_cadence_interval",
     "current_phase_transition_inputs_v1",
     "current_finalizer_manager_inputs_v1",
+    "current_warscore_caps_v1",
     "current_pursuit_inputs_v1",
     "actual_hard_casualty_sides",
     "pursuit_modifier_sides",
@@ -714,6 +718,10 @@ def normalize_battle_control_snapshot_v1(
                 expected_combat_id=combat_id,
             )
         )
+    if "current_warscore_caps_v1" in value:
+        result["current_warscore_caps_v1"] = normalize_current_warscore_caps_v1(
+            value["current_warscore_caps_v1"], expected_combat_id=combat_id
+        )
     if "current_pursuit_inputs_v1" in value:
         result["current_pursuit_inputs_v1"] = _normalize_current_pursuit_inputs_v1(
             value["current_pursuit_inputs_v1"], combat_id=combat_id
@@ -1229,6 +1237,7 @@ def normalize_active_combat_resume_inputs_v1(
         or set(observed) - {
             "roll_cadence_interval", "current_pursuit_inputs_v1",
             "current_finalizer_manager_inputs_v1",
+            "current_warscore_caps_v1",
             "current_phase_transition_inputs_v1",
         } not in (
             _ACTIVE_RESUME_OBSERVED_KEYS,
@@ -1289,6 +1298,17 @@ def normalize_active_combat_resume_inputs_v1(
         if manager != parent.get("current_finalizer_manager_inputs_v1"):
             raise ValueError(
                 f"{name}.observed.current_finalizer_manager_inputs_v1 "
+                "disagrees with battle frame"
+            )
+    if "current_warscore_caps_v1" in observed:
+        caps = normalize_current_warscore_caps_v1(
+            observed["current_warscore_caps_v1"],
+            expected_combat_id=parent["combat_id"],
+            field=f"{name}.observed.current_warscore_caps_v1",
+        )
+        if caps != parent.get("current_warscore_caps_v1"):
+            raise ValueError(
+                f"{name}.observed.current_warscore_caps_v1 "
                 "disagrees with battle frame"
             )
     if "current_pursuit_inputs_v1" in observed:

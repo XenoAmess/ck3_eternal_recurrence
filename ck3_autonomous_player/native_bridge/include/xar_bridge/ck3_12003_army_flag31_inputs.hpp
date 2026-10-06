@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/ck3_12003_post_admission_refresh.hpp"
+#include "xar_bridge/ck3_12003_army_rule24_source_pins.hpp"
 #include <array>
 #include <bit>
 namespace xar::game {
@@ -16,6 +17,9 @@ struct CurrentArmyFlag31Bindings12003 {
   Flag31ConstructScope construct_actor_scope = nullptr;
   Flag31DestroyScope destroy_scope = nullptr;
   Flag31Evaluate evaluate_condition = nullptr;
+  const void *rule_source_mode_slot = nullptr;
+  std::uintptr_t rule_source_module_base = 0;
+  std::size_t rule_source_image_size = 0;
 };
 inline CurrentArmyFlag31Bindings12003 BindCurrentArmyFlag31Inputs12003(
     std::uintptr_t base, std::string_view sha) noexcept {
@@ -25,6 +29,9 @@ inline CurrentArmyFlag31Bindings12003 BindCurrentArmyFlag31Inputs12003(
   out.combat_registry_slot = reinterpret_cast<const void *>(base + 0x5D1DE70);
   out.combat_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1DE18);
   out.rule_provider_slot = reinterpret_cast<const void *>(base + 0x5D21DC8);
+  out.rule_source_mode_slot = reinterpret_cast<const void *>(base + 0x5D1DADC);
+  out.rule_source_module_base = base;
+  out.rule_source_image_size = 102518784;
   out.construct_actor_scope = reinterpret_cast<Flag31ConstructScope>(base + 0x9F9E20);
   out.destroy_scope = reinterpret_cast<Flag31DestroyScope>(base + 0x87E0E0);
   out.evaluate_condition = reinterpret_cast<Flag31Evaluate>(base + 0x372DF30);
@@ -33,6 +40,11 @@ inline CurrentArmyFlag31Bindings12003 BindCurrentArmyFlag31Inputs12003(
 namespace army_flag31_detail {
 using namespace daily_assault_roster_detail;
 using Bindings = CurrentArmyFlag31Bindings12003;
+struct Rule24SourcePinCacheRow {
+  const void *receiver = nullptr;
+  game::ArmyCurrentRule24SourcePinsV1 pins{};
+};
+using Rule24SourcePinCache = std::vector<Rule24SourcePinCacheRow>;
 template <class F, class R, class... A>
 inline bool Returned(F f, R &out, A... args) noexcept {
   if (!f) return false;
@@ -153,7 +165,8 @@ inline const void *Character(const Bindings &b, const void *unit, game::ArmyFlag
       "character", out.character_resolution);
 }
 inline game::ArmyFlag31OccurrenceV1 Observe(const Bindings &b, const void *army,
-    const game::ArmyPostAdmissionRefreshOccurrenceV1 &source) {
+    const game::ArmyPostAdmissionRefreshOccurrenceV1 &source,
+    Rule24SourcePinCache &rule24_source_pin_cache) {
   game::ArmyFlag31OccurrenceV1 out{};
   out.native_index = source.native_index; out.raw_full_id_u32 = source.raw_full_id_u32;
   out.original_army_resolution = source.original_army_resolution; out.same_query_army_selection_matched = true;
@@ -185,6 +198,16 @@ inline game::ArmyFlag31OccurrenceV1 Observe(const Bindings &b, const void *army,
   if (!rules || !*rules) return fail("flag31_rule_array_unavailable");
   out.rule_array_identity = Identity(*rules);
   const auto rule = At(*rules, 0x1380); out.inline_rule_identity = Identity(rule);
+  const auto held_pin = std::find_if(
+      rule24_source_pin_cache.begin(), rule24_source_pin_cache.end(),
+      [rule](const auto &p) { return p.receiver == rule; });
+  if (held_pin != rule24_source_pin_cache.end()) {
+    out.rule24_source_pins_v1 = held_pin->pins;
+  } else {
+    auto pins = ReadCurrentRule24SourcePins12003(b, rule);
+    rule24_source_pin_cache.push_back({rule, std::move(pins)});
+    out.rule24_source_pins_v1 = rule24_source_pin_cache.back().pins;
+  }
   if (!b.construct_actor_scope || !b.destroy_scope || !b.evaluate_condition)
     return fail("flag31_context_or_evaluator_unbound");
   Scope scope(b, *out.selected_character_18_raw_u32);
@@ -209,6 +232,7 @@ inline game::ArmyCurrentFlag31InputsV1 ReadCurrentArmyFlag31Inputs12003(
     out.raw_roster_references_ready = out.original_roster.references_ready;
     CurrentPostAdmissionRefreshBindings12003 borrowed{}; borrowed.common = b.common;
     std::vector<post_admission_refresh_detail::ResolutionCacheRow> cache;
+    Rule24SourcePinCache rule24_source_pin_cache;
     for (const auto &raw : out.original_roster.occurrences) {
       game::ArmyFlag31OccurrenceV1 row{};
       row.native_index = raw.native_index; row.raw_full_id_u32 = raw.raw_full_id_u32;
@@ -222,7 +246,7 @@ inline game::ArmyCurrentFlag31InputsV1 ReadCurrentArmyFlag31Inputs12003(
         if (source == same_query_refresh.occurrences.end() ||
             !post_admission_refresh_detail::SameSelected(source->original_army_resolution, selected, raw.raw_full_id_u32)) {
           row.unavailable_reason = "flag31_same_query_army_selection_unavailable"; Finish(row, false);
-        } else row = Observe(b, selected.object, *source);
+        } else row = Observe(b, selected.object, *source, rule24_source_pin_cache);
       }
       out.occurrences.push_back(std::move(row));
     }

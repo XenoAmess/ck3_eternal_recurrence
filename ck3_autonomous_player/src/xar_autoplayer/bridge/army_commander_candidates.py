@@ -7,6 +7,7 @@ from .army_commander_target_rolls import (
     commander_target_province_id,
     normalize_candidate_target_roll_bounds,
 )
+from .army_commander_current_martial import normalize_current_commander_total_martial
 
 
 QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY = (
@@ -134,6 +135,11 @@ def normalize_army_commander_candidates_v1(
     ):
         raise ValueError("native current commander absence disagrees with its ID")
     _reason(current.get("unavailable_reason"), "current_commander.unavailable_reason")
+    copied_current = dict(current)
+    if "current_total_martial" in current:
+        copied_current["current_total_martial"] = normalize_current_commander_total_martial(
+            current["current_total_martial"], expected_current_commander=current
+        )
     if type(value.get("candidate_collection_complete")) is not bool:
         raise ValueError("native candidate collection completion must be boolean")
     count = value.get("candidate_source_count")
@@ -184,7 +190,7 @@ def normalize_army_commander_candidates_v1(
         copied_candidates.append(copied_row)
     _reason(value.get("unavailable_reason"), "unavailable_reason")
     normalized = {
-        **value, "current_commander": dict(current), "candidates": copied_candidates
+        **value, "current_commander": copied_current, "candidates": copied_candidates
     }
     # Older frozen readers have no selected-unit speed block. Preserve that
     # absence rather than manufacture zero rates or commander-derived speeds.

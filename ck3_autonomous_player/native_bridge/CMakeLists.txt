@@ -1022,6 +1022,7 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_tenet_rows.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_target_rite_tenet_comparison.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_tenet_knowledge_catalogue.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_tenet_sources.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_window.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_tenet_rows_mailbox.cpp")
@@ -1158,6 +1159,7 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_adapter.cpp
   src/ck3_12003_commander.cpp
   src/ck3_12003_commander_target_roll.cpp
+  src/ck3_12003_current_commander_martial.cpp
   src/ck3_12003_war_occupation.cpp
   src/ck3_12003_title_holder.cpp
   src/ck3_12003_commander_mailbox.cpp
@@ -1177,6 +1179,7 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_mercenary_hire_wire.cpp
   src/ck3_12003_player_mercenary_hire_mailbox.cpp
   src/ck3_12003_player_holy_order_context.cpp
+  src/ck3_12003_holy_order_current_reinforcement.cpp
   src/ck3_12003_holy_order_hire_action.cpp
   src/ck3_12003_holy_order_hire_wire.cpp
   src/ck3_12003_player_holy_order_hire_mailbox.cpp
@@ -1239,6 +1242,7 @@ add_executable(xar_ck3_12003_holy_order_hire_action_test
   src/ck3_12003_holy_order_hire_action.cpp
   src/ck3_12003_holy_order_hire_wire.cpp
   src/ck3_12003_player_holy_order_context.cpp
+  src/ck3_12003_holy_order_current_reinforcement.cpp
   src/ck3_12002_commands.cpp
   src/ck3_12002.cpp)
 target_include_directories(xar_ck3_12003_holy_order_hire_action_test PRIVATE include)
@@ -1256,6 +1260,7 @@ add_test(NAME ck3_12003_holy_order_hire_action
 add_executable(xar_ck3_12003_holy_order_war_eligibility_test
   src/ck3_12003_holy_order_war_eligibility_test.cpp
   src/ck3_12003_player_holy_order_context.cpp
+  src/ck3_12003_holy_order_current_reinforcement.cpp
   src/ck3_12003_player_holy_order_wire.cpp)
 target_include_directories(xar_ck3_12003_holy_order_war_eligibility_test PRIVATE include)
 target_compile_definitions(xar_ck3_12003_holy_order_war_eligibility_test PRIVATE
@@ -1271,6 +1276,7 @@ add_test(NAME ck3_12003_holy_order_war_eligibility
 add_executable(xar_ck3_12003_holy_order_service_lifecycle_test
   src/ck3_12003_holy_order_service_lifecycle_test.cpp
   src/ck3_12003_player_holy_order_context.cpp
+  src/ck3_12003_holy_order_current_reinforcement.cpp
   src/ck3_12003_player_holy_order_wire.cpp)
 target_include_directories(xar_ck3_12003_holy_order_service_lifecycle_test PRIVATE include)
 target_compile_definitions(xar_ck3_12003_holy_order_service_lifecycle_test PRIVATE
@@ -1286,6 +1292,7 @@ add_test(NAME ck3_12003_holy_order_service_lifecycle
 add_executable(xar_ck3_12003_holy_order_troop_association_test
   src/ck3_12003_holy_order_troop_association_test.cpp
   src/ck3_12003_player_holy_order_context.cpp
+  src/ck3_12003_holy_order_current_reinforcement.cpp
   src/ck3_12003_player_holy_order_wire.cpp)
 target_include_directories(xar_ck3_12003_holy_order_troop_association_test PRIVATE include)
 target_compile_definitions(xar_ck3_12003_holy_order_troop_association_test PRIVATE
@@ -1297,6 +1304,35 @@ endif()
 add_test(NAME ck3_12003_holy_order_troop_association
   COMMAND xar_ck3_12003_holy_order_troop_association_test
     "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_holy_order_troop_association_wire.json")
+
+add_executable(xar_ck3_12003_holy_order_hire_cost_context_test
+  src/ck3_12003_holy_order_hire_cost_context_test.cpp)
+target_link_libraries(xar_ck3_12003_holy_order_hire_cost_context_test PRIVATE
+  xar_ck3_12002_runtime)
+target_include_directories(xar_ck3_12003_holy_order_hire_cost_context_test PRIVATE include)
+target_compile_definitions(xar_ck3_12003_holy_order_hire_cost_context_test PRIVATE
+  NOMINMAX NDEBUG)
+if(MSVC)
+  target_compile_options(xar_ck3_12003_holy_order_hire_cost_context_test PRIVATE
+    /W4 /WX /permissive- /EHsc)
+endif()
+add_test(NAME ck3_12003_holy_order_hire_cost_context
+  COMMAND xar_ck3_12003_holy_order_hire_cost_context_test
+    "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_holy_order_hire_cost_context_wire.json")
+
+add_executable(xar_ck3_12003_holy_order_current_reinforcement_test
+  src/ck3_12003_holy_order_current_reinforcement_test.cpp)
+target_link_libraries(xar_ck3_12003_holy_order_current_reinforcement_test PRIVATE
+  xar_ck3_12002_runtime)
+target_include_directories(xar_ck3_12003_holy_order_current_reinforcement_test PRIVATE include)
+target_compile_definitions(xar_ck3_12003_holy_order_current_reinforcement_test PRIVATE NOMINMAX)
+if(MSVC)
+  target_compile_options(xar_ck3_12003_holy_order_current_reinforcement_test PRIVATE
+    /W4 /WX /permissive- /EHsc /utf-8)
+endif()
+add_test(NAME ck3_12003_holy_order_current_reinforcement
+  COMMAND xar_ck3_12003_holy_order_current_reinforcement_test
+    "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_holy_order_current_reinforcement_wire.json")
 
 if(XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1 AND (NOT XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1 OR NOT XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1 OR NOT XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1 OR NOT XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1))
   message(FATAL_ERROR "White age+1 action requires actual White business/text providers and owning frontend main-thread admission")
@@ -2476,6 +2512,8 @@ endif()
 include(CTest)
 include(cmake/religion_reform12003_creation_terms.cmake)
 include(cmake/prisoner_release_preview_12003.cmake)
+include(cmake/prisoner_native_kinship_12003.cmake)
+include(cmake/prisoner_negotiated_preview_12003.cmake)
 if(BUILD_TESTING)
   add_executable(xar_ck3_12003_siege_membership_test
     src/ck3_12002_province.cpp
@@ -3297,6 +3335,32 @@ if(BUILD_TESTING)
     endif()
     add_test(NAME xar_r3_religion_doctrine_knowledge_named_test
       COMMAND xar_r3_religion_doctrine_knowledge_named_test "${CMAKE_BINARY_DIR}/r3-religion-doctrine-knowledge-wire")
+
+    # FIRST_NOTRUN: only the new .3 schema-consumption cases execute here.
+    add_executable(xar_ck3_12003_doctrine_knowledge_schema_mailbox_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
+      src/ck3_12003_adapter.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_context.cpp
+      src/religion_doctrine12002_intrinsic.cpp
+      src/religion_doctrine12002_choices.cpp
+      src/religion_doctrine12002_choices_mailbox.cpp
+      src/ck3_12003_doctrine_knowledge_schema_mailbox_test.cpp)
+    target_include_directories(xar_ck3_12003_doctrine_knowledge_schema_mailbox_test PRIVATE include)
+    target_link_libraries(xar_ck3_12003_doctrine_knowledge_schema_mailbox_test PRIVATE
+      xar_bridge_protocol xar_ck3_12002_runtime user32)
+    target_compile_definitions(xar_ck3_12003_doctrine_knowledge_schema_mailbox_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1=1)
+    if(MSVC)
+      target_compile_options(xar_ck3_12003_doctrine_knowledge_schema_mailbox_test PRIVATE
+        /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8 /Gy)
+      target_link_options(xar_ck3_12003_doctrine_knowledge_schema_mailbox_test PRIVATE /OPT:REF)
+    endif()
+    add_test(NAME xar_ck3_12003_doctrine_knowledge_schema_mailbox_test
+      COMMAND xar_ck3_12003_doctrine_knowledge_schema_mailbox_test
+        "${CMAKE_BINARY_DIR}/doctrine-knowledge-schema-12003-wire")
   endif()
 
   if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
@@ -3309,6 +3373,7 @@ if(BUILD_TESTING)
       src/ck3_12002_religion_context.cpp
       src/religion_doctrine12002_tenet_rows.cpp
       src/ck3_12003_target_rite_tenet_comparison.cpp
+      src/ck3_12003_player_tenet_knowledge_catalogue.cpp
       src/religion_reform12002_tenet_sources.cpp
       src/religion_reform12002_window.cpp
       src/religion_doctrine12002_tenet_rows_mailbox.cpp
@@ -3336,6 +3401,7 @@ if(BUILD_TESTING)
       src/ck3_12002_religion_context.cpp
       src/religion_doctrine12002_tenet_rows.cpp
       src/ck3_12003_target_rite_tenet_comparison.cpp
+      src/ck3_12003_player_tenet_knowledge_catalogue.cpp
       src/religion_reform12002_tenet_sources.cpp
       src/religion_reform12002_window.cpp
       src/religion_doctrine12002_tenet_rows_mailbox.cpp
@@ -3353,6 +3419,36 @@ if(BUILD_TESTING)
     add_test(NAME xar_ck3_12003_target_rite_tenet_comparison_mailbox_test
       COMMAND xar_ck3_12003_target_rite_tenet_comparison_mailbox_test
         "${CMAKE_BINARY_DIR}/target-rite-tenet-comparison-wire")
+
+    # FIRST_NOTRUN: new actual-mailbox producer; Root owns the first execution.
+    add_executable(xar_ck3_12003_player_tenet_knowledge_catalogue_mailbox_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
+      src/ck3_12003_adapter.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_context.cpp
+      src/religion_doctrine12002_tenet_rows.cpp
+      src/ck3_12003_target_rite_tenet_comparison.cpp
+      src/ck3_12003_player_tenet_knowledge_catalogue.cpp
+      src/religion_reform12002_tenet_sources.cpp
+      src/religion_reform12002_window.cpp
+      src/religion_doctrine12002_tenet_rows_mailbox.cpp
+      src/ck3_12003_player_tenet_knowledge_catalogue_mailbox_test.cpp)
+    target_include_directories(xar_ck3_12003_player_tenet_knowledge_catalogue_mailbox_test PRIVATE include)
+    target_link_libraries(xar_ck3_12003_player_tenet_knowledge_catalogue_mailbox_test PRIVATE
+      xar_bridge_protocol xar_ck3_12002_runtime user32)
+    target_compile_definitions(xar_ck3_12003_player_tenet_knowledge_catalogue_mailbox_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1=1
+      XAR_RELIGION_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_ck3_12003_player_tenet_knowledge_catalogue_mailbox_test PRIVATE
+        /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8 /Gy)
+      target_link_options(xar_ck3_12003_player_tenet_knowledge_catalogue_mailbox_test PRIVATE /OPT:REF)
+    endif()
+    add_test(NAME xar_ck3_12003_player_tenet_knowledge_catalogue_mailbox_test
+      COMMAND xar_ck3_12003_player_tenet_knowledge_catalogue_mailbox_test
+        "${CMAKE_BINARY_DIR}/player-tenet-knowledge-catalogue-wire")
   endif()
 
   if(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
@@ -9054,6 +9150,7 @@ include(cmake/ordered_besieging_fixed_chunk0_preparation_12003.cmake)
 include(cmake/daily_assault_placement_witness_12003.cmake)
 include(cmake/daily_assault_release_headers_12003.cmake)
 include(cmake/daily_assault_roster_admission_12003.cmake)
+include(cmake/current_province73c_classification_12003.cmake)
 include(cmake/current_assault_removal_references_12003.cmake)
 include(cmake/pre_date_pending_and_dated_inputs_12003.cmake)
 include(cmake/current_post_admission_refresh_inputs_12003.cmake)
@@ -9133,6 +9230,9 @@ endif()
 include(cmake/current_army_flag21_inputs_12003.cmake)
 include(cmake/current_selected_title_holder_owner_relation_12003.cmake)
 include(cmake/current_fleet_supply_tick_inputs_12003.cmake)
+include(cmake/current_daily_supply_dispatch_inputs_12003.cmake)
+include(cmake/current_month_first_refill_call_inputs_12003.cmake)
+include(cmake/captured_target_land_supply_whole_preview_12003.cmake)
 include(cmake/army_strength_result_write_diagnostic_v1.cmake)
 
 # One explicitly built real-transport fixture at the historical Army body size.
@@ -9151,6 +9251,7 @@ if(WIN32)
 endif()
 include(cmake/current_army_flag31_inputs_12003.cmake)
 include(cmake/current_finalizer_manager_inputs_12003.cmake)
+include(cmake/current_warscore_caps_12003.cmake)
 
 # Additive selected-target fervor observation and its four FIRST scenarios.
 include("${CMAKE_CURRENT_SOURCE_DIR}/conversion-fervor-inputs.cmake")
@@ -9160,6 +9261,9 @@ endif()
 include(cmake/realm_law_succession_profile_12003.cmake)
 include(cmake/player_faction_county_culture_12003.cmake)
 include(cmake/commander_target_rolls_12003.cmake)
+include(cmake/current_commander_total_martial_12003.cmake)
 include(cmake/player_seek_indulgences_terms_12003.cmake)
 include(cmake/ordinary_holy_war_cb_cost_first_fixture.cmake)
 include(cmake/current_disembark_penalty_days_12003.cmake)
+
+include(cmake/current_army_combat_roles_phase_rule24_pins_12003.cmake)

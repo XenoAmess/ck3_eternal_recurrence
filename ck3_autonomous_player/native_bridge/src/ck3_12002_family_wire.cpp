@@ -215,7 +215,8 @@ std::string SerializeFamilyAllianceFrameV1(std::string_view request_id,
     result += available ? SignedNumber(read.heir_adult_threshold_raw) : "null";
     result += ",\"candidate_adult_threshold_raw\":";
     result += available ? SignedNumber(read.candidate_adult_threshold_raw) : "null";
-    if (step == kFamilyChildValueWireStepV1) {
+    if (step == kFamilyChildValueWireStepV1 ||
+        step == kFamilyAllianceProjectionWireStepV1) {
       const auto append_fertility = [&](std::string_view key,
                                         const auto &fertility) {
         result += ",\"";

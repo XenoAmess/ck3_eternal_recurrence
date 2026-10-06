@@ -3,6 +3,7 @@
 #include "xar_bridge/battle_reinforcement_arrival_admission_12003.hpp"
 #include "xar_bridge/battle_context_source_inputs_v1.hpp"
 #include "xar_bridge/battle_current_finalizer_manager_inputs_v1.hpp"
+#include "xar_bridge/battle_current_warscore_caps_v1.hpp"
 #include "xar_bridge/battle_current_own_nested_modifier_dto.hpp"
 #include "xar_bridge/knight_current_model_association_v1.hpp"
 
@@ -16,6 +17,9 @@
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp"
 #include "xar_bridge/army_current_fleet_supply_tick_inputs_v1.hpp"
+#include "xar_bridge/army_captured_target_land_supply_inputs_v1.hpp"
+#include "xar_bridge/army_current_daily_supply_dispatch_inputs_v1.hpp"
+#include "xar_bridge/army_current_month_first_refill_call_inputs_v1.hpp"
 #include "xar_bridge/ck3_12003_fixed_chunk0_preparation.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1.hpp"
 #include "xar_bridge/army_ordered_besieging_fixed_chunk0_preparation_v1.hpp"
@@ -743,6 +747,7 @@ struct ArmyCurrentProvinceBesiegingContributorsV1 {
 #include "xar_bridge/army_current_flag20_inputs_v1.inc.hpp"
 #include "xar_bridge/army_current_flag21_inputs_v1.inc.hpp"
 #include "xar_bridge/army_current_flag31_inputs_v1.inc.hpp"
+#include "xar_bridge/army_current_combat_roles_phase_inputs_v1.inc.hpp"
 #include "xar_bridge/army_current_candidate_detachment_mapper_v1.inc.hpp"
 #include "xar_bridge/army_current_detachment_data_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_v1.inc.hpp"
@@ -846,6 +851,9 @@ struct ArmyStrengthSnapshot {
       current_selected_title_holder_owner_relation_v1;
   // Exact .3 current landing input; omitted by old/.2 producers.
   std::optional<ArmyCurrentDisembarkPenaltyV1> current_disembark_penalty_v1;
+  std::optional<ArmyCurrentDailySupplyDispatchInputsV1> current_daily_supply_dispatch_inputs_v1;
+  std::optional<ArmyCurrentMonthFirstRefillCallInputsV1> current_month_first_refill_call_inputs_v1;
+  std::optional<ArmyCurrentCombatRolesPhaseInputsV1> current_army_combat_roles_phase_inputs_v1;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;
@@ -2317,6 +2325,7 @@ struct ArmyProvinceSupplyRow {
   std::int32_t province_id = -1;
   std::optional<std::int32_t> native_supply_limit_soldiers;
   std::optional<std::int32_t> native_supply_usage_soldiers;
+  std::optional<ArmyCapturedTargetLandSupplyInputsV1> captured_target_land_supply_inputs_v1;
   std::string unavailable_reason;
 
   friend bool operator==(const ArmyProvinceSupplyRow &,
@@ -2952,6 +2961,9 @@ struct BattleControlSnapshot {
   // Copied from the existing transition sample; independent of control ready.
   std::optional<BattleActualGeographyInputsV1> actual_geography_v1;
   bool battle_control_ready = false;
+  // Current loaded native cap pair; independent of row admission and ready.
+  std::optional<BattleControlCurrentWarscoreCapsV1>
+      current_warscore_caps_v1;
 
   friend bool operator==(const BattleControlSnapshot &,
                          const BattleControlSnapshot &) = default;

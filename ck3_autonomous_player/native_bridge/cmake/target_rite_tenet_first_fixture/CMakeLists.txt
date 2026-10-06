@@ -25,6 +25,7 @@ add_executable(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test
   "${native}/src/ck3_12002_religion_context.cpp"
   "${native}/src/religion_doctrine12002_tenet_rows.cpp"
   "${native}/src/ck3_12003_target_rite_tenet_comparison.cpp"
+  "${native}/src/ck3_12003_player_tenet_knowledge_catalogue.cpp"
   "${native}/src/religion_reform12002_tenet_sources.cpp"
   "${native}/src/religion_reform12002_window.cpp"
   "${native}/src/religion_doctrine12002_tenet_rows_mailbox.cpp"

@@ -559,6 +559,9 @@ from .title_holder_contract import (
     query_title_holder_v1_step,
     title_holder_query_actor,
 )
+from .army_captured_target_land_supply_inputs_contract import (
+    normalize_target_land_supply_in_route_preview,
+)
 from .war_contract import (
     ARMY_ROUTES_CAPABILITY,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
@@ -2766,18 +2769,28 @@ class NativeHeadlessGameplayDriver:
 
     def query_player_prisoner_collection_private_v1(
         self, *, expected_revision: int, ransom_ordinal: int = 0,
+        release_option_keys: list[str] | None = None,
     ) -> dict[str, object]:
         """Unadvertised, paused current-player prisoner ID collection readback."""
         from .player_prisoner_collection_private_transport import (
             query_player_prisoner_collection_private_v1,
         )
 
-        result = query_player_prisoner_collection_private_v1(
-            self,
-            expected_revision=expected_revision,
-            ransom_ordinal=ransom_ordinal,
-            timeout_seconds=self.command_timeout_seconds,
-        )
+        if release_option_keys is None:
+            result = query_player_prisoner_collection_private_v1(
+                self,
+                expected_revision=expected_revision,
+                ransom_ordinal=ransom_ordinal,
+                timeout_seconds=self.command_timeout_seconds,
+            )
+        else:
+            result = query_player_prisoner_collection_private_v1(
+                self,
+                expected_revision=expected_revision,
+                ransom_ordinal=ransom_ordinal,
+                release_option_keys=release_option_keys,
+                timeout_seconds=self.command_timeout_seconds,
+            )
         # The transport validates the complete readonly result and its paused
         # frame. Retain that returned observation for the ordinary planner.
         self._record_command(result["step"], ok=True, result=result)
@@ -3167,14 +3180,16 @@ class NativeHeadlessGameplayDriver:
     def query_player_religion_tenets_private_v1(
         self, *, expected_revision: int,
         target_rite_id: int | None = None, tenet_key: str | None = None,
+        include_knowledge_catalogue: bool = False,
     ) -> dict[str, object]:
-        """Read player Tenets and an optional paired target Rite/named Tenet."""
+        """Read player Tenets with optional comparison and knowledge inputs."""
         from .player_religion_tenets_private_transport import query_player_religion_tenets_private_v1
 
         return query_player_religion_tenets_private_v1(
             self, expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
             target_rite_id=target_rite_id, tenet_key=tenet_key,
+            include_knowledge_catalogue=include_knowledge_catalogue,
         )
 
     def query_player_religion_conversion_choices_private_v1(
@@ -13208,6 +13223,12 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native move preview returned a malformed route_preview"
                 )
+            try:
+                route_preview = normalize_target_land_supply_in_route_preview(route_preview)
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native target Province supply inputs are malformed: {error}"
+                ) from error
             current = self.take_internal_semantic_snapshot()
             if not _same_paused_native_frame(starting, current):
                 raise BridgeUnavailableError(

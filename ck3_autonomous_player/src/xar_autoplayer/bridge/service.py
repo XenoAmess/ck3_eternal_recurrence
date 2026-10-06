@@ -32,6 +32,7 @@ from ..simulation.army_current_selected_title_holder_owner_relation_12003 import
     project_current_selected_title_holder_owner_relation_12003,
 )
 from ..simulation.army_current_flag31_inputs_12003 import project_current_army_flag31_inputs_12003
+from ..simulation.army_current_combat_roles_phase_inputs_12003 import project_current_army_combat_roles_phase_inputs_12003
 from .army_current_candidate_detachment_mapper_builder import build_current_candidate_detachment_mapper_preview
 from .army_current_detachment_data_builder import build_same_input_current_detachment_data_prefix
 from ..simulation.army_pre_date_pending_update_12003 import project_current_pre_date_pending_update_v1
@@ -4698,6 +4699,16 @@ class GameplayBridgeService:
             "current_army_flag31_inputs_v1": [
                 {"army_id": row["army_id"], "projection": project_current_army_flag31_inputs_12003(
                     row.get("current_army_flag31_inputs_v1"), source_provenance={
+                        "snapshot_id": snapshot.get("snapshot_id"),
+                        "revision": snapshot.get("revision"),
+                        "native_revision": snapshot.get("native_revision"),
+                        "date_raw": snapshot.get("date_raw"),
+                        "game_version": hello.get("game_version") if isinstance(hello, dict) else None,
+                        "executable_sha256": hello.get("executable_sha256") if isinstance(hello, dict) else None})}
+                for row in selected_rows],
+            "current_army_combat_roles_phase_inputs_v1": [
+                {"army_id": row["army_id"], "projection": project_current_army_combat_roles_phase_inputs_12003(
+                    row.get("current_army_combat_roles_phase_inputs_v1"), source_provenance={
                         "snapshot_id": snapshot.get("snapshot_id"),
                         "revision": snapshot.get("revision"),
                         "native_revision": snapshot.get("native_revision"),

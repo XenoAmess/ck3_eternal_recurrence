@@ -747,6 +747,8 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
   out.full_backing_inputs_v1 = FullBackingInputs(b, out);
   out.current_finalizer_manager_inputs_v1 =
       ReadCurrentFinalizerManagerInputs12003(b, combat, cid);
+  out.current_warscore_caps_v1 =
+      ReadBattleCurrentWarscoreCaps12003(b.current_warscore_caps, combat, cid);
   out.current_pursuit_inputs_v1 = CurrentPursuitInputs(b, combat, out);
   out.current_phase_transition_inputs_v1 =
       CurrentPhaseTransitionInputs(b, combat, out);
@@ -2256,6 +2258,11 @@ ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
     // A changing optional census cannot invalidate the existing control frame.
     a.full_backing_inputs_v1.reset();
     c.full_backing_inputs_v1.reset();
+  }
+  if (sampled && a.current_warscore_caps_v1 != c.current_warscore_caps_v1) {
+    // Keep the existing control frame if only this optional operand changes.
+    a.current_warscore_caps_v1.reset();
+    c.current_warscore_caps_v1.reset();
   }
   if (sampled && a.current_finalizer_manager_inputs_v1 !=
                      c.current_finalizer_manager_inputs_v1) {

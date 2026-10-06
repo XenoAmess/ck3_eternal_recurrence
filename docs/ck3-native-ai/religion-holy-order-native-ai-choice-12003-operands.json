@@ -1,0 +1,75 @@
+{
+  "schema": "xar.holy-order-native-ai-choice-operands.v1",
+  "baseline": "69a2fe5c560e399ef5a0e98e60a45b0cabbc4b1b",
+  "build": {
+    "version": "1.20.0.3 Crozier / Steam25652598",
+    "exe_sha256_reused": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+  },
+  "actor_scope": "Human played character Robert29829 in original ordinary campaign; no game sample in this package",
+  "decision": "Native AI military HolyOrder candidate choice and why hire now",
+  "existing_operands_reused": [
+    {"name": "final_can_hire", "native": "2619C50(order, actor, reason)", "published": true, "scope": "Current native final legality; not AI utility"},
+    {"name": "current_war_eligibility", "native": "261C120(order, actor, reason)", "published": true, "scope": "Any qualifying current opposing war member; not holy-war CB choice"},
+    {"name": "resource_costs_raw", "native": "26198E0(order, out80, actor)", "published": true, "units": "ten signed int64/Q100000 resource slots"},
+    {"name": "can_afford", "native": "310E710(cost80, actor, reason)", "published": true, "scope": "Independent native payment predicate; not original AI budget"},
+    {"name": "current_soldiers", "native": "261AD10(order)", "published": true, "units": "plain signed int32 headcount; not projected contribution"},
+    {"name": "employer_patron_full_ids", "native": "order+80 and2618D80(order)", "published": true, "scope": "Current full-generation identities; historical founder separate"}
+  ],
+  "stock_operand_owner": {
+    "file": "common/defines/ai/00_ai.txt",
+    "lines": "136-161",
+    "names": ["MIN_RESERVED_GOLD_HOLY_ORDER", "MIN_RESERVED_TREASURY_HOLY_ORDER"],
+    "values": [500, 1500],
+    "actual_owner": "holy-order leader",
+    "employer_hire_budget_source": false
+  },
+  "held_manager_metadata": {
+    "constructor": "2A86200",
+    "primary_table": "477B598",
+    "secondary_table": "477B520",
+    "secondary_table_selected_bytes": 120,
+    "secondary_table_native_byte_sha_reused": "4adc94650ac24ca9b742212595270da1ab7c5690c3467aa67ff63f0902d6646a",
+    "closed_release_slots": {"8": "2A89390", "18": "2A89760"},
+    "ai_hire_callback_identified": false
+  },
+  "not_yet_source_closed": [
+    "Actual production native AI caller",
+    "Actual AI candidate producer/filter",
+    "Actual scoring operands, ranking and tie-break",
+    "Actual hire-now trigger/cadence and expenditure evaluation"
+  ],
+  "finite_next_locator": {
+    "request": "Cached exact .3 inbound metadata to literal477B6D0 and manager hire2A88630, or an already named AI hiring caller",
+    "required_before_body": ["callsite RVA", "containing function RVA/span", "exact executable binding", "held-or-missing cache status"],
+    "maximum_existing_index_rows_per_target": 16,
+    "new_body_discovery_plan_frozen": false,
+    "reason": "Concrete literal and actual manager mutation producer now held; actual AI incoming caller and approved lookup index/range remain missing"
+  },
+  "actual_discovery_anchors_reused": {
+    "literal_slice": "477B65F..477B6EF",
+    "literal_slice_bytes": 144,
+    "literal_slice_native_byte_sha256": "6eb3decdbbc16db00308ec3cbd47697fbad0c41cbdce3f04b5abd906ba9cb2ad",
+    "named_literal": "HireHolyOrder",
+    "named_literal_begin": "477B6D0",
+    "named_literal_end_exclusive_including_nul": "477B6DE",
+    "literal_to_function_reference_held": false,
+    "manager_hire": "2A88630..2A889B1",
+    "manager_hire_bytes": 897,
+    "manager_hire_native_byte_sha256_reused": "cd8c02b6bc8fe6872751a5f25e2034d5a9eb22b2843c6a49c54a517f28b9a753",
+    "ordinary_command_execute": "2994770 -> 2A88630(manager, order, actor, mode)",
+    "manager_hire_is_ai_chooser": false,
+    "ai_incoming_callsite_held": false
+  },
+  "minimum_new_observer": null,
+  "observer_null_meaning": "Implementation selection not source-ready; no unimplemented field is added to the production schema",
+  "native_ai_choice_ready": false,
+  "full_ai_optimality_ready": false,
+  "current_legal_availability_already_observable": true,
+  "implementation_tests_builds_imports_dispatch": "NOTRUN",
+  "new_exe_code_bytes": 0,
+  "new_exe_metadata_bytes": 0,
+  "duplicate_exe_bytes": 0,
+  "closed_body_rereads": 0,
+  "game_operations": 0,
+  "readiness": "research"
+}

@@ -7,6 +7,9 @@
 #include <string_view>
 #include <vector>
 
+#include "xar_bridge/ck3_12003_holy_order_hire_cost_context.hpp"
+#include "xar_bridge/ck3_12003_holy_order_current_reinforcement.hpp"
+
 namespace xar::ck3_12003::religion::holy_order {
 
 inline constexpr std::string_view kExecutableSha256 =
@@ -41,6 +44,8 @@ struct Bindings {
   void **regiment_registry_slot = nullptr;
   void **army_registry_slot = nullptr;
   void **combat_registry_slot = nullptr;
+  HireCostContextBindings hire_cost_context;
+  CurrentReinforcementBindings12003 current_reinforcement{};
 };
 
 struct TroopStrength {
@@ -104,6 +109,8 @@ struct MilitaryTerms {
   WarEligibility current_war_eligibility;
   ServiceLifecycle service_lifecycle;
   TroopAssociation troop_association;
+  HireCostContext hire_cost_context;
+  CurrentReinforcement12003 current_reinforcement_v1;
 };
 struct Row {
   std::uint32_t holy_order_id = UINT32_MAX;

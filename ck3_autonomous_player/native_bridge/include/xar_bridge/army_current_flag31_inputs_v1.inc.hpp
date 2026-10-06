@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/army_current_rule24_source_pins_v1.inc.hpp"
 // Included inside xar::game after the post-admission refresh DTO.
 struct ArmyFlag31SelectionV1 {
   std::string status = "unavailable", unavailable_reason = "not_demanded";
@@ -35,6 +36,7 @@ struct ArmyFlag31OccurrenceV1 {
   std::optional<bool> native_current_rule24_passed;
   std::optional<std::uint8_t> derived_current_31_raw_u8;
   bool current_flag31_inputs_ready = false;
+  std::optional<ArmyCurrentRule24SourcePinsV1> rule24_source_pins_v1;
   friend bool operator==(const ArmyFlag31OccurrenceV1 &, const ArmyFlag31OccurrenceV1 &) = default;
 };
 struct ArmyCurrentFlag31InputsV1 {

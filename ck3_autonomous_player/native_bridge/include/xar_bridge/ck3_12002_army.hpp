@@ -15,6 +15,7 @@
 #include "xar_bridge/ck3_12003_army_flag21_inputs.hpp"
 #include "xar_bridge/ck3_12003_selected_title_holder_owner_relation.hpp"
 #include "xar_bridge/ck3_12003_army_flag31_inputs.hpp"
+#include "xar_bridge/ck3_12003_army_combat_roles_phase_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_candidate_detachment_mapper.hpp"
 #include "xar_bridge/ck3_12003_current_detachment_data.hpp"
 #include "xar_bridge/ck3_12003_pre_date_pending_update.hpp"
@@ -208,6 +209,9 @@ struct ArmyBindings {
       current_selected_title_holder_owner_relation_bindings{};
   bool current_disembark_penalty_enabled = false;
   DisembarkPenaltyGetter12003 get_army_disembark_penalty_days = nullptr;
+  ck3_12003::CurrentDailySupplyDispatchBindings12003 current_daily_supply_dispatch_bindings{};
+  ck3_12003::CurrentMonthFirstRefillCallBindings12003 current_month_first_refill_call_bindings{};
+  ck3_12003::CurrentArmyCombatRolesPhaseBindings12003 current_army_combat_roles_phase_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

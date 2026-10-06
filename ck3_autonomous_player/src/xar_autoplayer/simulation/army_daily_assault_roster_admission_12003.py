@@ -185,7 +185,24 @@ def _derive_gate(raw, original_resolution):
         demand("associated_unit_character_id_raw_u32")
         _demand_operand(raw["associated_character_resolution"], "associated_character")
         if demand("province_character_id_73c_raw_u32") == 0xFFFFFFFF:
-            raise _MissingInput("province_73c_requires_2c099f0_inputs")
+            classifier_fields = (
+                "native_2c099f0_character_identity", "native_2c099f0_province_identity",
+                "native_2c099f0_third_argument_is_null", "native_2c099f0_returned",
+                "native_2c099f0_classification_raw_i32")
+            if (all(raw.get(name) is None for name in classifier_fields if name != "native_2c099f0_returned")
+                    and raw.get("native_2c099f0_returned", False) is False):
+                raise _MissingInput("province_73c_requires_2c099f0_inputs")
+            character = demand("native_2c099f0_character_identity")
+            province = demand("native_2c099f0_province_identity")
+            if character != raw["associated_character_resolution"]["object_identity"]:
+                raise _MissingInput("province_73c_2c099f0_character_operand_mismatch")
+            if province != raw["original_unit_province_identity"]:
+                raise _MissingInput("province_73c_2c099f0_province_operand_mismatch")
+            if demand("native_2c099f0_third_argument_is_null") is not True:
+                raise _MissingInput("province_73c_2c099f0_third_argument_not_null")
+            if demand("native_2c099f0_returned") is not True:
+                raise _MissingInput("province_73c_2c099f0_getter_unbound")
+            return finish(demand("native_2c099f0_classification_raw_i32") == 0)
         _demand_operand(raw["province_character_resolution"], "province_character")
         associated = demand("associated_character_full_id_raw_u32")
         if associated == demand("province_character_full_id_raw_u32"):

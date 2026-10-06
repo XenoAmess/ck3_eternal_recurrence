@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12003_commander_target_roll_serializer.hpp"
 #include "xar_bridge/ck3_12003_commander_target_roll.hpp"
+#include "xar_bridge/ck3_12003_current_commander_martial_serializer.hpp"
 #include "xar_bridge/public_unit_id.hpp"
 
 namespace xar::ck3_12003 {
@@ -177,6 +178,11 @@ std::string SerializeArmyCommanderCandidates(
       NullableId(observation.current_commander_character_id) +
       ",\"unavailable_reason\":" +
       NullableReason(observation.current_commander_unavailable_reason) +
+      (observation.current_total_martial
+           ? ",\"current_total_martial\":" +
+                 SerializeCurrentCommanderTotalMartial(
+                     *observation.current_total_martial)
+           : std::string{}) +
       "},\"current_movement_speed\":" +
       SerializeCurrentMovementSpeed(observation.current_movement_speed,
                                     snapshot_revision, date_raw) +

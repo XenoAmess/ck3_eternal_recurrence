@@ -1,5 +1,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
+#include "xar_bridge/ck3_12003_current_daily_supply_dispatch_inputs.hpp"
+#include "xar_bridge/ck3_12003_current_month_first_refill_call_inputs.hpp"
 #include "xar_bridge/ordinary_interaction_request_v1.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
@@ -175,6 +177,10 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
             image_base, executable_sha256);
     result.armies.current_fleet_supply_tick_bindings =
         ck3_12003::BindCurrentFleetSupplyTickImage12003(image_base, executable_sha256);
+    result.armies.current_daily_supply_dispatch_bindings =
+        ck3_12003::BindCurrentDailySupplyDispatch12003(image_base, executable_sha256);
+    result.armies.current_month_first_refill_call_bindings =
+        ck3_12003::BindCurrentMonthFirstRefillCallImage12003(image_base, executable_sha256);
     result.armies.current_candidate_detachment_mapper_bindings =
         ck3_12003::BindCurrentCandidateDetachmentMapper12003(image_base, executable_sha256);
     result.armies.current_detachment_data_bindings =
@@ -391,6 +397,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   if (result.armies.enabled) {
     result.armies.current_army_flag31_bindings =
         ck3_12003::BindCurrentArmyFlag31Inputs12003(image_base, executable_sha256);
+    result.armies.current_army_combat_roles_phase_bindings =
+        ck3_12003::BindCurrentArmyCombatRolesPhaseInputs12003(image_base, executable_sha256);
   }
   return result;
 }

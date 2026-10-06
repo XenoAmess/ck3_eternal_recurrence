@@ -157,6 +157,8 @@ struct BattleBindings {
   const void *current_person_context_static_header = nullptr;
   void **current_person_context_record_storage_slot = nullptr;
   void **current_person_context_record_fallback_slot = nullptr;
+  // Append exact .3 leaf bindings; preserve the existing aggregate prefix.
+  BattleCurrentWarscoreCapsBindings12003 current_warscore_caps{};
 
 };
 

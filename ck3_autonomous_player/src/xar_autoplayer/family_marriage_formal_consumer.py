@@ -30,6 +30,7 @@ _SELECTED_VALUE_FIELDS = (
     "heir_adult_measure_raw", "candidate_adult_measure_raw",
     "heir_adult_threshold_raw", "candidate_adult_threshold_raw",
     "grand_wedding_option_selected",
+    "heir_native_fertility", "candidate_native_fertility",
 )
 
 
@@ -38,7 +39,8 @@ def _positive(value: object) -> bool:
 
 
 def _current_first_heir_relation(
-    driver: object, snapshot: Mapping[str, object],
+    driver: object, snapshot: Mapping[str, object], *,
+    campaign_root_result: dict[str, object] | None = None,
 ) -> dict[str, object] | None:
     """Bind the opted-in current heir read to this formal planning frame."""
     if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is not True:
@@ -47,7 +49,9 @@ def _current_first_heir_relation(
     if not _positive(revision):
         raise ValueError("current first-heir relation lacks a native revision")
     result = driver.query_current_first_heir_relationship_private_v1(
-        expected_native_revision=revision)
+        expected_native_revision=revision,
+        **({"campaign_root_result": campaign_root_result}
+           if campaign_root_result is not None else {}))
     if (not isinstance(result, dict)
             or result.get("schema") != "xar.ck3.current-first-heir-relationship.v1"
             or result.get("status") not in {"available", "unavailable"}
@@ -295,6 +299,7 @@ def _private_five_candidate_diagnostic(
               "heir_adult_measure_raw", "candidate_adult_measure_raw",
               "heir_adult_threshold_raw", "candidate_adult_threshold_raw",
               "grand_wedding_option_selected",
+              "heir_native_fertility", "candidate_native_fertility",
               "generic_costs",
               "heir_betrothed_character_id", "heir_primary_spouse_character_id",
               "played_house_id", "played_dynasty_id", "heir_house_id",

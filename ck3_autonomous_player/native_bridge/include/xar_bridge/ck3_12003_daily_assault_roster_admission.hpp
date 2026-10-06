@@ -13,6 +13,7 @@
 #include <vector>
 
 namespace xar::ck3_12003 {
+using CurrentProvince73cClassification = std::int32_t (*)(const void *, const void *, const void *);
 struct CurrentDailyAssaultRosterAdmissionBindings12003 {
   bool enabled = false;
   const void *game_state_slot = nullptr;
@@ -22,6 +23,7 @@ struct CurrentDailyAssaultRosterAdmissionBindings12003 {
   const void *war_registry_slot = nullptr, *war_fallback_slot = nullptr;
   const void *siege_registry_slot = nullptr, *siege_fallback_slot = nullptr;
   const void *province_fallback_slot = nullptr, *relationship_fallback_slot = nullptr;
+  CurrentProvince73cClassification get_current_province73c_classification = nullptr;
   bool (*read_memory)(void *, const void *, void *, std::size_t) noexcept = nullptr;
   void *read_context = nullptr;
 };
@@ -37,6 +39,8 @@ inline CurrentDailyAssaultRosterAdmissionBindings12003 BindCurrentDailyAssaultRo
   out.war_registry_slot = address(0x5D1DE58); out.war_fallback_slot = address(0x5D1DE40);
   out.siege_registry_slot = address(0x5D1EC88); out.siege_fallback_slot = address(0x5D1EC60);
   out.province_fallback_slot = address(0x5D1E390); out.relationship_fallback_slot = address(0x5D27B70);
+  out.get_current_province73c_classification =
+      reinterpret_cast<CurrentProvince73cClassification>(base + 0x2C099F0);
   return out;
 }
 namespace daily_assault_roster_detail {
@@ -295,7 +299,19 @@ inline game::ArmyDailyAssaultAdmissionGateV1 Gate(const Bindings &b, const void 
   if (!first_character.observation.selected_object_ready) return fail("daily_assault_roster_associated_character_operand_unavailable");
   out.province_character_id_73c_raw_u32 = Read<std::uint32_t>(b, *province, 0x73C);
   if (!out.province_character_id_73c_raw_u32) return fail("daily_assault_roster_province_character_id_unavailable");
-  if (*out.province_character_id_73c_raw_u32 == 0xFFFFFFFFU) return fail("province_73c_requires_2c099f0_inputs");
+  if (*out.province_character_id_73c_raw_u32 == 0xFFFFFFFFU) {
+    // The frozen 2C16690 caller passes this selected associated Character,
+    // the original Unit+20 Province and a null third argument to 2C099F0.
+    out.native_2c099f0_character_identity = Identity(first_character.object);
+    out.native_2c099f0_province_identity = Identity(*province);
+    out.native_2c099f0_third_argument_is_null = true;
+    if (!b.get_current_province73c_classification)
+      return fail("province_73c_2c099f0_getter_unbound");
+    out.native_2c099f0_classification_raw_i32 =
+        b.get_current_province73c_classification(first_character.object, *province, nullptr);
+    out.native_2c099f0_returned = true;
+    return verdict(*out.native_2c099f0_classification_raw_i32 == 0);
+  }
   auto second_character = Resolve(b, b.character_registry_slot, b.character_fallback_slot, out.province_character_id_73c_raw_u32, 0x18);
   out.province_character_resolution = second_character.observation;
   if (!second_character.observation.selected_object_ready) return fail("daily_assault_roster_province_character_operand_unavailable");

@@ -2,6 +2,8 @@
 
 #include "xar_bridge/ck3_12002_context.hpp"
 #include "xar_bridge/ck3_12003_prisoner_release_preview.hpp"
+#include "xar_bridge/ck3_12003_prisoner_native_kinship.hpp"
+#include "xar_bridge/ck3_12003_prisoner_negotiated_preview.hpp"
 #include "xar_bridge/player_prisoner_collection_query_v1_private.hpp"
 #include "xar_bridge/player_prisoner_ransom_private_v1.hpp"
 
@@ -60,7 +62,11 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
     const std::array<PlayerPrisonerRansomQuoteV1, bridge::kPlayerPrisonerMaximumRowsV1> &quotes,
     bool quotes_complete,
     const std::array<ck3_12003::PrisonerReleasePreview12003,
-        bridge::kPlayerPrisonerMaximumRowsV1> *release_previews = nullptr);
+        bridge::kPlayerPrisonerMaximumRowsV1> *release_previews = nullptr,
+    const std::array<ck3_12003::PrisonerNativeKinship12003,
+        bridge::kPlayerPrisonerMaximumRowsV1> *kinship_inputs = nullptr,
+    const std::array<ck3_12003::PrisonerNegotiatedPreview12003,
+        bridge::kPlayerPrisonerMaximumRowsV1> *negotiated_previews = nullptr);
 
 std::string SerializePrisonerWarRetentionV1(
     const ck3_11906::WarPrisonerReleasePairsObservationV1 &value);

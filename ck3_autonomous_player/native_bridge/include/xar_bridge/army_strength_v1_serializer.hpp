@@ -7,6 +7,9 @@
 #include "xar_bridge/army_current_land_resupply_v1_serializer.hpp"
 #include "xar_bridge/army_current_land_supply_rate_v1_serializer.hpp"
 #include "xar_bridge/army_current_fleet_supply_tick_inputs_v1_serializer.hpp"
+#include "xar_bridge/army_captured_target_land_supply_inputs_v1_serializer.hpp"
+#include "xar_bridge/army_current_daily_supply_dispatch_inputs_v1_serializer.hpp"
+#include "xar_bridge/army_current_month_first_refill_call_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_fixed_chunk0_preparation_v1_serializer.hpp"
 #include "xar_bridge/army_daily_assault_active_table_serializer_v1.inc.hpp"
@@ -18,6 +21,7 @@
 #include "xar_bridge/army_current_flag21_inputs_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_selected_title_holder_owner_relation_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_flag31_inputs_serializer_v1.inc.hpp"
+#include "xar_bridge/army_current_combat_roles_phase_inputs_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_character_prefix_serializer_v1.inc.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1_serializer.hpp"
@@ -667,6 +671,12 @@ inline void AppendArmyStrengthV1(
     AppendArmyCurrentFlag31InputsV1(result, *strength.current_army_flag31_inputs_v1,
         number, append_int32_array, append_json_string);
   }
+  if (strength.current_army_combat_roles_phase_inputs_v1) {
+    result += ",\"current_army_combat_roles_phase_inputs_v1\":";
+    AppendArmyCurrentCombatRolesPhaseInputsV1(
+        result, *strength.current_army_combat_roles_phase_inputs_v1,
+        number, append_int32_array, append_json_string);
+  }
   if (strength.current_post_admission_refresh_inputs_v1) {
     result += ",\"current_post_admission_refresh_inputs_v1\":";
     AppendArmyCurrentPostAdmissionRefreshInputsV1(result, *strength.current_post_admission_refresh_inputs_v1,
@@ -731,6 +741,16 @@ inline void AppendArmyStrengthV1(
     result += ",\"current_fleet_supply_tick_inputs_v1\":";
     AppendArmyCurrentFleetSupplyTickInputsV1(
         result, *strength.current_fleet_supply_tick_inputs_v1, number, append_json_string);
+  }
+  if (strength.current_daily_supply_dispatch_inputs_v1) {
+    result += ",\"current_daily_supply_dispatch_inputs_v1\":";
+    AppendArmyCurrentDailySupplyDispatchInputsV1(
+        result, *strength.current_daily_supply_dispatch_inputs_v1, number, append_json_string);
+  }
+  if (strength.current_month_first_refill_call_inputs_v1) {
+    result += ",\"current_month_first_refill_call_inputs_v1\":";
+    AppendArmyCurrentMonthFirstRefillCallInputsV1(
+        result, *strength.current_month_first_refill_call_inputs_v1, number, append_json_string);
   }
   if (strength.scoped_ordered_refill_inputs_v1) {
     result += ",\"scoped_ordered_refill_inputs_v1\":";
@@ -1140,7 +1160,13 @@ inline void AppendArmyProvinceSupplyRowV1(
   output += ",\"native_supply_usage_soldiers\":";
   output += row.native_supply_usage_soldiers.has_value()
       ? number(*row.native_supply_usage_soldiers) : "null";
-  output += ",\"scale\":1}";
+  output += ",\"scale\":1";
+  if (row.captured_target_land_supply_inputs_v1.has_value()) {
+    output += ",\"captured_target_land_supply_inputs_v1\":";
+    AppendArmyCapturedTargetLandSupplyInputsV1(
+        output, *row.captured_target_land_supply_inputs_v1, number, append_json_string);
+  }
+  output += '}';
 }
 
 template <class Number, class JsonString>

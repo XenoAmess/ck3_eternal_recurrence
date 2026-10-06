@@ -374,7 +374,23 @@ void TermsJson(std::ostream &out, const MilitaryTerms &terms) {
     Optional(out, member.combat_id);
     out << ",\"combat_resolved\":" << member.combat_resolved << '}';
   }
-  out << "]}}";
+  const auto &cost_context = terms.hire_cost_context;
+  out << "]},\"hire_cost_context\":{\"available\":" << cost_context.available
+      << ",\"unavailable_reason\":";
+  if (cost_context.available) out << "null";
+  else Quote(out, cost_context.unavailable_reason);
+  out << ",\"order_title_id\":"; Optional(out, cost_context.order_title_id);
+  out << ",\"order_title_resolved\":" << cost_context.order_title_resolved
+      << ",\"order_title_holder_id\":"; Optional(out, cost_context.order_title_holder_id);
+  out << ",\"title_holder_is_player\":"; Optional(out, cost_context.title_holder_is_player);
+  out << ",\"patron_is_player\":"; Optional(out, cost_context.patron_is_player);
+  out << ",\"employed_by_other\":"; Optional(out, cost_context.employed_by_other);
+  out << ",\"cost_branch\":"; Optional(out, cost_context.cost_branch);
+  out << ",\"selected_patron_multiplier_raw\":";
+  Optional(out, cost_context.selected_patron_multiplier_raw);
+  out << ",\"resource_scale\":" << kRawScale << "},\"current_reinforcement_v1\":";
+  SerializeHolyOrderCurrentReinforcement12003(out, terms.current_reinforcement_v1);
+  out << '}';
 }
 } // namespace
 
@@ -397,6 +413,14 @@ Bindings BindPlayerHolyOrderImage12003(std::uintptr_t base, std::string_view sha
   b.regiment_registry_slot = reinterpret_cast<void **>(base + 0x5D1F340);
   b.army_registry_slot = reinterpret_cast<void **>(base + 0x5D1DE48);
   b.combat_registry_slot = reinterpret_cast<void **>(base + 0x5D1DE70);
+  b.hire_cost_context.title_registry_slot = reinterpret_cast<void **>(base + 0x5D1DAF8);
+  b.hire_cost_context.title_fallback_slot = reinterpret_cast<void **>(base + 0x5D1DAE0);
+  b.hire_cost_context.patron_hire_multiplier_raw =
+      reinterpret_cast<const std::int64_t *>(base + 0x5C69250);
+  b.hire_cost_context.patron_recall_multiplier_raw =
+      reinterpret_cast<const std::int64_t *>(base + 0x5C69248);
+  b.current_reinforcement = BindHolyOrderCurrentReinforcementImage12003(base, sha);
+  b.current_reinforcement.army_registry_slot = b.army_registry_slot;
   return b;
 }
 
@@ -452,6 +476,13 @@ bool ReadPlayerHolyOrderContext12003(const Bindings &b, void *player,
                              row.military_terms->service_lifecycle);
         ReadTroopAssociation(b, order, row, actor,
                              row.military_terms->troop_association);
+        row.military_terms->hire_cost_context =
+            ReadHireCostContext12003(b.hire_cost_context, order, player, b.patron);
+        auto &refill = row.military_terms->current_reinforcement_v1;
+        refill = ReadHolyOrderCurrentReinforcement12003(
+            b.current_reinforcement, order, row.holy_order_id);
+        refill.army_roles = ReadHolyOrderCurrentArmyRoles12003(
+            b.current_reinforcement, row.military_terms->troop_association);
       }
       out.rows.push_back(std::move(row));
     }

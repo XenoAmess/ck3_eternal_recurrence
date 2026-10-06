@@ -19,7 +19,8 @@ from .bridge.nonwar_private_build import (
     private_native_provenance, private_native_readback_matches,
 )
 from .family_marriage_formal_consumer import (
-    _write, query_family_marriage_result_private, read_family_marriage_ledger,
+    _current_first_heir_relation, _resolved_relation_matches, _write,
+    query_family_marriage_result_private, read_family_marriage_ledger,
 )
 from .current_betrothal_fulfillment_proposal import (
     build_current_betrothal_fulfillment_proposal,
@@ -156,20 +157,36 @@ def plan_current_first_heir_betrothal_fulfillment_private(
                 reason="read fulfillment reply and actual marriage without resubmitting")
         return _handled(planned, current_betrothal_pending=deepcopy(pending),
                         current_betrothal_status="await_later_paused_frame")
+    relation = None
     source = resolved.get("source_pending") if isinstance(resolved, dict) else None
     if (isinstance(source, dict) and source.get("fulfill_existing_betrothal") is True
             and source.get("episode_run_id") == snapshot.get("episode_run_id")
             and source.get("played_character_id") == actor):
-        if resolved.get("status") == "marriage" and (pid, creation) != (
-                resolved.get("post_bridge_pid"), resolved.get("post_bridge_creation_date")):
-            return _handled(planned, selected_step=RESULT_STEP,
-                phase="current_first_heir_betrothal_cold_material_recheck",
-                current_betrothal_pending=deepcopy(source),
-                current_betrothal_cold_recovery=True,
-                current_betrothal_material_recheck=True,
-                reason="independently read the fulfilled marriage in the restored PID")
-        return _handled(planned, current_betrothal_status=resolved.get("status"),
-                        current_betrothal_result_consumed=deepcopy(resolved))
+        relation = _current_first_heir_relation(
+            driver, snapshot, campaign_root_result=campaign_root_result)
+        if relation is None or relation.get("status") == "unavailable":
+            return _handled(planned,
+                current_betrothal_status="current_first_heir_relation_unavailable",
+                current_betrothal_relationship=deepcopy(relation))
+        same_failed_pair = (
+            resolved.get("status") in {"refused", "invalidated"}
+            and resolved.get("heir_character_id") == relation["heir_character_id"]
+            and resolved.get("candidate_character_id") == relation["betrothed_character_id"])
+        if _resolved_relation_matches(resolved, relation) or same_failed_pair:
+            if resolved.get("status") == "marriage" and (pid, creation) != (
+                    resolved.get("post_bridge_pid"), resolved.get("post_bridge_creation_date")):
+                return _handled(planned, selected_step=RESULT_STEP,
+                    phase="current_first_heir_betrothal_cold_material_recheck",
+                    current_betrothal_pending=deepcopy(source),
+                    current_betrothal_cold_recovery=True,
+                    current_betrothal_material_recheck=True,
+                    current_betrothal_relationship=deepcopy(relation),
+                    reason="independently read the fulfilled marriage in the restored PID")
+            return _handled(planned, current_betrothal_status=resolved.get("status"),
+                            current_betrothal_relationship=deepcopy(relation),
+                            current_betrothal_result_consumed=deepcopy(resolved))
+        # The old result stays in the durable ledger as history. Classify this
+        # observed current heir/pair through the existing opportunity routes.
     war_read = (wartime_arbitration is True and isinstance(selected, str)
                 and (selected == "life-advance" or selected.startswith("query-"))
                 and isinstance(snapshot.get("active_wars"), list)
@@ -180,10 +197,11 @@ def plan_current_first_heir_betrothal_fulfillment_private(
     if (snapshot.get("active_event") is not None
             or snapshot.get("pending_character_interaction") is not None):
         return planned
-    relation = driver.query_current_first_heir_relationship_private_v1(
-        expected_native_revision=snapshot["native_revision"],
-        **({"campaign_root_result": campaign_root_result}
-           if campaign_root_result is not None else {}))
+    if relation is None:
+        relation = driver.query_current_first_heir_relationship_private_v1(
+            expected_native_revision=snapshot["native_revision"],
+            **({"campaign_root_result": campaign_root_result}
+               if campaign_root_result is not None else {}))
     if (relation.get("status") == "available"
             and relation.get("betrothed_character_id") is None):
         return planned

@@ -141,6 +141,11 @@ inline void AdmissionGate(std::string &out, const ArmyDailyAssaultAdmissionGateV
   w.Integer("associated_unit_character_id_raw_u32", p.associated_unit_character_id_raw_u32);
   w.Key("associated_character_resolution"); OperandResolution(out, p.associated_character_resolution, number, string);
   w.Integer("province_character_id_73c_raw_u32", p.province_character_id_73c_raw_u32);
+  w.Text("native_2c099f0_character_identity", p.native_2c099f0_character_identity);
+  w.Text("native_2c099f0_province_identity", p.native_2c099f0_province_identity);
+  w.Boolean("native_2c099f0_third_argument_is_null", p.native_2c099f0_third_argument_is_null);
+  w.Boolean("native_2c099f0_returned", p.native_2c099f0_returned);
+  w.Integer("native_2c099f0_classification_raw_i32", p.native_2c099f0_classification_raw_i32);
   w.Key("province_character_resolution"); OperandResolution(out, p.province_character_resolution, number, string);
   w.Integer("associated_character_full_id_raw_u32", p.associated_character_full_id_raw_u32);
   w.Integer("province_character_full_id_raw_u32", p.province_character_full_id_raw_u32);

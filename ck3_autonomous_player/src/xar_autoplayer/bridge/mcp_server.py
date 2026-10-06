@@ -1426,8 +1426,15 @@ def create_server(
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_prisoner_collection_private_v1(
             expected_revision: int, ransom_ordinal: int = 0,
+            release_option_keys: list[str] | None = None,
         ) -> dict[str, object]:
-            """Read current-player prisoner IDs on one paused native frame."""
+            """Read player custody and optional selected release terms on one paused frame."""
+            if release_option_keys is not None:
+                return driver.query_player_prisoner_collection_private_v1(
+                    expected_revision=expected_revision,
+                    ransom_ordinal=ransom_ordinal,
+                    release_option_keys=release_option_keys,
+                )
             if ransom_ordinal != 0:
                 return driver.query_player_prisoner_collection_private_v1(
                     expected_revision=expected_revision,
@@ -1862,13 +1869,19 @@ def create_server(
         def ck3_query_player_religion_tenets_v1(
             expected_revision: int,
             target_rite_id: int | None = None, tenet_key: str | None = None,
+            include_knowledge_catalogue: Annotated[bool, Field(strict=True)] = False,
         ) -> dict[str, object]:
-            """Read player Tenets; pair target_rite_id with tenet_key for .3 comparison."""
-            if target_rite_id is None and tenet_key is None:
+            """Read Tenets, optional paired .3 comparison and native knowledge inputs."""
+            if target_rite_id is None and tenet_key is None and include_knowledge_catalogue is False:
                 return driver.query_player_religion_tenets_private_v1(expected_revision=expected_revision)
+            optional_fields: dict[str, object] = {}
+            if include_knowledge_catalogue is True:
+                optional_fields["include_knowledge_catalogue"] = True
+            if target_rite_id is not None or tenet_key is not None:
+                optional_fields.update(target_rite_id=target_rite_id, tenet_key=tenet_key)
             return driver.query_player_religion_tenets_private_v1(
                 expected_revision=expected_revision,
-                target_rite_id=target_rite_id, tenet_key=tenet_key,
+                **optional_fields,
             )
 
     if getattr(driver, "allow_private_player_religion_conversion_choices_query", False) is True:
