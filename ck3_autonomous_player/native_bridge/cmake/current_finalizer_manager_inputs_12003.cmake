@@ -1,5 +1,5 @@
 # Additive current manager source. Root integrates this include last, once.
-# This file and its two-scene/one-compound target have never been configured/run.
+# g104 first link failed; this source-only closure repair has not been built/run.
 get_property(finalizer_manager_targets DIRECTORY PROPERTY BUILDSYSTEM_TARGETS)
 foreach(finalizer_manager_target IN LISTS finalizer_manager_targets)
   get_target_property(finalizer_manager_sources ${finalizer_manager_target} SOURCES)
@@ -15,6 +15,14 @@ if(BUILD_TESTING AND WIN32)
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
   add_executable(xar_ck3_12003_current_finalizer_manager_inputs
     src/battle_control_snapshot_v1_mailbox.cpp
+    # The actual mailbox references these ck3_11906 adapter implementations.
+    # Reuse their existing game-access source closure, without fixture facades.
+    src/ck3_11906.cpp
+    src/battle_terminal_journal_v1.cpp
+    src/g2_truce_preview_entry_observer_v1.cpp
+    src/raiktor_war_bound_regiment_v1.cpp
+    src/raiktor_surrender_truce_v1.cpp
+    src/raiktor_actual_truce_expiry_v1.cpp
     src/ck3_12003_battle_finalizer_manager_inputs_test.cpp)
   target_link_libraries(xar_ck3_12003_current_finalizer_manager_inputs PRIVATE
     xar_ck3_12002_runtime user32)
