@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Mapping
 
 from .environment import write_json_atomic
+from .first_heir_native_lineage_policy import choose_native_lineage_opportunity
 from .bridge.declaration_contract import is_native_declaration_step
 from .bridge.nonwar_private_build import private_native_readback_matches
 from .bridge.domain_construction_private_transport_v1 import _identity as bridge_process_identity
@@ -647,9 +648,18 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
     choices = rank_first_heir_marriage_candidates(
         legality, projection, rejected_candidate_ids=rejected_candidate_ids)
     choice = choices[0] if choices else None
+    native_lineage_previews = None
+    goal = snapshot.get("campaign_goal")
+    if choices and isinstance(goal, Mapping) and goal.get("goal_key") == "dynasty_continuity":
+        choice, native_lineage_previews = choose_native_lineage_opportunity(
+            driver, snapshot=snapshot, legality=legality,
+            projection=projection, choices=choices)
+        choices = [choice] if choice is not None else []
     diagnostic = _private_five_candidate_diagnostic(
         legality, projection, snapshot, choice, ranking,
         rejected_candidate_ids=rejected_candidate_ids)
+    if native_lineage_previews is not None:
+        diagnostic["native_lineage_previews"] = native_lineage_previews
     if choice is None:
         return {**planned, "plan": {**plan, "family_marriage_status":
                                     "no_positive_observed_marriage_opportunity",
@@ -689,6 +699,7 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
         "family_marriage_legality": legality,
         "family_marriage_current_relationship": relation,
         "family_marriage_private_diagnostic": diagnostic,
+        "family_marriage_native_lineage_previews": native_lineage_previews,
         "reason": "submit one observed bounded first-heir marriage or betrothal opportunity"}}
 
 
@@ -797,6 +808,18 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
             if selected_row.get(field) is None
         ],
     }
+    native_preview_observation = choice.get("native_child_house_preview")
+    if isinstance(native_preview_observation, Mapping):
+        native_preview = native_preview_observation["native_child_house_preview"]
+        selected_value_projection.update({
+            "native_child_house_preview": dict(native_preview_observation),
+            "child_dynasty_prediction_status": "native_preview",
+            "predicted_child_dynasty_id": native_preview["dynasty_id"],
+            "unobserved_at_submission": [
+                field for field in selected_value_projection["unobserved_at_submission"]
+                if field != "native_child_dynasty_result"
+            ],
+        })
     pid, creation = bridge_process_identity(driver)
     pending = {"schema": SCHEMA, "status": "receipt_pending", "material_result": False,
                "pre_native_revision": snapshot["native_revision"],
