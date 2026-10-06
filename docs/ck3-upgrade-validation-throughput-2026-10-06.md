@@ -83,3 +83,20 @@ UI23/profile13/a82/R0009从clean82dd839a、Source18/runtime24/原DLL开场。14:
 最小修复已合入PlanClient.advance：仅显式native_campaign opt-in等待已完成observer的实际不同native玩家帧，继续原日期轮询和deadline再首次pause；默认路径未加等待。现有test文件一项真实R9薄状态回归覆盖默认/opt-in两分支，实际命令 `tools/.venv/Scripts/python.exe -B -m unittest test_ck3_12002_mcp_live.OfflinePlanTests.test_campaign_d1_actor_transition_wait_is_explicit_before_terminal_pause -v`（cwd `ck3_autonomous_player/native_bridge/research`）PASS/1test/0.012s；三场外置生产回放PASS/3/3.7514s。命令ACK和R9暂停后置是mock，未授新实机PASS。新的runtime31仅替换原runtime24 advance；Source18/index/registry/DLL和原冻结证据未改。
 
 2026-10-06 15:38 UTC勘误：以上R0009“实际推进24天”及“再次推进24天”单位误记。原D1 kind=advance_day/days=1，date_raw从53144328到53144352增加24表示24小时，即1天；应读为“实际推进1天”和“再次推进1天”。原始帧/请求/attempt未改，末端pause窗口归因与修复不变。
+
+
+## R0010：业务读回补齐、正常退出未完成
+
+UI24/profile14/a83/runtime31从clean e712122d启动，Source18/index/f150 DLL原样。15:50:24 UTC资源Cfree19,046,473,728B、commit21,314,834,432/39,359,959,040B、无CK3；15:51:47 nonce cccffcc594b7原图Steam离线亲审，claim4452/keeper ready4453。新first-report FileNotFound等待正确进入原launch2100 deadline；实际started15:52:53.086599。
+
+D0通知正常选项/eventgone/business bound成立。D1显式actor-change等待15:57:33.918603至41.115713 actualPASS，elapsed_hours24=1天；实际新官员29959/date53144352已paused。D2生产事件1001/选.d/D3原17控制步骤至15:58:10.029969全ok；初始4步合21。生产决议实际物理Confirm于1066-09-18触发xccc.1001/instance3，native typed context root29959；.f实际option_number5“从此封存这本账册”后eventgone15:58:38.016240。全部26排队step成功仅覆盖这些步骤，不能推出未排的GUI检查或正常退出。
+
+GUI23随机人脸模板匹配相关度0.652307/no unique/no click；未开启人物profile。旧退出尾部physical X关闭decisions后一次heldEscape没有打开菜单，第二次被consumed门禁拒绝，原business/quit错误不改。Root沿同一paused PID4564/create-time1791301981.5564969，以新original/full1920×1080/统一map/PNGreceipt实点portrait，16:02–16:04亲审完整trait行四xccc_corruption_1–4缺失；16:04:26 disabled row及16:08:03 disabled Confirm tooltip原图明确“不可用，直至公元1069年9月18日”，与native Confirm1066-09-18精确+3年，无快进三年。依据：[root亲审](C:/workspace/ck3-upgrade-20261006/resume-root-01/a83-root-actual-business-visual-review-01.json)。该有界实际业务已成立，生命周期仍未通过。
+
+原hold1791303150.8923366不延长，16:12:33.820355报告finished/GREEN/errornull、28,497,278B/SHAeebae1c268cf6893614858e7c46e9f07550d7be523039073dc9e4a355eb2e0b5；native shutdown16:12:32.916960 exit1、job0/treegone/cleanup_proven/controls absent。没有独立held OS0，仍不能正式sourcePASS/发布。Root下一工具实际执行16:22，比上一截图迟14分钟；OS monitor先返回NoSuchProcess，但root未中止后续两次mapped click，实际落在Explorer，已停止。原PNG/回执保留，未造成文件删除或移动；下一每次输入前原PID/ctime/HWND/deadline/sourcePNG身份本地核验，任依赖失败即停，只修这条实际失败路径。
+
+managed thread/cleanup true、库存空；keeper真实exit0/threadexit末4491后CAS4493 done/resources=[]。依据：[实际库存](C:/workspace/ck3-upgrade-20261006/resume-root-01/a83-final-inventory-01.json)、[释放](C:/workspace/ck3-upgrade-20261006/resume-root-01/a83-screen-release-01.json)。其他过程素材全部保留，无Steam在线/系统设置/清理动作。
+
+下一GUI24仅用本场固定三品徽章锚点定位portrait，及实际底栏pause-menu按钮鼠标打开，去除人脸和Escape依赖；原.92/.05/scale1两项只读定位一次均唯一。复用GUI23业务/原正常Quit后段，整条本地连续并本地核进程/时限，避免模型工具迟到重演。UI25/profile15只新六配置，Source18/runtime31/D1flag/base24/DLL/原预算复用。已完成核心11/FAIL0、其他五发布不重测；正式仍5/10。
+
+已备QOL04b同场final6→原9步→宋任命/slider→正常Quit及后五独立场；赎金原fixture实际FAIL为ZQRS120，下一未消费plan14处expect literal与原args/source对齐，old/new/diff保留，未消耗run或改业务。Git常规fetch遇schannel握手失败，per-command openssl/HTTP1.1同TLS失败；已正常rebase到本地已取得origin/master6866e45eef7600b9e3506ce26453f47f3b253de2，尚需新的成功fetch/普通push，未把缓存ref当新网络成功。并行resource代理只读诊断既有网络入口，inputs准备UI25，root应用本场事实与午夜收口；不阻塞无依赖工作、不新增平台或完整矩阵。
