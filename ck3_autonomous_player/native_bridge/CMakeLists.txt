@@ -9288,4 +9288,5 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME xar_ck3_12004_core_frame_v1_test
     COMMAND $<TARGET_FILE:xar_ck3_12004_core_frame_v1_test>
       ${CMAKE_CURRENT_BINARY_DIR}/wire/ck3_12004_core_frame_v1)
+  include(cmake/ck3_12004_core_frame_real_link_closure.cmake)
 endif()
