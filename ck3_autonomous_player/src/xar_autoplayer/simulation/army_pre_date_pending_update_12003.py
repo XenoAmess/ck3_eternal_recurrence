@@ -1,7 +1,7 @@
 """Observed-current ordered2A92320 list/count and removal-request projection.
 
-The native mutator is never invoked. Earlier2A9A360, remaining per-Army prefix,
-physical table carry/growth and actual next callback state are separate.
+The native mutator is never invoked. Optional same-query physical operands
+support conditional carry/growth; actual callback and future context stay separate.
 """
 from __future__ import annotations
 
@@ -9,6 +9,13 @@ from copy import deepcopy
 from math import copysign, inf, isnan
 import struct
 from typing import Mapping
+
+from .army_pre_date_pending_placement_12003 import (
+    PendingPlacementUnavailable,
+    create_pending_placement_state,
+    project_pending_placement_state,
+    select_or_insert_pending_record28,
+)
 
 _SENTINEL = 0xFFFFFFFF
 
@@ -115,12 +122,15 @@ def project_current_pre_date_pending_update_v1(army: Mapping) -> dict:
         "pending_counts_and_removal_requests_ready": False, "updated_pending_values_ready": False,
         "actual_pre_date_callback_ready": False, "actual_tomorrow_roster_ready": False,
         "full_daily_assault_ready": False, "full_monthly_ready": False, "native_writes": 0,
+        "conditional_pending_table_v1": None,
     }
     if family is None:
         return result
     rows = family["occurrences"]
     references = family["original_roster"]
     initial_queue = _reference_values(family["removal_queue"])
+    frame = family.get("pending_table_frame_v1")
+    placement_state = create_pending_placement_state(frame) if frame is not None else None
     physical: dict[int, dict] = {}
     # Union only genuinely captured current probes; later direct insertions overlay it.
     for row in rows:
@@ -164,9 +174,29 @@ def project_current_pre_date_pending_update_v1(army: Mapping) -> dict:
         candidate = deepcopy(working.get(target)) if target is not None else None
         inserted_slot = None
         next_map_count = map_count
+        next_placement_state = None
+        selected_physical_record = None
         if called and target is None:
             reason = "selected_army_full_id_unavailable"
-        if called and candidate is None and reason is None:
+        if called and placement_state is not None and reason is None:
+            next_placement_state = deepcopy(placement_state)
+            try:
+                selected = select_or_insert_pending_record28(next_placement_state,
+                    full_id_u32=target, hash_raw_u32=_hash(target), density_exceeds=_density_exceeds)
+                selected_physical_record = selected["record"]
+                vector = selected_physical_record["vector"]
+                if vector["count"] is None:
+                    reason = "existing_pending_count_unavailable"
+                else:
+                    decision["pending_setup_branch"] = "evolving_existing_key" if candidate is not None and not selected["inserted"] else selected["branch"]
+                    candidate = {"army_full_id_u32": target,
+                        "initial_count": candidate["initial_count"] if candidate is not None else vector["count"],
+                        "count": vector["count"], "values": deepcopy(vector["values"]),
+                        "appended_values": candidate["appended_values"] if candidate is not None else [],
+                        "setup_branch": candidate["setup_branch"] if candidate is not None else selected["branch"]}
+            except PendingPlacementUnavailable as error:
+                reason = str(error)
+        elif called and candidate is None and reason is None:
             mask = setup["mask_raw_i32"]
             if setup["entries_present"] is not True or mask is None:
                 reason = "pending_map_header_unavailable"
@@ -239,6 +269,11 @@ def project_current_pre_date_pending_update_v1(army: Mapping) -> dict:
         else:
             candidate["values"] = None
         working[target] = candidate
+        if next_placement_state is not None:
+            selected_physical_record["vector"]["count"] = after
+            selected_physical_record["vector"]["values"] = deepcopy(candidate["values"])
+            next_placement_state["changed_keys"].add(target)
+            placement_state = next_placement_state
         if inserted_slot is not None:
             physical[inserted_slot[0]] = {"control": inserted_slot[1], "key": target}
             map_count = next_map_count
@@ -259,6 +294,13 @@ def project_current_pre_date_pending_update_v1(army: Mapping) -> dict:
     count = references["count_raw_i32"]
     complete = references["references_ready"] and count is not None and result["completed_original_occurrence_count"] == count
     values_ready = complete and all(record["values"] is not None for record in working.values())
+    if placement_state is not None:
+        result["conditional_pending_table_v1"] = project_pending_placement_state(placement_state)
+        affected_physical = result["conditional_pending_table_v1"]["physical_records"]
+        physical_values_ready = all(record["conditional_full_ids_u32"] is not None
+            for record in affected_physical if record["physically_changed"])
+        result["conditional_pending_table_v1"]["changed_physical_values_ready"] = physical_values_ready
+        values_ready = values_ready and physical_values_ready
     result["pending_counts_and_removal_requests_ready"] = complete
     result["updated_pending_values_ready"] = values_ready
     result["ready"] = complete and values_ready

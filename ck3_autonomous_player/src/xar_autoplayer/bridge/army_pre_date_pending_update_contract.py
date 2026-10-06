@@ -18,6 +18,19 @@ from .army_daily_assault_roster_admission_contract import (
 
 _STATUS = {"status": "string", "ready": "bool", "unavailable_reason": "string"}
 _SHAPES = {
+    "PendingPhysicalRecord": {
+        **_STATUS, "native_index": "i32", "physical_slot_i64": "i64",
+        "control_raw_u8": "u8?", "stored_hash_raw_u32": "u32?", "key_raw_full_id_u32": "u32?",
+        "vector_capacity_raw_i32": "i32?", "vector_allocator_identity": "identity?",
+        "vector_allocator_matches_expected": "bool?", "references": "RawReferences",
+    },
+    "PendingTableFrame": {
+        **_STATUS, "schema_version": "i32=1", "entries_identity": "identity?", "entries_present": "bool?",
+        "data_is_native_empty_buffer": "bool?", "map_count_raw_i32": "i32?", "mask_raw_i32": "i32?",
+        "tail_raw_u8": "u8?", "threshold_bits_u32": "u32?", "physical_control_extent_last_slot_i64": "i64?",
+        "physical_controls_complete": "bool", "rehash_prefix_complete": "bool",
+        "rehash_nonzero_records_observed_i32": "i32?", "records": "PendingPhysicalRecord[]",
+    },
     "PendingArRg": {
         **_STATUS, "native_index": "i32", "raw_full_id_u32": "u32?",
         "arrg_resolution": "OperandResolution", "current_38_raw_i32": "i32?",
@@ -50,6 +63,7 @@ _SHAPES = {
         "occurrences": "PendingOccurrence[]", "raw_roster_references_ready": "bool", "source_operands_ready": "bool",
         "actual_pre_date_callback_ready": "bool=false", "actual_tomorrow_roster_ready": "bool=false",
         "full_daily_assault_ready": "bool=false", "full_monthly_ready": "bool=false",
+        "pending_table_frame_v1": "PendingTableFrame?",
     },
 }
 _REUSED = {"OperandResolution", "RawReferences", "PendingProbe"}
@@ -95,9 +109,16 @@ def normalize_current_pre_date_pending_update_inputs_v1(value: object) -> dict |
     if value is None:
         return None
     name = "current_pre_date_pending_update_inputs_v1"
+    if type(value) is dict and "pending_table_frame_v1" not in value:
+        value = {**value, "pending_table_frame_v1": None}
     _typed(value, "Inputs", name)
     _references(value["original_roster"], name + ".original_roster")
     _references(value["removal_queue"], name + ".removal_queue")
+    frame = value["pending_table_frame_v1"]
+    if frame is not None:
+        _ordered(frame["records"], name + ".pending_table_frame_v1.records")
+        for row in frame["records"]:
+            _references(row["references"], name + f'.pending_table_frame_v1.records[{row["native_index"]}].references')
     raw_rows = value["original_roster"]["occurrences"]
     rows = value["occurrences"]
     if [(r["native_index"], r["raw_full_id_u32"]) for r in rows] != [

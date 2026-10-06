@@ -1,4 +1,35 @@
 // Included inside xar::game after army_daily_assault_roster_admission_v1.inc.hpp.
+struct ArmyPreDatePendingPhysicalRecordV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::string unavailable_reason = "not_demanded";
+  std::int32_t native_index = 0;
+  std::int64_t physical_slot_i64 = 0;
+  std::optional<std::uint8_t> control_raw_u8;
+  std::optional<std::uint32_t> stored_hash_raw_u32, key_raw_full_id_u32;
+  std::optional<std::int32_t> vector_capacity_raw_i32;
+  std::optional<std::string> vector_allocator_identity;
+  std::optional<bool> vector_allocator_matches_expected;
+  ArmyDailyAssaultRawReferencesV1 references{};
+  friend bool operator==(const ArmyPreDatePendingPhysicalRecordV1 &, const ArmyPreDatePendingPhysicalRecordV1 &) = default;
+};
+struct ArmyPreDatePendingTableFrameV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::string unavailable_reason = "not_demanded";
+  std::int32_t schema_version = 1;
+  std::optional<std::string> entries_identity;
+  std::optional<bool> entries_present, data_is_native_empty_buffer;
+  std::optional<std::int32_t> map_count_raw_i32, mask_raw_i32;
+  std::optional<std::uint8_t> tail_raw_u8;
+  std::optional<std::uint32_t> threshold_bits_u32;
+  std::optional<std::int64_t> physical_control_extent_last_slot_i64;
+  bool physical_controls_complete = false;
+  bool rehash_prefix_complete = false;
+  std::int32_t rehash_nonzero_records_observed_i32 = 0;
+  std::vector<ArmyPreDatePendingPhysicalRecordV1> records;
+  friend bool operator==(const ArmyPreDatePendingTableFrameV1 &, const ArmyPreDatePendingTableFrameV1 &) = default;
+};
 struct ArmyPreDatePendingArRgV1 {
   std::string status = "unavailable";
   bool ready = false;
@@ -73,5 +104,6 @@ struct ArmyCurrentPreDatePendingUpdateInputsV1 {
   bool actual_tomorrow_roster_ready = false;
   bool full_daily_assault_ready = false;
   bool full_monthly_ready = false;
+  std::optional<ArmyPreDatePendingTableFrameV1> pending_table_frame_v1;
   friend bool operator==(const ArmyCurrentPreDatePendingUpdateInputsV1 &, const ArmyCurrentPreDatePendingUpdateInputsV1 &) = default;
 };

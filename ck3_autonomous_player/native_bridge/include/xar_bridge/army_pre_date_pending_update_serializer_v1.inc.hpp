@@ -6,6 +6,38 @@ namespace xar::game {
 namespace pre_date_pending_update_json_detail {
 using namespace daily_assault_roster_admission_json_detail;
 template <class Number, class JsonString>
+inline void PendingPhysicalRecord(std::string &out, const ArmyPreDatePendingPhysicalRecordV1 &p,
+    Number number, JsonString string) {
+  out += '{'; Writer<Number, JsonString> w{out, number, string}; w.Status(p);
+  w.Integer("native_index", p.native_index); w.Integer("physical_slot_i64", p.physical_slot_i64);
+  w.Integer("control_raw_u8", p.control_raw_u8); w.Integer("stored_hash_raw_u32", p.stored_hash_raw_u32);
+  w.Integer("key_raw_full_id_u32", p.key_raw_full_id_u32);
+  w.Integer("vector_capacity_raw_i32", p.vector_capacity_raw_i32);
+  w.Text("vector_allocator_identity", p.vector_allocator_identity);
+  w.Boolean("vector_allocator_matches_expected", p.vector_allocator_matches_expected);
+  w.Key("references"); RawReferences(out, p.references, number, string); out += '}';
+}
+template <class Number, class JsonString>
+inline void PendingTableFrame(std::string &out, const ArmyPreDatePendingTableFrameV1 &p,
+    Number number, JsonString string) {
+  out += '{'; Writer<Number, JsonString> w{out, number, string}; w.Status(p);
+  w.Integer("schema_version", p.schema_version);
+  w.Text("entries_identity", p.entries_identity); w.Boolean("entries_present", p.entries_present);
+  w.Boolean("data_is_native_empty_buffer", p.data_is_native_empty_buffer);
+  w.Integer("map_count_raw_i32", p.map_count_raw_i32); w.Integer("mask_raw_i32", p.mask_raw_i32);
+  w.Integer("tail_raw_u8", p.tail_raw_u8); w.Integer("threshold_bits_u32", p.threshold_bits_u32);
+  w.Integer("physical_control_extent_last_slot_i64", p.physical_control_extent_last_slot_i64);
+  w.Boolean("physical_controls_complete", p.physical_controls_complete);
+  w.Boolean("rehash_prefix_complete", p.rehash_prefix_complete);
+  w.Integer("rehash_nonzero_records_observed_i32", p.rehash_nonzero_records_observed_i32);
+  w.Key("records"); out += '[';
+  for (std::size_t i = 0; i < p.records.size(); ++i) {
+    if (i) out += ',';
+    PendingPhysicalRecord(out, p.records[i], number, string);
+  }
+  out += ']'; out += '}';
+}
+template <class Number, class JsonString>
 inline void PendingArRg(std::string &out, const ArmyPreDatePendingArRgV1 &p, Number number, JsonString string) {
   out += '{'; Writer<Number, JsonString> w{out, number, string}; w.Status(p);
   w.Integer("native_index", p.native_index); w.Integer("raw_full_id_u32", p.raw_full_id_u32);
@@ -82,6 +114,9 @@ inline void AppendArmyCurrentPreDatePendingUpdateInputsV1(std::string &out,
   w.Boolean("actual_pre_date_callback_ready", p.actual_pre_date_callback_ready);
   w.Boolean("actual_tomorrow_roster_ready", p.actual_tomorrow_roster_ready);
   w.Boolean("full_daily_assault_ready", p.full_daily_assault_ready); w.Boolean("full_monthly_ready", p.full_monthly_ready);
+  if (p.pending_table_frame_v1) {
+    w.Key("pending_table_frame_v1"); PendingTableFrame(out, *p.pending_table_frame_v1, number, string);
+  }
   out += '}';
 }
 } // namespace xar::game
