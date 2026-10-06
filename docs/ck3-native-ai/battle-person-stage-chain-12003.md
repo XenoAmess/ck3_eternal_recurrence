@@ -1377,3 +1377,75 @@ Research only: tests0, native builds0, local game/Steam/SDK/UI/pipe/process
 inspection0, deployment0, native qualification0 and new game days0. Full
 person, full Entry, real Rule43 admission and transfer-to-Entry association
 remain incomplete. Oct6/W41 reporting fields are sent to Root for merging.
+
+## Source-only following2921020 owner and composite inputs (2026-10-06)
+
+The next actual call `291CDAE ->2921020` receives the same preparation model
+and Character, then returns at291CDB3. Its prospective bounded result is
+`post2921020_pre291CDB3`, consuming an explicit same-Character
+`post2921350_pre291CDA8` context. Source-only closure does not advance the
+current partial consumer or infer current-final as a historical prior.
+
+Character1C0 supplies carrier DWORD1B0, or exactFFFFFFFF when null. Resolve
+the full ID through5D1EC98/fallback5D1EC50. Selected magicC=`4C656765` and
+full DWORD8!=FFFFFFFF admit; otherwise the stage has0 occurrences and no
+later owner, rank or PC demand. The admitted object provides DWORD288 for
+comparison with Character18, pointer78 for the base Definition, and signed
+byte250/pointer70 for the actual tier. Getter256EA10 returns
+`QWORD[selected+70]+438+signextend_i8(selected+250)*3478`. Ranks0..2 bypass
+its diagnostic; other signed bytes call3F7AB90 with no clamp. That diagnostic
+outcome is the only new branch-local uncaptured callee.
+
+After this getter returns, owner match first calls2491D80(model10,selected28).
+Reuse its existing header0/countC, stride48, Definition pointer0/signed
+Q64weight30 contract: consecutive equal full pointers group with wrap64
+sum, requesting actual Definition40 PCs in run order. Nonadjacent equal
+pointers remain separate, and weights may be negative or0. No owner header
+is demanded on the non-owner branch.
+
+Normal CA1870/CA18F0 constructors initialize the composite's empty numerical
+temporary. Owner match merges Definition78+420 then tierrow2BF8; non-owner
+merges Definition78+5E0 then tierrow2DB8. Both use existing exact2303120
+unit100000 folding in that order. Composite key count0 produces no outer
+occurrence; nonempty composite produces one291B3D0 unit100000 request after
+the owner runs. A zero-valued present key remains an occurrence. The two
+raw PCs are composite constituents, not two extra outer contributions.
+
+```mermaid
+flowchart TD
+  I[Explicit post2921350 context and Character] --> A{Full-ID selected Lege admitted?}
+  A -->|false| Z[Known0; later fields unused]
+  A -->|true| T[Actual table70; signed rank250]
+  T -->|rank0..2| O{Selected288 equals Character18?}
+  T -. other rank diagnostic outcome unknown .-> U[Branch-local missing]
+  O -->|yes| H[2491D80 owner28; ordered signed-weight runs]
+  H --> B[Definition420 then tier2BF8]
+  O -->|no| C[Definition5E0 then tier2DB8; no owner header]
+  B --> M[Two inner unit merges; one outer unit only if nonempty]
+  C --> M
+  M --> F[Proposed post2921020_pre291CDB3]
+  Z --> F
+  X[Actual earlier admission and fresh stage association] -. still needed .-> I
+  F -. following caller outside packet .-> N[Character1C8 and B70 direct family]
+```
+
+New exact bodies `[2921020,2921349)`809B and `[256EA10,256EA68)`88B plus
+48B exact `.pdata` total945 physicalB, within the initial1536B plan.
+Body SHA-256 values are respectively
+`19c9e82e7eb7b6e433f592d0a05f1beabac3a8bd8aed87e6a0772f819719baeb`
+and `3dba412b561442bad9ac289ff7eabe0a294c14110ab0b7b453d844dbdbcb25e3`.
+The frozen build/SHA above is reused; whole EXE hash/scan, duplicate reads,
+alignment/static-slot/unwind reads and capture failures are0. Existing
+2491D80/merge/constructor contracts receive0 new source credit, without body
+reread or recapture. No admission or diagnostic-handler catalogue expands.
+
+The exclusive packet
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-stage-chain/following2921020-source/`
+contains native tree/Mermaid, minimum same-query field proposal and future
+compound frozen fixture plan. Actual valid-rank, nonempty PCs and signed
+owner weights can improve modeled six-skill and declared-stage knight
+values. This is research-only: no genuine observer/emitter, new or old test,
+native build, local game/Steam/process/SDK/pipe/live operation, runtime write
+or new game day. Earlier real Diac/Rule43 admission, fresh-stage association,
+the following caller and full person/Entry remain partial; Oct6/W41 fields
+are delivered to Root for merging.
