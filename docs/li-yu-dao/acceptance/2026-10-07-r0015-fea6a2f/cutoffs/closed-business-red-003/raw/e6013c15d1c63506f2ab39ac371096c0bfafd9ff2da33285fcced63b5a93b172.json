@@ -1,0 +1,959 @@
+{
+  "schema": "lyd.retained-state.exact-reader-native-predicate-join.v1",
+  "status": "EXACT_SAVED_G2_PREDICATE_ROWS_JOINED",
+  "source_artifacts": {
+    "reader": {
+      "path": "C:/lr15s1/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+      "bytes": 51455,
+      "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+    },
+    "converter": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-native-title-query-20261007-007/source/reader/sdk_checkpoint_transition_qualification_v3.py",
+      "bytes": 21640,
+      "sha256": "f3923df30d6847e3daa7d554a1854f5e10b8e8b4823bc8c2904b9aea89ada0c6"
+    }
+  },
+  "original_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/RESULT.json",
+    "bytes": 978265,
+    "sha256": "570da040c325a4cb4808020959a15da4bf3a467510234fca9f90e0c92aea1fe4"
+  },
+  "original_inputs": {
+    "request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/CHECKPOINT-REQUEST.actual.json",
+      "bytes": 153797,
+      "sha256": "62ec8de52dfe36a4da004b663f9c6a986b580210302b6fa3fb95f60b1b28a66e"
+    },
+    "state": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/STATE.json",
+      "bytes": 2603596,
+      "sha256": "e38a106a153470bb8494ca12aaa4b0eef3f971615b138484328a4dcb5c7583a9"
+    },
+    "qualified": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 2705293,
+      "sha256": "cca2c68bc6c8afe503b710d7d19b84e5c0d6ffaa31e4a296a4aee64675823667"
+    },
+    "conversion": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/CONVERSION-REQUEST.actual-or-pending.json",
+      "bytes": 10139,
+      "sha256": "ec154b3faa07cc1a6ac4c548caf6645c7e0c78c054281494848c63b52b92c6f8"
+    }
+  },
+  "compact_artifacts": {
+    "provenance": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/PROVENANCE.actual-or-pending.json",
+      "bytes": 10939,
+      "sha256": "7ed169f664f7a340d4f7ee9aca130882b56bdf445b39a0c373f35e6fec940531"
+    },
+    "checkpoint_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-save-001/01-native-01.original.json",
+      "bytes": 2519004,
+      "sha256": "ab7bb9f31362253de7c7d21b074a71084cde47d6466d32d87993f2e7be1d314d"
+    },
+    "saved_state": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/STATE.json",
+      "bytes": 2603596,
+      "sha256": "e38a106a153470bb8494ca12aaa4b0eef3f971615b138484328a4dcb5c7583a9"
+    },
+    "G2_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-save-001/02-native-01.original.json",
+      "bytes": 28086,
+      "sha256": "c2a26eb068caf7495a07b62be1e55d7676c946acd8ccc36b9c393223399da801"
+    },
+    "G3_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-save-001/03-native-01.original.json",
+      "bytes": 4028,
+      "sha256": "248658bd40a49acef5eded3f5362590889232acfc09962eb15794848a7a74f38"
+    }
+  },
+  "output_request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/actual-001/CHECKPOINT-REQUEST.saved-G2-joined.json",
+    "bytes": 164603,
+    "sha256": "7b4ca87d4507fcac12dd5697cba878258c462ddf98a03f740b7312dd3fb92420"
+  },
+  "output_state": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/actual-001/STATE.saved-G2-joined.json",
+    "bytes": 2641064,
+    "sha256": "302eb5b06019c91a38c635fef114cb0a7cb4729f651af622884d16306d92746c"
+  },
+  "checkpoint_sha256": "75c3aff961230703912f6a08812cbb48943c0c0c733b654d2ff64b7cdd86fc33",
+  "frame_binding": {
+    "revision": 43,
+    "native_revision": 42,
+    "date_raw": 53144712,
+    "game_pid": 14452,
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "snapshot_id": "native:42"
+  },
+  "round": {
+    "serial": 3,
+    "nonce": 6,
+    "phase": 2,
+    "result_code": null
+  },
+  "original_checks": {
+    "total": 250,
+    "matches": 250
+  },
+  "added_native_checks": {
+    "total": 107,
+    "matches": 107,
+    "checks": [
+      {
+        "name": "native_witness_full_living_faith_roster",
+        "matches": true,
+        "observed": [
+          31254,
+          31538,
+          31692,
+          32236,
+          32535,
+          32536,
+          33234,
+          33542,
+          34232,
+          34741,
+          34973,
+          35386,
+          35598,
+          35899,
+          36311,
+          36329,
+          36445,
+          36638,
+          36663,
+          36847,
+          36873,
+          37064,
+          37221,
+          37244,
+          37702,
+          38561,
+          38924,
+          38925,
+          39045,
+          39171,
+          39348,
+          39352,
+          39527,
+          39979,
+          40259,
+          40507,
+          40526,
+          40694,
+          40695,
+          40843,
+          40847,
+          41028,
+          41032,
+          41235,
+          41288,
+          41495,
+          65851,
+          65852,
+          65853,
+          65854,
+          65865
+        ],
+        "expected": [
+          31254,
+          31538,
+          31692,
+          32236,
+          32535,
+          32536,
+          33234,
+          33542,
+          34232,
+          34741,
+          34973,
+          35386,
+          35598,
+          35899,
+          36311,
+          36329,
+          36445,
+          36638,
+          36663,
+          36847,
+          36873,
+          37064,
+          37221,
+          37244,
+          37702,
+          38561,
+          38924,
+          38925,
+          39045,
+          39171,
+          39348,
+          39352,
+          39527,
+          39979,
+          40259,
+          40507,
+          40526,
+          40694,
+          40695,
+          40843,
+          40847,
+          41028,
+          41032,
+          41235,
+          41288,
+          41495,
+          65851,
+          65852,
+          65853,
+          65854,
+          65865
+        ]
+      },
+      {
+        "name": "native_human_roster_exact",
+        "matches": true,
+        "observed": [
+          31254
+        ],
+        "expected": [
+          31254
+        ]
+      },
+      {
+        "name": "saved_current_humans_match_native",
+        "matches": true,
+        "observed": [
+          31254
+        ],
+        "expected": [
+          31254
+        ]
+      },
+      {
+        "name": "member_34232_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_34232_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_34741_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_34741_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_34973_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_34973_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_35386_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_35386_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_35598_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_35598_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_41495_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_41495_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_35899_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_35899_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36311_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36311_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36329_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36329_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36445_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36445_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36638_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36638_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36663_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36663_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36847_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36847_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36873_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_36873_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_37064_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_37064_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_37221_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_37221_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_37244_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_37244_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_37702_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_37702_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_38561_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_38561_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_38924_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_38924_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_38925_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_38925_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39045_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39045_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39171_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39171_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39348_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39348_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39352_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39352_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39527_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39527_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39979_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_39979_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40259_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40259_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40507_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40507_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40526_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40526_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40694_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40694_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40695_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40695_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40843_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40843_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40847_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_40847_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_65852_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_65852_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_31254_elector_matches_native",
+        "matches": true,
+        "observed": 1,
+        "expected": 1
+      },
+      {
+        "name": "member_31254_human_matches_native",
+        "matches": true,
+        "observed": 1,
+        "expected": 1
+      },
+      {
+        "name": "member_41028_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_41028_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_41032_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_41032_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_31538_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_31538_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_31692_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_31692_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_32236_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_32236_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_41235_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_41235_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_32535_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_32535_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_32536_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_32536_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_41288_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_41288_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_33234_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_33234_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_33542_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_33542_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_65853_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_65853_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_65854_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_65854_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_65851_elector_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_65851_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "member_65865_elector_matches_native",
+        "matches": true,
+        "observed": 1,
+        "expected": 1
+      },
+      {
+        "name": "member_65865_human_matches_native",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "rite_169_native_counties",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "rite_169_delegate_native_qualified",
+        "matches": true,
+        "observed": null,
+        "expected": null
+      }
+    ]
+  },
+  "joined_checks": {
+    "total": 357,
+    "matches": 357
+  },
+  "schools": [
+    {
+      "rite_id": 169,
+      "owner_id": 31254,
+      "serial": 3,
+      "members_total": 51,
+      "total": 2,
+      "yes": 2,
+      "signed": 1,
+      "dormant": 0,
+      "counties": 0,
+      "delegate_id": 31254,
+      "counted_members_total": 51,
+      "counted_total": 2,
+      "counted_yes": 2,
+      "quorum_numerator": 2
+    }
+  ],
+  "elector_votes": [
+    {
+      "character_id": 31254,
+      "was_elector": 1,
+      "was_player": 1,
+      "player_yes": 1,
+      "vote": 1
+    },
+    {
+      "character_id": 65865,
+      "was_elector": 1,
+      "was_player": 0,
+      "player_yes": 0,
+      "vote": 1
+    }
+  ],
+  "typed_protection_preserved_original": {
+    "artifact": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/TYPED-PROTECTION.json",
+      "bytes": 1161163,
+      "sha256": "f0b24ecb387f261182882812184f36e38367d81815efb87c8dc38feb30a640fb"
+    },
+    "original_keys": [
+      "schema",
+      "Faith_direct_effective_observation",
+      "Faith_declared_factory_AST_delta",
+      "identity",
+      "stage",
+      "checkpoint_sha256",
+      "actor",
+      "wallet",
+      "learning_XP_saved",
+      "stress_saved",
+      "commit_fee_delta",
+      "fee_delta_qualification",
+      "typed_round_fields",
+      "round_numeric_fields",
+      "C2_history",
+      "C2_serial",
+      "reset",
+      "school_study_CD",
+      "protected_characters",
+      "protected_graphs",
+      "protected_political_titles",
+      "actor_actual_all_held_title_ids",
+      "actual_added_religious_title",
+      "checks",
+      "protection_checks_match",
+      "actual_pass",
+      "formal_mandate_credit",
+      "saved_native_Title_field_paths"
+    ]
+  },
+  "native_predicate_qualification_status": "CALLER_SUPPLIED_NOT_NATIVE_AUTHENTICATED",
+  "native_reference_qualification": {
+    "status": "UNKNOWN",
+    "binding": null
+  },
+  "formal_event_context_qualification": {
+    "status": "UNKNOWN",
+    "actor": null,
+    "serial": null,
+    "nonce": null,
+    "phase": null,
+    "native_revision": null,
+    "reason": "checkpoint consistency does not prove callbacks used formal ballot events or current event scope; retain independently bound 410/411/412/413/430 receipts"
+  },
+  "assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+  "original_state_rewritten": false,
+  "checkpoint_body_reads": 0,
+  "checkpoint_scan_or_parse_called": false,
+  "native_gate_rerun": false,
+  "SDK_or_game_calls": 0,
+  "actual_pass": null,
+  "actual_native_runtime_pass": null,
+  "formal_mandate_credit": null,
+  "source_provenance_is_observation_not_new_runtime_acceptance": true
+}

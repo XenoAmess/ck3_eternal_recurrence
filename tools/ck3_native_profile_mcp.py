@@ -33,6 +33,12 @@ StressQueryRevisionV1 = Annotated[int, Field(strict=True, ge=0, lt=2**64)]
 OrdinaryInteractionKeyV1 = Annotated[str, Field(strict=True, min_length=1, max_length=128, pattern=r"^[A-Za-z0-9_]+$")]
 OrdinaryRecipientIdV1 = Annotated[int, Field(strict=True, ge=1, le=2**32 - 2)]
 PlayerControlCharacterIdV1 = Annotated[int, Field(strict=True, ge=1, le=2**64 - 2)]
+GrantTitleFullIdV1 = Annotated[int, Field(strict=True, ge=0, lt=2**32-1)]
+GrantTitleIdsV1 = Annotated[list[GrantTitleFullIdV1], Field(strict=True, max_length=64, json_schema_extra={"uniqueItems": True}),
+    AfterValidator(_unique_confucian_faith_ids_v1)]
+GrantSendTitleIdsV1 = Annotated[list[GrantTitleFullIdV1], Field(strict=True, min_length=1, max_length=64, json_schema_extra={"uniqueItems": True}),
+    AfterValidator(_unique_confucian_faith_ids_v1)]
+GrantDesiredSelectedV1 = Annotated[bool, Field(strict=True)]
 
 import desktop_semantic_action_mcp as desktop
 
@@ -435,7 +441,37 @@ class NativeProfileService:
             return self._receipt("ordinary-interaction-query", {
                 "status": ("native_ordinary_interaction_observed" if result["ordinary_interaction_context_ready"]
                            else "native_ordinary_interaction_unavailable"), "result": result,
-                "business_effects_verified": False, "full_product_acceptance_credit": False})
+                 "business_effects_verified": False, "full_product_acceptance_credit": False})
+
+    def grant_title_picker(self, operation: str, recipient_id: int, expected_revision: int,
+                           targets: list[int], selected: list[int], title_id: int | None = None,
+                           desired_selected: bool | None = None) -> dict:
+        from xar_autoplayer.bridge.grant_title_picker_v1 import PERMISSION, request_fields
+        if getattr(self, "_grant_title_picker_tools_enabled_v1", False) is not True:
+            raise RuntimeError("stock grant tools require explicit private opt-in")
+        request_fields(operation, recipient_id, targets, selected, title_id, desired_selected)
+        with self._lock:
+            before = self._bound_frame(expected_revision, paused=True)
+            self._gameplay_service()
+            if operation != "query":
+                self.backend.poll(self.profile)
+                self._bound_frame(expected_revision, paused=True)
+            previous = getattr(self.driver, PERMISSION, False)
+            setattr(self.driver, PERMISSION, True)
+            try:
+                result = self.driver.grant_title_picker_v1(operation, recipient_id,
+                    expected_revision=expected_revision, requested_title_full_ids=targets,
+                    expected_selected_title_full_ids=selected, title_full_id=title_id,
+                    desired_selected=desired_selected)
+                self.guard()
+                after = self._snapshot()
+                return self._receipt("grant-title-picker-" + operation, {
+                    "status": result["status"], "result": result,
+                    "snapshot_before": before, "snapshot_after": after,
+                    "business_effects_verified": False, "full_product_acceptance_credit": False,
+                    "uses_desktop_input": False, "uses_ocr": False})
+            finally:
+                setattr(self.driver, PERMISSION, previous)
 
     def initiate_ordinary_interaction(self, interaction_key: str, recipient_id: int, expected_revision: int) -> dict:
         from xar_autoplayer.bridge.ordinary_interaction_contract import (
@@ -918,7 +954,11 @@ def create_clock_server(service: NativeClockProfileService):
 
 
 def create_server(service: NativeProfileService, *, player_control_tools: bool = False,
-                  confucian_readonly_tools: bool = False, confucian_challenger_tools: bool = False):
+                  confucian_readonly_tools: bool = False, confucian_challenger_tools: bool = False,
+                  grant_title_picker_tools: bool = False):
+    if type(grant_title_picker_tools) is not bool:
+        raise ValueError("grant_title_picker_tools must be an explicit boolean")
+    service._grant_title_picker_tools_enabled_v1 = grant_title_picker_tools
     if type(confucian_challenger_tools) is not bool:
         raise ValueError("confucian_challenger_tools must be an explicit boolean")
     service._confucian_challenger_tools_enabled_v1 = confucian_challenger_tools
@@ -1046,6 +1086,32 @@ def create_server(service: NativeProfileService, *, player_control_tools: bool =
             """Read complete native challenger/sponsor collections and current-holder Faith scopes."""
             return service.query_confucian_readonly("challenger_graph", expected_revision, faith_full_ids)
         _forbid_unknown_tool_arguments_v1(server, "ck3_query_profile_confucian_challenger_graph_v1")
+    if grant_title_picker_tools:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+        def ck3_query_profile_grant_title_picker_v1(recipient_id: OrdinaryRecipientIdV1,
+                title_full_ids: GrantTitleIdsV1, expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+            return service.grant_title_picker("query", recipient_id, expected_revision, title_full_ids, [])
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_prepare_profile_grant_title_picker_v1(recipient_id: OrdinaryRecipientIdV1,
+                title_full_ids: GrantTitleIdsV1, expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+            return service.grant_title_picker("prepare", recipient_id, expected_revision, title_full_ids, [])
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_select_profile_grant_title_picker_v1(recipient_id: OrdinaryRecipientIdV1,
+                title_full_id: GrantTitleFullIdV1, desired_selected: GrantDesiredSelectedV1,
+                expected_selected_title_full_ids: GrantTitleIdsV1, expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+            targets = list(expected_selected_title_full_ids)
+            if title_full_id not in targets:
+                targets.append(title_full_id)
+            return service.grant_title_picker("select", recipient_id, expected_revision, targets,
+                expected_selected_title_full_ids, title_full_id, desired_selected)
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
+        def ck3_send_profile_grant_title_picker_v1(recipient_id: OrdinaryRecipientIdV1,
+                expected_selected_title_full_ids: GrantSendTitleIdsV1, expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+            return service.grant_title_picker("send", recipient_id, expected_revision,
+                expected_selected_title_full_ids, expected_selected_title_full_ids)
+        for name in ("ck3_query_profile_grant_title_picker_v1", "ck3_prepare_profile_grant_title_picker_v1",
+                     "ck3_select_profile_grant_title_picker_v1", "ck3_send_profile_grant_title_picker_v1"):
+            _forbid_unknown_tool_arguments_v1(server, name)
     if player_control_tools:
         @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
         def ck3_query_profile_player_control_context_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
@@ -1076,8 +1142,10 @@ def main() -> None:
                         help="Explicit 24-tool private bundle including both readonly Confucian queries and complete challenger graph")
     parser.add_argument("--player-control-tools", action="store_true",
                         help="Resume the original attached DLL and admit 23 tools only after actual readonly capability/source proof")
+    parser.add_argument("--grant-title-picker-tools", action="store_true",
+                        help="Explicit four stock grant window tools; each requires new native .3 capability/pins")
     args = parser.parse_args()
-    if args.clock_only and (args.player_control_tools or args.confucian_readonly_tools or args.confucian_challenger_tools):
+    if args.clock_only and (args.player_control_tools or args.confucian_readonly_tools or args.confucian_challenger_tools or args.grant_title_picker_tools):
         parser.error("private native tools require the native gameplay profile")
     if args.clock_only:
         create_clock_server(NativeClockProfileService(load_clock_profile(args.profile))).run(transport="stdio")
@@ -1090,7 +1158,8 @@ def main() -> None:
                 raise RuntimeError("explicit successor tools require successful original-DLL profile resume")
         create_server(service, player_control_tools=args.player_control_tools,
                       confucian_readonly_tools=args.confucian_readonly_tools,
-                      confucian_challenger_tools=args.confucian_challenger_tools).run(transport="stdio")
+                      confucian_challenger_tools=args.confucian_challenger_tools,
+                      grant_title_picker_tools=args.grant_title_picker_tools).run(transport="stdio")
     finally:
         service.close()
 

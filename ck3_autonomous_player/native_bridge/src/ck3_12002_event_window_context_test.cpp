@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <string>
 
@@ -961,8 +962,83 @@ bool TestActivityInsert() {
       !output.options.empty()) return false;
   return true;
 }
+bool TestNumericSavedScope() {
+  using namespace xar;
+  Fixture fixture;
+  std::array<std::byte, 0x20> value_name{};
+  StoreInlineString(value_name.data(), "value");
+  g_generic_value_type_names.emplace(
+      101, reinterpret_cast<const std::string *>(value_name.data()));
+  Store<std::int32_t>(fixture.generic_value_type_entries.data() + 0x50,
+                      0, 101);
+  Store<std::uint16_t>(fixture.saved_scope_rows.data(), 0x08, 1);
+  Store<std::uint16_t>(fixture.saved_scope_rows.data(), 0x0A, 0);
+  fixture.bindings.read_numeric_scope_value = true;
+  game::EventWindowContextV1 output{};
+  auto read = [&]() {
+    g_current_event_calls = 0;
+    return ck3_12002::ReadEventWindowContextV1(
+               fixture.bindings, kRevision, kEventId, output) ==
+           game::ReadEventWindowContextResultV1::available;
+  };
+  struct Case { std::int64_t raw; const char *decimal; const char *integer; };
+  const Case cases[] = {
+      {0, "0", "0"}, {12'300'000, "123", "123"},
+      {-100'000, "-1", "-1"}, {-1, "-0.00001", nullptr},
+      {100'001, "1.00001", nullptr},
+      {std::numeric_limits<std::int64_t>::min(), "-92233720368547.75808", nullptr},
+      {std::numeric_limits<std::int64_t>::max(), "92233720368547.75807", nullptr},
+  };
+  for (const auto &item : cases) {
+    Store<std::int64_t>(fixture.saved_scope_rows.data(), 0x10, item.raw);
+    if (!read() || !output.saved_scopes[0].scope.numeric_value ||
+        output.saved_scopes[0].scope.numeric_value->raw_fixed_point != item.raw ||
+        output.saved_scopes[0].scope.typed_identity.available) return false;
+    const auto wire = ck3_12002::SerializeEventWindowContextV1(output);
+    const std::string raw = std::to_string(item.raw);
+    const std::string integer = item.integer == nullptr
+        ? "null" : "\"" + std::string(item.integer) + "\"";
+    if (wire.find("\"raw_fixed_point\":\"" + raw + "\"") == std::string::npos ||
+        wire.find("\"decimal_value\":\"" + std::string(item.decimal) + "\"") == std::string::npos ||
+        wire.find("\"integer_value\":" + integer) == std::string::npos) return false;
+  }
+  auto changed = output;
+  changed.saved_scopes[0].scope.numeric_value->raw_token[4] = std::byte{1};
+  if (changed == output) return false;
+  changed = output;
+  changed.saved_scopes[0].scope.numeric_value->raw_fixed_point = 0;
+  if (changed == output) return false;
+  if (!ck3_12002::SerializeEventWindowContextV1(changed).empty()) return false;
+  Store<std::int64_t>(fixture.saved_scope_rows.data(), 0x10, 0);
+  fixture.bindings.read_numeric_scope_value = false;
+  if (!read() || output.saved_scopes[0].scope.numeric_value ||
+      ck3_12002::SerializeEventWindowContextV1(output).find("numeric_value") !=
+          std::string::npos) return false;
+  fixture.bindings.read_numeric_scope_value = true;
+  Store<std::uint16_t>(fixture.saved_scope_rows.data(), 0x0A, 1);
+  if (read()) return false;
+  Store<std::uint16_t>(fixture.saved_scope_rows.data(), 0x0A, 0);
+  StoreInlineString(value_name.data(), "province");
+  if (read()) return false;
+  value_name.fill(std::byte{});
+  StoreInlineString(value_name.data(), "value");
+  if (!read()) return false;
+  g_event_identity_drift = EventIdentityDrift::saved_scope_payload;
+  if (read()) return false;
+  g_event_identity_drift = EventIdentityDrift::none;
+  const auto legacy = ck3_12002::BindEventWindowImage(
+      0x180000000, ck3_12002::kExecutableSha256);
+  const auto patch3 = ck3_12002::BindEventWindowImage(
+      0x180000000, ck3_12003::kExecutableSha256);
+  const auto wrong = ck3_12002::BindEventWindowImage(0x180000000, "wrong");
+  return !legacy.read_numeric_scope_value && patch3.read_numeric_scope_value &&
+         !wrong.read_numeric_scope_value;
+}
 } // namespace
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--numeric-value-scope") {
+    return TestNumericSavedScope() ? 0 : 1;
+  }
   if (argc == 2 && std::string_view(argv[1]) == "--combined-title-faction-scopes") {
     return TestCombinedTitleAndFactionSavedScope() ? 0 : 1;
   }
@@ -977,7 +1053,7 @@ int main(int argc, char **argv) {
     std::cout << "CK3 1.20.0.3 activity-insert offline fixture passed\n";
     return 0;
   }
-  if (!TestMigration() || !TestSplash() || !TestNullSavedCharacterScope() || !TestActivityInsert()) { std::cerr << "CK3 1.20.0.2/.3 event-window fixture failed\n"; return 1; }
+  if (!TestMigration() || !TestSplash() || !TestNullSavedCharacterScope() || !TestActivityInsert() || !TestNumericSavedScope()) { std::cerr << "CK3 1.20.0.2/.3 event-window fixture failed\n"; return 1; }
   std::cout << "CK3 1.20.0.2 event-window offline fixture passed\n";
   return 0;
 }

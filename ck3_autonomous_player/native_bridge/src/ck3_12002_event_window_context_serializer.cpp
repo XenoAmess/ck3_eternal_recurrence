@@ -4,6 +4,7 @@
 #include <array>
 #include <charconv>
 #include <cstddef>
+#include <cstring>
 #include <string>
 
 namespace xar::ck3_12002 {
@@ -43,6 +44,39 @@ void AppendString(std::string &output, std::string_view value) {
     }
   }
   output.push_back('"');
+}
+
+std::string FixedPointDecimal(std::int64_t raw) {
+  constexpr auto scale =
+      static_cast<std::uint64_t>(game::kEventScopeFixedPointScaleV1);
+  // Avoid negating INT64_MIN and preserve every fractional digit without float.
+  const bool negative = raw < 0;
+  const auto magnitude = negative
+      ? static_cast<std::uint64_t>(-(raw + 1)) + 1U
+      : static_cast<std::uint64_t>(raw);
+  std::string text = negative ? "-" : "";
+  text += Number(magnitude / scale);
+  const auto fraction = magnitude % scale;
+  if (fraction != 0) {
+    auto digits = Number(fraction);
+    digits.insert(0, 5 - digits.size(), '0');
+    while (digits.back() == '0') digits.pop_back();
+    text += "." + digits;
+  }
+  return text;
+}
+
+bool ValidNumericScope(const game::EventScopeV1 &scope) {
+  if (!scope.numeric_value) return true;
+  if (scope.raw_type_index != 1 || scope.type_key != "value" ||
+      scope.subtype != 0) return false;
+  const auto &numeric = *scope.numeric_value;
+  std::uint16_t kind = 0, subtype = 0;
+  std::int64_t payload = 0;
+  std::memcpy(&kind, numeric.raw_token.data(), sizeof(kind));
+  std::memcpy(&subtype, numeric.raw_token.data() + 2, sizeof(subtype));
+  std::memcpy(&payload, numeric.raw_token.data() + 8, sizeof(payload));
+  return kind == 1 && subtype == 0 && payload == numeric.raw_fixed_point;
 }
 
 bool ValidEffectIndicator(const game::EventEffectIndicatorRowV1 &row) {
@@ -152,7 +186,8 @@ void AppendEffectIndicator(std::string &output,
 bool ValidScope(const game::EventScopeV1 &scope,
                 bool allow_null_saved_character_scope = false) {
   if (scope.raw_type_index == 0 || scope.type_key.empty() ||
-      scope.type_key.size() > kMaximumEventDefinitionKeyBytes) {
+      scope.type_key.size() > kMaximumEventDefinitionKeyBytes ||
+      !ValidNumericScope(scope)) {
     return false;
   }
   const auto &identity = scope.typed_identity;
@@ -220,6 +255,20 @@ void AppendScope(std::string &output, const game::EventScopeV1 &scope) {
   } else {
     output += "{\"status\":\"unavailable\",\"reason\":";
     AppendString(output, scope.typed_identity.unavailable_reason);
+    output.push_back('}');
+  }
+  if (scope.numeric_value) {
+    const auto raw = scope.numeric_value->raw_fixed_point;
+    output += ",\"numeric_value\":{\"raw_fixed_point\":";
+    AppendString(output, Number(raw));
+    output += ",\"scale\":100000,\"decimal_value\":";
+    AppendString(output, FixedPointDecimal(raw));
+    output += ",\"integer_value\":";
+    if (raw % game::kEventScopeFixedPointScaleV1 == 0) {
+      AppendString(output, Number(raw / game::kEventScopeFixedPointScaleV1));
+    } else {
+      output += "null";
+    }
     output.push_back('}');
   }
   output.push_back('}');

@@ -288,6 +288,49 @@ bool ReadOrdinaryInteractionContextV1(const Bindings &b,
   return Prepare(b, r, context, out);
 }
 
+#if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+void PrepareGrantTitlePickerWindowV1(const Bindings &b, const OrdinaryInteractionRequestV1 &r,
+    const GrantWindowBindingsV1 &window, GrantPrepareObservationV1 &out) noexcept {
+  out = {};
+  NativeContext context{};
+  if (r.interaction_key != "grant_titles_interaction" || !window.confirmation || !window.handler ||
+      !window.install_context || !window.open_window || !window.refresh_window) {
+    out.reason = "stock_grant_open_bindings_unavailable"; return;
+  }
+  if (!Prepare(b, r, context, out.preflight)) { out.reason = out.preflight.unavailable_reason; return; }
+  if (!out.preflight.actor_alive.value_or(false) || !out.preflight.recipient_alive.value_or(false) ||
+      !out.preflight.shown.value_or(false)) { out.reason = "stock_grant_not_shown_or_alive"; return; }
+  void *definition = nullptr; std::uint8_t kind = 255;
+  std::uint32_t actor = UINT32_MAX, recipient = UINT32_MAX, effective_actor = UINT32_MAX;
+  if (!Read(context.bytes.data(), 0, definition) || !Read(definition, 0x26F9, kind) || kind != 2 ||
+      !Read(context.bytes.data(), 0x2D8, actor) || actor != static_cast<std::uint32_t>(r.expected_player_character_id) ||
+      !Read(context.bytes.data(), 0x2DC, recipient) || recipient != r.recipient_id ||
+      !Read(context.bytes.data(), 0x2EC, effective_actor) || effective_actor != actor) {
+    out.reason = "stock_grant_kind_or_roles_changed"; return;
+  }
+  // AF2810's false branch sends a command. Evaluate its exact embedded
+  // confirmation trigger, then call only its true branch's UI leaves.
+  bool confirmation_required = false;
+  if (!Call(b.interaction.evaluate_trigger, confirmation_required,
+      static_cast<const void *>(static_cast<const std::byte *>(definition) + 0x13D8),
+      static_cast<const void *>(context.bytes.data() + 8)) || !confirmation_required) {
+    out.reason = "stock_grant_confirmation_trigger_not_true"; return;
+  }
+  bool frame_matches = false;
+  if (!b.dispatch_frame_context || !Call(b.verify_dispatch_frame, frame_matches, b.dispatch_frame_context) || !frame_matches) {
+    out.reason = "stock_grant_prepare_dispatch_frame_changed"; return;
+  }
+  out.dispatch_invoked = true;
+  // Copy keeps its own native context alive after this stack context is destroyed.
+  // enum15 is handler+98+15*8=handler+110, the exact grant slot.
+  out.native_call_completed = CallVoid(window.install_context, window.confirmation,
+      static_cast<const void *>(context.bytes.data())) &&
+      CallVoid(window.open_window, window.handler, std::int32_t{15}, std::int32_t{1}) &&
+      CallVoid(window.refresh_window, window.confirmation);
+  out.reason = out.native_call_completed ? nullptr : "stock_grant_prepare_result_unknown_no_retry";
+}
+#endif
+
 void InitiateOrdinaryInteractionV1(const Bindings &b,
     const OrdinaryInteractionRequestV1 &r, SendObservation &out) noexcept {
   out = {};

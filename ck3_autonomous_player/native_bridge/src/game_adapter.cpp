@@ -468,6 +468,16 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     if (descriptor().game_version != ck3_12003::kGameVersion ||
         descriptor().executable_sha256 != ck3_12003::kExecutableSha256) return false;
     capability = ck3_12003::kNormalExitMapV1Capability;
+#if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+  } else if (step == ck3_12003::kGrantTitlePickerQueryV1Step) {
+    capability = ck3_12003::kGrantTitlePickerQueryV1Capability;
+  } else if (step == ck3_12003::kGrantTitlePickerPrepareV1Step) {
+    capability = ck3_12003::kGrantTitlePickerPrepareV1Capability;
+  } else if (step == ck3_12003::kGrantTitlePickerSelectV1Step) {
+    capability = ck3_12003::kGrantTitlePickerSelectV1Capability;
+  } else if (step == ck3_12003::kGrantTitlePickerSendV1Step) {
+    capability = ck3_12003::kGrantTitlePickerSendV1Capability;
+#endif
   } else if (step == ck3_11906::kIngameDecisionsOpenV1Step) {
     capability = ck3_11906::kIngameDecisionsOpenV1Capability;
   } else if (step == ck3_11906::kIngameDecisionItemQueryV1Step) {

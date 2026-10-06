@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r15-checkpoint-author-native-title-query-20261007-007\source\author_actual_checkpoint.py", line 412, in run
+    req,title_proof=title_hook.bind_current_query(
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        cp,title_query,state,provenance,req,reader,converter,export,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        {'checkpoint':reference(cp_path),'query':title_query_input['native_receipt'],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         'sdk_result':title_query_input['sdk_result'],'state':reference(out/'STATE.json'),
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         'provenance':reference(out/'PROVENANCE.actual-or-pending.json')},out)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r15-checkpoint-author-native-title-query-20261007-007\source\title_reference\title_reference_hook.py", line 64, in bind_current_query
+    new_request, evidence, binding = bind_existing_join_request(
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        checkpoint, query, state, provenance, request, modules, input_artifacts, source_refs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r15-checkpoint-author-native-title-query-20261007-007\source\title_reference\bind_existing_join_request.py", line 9, in bind_existing_join_request
+    evidence = proof.derive(checkpoint, query, state, provenance, modules)
+  File "C:\workspace\ck3_lyd_runtime_20261004\r15-checkpoint-author-native-title-query-20261007-007\source\title_reference\derive_saved_title_reference_v3.py", line 137, in derive
+    need(len(candidates) == 1, 'unique named native Title sample required')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r15-checkpoint-author-native-title-query-20261007-007\source\title_reference\derive_saved_title_reference_v3.py", line 24, in need
+    raise ValueError(message)
+ValueError: unique named native Title sample required

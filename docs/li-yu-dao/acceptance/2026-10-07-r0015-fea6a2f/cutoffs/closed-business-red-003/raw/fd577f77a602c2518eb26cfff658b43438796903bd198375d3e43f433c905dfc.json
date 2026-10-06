@@ -1,0 +1,94 @@
+{
+  "review": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3114,
+    "sha256": "c519e2c30c051df45afce80ee10f6d025c59d9e4943894fa0e9cc1e6808bf158"
+  },
+  "keeper_final": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015/FINAL.json",
+    "bytes": 393,
+    "sha256": "5ffc142d8af366fe72a64ed7b084b761e2906e65a638f1d35573b97051852371"
+  },
+  "release_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-release-screen-actual-20261007-001/RELEASE.actual.json",
+    "bytes": 1167,
+    "sha256": "fc2a0b0410ac7529524c749e500564bc0a96b2dbef7efc699e49feeb75aabbc1"
+  },
+  "launch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/launch.json",
+    "bytes": 2335,
+    "sha256": "3a94c0dd19c22a0f24aa1ebff01d1e4b507c625114863250709c91e3b2089c18"
+  },
+  "original_native_observation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0156-explicit-d362372ca56f4accafd2078ba1ed0456.native-01.json",
+    "bytes": 5908,
+    "sha256": "9830a64142ab93f06bed7292fcd0127d8e9e0ff35d43751adf928fb961e0b14b"
+  },
+  "process_absence": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-postrelease-process-absence-20261007-001/PROCESS-ABSENCE.actual.json",
+    "bytes": 1594,
+    "sha256": "43e434cb42bcb42c344db2647191426fa0d59af3096dec7c95ad2832f4d0353f"
+  },
+  "after_list": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-release-screen-actual-20261007-001/BUS-AFTER-RELEASE.parsed.json",
+    "bytes": 101642,
+    "sha256": "8ffd70406d07695b3c3bd26489e60273a946e60f43d847335d5658a20840e412"
+  },
+  "helpers_closed": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/HELPERS-CLOSED.actual.json",
+    "bytes": 5068,
+    "sha256": "647503d3cf9c038048301e1d1e5abbcc66feef40a33925e24e39108269cc96e5"
+  },
+  "consumer_closed": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/session-closed.json",
+    "bytes": 10017,
+    "sha256": "fb081888c75921db8f1b74370a1d7b01c30a578bf9e08c6d2b3c20a2267c448b"
+  },
+  "original_handle_observation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0156-explicit-d362372ca56f4accafd2078ba1ed0456.sdk-result.json",
+    "bytes": 12819,
+    "sha256": "237ef3cfe04b5f6b299f9143621d363125effb7d91598511ce48df1b073d44ac"
+  },
+  "consumer_session": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/session.json",
+    "bytes": 1269,
+    "sha256": "923635daee8d738f5e524b51c70bc683e71239d24ff92c7181a6b672e9f3d338"
+  },
+  "consumer_close_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0157-r15-root-close-0e170c7ef4a24d37af1ddf7408abe3b6.response.json",
+    "bytes": 533,
+    "sha256": "f3d451856bf435d70ed8d6901ff204dedd2f27fff797f897ee390b67c4d19983"
+  },
+  "actual_prior_identity": {
+    "pid": 14452,
+    "process_create_time": 1791313780.8972144,
+    "process_creation_filetime_100ns": 134357873808972143
+  },
+  "actual_prior_source_head": "fea6a2f9f7233f2e3bab6cdd1329b55aa09ca17c",
+  "actual_prior_task": "ck3-lyd-r15-formal-20261007-001",
+  "actual_original_exec_process_results": {
+    "holder": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-postrelease-process-absence-20261007-001/holder-original-exec-result.raw.json",
+      "bytes": 348,
+      "sha256": "6d63baa4964617cce48231904892ae4525d5c8f64a5df0067d6a00fa3db4660f"
+    },
+    "keeper": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-postrelease-process-absence-20261007-001/keeper-original-exec-result.raw.json",
+      "bytes": 190,
+      "sha256": "009edd74b4cf665fcad84197e78d0b3f697a91eea8dc75533ba1692730f01df7"
+    }
+  },
+  "actual_exit_observation_limits": {
+    "game_original_HANDLE_exit0_observed": true,
+    "client_exit_code": 0,
+    "keeper_exit_code": 0,
+    "client_OS_exit0_observed": true,
+    "keeper_OS_exit0_observed": true,
+    "holder_original_exec_process_exit0_observed": true,
+    "holder_original_exec_session_id": 47805,
+    "keeper_original_exec_session_id": 65664,
+    "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+    "consumer_session_id": "3752b80510144540a5ff173194ab5bb8",
+    "autosave_verified": false
+  }
+}

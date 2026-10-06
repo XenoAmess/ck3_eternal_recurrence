@@ -45,6 +45,8 @@ struct EventWindowBindings {
   // Only the exact patch3 binder admits the observed native null payload in
   // named saved scopes. Root scopes and legacy patch2 behavior stay strict.
   bool allow_null_saved_character_scope = false;
+  // Numeric kind1/value/subtype0 is independently bound to exact patch3.
+  bool read_numeric_scope_value = false;
   // Exact patch3 type5 FullRef storage; legacy patch2 generic scopes stay opaque.
   void **landed_title_storage_slot = nullptr;
   void **landed_title_fallback_slot = nullptr;

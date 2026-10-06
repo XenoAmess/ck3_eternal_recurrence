@@ -9008,17 +9008,32 @@ if(BUILD_TESTING AND WIN32)
 endif()
 
 
+option(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1
+  "Admit exact .3 stock grant window prepare/query/select/send; full holder readback required" OFF)
 option(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1
   "Admit exact .3 ordinary key/full-recipient context query and single owned send" OFF)
 if(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
     src/ordinary_interaction_request_v1.cpp
-    src/ordinary_character_interaction_v1.cpp
     src/ordinary_interaction_mailbox_v1.cpp)
+  if(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+    target_sources(xar_ck3_12002_runtime PRIVATE src/ordinary_character_interaction_v1.cpp)
+  else()
+    target_sources(xar_ck3_bridge PRIVATE src/ordinary_character_interaction_v1.cpp)
+  endif()
   target_compile_definitions(xar_ck3_12002_runtime PRIVATE
     XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1)
+endif()
+if(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+  if(NOT XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+    message(FATAL_ERROR "Stock grant preparation requires the existing ordinary context provider")
+  endif()
+  target_sources(xar_ck3_12002_runtime PRIVATE src/grant_title_picker_v1.cpp)
+  # The optional Frontend context member changes the shared header layout.
+  target_compile_definitions(xar_ck3_12002_runtime PUBLIC XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1=1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1=1)
 endif()
 if(BUILD_TESTING)
   add_executable(xar_ck3_ordinary_interaction_request_v1_test

@@ -1,0 +1,132 @@
+{
+  "status": "ORIGINAL_CLIENT_AND_KEEPER_HANDLES_CAPTURED_ALIVE_BEFORE_CLOSE",
+  "holder_pid": 14760,
+  "holder_create_time": 1791316356.256702,
+  "holder_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-retained-helper-handles-source-20261007-001/retain_helper_handles.py",
+    "bytes": 9751,
+    "sha256": "2e0f81acd8c0bf31404112e99c163ccad1a82711f2323a73c8705aaa026f3bd9"
+  },
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-retained-helper-handles-request-20261007-001/REQUEST.actual.json",
+    "bytes": 5058,
+    "sha256": "1515a833a014dbcde68779024e32f8184862ac41fd0e008ca30f5f850a96ad57"
+  },
+  "results": [
+    {
+      "pid": 9624,
+      "create_time": 1791316076.4627192,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\next-formal-queue-and-guard-adapter-20261007-003\\source\\persistent_native_mcp_queue_24.py",
+        "serve",
+        "--profile",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/native-profile-with-exit-inventory.json",
+        "--queue",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-queue-001",
+        "--output",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001",
+        "--binding",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\root-consumer-binding-003\\ROOT-BINDING.json",
+        "--binding-sha256",
+        "6946139fe48c83cf2f41ca23003f2def1c3a068597885062574f758a355bd671"
+      ],
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/root-dispatch-001/CLIENT-START.actual.json",
+        "bytes": 1367,
+        "sha256": "fb06c46e17a96d46c36d3b53b8f82a0aa8a06eaad7b0842acbfd23d8f64c8690"
+      },
+      "role": "client",
+      "handle_value": 420,
+      "handle_local_to_holder_pid": 14760,
+      "handle_access": 1052672,
+      "process_creation_filetime_100ns": 134357896764627193,
+      "handle_retained_before_close": true,
+      "initial_wait_result": 258,
+      "initial_exit_code": 259,
+      "captured_at_utc": "2026-10-06T19:52:36.444586+00:00"
+    },
+    {
+      "pid": 19880,
+      "create_time": 1791313373.0698714,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3_lyd_runtime_20261004/r15-root-operations-20261007-001/screen_lease_entry_r0015.py",
+        "--output",
+        "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015",
+        "--expected-sequence",
+        "3430"
+      ],
+      "keeper_output": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015",
+      "READY.json": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015/READY.json",
+        "bytes": 742,
+        "sha256": "df654f8af755a28362c941cefffe13e73e4aa6a34aa24b20c5b4c0411ade77bc"
+      },
+      "role": "keeper",
+      "handle_value": 424,
+      "handle_local_to_holder_pid": 14760,
+      "handle_access": 1052672,
+      "process_creation_filetime_100ns": 134357869730698714,
+      "handle_retained_before_close": true,
+      "initial_wait_result": 258,
+      "initial_exit_code": 259,
+      "captured_at_utc": "2026-10-06T19:52:36.445471+00:00"
+    }
+  ],
+  "client_session_id": "3752b80510144540a5ff173194ab5bb8",
+  "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+  "source_revision": "fea6a2f9f7233f2e3bab6cdd1329b55aa09ca17c",
+  "epoch_id": "lyd-r15-native-921bea21-45f9-4729-a29b-7e22f8a33460",
+  "screen_task": "ck3-lyd-r15-formal-20261007-001",
+  "game_original_handle_owner": {
+    "component": "existing SDK NativeProfileService in actual Client-owned native MCP server",
+    "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+    "client_session_id": "3752b80510144540a5ff173194ab5bb8",
+    "server_process": {
+      "pid": 19348,
+      "create_time": 1791316081.0459528,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\lr15s1\\tools\\ck3_native_profile_mcp.py",
+        "--profile",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\native-profile-with-exit-inventory.json",
+        "--confucian-challenger-tools"
+      ]
+    },
+    "server_source": {
+      "path": "C:/lr15s1/tools/ck3_native_profile_mcp.py",
+      "bytes": 72524,
+      "sha256": "9e8848a9292be45d627bf70a33c96abfadd406e6d7c50dd12ea8eaa2a525ae23"
+    },
+    "original_attach_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/native-evidence/de4469c9251145468e0ca685176cbc8f/0001-attach.json",
+      "bytes": 19650,
+      "sha256": "33b2eaf4928276e32c5cfc7a2bb73d0881a11394e30d800e719cc73430cb60a3"
+    },
+    "actual_game_identity": {
+      "pid": 14452,
+      "process_create_time": 1791313780.8972144
+    },
+    "actual_connection_generation": 1,
+    "game_handle_value": null,
+    "retained_game_handle_capture_in_attach_receipt": null,
+    "authority": "Actual attached SDK session/process identity only; original attach receipt has no exported HANDLE value/capture field. Passive helper observer opens no game HANDLE."
+  },
+  "game_handle_opened": false,
+  "close_requested": false,
+  "stop_requested": false,
+  "SDK_calls": 0,
+  "game_calls": 0
+}

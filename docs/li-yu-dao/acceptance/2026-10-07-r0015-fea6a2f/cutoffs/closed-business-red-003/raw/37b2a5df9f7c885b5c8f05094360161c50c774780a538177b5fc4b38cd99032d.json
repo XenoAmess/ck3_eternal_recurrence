@@ -1,0 +1,80 @@
+{
+  "schema": "lyd.retained-state-native-predicate-join-package.v1",
+  "artifacts": {
+    "FOCUSED9-successor002.actual.json": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/FOCUSED9-successor002.actual.json",
+      "bytes": 1746,
+      "sha256": "fbd108aff1c86f895ccdbcfce55eec6c4b17e83515dd61c2501a7a1e6c1c0d7e"
+    },
+    "FOCUSED9.actual.json": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/FOCUSED9.actual.json",
+      "bytes": 1334,
+      "sha256": "be547fe217df932575fb831b7f640a3b3fa1edda42c471c591539a7bd81d8938"
+    },
+    "inspect_converter.py": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/inspect_converter.py",
+      "bytes": 1158,
+      "sha256": "e5f0cdbf0950e532bd17b5ec26696a372ff41a330b29580129e1be0d8c4768df"
+    },
+    "inspect_inputs.py": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/inspect_inputs.py",
+      "bytes": 2054,
+      "sha256": "33533ce014ca3cf3713c2435b1cf55a5aff2edf173da3e4ccca851949859c2b1"
+    },
+    "inspect_shape.py": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/inspect_shape.py",
+      "bytes": 1646,
+      "sha256": "6862c65c844c855db75b7d0ee138f35427ad01e83bfa2762992e9e17a2ed4250"
+    },
+    "join_retained_state.py": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/join_retained_state.py",
+      "bytes": 14725,
+      "sha256": "72118e2d67bf9144a845606480a3eaf780ed67263d9eef0d4a8fc3ba5bd10944"
+    },
+    "test_join_retained_state.py": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/test_join_retained_state.py",
+      "bytes": 4742,
+      "sha256": "1481df04d1efae2797d3e841367c1a10839c6722a0fb36ba9a2191b7c51c4459"
+    },
+    "test_join_retained_state_002.py": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/test_join_retained_state_002.py",
+      "bytes": 3514,
+      "sha256": "7ba7dba97962ee8f742c00614fd0dc37813d6f6b95ddeefd9a5b381da7e1001e"
+    },
+    "actual-001/CHECKPOINT-REQUEST.saved-G2-joined.json": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/actual-001/CHECKPOINT-REQUEST.saved-G2-joined.json",
+      "bytes": 164603,
+      "sha256": "7b4ca87d4507fcac12dd5697cba878258c462ddf98a03f740b7312dd3fb92420"
+    },
+    "actual-001/INDEX.json": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/actual-001/INDEX.json",
+      "bytes": 2498,
+      "sha256": "3eba79d12a47e8816f7fc5baa19b0d25b29f1c9eb4a789d0a281f5588a231b52"
+    },
+    "actual-001/REPORT.actual.json": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/actual-001/REPORT.actual.json",
+      "bytes": 24028,
+      "sha256": "e6013c15d1c63506f2ab39ac371096c0bfafd9ff2da33285fcced63b5a93b172"
+    },
+    "actual-001/STATE.saved-G2-joined.json": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/actual-001/STATE.saved-G2-joined.json",
+      "bytes": 2641064,
+      "sha256": "302eb5b06019c91a38c635fef114cb0a7cb4729f651af622884d16306d92746c"
+    }
+  },
+  "actual_joined_checks": {
+    "total": 357,
+    "matches": 357
+  },
+  "focused_successor": {
+    "total": 9,
+    "successful": true
+  },
+  "prior_failure_preserved": true,
+  "original_state_changed": false,
+  "checkpoint_body_read": false,
+  "native_reference_qualification": "UNKNOWN",
+  "formal_event_context_qualification": "UNKNOWN",
+  "actual_pass": null,
+  "formal_mandate_credit": null
+}

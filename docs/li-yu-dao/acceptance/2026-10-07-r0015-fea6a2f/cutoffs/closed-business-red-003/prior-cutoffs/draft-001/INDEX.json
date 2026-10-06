@@ -1,0 +1,38 @@
+{
+  "status": "EXTERNAL_DRAFT_ONLY",
+  "cutoff_utc": "2026-10-06T19:49:23.039514+00:00",
+  "source_helper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/prepare_draft.py",
+    "bytes": 17661,
+    "sha256": "783c85f4a8f99c7d1de5ed13d5c11a1c36b4bca0658ae31ddd153a73176b85fc"
+  },
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-001/DAILY-2026-10-07.append.draft.md",
+      "bytes": 1384,
+      "sha256": "b519ada9d6a14a08d3720eaff7e5ca04b0f1ded04c56f1e1a39bf7e26d5c1236"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-001/FACTS.cutoff.actual.json",
+      "bytes": 19918,
+      "sha256": "e2f43a01dbf1e0ad35ed3ec44e5fd466066e36cf6ad8ec6ffdd63cd9a1ade3c4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-001/NAVIGATION.append.draft.md",
+      "bytes": 650,
+      "sha256": "a19b44b82397ab00933845d7bd23947c0de11645bc666d738610d7e3df0fa7d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-001/REPORT.append-only.draft.md",
+      "bytes": 5433,
+      "sha256": "fa9e5a7fd2ce9c34641447aa67ed1e9d2fa8b106f2183cbbd44170310148a791"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-001/ROOT-APPEND-PLAN.draft.json",
+      "bytes": 2128,
+      "sha256": "fc795df044e950e18e2fa9c96b9d9a035f87a76751299910d9721daa5b412f12"
+    }
+  ],
+  "main_writes": 0,
+  "SDK_game_calls": 0
+}

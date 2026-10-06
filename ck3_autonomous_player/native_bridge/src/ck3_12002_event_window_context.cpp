@@ -6,6 +6,7 @@
 
 #include "xar_bridge/ck3_12003.hpp"
 #include <algorithm>
+#include <array>
 #include <charconv>
 #include <cstddef>
 #include <cstring>
@@ -353,6 +354,11 @@ bool ReadEventScopeToken(const EventWindowBindings &bindings, void *registry,
   if (token == nullptr) {
     return false;
   }
+  // Decode each field from this one copy. No payload re-read can drift between
+  // registry validation and interpretation; the outer read still compares two
+  // complete observations, including numeric_value.raw_token.
+  const auto copied_token = LoadAt<std::array<std::byte, 16>>(token, 0);
+  token = copied_token.data();
   output.raw_type_index = LoadAt<std::uint16_t>(
       token, kEventScopeTokenTypeIndexOffset);
   output.subtype =
@@ -360,6 +366,20 @@ bool ReadEventScopeToken(const EventWindowBindings &bindings, void *registry,
   if (!ReadGenericValueTypeKey(bindings, registry, output.raw_type_index,
                                output.type_key)) {
     return false;
+  }
+  if (bindings.read_numeric_scope_value &&
+      (output.raw_type_index == 1 || output.type_key == "value")) {
+    if (output.raw_type_index != 1 || output.type_key != "value" ||
+        output.subtype != 0) return false;
+    game::EventScopeNumericValueV1 numeric{};
+    numeric.raw_token = copied_token;
+    numeric.raw_fixed_point =
+        LoadAt<std::int64_t>(token, kEventScopeTokenPayloadOffset);
+    output.numeric_value = numeric;
+    // A number is a value, not a resolved object identity.
+    output.typed_identity.unavailable_reason.assign(
+        kGenericScopeIdentityUnavailableReason);
+    return true;
   }
   if (output.raw_type_index == kCharacterScopeTypeIndex) {
     if (output.type_key != kCharacterScopeTypeKey) {
@@ -939,6 +959,7 @@ EventWindowBindings BindEventWindowImage(std::uintptr_t image_base,
   result.events = BindEventsImage(image_base, patch3_splash ? kExecutableSha256 : sha256);
   if (!result.events.core.enabled) { return result; }
   result.allow_null_saved_character_scope = patch3_splash;
+  result.read_numeric_scope_value = patch3_splash;
   if (patch3_splash) {
     const auto factions = BindPlayerFactionAlertsNativeEnvironmentV1(image_base, true);
     result.faction_scope_storage_slot = factions.faction_storage_slot;

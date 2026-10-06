@@ -1,0 +1,34 @@
+{
+  "schema": "lyd.original-exec-results.extraction.v1",
+  "rows": [
+    {
+      "role": "holder",
+      "source_wrapper": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-retained-helper-handles-actual-20261007-001/HOLDER-original-exec-completion.actual.json",
+        "bytes": 510,
+        "sha256": "caedcce9e5696f09742cd914073dfd5549079500f8026a34a56dc96c237e0249"
+      },
+      "raw_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-postrelease-process-absence-20261007-001/holder-original-exec-result.raw.json",
+        "bytes": 348,
+        "sha256": "6d63baa4964617cce48231904892ae4525d5c8f64a5df0067d6a00fa3db4660f"
+      },
+      "preserved_exact_decoded_tool_result": true
+    },
+    {
+      "role": "keeper",
+      "source_wrapper": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015/KEEPER-original-exec-completion.actual.json",
+        "bytes": 353,
+        "sha256": "cc6f82308462fe6a9e58425d3a8035040d08727196494edc466dbe36b8c62958"
+      },
+      "raw_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-postrelease-process-absence-20261007-001/keeper-original-exec-result.raw.json",
+        "bytes": 190,
+        "sha256": "009edd74b4cf665fcad84197e78d0b3f697a91eea8dc75533ba1692730f01df7"
+      },
+      "preserved_exact_decoded_tool_result": true
+    }
+  ],
+  "new_process_operations": 0
+}

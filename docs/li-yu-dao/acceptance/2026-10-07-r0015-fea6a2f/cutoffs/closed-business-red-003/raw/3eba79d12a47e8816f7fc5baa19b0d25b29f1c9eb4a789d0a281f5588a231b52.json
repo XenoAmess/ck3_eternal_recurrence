@@ -1,0 +1,52 @@
+{
+  "schema": "lyd.retained-state.exact-reader-native-predicate-join-index.v1",
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/join_retained_state.py",
+    "bytes": 14725,
+    "sha256": "72118e2d67bf9144a845606480a3eaf780ed67263d9eef0d4a8fc3ba5bd10944"
+  },
+  "report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/actual-001/REPORT.actual.json",
+    "bytes": 24028,
+    "sha256": "e6013c15d1c63506f2ab39ac371096c0bfafd9ff2da33285fcced63b5a93b172"
+  },
+  "state": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/actual-001/STATE.saved-G2-joined.json",
+    "bytes": 2641064,
+    "sha256": "302eb5b06019c91a38c635fef114cb0a7cb4729f651af622884d16306d92746c"
+  },
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-r3-B3-retained-native-predicate-join-20261008-001/actual-001/CHECKPOINT-REQUEST.saved-G2-joined.json",
+    "bytes": 164603,
+    "sha256": "7b4ca87d4507fcac12dd5697cba878258c462ddf98a03f740b7312dd3fb92420"
+  },
+  "original_inputs": {
+    "request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/CHECKPOINT-REQUEST.actual.json",
+      "bytes": 153797,
+      "sha256": "62ec8de52dfe36a4da004b663f9c6a986b580210302b6fa3fb95f60b1b28a66e"
+    },
+    "state": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/STATE.json",
+      "bytes": 2603596,
+      "sha256": "e38a106a153470bb8494ca12aaa4b0eef3f971615b138484328a4dcb5c7583a9"
+    },
+    "qualified": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 2705293,
+      "sha256": "cca2c68bc6c8afe503b710d7d19b84e5c0d6ffaa31e4a296a4aee64675823667"
+    },
+    "conversion": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/CONVERSION-REQUEST.actual-or-pending.json",
+      "bytes": 10139,
+      "sha256": "ec154b3faa07cc1a6ac4c548caf6645c7e0c78c054281494848c63b52b92c6f8"
+    }
+  },
+  "original_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-002/RESULT.json",
+    "bytes": 978265,
+    "sha256": "570da040c325a4cb4808020959a15da4bf3a467510234fca9f90e0c92aea1fe4"
+  },
+  "actual_pass": null,
+  "formal_mandate_credit": null
+}

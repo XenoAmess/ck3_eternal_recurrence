@@ -1,0 +1,1 @@
+{"schema":"lyd.original-exec-process-completion.v1","tool_session_id":65664,"expected_pid":19880,"expected_create_time":1791313373.0698714,"raw_tool_result":{"chunk_id":"12059d","wall_time_seconds":0.0000246,"exit_code":0,"original_token_count":15,"output":"{\"status\": \"ROOT_NOTICES_AVAILABLE\", \"event_count\": 100}\r\n"},"reopened_process":false}

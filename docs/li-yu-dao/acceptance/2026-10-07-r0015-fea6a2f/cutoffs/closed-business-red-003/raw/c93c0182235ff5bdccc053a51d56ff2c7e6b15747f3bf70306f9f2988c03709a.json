@@ -1,0 +1,21 @@
+{
+  "status": "ACTUAL_REQUESTED_PHASE_COMPLETE",
+  "command": "release-screen",
+  "result": {
+    "release_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-release-screen-actual-20261007-001/RELEASE.actual.json",
+      "bytes": 1167,
+      "sha256": "fc2a0b0410ac7529524c749e500564bc0a96b2dbef7efc699e49feeb75aabbc1"
+    },
+    "after_list": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-release-screen-actual-20261007-001/BUS-AFTER-RELEASE.parsed.json",
+      "bytes": 101642,
+      "sha256": "8ffd70406d07695b3c3bd26489e60273a946e60f43d847335d5658a20840e412"
+    },
+    "remaining_boundary_work": "root actual post-release process absence, actual checkpoint review and original-ref boundary verifier"
+  },
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "finished_at_utc": "2026-10-06T21:23:57.879393+00:00",
+  "autosave_verified": false
+}

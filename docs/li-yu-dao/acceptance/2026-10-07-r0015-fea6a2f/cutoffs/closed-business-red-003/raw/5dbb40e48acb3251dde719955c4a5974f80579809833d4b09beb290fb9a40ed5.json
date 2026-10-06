@@ -1,0 +1,39 @@
+{
+  "argv": [
+    "C:/workspace/ck3_lyd_runtime_20261004/next-formal-queue-and-guard-adapter-20261007-003/source/formal_guarded_steps.py",
+    "--bindings",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/RUNTIME.formal-001.actual.json",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B4-save-001",
+    "save",
+    "--revision",
+    "44",
+    "--window",
+    "B4-factory-result",
+    "--author-input",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/root-requests-001/AUTHOR-FRAMEWORK.actual-or-pending.json",
+    "--author",
+    "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-observed-native-qualification-20261007-006/source/author_actual_checkpoint.py",
+    "--author-sha256",
+    "000ff0d993c126ecbec11ea3c366378373277b218004fe5f680c557ff097a910",
+    "--readback-output",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B4-readback-001"
+  ],
+  "script": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/next-formal-queue-and-guard-adapter-20261007-003/source/formal_guarded_steps.py",
+    "bytes": 12070,
+    "sha256": "f730a6b9fb3da2beaaf82b62c56036cbe2edf7f094234b1c427e0aaea4cb9050"
+  },
+  "queue_helper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/next-formal-queue-and-guard-adapter-20261007-003/source/root_queue_ops.py",
+    "bytes": 5400,
+    "sha256": "ae9fc2e15e6d285a497fef2ee0c4a6ad1dd8103bcf83ab1b14c0b57c2c58cc7f"
+  },
+  "bindings": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/RUNTIME.formal-001.actual.json",
+    "bytes": 1821,
+    "sha256": "7cc2734d45a984019667bd8e9f05a3bf0aaf0565746aec7f6070547eb711800a"
+  },
+  "automatic_retry": false,
+  "NPC_control": false
+}

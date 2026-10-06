@@ -1,0 +1,100 @@
+{
+  "status": "ORIGINAL_HELPER_EXIT_OBSERVATIONS_PRESERVED",
+  "capture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-retained-helper-handles-actual-20261007-001/CAPTURED.actual.json",
+    "bytes": 5730,
+    "sha256": "a835a1fdfcff820e64313d6de437a5e8b4d7ade62cf9abaa17d2c081ac9f6330"
+  },
+  "results": [
+    {
+      "pid": 9624,
+      "create_time": 1791316076.4627192,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\next-formal-queue-and-guard-adapter-20261007-003\\source\\persistent_native_mcp_queue_24.py",
+        "serve",
+        "--profile",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/native-profile-with-exit-inventory.json",
+        "--queue",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-queue-001",
+        "--output",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001",
+        "--binding",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\root-consumer-binding-003\\ROOT-BINDING.json",
+        "--binding-sha256",
+        "6946139fe48c83cf2f41ca23003f2def1c3a068597885062574f758a355bd671"
+      ],
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/root-dispatch-001/CLIENT-START.actual.json",
+        "bytes": 1367,
+        "sha256": "fb06c46e17a96d46c36d3b53b8f82a0aa8a06eaad7b0842acbfd23d8f64c8690"
+      },
+      "role": "client",
+      "handle_value": 420,
+      "handle_local_to_holder_pid": 14760,
+      "handle_access": 1052672,
+      "process_creation_filetime_100ns": 134357896764627193,
+      "handle_retained_before_close": true,
+      "initial_wait_result": 258,
+      "initial_exit_code": 259,
+      "captured_at_utc": "2026-10-06T19:52:36.444586+00:00",
+      "wait_result": 0,
+      "exit_code": 0,
+      "observed_at_utc": "2026-10-06T21:22:46.950325+00:00",
+      "observation": "ORIGINAL_RETAINED_HANDLE",
+      "close_requested_by_observer": false,
+      "SDK_calls": 0,
+      "game_calls": 0,
+      "status": "ORIGINAL_PROCESS_EXIT_OBSERVED"
+    },
+    {
+      "pid": 19880,
+      "create_time": 1791313373.0698714,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3_lyd_runtime_20261004/r15-root-operations-20261007-001/screen_lease_entry_r0015.py",
+        "--output",
+        "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015",
+        "--expected-sequence",
+        "3430"
+      ],
+      "keeper_output": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015",
+      "READY.json": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015/READY.json",
+        "bytes": 742,
+        "sha256": "df654f8af755a28362c941cefffe13e73e4aa6a34aa24b20c5b4c0411ade77bc"
+      },
+      "role": "keeper",
+      "handle_value": 424,
+      "handle_local_to_holder_pid": 14760,
+      "handle_access": 1052672,
+      "process_creation_filetime_100ns": 134357869730698714,
+      "handle_retained_before_close": true,
+      "initial_wait_result": 258,
+      "initial_exit_code": 259,
+      "captured_at_utc": "2026-10-06T19:52:36.445471+00:00",
+      "wait_result": 0,
+      "exit_code": 0,
+      "observed_at_utc": "2026-10-06T21:22:58.720802+00:00",
+      "observation": "ORIGINAL_RETAINED_HANDLE",
+      "close_requested_by_observer": false,
+      "SDK_calls": 0,
+      "game_calls": 0,
+      "status": "ORIGINAL_PROCESS_EXIT_OBSERVED"
+    }
+  ],
+  "all_wait0_exit0": true,
+  "observed_at_utc": "2026-10-06T21:22:58.722929+00:00",
+  "close_requested": false,
+  "stop_requested": false,
+  "SDK_calls": 0,
+  "game_calls": 0
+}

@@ -795,6 +795,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return false;
   }
   query->result = {};
+#if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+  if(query->operation==FrontendGuiRouteOperationV1::grant_title_picker)
+    return ck3_12003::ExecuteGrantTitlePickerV1(query->grant_title_picker,*query->mailbox,stamp,query->environment);
+#endif
 #if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
   if(query->operation==FrontendGuiRouteOperationV1::player_control_readonly) {
     query->player_control_readonly.ticket=query->ticket;

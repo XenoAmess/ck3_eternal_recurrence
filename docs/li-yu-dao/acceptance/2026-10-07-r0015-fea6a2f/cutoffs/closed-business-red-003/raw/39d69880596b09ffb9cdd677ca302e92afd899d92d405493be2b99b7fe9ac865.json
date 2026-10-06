@@ -1,0 +1,39 @@
+{
+  "pid": 19880,
+  "create_time": 1791313373.0698714,
+  "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "cmdline": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r15-root-operations-20261007-001/screen_lease_entry_r0015.py",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015",
+    "--expected-sequence",
+    "3430"
+  ],
+  "keeper_output": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015",
+  "READY.json": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0015/READY.json",
+    "bytes": 742,
+    "sha256": "df654f8af755a28362c941cefffe13e73e4aa6a34aa24b20c5b4c0411ade77bc"
+  },
+  "role": "keeper",
+  "handle_value": 424,
+  "handle_local_to_holder_pid": 14760,
+  "handle_access": 1052672,
+  "process_creation_filetime_100ns": 134357869730698714,
+  "handle_retained_before_close": true,
+  "initial_wait_result": 258,
+  "initial_exit_code": 259,
+  "captured_at_utc": "2026-10-06T19:52:36.445471+00:00",
+  "wait_result": 0,
+  "exit_code": 0,
+  "observed_at_utc": "2026-10-06T21:22:58.720802+00:00",
+  "observation": "ORIGINAL_RETAINED_HANDLE",
+  "close_requested_by_observer": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "status": "ORIGINAL_PROCESS_EXIT_OBSERVED"
+}

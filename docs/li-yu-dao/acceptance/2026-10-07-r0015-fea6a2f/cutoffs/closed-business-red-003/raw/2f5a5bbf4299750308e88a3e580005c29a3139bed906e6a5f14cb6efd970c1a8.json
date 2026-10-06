@@ -1,0 +1,36 @@
+{
+  "schema": "lyd.versioned-source.actual-checkpoint-author-request.v2",
+  "profile": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/native-profile-with-exit-inventory.json",
+  "source_export_report": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-head-export-20261007-001/REPORT.json",
+  "compiled_result": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-clean-native-build-20261007-001/RESULT.json",
+  "metadata_result": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-metadata-capture-20261007-001/RESULT.json",
+  "original_baseline": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r13-formal-route23-20261006-001/inputs/i3b-0240-native-preparation-20261006-001/BASELINE-0240.json",
+  "reader_request_template": "C:/lr15s1/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-REQUEST.template.json",
+  "windows": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r15-windows-fea6a2f9-20261007-001/source-derived-001/FIVE-SAVE-WINDOWS.expected.json",
+  "sdk_metadata_variant": "challenger24",
+  "sdk_metadata_artifact": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-metadata-capture-20261007-001/ACTUAL-challenger24-profile-all-tools.json",
+    "bytes": 23777,
+    "sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9"
+  },
+  "sdk_codec_artifact": {
+    "path": "C:/lr15s1/ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+    "bytes": 23750,
+    "sha256": "9b9e87e1c6981f6b74382d291ad1f9c33c10f1f1e0002e1bfd704ec11e800681"
+  },
+  "business_migration_registry": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-business-registry-fea6a2f9-20261007-001/BUSINESS-MIGRATION-REGISTRY.actual.json",
+    "bytes": 3032,
+    "sha256": "9d4ec1a1d35ef5ca6e355b1f656039c61ade8f6da5b43711829883fd188601c9"
+  },
+  "checkpoint_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\formal-r3-B4-save-001\\01-native-01.original.json",
+  "preserved_checkpoint": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B4-save-001/content-3b22322b498572b845394d19f25c5bd16013b736baf186bec7b0d5e7891c5256.ck3",
+    "bytes": 91677640,
+    "sha256": "3b22322b498572b845394d19f25c5bd16013b736baf186bec7b0d5e7891c5256"
+  },
+  "G2_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\formal-r3-B4-save-001\\02-native-01.original.json",
+  "G3_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\formal-r3-B4-save-001\\03-native-01.original.json",
+  "window": "B4-factory-result",
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\formal-r3-B4-readback-001"
+}

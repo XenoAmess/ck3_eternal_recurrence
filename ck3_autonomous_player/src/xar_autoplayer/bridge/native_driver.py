@@ -6972,6 +6972,16 @@ class NativeHeadlessGameplayDriver:
                        "gui_acceptance_credit": False})
         return result
 
+    def grant_title_picker_v1(self, operation: str, recipient_id: int, *, expected_revision: int,
+            requested_title_full_ids: list[int], expected_selected_title_full_ids: list[int],
+            title_full_id: int | None = None, desired_selected: bool | None = None) -> dict[str, object]:
+        """Explicit exact .3 stock grant window extension; all identities remain full IDs."""
+        from .grant_title_picker_v1 import execute
+        return execute(self, operation, recipient_id, expected_revision=expected_revision,
+            requested_title_full_ids=requested_title_full_ids,
+            expected_selected_title_full_ids=expected_selected_title_full_ids,
+            title_full_id=title_full_id, desired_selected=desired_selected)
+
     def query_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
         """Read actual .3 model key/owner and selected detail identity without action credit."""
         from .ingame_decision_item_contract import STEP, CAPABILITY, validate_decision_key, normalize_decision_item

@@ -951,3 +951,8 @@ R14已以原game/client/keeper HANDLE exit0及CAS3429 DONE/resources[]闭合，�
 [日报](daily/2026-10-07.md)与[验收报告](../li-yu-dao/acceptance/2026-10-07-r0014-19e6601/REPORT.md)。保留已有一般进度、Z机器和战争专题追加。
 
 闭合后 root 已完成 numeric/preview/factory/reader3 源码整合；实际 reader112、law11、preview6 通过，static70 runtime files GREEN。详见[独立 afterclose 附录](../li-yu-dao/acceptance/2026-10-07-r0014-19e6601/AFTERCLOSE-INTEGRATION.md)；原 R14 runtime19/B4B5 RED不改，新修复提交HEAD及新cold验收尚无信用。
+
+
+### 礼与道 R0015 正常闭合、业务RED（2026-10-07）
+
+genuine v3 c519e2c3…原game/helper退出0与CAS空资源闭合；R3B3 saved-G2 357/357，B4/B5实际title18373但STATE43/48、保护82/88，政治继承AST失败，modNOT_GREEN。成功B5重载/C3/I4待修复后新实证。[终局追加](../li-yu-dao/acceptance/2026-10-07-r0015-fea6a2f/cutoffs/closed-business-red-003/REPORT.md)。

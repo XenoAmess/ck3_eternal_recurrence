@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 157,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\mcp-queue-001\\r15-root-close-0e170c7ef4a24d37af1ddf7408abe3b6.request.json",
+  "request_sha256": "fdce9a0092e8d7c7d44f70fae6a8206881113662e3525aa058d8120d75abc149",
+  "started_at_utc": "2026-10-06T21:22:46.390198+00:00",
+  "request_id": "r15-root-close-0e170c7ef4a24d37af1ddf7408abe3b6",
+  "status": "CLIENT_CLOSE_REQUESTED",
+  "finished_at_utc": "2026-10-06T21:22:46.390968+00:00"
+}

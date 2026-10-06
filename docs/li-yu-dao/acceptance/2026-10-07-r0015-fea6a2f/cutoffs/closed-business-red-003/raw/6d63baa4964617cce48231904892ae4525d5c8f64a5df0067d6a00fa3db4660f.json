@@ -1,0 +1,7 @@
+{
+  "chunk_id": "aacdc0",
+  "wall_time_seconds": 2.67e-05,
+  "exit_code": 0,
+  "original_token_count": 49,
+  "output": "{\"role\": \"client\", \"wait_result\": 0, \"exit_code\": 0, \"status\": \"ORIGINAL_PROCESS_EXIT_OBSERVED\"}\r\n{\"role\": \"keeper\", \"wait_result\": 0, \"exit_code\": 0, \"status\": \"ORIGINAL_PROCESS_EXIT_OBSERVED\"}\r\n"
+}

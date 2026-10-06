@@ -1,0 +1,41 @@
+{
+  "argv": [
+    "C:/workspace/ck3_lyd_runtime_20261004/r15-formal-guard-title-side-input-20261007-004/source/formal_guarded_steps.py",
+    "--bindings",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/RUNTIME.formal-001.actual.json",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-save-001",
+    "save",
+    "--revision",
+    "42",
+    "--window",
+    "B3-signed-precommit",
+    "--author-input",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/root-requests-001/AUTHOR-FRAMEWORK.actual-or-pending.json",
+    "--author",
+    "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-native-title-query-20261007-007/source/author_actual_checkpoint.py",
+    "--author-sha256",
+    "59ebc2a14f88cc66d26961c65fae75a846a451c5fa6a3fb61d26280c24126543",
+    "--readback-output",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-readback-001",
+    "--native-title-reference-query",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B3-query-001/QUERY.actual.json"
+  ],
+  "script": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-formal-guard-title-side-input-20261007-004/source/formal_guarded_steps.py",
+    "bytes": 12360,
+    "sha256": "e3db59d055260bcab0e89a926ff3ec36b5b576ba42cfb79c3cacfc95b45a90cd"
+  },
+  "queue_helper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-formal-guard-title-side-input-20261007-004/source/root_queue_ops.py",
+    "bytes": 5400,
+    "sha256": "ae9fc2e15e6d285a497fef2ee0c4a6ad1dd8103bcf83ab1b14c0b57c2c58cc7f"
+  },
+  "bindings": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/RUNTIME.formal-001.actual.json",
+    "bytes": 1821,
+    "sha256": "7cc2734d45a984019667bd8e9f05a3bf0aaf0565746aec7f6070547eb711800a"
+  },
+  "automatic_retry": false,
+  "NPC_control": false
+}

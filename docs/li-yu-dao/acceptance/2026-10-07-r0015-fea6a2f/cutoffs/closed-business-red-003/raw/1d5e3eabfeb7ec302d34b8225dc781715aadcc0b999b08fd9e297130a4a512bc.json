@@ -1,0 +1,58 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\next-formal-queue-and-guard-adapter-20261007-003\\source\\root_queue_ops.py",
+    "--bindings",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/RUNTIME.formal-001.actual.json",
+    "--compact",
+    "send",
+    "ck3_query_profile_decision_item_v1",
+    "--arguments-file",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\formal-r3-ballot-sequence-001\\05-review\\03.arguments.json"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-ballot-sequence-001/05-review/03.stdout",
+    "bytes": 3426,
+    "sha256": "2b3549e946d2188f50d2a07936a90743106ea31f982eda9992103009d3b81c3a"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-ballot-sequence-001/05-review/03.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false,
+  "dispatch": {
+    "schema": "ck3.lyd.mcp-dispatch.v1",
+    "sequence": 128,
+    "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\mcp-queue-001\\explicit-85f9ea1cd3d14c8ea0070bff6d7a3f20.request.json",
+    "request_sha256": "340afb1200706abdc79e80079a6fdd05bd230e32514b5b5ec476550357b172b4",
+    "started_at_utc": "2026-10-06T21:03:43.827058+00:00",
+    "request_id": "explicit-85f9ea1cd3d14c8ea0070bff6d7a3f20",
+    "status": "MCP_RESULT_RECORDED",
+    "is_error": null,
+    "sdk_result": "0128-explicit-85f9ea1cd3d14c8ea0070bff6d7a3f20.sdk-result.json",
+    "sdk_result_sha256": "c5448baa73f4b30d177fc6ecf0bf8506492c018ddb5d6abd3bb6763f2d157460",
+    "native_receipts": [
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\native-evidence\\de4469c9251145468e0ca685176cbc8f\\0126-decision-query.json",
+        "copy": "0128-explicit-85f9ea1cd3d14c8ea0070bff6d7a3f20.native-01.json",
+        "sha256": "9ed8d2be5fe7834f4e9a9edeb71bcbe43a4793114d3e3c67d065254c59370c96"
+      }
+    ],
+    "finished_at_utc": "2026-10-06T21:03:45.197685+00:00"
+  },
+  "SDK_wrapper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0128-explicit-85f9ea1cd3d14c8ea0070bff6d7a3f20.sdk-result.json",
+    "bytes": 4783,
+    "sha256": "c5448baa73f4b30d177fc6ecf0bf8506492c018ddb5d6abd3bb6763f2d157460"
+  },
+  "original_native_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-ballot-sequence-001/05-review/03-native-01.original.json",
+    "bytes": 2040,
+    "sha256": "ba14f842d56fb4fc4f4c15224590c7b0ae47d9c357755cdfaaa00a2f7133d8e5"
+  }
+}

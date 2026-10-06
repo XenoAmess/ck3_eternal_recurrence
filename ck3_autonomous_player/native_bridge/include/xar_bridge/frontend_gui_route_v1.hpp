@@ -19,6 +19,9 @@
 #include "xar_bridge/white_control_action_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+#include "xar_bridge/grant_title_picker_v1.hpp"
+#endif
 
 #include <cstdint>
 #include <string_view>
@@ -244,6 +247,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   action_white_control = 35,
   normal_exit_map = 38, // Fixed map-only normal-exit provider; no new mailbox slot.
   player_control_readonly = 39, // Fixed source-bound partial query; mutations unavailable.
+  grant_title_picker = 40,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -298,6 +302,9 @@ struct FrontendGuiRouteMailboxContextV1 {
   ck3_12003::AubBusinessStateContextV1 aub_business_state{};
   ck3_12003::AubConfirmContextV1 aub_confirm{};
   WhiteControlActionContextV1 white_control_action{};
+#if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+  ck3_12003::GrantTitlePickerContextV1 grant_title_picker{};
+#endif
 #if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
   ck3_12003::NormalExitMapContextV1 normal_exit_map{};
 #endif

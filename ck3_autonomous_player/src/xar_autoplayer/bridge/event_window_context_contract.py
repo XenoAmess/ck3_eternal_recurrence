@@ -64,6 +64,10 @@ _SCOPE_FIELDS = {
     "typed_identity",
 }
 _SAVED_SCOPE_FIELDS = {"name", "name_identifier", "scope"}
+_NUMERIC_SCOPE_FIELDS = {
+    "raw_fixed_point", "scale", "decimal_value", "integer_value"
+}
+_NUMERIC_SCOPE_SCALE = 100_000
 
 _EFFECT_INDICATOR_COVERAGE = (
     "played-character-event-icon-indicators-1.19.0.6-v1"
@@ -245,14 +249,44 @@ def _effect_indicator(value: Any, label: str, *, game_version: str) -> None:
     raise ValueError(f"{label}.kind is invalid")
 
 
+def _numeric_scope_value(value: Any, label: str) -> None:
+    numeric = _exact_object(value, _NUMERIC_SCOPE_FIELDS, label)
+    raw_text = numeric["raw_fixed_point"]
+    if not isinstance(raw_text, str) or not 1 <= len(raw_text) <= 20:
+        raise ValueError(f"{label}.raw_fixed_point is not a signed64 string")
+    try:
+        raw = int(raw_text)
+    except ValueError as exc:
+        raise ValueError(f"{label}.raw_fixed_point is invalid") from exc
+    if str(raw) != raw_text or not -(2**63) <= raw < 2**63:
+        raise ValueError(f"{label}.raw_fixed_point is not canonical signed64")
+    _int(numeric["scale"], f"{label}.scale", _NUMERIC_SCOPE_SCALE,
+         _NUMERIC_SCOPE_SCALE)
+    whole, fraction = divmod(abs(raw), _NUMERIC_SCOPE_SCALE)
+    decimal = ("-" if raw < 0 else "") + str(whole)
+    if fraction:
+        decimal += "." + f"{fraction:05d}".rstrip("0")
+    if numeric["decimal_value"] != decimal:
+        raise ValueError(f"{label}.decimal_value differs from exact payload")
+    integer = str(raw // _NUMERIC_SCOPE_SCALE) if fraction == 0 else None
+    if numeric["integer_value"] != integer:
+        raise ValueError(f"{label}.integer_value differs from exact payload")
+
+
 def _event_scope(
     value: Any,
     label: str,
     *,
     allow_unavailable_character_identity: bool = False,
     allow_null_character_identity: bool = False,
+    allow_numeric_value: bool = False,
 ) -> None:
-    scope = _exact_object(value, _SCOPE_FIELDS, label)
+    has_numeric = isinstance(value, dict) and "numeric_value" in value
+    if has_numeric and not allow_numeric_value:
+        raise ValueError(f"{label}.numeric_value does not belong to this build")
+    scope = _exact_object(
+        value, _SCOPE_FIELDS | ({"numeric_value"} if has_numeric else set()), label
+    )
     if scope["status"] != "available":
         raise ValueError(f"{label}.status is invalid")
     raw_type_index = _int(
@@ -262,7 +296,11 @@ def _event_scope(
         2**16 - 1,
     )
     type_key = _stable_key(scope["type_key"], f"{label}.type_key")
-    _int(scope["subtype"], f"{label}.subtype", 0, 2**16 - 1)
+    subtype = _int(scope["subtype"], f"{label}.subtype", 0, 2**16 - 1)
+    if has_numeric:
+        if raw_type_index != 1 or type_key != "value" or subtype != 0:
+            raise ValueError(f"{label}.numeric_value type/subtype differs")
+        _numeric_scope_value(scope["numeric_value"], f"{label}.numeric_value")
     identity = scope["typed_identity"]
     if raw_type_index == 25 and type_key == "faction":
         if isinstance(identity, dict) and identity.get("status") == "available":
@@ -452,7 +490,8 @@ def normalize_current_event_window_context_v1(
         -(2**31),
         2**31 - 1,
     )
-    _event_scope(frame["root_scope"], "current event root_scope")
+    _event_scope(frame["root_scope"], "current event root_scope",
+                 allow_numeric_value=event_build == CK3_12003)
     saved_scopes = frame["saved_scopes"]
     if not isinstance(saved_scopes, list) or len(saved_scopes) > 1_024:
         raise ValueError("current event saved_scopes must be a bounded list")
@@ -482,6 +521,7 @@ def normalize_current_event_window_context_v1(
             f"current event saved scope {index}.scope",
             allow_unavailable_character_identity=True,
             allow_null_character_identity=event_build == CK3_12003,
+            allow_numeric_value=event_build == CK3_12003,
         )
     if readiness != {
         "event_definition_identity_ready": True,

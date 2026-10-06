@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r15-checkpoint-author-native-title-query-20261007-007\source\author_actual_checkpoint.py", line 348, in run
+    title_query=title_hook.authenticate_query_source(title_query_input,provenance)
+  File "C:\workspace\ck3_lyd_runtime_20261004\r15-checkpoint-author-native-title-query-20261007-007\source\title_reference\title_reference_hook.py", line 37, in authenticate_query_source
+    need(type(native.get('receipt_path')) is str and Path(native['receipt_path']).resolve() == Path(spec['native_receipt']['path']).resolve(), 'native original receipt_path differs from supplied file')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r15-checkpoint-author-native-title-query-20261007-007\source\title_reference\derive_saved_title_reference_v3.py", line 24, in need
+    raise ValueError(message)
+ValueError: native original receipt_path differs from supplied file

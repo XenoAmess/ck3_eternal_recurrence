@@ -2,6 +2,8 @@
 
 #include "xar_bridge/game_contract.hpp"
 
+#include <array>
+#include <cstddef>
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -66,11 +68,24 @@ struct EventScopeTypedIdentityV1 {
                          const EventScopeTypedIdentityV1 &) = default;
 };
 
+struct EventScopeNumericValueV1 {
+  // Retain the complete token copied by the reader, including the exact payload
+  // bytes, so the existing before/after observation equality detects drift.
+  std::array<std::byte, 16> raw_token{};
+  std::int64_t raw_fixed_point = 0;
+
+  friend bool operator==(const EventScopeNumericValueV1 &,
+                         const EventScopeNumericValueV1 &) = default;
+};
+
+inline constexpr std::int64_t kEventScopeFixedPointScaleV1 = 100'000;
+
 struct EventScopeV1 {
   std::uint16_t raw_type_index = 0;
   std::string type_key;
   std::uint16_t subtype = 0;
   EventScopeTypedIdentityV1 typed_identity;
+  std::optional<EventScopeNumericValueV1> numeric_value;
 
   friend bool operator==(const EventScopeV1 &, const EventScopeV1 &) =
       default;

@@ -39,6 +39,12 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
     result.push_back(ck3_12003::kNormalExitMapV1Capability);
 #endif
+#if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+    result.push_back(ck3_12003::kGrantTitlePickerQueryV1Capability);
+    result.push_back(ck3_12003::kGrantTitlePickerPrepareV1Capability);
+    result.push_back(ck3_12003::kGrantTitlePickerSelectV1Capability);
+    result.push_back(ck3_12003::kGrantTitlePickerSendV1Capability);
+#endif
     // Existing public UI family is implemented only for Army query/select on
     // exact .3; bridge/provider reject every other role before native dispatch.
     result.push_back(ck3_11906::kIngameUiNavigationV1Capability);

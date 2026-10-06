@@ -90,6 +90,23 @@ bool ReadOrdinaryInteractionContextV1(const Bindings &, const OrdinaryInteractio
 // construction, checks both vtables, invokes SubmitCommandCopy once (0x0E).
 // Any invoked queue path is only pending; no gameplay outcome is claimed.
 void InitiateOrdinaryInteractionV1(const Bindings &, const OrdinaryInteractionRequestV1 &,
-                                  SendObservation &) noexcept;
+                                   SendObservation &) noexcept;
+
+#if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+// Trusted owner-only stock UI leaves. This path never constructs a command.
+struct GrantWindowBindingsV1 {
+  void *confirmation = nullptr, *handler = nullptr;
+  void (*install_context)(void *, const void *) = nullptr;
+  void (*open_window)(void *, std::int32_t, std::int32_t) = nullptr;
+  void (*refresh_window)(void *) = nullptr;
+};
+struct GrantPrepareObservationV1 {
+  Observation preflight{};
+  bool dispatch_invoked = false, native_call_completed = false;
+  const char *reason = "not_attempted";
+};
+void PrepareGrantTitlePickerWindowV1(const Bindings &, const OrdinaryInteractionRequestV1 &,
+    const GrantWindowBindingsV1 &, GrantPrepareObservationV1 &) noexcept;
+#endif
 
 } // namespace xar::ck3_12003::ordinary_interaction

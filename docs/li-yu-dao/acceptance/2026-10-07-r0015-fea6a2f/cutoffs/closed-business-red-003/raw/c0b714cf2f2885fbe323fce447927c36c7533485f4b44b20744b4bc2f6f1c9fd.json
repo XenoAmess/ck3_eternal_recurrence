@@ -1,0 +1,58 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\next-formal-queue-and-guard-adapter-20261007-003\\source\\root_queue_ops.py",
+    "--bindings",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/RUNTIME.formal-001.actual.json",
+    "--compact",
+    "send",
+    "ck3_save_profile_checkpoint_v1",
+    "--arguments-file",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\formal-r3-B4-save-001\\01.arguments.json"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B4-save-001/01.stdout",
+    "bytes": 5387,
+    "sha256": "e9cedb46e7d5ee60870ff7d140848eb37b777fa5fc1f4a2ce332785bf6653176"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B4-save-001/01.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false,
+  "dispatch": {
+    "schema": "ck3.lyd.mcp-dispatch.v1",
+    "sequence": 142,
+    "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\mcp-queue-001\\explicit-34f67f0ab7e4411bacc4d1c3d10c8df9.request.json",
+    "request_sha256": "32f2a055e9897c4eed2e8781eae921c1418b33fe10e462f4bb64b6c79a22cd9b",
+    "started_at_utc": "2026-10-06T21:15:48.098397+00:00",
+    "request_id": "explicit-34f67f0ab7e4411bacc4d1c3d10c8df9",
+    "status": "MCP_RESULT_RECORDED",
+    "is_error": null,
+    "sdk_result": "0142-explicit-34f67f0ab7e4411bacc4d1c3d10c8df9.sdk-result.json",
+    "sdk_result_sha256": "d74c5172ec149fa4461c477929bfabd525768324022d7878f008e74d73c05b01",
+    "native_receipts": [
+      {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\native-evidence\\de4469c9251145468e0ca685176cbc8f\\0140-checkpoint.json",
+        "copy": "0142-explicit-34f67f0ab7e4411bacc4d1c3d10c8df9.native-01.json",
+        "sha256": "4d9c0bb14791fa3ec4246fec7ada6df52c4f02c32627822bb2d3bcbc38a9651c"
+      }
+    ],
+    "finished_at_utc": "2026-10-06T21:15:56.191295+00:00"
+  },
+  "SDK_wrapper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0142-explicit-34f67f0ab7e4411bacc4d1c3d10c8df9.sdk-result.json",
+    "bytes": 5521221,
+    "sha256": "d74c5172ec149fa4461c477929bfabd525768324022d7878f008e74d73c05b01"
+  },
+  "original_native_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B4-save-001/01-native-01.original.json",
+    "bytes": 2556418,
+    "sha256": "4cb594d498b13c026d44d1d9c80970e4d0d9624387ffd39d12b5f780e29c0d9f"
+  }
+}

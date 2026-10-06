@@ -1,0 +1,50 @@
+{
+  "schema": "lyd.root.postrelease-process-absence.v1",
+  "observed_at_utc": "2026-10-06T21:25:37.136934+00:00",
+  "writer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-operations-20261007-001/capture_closed_absence.py",
+    "bytes": 3231,
+    "sha256": "a728aca5e4ab59d12e0c284924513492a31f9b77df72825cb600d1ad00473e71"
+  },
+  "release": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-release-screen-actual-20261007-001/RELEASE.actual.json",
+    "bytes": 1167,
+    "sha256": "fc2a0b0410ac7529524c749e500564bc0a96b2dbef7efc699e49feeb75aabbc1"
+  },
+  "original_identities": [
+    {
+      "role": "game",
+      "pid": 14452,
+      "create_time": 1791313780.8972144,
+      "same_original_identity_alive": false,
+      "current_pid_observation": null
+    },
+    {
+      "role": "client",
+      "pid": 9624,
+      "create_time": 1791316076.4627192,
+      "same_original_identity_alive": false,
+      "current_pid_observation": null
+    },
+    {
+      "role": "keeper",
+      "pid": 19880,
+      "create_time": 1791313373.0698714,
+      "same_original_identity_alive": false,
+      "current_pid_observation": null
+    },
+    {
+      "role": "holder",
+      "pid": 14760,
+      "create_time": 1791316356.256702,
+      "same_original_identity_alive": false,
+      "current_pid_observation": null
+    }
+  ],
+  "same_original_identities_absent": true,
+  "no_current_managed_game_or_native_services": true,
+  "remaining_managed_game_or_native_services": [],
+  "unknown_python_identity_queries": [],
+  "SDK_server_pid_19348_present": false,
+  "original_HANDLE_credit": false
+}

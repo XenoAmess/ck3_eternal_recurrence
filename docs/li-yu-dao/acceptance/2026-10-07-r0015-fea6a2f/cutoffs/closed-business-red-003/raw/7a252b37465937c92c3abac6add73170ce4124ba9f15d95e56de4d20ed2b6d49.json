@@ -1,0 +1,37 @@
+{
+  "schema": "lyd.actual-closed-boundary-source-index.v1",
+  "status": "ACTUAL_R15_CLOSED_RELEASED_BOUNDARY_VERIFIED",
+  "review": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3114,
+    "sha256": "c519e2c30c051df45afce80ee10f6d025c59d9e4943894fa0e9cc1e6808bf158"
+  },
+  "verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/verify_r15_previous_boundary.py",
+    "bytes": 11128,
+    "sha256": "f92037872d6fa921980501a4adbd69010f24edd99cd2d0656ff88765b9dbd9ec"
+  },
+  "verifier_dependencies": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/DEPENDENCIES.json",
+    "bytes": 1940,
+    "sha256": "e8ad67c4a02ac68252590d84143f836d86a3368601be984e48412565889c6ecc"
+  },
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-postrelease-process-absence-20261007-001/ROOT-BOUNDARY-INPUTS.actual.json",
+    "bytes": 1720,
+    "sha256": "def2c4d04c348a355b48e841985eb49760dcc392164ac4958b81a31010bdacda"
+  },
+  "author_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-genuine-closed-boundary-author-source-20261007-001/author_r15_closed_boundary.py",
+    "bytes": 2986,
+    "sha256": "be472345ff44bf787ab0fddf60a27ee01f6c4ef7f583ad1c7c09e03866b55595"
+  },
+  "recorded_at_utc": "2026-10-06T21:26:23.763154+00:00",
+  "source_head": "fea6a2f9f7233f2e3bab6cdd1329b55aa09ca17c",
+  "business_GREEN": false,
+  "autosave_verified": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "process_lookups": 0,
+  "lease_mutated": false
+}

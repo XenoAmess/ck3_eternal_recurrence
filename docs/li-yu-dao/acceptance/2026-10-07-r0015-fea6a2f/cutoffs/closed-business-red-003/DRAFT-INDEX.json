@@ -1,0 +1,50 @@
+{
+  "status": "EXTERNAL_APPEND_DRAFT004_CLOSED_BUSINESS_RED",
+  "prior_draft": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-003/INDEX.json",
+    "bytes": 1887,
+    "sha256": "017473bdb068b8b43a600861d35fa78cac6fe82f6884ea7087fb5daec1136504"
+  },
+  "source_helper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/prepare_draft004.py",
+    "bytes": 16700,
+    "sha256": "81c676d490d1c07bb5a5820abf51507eda1372aa4350fe63b5002b4174bbd931"
+  },
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-004/DAILY-2026-10-07.append.draft.md",
+      "bytes": 804,
+      "sha256": "1297f33ab1bd12d9e7a5cb04a6432445bf9f18704d73ff00663b14c5bdbc05b8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-004/FACTS.cutoff.actual.json",
+      "bytes": 67630,
+      "sha256": "96e95ba3ce8704825459273c5d7cd4d59ed453353b42ec558c6d7ae4167de797"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-004/NAVIGATION.append.draft.md",
+      "bytes": 399,
+      "sha256": "95f37ff955d3316477ba5cf89a40971195f0be87471efc47be44dddaab3ee7df"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-004/REPORT.append-only.draft.md",
+      "bytes": 3271,
+      "sha256": "cea85f1653216c07d62740f38008cbeb0e7ab98b1b2309325598c172b63bcaef"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-004/SMALL-SOURCE-MANIFEST.actual.json",
+      "bytes": 45608,
+      "sha256": "d7c73406d7a2556d72dff62590485f56ee4b9b3b8e4cbf9d7fec34a8a5c7ee7d"
+    }
+  ],
+  "actual_closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3114,
+    "sha256": "c519e2c30c051df45afce80ee10f6d025c59d9e4943894fa0e9cc1e6808bf158"
+  },
+  "business_GREEN": false,
+  "main_writes": 0,
+  "SDK_game_calls": 0,
+  "process_lookups": 0,
+  "save_body_reads": 0
+}

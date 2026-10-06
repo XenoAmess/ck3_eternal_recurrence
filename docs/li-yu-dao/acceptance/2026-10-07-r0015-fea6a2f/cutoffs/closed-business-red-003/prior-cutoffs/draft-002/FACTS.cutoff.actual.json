@@ -1,0 +1,1624 @@
+{
+  "status": "APPEND_ONLY_BASELINE_B1_B2_CUTOFF_NOT_GREEN",
+  "cutoff_utc": "2026-10-06T20:30:53.133585+00:00",
+  "source_HEAD": "fea6a2f9f7233f2e3bab6cdd1329b55aa09ca17c",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0015",
+  "execution_id": "92ed81fe-a4ab-4cd8-8bd6-96eaec13a65f",
+  "attempt": "R0015",
+  "first_round_authorized_evidence_scope": "Only original baseline/B1/B2 and actions through SDK27; later on-disk phases not assigned credit here",
+  "actual_game": {
+    "pid": 14452,
+    "create_time": 1791313780.8972144,
+    "still_live": "ROOT_REPORTED_NOT_REPROBED_BY_DRAFT"
+  },
+  "Client_session_id": "3752b80510144540a5ff173194ab5bb8",
+  "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+  "actual_Client_tool_count": 24,
+  "SDK_attach_status": "attached_snapshot_verified",
+  "automatic_attach": false,
+  "original_attach_count_in_scoped_receipts": 1,
+  "original_helper_handles": {
+    "holder_pid": 14760,
+    "holder_create_time": 1791316356.256702,
+    "captured_client_keeper": [
+      {
+        "role": "client",
+        "pid": 9624,
+        "create_time": 1791316076.4627192,
+        "handle_value": 420,
+        "handle_local_to_holder_pid": 14760,
+        "process_creation_filetime_100ns": 134357896764627193,
+        "initial_wait_result": 258,
+        "initial_exit_code": 259,
+        "captured_at_utc": "2026-10-06T19:52:36.444586+00:00"
+      },
+      {
+        "role": "keeper",
+        "pid": 19880,
+        "create_time": 1791313373.0698714,
+        "handle_value": 424,
+        "handle_local_to_holder_pid": 14760,
+        "process_creation_filetime_100ns": 134357869730698714,
+        "initial_wait_result": 258,
+        "initial_exit_code": 259,
+        "captured_at_utc": "2026-10-06T19:52:36.445471+00:00"
+      }
+    ],
+    "current_still_alive": "ROOT_REPORTED; retained initial wait258/exit259 are original observations",
+    "game_original_HANDLE_exported": null,
+    "game_original_HANDLE_owner": {
+      "component": "existing SDK NativeProfileService in actual Client-owned native MCP server",
+      "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+      "client_session_id": "3752b80510144540a5ff173194ab5bb8",
+      "server_process": {
+        "pid": 19348,
+        "create_time": 1791316081.0459528,
+        "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "cmdline": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-X",
+          "utf8",
+          "C:\\lr15s1\\tools\\ck3_native_profile_mcp.py",
+          "--profile",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\native-profile-with-exit-inventory.json",
+          "--confucian-challenger-tools"
+        ]
+      },
+      "server_source": {
+        "path": "C:/lr15s1/tools/ck3_native_profile_mcp.py",
+        "bytes": 72524,
+        "sha256": "9e8848a9292be45d627bf70a33c96abfadd406e6d7c50dd12ea8eaa2a525ae23"
+      },
+      "original_attach_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/native-evidence/de4469c9251145468e0ca685176cbc8f/0001-attach.json",
+        "bytes": 19650,
+        "sha256": "33b2eaf4928276e32c5cfc7a2bb73d0881a11394e30d800e719cc73430cb60a3"
+      },
+      "actual_game_identity": {
+        "pid": 14452,
+        "process_create_time": 1791313780.8972144
+      },
+      "actual_connection_generation": 1,
+      "game_handle_value": null,
+      "retained_game_handle_capture_in_attach_receipt": null,
+      "authority": "Actual attached SDK session/process identity only; original attach receipt has no exported HANDLE value/capture field. Passive helper observer opens no game HANDLE."
+    },
+    "game_exit0": null,
+    "client_exit0": null,
+    "keeper_exit0": null,
+    "CAS_release": null
+  },
+  "stages": [
+    {
+      "label": "baseline",
+      "author_status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "author_utc": "2026-10-06T19:58:05.331750+00:00",
+      "executing_author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-observed-native-qualification-20261007-006/source/author_actual_checkpoint.py",
+        "bytes": 35946,
+        "sha256": "000ff0d993c126ecbec11ea3c366378373277b218004fe5f680c557ff097a910"
+      },
+      "protocol_HEAD": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+      "stage_literal": "pre_proposal_baseline",
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 14452,
+        "session_id": "de4469c9251145468e0ca685176cbc8f",
+        "revision": 2,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "round": {
+        "serial": null,
+        "nonce": null,
+        "phase": null,
+        "result_code": null
+      },
+      "before_save": {
+        "revision": 2,
+        "native_revision": 1,
+        "date_raw": 53144712,
+        "game_pid": 14452,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:1"
+      },
+      "after_save": {
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53144712,
+        "game_pid": 14452,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:2"
+      },
+      "checkpoint_reference_only": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/content-e48f0ec8fd4ec4bc20d5bea03eea7642dbcc2736bbd91143362aee2b38278485.ck3",
+        "bytes": 91669783,
+        "sha256": "e48f0ec8fd4ec4bc20d5bea03eea7642dbcc2736bbd91143362aee2b38278485"
+      },
+      "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+      "G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+      "strict_reader_executed": false,
+      "raw_observation_check_count": 0,
+      "STATE_actual_pass": null,
+      "STATE_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "STATE_native_qualification": "UNKNOWN",
+      "STATE_native_qualified_check_count": null,
+      "STATE_native_qualified_actual_pass": null,
+      "STATE_native_qualified_status": null,
+      "typed_protection_check_count": 87,
+      "protection_checks_match": true,
+      "typed_actual_pass": null,
+      "formal_mandate_credit": null,
+      "actor_held_political_title_ids": [
+        2230,
+        2231,
+        2232,
+        2235,
+        2262,
+        2263,
+        2264
+      ],
+      "actual_added_religious_title": null,
+      "future_T": null,
+      "observed_qualification_reuse": {
+        "observed_qualification": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-metadata-capture-20261007-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+          "bytes": 921290,
+          "sha256": "94d3606519d977b6a52fa4f72caa3e97f8f8769c3227489dbc159bfa3d7a2ea5"
+        },
+        "consumer_adapter_source": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-observed-native-qualification-20261007-006/source/qualification/consumer_native_build_adapter.py",
+          "bytes": 1663,
+          "sha256": "ce6d307bc518e3f2de089fa914e37239c2756d7bda38009d489390eb31b1ff39"
+        },
+        "compiled_verification": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-clean-native-build-20261007-001/RESULT.json",
+          "bytes": 919477,
+          "sha256": "044b394f20812009cac8e7b89b3357a785f8015019c4f9de65c61f28736eb1a5"
+        },
+        "actual_export_report": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-head-export-20261007-001/REPORT.json",
+          "bytes": 23128,
+          "sha256": "9bbd1400f3b29f23717482eb5e8162d2e74ba22b002fc9d19fe34264c7e90697"
+        },
+        "qualification_original_bytes_retained": true,
+        "already_observed_qualification_reused": true,
+        "native_gate_rerun": false,
+        "current_artifact_byte_checks": {
+          "six_products": 6,
+          "new_runtime_library": true,
+          "profile_DLL_and_injector": true
+        },
+        "historical_build_reinterpreted": false,
+        "new_runtime_or_formal_credit": null
+      },
+      "original_refs": {
+        "RESULT.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-002/RESULT.json",
+          "bytes": 975792,
+          "sha256": "464714af248c48b0e686152f0f088d97625ef7171dc4ce653705c2da3849b0ce"
+        },
+        "STATE.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-002/STATE.json",
+          "bytes": 1317829,
+          "sha256": "152108f82949688e11c8701e3f0d433bf1eca2b4fe816e338d3abe90ed97d2d5"
+        },
+        "TYPED-PROTECTION.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-002/TYPED-PROTECTION.json",
+          "bytes": 966756,
+          "sha256": "1a6e4ec868db2d8139ece156ddfc1d77df421b89e456322b71aee40ef2e132cc"
+        },
+        "CHECKPOINT-TRANSITION.actual.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-002/CHECKPOINT-TRANSITION.actual.json",
+          "bytes": 26934,
+          "sha256": "d2134a128e0931ad279c96f3853df328e67009e91f59d0a7d9d693d0418e34a2"
+        }
+      }
+    },
+    {
+      "label": "B1",
+      "author_status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "author_utc": "2026-10-06T20:03:35.238835+00:00",
+      "executing_author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-observed-native-qualification-20261007-006/source/author_actual_checkpoint.py",
+        "bytes": 35946,
+        "sha256": "000ff0d993c126ecbec11ea3c366378373277b218004fe5f680c557ff097a910"
+      },
+      "protocol_HEAD": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+      "stage_literal": "proposal",
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 14452,
+        "session_id": "de4469c9251145468e0ca685176cbc8f",
+        "revision": 4,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "round": {
+        "serial": 1,
+        "nonce": 1,
+        "phase": 1,
+        "result_code": null
+      },
+      "before_save": {
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53144712,
+        "game_pid": 14452,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:3"
+      },
+      "after_save": {
+        "revision": 5,
+        "native_revision": 4,
+        "date_raw": 53144712,
+        "game_pid": 14452,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:4"
+      },
+      "checkpoint_reference_only": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/content-862cca745915fb3ea88a76f447c0bbebbb75f3c385fcb6fa98a84471db832f4c.ck3",
+        "bytes": 91707924,
+        "sha256": "862cca745915fb3ea88a76f447c0bbebbb75f3c385fcb6fa98a84471db832f4c"
+      },
+      "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+      "G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+      "strict_reader_executed": true,
+      "raw_observation_check_count": 297,
+      "STATE_actual_pass": null,
+      "STATE_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "STATE_native_qualification": "UNKNOWN",
+      "STATE_native_qualified_check_count": 403,
+      "STATE_native_qualified_actual_pass": null,
+      "STATE_native_qualified_status": "CALLER_SUPPLIED_NOT_NATIVE_AUTHENTICATED",
+      "typed_protection_check_count": 87,
+      "protection_checks_match": true,
+      "typed_actual_pass": null,
+      "formal_mandate_credit": null,
+      "actor_held_political_title_ids": [
+        2230,
+        2231,
+        2232,
+        2235,
+        2262,
+        2263,
+        2264
+      ],
+      "actual_added_religious_title": null,
+      "future_T": null,
+      "observed_qualification_reuse": {
+        "observed_qualification": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-metadata-capture-20261007-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+          "bytes": 921290,
+          "sha256": "94d3606519d977b6a52fa4f72caa3e97f8f8769c3227489dbc159bfa3d7a2ea5"
+        },
+        "consumer_adapter_source": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-observed-native-qualification-20261007-006/source/qualification/consumer_native_build_adapter.py",
+          "bytes": 1663,
+          "sha256": "ce6d307bc518e3f2de089fa914e37239c2756d7bda38009d489390eb31b1ff39"
+        },
+        "compiled_verification": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-clean-native-build-20261007-001/RESULT.json",
+          "bytes": 919477,
+          "sha256": "044b394f20812009cac8e7b89b3357a785f8015019c4f9de65c61f28736eb1a5"
+        },
+        "actual_export_report": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-head-export-20261007-001/REPORT.json",
+          "bytes": 23128,
+          "sha256": "9bbd1400f3b29f23717482eb5e8162d2e74ba22b002fc9d19fe34264c7e90697"
+        },
+        "qualification_original_bytes_retained": true,
+        "already_observed_qualification_reused": true,
+        "native_gate_rerun": false,
+        "current_artifact_byte_checks": {
+          "six_products": 6,
+          "new_runtime_library": true,
+          "profile_DLL_and_injector": true
+        },
+        "historical_build_reinterpreted": false,
+        "new_runtime_or_formal_credit": null
+      },
+      "original_refs": {
+        "RESULT.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/RESULT.json",
+          "bytes": 977020,
+          "sha256": "0eb1fcace4018307c7bf72a8f8df3bd90f0634bddd8b272a84a40a535189bfc1"
+        },
+        "STATE.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/STATE.json",
+          "bytes": 2605635,
+          "sha256": "07e2cd1782b8781a37044b10d77aed51529f53fa406a3caa7e53960bafee2a89"
+        },
+        "TYPED-PROTECTION.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/TYPED-PROTECTION.json",
+          "bytes": 1156293,
+          "sha256": "65cca3de9e39296c4e518921d56c4fe9f9f47ac6ee13a8786e5ec125f6b67546"
+        },
+        "CHECKPOINT-TRANSITION.actual.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/CHECKPOINT-TRANSITION.actual.json",
+          "bytes": 348228,
+          "sha256": "5f968f4c88dcfd8efe95791e2b124611dc51bbfd2c874bc15c3b6dfcc01a340a"
+        },
+        "STATE.native-qualified.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/STATE.native-qualified.json",
+          "bytes": 2643137,
+          "sha256": "4ed3a22ccf0aaf065558c742d1b70a91086b92502b3c27e4844e2c9a96b851d9"
+        }
+      }
+    },
+    {
+      "label": "B2",
+      "author_status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "author_utc": "2026-10-06T20:15:10.302285+00:00",
+      "executing_author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-observed-native-qualification-20261007-006/source/author_actual_checkpoint.py",
+        "bytes": 35946,
+        "sha256": "000ff0d993c126ecbec11ea3c366378373277b218004fe5f680c557ff097a910"
+      },
+      "protocol_HEAD": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+      "stage_literal": "proposal",
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 14452,
+        "session_id": "de4469c9251145468e0ca685176cbc8f",
+        "revision": 8,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-015\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "round": {
+        "serial": 1,
+        "nonce": 1,
+        "phase": 1,
+        "result_code": null
+      },
+      "before_save": {
+        "revision": 8,
+        "native_revision": 7,
+        "date_raw": 53144712,
+        "game_pid": 14452,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:7"
+      },
+      "after_save": {
+        "revision": 9,
+        "native_revision": 8,
+        "date_raw": 53144712,
+        "game_pid": 14452,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:8"
+      },
+      "checkpoint_reference_only": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/content-195158547ec15c67e294f2bc76ecb1aeccd407931ca1b9c769d1448caf788a20.ck3",
+        "bytes": 91707310,
+        "sha256": "195158547ec15c67e294f2bc76ecb1aeccd407931ca1b9c769d1448caf788a20"
+      },
+      "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+      "G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+      "strict_reader_executed": true,
+      "raw_observation_check_count": 297,
+      "STATE_actual_pass": null,
+      "STATE_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "STATE_native_qualification": "UNKNOWN",
+      "STATE_native_qualified_check_count": 404,
+      "STATE_native_qualified_actual_pass": null,
+      "STATE_native_qualified_status": "CALLER_SUPPLIED_NOT_NATIVE_AUTHENTICATED",
+      "typed_protection_check_count": 87,
+      "protection_checks_match": true,
+      "typed_actual_pass": null,
+      "formal_mandate_credit": null,
+      "actor_held_political_title_ids": [
+        2230,
+        2231,
+        2232,
+        2235,
+        2262,
+        2263,
+        2264
+      ],
+      "actual_added_religious_title": null,
+      "future_T": null,
+      "observed_qualification_reuse": {
+        "observed_qualification": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-metadata-capture-20261007-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+          "bytes": 921290,
+          "sha256": "94d3606519d977b6a52fa4f72caa3e97f8f8769c3227489dbc159bfa3d7a2ea5"
+        },
+        "consumer_adapter_source": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-observed-native-qualification-20261007-006/source/qualification/consumer_native_build_adapter.py",
+          "bytes": 1663,
+          "sha256": "ce6d307bc518e3f2de089fa914e37239c2756d7bda38009d489390eb31b1ff39"
+        },
+        "compiled_verification": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-clean-native-build-20261007-001/RESULT.json",
+          "bytes": 919477,
+          "sha256": "044b394f20812009cac8e7b89b3357a785f8015019c4f9de65c61f28736eb1a5"
+        },
+        "actual_export_report": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-head-export-20261007-001/REPORT.json",
+          "bytes": 23128,
+          "sha256": "9bbd1400f3b29f23717482eb5e8162d2e74ba22b002fc9d19fe34264c7e90697"
+        },
+        "qualification_original_bytes_retained": true,
+        "already_observed_qualification_reused": true,
+        "native_gate_rerun": false,
+        "current_artifact_byte_checks": {
+          "six_products": 6,
+          "new_runtime_library": true,
+          "profile_DLL_and_injector": true
+        },
+        "historical_build_reinterpreted": false,
+        "new_runtime_or_formal_credit": null
+      },
+      "original_refs": {
+        "RESULT.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/RESULT.json",
+          "bytes": 977021,
+          "sha256": "ea2c499f7c4a3f6e7cfbc5234e4e5057146cbb31cfff03aa5401cad30f8c3ec7"
+        },
+        "STATE.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/STATE.json",
+          "bytes": 2607113,
+          "sha256": "19ac4d13b2bc9a5b7cd4280340e2ef8f9d32da9e074428f99f621625b0e017ac"
+        },
+        "TYPED-PROTECTION.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/TYPED-PROTECTION.json",
+          "bytes": 1157884,
+          "sha256": "a29a36a3825f96a6cc204e9970d21ea0ee981e0992fc5fd966b615b5f959281f"
+        },
+        "CHECKPOINT-TRANSITION.actual.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/CHECKPOINT-TRANSITION.actual.json",
+          "bytes": 525759,
+          "sha256": "3bd35b59fc87b76e86f5a6996367ea1eba107b83a3dc9aedb37cf56d3b3fcce6"
+        },
+        "STATE.native-qualified.json": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/STATE.native-qualified.json",
+          "bytes": 2644750,
+          "sha256": "3fad7b7de581c490f38b650fb9e2e6ccfd551ec6c7caff9ad6a8efe24aff981d"
+        }
+      }
+    }
+  ],
+  "formal_actions": [
+    {
+      "directory": "formal-baseline-save-001",
+      "actual_result": null,
+      "calls": [
+        {
+          "tool": "ck3_save_profile_checkpoint_v1",
+          "arguments": {
+            "expected_revision": 2
+          },
+          "shell_exit_code": 0,
+          "sequence": 4,
+          "started": "2026-10-06T19:51:49.510918+00:00",
+          "finished": "2026-10-06T19:51:57.250409+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_gameplay_postcondition_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/01.call-completed.json",
+            "bytes": 2701,
+            "sha256": "3f5c59e156e2062889e218640629aa1bdee0888340c32632962d314a95f714e5"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0004-explicit-b95fbbb249cf4cfd98952c3ced87d9bc.sdk-result.json",
+            "bytes": 63457,
+            "sha256": "59a8a7dde40ef2f5a67bc205a2153dde13c8fcb19d3e6fadcc33e0cfa4372c57"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/01-native-01.original.json",
+            "bytes": 29264,
+            "sha256": "2ab2f971b2a4b0365416edfd10497237122df9ed657e62ff00eaadf4cd526b7e"
+          }
+        },
+        {
+          "tool": "ck3_query_profile_confucian_assembly_predicates_v1",
+          "arguments": {
+            "expected_revision": 3
+          },
+          "shell_exit_code": 0,
+          "sequence": 5,
+          "started": "2026-10-06T19:51:58.685624+00:00",
+          "finished": "2026-10-06T19:51:59.890588+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_confucian_readonly_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/02.call-completed.json",
+            "bytes": 2750,
+            "sha256": "a9f5d8e79b2d5c085d36bf353852e5483cd0690f837f51e766b78e91335d1abb"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0005-explicit-a2de875899044fa6ae329b4d0ff906a1.sdk-result.json",
+            "bytes": 61859,
+            "sha256": "7bbbbf0c395a4c2c85fead7e4458e86136df0799bafe2d8ec81ff3c4c646a3ec"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/02-native-01.original.json",
+            "bytes": 28081,
+            "sha256": "ac24c8a083ce17b0314a8a59def3ed0334ccc8b3fa874206e254abc88a864e7c"
+          }
+        },
+        {
+          "tool": "ck3_query_profile_confucian_religious_title_v1",
+          "arguments": {
+            "expected_revision": 3
+          },
+          "shell_exit_code": 0,
+          "sequence": 6,
+          "started": "2026-10-06T19:52:00.504952+00:00",
+          "finished": "2026-10-06T19:52:01.650282+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_confucian_readonly_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/03.call-completed.json",
+            "bytes": 2739,
+            "sha256": "f04a768f966492ddf0890837f04ff12da50416b9eaee0d5cd55e601ba9633f11"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0006-explicit-750c9c21091a4280bd547058fdf1505f.sdk-result.json",
+            "bytes": 9021,
+            "sha256": "4ad1b5241d745ff145ce61b6809a471641bc355127b73a3201546bd2cb153338"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/03-native-01.original.json",
+            "bytes": 4023,
+            "sha256": "89347bb4acafc1593cc03782300387451881208faaef97672e2d9677b2149aa1"
+          }
+        }
+      ],
+      "full_product_credit": null
+    },
+    {
+      "directory": "formal-r1-begin-002",
+      "actual_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/RESULT.actual.json",
+        "bytes": 167797,
+        "sha256": "c65c14e63c87ce9bdfc2a239395223472a7eb4d224a924417644c32e041dea19"
+      },
+      "calls": [
+        {
+          "tool": "ck3_query_profile_decision_item_v1",
+          "arguments": {
+            "decision_key": "lyd_i3b_begin_decision",
+            "expected_revision": 3
+          },
+          "shell_exit_code": 0,
+          "sequence": 9,
+          "started": "2026-10-06T20:01:13.565268+00:00",
+          "finished": "2026-10-06T20:01:14.624183+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_decision_query_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/01.call-completed.json",
+            "bytes": 2687,
+            "sha256": "a5b3dda808098f8fb53f44e7b99f8c68e3f6ca67f58e1474e743ca807d879037"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0009-explicit-a146c1f922c74ead909186ff082b68b6.sdk-result.json",
+            "bytes": 4733,
+            "sha256": "a5f9df44623a4d40dc919dcb2f85d6dd8776303f58f3db43f63d9ce184712e71"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/01-native-01.original.json",
+            "bytes": 2015,
+            "sha256": "7c3225aefca85e4ac661444d198ecc0f6892897db3d13076ea711d6c2962f7c1"
+          }
+        },
+        {
+          "tool": "ck3_select_profile_decision_item_v1",
+          "arguments": {
+            "decision_key": "lyd_i3b_begin_decision",
+            "expected_revision": 3
+          },
+          "shell_exit_code": 0,
+          "sequence": 10,
+          "started": "2026-10-06T20:01:15.241740+00:00",
+          "finished": "2026-10-06T20:01:17.894565+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_gameplay_postcondition_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/02.call-completed.json",
+            "bytes": 2694,
+            "sha256": "a689ec16f22fc035e097ba9b4cea2333d3225404f3d0d81c54c41730a11b1803"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0010-explicit-6f2cb99b70a74f43b27698237e19de09.sdk-result.json",
+            "bytes": 486131,
+            "sha256": "d24e766df7cbdc1108bd71a8e7b4845f96006428c0a957b54f5e30f65396300f"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/02-native-01.original.json",
+            "bytes": 223809,
+            "sha256": "0926cae758d7c1688cd193056dab8926577493fb93141af81844d7c0ecc99fd6"
+          }
+        },
+        {
+          "tool": "ck3_query_profile_decision_item_v1",
+          "arguments": {
+            "decision_key": "lyd_i3b_begin_decision",
+            "expected_revision": 3
+          },
+          "shell_exit_code": 0,
+          "sequence": 11,
+          "started": "2026-10-06T20:01:18.510260+00:00",
+          "finished": "2026-10-06T20:01:19.747953+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_decision_query_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/03.call-completed.json",
+            "bytes": 2688,
+            "sha256": "b7a848060a7e1e8e14edc1d50e8a346bb35d2c8bafc7a1f28e14c5a8d675cbd9"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0011-explicit-8caf02ccb7564a8ab5c3828afe62d718.sdk-result.json",
+            "bytes": 4775,
+            "sha256": "00d2442092e01a841110f8da9bdb49d77e0675dd4497e77756a492a8567e28b2"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/03-native-01.original.json",
+            "bytes": 2036,
+            "sha256": "15de60a7e7c5c1e9faca0124bb285e0e2677b6503f3b7c8a5a229c8d1e9484db"
+          }
+        },
+        {
+          "tool": "ck3_confirm_profile_decision_outcome_v1",
+          "arguments": {
+            "decision_key": "lyd_i3b_begin_decision",
+            "expected_revision": 3,
+            "expected_outcome": "event_window",
+            "expected_event_definition_key": "lyd.430"
+          },
+          "shell_exit_code": 0,
+          "sequence": 12,
+          "started": "2026-10-06T20:01:20.376210+00:00",
+          "finished": "2026-10-06T20:01:24.195696+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_gameplay_postcondition_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/04.call-completed.json",
+            "bytes": 2707,
+            "sha256": "9c81e41a974496e93da731a4bdb70ae408ed960d914aa2ccf6abfb993fb61986"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0012-explicit-803140f97f99447c82e27b4f520cb0f6.sdk-result.json",
+            "bytes": 666463,
+            "sha256": "5b4c8587cf89208a59762b6e79c27f2b0db4a84a8a4ff36275af034a7f4a42f5"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/04-native-01.original.json",
+            "bytes": 307377,
+            "sha256": "f4b6562c602f88b6cf42c1c8172a9e4b9f768b7fe0a34e95117e08ad5115f67d"
+          }
+        }
+      ],
+      "full_product_credit": null
+    },
+    {
+      "directory": "formal-r1-wait-001",
+      "actual_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-wait-001/RESULT.actual.json",
+        "bytes": 198817,
+        "sha256": "cde16472c6b673b025b4d25a830d767e6c74beaf1af501856070f0951fe7f644"
+      },
+      "calls": [
+        {
+          "tool": "ck3_query_profile_event_window_v1",
+          "arguments": {
+            "event_instance_id": 101,
+            "expected_revision": 5
+          },
+          "shell_exit_code": 0,
+          "sequence": 17,
+          "started": "2026-10-06T20:06:33.283204+00:00",
+          "finished": "2026-10-06T20:06:34.549460+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_event_query_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-wait-001/01.call-completed.json",
+            "bytes": 2683,
+            "sha256": "46f9bb5ed4439c492aa24ad18846cf84d640c58f549b9d04f2dbe97f7bf5044f"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0017-explicit-ad711b77eac448d79c268334492909ac.sdk-result.json",
+            "bytes": 33089,
+            "sha256": "08826ff5522f8ab6722224c2480d5d9c5546ae2b1c735cbc64066de697f8aa83"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-wait-001/01-native-01.original.json",
+            "bytes": 14797,
+            "sha256": "110e49e5c3f6819daaf43191abdc2412676c1fb49f893b080eba3c11b5343c29"
+          }
+        },
+        {
+          "tool": "ck3_select_profile_event_option_v1",
+          "arguments": {
+            "event_instance_id": 101,
+            "expected_revision": 5,
+            "option_number": 3
+          },
+          "shell_exit_code": 0,
+          "sequence": 18,
+          "started": "2026-10-06T20:06:35.164126+00:00",
+          "finished": "2026-10-06T20:06:38.207073+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_gameplay_postcondition_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-wait-001/02.call-completed.json",
+            "bytes": 2686,
+            "sha256": "5e4d582d950474f9fcc33c7029fe4e08e325a30d09e52302f7a3fcf4a3e368ef"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0018-explicit-13602af777484164bbe0a8ca9ff7f7e2.sdk-result.json",
+            "bytes": 841885,
+            "sha256": "bb3906a5ff2b45596eb77639872f4ef0907b478f98da77e9da16221968fdf3af"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-wait-001/02-native-01.original.json",
+            "bytes": 388403,
+            "sha256": "d87093b8b89deec4cc24b53762969ebffd0c2eebf8d76e41e1db505f2a2a6818"
+          }
+        }
+      ],
+      "full_product_credit": null
+    },
+    {
+      "directory": "formal-r1-B1-save-001",
+      "actual_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/RESULT.actual.json",
+        "bytes": 183163,
+        "sha256": "cdd968f9bfd2ca0a51e23a2c994ca2da65758eef32cfc814085b4931fc124f45"
+      },
+      "calls": [
+        {
+          "tool": "ck3_save_profile_checkpoint_v1",
+          "arguments": {
+            "expected_revision": 4
+          },
+          "shell_exit_code": 0,
+          "sequence": 14,
+          "started": "2026-10-06T20:03:23.789254+00:00",
+          "finished": "2026-10-06T20:03:30.626941+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_gameplay_postcondition_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/01.call-completed.json",
+            "bytes": 2692,
+            "sha256": "e96a530ab8fcf2a836d2a3ad6fad5255ac2da32e70818f153d0d77285b8b7040"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0014-explicit-b405839db7b64ea6b97ca3bc8f5b7259.sdk-result.json",
+            "bytes": 759487,
+            "sha256": "468a0a922628bdf7abeb1065090c4fb0ac87729f1f57edbed963941d26acdb83"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/01-native-01.original.json",
+            "bytes": 350557,
+            "sha256": "f68c026628b3d10db8950ae26a8ecbf46fe456c9eb1f0d898cfab826993e6a91"
+          }
+        },
+        {
+          "tool": "ck3_query_profile_confucian_assembly_predicates_v1",
+          "arguments": {
+            "expected_revision": 5
+          },
+          "shell_exit_code": 0,
+          "sequence": 15,
+          "started": "2026-10-06T20:03:31.849598+00:00",
+          "finished": "2026-10-06T20:03:33.097703+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_confucian_readonly_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/02.call-completed.json",
+            "bytes": 2739,
+            "sha256": "80047199d1759c2bf9757e95ca7c836ea5a184a594c48a9d19953b8d58c26e21"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0015-explicit-7fc7dbaab5304f1cbf7bcb19914e6f25.sdk-result.json",
+            "bytes": 61861,
+            "sha256": "7f97dba442cbc4a0a533629b0c5e924e35a00408ff0e62f4273774952a4af857"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/02-native-01.original.json",
+            "bytes": 28082,
+            "sha256": "882a3450bb823532a9dcddf745b8f73013ee23c2a4b4854a2f6ddaddb6fc80b0"
+          }
+        },
+        {
+          "tool": "ck3_query_profile_confucian_religious_title_v1",
+          "arguments": {
+            "expected_revision": 5
+          },
+          "shell_exit_code": 0,
+          "sequence": 16,
+          "started": "2026-10-06T20:03:33.513256+00:00",
+          "finished": "2026-10-06T20:03:34.759302+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_confucian_readonly_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/03.call-completed.json",
+            "bytes": 2728,
+            "sha256": "2461f223cd82f2d54a4f7cd51f7f7f8bce8e64f8ab94cddad9bd2a9300d6250b"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0016-explicit-bdd01e78f99b4561b656707f6c044690.sdk-result.json",
+            "bytes": 9023,
+            "sha256": "0ef5b2a01dba83c9cee2356b0e0c9fe79c7238a88dc308c897b7d3789b90f299"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/03-native-01.original.json",
+            "bytes": 4024,
+            "sha256": "9636d176209e0f4b2d11528aeb479af013f309d7762d6a26c63e92ab31febea6"
+          }
+        }
+      ],
+      "full_product_credit": null
+    },
+    {
+      "directory": "formal-r1-nominate-self-001",
+      "actual_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/RESULT.actual.json",
+        "bytes": 257486,
+        "sha256": "a50647de7b0d39b40875fe9df4a44bb65f901351e1c32e3b2f13b0a7f87e4955"
+      },
+      "calls": [
+        {
+          "tool": "ck3_query_profile_decision_item_v1",
+          "arguments": {
+            "decision_key": "lyd_i3b_nominate_self_decision",
+            "expected_revision": 6
+          },
+          "shell_exit_code": 0,
+          "sequence": 19,
+          "started": "2026-10-06T20:07:00.708425+00:00",
+          "finished": "2026-10-06T20:07:01.993700+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_decision_query_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/01.call-completed.json",
+            "bytes": 2720,
+            "sha256": "0398d5576b640c789a5995f3a0ee87437485ef7ef762a8eb82470b1d23a85c9e"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0019-explicit-5fba596307994e37b002947ecd994802.sdk-result.json",
+            "bytes": 4749,
+            "sha256": "128a114f5fa08acc62c15650ec5600c5d382c74086b7663c904fbb7c613a7ac5"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/01-native-01.original.json",
+            "bytes": 2023,
+            "sha256": "503cf3a57971263d2f3a60ee7b850ae2bebf6c3ab5ec53410a2377ae84a85563"
+          }
+        },
+        {
+          "tool": "ck3_select_profile_decision_item_v1",
+          "arguments": {
+            "decision_key": "lyd_i3b_nominate_self_decision",
+            "expected_revision": 6
+          },
+          "shell_exit_code": 0,
+          "sequence": 20,
+          "started": "2026-10-06T20:07:02.817102+00:00",
+          "finished": "2026-10-06T20:07:05.887624+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_gameplay_postcondition_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/02.call-completed.json",
+            "bytes": 2726,
+            "sha256": "fe0764a36fada738cf21d0b18ad4c9b50f9deadf3ce651e2f721b0e93e7fa921"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0020-explicit-272a6053353847e2939dc86cf8b37209.sdk-result.json",
+            "bytes": 888487,
+            "sha256": "0854004011341c9c7a6730753395291eff95d400031b6fa6efcc580051e41f79"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/02-native-01.original.json",
+            "bytes": 410075,
+            "sha256": "ac24775ed0f31ea8c3f81f727ca101d500674a9f3d96aec077c3ba949ac412ac"
+          }
+        },
+        {
+          "tool": "ck3_query_profile_decision_item_v1",
+          "arguments": {
+            "decision_key": "lyd_i3b_nominate_self_decision",
+            "expected_revision": 6
+          },
+          "shell_exit_code": 0,
+          "sequence": 21,
+          "started": "2026-10-06T20:07:06.512839+00:00",
+          "finished": "2026-10-06T20:07:07.792505+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_decision_query_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/03.call-completed.json",
+            "bytes": 2720,
+            "sha256": "460bf243ad3e51ff5fb6ee9be53d6276378af17069089ab8ac1179834e7865be"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0021-explicit-ad39c037a3054f4cb16506d3b2032a2c.sdk-result.json",
+            "bytes": 4807,
+            "sha256": "51722c1f3b6ef94d5724dddf848cbd727072c4279a261388d4e9a58053d7841c"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/03-native-01.original.json",
+            "bytes": 2052,
+            "sha256": "1b4bb746c96950b75a87774eb8007232b208a73ebc3110de9ab83804d9721c88"
+          }
+        },
+        {
+          "tool": "ck3_confirm_profile_decision_outcome_v1",
+          "arguments": {
+            "decision_key": "lyd_i3b_nominate_self_decision",
+            "expected_revision": 6,
+            "expected_outcome": "event_window",
+            "expected_event_definition_key": "lyd.410"
+          },
+          "shell_exit_code": 0,
+          "sequence": 22,
+          "started": "2026-10-06T20:07:08.417154+00:00",
+          "finished": "2026-10-06T20:07:11.776812+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_gameplay_postcondition_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/04.call-completed.json",
+            "bytes": 2740,
+            "sha256": "f42f9d7b484b0c4d10c4cdb3514fefebd86de9e0e4fad0ba6bde9c98db67fb20"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0022-explicit-4cf6c40f926245359cb43e24145d45b7.sdk-result.json",
+            "bytes": 1054945,
+            "sha256": "a0546428bb4e10aad2df63b1777322cf37250c26415cb927f464d513d26deda0"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/04-native-01.original.json",
+            "bytes": 487306,
+            "sha256": "9c41e7c5f620c2e5749e8249b35a50850db3ede651104d3c58a86c62163c0bca"
+          }
+        }
+      ],
+      "full_product_credit": null
+    },
+    {
+      "directory": "formal-r1-accept-self-001",
+      "actual_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-accept-self-001/RESULT.actual.json",
+        "bytes": 267600,
+        "sha256": "c1540ff5a3ddd9fdf7db2366812622e3e68855d28fc05b90045406a94af907b3"
+      },
+      "calls": [
+        {
+          "tool": "ck3_query_profile_event_window_v1",
+          "arguments": {
+            "event_instance_id": 102,
+            "expected_revision": 7
+          },
+          "shell_exit_code": 0,
+          "sequence": 23,
+          "started": "2026-10-06T20:14:38.898377+00:00",
+          "finished": "2026-10-06T20:14:40.272270+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_event_query_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-accept-self-001/01.call-completed.json",
+            "bytes": 2711,
+            "sha256": "a848b4f3f8115825a6c168fee09986418d5ce9038805a9b89e951f4908635014"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0023-explicit-126a1cea7ffa4c62babe76676f426173.sdk-result.json",
+            "bytes": 27837,
+            "sha256": "f2c49f963a630b738a637aafd12771f9c32f514e347bf57dd4ad3f49f3334b25"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-accept-self-001/01-native-01.original.json",
+            "bytes": 12423,
+            "sha256": "f81a4596b5e8e65b3c42361d0f93857e167f6aa8c2809d33acc6ce66892cb266"
+          }
+        },
+        {
+          "tool": "ck3_select_profile_event_option_v1",
+          "arguments": {
+            "event_instance_id": 102,
+            "expected_revision": 7,
+            "option_number": 1
+          },
+          "shell_exit_code": 0,
+          "sequence": 24,
+          "started": "2026-10-06T20:14:40.896875+00:00",
+          "finished": "2026-10-06T20:14:43.967916+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_gameplay_postcondition_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-accept-self-001/02.call-completed.json",
+            "bytes": 2715,
+            "sha256": "f33848d79bd27e38298aaacc4f4b840e2b85dbd67670d89b0905962e3a00812d"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0024-explicit-d250a5f3409543b0bd07e28c5fb91ebb.sdk-result.json",
+            "bytes": 1137411,
+            "sha256": "ce02e1d109dbead0c3e04fa20e35fdf4a8e46ecbb3b16826f4a596173223f5e1"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-accept-self-001/02-native-01.original.json",
+            "bytes": 525606,
+            "sha256": "88a5ce105277abdbb64d8f73add68576d3d41fd014f0e7113d3c097b7400cf42"
+          }
+        }
+      ],
+      "full_product_credit": null
+    },
+    {
+      "directory": "formal-r1-B2-save-001",
+      "actual_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/RESULT.actual.json",
+        "bytes": 271930,
+        "sha256": "40c0a96137ddfba4042cdfd6cc2c77abac3d81f2c927c724d8d3b856cec4a524"
+      },
+      "calls": [
+        {
+          "tool": "ck3_save_profile_checkpoint_v1",
+          "arguments": {
+            "expected_revision": 8
+          },
+          "shell_exit_code": 0,
+          "sequence": 25,
+          "started": "2026-10-06T20:14:58.749967+00:00",
+          "finished": "2026-10-06T20:15:05.691136+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_gameplay_postcondition_verified",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/01.call-completed.json",
+            "bytes": 2693,
+            "sha256": "66b1f66c13b474cf297468ecc5937094ce3e4d687441fbd68ac742c75056dc6e"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0025-explicit-c0f8681dd9ec4280b718df58849bb65a.sdk-result.json",
+            "bytes": 1142765,
+            "sha256": "6967850813935ef46fb85e15c1ed967dc73e5630bb2a5f6989bf925e5242794c"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/01-native-01.original.json",
+            "bytes": 528088,
+            "sha256": "52f0a9eb40c74c82260da786026aab985697302082703a75904f3f734b1e4a33"
+          }
+        },
+        {
+          "tool": "ck3_query_profile_confucian_assembly_predicates_v1",
+          "arguments": {
+            "expected_revision": 9
+          },
+          "shell_exit_code": 0,
+          "sequence": 26,
+          "started": "2026-10-06T20:15:06.921534+00:00",
+          "finished": "2026-10-06T20:15:08.140437+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_confucian_readonly_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/02.call-completed.json",
+            "bytes": 2739,
+            "sha256": "9e6fd980b52db9124ac7958317906f9cedaa166271c741628f5c6ef1b5c96bf9"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0026-explicit-e181091ce24a41128ce56b65bbf7f004.sdk-result.json",
+            "bytes": 61861,
+            "sha256": "d4e5b46dce69c9a43a76ab43f03843867038031df8660740e206087380abfef0"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/02-native-01.original.json",
+            "bytes": 28082,
+            "sha256": "94b33a75f3b687402af48e4c8fd94373a3df57f5ec3688cf785d5203112734ae"
+          }
+        },
+        {
+          "tool": "ck3_query_profile_confucian_religious_title_v1",
+          "arguments": {
+            "expected_revision": 9
+          },
+          "shell_exit_code": 0,
+          "sequence": 27,
+          "started": "2026-10-06T20:15:08.774496+00:00",
+          "finished": "2026-10-06T20:15:09.954509+00:00",
+          "dispatch_is_error": null,
+          "actual_SDK_isError": false,
+          "actual_SDK_resultType": "complete",
+          "native_status": "native_confucian_readonly_observed",
+          "native_session_id": "de4469c9251145468e0ca685176cbc8f",
+          "call_completed": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/03.call-completed.json",
+            "bytes": 2728,
+            "sha256": "9afd5173e974018cf3b796e51aaaa79cfa3f08a606fa9ae9a86c9c232659fe05"
+          },
+          "SDK_wrapper_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0027-explicit-c0fa966b811f43ce97a295680f6cdccb.sdk-result.json",
+            "bytes": 9023,
+            "sha256": "341b206f3f7cc37f76bb03ca32860296b3b2a1dda8efd08f1b161dd73db668e0"
+          },
+          "native_reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/03-native-01.original.json",
+            "bytes": 4024,
+            "sha256": "62ff6ab2931a1bb00b7be5bd845a52389459c71b1057976bbbcc7a65919f1b16"
+          }
+        }
+      ],
+      "full_product_credit": null
+    }
+  ],
+  "raw_failures_preserved": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-001/RESULT.json",
+      "bytes": 3770,
+      "sha256": "e9b1cb7805de19685d68b769ea70d81c5f2c6e901f2df0ffc11ed7f4ea3821d9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-001/stderr.traceback.txt",
+      "bytes": 1135,
+      "sha256": "1a68636c4579b38f51a3cc1c33412661e3fe929a3a723dd24db3c530a8db93de"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-001/FAILED.actual.json",
+      "bytes": 3070,
+      "sha256": "1ba7d0372d209493b8334351f86fd52ffecc0235c54f3df2a5a504d0e2dbd407"
+    }
+  ],
+  "refs": {
+    "prior_draft": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-evidence-daily-draft-20261007-001/draft-001/INDEX.json",
+      "bytes": 1626,
+      "sha256": "93c06f1a159d912feb1317a9129ab3f8968c36f2b72400c0c6cd99cfab1e5817"
+    },
+    "consumer003_SOURCE": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/next-formal-queue-and-guard-adapter-20261007-003/INDEX.json",
+      "bytes": 6433,
+      "sha256": "f679ab872ca890a8c8198e37e48b7be623e8cd9d3174b08728c499bf70fd930b"
+    },
+    "consumer_bind": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/root-consumer-binding-003/PREPARATION.json",
+      "bytes": 1170,
+      "sha256": "20d8361565027d9ff96f3f22b476e00c596b29832d8f0bbad3da60ec75228287"
+    },
+    "ROOT_binding": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/root-consumer-binding-003/ROOT-BINDING.json",
+      "bytes": 2908,
+      "sha256": "6946139fe48c83cf2f41ca23003f2def1c3a068597885062574f758a355bd671"
+    },
+    "Client_start": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/root-dispatch-001/CLIENT-START.actual.json",
+      "bytes": 1367,
+      "sha256": "fb06c46e17a96d46c36d3b53b8f82a0aa8a06eaad7b0842acbfd23d8f64c8690"
+    },
+    "Client_session": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/session.json",
+      "bytes": 1269,
+      "sha256": "923635daee8d738f5e524b51c70bc683e71239d24ff92c7181a6b672e9f3d338"
+    },
+    "actual_Client_list24": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0001-explicit-c8ad8a813a1942089d4f045acb95d814.sdk-result.json",
+      "bytes": 26820,
+      "sha256": "dc05549b77eba34178244ff18d7ead45f05e710e975c8fa3e02eb1a74c323e3c"
+    },
+    "actual_attach_once": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0002-explicit-3fa473ae8ef64eba8c2017b073d10230.sdk-result.json",
+      "bytes": 41737,
+      "sha256": "cf7263dcb5bb96e5996b55bb7a8d31a89d432608701d9746326d8e6588334af5"
+    },
+    "RUNTIME_formal": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/RUNTIME.formal-001.actual.json",
+      "bytes": 1821,
+      "sha256": "7cc2734d45a984019667bd8e9f05a3bf0aaf0565746aec7f6070547eb711800a"
+    },
+    "HANDLE_capture": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-retained-helper-handles-actual-20261007-001/CAPTURED.actual.json",
+      "bytes": 5730,
+      "sha256": "a835a1fdfcff820e64313d6de437a5e8b4d7ade62cf9abaa17d2c081ac9f6330"
+    },
+    "author006_SOURCE": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-checkpoint-author-observed-native-qualification-20261007-006/INDEX.json",
+      "bytes": 5842,
+      "sha256": "ea8f6148306a3d6d0db1421c5e5c560967f881f3cca1b893f9abf9b0d8b68d23"
+    },
+    "actual_metadata": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-metadata-capture-20261007-001/RESULT.json",
+      "bytes": 6333,
+      "sha256": "dbbd4e1e1e232f89c7e44c587f5d52452e1951f340aff4bbbbdff974f1f0687f"
+    },
+    "actual_native_qualification": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-root-metadata-capture-20261007-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "bytes": 921290,
+      "sha256": "94d3606519d977b6a52fa4f72caa3e97f8f8769c3227489dbc159bfa3d7a2ea5"
+    }
+  },
+  "B3": null,
+  "B4": null,
+  "B5": null,
+  "normal_exit": null,
+  "cold_reload": null,
+  "C3": null,
+  "I4": null,
+  "future_T": null,
+  "political2264_is_T": false,
+  "full_mod_status": "NOT_GREEN",
+  "Workshop_release": null,
+  "archive_large_external_refs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-002/RESULT.json",
+      "bytes": 975792,
+      "sha256": "464714af248c48b0e686152f0f088d97625ef7171dc4ce653705c2da3849b0ce"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-002/STATE.json",
+      "bytes": 1317829,
+      "sha256": "152108f82949688e11c8701e3f0d433bf1eca2b4fe816e338d3abe90ed97d2d5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-002/TYPED-PROTECTION.json",
+      "bytes": 966756,
+      "sha256": "1a6e4ec868db2d8139ece156ddfc1d77df421b89e456322b71aee40ef2e132cc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-readback-002/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 26934,
+      "sha256": "d2134a128e0931ad279c96f3853df328e67009e91f59d0a7d9d693d0418e34a2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/RESULT.json",
+      "bytes": 977020,
+      "sha256": "0eb1fcace4018307c7bf72a8f8df3bd90f0634bddd8b272a84a40a535189bfc1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/STATE.json",
+      "bytes": 2605635,
+      "sha256": "07e2cd1782b8781a37044b10d77aed51529f53fa406a3caa7e53960bafee2a89"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/TYPED-PROTECTION.json",
+      "bytes": 1156293,
+      "sha256": "65cca3de9e39296c4e518921d56c4fe9f9f47ac6ee13a8786e5ec125f6b67546"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 348228,
+      "sha256": "5f968f4c88dcfd8efe95791e2b124611dc51bbfd2c874bc15c3b6dfcc01a340a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-readback-001/STATE.native-qualified.json",
+      "bytes": 2643137,
+      "sha256": "4ed3a22ccf0aaf065558c742d1b70a91086b92502b3c27e4844e2c9a96b851d9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/RESULT.json",
+      "bytes": 977021,
+      "sha256": "ea2c499f7c4a3f6e7cfbc5234e4e5057146cbb31cfff03aa5401cad30f8c3ec7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/STATE.json",
+      "bytes": 2607113,
+      "sha256": "19ac4d13b2bc9a5b7cd4280340e2ef8f9d32da9e074428f99f621625b0e017ac"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/TYPED-PROTECTION.json",
+      "bytes": 1157884,
+      "sha256": "a29a36a3825f96a6cc204e9970d21ea0ee981e0992fc5fd966b615b5f959281f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 525759,
+      "sha256": "3bd35b59fc87b76e86f5a6996367ea1eba107b83a3dc9aedb37cf56d3b3fcce6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-readback-001/STATE.native-qualified.json",
+      "bytes": 2644750,
+      "sha256": "3fad7b7de581c490f38b650fb9e2e6ccfd551ec6c7caff9ad6a8efe24aff981d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0004-explicit-b95fbbb249cf4cfd98952c3ced87d9bc.sdk-result.json",
+      "bytes": 63457,
+      "sha256": "59a8a7dde40ef2f5a67bc205a2153dde13c8fcb19d3e6fadcc33e0cfa4372c57"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/01-native-01.original.json",
+      "bytes": 29264,
+      "sha256": "2ab2f971b2a4b0365416edfd10497237122df9ed657e62ff00eaadf4cd526b7e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0005-explicit-a2de875899044fa6ae329b4d0ff906a1.sdk-result.json",
+      "bytes": 61859,
+      "sha256": "7bbbbf0c395a4c2c85fead7e4458e86136df0799bafe2d8ec81ff3c4c646a3ec"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/02-native-01.original.json",
+      "bytes": 28081,
+      "sha256": "ac24c8a083ce17b0314a8a59def3ed0334ccc8b3fa874206e254abc88a864e7c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0006-explicit-750c9c21091a4280bd547058fdf1505f.sdk-result.json",
+      "bytes": 9021,
+      "sha256": "4ad1b5241d745ff145ce61b6809a471641bc355127b73a3201546bd2cb153338"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-baseline-save-001/03-native-01.original.json",
+      "bytes": 4023,
+      "sha256": "89347bb4acafc1593cc03782300387451881208faaef97672e2d9677b2149aa1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0009-explicit-a146c1f922c74ead909186ff082b68b6.sdk-result.json",
+      "bytes": 4733,
+      "sha256": "a5f9df44623a4d40dc919dcb2f85d6dd8776303f58f3db43f63d9ce184712e71"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/01-native-01.original.json",
+      "bytes": 2015,
+      "sha256": "7c3225aefca85e4ac661444d198ecc0f6892897db3d13076ea711d6c2962f7c1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0010-explicit-6f2cb99b70a74f43b27698237e19de09.sdk-result.json",
+      "bytes": 486131,
+      "sha256": "d24e766df7cbdc1108bd71a8e7b4845f96006428c0a957b54f5e30f65396300f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/02-native-01.original.json",
+      "bytes": 223809,
+      "sha256": "0926cae758d7c1688cd193056dab8926577493fb93141af81844d7c0ecc99fd6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0011-explicit-8caf02ccb7564a8ab5c3828afe62d718.sdk-result.json",
+      "bytes": 4775,
+      "sha256": "00d2442092e01a841110f8da9bdb49d77e0675dd4497e77756a492a8567e28b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/03-native-01.original.json",
+      "bytes": 2036,
+      "sha256": "15de60a7e7c5c1e9faca0124bb285e0e2677b6503f3b7c8a5a229c8d1e9484db"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0012-explicit-803140f97f99447c82e27b4f520cb0f6.sdk-result.json",
+      "bytes": 666463,
+      "sha256": "5b4c8587cf89208a59762b6e79c27f2b0db4a84a8a4ff36275af034a7f4a42f5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/04-native-01.original.json",
+      "bytes": 307377,
+      "sha256": "f4b6562c602f88b6cf42c1c8172a9e4b9f768b7fe0a34e95117e08ad5115f67d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-begin-002/RESULT.actual.json",
+      "bytes": 167797,
+      "sha256": "c65c14e63c87ce9bdfc2a239395223472a7eb4d224a924417644c32e041dea19"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0017-explicit-ad711b77eac448d79c268334492909ac.sdk-result.json",
+      "bytes": 33089,
+      "sha256": "08826ff5522f8ab6722224c2480d5d9c5546ae2b1c735cbc64066de697f8aa83"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-wait-001/01-native-01.original.json",
+      "bytes": 14797,
+      "sha256": "110e49e5c3f6819daaf43191abdc2412676c1fb49f893b080eba3c11b5343c29"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0018-explicit-13602af777484164bbe0a8ca9ff7f7e2.sdk-result.json",
+      "bytes": 841885,
+      "sha256": "bb3906a5ff2b45596eb77639872f4ef0907b478f98da77e9da16221968fdf3af"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-wait-001/02-native-01.original.json",
+      "bytes": 388403,
+      "sha256": "d87093b8b89deec4cc24b53762969ebffd0c2eebf8d76e41e1db505f2a2a6818"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-wait-001/RESULT.actual.json",
+      "bytes": 198817,
+      "sha256": "cde16472c6b673b025b4d25a830d767e6c74beaf1af501856070f0951fe7f644"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0014-explicit-b405839db7b64ea6b97ca3bc8f5b7259.sdk-result.json",
+      "bytes": 759487,
+      "sha256": "468a0a922628bdf7abeb1065090c4fb0ac87729f1f57edbed963941d26acdb83"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/01-native-01.original.json",
+      "bytes": 350557,
+      "sha256": "f68c026628b3d10db8950ae26a8ecbf46fe456c9eb1f0d898cfab826993e6a91"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0015-explicit-7fc7dbaab5304f1cbf7bcb19914e6f25.sdk-result.json",
+      "bytes": 61861,
+      "sha256": "7f97dba442cbc4a0a533629b0c5e924e35a00408ff0e62f4273774952a4af857"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/02-native-01.original.json",
+      "bytes": 28082,
+      "sha256": "882a3450bb823532a9dcddf745b8f73013ee23c2a4b4854a2f6ddaddb6fc80b0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0016-explicit-bdd01e78f99b4561b656707f6c044690.sdk-result.json",
+      "bytes": 9023,
+      "sha256": "0ef5b2a01dba83c9cee2356b0e0c9fe79c7238a88dc308c897b7d3789b90f299"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/03-native-01.original.json",
+      "bytes": 4024,
+      "sha256": "9636d176209e0f4b2d11528aeb479af013f309d7762d6a26c63e92ab31febea6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B1-save-001/RESULT.actual.json",
+      "bytes": 183163,
+      "sha256": "cdd968f9bfd2ca0a51e23a2c994ca2da65758eef32cfc814085b4931fc124f45"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0019-explicit-5fba596307994e37b002947ecd994802.sdk-result.json",
+      "bytes": 4749,
+      "sha256": "128a114f5fa08acc62c15650ec5600c5d382c74086b7663c904fbb7c613a7ac5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/01-native-01.original.json",
+      "bytes": 2023,
+      "sha256": "503cf3a57971263d2f3a60ee7b850ae2bebf6c3ab5ec53410a2377ae84a85563"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0020-explicit-272a6053353847e2939dc86cf8b37209.sdk-result.json",
+      "bytes": 888487,
+      "sha256": "0854004011341c9c7a6730753395291eff95d400031b6fa6efcc580051e41f79"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/02-native-01.original.json",
+      "bytes": 410075,
+      "sha256": "ac24775ed0f31ea8c3f81f727ca101d500674a9f3d96aec077c3ba949ac412ac"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0021-explicit-ad39c037a3054f4cb16506d3b2032a2c.sdk-result.json",
+      "bytes": 4807,
+      "sha256": "51722c1f3b6ef94d5724dddf848cbd727072c4279a261388d4e9a58053d7841c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/03-native-01.original.json",
+      "bytes": 2052,
+      "sha256": "1b4bb746c96950b75a87774eb8007232b208a73ebc3110de9ab83804d9721c88"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0022-explicit-4cf6c40f926245359cb43e24145d45b7.sdk-result.json",
+      "bytes": 1054945,
+      "sha256": "a0546428bb4e10aad2df63b1777322cf37250c26415cb927f464d513d26deda0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/04-native-01.original.json",
+      "bytes": 487306,
+      "sha256": "9c41e7c5f620c2e5749e8249b35a50850db3ede651104d3c58a86c62163c0bca"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-nominate-self-001/RESULT.actual.json",
+      "bytes": 257486,
+      "sha256": "a50647de7b0d39b40875fe9df4a44bb65f901351e1c32e3b2f13b0a7f87e4955"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0023-explicit-126a1cea7ffa4c62babe76676f426173.sdk-result.json",
+      "bytes": 27837,
+      "sha256": "f2c49f963a630b738a637aafd12771f9c32f514e347bf57dd4ad3f49f3334b25"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-accept-self-001/01-native-01.original.json",
+      "bytes": 12423,
+      "sha256": "f81a4596b5e8e65b3c42361d0f93857e167f6aa8c2809d33acc6ce66892cb266"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0024-explicit-d250a5f3409543b0bd07e28c5fb91ebb.sdk-result.json",
+      "bytes": 1137411,
+      "sha256": "ce02e1d109dbead0c3e04fa20e35fdf4a8e46ecbb3b16826f4a596173223f5e1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-accept-self-001/02-native-01.original.json",
+      "bytes": 525606,
+      "sha256": "88a5ce105277abdbb64d8f73add68576d3d41fd014f0e7113d3c097b7400cf42"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-accept-self-001/RESULT.actual.json",
+      "bytes": 267600,
+      "sha256": "c1540ff5a3ddd9fdf7db2366812622e3e68855d28fc05b90045406a94af907b3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0025-explicit-c0f8681dd9ec4280b718df58849bb65a.sdk-result.json",
+      "bytes": 1142765,
+      "sha256": "6967850813935ef46fb85e15c1ed967dc73e5630bb2a5f6989bf925e5242794c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/01-native-01.original.json",
+      "bytes": 528088,
+      "sha256": "52f0a9eb40c74c82260da786026aab985697302082703a75904f3f734b1e4a33"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0026-explicit-e181091ce24a41128ce56b65bbf7f004.sdk-result.json",
+      "bytes": 61861,
+      "sha256": "d4e5b46dce69c9a43a76ab43f03843867038031df8660740e206087380abfef0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/02-native-01.original.json",
+      "bytes": 28082,
+      "sha256": "94b33a75f3b687402af48e4c8fd94373a3df57f5ec3688cf785d5203112734ae"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/mcp-client-001/0027-explicit-c0fa966b811f43ce97a295680f6cdccb.sdk-result.json",
+      "bytes": 9023,
+      "sha256": "341b206f3f7cc37f76bb03ca32860296b3b2a1dda8efd08f1b161dd73db668e0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/03-native-01.original.json",
+      "bytes": 4024,
+      "sha256": "62ff6ab2931a1bb00b7be5bd845a52389459c71b1057976bbbcc7a65919f1b16"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r1-B2-save-001/RESULT.actual.json",
+      "bytes": 271930,
+      "sha256": "40c0a96137ddfba4042cdfd6cc2c77abac3d81f2c927c724d8d3b856cec4a524"
+    }
+  ],
+  "checkpoint_bodies_read_by_this_draft": 0,
+  "SDK_game_calls_by_this_draft": 0,
+  "main_writes": 0,
+  "old_raw_scans": 0
+}

@@ -16363,6 +16363,69 @@ void RunConnectedSession(
               connected=write_frame(pipe,response);
             }
 #endif
+#if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+          } else if (step == xar::ck3_12003::kGrantTitlePickerQueryV1Step ||
+                     step == xar::ck3_12003::kGrantTitlePickerPrepareV1Step ||
+                     step == xar::ck3_12003::kGrantTitlePickerSelectV1Step ||
+                     step == xar::ck3_12003::kGrantTitlePickerSendV1Step) {
+            std::uint64_t expected_revision=0,expected_actor=0,expected_pid=0,expected_generation=0,recipient=UINT64_MAX,title=UINT64_MAX;
+            bool desired=false;xar::game::Snapshot current{};
+            xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
+            query.mailbox=&g_main_thread_query_mailbox_v1;
+            query.operation=xar::ck3_11906::FrontendGuiRouteOperationV1::grant_title_picker;
+            auto &grant=query.grant_title_picker;
+            using GrantOp=xar::ck3_12003::GrantTitlePickerOperationV1;
+            grant.operation=step==xar::ck3_12003::kGrantTitlePickerQueryV1Step?GrantOp::query:
+                step==xar::ck3_12003::kGrantTitlePickerPrepareV1Step?GrantOp::prepare:
+                step==xar::ck3_12003::kGrantTitlePickerSelectV1Step?GrantOp::select:GrantOp::send;
+            if(!xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision)||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor)||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid)||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation)||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"recipient_character_full_id",recipient)||!recipient||recipient>=UINT32_MAX||
+                !xar::ck3_12003::ParseGrantTitlePickerIdsFieldV1(incoming.payload,"requested_title_full_ids",grant.requested_title_full_ids,true)||
+                !xar::ck3_12003::ParseGrantTitlePickerIdsFieldV1(incoming.payload,"expected_selected_title_full_ids",grant.expected_selected_title_full_ids,grant.operation!=GrantOp::send)||
+                ((grant.operation==GrantOp::query||grant.operation==GrantOp::prepare)&&!grant.expected_selected_title_full_ids.empty())||
+                (grant.operation==GrantOp::select&&(!xar::bridge::JsonUnsignedField(incoming.payload,"title_full_id",title)||title>=UINT32_MAX||
+                 !xar::bridge::JsonBooleanField(incoming.payload,"desired_selected",desired)))||
+                !expected_revision||expected_revision!=state_revision||expected_pid!=GetCurrentProcessId()||
+                expected_generation!=connection_generation||!previous_snapshot.has_value()||
+                !xar::game::ReadSnapshot(game,current)||current!=*previous_snapshot||!current.map_ready||!current.paused||
+                !current.has_played_character||!current.played_character_alive||current.played_character_id<=0||
+                current.has_active_event||current.has_pending_character_interaction||
+                expected_actor!=static_cast<std::uint64_t>(current.played_character_id)||
+                game.descriptor().game_version!="1.20.0.3"||game.descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
+              connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"grant_title_picker_exact_frame_or_request_unavailable"));
+            }else{
+              grant.game=&game;grant.expected_snapshot=current;grant.native_revision=state_revision;
+              grant.connection_generation=connection_generation;grant.recipient_character_full_id=static_cast<std::uint32_t>(recipient);
+              grant.title_full_id=static_cast<std::uint32_t>(title);grant.desired_selected=desired;
+              const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
+              std::string response;
+              if(submitted==xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted){
+                auto waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+                while(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+                if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed){
+                  xar::game::Snapshot completion{};
+                  const bool same=xar::game::ReadSnapshot(game,completion)&&state_revision==expected_revision&&connection_generation==expected_generation&&
+                      (grant.operation==GrantOp::send?(completion.map_ready&&completion.paused&&completion.has_played_character&&completion.played_character_alive&&
+                       completion.played_character_id==current.played_character_id&&completion.date_raw==current.date_raw):completion==current);
+                  if(!same){grant.result.frame_verified=false;grant.result.transfer_verified=false;grant.result.selection_verified=false;
+                    grant.result.status="unavailable";grant.result.unavailable_reason="grant_pipe_completion_changed_no_retry";}
+                  response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";AppendJsonString(response,request_id);
+                  response+=",\"ok\":true,\"result\":";response+=xar::ck3_12003::SerializeGrantTitlePickerV1(grant.result);response+='}';
+                  if(response.size()>xar::bridge::kMaximumFrameBytes)response.clear();
+                }
+                if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)response.clear();
+              }
+              if(response.empty())response=CommandResultFrame(request_id,step,false,"grant_owner_submission_or_completion_unavailable_no_retry");
+              connected=write_frame(pipe,response);
+            }
+#endif
 #if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
           } else if (step == xar::ck3_12003::kNormalExitMapV1Step) {
             xar::ck3_12003::NormalExitMapRequestV1 request{};
