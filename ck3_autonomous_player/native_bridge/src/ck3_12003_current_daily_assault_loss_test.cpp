@@ -118,6 +118,7 @@ struct Fixture {
     memory.Put(state_slot,0,state); memory.Put(state,0xA0,data);
     memory.Put(manager,0x178,entries); memory.Put(manager,0x180,std::int32_t{2}); memory.Put(manager,0x184,std::int32_t{3});
     memory.Put(manager,0x188,std::uint8_t{0}); memory.Put(manager,0x18C,std::uint32_t{0x3F400000U});
+    memory.Put(entries,4*0x40+4,std::uint8_t{0xA5}); // End marker is outside the scanned groups.
     units.Add(UA,ua,0x10); units.Add(UB,ub,0x10); armies.Add(AA,aa,0x10); armies.Add(AB,ab,0x10);
     memory.Put(ua,0x178,AA); memory.Put(ub,0x178,AB); memory.Put(ua,0x20,province); memory.Put(ub,0x20,province);
     memory.Put(aa,0x124,UA); memory.Put(ab,0x124,UB); memory.Put(armies.fallback,0,ab);
