@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/ck3_12003_current_province_supply_contributors.hpp"
 
 #include <cstdint>
 #include <span>
@@ -157,6 +158,8 @@ struct ArmyBindings {
   bool monthly_first_removal_cleanup_inputs_enabled = false;
   ArmyCurrentHelperDomainBindings12003 monthly_current_helper_domain_bindings{};
   bool monthly_current_helper_point_store_inputs_enabled = false;
+  ck3_12003::CurrentProvinceSupplyContributorBindings12003
+      current_province_supply_contributor_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

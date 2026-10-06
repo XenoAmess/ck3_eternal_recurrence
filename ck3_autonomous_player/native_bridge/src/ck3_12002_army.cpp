@@ -946,7 +946,17 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     if (bindings.monthly_current_helper_point_store_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("current_helper_point_store_inputs_readonly");
       result.monthly_current_helper_point_store_inputs_v1 =
-          ReadCurrentHelperPointStoreInputs12003(bindings, army);
+           ReadCurrentHelperPointStoreInputs12003(bindings, army);
+    }
+    if (bindings.current_province_supply_contributor_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("current_province_supply_contributors_readonly");
+      void *province = Load<void *>(unit, 0x20);
+      void *game_data = bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr
+          ? Load<void *>(*bindings.game_state_slot, 0xA0) : nullptr;
+      if (province != nullptr &&
+          Province(game_data, Load<std::int32_t>(province, 0x10)) != province) province = nullptr;
+      result.current_province_supply_contributors_v1 =
+          ck3_12003::ReadCurrentProvinceSupplyContributors12003(bindings, army, unit, province);
     }
     if (bindings.county_entry_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");

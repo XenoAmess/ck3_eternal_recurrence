@@ -290,6 +290,10 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.province_supply_character_fallback_slot =
         reinterpret_cast<void **>(
             image_base + ck3_12002::kCampaignRootCharacterFallbackSlotRva);
+    result.armies.current_province_supply_contributor_bindings.enabled = true;
+    result.armies.current_province_supply_contributor_bindings.shares_current_war_side =
+        reinterpret_cast<decltype(result.armies.current_province_supply_contributor_bindings.shares_current_war_side)>(
+            image_base + ck3_12003::kSupplyContributorCommonWarSideRva12003);
   }
   if (result.phase.advantage.enabled) {
     // Constructor-faith closure is proven only for exact .3. Keep the .2

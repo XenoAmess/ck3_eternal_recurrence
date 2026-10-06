@@ -10,6 +10,135 @@
 namespace xar::game {
 
 template <class Number, class JsonString>
+inline void AppendArmyRegimentReplenishmentRecordsSnapshotV1(
+    std::string &result, const ArmyRegimentReplenishmentRecordsSnapshotV1 &regiment,
+    Number number, JsonString append_json_string) {
+  result += "{\"army_regiment_id\":" + number(regiment.army_regiment_id);
+  result += ",\"source\":\"native_all_data_records\",\"status\":\"";
+  switch (regiment.status) {
+  case ArmyRegimentReplenishmentRecordsStatusV1::available: result += "available"; break;
+  case ArmyRegimentReplenishmentRecordsStatusV1::partial: result += "partial"; break;
+  default: result += "unavailable"; break;
+  }
+  result += "\",\"ready\":";
+  result += regiment.status == ArmyRegimentReplenishmentRecordsStatusV1::available ? "true" : "false";
+  result += ",\"native_data_record_count\":";
+  result += regiment.native_data_record_count.has_value() ? number(*regiment.native_data_record_count) : "null";
+  result += ",\"unavailable_reason\":";
+  if (regiment.unavailable_reason.empty()) result += "null";
+  else append_json_string(result,regiment.unavailable_reason);
+  result += ",\"native_loss_writer_skipped\":";
+  result += regiment.native_loss_writer_skipped.has_value()
+      ? (*regiment.native_loss_writer_skipped ? "true" : "false") : "null";
+  result += ",\"loss_writer_admission_unavailable_reason\":";
+  if (regiment.loss_writer_admission_unavailable_reason.empty()) result += "null";
+  else append_json_string(result,regiment.loss_writer_admission_unavailable_reason);
+  result += ",\"records\":[";
+  bool first_record=true;
+  for (const auto &record : regiment.records) {
+    if (!first_record) result += ',';
+    first_record=false;
+    result += "{\"record_index\":" + number(record.record_index);
+    result += ",\"persistent_regiment_id\":" + number(record.persistent_regiment_id);
+    result += ",\"chunk_index\":" + number(record.chunk_index);
+    result += ",\"status\":\"";
+    result += record.available ? "available" : "unavailable";
+    result += "\",\"unavailable_reason\":";
+    if (record.unavailable_reason.empty()) result += "null";
+    else append_json_string(result,record.unavailable_reason);
+    const auto optional_number=[&](std::string_view key,const auto &value) {
+      result += ','; append_json_string(result,key); result += ':';
+      result += value.has_value() ? number(*value) : "null";
+    };
+    const auto optional_bool=[&](std::string_view key,const auto &value) {
+      result += ','; append_json_string(result,key); result += ':';
+      result += value.has_value() ? (*value ? "true" : "false") : "null";
+    };
+    optional_number("current_soldiers",record.current_soldiers);
+    optional_number("maximum_soldiers",record.maximum_soldiers);
+    optional_number("effective_current_soldiers",record.effective_current_soldiers);
+    optional_number("state_raw",record.state_raw);
+    optional_number("chunk_army_regiment_id",record.chunk_army_regiment_id);
+    optional_bool("native_can_replenish",record.native_can_replenish);
+    optional_bool("native_chunk_can_replenish",record.native_chunk_can_replenish);
+    optional_number("persistent_monthly_replenishment_fraction_raw",record.persistent_monthly_replenishment_fraction_raw);
+    optional_number("persistent_prepared_replenishment_fraction_raw",record.persistent_prepared_replenishment_fraction_raw);
+    result += ",\"persistent_monthly_replenishment_fraction_scale\":100000";
+    result += ",\"persistent_prepared_replenishment_fraction_scale\":100000}";
+  }
+  result += "]}";
+}
+
+template <class Number, class JsonString>
+inline void AppendArmyCurrentProvinceSupplyContributorsV1(
+    std::string &result, const ArmyCurrentProvinceSupplyContributorsV1 &inputs,
+    Number number, JsonString append_json_string) {
+  const auto string_field = [&](std::string_view key, std::string_view value, bool nullable = false) {
+    result += ','; append_json_string(result, key); result += ':';
+    if (nullable && value.empty()) result += "null";
+    else append_json_string(result, value);
+  };
+  const auto optional_number = [&](std::string_view key, const auto &value) {
+    result += ','; append_json_string(result, key); result += ':';
+    result += value ? number(*value) : "null";
+  };
+  const auto optional_bool = [&](std::string_view key, const auto &value) {
+    result += ','; append_json_string(result, key); result += ':';
+    result += value ? (*value ? "true" : "false") : "null";
+  };
+  result += "{\"source\":\"native_current_province_mode0\"";
+  string_field("status", inputs.status);
+  string_field("unavailable_reason", inputs.unavailable_reason, true);
+  result += ",\"current_usage_ready\":";
+  result += inputs.current_usage_ready ? "true" : "false";
+  result += ",\"contributors_ready\":";
+  result += inputs.contributors_ready ? "true" : "false";
+  optional_number("province_id", inputs.province_id);
+  optional_number("subject_army_id", inputs.subject_army_id);
+  optional_number("subject_carmy_id", inputs.subject_carmy_id);
+  optional_number("owner_character_id", inputs.owner_character_id);
+  optional_number("native_province_unit_count", inputs.native_province_unit_count);
+  optional_number("native_supply_limit_soldiers", inputs.native_supply_limit_soldiers);
+  optional_number("native_supply_usage_soldiers", inputs.native_supply_usage_soldiers);
+  result += ",\"soldiers_scale\":1,\"occurrences\":[";
+  bool first_occurrence = true;
+  for (const auto &occurrence : inputs.occurrences) {
+    if (!first_occurrence) result += ',';
+    first_occurrence = false;
+    result += "{\"stored_index\":" + number(occurrence.stored_index);
+    result += ",\"army_id\":" + number(occurrence.army_id);
+    string_field("status", occurrence.available ? "available" : "unavailable");
+    string_field("unavailable_reason", occurrence.unavailable_reason, true);
+    optional_number("owner_character_id", occurrence.owner_character_id);
+    optional_bool("included", occurrence.included);
+    string_field("inclusion_basis", occurrence.inclusion_basis, true);
+    optional_number("native_carmy_id", occurrence.native_carmy_id);
+    optional_number("native_eligible_current_soldiers", occurrence.native_eligible_current_soldiers);
+    result += ",\"regiments\":[";
+    bool first_regiment = true;
+    for (const auto &regiment : occurrence.regiments) {
+      if (!first_regiment) result += ',';
+      first_regiment = false;
+      result += "{\"stored_index\":" + number(regiment.stored_index);
+      result += ",\"army_regiment_id\":" + number(regiment.army_regiment_id);
+      string_field("status", regiment.available ? "available" : "unavailable");
+      string_field("unavailable_reason", regiment.unavailable_reason, true);
+      optional_number("current_soldiers", regiment.current_soldiers);
+      optional_number("maximum_soldiers", regiment.maximum_soldiers);
+      optional_bool("native_supply_loss_eligible", regiment.native_supply_loss_eligible);
+      result += ",\"replenishment_records_v1\":";
+      if (regiment.replenishment_records_v1)
+        AppendArmyRegimentReplenishmentRecordsSnapshotV1(
+            result, *regiment.replenishment_records_v1, number, append_json_string);
+      else result += "null";
+      result += '}';
+    }
+    result += "]}";
+  }
+  result += "]}";
+}
+
+template <class Number, class JsonString>
 inline void AppendNativeMaaRecruitmentQuoteV1(
     std::string &output, const NativeMaaRecruitmentQuoteV1 &quote,
     Number number, JsonString append_json_string) {
@@ -377,6 +506,11 @@ inline void AppendArmyStrengthV1(
     AppendArmyCurrentHelperPointStoreInputsV1(result, *strength.monthly_current_helper_point_store_inputs_v1,
                                              number, append_json_string);
   }
+  if (strength.current_province_supply_contributors_v1) {
+    result += ",\"current_province_supply_contributors_v1\":";
+    AppendArmyCurrentProvinceSupplyContributorsV1(
+        result, *strength.current_province_supply_contributors_v1, number, append_json_string);
+  }
   result += ",\"scope_role\":\"";
   switch (strength.scope_role) {
   case ArmyStrengthScopeRole::player:
@@ -555,60 +689,7 @@ inline void AppendArmyStrengthV1(
     for (const auto &regiment : *strength.regiment_replenishment_records_v1) {
       if (!first_regiment) result += ',';
       first_regiment = false;
-      result += "{\"army_regiment_id\":" + number(regiment.army_regiment_id);
-      result += ",\"source\":\"native_all_data_records\",\"status\":\"";
-      switch (regiment.status) {
-      case ArmyRegimentReplenishmentRecordsStatusV1::available: result += "available"; break;
-      case ArmyRegimentReplenishmentRecordsStatusV1::partial: result += "partial"; break;
-      default: result += "unavailable"; break;
-      }
-      result += "\",\"ready\":";
-      result += regiment.status == ArmyRegimentReplenishmentRecordsStatusV1::available ? "true" : "false";
-      result += ",\"native_data_record_count\":";
-      result += regiment.native_data_record_count.has_value() ? number(*regiment.native_data_record_count) : "null";
-      result += ",\"unavailable_reason\":";
-      if (regiment.unavailable_reason.empty()) result += "null";
-      else append_json_string(result,regiment.unavailable_reason);
-      result += ",\"native_loss_writer_skipped\":";
-      result += regiment.native_loss_writer_skipped.has_value()
-          ? (*regiment.native_loss_writer_skipped ? "true" : "false") : "null";
-      result += ",\"loss_writer_admission_unavailable_reason\":";
-      if (regiment.loss_writer_admission_unavailable_reason.empty()) result += "null";
-      else append_json_string(result,regiment.loss_writer_admission_unavailable_reason);
-      result += ",\"records\":[";
-      bool first_record=true;
-      for (const auto &record : regiment.records) {
-        if (!first_record) result += ',';
-        first_record=false;
-        result += "{\"record_index\":" + number(record.record_index);
-        result += ",\"persistent_regiment_id\":" + number(record.persistent_regiment_id);
-        result += ",\"chunk_index\":" + number(record.chunk_index);
-        result += ",\"status\":\"";
-        result += record.available ? "available" : "unavailable";
-        result += "\",\"unavailable_reason\":";
-        if (record.unavailable_reason.empty()) result += "null";
-        else append_json_string(result,record.unavailable_reason);
-        const auto optional_number=[&](std::string_view key,const auto &value) {
-          result += ','; append_json_string(result,key); result += ':';
-          result += value.has_value() ? number(*value) : "null";
-        };
-        const auto optional_bool=[&](std::string_view key,const auto &value) {
-          result += ','; append_json_string(result,key); result += ':';
-          result += value.has_value() ? (*value ? "true" : "false") : "null";
-        };
-        optional_number("current_soldiers",record.current_soldiers);
-        optional_number("maximum_soldiers",record.maximum_soldiers);
-        optional_number("effective_current_soldiers",record.effective_current_soldiers);
-        optional_number("state_raw",record.state_raw);
-        optional_number("chunk_army_regiment_id",record.chunk_army_regiment_id);
-        optional_bool("native_can_replenish",record.native_can_replenish);
-        optional_bool("native_chunk_can_replenish",record.native_chunk_can_replenish);
-        optional_number("persistent_monthly_replenishment_fraction_raw",record.persistent_monthly_replenishment_fraction_raw);
-        optional_number("persistent_prepared_replenishment_fraction_raw",record.persistent_prepared_replenishment_fraction_raw);
-        result += ",\"persistent_monthly_replenishment_fraction_scale\":100000";
-        result += ",\"persistent_prepared_replenishment_fraction_scale\":100000}";
-      }
-      result += "]}";
+      AppendArmyRegimentReplenishmentRecordsSnapshotV1(result, regiment, number, append_json_string);
     }
     result += ']';
   }

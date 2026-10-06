@@ -590,6 +590,53 @@ struct ArmyNativeResolutionSnapshotV1 {
                          const ArmyNativeResolutionSnapshotV1 &) = default;
 };
 
+// Exact .3 current Province mode0 supply contributors. DATA supports an
+// independent conditional refill calculation; it is not an observed refill.
+struct ArmyProvinceSupplyContributorRegimentV1 {
+  std::int32_t stored_index = 0;
+  std::int32_t army_regiment_id = -1;
+  bool available = false;
+  std::string unavailable_reason;
+  std::optional<std::int32_t> current_soldiers;
+  std::optional<std::int32_t> maximum_soldiers;
+  std::optional<bool> native_supply_loss_eligible;
+  std::optional<ArmyRegimentReplenishmentRecordsSnapshotV1> replenishment_records_v1;
+  friend bool operator==(const ArmyProvinceSupplyContributorRegimentV1 &,
+                         const ArmyProvinceSupplyContributorRegimentV1 &) = default;
+};
+
+struct ArmyProvinceSupplyContributorOccurrenceV1 {
+  std::int32_t stored_index = 0;
+  std::int32_t army_id = -1;
+  bool available = false;
+  std::string unavailable_reason;
+  std::optional<std::int32_t> owner_character_id;
+  std::optional<bool> included;
+  std::string inclusion_basis;
+  std::optional<std::int32_t> native_carmy_id;
+  std::optional<std::int32_t> native_eligible_current_soldiers;
+  std::vector<ArmyProvinceSupplyContributorRegimentV1> regiments;
+  friend bool operator==(const ArmyProvinceSupplyContributorOccurrenceV1 &,
+                         const ArmyProvinceSupplyContributorOccurrenceV1 &) = default;
+};
+
+struct ArmyCurrentProvinceSupplyContributorsV1 {
+  std::string status = "unavailable";
+  std::string unavailable_reason;
+  bool current_usage_ready = false;
+  bool contributors_ready = false;
+  std::optional<std::int32_t> province_id;
+  std::optional<std::int32_t> subject_army_id;
+  std::optional<std::int32_t> subject_carmy_id;
+  std::optional<std::int32_t> owner_character_id;
+  std::optional<std::int32_t> native_province_unit_count;
+  std::optional<std::int32_t> native_supply_limit_soldiers;
+  std::optional<std::int32_t> native_supply_usage_soldiers;
+  std::vector<ArmyProvinceSupplyContributorOccurrenceV1> occurrences;
+  friend bool operator==(const ArmyCurrentProvinceSupplyContributorsV1 &,
+                         const ArmyCurrentProvinceSupplyContributorsV1 &) = default;
+};
+
 struct ArmyStrengthSnapshot {
   bool available = false;
   std::int32_t army_id = -1;
@@ -639,6 +686,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyFirstRemovalCleanupInputsV1> monthly_first_removal_cleanup_inputs_v1;
   std::optional<ArmyCurrentHelperDomainInputsV1> monthly_current_helper_domain_inputs_v1;
   std::optional<ArmyCurrentHelperPointStoreInputsV1> monthly_current_helper_point_store_inputs_v1;
+  std::optional<ArmyCurrentProvinceSupplyContributorsV1> current_province_supply_contributors_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;
