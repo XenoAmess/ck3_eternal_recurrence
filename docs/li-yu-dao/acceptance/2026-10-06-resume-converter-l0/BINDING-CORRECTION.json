@@ -1,0 +1,38 @@
+{
+  "old_pin": "e293b46eab19ab043ee66e0f745e9c054110dcf30bb14c2dacdc8ca405fdf186",
+  "new_pin": "a95b8f65cf46b731c4556ffb12bbce38d47de61ede8222c383f85209c9730643",
+  "source_before_sha256": "cee4573ec1fd8e9151869d2cb63733297b795d1c36acdd82c06631845db588c3",
+  "source_after_sha256": "2d2cb9fe80bab3462eca38f28162a1a0d6f6cde7d8051c8e36f3dbb587ea1c94",
+  "files": [
+    {
+      "file": "110953608758-post-LF-before-fix-tests.json",
+      "bytes": 351,
+      "sha256": "0241b51fbaaefc5684b79a389179501d93d9f093ff185e968199b7e65b29a53e"
+    },
+    {
+      "file": "110953608758-post-LF-before-fix-tests.stderr",
+      "bytes": 16983,
+      "sha256": "626daf7bd0892af0bc56925afe5fb8c21f8461fa9ddbd9ca0e7d9dddff8ee78d"
+    },
+    {
+      "file": "110953608758-post-LF-before-fix-tests.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "110953863284-post-LF-after-fix-tests.json",
+      "bytes": 351,
+      "sha256": "30aa110fe0c7cfec77c825d43f9fbd119daa9c8fff2e5f4d45ec8a06d893f4d6"
+    },
+    {
+      "file": "110953863284-post-LF-after-fix-tests.stderr",
+      "bytes": 2549,
+      "sha256": "d897961979e5110616a75107e372ea699cdfdbc1ee2c2146eac44e0a4119bd81"
+    },
+    {
+      "file": "110953863284-post-LF-after-fix-tests.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

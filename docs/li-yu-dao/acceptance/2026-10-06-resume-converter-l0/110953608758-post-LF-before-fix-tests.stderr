@@ -1,0 +1,163 @@
+test_artifact_bytes_sha_and_body_extension_rejected (test_sdk_checkpoint_seam.SeamTests.test_artifact_bytes_sha_and_body_extension_rejected) ... ok
+test_descriptor_parses_the_verified_buffer_even_if_file_changes (test_sdk_checkpoint_seam.SeamTests.test_descriptor_parses_the_verified_buffer_even_if_file_changes) ... ok
+test_epoch_stale_and_sdk_credit_mutation_rejected (test_sdk_checkpoint_seam.SeamTests.test_epoch_stale_and_sdk_credit_mutation_rejected) ... ok
+test_explicit_mapping_fullsets_humans_counties_distinct_epochs_and_head_join (test_sdk_checkpoint_seam.SeamTests.test_explicit_mapping_fullsets_humans_counties_distinct_epochs_and_head_join) ... ERROR
+test_high_generation_actor_kept_and_only_minus_one_absent (test_sdk_checkpoint_seam.SeamTests.test_high_generation_actor_kept_and_only_minus_one_absent) ... ERROR
+test_incomplete_predicate_unknown_not_zero_and_fullsets_mismatch (test_sdk_checkpoint_seam.SeamTests.test_incomplete_predicate_unknown_not_zero_and_fullsets_mismatch) ... ERROR
+test_independent_owner_frame_source_changes_rejected (test_sdk_checkpoint_seam.SeamTests.test_independent_owner_frame_source_changes_rejected) ... ok
+test_known_absent_head_is_not_unknown_or_factory_success (test_sdk_checkpoint_seam.SeamTests.test_known_absent_head_is_not_unknown_or_factory_success) ... ERROR
+test_known_non_title_discriminators_rejected (test_sdk_checkpoint_seam.SeamTests.test_known_non_title_discriminators_rejected) ... ok
+test_matching_before_after_wrong_hello_pins_rejected (test_sdk_checkpoint_seam.SeamTests.test_matching_before_after_wrong_hello_pins_rejected) ... ok
+test_native_class_not_saved_type_or_owned_and_actual_full_ast_required (test_sdk_checkpoint_seam.SeamTests.test_native_class_not_saved_type_or_owned_and_actual_full_ast_required) ... ok
+test_native_false_property_and_law_nonmember_remain_false (test_sdk_checkpoint_seam.SeamTests.test_native_false_property_and_law_nonmember_remain_false) ... ERROR
+test_present_title_zero_is_preserved_with_reader_compatibility_gap (test_sdk_checkpoint_seam.SeamTests.test_present_title_zero_is_preserved_with_reader_compatibility_gap) ... ERROR
+test_rehashed_saved_title_wrong_holder_rejected (test_sdk_checkpoint_seam.SeamTests.test_rehashed_saved_title_wrong_holder_rejected) ... ok
+test_unknown_counties_and_signed_learning_preserved_without_bridge (test_sdk_checkpoint_seam.SeamTests.test_unknown_counties_and_signed_learning_preserved_without_bridge) ... ERROR
+
+======================================================================
+ERROR: test_explicit_mapping_fullsets_humans_counties_distinct_epochs_and_head_join (test_sdk_checkpoint_seam.SeamTests.test_explicit_mapping_fullsets_humans_counties_distinct_epochs_and_head_join)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 44, in test_explicit_mapping_fullsets_humans_counties_distinct_epochs_and_head_join
+    d=fixture();out=run(d)
+                    ~~~^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 39, in run
+    def run(d):return seam.convert(d['provenance'],d['checkpoint'],d['state'],d['g2'],d['g3'],immutable_business_files=d['business'],artifact_hashes=d['hashes'])
+                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 100, in convert
+    validate_provenance(provenance,immutable_business_files)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 85, in validate_provenance
+    need(sha(data)==BUSINESS_CONTRACT_SHA,'frozen business contract bytes changed')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 25, in need
+    if not ok:raise QualificationError(label)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sdk_checkpoint_qualification.QualificationError: frozen business contract bytes changed
+
+======================================================================
+ERROR: test_high_generation_actor_kept_and_only_minus_one_absent (test_sdk_checkpoint_seam.SeamTests.test_high_generation_actor_kept_and_only_minus_one_absent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 78, in test_high_generation_actor_kept_and_only_minus_one_absent
+    d=fixture(-2147483646);o=run(d);self.assertEqual(o['runtime_binding']['played_character_full_id'],0x80000002)
+                             ~~~^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 39, in run
+    def run(d):return seam.convert(d['provenance'],d['checkpoint'],d['state'],d['g2'],d['g3'],immutable_business_files=d['business'],artifact_hashes=d['hashes'])
+                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 100, in convert
+    validate_provenance(provenance,immutable_business_files)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 85, in validate_provenance
+    need(sha(data)==BUSINESS_CONTRACT_SHA,'frozen business contract bytes changed')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 25, in need
+    if not ok:raise QualificationError(label)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sdk_checkpoint_qualification.QualificationError: frozen business contract bytes changed
+
+======================================================================
+ERROR: test_incomplete_predicate_unknown_not_zero_and_fullsets_mismatch (test_sdk_checkpoint_seam.SeamTests.test_incomplete_predicate_unknown_not_zero_and_fullsets_mismatch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 66, in test_incomplete_predicate_unknown_not_zero_and_fullsets_mismatch
+    o=run(d);self.assertIsNone(o['native_predicates']);self.assertEqual(o['G2_status'],'UNKNOWN');self.assertIsNone(payload({'g2':{'result':o['G2_raw_public']}},2)['members'][0]['imprisoned'])
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 39, in run
+    def run(d):return seam.convert(d['provenance'],d['checkpoint'],d['state'],d['g2'],d['g3'],immutable_business_files=d['business'],artifact_hashes=d['hashes'])
+                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 100, in convert
+    validate_provenance(provenance,immutable_business_files)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 85, in validate_provenance
+    need(sha(data)==BUSINESS_CONTRACT_SHA,'frozen business contract bytes changed')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 25, in need
+    if not ok:raise QualificationError(label)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sdk_checkpoint_qualification.QualificationError: frozen business contract bytes changed
+
+======================================================================
+ERROR: test_known_absent_head_is_not_unknown_or_factory_success (test_sdk_checkpoint_seam.SeamTests.test_known_absent_head_is_not_unknown_or_factory_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 97, in test_known_absent_head_is_not_unknown_or_factory_success
+    o=run(d);h=o['qualified_native_head'];self.assertEqual(h['status'],'BOUND_NATIVE_HEADLESS_OBSERVATION');self.assertFalse(h['factory_contract_match'])
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 39, in run
+    def run(d):return seam.convert(d['provenance'],d['checkpoint'],d['state'],d['g2'],d['g3'],immutable_business_files=d['business'],artifact_hashes=d['hashes'])
+                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 100, in convert
+    validate_provenance(provenance,immutable_business_files)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 85, in validate_provenance
+    need(sha(data)==BUSINESS_CONTRACT_SHA,'frozen business contract bytes changed')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 25, in need
+    if not ok:raise QualificationError(label)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sdk_checkpoint_qualification.QualificationError: frozen business contract bytes changed
+
+======================================================================
+ERROR: test_native_false_property_and_law_nonmember_remain_false (test_sdk_checkpoint_seam.SeamTests.test_native_false_property_and_law_nonmember_remain_false)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 85, in test_native_false_property_and_law_nonmember_remain_false
+    o=run(d);self.assertFalse(o['qualified_native_head']['factory_contract_match']);self.assertFalse(o['qualified_native_head']['title_properties']['definitive_form'])
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 39, in run
+    def run(d):return seam.convert(d['provenance'],d['checkpoint'],d['state'],d['g2'],d['g3'],immutable_business_files=d['business'],artifact_hashes=d['hashes'])
+                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 100, in convert
+    validate_provenance(provenance,immutable_business_files)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 85, in validate_provenance
+    need(sha(data)==BUSINESS_CONTRACT_SHA,'frozen business contract bytes changed')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 25, in need
+    if not ok:raise QualificationError(label)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sdk_checkpoint_qualification.QualificationError: frozen business contract bytes changed
+
+======================================================================
+ERROR: test_present_title_zero_is_preserved_with_reader_compatibility_gap (test_sdk_checkpoint_seam.SeamTests.test_present_title_zero_is_preserved_with_reader_compatibility_gap)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 101, in test_present_title_zero_is_preserved_with_reader_compatibility_gap
+    h=run(d)['qualified_native_head'];self.assertEqual(h['native_graph']['head_title_full_id'],0)
+      ~~~^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 39, in run
+    def run(d):return seam.convert(d['provenance'],d['checkpoint'],d['state'],d['g2'],d['g3'],immutable_business_files=d['business'],artifact_hashes=d['hashes'])
+                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 100, in convert
+    validate_provenance(provenance,immutable_business_files)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 85, in validate_provenance
+    need(sha(data)==BUSINESS_CONTRACT_SHA,'frozen business contract bytes changed')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 25, in need
+    if not ok:raise QualificationError(label)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sdk_checkpoint_qualification.QualificationError: frozen business contract bytes changed
+
+======================================================================
+ERROR: test_unknown_counties_and_signed_learning_preserved_without_bridge (test_sdk_checkpoint_seam.SeamTests.test_unknown_counties_and_signed_learning_preserved_without_bridge)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 73, in test_unknown_counties_and_signed_learning_preserved_without_bridge
+    out=run(d);self.assertIsNone(out['native_predicates']);self.assertIsNone(out['G2_raw_public']['native_result']['confucian_assembly_predicates']['rites'][1]['native_county_count'])
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\tests\test_sdk_checkpoint_seam.py", line 39, in run
+    def run(d):return seam.convert(d['provenance'],d['checkpoint'],d['state'],d['g2'],d['g3'],immutable_business_files=d['business'],artifact_hashes=d['hashes'])
+                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 100, in convert
+    validate_provenance(provenance,immutable_business_files)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 85, in validate_provenance
+    need(sha(data)==BUSINESS_CONTRACT_SHA,'frozen business contract bytes changed')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\tools\lyd_i3b_checkpoint_readback\reader\sdk_checkpoint_qualification.py", line 25, in need
+    if not ok:raise QualificationError(label)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sdk_checkpoint_qualification.QualificationError: frozen business contract bytes changed
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.055s
+
+FAILED (errors=7)

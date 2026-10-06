@@ -15,3 +15,5 @@ Open Kaishek：NOT_APPLICABLE。本机三处已知 checkout/JAR 缺席，转换�
 提交前按仓库 LF 规则对七个新增依赖/合同文件做 CRLF→LF 机械投影，JSON 含义不变；[换行回执](LINE-ENDINGS.json)记录原/新 SHA。已执行的 converter 本体和 seam 测试文件原本为 LF，未再改变。旧候选及原应用哈希继续保留。
 
 首次 staged whitespace check 报两个 helper 末尾额外空行（exit2）；只移除该空行后继续提交，原失败 stdout 在外置 attempt 保留，[修正回执](EOF-PROJECTION.json)记录原/新 SHA。
+
+2026-10-06 勘误：LF 投影虽然保持 JSON 含义，但转换器按原始 bytes 校验合同；首次报告称无需重测不成立。规范化后、修正前实运行定向测试复现合同哈希拒绝。现将 BUSINESS_CONTRACT_SHA 绑定到仓库实际 LF 文件 a95b8f65…，重跑全部 15 项通过（exit0）。原失败与修正结果见 [绑定更正](BINDING-CORRECTION.json)。69 项产品业务字节不变。

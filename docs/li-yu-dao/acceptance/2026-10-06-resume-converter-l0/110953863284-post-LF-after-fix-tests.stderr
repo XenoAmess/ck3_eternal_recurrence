@@ -1,0 +1,20 @@
+test_artifact_bytes_sha_and_body_extension_rejected (test_sdk_checkpoint_seam.SeamTests.test_artifact_bytes_sha_and_body_extension_rejected) ... ok
+test_descriptor_parses_the_verified_buffer_even_if_file_changes (test_sdk_checkpoint_seam.SeamTests.test_descriptor_parses_the_verified_buffer_even_if_file_changes) ... ok
+test_epoch_stale_and_sdk_credit_mutation_rejected (test_sdk_checkpoint_seam.SeamTests.test_epoch_stale_and_sdk_credit_mutation_rejected) ... ok
+test_explicit_mapping_fullsets_humans_counties_distinct_epochs_and_head_join (test_sdk_checkpoint_seam.SeamTests.test_explicit_mapping_fullsets_humans_counties_distinct_epochs_and_head_join) ... ok
+test_high_generation_actor_kept_and_only_minus_one_absent (test_sdk_checkpoint_seam.SeamTests.test_high_generation_actor_kept_and_only_minus_one_absent) ... ok
+test_incomplete_predicate_unknown_not_zero_and_fullsets_mismatch (test_sdk_checkpoint_seam.SeamTests.test_incomplete_predicate_unknown_not_zero_and_fullsets_mismatch) ... ok
+test_independent_owner_frame_source_changes_rejected (test_sdk_checkpoint_seam.SeamTests.test_independent_owner_frame_source_changes_rejected) ... ok
+test_known_absent_head_is_not_unknown_or_factory_success (test_sdk_checkpoint_seam.SeamTests.test_known_absent_head_is_not_unknown_or_factory_success) ... ok
+test_known_non_title_discriminators_rejected (test_sdk_checkpoint_seam.SeamTests.test_known_non_title_discriminators_rejected) ... ok
+test_matching_before_after_wrong_hello_pins_rejected (test_sdk_checkpoint_seam.SeamTests.test_matching_before_after_wrong_hello_pins_rejected) ... ok
+test_native_class_not_saved_type_or_owned_and_actual_full_ast_required (test_sdk_checkpoint_seam.SeamTests.test_native_class_not_saved_type_or_owned_and_actual_full_ast_required) ... ok
+test_native_false_property_and_law_nonmember_remain_false (test_sdk_checkpoint_seam.SeamTests.test_native_false_property_and_law_nonmember_remain_false) ... ok
+test_present_title_zero_is_preserved_with_reader_compatibility_gap (test_sdk_checkpoint_seam.SeamTests.test_present_title_zero_is_preserved_with_reader_compatibility_gap) ... ok
+test_rehashed_saved_title_wrong_holder_rejected (test_sdk_checkpoint_seam.SeamTests.test_rehashed_saved_title_wrong_holder_rejected) ... ok
+test_unknown_counties_and_signed_learning_preserved_without_bridge (test_sdk_checkpoint_seam.SeamTests.test_unknown_counties_and_signed_learning_preserved_without_bridge) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.060s
+
+OK
