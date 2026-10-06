@@ -51,3 +51,44 @@ flowchart TD
 These pointers identify the shortest next unique frozen-source extents: required scope producer, scope mask producer and Rule43 evaluator. Distinct targets are captured once. Only additional operands proven necessary by those exact bodies become subsequent paused-read fields. No generic trigger catalogue or fullperson directory is requested.
 
 Readiness is **research / source-closed applicability shell**. Actual Rule43 admission remains unevaluated; the previously compiled literal numeric producer remains independently static-ready. This source does not advance a complete2920D60 stage, full person, Entry, future baseline or live forecast. All tests and builds are zero in this package; parent owns report integration and any later source adoption.
+
+## Actual paused target closure — October6 08:07 onward
+
+Root's actual48-byte read at2026-10-06 00:07:24.697567 UTC inR0048/PID4692 is preserved at `g2-resume-20261006/rule43-loaded-targets-r0048-once.json`. Before frame812 and independent after813 both show pausedtrue, publicrevision32/native31/rawdate53288232/originalRobert29829. Root performed no callbacks, writes or game actions for the six reads. Modulebase7FF7312C0000, provider29919C22F20, array2991A414190 and inlineRule43 receiver2991A416480 give actualvptr **RVA449BEB0**. Its actual slots are +58→**855AB0**, +60→**9CFEC0**, +C8→**372F780**. This is actual loaded identity evidence, not a predicate result.
+
+855AB0 is a complete **3-byte** leaf `XOR EAX,EAX;RET`, so expected scopeWORD iszero. 9CFEC0 is a complete **14-byte** leaf copying16 bytes from staticRVA**4430590** to the caller's mask output. A necessary16-byte narrow read, using an existing exact.3 cached.rdata section map, proves bothQWORDs arezero. No PE header or old code was reread. Therefore the actual observed Rule43 vptr's372B4E0 applicability result is source-defined **true**; this does not bypass the preceding root-scope validation or evaluate the final rule.
+
+The actual evaluator372F780 is one chained native function, complete **255 bytes** across `[372F780,372F7DC)`, `[372F7DC,372F82D)`, `[372F82D,372F86D)` and `[372F86D,372F87F)`. The latter fragments are the same function's continuations and shared false epilogue. Its source reads evaluationStateBYTE20. Cached372DF30 obtains that byte from actual moduleRVA**5D1DADC**. Actual mode2 calls372F880 with the receiver+40 header; actualmode4 calls37354A0 with receiver+40/+88 iterator wrappers. Those two callees are not captured or guessed by this bounded package.
+
+For modes1 or3 the selected ordered QWORD child list is **receiver+88** (dataQWORD88/signedcountDWORD94). All other byte modes except2/4 select **receiver+40** (dataQWORD40/signedcountDWORD4C). In either captured ordinary loop the native end is data+signedcount*8; count0 gives AL=true. A negative count is not a legal empty shortcut. Each physical child pointer is passed to the already captured **372E020(child,originalEvaluationState,false)** in source order. The first childAL=false returnsfalse immediately; alltrue or an actualempty list returns true. Duplicate child pointers are retained. No resolved child target or arbitrary supplied Boolean is invented.
+
+```mermaid
+flowchart TD
+  R[Actual Rule43 vptr449BEB0 /Rootframe812-813] --> A[855AB0 expectedWORD0]
+  A --> M[9CFEC0 static4430590 mask0/0]
+  M --> AP[372B4E0 applicabletrue; rootscopevalidation still separate]
+  AP --> E[372F780 evaluator /stateBYTE20 fromglobal5D1DADC]
+  E --> K{Actual byte mode}
+  K -- 2 --> TWO[372F880 header40]
+  TWO -. demanded callee unknown .-> GAP[Exact source gap, no assumed result]
+  K -- 4 --> FOUR[37354A0 header40 and88]
+  FOUR -. demanded callee unknown .-> GAP
+  K -- 1 or3 --> L88[Ordered header88 data/count94]
+  K -- other except2/4 --> L40[Ordered header40 data/count4C]
+  L88 --> EMPTY{Actual count0}
+  L40 --> EMPTY
+  EMPTY -- true --> YES[Conjunction true; no child demand]
+  EMPTY -- positive --> C[Only next physical child /sameevaluationstate]
+  EMPTY -- negative --> GAP
+  C -. actual child scope/predicate targets unknown .-> CE[372E020 child]
+  CE -- false --> NO[Firstfalse returns false]
+  CE -- true --> N{Remaining physical child}
+  N -- yes --> C
+  N -- no --> YES
+```
+
+Fresh loaded-target work adds **408 bytes =272 code+120 pdata+16 static data**. Together with the preceding168-byte applicability capture, this exact Rule43 lane totals **576 bytes =416 code+144 pdata+16 static data**. The three loaded target bodies themselves comprise272 unique code bytes (3+14+255). No old overlap was found in the bounded cached region inventory; prior caller/numeric/loader source costs remain separate. One Python preparation syntax failure and one metadata-command path typo both occurred before source reads for those failed attempts; receipts preserve them as harness failures, not capability failures. The successfully captured source was read once.
+
+`ROOT-MODE-AND-FIRST-CHILD-READ-REQUEST.json` is the next bounded Root-only plan: one byte atM+5D1DADC, then only the selected ordinary header's data8/count4. Modes2/4 stop at their exact named source entry instead. A realempty list requires13 bytes total and no child. A positive list additionally requests only firstchild pointer, vptr and its58/60/C8 targets (40 bytes), maximum53 bytes total. It does not dump all rule children or create another predicate caller. The actual source-selected next input, not a fake zero fixture or a general trigger catalogue, decides further work.
+
+Readiness remains **source-only loaded Rule43 applicability and conjunction shell closure**, with actual mode/list/child admission and prior root-scope validation/CharacterScriptContext association still explicit. No accessor implementation, build, test or policy promotion is delivered by this source continuation. Root's g79 runtime/source remains frozen and untouched.
