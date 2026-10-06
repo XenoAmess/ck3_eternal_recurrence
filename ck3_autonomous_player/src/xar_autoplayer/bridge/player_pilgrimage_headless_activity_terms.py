@@ -6,6 +6,8 @@ neither candidate selection nor a valid outbound route establishes CanStart.
 
 from __future__ import annotations
 
+from .religion_context_addon_schema import religion_context_addon_schema
+
 from collections.abc import Mapping
 from copy import deepcopy
 
@@ -132,7 +134,7 @@ def normalize_player_pilgrimage_headless_activity_terms_v1(
         "single_location", "resolved_location_phase_count", "selected_special_definition_index",
         "default_options", "initial_configured_phases", "candidates",
     }, "headless activity terms")
-    if (value["schema"] != _ACTIVITY_SCHEMA or value["activity_id"] != "activity_pilgrimage"
+    if (value["schema"] != religion_context_addon_schema(_ACTIVITY_SCHEMA, current_context) or value["activity_id"] != "activity_pilgrimage"
             or value["quote_scope"] != _QUOTE_SCOPE or value["journey_cost_included"] is not False
             or value["default_options_provenance"] != "native_actual_actor_default"
             or value["phase_choice_provenance"] != "native_mode1_offers_independent_predicates"):
@@ -222,7 +224,7 @@ def normalize_player_pilgrimage_candidate_routes_v1(
             "capture_epoch", "date_raw", "played_character_id", "candidate_province_id",
             "native_start_province_id", "route_valid", "outbound_arrival_date_raw",
         }, "candidate route")
-        if (route["schema"] != _ROUTE_SCHEMA
+        if (route["schema"] != religion_context_addon_schema(_ROUTE_SCHEMA, current_context)
                 or route["configuration_source"] != "native_local_candidate"):
             raise ValueError("native pilgrimage candidate route identity is malformed")
         _frame(route, current_context)

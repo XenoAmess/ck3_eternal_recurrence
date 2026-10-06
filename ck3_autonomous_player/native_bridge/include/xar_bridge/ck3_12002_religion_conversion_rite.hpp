@@ -35,6 +35,8 @@ static_assert(offsetof(FaithAndRiteConversionCommand, pay_piety) == 0x28);
 using Validate = bool (*)(const FaithAndRiteConversionCommand *, void *reasons);
 using ObjectGetter = void *(*)(void *);
 using ContainerGetter = const void *(*)(void *);
+using ReadOnlyValueFactory = FaithAndRiteConversionCommand (*)(
+    std::uintptr_t, std::int32_t, std::uint32_t, bool) noexcept;
 struct Bindings {
   bool enabled = false;
   std::uintptr_t module_base = 0;
@@ -43,6 +45,9 @@ struct Bindings {
   Validate validate = nullptr;
   ObjectGetter character_faith = nullptr;
   ContainerGetter faith_rites = nullptr;
+  // A later exact-build binder supplies its independently proved value vptrs.
+  // The absent callback preserves this build's original factory behavior.
+  ReadOnlyValueFactory read_only_value_factory = nullptr;
 };
 
 enum class Failure {

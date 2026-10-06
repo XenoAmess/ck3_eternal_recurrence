@@ -96,7 +96,9 @@ bool ReadRitePreview12002(const Bindings &b, std::uint64_t epoch,
   }
   out.same_faith = out.current_faith_id == out.target_faith_id;
   out.different_from_current_rite = current_id != target_id;
-  auto command = MakeReadOnlyConvertRiteValue12002(b.module_base,
+  const auto factory = b.read_only_value_factory ? b.read_only_value_factory
+                                               : &MakeReadOnlyConvertRiteValue12002;
+  auto command = factory(b.module_base,
       frame.played_character_id, target_id, false);
   out.validator_without_payment = b.validate(&command, nullptr);
   command.pay_piety = 1;

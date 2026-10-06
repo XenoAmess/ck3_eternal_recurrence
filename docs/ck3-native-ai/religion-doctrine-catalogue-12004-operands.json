@@ -1,0 +1,258 @@
+{
+  "schema": "ck3.doctrine-catalogue-12004-used-operands.v1",
+  "game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_baseline": "66cfb479801f0fc9f9fd518c7705c807e640cc4b",
+  "status": "SOURCE_CLOSED_AUTHORED_NOTRUN",
+  "tree_frozen_before_binder_implementation": true,
+  "registry": {
+    "old_rva": "0x8fc740",
+    "actual4_rva": "0x8fc740",
+    "complete_body_bytes": 87,
+    "actual4_slot_rva": "0x5c67198",
+    "actual4_rip_reads": [
+      "0x8fc744",
+      "0x8fc78b"
+    ],
+    "detail": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/faith-tenet/implementation-caa4/doctrine-map/roots/DoctrineRegistryGlobalOwner-DETAIL.json",
+    "old_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/old-008FC740-008FC797.bin",
+    "actual4_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/new-008FC740-008FC797.bin",
+    "production_role": "Read already loaded slot only. Do not call lazy getter or its initializer."
+  },
+  "used_layout_rows": [
+    {
+      "id": "DoctrineRegistryArrayCountAndGroup",
+      "old_rva": "0x31e1161",
+      "actual4_rva": "0x31e1141",
+      "extent_bytes": 41,
+      "qualification": "complete_instruction_span_normalized_equal",
+      "normalized_code_equal": true,
+      "complete_old_decode": true,
+      "complete_actual4_decode": true,
+      "detail": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/faith-tenet/implementation-caa4/doctrine-map/layout/DoctrineRegistryArrayCountAndGroup-DETAIL.json",
+      "old_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/old-031E1161-031E118A.bin",
+      "actual4_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/new-031E1141-031E116A.bin",
+      "actual4_instructions": [
+        {
+          "rva": "0x31e1141",
+          "offset": 0,
+          "instruction": "call 0x8fc740"
+        },
+        {
+          "rva": "0x31e1146",
+          "offset": 5,
+          "instruction": "mov rbx, qword ptr [rax + 0x50]"
+        },
+        {
+          "rva": "0x31e114a",
+          "offset": 9,
+          "instruction": "movsxd rax, dword ptr [rax + 0x5c]"
+        },
+        {
+          "rva": "0x31e114e",
+          "offset": 13,
+          "instruction": "lea rdi, [rbx + rax*8]"
+        },
+        {
+          "rva": "0x31e1152",
+          "offset": 17,
+          "instruction": "cmp rbx, rdi"
+        },
+        {
+          "rva": "0x31e1155",
+          "offset": 20,
+          "instruction": "je 0x31e118f"
+        },
+        {
+          "rva": "0x31e1157",
+          "offset": 22,
+          "instruction": "nop word ptr [rax + rax]"
+        },
+        {
+          "rva": "0x31e1160",
+          "offset": 31,
+          "instruction": "mov rax, qword ptr [rbx]"
+        },
+        {
+          "rva": "0x31e1163",
+          "offset": 34,
+          "instruction": "cmp qword ptr [rax + 0xb08], rsi"
+        }
+      ],
+      "boundary": "Used instruction slice only; not full postload/initializer behavior."
+    },
+    {
+      "id": "DoctrineGroupKeyCString",
+      "old_rva": "0x31e0fd2",
+      "actual4_rva": "0x31e0fb2",
+      "extent_bytes": 61,
+      "qualification": "complete_instruction_span_normalized_equal",
+      "normalized_code_equal": true,
+      "complete_old_decode": true,
+      "complete_actual4_decode": true,
+      "detail": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/faith-tenet/implementation-caa4/doctrine-map/layout/DoctrineGroupKeyCString-DETAIL.json",
+      "old_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/old-031E0FD2-031E100F.bin",
+      "actual4_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/new-031E0FB2-031E0FEF.bin",
+      "actual4_instructions": [
+        {
+          "rva": "0x31e0fb2",
+          "offset": 0,
+          "instruction": "lea r14, [rcx + 0x18]"
+        },
+        {
+          "rva": "0x31e0fb6",
+          "offset": 4,
+          "instruction": "mov rdx, r14"
+        },
+        {
+          "rva": "0x31e0fb9",
+          "offset": 7,
+          "instruction": "lea rcx, [rbp - 0x80]"
+        },
+        {
+          "rva": "0x31e0fbd",
+          "offset": 11,
+          "instruction": "call 0x855f00"
+        },
+        {
+          "rva": "0x31e0fc2",
+          "offset": 16,
+          "instruction": "mov r15d, 1"
+        },
+        {
+          "rva": "0x31e0fc8",
+          "offset": 22,
+          "instruction": "mov dword ptr [rbp + 0x1000], r15d"
+        },
+        {
+          "rva": "0x31e0fcf",
+          "offset": 29,
+          "instruction": "lea r8d, [rdi + 5]"
+        },
+        {
+          "rva": "0x31e0fd3",
+          "offset": 33,
+          "instruction": "lea rdx, [rip + 0x15a22e6]"
+        },
+        {
+          "rva": "0x31e0fda",
+          "offset": 40,
+          "instruction": "lea rcx, [rbp - 0x80]"
+        },
+        {
+          "rva": "0x31e0fde",
+          "offset": 44,
+          "instruction": "call 0x885fd0"
+        },
+        {
+          "rva": "0x31e0fe3",
+          "offset": 49,
+          "instruction": "mov ecx, dword ptr [r14 + 0x10]"
+        },
+        {
+          "rva": "0x31e0fe7",
+          "offset": 53,
+          "instruction": "mov rax, r14"
+        },
+        {
+          "rva": "0x31e0fea",
+          "offset": 56,
+          "instruction": "cmp qword ptr [r14 + 0x18], 0x10"
+        }
+      ],
+      "boundary": "Used instruction slice only; not full postload/initializer behavior."
+    },
+    {
+      "id": "DoctrineDefinitionKey",
+      "old_rva": "0x24fa541",
+      "actual4_rva": "0x24fa521",
+      "extent_bytes": 4,
+      "qualification": "complete_instruction_span_normalized_equal",
+      "normalized_code_equal": true,
+      "complete_old_decode": true,
+      "complete_actual4_decode": true,
+      "detail": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/faith-tenet/implementation-caa4/doctrine-map/layout/DoctrineDefinitionKey-DETAIL.json",
+      "old_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/old-024FA541-024FA545.bin",
+      "actual4_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/new-024FA521-024FA525.bin",
+      "actual4_instructions": [
+        {
+          "rva": "0x24fa521",
+          "offset": 0,
+          "instruction": "lea r15, [r13 + 0x18]"
+        }
+      ],
+      "boundary": "Used instruction slice only; not full postload/initializer behavior."
+    },
+    {
+      "id": "DoctrineDefinitionGroup",
+      "old_rva": "0x24fa2aa",
+      "actual4_rva": "0x24fa28a",
+      "extent_bytes": 7,
+      "qualification": "complete_instruction_span_normalized_equal",
+      "normalized_code_equal": true,
+      "complete_old_decode": true,
+      "complete_actual4_decode": true,
+      "detail": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/faith-tenet/implementation-caa4/doctrine-map/layout/DoctrineDefinitionGroup-DETAIL.json",
+      "old_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/old-024FA2AA-024FA2B1.bin",
+      "actual4_cache": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/new-024FA28A-024FA291.bin",
+      "actual4_instructions": [
+        {
+          "rva": "0x24fa28a",
+          "offset": 0,
+          "instruction": "mov rcx, qword ptr [r15 + 0xb08]"
+        }
+      ],
+      "boundary": "Used instruction slice only; not full postload/initializer behavior."
+    }
+  ],
+  "common_cstring": {
+    "receipt": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/shared-roster-layout/GDBO-KEY-LAYOUT-SOURCE-CLOSED.json",
+    "role": "Common native CString storage proof, distinct from doctrine-specific key/group object member proof.",
+    "length_offset": "0x10",
+    "capacity_offset": "0x18",
+    "inline_capacity": 15,
+    "heap_pointer_offset": "0x0",
+    "doctrine_group_length_instruction": "0x31e0fe3 reads low DWORD length; common CString layout supplies full size_t storage width."
+  },
+  "core": {
+    "binder": "ck3_12004::BindCoreImage",
+    "current_selector": "ck3_12004::ReadCoreSnapshot",
+    "proof": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/faith-tenet/implementation-caa4/ROOT-DELIVERY.json"
+  },
+  "software": {
+    "reader": "ck3_12002::religion::doctrine12002::ReadPlayedDoctrineCatalogue12002",
+    "definition_copy": "CopyDoctrineDefinition12002",
+    "serializer": "SerializeDoctrineCatalogue12002",
+    "namespace_role": "Software history. No old image binder or old native callback address is reused."
+  },
+  "semantics": {
+    "source": "loaded_doctrine_registry",
+    "ordered_duplicates_preserved": true,
+    "known_empty": "available=true,catalogue_complete=true,rows=[]",
+    "null_database": "available=false,catalogue_complete=false,doctrine_database_unavailable",
+    "not_claimed": [
+      "actor legal reform selection",
+      "faith-selected doctrine list",
+      "runtime execution",
+      "paused game qualification"
+    ]
+  },
+  "cost": {
+    "own_new_executable_bytes": 0,
+    "own_old_executable_bytes": 0,
+    "own_executable_read_calls": 0,
+    "own_metadata_bytes": 0,
+    "own_duplicate_capture_bytes": 0,
+    "own_hashes": 0,
+    "reused_basic_source_bytes": 9250,
+    "reused_basic_source_reads": 123,
+    "reused_doctrine_subset_bytes_in_basic": 1922,
+    "reused_doctrine_subset_reads_in_basic": 22,
+    "additional_shared_cstring_receipt_reused": true,
+    "reused_material_is_not_new_credit": true
+  },
+  "tests_build_import_game_sdk_first": "NOTRUN",
+  "asia_shanghai_day": "2026-10-07",
+  "iso_week": "2026-W41"
+}

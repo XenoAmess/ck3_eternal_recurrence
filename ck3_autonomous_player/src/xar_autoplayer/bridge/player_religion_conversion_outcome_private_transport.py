@@ -9,7 +9,7 @@ from .driver import BridgeUnavailableError
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
 from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
 from .player_religion_context_private_transport import normalize_player_religion_context_v1
-from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
+from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build
 
 
 STEP = "query-player-religion-conversion-outcome-v1"
@@ -53,7 +53,7 @@ def _source(value: object, schema: str, keys: set[str]) -> dict[str, object]:
 
 def _build(value: Mapping[str, object], snapshot: Mapping[str, object]) -> None:
     observed = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if observed not in (CK3_12002, CK3_12003) or observed != private_native_build_identity(snapshot) or value["read_only"] is not True:
+    if observed not in (CK3_12002, CK3_12003, CK3_12004) or observed != private_native_build_identity(snapshot) or value["read_only"] is not True:
         raise ValueError("native conversion outcome belongs to another connected build")
 
 
@@ -116,7 +116,7 @@ def query_player_religion_conversion_outcome_private_v1(
     try:
         build = require_exact_native_backend(result.get("game_version"), result.get("executable_sha256"),
                                            result.get("backend_id"), suffix="player-religion-conversion-outcome-v1")
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

@@ -2,10 +2,13 @@
 #include "xar_bridge/religion_doctrine12002_catalogue_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_doctrine_catalogue_bindings.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #include <windows.h>
+#include <utility>
 
 namespace xar::ck3_12002 {
 namespace {
@@ -60,8 +63,12 @@ bool ExecutePlayerReligionDoctrineCatalogueMailbox12002(
       query.failure = "player_religion_doctrine_catalogue_published_frame_changed";
       return true;
     }
-    (void)religion::doctrine12002::ReadPlayedDoctrineCatalogue12002(
-        query.bindings, stamp.pump_epoch, query.observation);
+    if (game::IsCk3_12004Descriptor(envelope->game->descriptor()))
+      (void)ck3_12004::religion::doctrine_catalogue::ReadPlayedDoctrineCatalogue12004(
+          query.bindings, stamp.pump_epoch, query.observation);
+    else
+      (void)religion::doctrine12002::ReadPlayedDoctrineCatalogue12002(
+          query.bindings, stamp.pump_epoch, query.observation);
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
     if (out.available && (out.played_character_id != frame.played_character_id ||
@@ -128,6 +135,9 @@ bool RunPlayerReligionDoctrineCatalogueMailbox12002(PlayerReligionDoctrineCatalo
       return false;
     }
     serialized = SerializePlayerReligionDoctrineCatalogueResult12002(query, request_id);
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      serialized = game::Render12004BuildIdentity(
+          std::move(serialized), envelope.game->descriptor());
     if (!serialized.empty()) return true;
     failure = query.failure.empty() ? "player_religion_doctrine_catalogue_serialization_unavailable" : query.failure;
     return false;
@@ -149,20 +159,25 @@ bool HandlePlayerReligionDoctrineCataloguePrivate12002(const game::GameAdapter &
   if (!ParsePlayerReligionDoctrineCatalogueRevision12002(payload, expected)) {
     failure = "player_religion_doctrine_catalogue_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_doctrine_catalogue_current_frame_unavailable"; return false;
   }
   try {
     PlayerReligionDoctrineCatalogueMailboxContext12002 query{};
-    query.envelope.game = &NativeAdapter12002(adapter);
+    query.envelope.game = actual4 ? &adapter : &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
-    query.bindings = religion::doctrine12002::BindDoctrineCatalogueImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    query.bindings = actual4
+        ? ck3_12004::religion::doctrine_catalogue::BindDoctrineCatalogueImage12004(
+            base, adapter.descriptor().executable_sha256)
+        : religion::doctrine12002::BindDoctrineCatalogueImage12002(
+            base, game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     return RunPlayerReligionDoctrineCatalogueMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_doctrine_catalogue_handler_exception"; return false; }
 }

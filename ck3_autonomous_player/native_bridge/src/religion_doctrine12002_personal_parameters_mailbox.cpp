@@ -2,10 +2,13 @@
 #include "xar_bridge/religion_doctrine12002_personal_parameters_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_parameter_bindings.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #include <windows.h>
+#include <utility>
 
 namespace xar::ck3_12002 {
 namespace {
@@ -60,8 +63,12 @@ bool ExecutePlayerReligionPersonalParametersMailbox12002(
       query.failure = "player_religion_personal_parameters_published_frame_changed";
       return true;
     }
-    (void)religion::doctrine12002::ReadPlayedPersonalParameters12002(
-        query.bindings, query.parameter_bindings, stamp.pump_epoch, query.observation);
+    if (game::IsCk3_12004Descriptor(envelope->game->descriptor()))
+      (void)ck3_12004::religion::ReadPlayedPersonalParameters12004(
+          query.bindings, query.parameter_bindings, stamp.pump_epoch, query.observation);
+    else
+      (void)religion::doctrine12002::ReadPlayedPersonalParameters12002(
+          query.bindings, query.parameter_bindings, stamp.pump_epoch, query.observation);
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
     if (out.available && (out.played_character_id != static_cast<std::uint32_t>(frame.played_character_id) ||
@@ -128,6 +135,9 @@ bool RunPlayerReligionPersonalParametersMailbox12002(PlayerReligionPersonalParam
       return false;
     }
     serialized = SerializePlayerReligionPersonalParametersResult12002(query, request_id);
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      serialized = game::Render12004BuildIdentity(
+          std::move(serialized), envelope.game->descriptor());
     if (!serialized.empty()) return true;
     failure = query.failure.empty() ? "player_religion_personal_parameters_serialization_unavailable" : query.failure;
     return false;
@@ -149,23 +159,29 @@ bool HandlePlayerReligionPersonalParametersPrivate12002(const game::GameAdapter 
   if (!ParsePlayerReligionPersonalParametersRevision12002(payload, expected)) {
     failure = "player_religion_personal_parameters_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_personal_parameters_current_frame_unavailable"; return false;
   }
   try {
     PlayerReligionPersonalParametersMailboxContext12002 query{};
-    query.envelope.game = &NativeAdapter12002(adapter);
+    query.envelope.game = actual4 ? &adapter : &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
-    query.bindings = religion::BindReligionContextImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    query.parameter_bindings = religion::doctrine12002::BindPersonalParameters12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (actual4) {
+      const auto sha = adapter.descriptor().executable_sha256;
+      query.bindings = ck3_12004::religion::BindReligionContextImage12004(base, sha);
+      query.parameter_bindings = ck3_12004::religion::BindPersonalParametersImage12004(base, sha);
+    } else {
+      const auto sha = game::ReviewedCrozierAbiSha256(adapter.descriptor());
+      query.bindings = religion::BindReligionContextImage12002(base, sha);
+      query.parameter_bindings = religion::doctrine12002::BindPersonalParameters12002(base, sha);
+    }
     return RunPlayerReligionPersonalParametersMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_personal_parameters_handler_exception"; return false; }
 }

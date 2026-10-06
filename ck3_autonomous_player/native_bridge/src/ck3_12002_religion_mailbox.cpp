@@ -2,6 +2,8 @@
 #include "xar_bridge/ck3_12002_religion_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_context_addons.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
@@ -27,6 +29,13 @@ bool ValidFrame(const game::Snapshot &frame, std::uint64_t revision) noexcept {
   return revision != 0 && frame.paused && frame.map_ready &&
       frame.has_played_character && frame.played_character_alive &&
       frame.played_character_id > 0;
+}
+void *ResolveReligionCharacter(const PlayerReligionMailboxContext12002 &query,
+    std::int32_t id) noexcept {
+  return query.envelope.game &&
+      game::IsCk3_12004Descriptor(query.envelope.game->descriptor())
+      ? ck3_12004::ResolveCoreCharacter(query.bindings.core, id)
+      : ResolveCoreCharacter(query.bindings.core, id);
 }
 } // namespace
 
@@ -61,8 +70,12 @@ bool ExecutePlayerReligionMailbox12002(
       query.failure = "player_religion_published_frame_changed";
       return true;
     }
-    (void)religion::ReadPlayedReligionContext12002(
-        query.bindings, stamp.pump_epoch, query.observation);
+    if (game::IsCk3_12004Descriptor(envelope->game->descriptor()))
+      (void)ck3_12004::religion::ReadPlayedReligionContext12004(
+          query.bindings, stamp.pump_epoch, query.observation);
+    else
+      (void)religion::ReadPlayedReligionContext12002(
+          query.bindings, stamp.pump_epoch, query.observation);
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
     if (out.available && (out.played_character_id != frame.played_character_id ||
@@ -80,36 +93,36 @@ bool ExecutePlayerReligionMailbox12002(
     // and actual player. A legal false permission remains an observed value.
     (void)ck3_12003::religion::confession_permission::ReadPlayerConfessionRitePermission12003(
         query.confession_permission_bindings, query.bindings,
-        out.available ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr,
+        out.available ? ResolveReligionCharacter(query, out.played_character_id) : nullptr,
         out, query.confession_rite_permission);
     // Read the independent milestone component on the same owner callback.
     // Its availability does not alter the existing Context or conversion inputs.
     (void)religion::fulfillment_progress12003::ReadPlayerSpiritualFulfillmentProgress12003(
         query.progress_bindings,
-        out.available ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr,
+        out.available ? ResolveReligionCharacter(query, out.played_character_id) : nullptr,
         out, query.progress);
     // Reuse the exact progress binding for an independent stable type key.
     (void)ck3_12003::religion::fulfillment_type::ReadPlayerSpiritualFulfillmentType12003(
         query.progress_bindings,
-        out.available ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr,
+        out.available ? ResolveReligionCharacter(query, out.played_character_id) : nullptr,
         out, query.spiritual_fulfillment_type);
     // The fixed decision read is independent of Faith Context and loan numerics.
     (void)ck3_12003::religion::mystical_communion::ReadPlayerMysticalCommunionDecisionTerms12003(
         query.mystical_communion_bindings,
-        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.mystical_communion_terms);
     // Read fixed pilgrimage CanPlan and its tooltip without opening a planner.
     // This independent component does not change the existing Context.
     (void)ck3_12003::religion::pilgrimage::ReadPlayerPilgrimageActivityTypeTerms12003(
         query.pilgrimage_bindings,
-        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.pilgrimage_terms);
     // Discover actual Faith candidates and quote owned local configurations.
     // Route defaults are a separate observation; neither is a live planner.
     auto *pilgrimage_actor = out.available
-        ? ResolveCoreCharacter(query.bindings.core, out.played_character_id) : nullptr;
+        ? ResolveReligionCharacter(query, out.played_character_id) : nullptr;
     (void)ck3_12003::religion::pilgrimage_activity_terms::ReadPlayerPilgrimageActivityTerms12003(
         query.pilgrimage_activity_bindings, pilgrimage_actor, out,
         query.pilgrimage_activity_terms);
@@ -125,22 +138,22 @@ bool ExecutePlayerReligionMailbox12002(
     // same resolved current player/frame; neither gates existing Context.
     (void)ck3_12003::religion::confession::ReadPlayerConfessionDecisionTerms12003(
         query.confession_bindings,
-        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.confession_terms);
     (void)ck3_12003::religion::church_income::ReadPlayerChurchIncomeProfile12003(
         query.church_income_bindings,
-        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.church_income_terms);
     // The selected native church tax rule is a separate optional observation.
     (void)ck3_12003::religion::church_tax_inputs::ReadPlayerChurchTaxInputs12003(
         query.church_tax_bindings,
-        ResolveCoreCharacter(query.bindings.core, static_cast<std::int32_t>(frame.played_character_id)),
+        ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.church_tax_inputs);
     // Three independent read-only religion inputs share the actual owner frame.
-    auto *religion_actor = ResolveCoreCharacter(query.bindings.core,
+    auto *religion_actor = ResolveReligionCharacter(query,
         static_cast<std::int32_t>(frame.played_character_id));
     (void)religion::devotion_profile12003::ReadPlayerDevotionProfile12003(
         query.devotion_bindings, religion_actor, out, query.devotion_profile);
@@ -243,6 +256,9 @@ bool RunPlayerReligionMailbox12002(PlayerReligionMailboxContext12002 &query,
       return false;
     }
     serialized = SerializePlayerReligionResult12002(query, request_id);
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      serialized = game::Render12004BuildIdentity(
+          std::move(serialized), envelope.game->descriptor());
     if (!serialized.empty()) return true;
     failure = query.failure.empty() ? "player_religion_serialization_unavailable" : query.failure;
     return false;
@@ -264,57 +280,77 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
   if (!ParsePlayerReligionRevision12002(payload, expected)) {
     failure = "player_religion_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_current_frame_unavailable"; return false;
   }
   try {
     PlayerReligionMailboxContext12002 query{};
-    query.envelope.game = &NativeAdapter12002(adapter);
+    query.envelope.game = actual4 ? &adapter : &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     const auto image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    query.bindings = religion::BindReligionContextImage12002(
-        image_base,
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    query.progress_bindings =
-        religion::fulfillment_progress12003::BindSpiritualFulfillmentProgressImage12003(
-            image_base, adapter.descriptor());
-    query.mystical_communion_bindings =
-        ck3_12003::religion::mystical_communion::BindPlayerMysticalCommunionDecisionTermsImage12003(
-            image_base, adapter.descriptor().executable_sha256);
-    query.pilgrimage_bindings =
-        ck3_12003::religion::pilgrimage::BindPlayerPilgrimageActivityTypeTermsImage12003(
-            image_base, adapter.descriptor().executable_sha256);
-    query.pilgrimage_activity_bindings =
-        ck3_12003::religion::pilgrimage_activity_terms::BindPlayerPilgrimageActivityTermsImage12003(
-            image_base, adapter.descriptor().executable_sha256);
-    query.pilgrimage_route_bindings =
-        ck3_12003::religion::pilgrimage_route::BindPlayerPilgrimageCandidateRouteImage12003(
-            image_base, adapter.descriptor().executable_sha256);
-    query.confession_bindings =
-        ck3_12003::religion::confession::BindPlayerConfessionDecisionTermsImage12003(
-            image_base, adapter.descriptor().executable_sha256);
-    // Reuse reviewed .3 admission for the existing definition/status factory.
-    // No draft reader or window operation is invoked by this query.
-    query.confession_permission_bindings =
-        religion_reform::BindCurrentDraftTenetSources12002(
-            image_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    query.church_income_bindings =
-        ck3_12003::religion::church_income::BindPlayerChurchIncomeProfileImage12003(
-            image_base, adapter.descriptor().executable_sha256);
-    query.church_tax_bindings =
-        ck3_12003::religion::church_tax_inputs::BindPlayerChurchTaxInputsImage12003(
-            image_base, adapter.descriptor().executable_sha256);
-    query.devotion_bindings =
-        religion::devotion_profile12003::BindPlayerDevotionProfileImage12003(image_base, adapter.descriptor());
-    query.rite_virtue_sin_bindings =
-        religion::rite_virtue_sin_profile12003::BindPlayerRiteVirtueSinProfileImage12003(image_base, adapter.descriptor());
-    query.vow_of_poverty_bindings =
-        ck3_12003::religion::vow_of_poverty_terms12003::BindVowOfPovertyTermsImage12003(
-            image_base, adapter.descriptor().executable_sha256);
+    if (actual4) {
+      const auto sha = adapter.descriptor().executable_sha256;
+      query.bindings = ck3_12004::religion::BindReligionContextImage12004(image_base, sha);
+      const auto addons = ck3_12004::religion::BindReligionContextAddonsImage12004(image_base, sha);
+      query.progress_bindings = addons.progress_bindings;
+      query.mystical_communion_bindings = addons.mystical_communion_bindings;
+      query.pilgrimage_bindings = addons.pilgrimage_bindings;
+      query.pilgrimage_activity_bindings = addons.pilgrimage_activity_bindings;
+      query.pilgrimage_route_bindings = addons.pilgrimage_route_bindings;
+      query.confession_bindings = addons.confession_bindings;
+      query.confession_permission_bindings = addons.confession_permission_bindings;
+      query.church_income_bindings = addons.church_income_bindings;
+      query.church_tax_bindings = addons.church_tax_bindings;
+      query.devotion_bindings = addons.devotion_bindings;
+      query.rite_virtue_sin_bindings = addons.rite_virtue_sin_bindings;
+      query.vow_of_poverty_bindings = addons.vow_of_poverty_bindings;
+    } else {
+      query.bindings = religion::BindReligionContextImage12002(
+          image_base,
+          xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.progress_bindings =
+          religion::fulfillment_progress12003::BindSpiritualFulfillmentProgressImage12003(
+              image_base, adapter.descriptor());
+      query.mystical_communion_bindings =
+          ck3_12003::religion::mystical_communion::BindPlayerMysticalCommunionDecisionTermsImage12003(
+              image_base, adapter.descriptor().executable_sha256);
+      query.pilgrimage_bindings =
+          ck3_12003::religion::pilgrimage::BindPlayerPilgrimageActivityTypeTermsImage12003(
+              image_base, adapter.descriptor().executable_sha256);
+      query.pilgrimage_activity_bindings =
+          ck3_12003::religion::pilgrimage_activity_terms::BindPlayerPilgrimageActivityTermsImage12003(
+              image_base, adapter.descriptor().executable_sha256);
+      query.pilgrimage_route_bindings =
+          ck3_12003::religion::pilgrimage_route::BindPlayerPilgrimageCandidateRouteImage12003(
+              image_base, adapter.descriptor().executable_sha256);
+      query.confession_bindings =
+          ck3_12003::religion::confession::BindPlayerConfessionDecisionTermsImage12003(
+              image_base, adapter.descriptor().executable_sha256);
+      // Reuse reviewed .3 admission for the existing definition/status factory.
+      // No draft reader or window operation is invoked by this query.
+      query.confession_permission_bindings =
+          religion_reform::BindCurrentDraftTenetSources12002(
+              image_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.church_income_bindings =
+          ck3_12003::religion::church_income::BindPlayerChurchIncomeProfileImage12003(
+              image_base, adapter.descriptor().executable_sha256);
+      query.church_tax_bindings =
+          ck3_12003::religion::church_tax_inputs::BindPlayerChurchTaxInputsImage12003(
+              image_base, adapter.descriptor().executable_sha256);
+      query.devotion_bindings =
+          religion::devotion_profile12003::BindPlayerDevotionProfileImage12003(image_base, adapter.descriptor());
+      query.rite_virtue_sin_bindings =
+          religion::rite_virtue_sin_profile12003::BindPlayerRiteVirtueSinProfileImage12003(image_base, adapter.descriptor());
+      query.vow_of_poverty_bindings =
+          ck3_12003::religion::vow_of_poverty_terms12003::BindVowOfPovertyTermsImage12003(
+              image_base, adapter.descriptor().executable_sha256);
+    }
     return RunPlayerReligionMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_handler_exception"; return false; }
 }
