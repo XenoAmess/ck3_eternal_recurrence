@@ -279,8 +279,11 @@ flowchart TD
     S --> CP[Copy positive reloadedcount oldrecords in order]
     CP --> T[11244A0 header newbuffer newcount newcapacity]
     T --> SC{Reloaded signed countC positive}
-    SC -.->|yes| UC[11244C6 unknown continuation]
-    SC -.->|no| UE[11244E9 unknown continuation]
+    SC -->|yes| UC[11244C6 ordered oldrecord virtual0 with flags0]
+    UC -.-> CB[Selected record callback footprint unknown]
+    UC --> UE[11244E9 allocator slot10 normalresource boundary]
+    SC -->|no| UE
+    UE --> HC[Store capacity8 then buffer0 then countC and ret]
 ```
 
 The sole next source gap is that normal-return **storage-commit** footprint. `PENDING-STORAGE-COMMIT-METADATA-PLAN.json` proposes only named `11244A0` pdata/header/selected-chain metadata after cache-first reuse. It does not authorize a body, generic allocator/deallocator, exception handler or new observer implementation. The revised whole-DATA plan publishes typed pending records and the new physical `chunk+C` input; no code, test, build or game operation has begun.
@@ -300,3 +303,13 @@ Root approved exactly the selected 38 B. October 6 **20:47:06 CST**, actual new 
 There is **no return, call or non-stack write in these 38 B**. Thus the exact pdata selection was an initial prologue fragment, not a complete storage-commit body. Growth header/count/capacity/buffer state remains unknown, and the whole-DATA observer is not implementation-qualified. `PENDING-STORAGE-COMMIT-EXACT-BODY-READ-RECEIPT.json` seals the actual fragment and both reached edges without reading either continuation.
 
 `PENDING-STORAGE-REACHED-CONTINUATION-METADATA-PLAN.json` proposes metadata only for the two actual reached addresses **`11244C6`** and **`11244E9`**. Reuse the primary record/header and all held metadata; select the real containing pdata record, its four-byte unwind header and at most one actual CHAININFO record per target, at most **464 new B / 40 seeks total**. Actual containment is sufficient if an edge is inside a fragment; no function start is invented. Any selected continuation body requires a separate exact span plan and Root approval.
+
+## Actual normal-return header commit and record callback
+
+Root then authorized those metadata selectors and, after their actual extents were sealed, up to 1,024 B of selected normal-storage continuation code. October 6 **20:50:39 CST**, metadata cost was **68 B / 7 seeks**. The actual ranges are **`[11244C6,11244E9)` / 35 B** and **`[11244E9,112451A)` / 49 B**, pdata indices 57357/57358. Their unwind headers are `21050200` at `5173C80` and `21000000` at `5173C94`; both have flags 4 and their distinct CHAININFO records point to the already held primary `a0441201c644120158f11005`. The chain bytes were captured only at their real selected physical addresses; the old primary bytes were not reread. `PENDING-STORAGE-CONTINUATION-ACTUAL-SPAN-LEDGER.json` was sealed before the **84 B / 2 seek** code read at **20:51:38 CST**.
+
+Combined with the cached 38 B primary, the 122 B direct control flow returns at **`1124519`** with no outside transfer. The positive-count branch uses the old signed count loaded once in the primary fragment, reads the old buffer, and invokes each old 16 B record's **virtual slot `+0(record, EDX=0)`** in stored order. It then joins the nonpositive-count branch. Both branches reload header allocator `+10` and the old buffer `+0`, invoke allocator virtual slot **`+10(allocator, old_buffer, 8)`**, and on normal return write **capacity `+8 = newCapacity`, buffer `+0 = newBuffer`, count `+C = newCount` in this exact order**. Negative/zero old counts skip the record callbacks; they are not clamped or made positive.
+
+The direct header/storage footprint is now closed under the stated normal resource-return premise. **A positive old count also executes record callbacks before those writes. Their footprint cannot be silently labeled generic free or no-op.** Newly appended/copied records have canonical `44DEFA8`, while each old record dispatches through its own actual raw qword `+0`. A useful model must preserve that selected callback role and any actual record/buffer/header/chunk overlap; it must not infer a callback from a Regi ID or a DATA ordinal. The minimum extra source selector is the canonical vtable's first qword **`44DEFA8[0]`**, followed only by that actual target's cached source or named pdata/header selection. No selected callback code or static qword was read here.
+
+`PENDING-RECORD-CALLBACK-FINITE-SELECTION-PLAN.json` seals this next finite selector. Independent no-growth append and growth with nonpositive old count retain useful source-defined logical results; positive old-record callback effects remain a separate concrete source/input dependency. No generic allocator, exception handler, route/capital tree or tests were expanded. Cumulative source I/O is **872 metadata B + 1,542 code B = 2,414 B / 376 seeks**; constant bytes, game/SDK, native builds, tests and wire consumers remain zero.
