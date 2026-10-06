@@ -490,6 +490,8 @@ int main(int argc, char **argv) {
         memory.create_calls == 1U && memory.edit_calls == 1U && memory.destroy_calls == 2U,
         "independent native final bools retain full heap and empty inline text");
     const auto &terms = value.draft_creation_terms;
+    // The composed reader captures creation terms once. The cost reader's
+    // repeated quote checks do not duplicate these two native callbacks.
     Assert(value.publish_creation_terms && terms.available && terms.failure == "none" &&
         terms.capture_epoch == epoch && terms.date_raw == Fixture::date &&
         terms.played_character_id == static_cast<std::uint32_t>(Fixture::actor_id) &&
@@ -497,7 +499,7 @@ int main(int argc, char **argv) {
         terms.source_main_rite_id == Fixture::main_id && terms.actor_faith_id == Fixture::faith_id &&
         terms.draft_divergence_raw == std::int64_t{0} && terms.faith_creation_threshold_raw == std::int64_t{0} &&
         terms.divergence_results_in_faith_creation == true && terms.native_create_faith_or_reform == false &&
-        memory.divergence_calls == 2U && memory.lane_calls == 2U,
+        memory.divergence_calls == 1U && memory.lane_calls == 1U,
         "actual fullref source storage preserves zero UI equality and independent native lane");
     Assert(!value.popup_choices.available && !value.current_doctrine_selection.available &&
         wire.find("ck3_12004_current_draft_creation_terms_v1") != std::string::npos,
@@ -506,7 +508,7 @@ int main(int argc, char **argv) {
         << " actual_adapter=true actual_core_reader=true actual_named_mailbox=true actual_serializer=true"
         << " actual_renderer=true actual_full_wire=true synthetic_memory=true synthetic_callbacks=true"
         << " native_cost_calls=2 native_missing_calls=2 native_owned_calls=2 native_create_calls=1"
-        << " native_edit_calls=1 native_reason_destroy_calls=2 native_divergence_calls=2 native_lane_calls=2"
+        << " native_edit_calls=1 native_reason_destroy_calls=2 native_divergence_calls=1 native_lane_calls=1"
         << " legacy_main_executed=false production_stubs=false live=false\n";
     fixture_state = nullptr;
     return 0;
