@@ -31,7 +31,7 @@ flowchart TD
 
 ## Existing production integration
 
-The actual4 API exposes `BindFamilyContextImage`, `BindFamilyValuesImage`, `BindFamilyImage`, `BindFamilyProjectionImage`, `BindFamilyLineageImage` and `BindFamilyObligationsBreakImageV1`. The source baseline's strict transport already admits exact actual4 identity. Its obligations `kind` remains the existing `.2` software DTO identifier while `Render12004BuildIdentity` renders actual version/SHA; no strict metadata rewrite is required.
+The actual4 API exposes `BindFamilyContextImage`, `BindFamilyValuesImage`, `BindFamilyImage`, `BindFamilyProjectionImage`, `BindFamilyLineageImage` and `BindFamilyObligationsBreakImageV1`. The existing obligations topic mailbox now accepts the exact actual4 descriptor and selects the independent lineage and break-term binders, then renders its existing serialized result through `Render12004BuildIdentity`. Its alliance branch awaits the separate actual binder; the current actual3 action descriptor remains required for call-ally submission. The source baseline's strict transport already admits exact actual4 identity. Its obligations `kind` remains the existing `.2` software DTO identifier while `Render12004BuildIdentity` renders actual version/SHA; no strict metadata rewrite is required.
 
 The existing native-auto-run family opt-in needs the same readonly `allow_private_family_obligations_query` assignment already supplied by the MCP `--private-family-obligations-query` option. The minimal external recipe is `actual4-strict/RUNTIME-HOOK.patch`; Root performs shared configuration integration and SDK qualification.
 
