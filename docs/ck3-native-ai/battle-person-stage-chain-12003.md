@@ -1550,3 +1550,52 @@ are0. The Python numerical connection is **static-ready conditional on held
 source values and an explicit incoming stage**; native production readiness,
 fresh-stage identity, real Diac/Rule43 selection, following caller, full person
 preparation and full Entry remain incomplete.
+
+## First compiled following-helper wire qualification
+
+Root adopted the implementation as `4d21c228` and centrally compiled the
+frozen g87 source `5c33040bbc28864fa76106e719fa61fae30258ab`. Root reports
+the full production build GREEN in121.369582s and the batch's first three
+readonly CTests GREEN3/3; the two following-helper targets generated9 and8
+new whole production DTO/serializer wires. The third target is separate work,
+and this lane neither builds nor reruns any native target.
+
+At2026-10-06 11:21:45CST the **first and only compiled-wire consumer** passed
+17/17 actual serialized snapshots plus4 conditional stage compositions,
+with204 checks in1.92594s. It used the archived g87 production source at
+`C:/codex-ck3-background/person-full-rate-batch/g87/ck3_autonomous_player/src`,
+not the unbuilt child tree. Actual payloads totaled94047B; individual size
+and SHA-256 are recorded in
+`following-stages-implementation/compiled-wire-consumer/attempt-01/RESULT.json`.
+The external frozen build and first-CTest receipts are
+`C:/codex-ck3-background/person-full-rate-batch/strict01/BUILD-RESULT.json`
+and `FIRST-THREE-READONLY-CTESTS.json` in that same directory.
+
+All actual whole snapshots passed the production current-source normalizer
+and strict numerical contracts. The emitted values demonstrate full physical
+Title dedup while duplicate Province occurrences remain; initialized default
+PC use; actual absent-map0; generation fallback; actual default Title header;
+negative Title-count partial; group-local cold/map failures; signed64 owner
+run wrap; nonowner zero-valued key; admission-known0; empty two-PC composite;
+diagnostic-rank partial; and independently complete composite after missing
+owner input. The known native byte shapes are no longer qualified solely by
+Python-built input.
+
+The declared-stage compositions reproduce the established positive skills
+`[3,7,8,6,5,17]`, cold incoming skills `[6,6,8,6,6,6]`, known-zero-stage
+skills `[6,6,8,6,6,6]`, and diagnostic frontier skills `[2,6,8,6,6,14]`.
+Cold and diagnostic results retain their actual earlier frontiers and missing
+inputs. The two native fixture frames are physically independent despite
+their same Character fullID: their combination is explicit conditional
+fixture modeling. It does not establish a coherent live pair, a historical
+postDiac context, real Rule43 admission, or fresh installed-model identity.
+
+This qualifies the readonly native collectors/serializers and conditional
+numerical consumers as **offline static-ready**. It is not fixture-live or
+production-live evidence. No Python test/producer builder, old wire/sample,
+native configure/build/CTest, EXE read, local CK3/Steam/process/SDK/UI/pipe/live
+operation, runtime write or game day ran in this followup lane. Fresh-stage
+association, demanded cold/diagnostic branches, actual Diac selection,
+subsequent caller, full person preparation and full Entry remain partial.
+The topic-only qualification commit and Oct6/W41 fields are handed to Root;
+shared reports, native source and runtime package are unchanged here.
