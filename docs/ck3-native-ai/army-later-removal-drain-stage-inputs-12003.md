@@ -2,7 +2,7 @@
 
 This is a source-only continuation of [current first removal](army-current-assault-first-removal-context-12003.md) and the conditional daily record-release work. It identifies the actual remainder of `2A978A0` and the next temporary-queue iteration. It implements no new observer or model. The qualified first-helper output remains a current-input conditional prefix; it does not establish a later removal frame.
 
-The held build is CK3 **1.20.0.3**, Steam **25652598**, EXE SHA-256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6` (reused, not recomputed). This packet used cached source only: **0 new EXE bytes, 0 tests/wires, 0 builds, 0 game/SDK/pipe/Steam/UI/process/user-data operations**. Scope was sealed before the cached-body work in `g2-background-round20-20261006/later-removal-drain-stage-plan/SCOPE-FIRST.json`.
+The held build is CK3 **1.20.0.3**, Steam **25652598**, EXE SHA-256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6` (reused, not recomputed). The initial scope packet used cached source only: **0 new EXE bytes, 0 tests/wires, 0 builds, 0 game/SDK/pipe/Steam/UI/process/user-data operations**. Scope was sealed before the cached-body work in `g2-background-round20-20261006/later-removal-drain-stage-plan/SCOPE-FIRST.json`. The separately authorized 247 B mapper capture and its metadata cost are recorded below.
 
 ## Actual receiver and read clocks
 
@@ -51,7 +51,7 @@ flowchart TD
     T --> A[Combat / associated Army / Commander callbacks]
     A --> C[Capture Province and Army buffer/end]
     C --> L[Read current physical ArRg cursor payload]
-    L -.-> M[unknown 2A977A0 persistent receiver getter]
+    L --> M[2A977A0 kind / first record / count mapper]
     M --> D[2633FF0 DATA detach/date branch]
     D -.-> X[unknown date/pending/Character helper footprints]
     D --> E[ArRg store erase then 2A972B0]
@@ -70,7 +70,7 @@ flowchart TD
     N -->|more temporary occurrences| R
 ```
 
-## Smallest next construction and exact missing source
+## Initial construction plan, before the authorized mapper capture
 
 The next finite source step is **`2A977A0`**, the actual receiver mapper used before any persistent branch. Scoped cache inventories and owner replies found only its address and its use as `2A972B0`'s exclusive end; that is not a captured getter body. Reuse the held verified `.pdata` table to locate the entry/chained range, then read only that verified function. The known next entry `2A978A0` is an upper bound of `0x100` bytes, **not assumed function extent**. If the verified extent exceeds that bound or metadata disagrees, stop and report the actual finite extent before any body read. No new EXE read is performed by this packet.
 
@@ -97,3 +97,50 @@ Research readiness advances through this explicit stage/input ledger. **Actual r
 - `g2-background-round4-20261005/monthly-caller-effects/queue-consumer-source/first-removal-stage-ledger/` and `later-manager-removal-stage/`: sealed first/later/group/Domain stage receipts and their implementation correction.
 - `g2-background-round5-20261006/holy-order-player-release/army-teardown-receiver/ROOT-DELIVERY.json`: selected actual CArmy destructor summary only; no receiver alias, employer or unrelated lifecycle inference.
 - `g2-background-round19-20261006/current-assault-removal-reference-context/QUALIFIED-ROOT-DELIVERY.json`: qualified first/current prefix provenance, including original native CTest RED and corrected fixture/first six service results. None was replayed.
+
+## Authorized mapper source closure — October 6, 17:21 CST
+
+Root approved the finite source step after adopting the preceding tree. The exact `.pdata` record is index **146673**, record RVA **`5F70B4C`**, file offset **`5E07D4C`**, raw bytes `a077a9029778a902609c1005`. It specifies **`[2A977A0,2A97897)`**, 247 B, entirely below the known next entry `2A978A0`. The selected unwind header at RVA `5109C60` is `010a0400`: version 1, flags 0, prologue 10 B, four unwind-code slots, frame byte 0. There is **no chained extent**.
+
+The held PE mapping was reused; no fresh PE header or whole-EXE/hash/scan was performed. The exact entry binary search and selected four-byte unwind header cost **220 metadata bytes / 19 seeks**. The verified named body was read **once, 247 bytes / one seek**, decoded completely through `2A97896 ret`; no neighboring code was read. Thus actual new frozen-file I/O is **467 B / 20 seeks**. Raw record/header/body bytes and file offsets, without a body hash, are sealed under `mapper-2a977a0/METADATA-READ-RECEIPT.json` and `EXACT-BODY-READ-RECEIPT.json`. Earlier cached body reuse remains a separate cost category.
+
+The function is a read-only mapper; its sole direct call is the already source-closed `262BBC0` signed count helper. It has no ArRg magic/full-ID guard. The return rules are:
+
+| Actual branch | Demanded inputs | Returned physical receiver |
+| --- | --- | --- |
+| ArRg DWORD `+14C` is neither 1 nor 4 | Only raw `+14C` and actual Regi fallback pointer `5D1EB58` | The fallback directly; no first DATA or count reads. |
+| Kind 1 or 4 | Signed DATA count `+2C`; **exactly zero** chooses raw Regi ID `FFFFFFFF`, otherwise first record at pointer `+20`, DWORD record `+8` | Generation-resolve through Regi DB `5D1EB68`, fallback `5D1EB58`; unsigned low24 capacity gate, 16 B entry pointer `+8`, selected Regi full ID `+10` equality. |
+| Resolved Regi magic `+14` is not Regi or full ID `+10` equals `FFFFFFFF` | Actual selected magic/full ID | Fallback, even if the fallback itself is invalid. |
+| Kind 4 with valid selected Regi | No count helper input | The selected Regi, without inspecting its physical counts. |
+| Kind 1 with valid selected Regi | `262BBC0(Regi)` | Signed result **`<=0`** retains the selected Regi; signed result **`>0`** returns fallback. |
+
+The count helper is the existing exact signed-i32 contract: start at Regi `+128`, visit seven physical chunks at `+18 + 24h*k`; maximum zero skips a chunk, as does state 3 with current zero; otherwise add `current-maximum` with i32 wrap. Negative totals are not clamped. A negative nonzero DATA count still demands the first record in the mapper. No array-size, positive-count, selected-ordinal or full-seven gate may be substituted for these source branches. The mapper does **not** demand any chunk index for its first-record ID read.
+
+```mermaid
+flowchart TD
+    I[ArRg raw14C] --> K{kind1 or kind4}
+    K -->|false| F[Actual Regi fallback pointer]
+    K -->|true| Z{DATA signed count2C equals0}
+    Z -->|true| ID[raw RegiID FFFFFFFF]
+    Z -->|false| FIRST[Read first DATArecord8 raw RegiID]
+    ID --> R[Generation registry/fallback resolution]
+    FIRST --> R
+    R --> V{selected Regi magic and fullID valid}
+    V -->|false| F
+    V -->|true| T{kind4}
+    T -->|true| S[Selected physical Regi]
+    T -->|false| C[262BBC0 signed wrapped seven-chunk count]
+    C --> Q{count greater than0}
+    Q -->|true| F
+    Q -->|false| S
+```
+
+## Minimum independent detach query after mapper closure
+
+The mapper's numerical/source contract is now closed; its required raw inputs are not yet a qualified observer. Existing `regiment_strengths` does not publish ArRg `+14C`, its complete first DATA reference and persistent physical receiver identity. Existing `monthly_current_helper_domain_inputs_v1.rows[].count_base_128_raw/count_records` supplies the same seven-chunk count operands **only for that family's captured receiver scope**. It can be reused when physical identity and stage match; its group-row subset is not a whole candidate-ArRg mapper capture.
+
+The minimum additive same-query family should reuse the already-qualified current candidate selection and read its Army `+38/+44` occurrence buffer once. Each occurrence needs raw requested ArRg ID, actual registry/fallback identity, raw `+14C`, and only the branch-demanded first DATA/selected Regi operands above. This is the whole raw occurrence buffer, including invalid-ID/fallback resolutions, rather than the validated legacy strength subset: the actual caller has no ArRg validity gate before this getter. Publish the mapper's actual returned pointer identity, selected raw full ID/magic and raw `+138`; the caller reads that state even when the return is fallback. Preserve the registry-selected Regi and finally returned Regi as separate roles. Use a physical identity alias map for shared count/chunk data without deduplicating occurrence order. Keep high-bit full IDs in an additive u32 field; do not widen legacy signed-ID fields.
+
+This supports a useful **current ordered detach receiver/count preview** rather than a permanent-null schema. Kind 4 and unrelated-kind branches do not require unused seven-chunk count inputs. Kind 1's count must be recomputed from evolving physical chunks when earlier closed writes change them; a captured bool or cached initial count cannot determine a later mapper result. The initial preview has no earlier-writes replay premise. Joining it into full `2633FF0` detachment still requires the selected `2658050`/`2658180`/`2A9BE60`/`28CBE70` footprints; no new source read of those helpers is included here.
+
+Implementation is deliberately deferred until this source/input recipe is adopted. The next missing source is the **actually selected DATA/date/pending branch**, with a separate finite named-leaf plan and existing observer reuse first. No generic allocator expansion is needed. **Actual removal/post-stage, complete drain/lifecycle, full monthly and live remain false/null.** No Python case, native fixture, build, old wire or runtime action was executed for this source step.
