@@ -1,0 +1,137 @@
+{
+  "schema": "ck3.world-12004-profile-source-proof.v1",
+  "owner": "/root/army_current31_source",
+  "source_base": "caa4adc3d1278e324cf4ec19774028e9b9138e28",
+  "game_version": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "functions": [
+    {
+      "name": "contains_participant",
+      "old_rva": "0x2494b60",
+      "new_rva": "0x2494b40",
+      "complete_body_bytes": 130,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\first01\\contains_participant-DETAIL.json"
+    },
+    {
+      "name": "war_score",
+      "old_rva": "0x249ac40",
+      "new_rva": "0x249ac20",
+      "complete_body_bytes": 429,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\first01\\war_score-DETAIL.json"
+    },
+    {
+      "name": "character_capital",
+      "old_rva": "0x28b1cd0",
+      "new_rva": "0x28b1cb0",
+      "complete_body_bytes": 187,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\first01\\character_capital-DETAIL.json"
+    },
+    {
+      "name": "default_raise_province",
+      "old_rva": "0x24a51b0",
+      "new_rva": "0x24a5190",
+      "complete_body_bytes": 912,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\first01\\default_raise_province-DETAIL.json"
+    }
+  ],
+  "adopted_software_types": [
+    "ck3_12002::WorldBindings",
+    "ck3_12002::WorldReadResult"
+  ],
+  "game_state_and_character_slots": "core-global-slots/CORE-GLOBAL-MAP.json actual paired RIP and operands reused",
+  "war_registry_slot": {
+    "old_rva": "0x5d1de58",
+    "new_rva": "0x5d1de58",
+    "actual_paired_RIP_uses": [
+      {
+        "offset": 472,
+        "kind": "rip_memory",
+        "old_target_rva": 97640024,
+        "new_target_rva": 97640024,
+        "target_delta": 0,
+        "ordered_shape_equal": true,
+        "old_target_section": ".data",
+        "new_target_section": ".data",
+        "both_target_rvas_in_cached_image_bounds": true,
+        "old_import": null,
+        "new_import": null,
+        "import_symbol_identity_equal": null,
+        "data_or_code_pointer_identity_requires_owner": true
+      },
+      {
+        "offset": 513,
+        "kind": "rip_memory",
+        "old_target_rva": 97640024,
+        "new_target_rva": 97640024,
+        "target_delta": 0,
+        "ordered_shape_equal": true,
+        "old_target_section": ".data",
+        "new_target_section": ".data",
+        "both_target_rvas_in_cached_image_bounds": true,
+        "old_import": null,
+        "new_import": null,
+        "import_symbol_identity_equal": null,
+        "data_or_code_pointer_identity_requires_owner": true
+      },
+      {
+        "offset": 525,
+        "kind": "rip_memory",
+        "old_target_rva": 97640024,
+        "new_target_rva": 97640024,
+        "target_delta": 0,
+        "ordered_shape_equal": true,
+        "old_target_section": ".data",
+        "new_target_section": ".data",
+        "both_target_rvas_in_cached_image_bounds": true,
+        "old_import": null,
+        "new_import": null,
+        "import_symbol_identity_equal": null,
+        "data_or_code_pointer_identity_requires_owner": true
+      }
+    ],
+    "actual_function": "war_storage_constructor 0x2a83c40 -> 0x2a83c20, 563 complete body bytes",
+    "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\continuation02\\war_storage_constructor-DETAIL.json"
+  },
+  "world_member_offsets_preserved": {
+    "game_data_war_manager": "0x2ebe0",
+    "manager_storage": "0x20",
+    "war_id": "0x8",
+    "war_attackers": "0x20",
+    "war_defenders": "0x80",
+    "war_cb": "0x100",
+    "war_date": "0xe0",
+    "war_targets": "0x270/0x278/0x27c",
+    "war_leaders": "0x288/0x28c",
+    "claimant": "0x290",
+    "ended_byte": "0x358",
+    "participant_array": "pointer0x8/capacity0x10/count0x14; actual constructor qword store0x30 for attackers+20",
+    "participant_id": "0x8",
+    "storage": "complete native iterator + paired operands: slots20/capacity2C/stride16/object8/fullid8"
+  },
+  "first_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\first01\\FAMILY-MAP.json",
+  "continuation": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\continuation02\\WORLD-CONTINUATION-CLOSED.json",
+  "first_partial_preserved": "first manifest claimant18B truncated one instruction; necessary cachedprefix+3B perbuild continuation closed21B, no repeated full span",
+  "leaf_without_pdata": "participant ID 3B operand target selected from actual contains RIP offset30; not inferred RVA shift",
+  "costs": {
+    "physical_finite_bytes": 7354,
+    "physical_finite_read_calls": 52,
+    "whole_exe_reads": 0,
+    "hashes": 0,
+    "PE_reparses": 0,
+    "build_fixture_tests_game_SDK": 0
+  },
+  "readiness": "source-closed addressed and member-operand world profile; implementation/build/fixture/live tracked separately",
+  "complete_storage_layout_supplement": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\layout03\\WORLD-LAYOUT-CLOSED.json",
+  "tracked_source": {
+    "header": "include/xar_bridge/ck3_12004_world.hpp",
+    "source": "src/ck3_12004_world.cpp",
+    "reader_types": "existing ck3_12002::WorldBindings and software readers",
+    "exact_identity_gate": "ck3_12004::kExecutableSha256 only",
+    "central_adapter_bridge_CMake_owner": "/root/entry_next_stage_research and Root registration",
+    "qualification": "FIRST NOTRUN"
+  }
+}
