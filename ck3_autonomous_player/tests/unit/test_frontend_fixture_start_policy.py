@@ -241,6 +241,25 @@ class FixturePolicyTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "bytes changed"):
                 load_bound_fixture_start_policy(path, profile)
 
+    def test_bound_empire_governments_require_matching_actual_business_context(self):
+        for government_key in ("administrative_government", "meritocratic_government"):
+            with self.subTest(government_key=government_key), tempfile.TemporaryDirectory() as directory:
+                path, profile, value = self.make_bound_policy(Path(directory))
+                value["post_start"] = {
+                    "government_key": government_key, "primary_title_tier_key": "empire", "independent": True,
+                }
+                path.write_text(json.dumps(value), encoding="utf-8")
+                bound, _ = load_bound_fixture_start_policy(path, profile)
+                snapshot, root = current()
+                root["government"]["key"] = government_key
+                root["primary_title"].update(tier_raw=5, tier_key="empire")
+                binding = fixture_business_context_binding(snapshot, root, bound, submission())
+                self.assertEqual(binding["actor_character_id"], 922)
+                self.assertEqual(binding["government_key"], government_key)
+                self.assertFalse(binding["fixture_target_identity_proven"])
+                root["government"]["key"] = "feudal_government"
+                self.assertIsNone(fixture_business_context_binding(snapshot, root, bound, submission()))
+
     def test_extra_mounted_file_and_stale_log_each_reject_cold_profile(self):
         for bad in ("extra", "log", "preparation"):
             with self.subTest(bad=bad), tempfile.TemporaryDirectory() as directory:

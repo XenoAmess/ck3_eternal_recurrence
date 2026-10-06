@@ -11,3 +11,9 @@
 冻结候选在 `C:/workspace/ck3-upgrade-20261003/zhongguo-agent-01/fixture-start-package-01/`。combined-v2 patch SHA `413fd74b51e6b4729be553fef836ca8cb518345a553f62146c195c771964cd97`；core-v2 SHA `f03fcead5b1b34c29aa76446ee78300963f19e3b7cf8511067a82ebded6c3b06`。21 项独立新聚焦检查通过，实际 MCP SDK 为 2.2.0；前两次 import overlay/缺依赖环境失败保留。default-invariance AST 检查和实际 patch apply/check 已完成；旧通过项未重跑。无需重新编译 DLL，完成的 f4 source/DLL 仍原样保留，后续 runtime 源要另冻结并精确记录。
 
 外置 RMTM/Ox policy 已绑定各自 profile03 的实际输入；361 目前只有来源明确的 intent 与 factory，未因此生成或验证新的 profile。下一步在新 run 中先验该入口与实际后态，再执行各产品功能；不得用准备、schema、合成测试或日志字面值替代玩法结果。
+
+## 2026-10-06 行政与贤能政府的夹具后态输入
+
+体验优化的行政、贤能任命验收准备暴露出 policy 校验只接受封建与天朝政府，真实 `administrative_government` / `meritocratic_government` 输入会在启动前被拒绝。本次仅将这两个原版政府 key 加入 `post_start` 合法集合；原 Robert1066 的封建选角、一次 Start、实际 actor/government/title 与两 epoch 绑定保持。`campaign_root_context` 的现有政府 key 读取支持这些值，无需修改 native DLL。
+
+外置政府入口的10项有限 loader/绑定检查与6项 compile 已通过，见 `C:/workspace/ck3-upgrade-20261006/xqol-post-defense-appointment-ui-next-agent-01/government-entry-ready-01/government-entry-finite-shape-receipt-02.json`。新增入库回归经过真实 bound-policy loader，再要求实际帝国政府匹配；仅 policy 接受不能授予业务绑定。新政府37文件输入仍 NOT_RUN，实际政府、任命法、候选与任命后态须由后续独立实机证明；已冻结 Source09/Source10 与各产品当前输入不变。

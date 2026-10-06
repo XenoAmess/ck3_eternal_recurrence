@@ -90,7 +90,8 @@ def validate_fixture_start_policy(value: object) -> dict[str, object]:
             raise ValueError("fixture profile input must stay below the bound profile")
     post = value["post_start"]
     if not isinstance(post, dict) or set(post) != {"government_key", "primary_title_tier_key", "independent"} or (
-            post["government_key"] not in {"feudal_government", "celestial_government"}) or (
+            post["government_key"] not in {"feudal_government", "celestial_government",
+                                                  "administrative_government", "meritocratic_government"}) or (
             post["primary_title_tier_key"] not in {"empire", "hegemony"}) or post["independent"] is not True:
         raise ValueError("fixture policy requires explicit delivered government/tier/independence predicates")
     markers = []

@@ -93,3 +93,15 @@ R15副本 native-state-003.jsonl 实际9,204B、-004.jsonl实际9,216B；sidecar
 最后一组结束时C盘空闲4,462,964,736B（4.156GiB），为独立实测快照；API差不是物理释放量，不排他归因空闲变化。Native fixed-volume查询当前仅C，caller available与total free相等。CCC原Errno28具体写入对象和失败时空间峰值仍UNKNOWN，小stderr未给文件对象；不以当前快照解释当时故障。另两次pagefile同路径实测05:12:43Z为6,730,995,712B、07:51:27Z为5,100,273,664B，仅记录观察到缩小1,630,722,048B，失败时大小与因果UNKNOWN；没有修改系统文件。
 
 实际薄收据：[ACTUAL61-CLOSED-TEXT-AND-OLD-SESSIONS-THIN-01.json](C:/workspace/ck3-upgrade-20261006/c-drive-closed-large-text-compression-agent-01/ACTUAL61-CLOSED-TEXT-AND-OLD-SESSIONS-THIN-01.json)，5,007B，SHA `f7786e863c55691d6f40ddd93a743952844823fdd1fd6cc669770a47681aa467`；逐组result SHA、原append-only journals、精确计划与runner源码快照保全在同目录各独立attempt，薄收据逐份核对61组前后SHA与native身份/timestamps，没有重新hash大原件。C04的154个标准文本叶均已有压缩属性，本轮新操作/回收0；未继续扩扫或处理小对象文件、active数据库、游戏安装树。
+
+## 2026-10-06 新日志目录默认压缩与启动空间观察（新增释放0）
+
+08:38:03.187449 UTC，精确 `C:/workspace/ck3-upgrade-20261005/live` 与其 `4-8e1c2f1861--celestial-commerce-corruption--R0003` 目录各执行一次FSCTL_SET_COMPRESSION，实际NTFS volume serial=1996358582，压缩属性16→2064读回成功；目录fileid、size、creation/access/mtime保持。没有打开、hash或压缩现有子文件，没有递归，全部原始日志字节保留。
+
+08:52:59.091381 UTC，精确C04/live已为2064，实际skip/FSCTL0；C06/live不存在，实际skip且没有创建。此轮结果：[result-01.json](C:/workspace/ck3-upgrade-20261006/c-drive-c04-c06-directory-default-compression-agent-02/result-01.json)，2641B，SHA `6a3faf5a4dff6ac5775943f94be0f863aeca15e57160ea729f1c5136bcdcdde0`；此前C05实际result为3833B、SHA `7fe2b756cc5629d5897e3f7bb75c23f84fe81620b1f09927c3e0a6d99299bfe7`。
+
+目录操作新增API释放计0B，不声称改变已打开文件的压缩状态。已设置父目录的新文件和子目录按[Microsoft压缩属性合同](https://learn.microsoft.com/en-us/windows/win32/fileio/compression-attribute)继承默认状态；下一真实场内新文件/新run目录继承仍待实际读回。不存在的C06/live未获此设置，未来首次创建后需再读取其实际属性，不能外推已设置。
+
+启动前C空闲4,460,802,048B→运行时337,387,520B，pagefile同路径5,100,273,664B→8,371,859,456B，仅记录Root本轮独立观察；完整空间下降因果未知，不以差额推断全部由pagefile引起，系统文件未改。目录复核结束C空闲4,041,342,976B也仅为当时快照。
+
+两条并行窄缓存检查没有确认GiB级可释放候选：浏览器/pip旧缓存196叶合12,325,142B（11.75MiB）只做metadata/native占用探测，未删除或压缩；Temp近期、未知用途文件和全部项目过程资产保留。未遍历的浏览器/Temp子树容量UNKNOWN，此边界不能表述为全C无可清空间。没有继续宽扫、处理小文件或改动daily/CCC/src。
