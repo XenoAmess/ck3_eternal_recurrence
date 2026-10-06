@@ -3521,7 +3521,7 @@ void AppendCombatKnights(std::string &result,
         result += context.character_id.has_value() ? SignedNumber(*context.character_id) : "null";
         if (context.current_model_association_v1) {
           result += ",\"current_model_association_v1\":";
-          result += ck3_12002::SerializeKnightCurrentModelAssociationV1(
+          result += xar::ck3_12002::SerializeKnightCurrentModelAssociationV1(
               *context.current_model_association_v1);
         }
         result += ",\"modifier_indices\":[193,194,195,196,197,198,199,200,201],\"modifier_raw\":";

@@ -55,7 +55,7 @@ std::int32_t Maximum(void *) { return 0; }
 std::int32_t Limit(void *, void *, void *, void *breakdown) {
   Check(breakdown == nullptr, "native limit optional output is null"); return 500;
 }
-std::int32_t Usage(void *, void *, std::int32_t mode, void *breakdown) {
+std::int32_t Usage(void *, void *, std::int32_t mode, std::int64_t *breakdown) {
   Check(mode == 0 && breakdown == nullptr, "query uses exact mode0 and null breakdown"); return current_usage;
 }
 bool CanReplenish(void *, void *) { return true; }
