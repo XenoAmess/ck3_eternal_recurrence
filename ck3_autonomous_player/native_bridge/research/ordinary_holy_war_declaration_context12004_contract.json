@@ -1,0 +1,816 @@
+{
+  "schema": "xar.ck3.ordinary-holy-war-actual4-source-contract/v1",
+  "identity": {
+    "game_version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "scope": "Adopted CB-only selected declaration context; existing software DTO, collector, native scope algorithm and same registered query.",
+  "source_rows": [
+    {
+      "id": "cb_database_getter",
+      "old_rva": "0x8fc320",
+      "actual4_rva": "0x8fc320",
+      "declared_bytes": 87,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\cb_database_getter-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 4,
+          "old": "0x5c671f0",
+          "actual4": "0x5c671f0"
+        },
+        {
+          "offset": 24,
+          "old": "0x448d008",
+          "actual4": "0x448d018"
+        },
+        {
+          "offset": 75,
+          "old": "0x5c671f0",
+          "actual4": "0x5c671f0"
+        }
+      ]
+    },
+    {
+      "id": "cb_evaluator",
+      "old_rva": "0x31f4540",
+      "actual4_rva": "0x31f4520",
+      "declared_bytes": 1077,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\cb_evaluator-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 79,
+          "old": "0x5d1de58",
+          "actual4": "0x5d1de58"
+        },
+        {
+          "offset": 129,
+          "old": "0x5d1de40",
+          "actual4": "0x5d1de40"
+        },
+        {
+          "offset": 216,
+          "old": "0x5d4bd94",
+          "actual4": "0x5d4bd94"
+        },
+        {
+          "offset": 252,
+          "old": "0x5d4bd98",
+          "actual4": "0x5d4bd98"
+        },
+        {
+          "offset": 302,
+          "old": "0x5d4bd94",
+          "actual4": "0x5d4bd94"
+        },
+        {
+          "offset": 336,
+          "old": "0x5d4bd98",
+          "actual4": "0x5d4bd98"
+        },
+        {
+          "offset": 384,
+          "old": "0x5d4bd94",
+          "actual4": "0x5d4bd94"
+        },
+        {
+          "offset": 420,
+          "old": "0x5d4bd98",
+          "actual4": "0x5d4bd98"
+        }
+      ]
+    },
+    {
+      "id": "configuration_destructor",
+      "old_rva": "0x111f190",
+      "actual4_rva": "0x111f190",
+      "declared_bytes": 94,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\configuration_destructor-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "native_int_array_copy",
+      "old_rva": "0xc858c0",
+      "actual4_rva": "0xc858c0",
+      "declared_bytes": 14,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\native_int_array_copy-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "native_int_array_append",
+      "old_rva": "0x9e3790",
+      "actual4_rva": "0x9e3790",
+      "declared_bytes": 25,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\native_int_array_append-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "scope_constructor",
+      "old_rva": "0x889f60",
+      "actual4_rva": "0x889f60",
+      "declared_bytes": 186,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\scope_constructor-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 37,
+          "old": "0x448d1e8",
+          "actual4": "0x448d1f8"
+        },
+        {
+          "offset": 58,
+          "old": "0x54de270",
+          "actual4": "0x54de270"
+        },
+        {
+          "offset": 65,
+          "old": "0x448d258",
+          "actual4": "0x448d268"
+        },
+        {
+          "offset": 86,
+          "old": "0x54de278",
+          "actual4": "0x54de278"
+        }
+      ]
+    },
+    {
+      "id": "scope_populate",
+      "old_rva": "0x2a81500",
+      "actual4_rva": "0x2a814e0",
+      "declared_bytes": 368,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\scope_populate-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 61,
+          "old": "0x492b580",
+          "actual4": "0x492b590"
+        },
+        {
+          "offset": 70,
+          "old": "0x5d37ec0",
+          "actual4": "0x5d37ec0"
+        },
+        {
+          "offset": 107,
+          "old": "0x5d4bd94",
+          "actual4": "0x5d4bd94"
+        },
+        {
+          "offset": 161,
+          "old": "0x5d4bd98",
+          "actual4": "0x5d4bd98"
+        },
+        {
+          "offset": 180,
+          "old": "0x5d4be10",
+          "actual4": "0x5d4be10"
+        },
+        {
+          "offset": 231,
+          "old": "0x5d4bdfc",
+          "actual4": "0x5d4bdfc"
+        },
+        {
+          "offset": 280,
+          "old": "0x5d4bd9c",
+          "actual4": "0x5d4bd9c"
+        },
+        {
+          "offset": 313,
+          "old": "0x5d4bda0",
+          "actual4": "0x5d4bda0"
+        }
+      ]
+    },
+    {
+      "id": "scope_destructor",
+      "old_rva": "0x87e0e0",
+      "actual4_rva": "0x87e0e0",
+      "declared_bytes": 126,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\scope_destructor-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "cb_virtual_cost_wrapper",
+      "old_rva": "0x277f250",
+      "actual4_rva": "0x277f230",
+      "declared_bytes": 281,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\cb_virtual_cost_wrapper-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 50,
+          "old": "0x5c67568",
+          "actual4": "0x5c67568"
+        },
+        {
+          "offset": 62,
+          "old": "0x5c67570",
+          "actual4": "0x5c67570"
+        },
+        {
+          "offset": 87,
+          "old": "0x5c67570",
+          "actual4": "0x5c67570"
+        }
+      ]
+    },
+    {
+      "id": "cb_scope_cost_wrapper",
+      "old_rva": "0x31f4e40",
+      "actual4_rva": "0x31f4e20",
+      "declared_bytes": 382,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\cb_scope_cost_wrapper-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "cb_quote_cost_wrapper",
+      "old_rva": "0x31f1540",
+      "actual4_rva": "0x31f1520",
+      "declared_bytes": 315,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\cb_quote_cost_wrapper-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 247,
+          "old": "0x5430278",
+          "actual4": "0x5430278"
+        }
+      ]
+    },
+    {
+      "id": "cb_database_array_and_count_operands",
+      "old_rva": "0x118c71d",
+      "actual4_rva": "0x118c6fd",
+      "declared_bytes": 8,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\cb_database_array_and_count_operands-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "cb_rule_disabled_operands",
+      "old_rva": "0x118c74b",
+      "actual4_rva": "0x118c72b",
+      "declared_bytes": 11,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\cb_rule_disabled_operands-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "cb_combined_flag_and_configuration_stride_operands",
+      "old_rva": "0x118c83a",
+      "actual4_rva": "0x118c81a",
+      "declared_bytes": 13,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\cb_combined_flag_and_configuration_stride_operands-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "configuration_claimant_titles_and_scratch_operands",
+      "old_rva": "0x118c847",
+      "actual4_rva": "0x118c827",
+      "declared_bytes": 75,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\configuration_claimant_titles_and_scratch_operands-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 7,
+          "old": "0x54e14b8",
+          "actual4": "0x54e14b8"
+        }
+      ]
+    },
+    {
+      "id": "declare_war_interaction_registration_operands",
+      "old_rva": "0x3214d3b",
+      "actual4_rva": "0x3214d1b",
+      "declared_bytes": 52,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\declare_war_interaction_registration_operands-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 0,
+          "old": "0x46c46f0",
+          "actual4": "0x46c4700"
+        }
+      ]
+    },
+    {
+      "id": "native_int_array_copy_remaining_normal_code",
+      "old_rva": "0xc858ce",
+      "actual4_rva": "0xc858ce",
+      "declared_bytes": 106,
+      "status": "instruction_span_partial_or_concrete_operand_delta",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\continuation01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\continuation01\\native_int_array_copy_remaining_normal_code-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "native_int_array_append_remaining_normal_code",
+      "old_rva": "0x9e37a9",
+      "actual4_rva": "0x9e37a9",
+      "declared_bytes": 364,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\continuation01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\continuation01\\native_int_array_append_remaining_normal_code-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 75,
+          "old": "0x49f6400",
+          "actual4": "0x49f64f0"
+        }
+      ]
+    },
+    {
+      "id": "CWarDeclaration_vtable_identity_source_method",
+      "old_rva": "0x277f390",
+      "actual4_rva": "0x277f370",
+      "declared_bytes": 448,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\continuation01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\continuation01\\CWarDeclaration_vtable_identity_source_method-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "native_int_array_copy_final_epilogue",
+      "old_rva": "0xc85932",
+      "actual4_rva": "0xc85932",
+      "declared_bytes": 9,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\copy-tail01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\copy-tail01\\native_int_array_copy_final_epilogue-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "CWarDeclaration_type_table_producer",
+      "old_rva": "0x1199610",
+      "actual4_rva": "0x11995f0",
+      "declared_bytes": 95,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\war-vt01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\war-vt01\\CWarDeclaration_type_table_producer-DETAIL.json",
+      "rip_targets": []
+    },
+    {
+      "id": "selected_declaration_type_producer",
+      "old_rva": "0x118c6c0",
+      "actual4_rva": "0x118c6a0",
+      "declared_bytes": 969,
+      "status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\war-producer01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\war-producer01\\selected_declaration_type_producer-DETAIL.json",
+      "rip_targets": [
+        {
+          "offset": 81,
+          "old": "0x5d55a10",
+          "actual4": "0x5d55a10"
+        },
+        {
+          "offset": 117,
+          "old": "0x54e14b8",
+          "actual4": "0x54e14b8"
+        },
+        {
+          "offset": 156,
+          "old": "0x54e14c4",
+          "actual4": "0x54e14c4"
+        },
+        {
+          "offset": 187,
+          "old": "0x54e14c4",
+          "actual4": "0x54e14c4"
+        },
+        {
+          "offset": 208,
+          "old": "0x5c67568",
+          "actual4": "0x5c67568"
+        },
+        {
+          "offset": 215,
+          "old": "0x5c67570",
+          "actual4": "0x5c67570"
+        },
+        {
+          "offset": 338,
+          "old": "0x54e14b8",
+          "actual4": "0x54e14b8"
+        },
+        {
+          "offset": 367,
+          "old": "0x54e14c4",
+          "actual4": "0x54e14c4"
+        },
+        {
+          "offset": 398,
+          "old": "0x54e14b8",
+          "actual4": "0x54e14b8"
+        },
+        {
+          "offset": 525,
+          "old": "0x54e14c4",
+          "actual4": "0x54e14c4"
+        },
+        {
+          "offset": 539,
+          "old": "0x54e14b8",
+          "actual4": "0x54e14b8"
+        },
+        {
+          "offset": 600,
+          "old": "0x54e14b8",
+          "actual4": "0x54e14b8"
+        },
+        {
+          "offset": 775,
+          "old": "0x441f580",
+          "actual4": "0x441f580"
+        },
+        {
+          "offset": 915,
+          "old": "0x5d55a10",
+          "actual4": "0x5d55a10"
+        },
+        {
+          "offset": 927,
+          "old": "0x5d55a10",
+          "actual4": "0x5d55a10"
+        },
+        {
+          "offset": 940,
+          "old": "0x4336690",
+          "actual4": "0x4336670"
+        },
+        {
+          "offset": 952,
+          "old": "0x5d55a10",
+          "actual4": "0x5d55a10"
+        }
+      ]
+    }
+  ],
+  "shared_sources": {
+    "interaction_context_and_cost": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/prisoner/current4-context-release/FAMILY-MAP.json",
+    "complete_final_validator": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/prisoner/current4-context-release/complete-cached/FAMILY-MAP.json",
+    "cb_string_layout": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/python-binding/cash-terms-native/cb-type-first01/CB-TYPE-IDENTITY-SOURCE-SUMMARY.json"
+  },
+  "typed_layouts": {
+    "cb_database": {
+      "array": "0x50",
+      "signed_count": "0x5C"
+    },
+    "cb_type": {
+      "string": "0x18",
+      "string_size": "0x28",
+      "string_capacity": "0x30",
+      "rule": "0x40",
+      "rule_disabled_byte": "0x1F9",
+      "flags": "0x1548",
+      "combined_bit": 20,
+      "compiled_cost": "0xA80"
+    },
+    "configuration": {
+      "size": "0x98",
+      "claimant_full_id": "0x0",
+      "titles_array": "0x8"
+    },
+    "native_array": {
+      "data": "0x0",
+      "capacity": "0x8",
+      "signed_count": "0xC",
+      "title_stride": 4
+    },
+    "interaction": {
+      "declaration_member": "0xF60",
+      "context_size": "0x338",
+      "actor": "0x2D8",
+      "recipient": "0x2DC",
+      "additional": "0x2EC",
+      "special_data": "0x330"
+    },
+    "war_declaration": {
+      "cb": "0x8",
+      "titles_array": "0x10",
+      "claimant_full_id": "0x28"
+    },
+    "scope": {
+      "logical_native_bytes": "0x168",
+      "owned_aligned_storage": "0x170",
+      "holder_bytes": "0x180"
+    },
+    "cost_output": {
+      "signed_qwords": 10,
+      "raw_scale": 100000
+    }
+  },
+  "scope_semantics": "Use the same finalized outgoing context. CB quote selects actual additional role, recipient, resolved claimant/native fallback and current native titles. The actual actor remains an independent published fullID. FinalCanSend is independent of quote evaluation.",
+  "qualification": {
+    "build": "NOTRUN",
+    "native_first": "NOTRUN",
+    "registered_consumer": "NOTRUN",
+    "game": "NOTRUN",
+    "sdk": "NOTRUN"
+  },
+  "capture_cost": {
+    "fresh_partial_bytes_both_images": 9124,
+    "fresh_partial_calls_both_images": 41,
+    "new_metadata_bytes": 0,
+    "unwind_bytes": 0,
+    "whole_exe_reads": 0,
+    "hash_operations": 0,
+    "shared_captures_charged_to_this_lane": 0
+  },
+  "retained_attempts": [
+    "Array copy continuation ended inside final add-rsp instruction; source status retained, final cached runtime9B epilogue closed separately.",
+    "Word2 method448B, destructor95B and selected enumeration969B have no vtable-producing RIP; these do not establish a new type-table address.",
+    "Nine-pointer strict ordinal candidate match had an unused leaf word7 mismatch; retained TYPE-TABLE-ATTEMPT. Two actual body-proved identity methods and remaining eight prefix operands identify the unique actual table452FFD0; actual selector4530030 targets full body-proved277F230. No callable binding or body expansion is made for word7."
+  ],
+  "type_table_proof": {
+    "status": "actual4_typed_declaration_table_closed",
+    "authorization": "Root necessary <=144B data only; sole mapper confirmed no owner/cache claim for window.",
+    "old_held_prefix": [
+      "0x1199610",
+      "0x3f7e2d0",
+      "0x277f390",
+      "0x3f7e350",
+      "0x277f550",
+      "0x8522c0",
+      "0x8522c0",
+      "0x277f370",
+      "0x277f150"
+    ],
+    "old_held_prefix_source": "Adopted declarations research ck3_1_20_0_2_declarations.json/vtable_prefixes/CWarDeclaration, retained exact3 declaration-context family; no old EXE read.",
+    "window": {
+      "begin_rva": "0x452ffa0",
+      "end_exclusive": "0x4530028",
+      "bytes": 136,
+      "raw_hex": "b028884001000000201e9f400100000080b31a410100000020f2ad400100000040f2ad4001000000202cb14401000000f095194101000000b0e2f7430100000070f377420100000030e3f7430100000030f5774201000000c022854001000000c02285400100000050f377420100000030f1774201000000c022854001000000c022854001000000",
+      "receipt": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0452FFA0-04530028.bin",
+        "cache_begin_rva": 72548256,
+        "reused": true
+      }
+    },
+    "unique_prefix_matches": 1,
+    "actual4_vtable_rva": "0x452ffd0",
+    "actual4_prefix_function_rvas": [
+      "0x11995f0",
+      "0x3f7e2b0",
+      "0x277f370",
+      "0x3f7e330",
+      "0x277f530",
+      "0x8522c0",
+      "0x8522c0",
+      "0x277f350",
+      "0x277f130"
+    ],
+    "independently_body_proved_identity_methods": [
+      "1199610->11995F0 /95B",
+      "277F390->277F370 /448B"
+    ],
+    "cached_target_locators": [
+      {
+        "old": "0x1199610",
+        "candidate": "0x11995f0",
+        "cached_locator": {
+          "status": "same_ordinal_candidate_only",
+          "ordinal": 58728,
+          "old_interval": [
+            18454032,
+            18454127,
+            84974688
+          ],
+          "new_interval": [
+            18454000,
+            18454095,
+            84974928
+          ],
+          "begin_delta": -32,
+          "end_delta": -32,
+          "length_equal": true
+        }
+      },
+      {
+        "old": "0x3f7e2d0",
+        "candidate": "0x3f7e2b0",
+        "cached_locator": {
+          "status": "same_ordinal_candidate_only",
+          "ordinal": 216235,
+          "old_interval": [
+            66577104,
+            66577227,
+            84974688
+          ],
+          "new_interval": [
+            66577072,
+            66577195,
+            84974928
+          ],
+          "begin_delta": -32,
+          "end_delta": -32,
+          "length_equal": true
+        }
+      },
+      {
+        "old": "0x277f390",
+        "candidate": "0x277f370",
+        "cached_locator": {
+          "status": "same_ordinal_candidate_only",
+          "ordinal": 135870,
+          "old_interval": [
+            41415568,
+            41416016,
+            85186848
+          ],
+          "new_interval": [
+            41415536,
+            41415984,
+            85187088
+          ],
+          "begin_delta": -32,
+          "end_delta": -32,
+          "length_equal": true
+        }
+      },
+      {
+        "old": "0x3f7e350",
+        "candidate": "0x3f7e330",
+        "cached_locator": {
+          "status": "same_ordinal_candidate_only",
+          "ordinal": 216236,
+          "old_interval": [
+            66577232,
+            66577272,
+            84972836
+          ],
+          "new_interval": [
+            66577200,
+            66577240,
+            84973076
+          ],
+          "begin_delta": -32,
+          "end_delta": -32,
+          "length_equal": true
+        }
+      },
+      {
+        "old": "0x277f550",
+        "candidate": "0x277f530",
+        "cached_locator": {
+          "status": "same_ordinal_candidate_only",
+          "ordinal": 135871,
+          "old_interval": [
+            41416016,
+            41416207,
+            84972784
+          ],
+          "new_interval": [
+            41415984,
+            41416175,
+            84973024
+          ],
+          "begin_delta": -32,
+          "end_delta": -32,
+          "length_equal": true
+        }
+      },
+      {
+        "old": "0x8522c0",
+        "candidate": "0x8522c0",
+        "cached_locator": {
+          "status": "no_containing_old_runtime_function",
+          "global_shift_inferred": false
+        }
+      },
+      {
+        "old": "0x8522c0",
+        "candidate": "0x8522c0",
+        "cached_locator": {
+          "status": "no_containing_old_runtime_function",
+          "global_shift_inferred": false
+        }
+      },
+      {
+        "old": "0x277f370",
+        "candidate": "0x277f370",
+        "cached_locator": {
+          "status": "no_containing_old_runtime_function",
+          "global_shift_inferred": false
+        }
+      },
+      {
+        "old": "0x277f150",
+        "candidate": "0x277f130",
+        "cached_locator": {
+          "status": "same_ordinal_candidate_only",
+          "ordinal": 135868,
+          "old_interval": [
+            41414992,
+            41415239,
+            84986752
+          ],
+          "new_interval": [
+            41414960,
+            41415207,
+            84986992
+          ],
+          "begin_delta": -32,
+          "end_delta": -32,
+          "length_equal": true
+        }
+      }
+    ],
+    "retained_candidate_delta": {
+      "unused_word7_old": "0x277f370",
+      "cached_ordinal_candidate": "0x277f370",
+      "actual4_table_pointer": "0x277f350",
+      "callback_bound": false,
+      "callee_expanded": false,
+      "reason": "Ordinal-only candidate is not semantic identity. Actual table pointer is retained; table identity uses the independently mapped body methods and remaining eight prefix operands."
+    },
+    "cb_cost_selector": {
+      "offset": "0x60",
+      "actual_slot_rva": "0x4530030",
+      "raw_hex": "30f2774201000000",
+      "actual_target_rva": "0x277f230",
+      "receipt": {
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-04530030-04530038.bin",
+        "cache_begin_rva": 72548400,
+        "reused": false
+      },
+      "body_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261006\\holy-war\\actual4-source\\first01\\cb_virtual_cost_wrapper-DETAIL.json"
+    },
+    "no_universal_section_shift_inferred": true,
+    "no_neighbouring_class_identity_claim": true,
+    "selected_global_is_readonly_type_tag": true,
+    "function_targets_expanded": 0,
+    "new_partial_bytes": 144,
+    "new_partial_read_calls": 2,
+    "reads": [
+      {
+        "kind": "new",
+        "begin_rva": 72548256,
+        "end_rva_exclusive": 72548392,
+        "file_offset": 72543648,
+        "read_bytes": 136,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0452FFA0-04530028.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0452FFA0-04530028.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 72548400,
+        "end_rva_exclusive": 72548408,
+        "file_offset": 72543792,
+        "read_bytes": 8,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-04530030-04530038.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-04530030-04530038.claim"
+      }
+    ],
+    "cache_reuses": [
+      {
+        "kind": "new",
+        "begin_rva": 72548256,
+        "end_rva_exclusive": 72548392,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0452FFA0-04530028.bin",
+        "cache_begin_rva": 72548256
+      }
+    ],
+    "metadata_bytes": 0,
+    "unwind_bytes": 0,
+    "hash_operations": 0
+  },
+  "missing": [],
+  "unadopted_features_not_prerequisites": [
+    "generic interaction cost",
+    "final owning reason",
+    "CB multiplier",
+    "canonical total getter",
+    "NPC defender join"
+  ]
+}

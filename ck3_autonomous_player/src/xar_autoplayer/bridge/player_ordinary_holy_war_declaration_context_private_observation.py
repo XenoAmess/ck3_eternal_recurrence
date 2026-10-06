@@ -7,7 +7,7 @@ from copy import deepcopy
 
 from .declaration_contract import normalize_declarable_wars
 from .nonwar_private_build import private_native_build_identity
-from .version_identity import CK3_12003, require_exact_native_build
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 SCHEMA = "player_ordinary_holy_war_declaration_context_v1"
@@ -84,7 +84,9 @@ def normalize_player_ordinary_holy_war_declaration_context_v1(
             or value["schema"] != SCHEMA or value["read_only"] is not True):
         raise ValueError("native ordinary holy-war declaration context schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build != CK3_12003 or build != private_native_build_identity(snapshot):
+    # The .4 factory's native proof is recorded in the dedicated 12004
+    # declaration-context contract; DTO reuse does not alias an older SHA.
+    if build not in (CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native ordinary holy-war declaration context belongs to another build")
     if type(value["available"]) is not bool:
         raise ValueError("native ordinary holy-war declaration context availability is malformed")
