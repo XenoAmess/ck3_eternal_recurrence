@@ -77,3 +77,88 @@ strategy.py新增同帧恢复与派系说明两个helper。它复用既有生产
 首次receipt位于外置consumer-first-case-attempt01/RESULT.json与stderr.txt，旧case/wire重跑0、测试retry0、nativebuild0、EXE新读0、SDK/pipe/game/UI/runtime操作0。隔离checkout曾有tracked静态兼容性registry为skip-worktree，施工前仅从本checkout相同HEAD materialize其src，让生产import可用；未改其代码、未触碰Root/runtime，未产生测试harness RED。本包只授该有限Python消费者static-ready；采用后新进程实际planner、宣战/战争结果由Root另行验证和计账。
 
 外置字段与封存来源：Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/faction-battle-prior-scope/。Root合并当天/W41，不编辑shared reports、g78或gb0。
+
+## First actual watch-aware declaration (2026-10-06)
+
+## Result and qualification
+
+The Root-run g79 / source715 / R0048 / v74 session used the adopted watch consumer (`30c`, originally `2536ca89283413b0f77a1f6603d04b6f4283c986`). At raw date `53287920` / campaign day `5983`, the existing planner accepted two current watch-only targeting factions into its existing general battle prior and proposed `DECLARE` for native declaration `31050-11-0`: `claim_cb`, actor/claimant Robert `29829`, target title `2132`. The existing turn submitted that declaration once and finished at `2026-10-05T23:56:29.294684Z` (`2026-10-06 07:56:29.294684 Asia/Shanghai`). Two independent saved post-action snapshots confirmed active WarID `100663329`, Robert as primary attacker, primary opponent `31050`, targeted title `2132` and objective provinces `2606/2608`. The player army list was empty and player war score was zero.
+
+This establishes the **first actual watch-aware declaration production-live primitive**. It does not establish a battle win, army raising or movement, a calibrated battle forecast, native AI parity, regiment-v3 input availability, complete war OODA, whole Entry preparation or century completion. Natural succession remains zero. The old g78 executable did not contain this consumer; the evidence belongs to the new g79 session.
+
+## Reused native tree and actual path
+
+The existing exact-build source contract remains CK3 `1.20.0.3`, Steam build `25652598`, frozen EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. These pins are reused from the canonical topic, without rehashing or reading the EXE.
+
+The faction observer resolves player-targeting full faction IDs from Character `+1C0` → land `+120/+12C`, then evaluates native stock danger (`1D65BF0`), current percent-point power (`2601EF0`), loaded dynamic threshold (`26021A0`), discontent (`Faction+28`), growth (`2601B50`), months (`2601C60`) and war state (`2603AB0`). Native danger includes the human-leader path and the applicable peasant/nonpeasant branches; the nonpeasant branch uses positive discontent growth. Months zero with nonpositive growth is not an imminent ultimatum claim. The normalizer's existing watch/danger/war-handoff projection and readiness contract are reused. The consumer introduces no fixed power threshold.
+
+The declaration query and existing native-power inputs reuse the separately sealed `.3` war-entry tree: `2C13460` effective target; `1A22D30` state16; `1A24010` actor/target filters and power-network inputs; `1A23240` ratios, distance, AI entries and flags. The count of targeting factions is not itself the source-bound native declaration criterion. The watch consumer is an explicitly bounded project policy atop that observed source tree, not a claim that the complete native AI outer caller has been reproduced.
+
+```mermaid
+flowchart TD
+    A[Paused same-frame Robert root] --> B[Native declarable candidate 31050-11-0]
+    A --> C[Current actor and target native-power inputs]
+    A --> D[Current faction alert observer]
+    D --> E{Existing normalized projection}
+    E -->|watch-only, ready| F[General prior scope accepts this frame]
+    E -->|dangerous| G[Explicit dynamic-danger defer]
+    E -->|missing or unavailable| H[Existing query or explicit unavailable path]
+    B --> F
+    C --> F
+    F --> I[Existing 256-sample aggregate surrogate]
+    I --> J[790 before-action DECLARE plan]
+    J --> K[One existing turn submission]
+    K --> L[Two independent active-WarID snapshots]
+    L --> M[Normal h9568 checkpoint receipt]
+    L -. remaining .-> N[Army raising, movement and battle outcome]
+    I -. remaining .-> O[Native-parity or calibrated full forecast]
+```
+
+The diagram does not turn submission acceptance into a war predicate: WarID readiness is established separately by the two saved post-action queries. No new code or input contract is required by this reconciliation.
+
+## Before-action frames remain distinct
+
+| Saved frame | 780 inspection, h9558 | 790 actual before-action plan |
+|---|---:|---:|
+| Raw date / campaign day | `53287128` / `5950` | `53287920` / `5983` |
+| Snapshot native/public | `14/15` | `22/23` |
+| Actor adjusted power | `6620500000` | `6614500000` |
+| Target adjusted power | `1964000000` | `1962000000` |
+| Native target/actor ratio, Q100000 | `29665` | `29662` |
+| Populist `33554465` power, Q100000 percent points | `3296700` (32.967%) | `3301600` (33.016%) |
+| Liberty `50331692` power, Q100000 percent points | `3879500` (38.795%) | `3896100` (38.961%) |
+| Loaded stock power threshold | both `7500000` (75%) | both `7500000` (75%) |
+| Discontent / monthly growth | both `0 / -300000` | both `0 / -300000` |
+| Stock dangerous / at war | both false / false | both false / false |
+| Prior source SHA-256, saved identity | `ED35C7B26622D8EE8DDDC85879185A07F56310ED47266796EAFECE3395253F29` | `2E346FA5ABFF3D0B758238EF4F33209B9203322C1AB22639006B019265BDE9C5` |
+
+Both frames contain stock watch IDs `[33554465, 50331692]`, no dangerous, exposure or war-handoff rows, and exact-ultimatum readiness false. Both proposed the same native claim declaration and title. The 780 plan was inspected and saved; no declaration execution is credited to that frame. The 790 plan and turn share the fresh `2E346…` prior identity. The earlier `ED35…` identity must not be relabeled as the actual 790 action source.
+
+For both saved priors, the existing model recorded `256` wins, `0` losses and `0` unresolved trials over a `120`-day horizon; Wilson lower bound `0.9852161435741286` passed the unchanged `0.95` minimum and `0.05` unresolved maximum. Fidelity is `aggregate-prewar-surrogate-not-native-parity`, with `calibrated_probability=false`. The source still omits actual regiment roster, terrain, reinforcement timing, phase events and casualty-type mechanics. The trial outcome is a surrogate admission value, not a 98.5% calibrated victory probability and not an observed battle result.
+
+## Execution and independent postconditions
+
+`790-v74-existing-entry-plan-07.json` ended at `2026-10-05T23:56:15.087845Z`. `790-v74-existing-entry-turn-07.json` began at `23:56:15.375945Z` and ended at `23:56:29.294684Z`. The selected step was `declare-war-31050-11-0`; the native-headless executor accepted one submitted declaration. Its returned `war_action.status` was `war_started`.
+
+Independent `790-v74-existing-entry-post-declaration-snapshot.json` and `790-v74-existing-entry-final-snapshot.json` were saved at `23:56:29.591402–29.598808Z` and `23:56:29.879083–29.886512Z`. Both were paused, raw date `53287920`, native/public `23/24`, native revision `23`, with Robert alive in original episode `native-29829-2bc2d599f7f9`. Both showed the same active WarID `100663329`, primary attacker/opponent/title/objective tuple, empty `player_armies`, zero player war score and no active event. The returned enemy siege at objective `2608` is not credited as a player siege, occupation or battle.
+
+Normal h9568 receipt retained history `9568`, date `53287920`, checkpoint size `104622413` bytes and saved SHA-256 `b57ce04165f8238364cded20f55d65614264b186d852fe29c24c9bdad48019a7`. The Root's physical checkpoint copy/pin is recorded once by that receipt; this background reconciliation reads only its saved metadata. The earlier h9558 inspection checkpoint remains separately retained: history `9558`, raw date `53287128`, `104250341` bytes, saved SHA-256 `c1931eea345604d2634412d2784be4ebe134dc3827d6006424767840002d7f04`.
+
+## Actual cutoff and report accounting
+
+The previous published `297` report used source715 but ended at h9543 / day5918, at the self-trade milestone. Its publication does not contain the subsequent actual declaration cutoff. The new cutoff is h9568 / day5983. Root-reported campaign advancement is `32 + 33 = 65` ordinary days after5918: h9558/day5950 then h9568/day5983. Resume advancement is `883 + 65 = 948` days; total resumed advancement is `2765 + 65 = 2830` days. These are the same shared campaign delta, for Root to merge once; this background documentation task adds zero simulation days. Natural succession remains `0`.
+
+Next live work belongs to Root's army raising, movement and battle pipeline. This package needs no new policy/code/test or repeated fixture qualification; current evidence upgrades only the watch-aware declaration primitive from static-ready to production-live primitive.
+
+## Saved evidence
+
+All paths below are under `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/`:
+
+- `gameplay-responses/780-v74-existing-planner-plan-07.json` — prior inspection plan; same candidate, no action credit.
+- `checkpoints/h9558-v74-5950days-declare-candidate/checkpoint-receipt.json` — separately preserved inspection checkpoint.
+- `gameplay-responses/790-v74-existing-entry-plan-07.json` — fresh cached before-action plan.
+- `gameplay-responses/790-v74-existing-entry-turn-07.json` — one declaration submission and returned action result.
+- `gameplay-responses/790-v74-existing-entry-post-declaration-snapshot.json` — independent active-war postcondition.
+- `gameplay-responses/790-v74-existing-entry-final-snapshot.json` — second independent saved active-war observation.
+- `checkpoints/h9568-v74-declared-war100663329-5983days/checkpoint-receipt.json` — normal saved checkpoint/copy receipt.
+- `watch-prior-declaration-qualification/CACHED-ACTUAL-EXTRACTION.json` and `CACHED-ACTUAL-SUPPLEMENT.json` — this package's saved small-receipt extraction. Initial shorthand filename misses were corrected from the filename catalog; no test or capability failure occurred.
