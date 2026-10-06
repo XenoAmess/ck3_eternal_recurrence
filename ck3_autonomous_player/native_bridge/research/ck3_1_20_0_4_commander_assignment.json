@@ -1,0 +1,180 @@
+{
+  "schema": "xar.ck3-12004.commander-assignment-existing-factory.v1",
+  "date": "2026-10-07",
+  "iso_week": "2026-W41",
+  "status": "source-implemented / finite offline source proof; FIRST NOT_RUN",
+  "source_baseline": "329d1e336fe518ae7c8f49b1874a6385b6f9f3c9",
+  "source_tree": "C:/codex-ck3-background/a4-existing-factories",
+  "exact_build": {
+    "version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "identity_source": "Root frozen BUILD-FREEZE.json; identity reused without executable hashing"
+  },
+  "api": {
+    "namespace": "xar::ck3_12004",
+    "signature": "ck3_12003::CommanderAssignmentBindings BindCommanderAssignmentImage12004(std::uintptr_t image_base, std::string_view executable_sha256, const ck3_12003::CommanderBindings &commanders, const ck3_12002::CommandBindings &commands) noexcept",
+    "role": "Address calculation only; actual .4 dependencies are supplied by the caller",
+    "required_dependencies": [
+      "ck3_12004::BindCommanderImage12004(base, actual_sha)",
+      "ck3_12004::BindCommandImage12004(base, actual_sha)"
+    ],
+    "old_native_binder_calls": 0,
+    "native_calls_from_factory": 0,
+    "native_writes_from_factory": 0,
+    "unchanged_enabled_rule": "commanders.enabled && commands.enabled"
+  },
+  "factory": {
+    "old_rva": "0x297BB00",
+    "actual_rva": "0x297BAE0",
+    "complete_span_bytes": 69,
+    "normalized_complete_instruction_span_equal": true,
+    "ordered_edges_equal": true,
+    "member_operands_preserved": true,
+    "allocated_bytes": 48,
+    "allocation_call_actual_rva": "0x4223B94",
+    "allocation_callee_body_expanded": false,
+    "allocation_edge": "Same cached runtime-function ordinal and interval offset; actual constructor performs allocation, bridge does not reproduce allocator",
+    "primary_vtable_actual_rva": "0x476A428",
+    "secondary_vtable_actual_rva": "0x476A4C0",
+    "writes": [
+      {
+        "offset": "0x00",
+        "meaning": "actual primary vtable"
+      },
+      {
+        "offset": "0x08",
+        "meaning": "metadata byte zero"
+      },
+      {
+        "offset": "0x0C",
+        "meaning": "QWORD metadata zero"
+      },
+      {
+        "offset": "0x14",
+        "meaning": "DWORD metadata zero"
+      },
+      {
+        "offset": "0x18",
+        "meaning": "actual secondary vtable"
+      },
+      {
+        "offset": "0x20",
+        "meaning": "mode zero"
+      },
+      {
+        "offset": "0x24",
+        "meaning": "candidate and internal Army DWORDs both FFFFFFFF"
+      }
+    ],
+    "proof": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/existing-mcp-factories-12004/commander-assignment/map01/default_factory-DETAIL.json"
+  },
+  "validator": {
+    "old_rva": "0x2971480",
+    "actual_rva": "0x2971460",
+    "complete_span_bytes": 138,
+    "old_leaf_has_no_pdata_interval": true,
+    "initial_unresolved_attempt_retained": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/existing-mcp-factories-12004/commander-assignment/map01/FAMILY-MAP.json",
+    "candidate_proof": "Actual native constructor primary table +0x30 contains VA 0x142971460; cached metadata ImageBase 0x140000000 gives RVA 0x2971460",
+    "candidate_slot_proof": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/existing-mcp-factories-12004/commander-assignment/validator-slot/ACTUAL-VALIDATOR-SLOT.json",
+    "normalized_complete_instruction_span_equal": true,
+    "ordered_edges_equal": true,
+    "member_operands_preserved": true,
+    "receiver": "Full primary command packet RCX; optional native reason RDX preserved into R9",
+    "army_resolution": {
+      "packet_full_id_offset": "0x28",
+      "database_slot_actual_rva": "0x5D1DE48",
+      "fallback_slot_actual_rva": "0x5D1DE50",
+      "index_mask": "0x00FFFFFF",
+      "registry_capacity_offset": "0x2C",
+      "registry_data_offset": "0x20",
+      "registry_stride": 16,
+      "registry_pointer_offset": 8,
+      "actual_full_id_comparison_offset": "0x10",
+      "generation_mismatch_uses_fallback": true
+    },
+    "character_resolution": {
+      "packet_full_id_offset": "0x24",
+      "database_slot_actual_rva": "0x5C67568",
+      "fallback_slot_actual_rva": "0x5C67570",
+      "index_mask": "0x00FFFFFF",
+      "registry_capacity_offset": "0x2C",
+      "registry_data_offset": "0x20",
+      "registry_stride": 16,
+      "registry_pointer_offset": 8,
+      "actual_full_id_comparison_offset": "0x18",
+      "generation_mismatch_uses_fallback": true
+    },
+    "mode_packet_offset": "0x20",
+    "tailcall_actual_rva": "0x29714F0",
+    "tailcall_reuse": "Existing adopted support_2971510-DETAIL.json closes full can_set_commander body and actual Character tag1C/ID18, Army tag14/ID10 and Unit backlink124 receivers",
+    "proof": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/existing-mcp-factories-12004/commander-assignment/map02/full_packet_validation_wrapper-DETAIL.json"
+  },
+  "reused_source_proofs": [
+    "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-world-family/native-main/BASE-READER-SOURCE-CLOSED.json",
+    "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/commander-supply/SUPPORT-RIP-GLOBAL-MAP-CLOSED.json",
+    "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/commander-supply/support-first01/support_2971510-DETAIL.json",
+    "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/command-layout-core/COMMAND-LAYOUT-MAP.json",
+    "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/function-match-core/CORE-FUNCTION-MAP.json"
+  ],
+  "executor_reuse": {
+    "function": "ck3_12003::ApplyArmyCommanderAssignment",
+    "native_owned_source": true,
+    "source_writes": {
+      "mode": "DWORD +0x20 = 1",
+      "candidate": "DWORD +0x24 = requested candidate full ID",
+      "army": "DWORD +0x28 = observed internal CArmy full ID, not public CUnit ID"
+    },
+    "native_validator_reason_argument": null,
+    "channel_flags": 14,
+    "copy_submit": "ck3_12002::SubmitCommandCopy uses source actual primary virtual clone+0x40, native-owned result storage, caller-supplied actual queue, and actual virtual deletion",
+    "queue_actual_rva": "0x37F06D0",
+    "embedded_manager_actual_rva": "0x5CC1240",
+    "source_cleanup": "Existing NativeOwnedSource destructor calls DestroyOwnedCommand on native-owned source",
+    "no_direct_secondary_executor_call": true,
+    "no_typed_result_schema_change": true,
+    "submitted_result": {
+      "command_submitted": true,
+      "verification_pending": true,
+      "ack_is_readback": false
+    },
+    "already_assigned": "Existing independently read current commander is compared with requested candidate before constructing a command",
+    "partial_or_ineligible_behavior": "Existing unavailable/rejected reason and null-observation semantics retained",
+    "wire_schema_label": "ck3_12003_army_commander_assignment_v1"
+  },
+  "finite_cost": {
+    "old_retained_source_bytes": 207,
+    "new_partial_bytes": 215,
+    "new_partial_read_calls": 3,
+    "new_functions_mapped": 2,
+    "new_data_slots_read": 1,
+    "queue_body_recaptures": 0,
+    "callee_body_expansion": 0,
+    "full_executable_reads": 0,
+    "hashes": 0,
+    "builds": 0,
+    "tests": 0,
+    "production_imports": 0,
+    "sdk_queries": 0,
+    "game_queries": 0,
+    "git_operations": 0
+  },
+  "readiness": {
+    "research": "finite native source proof complete for two factory functions and validator slot",
+    "source_implemented": true,
+    "static_ready": false,
+    "fixture_live": false,
+    "production_live_primitive": false,
+    "production_live_loop": false,
+    "complete": false,
+    "FIRST": "NOT_RUN; Root owns joint qualification"
+  },
+  "ownership": {
+    "new_files": [
+      "include/xar_bridge/ck3_12004_commander_assignment.hpp",
+      "src/ck3_12004_commander_assignment.cpp",
+      "research/ck3_1_20_0_4_commander_assignment.json"
+    ],
+    "shared_hooks_fixture_cmake_first_commit_reports": "Parent and entry owner"
+  }
+}
