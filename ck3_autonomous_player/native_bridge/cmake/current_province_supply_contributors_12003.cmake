@@ -3,7 +3,8 @@
 get_property(current_province_supply_targets DIRECTORY PROPERTY BUILDSYSTEM_TARGETS)
 foreach(current_province_supply_target IN LISTS current_province_supply_targets)
   get_target_property(current_province_supply_sources ${current_province_supply_target} SOURCES)
-  if("src/ck3_12002_army.cpp" IN_LIST current_province_supply_sources AND
+  if(("src/ck3_12002_army.cpp" IN_LIST current_province_supply_sources OR
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_army.cpp" IN_LIST current_province_supply_sources) AND
      NOT "src/ck3_12003_current_province_supply_contributors.cpp" IN_LIST current_province_supply_sources)
     target_sources(${current_province_supply_target} PRIVATE
       src/ck3_12003_current_province_supply_contributors.cpp)
