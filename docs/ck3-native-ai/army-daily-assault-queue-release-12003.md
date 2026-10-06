@@ -38,6 +38,14 @@ The independent new native fixture `ck3_12003_daily_assault_release_headers_test
 
 Readiness is bounded pure static-ready with a native observer candidate pending qualification. `actual_record_release`, `actual_effects`, `full_daily_assault_ready`, `full_regular_refill_ready`, `full_monthly_ready`, `full_calendar_ready` and `live` stay false. Conditional pending preservation is independent of future queue execution/removal. Next construction uses real appended-Army magic/receiver context and the independently held first-removal/lifecycle inputs; neither today's queue prefix nor this normal-return release establishes a future drain frame.
 
+### First actual compiled route and necessary strict-leaf correction
+
+Root's immutable g96 native source `c98127ed20124abf92da121a3f9b017d409932a2` passed the full four-runtime/new-fixture build once in121.693152s and the one new CTest once in0.17s /0.2082458s process time at2026-10-06T07:29:42UTC. Six new raw-header whole-strength wires were emitted. This qualification does not include the separately adopted old-fixture source-only correction.
+
+FIRST complete-service consumption stopped on the first `zero-count-nonnull` wire: zero new projections/checks; five other wires were not executed. The new strict raw-header leaf required a string reason, whereas the actual shared Status serializer emits `unavailable_reason:null` for a ready value. The source-shaped Python compound had used an empty string and did not prove this actual wire shape. This is a new contract integration RED, not a native buffer-release capability RED. The exact failed invocation, stdout/stderr and `compiled-consumer-first01/CONSUMER-FIRST-RECEIPT.json` remain unchanged in the round18 packet.
+
+The necessary correction accepts the native nullable string and preserves its actual value. It changes only the new Python leaf and this topic; producer, native artifacts and passed compound/CTest are not rebuilt or rerun. A separate exact immutable fixed service source must consume the failed first wire and five previously unexecuted wires once, with native producer source `c98127ed` and fixed service source pinned independently. Qualification remains pending that necessary route; no actual post-state or full/live readiness is promoted.
+
 2026-10-06 / W41. This source-first package connects the independently modeled [current daily loss groups](army-current-daily-assault-loss-inputs-12003.md) to the existing queue/removal capabilities. Exact `.3` / Steam25652598 / EXE SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6` and held source receipts are reused. No EXE bytes, closed native bodies or old qualification samples are read again; no implementation, test, build or runtime operation is performed for this plan.
 
 ## Native scheduling and two distinct release paths

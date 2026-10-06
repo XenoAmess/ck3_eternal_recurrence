@@ -14,7 +14,7 @@ def normalize_daily_assault_release_header_v1(value: object) -> dict | None:
         raise ValueError('daily_assault_release_header_v1 schema is malformed')
     if value['status'] not in ('available', 'partial', 'unavailable') or type(value['ready']) is not bool:
         raise ValueError('daily_assault_release_header_v1 status is malformed')
-    if not isinstance(value['unavailable_reason'], str):
+    if value['unavailable_reason'] is not None and not isinstance(value['unavailable_reason'], str):
         raise ValueError('daily_assault_release_header_v1 unavailable reason is malformed')
     present = value['data_present']
     if present is not None and type(present) is not bool:
