@@ -81,7 +81,7 @@ bool ObservePredicates(void *opaque, std::int32_t character_id,
   if (bindings == nullptr || !bindings->enabled ||
       bindings->is_paused_by_succession == nullptr ||
       bindings->has_open_succession == nullptr) return false;
-  void *const character = ResolveCoreCharacter(bindings->core, character_id);
+  void *const character = ck3_12004::ResolveCoreCharacter(bindings->core, character_id);
   if (character == nullptr) return false;
   paused = bindings->is_paused_by_succession();
   has_open = bindings->has_open_succession(character);

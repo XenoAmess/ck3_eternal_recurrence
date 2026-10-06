@@ -1,6 +1,8 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_sway_outcome_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_sway.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #include <limits>
@@ -129,5 +131,3 @@ bool HandleSwayOutcomeEventV1(
 }
 
 } // namespace xar::ck3_12002
-#include "xar_bridge/ck3_12004_adapter.hpp"
-#include "xar_bridge/ck3_12004_sway.hpp"

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ordinary_holy_war_cb_cost_v1.hpp"
 
 namespace xar::ck3_12004 {

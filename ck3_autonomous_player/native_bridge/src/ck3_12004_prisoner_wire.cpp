@@ -16,7 +16,8 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
   // or native read is called, and optional next-feature arrays stay absent.
   return game::Render12004BuildIdentity(
       ck3_12002::SerializePlayerPrisonerCollectionPrivateV1(
-          snapshot, revision, quotes, quotes_complete, release_previews));
+          snapshot, revision, quotes, quotes_complete, release_previews),
+      game::Ck3_12004AdapterDescriptor());
 }
 
 } // namespace xar::ck3_12004
