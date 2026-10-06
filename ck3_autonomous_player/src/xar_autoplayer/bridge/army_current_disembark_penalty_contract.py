@@ -1,4 +1,4 @@
-"""Exact .3 observed signed native remaining landing days.
+"""Exact .3/.4 observed signed native remaining landing days.
 
 The named source chain establishes the genuine CArmy receiver.
 The direct getter defines no clamp/sentinel. Days do not prove native active
@@ -7,7 +7,7 @@ status or an expiry predicate, and current days do not predict a future route.
 from __future__ import annotations
 
 from copy import deepcopy
-from .version_identity import CK3_12003, require_exact_native_build
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 LEAF = "current_disembark_penalty_v1"
 SOURCE = "native_current_disembark_penalty_days_12003"
@@ -54,8 +54,8 @@ def project_current_disembark_penalty_v1(
     if require_exact_native_build(
         source_provenance.get("game_version"),
         source_provenance.get("executable_sha256"),
-    ) != CK3_12003:
-        raise ValueError("current landing input requires its exact .3 source")
+    ) not in (CK3_12003, CK3_12004):
+        raise ValueError("current landing input requires its exact .3/.4 source")
     normalized = normalize_current_disembark_penalty_v1(raw)
     result.update(
         status=normalized["status"],

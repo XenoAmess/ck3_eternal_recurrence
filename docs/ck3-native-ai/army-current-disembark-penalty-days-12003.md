@@ -75,3 +75,57 @@ producer成功退出0，stdout单行为 `GREEN current_disembark_penalty_days_12
 唯一 consumer为 `ck3_autonomous_player/tests/test_current_disembark_penalty_mcp_compound.py`，只有一个 async testmethod。Root先生成上述 native文件，再设置 `XAR_CURRENT_DISEMBARK_NATIVE_WIRE=<absolute JSON path>`、可选 `XAR_CURRENT_DISEMBARK_CASE_OUTPUT=<absolute receipt path>`，使用既有含实际 `mcp==2.0.0` SDK的Python执行 `-B -X utf8 <testfile> -v`。consumer通过实际 `create_server/list_tools/call_tool`构造真实 typed Service；只有 snapshot、capabilities与execute_step backend envelope为 synthetic。它用五个未修改的 native行调用已注册 `ck3_query_army_strengths`，第六次调用仅从本次 zero行删除可选leaf检查旧包兼容，不增加native sample。全部断言通过后才写GREEN sidecar；native原始字节、行、signeddays与source provenance保持不变。
 
 Current-days ready只说明本帧getter观测可用；invalidArmy保持真实不可用，typeUnavailable保持typed binding不可用。现有 river/strait retained `actual_geography_v1`、actual present Province、projected entry Province与attacker/defender角色继续使用各自已资格合同，不借本计时器授未来状态或真实接战信用。
+
+
+## 2026-10-07: actual1.20.0.4 current-disembark family source closed
+
+This separate migration note is bound to Root-confirmed **CK3 1.20.0.4 / Steam25734779**, EXE SHA `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`, and source package base `caa4adc3d1278e324cf4ec19774028e9b9138e28`. Historical exact `.3` evidence above retains its original scope. The two authoritative owner excerpts now close **the actual4 source operands of the current-disembark field only**. Build, native whole producer/consumer FIRST and live qualification remain **NOTRUN**.
+
+The parent first transferred [DISEMBARK-NAMED-LEAF-CLOSED.json](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/commander-supply/disembark-first01/DISEMBARK-NAMED-LEAF-CLOSED.json), then [BASE-READER-SOURCE-CLOSED.json](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-world-family/native-main/BASE-READER-SOURCE-CLOSED.json). This doc lane reuses those parent-consumed excerpts, with no independent receipt/EXE/mapping/hash reads.
+
+| Exact actual4 evidence | Closed meaning for this field |
+| --- | --- |
+| Named target / callback | Actual `GetDisembarkPenaltyDays` name is unchanged; actual callback **24EA610**. |
+| Integer core | Old24AA240 maps to **24AA220..24AA227**,7B, identical **`8B81D0010000C3`**: `MOV EAX,[RCX+1D0];RET`. |
+| Typed registration | Actual **CFCB00** is normalized equal; actual RIP references to int type-ID **5C5FD8C** and CArmy type-ID **5D1DF94** are unchanged. |
+| CArmy registry / native fallback | Actual registry slot **5D1DE48**, fallback **5D1DE50**; rows **+20**, capacity **+2C**, row stride **0x10**, object pointer **+8**. |
+| Actual CArmy header | FullID **+10**, magic **+14=0x41726D79**. The supplied base proof includes actual type/database/fullID/header evidence. |
+| Actual receiver join | **CArmy+124 public Unit** and **Unit+178 ArmyID** backlinks are actually matched by the base source proof; they supply the genuine generation-bound CArmy receiver for this current getter. |
+| Field / operation | Receiver's stored **+1D0 signed32** current value; the seven-byte core has no clamp, sentinel, date conversion, loaded-duration read or write. |
+
+**`getter_closed=true` and `full_family_proof=true` for current disembark only.** Parent grants the exact **3+4** source-guard scope supported by these named/type and Army-base receipts. This is a source-proof grant for that field, not a general Army layout grant: Army+180 supply, regiment composition and other supply/refill operands are not closed by this note. Root owns core identity/header/profile; Army owner owns the actual4 native binding; the separate child owns the Python leaf consumer. Source closure does not establish that a guard was built/activated or that an actual CK3 receiver was queried.
+
+The public leaf remains `army_strengths[].current_disembark_penalty_v1.remaining_days`, source **`native_current_disembark_penalty_days_12003`**, through `ck3_query_army_strengths`. Retain that existing wire source string; exact4 identity is carried separately by the profile/evidence. Preserve lossless current signed32 values, including0, negative and nonstock positive values. Service's `current_disembark_penalty_v1[]` contains `{army_id,projection}`; `current_disembark_days_ready` concerns current-field availability, while **`future_route_landing_days_ready=false`**. No native active predicate, future landing expiry or effective combat advantage is inferred.
+
+```mermaid
+flowchart TD
+  ID["Actual1.20.0.4 / Steam25734779 / SHA98702f88..."] --> NAMED["Named owner proof:GetDisembarkPenaltyDays;callback24EA610"]
+  NAMED --> REG["CFCB00 normalized equal;actual intID5C5FD8C/CArmytypeID5D1DF94 RIP unchanged"]
+  REG --> CORE["Mapped24AA220..24AA227;7B identical MOV EAX,[RCX+1D0];RET"]
+  OLD["Historical exact.3 core24AA240..24AA247"] --> CORE
+  ID --> BASE["Authoritative actual4 Army type/db/fullID/header base proof"]
+  BASE --> STORE["Registry5D1DE48/fallback5D1DE50;rows20/cap2C/stride10/object8"]
+  STORE --> HEADER["CArmy fullID10;magic14=41726D79;matched Army124/Unit178 backlinks"]
+  HEADER --> RECEIVER["Actual generation-bound CArmy receiver for current field"]
+  RECEIVER --> CORE
+  CORE --> VALUE["Current CArmy1D0 signed32;getter+specific family source closed"]
+  VALUE --> GRANT["Parent exact3+4 source-guard scope for current disembark only"]
+  GRANT -. "Army owner binding/build activation not executed here" .-> BIND["Actual4 native binding implementation/qualification"]
+  BIND -. "fresh whole producer/sole consumer FIRST NOTRUN" .-> LEAF["Existing current_disembark_penalty_v1.remaining_days;source12003"]
+  LEAF --> FLAGS["Current signed32 only;future_route_landing_days_ready=false"]
+  FLAGS --> API["Existing ck3_query_army_strengths;no new family"]
+  CASES["Fresh whole0/-1/34/unavailable source shapes"] -. "synthetic callbacks are not ABI proof" .-> QUAL["Native FIRST/live remain separate and NOTRUN"]
+  LD["Loaded landing duration5C69984 unobserved"] -. "no demonstrated supply need;no duration family" .-> FUTURE["Future landing and actual after-state unqualified"]
+```
+
+### Fresh actual4 whole producer/sole consumer source shape
+
+Army owner supplied four fresh whole source files: `zero.command-result.json`, `negative.command-result.json`, `positive.command-result.json` and `unavailable.command-result.json`. Current days are respectively **0,−1,34,null**; unavailable reason is **`disembark_getter_not_bound`**. The full native `command_result` result starts with its original five keys; the production primitive adds `backend_id`. This doc lane does not guess unnamed keys, read or consume those files, or treat a hand-built row as native whole authority.
+
+The sole new method is **`CurrentDisembarkPenaltyWholeService12004Tests.test_fresh_native_whole_rows_keep_signed_current_days_under_exact_12004_source`**. Its source and the new producer/FIRST remain **NOTRUN**. Old `.3` row fixtures gain no new qualification. The authoritative native receipts close the ABI/source premise; synthetic numeric cases or the partial unavailable fourth scene test transport behavior and supply no ABI, live or landing proof.
+
+### Reused cost and readiness boundary
+
+Parent reports the base owner's source cost as **16784B /56 reads**, plus **78B support-owner additional reads**. Those costs belong to their owners and are reused here; this doc lane adds **0 EXE bytes,0 native seeks and0 hashes**, with no duplicated source-cost or game-day credit. The prior2093B/41seek Unit/disembark study is not reopened.
+
+Supply grace remains the separate existing `army_update_clock_v1.loaded_grace_days` family (old slot5C69AA0), distinct from loaded landing duration5C69984. This narrow source family adds no duration/supply observer and grants no broader supply180 or regiment-composition layout. The doc lane performs no Git/diffcheck/import/build/test/SDK/game/process operation. Parent owns the once-only final diff check and commit. Current-disembark actual4 source operands are closed; static-ready, fixture/live, production-live primitive/loop and complete remain unclaimed until their separate Root-owned executions.
