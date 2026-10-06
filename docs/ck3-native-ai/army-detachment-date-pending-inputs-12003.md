@@ -358,3 +358,9 @@ flowchart TD
 ```
 
 The sole authored method is `CurrentDetachmentDataServiceCompoundTests.test_current_detachment_data_service_compound` in `tests/test_current_detachment_data_service_compound.py`, with ten new complete registered-service queries. Its expected artifact was written before any execution at `packet/PURE-DRAFT/DATA-REAL-IMPLEMENTATION-FIRST-EXPECTATIONS.json`. The external implementation recipe and eight-wire consumer are in the same round-29 packet's `implementation/` directory. Both source FIRST and compiled FIRST remain **NOT RUN** when this implementation is sealed.
+
+## FIRST joint native compile: fixture binding-name correction
+
+Root's immutable g104 FIRST compile reported **C2039** in this new fixture: `ArmyBindings` has no `monthly_caller_effect_inputs_enabled` member. The actual production interface is the existing nested `monthly_caller_effect_bindings.enabled`; `Strength` uses that binding to capture `monthly_caller_effect_inputs_v1`, including the full-QWORD GameState `+8` date required by this new collector. The fixture is corrected to enable that real binding. No new production flag, collector ABI, arithmetic or scenario is added or changed.
+
+The correction is isolated from source **`71b729f0cc4894331f1dadb89155920fccd42a00`**. Root preserves the original g104 immutable tree and `BUILD-STDOUT.log` lines 803–810 as FIRST compiler RED; the child executes no build, test, production import or wire consumer. The eight new whole-query native scenes and ten source-service scenes remain **NOT RUN**. Root owns the necessary changed-fixture compile and later FIRST qualification; this one-line fixture repair is not native or service evidence.

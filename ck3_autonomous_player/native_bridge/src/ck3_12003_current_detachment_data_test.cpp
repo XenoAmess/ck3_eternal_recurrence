@@ -100,7 +100,7 @@ struct Fixture {
     bindings.monthly_daily_queue_bindings.enabled = true;
     bindings.monthly_daily_queue_bindings.army_fallback_slot = static_cast<void **>(armies.fallback_slot);
     bindings.monthly_first_removal_cleanup_inputs_enabled = true;
-    bindings.monthly_caller_effect_inputs_enabled = true;
+    bindings.monthly_caller_effect_bindings.enabled = true;
     auto &lookup = bindings.current_assault_removal_reference_bindings.lookup;
     bindings.current_assault_removal_reference_bindings.enabled = true;
     lookup.enabled = true; lookup.game_state_slot = state_slot;
