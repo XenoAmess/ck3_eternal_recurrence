@@ -189,3 +189,16 @@ flowchart TD
 Existing capital source is reused from `battle-native-owner-retreat-v62/active-criteria/new-owner-target-28b1cd0.asm.txt`, with the held `new-owner-title-id-28b2220.asm.txt`. It is the existing native Character-capital query entrance, not an arbitrary chosen capital. The available `new-title-province-230f900.asm.txt` is only a partial cache; its presence is not credited as a newly complete transitive footprint. Current whole-DATA inputs can publish the actual getter's selected returned origin when that branch is used; no call to a mutator is proposed.
 
 The next source plan names only two actual dependencies: the numerical date constructor **`2C54340`** and the strictly-later pending callback **`2A9BE60(primary, physical_chunk)`**. No complete body/metadata locator was found in the searched owned date/pending catalogs; only already held pending callsites are credited. `2658180-SELECTED-CALLEE-METADATA-PLAN.json` proposes finite exact-start pdata/unwind selection for those two named entries, reusing any previous selected record bytes. Code capture still requires separate exact-extent review. Whole incoming-DATA DTO implementation remains pending those concrete branch operands, with the false-predicate and equal-date prefixes independently retained in its construction plan.
+
+## Exact selected date/pending callee metadata
+
+Root approved those two metadata-only selections. October 6 **19:30:15 CST**, the reader used **332 new metadata B / 29 seeks**, reusing earlier raw records whenever the binary searches reached them. Both exact starts were found, and neither selected header has CHAININFO. There were **0 new code B**. Capital helper expansion remains outside this work package.
+
+| Actual target | Exact pdata record RVA / file | Raw record | Selected range and length | Unwind header |
+| --- | --- | --- | --- | --- |
+| `2C54340` | `5F84550` / `5E1B750`, index 153372 | `4043c502cd44c502c45b2b05` | `[2C54340,2C544CD)`, **397 B** | `52B5BC4`: `11180900`, version 1, flags **2**, prologue 24, codes 9, frame 0 |
+| `2A9BE60` | `5F70E58` / `5E08058`, index 146738 | `60bea90292bea902e4cb1405` | `[2A9BE60,2A9BE92)`, **50 B** | `514CBE4`: `01080400`, version 1, flags **0**, prologue 8, codes 4, frame 0 |
+
+`2C54340` consumed 172 new B / 15 seeks; `2A9BE60` consumed 160 new B / 14 seeks. The date header's flags 2 are preserved as actual metadata, without reading handler data or crediting handler effects as closed. `SELECTED-DATE-PENDING-METADATA-READ-RECEIPT.json` preserves each actual/cached record selection and header. Cumulative frozen-file I/O is now **552 metadata B + 717 code B = 1,269 B / 339 seeks**.
+
+`SELECTED-DATE-PENDING-EXACT-BODY-PLAN.json` proposes only these two exact bodies, **397 + 50 = 447 new B / 2 seeks**, with all metadata and previous code reused. It will publish actual normal-return direct control, output/date construction, manager/chunk writes and callee receivers; any required outside transfer or missing gameplay callee gets a separate finite cache-first plan. Both bodies are currently **NOTRUN**. No generic allocator, capital tree, theoretical consistency audit, new model, test or observer was added.
