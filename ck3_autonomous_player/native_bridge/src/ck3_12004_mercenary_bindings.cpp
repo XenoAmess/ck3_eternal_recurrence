@@ -10,7 +10,7 @@ ck3_12003::mercenary::CandidateBindings BindMercenaryCandidatesImage12004(
   // Actual 29942C0: current Merc registry, full generation lookup and Merc tag.
   // Actual 2625700: unchanged persistent roster and signed native headcount.
   b.manager_slot = reinterpret_cast<void **>(base + 0x5D1DF08);
-  b.invalid_company_slot = reinterpret_cast<void **>(base + 0x5D1DEF8);
+  b.fallback_slot = reinterpret_cast<void **>(base + 0x5D1DEF8);
   b.current_soldiers = reinterpret_cast<decltype(b.current_soldiers)>(
       base + 0x2625700);
   b.enabled = true;
