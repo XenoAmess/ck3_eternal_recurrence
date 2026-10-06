@@ -1,5 +1,9 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-07：本地更新至 Steam build25734779，MCP 迁移中
+
+[实际安装更新与 MCP 迁移](installed-build-25734779-mcp-migration-2026-10-07.md)：R0051 完成一日路线循环并正常保存 h9613，累计5997；10streams冻结、ownedjob退出并证明进程回收后，Steam已更新。新EXE SHA98702f88…dd518已冻结，native文字确认1.20.0.4，text/rdata均变，实际ABI迁移正在施工。旧g105严格构建RED C4324保留，g106已采用source0597但FIRST未跑；并行迁移各MCP领域，尚无新版live信用。
+
 
 ### 2026-10-06 late update: actual Army query recovered
 
