@@ -1,6 +1,7 @@
 """Construction-only exact-source dated branch operands; no test invocation."""
 from copy import deepcopy
 from daily_assault_roster_admission_fixture import operand_resolution, state
+from pre_date_pending_update_fixture import resolution as combat_resolution
 
 
 def id_list(ids, *, count=None):
@@ -17,7 +18,7 @@ def occurrence(index, requested, *, selected=None, dates=(), count=None, valid_c
     return {**state(), 'native_index': index, 'original_request_full_id_u32': requested,
             'army_resolution': operand_resolution(requested, selected=full, fallback=full != requested),
             'combat_request_full_id_u32': combat,
-            'combat_resolution': operand_resolution(combat, kind='combat', fallback=not valid_combat),
+            'combat_resolution': combat_resolution(combat, kind='combat', fallback=not valid_combat),
             'combat_magic_0c_raw_u32': 0x436F6D62,
             'army_date_count_5c_raw_i32': None if valid_combat else len(dates) if count is None else count,
             'date_array_identity': f'native:{8100000 + index}' if dates else None,
