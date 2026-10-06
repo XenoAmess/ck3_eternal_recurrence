@@ -147,7 +147,15 @@ void Wire(const std::filesystem::path &directory, const char *name, const xar::g
   if (directory.empty()) return;
   std::filesystem::create_directories(directory);
   std::string output = "{\"status\":\"available\",\"army_strengths\":[";
-  xar::game::AppendArmyStrengthV1(output, row, Number, Text);
+  xar::game::AppendArmyStrengthV1(output, row, Number,
+      [](std::string &out, const std::vector<std::int32_t> &values) {
+        out += '[';
+        for (std::size_t index = 0; index < values.size(); ++index) {
+          if (index != 0) out += ',';
+          out += Number(values[index]);
+        }
+        out += ']';
+      }, Text);
   output += "],\"native_readiness\":{\"current_strength\":true,\"full_monthly\":false}}\n";
   std::ofstream file(directory / name, std::ios::binary); file << output;
   Require(static_cast<bool>(file), "new native wire could not be written");
