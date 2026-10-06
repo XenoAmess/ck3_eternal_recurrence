@@ -255,7 +255,7 @@ int main(int argc, char **argv) {
   FactionGiftPrivateState12004 state;
   std::string wire, failure;
   const auto call = [&](std::string_view step, const std::string &payload, std::uint64_t revision,
-      std::string_view request_id = "offline-gift-router-once") {
+      std::string_view request_id = "faction-gift-00000000000000000000000000000001") {
     return HandleFactionGiftPrivate12004(adapter, mailbox, adapter.snapshot, revision,
         step, payload, request_id, state, wire, failure, &bindings);
   };
