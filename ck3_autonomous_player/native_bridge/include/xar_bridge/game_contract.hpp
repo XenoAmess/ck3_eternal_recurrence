@@ -730,6 +730,7 @@ struct ArmyCurrentProvinceBesiegingContributorsV1 {
 };
 
 #include "xar_bridge/army_daily_assault_active_table_v1.inc.hpp"
+#include "xar_bridge/army_daily_assault_loss_inputs_v1.inc.hpp"
 
 struct ArmyStrengthSnapshot {
   bool available = false;
@@ -798,6 +799,7 @@ struct ArmyStrengthSnapshot {
       ArmyGatheringDaysStatus::unavailable;
   std::optional<ArmyMovementProgressSnapshot> current_movement_progress;
   std::optional<ArmyCurrentDailyAssaultTableV1> current_daily_assault_table_v1;
+  std::optional<ArmyCurrentDailyAssaultLossInputsV1> current_daily_assault_loss_inputs_v1;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;

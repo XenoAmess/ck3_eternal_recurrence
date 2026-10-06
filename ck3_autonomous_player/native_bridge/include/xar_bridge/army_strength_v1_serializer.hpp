@@ -529,6 +529,8 @@ inline void AppendArmyCurrentProvinceBesiegingContributorsV1(
   result += "]}";
 }
 
+#include "xar_bridge/army_daily_assault_loss_inputs_serializer_v1.inc.hpp"
+
 template <class Number, class Int32Array, class JsonString>
 inline void AppendArmyStrengthV1(
     std::string &result,
@@ -576,6 +578,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"monthly_daily_queue_inputs_v1\":";
     AppendArmyDailyQueueInputsV1(result, *strength.monthly_daily_queue_inputs_v1,
                                 number, append_json_string);
+  }
+  if (strength.current_daily_assault_loss_inputs_v1) {
+    result += ",\"current_daily_assault_loss_inputs_v1\":";
+    AppendArmyCurrentDailyAssaultLossInputsV1(result, *strength.current_daily_assault_loss_inputs_v1,
+        number, append_json_string);
   }
   if (strength.current_daily_assault_table_v1) {
     result += ",\"current_daily_assault_table_v1\":";

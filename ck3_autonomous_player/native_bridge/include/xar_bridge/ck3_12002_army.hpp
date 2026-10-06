@@ -173,6 +173,7 @@ struct ArmyBindings {
   // Keep additions at the tail: legacy aggregate initializers use the prefix.
   ck3_12003::CurrentDailyAssaultTableBindings12003 current_daily_assault_table_bindings{};
   ck3_12003::OrderedBesiegingRefillBindings12003 ordered_besieging_refill_bindings{};
+  bool current_daily_assault_loss_inputs_enabled = false;
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(
