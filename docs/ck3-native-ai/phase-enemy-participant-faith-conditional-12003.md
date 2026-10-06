@@ -81,3 +81,32 @@ flowchart TD
 外置包：[phase-enemy-participant-faith](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/phase-enemy-participant-faith/)，含 `CACHED-CONSUMER.json`、`NATIVE-TREE.md`、`RESEARCH-PLAN.json`、`MINIMUM-SAME-QUERY-CONTRACT.json`、`FRAME-DATA-REQUEST.json`、Root delivery与Oct6/W41字段。source AST唯一匹配已提取，Git whitespace检查一次；没有测试或native编译，禁止把文档检查称为新能力资格。
 
 当前完成 **research / bounded source plan**：确定唯一真正consumer、方向、实际census接点和最小observer合同。没有新provider或readiness提升；两条 `.3` scope语义待窄静态pin，实际游戏帧、完整phase选取与feedback仍独立未完成。日报/周报由Root据外置字段统一合并；本子线只提交该新topic。
+
+## 后续有界定位：当前 receiver 已闭合，两个注册入口未命中
+
+Root随后授权只定位exact `.3` `any_side_participant`接受规则与kind11 `enemy_side` resolver。复用现有3298EE0 cache后，**当前Side token receiver的body已闭合**：`3298F27..3298F6B`从 `Side+B8`取parent Combat，读取 `parent+8`完整signed32 CombatID并sign-extend到token payload；kind word为11，subindex word是 `Side != parent+20`。该token经 `373A110`插入当前context，name key仍来自 `5D4BD6C`。实际physical Side0/1因此以CombatID与subindex0/1区分，不能用战争攻守标签替代。此68B slice从原886B缓存拆出，新EXE code读取0B；它证明source token构造，不证明 `enemy_side` 的转换body或实际loaded name字符串。
+
+唯一第一轮locator使用旧 `.2` `4745CF0`作为**发现邻域**，没有继承旧ABI：读取当前 `[4745000,474D000)` 32768B，最多32个actual COL direct pointers及其TypeDescriptor。达到32 follow预算后停止，实际新增38176B/62 reads，未命中iterator/resolver。原negative结果保留，未扩大该邻域或重复follow。只检查已捕获字节后得到一个具体候选pointer；第二步仅follow该actual COL与TypeDescriptor，共184B/2 reads，确认当前 **vtable `4745CF0` → COL `4DEADC0` → TD `59E6CC8`，name `.?AVCCombatSide@@`**。
+
+以这个已验证当前TD为新锚点，最后只读 `[59E6C00,59E8C00)` 8192B/1 read的实际CombatSide类型族；其中是CombatSide、CombatRegiment与ResultData，仍没有目标iterator/resolver类型。该次negative也保留，并到预算停止。不能从邻域未命中推断这些目标全图不存在。**本增量新增EXE data总46552B/65 reads，new code0B、whole image/section scan0、全图hash0、测试/build/provider改动/游戏操作均0**；原EXE SHA与PE map沿用封存值，逐新读取的offset、bytes、SHA与bin保留。
+
+```mermaid
+flowchart TD
+    S["exact current CCombatSide：4745CF0/4DEADC0/59E6CC8"] --> P["cached3298F27：Side+B8 → parent Combat"]
+    P --> I["parent+8 full signed CombatID → token payload"]
+    P --> J["Side != parent+20 → subindex0/1"]
+    I --> K["kind11 current Side token"]
+    J --> K
+    K --> C["373A110 current context insertion"]
+    L["5D4BD6C loaded name key"] --> C
+    C -. "当前enemy_side注册body未命中" .-> E["enemy Side token转换 unknown"]
+    H["actual H58 ordered raw rows已闭合"] -. "当前iterator/filter body未命中" .-> A["accepted any_side_participant occurrence unknown"]
+    N["38,176B locator达到32 COL cap"] -.-> U["negative preserved：不扩大同邻域"]
+    T["当前TD家族8,192B终止"] -.-> U
+```
+
+最小observer合同新增已闭合source字段：native root Side token的 `scope_kind=11`、`side_subindex=0|1`、full CombatID原始32位及native sign-extended payload，和actualSide→parentCombat来源；它们来自同query实际Side，不来自player religion或另一个查询。raw H58 census与已闭合Faith getter的collector仍可按前节小接点施工，但两个未闭合的script scope边不能因receiver身份正确而自动取得accepted-occurrence资格，整体readiness不变。
+
+这次具体缺口是**当前compiled script-list/scope注册族的入口**，而不是CCombatSide C++对象RTTI。下一定位需 exact `.3` `any_side_participant`注册record的factory/vtable/Evaluate pointer、kind11 `enemy_side` property的resolver pointer及对应 `.pdata`边界；若另一个已封存注册cache命中，只读两个body与direct receiver/skip operands。不能继续按旧19DE0D0或当前对象TD邻域扩大搜索。本轮没有证明实际 `5D4BD6C` name只能由live取得；它的loaded name仍是单独source/frame请求，不因缺名重新研究schedule。
+
+增量包：[phase-enemy-scope-nodes](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/phase-enemy-scope-nodes/)，`locator01/LOCATOR-RESULT.json`、`locator02/DIRECT-COL-RESULT.json`与 `locator03/TYPE-FAMILY-RESULT.json`保留尝试、actual cost与negative；`RECEIVER-SOURCE.json`、`NATIVE-TREE.md`、`MINIMUM-CONTRACT-DELTA.json`、`NEXT-REGISTRATION-REQUEST.json`及Oct6/W41字段供Root汇总。当前是**部分完成的research增量**：receiver/class identity闭合；请求的两个script节点未闭合，原因是该具体有界注册定位未命中。没有新能力GREEN或live资格。
