@@ -135,8 +135,6 @@ struct ArmyBindings {
   std::int32_t (*get_army_gathering_days_left)(void *) = nullptr;
   // Exact .3 native core: signed EAX dword return, RCX receiver, no writes.
   using DisembarkPenaltyGetter12003 = std::int32_t (__fastcall *)(const void *);
-  bool current_disembark_penalty_enabled = false;
-  DisembarkPenaltyGetter12003 get_army_disembark_penalty_days = nullptr;
   // Exact .3 CUnit route getters; neither requires an army-AI assignment.
   // A missing getter leaves only that operand unknown. The .2 binder omits
   // this subdomain. Positive 0xFFFFFFFF is the native unavailable sentinel.
@@ -208,6 +206,8 @@ struct ArmyBindings {
   ck3_12003::CurrentDetachmentDataBindings12003 current_detachment_data_bindings{};
   ck3_12003::CurrentSelectedTitleHolderOwnerRelationBindings12003
       current_selected_title_holder_owner_relation_bindings{};
+  bool current_disembark_penalty_enabled = false;
+  DisembarkPenaltyGetter12003 get_army_disembark_penalty_days = nullptr;
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

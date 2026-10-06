@@ -19,6 +19,8 @@ The Disembark package adds optional `current_disembark_penalty_v1` and the match
 
 The shared edits were merged additively. README retained Root's actual Army recovery history and both new topics. The absent holder-owner topic was retained from its native source commit. The binding conflict retained the existing detachment member and appended the new holder-owner member after it. The CMake conflict retained both new leaf includes. Existing unrelated DTO/query/Service families and the prior fixture corrections remain inherited from c92; no whole-file replacement restored an older base.
 
+Root's subsequent concrete layout review identified that the original Disembark package inserted its two binding data members and snapshot optional inside existing aggregate prefixes. The project had already observed the same ArmyBindings compatibility failure in earlier native/CI attempts. A separate follow-up commit moves only those three data members to their respective structure tails, after the newly appended holder-owner members; the getter typedef remains in place. Getter behavior, field names, serialization, fixture cases and CMake remain unchanged. The first assembly commit is preserved. This source layout correction performs one diff check and no build or test, so it does not supply new native qualification.
+
 ```mermaid
 flowchart TD
     A[Published c92 source with existing fixture repairs] --> B[Holywar original0255 source]
