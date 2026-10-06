@@ -278,7 +278,9 @@ flowchart TD
     A --> S[Initialize and fill new typedrecord]
     S --> CP[Copy positive reloadedcount oldrecords in order]
     CP --> T[11244A0 header newbuffer newcount newcapacity]
-    T -.-> U[Unknown actual storage and header commit]
+    T --> SC{Reloaded signed countC positive}
+    SC -.->|yes| UC[11244C6 unknown continuation]
+    SC -.->|no| UE[11244E9 unknown continuation]
 ```
 
 The sole next source gap is that normal-return **storage-commit** footprint. `PENDING-STORAGE-COMMIT-METADATA-PLAN.json` proposes only named `11244A0` pdata/header/selected-chain metadata after cache-first reuse. It does not authorize a body, generic allocator/deallocator, exception handler or new observer implementation. The revised whole-DATA plan publishes typed pending records and the new physical `chunk+C` input; no code, test, build or game operation has begun.
@@ -290,3 +292,11 @@ Root approved only the named metadata selection. October 6 **20:43:21 CST**, the
 The actual new metadata cost was **208 B / 18 seeks**, with previously held binary-search records reused. No code, constant, allocator, handler, old body or whole-file hash was read. Cumulative source I/O is now **804 metadata B + 1,420 code B = 2,224 B / 366 seeks**. `PENDING-STORAGE-COMMIT-METADATA-READ-RECEIPT.json` retains every actual record/header and cached record separately.
 
 The unique next proposal is **38 B / 1 seek**, exactly the selected `[11244A0,11244C6)` body. Inspect its actual normal-return header writes, source reload order and direct call/tail boundaries for `11244A0(vector_header, new_buffer, newCount, newCapacity)`. Any reached generic resource routine remains opaque; any separately required gameplay or header-commit continuation needs its own cached-source selection and finite plan. `PENDING-STORAGE-COMMIT-EXACT-BODY-PLAN.json` is **NOTRUN** until Root separately reviews it. The typed-record correction and the independent no-growth append stay closed; growth commit and the proposed observer remain unqualified.
+
+## Storage-commit prologue is not its complete body
+
+Root approved exactly the selected 38 B. October 6 **20:47:06 CST**, actual new code cost was **38 B / 1 seek**; metadata, old code and constants were not reread. Cumulative source I/O is **804 metadata B + 1,458 code B = 2,262 B / 367 seeks**. The selected fragment saves arguments, loads the **current signed vector count `+C`**, and tests it at `11244C2`. Instruction `11244C4` is `jle 11244E9`; a positive count falls through to **`11244C6`**, exactly outside the selected range.
+
+There is **no return, call or non-stack write in these 38 B**. Thus the exact pdata selection was an initial prologue fragment, not a complete storage-commit body. Growth header/count/capacity/buffer state remains unknown, and the whole-DATA observer is not implementation-qualified. `PENDING-STORAGE-COMMIT-EXACT-BODY-READ-RECEIPT.json` seals the actual fragment and both reached edges without reading either continuation.
+
+`PENDING-STORAGE-REACHED-CONTINUATION-METADATA-PLAN.json` proposes metadata only for the two actual reached addresses **`11244C6`** and **`11244E9`**. Reuse the primary record/header and all held metadata; select the real containing pdata record, its four-byte unwind header and at most one actual CHAININFO record per target, at most **464 new B / 40 seeks total**. Actual containment is sufficient if an edge is inside a fragment; no function start is invented. Any selected continuation body requires a separate exact span plan and Root approval.
