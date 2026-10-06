@@ -28,6 +28,12 @@ common_tradeport_02 line4452, SHA-256
 D40C015E0CF240B830D83C2CA8FC38190EAB2C5D4D8492D044DB8F1AED6B20C4.
 The shared script-values SHA-256 above is unchanged. Actual frame/key proof
 and noncash-effect limits are recorded in the native construction topic.
+
+The actual 1.20.0.4 Steam build 25734779 reuses the accepted .3 table through
+installed content depot 1158311, manifest 5078208590259867811, also containing
+game/common/buildings. This is retained content-depot evidence, not a new local
+file hash or a new review of the original 1.19.0.6 / .2 table. Actual .4 native
+cost, legality and slot operands have separate finite executable source proof.
 """
 
 from __future__ import annotations
@@ -63,7 +69,7 @@ def authored_monthly_income_hundredths(
     building_key: object, *, exact_ck3_build: str = "1.19.0.6",
 ) -> int | None:
     if (not isinstance(building_key, str)
-            or exact_ck3_build not in {"1.19.0.6", "1.20.0.2", "1.20.0.3"}):
+            or exact_ck3_build not in {"1.19.0.6", "1.20.0.2", "1.20.0.3", "1.20.0.4"}):
         return None
     return _AUTHOR_MONTHLY_INCOME_HUNDREDTHS.get(building_key)
 
@@ -73,7 +79,7 @@ def authored_existing_monthly_income_hundredths(
 ) -> int | None:
     if not isinstance(building_key, str):
         return None
-    if exact_ck3_build == "1.20.0.3":
+    if exact_ck3_build in {"1.20.0.3", "1.20.0.4"}:
         return _AUTHOR_EXISTING_MONTHLY_INCOME_HUNDREDTHS_12003.get(building_key)
     return authored_monthly_income_hundredths(
         building_key, exact_ck3_build=exact_ck3_build)
