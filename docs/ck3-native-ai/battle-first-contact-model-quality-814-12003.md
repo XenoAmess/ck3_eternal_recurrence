@@ -1,11 +1,12 @@
 # Entry model quality: saved814 and fresh paired-model initialization (.3)
 
-Source-only increment, 2026-10-06 / W41. The exact frozen build is CK3 1.20.0.3,
+Source-first increments, 2026-10-06 / W41. The exact frozen build is CK3 1.20.0.3,
 Steam25652598, with reused EXE SHA-256
 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
-No game/MCP query, native build, test, callback execution, or shared runtime edit
-was performed. The source target was selected from actual saved inputs, not to
-complete a field catalogue.
+The source packages performed no game/MCP query, native build, test, callback
+execution or shared runtime edit. A later single new production consumer case
+is qualified below. The source target was selected from actual saved inputs,
+not to complete a field catalogue.
 
 ## Actual saved input and useful next query
 
@@ -25,8 +26,8 @@ null. The artifact is not relabeled with an invented hello identity, a present
 revision, or a hypothetical construction stage.
 
 814 does not publish either selected Character's complete current model context
-or a fresh paired-model baseline. The minimum **existing** query recipe for
-Root's next authorized paused sample is:
+or a fresh paired-model baseline. The historical minimum **existing** query
+recipe for a separately authorized paused sample was:
 
 ```text
 ck3_query_battle_terminal_transition_v1(
@@ -43,6 +44,9 @@ The existing current source census also exposes model presence, owner presence,
 owner full ID, owner match, and model magic. Match current getter provenance
 with the selected Character and `model_inline` branch. Keep the query's own
 public/native revision/date; a separate request is not an atomic part of814.
+The user's latest instruction prohibits local CK3/Steam/SDK/UI connection or
+operation. This recipe is retained as an unvalidated interface record, not local
+execution authorization; arrangements on other machines are separate.
 
 Root subsequently attempted this recipe as844. It failed before delivering the
 requested contexts: `executor_exception3221225477` (`0xC0000005`), bridge
@@ -168,14 +172,62 @@ No new DTO, native callback or arithmetic system is needed. An old held model
 with weighted0/nonempty aggregate must still supply its actual retained arrays;
 these new-construction counts do not override that existing branch.
 
-The proposed next frozen fixture should use held model A with nonempty values
-and a distinct fresh model B for the same Character. Give B the source-closed
-postimages above and entering counts(0,0,0), then feed the real provider prefix
-and existing branch fold. Preserve A as the separate held-source rank input and
-B as the evolving context. Include the existing old-model weighted0/nonempty
-aggregate branch to demonstrate its retention. This fixture is a plan only:
-no tests ran in this source-only increment, no Rule43 admission is fabricated,
-and no cold callback result or whole Entry equivalence is claimed.
+The proposed distinct-model fixture was implemented after the source seal.
+It uses held model A with nonempty values and distinct fresh model B for the
+same Character. B receives the source-closed entering counts(0,0,0), then the
+real production-normalized provider prefix and existing branch fold. A remains
+the separately supplied held source; a separately declared modeled new reset
+of A exercises weighted0/nonempty aggregate retention. It is not B's prior or
+a claim about a historical preparation frame. No Rule43 admission, cold callback
+result or whole Entry equivalence is fabricated.
+
+## First independent production consumer fixture
+
+The existing interface already provides the complete bounded value path; no
+production glue was missing and no consumer, forecast, native/schema or Entry
+readiness code changed. The new unique test is
+`ck3_autonomous_player/tests/unit/test_battle_person_fresh_constructor_baseline_12003.py`,
+case `test_distinct_fresh_model_joins_normalized_prefix_branch_and_skills`.
+Only earlier fixture builders are imported; their test cases were not run.
+
+The new source-shaped synthetic frame carries nonempty held A for Character29829
+and normalized current provider1530/common1A48/selected19A0 inputs plus selected
+291D1D0 and positive group0/2 inputs. The existing production
+`normalize_battle_terminal_transition_v1` feeds the existing assembler. Fresh B
+uses `kind="modeled_new_reset"`, explicit entering(0,0,0), `context=None`,
+normal constructor-return source pins, copied-owner provenance and distinct
+fresh/held model identities. The actual existing empty-context projection is
+used; A's current-final aggregate is not an implicit prior for B.
+
+Seven ordered contributions, including both equal common occurrences and the
+group0 weight200000, produce B's verified aggregate keys`[0,1,4,5]`, signed Q64
+values`[100000,200000,300000,700000]`. The existing six-skill kernel gives
+**[7,8,6,6,9,13]**. The separately modeled retained A branch gives
+**[19,8,6,6,9,53]**, demonstrating the actual weighted0/retained aggregate
+difference without renaming A as B's constructor baseline. Both retain the
+current context and observed prowess8. Source provenance survives the assembler
+ledger, and the result stops at **post291D1D0_pre291C209**.
+
+```mermaid
+flowchart LR
+  S[Sourceclosed normal fresh counts0/0/0] --> B[Explicit freshB baseline /sameowner29829]
+  N[Production normalizer /source-shaped synthetic prefix and branch] --> P[Existing prefix then291D1D0 assembler]
+  B --> P
+  A[Separate nonempty heldA] --> R[Declared modeled new reset ofA /aggregate retained]
+  R --> P
+  P --> C[Distinct bounded contexts /existing six-skill projection]
+  C -. real later contributions and Rule43 unknown .-> E[Full person andEntry unfinished]
+```
+
+The sole first execution was **GREEN1/1,0.219730s**,2026-10-06
+**09:03:35+08:00**, W41. Receipt:
+`model-quality-814/fresh-baseline-consumer/attempt-01/RESULT.json`; the plan
+preceded implementation. The runner selects this exact one case and adds only
+the existing local registry package import path. It invokes no registry/Steam
+tools, no game/SDK/pipe query, native build or old test. The bounded source-derived
+fresh-baseline consumer path is **static-ready**; this is not a new native frame,
+paused observation, physical constructor execution or live capability. Terminal,
+full future-context and Entry readiness remain unchanged/false.
 
 ## Receipts and boundary
 
@@ -204,10 +256,11 @@ fresh-model source line totals1670 B. CachedCA1870 and all earlier caller/reset
 source retain zero new source credit. No unwind, global allocator body, extra
 vtable slot, whole EXE scan/hash, game query, build or test was added.
 
-This is **research/source-closed numerical initialization** and a concrete
+The constructor work is **research/source-closed numerical initialization** and a concrete
 existing current-input query recipe whose Root delivery attempt is RED. The
 fresh normal-return empty logical baseline now has exact source evidence;
 current held inputs, later real gates/selected contributions, full preparation,
-post-constructor held stability and complete Entry remain separate. No new
-static-ready code or live primitive is claimed. The independent current C1..C9
-slice remains useful and available in814.
+post-constructor held stability and complete Entry remain separate. The one new
+fixture qualifies the existing bounded fresh-baseline value path as static-ready;
+no new production glue or live primitive is claimed. The independent current
+C1..C9 slice remains useful and available in814.
