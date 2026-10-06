@@ -200,12 +200,14 @@ AckStatus ExecuteActiveSchemeSemanticActionV1Private(
       return Reject(request, Failure::interaction_not_allowed,
                     "interaction_not_allowlisted", {}, ack);
     }
-    const bool exact_12002_sway = request.interaction_key == "sway_interaction" &&
-        environment.admitted_executable_sha256 ==
-            "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D";
+    const bool exact_crozier_sway = request.interaction_key == "sway_interaction" &&
+        (environment.admitted_executable_sha256 ==
+             "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D" ||
+         environment.admitted_executable_sha256 ==
+             "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518");
     if (!environment.exact_build_admitted ||
         (environment.admitted_executable_sha256 !=
-             kActiveSchemeSemanticActionV1PrivateExecutableSha256 && !exact_12002_sway)) {
+             kActiveSchemeSemanticActionV1PrivateExecutableSha256 && !exact_crozier_sway)) {
       return Reject(request, Failure::exact_build_mismatch,
                     "exact_build_mismatch", {}, ack);
     }

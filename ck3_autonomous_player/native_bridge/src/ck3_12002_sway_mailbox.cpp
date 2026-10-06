@@ -84,7 +84,7 @@ bool ExecuteActiveSwayMailbox12002(void *opaque,
         request.expected_date_raw = q.active.date_raw;
         const ActiveSchemeSemanticActionV1PrivateEnvironment environment{
             q.source.module_base, q.source.enabled && q.commands.enabled,
-            kExecutableSha256, q.commands.enabled, false};
+            q.source.executable_sha256, q.commands.enabled, false};
         if (ExecuteActiveSchemeSemanticActionV1Private(environment, access, request, q.ack) !=
             ActiveSchemeSemanticActionV1PrivateAckStatus::submitted_verification_pending) {
           q.failure = "native_sway_submit_rejected:";

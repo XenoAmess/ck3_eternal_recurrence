@@ -204,6 +204,7 @@ bool ReadSwayOutcomeOpinionV1(const SwayOutcomeBindings &bindings,
   output = {};
   output.actor_character_id = actor_id;
   output.target_character_id = target_id;
+  output.build_version = bindings.build_version;
   try {
     if (!bindings.event_window.events.core.enabled || bindings.target_opinion == nullptr ||
         actor_id <= 0 || target_id <= 0 || actor_id == target_id) {
@@ -242,7 +243,8 @@ bool ReadSwayOutcomeOpinionV1(const SwayOutcomeBindings &bindings,
 
 std::string SerializeSwayOutcomeOpinionV1(const SwayOutcomeOpinionV1 &row,
                                         std::uint64_t revision, std::int32_t date_raw) {
-  std::string out = "{\"schema\":\"xar.ck3.sway-outcome-opinion-v1\",\"build\":\"1.20.0.2\",\"available\":";
+  std::string out = "{\"schema\":\"xar.ck3.sway-outcome-opinion-v1\",\"build\":" +
+      Quote(row.build_version) + ",\"available\":";
   out += Boolean(row.available);
   out += ",\"unavailable_reason\":" + Quote(row.unavailable_reason);
   out += ",\"snapshot_revision\":" + std::to_string(revision);

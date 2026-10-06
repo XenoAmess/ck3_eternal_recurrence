@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_sway.hpp"
 #include "xar_bridge/ck3_12002_sway_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -40,7 +42,8 @@ bool HandleActiveSwayPrivate12002(const game::GameAdapter &adapter,
       }
     }
     std::uint64_t expected_revision{};
-    if (xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 || !adapter.enabled() ||
+    const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+    if ((!actual4 && game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256) || !adapter.enabled() ||
         !JsonUnsignedField(payload, "expected_revision", expected_revision) || expected_revision != revision ||
         !revision || !published.paused || !published.map_ready || !published.has_played_character ||
         !published.played_character_alive || published.played_character_id <= 0 ||
@@ -74,8 +77,10 @@ bool HandleActiveSwayPrivate12002(const game::GameAdapter &adapter,
     q.envelope.expected_snapshot = published; q.envelope.expected_snapshot_revision = revision;
     q.envelope.typed_context = &q;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    q.source = BindSwayStateImage12002(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    q.commands = BindSwayCommandImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    q.source = actual4 ? ck3_12004::BindSwayStateImage12004(base, adapter.descriptor().executable_sha256) :
+        BindSwayStateImage12002(base, game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    q.commands = actual4 ? ck3_12004::BindSwayCommandImage12004(base, adapter.descriptor().executable_sha256) :
+        BindSwayCommandImage(base, game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     const bool submitting = q.formal && !q.receipt_mode;
     if (submitting) state.may_have_submitted = true;
     const auto submit = TrySubmitMainThreadQueryV1(mailbox, &ExecuteActiveSwayMailbox12002,
