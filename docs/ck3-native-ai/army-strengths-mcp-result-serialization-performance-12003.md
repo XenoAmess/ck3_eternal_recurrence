@@ -58,3 +58,14 @@ Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe -B -X utf8 ck3_autonomous_play
 ```
 
 Set `XAR_ARMY_RESULT_PERFORMANCE_CASE_OUTPUT` to a fresh external JSON path for both measured pairs. Follow-on plan, Oct7/W41 fields and delivery live under `Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/army007-query-performance/FOLLOWON-EXECUTE-STEP/fixture-doc-lane/`. The initial packet remains archived. Parent owns actual hooks, commit and report integration.
+
+## Extended compound qualified during the 1.20.0.4 migration
+
+The original extended first attempt is retained as RED: the fixture compared the output schema's root title against a differently named synthetic baseline tool. Only that fixture title comparison was corrected; production code did not change. The necessary retry ran the same sole method once and passed, exit0/3.0711939s (unittest body0.989s). [Actual retry receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/performance-followon-retry02/RETRY-RECEIPT.json) and [measured synthetic SDK envelopes](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/performance-followon-retry02/army-mcp-result-performance-case.json) preserve both routes.
+
+| Registered synthetic route | Original SDK result bytes | Compact-text SDK result bytes | New/original |
+| --- | ---: | ---: | ---: |
+| `ck3_execute_step`, Army step | 5815275 | 2166861 | 37.26154% |
+| Direct Army query | 5817820 | 2167848 | 37.26220% |
+
+Each text summary is899 bytes. The actual registered execute Army, direct Army and non-Army step each call their Service method once. Complete structured fields, schema structure and arguments are preserved. Candidate source `d8fc8000→36a272fa→4a5534b3` is adopted by Root as `22251e4a→533f8bc8→ea222238`. This qualifies the envelope change as **static-ready**, superseding the extended NOTRUN above. Real 135/140MB Army output and latency reduction remain unmeasured; the new native build and live observations are separate migration work.
