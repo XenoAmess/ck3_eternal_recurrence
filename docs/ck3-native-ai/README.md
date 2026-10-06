@@ -1128,3 +1128,7 @@ flowchart TD
 ## Land resupply and warmonger FIRST qualification; actual isolated CI repair (2026-10-06T10:59:32+08:00)
 
 g86@75e9d648dac75f941cc338a0d410f930570fa1fb四runtime+两新fixtures native121.607099s/FIRST2Ct2/2 GREEN；新resupply4wire、warmonger7samples/67checks首次生产消费GREEN，两current叶 **static-ready**，未live/部署/fullrate/fullphase。实际359e CI漏collector依赖已复现并最小修复，一次必要isolate route检查GREEN，其它旧测试不重复。phase敌方Faith方向与实际Side token/class source闭合，46552B有界metadata定位未中iterator/resolver，下一compiled registration入口明确，仍research。人物两numerical producers/native17wire待集中资格、full-rate source继续。本机CK3/Steam/SDK/input0，其他机器安排照旧，冻结agent h9586/5996/natural0不变。[资格证据](Z:/ck3_mod_rewrite_process_assets/g2-background-round8-20261006/current-land-resupply-observer/root-resupply-warmonger-publication/ROOT-FIRST-QUALIFICATION.json)、[继续source入口](phase-enemy-participant-faith-conditional-12003.md)。
+
+## Person following stages and full land rate FIRST qualification (2026-10-06T11:24:15+08:00)
+
+g87@5c33040bbc28864fa76106e719fa61fae30258ab FIRST native三新Ct3/3、人物17wires/4条件stage/204checks、full-land-rate5wires均GREEN；两人物阶段与同context完整陆军rate为限定static-ready，实际Rule43/阶段关联/月度/Entry/live仍未完成。[人物树](battle-person-stage-chain-12003.md)、[补给率](army-land-supply-rate-inputs-12003.md)、[Root资格](Z:/ck3_mod_rewrite_process_assets/g2-background-round9-20261006/person-full-rate-root-publication/root-publication/ROOT-FIRST-QUALIFICATION.json)。registry/name source13627B闭合，敌方iterator/resolver继续；狂战士五输入最小源码接点已确认并开始V2施工。上一323445bc官方CI37406839068 SUCCESS。本机game/Steam/SDK/input0，其他机器授权照旧；冻结agent h9586/5996/natural0不变。
