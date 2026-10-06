@@ -1,6 +1,8 @@
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_army_support.hpp"
 #include "xar_bridge/ck3_12003_commander_target_roll_serializer.hpp"
 #include "xar_bridge/ck3_12003_commander_target_roll.hpp"
 #include "xar_bridge/ck3_12003_current_commander_martial_serializer.hpp"
@@ -128,18 +130,28 @@ bool ExecuteArmyCommanderCandidatesMailbox(
   }
   auto &query =
       *static_cast<ArmyCommanderMailboxContext *>(envelope->typed_context);
-  if (envelope != &query.envelope || query.completed ||
-      !game::IsCk3_12003Descriptor(envelope->game->descriptor())) {
+  if (envelope != &query.envelope || query.completed) {
     return false;
   }
-  const auto bindings = BindCommanderImage(
-      query.image_base, envelope->game->descriptor().executable_sha256);
+  const bool actual4 = game::IsCk3_12004Descriptor(envelope->game->descriptor());
+  if (!actual4 && !game::IsCk3_12003Descriptor(envelope->game->descriptor()))
+    return false;
+  const auto bindings = actual4
+      ? ck3_12004::BindCommanderImage12004(
+            query.image_base, envelope->game->descriptor().executable_sha256)
+      : BindCommanderImage(
+            query.image_base, envelope->game->descriptor().executable_sha256);
   query.read_result = ReadArmyCommanderCandidates(
       bindings, envelope->expected_snapshot, query.army_id,
       query.observation);
   if (query.target_province_id.has_value()) {
-    const auto target_bindings = BindCommanderTargetRollImage(
-        query.image_base, envelope->game->descriptor().executable_sha256);
+    // Actual .4 target-roll needs the selected Province/Combat family bindings.
+    // Until supplied here, the shared DTO reader reports its existing explicit
+    // target_province_bindings_unavailable reason without invoking old callbacks.
+    const auto target_bindings = actual4
+        ? CommanderTargetRollBindings{}
+        : BindCommanderTargetRollImage(
+              query.image_base, envelope->game->descriptor().executable_sha256);
     ReadArmyCommanderCandidateTargetRollBounds(
         target_bindings, *query.target_province_id, query.observation);
   }

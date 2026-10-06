@@ -7,6 +7,7 @@
 #include "xar_bridge/ck3_12004_snapshot_foundation.hpp"
 #include "xar_bridge/ck3_12004_world.hpp"
 #include "xar_bridge/ck3_12004_army.hpp"
+#include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 
 #include <windows.h>
 #include <array>
@@ -36,6 +37,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.war-objective-siege-progress", "game.state.war-objective-assault",
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
+      ck3_12003::kArmyCommanderCandidatesCapability,
       "game.command.pause-map", "game.command.resume-map",
       "game.command.set-speed-1", "game.command.set-speed-2",
       "game.command.set-speed-3", "game.command.set-speed-4",

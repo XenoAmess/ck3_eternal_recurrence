@@ -24,6 +24,7 @@
 #endif
 #include "xar_bridge/ck3_12003_maa_create_private_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
+#include "xar_bridge/ck3_12004_commander_mailbox.hpp"
 #if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
 #include "xar_bridge/current_actor_stress_adjustment_v1_mailbox.hpp"
 #endif
@@ -11243,6 +11244,8 @@ public:
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
     xar::ck3_12002::RegisterNonwarMailboxExecutorsV1(environment, nonwar);
+    environment.permitted_executor_quindenary =
+        &xar::ck3_12003::ExecuteArmyCommanderCandidatesMailbox;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -12481,7 +12484,8 @@ std::string RunArmyCommanderCandidatesQuery12003(
   query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
   query.envelope.typed_context = &query;
   query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+  if ((!xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
+       !xar::game::IsCk3_12004Descriptor(game.descriptor())) ||
       !xar::ck3_12003::ParseArmyCommanderCandidatesRequest(
           step, query.army_id, query.target_province_id) ||
       !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
@@ -12529,10 +12533,14 @@ std::string RunArmyCommanderCandidatesQuery12003(
     return CommandResultFrame(request_id, step, false,
         "application-main army-commander query failed or its snapshot changed");
   }
-  const auto result = xar::ck3_12003::SerializeArmyCommanderCandidates(
-      query.observation, query.read_result,
-      ++state.army_commander_candidates_query_sequence,
-      query.envelope.expected_snapshot_revision, snapshot.date_raw, step);
+  const auto query_sequence = ++state.army_commander_candidates_query_sequence;
+  const auto result = xar::game::IsCk3_12004Descriptor(game.descriptor())
+      ? xar::ck3_12004::SerializeArmyCommanderCandidates12004(
+            query.observation, query.read_result, query_sequence,
+            query.envelope.expected_snapshot_revision, snapshot.date_raw, step)
+      : xar::ck3_12003::SerializeArmyCommanderCandidates(
+            query.observation, query.read_result, query_sequence,
+            query.envelope.expected_snapshot_revision, snapshot.date_raw, step);
   std::string response =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(response, request_id);
@@ -13716,8 +13724,11 @@ void RunConnectedSession(
           connected = write_frame(pipe, RunCurrentActorStressAdjustmentQueryV1(
               game, state, request_id, incoming.payload));
 #endif
-        } else if (xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
-                   (step.starts_with(xar::ck3_12003::
+        } else if ((xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+                    (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+                     step.starts_with(xar::ck3_12003::
+                         kArmyCommanderCandidatesStepPrefix))) &&
+                    (step.starts_with(xar::ck3_12003::
                                          kArmyCommanderAssignmentStepPrefix) ||
                     step.starts_with(xar::ck3_12003::
                                          kArmyCommanderCandidatesStepPrefix) ||
