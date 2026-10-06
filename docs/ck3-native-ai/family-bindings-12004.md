@@ -12,6 +12,8 @@ The outcome and spouse-producer receipts used by the [relationship migration](fa
 
 The independent actual4 `BindFamilySubjectImage` reuses the actual family/value pointers and the existing software child predicate. The shared native `inline_child_relation` proof explicitly reads Family parent slots `+0/+4`, parent full ID `+0x18` and child Family pointer `+0x1A8`. A single32B diagnostic operand window maps old `1C11BB4` to actual `1C11B94` and closes the existing named children collection at Family `+0x38`, data `+0` and count `+0xC`; it adds64B/2physical reads across the frozen images. The diagnostic collection does not replace the actual child-of admission predicate.
 
+The existing ranked candidate query now selects an independent actual4 `BindFamilyRankedImage`. Its native enumerator `1A3BD20`, score filter `1A3C650`, sort/scored initialization and buffer lifecycle callbacks are individually mapped; Strategy/age/cap and typed owner/allocator operands are retained. Candidate initialization is rooted in the actual candidate-owner table's single necessary `+0x20` entry. The scored-row owner `4528110` derives from the uniquely authorized7B constructor LEA at actual `1A3C986`; the scorer body and fertility-threshold branch were not recaptured or adopted as a new feature. Shared Council release and Army row-destruction proofs are reused. This migration preserves the existing native producer, candidate order and acceptance flow; it does not reconstruct the pool or change policy. The ranked topic mailbox explicitly accepts actual4 and selects the new binder. Source receipts and Mermaid are `actual4-ranked/`; added owned cost4670B/20physical reads.
+
 Exact source trees, Mermaid diagrams and captures are under `Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/marriage-family/actual4-native/`, `actual4-heir-lineage/`, `actual4-projection-map/` and `capacity-seam/`. Shared Dynasty/member proof is `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/prisoner/current4-collection/COLLECTION-LAYOUT-LEDGER.json`. The family native child used3331B/22physical reads; lineage used1558B/8; projection used3032B/11. The relationship chain used6663B/9. Shared evidence is reused and its physical cost is not recounted here.
 
 ```mermaid
@@ -28,7 +30,8 @@ flowchart TD
   L --> O
   P --> O
   C -. separate actual alliance binding in progress .-> A[Existing obligations alliance and war diagnostics]
-  C -. native producer binding migration pending .-> R[Existing ranked candidate query]
+  C --> R[Independently bound existing ranked candidate query]
+  R --> O
 ```
 
 ## Existing production integration
@@ -37,4 +40,4 @@ The actual4 API exposes `BindFamilyContextImage`, `BindFamilyValuesImage`, `Bind
 
 The existing native-auto-run family opt-in needs the same readonly `allow_private_family_obligations_query` assignment already supplied by the MCP `--private-family-obligations-query` option. The minimal external recipe is `actual4-strict/RUNTIME-HOOK.patch`; Root performs shared configuration integration and SDK qualification.
 
-Obligations alliance diagnostics, ranked native candidate production and conditional break penalty have independent necessary binding inputs. Their migration must use actual mapped sources rather than old binders. Source closure of the family basics does not claim these other components are already restored. Root owns adapter/bridge/CMake hooks, builds and paused ordinary Robert29829 verification. This packet ran no production import, fixture FIRST, test, build or game contact and claims no new candidate opportunity or natural succession.
+Obligations alliance diagnostics, ordinary marriage sender bindings and conditional break penalty have independent necessary binding inputs still in progress. Their migration must use actual mapped sources rather than old binders. The ranked native candidate producer is source implemented; Root qualification remains pending. Source closure does not claim restored runtime behavior. Root owns adapter/bridge/CMake hooks, builds and paused ordinary Robert29829 verification. This packet ran no production import, fixture FIRST, test, build or game contact and claims no new candidate opportunity or natural succession.
