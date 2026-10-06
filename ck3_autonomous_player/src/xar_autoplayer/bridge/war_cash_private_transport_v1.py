@@ -10,7 +10,7 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_build_identity
-from .version_identity import require_exact_native_build
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 CURRENT_STEP = "query-war-cash-current-resources-v1"
@@ -24,6 +24,14 @@ MONTHLY_FLOW_SEMANTICS = {
     "expense_source": "native_character_monthly_total_gold_expenses",
     "military_expenses_included": True,
 }
+MONTHLY_FLOW_SEMANTICS_12004 = {
+    **MONTHLY_FLOW_SEMANTICS,
+    "version": "ck3-1.20.0.4-native-income-minus-total-expenses-v2",
+}
+_MONTHLY_FLOW_SEMANTICS_BY_BUILD = {
+    CK3_12003.game_version: MONTHLY_FLOW_SEMANTICS,
+    CK3_12004.game_version: MONTHLY_FLOW_SEMANTICS_12004,
+}
 
 
 def _monthly_flow(current: Mapping[str, object]) -> None:
@@ -34,7 +42,8 @@ def _monthly_flow(current: Mapping[str, object]) -> None:
         if any(k in current for k in ("player_monthly_gross_income", "player_monthly_total_expenses")):
             raise ValueError("war cash monthly flow lacks its semantics marker")
         return
-    if (current.get("game_version") != "1.20.0.3" or marker != MONTHLY_FLOW_SEMANTICS
+    expected = _MONTHLY_FLOW_SEMANTICS_BY_BUILD.get(current.get("game_version"))
+    if (expected is None or marker != expected
             or not isinstance(marker, Mapping) or marker.get("military_expenses_included") is not True):
         raise ValueError("war cash monthly flow lost its exact-build semantics")
     ready = current.get("readiness")
