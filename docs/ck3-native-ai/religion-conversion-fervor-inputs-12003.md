@@ -63,6 +63,14 @@ py -B -X utf8 ck3_autonomous_player/tools/conversion_fervor_registered_mcp_compo
 
 Compound 收据为新 attempt 的 `RESULT.json` 和 `observed.json`。通过后才允许提高相应静态资格；之后由 Root 在唯一 Robert 29829 普通战役取得 fresh choices 的有效 full target Rite，并用原 query 保存实际暂停结果，要求两个真实 non-null raw 与 actor/target Faith/frame。same Faith 结果只证明该分支，不虚构异 Faith live 覆盖。无需转换动作或推进日期。本包不授予 OODA、paid conversion、recipient acceptance、holy-war join 或新游戏日信用。
 
+## 2026-10-06 22:38：首次实际 fixture 链接 RED 与源码修复
+
+Root 在 joint source `71b729f0cc4894331f1dadb89155920fccd42a00` 的原 strict cache 执行 completion01；[实际 completion receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-round33-20261006/joint-source-cap64-root/remaining-original-targets-completion01/ROOT-ACTUAL-COMPLETION-RESULT.json) 为 RED/exit1。原 [CP936 stdout](Z:/ck3_mod_rewrite_process_assets/g2-background-round33-20261006/joint-source-cap64-root/remaining-original-targets-completion01/COMPLETION-STDOUT.log) 显示 fervor target 的 `ck3_12003_adapter.cpp.obj` 有 **17 个 LNK2019 / LNK1120=17**，涉及实际 Maa、battle、supply、combat、route、refill、war-cash 和 `.2` adapter/factory 依赖；新 EXE 不存在，CTest 与 wire consumer 都没有运行。失败保留，不能把它称为 component 观测或 qualification GREEN。
+
+修复只在新 fixture 的自有 CMake 链接中增加现有 `xar_ck3_12002_runtime`，保留当前 reader/owner/serializer/真实 `.3` renderer 源、fixture adapter macro、`/W4 /WX` 和其余 compile/link options。这 17 个实际定义已由现 runtime 的源码及 scoped/ordered-refill CMake 加入；不新增 binder stub，不修改 runtime、生产 reader、DTO、serializer 或 MCP 路由。该 target 通过真实库继承全部 PUBLIC feature/layout definitions；Root 外置投影若导入原 runtime archive，必须同时保留原 `INTERFACE_COMPILE_DEFINITIONS`、include directories 和 link dependencies。普通 archive extraction，无 `/WHOLEARCHIVE`；现 fixture 的 `NativeAdapter12002` 只保留既有 offline harness seam，未新增假的真实 helper。
+
+这是 **harness link RED 的 source-only 修复**，实际 relink/native FIRST/registered-MCP compound 继续 NOTRUN，readiness 仍 research。Root 在下个外置 projection 首次编译修复后目标；四场景和 fresh Robert live 仍待真实结果，B 保持独立不阻挡 A。
+
 ## B 和其他未完成项
 
 B 年变化继续 **NOTRUN，不阻挡 A**。stock `window_faith.gui` 使用 `Faith.GetYearlyFervorChange`；旧 `.2` 候选 body `0x243EC60..0x244088D` 及已有 special cache 不等于 exact `.3` callable contract 或最终当前年变化。本包保留独立 [12-byte-only metadata request](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/faith-fervor/EXACT-METADATA-REQUEST.json)，没有新 EXE 采集。实际年净变化、signed contributions、未来累计结果仍各自未发布；不能以长期 null 或参数 +0.5 代替它们。

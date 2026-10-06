@@ -26,13 +26,15 @@ if(BUILD_TESTING AND WIN32 AND XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUE
     src/ck3_12003_conversion_fervor_inputs.cpp
     src/ck3_12003_conversion_fervor_inputs_test.cpp)
   target_include_directories(xar_conversion_fervor_inputs_first_test PRIVATE include)
-  target_link_libraries(xar_conversion_fervor_inputs_first_test PRIVATE xar_bridge_protocol user32)
+  # The actual identity renderer references the existing adapter/binder closure.
+  # Linking runtime also preserves its PUBLIC feature/layout definitions.
+  target_link_libraries(xar_conversion_fervor_inputs_first_test PRIVATE
+    xar_bridge_protocol xar_ck3_12002_runtime user32)
   target_compile_definitions(xar_conversion_fervor_inputs_first_test PRIVATE
     XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1=1
     XAR_RELIGION_CONVERSION_INPUTS_MAILBOX_STANDALONE_ADAPTER=1)
   if(MSVC)
-    # Keep actual production identity-renderer code. Discard unrelated adapter
-    # construction branches in this focused executable.
+    # Keep actual production identity-renderer code and its real runtime closure.
     target_compile_options(xar_conversion_fervor_inputs_first_test PRIVATE
       /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8 /Gy /Gw)
     target_link_options(xar_conversion_fervor_inputs_first_test PRIVATE /OPT:REF)
