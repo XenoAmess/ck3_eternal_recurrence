@@ -33,6 +33,7 @@ TRANSLATION_UNITS = (
     "src/ck3_12003_scoped_ordered_refill_core.cpp",
     "src/ck3_12003_current_province_besieging_contributors.cpp",
     "src/ck3_12003_fixed_chunk0_preparation.cpp",
+    "src/ck3_12003_ordered_besieging_refill_inputs.cpp",
     "src/ck3_12002_army_test.cpp",
 )
 INPUTS = (
@@ -47,6 +48,8 @@ INPUTS = (
     "include/xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp",
     "include/xar_bridge/ck3_12003_current_province_besieging_contributors.hpp",
     "include/xar_bridge/ck3_12003_fixed_chunk0_preparation.hpp",
+    "include/xar_bridge/ck3_12003_ordered_besieging_refill_inputs.hpp",
+    "include/xar_bridge/army_daily_assault_active_table_collector_v1.inc.hpp",
     "include/xar_bridge/ck3_12002.hpp",
     "include/xar_bridge/ck3_12003.hpp",
     "include/xar_bridge/game_contract.hpp",
