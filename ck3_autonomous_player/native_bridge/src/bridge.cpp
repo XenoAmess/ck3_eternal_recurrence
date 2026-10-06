@@ -487,6 +487,7 @@ static xar::bridge::ActivityCostSlot12ObserverV1
     g_activity_cost_slot12_observer_v1{};
 static xar::ck3_11906::Bindings g_activity_cost_slot12_bindings_v1{};
 static xar::ck3_12002::CoreBindings g_activity_cost_slot12_bindings12002{};
+static xar::ck3_12004::CoreBindings g_activity_cost_slot12_bindings12004{};
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
 static xar::bridge::ActivityGuestRuleProvenanceObserverV1
     g_activity_guest_rule_provenance_observer_v1{};
@@ -503,6 +504,19 @@ bool ReadActivityCostSlot12MemoryV1(void *, std::uintptr_t address,
 
 bool ReadActivityCostSlot12FrameV1(
     void *, xar::bridge::ActivityCostSlot12FrameV1 &output) noexcept {
+  if (g_activity_cost_slot12_bindings12004.enabled) {
+    xar::ck3_12004::CoreSnapshotPrefix prefix{};
+    if (!xar::ck3_12004::ReadCoreSnapshot(
+            g_activity_cost_slot12_bindings12004, prefix) ||
+        !prefix.map_ready || !prefix.has_played_character)
+      return false;
+    output.date_raw = prefix.clock.date_raw;
+    output.actor_character_id = prefix.played_character_id;
+    output.paused = prefix.clock.paused;
+    output.thread_id = g_main_thread_query_mailbox_v1.owner_thread_id.load(
+        std::memory_order_acquire);
+    return output.thread_id != 0;
+  }
   if (g_activity_cost_slot12_bindings12002.enabled) {
     xar::ck3_12002::CoreSnapshotPrefix prefix{};
     if (!xar::ck3_12002::ReadCoreSnapshot(
@@ -1891,8 +1905,67 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
   return result;
 }
 
+// Retain only the real R0054 Timeline and termination failed command paths. The pipe worker owns
+// these records and publishes checkpoints before potentially blocking calls.
+struct CommandEntryTraceV1 {
+  std::string request_id;
+  std::string frame_type;
+  const char *stage = "not_received";
+  const char *parse_kind = "not_parsed";
+  const char *dispatch_route = "not_reached";
+  std::uint64_t monotonic_ms = 0;
+  bool type_parsed = false;
+  bool request_id_parsed = false;
+  bool step_parsed = false;
+  bool handler_entered = false;
+  std::int64_t submit_result = -1;
+  std::int64_t call_result = -1;
+  std::string reply_request_id;
+  std::string reply_type;
+  bool reply_write_success = false;
+};
+
+struct CommandEntryTracesV1 {
+  CommandEntryTraceV1 timeline{};
+  CommandEntryTraceV1 war_termination_options{};
+  CommandEntryTraceV1 war_termination_terms{};
+};
+
+void AppendCommandEntryTraceV1(std::string &result,
+                              const CommandEntryTraceV1 &trace) {
+  result += "{\"request_id\":";
+  AppendJsonString(result, trace.request_id);
+  result += ",\"frame_type\":";
+  AppendJsonString(result, trace.frame_type);
+  result += ",\"stage\":";
+  AppendJsonString(result, trace.stage);
+  result += ",\"parse_kind\":";
+  AppendJsonString(result, trace.parse_kind);
+  result += ",\"dispatch_route\":";
+  AppendJsonString(result, trace.dispatch_route);
+  result += ",\"monotonic_ms\":" + Number(trace.monotonic_ms);
+  result += ",\"type_parsed\":";
+  result += trace.type_parsed ? "true" : "false";
+  result += ",\"request_id_parsed\":";
+  result += trace.request_id_parsed ? "true" : "false";
+  result += ",\"step_parsed\":";
+  result += trace.step_parsed ? "true" : "false";
+  result += ",\"handler_entered\":";
+  result += trace.handler_entered ? "true" : "false";
+  result += ",\"submit_result\":" + SignedNumber(trace.submit_result);
+  result += ",\"call_result\":" + SignedNumber(trace.call_result);
+  result += ",\"reply_request_id\":";
+  AppendJsonString(result, trace.reply_request_id);
+  result += ",\"reply_type\":";
+  AppendJsonString(result, trace.reply_type);
+  result += ",\"reply_write_success\":";
+  result += trace.reply_write_success ? "true" : "false";
+  result += "}";
+}
+
 std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter &game,
-    const xar::bridge::ArmyStrengthResultWriteDiagnosticV1 &army_result_write) {
+    const xar::bridge::ArmyStrengthResultWriteDiagnosticV1 &army_result_write,
+    const CommandEntryTracesV1 &command_entry_traces) {
   const auto mailbox =
       xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
           g_main_thread_query_mailbox_v1);
@@ -2014,6 +2087,13 @@ std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter 
   result += Number(GetCurrentProcessId());
   result += ",\"monotonic_ms\":";
   result += Number(GetTickCount64());
+  result += ",\"command_entry_trace_v1\":{\"timeline\":";
+  AppendCommandEntryTraceV1(result, command_entry_traces.timeline);
+  result += ",\"war_termination_options\":";
+  AppendCommandEntryTraceV1(result, command_entry_traces.war_termination_options);
+  result += ",\"war_termination_terms\":";
+  AppendCommandEntryTraceV1(result, command_entry_traces.war_termination_terms);
+  result += "}";
   result += ",\"army_strength_result_write_v1\":";
   result += xar::bridge::SerializeArmyStrengthResultWriteDiagnosticV1(army_result_write);
   result += ",\"startup_failure_containment_enabled\":";
@@ -11726,6 +11806,7 @@ HANDLE ConnectToHost() noexcept {
 
 struct WorkerState {
   xar::bridge::ArmyStrengthResultWriteDiagnosticV1 army_result_write{};
+  CommandEntryTracesV1 command_entry_traces{};
   xar::ck3_12002::NonwarPrivateState12002 nonwar_private12002{};
   std::uint64_t connection_generation = 0;
   std::uint64_t sequence = 0;
@@ -13492,9 +13573,50 @@ std::string RunCoreFrameQuery12004(const xar::game::GameAdapter &game,
 void RunConnectedSession(
     HANDLE pipe, const xar::game::GameAdapter &game, WorkerState &state,
     WarEntryApplicationMainMailboxWorkerLifetime &mailbox_lifetime) noexcept {
-  const auto write_frame = [&game](HANDLE output_pipe, std::string frame) {
-    return xar::bridge::WriteFrame(output_pipe,
+  const auto publish_command_entry_trace = [&game, &state](HANDLE output_pipe) {
+    ++state.sequence;
+    (void)xar::bridge::WriteFrame(output_pipe,
+        xar::game::RenderCrozierBuildIdentity(
+            HeartbeatFrame(state.sequence, game, state.army_result_write,
+                           state.command_entry_traces),
+            game.descriptor()));
+  };
+  const auto write_frame = [&game, &state, &publish_command_entry_trace](
+                              HANDLE output_pipe, std::string frame) {
+    CommandEntryTraceV1 *reply_trace = nullptr;
+    std::string outgoing_type;
+    const bool command_result = xar::bridge::JsonStringField(
+        frame, "type", outgoing_type, xar::bridge::kMaximumControlStringBytes) &&
+        outgoing_type == "command_result";
+    for (auto *trace : {&state.command_entry_traces.timeline,
+                       &state.command_entry_traces.war_termination_options,
+                       &state.command_entry_traces.war_termination_terms}) {
+      if (!command_result || trace->request_id.empty() ||
+          frame.find(trace->request_id) == std::string::npos)
+        continue;
+      std::string reply_request_id;
+      if (xar::bridge::JsonStringField(frame, "request_id", reply_request_id,
+              xar::bridge::kMaximumControlStringBytes) &&
+          reply_request_id == trace->request_id) {
+        reply_trace = trace;
+        trace->reply_request_id = std::move(reply_request_id);
+        (void)xar::bridge::JsonStringField(frame, "type", trace->reply_type,
+            xar::bridge::kMaximumControlStringBytes);
+        trace->stage = "response_write_pending";
+        trace->monotonic_ms = GetTickCount64();
+        publish_command_entry_trace(output_pipe);
+        break;
+      }
+    }
+    const bool written = xar::bridge::WriteFrame(output_pipe,
         xar::game::RenderCrozierBuildIdentity(std::move(frame), game.descriptor()));
+    if (reply_trace != nullptr) {
+      reply_trace->reply_write_success = written;
+      reply_trace->stage = "response_write_returned";
+      reply_trace->monotonic_ms = GetTickCount64();
+      if (written) publish_command_entry_trace(output_pipe);
+    }
+    return written;
   };
   if (state.connection_generation ==
       std::numeric_limits<std::uint64_t>::max()) {
@@ -13655,6 +13777,13 @@ void RunConnectedSession(
 #endif
   ULONGLONG next_heartbeat = GetTickCount64();
   bool connected = true;
+  CommandEntryTraceV1 *active_command_entry_trace = nullptr;
+  const auto trace_command_entry = [&](const char *stage) {
+    if (active_command_entry_trace == nullptr) return;
+    active_command_entry_trace->stage = stage;
+    active_command_entry_trace->monotonic_ms = GetTickCount64();
+    publish_command_entry_trace(pipe);
+  };
   while (connected && WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     const ULONGLONG now = GetTickCount64();
     if (now >= next_heartbeat) {
@@ -13697,7 +13826,8 @@ void RunConnectedSession(
           state_revision, state_revision);
 #endif
       ++sequence;
-      connected = write_frame(pipe, HeartbeatFrame(sequence, game, state.army_result_write));
+      connected = write_frame(pipe, HeartbeatFrame(sequence, game,
+          state.army_result_write, state.command_entry_traces));
       if (connected && game.supports_snapshot()) {
         connected = PublishSnapshot(pipe, game, previous_snapshot,
                                     state_revision, checkpoint_submission,
@@ -13716,6 +13846,39 @@ void RunConnectedSession(
       break;
     }
     if (incoming.status == xar::bridge::ReadStatus::frame) {
+      active_command_entry_trace = nullptr;
+      const bool raw_timeline = incoming.payload.find(
+          "query-current-timeline-blocker-context-v1") != std::string::npos;
+      const bool raw_termination = incoming.payload.find(
+          "query-war-termination-options-") != std::string::npos;
+      const bool raw_terms = incoming.payload.find(
+          "query-war-termination-terms-v1-") != std::string::npos;
+      if (raw_timeline || raw_termination || raw_terms) {
+        active_command_entry_trace = raw_timeline
+            ? &state.command_entry_traces.timeline
+            : raw_termination ? &state.command_entry_traces.war_termination_options
+                              : &state.command_entry_traces.war_termination_terms;
+        *active_command_entry_trace = {};
+        auto &trace = *active_command_entry_trace;
+        trace.type_parsed = xar::bridge::JsonStringField(
+            incoming.payload, "type", trace.frame_type,
+            xar::bridge::kMaximumControlStringBytes);
+        trace.request_id_parsed = xar::bridge::JsonStringField(
+            incoming.payload, "request_id", trace.request_id,
+            xar::bridge::kMaximumControlStringBytes);
+        std::string parsed_step;
+        trace.step_parsed = xar::bridge::JsonStringField(
+            incoming.payload, "step", parsed_step,
+            xar::ck3_11906::kTacticalDailySentinelMaximumArmStepBytesV1);
+        trace.parse_kind = !trace.step_parsed ? "raw_target_unparsed"
+            : parsed_step == "query-current-timeline-blocker-context-v1"
+                ? "timeline"
+                : parsed_step.starts_with("query-war-termination-options-")
+                    ? "war_termination_options"
+                    : parsed_step.starts_with("query-war-termination-terms-v1-")
+                        ? "war_termination_terms" : "different_step";
+        trace_command_entry("frame_received");
+      }
       std::string type;
       std::string request_id;
       if (xar::bridge::JsonStringField(
@@ -13738,6 +13901,7 @@ void RunConnectedSession(
                      incoming.payload, "request_id", request_id,
                      xar::bridge::kMaximumControlStringBytes) &&
                  IsSimpleRequestId(request_id)) {
+        trace_command_entry("execute_step_accepted");
         std::string step;
         // Keep this terminal chain outside the long dispatcher nesting
         // so MSVC can compile it without changing command precedence.
@@ -13930,6 +14094,7 @@ void RunConnectedSession(
                                        "native gameplay step is missing"));
           early_step_dispatched = true;
         }
+        trace_command_entry("step_parse_returned");
 #if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
         if (!early_step_dispatched && state.experimental_combat_phase_trace &&
             state.experimental_combat_phase_trace->stage ==
@@ -13990,11 +14155,22 @@ void RunConnectedSession(
               (step == xar::ck3_12004::kLoadedFeatureManifestV1Step ||
                step == xar::ck3_12002::kCampaignRootContextV1Step)))) {
           std::string readonly_diagnostic;
+          if (active_command_entry_trace != nullptr)
+            active_command_entry_trace->dispatch_route = "typed_early";
+          trace_command_entry("typed_early_handler_entered");
           const auto response = RunTypedQuery12002(
               game, state, request_id, step, incoming.payload, &readonly_diagnostic);
           if (!readonly_diagnostic.empty()) connected = write_frame(pipe, readonly_diagnostic);
           if (connected) connected = write_frame(pipe, response);
           early_step_dispatched = true;
+        }
+        if (active_command_entry_trace != nullptr) {
+          if (!early_step_dispatched)
+            active_command_entry_trace->dispatch_route = "long_dispatch";
+          else if (std::string_view(active_command_entry_trace->dispatch_route) ==
+                   "not_reached")
+            active_command_entry_trace->dispatch_route = "other_early";
+          trace_command_entry("early_dispatch_returned");
         }
         if (!early_step_dispatched) {
         if (xar::game::IsReviewedCrozierAdapter(game) &&
@@ -14105,6 +14281,9 @@ void RunConnectedSession(
         } else if ((xar::game::IsReviewedCrozierAdapter(game) &&
                     xar::ck3_12002::IsNonwarPrivateStep12002(step)) ||
                    xar::ck3_12002::IsNonwarPrivateStep12004(game, step)) {
+          if (active_command_entry_trace != nullptr)
+            active_command_entry_trace->dispatch_route = "nonwar_private";
+          trace_command_entry("nonwar_private_handler_entered");
           std::uint64_t expected_revision = 0;
           xar::game::Snapshot current{};
           std::string response, failure;
@@ -23702,6 +23881,11 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
         } else if (xar::ck3_11906::
                        ParseCurrentTimelineBlockerContextV1Step(step)) {
+          if (active_command_entry_trace != nullptr) {
+            active_command_entry_trace->handler_entered = true;
+            active_command_entry_trace->dispatch_route = "timeline_handler";
+          }
+          trace_command_entry("handler_entered");
           std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
                   incoming.payload, expected_revision)) {
@@ -23716,6 +23900,7 @@ void RunConnectedSession(
                           "timeline-blocker context snapshot revision is stale"));
           } else {
             xar::game::Snapshot current_snapshot{};
+            trace_command_entry("pre_admission_snapshot");
             if (!previous_snapshot.has_value() || state_revision == 0 ||
                 !xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value() ||
@@ -23761,12 +23946,17 @@ void RunConnectedSession(
               query.request.paused = true;
               query.expected_snapshot = current_snapshot;
 
+              trace_command_entry("pre_submit");
               const auto submit =
                   xar::ck3_11906::TrySubmitMainThreadQueryV1(
                       g_main_thread_query_mailbox_v1,
                       &xar::ck3_11906::
                           ExecuteCurrentTimelineBlockerContextMailboxQueryV1,
                       &query, query.ticket);
+              if (active_command_entry_trace != nullptr)
+                active_command_entry_trace->submit_result =
+                    static_cast<std::int64_t>(submit);
+              trace_command_entry("submit_returned");
               if (submit != xar::ck3_11906::
                                 MainThreadQuerySubmitResultV1::submitted) {
                 std::string_view error =
@@ -23799,6 +23989,10 @@ void RunConnectedSession(
                 }
 
                 xar::game::Snapshot completion_snapshot{};
+                if (active_command_entry_trace != nullptr)
+                  active_command_entry_trace->call_result =
+                      static_cast<std::int64_t>(wait);
+                trace_command_entry("pre_completion_snapshot");
                 const bool completion_snapshot_stable =
                     wait == xar::ck3_11906::
                                 MainThreadQueryWaitResultV1::completed &&
@@ -23829,6 +24023,7 @@ void RunConnectedSession(
                   response = CommandResultFrame(request_id, step, false,
                                                 error);
                 }
+                trace_command_entry("pre_reclaim");
                 const auto reclaimed =
                     xar::ck3_11906::ReclaimMainThreadQueryV1(
                         g_main_thread_query_mailbox_v1, query.ticket);
@@ -25050,6 +25245,11 @@ void RunConnectedSession(
           }
         } else if (step.starts_with(
                        "query-war-termination-options-")) {
+          if (active_command_entry_trace != nullptr) {
+            active_command_entry_trace->handler_entered = true;
+            active_command_entry_trace->dispatch_route = "war_termination_handler";
+          }
+          trace_command_entry("handler_entered");
           const auto war_id = WarTerminationQueryStep(step);
           if (!war_id.has_value()) {
             connected = write_frame(
@@ -25080,6 +25280,7 @@ void RunConnectedSession(
                             "unavailable"));
             } else {
               xar::game::Snapshot admission_snapshot{};
+              trace_command_entry("pre_admission_snapshot");
               if (!xar::game::ReadSnapshot(game, admission_snapshot)) {
                 connected = write_frame(
                     pipe, CommandResultFrame(
@@ -25108,9 +25309,16 @@ void RunConnectedSession(
                               "living player snapshot"));
               } else {
                 xar::game::WarTerminationOptionsSnapshot options{};
+                // This call owns semantic-adapter submission and waiting;
+                // the bridge checkpoint does not claim an internal Submit result.
+                trace_command_entry("pre_semantic_adapter_call");
                 const auto query_result =
                     xar::game::ReadWarTerminationOptions(
                         game, war_id.value(), options);
+                if (active_command_entry_trace != nullptr)
+                  active_command_entry_trace->call_result =
+                      static_cast<std::int64_t>(query_result);
+                trace_command_entry("pre_completion_snapshot");
                 xar::game::Snapshot completion_snapshot{};
                 if (!xar::game::ReadSnapshot(game, completion_snapshot)) {
                   connected = write_frame(
@@ -25724,6 +25932,11 @@ void RunConnectedSession(
         }
         else if (step.starts_with(
                        "query-war-termination-terms-v1-")) {
+          if (active_command_entry_trace != nullptr) {
+            active_command_entry_trace->handler_entered = true;
+            active_command_entry_trace->dispatch_route = "war_termination_terms_handler";
+          }
+          trace_command_entry("handler_entered");
           const auto war_id = WarTerminationTermsQueryStep(step);
           if (!war_id.has_value()) {
             connected = write_frame(
@@ -25733,6 +25946,7 @@ void RunConnectedSession(
                           "step"));
           } else {
             xar::game::Snapshot admission_snapshot{};
+            trace_command_entry("pre_admission_snapshot");
             if (!previous_snapshot.has_value() || state_revision == 0 ||
                 !xar::game::ReadSnapshot(game, admission_snapshot) ||
                 admission_snapshot != previous_snapshot.value()) {
@@ -25748,8 +25962,13 @@ void RunConnectedSession(
               }
             } else {
               xar::game::WarTerminationTermsSnapshot terms{};
+              trace_command_entry("pre_semantic_adapter_call");
               const auto query_result = xar::game::ReadWarTerminationTerms(
                   game, war_id.value(), terms);
+              if (active_command_entry_trace != nullptr)
+                active_command_entry_trace->call_result =
+                    static_cast<std::int64_t>(query_result);
+              trace_command_entry("pre_completion_snapshot");
               xar::game::Snapshot completion_snapshot{};
               if (!xar::game::ReadSnapshot(game, completion_snapshot)) {
                 connected = write_frame(
@@ -27236,6 +27455,9 @@ void RunConnectedSession(
         }
         }
       }
+      if (active_command_entry_trace != nullptr &&
+          active_command_entry_trace->reply_request_id.empty())
+        trace_command_entry("dispatch_returned_without_reply");
     }
     WaitForSingleObject(g_stop_event, 10);
   }
@@ -27407,6 +27629,25 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   if (xar::game::IsCk3_12004Descriptor(game->descriptor())) {
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     const auto sha = game->descriptor().executable_sha256;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+    g_activity_cost_slot12_bindings12004 =
+        xar::ck3_12004::BindCoreImage(base, sha);
+    xar::bridge::ActivityCostSlot12EnvironmentV1 cost_environment{};
+    cost_environment.enabled = g_activity_cost_slot12_bindings12004.enabled;
+    cost_environment.primary_thread_suspended = true;
+    cost_environment.executable_sha256 = sha;
+    cost_environment.module_base = base;
+    cost_environment.read_memory = &ReadActivityCostSlot12MemoryV1;
+    cost_environment.read_frame = &ReadActivityCostSlot12FrameV1;
+    if (!xar::bridge::InstallActivityCostSlot12PassiveV1(
+            g_activity_cost_slot12_observer_v1, cost_environment))
+      return FALSE;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
+    if (!xar::bridge::InstallActivityGuestRuleProvenanceV1(
+            g_activity_guest_rule_provenance_observer_v1, cost_environment))
+      return FALSE;
+#endif
+#endif
     // PrepareStartup is invoked while the managed primary thread is suspended.
     // Journal capture needs the owned roots, so no stack province callback is
     // retained after this startup call returns.
