@@ -14,7 +14,7 @@ import uuid
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .timeline_blocker_private_transport import _binding
-from .version_identity import CK3_12003
+from .version_identity import CK3_12003, CK3_12004
 
 
 SUBMIT_STEP = "submit-call-ally-to-war-v1-private"
@@ -47,7 +47,7 @@ def _frame(driver: object, expected_revision: int) -> dict[str, object]:
             or not isinstance(actor, Mapping) or actor.get("alive") is not True
             or not _full_id(actor.get("character_id"))
             or type(before.get("native_revision")) is not int or before["native_revision"] <= 0
-            or private_native_build_identity(before) != CK3_12003):
+            or private_native_build_identity(before) not in (CK3_12003, CK3_12004)):
         raise BridgeUnavailableError("call ally requires the current paused living player frame")
     return before
 
@@ -62,6 +62,7 @@ def submit_call_ally_to_war_private_v1(
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
     before = _frame(driver, expected_revision)
+    source_build = private_native_build_identity(before)
     actor_id = before["played_character"]["character_id"]
     if recipient_character_id == actor_id:
         raise ValueError("call ally recipient must differ from the played character")
@@ -139,8 +140,8 @@ def submit_call_ally_to_war_private_v1(
             or result.get("pre_native_revision") != before["native_revision"]
             or result.get("snapshot_revision") != before["native_revision"]
             or result.get("date_raw") != before.get("date_raw")
-            or result.get("game_version") != CK3_12003.game_version
-            or result.get("executable_sha256") != CK3_12003.executable_sha256
+            or result.get("game_version") != source_build.game_version
+            or result.get("executable_sha256") != source_build.executable_sha256
             or result.get("played_character_id") != actor_id
             or result.get("recipient_character_id") != recipient_character_id
             or result.get("war_id") != war_id
