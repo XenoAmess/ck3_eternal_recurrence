@@ -20,7 +20,9 @@ The plan packet is `Z:/ck3_mod_rewrite_process_assets/g2-background-round16-2026
 
 `project_post_refill_besieging_current_v1(army, selected_physical_chunks=...)` already accepts final physical values and executes zero ADDs. Its overlay requires `status=available` for known current/max. Its present reducer refreshes every admitted ArRg from DATA. Passing ordered physical values directly to that reducer would therefore recount a known nonrefreshed ArRg, which is a conditional DATA-count projection rather than the actual manager refresh order.
 
-The new entry must distinguish a true empty manager refresh membership from failed observation. An ArRg refreshed elsewhere in the manager roster has a shared stored current/max identity; its contribution cannot be declared unchanged merely because its own admitted CArmy has no raw matching manager ID. The observer will select actual manager refresh writes by target ArRg identity and retain their original CArmy and ArRg occurrence indices. The exact fallback receiver and `24E8120` traversal instructions are a narrow held-source entrance to resolve before implementing that selector; no full roster uniqueness assumption is introduced.
+The new entry distinguishes a true empty manager refresh membership from failed observation. An ArRg refreshed elsewhere in the manager roster has a shared stored current/max identity; its contribution cannot be declared unchanged merely because its own admitted CArmy has no raw matching manager ID. The observer selects actual manager refresh writes by target ArRg identity and retains their original CArmy and ArRg occurrence indices. The held caller resolves CArmy through storage `5D1DE48` / fullID+10, then native fallback `5D1DE50`; `24E8120` walks every original ArRg occurrence without an owner-equality filter. A Root-authorized single cached selector excerpt closed the actual ArRg generation lookup and write guard below; no full roster uniqueness assumption is introduced.
+
+The cached body `[24E8120,24E8206)` is230B, held SHA `5458487f9603016856c1894583a43836afdac0e748b5eaf1ec1d34227036d5d3`. Only22 disassembly lines /81 instruction bytes `[24E814A,24E819B)` were extracted once from the existing `.asm.txt`, without EXE/pdata/bodyhash reads. The inline ArRg generation lookup uses the masked24-bit index, storage `5D1F340`, object+10 exact fullID and fallback pointer slot `5D1F338`. It is not a `C171A0` call. At `24E8180/89`, require DWORD magic+14=`41725267` and DWORD fullID+10!=-1; only then `24E818F` calls `2633340`. Raw manager and raw ArRg IDs remain separate from the resolved/fallback receiver identity. Invalid native fallback is skipped; valid fallback targets retain their actual original occurrence. Receipt: round17 `CACHED-REFRESH-SELECTOR-RECEIPT.json`.
 
 ## Minimum same-query readonly inputs
 
@@ -65,7 +67,8 @@ flowchart TD
   S --> W
   W --> A[25205C0 conditional assault budget]
   B --> A
-  M -. held fallback / 24E8120 selector entrance .-> X[Resolve exact target refresh receiver semantics before implementation]
+  M --> X[Native generation lookup / fallback; magic ArRg and fullID not minus1]
+  X --> R
 ```
 
 ## Delivery and first-verification boundary
@@ -77,3 +80,5 @@ New owned files are a readonly `ck3_12003_ordered_besieging_refill_inputs` colle
 One new production service compound will traverse the real normalizer, query route, ordered physical core, actual refresh selector and B/assault reducer. Expected arithmetic is written outside the repository before that first run: repeated `[A,A]`, repeated DATA/Province contributions, actual-refresh versus known-nonmember, zero-q cleanup and nonpositive suppression, unavailable affected inputs versus independent current native B, and signed fixed primitive behavior. A new native fixture and recipe will exercise real same-query manager membership and physical scope. Root alone registers, builds and first-consumes compiled wires. Existing compounds, CTests and wires are not rerun.
 
 Current readiness is `research / source-plan ready`; the new join is not implemented or qualified. Remaining implementation entrance is the actual manager refresh receiver/traversal selector, then readonly family, shared pure physical entrance, strict normalizer, zero-ADD adapter and service hook. There is no new local CK3/Steam/process/SDK/UI/pipe/live operation or full EXE audit.
+
+The first compound fixture initially tried to declare an association-1 physical chunk an available ArRg DATA contribution. The production normalizer rejected that tuple, preserving the existing unavailable association branch. The corrected case exercises AL=true/q0 clearing an unreferenced physical pair while B stays at its observed DATA count; F<=0 preserves that pair. No production association guard or previously unreachable special-association branch was changed. Both expectations and the failed attempt are retained externally.
