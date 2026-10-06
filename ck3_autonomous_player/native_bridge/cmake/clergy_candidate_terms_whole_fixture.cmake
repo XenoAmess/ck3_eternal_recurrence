@@ -26,7 +26,10 @@ add_executable(${xar_clergy_whole_target}
 target_include_directories(${xar_clergy_whole_target} PRIVATE
   "${XAR_CLERGY_WHOLE_NATIVE_ROOT}/include"
   "${XAR_CLERGY_WHOLE_NATIVE_ROOT}/src")
-target_link_libraries(${xar_clergy_whole_target} PRIVATE xar_bridge_protocol user32)
+# The real Crozier adapter references existing runtime binders. Import their
+# actual definitions and PUBLIC usage requirements rather than fixture stubs.
+target_link_libraries(${xar_clergy_whole_target} PRIVATE
+  xar_bridge_protocol xar_ck3_12002_runtime user32)
 target_compile_features(${xar_clergy_whole_target} PRIVATE cxx_std_20)
 target_compile_definitions(${xar_clergy_whole_target} PRIVATE
   XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1=1)
