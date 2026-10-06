@@ -102,3 +102,15 @@ V2 commander 与 knight 行的 optional `phase_rite_parameters_v1` 已接入实�
 实现外置包：[phase-rite-parameters-provider](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/phase-rite-parameters-provider/)。`FIRST-PYTHON-TEST.json/log` 保留导入 harness RED；`RETRY-PYTHON-TEST.json/log` 是首次实际方法 GREEN。`consume_new_phase_rite_wires.py` 是 Root首次新 native GREEN后才可执行的唯一生产消费 recipe；它消费刚产生的五个 wire，经过实际 commander/knight严格 normalizer与source adapter，不再次运行本 Python case或任何旧 wire。
 
 尚未完成：中央 native build、新 CTest、这五个新 wire的生产消费、实际 paused candidate provider资格，以及上节列明的 warmonger/participant Faith hostility/loaded selection与完整 phase依赖。测试成功仅提高当前 Python输入合同资格，不声称完整 phase、forecast或人物未来最终状态。Oct6/W41的后续实现字段外置封存，由Root合并共享日报/周报。
+
+## 中央首次编译与五个新 wire 资格
+
+**2026-10-06 10:25:47.579963 Asia/Shanghai**，上述当时待办的中央 native 编译、新 CTest 与五个新 wire 生产消费已完成。当前叶子为 **static-ready：实际 collector、literal serializer、production row normalizer、occurrence adapter与单步 consumer 已离线贯通**；仍没有真实 CK3 frame或新的 live 资格。
+
+Root中央修正批次的 exact native source为 `01d98c73ca42b91b5e39c827e32a07b1afe51479`，native build GREEN、124.917782秒。首次三个新 CTest于10:21:42 Asia/Shanghai开始并GREEN 3/3，含 `xar_ck3_12003_phase_rite_parameters_test`；进程0.4263953秒，CTest汇总0.38秒。来源为 [FIRST-THREE-READONLY-CTESTS.json](C:/codex-ck3-background/readonly-observer-batch/strict03/FIRST-THREE-READONLY-CTESTS.json)。此前中央两个 native RED由Root保留和修正；没有在本子线重新编译、重跑或扩展核查。
+
+获准后，封存recipe首次且仅消费新目录 `C:/codex-ck3-background/readonly-observer-batch/strict03/cache-observers/ck3_12003_phase_rite_parameters_wire/` 的五个实际编译输出：complete true、known false/main different、ref0、absent Rite、key unavailable，**GREEN 5/5，0.2161987秒**。生产Python来源为 `Z:/gb0`，HEAD `07350179c3ac40f31f90e71bf0995087d9835c08`；native来源与生产HEAD分别记录。各wire的完整路径、SHA-256与逐occurrence结果见 [NEW-NATIVE-WIRE-CONSUMER.json](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/phase-rite-parameters-provider/NEW-NATIVE-WIRE-CONSUMER.json)，serializer projection和CPP元数据未计作wire。
+
+实际检查使用 production commander/knight严格行normalizer与 Army/Regiment/Character occurrence adapter：complete集合给出明确true或false；adopted Rite与main Rite不同时仍使用adopted来源；合法 Rite/Faith ref0保留；raw `0xFFFFFFFF` 的Rite缺席投影为独立absent与明确false；key读取失败保留 unavailable、已读来源与reason，拒绝产生chance值。root与selected-enemy-knight两种source path都消费同一角色叶子。running Q100000为 `100001` 与 `-100001` 时，true分支分别变为 `110001` 与 `-110001`，false分支原值保留。compiled-wire消费实际执行commander/knight的wounded、killed路径；六行支持及maimed路径的先前compound Python资格直接复用，没有重跑。whole V2 base readiness与input gaps保持独立，旧Python case、旧wire、子线native build/CTest及游戏操作均为0。
+
+Oct6/W41资格字段外置于 `OCT6-W41-QUALIFICATION.json`，由Root合并共享报告。本次完成仅解除已观测 adopted-Rite Boolean operand的缺失；真实同query候选读取、native candidate admission/order、敌方Side participant census与方向性Faith hostility、actual loaded selection、局部RNG及完整反馈仍分别待闭合。下一 source-only包将专门研究 enemy participation occurrence→Faith getter来源，不与本资格提交混合；不改变整体V3 advertisement或forecast readiness。
