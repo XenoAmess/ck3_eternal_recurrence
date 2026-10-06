@@ -995,6 +995,14 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
                 bindings, Resolve(bindings.regiment_storage_slot, id), id));
       }
     }
+    if (bindings.scoped_ordered_refill_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("scoped_ordered_refill_inputs_readonly");
+      const auto records = result.regiment_replenishment_records_v1
+          ? std::span<const game::ArmyRegimentReplenishmentRecordsSnapshotV1>(*result.regiment_replenishment_records_v1)
+          : std::span<const game::ArmyRegimentReplenishmentRecordsSnapshotV1>{};
+      result.scoped_ordered_refill_inputs_v1 =
+          ck3_12003::ReadScopedOrderedRefillInputs12003(bindings, army, unit, records);
+    }
   }
   return result;
 }

@@ -12,6 +12,7 @@
 #include "xar_bridge/battle_native_owner_recall_inputs_12003.hpp"
 #include "xar_bridge/ck3_12003_army_supply_timing.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
+#include "xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp"
 #include "xar_bridge/phase_rite_parameters_v1.hpp"
 #include "xar_bridge/phase_warmonger_core_v1.hpp"
 #include "xar_bridge/phase_berserker_validity_inputs_v1.hpp"
@@ -721,6 +722,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentProvinceSupplyContributorsV1> current_province_supply_contributors_v1;
   std::optional<ArmyCurrentLandResupplyV1> current_land_resupply_v1;
   std::optional<ArmyCurrentLandSupplyRateInputsV1> current_land_supply_rate_inputs_v1;
+  std::optional<ArmyScopedOrderedRefillInputsV1> scoped_ordered_refill_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;

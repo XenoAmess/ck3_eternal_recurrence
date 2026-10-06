@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12003_current_province_supply_contributors.hpp"
 #include "xar_bridge/ck3_12003_current_land_resupply.hpp"
 #include "xar_bridge/ck3_12003_current_land_supply_rate.hpp"
+#include "xar_bridge/ck3_12003_scoped_ordered_refill_core.hpp"
 
 #include <cstdint>
 #include <span>
@@ -164,6 +165,7 @@ struct ArmyBindings {
       current_province_supply_contributor_bindings{};
   ck3_12003::CurrentLandResupplyBindings12003 current_land_resupply_bindings{};
   ck3_12003::CurrentLandSupplyRateBindings12003 current_land_supply_rate_bindings{};
+  ck3_12003::ScopedOrderedRefillBindings12003 scoped_ordered_refill_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

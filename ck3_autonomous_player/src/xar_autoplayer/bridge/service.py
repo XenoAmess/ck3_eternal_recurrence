@@ -16,6 +16,7 @@ from .version_identity import require_exact_native_build
 from .army_loss_allocation_projection import project_observed_army_loss_requests
 from .army_post_refill_land_supply_rate_projection import project_observed_post_refill_land_supply_rates_v1
 from .army_selected_refill_monthly_assembly import project_selected_refill_monthly_assemblies_v1
+from .army_scoped_ordered_refill_projection import project_scoped_ordered_refills_v1
 
 from .driver import (
     BridgeUnavailableError,
@@ -4512,6 +4513,8 @@ class GameplayBridgeService:
                 joined_land_rates,
             "same_input_conditional_selected_refill_monthly_assembly_v1":
                 project_selected_refill_monthly_assemblies_v1(selected_rows, joined_land_rates=joined_land_rates),
+            "same_input_conditional_scoped_ordered_refill_current_v1":
+                project_scoped_ordered_refills_v1(selected_rows),
         }
 
     def query_campaign_root_context_v1(
