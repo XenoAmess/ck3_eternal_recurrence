@@ -11502,6 +11502,12 @@ public:
     environment.permitted_executor_unquadragintary =
         &xar::ck3_12004::ExecuteCouncilMailbox12004;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
+    environment.permitted_executor_quattuorquadragintary =
+        &xar::ck3_11906::ExecuteCurrentTimelineBlockerContextMailboxQueryV1;
+    environment.permitted_executor_quinquadragintary =
+        &xar::ck3_11906::ExecuteDeathSuccessionModalContinueMailboxV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -23725,7 +23731,19 @@ void RunConnectedSession(
               xar::ck3_11906::
                   CurrentTimelineBlockerContextMailboxContextV1 query{};
               query.mailbox = &g_main_thread_query_mailbox_v1;
-              if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+              if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+                query.selected_game = &game;
+                const auto image_base =
+                    reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+                query.gui12004 = xar::ck3_12004::
+                    BindSuccessionModalGuiObservationContext12004(
+                        image_base, game.descriptor().executable_sha256);
+                query.succession12004 =
+                    xar::ck3_12004::BindSuccessionModalImage12004(
+                        image_base, game.descriptor().executable_sha256,
+                        xar::ck3_12004::MakeSuccessionModalGuiProfile12004(
+                            query.gui12004));
+              } else if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
                 query.selected_game = &game;
                 query.succession12003 = xar::ck3_12003::BindSuccessionModalImage12003(
                     reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
@@ -23859,7 +23877,19 @@ void RunConnectedSession(
               xar::ck3_11906::DeathSuccessionModalContinueMailboxContextV1
                   action{};
               action.mailbox = &g_main_thread_query_mailbox_v1;
-              if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+              if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+                action.selected_game = &game;
+                const auto image_base =
+                    reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+                action.gui12004 = xar::ck3_12004::
+                    BindSuccessionModalGuiObservationContext12004(
+                        image_base, game.descriptor().executable_sha256);
+                action.succession12004 =
+                    xar::ck3_12004::BindSuccessionModalImage12004(
+                        image_base, game.descriptor().executable_sha256,
+                        xar::ck3_12004::MakeSuccessionModalGuiProfile12004(
+                            action.gui12004));
+              } else if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
                 action.selected_game = &game;
                 action.succession12003 = xar::ck3_12003::BindSuccessionModalImage12003(
                     reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
