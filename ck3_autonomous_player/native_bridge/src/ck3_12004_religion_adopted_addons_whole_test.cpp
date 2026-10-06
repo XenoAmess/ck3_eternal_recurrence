@@ -571,7 +571,7 @@ std::uint32_t *ExistingAtom(void *pool, std::uint32_t *out, const religion::conv
 }
 void *FlagCollection(void *resources) { RecordCallback(__func__, __LINE__, "resources == world->resources.data()", resources == world->resources.data()); return world->flags.data(); }
 std::int64_t *BaseFulfillment(std::int64_t *out, void *actor, void *rite) {
-  RecordCallback(__func__, __LINE__, "actor == world->character.data() && rite == world->target_rite.data()", actor == world->character.data() && rite == world->target_rite.data()); *out = -50'000; return out;
+  RecordCallback(__func__, __LINE__, "actor == world->character.data() && (rite == world->rite.data() || rite == world->target_rite.data())", actor == world->character.data() && (rite == world->rite.data() || rite == world->target_rite.data())); *out = -50'000; return out;
 }
 bool ReadMemory(void *context, std::uintptr_t address, void *out, std::size_t bytes) noexcept {
   auto &w = *static_cast<World *>(context);
