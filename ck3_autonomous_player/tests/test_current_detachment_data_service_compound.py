@@ -1,6 +1,6 @@
 """ONE registered whole-service compound. Authoring status: FIRST_NOTRUN.
 
-SDK registration and backend data are fixtures; the production registered
+Backend data is a fixture; MCP 2.0 registration and metadata, the registered
 callable, service, whole Army normalizer and DATA builder remain real.
 """
 from __future__ import annotations
@@ -10,9 +10,7 @@ import json
 import os
 from pathlib import Path
 import sys
-from types import ModuleType, SimpleNamespace
 import unittest
-from unittest.mock import patch
 
 _PROJECT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_PROJECT / "src"))
@@ -191,32 +189,14 @@ class _Driver:
                 "native_readiness": {"current_strength": True, "full_monthly": False}}
 
 
-class _Registration:
-    def __init__(self, *args, **kwargs) -> None:
-        self.tools = {}
-
-    def tool(self, **kwargs):
-        def register(function):
-            self.tools[function.__name__] = function
-            return function
-        return register
-
-    def resource(self, *args, **kwargs):
-        return lambda function: function
-
-
 def query_with_fake_driver(row: dict) -> tuple[dict, list]:
-    """FIRST native-wire consumer: real registered/service path, fixture backend."""
-    package, sdk_server, sdk_types = ModuleType("mcp"), ModuleType("mcp.server"), ModuleType("mcp.types")
-    package.__path__ = []
-    sdk_server.MCPServer = _Registration
-    sdk_types.ToolAnnotations = lambda **kwargs: SimpleNamespace(**kwargs)
+    """Real pinned MCP registration and whole service; fixture backend only."""
     driver = _Driver(row)
-    with patch.dict(sys.modules, {"mcp": package, "mcp.server": sdk_server, "mcp.types": sdk_types}):
-        registered = create_server(driver).tools["ck3_query_army_strengths"]
-        if registered.__module__ != "xar_autoplayer.bridge.mcp_server":
-            raise AssertionError("Expected the real registered army query callable")
-        returned = registered([row["army_id"]], expected_revision=42)
+    server = create_server(driver)
+    registered = server._tool_manager._tools["ck3_query_army_strengths"].fn
+    if registered.__module__ != "xar_autoplayer.bridge.mcp_server":
+        raise AssertionError("Expected the real registered army query callable")
+    returned = registered([row["army_id"]], expected_revision=42)
     return returned, driver.calls
 
 
