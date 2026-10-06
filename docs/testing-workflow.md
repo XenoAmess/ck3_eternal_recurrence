@@ -1,5 +1,15 @@
 # 实测工作流程（CK3 mod 调试）
 
+
+### 2026-10-06 late update: actual Army query recovered
+
+Root 在 R0051 原 Robert29829 普通战役、最小化暂停现场，取得完整 Army 查询 GREEN：Army218104048 / CArmy67109093，1833/2367、39 regiments、supply100、attrition0；实际35,683,420 B native响应在67,108,864 B上限内完整写入。它是 production-live read-only primitive，不是完整 daily/monthly/future 或战争胜利。query007为15:29:48.082538–15:30:37.915800 UTC，49.833262 s；writer008为complete/success，实际来源g10471b、DLL64e934f2。随后真实 realm-law009 发布四种继承法profile；shared planner读取war termination后选择目标2606的route preview。新游戏日仍0，累计5996、Oct6原961日、natural0保持。
+
+本次 fixture 修正实际资格分列：Detachment DATA native8＋compiled Service8/16 checks＋sole10 cases GREEN；Commander native7/64 checks＋sole Service GREEN；Tenet native7/77 checks＋sole registered MCP GREEN；Fervor corrected build8.5734101s、native4/44 checks和MCP4/85 checks GREEN；Creation/Indulgence已GREEN。Clergy only-target completion2.7343227s与native6/105 checks GREEN，但首consumer因真实 registry package缺失而RED（0 cases），正在绑定原71b真实依赖进行必要重试；Finalizer corrected sole11-TU build13.4821248s GREEN，FIRST另记。原joint、compile/link与consumer失败均保留，不合成整批all GREEN。源码修正与原71b实际runtime pins分列，未热替换当前游戏。
+
+[实际Army恢复](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-ARMY-CAP64-RECOVERY.json) · [真实完整写入](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-CAP64-COMPLETE-WRITE-RECEIPT.json) · [Detachment资格](Z:/ck3_mod_rewrite_process_assets/g2-background-round29-20261006/detachment-date-pending-source/implementation/QUALIFIED-ROOT-DELIVERY.json) · [Tenet FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/faith-tenet/g104-first/attempt01/ROOT-FIRST-DELIVERY.json)。
+
+
 2026-10-03 当前语言范围：真实游戏验收统一只使用简体中文；英文及其他语言只检查 key 集合、UTF-8/BOM/header、占位符、保护 token、转义及可解析性。
 下文旧版多语言人工审校、母语、布局或截断要求保留为历史，相关非中文门禁已退役，不安排逐语言实机或冷启动。
 既有非中文过程证据保持原始结果；后续以 [当前本地化工作流](localization-workflow.md) 为准。
@@ -3086,3 +3096,14 @@ R0050 SDK request003的exact Army query仍RED：实际响应payload33445694B超�
 这条是已出现故障的诊断/最小验证记录；复用[g103静态首次资格历史](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/COMPACT-QUALIFICATION-INDEX.json)、[R0050实际资格增量](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/R0050-ACTUAL-QUALIFICATION-UPDATE.json)、[真实Army size_limit诊断回执](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-after-r0049-response-failure/ROOT-ACTUAL-ARMY-RESULT-WRITE-DIAGNOSIS.json)，不重复旧tests/CI或扩展理论审计。
 
 Root实际登记：2026-10-06T21:43:54.058456+08:00；日报与W41持续滚动，未正式收口。
+
+
+### 本轮验证实证增量：presence/link/native/consumer/live分列
+
+必要新fixture失败与修复保持原artifact；Rite link RED导致Ninja停止时不得把未生成目标称为GREEN。Owner sealed presence曾记录Creation/Indulgence present、Finalizer/Detachment absent，这属于当时产物状态；后续实际FIRST结果另列。新局部资格保持分列：Creation/Indulgence FIRST GREEN；detachment native8 GREEN，但consumer RED（test553必要修复；553 appenddoc冲突按Root实际处理保留双方，不授consumer GREEN）。Commander后来新封实际FIRST双GREEN：producer7whole/64checks，0.2216355秒；唯一Service/MCP方法消费7原始whole加1单独标注null-derived variant，5.746253秒；fixture2738568d/runtime与consumer71b，static-ready、无live。四link batch整体RED和原Commander13symbol RED均保留；Tenet link GREEN、FIRST仍pending。Fervor仍2项LNK RED，Clergy pending，finalizer14d仅source adoption完成，build/test尚无执行报告。原始71b四runtime正式archive GREEN保持（605 actual TU/602 unique/1408 inputs），原 joint FIRST/remaining RED保留。此前33445694B容量包是单个SYNTHETIC隔离pipe transport GREEN，非actualCK3 packet或typedArmy资格；与本次Army007真实query primitive独立记账。不得合成整批all GREEN。
+
+原71b runtime archive GREEN仅覆盖四运行时及其compiled-input闭合，不覆盖修正fixture或consumer。R0050 已完整关闭：SDK81997 与 owned job 均正常 exit0，cleanup_proven=true，全10 streams freeze GREEN；此前 STOP_PENDING 属历史。cleanup_proven仅适用于R0050，不能借给当前R0051。R0051 已实际 allocation c001edec / sequence51，PID155556，DLL pin 64e934f2 对应编译来源71b729f0cc4894331f1dadb89155920fccd42a00，SDK暴露207 tools。snapshot001 仅clock-only pending，15:21:20UTC的006才实际确认Robert29829、public revision3/native revision2、mapready/alive/paused。Army FIRST007已由Root亲读actual GREEN：15:29:48.082538→15:30:37.915800UTC，49.833262秒，SDK raw140369382B，available/accepted=true且noerror；Army218104048/CArmy67109093、1833/2367兵、39reg、supply100/attrition0。只读production Army query恢复到production-live primitive；此前PENDING版本已归档，不授full daily/monthly/future/loop。累计5996正常日、natural0；本R0050/51轮次增量0，Oct6既有日账961（5035→5996，既有resume961/cumulative2843）保留，不把整天改成0。
+
+复用已完成验证；只针对detachment test553等实际RED做必要修复。旧CI、archive、link或native成功不替代Army007自己的实际GREEN，也不授完整loop。已push源码185653d94e694c659a0e2cb90aa29363d1bcbd13、实际runtime编译来源71b、最后已提供的fixture修正HEAD前缀69a2fe5c9（当时UNPUSHED）分列；后续14d/553施工可能改变HEAD，current exact HEAD待Root更近fields，不把69a永称当前。exact185 CI37480703382仅复用14:44:28UTC一次in_progress历史观测，不再查询、不借给修正HEAD或live。
+
+证据入口：[Army007真实恢复](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-ARMY-CAP64-RECOVERY.json)；[恢复事实小索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/LATEST-R0051-ACTUAL-ARMY-RECOVERY-FACTS.json)；[R0050关闭/R0051恢复及历史pending](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/LATEST-R0050-CLOSED-R0051-ARMY-PENDING-FACTS.json)；[Commander新增FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/battle-commander/OCT6-W41-ACTUAL-FIRST-FIELDS.json)；[原始构建、修复与正式archive分层](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/G104-BUILD-FAILURE-REPAIR-INCREMENT.json)。authority由Root/事实兄弟唯一读取，本版消费兄弟小索引并复用已封fields，不重读authority、CI或旧proof。

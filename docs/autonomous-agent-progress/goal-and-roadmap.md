@@ -1,5 +1,15 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+
+### 2026-10-06 late update: actual Army query recovered
+
+Root 在 R0051 原 Robert29829 普通战役、最小化暂停现场，取得完整 Army 查询 GREEN：Army218104048 / CArmy67109093，1833/2367、39 regiments、supply100、attrition0；实际35,683,420 B native响应在67,108,864 B上限内完整写入。它是 production-live read-only primitive，不是完整 daily/monthly/future 或战争胜利。query007为15:29:48.082538–15:30:37.915800 UTC，49.833262 s；writer008为complete/success，实际来源g10471b、DLL64e934f2。随后真实 realm-law009 发布四种继承法profile；shared planner读取war termination后选择目标2606的route preview。新游戏日仍0，累计5996、Oct6原961日、natural0保持。
+
+本次 fixture 修正实际资格分列：Detachment DATA native8＋compiled Service8/16 checks＋sole10 cases GREEN；Commander native7/64 checks＋sole Service GREEN；Tenet native7/77 checks＋sole registered MCP GREEN；Fervor corrected build8.5734101s、native4/44 checks和MCP4/85 checks GREEN；Creation/Indulgence已GREEN。Clergy only-target completion2.7343227s与native6/105 checks GREEN，但首consumer因真实 registry package缺失而RED（0 cases），正在绑定原71b真实依赖进行必要重试；Finalizer corrected sole11-TU build13.4821248s GREEN，FIRST另记。原joint、compile/link与consumer失败均保留，不合成整批all GREEN。源码修正与原71b实际runtime pins分列，未热替换当前游戏。
+
+[实际Army恢复](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-ARMY-CAP64-RECOVERY.json) · [真实完整写入](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-CAP64-COMPLETE-WRITE-RECEIPT.json) · [Detachment资格](Z:/ck3_mod_rewrite_process_assets/g2-background-round29-20261006/detachment-date-pending-source/implementation/QUALIFIED-ROOT-DELIVERY.json) · [Tenet FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/faith-tenet/g104-first/attempt01/ROOT-FIRST-DELIVERY.json)。
+
+
 ### Oct6实际停点及下一项可交付
 
 current21当前输入与same-query whole Service已static-ready；writer diagnostic经R0050真实fault观测取得production-live primitive。原战役snapshot真实恢复并保持暂停、最小化，Army结果超native2MiB上限仍阻断该观测功能，尚无新完整玩法循环。
@@ -1397,3 +1407,16 @@ b3010a10官方CI37453062903 FAILURE439/static437是第二份incoming handoff第1
 R0049仍是最小化 samePID92056、原Robert29829 episode、paused/raw53288232；正常保存h9591与完整十流冻结已完成，新增游戏日0、累计5996/natural0保持。Python-only query deadline改为max(configured,35)，唯一新复合方法原FIRST RED仅末尾protocol总帧数断言，最小修正后四场景GREEN3.668710s，其他命令10秒不变，未重建或替换333 DLL。正常关闭旧SDK后新source03@3fe0dddf接入同游戏；实际fresh both-army query **仍RED11.629072s**，[原响应](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-resume-r0049/python-deadline-hot-upgrade/fixture-repair01/gameplay-responses/002-fresh-both-army-deadline-retry.json)保留，因此不宣称修复已获live资格。必要单次[diagnostics](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-resume-r0049/python-deadline-hot-upgrade/fixture-repair01/gameplay-responses/003-after-retry-bridge-diagnostics.json)确认samePID可用、connection generation3→4、mailbox failure/exception0且published/completed4；不能把后续健康状态冒充该query成功。现沿实际提前断连／传输路径定位，不重复发送同一query，不凭未知力量推进进攻。
 
 source增量：B02D10 normal-return全文已闭合且复用既有logical80；detachment date2C54340完整397B可复用原生route入口，pending2A9BE60起始50B不能冒充完整函数。实际新reached metadata仅44B/5seeks选中BE92/BF59两个CHAIN片段；Root已读并批准其唯一256B/2seeks continuation计划，source总1760B/346seeks（该时刻），尚无新pending observer/live。current21 exact API计划已采用，九独占文件实施中，正式构建/首次验收尚未执行。此为真实晚间计划调整，既有早会/历史失败与其他机器授权保持。
+
+
+### 当前路线与readiness增量
+
+当前真实运行入口已从R0050迁移到R0051，006确认地图和Robert已恢复；007 Army已actual GREEN primitive，完整执行loop仍未授。R0050 已完整关闭：SDK81997 与 owned job 均正常 exit0，cleanup_proven=true，全10 streams freeze GREEN；此前 STOP_PENDING 属历史。cleanup_proven仅适用于R0050，不能借给当前R0051。R0051 已实际 allocation c001edec / sequence51，PID155556，DLL pin 64e934f2 对应编译来源71b729f0cc4894331f1dadb89155920fccd42a00，SDK暴露207 tools。snapshot001 仅clock-only pending，15:21:20UTC的006才实际确认Robert29829、public revision3/native revision2、mapready/alive/paused。Army FIRST007已由Root亲读actual GREEN：15:29:48.082538→15:30:37.915800UTC，49.833262秒，SDK raw140369382B，available/accepted=true且noerror；Army218104048/CArmy67109093、1833/2367兵、39reg、supply100/attrition0。只读production Army query恢复到production-live primitive；此前PENDING版本已归档，不授full daily/monthly/future/loop。累计5996正常日、natural0；本R0050/51轮次增量0，Oct6既有日账961（5035→5996，既有resume961/cumulative2843）保留，不把整天改成0。
+
+新局部资格保持分列：Creation/Indulgence FIRST GREEN；detachment native8 GREEN，但consumer RED（test553必要修复；553 appenddoc冲突按Root实际处理保留双方，不授consumer GREEN）。Commander后来新封实际FIRST双GREEN：producer7whole/64checks，0.2216355秒；唯一Service/MCP方法消费7原始whole加1单独标注null-derived variant，5.746253秒；fixture2738568d/runtime与consumer71b，static-ready、无live。四link batch整体RED和原Commander13symbol RED均保留；Tenet link GREEN、FIRST仍pending。Fervor仍2项LNK RED，Clergy pending，finalizer14d仅source adoption完成，build/test尚无执行报告。原始71b四runtime正式archive GREEN保持（605 actual TU/602 unique/1408 inputs），原 joint FIRST/remaining RED保留。此前33445694B容量包是单个SYNTHETIC隔离pipe transport GREEN，非actualCK3 packet或typedArmy资格；与本次Army007真实query primitive独立记账。不得合成整批all GREEN。
+
+下一可交付项由Root基于已恢复Army查询继续既定策略；008诊断/009Law准备中NOT_RUN；已有consumer RED只修可复现失败，未执行的fixture继续FIRST，不重复旧GREEN。最后已提供69a2fe5c9当时尚未push，current exact HEAD待新fields，发布与runtime来源保持分列。
+
+这是23:44:55 CST 的晚间外置事实候选（本节保留当时状态，最新资格见本文顶部late update）。Oct6日报/W41周报继续rolling，午夜前不提前收口、不倒填早会；Root实际采用时间 2026-10-06T15:49:46.572609+00:00。Oct7计划另有真实计划对照候选，不能把本段视为已召开Oct7早会。
+
+证据入口：[Army007真实恢复](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-ARMY-CAP64-RECOVERY.json)；[恢复事实小索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/LATEST-R0051-ACTUAL-ARMY-RECOVERY-FACTS.json)；[R0050关闭/R0051恢复及历史pending](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/LATEST-R0050-CLOSED-R0051-ARMY-PENDING-FACTS.json)；[Commander新增FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/battle-commander/OCT6-W41-ACTUAL-FIRST-FIELDS.json)；[原始构建、修复与正式archive分层](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/G104-BUILD-FAILURE-REPAIR-INCREMENT.json)。authority由Root/事实兄弟唯一读取，本版消费兄弟小索引并复用已封fields，不重读authority、CI或旧proof。
