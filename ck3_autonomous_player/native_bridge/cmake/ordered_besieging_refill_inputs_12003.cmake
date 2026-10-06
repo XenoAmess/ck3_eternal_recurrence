@@ -26,5 +26,6 @@ if(BUILD_TESTING AND WIN32)
   endif()
   add_test(NAME xar_bridge_ck3_12003_ordered_besieging_refill_inputs_test
     COMMAND xar_bridge_ck3_12003_ordered_besieging_refill_inputs_test
+      --wire-dir
       "${CMAKE_CURRENT_BINARY_DIR}/ordered-besieging-refill-inputs-wire")
 endif()
