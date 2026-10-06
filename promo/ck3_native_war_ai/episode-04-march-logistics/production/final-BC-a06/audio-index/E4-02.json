@@ -1,0 +1,1093 @@
+{
+  "schema": "xar.e04.actual-stable-chapter-audio.v2",
+  "chapter_id": "E4-02",
+  "created_utc": "2026-10-05T16:15:39.225285+00:00",
+  "audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-02\\narration.wav",
+    "bytes": 13022252,
+    "sha256": "8084578527c8632c70eb935212793feaaf5d980b40533fd033251fdf2b89da60"
+  },
+  "actual_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 6511104,
+    "seconds": 271.296
+  },
+  "paragraphs": [
+    {
+      "id": "C02-01",
+      "subtitles_zh": "先看军队面板里的总人数和满员数。总人数是现在有多少士兵，满员数是这支军队当前能有多少人。缺的是哪几个兵团，可以继续展开看。人数缺额和补给库存不是同一个问题。",
+      "subtitles_en": "First, read current soldiers and maximum soldiers in the army panel. Current soldiers tell us how many are present. Maximum soldiers tell us the army's current full strength. Expand the roster to see which regiments are understrength. Missing soldiers and supply stock are different questions.",
+      "chapter_start_sample": 0,
+      "chapter_end_sample": 450432,
+      "chapter_start_seconds": 0.0,
+      "chapter_end_seconds": 18.768,
+      "fragments": [
+        {
+          "fragment_id": "C02-01-F01",
+          "paragraph_id": "C02-01",
+          "chapter_id": "E4-02",
+          "kind": "existing-exact-text-audio",
+          "status": "REUSED_EXACT_AUDIO_PENDING_LISTENING",
+          "text_sha256": "691fbcf323d0ed2e886f128f0cd5795ca4eea5e5ddc324f96314e9ca648d0524",
+          "text_zh": "先看军队面板里的总人数和满员数。总人数是现在有多少士兵，满员数是这支军队当前能有多少人。",
+          "old_cue_id": "E4S02-001",
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "metadata": null,
+          "WordBoundary_count": null,
+          "metadata_unknown_reason": "Original six audio requests did not retain boundary metadata; no duplicate request made.",
+          "provider_calls": 0,
+          "human_listening_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-001\\attempt-a01\\speech.mp3",
+            "bytes": 64800,
+            "sha256": "825a02fd0498e9cfd79749553fddcc0fca39d0762bd46d5ce4622a749b74a873"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-01-F01\\logs\\probe.stdout.txt",
+            "bytes": 2025,
+            "sha256": "608e08fae00d8147f9c39a5a9e5dbb44200c4f5959298659d3fec7b61813f836"
+          },
+          "MP3_container_seconds": 10.8,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-01-F01\\decoded.wav",
+            "bytes": 518478,
+            "sha256": "673d987703195e8a18cf8fe5e740349376106bbd55549b5044be6681e0aa9f1f"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 259200,
+            "seconds": 10.8
+          },
+          "chapter_start_sample": 0,
+          "chapter_end_sample": 259200,
+          "chapter_start_seconds": 0.0,
+          "chapter_end_seconds": 10.8
+        },
+        {
+          "fragment_id": "C02-01-F02",
+          "paragraph_id": "C02-01",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:29.345547+00:00",
+          "finished_utc": "2026-10-05T16:15:32.397779+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-01-F02\\attempt-a01\\request.json",
+            "bytes": 793,
+            "sha256": "329739c2b0e1bf087d232f04fe564b2aeb7f1ad82906319638d1911752c4e0e1"
+          },
+          "text_sha256": "11afbceeb6b6482d6479f695e721d8e0dbafca4d4fa3d02c1135c34aa0045fca",
+          "text_zh": "缺的是哪几个兵团，可以继续展开看。人数缺额和补给库存不是同一个问题。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-01-F02\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 1681,
+            "sha256": "7a3706c3444b785d6a6496e7e941580224ba08b7d266bc4ada2f3cd8e51dd772"
+          },
+          "WordBoundary_count": 19,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 7.355291,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-01-F02\\attempt-a01\\speech.mp3",
+            "bytes": 47808,
+            "sha256": "dacaf26d6754c4ccbc8037d4ff865924eb6969141202f38716dbad1a71acb8f0"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-01-F02\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2024,
+            "sha256": "72158fa78b8edc7241a883dd7a517a98c14799215fd789518bd48c64bbd9253d"
+          },
+          "MP3_container_seconds": 7.968,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-01-F02\\attempt-a01\\decoded.wav",
+            "bytes": 382542,
+            "sha256": "c134abe1e6a2ba5fc22208019e9bedc4f834df1f0cd0832276bd7fdc6077f4c2"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 191232,
+            "seconds": 7.968
+          },
+          "chapter_start_sample": 259200,
+          "chapter_end_sample": 450432,
+          "chapter_start_seconds": 10.8,
+          "chapter_end_seconds": 18.768
+        }
+      ]
+    },
+    {
+      "id": "C02-02",
+      "subtitles_zh": "原版把军队携带的食物、装备等物资叫作补给。补给库存、补给容量和兵员人数，需要分别读。看到一百一十六、容量三百，前一个数是当前显示的补给，后一个是这支军队的补给容量。它不是一百一十六名士兵，也不是百分比。",
+      "subtitles_en": "The base game calls the food, equipment, and other resources an army carries “Supplies.” Supply stock, supply capacity, and soldier count need separate readings. A displayed 116 with a capacity of 300 means 116 supply out of a capacity of 300. It does not mean 116 soldiers or a percentage.",
+      "chapter_start_sample": 450432,
+      "chapter_end_sample": 1003392,
+      "chapter_start_seconds": 18.768,
+      "chapter_end_seconds": 41.808,
+      "fragments": [
+        {
+          "fragment_id": "C02-02-F01",
+          "paragraph_id": "C02-02",
+          "chapter_id": "E4-02",
+          "kind": "existing-exact-text-audio",
+          "status": "REUSED_EXACT_AUDIO_PENDING_LISTENING",
+          "text_sha256": "b1fda1de398e6791d8ef84ca70599ba95c238fce09ba8a7712fd90dcfdaa9124",
+          "text_zh": "原版把军队携带的食物、装备等物资叫作补给。补给库存、补给容量和兵员人数，需要分别读。",
+          "old_cue_id": "E4S02-002",
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "metadata": null,
+          "WordBoundary_count": null,
+          "metadata_unknown_reason": "Original six audio requests did not retain boundary metadata; no duplicate request made.",
+          "provider_calls": 0,
+          "human_listening_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-002\\attempt-a01\\speech.mp3",
+            "bytes": 60768,
+            "sha256": "9c1db651a943fd3f7a5655f0f042c23c110132e86e4807f95a630bf2a61ba7a8"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-02-F01\\logs\\probe.stdout.txt",
+            "bytes": 2025,
+            "sha256": "5e34f5b03f047ced56be965377caaf5241291542cf75c18e547e90d2ef6b9385"
+          },
+          "MP3_container_seconds": 10.128,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-02-F01\\decoded.wav",
+            "bytes": 486222,
+            "sha256": "c9b8bf9775c05200b6deb055cb00663fee7bc1e624c6b98b917167f70b947ed5"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 243072,
+            "seconds": 10.128
+          },
+          "chapter_start_sample": 450432,
+          "chapter_end_sample": 693504,
+          "chapter_start_seconds": 18.768,
+          "chapter_end_seconds": 28.896
+        },
+        {
+          "fragment_id": "C02-02-F02",
+          "paragraph_id": "C02-02",
+          "chapter_id": "E4-02",
+          "kind": "existing-exact-text-audio",
+          "status": "REUSED_EXACT_AUDIO_PENDING_LISTENING",
+          "text_sha256": "2fa5e5f627bccc5f63b14eb966a34a1bd90946a40e98e11bc8af993101b3e288",
+          "text_zh": "看到一百一十六、容量三百，前一个数是当前显示的补给，后一个是这支军队的补给容量。它不是一百一十六名士兵，也不是百分比。",
+          "old_cue_id": "E4S02-003",
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "metadata": null,
+          "WordBoundary_count": null,
+          "metadata_unknown_reason": "Original six audio requests did not retain boundary metadata; no duplicate request made.",
+          "provider_calls": 0,
+          "human_listening_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-003\\attempt-a01\\speech.mp3",
+            "bytes": 77472,
+            "sha256": "12f570765269d5136d63af92bd9ad58854d94876b4df9a9e78dc5ec04e019d43"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-02-F02\\logs\\probe.stdout.txt",
+            "bytes": 2025,
+            "sha256": "5fef653cf8fbcdd81c3a2d14134e707e50c39af5aab7ee494c0c2668c44fd9cd"
+          },
+          "MP3_container_seconds": 12.912,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-02-F02\\decoded.wav",
+            "bytes": 619854,
+            "sha256": "5e612b411a05ab9d8d484554b3000fab23798d1e54929d94e10cfcce936f9d93"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 309888,
+            "seconds": 12.912
+          },
+          "chapter_start_sample": 693504,
+          "chapter_end_sample": 1003392,
+          "chapter_start_seconds": 28.896,
+          "chapter_end_seconds": 41.808
+        }
+      ]
+    },
+    {
+      "id": "C02-03",
+      "subtitles_zh": "当地补给上限说的是这个地方能支持多少名士兵。军队的三百补给容量，不能直接和当地几千人的上限比较。要比较当地用量和当地上限。两支军队如果还留在同一个地方，也不能只看其中较小的一队，就宣布补给压力已经解除。",
+      "subtitles_en": "The local supply limit measures how many soldiers a location can support. The army's supply capacity of 300 cannot be compared directly with a local limit of several thousand soldiers. Compare local supply usage with the local limit. If two armies remain at the same location, counting only the smaller one does not prove the supply pressure is gone.",
+      "chapter_start_sample": 1003392,
+      "chapter_end_sample": 1540224,
+      "chapter_start_seconds": 41.808,
+      "chapter_end_seconds": 64.176,
+      "fragments": [
+        {
+          "fragment_id": "C02-03-F01",
+          "paragraph_id": "C02-03",
+          "chapter_id": "E4-02",
+          "kind": "existing-exact-text-audio",
+          "status": "REUSED_EXACT_AUDIO_PENDING_LISTENING",
+          "text_sha256": "ae95b54b0799f8c9a203a9d623aa4fa1f1643a2649b9188398fa8db9ae55dc3e",
+          "text_zh": "当地补给上限说的是这个地方能支持多少名士兵。军队的三百补给容量，不能直接和当地几千人的上限比较。",
+          "old_cue_id": "E4S02-004",
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "metadata": null,
+          "WordBoundary_count": null,
+          "metadata_unknown_reason": "Original six audio requests did not retain boundary metadata; no duplicate request made.",
+          "provider_calls": 0,
+          "human_listening_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-004\\attempt-a01\\speech.mp3",
+            "bytes": 63792,
+            "sha256": "c6f3b523090ecdb4513a104daad261f720873a392ef436b6981c1837c53049c8"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-03-F01\\logs\\probe.stdout.txt",
+            "bytes": 2025,
+            "sha256": "efefd9e2bb6f7db6261d9276069c471635f2d9fe8740fb52979b0cd6b46dfbda"
+          },
+          "MP3_container_seconds": 10.632,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-03-F01\\decoded.wav",
+            "bytes": 510414,
+            "sha256": "31a7eee1b95e2bbe80cfd25dff8079b8b9ea32bc447200cabfb3645c341fec13"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 255168,
+            "seconds": 10.632
+          },
+          "chapter_start_sample": 1003392,
+          "chapter_end_sample": 1258560,
+          "chapter_start_seconds": 41.808,
+          "chapter_end_seconds": 52.44
+        },
+        {
+          "fragment_id": "C02-03-F02",
+          "paragraph_id": "C02-03",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:30.156276+00:00",
+          "finished_utc": "2026-10-05T16:15:33.664139+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-03-F02\\attempt-a01\\request.json",
+            "bytes": 895,
+            "sha256": "31cc40660900884d88822199c115fab63570bca9f4b0e26c47a020368366b9e3"
+          },
+          "text_sha256": "738f94470ada62a7ca7c1cb52fefff944f9920ccb27b858ba0fe79d1dc23f60d",
+          "text_zh": "要比较当地用量和当地上限。两支军队如果还留在同一个地方，也不能只看其中较小的一队，就宣布补给压力已经解除。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-03-F02\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 2662,
+            "sha256": "245f5035a480791cb1350395899c5bb18650e742852bde77819beed526efcbab"
+          },
+          "WordBoundary_count": 30,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 11.118416,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-03-F02\\attempt-a01\\speech.mp3",
+            "bytes": 70416,
+            "sha256": "522736138bdbf6c13ee262a6e9ce8a834bc8b3a4aa215428f56e0082c296cdbb"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-03-F02\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2026,
+            "sha256": "9e7eae1a117636ffa5241707b9e8e21301452a230f8ff9ab5499c071bdd4bf66"
+          },
+          "MP3_container_seconds": 11.736,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-03-F02\\attempt-a01\\decoded.wav",
+            "bytes": 563406,
+            "sha256": "534c6303ca265014e57d76d910d3a6d0b761be4eff39357472795f93a6ae96b9"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 281664,
+            "seconds": 11.736
+          },
+          "chapter_start_sample": 1258560,
+          "chapter_end_sample": 1540224,
+          "chapter_start_seconds": 52.44,
+          "chapter_end_seconds": 64.176
+        }
+      ]
+    },
+    {
+      "id": "C02-04",
+      "subtitles_zh": "补给每月的正负号描述当前条件下的变化率。军队换了地点，或者条件改变，这个数也可能改变。下一次实际库存，还要重新读。容量也要单独看：一次正常增加碰到容量，与刚分军时继承库存，是不同的观察窗口。",
+      "subtitles_en": "The sign of supplies per month describes the rate under current conditions. That number may change when the army moves or its conditions change. Read the next actual stock separately, and check capacity too. A normal gain reaching capacity and inherited stock after splitting are different observations.",
+      "chapter_start_sample": 1540224,
+      "chapter_end_sample": 2076480,
+      "chapter_start_seconds": 64.176,
+      "chapter_end_seconds": 86.52,
+      "fragments": [
+        {
+          "fragment_id": "C02-04-F01",
+          "paragraph_id": "C02-04",
+          "chapter_id": "E4-02",
+          "kind": "existing-exact-text-audio",
+          "status": "REUSED_EXACT_AUDIO_PENDING_LISTENING",
+          "text_sha256": "b15a527822b784f399f799b74aa7732e32369dea1d43516160a14c80d382e528",
+          "text_zh": "补给每月的正负号描述当前条件下的变化率。军队换了地点，或者条件改变，这个数也可能改变。下一次实际库存，还要重新读。",
+          "old_cue_id": "E4S02-005",
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "metadata": null,
+          "WordBoundary_count": null,
+          "metadata_unknown_reason": "Original six audio requests did not retain boundary metadata; no duplicate request made.",
+          "provider_calls": 0,
+          "human_listening_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-005\\attempt-a01\\speech.mp3",
+            "bytes": 81072,
+            "sha256": "444920531f082f195b69f216611f7c61aa77403b8335a3d899ff48f35272aac7"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-04-F01\\logs\\probe.stdout.txt",
+            "bytes": 2025,
+            "sha256": "7dc829e33493cb59aed4fba23eae9384d0554c59c8bb6153f8dde75a39f1d838"
+          },
+          "MP3_container_seconds": 13.512,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-04-F01\\decoded.wav",
+            "bytes": 648654,
+            "sha256": "5412204817541db8ae60a699935d933045143b256e429842a64fcc3338b33976"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 324288,
+            "seconds": 13.512
+          },
+          "chapter_start_sample": 1540224,
+          "chapter_end_sample": 1864512,
+          "chapter_start_seconds": 64.176,
+          "chapter_end_seconds": 77.688
+        },
+        {
+          "fragment_id": "C02-04-F02",
+          "paragraph_id": "C02-04",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:30.420951+00:00",
+          "finished_utc": "2026-10-05T16:15:33.809229+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-04-F02\\attempt-a01\\request.json",
+            "bytes": 837,
+            "sha256": "19d27cbcfebd24ac4f34e27bb7c9ddd0253d6067444dd2a5b40786448bf04759"
+          },
+          "text_sha256": "31e25cf6e2cc22f2bb16ac8502f2332a7736cea758cb294b36baad0e00f658ae",
+          "text_zh": "容量也要单独看：一次正常增加碰到容量，与刚分军时继承库存，是不同的观察窗口。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-04-F02\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 1859,
+            "sha256": "400f383e509a6637668f759778a4554970ac5e6b41dc9e03cc4f60a1c35e353a"
+          },
+          "WordBoundary_count": 21,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 8.207916,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-04-F02\\attempt-a01\\speech.mp3",
+            "bytes": 52992,
+            "sha256": "c4b4c383a2fd9faabf63d65bcc139298af4cbcefec27817e5c3c6aab8716ed73"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-04-F02\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2024,
+            "sha256": "291f64ac3f684c8ac7fa3525abf38e4d5c2820da04e36b19c8a4359207f6db9d"
+          },
+          "MP3_container_seconds": 8.832,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-04-F02\\attempt-a01\\decoded.wav",
+            "bytes": 424014,
+            "sha256": "2ea11e8b44c27897d096bb37a6391a07918664904d7718ce4f409cf2aa0a7669"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 211968,
+            "seconds": 8.832
+          },
+          "chapter_start_sample": 1864512,
+          "chapter_end_sample": 2076480,
+          "chapter_start_seconds": 77.688,
+          "chapter_end_seconds": 86.52
+        }
+      ]
+    },
+    {
+      "id": "C02-05",
+      "subtitles_zh": "恢复补给不等于补满兵员。本期有两个独立窗口，可以把这两件事分别看清。第一轮回放的第十四到十五日，补给从约二百九十一点二三升到三百。军队当时还在行军，不能说已经抵达终点休整。当前月变化约正十五点六一，实际只增加约八点七七，因为库存碰到了容量。",
+      "subtitles_en": "Recovering supply does not mean recovering full strength. Two separate observations let us see the difference. From day 14 to day 15 of the first replay, supply rose from about 291.23 to 300. The army was still marching, rather than already resting at its destination. Its current monthly change was about +15.61, but it gained only about 8.77 because it reached capacity.",
+      "chapter_start_sample": 2076480,
+      "chapter_end_sample": 2746944,
+      "chapter_start_seconds": 86.52,
+      "chapter_end_seconds": 114.456,
+      "fragments": [
+        {
+          "fragment_id": "C02-05-F01",
+          "paragraph_id": "C02-05",
+          "chapter_id": "E4-02",
+          "kind": "existing-exact-text-audio",
+          "status": "REUSED_EXACT_AUDIO_PENDING_LISTENING",
+          "text_sha256": "5823ad88d701ef47cafa092188e275127f71fff4b7e8fa68c398b1b0a7fbe6fd",
+          "text_zh": "恢复补给不等于补满兵员。本期有两个独立窗口，可以把这两件事分别看清。",
+          "old_cue_id": "E4S02-006",
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "metadata": null,
+          "WordBoundary_count": null,
+          "metadata_unknown_reason": "Original six audio requests did not retain boundary metadata; no duplicate request made.",
+          "provider_calls": 0,
+          "human_listening_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-006\\attempt-a01\\speech.mp3",
+            "bytes": 48096,
+            "sha256": "e7a54013b7062a77fd798ff4ad336b0bf68986b80db58d56cf7f2fba61b6d336"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-05-F01\\logs\\probe.stdout.txt",
+            "bytes": 2023,
+            "sha256": "b3308939b529047a1823acfa6b0700a83e4bacdcd8e4168487463b588d91c493"
+          },
+          "MP3_container_seconds": 8.016,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-05-F01\\decoded.wav",
+            "bytes": 384846,
+            "sha256": "14fd8472d8824df72c5d9290117ae1decfe6c6544cea6f82229701cfd8f2e2d1"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 192384,
+            "seconds": 8.016
+          },
+          "chapter_start_sample": 2076480,
+          "chapter_end_sample": 2268864,
+          "chapter_start_seconds": 86.52,
+          "chapter_end_seconds": 94.536
+        },
+        {
+          "fragment_id": "C02-05-F02",
+          "paragraph_id": "C02-05",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:31.971749+00:00",
+          "finished_utc": "2026-10-05T16:15:34.676413+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-05-F02\\attempt-a01\\request.json",
+            "bytes": 964,
+            "sha256": "63127113b20277609c985c806db1e106b972745c88ce6450010c2f1080a4105c"
+          },
+          "text_sha256": "ca9ba7cf2b5b561f56fc80bfe69301929eb33a16226752082ca579bc164d98d0",
+          "text_zh": "第一轮回放的第十四到十五日，补给从约二百九十一点二三升到三百。军队当时还在行军，不能说已经抵达终点休整。当前月变化约正十五点六一，实际只增加约八点七七，因为库存碰到了容量。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-05-F02\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 3652,
+            "sha256": "e47ae06f4bbee396df97993b866e40f355debb59fddd07add2780ba516a875b0"
+          },
+          "WordBoundary_count": 40,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 19.302625,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-05-F02\\attempt-a01\\speech.mp3",
+            "bytes": 119520,
+            "sha256": "eecd3de54fc96cfce2620eb93e1aee2c3229b67e9aa6c5e7404c09f7edc1abbb"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-05-F02\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "e579226873fb049e39c36043c20d24bab1e75bc7448747fe5af434fd4ecada0a"
+          },
+          "MP3_container_seconds": 19.92,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-05-F02\\attempt-a01\\decoded.wav",
+            "bytes": 956238,
+            "sha256": "7aa3a4ed2fb2fdef6cbf5966c3cd314164762ac3bcb978cbfe10ddc73ea4df5d"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 478080,
+            "seconds": 19.92
+          },
+          "chapter_start_sample": 2268864,
+          "chapter_end_sample": 2746944,
+          "chapter_start_seconds": 94.536,
+          "chapter_end_seconds": 114.456
+        }
+      ]
+    },
+    {
+      "id": "C02-06",
+      "subtitles_zh": "补给回满时，完整十四个兵团的人数都没有变化。整军仍是一千零八十六人，满员一千零八十七；缺员的那个小兵团还是九人，满员十人。补员条件允许，也不等于这个窗口已经补上了那一个。真正增加多少，要看实际人数。",
+      "subtitles_en": "When supply reached capacity, all 14 regiments kept the same soldier counts. The army still had 1,086 soldiers out of 1,087. The small understrength regiment remained at nine out of ten. Being eligible for reinforcement did not mean that missing soldier had been added in this window. The actual count tells us how many were added.",
+      "chapter_start_sample": 2746944,
+      "chapter_end_sample": 3295296,
+      "chapter_start_seconds": 114.456,
+      "chapter_end_seconds": 137.304,
+      "fragments": [
+        {
+          "fragment_id": "C02-06-F01",
+          "paragraph_id": "C02-06",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:32.421435+00:00",
+          "finished_utc": "2026-10-05T16:15:34.964894+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-06-F01\\attempt-a01\\request.json",
+            "bytes": 1003,
+            "sha256": "e135c23c698ad13dfd51c4adf6149ef3b53006747d00cbc8df4fc378d88eef8f"
+          },
+          "text_sha256": "8e634c9cb1f4319a734501a8d53016a50b6e5937a8e7ceedcd12b13f1c3cca86",
+          "text_zh": "补给回满时，完整十四个兵团的人数都没有变化。整军仍是一千零八十六人，满员一千零八十七；缺员的那个小兵团还是九人，满员十人。补员条件允许，也不等于这个窗口已经补上了那一个。真正增加多少，要看实际人数。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-06-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4431,
+            "sha256": "f850a6f7927a7f28bae8190780ba8f607a578ff9da22b49573825463c761183a"
+          },
+          "WordBoundary_count": 49,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 22.236833,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-06-F01\\attempt-a01\\speech.mp3",
+            "bytes": 137088,
+            "sha256": "10c10572ede2ef55153bfbfa881d2737c58cd1235d2ae951e29a93ef71182782"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-06-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "d0516201dc1e0c580a658fd5c10d26efd59e02c9fb5b6f7966119fdc6d360055"
+          },
+          "MP3_container_seconds": 22.848,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-06-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1096782,
+            "sha256": "a492f79e46ebed3186666275ef5f743689ee101f17e3446a965b073fad9c1033"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 548352,
+            "seconds": 22.848
+          },
+          "chapter_start_sample": 2746944,
+          "chapter_end_sample": 3295296,
+          "chapter_start_seconds": 114.456,
+          "chapter_end_seconds": 137.304
+        }
+      ]
+    },
+    {
+      "id": "C02-07",
+      "subtitles_zh": "第二轮重新载入存档，独立观察到原始第二十到二十一日。那个缺员兵团真的从九人补到十人，整军变成一千零八十七，其余十三团没有变化。这时补给两端都是三百，军队仍在去终点的路上。这才是实际兵员补齐。",
+      "subtitles_en": "A second, separate reload was observed from its original day 20 to day 21. The understrength regiment actually rose from nine to ten soldiers. The army reached 1,087, with the other 13 regiments unchanged. Supply was 300 at both endpoints, and the army was still on the way to its destination. This was an actual recovery to full strength.",
+      "chapter_start_sample": 3295296,
+      "chapter_end_sample": 3831552,
+      "chapter_start_seconds": 137.304,
+      "chapter_end_seconds": 159.648,
+      "fragments": [
+        {
+          "fragment_id": "C02-07-F01",
+          "paragraph_id": "C02-07",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:33.679388+00:00",
+          "finished_utc": "2026-10-05T16:15:36.600637+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-07-F01\\attempt-a01\\request.json",
+            "bytes": 991,
+            "sha256": "19ef79610ee33dde01cded3a2ab19ac6cb860302aeb0476d99978e11742eec0f"
+          },
+          "text_sha256": "15dbde3441d6a0a70e0ad8b18ee491459bccb062d8eed81b850459dcc1f45bf1",
+          "text_zh": "第二轮重新载入存档，独立观察到原始第二十到二十一日。那个缺员兵团真的从九人补到十人，整军变成一千零八十七，其余十三团没有变化。这时补给两端都是三百，军队仍在去终点的路上。这才是实际兵员补齐。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-07-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4495,
+            "sha256": "99007b4ec83692cdb7bbb141ad81d40362690f1b04abd8f0d9676596c3a0a7c3"
+          },
+          "WordBoundary_count": 50,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 21.723708,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-07-F01\\attempt-a01\\speech.mp3",
+            "bytes": 134064,
+            "sha256": "24d17100cbcbd22e7c0d8b05254f7cc689bd8df9968cac6567241d5a72a4a6c5"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-07-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "ad587e596fae0c75cc42a2d48e4cae60cd16de63fda2cb98cf633735fe8d0d17"
+          },
+          "MP3_container_seconds": 22.344,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-07-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1072590,
+            "sha256": "350181027c80e4deabf072e70ea231f4b54c693d4b42c8278aa95a172924de83"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 536256,
+            "seconds": 22.344
+          },
+          "chapter_start_sample": 3295296,
+          "chapter_end_sample": 3831552,
+          "chapter_start_seconds": 137.304,
+          "chapter_end_seconds": 159.648
+        }
+      ]
+    },
+    {
+      "id": "C02-08",
+      "subtitles_zh": "所以画面要分别标清两次运行。前一段证明补给可以先回满，后一段证明实际兵员后来补齐；不能把两次重新载入剪成一个没有中断的现场。补员准备比例刷新，也不能直接换算成新增士兵。",
+      "subtitles_en": "The footage must identify these as separate playthroughs. The first shows supply reaching capacity before strength recovers. The second shows the missing soldier actually being reinforced. They cannot be edited into one uninterrupted observation across two save reloads. A refreshed reinforcement progress value is not itself a new soldier.",
+      "chapter_start_sample": 3831552,
+      "chapter_end_sample": 4288896,
+      "chapter_start_seconds": 159.648,
+      "chapter_end_seconds": 178.704,
+      "fragments": [
+        {
+          "fragment_id": "C02-08-F01",
+          "paragraph_id": "C02-08",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:33.828571+00:00",
+          "finished_utc": "2026-10-05T16:15:36.660410+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-08-F01\\attempt-a01\\request.json",
+            "bytes": 957,
+            "sha256": "9a794dae4aedabd814d63413d0a46c1c6a37ca55d423e0a6426c27ee0662ad4f"
+          },
+          "text_sha256": "351ff80a7779a44727a17b29a3fbb08fc2f87338a14bdd4a866c06d9f6fc2573",
+          "text_zh": "所以画面要分别标清两次运行。前一段证明补给可以先回满，后一段证明实际兵员后来补齐；不能把两次重新载入剪成一个没有中断的现场。补员准备比例刷新，也不能直接换算成新增士兵。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-08-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 3961,
+            "sha256": "66a3ae7f008196bba239bcbab851ea2752e93a7c0e8908e05083f04ca87fddd3"
+          },
+          "WordBoundary_count": 44,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 18.434207,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-08-F01\\attempt-a01\\speech.mp3",
+            "bytes": 114336,
+            "sha256": "b76dd6bd5d2e519dbd2ceca840deb497dedd10d7ea29962c0d425893c48c54a7"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-08-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "d778cf9cc591c4ec026203e2acda0ea1551da0df1e07890e64f977536657ca20"
+          },
+          "MP3_container_seconds": 19.056,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-08-F01\\attempt-a01\\decoded.wav",
+            "bytes": 914766,
+            "sha256": "becf5711790196e24b3c04691066319cd54699df869e382bf4fb8838255c465a"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 457344,
+            "seconds": 19.056
+          },
+          "chapter_start_sample": 3831552,
+          "chapter_end_sample": 4288896,
+          "chapter_start_seconds": 159.648,
+          "chapter_end_seconds": 178.704
+        }
+      ]
+    },
+    {
+      "id": "C02-09",
+      "subtitles_zh": "军事页还有“每月补员”勾选框，悬停文字叫“补员兵士”。画面可以说明当前勾选，以及提示一个月达到满员、点击停止补员。这个单帧没有数字费用，也没有证明已经付款或实际切换了开关。",
+      "subtitles_en": "The military page also has a “Monthly Reinforcement” checkbox, with a “Reinforcing Men-at-Arms” tooltip. The image shows its current checked state, with full strength predicted in one month and a click to stop reinforcement. This frame gives no numeric cost, and does not prove a payment or an actual toggle.",
+      "chapter_start_sample": 4288896,
+      "chapter_end_sample": 4737600,
+      "chapter_start_seconds": 178.704,
+      "chapter_end_seconds": 197.4,
+      "fragments": [
+        {
+          "fragment_id": "C02-09-F01",
+          "paragraph_id": "C02-09",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:34.690360+00:00",
+          "finished_utc": "2026-10-05T16:15:37.715253+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-09-F01\\attempt-a01\\request.json",
+            "bytes": 981,
+            "sha256": "4165b9e613b14e2e2373ffbe7de8c5f802822de1141ea1fa41456d7d85d08217"
+          },
+          "text_sha256": "fda3979599d82feba2d93f08a5f995e602f3d655038cd128420b25f8004226c4",
+          "text_zh": "军事页还有“每月补员”勾选框，悬停文字叫“补员兵士”。画面可以说明当前勾选，以及提示一个月达到满员、点击停止补员。这个单帧没有数字费用，也没有证明已经付款或实际切换了开关。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-09-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 3703,
+            "sha256": "ca14064942fde1cace3ebdf37c7e1165c98689b3ea1cd15ed760c1e116b07a51"
+          },
+          "WordBoundary_count": 41,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 18.092083,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-09-F01\\attempt-a01\\speech.mp3",
+            "bytes": 112176,
+            "sha256": "5c993ae91bad84d2bc1ba2a2bc9179e11ea88a3cef679547f2547c4aa86d9e01"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-09-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "a98c30bef6d263a216ca2929e2f19c95f716116a6d99be955f551937a6a338ab"
+          },
+          "MP3_container_seconds": 18.696,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-09-F01\\attempt-a01\\decoded.wav",
+            "bytes": 897486,
+            "sha256": "b6194a770d4e590b9aea6b87a06431dc9a841433baa8314da01243630a10ce8c"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 448704,
+            "seconds": 18.696
+          },
+          "chapter_start_sample": 4288896,
+          "chapter_end_sample": 4737600,
+          "chapter_start_seconds": 178.704,
+          "chapter_end_seconds": 197.4
+        }
+      ]
+    },
+    {
+      "id": "C02-10",
+      "subtitles_zh": "休整地点还要实际验证。一月二十九日的另一次观察，两支军队分别停在两个候选地点，当前补给月变化却约为负四点三九和负八点七七。这两个地点不符合当次寻找正补给的要求，不能据此说所有分兵休整都无效；负值不同的原因，也不能靠猜。",
+      "subtitles_en": "Recovery locations also need testing. In another observation on January 29, two armies had stopped at candidate locations, but their monthly supply changes were about −4.39 and −8.77. Neither met that search's requirement for positive supply. That does not rule out every split-and-recover plan, and we cannot guess why the two negative values differed.",
+      "chapter_start_sample": 4737600,
+      "chapter_end_sample": 5326848,
+      "chapter_start_seconds": 197.4,
+      "chapter_end_seconds": 221.952,
+      "fragments": [
+        {
+          "fragment_id": "C02-10-F01",
+          "paragraph_id": "C02-10",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:34.977537+00:00",
+          "finished_utc": "2026-10-05T16:15:38.166688+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-10-F01\\attempt-a01\\request.json",
+            "bytes": 1025,
+            "sha256": "aff63f6dc89aa8fb933d4d6c189842b29200f2c6db2f3f67daa519e6d9d4142f"
+          },
+          "text_sha256": "7d88a2d884f24f876c25541446920b8446fbb4ae529791529673f0685c0b7517",
+          "text_zh": "休整地点还要实际验证。一月二十九日的另一次观察，两支军队分别停在两个候选地点，当前补给月变化却约为负四点三九和负八点七七。这两个地点不符合当次寻找正补给的要求，不能据此说所有分兵休整都无效；负值不同的原因，也不能靠猜。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-10-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 5377,
+            "sha256": "5ca5cf29cde39230d1e910ee5d7d431381a8c63a161ddd89a169a3d7bb66c335"
+          },
+          "WordBoundary_count": 60,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 23.934208,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-10-F01\\attempt-a01\\speech.mp3",
+            "bytes": 147312,
+            "sha256": "8d4cd07188229f41d85773e3ce773cb222215d8126a06dc2654935a1ea19d488"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-10-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "9dfb1f023ce55fcbfc74d47f321ee40df22c2dfd80f704dca1b33c349b3bba06"
+          },
+          "MP3_container_seconds": 24.552,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-10-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1178574,
+            "sha256": "216abee4a0c2fa95c16c958bfd34e44100028aee6b2cb1c485176c3d8fa5ee28"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 589248,
+            "seconds": 24.552
+          },
+          "chapter_start_sample": 4737600,
+          "chapter_end_sample": 5326848,
+          "chapter_start_seconds": 197.4,
+          "chapter_end_seconds": 221.952
+        }
+      ]
+    },
+    {
+      "id": "C02-11",
+      "subtitles_zh": "再看一月二十日同地合军的独立样本。合前两队的补给约八十三和二百九十一点二三；合后完整二十七个兵团都在，人数六千七百四十六，满员六千七百四十七。实际补给约一百一十六点五二，容量三百。库存和容量都没有简单相加。",
+      "subtitles_en": "Now consider a separate same-location merge on January 20. The armies had about 83 and 291.23 supply beforehand. After merging, all 27 regiments remained: 6,746 current soldiers out of 6,747. The actual supply was about 116.52, with a capacity of 300. Neither stock nor capacity was simply added together.",
+      "chapter_start_sample": 5326848,
+      "chapter_end_sample": 5889600,
+      "chapter_start_seconds": 221.952,
+      "chapter_end_seconds": 245.4,
+      "fragments": [
+        {
+          "fragment_id": "C02-11-F01",
+          "paragraph_id": "C02-11",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:36.615754+00:00",
+          "finished_utc": "2026-10-05T16:15:39.143175+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-11-F01\\attempt-a01\\request.json",
+            "bytes": 1000,
+            "sha256": "9dbf1b19fb3fe2cc886b2302b64d646f9c3e939bb077c8f36f21c90ce581a724"
+          },
+          "text_sha256": "2d58a76dcea68330be912bd441f0fcb046fdddca98c289fddd2426d1f0736cae",
+          "text_zh": "再看一月二十日同地合军的独立样本。合前两队的补给约八十三和二百九十一点二三；合后完整二十七个兵团都在，人数六千七百四十六，满员六千七百四十七。实际补给约一百一十六点五二，容量三百。库存和容量都没有简单相加。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-11-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4064,
+            "sha256": "68f960411e368158403d3a4fb7400173e5b7ece91fa8a6dfc0f8d2d06773a939"
+          },
+          "WordBoundary_count": 44,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 22.842083,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-11-F01\\attempt-a01\\speech.mp3",
+            "bytes": 140688,
+            "sha256": "91d508c74b2a11c46cb58e5387e4878c57a99800068bc565cb27da95d96fbaba"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-11-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "4d303c4c9e1e853c8e39da008572eb7fdfc989ad32a1ec61dc58496ae1a2b8e9"
+          },
+          "MP3_container_seconds": 23.448,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-11-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1125582,
+            "sha256": "1dfa9701cb9f1e599c879522e13c75262c991693fc0b0a817b747ea95fcfbad6"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 562752,
+            "seconds": 23.448
+          },
+          "chapter_start_sample": 5326848,
+          "chapter_end_sample": 5889600,
+          "chapter_start_seconds": 221.952,
+          "chapter_end_seconds": 245.4
+        }
+      ]
+    },
+    {
+      "id": "C02-12",
+      "subtitles_zh": "这次合并按两军在合并中的权重，先算份额，再保留各自的一部分库存；游戏的取整也影响原始结果。完整数字复核严格吻合合后库存。它还低于三百，所以能说明这次加权合军，却没有证明超过新容量时的合军截断。那一种情况需要另一个实际样本。",
+      "subtitles_en": "This merge uses each army's weight to calculate its share, then retain part of its stock. The game's integer truncation also affects the exact result. Checking the full numbers gives an exact match with the merged stock. Because it is below 300, this verifies weighted merging, but not clamping a merged stock above its new capacity. That needs a separate actual example.",
+      "chapter_start_sample": 5889600,
+      "chapter_end_sample": 6511104,
+      "chapter_start_seconds": 245.4,
+      "chapter_end_seconds": 271.296,
+      "fragments": [
+        {
+          "fragment_id": "C02-12-F01",
+          "paragraph_id": "C02-12",
+          "chapter_id": "E4-02",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:36.674428+00:00",
+          "finished_utc": "2026-10-05T16:15:39.184246+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-12-F01\\attempt-a01\\request.json",
+            "bytes": 1074,
+            "sha256": "dbbbfedd47e078bde9043d301f5c229c69e6a897ed744386c2989d58d8d34bca"
+          },
+          "text_sha256": "1e5ae3ab835b3fc8860cdc74eae067634b056ad549c2fcdc41a6842769e634ec",
+          "text_zh": "这次合并按两军在合并中的权重，先算份额，再保留各自的一部分库存；游戏的取整也影响原始结果。完整数字复核严格吻合合后库存。它还低于三百，所以能说明这次加权合军，却没有证明超过新容量时的合军截断。那一种情况需要另一个实际样本。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-12-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 5383,
+            "sha256": "7bce0310ef107de5b42cbf63e2ae5f913b7bafc437083bda2cdf1fca658c27cb"
+          },
+          "WordBoundary_count": 60,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 25.263166,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-12-F01\\attempt-a01\\speech.mp3",
+            "bytes": 155376,
+            "sha256": "a4ca86c921c3256e707c1b2305cb47a07ee80c5f8868268f8810764dd9dca5ac"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-12-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "957ff0525f6dd5307ae4a8d83ddc7250480590e74e89f3b2a702ab8ca4477c29"
+          },
+          "MP3_container_seconds": 25.896,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-12-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1243086,
+            "sha256": "24b1f07655680a4277e6e90be953e596782314573c559aea0d9eddb8cc6fdf39"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 621504,
+            "seconds": 25.896
+          },
+          "chapter_start_sample": 5889600,
+          "chapter_end_sample": 6511104,
+          "chapter_start_seconds": 245.4,
+          "chapter_end_seconds": 271.296
+        }
+      ]
+    }
+  ],
+  "sample_offsets_are_actual_concatenated_PCM": true,
+  "inserted_silence_frames": 0,
+  "WordBoundary_scope": "New fragments preserve actual provider ticks relative to returned fragment audio; six reused fragments have null word metadata.",
+  "ABC_results": null,
+  "ABC_winner": null,
+  "human_listening_signoff": false,
+  "final_film_ready": false
+}

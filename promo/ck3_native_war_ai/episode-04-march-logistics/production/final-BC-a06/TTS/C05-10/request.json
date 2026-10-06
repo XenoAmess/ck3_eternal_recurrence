@@ -1,0 +1,29 @@
+{
+  "fragment_id": "C05-10-F01",
+  "paragraph_id": "C05-10",
+  "chapter_id": "E4-05",
+  "provider": {
+    "id": "edge-tts",
+    "version": "7.2.8"
+  },
+  "request": {
+    "text": "接着看两个不同的窗口。起点后的第二十六到二十七日，主军人数净增七，新分队净增三，两端库存相同。第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，新分队两端都是一百，完整兵团的人数与编制也没变。人数净变化与补给增加各记自己的日期，不能剪成同一次结算。后来两军回到同地实际合军，合前补给约一百二十六点一四和一百。按双方各自的合军权重加权、分别取整，得到约一百一十三点零六。合后容量读到一百，库存实际也是一百。这个窗口能单独确认上限截断，不能用两队库存的普通平均代替。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-5%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": "episode04-a04-wordboundary-a02"
+  },
+  "metadata_request": {
+    "boundary": "WordBoundary",
+    "ticks_per_second": 10000000,
+    "save_sync_audio_and_metadata": true
+  },
+  "text_sha256": "c0bf8afe27fa1052e0d7ad244428dd33cc828cacf94a4b7c8ec68a433a50bffb",
+  "source_keys": [
+    "B-research-published"
+  ],
+  "attempt": 1,
+  "started_utc": "2026-10-06T00:38:38.885051+00:00"
+}

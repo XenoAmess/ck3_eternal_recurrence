@@ -1,0 +1,139 @@
+{
+  "schema": "xar.e04.actual-affected-chapter-relative-delivery.v1",
+  "chapter_id": "E4-06",
+  "paragraphs": [
+    {
+      "paragraph_id": "C06-01",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-01\\timeline.json",
+        "bytes": 17526,
+        "sha256": "e394acd453268055e4f85f87e934da45fe9f7368cd91b59c2b254fad7ef3262c"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-01\\subtitles.ass",
+        "bytes": 1649,
+        "sha256": "ed76f9d9187e8abb39569dda1614869119d3dea725fda636724bb3837cd07bc7"
+      }
+    },
+    {
+      "paragraph_id": "C06-02",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-02\\timeline.json",
+        "bytes": 18428,
+        "sha256": "4a92e916fbc60e91089771e6a93e4c1977a16d2b43c7f41cc578831b4ed07047"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-02\\subtitles.ass",
+        "bytes": 1863,
+        "sha256": "95fb7a9f8e32d57af52673e02091daa9961b95988b2144625f19d304213def5a"
+      }
+    },
+    {
+      "paragraph_id": "C06-03",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-03\\timeline.json",
+        "bytes": 18930,
+        "sha256": "d5cae71e915291aeb821f93e671a5af80520527a78005f7682b80bbee47ff4ac"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-03\\subtitles.ass",
+        "bytes": 1861,
+        "sha256": "ad4c67cafc0ff930ea2a3fb7f51c8abc67b4d8f1e6a6b17208b117f52c21ae81"
+      }
+    },
+    {
+      "paragraph_id": "C06-04",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-04\\timeline.json",
+        "bytes": 19758,
+        "sha256": "0247cd961ef366953f5488c7fd78d1504a9cb309293dfa5f78e53259f9937e3d"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-04\\subtitles.ass",
+        "bytes": 1977,
+        "sha256": "b7e4e0e2a55092c264686b110903290b1134a29b517a3b17713b63e61698a8ee"
+      }
+    },
+    {
+      "paragraph_id": "C06-05",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-05\\timeline.json",
+        "bytes": 19132,
+        "sha256": "453adc01b625337d29557ac470509127dbdaa30ac68e7c088ebb65a57cd31b86"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-05\\subtitles.ass",
+        "bytes": 1927,
+        "sha256": "3afaaa3736427eff774fcdca38e86a5a58bc38d483886e764062f4e60b7af8e0"
+      }
+    },
+    {
+      "paragraph_id": "C06-06",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-06\\timeline.json",
+        "bytes": 19657,
+        "sha256": "261a3eca65d2d433f1528f1308cb3c8422f5e56c7edb77208587f9ba5ffccd94"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-06\\subtitles.ass",
+        "bytes": 1939,
+        "sha256": "bf05e57932d1f2e09b7ebef765c7511aab9eb98defb3cc27cbb090138c2857b8"
+      }
+    },
+    {
+      "paragraph_id": "C06-07",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-07\\timeline.json",
+        "bytes": 19192,
+        "sha256": "6c2a3a48143fca5b1d9d327b4783686f1ef475800b57756d314f4797894d1164"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-07\\subtitles.ass",
+        "bytes": 1946,
+        "sha256": "3360db3f869eade188138b4bca8694e82197302ef4d3599910f3058c06954b5d"
+      }
+    },
+    {
+      "paragraph_id": "C06-08",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-08\\timeline.json",
+        "bytes": 19830,
+        "sha256": "b12580dfa94fcda77f50c3b573594d9bdde6b4a290a684cd464f91380701b580"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-08\\subtitles.ass",
+        "bytes": 2034,
+        "sha256": "a270a0fad0c209a84ce362bca1efad80c52f4271f0e665e541f659c875b7734d"
+      }
+    },
+    {
+      "paragraph_id": "C06-09",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-09\\timeline.json",
+        "bytes": 19570,
+        "sha256": "e273d8ade47ceb59210926e86cc1017397865d0a1de867df4e20e55ca32dbd44"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-09\\subtitles.ass",
+        "bytes": 1904,
+        "sha256": "b969fe35ec95143e63520e5a6f294a98595629d3f8f96e627aeb7526fe6a377e"
+      }
+    },
+    {
+      "paragraph_id": "C06-10",
+      "timeline": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-10\\timeline.json",
+        "bytes": 27380,
+        "sha256": "23e31b84c48f8886025badb65981f28e77e1f4afc6a0e077e4c6c8ad0754dd44"
+      },
+      "subtitles": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\C06-10\\subtitles.ass",
+        "bytes": 3468,
+        "sha256": "f1de162b5ae062ad285d9286b1c5742cf4fd3d342753a2ff0c937f0b5b27f7a6"
+      }
+    }
+  ],
+  "paragraph_count": 10,
+  "actual_only": true,
+  "film_signoff": false
+}

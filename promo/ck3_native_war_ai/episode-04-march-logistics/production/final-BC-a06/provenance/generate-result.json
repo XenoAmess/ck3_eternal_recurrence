@@ -1,0 +1,32 @@
+{
+  "started_utc": "2026-10-06T00:38:36.227711+00:00",
+  "finished_utc": "2026-10-06T00:39:48.159023+00:00",
+  "exit_code": 0,
+  "argv": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-launch-a01\\generate.argv.json",
+    "bytes": 478,
+    "sha256": "38c43af1e6004a96dcef7cd88951e86961ab2a379fb962d8b22e2b1efa3dbe24"
+  },
+  "stdout": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-launch-a01\\generate.stdout.txt",
+    "bytes": 14701,
+    "sha256": "28f4ef8c613d7bbed36796b6197e0551bdc44775df9fb534693f50c89c550841"
+  },
+  "stderr": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-launch-a01\\generate.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "AUDIO_READY": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\AUDIO-READY.json",
+    "bytes": 16849,
+    "sha256": "c258bf2d9906ec1c1bb9256fadc19b5b4fceaa05f922879602e6420b82b0dd41"
+  },
+  "actual_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\ROOT-DELIVERY.json",
+    "bytes": 17389,
+    "sha256": "9c0de53da5169bebd680cebaa94276d45e076de3a26cf1f565bc9147a15938ec"
+  },
+  "all_attempts_and_partial_preserved": true,
+  "human_signoff": false
+}

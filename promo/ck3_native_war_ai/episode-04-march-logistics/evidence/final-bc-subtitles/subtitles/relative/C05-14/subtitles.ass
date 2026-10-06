@@ -1,0 +1,48 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:03.26,Chinese,C05-14-S01,0,0,0,,{\an8\pos(960,935)}结果表按同日期或同事件对齐：
+Dialogue: 0,0:00:00.10,0:00:03.26,English,C05-14-S01,0,0,0,,{\an8\pos(960,1030)}Align results by the same date or event.
+Dialogue: 0,0:00:03.60,0:00:07.46,Chinese,C05-14-S02,0,0,0,,{\an8\pos(960,935)}先看实际抵达，再看完整兵团与可用人数，
+Dialogue: 0,0:00:03.60,0:00:07.46,English,C05-14-S02,0,0,0,,{\an8\pos(960,1030)}First check actual arrival, then the full regiments and available soldiers.
+Dialogue: 0,0:00:07.80,0:00:12.70,Chinese,C05-14-S03,0,0,0,,{\an8\pos(960,935)}然后是库存、补员和损耗窗口，最后是实际支付。
+Dialogue: 0,0:00:07.80,0:00:12.70,English,C05-14-S03,0,0,0,,{\an8\pos(960,1030)}Then check supply, reinforcement and attrition windows, and finally actual payments.
+Dialogue: 0,0:00:13.30,0:00:16.66,Chinese,C05-14-S04,0,0,0,,{\an8\pos(960,935)}这次B合军后，原二十七个兵团仍在，
+Dialogue: 0,0:00:13.30,0:00:16.66,English,C05-14-S04,0,0,0,,{\an8\pos(960,1030)}After B's merge, all 27 original regiments remained.
+Dialogue: 0,0:00:17.03,0:00:19.80,Chinese,C05-14-S05,0,0,0,,{\an8\pos(960,935)}但又多出一条满员一人的兵团记录；
+Dialogue: 0,0:00:17.03,0:00:19.80,English,C05-14-S05,0,0,0,,{\an8\pos(960,1030)}New regiment record: 1/1 soldier.
+Dialogue: 0,0:00:20.03,0:00:24.53,Chinese,C05-14-S06,0,0,0,,{\an8\pos(960,935)}合后共有六千六百九十人，满员六千七百四十八。
+Dialogue: 0,0:00:20.03,0:00:24.53,English,C05-14-S06,0,0,0,,{\an8\pos(960,1030)}The merged army had 6,690 soldiers, out of a maximum of 6,748.
+Dialogue: 0,0:00:25.16,0:00:29.03,Chinese,C05-14-S07,0,0,0,,{\an8\pos(960,935)}实际统帅也变了，与原先冻结的条件不符。
+Dialogue: 0,0:00:25.16,0:00:29.03,English,C05-14-S07,0,0,0,,{\an8\pos(960,1030)}The commander also changed, breaking the conditions fixed at the start.
+Dialogue: 0,0:00:29.63,0:00:33.46,Chinese,C05-14-S08,0,0,0,,{\an8\pos(960,935)}新增记录和统帅变化的原因还没有确认。
+Dialogue: 0,0:00:29.63,0:00:33.46,English,C05-14-S08,0,0,0,,{\an8\pos(960,1030)}The causes of the new record and commander change remain unconfirmed.
+Dialogue: 0,0:00:34.10,0:00:39.03,Chinese,C05-14-S09,0,0,0,,{\an8\pos(960,935)}因此，这次B在第三十八日停止，尚有五十二日预算；
+Dialogue: 0,0:00:34.10,0:00:39.03,English,C05-14-S09,0,0,0,,{\an8\pos(960,1030)}So B stopped on day 38, with 52 days left in its budget.
+Dialogue: 0,0:00:39.43,0:00:43.03,Chinese,C05-14-S10,0,0,0,,{\an8\pos(960,935)}停止是冻结条件未通过，不是时间耗尽。
+Dialogue: 0,0:00:39.43,0:00:43.03,English,C05-14-S10,0,0,0,,{\an8\pos(960,1030)}It stopped because the fixed conditions failed, not because time ran out.
+Dialogue: 0,0:00:43.66,0:00:46.13,Chinese,C05-14-S11,0,0,0,,{\an8\pos(960,935)}这段能保留为合军机制样本，
+Dialogue: 0,0:00:43.66,0:00:46.13,English,C05-14-S11,0,0,0,,{\an8\pos(960,1030)}We can retain this as a sample of the merge mechanism.
+Dialogue: 0,0:00:46.43,0:00:48.46,Chinese,C05-14-S12,0,0,0,,{\an8\pos(960,935)}却没有可比较的伦敦终点。
+Dialogue: 0,0:00:46.43,0:00:48.46,English,C05-14-S12,0,0,0,,{\an8\pos(960,1030)}But it has no comparable London endpoint.
+Dialogue: 0,0:00:49.10,0:00:51.36,Chinese,C05-14-S13,0,0,0,,{\an8\pos(960,935)}C也出现多次采样偏差：
+Dialogue: 0,0:00:49.10,0:00:51.36,English,C05-14-S13,0,0,0,,{\an8\pos(960,1030)}C also had multiple sampling deviations.
+Dialogue: 0,0:00:51.73,0:00:55.33,Chinese,C05-14-S14,0,0,0,,{\an8\pos(960,935)}原计划每次最多过一天，实际跨了两天。
+Dialogue: 0,0:00:51.73,0:00:55.33,English,C05-14-S14,0,0,0,,{\an8\pos(960,1030)}Pulses planned for at most one day actually advanced two.
+Dialogue: 0,0:00:55.93,0:00:58.46,Chinese,C05-14-S15,0,0,0,,{\an8\pos(960,935)}后续只保留为描述性观察，
+Dialogue: 0,0:00:55.93,0:00:58.46,English,C05-14-S15,0,0,0,,{\an8\pos(960,1030)}The later results are retained as descriptive observations only.
+Dialogue: 0,0:00:58.76,0:01:03.30,Chinese,C05-14-S16,0,0,0,,{\an8\pos(960,935)}即使已经到达，也不能恢复成严格公平的A/C对照。
+Dialogue: 0,0:00:58.76,0:01:03.30,English,C05-14-S16,0,0,0,,{\an8\pos(960,1030)}Reaching London does not restore a strictly controlled A/C comparison.
+Dialogue: 0,0:01:03.93,0:01:07.26,Chinese,C05-14-S17,0,0,0,,{\an8\pos(960,935)}A和C的实际到达观测各自保留。
+Dialogue: 0,0:01:03.93,0:01:07.26,English,C05-14-S17,0,0,0,,{\an8\pos(960,1030)}The actual arrival observations for A and C are retained separately.
+Dialogue: 0,0:01:07.86,0:01:10.00,Chinese,C05-14-S18,0,0,0,,{\an8\pos(960,935)}下面回到整军直走的A。
+Dialogue: 0,0:01:07.86,0:01:10.00,English,C05-14-S18,0,0,0,,{\an8\pos(960,1030)}Back to A: whole army, direct route.

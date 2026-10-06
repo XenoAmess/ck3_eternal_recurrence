@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:06.06,Chinese,C05-04-S01,0,0,0,,{\an8\pos(960,935)}方案B先分兵，让两支军队分别到合格驻点休整，再会合。
+Dialogue: 0,0:00:00.10,0:00:06.06,English,C05-04-S01,0,0,0,,{\an8\pos(960,1030)}Plan B splits the army. Both groups rest at qualifying locations, then reunite.
+Dialogue: 0,0:00:06.66,0:00:08.66,Chinese,C05-04-S02,0,0,0,,{\an8\pos(960,935)}这里看一次独立的B回放：
+Dialogue: 0,0:00:06.66,0:00:08.66,English,C05-04-S02,0,0,0,,{\an8\pos(960,1030)}Here is an independent replay of B.
+Dialogue: 0,0:00:09.06,0:00:14.50,Chinese,C05-04-S03,0,0,0,,{\an8\pos(960,935)}在已核对的停驻窗口，两军当前补给月变化都读到正二十。
+Dialogue: 0,0:00:09.06,0:00:14.50,English,C05-04-S03,0,0,0,,{\an8\pos(960,1030)}During the checked rest window, both armies showed a current supply change of +20 per month.
+Dialogue: 0,0:00:15.10,0:00:18.80,Chinese,C05-04-S04,0,0,0,,{\an8\pos(960,935)}它只说当时的读数，不表示库存已经增加。
+Dialogue: 0,0:00:15.10,0:00:18.80,English,C05-04-S04,0,0,0,,{\an8\pos(960,1030)}That was the current rate. It does not show that supply had already increased.
+Dialogue: 0,0:00:19.43,0:00:22.60,Chinese,C05-04-S05,0,0,0,,{\an8\pos(960,935)}后面分别看人数和库存的实际变化；
+Dialogue: 0,0:00:19.43,0:00:22.60,English,C05-04-S05,0,0,0,,{\an8\pos(960,1030)}Next, we observe actual soldier and supply changes separately.
+Dialogue: 0,0:00:23.03,0:00:27.36,Chinese,C05-04-S06,0,0,0,,{\an8\pos(960,935)}实际合军之后，还要重新核对兵团与统帅条件，
+Dialogue: 0,0:00:23.03,0:00:27.36,English,C05-04-S06,0,0,0,,{\an8\pos(960,1030)}After the actual merge, we must check the regiments and commander again.
+Dialogue: 0,0:00:27.63,0:00:29.40,Chinese,C05-04-S07,0,0,0,,{\an8\pos(960,935)}伦敦终点仍未读到。
+Dialogue: 0,0:00:27.63,0:00:29.40,English,C05-04-S07,0,0,0,,{\an8\pos(960,1030)}B's London endpoint remains unobserved.

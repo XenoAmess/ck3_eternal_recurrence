@@ -1,0 +1,57 @@
+{
+  "fragment_id": "C05-10-F01",
+  "paragraph_id": "C05-10",
+  "chapter_id": "E4-05",
+  "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+  "kind": "new-generated-audio",
+  "started_utc": "2026-10-06T00:38:38.889415+00:00",
+  "finished_utc": "2026-10-06T00:38:43.375930+00:00",
+  "attempt": 1,
+  "request": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-10-F01\\attempt-a01\\request.json",
+    "bytes": 1426,
+    "sha256": "c3352d43bd8d9e07eceacf096e40add89fdf926c401aa5656e328490f92cf68a"
+  },
+  "text_sha256": "c0bf8afe27fa1052e0d7ad244428dd33cc828cacf94a4b7c8ec68a433a50bffb",
+  "text_zh": "接着看两个不同的窗口。起点后的第二十六到二十七日，主军人数净增七，新分队净增三，两端库存相同。第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，新分队两端都是一百，完整兵团的人数与编制也没变。人数净变化与补给增加各记自己的日期，不能剪成同一次结算。后来两军回到同地实际合军，合前补给约一百二十六点一四和一百。按双方各自的合军权重加权、分别取整，得到约一百一十三点零六。合后容量读到一百，库存实际也是一百。这个窗口能单独确认上限截断，不能用两队库存的普通平均代替。",
+  "provider_return": null,
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-5%",
+  "pitch": "+0Hz",
+  "volume": "+0%",
+  "metadata": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-10-F01\\attempt-a01\\word-boundary.jsonl",
+    "bytes": 10894,
+    "sha256": "7e72c3f288aecd2f1fa449df395a80ead4a0a206215293aab4c8535ae21494e7"
+  },
+  "WordBoundary_count": 120,
+  "native_metadata_seconds_divisor": 10000000,
+  "native_max_boundary_end_seconds": 54.605291,
+  "native_boundary_not_refitted_to_audio": true,
+  "boundary_extent_within_decoded_audio_plus_250ms": true,
+  "human_listening_signoff": false,
+  "subtitle_alignment_signoff": false,
+  "audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-10-F01\\attempt-a01\\speech.mp3",
+    "bytes": 331344,
+    "sha256": "51aede7478ca88afd9bc3194f8e5192d0bffb8421207fae92a4697502757fa2b"
+  },
+  "MP3_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-10-F01\\attempt-a01\\logs\\probe.stdout.txt",
+    "bytes": 2029,
+    "sha256": "6b464ee7cbd3b2aec9711ddbeca47a0dce3df0106e8beff85167be639a30b542"
+  },
+  "MP3_container_seconds": 55.224,
+  "decoded_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-10-F01\\attempt-a01\\decoded.wav",
+    "bytes": 2650830,
+    "sha256": "cfa6cab32a418e0501c61c1eb1c154d505f579038a892387c4d760e14cea0d43"
+  },
+  "decoded_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 1325376,
+    "seconds": 55.224
+  }
+}

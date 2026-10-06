@@ -1,0 +1,108 @@
+{
+  "schema": "xar.e04.actual-final-subtitle-production-summary/v1",
+  "status": "ACTUAL_FULL_69_AND_AFFECTED_RELATIVES_READY",
+  "producer_ROOT": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\ROOT-DELIVERY.json",
+    "bytes": 23131,
+    "sha256": "66931359da98229b353383d90336ee2bc288d83509cafb70c94f0cb5579d4eae"
+  },
+  "full_global": {
+    "timeline": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\full-global\\timeline.json",
+      "bytes": 601870,
+      "sha256": "3df5ce8975609deaae24c713370d2e9f17dbe8de073dd317adac290e3ce9f9cf"
+    },
+    "subtitles": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\full-global\\subtitles.ass",
+      "bytes": 102083,
+      "sha256": "fe74a9d9209b9237ae58765e05b66f8eb49bd96fdda0ae161505c742b0b4f0a5"
+    }
+  },
+  "affected_chapters": {
+    "E4-05": {
+      "delivery": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\E4-05-relative-ROOT-DELIVERY.json",
+        "bytes": 9983,
+        "sha256": "8b3a4552c2c69153d8e94dce4c6851eaf5b53908c99e1f5615ba6f0b0718c8ef"
+      },
+      "paragraph_count": 16,
+      "paragraph_ids": [
+        "C05-01",
+        "C05-02",
+        "C05-03",
+        "C05-04",
+        "C05-05",
+        "C05-06",
+        "C05-07",
+        "C05-08",
+        "C05-09",
+        "C05-10",
+        "C05-11",
+        "C05-12",
+        "C05-13",
+        "C05-14",
+        "C05-15",
+        "C05-16"
+      ]
+    },
+    "E4-06": {
+      "delivery": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\E4-06-relative-ROOT-DELIVERY.json",
+        "bytes": 6311,
+        "sha256": "2907a7ee566b09b4f052dd5ef626f9bd8cdb16829ab7c0e8dce2aeedc6cd751d"
+      },
+      "paragraph_count": 10,
+      "paragraph_ids": [
+        "C06-01",
+        "C06-02",
+        "C06-03",
+        "C06-04",
+        "C06-05",
+        "C06-06",
+        "C06-07",
+        "C06-08",
+        "C06-09",
+        "C06-10"
+      ]
+    }
+  },
+  "global_timeline_top_level_keys": [
+    "schema",
+    "source_request",
+    "source_audio_delivery",
+    "sample_rate",
+    "sample_frames",
+    "actual_seconds",
+    "picture_frames_30fps",
+    "chapters",
+    "paragraphs",
+    "events",
+    "coordinate_basis",
+    "ABC_results",
+    "ABC_winner",
+    "C_subject_scope",
+    "source_review",
+    "listening_signoff",
+    "film_signoff",
+    "final_film"
+  ],
+  "sample_frames": 41658624,
+  "sample_rate": 24000,
+  "actual_seconds": 1735.776,
+  "paragraphs": 69,
+  "events": 326,
+  "actual_new_semantic_units": 86,
+  "unaffected_paragraphs": 62,
+  "new_reading_rate_flags": [],
+  "max_new_English_words_per_second": 4.444444444444444,
+  "max_new_Chinese_characters_per_second": 5.421686746987952,
+  "fonts": {
+    "Chinese": 35,
+    "English": 25
+  },
+  "new_provider_calls": 0,
+  "game_raw_media_reads": 0,
+  "full_movie_reads": 0,
+  "historical_failed_attempt_preserved": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a01",
+  "full_human_listening_or_film_signoff": false
+}

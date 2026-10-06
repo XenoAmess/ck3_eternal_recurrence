@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:01.53,Chinese,C06-08-S01,0,0,0,,{\an8\pos(960,935)}费用也回看一次。
+Dialogue: 0,0:00:00.10,0:00:01.53,English,C06-08-S01,0,0,0,,{\an8\pos(960,1030)}Check costs again too.
+Dialogue: 0,0:00:02.13,0:00:08.03,Chinese,C06-08-S02,0,0,0,,{\an8\pos(960,935)}当次收入、完整支出和已经发生的支付，放在各自正确范围里；
+Dialogue: 0,0:00:02.13,0:00:08.03,English,C06-08-S02,0,0,0,,{\an8\pos(960,1030)}Keep income, complete expenditure, and actual payments within their correct scopes.
+Dialogue: 0,0:00:08.43,0:00:11.60,Chinese,C06-08-S03,0,0,0,,{\an8\pos(960,935)}净收入已经扣过的军费，不再重扣。
+Dialogue: 0,0:00:08.43,0:00:11.60,English,C06-08-S03,0,0,0,,{\an8\pos(960,1030)}Military costs already deducted in net gold income must not be deducted again.
+Dialogue: 0,0:00:12.23,0:00:15.66,Chinese,C06-08-S04,0,0,0,,{\an8\pos(960,935)}实际登船支付还没读到，就继续未知。
+Dialogue: 0,0:00:12.23,0:00:15.66,English,C06-08-S04,0,0,0,,{\an8\pos(960,1030)}An unread actual embarkation payment remains unknown.
+Dialogue: 0,0:00:16.30,0:00:20.80,Chinese,C06-08-S05,0,0,0,,{\an8\pos(960,935)}完整账比一个钱包差值更能说明路线到底花了什么。
+Dialogue: 0,0:00:16.30,0:00:20.80,English,C06-08-S05,0,0,0,,{\an8\pos(960,1030)}A complete ledger explains a route's costs better than one treasury difference.

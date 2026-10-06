@@ -1,0 +1,57 @@
+{
+  "fragment_id": "C05-14-F01",
+  "paragraph_id": "C05-14",
+  "chapter_id": "E4-05",
+  "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+  "kind": "new-generated-audio",
+  "started_utc": "2026-10-06T00:38:41.793315+00:00",
+  "finished_utc": "2026-10-06T00:38:46.709488+00:00",
+  "attempt": 1,
+  "request": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-14-F01\\attempt-a01\\request.json",
+    "bytes": 1660,
+    "sha256": "6a9ec20d0b50a92775f74e8377ca08f6e27752375930f1ea1213579f6d45230a"
+  },
+  "text_sha256": "ebf4263426ed6bf39d7d5754dfa5fdf10ecebdf8f3c4adcfb883781994a94df7",
+  "text_zh": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。这次B合军后，原二十七个兵团仍在，但又多出一条满员一人的兵团记录；合后共有六千六百九十人，满员六千七百四十八。实际统帅也变了，与原先冻结的条件不符。新增记录和统帅变化的原因还没有确认。因此，这次B在第三十八日停止，尚有五十二日预算；停止是冻结条件未通过，不是时间耗尽。这段能保留为合军机制样本，却没有可比较的伦敦终点。C也出现多次采样偏差：原计划每次最多过一天，实际跨了两天。后续只保留为描述性观察，即使已经到达，也不能恢复成严格公平的A/C对照。A和C的实际到达观测各自保留。下面回到整军直走的A。",
+  "provider_return": null,
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-5%",
+  "pitch": "+0Hz",
+  "volume": "+0%",
+  "metadata": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-14-F01\\attempt-a01\\word-boundary.jsonl",
+    "bytes": 14859,
+    "sha256": "07c59f41beffd85bf91f445bcc4bd1b242110521aedc8d74866f6802ae50a585"
+  },
+  "WordBoundary_count": 166,
+  "native_metadata_seconds_divisor": 10000000,
+  "native_max_boundary_end_seconds": 70.013166,
+  "native_boundary_not_refitted_to_audio": true,
+  "boundary_extent_within_decoded_audio_plus_250ms": true,
+  "human_listening_signoff": false,
+  "subtitle_alignment_signoff": false,
+  "audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-14-F01\\attempt-a01\\speech.mp3",
+    "bytes": 423792,
+    "sha256": "55c86ff5b2f444979b1b0c0eefadbaf9c94e048b8ace439b422b48240334115b"
+  },
+  "MP3_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-14-F01\\attempt-a01\\logs\\probe.stdout.txt",
+    "bytes": 2029,
+    "sha256": "6f15aeebb9aa549807f8f12a18055b4016cd03aec2be8318448ef064bdd2997b"
+  },
+  "MP3_container_seconds": 70.632,
+  "decoded_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-14-F01\\attempt-a01\\decoded.wav",
+    "bytes": 3390414,
+    "sha256": "1c244a54dbf91026106aa0b4c94608c2fdbef2235dc3a2683130971f715a5fb1"
+  },
+  "decoded_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 1695168,
+    "seconds": 70.632
+  }
+}

@@ -1,0 +1,818 @@
+{
+  "schema": "xar.e04.actual-stable-chapter-audio.v2",
+  "chapter_id": "E4-04",
+  "created_utc": "2026-10-05T16:15:58.490025+00:00",
+  "audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-04\\narration.wav",
+    "bytes": 11780396,
+    "sha256": "ed1365c974bd97fdf910fd55015959958a25fe728ef683e17e130a349735f705"
+  },
+  "actual_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 5890176,
+    "seconds": 245.424
+  },
+  "paragraphs": [
+    {
+      "id": "C04-01",
+      "subtitles_zh": "路线先决定去哪里，再影响什么时候能到。下令前，地图显示“预期抵达时间”；下令后，军队窗口显示当前剩余时间。真正到场还要看实际位置、状态和剩余路线。看到一个日期，不能直接当成已经抵达。",
+      "subtitles_en": "A route determines where an army goes, then affects when it can arrive. Before the order, the map shows “Predicted arrival.” Afterward, the army window shows the current time remaining. Actual arrival still requires checking location, state, and the remaining route. A displayed date does not mean the army is already there.",
+      "chapter_start_sample": 0,
+      "chapter_end_sample": 500544,
+      "chapter_start_seconds": 0.0,
+      "chapter_end_seconds": 20.856,
+      "fragments": [
+        {
+          "fragment_id": "C04-01-F01",
+          "paragraph_id": "C04-01",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:46.120117+00:00",
+          "finished_utc": "2026-10-05T16:15:48.762360+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-01-F01\\attempt-a01\\request.json",
+            "bytes": 979,
+            "sha256": "6dc95f8a416bd80a22aead40164679a01f654ba762fb5f0f41bf7475833b4c4e"
+          },
+          "text_sha256": "bf8e25e040a97fa7bfac25e33ddd8d26c367b732bf26e951f7eb65f5806ece2a",
+          "text_zh": "路线先决定去哪里，再影响什么时候能到。下令前，地图显示“预期抵达时间”；下令后，军队窗口显示当前剩余时间。真正到场还要看实际位置、状态和剩余路线。看到一个日期，不能直接当成已经抵达。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-01-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 3888,
+            "sha256": "cae2a5106241148b6eddba8368e4ebe14cb136da052f159915b775f5c7a0f5ca"
+          },
+          "WordBoundary_count": 43,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 20.25,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-01-F01\\attempt-a01\\speech.mp3",
+            "bytes": 125136,
+            "sha256": "34988fae8ef35b35c7b4f13c9fcedc4cb7e444962196a8e2e837222fa9fdf38c"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-01-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "1ec8fb47a8c31497ac52dacefd83f6979e70fdda0c19f0c686b950e3903cb522"
+          },
+          "MP3_container_seconds": 20.856,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-01-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1001166,
+            "sha256": "d27cfe6be4150ec9776d6d81b417043e1699b75f71bbc44c4f83128bfcf9780d"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 500544,
+            "seconds": 20.856
+          },
+          "chapter_start_sample": 0,
+          "chapter_end_sample": 500544,
+          "chapter_start_seconds": 0.0,
+          "chapter_end_seconds": 20.856
+        }
+      ]
+    },
+    {
+      "id": "C04-02",
+      "subtitles_zh": "一月二十日，军队窗口显示“抵达利雪，剩余四十三天，三月四日”。这是整条路线的当前界面估计。与此同时，独立读取的当前第一段时量是三十天，进度为零，后面还储存着其他路段。",
+      "subtitles_en": "On January 20, the army window showed arrival at Lisieux in 43 days, on March 4. That was the current interface estimate for the whole route. At the same time, a separate first-leg reading showed 30 days remaining and zero progress, with later legs still stored.",
+      "chapter_start_sample": 500544,
+      "chapter_end_sample": 950976,
+      "chapter_start_seconds": 20.856,
+      "chapter_end_seconds": 39.624,
+      "fragments": [
+        {
+          "fragment_id": "C04-02-F01",
+          "paragraph_id": "C04-02",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:47.711866+00:00",
+          "finished_utc": "2026-10-05T16:15:50.654081+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-02-F01\\attempt-a01\\request.json",
+            "bytes": 962,
+            "sha256": "99ca9b8552da213c85c4f100e09354840ce0c3c516bc3a0bd95fb48bd8863837"
+          },
+          "text_sha256": "1e01cc8eb088b75562b981abd13aba658b01a541efcea5e511e9b2955a545e25",
+          "text_zh": "一月二十日，军队窗口显示“抵达利雪，剩余四十三天，三月四日”。这是整条路线的当前界面估计。与此同时，独立读取的当前第一段时量是三十天，进度为零，后面还储存着其他路段。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-02-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 3688,
+            "sha256": "505e01b731db8cf745b11937b4d61e2ce678eff7372be061513e608ffe63746c"
+          },
+          "WordBoundary_count": 41,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 18.157916,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-02-F01\\attempt-a01\\speech.mp3",
+            "bytes": 112608,
+            "sha256": "70979e59bc4a47210bbed61be89967bb779e9ee5d348a57f0b7990c05e9303e7"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-02-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "57ee972a9a86d887c12a1148d68ce708031eee682afea0855a2358db834ac700"
+          },
+          "MP3_container_seconds": 18.768,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-02-F01\\attempt-a01\\decoded.wav",
+            "bytes": 900942,
+            "sha256": "bc19f07fdc43a5e361cbdcfa04ca5fa0759f7c3a15c40e9aa18b22d55de50b36"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 450432,
+            "seconds": 18.768
+          },
+          "chapter_start_sample": 500544,
+          "chapter_end_sample": 950976,
+          "chapter_start_seconds": 20.856,
+          "chapter_end_seconds": 39.624
+        }
+      ]
+    },
+    {
+      "id": "C04-03",
+      "subtitles_zh": "四十三天与三十天描述的行程范围不同。不能拿首段三十天，说整支军队三十天就到利雪；也不能只因为两个数不同，就判定界面或读取出错。把整条估计与当前首段分开保留，真实抵达再核对。两数相减也不会自动得到精确的后续路程时长。",
+      "subtitles_en": "Those 43 days and 30 days describe different parts of the journey. We cannot use the first leg's 30 days to claim the whole army will reach Lisieux in 30 days. Their difference alone does not establish an error in either reading. Keep the whole-route estimate and the first-leg time separate, then check actual arrival. Subtracting them does not automatically give the exact duration of the later legs.",
+      "chapter_start_sample": 950976,
+      "chapter_end_sample": 1559232,
+      "chapter_start_seconds": 39.624,
+      "chapter_end_seconds": 64.968,
+      "fragments": [
+        {
+          "fragment_id": "C04-03-F01",
+          "paragraph_id": "C04-03",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:47.830339+00:00",
+          "finished_utc": "2026-10-05T16:15:52.268604+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-03-F01\\attempt-a01\\request.json",
+            "bytes": 1034,
+            "sha256": "5b9b8217ca9e4f756d4b1aacdc0f0895efcd0521d3e7a7ad29de647a26792234"
+          },
+          "text_sha256": "f65ccfde27e2698f02fd4d178f9251f107bc87a22ae6b115fc585a8c0e06d8a4",
+          "text_zh": "四十三天与三十天描述的行程范围不同。不能拿首段三十天，说整支军队三十天就到利雪；也不能只因为两个数不同，就判定界面或读取出错。把整条估计与当前首段分开保留，真实抵达再核对。两数相减也不会自动得到精确的后续路程时长。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-03-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 5683,
+            "sha256": "4325a1b2e7f9eb3b86e8993f11f24d5a2642a5e269c14401e45c6311202db2ed"
+          },
+          "WordBoundary_count": 64,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 24.736875,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-03-F01\\attempt-a01\\speech.mp3",
+            "bytes": 152064,
+            "sha256": "0272f5ff23f88d8fae5c6b224cefbc16e9885e8a7f5e180cc42bc7c29218f048"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-03-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "a171d788883897495325d331db011322fb9b26fd921b9dd8b78d0a18d86cb4fd"
+          },
+          "MP3_container_seconds": 25.344,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-03-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1216590,
+            "sha256": "370f4c5623fcc9c15fdf1f6141e7ea688414652259e4e8316472a21c85aa992b"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 608256,
+            "seconds": 25.344
+          },
+          "chapter_start_sample": 950976,
+          "chapter_end_sample": 1559232,
+          "chapter_start_seconds": 39.624,
+          "chapter_end_seconds": 64.968
+        }
+      ]
+    },
+    {
+      "id": "C04-04",
+      "subtitles_zh": "这些查询和下令前后仍是同一个游戏日期，军队没有因为我们读到四十三天或三十天，就移动到目的地。行军之后要重新看当前估计，不能拿旧提示减去经过天数，冒充一次新的计算。",
+      "subtitles_en": "The queries and order were still on the same game date. Reading 43 days or 30 days did not move the army to its destination. After marching, check the current estimate afresh. Subtracting elapsed days from an old tooltip does not create a new calculation.",
+      "chapter_start_sample": 1559232,
+      "chapter_end_sample": 1995840,
+      "chapter_start_seconds": 64.968,
+      "chapter_end_seconds": 83.16,
+      "fragments": [
+        {
+          "fragment_id": "C04-04-F01",
+          "paragraph_id": "C04-04",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:47.936316+00:00",
+          "finished_utc": "2026-10-05T16:15:50.664759+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-04-F01\\attempt-a01\\request.json",
+            "bytes": 953,
+            "sha256": "10dda58cb23340f49606c68cb653c4923fed27dd6296e2fc06c3e4e4c527aed6"
+          },
+          "text_sha256": "96a0f54f7d1e168bda66d2f828f7057850c4f381debf38266ca66e5d2b843954",
+          "text_zh": "这些查询和下令前后仍是同一个游戏日期，军队没有因为我们读到四十三天或三十天，就移动到目的地。行军之后要重新看当前估计，不能拿旧提示减去经过天数，冒充一次新的计算。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-04-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 3862,
+            "sha256": "25724788abc2313c203f405bab2b14c8f952f99615cd3902f044398e6e91324b"
+          },
+          "WordBoundary_count": 43,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 17.565791,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-04-F01\\attempt-a01\\speech.mp3",
+            "bytes": 109152,
+            "sha256": "0aa5064d3a50d97e96bdf5650b0b4c99ca9f682cc5515fda63463ba1e259e0eb"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-04-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "65733b38fa4a1c25e3f95b1dc94f1223c70a506db0e5452f1ed1de86677ae282"
+          },
+          "MP3_container_seconds": 18.192,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-04-F01\\attempt-a01\\decoded.wav",
+            "bytes": 873294,
+            "sha256": "3bdb12e0393fa3c2ddee2d29e92e6e02424ae2a16b865bd03ba08c8964fcc5aa"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 436608,
+            "seconds": 18.192
+          },
+          "chapter_start_sample": 1559232,
+          "chapter_end_sample": 1995840,
+          "chapter_start_seconds": 64.968,
+          "chapter_end_seconds": 83.16
+        }
+      ]
+    },
+    {
+      "id": "C04-05",
+      "subtitles_zh": "另一轮的一月二十五日，画面出现“移动锁定”。同一暂停点，当前路段约走了百分之六十一点九；独立剩余时量约三点零八天，界面显示四天、预计一月二十九日抵达。它们可以并列读，当前路段进度也不当作任意整条路线的统一百分比。",
+      "subtitles_en": "On January 25 of another replay, the screen showed “Movement Locked.” At that same paused point, the current leg was about 61.9% complete. The separate remaining-time reading was about 3.08 days, while the interface showed four days and arrival predicted for January 29. Read these side by side, without treating the current leg's progress as a percentage for any entire route.",
+      "chapter_start_sample": 1995840,
+      "chapter_end_sample": 2548224,
+      "chapter_start_seconds": 83.16,
+      "chapter_end_seconds": 106.176,
+      "fragments": [
+        {
+          "fragment_id": "C04-05-F01",
+          "paragraph_id": "C04-05",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:48.776990+00:00",
+          "finished_utc": "2026-10-05T16:15:52.532317+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-05-F01\\attempt-a01\\request.json",
+            "bytes": 1036,
+            "sha256": "5e3c590935717ad84d6128def4cfea09614f19f914fe5e4198cf70346aae9412"
+          },
+          "text_sha256": "394aa4f0b47e65aea8ec6d6f005526a4b08f1d057fc7d40458f90ab072aebc90",
+          "text_zh": "另一轮的一月二十五日，画面出现“移动锁定”。同一暂停点，当前路段约走了百分之六十一点九；独立剩余时量约三点零八天，界面显示四天、预计一月二十九日抵达。它们可以并列读，当前路段进度也不当作任意整条路线的统一百分比。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-05-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4461,
+            "sha256": "86e108bd052f61c51925d4c2ad5a4d8317c086de86024bd2be033296bd22c1bc"
+          },
+          "WordBoundary_count": 49,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 22.394708,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-05-F01\\attempt-a01\\speech.mp3",
+            "bytes": 138096,
+            "sha256": "44c7c85d9c7a3119d3f5a180997efc029b28baad7cdc2f5bb3b25d8853412c53"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-05-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "d79a8e5f61059c90142467d277611de158728c290668b73b7d97d0469e8bc946"
+          },
+          "MP3_container_seconds": 23.016,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-05-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1104846,
+            "sha256": "a4118e0979e5c9dba7cfa0a5c10a5b0c26cc232f5ffb318462036d6f072bd0a9"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 552384,
+            "seconds": 23.016
+          },
+          "chapter_start_sample": 1995840,
+          "chapter_end_sample": 2548224,
+          "chapter_start_seconds": 83.16,
+          "chapter_end_seconds": 106.176
+        }
+      ]
+    },
+    {
+      "id": "C04-06",
+      "subtitles_zh": "原生概念用一半进度说明锁定。这个超过一半的实际样本，可以证明当时已经锁定，却不能替代正好百分之五十的边界实验。画面没有单独告诉我们取消移动的精确边界，所以先讲当时锁定，刚好一半仍留给实际测试。",
+      "subtitles_en": "The Chinese game concept describes the lock at halfway. This actual sample beyond halfway shows the army was locked then, but does not replace a test at exactly 50%. The image alone does not give us the exact boundary for cancelling movement. We can explain the observed lock; exactly halfway still needs an actual test.",
+      "chapter_start_sample": 2548224,
+      "chapter_end_sample": 3071808,
+      "chapter_start_seconds": 106.176,
+      "chapter_end_seconds": 127.992,
+      "fragments": [
+        {
+          "fragment_id": "C04-06-F01",
+          "paragraph_id": "C04-06",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:50.670223+00:00",
+          "finished_utc": "2026-10-05T16:15:54.705285+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-06-F01\\attempt-a01\\request.json",
+            "bytes": 996,
+            "sha256": "7a36ae40017ac3966530bdc812bec69d05d98465f7c76e4bd8227df13e2a4811"
+          },
+          "text_sha256": "ac71404283b36bb44345085136ca7cf1c9a4ab936ea38b438552d750236e1fd6",
+          "text_zh": "原生概念用一半进度说明锁定。这个超过一半的实际样本，可以证明当时已经锁定，却不能替代正好百分之五十的边界实验。画面没有单独告诉我们取消移动的精确边界，所以先讲当时锁定，刚好一半仍留给实际测试。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-06-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4268,
+            "sha256": "8969f7fff86eec13f9908323ab044643140ce1f036c8638108af4bca88c62165"
+          },
+          "WordBoundary_count": 47,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 21.184208,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-06-F01\\attempt-a01\\speech.mp3",
+            "bytes": 130896,
+            "sha256": "f5a2af6985393fce2d8a41772caf4e932e07897a2c1f78b110c168ac02ff7db3"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-06-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "c8673a888c0b43ce553653829eed5b61420bfb750e4ad002866184356f01339d"
+          },
+          "MP3_container_seconds": 21.816,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-06-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1047246,
+            "sha256": "46c6bf5fdbd946570b638ba03e6cee33bb696ad6962cd4d97536054f465244a4"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 523584,
+            "seconds": 21.816
+          },
+          "chapter_start_sample": 2548224,
+          "chapter_end_sample": 3071808,
+          "chapter_start_seconds": 106.176,
+          "chapter_end_seconds": 127.992
+        }
+      ]
+    },
+    {
+      "id": "C04-07",
+      "subtitles_zh": "锁定之后按“停止移动”，要看当前路段和后续路线的区别。条件允许时，可以停在当前地点，也可以保留正在走的第一段、撤掉后面的路；只剩一段等情况还可能拒绝。按钮提交成功，不等于已经原地停止。",
+      "subtitles_en": "After movement locks, “Halt movement” needs a check of the current leg versus the later route. When conditions allow, the army may stop at its current location, or keep the active first leg and remove the rest. Cases such as only one leg remaining may be refused. A successful button submission does not mean the army has stopped in place.",
+      "chapter_start_sample": 3071808,
+      "chapter_end_sample": 3561408,
+      "chapter_start_seconds": 127.992,
+      "chapter_end_seconds": 148.392,
+      "fragments": [
+        {
+          "fragment_id": "C04-07-F01",
+          "paragraph_id": "C04-07",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:50.683985+00:00",
+          "finished_utc": "2026-10-05T16:15:53.196347+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-07-F01\\attempt-a01\\request.json",
+            "bytes": 966,
+            "sha256": "68c0a64d1bb2ddf84795c81385683bfe9cd21c70a2edc00647dfc67ad3416e71"
+          },
+          "text_sha256": "661d4909df899d2f2a965417d2d5ce9270a1529e57e5b8b534225897c78906b5",
+          "text_zh": "锁定之后按“停止移动”，要看当前路段和后续路线的区别。条件允许时，可以停在当前地点，也可以保留正在走的第一段、撤掉后面的路；只剩一段等情况还可能拒绝。按钮提交成功，不等于已经原地停止。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-07-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4459,
+            "sha256": "6225fb7a50f6587d21ceb4115a7a901d100328159cdd28dc4cd79e204f042d3b"
+          },
+          "WordBoundary_count": 50,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 19.776332,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-07-F01\\attempt-a01\\speech.mp3",
+            "bytes": 122400,
+            "sha256": "859d5c6e9008d7d5e26d8a1f7286cdb0d2b50ecaaf39c3643cfc8e581c289b58"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-07-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "71e13398ba07d4bd6d6edbd233475f22b57abd3614b0ac04d1b17aeaec2df519"
+          },
+          "MP3_container_seconds": 20.4,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-07-F01\\attempt-a01\\decoded.wav",
+            "bytes": 979278,
+            "sha256": "90849a121d9302e0bb8f759ab1059451d76f16244a426d24d30fbdea6068702b"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 489600,
+            "seconds": 20.4
+          },
+          "chapter_start_sample": 3071808,
+          "chapter_end_sample": 3561408,
+          "chapter_start_seconds": 127.992,
+          "chapter_end_seconds": 148.392
+        }
+      ]
+    },
+    {
+      "id": "C04-08",
+      "subtitles_zh": "正式画面需要依次看到停止前的路线、操作后剩下什么，再到军队实际到了哪里。改道也一样：旧的首段是否保留，新目的地和后续路线是否真的改变，都要读回。一个下令确认消息，不能替代这一串真实状态。",
+      "subtitles_en": "The footage needs to show the route before halting, what remains after the action, and where the army actually arrives. For a reroute, read back whether the old first leg remains and whether the new destination and later route changed. One order acknowledgement cannot replace that sequence of actual states.",
+      "chapter_start_sample": 3561408,
+      "chapter_end_sample": 4061952,
+      "chapter_start_seconds": 148.392,
+      "chapter_end_seconds": 169.248,
+      "fragments": [
+        {
+          "fragment_id": "C04-08-F01",
+          "paragraph_id": "C04-08",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:52.291996+00:00",
+          "finished_utc": "2026-10-05T16:15:54.990197+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-08-F01\\attempt-a01\\request.json",
+            "bytes": 982,
+            "sha256": "449514ae017f6355a216fa35fe43cbef84385029e4a1859ec1bad1119e5f45b6"
+          },
+          "text_sha256": "7d49a1c8351e3ce27fafe24238887a13e01ea27f45e4c22bcc4c1ff9da14b2bf",
+          "text_zh": "正式画面需要依次看到停止前的路线、操作后剩下什么，再到军队实际到了哪里。改道也一样：旧的首段是否保留，新目的地和后续路线是否真的改变，都要读回。一个下令确认消息，不能替代这一串真实状态。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-08-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4472,
+            "sha256": "fde703d24ac17d36ef7a277838b5656ce329ca8dd281c092663948f3e253184c"
+          },
+          "WordBoundary_count": 50,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 20.249999,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-08-F01\\attempt-a01\\speech.mp3",
+            "bytes": 125136,
+            "sha256": "a7bd7bc0bc9d28ada206a3e96119fd649017a749547a247ca216ac3efb26909d"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-08-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "362d822cf4f37a31c5c9b25f5040227056a3a72430cf97947b9e535d9708de76"
+          },
+          "MP3_container_seconds": 20.856,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-08-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1001166,
+            "sha256": "bb0dfe485c82a5bddec59ff8216cf50d101a8b306d44704b271d006c526e959d"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 500544,
+            "seconds": 20.856
+          },
+          "chapter_start_sample": 3561408,
+          "chapter_end_sample": 4061952,
+          "chapter_start_seconds": 148.392,
+          "chapter_end_seconds": 169.248
+        }
+      ]
+    },
+    {
+      "id": "C04-09",
+      "subtitles_zh": "下令前的警告也有自己的范围。“会支付登船费”说的是当前路线预计包含支付事件，不是钱已经扣了。县域预算二百三十六，也不是每经过一个省就必定扣二百三十六。规划提示、动作后的状态和实际结算要分别记。",
+      "subtitles_en": "Pre-order warnings also have their own scope. “Will pay embarkation fees” says the current route is expected to include a payment event, not that gold has already been deducted. A county-entry budget of 236 does not mean every province crossed must cost 236 soldiers. Record planning warnings, the state after the order, and actual settlement separately.",
+      "chapter_start_sample": 4061952,
+      "chapter_end_sample": 4576896,
+      "chapter_start_seconds": 169.248,
+      "chapter_end_seconds": 190.704,
+      "fragments": [
+        {
+          "fragment_id": "C04-09-F01",
+          "paragraph_id": "C04-09",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:52.544714+00:00",
+          "finished_utc": "2026-10-05T16:15:55.140817+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-09-F01\\attempt-a01\\request.json",
+            "bytes": 999,
+            "sha256": "cc8f4c2cebbc66ab51bc27029a1ac90c4e265af60f1a4b82924d5d69f05a2e73"
+          },
+          "text_sha256": "e3a6c6bc1642305728e1841e300f6ccbf6a7c9da2581d973e36344ff4d9681a8",
+          "text_zh": "下令前的警告也有自己的范围。“会支付登船费”说的是当前路线预计包含支付事件，不是钱已经扣了。县域预算二百三十六，也不是每经过一个省就必定扣二百三十六。规划提示、动作后的状态和实际结算要分别记。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-09-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4570,
+            "sha256": "c4dcb04035040bd48303bc3ed6c748b91f65eb8f142748c61950a63e0c014bb2"
+          },
+          "WordBoundary_count": 51,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 20.855249,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-09-F01\\attempt-a01\\speech.mp3",
+            "bytes": 128736,
+            "sha256": "8120e9e3abd60a7219e4b8d5ee6873babf291705f0a625ef34c714580ba1f031"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-09-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "86f474f6de21249e16da3ef333ae1a4a854d58bb19ac41a6f94790be92321475"
+          },
+          "MP3_container_seconds": 21.456,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-09-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1029966,
+            "sha256": "6cb015647293bb85ab35e7c84f55afd260d90677cdc6f82db6455faae4f39c65"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 514944,
+            "seconds": 21.456
+          },
+          "chapter_start_sample": 4061952,
+          "chapter_end_sample": 4576896,
+          "chapter_start_seconds": 169.248,
+          "chapter_end_seconds": 190.704
+        }
+      ]
+    },
+    {
+      "id": "C04-10",
+      "subtitles_zh": "这轮行军后来还核到了登船和登陆窗口。相对一月二十日起点，第三十到三十二日进入海段、变成已登船；第四十二到四十四日抵达陆地，路线走完、回到普通状态。两窗完整二十七团都仍是六千六百七十九，库存也没变。这只说明各自前后净变化；登陆后补员条件已经变化，后续要重新建立基线。",
+      "subtitles_en": "This journey later gave us boarding and landing windows. From day 30 to day 32 after the January 20 start, the army entered the sea leg and became embarked. From day 42 to day 44, it reached land, completed the route, and returned to a regular state. All 27 regiments stayed at a total of 6,679 soldiers in both windows, with supply unchanged. That describes each window's net change. Reinforcement conditions changed after landing, so later observations need a new baseline.",
+      "chapter_start_sample": 4576896,
+      "chapter_end_sample": 5303808,
+      "chapter_start_seconds": 190.704,
+      "chapter_end_seconds": 220.992,
+      "fragments": [
+        {
+          "fragment_id": "C04-10-F01",
+          "paragraph_id": "C04-10",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:53.212068+00:00",
+          "finished_utc": "2026-10-05T16:15:58.447202+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-10-F01\\attempt-a01\\request.json",
+            "bytes": 1113,
+            "sha256": "891722b6891e4fb26e2d1595198e805a621325b3e9f1326e0f4ef8b91fdcaea6"
+          },
+          "text_sha256": "113bf82f2f97f3783ea46eb9c73d47b372ec333eca31afc2a2d6081b8b5d85ae",
+          "text_zh": "这轮行军后来还核到了登船和登陆窗口。相对一月二十日起点，第三十到三十二日进入海段、变成已登船；第四十二到四十四日抵达陆地，路线走完、回到普通状态。两窗完整二十七团都仍是六千六百七十九，库存也没变。这只说明各自前后净变化；登陆后补员条件已经变化，后续要重新建立基线。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-10-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 5894,
+            "sha256": "6845bec7aed26ba179dd052fef4654e15a4e11671558508001d09be6d30f97cf"
+          },
+          "WordBoundary_count": 65,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 29.657874,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-10-F01\\attempt-a01\\speech.mp3",
+            "bytes": 181728,
+            "sha256": "bc20d37a2971929a655d6063e4af56bfbdfbabf113c1d7f3ed82da14502e9b00"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-10-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "6cccf4a667555f57c9ada74a58577f6ce3742688da7674fb4488f741c102b16e"
+          },
+          "MP3_container_seconds": 30.288,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-10-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1453902,
+            "sha256": "ea428df435d344dc54725d030fbe48965c504b8b4f3dff0589551c7199ff830a"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 726912,
+            "seconds": 30.288
+          },
+          "chapter_start_sample": 4576896,
+          "chapter_end_sample": 5303808,
+          "chapter_start_seconds": 190.704,
+          "chapter_end_seconds": 220.992
+        }
+      ]
+    },
+    {
+      "id": "C04-11",
+      "subtitles_zh": "接下来选路线，同时看合法路径、当前估计、下一步条件和沿途补给。看到一个可走地点，还要验证到了那里是否适合恢复；看到到达日期，还要等真正抵达。完成同一起点的独立回放后，才能把时间、兵力、库存和实际支付放进同一张表。",
+      "subtitles_en": "When choosing a route, check the legal path, current estimate, next-step condition, and supply along the way. A reachable location still needs testing for recovery. An arrival date still needs an actual arrival. Only after separate replays from the same starting point are complete can we compare time, strength, supply, and actual payments in one table.",
+      "chapter_start_sample": 5303808,
+      "chapter_end_sample": 5890176,
+      "chapter_start_seconds": 220.992,
+      "chapter_end_seconds": 245.424,
+      "fragments": [
+        {
+          "fragment_id": "C04-11-F01",
+          "paragraph_id": "C04-11",
+          "chapter_id": "E4-04",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:54.727713+00:00",
+          "finished_utc": "2026-10-05T16:15:57.532540+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-11-F01\\attempt-a01\\request.json",
+            "bytes": 1011,
+            "sha256": "4a7b2d25d2a5591449d11df1706a5409ff250601b1804d54b263862e95e0ceff"
+          },
+          "text_sha256": "84af77a54ac933bbaac446056d60b3ef5464a9e452de55d7fc712a9a8a9b24bc",
+          "text_zh": "接下来选路线，同时看合法路径、当前估计、下一步条件和沿途补给。看到一个可走地点，还要验证到了那里是否适合恢复；看到到达日期，还要等真正抵达。完成同一起点的独立回放后，才能把时间、兵力、库存和实际支付放进同一张表。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-11-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4780,
+            "sha256": "00c547032cde403e7a7da59dd3b87f94b1e70ca6720a5c0eab71485bb76e23fa"
+          },
+          "WordBoundary_count": 53,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 23.828957,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-11-F01\\attempt-a01\\speech.mp3",
+            "bytes": 146592,
+            "sha256": "9788571f3c8c0d9adc62de369a1943bd7fc78b9b85a4851a578aef38ff3d4e9e"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-11-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "7ea7f0c9324585504be999218d3a8153ffef3c48dcc2d2a2799ea0e9833599fe"
+          },
+          "MP3_container_seconds": 24.432,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-11-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1172814,
+            "sha256": "93e79fce8b2b7677cf8cf29fa039fd8ab8caa459ccaf89461a3cb6ee62ce92b6"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 586368,
+            "seconds": 24.432
+          },
+          "chapter_start_sample": 5303808,
+          "chapter_end_sample": 5890176,
+          "chapter_start_seconds": 220.992,
+          "chapter_end_seconds": 245.424
+        }
+      ]
+    }
+  ],
+  "sample_offsets_are_actual_concatenated_PCM": true,
+  "inserted_silence_frames": 0,
+  "WordBoundary_scope": "New fragments preserve actual provider ticks relative to returned fragment audio; six reused fragments have null word metadata.",
+  "ABC_results": null,
+  "ABC_winner": null,
+  "human_listening_signoff": false,
+  "final_film_ready": false
+}

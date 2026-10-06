@@ -1,0 +1,31 @@
+{
+  "fragment_id": "C05-14-F01",
+  "paragraph_id": "C05-14",
+  "chapter_id": "E4-05",
+  "provider": {
+    "id": "edge-tts",
+    "version": "7.2.8"
+  },
+  "request": {
+    "text": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。这次B合军后，原二十七个兵团仍在，但又多出一条满员一人的兵团记录；合后共有六千六百九十人，满员六千七百四十八。实际统帅也变了，与原先冻结的条件不符。新增记录和统帅变化的原因还没有确认。因此，这次B在第三十八日停止，尚有五十二日预算；停止是冻结条件未通过，不是时间耗尽。这段能保留为合军机制样本，却没有可比较的伦敦终点。C也出现多次采样偏差：原计划每次最多过一天，实际跨了两天。后续只保留为描述性观察，即使已经到达，也不能恢复成严格公平的A/C对照。A和C的实际到达观测各自保留。下面回到整军直走的A。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-5%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": "episode04-a04-wordboundary-a02"
+  },
+  "metadata_request": {
+    "boundary": "WordBoundary",
+    "ticks_per_second": 10000000,
+    "save_sync_audio_and_metadata": true
+  },
+  "text_sha256": "ebf4263426ed6bf39d7d5754dfa5fdf10ecebdf8f3c4adcfb883781994a94df7",
+  "source_keys": [
+    "B-research-published",
+    "C-terminal-actual",
+    "C-terminal-Root-sampling"
+  ],
+  "attempt": 1,
+  "started_utc": "2026-10-06T00:38:41.792438+00:00"
+}

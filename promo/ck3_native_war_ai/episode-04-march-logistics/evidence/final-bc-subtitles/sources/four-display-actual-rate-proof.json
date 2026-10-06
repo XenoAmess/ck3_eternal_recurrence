@@ -1,0 +1,60 @@
+{
+  "schema": "xar.e04.actual-four-English-display-revision/v1",
+  "full_English_diff_sha256_unchanged": "b2243b8d3cd8d843f416b080f4ed96de15ade494a06e9fcd78aafefc643be944",
+  "alignment": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\semantic-alignment-final-BC-display-a02.json",
+    "bytes": 17214,
+    "sha256": "e7d9aecd6703c9e8af5831ae746b0e811bb005b6c655942b0169ee629bc78bc4"
+  },
+  "actual_reading_rate_cases": [
+    {
+      "id": "C05-04-S07",
+      "zh": "伦敦终点仍未读到。",
+      "full_English_source": "There is still no observed London endpoint for B.",
+      "new_display_English": "B's London endpoint remains unobserved.",
+      "actual_duration_seconds": 1.7666666666666666,
+      "old_words_per_second": 5.09433962264151,
+      "new_words_per_second": 2.8301886792452833,
+      "timing_unchanged": true,
+      "Chinese_audio_and_source_unchanged": true
+    },
+    {
+      "id": "C05-10-S08",
+      "zh": "不能剪成同一次结算。",
+      "full_English_source": "Do not edit them into a single update.",
+      "new_display_English": "Keep these windows separate.",
+      "actual_duration_seconds": 1.7666666666666666,
+      "old_words_per_second": 4.528301886792453,
+      "new_words_per_second": 2.2641509433962264,
+      "timing_unchanged": true,
+      "Chinese_audio_and_source_unchanged": true
+    },
+    {
+      "id": "C05-14-S05",
+      "zh": "但又多出一条满员一人的兵团记录；",
+      "full_English_source": "But a new regiment record appeared, with one soldier out of a maximum of one.",
+      "new_display_English": "New regiment record: 1/1 soldier.",
+      "actual_duration_seconds": 2.7666666666666666,
+      "old_words_per_second": 5.421686746987952,
+      "new_words_per_second": 1.8072289156626506,
+      "timing_unchanged": true,
+      "Chinese_audio_and_source_unchanged": true
+    },
+    {
+      "id": "C05-14-S18",
+      "zh": "下面回到整军直走的A。",
+      "full_English_source": "Now we return to A: the whole army taking the direct route.",
+      "new_display_English": "Back to A: whole army, direct route.",
+      "actual_duration_seconds": 2.1333333333333333,
+      "old_words_per_second": 5.625,
+      "new_words_per_second": 3.28125,
+      "timing_unchanged": true,
+      "Chinese_audio_and_source_unchanged": true
+    }
+  ],
+  "Root_actual_display_review_status": null,
+  "Root_actual_reviewed_utc": null,
+  "provider_calls": 0,
+  "audio_or_timing_change": false,
+  "human_film_signoff": false
+}

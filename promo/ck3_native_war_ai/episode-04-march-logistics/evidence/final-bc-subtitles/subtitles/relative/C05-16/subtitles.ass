@@ -1,0 +1,40 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:06.66,Chinese,C05-16-S01,0,0,0,,{\an8\pos(960,935)}同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，
+Dialogue: 0,0:00:00.10,0:00:06.66,English,C05-16-S01,0,0,0,,{\an8\pos(960,1030)}Over that period, gold fell from about 637.55 to 621.48.
+Dialogue: 0,0:00:07.00,0:00:08.46,Chinese,C05-16-S02,0,0,0,,{\an8\pos(960,935)}净少十六点零六。
+Dialogue: 0,0:00:07.00,0:00:08.46,English,C05-16-S02,0,0,0,,{\an8\pos(960,1030)}The net decrease was 16.06.
+Dialogue: 0,0:00:09.10,0:00:12.03,Chinese,C05-16-S03,0,0,0,,{\an8\pos(960,935)}它是期间所有收支留下的净余额差，
+Dialogue: 0,0:00:09.10,0:00:12.03,English,C05-16-S03,0,0,0,,{\an8\pos(960,1030)}That is the net balance change after all income and expenses.
+Dialogue: 0,0:00:12.36,0:00:16.90,Chinese,C05-16-S04,0,0,0,,{\an8\pos(960,935)}不能改名为行军费，也不能当作已经核验的登船付款。
+Dialogue: 0,0:00:12.36,0:00:16.90,English,C05-16-S04,0,0,0,,{\an8\pos(960,1030)}It is not a march-cost ledger or a verified embarkation payment.
+Dialogue: 0,0:00:17.50,0:00:19.36,Chinese,C05-16-S05,0,0,0,,{\an8\pos(960,935)}另看换路线的C回放：
+Dialogue: 0,0:00:17.50,0:00:19.36,English,C05-16-S05,0,0,0,,{\an8\pos(960,1030)}Now consider C's replay using a different route.
+Dialogue: 0,0:00:19.70,0:00:25.20,Chinese,C05-16-S06,0,0,0,,{\an8\pos(960,935)}从共同起点到它的到达观测，余额净少约十五点八二金币。
+Dialogue: 0,0:00:19.70,0:00:25.20,English,C05-16-S06,0,0,0,,{\an8\pos(960,1030)}From the shared start to its arrival observation, gold decreased by about 15.82 net.
+Dialogue: 0,0:00:25.80,0:00:28.20,Chinese,C05-16-S07,0,0,0,,{\an8\pos(960,935)}这个数字同样只是净变化。
+Dialogue: 0,0:00:25.80,0:00:28.20,English,C05-16-S07,0,0,0,,{\an8\pos(960,1030)}That figure is also only a net change.
+Dialogue: 0,0:00:28.80,0:00:32.73,Chinese,C05-16-S08,0,0,0,,{\an8\pos(960,935)}途中登船阶段曾观察到余额净少十七金币，
+Dialogue: 0,0:00:28.80,0:00:32.73,English,C05-16-S08,0,0,0,,{\an8\pos(960,1030)}During embarkation, we observed a net decrease of 17 gold.
+Dialogue: 0,0:00:33.16,0:00:36.20,Chinese,C05-16-S09,0,0,0,,{\an8\pos(960,935)}另一个窗口又净增加约零点二五；
+Dialogue: 0,0:00:33.16,0:00:36.20,English,C05-16-S09,0,0,0,,{\an8\pos(960,1030)}In another window, it increased by about 0.25 net.
+Dialogue: 0,0:00:36.40,0:00:39.46,Chinese,C05-16-S10,0,0,0,,{\an8\pos(960,935)}各自原因都没有逐笔付款账来证明。
+Dialogue: 0,0:00:36.40,0:00:39.46,English,C05-16-S10,0,0,0,,{\an8\pos(960,1030)}Neither cause is established by an itemized payment ledger.
+Dialogue: 0,0:00:40.10,0:00:43.23,Chinese,C05-16-S11,0,0,0,,{\an8\pos(960,935)}现在A和C各有真实到达观测，
+Dialogue: 0,0:00:40.10,0:00:43.23,English,C05-16-S11,0,0,0,,{\an8\pos(960,1030)}A and C now each have an actual arrival observation.
+Dialogue: 0,0:00:43.60,0:00:46.23,Chinese,C05-16-S12,0,0,0,,{\an8\pos(960,935)}B因冻结条件未通过而停止；
+Dialogue: 0,0:00:43.60,0:00:46.23,English,C05-16-S12,0,0,0,,{\an8\pos(960,1030)}B stopped after failing the fixed conditions.
+Dialogue: 0,0:00:46.63,0:00:48.30,Chinese,C05-16-S13,0,0,0,,{\an8\pos(960,935)}C又保留采样偏差，
+Dialogue: 0,0:00:46.63,0:00:48.30,English,C05-16-S13,0,0,0,,{\an8\pos(960,1030)}C also retains its sampling deviations.
+Dialogue: 0,0:00:48.56,0:00:51.50,Chinese,C05-16-S14,0,0,0,,{\an8\pos(960,935)}本次不能排出严格三方案的赢家。
+Dialogue: 0,0:00:48.56,0:00:51.50,English,C05-16-S14,0,0,0,,{\an8\pos(960,1030)}This run cannot establish a winner in a strictly controlled three-plan comparison.

@@ -1,0 +1,664 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:04.43,Chinese,C01-01-S01,0,0,0,,{\an8\pos(960,935)}大军出发的时候，最容易记住的是那个很大的总人数。
+Dialogue: 0,0:00:00.10,0:00:04.43,English,C01-01-S01,0,0,0,,{\an8\pos(960,1030)}When a large army sets out, its total soldier count is easy to remember.
+Dialogue: 0,0:00:05.06,0:00:07.66,Chinese,C01-01-S02,0,0,0,,{\an8\pos(960,935)}但到接战以前，还有一整段路。
+Dialogue: 0,0:00:05.06,0:00:07.66,English,C01-01-S02,0,0,0,,{\an8\pos(960,1030)}But there is a whole journey before it joins the battle.
+Dialogue: 0,0:00:08.26,0:00:14.30,Chinese,C01-01-S03,0,0,0,,{\an8\pos(960,935)}军队要带着补给，经过不同地点，可能减少兵员，也可能得到补充。
+Dialogue: 0,0:00:08.26,0:00:14.30,English,C01-01-S03,0,0,0,,{\an8\pos(960,1008)}It carries supplies through different places,\Nand may lose soldiers or receive reinforcement along the way.
+Dialogue: 0,0:00:14.93,0:00:22.96,Chinese,C01-01-S04,0,0,0,,{\an8\pos(960,935)}到了战场，还剩多少人、有没有补给、能不能及时加入，不能只靠出发时的一个数字回答。
+Dialogue: 0,0:00:14.93,0:00:22.96,English,C01-01-S04,0,0,0,,{\an8\pos(960,1008)}That starting number alone cannot tell us how many soldiers will arrive,\Nwhether they will have supplies, or whether they can join in time.
+Dialogue: 0,0:00:23.70,0:00:27.03,Chinese,C01-02-S01,0,0,0,,{\an8\pos(960,935)}这期把镜头放在行军、补给和损耗。
+Dialogue: 0,0:00:23.70,0:00:27.03,English,C01-02-S01,0,0,0,,{\an8\pos(960,1030)}This episode follows marching, supply, and attrition.
+Dialogue: 0,0:00:27.66,0:00:35.30,Chinese,C01-02-S02,0,0,0,,{\an8\pos(960,935)}核心问题是，怎样把足够多的兵，在合适的时间，以能够继续作战的状态送到战场。
+Dialogue: 0,0:00:27.66,0:00:35.30,English,C01-02-S02,0,0,0,,{\an8\pos(960,1030)}How do we bring enough soldiers to the battlefield, at the right time, ready to keep fighting?
+Dialogue: 0,0:00:35.90,0:00:39.60,Chinese,C01-02-S03,0,0,0,,{\an8\pos(960,935)}先读原版界面，再跟着真实变化看结果。
+Dialogue: 0,0:00:35.90,0:00:39.60,English,C01-02-S03,0,0,0,,{\an8\pos(960,1030)}First, read the base game's interface. Then follow the actual changes.
+Dialogue: 0,0:00:40.23,0:00:44.56,Chinese,C01-02-S04,0,0,0,,{\an8\pos(960,935)}下令成功、预计抵达和真正到场，要分别确认。
+Dialogue: 0,0:00:40.23,0:00:44.56,English,C01-02-S04,0,0,0,,{\an8\pos(960,1030)}A successful order, predicted arrival, and actual arrival need separate checks.
+Dialogue: 0,0:00:45.33,0:00:50.06,Chinese,C01-03-S01,0,0,0,,{\an8\pos(960,935)}本期跟着威廉的军队，使用一点二零点零点三原版。
+Dialogue: 0,0:00:45.33,0:00:50.06,English,C01-03-S01,0,0,0,,{\an8\pos(960,1030)}We are following William's armies in the unmodified game, version 1.20.0.3.
+Dialogue: 0,0:00:50.70,0:00:53.76,Chinese,C01-03-S02,0,0,0,,{\an8\pos(960,935)}不同回放会分别标清起点和日期。
+Dialogue: 0,0:00:50.70,0:00:53.76,English,C01-03-S02,0,0,0,,{\an8\pos(960,1030)}Separate replays will retain their own starting points and dates.
+Dialogue: 0,0:00:54.36,0:00:58.16,Chinese,C01-03-S03,0,0,0,,{\an8\pos(960,935)}另一个人物的历史人数，不放到威廉的画面上；
+Dialogue: 0,0:00:54.36,0:00:58.16,English,C01-03-S03,0,0,0,,{\an8\pos(960,1030)}Another character's historical soldier counts will not become William's results.
+Dialogue: 0,0:00:58.60,0:01:03.73,Chinese,C01-03-S04,0,0,0,,{\an8\pos(960,935)}重新载入存档后的独立观察，也不剪成一次没有中断的现场。
+Dialogue: 0,0:00:58.60,0:01:03.73,English,C01-03-S04,0,0,0,,{\an8\pos(960,1030)}Separate observations after reloading a save will not be edited into one uninterrupted journey.
+Dialogue: 0,0:01:04.46,0:01:06.93,Chinese,C01-04-S01,0,0,0,,{\an8\pos(960,935)}先看三个已经观察到的区别。
+Dialogue: 0,0:01:04.46,0:01:06.93,English,C01-04-S01,0,0,0,,{\an8\pos(960,1030)}Start with three differences we have already observed.
+Dialogue: 0,0:01:07.56,0:01:15.26,Chinese,C01-04-S02,0,0,0,,{\an8\pos(960,935)}有一支军队，补给回到三百，人数却还差一个；另一轮独立观察里，它真的补上了那一个。
+Dialogue: 0,0:01:07.56,0:01:15.26,English,C01-04-S02,0,0,0,,{\an8\pos(960,1008)}One army recovered to 300 supply while still missing one soldier.\NIn a separate observation, that soldier was actually reinforced.
+Dialogue: 0,0:01:15.86,0:01:21.80,Chinese,C01-04-S03,0,0,0,,{\an8\pos(960,935)}还有两军合并，兵团一个没少，补给却不是把两份库存直接相加。
+Dialogue: 0,0:01:15.86,0:01:21.80,English,C01-04-S03,0,0,0,,{\an8\pos(960,1008)}Two armies also merged without losing any regiments,\Nbut their supplies were not simply added together.
+Dialogue: 0,0:01:22.43,0:01:26.80,Chinese,C01-04-S04,0,0,0,,{\an8\pos(960,935)}人数、库存、容量和组织变化，需要分开读。
+Dialogue: 0,0:01:22.43,0:01:26.80,English,C01-04-S04,0,0,0,,{\an8\pos(960,1030)}Soldier count, supply stock, capacity, and army organization each need their own reading.
+Dialogue: 0,0:01:27.53,0:01:29.83,Chinese,C01-05-S01,0,0,0,,{\an8\pos(960,935)}人数减少也有不同窗口。
+Dialogue: 0,0:01:27.53,0:01:29.83,English,C01-05-S01,0,0,0,,{\an8\pos(960,1030)}Soldier losses also appear in different windows.
+Dialogue: 0,0:01:30.46,0:01:38.53,Chinese,C01-05-S02,0,0,0,,{\an8\pos(960,935)}一个围城分队的观察窗口净少三十一人，主军跨到新县的另一个窗口净少一百二十七人。
+Dialogue: 0,0:01:30.46,0:01:38.53,English,C01-05-S02,0,0,0,,{\an8\pos(960,1008)}A besieging detachment lost a net 31 soldiers.\NThe main army lost a net 127 in another window as it entered a new county.
+Dialogue: 0,0:01:39.13,0:01:43.63,Chinese,C01-05-S03,0,0,0,,{\an8\pos(960,935)}另一轮回放，又看到整军在两天内净少六十七人。
+Dialogue: 0,0:01:39.13,0:01:43.63,English,C01-05-S03,0,0,0,,{\an8\pos(960,1030)}A separate replay showed a net loss of 67 in two days.
+Dialogue: 0,0:01:44.23,0:01:50.33,Chinese,C01-05-S04,0,0,0,,{\an8\pos(960,935)}这里说的是兵员净变化，各例的条件分别解释，不统一叫作死亡。
+Dialogue: 0,0:01:44.23,0:01:50.33,English,C01-05-S04,0,0,0,,{\an8\pos(960,1008)}These are net changes in soldiers.\NWe will explain the conditions for each, without calling every decrease a death count.
+Dialogue: 0,0:01:51.06,0:01:52.73,Chinese,C01-06-S01,0,0,0,,{\an8\pos(960,935)}路线也有几种时间。
+Dialogue: 0,0:01:51.06,0:01:52.73,English,C01-06-S01,0,0,0,,{\an8\pos(960,1030)}A route has several time estimates.
+Dialogue: 0,0:01:53.36,0:02:00.43,Chinese,C01-06-S02,0,0,0,,{\an8\pos(960,935)}下令前是预期抵达，走起来以后是当前剩余时间，真正抵达又是独立结果。
+Dialogue: 0,0:01:53.36,0:02:00.43,English,C01-06-S02,0,0,0,,{\an8\pos(960,1008)}Before the order, there is predicted arrival.\NOnce moving, there is the current time remaining. Actual arrival is a separate result.
+Dialogue: 0,0:02:01.06,0:02:07.60,Chinese,C01-06-S03,0,0,0,,{\an8\pos(960,935)}军队窗口对整条路线的估计，与当前第一段还要走多久，可以有不同范围。
+Dialogue: 0,0:02:01.06,0:02:07.60,English,C01-06-S03,0,0,0,,{\an8\pos(960,1008)}The army window's whole-route estimate can cover a\Ndifferent distance from the first leg's remaining time.
+Dialogue: 0,0:02:08.23,0:02:11.96,Chinese,C01-06-S04,0,0,0,,{\an8\pos(960,935)}比较以前，先确认这个时间描述的是哪一段。
+Dialogue: 0,0:02:08.23,0:02:11.96,English,C01-06-S04,0,0,0,,{\an8\pos(960,1030)}Before comparing, check which part of the journey each time describes.
+Dialogue: 0,0:02:12.66,0:02:18.73,Chinese,C01-07-S01,0,0,0,,{\an8\pos(960,935)}最后要比较三个安排：整军直走、分兵休整后会合、换路线。
+Dialogue: 0,0:02:12.66,0:02:18.73,English,C01-07-S01,0,0,0,,{\an8\pos(960,1008)}Finally, we will compare three plans: march as one army,\Nsplit to recover and reunite, or take another route.
+Dialogue: 0,0:02:19.36,0:02:25.60,Chinese,C01-07-S02,0,0,0,,{\an8\pos(960,935)}它们需要从同一个起点独立回放，再比较实际到达、兵力、补给和支付。
+Dialogue: 0,0:02:19.36,0:02:25.60,English,C01-07-S02,0,0,0,,{\an8\pos(960,1008)}Each needs a separate replay from the same starting point,\Ncomparing actual arrival, strength, supply, and payments.
+Dialogue: 0,0:02:26.23,0:02:30.66,Chinese,C01-07-S03,0,0,0,,{\an8\pos(960,935)}一个地点不适合休整，不等于整个分兵方案已经输了；
+Dialogue: 0,0:02:26.23,0:02:30.66,English,C01-07-S03,0,0,0,,{\an8\pos(960,1030)}One unsuitable recovery location does not mean the entire split-army plan has lost.
+Dialogue: 0,0:02:31.10,0:02:33.90,Chinese,C01-07-S04,0,0,0,,{\an8\pos(960,935)}结果到齐以前，不提前选赢家。
+Dialogue: 0,0:02:31.10,0:02:33.90,English,C01-07-S04,0,0,0,,{\an8\pos(960,1030)}We will not choose a winner before the results are complete.
+Dialogue: 0,0:02:34.60,0:02:42.70,Chinese,C01-08-S01,0,0,0,,{\an8\pos(960,935)}按这个顺序，出发前能看清眼前条件，途中能发现变化，接战前还能再核对一次。
+Dialogue: 0,0:02:34.60,0:02:42.70,English,C01-08-S01,0,0,0,,{\an8\pos(960,1030)}This gives us three chances to check: before departure, along the way, and before battle.
+Dialogue: 0,0:02:43.30,0:02:52.63,Chinese,C01-08-S02,0,0,0,,{\an8\pos(960,910)}我们从最容易混在一起的一组数开始：军队现在带着多少补给，\N能够带多少，以及当地能支持多少士兵。
+Dialogue: 0,0:02:43.30,0:02:52.63,English,C01-08-S02,0,0,0,,{\an8\pos(960,1008)}We begin with the numbers most easily confused: how much supply the army has,\Nhow much it can carry, and how many soldiers the location can support.
+Dialogue: 0,0:02:53.26,0:03:04.03,Chinese,C02-01-F01-FULL,0,0,0,,{\an8\pos(960,910)}先看军队面板里的总人数和满员数。\N总人数是现在有多少士兵，满员数是这支军队当前能有多少人。
+Dialogue: 0,0:02:53.26,0:03:04.03,English,C02-01-F01-FULL,0,0,0,,{\an8\pos(960,1008)}First, read current soldiers and maximum soldiers in the army panel. Current soldiers\Ntell us how many are present. Maximum soldiers tell us the army's current full strength.
+Dialogue: 0,0:03:04.16,0:03:07.23,Chinese,C02-01-S03,0,0,0,,{\an8\pos(960,935)}缺的是哪几个兵团，可以继续展开看。
+Dialogue: 0,0:03:04.16,0:03:07.23,English,C02-01-S03,0,0,0,,{\an8\pos(960,1030)}Expand the roster to see which regiments are understrength.
+Dialogue: 0,0:03:07.83,0:03:11.40,Chinese,C02-01-S04,0,0,0,,{\an8\pos(960,935)}人数缺额和补给库存不是同一个问题。
+Dialogue: 0,0:03:07.83,0:03:11.40,English,C02-01-S04,0,0,0,,{\an8\pos(960,1030)}Missing soldiers and supply stock are different questions.
+Dialogue: 0,0:03:12.03,0:03:22.13,Chinese,C02-02-F01-FULL,0,0,0,,{\an8\pos(960,910)}原版把军队携带的食物、装备等物资叫作补给。\N补给库存、补给容量和兵员人数，需要分别读。
+Dialogue: 0,0:03:12.03,0:03:22.13,English,C02-02-F01-FULL,0,0,0,,{\an8\pos(960,1008)}The base game calls the food, equipment, and other resources an army carries “Supplies.”\NSupply stock, supply capacity, and soldier count need separate readings.
+Dialogue: 0,0:03:22.16,0:03:35.03,Chinese,C02-02-F02-FULL,0,0,0,,{\an8\pos(960,910)}看到一百一十六、容量三百，前一个数是当前显示的补给，\N后一个是这支军队的补给容量。它不是一百一十六名士兵，也不是百分比。
+Dialogue: 0,0:03:22.16,0:03:35.03,English,C02-02-F02-FULL,0,0,0,,{\an8\pos(960,1008)}A displayed 116 with a capacity of 300 means 116 supply out of a capacity of 300.\NIt does not mean 116 soldiers or a percentage.
+Dialogue: 0,0:03:35.06,0:03:45.66,Chinese,C02-03-F01-FULL,0,0,0,,{\an8\pos(960,910)}当地补给上限说的是这个地方能支持多少名士兵。\N军队的三百补给容量，不能直接和当地几千人的上限比较。
+Dialogue: 0,0:03:35.06,0:03:45.66,English,C02-03-F01-FULL,0,0,0,,{\an8\pos(960,1008)}The local supply limit measures how many soldiers a location can support. The army's\Nsupply capacity of 300 cannot be compared directly with a local limit of several thousand soldiers.
+Dialogue: 0,0:03:45.80,0:03:48.40,Chinese,C02-03-S03,0,0,0,,{\an8\pos(960,935)}要比较当地用量和当地上限。
+Dialogue: 0,0:03:45.80,0:03:48.40,English,C02-03-S03,0,0,0,,{\an8\pos(960,1030)}Compare local supply usage with the local limit.
+Dialogue: 0,0:03:49.03,0:03:56.80,Chinese,C02-03-S04,0,0,0,,{\an8\pos(960,935)}两支军队如果还留在同一个地方，也不能只看其中较小的一队，就宣布补给压力已经解除。
+Dialogue: 0,0:03:49.03,0:03:56.80,English,C02-03-S04,0,0,0,,{\an8\pos(960,1008)}If two armies remain at the same location,\Ncounting only the smaller one does not prove the supply pressure is gone.
+Dialogue: 0,0:03:57.43,0:04:10.93,Chinese,C02-04-F01-FULL,0,0,0,,{\an8\pos(960,910)}补给每月的正负号描述当前条件下的变化率。军队换了地点，\N或者条件改变，这个数也可能改变。下一次实际库存，还要重新读。
+Dialogue: 0,0:03:57.43,0:04:10.93,English,C02-04-F01-FULL,0,0,0,,{\an8\pos(960,1008)}The sign of supplies per month describes the rate under current conditions. That number may\Nchange when the army moves or its conditions change. Read the next actual stock separately.
+Dialogue: 0,0:04:11.03,0:04:19.13,Chinese,C02-04-F02-FULL,0,0,0,,{\an8\pos(960,935)}容量也要单独看：一次正常增加碰到容量，与刚分军时继承库存，是不同的观察窗口。
+Dialogue: 0,0:04:11.03,0:04:19.13,English,C02-04-F02-FULL,0,0,0,,{\an8\pos(960,1008)}Check capacity too.\NA normal gain reaching capacity and inherited stock after splitting are different observations.
+Dialogue: 0,0:04:19.76,0:04:27.76,Chinese,C02-05-F01-FULL,0,0,0,,{\an8\pos(960,935)}恢复补给不等于补满兵员。本期有两个独立窗口，可以把这两件事分别看清。
+Dialogue: 0,0:04:19.76,0:04:27.76,English,C02-05-F01-FULL,0,0,0,,{\an8\pos(960,1008)}Recovering supply does not mean recovering full strength.\NTwo separate observations let us see the difference.
+Dialogue: 0,0:04:27.90,0:04:34.10,Chinese,C02-05-S03,0,0,0,,{\an8\pos(960,935)}第一轮回放的第十四到十五日，补给从约二百九十一点二三升到三百。
+Dialogue: 0,0:04:27.90,0:04:34.10,English,C02-05-S03,0,0,0,,{\an8\pos(960,1030)}From day 14 to day 15 of the first replay, supply rose from about 291.23 to 300.
+Dialogue: 0,0:04:34.70,0:04:39.16,Chinese,C02-05-S04,0,0,0,,{\an8\pos(960,935)}军队当时还在行军，不能说已经抵达终点休整。
+Dialogue: 0,0:04:34.70,0:04:39.16,English,C02-05-S04,0,0,0,,{\an8\pos(960,1030)}The army was still marching, rather than already resting at its destination.
+Dialogue: 0,0:04:39.76,0:04:47.06,Chinese,C02-05-S05,0,0,0,,{\an8\pos(960,935)}当前月变化约正十五点六一，实际只增加约八点七七，因为库存碰到了容量。
+Dialogue: 0,0:04:39.76,0:04:47.06,English,C02-05-S05,0,0,0,,{\an8\pos(960,1008)}Its current monthly change was about +15.61,\Nbut it gained only about 8.77 because it reached capacity.
+Dialogue: 0,0:04:47.80,0:04:52.23,Chinese,C02-06-S01,0,0,0,,{\an8\pos(960,935)}补给回满时，完整十四个兵团的人数都没有变化。
+Dialogue: 0,0:04:47.80,0:04:52.23,English,C02-06-S01,0,0,0,,{\an8\pos(960,1030)}When supply reached capacity, all 14 regiments kept the same soldier counts.
+Dialogue: 0,0:04:52.86,0:05:01.26,Chinese,C02-06-S02,0,0,0,,{\an8\pos(960,935)}整军仍是一千零八十六人，满员一千零八十七；缺员的那个小兵团还是九人，满员十人。
+Dialogue: 0,0:04:52.86,0:05:01.26,English,C02-06-S02,0,0,0,,{\an8\pos(960,1008)}The army still had 1,086 soldiers out of 1,087.\NThe small understrength regiment remained at nine out of ten.
+Dialogue: 0,0:05:01.86,0:05:06.50,Chinese,C02-06-S03,0,0,0,,{\an8\pos(960,935)}补员条件允许，也不等于这个窗口已经补上了那一个。
+Dialogue: 0,0:05:01.86,0:05:06.50,English,C02-06-S03,0,0,0,,{\an8\pos(960,1030)}Being eligible for reinforcement did not mean that missing soldier had been added in this window.
+Dialogue: 0,0:05:07.10,0:05:09.93,Chinese,C02-06-S04,0,0,0,,{\an8\pos(960,935)}真正增加多少，要看实际人数。
+Dialogue: 0,0:05:07.10,0:05:09.93,English,C02-06-S04,0,0,0,,{\an8\pos(960,1030)}The actual count tells us how many were added.
+Dialogue: 0,0:05:10.66,0:05:15.96,Chinese,C02-07-S01,0,0,0,,{\an8\pos(960,935)}第二轮重新载入存档，独立观察到原始第二十到二十一日。
+Dialogue: 0,0:05:10.66,0:05:15.96,English,C02-07-S01,0,0,0,,{\an8\pos(960,1030)}A second, separate reload was observed from its original day 20 to day 21.
+Dialogue: 0,0:05:16.60,0:05:24.26,Chinese,C02-07-S02,0,0,0,,{\an8\pos(960,935)}那个缺员兵团真的从九人补到十人，整军变成一千零八十七，其余十三团没有变化。
+Dialogue: 0,0:05:16.60,0:05:24.26,English,C02-07-S02,0,0,0,,{\an8\pos(960,1008)}The understrength regiment actually rose from nine to ten soldiers.\NThe army reached 1,087, with the other 13 regiments unchanged.
+Dialogue: 0,0:05:24.86,0:05:29.63,Chinese,C02-07-S03,0,0,0,,{\an8\pos(960,935)}这时补给两端都是三百，军队仍在去终点的路上。
+Dialogue: 0,0:05:24.86,0:05:29.63,English,C02-07-S03,0,0,0,,{\an8\pos(960,1030)}Supply was 300 at both endpoints, and the army was still on the way to its destination.
+Dialogue: 0,0:05:30.23,0:05:32.26,Chinese,C02-07-S04,0,0,0,,{\an8\pos(960,935)}这才是实际兵员补齐。
+Dialogue: 0,0:05:30.23,0:05:32.26,English,C02-07-S04,0,0,0,,{\an8\pos(960,1030)}This was an actual recovery to full strength.
+Dialogue: 0,0:05:33.00,0:05:36.06,Chinese,C02-08-S01,0,0,0,,{\an8\pos(960,935)}所以画面要分别标清两次运行。
+Dialogue: 0,0:05:33.00,0:05:36.06,English,C02-08-S01,0,0,0,,{\an8\pos(960,1030)}The footage must identify these as separate playthroughs.
+Dialogue: 0,0:05:36.70,0:05:42.26,Chinese,C02-08-S02,0,0,0,,{\an8\pos(960,935)}前一段证明补给可以先回满，后一段证明实际兵员后来补齐；
+Dialogue: 0,0:05:36.70,0:05:42.26,English,C02-08-S02,0,0,0,,{\an8\pos(960,1008)}The first shows supply reaching capacity before strength recovers.\NThe second shows the missing soldier actually being reinforced.
+Dialogue: 0,0:05:42.50,0:05:46.33,Chinese,C02-08-S03,0,0,0,,{\an8\pos(960,935)}不能把两次重新载入剪成一个没有中断的现场。
+Dialogue: 0,0:05:42.50,0:05:46.33,English,C02-08-S03,0,0,0,,{\an8\pos(960,1030)}They cannot be edited into one uninterrupted observation across two save reloads.
+Dialogue: 0,0:05:46.96,0:05:51.33,Chinese,C02-08-S04,0,0,0,,{\an8\pos(960,935)}补员准备比例刷新，也不能直接换算成新增士兵。
+Dialogue: 0,0:05:46.96,0:05:51.33,English,C02-08-S04,0,0,0,,{\an8\pos(960,1030)}A refreshed reinforcement progress value is not itself a new soldier.
+Dialogue: 0,0:05:52.06,0:05:56.83,Chinese,C02-09-S01,0,0,0,,{\an8\pos(960,935)}军事页还有“每月补员”勾选框，悬停文字叫“补员兵士”。
+Dialogue: 0,0:05:52.06,0:05:56.83,English,C02-09-S01,0,0,0,,{\an8\pos(960,1008)}The military page also has a “Monthly Reinforcement” checkbox,\Nwith a “Reinforcing Men-at-Arms” tooltip.
+Dialogue: 0,0:05:57.46,0:06:03.63,Chinese,C02-09-S02,0,0,0,,{\an8\pos(960,935)}画面可以说明当前勾选，以及提示一个月达到满员、点击停止补员。
+Dialogue: 0,0:05:57.46,0:06:03.63,English,C02-09-S02,0,0,0,,{\an8\pos(960,1008)}The image shows its current checked state,\Nwith full strength predicted in one month and a click to stop reinforcement.
+Dialogue: 0,0:06:04.23,0:06:10.03,Chinese,C02-09-S03,0,0,0,,{\an8\pos(960,935)}这个单帧没有数字费用，也没有证明已经付款或实际切换了开关。
+Dialogue: 0,0:06:04.23,0:06:10.03,English,C02-09-S03,0,0,0,,{\an8\pos(960,1030)}This frame gives no numeric cost, and does not prove a payment or an actual toggle.
+Dialogue: 0,0:06:10.76,0:06:13.03,Chinese,C02-10-S01,0,0,0,,{\an8\pos(960,935)}休整地点还要实际验证。
+Dialogue: 0,0:06:10.76,0:06:13.03,English,C02-10-S01,0,0,0,,{\an8\pos(960,1030)}Recovery locations also need testing.
+Dialogue: 0,0:06:13.63,0:06:24.10,Chinese,C02-10-S02,0,0,0,,{\an8\pos(960,910)}一月二十九日的另一次观察，两支军队分别停在两个候选地点，\N当前补给月变化却约为负四点三九和负八点七七。
+Dialogue: 0,0:06:13.63,0:06:24.10,English,C02-10-S02,0,0,0,,{\an8\pos(960,1008)}In another observation on January 29, two armies had stopped at candidate locations,\Nbut their monthly supply changes were about −4.39 and −8.77.
+Dialogue: 0,0:06:24.70,0:06:28.30,Chinese,C02-10-S03,0,0,0,,{\an8\pos(960,935)}这两个地点不符合当次寻找正补给的要求，
+Dialogue: 0,0:06:24.70,0:06:28.30,English,C02-10-S03,0,0,0,,{\an8\pos(960,1030)}Neither met that search's requirement for positive supply.
+Dialogue: 0,0:06:28.63,0:06:34.56,Chinese,C02-10-S04,0,0,0,,{\an8\pos(960,935)}不能据此说所有分兵休整都无效；负值不同的原因，也不能靠猜。
+Dialogue: 0,0:06:28.63,0:06:34.56,English,C02-10-S04,0,0,0,,{\an8\pos(960,1008)}That does not rule out every split-and-recover plan,\Nand we cannot guess why the two negative values differed.
+Dialogue: 0,0:06:35.30,0:06:38.53,Chinese,C02-11-S01,0,0,0,,{\an8\pos(960,935)}再看一月二十日同地合军的独立样本。
+Dialogue: 0,0:06:35.30,0:06:38.53,English,C02-11-S01,0,0,0,,{\an8\pos(960,1030)}Now consider a separate same-location merge on January 20.
+Dialogue: 0,0:06:39.13,0:06:43.26,Chinese,C02-11-S02,0,0,0,,{\an8\pos(960,935)}合前两队的补给约八十三和二百九十一点二三；
+Dialogue: 0,0:06:39.13,0:06:43.26,English,C02-11-S02,0,0,0,,{\an8\pos(960,1030)}The armies had about 83 and 291.23 supply beforehand.
+Dialogue: 0,0:06:43.70,0:06:50.40,Chinese,C02-11-S03,0,0,0,,{\an8\pos(960,935)}合后完整二十七个兵团都在，人数六千七百四十六，满员六千七百四十七。
+Dialogue: 0,0:06:43.70,0:06:50.40,English,C02-11-S03,0,0,0,,{\an8\pos(960,1030)}After merging, all 27 regiments remained: 6,746 current soldiers out of 6,747.
+Dialogue: 0,0:06:51.00,0:06:54.86,Chinese,C02-11-S04,0,0,0,,{\an8\pos(960,935)}实际补给约一百一十六点五二，容量三百。
+Dialogue: 0,0:06:51.00,0:06:54.86,English,C02-11-S04,0,0,0,,{\an8\pos(960,1030)}The actual supply was about 116.52, with a capacity of 300.
+Dialogue: 0,0:06:55.50,0:06:58.03,Chinese,C02-11-S05,0,0,0,,{\an8\pos(960,935)}库存和容量都没有简单相加。
+Dialogue: 0,0:06:55.50,0:06:58.03,English,C02-11-S05,0,0,0,,{\an8\pos(960,1030)}Neither stock nor capacity was simply added together.
+Dialogue: 0,0:06:58.76,0:07:05.63,Chinese,C02-12-S01,0,0,0,,{\an8\pos(960,935)}这次合并按两军在合并中的权重，先算份额，再保留各自的一部分库存；
+Dialogue: 0,0:06:58.76,0:07:05.63,English,C02-12-S01,0,0,0,,{\an8\pos(960,1030)}This merge uses each army's weight to calculate its share, then retain part of its stock.
+Dialogue: 0,0:07:05.86,0:07:08.60,Chinese,C02-12-S02,0,0,0,,{\an8\pos(960,935)}游戏的取整也影响原始结果。
+Dialogue: 0,0:07:05.86,0:07:08.60,English,C02-12-S02,0,0,0,,{\an8\pos(960,1030)}The game's integer truncation also affects the exact result.
+Dialogue: 0,0:07:09.20,0:07:12.43,Chinese,C02-12-S03,0,0,0,,{\an8\pos(960,935)}完整数字复核严格吻合合后库存。
+Dialogue: 0,0:07:09.20,0:07:12.43,English,C02-12-S03,0,0,0,,{\an8\pos(960,1030)}Checking the full numbers gives an exact match with the merged stock.
+Dialogue: 0,0:07:13.06,0:07:20.63,Chinese,C02-12-S04,0,0,0,,{\an8\pos(960,935)}它还低于三百，所以能说明这次加权合军，却没有证明超过新容量时的合军截断。
+Dialogue: 0,0:07:13.06,0:07:20.63,English,C02-12-S04,0,0,0,,{\an8\pos(960,1008)}Because it is below 300, this verifies weighted merging,\Nbut not clamping a merged stock above its new capacity.
+Dialogue: 0,0:07:21.26,0:07:23.90,Chinese,C02-12-S05,0,0,0,,{\an8\pos(960,935)}那一种情况需要另一个实际样本。
+Dialogue: 0,0:07:21.26,0:07:23.90,English,C02-12-S05,0,0,0,,{\an8\pos(960,1030)}That needs a separate actual example.
+Dialogue: 0,0:07:24.66,0:07:28.86,Chinese,C03-01-S01,0,0,0,,{\an8\pos(960,935)}补给和人数会变，还要问变化发生在哪个窗口。
+Dialogue: 0,0:07:24.66,0:07:28.86,English,C03-01-S01,0,0,0,,{\an8\pos(960,1030)}When supply or strength changes, we need to identify the observation window.
+Dialogue: 0,0:07:29.50,0:07:35.80,Chinese,C03-01-S02,0,0,0,,{\an8\pos(960,935)}军队面板的“每月损耗”给出当前比例和人数，是眼前条件下的计算提示。
+Dialogue: 0,0:07:29.50,0:07:35.80,English,C03-01-S02,0,0,0,,{\an8\pos(960,1008)}“Monthly Attrition” shows the current percentage and soldiers per month,\Ncalculated under present conditions.
+Dialogue: 0,0:07:36.43,0:07:40.63,Chinese,C03-01-S03,0,0,0,,{\an8\pos(960,935)}要讲已经少了多少兵，就需要完整兵团的前后人数，
+Dialogue: 0,0:07:36.43,0:07:40.63,English,C03-01-S03,0,0,0,,{\an8\pos(960,1030)}To say how many soldiers have already been lost, compare every regiment before and after.
+Dialogue: 0,0:07:41.00,0:07:45.66,Chinese,C03-01-S04,0,0,0,,{\an8\pos(960,935)}并检查有没有补员、战斗、分合军或其他事件。
+Dialogue: 0,0:07:41.00,0:07:45.66,English,C03-01-S04,0,0,0,,{\an8\pos(960,1030)}Check for reinforcement, combat, splitting or merging, and other events too.
+Dialogue: 0,0:07:46.43,0:07:51.80,Chinese,C03-02-S01,0,0,0,,{\an8\pos(960,935)}比如一月十一日的暂停样本，当前围城损失预算是五十六。
+Dialogue: 0,0:07:46.43,0:07:51.80,English,C03-02-S01,0,0,0,,{\an8\pos(960,1030)}For example, at a paused January 11 observation, the current siege loss budget was 56.
+Dialogue: 0,0:07:52.43,0:07:58.13,Chinese,C03-02-S02,0,0,0,,{\an8\pos(960,935)}它能说明眼前相关条件怎么算，不是一条刚刚扣了五十六人的记录。
+Dialogue: 0,0:07:52.43,0:07:58.13,English,C03-02-S02,0,0,0,,{\an8\pos(960,1008)}It describes the calculation under relevant current conditions,\Nnot a record saying 56 soldiers were just removed.
+Dialogue: 0,0:07:58.73,0:08:04.80,Chinese,C03-02-S03,0,0,0,,{\an8\pos(960,935)}预算与真正发生的减少分开，才不会把一个提示数重复记入结果。
+Dialogue: 0,0:07:58.73,0:08:04.80,English,C03-02-S03,0,0,0,,{\an8\pos(960,1008)}Keeping the budget separate from an actual decrease\Nprevents us from counting a tooltip number as a result.
+Dialogue: 0,0:08:05.56,0:08:12.90,Chinese,C03-03-S01,0,0,0,,{\an8\pos(960,935)}较早的一次围城观察，分队从三千一百二十人变成三千零八十九，净少三十一。
+Dialogue: 0,0:08:05.56,0:08:12.90,English,C03-03-S01,0,0,0,,{\an8\pos(960,1030)}In an earlier siege observation, the detachment went from 3,120 to 3,089 soldiers: a net loss of 31.
+Dialogue: 0,0:08:13.53,0:08:19.13,Chinese,C03-03-S02,0,0,0,,{\an8\pos(960,935)}同期补给从约八十三降到七十四点二三，两端都高于五十。
+Dialogue: 0,0:08:13.53,0:08:19.13,English,C03-03-S02,0,0,0,,{\an8\pos(960,1030)}Supply fell from about 83 to 74.23, with both endpoints above 50.
+Dialogue: 0,0:08:19.76,0:08:24.06,Chinese,C03-03-S03,0,0,0,,{\an8\pos(960,935)}可以讲围城背景下的周期变化和实际兵员减少，
+Dialogue: 0,0:08:19.76,0:08:24.06,English,C03-03-S03,0,0,0,,{\an8\pos(960,1030)}We can describe a periodic change under siege conditions and actual soldier losses.
+Dialogue: 0,0:08:24.43,0:08:26.06,Chinese,C03-03-S04,0,0,0,,{\an8\pos(960,935)}不能把这段说成饥饿。
+Dialogue: 0,0:08:24.43,0:08:26.06,English,C03-03-S04,0,0,0,,{\an8\pos(960,1030)}We cannot call this starvation.
+Dialogue: 0,0:08:26.80,0:08:34.40,Chinese,C03-04-S01,0,0,0,,{\an8\pos(960,935)}这支分队的六个兵团也完整核对过，身份和满员数没变，人数变化能逐团对上。
+Dialogue: 0,0:08:26.80,0:08:34.40,English,C03-04-S01,0,0,0,,{\an8\pos(960,1008)}All six regiments were checked, with identities and maximum strengths unchanged.\NTheir soldier changes reconcile individually.
+Dialogue: 0,0:08:35.03,0:08:40.56,Chinese,C03-04-S02,0,0,0,,{\an8\pos(960,935)}规则先算整军预算，再按符合条件的兵团顺序分配整数。
+Dialogue: 0,0:08:35.03,0:08:40.56,English,C03-04-S02,0,0,0,,{\an8\pos(960,1008)}The rule first calculates an army-wide budget,\Nthen distributes integer losses to eligible regiments in order.
+Dialogue: 0,0:08:41.20,0:08:44.70,Chinese,C03-04-S03,0,0,0,,{\an8\pos(960,935)}这一例恰好也能与各团比例取整吻合，
+Dialogue: 0,0:08:41.20,0:08:44.70,English,C03-04-S03,0,0,0,,{\an8\pos(960,1030)}This example also happens to match percentages rounded down separately for each regiment.
+Dialogue: 0,0:08:45.10,0:08:49.36,Chinese,C03-04-S04,0,0,0,,{\an8\pos(960,935)}但不能推广成所有兵团永远各自独立乘百分比。
+Dialogue: 0,0:08:45.10,0:08:49.36,English,C03-04-S04,0,0,0,,{\an8\pos(960,1030)}That does not mean every regiment always receives its own independent percentage calculation.
+Dialogue: 0,0:08:50.13,0:08:56.53,Chinese,C03-05-S01,0,0,0,,{\an8\pos(960,935)}同一次运行，主军还有另一个窗口：从原始第六到第九日，它跨到新县，
+Dialogue: 0,0:08:50.13,0:08:56.53,English,C03-05-S01,0,0,0,,{\an8\pos(960,1008)}In another window of the same playthrough,\Nfrom the original day 6 to day 9, the main army entered a new county.
+Dialogue: 0,0:08:56.83,0:09:05.73,Chinese,C03-05-S02,0,0,0,,{\an8\pos(960,935)}人数从二千五百四十变成二千四百一十三，净少一百二十七。这个窗口补给库存没有变化。
+Dialogue: 0,0:08:56.83,0:09:05.73,English,C03-05-S02,0,0,0,,{\an8\pos(960,1030)}It fell from 2,540 to 2,413 soldiers: a net loss of 127. Supply stock did not change.
+Dialogue: 0,0:09:06.36,0:09:11.90,Chinese,C03-05-S03,0,0,0,,{\an8\pos(960,935)}已查明的县界移动损耗有独立入口，与这组前后观察吻合。
+Dialogue: 0,0:09:06.36,0:09:11.90,English,C03-05-S03,0,0,0,,{\an8\pos(960,1030)}The separate native path for county-entry attrition agrees with these before-and-after observations.
+Dialogue: 0,0:09:12.66,0:09:14.50,Chinese,C03-06-S01,0,0,0,,{\an8\pos(960,935)}这项解释仍有边界。
+Dialogue: 0,0:09:12.66,0:09:14.50,English,C03-06-S01,0,0,0,,{\an8\pos(960,1030)}That explanation still has limits.
+Dialogue: 0,0:09:15.13,0:09:21.40,Chinese,C03-06-S02,0,0,0,,{\an8\pos(960,935)}当次所有判定条件没有独立读全，中间未见的事件也没有一并排除。
+Dialogue: 0,0:09:15.13,0:09:21.40,English,C03-06-S02,0,0,0,,{\an8\pos(960,1008)}Not every condition was independently read at the time,\Nand unseen intermediate events were not all ruled out.
+Dialogue: 0,0:09:22.00,0:09:25.93,Chinese,C03-06-S03,0,0,0,,{\an8\pos(960,935)}净少一百二十七，不是死亡一百二十七的统计。
+Dialogue: 0,0:09:22.00,0:09:25.93,English,C03-06-S03,0,0,0,,{\an8\pos(960,1030)}A net decrease of 127 is not a count of 127 deaths.
+Dialogue: 0,0:09:26.56,0:09:33.30,Chinese,C03-06-S04,0,0,0,,{\an8\pos(960,935)}口播采用兵员损失或人数净减少，具体原因按这一个窗口的证据解释。
+Dialogue: 0,0:09:26.56,0:09:33.30,English,C03-06-S04,0,0,0,,{\an8\pos(960,1008)}We say “soldier losses” or “net decrease,”\Nand explain the cause within the evidence for this window.
+Dialogue: 0,0:09:34.03,0:09:38.96,Chinese,C03-07-S01,0,0,0,,{\an8\pos(960,935)}一月二十日的新暂停样本，读到了更完整的当前县域条件。
+Dialogue: 0,0:09:34.03,0:09:38.96,English,C03-07-S01,0,0,0,,{\an8\pos(960,1030)}A new paused January 20 sample gave us more complete current county-entry conditions.
+Dialogue: 0,0:09:39.56,0:09:47.50,Chinese,C03-07-S02,0,0,0,,{\an8\pos(960,935)}下令前后整军仍是六千七百四十六，满员六千七百四十七，全部二十七团没有变化。
+Dialogue: 0,0:09:39.56,0:09:47.50,English,C03-07-S02,0,0,0,,{\an8\pos(960,1008)}Before and after the order, the army remained at 6,746 soldiers out of 6,747,\Nwith all 27 regiments unchanged.
+Dialogue: 0,0:09:48.13,0:09:52.70,Chinese,C03-07-S03,0,0,0,,{\an8\pos(960,935)}当前有效比例约百分之三点五，预算二百三十六；
+Dialogue: 0,0:09:48.13,0:09:52.70,English,C03-07-S03,0,0,0,,{\an8\pos(960,1030)}The current effective percentage was about 3.5%, with a budget of 236.
+Dialogue: 0,0:09:53.10,0:09:55.60,Chinese,C03-07-S04,0,0,0,,{\an8\pos(960,935)}预算仍然不是已经扣掉的人数。
+Dialogue: 0,0:09:53.10,0:09:55.60,English,C03-07-S04,0,0,0,,{\an8\pos(960,1030)}That budget is still not a count already removed.
+Dialogue: 0,0:09:56.33,0:09:59.20,Chinese,C03-08-S01,0,0,0,,{\an8\pos(960,935)}判定还要看实际储存的下一步路线。
+Dialogue: 0,0:09:56.33,0:09:59.20,English,C03-08-S01,0,0,0,,{\an8\pos(960,1030)}The condition also uses the actual stored next step.
+Dialogue: 0,0:09:59.83,0:10:06.96,Chinese,C03-08-S02,0,0,0,,{\an8\pos(960,935)}这次最终目的地虽在更远处，当前判断取的是正在走的第一步，结果不通过。
+Dialogue: 0,0:09:59.83,0:10:06.96,English,C03-08-S02,0,0,0,,{\an8\pos(960,1008)}Although the final destination was farther away,\Nthis check used the first step being traveled, and did not pass.
+Dialogue: 0,0:10:07.56,0:10:13.10,Chinese,C03-08-S03,0,0,0,,{\an8\pos(960,935)}下令前没有储存路线时，这项条件是未知，不能写成不通过。
+Dialogue: 0,0:10:07.56,0:10:13.10,English,C03-08-S03,0,0,0,,{\an8\pos(960,1008)}Before the order, there was no stored route, so this condition was unknown.\NUnknown cannot be written as a failed condition.
+Dialogue: 0,0:10:13.70,0:10:19.70,Chinese,C03-08-S04,0,0,0,,{\an8\pos(960,935)}下令后的结果，也只说明当前暂停点，不保证以后每一步都一样。
+Dialogue: 0,0:10:13.70,0:10:19.70,English,C03-08-S04,0,0,0,,{\an8\pos(960,1030)}The result after the order describes the current paused point, not every later step.
+Dialogue: 0,0:10:20.43,0:10:30.20,Chinese,C03-09-S01,0,0,0,,{\an8\pos(960,910)}这轮行军随后观察到两日内的真实减少：\N整军从六千七百四十六变成六千六百七十九，净少六十七。
+Dialogue: 0,0:10:20.43,0:10:30.20,English,C03-09-S01,0,0,0,,{\an8\pos(960,1008)}That journey later showed an actual two-day decrease,\Nfrom 6,746 to 6,679 soldiers: a net loss of 67.
+Dialogue: 0,0:10:30.80,0:10:34.60,Chinese,C03-09-S02,0,0,0,,{\an8\pos(960,935)}完整二十七个兵团的身份和满员数都相同，
+Dialogue: 0,0:10:30.80,0:10:34.60,English,C03-09-S02,0,0,0,,{\an8\pos(960,1030)}All 27 regiments kept the same identities and maximum strengths.
+Dialogue: 0,0:10:35.00,0:10:38.23,Chinese,C03-09-S03,0,0,0,,{\an8\pos(960,935)}其中十六团人数下降，合计六十七。
+Dialogue: 0,0:10:35.00,0:10:38.23,English,C03-09-S03,0,0,0,,{\an8\pos(960,1030)}Sixteen regiments lost soldiers, adding up to 67.
+Dialogue: 0,0:10:38.83,0:10:43.73,Chinese,C03-09-S04,0,0,0,,{\an8\pos(960,935)}这是实际人数变化，已经超出了仅仅读提示框的范围。
+Dialogue: 0,0:10:38.83,0:10:43.73,English,C03-09-S04,0,0,0,,{\an8\pos(960,1030)}This is an actual change in strength, beyond simply reading a tooltip.
+Dialogue: 0,0:10:44.46,0:10:51.16,Chinese,C03-10-S01,0,0,0,,{\an8\pos(960,935)}同期补给从约一百一十六点五二降到一百一十点三八，净少约六点一四。
+Dialogue: 0,0:10:44.46,0:10:51.16,English,C03-10-S01,0,0,0,,{\an8\pos(960,1030)}In the same window, supply fell from about 116.52 to 110.38: a net decrease of about 6.14.
+Dialogue: 0,0:10:51.80,0:10:57.73,Chinese,C03-10-S02,0,0,0,,{\an8\pos(960,935)}前一个观察点的当前月变化约负八点七七，后一个约负六点一四。
+Dialogue: 0,0:10:51.80,0:10:57.73,English,C03-10-S02,0,0,0,,{\an8\pos(960,1030)}The current monthly change was about −8.77 at the first observation, and −6.14 at the second.
+Dialogue: 0,0:10:58.33,0:11:03.33,Chinese,C03-10-S03,0,0,0,,{\an8\pos(960,935)}后者与库存差吻合，但它是后来那个地点的当前计算，
+Dialogue: 0,0:10:58.33,0:11:03.33,English,C03-10-S03,0,0,0,,{\an8\pos(960,1030)}The latter matches the stock difference, but is the current calculation read afterward.
+Dialogue: 0,0:11:03.60,0:11:08.10,Chinese,C03-10-S04,0,0,0,,{\an8\pos(960,935)}不能倒过来当成前面更新时已经确认使用的数值。
+Dialogue: 0,0:11:03.60,0:11:08.10,English,C03-10-S04,0,0,0,,{\an8\pos(960,1030)}We cannot turn it into a value confirmed to have been used during the earlier update.
+Dialogue: 0,0:11:08.83,0:11:12.40,Chinese,C03-11-S01,0,0,0,,{\an8\pos(960,935)}这个两日窗口跨过了该军的周期更新机会，
+Dialogue: 0,0:11:08.83,0:11:12.40,English,C03-11-S01,0,0,0,,{\an8\pos(960,1030)}This two-day window crossed the army's periodic update opportunity.
+Dialogue: 0,0:11:12.63,0:11:17.46,Chinese,C03-11-S02,0,0,0,,{\an8\pos(960,935)}之前的围攻预算和有条件的逐团分配都吻合实际变化。
+Dialogue: 0,0:11:12.63,0:11:17.46,English,C03-11-S02,0,0,0,,{\an8\pos(960,1008)}The earlier siege budget and a conditional\Nregiment-by-regiment distribution both match the actual change.
+Dialogue: 0,0:11:18.10,0:11:24.53,Chinese,C03-11-S03,0,0,0,,{\an8\pos(960,935)}但没有逐团确认当时所有条件，也没有证明未观察的间隔绝无补员。
+Dialogue: 0,0:11:18.10,0:11:24.53,English,C03-11-S03,0,0,0,,{\an8\pos(960,1008)}But not every condition was confirmed for each regiment at execution,\Nand we have not proved there was no reinforcement between observations.
+Dialogue: 0,0:11:25.16,0:11:29.60,Chinese,C03-11-S04,0,0,0,,{\an8\pos(960,935)}两端库存远高于饥饿边界，第一步条件仍不通过，
+Dialogue: 0,0:11:25.16,0:11:29.60,English,C03-11-S04,0,0,0,,{\an8\pos(960,1008)}Both stocks were far above the starvation threshold,\Nand the first-step condition still did not pass.
+Dialogue: 0,0:11:29.86,0:11:35.90,Chinese,C03-11-S05,0,0,0,,{\an8\pos(960,935)}所以不能把这段说成县界已经扣了二百三十六，或已经证明饥饿。
+Dialogue: 0,0:11:29.86,0:11:35.90,English,C03-11-S05,0,0,0,,{\an8\pos(960,1030)}This does not show 236 soldiers already lost at a county boundary, or prove starvation.
+Dialogue: 0,0:11:36.63,0:11:46.73,Chinese,C03-12-S01,0,0,0,,{\an8\pos(960,910)}要完成饥饿专题，仍需在威廉这一案里看见补给跨过相关边界、\N状态发生变化，再读到对应的整数兵员减少；
+Dialogue: 0,0:11:36.63,0:11:46.73,English,C03-12-S01,0,0,0,,{\an8\pos(960,1008)}To complete the starvation case, we still need to see William's supplies cross the\Nrelevant threshold, the state change, and corresponding integer soldier losses.
+Dialogue: 0,0:11:47.10,0:11:50.33,Chinese,C03-12-S02,0,0,0,,{\an8\pos(960,935)}同窗补员、战斗和事件也要核对。
+Dialogue: 0,0:11:47.10,0:11:50.33,English,C03-12-S02,0,0,0,,{\an8\pos(960,1030)}Reinforcement, combat, and events must be checked in the same window.
+Dialogue: 0,0:11:50.93,0:11:56.73,Chinese,C03-12-S03,0,0,0,,{\an8\pos(960,935)}当前预算、围城窗口和移动窗口各有价值，不能彼此代替。
+Dialogue: 0,0:11:50.93,0:11:56.73,English,C03-12-S03,0,0,0,,{\an8\pos(960,1008)}Current budgets, siege windows,\Nand movement windows each have value, but cannot replace one another.
+Dialogue: 0,0:11:57.33,0:12:02.16,Chinese,C03-12-S04,0,0,0,,{\an8\pos(960,935)}缺的那一步保留，不从高补给减员样本里制造饥饿结果。
+Dialogue: 0,0:11:57.33,0:12:02.16,English,C03-12-S04,0,0,0,,{\an8\pos(960,1030)}The missing step remains open. A high-supply loss sample cannot become a starvation result.
+Dialogue: 0,0:12:02.93,0:12:06.40,Chinese,C04-01-S01,0,0,0,,{\an8\pos(960,935)}路线先决定去哪里，再影响什么时候能到。
+Dialogue: 0,0:12:02.93,0:12:06.40,English,C04-01-S01,0,0,0,,{\an8\pos(960,1030)}A route determines where an army goes, then affects when it can arrive.
+Dialogue: 0,0:12:07.00,0:12:14.13,Chinese,C04-01-S02,0,0,0,,{\an8\pos(960,935)}下令前，地图显示“预期抵达时间”；下令后，军队窗口显示当前剩余时间。
+Dialogue: 0,0:12:07.00,0:12:14.13,English,C04-01-S02,0,0,0,,{\an8\pos(960,1008)}Before the order, the map shows “Predicted arrival.”\NAfterward, the army window shows the current time remaining.
+Dialogue: 0,0:12:14.76,0:12:19.10,Chinese,C04-01-S03,0,0,0,,{\an8\pos(960,935)}真正到场还要看实际位置、状态和剩余路线。
+Dialogue: 0,0:12:14.76,0:12:19.10,English,C04-01-S03,0,0,0,,{\an8\pos(960,1030)}Actual arrival still requires checking location, state, and the remaining route.
+Dialogue: 0,0:12:19.73,0:12:23.06,Chinese,C04-01-S04,0,0,0,,{\an8\pos(960,935)}看到一个日期，不能直接当成已经抵达。
+Dialogue: 0,0:12:19.73,0:12:23.06,English,C04-01-S04,0,0,0,,{\an8\pos(960,1030)}A displayed date does not mean the army is already there.
+Dialogue: 0,0:12:23.80,0:12:29.90,Chinese,C04-02-S01,0,0,0,,{\an8\pos(960,935)}一月二十日，军队窗口显示“抵达利雪，剩余四十三天，三月四日”。
+Dialogue: 0,0:12:23.80,0:12:29.90,English,C04-02-S01,0,0,0,,{\an8\pos(960,1030)}On January 20, the army window showed arrival at Lisieux in 43 days, on March 4.
+Dialogue: 0,0:12:30.53,0:12:33.13,Chinese,C04-02-S02,0,0,0,,{\an8\pos(960,935)}这是整条路线的当前界面估计。
+Dialogue: 0,0:12:30.53,0:12:33.13,English,C04-02-S02,0,0,0,,{\an8\pos(960,1030)}That was the current interface estimate for the whole route.
+Dialogue: 0,0:12:33.73,0:12:41.83,Chinese,C04-02-S03,0,0,0,,{\an8\pos(960,935)}与此同时，独立读取的当前第一段时量是三十天，进度为零，后面还储存着其他路段。
+Dialogue: 0,0:12:33.73,0:12:41.83,English,C04-02-S03,0,0,0,,{\an8\pos(960,1008)}At the same time, a separate first-leg reading showed 30 days remaining and zero progress,\Nwith later legs still stored.
+Dialogue: 0,0:12:42.56,0:12:46.26,Chinese,C04-03-S01,0,0,0,,{\an8\pos(960,935)}四十三天与三十天描述的行程范围不同。
+Dialogue: 0,0:12:42.56,0:12:46.26,English,C04-03-S01,0,0,0,,{\an8\pos(960,1030)}Those 43 days and 30 days describe different parts of the journey.
+Dialogue: 0,0:12:46.90,0:12:51.33,Chinese,C04-03-S02,0,0,0,,{\an8\pos(960,935)}不能拿首段三十天，说整支军队三十天就到利雪；
+Dialogue: 0,0:12:46.90,0:12:51.33,English,C04-03-S02,0,0,0,,{\an8\pos(960,1030)}We cannot use the first leg's 30 days to claim the whole army will reach Lisieux in 30 days.
+Dialogue: 0,0:12:51.76,0:12:56.53,Chinese,C04-03-S03,0,0,0,,{\an8\pos(960,935)}也不能只因为两个数不同，就判定界面或读取出错。
+Dialogue: 0,0:12:51.76,0:12:56.53,English,C04-03-S03,0,0,0,,{\an8\pos(960,1030)}Their difference alone does not establish an error in either reading.
+Dialogue: 0,0:12:57.13,0:13:02.26,Chinese,C04-03-S04,0,0,0,,{\an8\pos(960,935)}把整条估计与当前首段分开保留，真实抵达再核对。
+Dialogue: 0,0:12:57.13,0:13:02.26,English,C04-03-S04,0,0,0,,{\an8\pos(960,1030)}Keep the whole-route estimate and the first-leg time separate, then check actual arrival.
+Dialogue: 0,0:13:02.86,0:13:07.16,Chinese,C04-03-S05,0,0,0,,{\an8\pos(960,935)}两数相减也不会自动得到精确的后续路程时长。
+Dialogue: 0,0:13:02.86,0:13:07.16,English,C04-03-S05,0,0,0,,{\an8\pos(960,1030)}Subtracting them does not automatically give the exact duration of the later legs.
+Dialogue: 0,0:13:07.90,0:13:11.76,Chinese,C04-04-S01,0,0,0,,{\an8\pos(960,935)}这些查询和下令前后仍是同一个游戏日期，
+Dialogue: 0,0:13:07.90,0:13:11.76,English,C04-04-S01,0,0,0,,{\an8\pos(960,1030)}The queries and order were still on the same game date.
+Dialogue: 0,0:13:12.13,0:13:17.10,Chinese,C04-04-S02,0,0,0,,{\an8\pos(960,935)}军队没有因为我们读到四十三天或三十天，就移动到目的地。
+Dialogue: 0,0:13:12.13,0:13:17.10,English,C04-04-S02,0,0,0,,{\an8\pos(960,1030)}Reading 43 days or 30 days did not move the army to its destination.
+Dialogue: 0,0:13:17.70,0:13:20.53,Chinese,C04-04-S03,0,0,0,,{\an8\pos(960,935)}行军之后要重新看当前估计，
+Dialogue: 0,0:13:17.70,0:13:20.53,English,C04-04-S03,0,0,0,,{\an8\pos(960,1030)}After marching, check the current estimate afresh.
+Dialogue: 0,0:13:20.90,0:13:25.33,Chinese,C04-04-S04,0,0,0,,{\an8\pos(960,935)}不能拿旧提示减去经过天数，冒充一次新的计算。
+Dialogue: 0,0:13:20.90,0:13:25.33,English,C04-04-S04,0,0,0,,{\an8\pos(960,1030)}Subtracting elapsed days from an old tooltip does not create a new calculation.
+Dialogue: 0,0:13:26.10,0:13:29.73,Chinese,C04-05-S01,0,0,0,,{\an8\pos(960,935)}另一轮的一月二十五日，画面出现“移动锁定”。
+Dialogue: 0,0:13:26.10,0:13:29.73,English,C04-05-S01,0,0,0,,{\an8\pos(960,1030)}On January 25 of another replay, the screen showed “Movement Locked.”
+Dialogue: 0,0:13:30.33,0:13:34.66,Chinese,C04-05-S02,0,0,0,,{\an8\pos(960,935)}同一暂停点，当前路段约走了百分之六十一点九；
+Dialogue: 0,0:13:30.33,0:13:34.66,English,C04-05-S02,0,0,0,,{\an8\pos(960,1030)}At that same paused point, the current leg was about 61.9% complete.
+Dialogue: 0,0:13:35.10,0:13:41.63,Chinese,C04-05-S03,0,0,0,,{\an8\pos(960,935)}独立剩余时量约三点零八天，界面显示四天、预计一月二十九日抵达。
+Dialogue: 0,0:13:35.10,0:13:41.63,English,C04-05-S03,0,0,0,,{\an8\pos(960,1008)}The separate remaining-time reading was about 3.08 days,\Nwhile the interface showed four days and arrival predicted for January 29.
+Dialogue: 0,0:13:42.23,0:13:48.36,Chinese,C04-05-S04,0,0,0,,{\an8\pos(960,935)}它们可以并列读，当前路段进度也不当作任意整条路线的统一百分比。
+Dialogue: 0,0:13:42.23,0:13:48.36,English,C04-05-S04,0,0,0,,{\an8\pos(960,1008)}Read these side by side,\Nwithout treating the current leg's progress as a percentage for any entire route.
+Dialogue: 0,0:13:49.10,0:13:52.00,Chinese,C04-06-S01,0,0,0,,{\an8\pos(960,935)}原生概念用一半进度说明锁定。
+Dialogue: 0,0:13:49.10,0:13:52.00,English,C04-06-S01,0,0,0,,{\an8\pos(960,1030)}The Chinese game concept describes the lock at halfway.
+Dialogue: 0,0:13:52.63,0:14:00.80,Chinese,C04-06-S02,0,0,0,,{\an8\pos(960,910)}这个超过一半的实际样本，可以证明当时已经锁定，\N却不能替代正好百分之五十的边界实验。
+Dialogue: 0,0:13:52.63,0:14:00.80,English,C04-06-S02,0,0,0,,{\an8\pos(960,1008)}This actual sample beyond halfway shows the army was locked then,\Nbut does not replace a test at exactly 50%.
+Dialogue: 0,0:14:01.40,0:14:05.46,Chinese,C04-06-S03,0,0,0,,{\an8\pos(960,935)}画面没有单独告诉我们取消移动的精确边界，
+Dialogue: 0,0:14:01.40,0:14:05.46,English,C04-06-S03,0,0,0,,{\an8\pos(960,1030)}The image alone does not give us the exact boundary for cancelling movement.
+Dialogue: 0,0:14:05.86,0:14:10.16,Chinese,C04-06-S04,0,0,0,,{\an8\pos(960,935)}所以先讲当时锁定，刚好一半仍留给实际测试。
+Dialogue: 0,0:14:05.86,0:14:10.16,English,C04-06-S04,0,0,0,,{\an8\pos(960,1030)}We can explain the observed lock; exactly halfway still needs an actual test.
+Dialogue: 0,0:14:10.93,0:14:16.33,Chinese,C04-07-S01,0,0,0,,{\an8\pos(960,935)}锁定之后按“停止移动”，要看当前路段和后续路线的区别。
+Dialogue: 0,0:14:10.93,0:14:16.33,English,C04-07-S01,0,0,0,,{\an8\pos(960,1030)}After movement locks, “Halt movement” needs a check of the current leg versus the later route.
+Dialogue: 0,0:14:16.96,0:14:23.86,Chinese,C04-07-S02,0,0,0,,{\an8\pos(960,935)}条件允许时，可以停在当前地点，也可以保留正在走的第一段、撤掉后面的路；
+Dialogue: 0,0:14:16.96,0:14:23.86,English,C04-07-S02,0,0,0,,{\an8\pos(960,1008)}When conditions allow, the army may stop at its current location,\Nor keep the active first leg and remove the rest.
+Dialogue: 0,0:14:24.10,0:14:26.66,Chinese,C04-07-S03,0,0,0,,{\an8\pos(960,935)}只剩一段等情况还可能拒绝。
+Dialogue: 0,0:14:24.10,0:14:26.66,English,C04-07-S03,0,0,0,,{\an8\pos(960,1030)}Cases such as only one leg remaining may be refused.
+Dialogue: 0,0:14:27.30,0:14:30.60,Chinese,C04-07-S04,0,0,0,,{\an8\pos(960,935)}按钮提交成功，不等于已经原地停止。
+Dialogue: 0,0:14:27.30,0:14:30.60,English,C04-07-S04,0,0,0,,{\an8\pos(960,1030)}A successful button submission does not mean the army has stopped in place.
+Dialogue: 0,0:14:31.33,0:14:38.63,Chinese,C04-08-S01,0,0,0,,{\an8\pos(960,935)}正式画面需要依次看到停止前的路线、操作后剩下什么，再到军队实际到了哪里。
+Dialogue: 0,0:14:31.33,0:14:38.63,English,C04-08-S01,0,0,0,,{\an8\pos(960,1008)}The footage needs to show the route before halting,\Nwhat remains after the action, and where the army actually arrives.
+Dialogue: 0,0:14:39.26,0:14:46.76,Chinese,C04-08-S02,0,0,0,,{\an8\pos(960,935)}改道也一样：旧的首段是否保留，新目的地和后续路线是否真的改变，都要读回。
+Dialogue: 0,0:14:39.26,0:14:46.76,English,C04-08-S02,0,0,0,,{\an8\pos(960,1008)}For a reroute,\Nread back whether the old first leg remains and whether the new destination and later route changed.
+Dialogue: 0,0:14:47.36,0:14:51.46,Chinese,C04-08-S03,0,0,0,,{\an8\pos(960,935)}一个下令确认消息，不能替代这一串真实状态。
+Dialogue: 0,0:14:47.36,0:14:51.46,English,C04-08-S03,0,0,0,,{\an8\pos(960,1030)}One order acknowledgement cannot replace that sequence of actual states.
+Dialogue: 0,0:14:52.16,0:14:54.76,Chinese,C04-09-S01,0,0,0,,{\an8\pos(960,935)}下令前的警告也有自己的范围。
+Dialogue: 0,0:14:52.16,0:14:54.76,English,C04-09-S01,0,0,0,,{\an8\pos(960,1030)}Pre-order warnings also have their own scope.
+Dialogue: 0,0:14:55.36,0:15:01.46,Chinese,C04-09-S02,0,0,0,,{\an8\pos(960,935)}“会支付登船费”说的是当前路线预计包含支付事件，不是钱已经扣了。
+Dialogue: 0,0:14:55.36,0:15:01.46,English,C04-09-S02,0,0,0,,{\an8\pos(960,1008)}“Will pay embarkation fees” says the current route is expected to include a payment event,\Nnot that gold has already been deducted.
+Dialogue: 0,0:15:02.06,0:15:07.80,Chinese,C04-09-S03,0,0,0,,{\an8\pos(960,935)}县域预算二百三十六，也不是每经过一个省就必定扣二百三十六。
+Dialogue: 0,0:15:02.06,0:15:07.80,English,C04-09-S03,0,0,0,,{\an8\pos(960,1030)}A county-entry budget of 236 does not mean every province crossed must cost 236 soldiers.
+Dialogue: 0,0:15:08.43,0:15:12.93,Chinese,C04-09-S04,0,0,0,,{\an8\pos(960,935)}规划提示、动作后的状态和实际结算要分别记。
+Dialogue: 0,0:15:08.43,0:15:12.93,English,C04-09-S04,0,0,0,,{\an8\pos(960,1030)}Record planning warnings, the state after the order, and actual settlement separately.
+Dialogue: 0,0:15:13.63,0:15:17.23,Chinese,C04-10-S01,0,0,0,,{\an8\pos(960,935)}这轮行军后来还核到了登船和登陆窗口。
+Dialogue: 0,0:15:13.63,0:15:17.23,English,C04-10-S01,0,0,0,,{\an8\pos(960,1030)}This journey later gave us boarding and landing windows.
+Dialogue: 0,0:15:17.86,0:15:23.76,Chinese,C04-10-S02,0,0,0,,{\an8\pos(960,935)}相对一月二十日起点，第三十到三十二日进入海段、变成已登船；
+Dialogue: 0,0:15:17.86,0:15:23.76,English,C04-10-S02,0,0,0,,{\an8\pos(960,1030)}From day 30 to day 32 after the January 20 start, the army entered the sea leg and became embarked.
+Dialogue: 0,0:15:24.00,0:15:29.20,Chinese,C04-10-S03,0,0,0,,{\an8\pos(960,935)}第四十二到四十四日抵达陆地，路线走完、回到普通状态。
+Dialogue: 0,0:15:24.00,0:15:29.20,English,C04-10-S03,0,0,0,,{\an8\pos(960,1030)}From day 42 to day 44, it reached land, completed the route, and returned to a regular state.
+Dialogue: 0,0:15:29.80,0:15:35.16,Chinese,C04-10-S04,0,0,0,,{\an8\pos(960,935)}两窗完整二十七团都仍是六千六百七十九，库存也没变。
+Dialogue: 0,0:15:29.80,0:15:35.16,English,C04-10-S04,0,0,0,,{\an8\pos(960,1030)}All 27 regiments stayed at a total of 6,679 soldiers in both windows, with supply unchanged.
+Dialogue: 0,0:15:35.76,0:15:43.16,Chinese,C04-10-S05,0,0,0,,{\an8\pos(960,935)}这只说明各自前后净变化；登陆后补员条件已经变化，后续要重新建立基线。
+Dialogue: 0,0:15:35.76,0:15:43.16,English,C04-10-S05,0,0,0,,{\an8\pos(960,1008)}That describes each window's net change.\NReinforcement conditions changed after landing, so later observations need a new baseline.
+Dialogue: 0,0:15:43.93,0:15:50.63,Chinese,C04-11-S01,0,0,0,,{\an8\pos(960,935)}接下来选路线，同时看合法路径、当前估计、下一步条件和沿途补给。
+Dialogue: 0,0:15:43.93,0:15:50.63,English,C04-11-S01,0,0,0,,{\an8\pos(960,1008)}When choosing a route, check the legal path, current estimate,\Nnext-step condition, and supply along the way.
+Dialogue: 0,0:15:51.23,0:15:59.10,Chinese,C04-11-S02,0,0,0,,{\an8\pos(960,935)}看到一个可走地点，还要验证到了那里是否适合恢复；看到到达日期，还要等真正抵达。
+Dialogue: 0,0:15:51.23,0:15:59.10,English,C04-11-S02,0,0,0,,{\an8\pos(960,1008)}A reachable location still needs testing for recovery.\NAn arrival date still needs an actual arrival.
+Dialogue: 0,0:15:59.70,0:16:07.63,Chinese,C04-11-S03,0,0,0,,{\an8\pos(960,935)}完成同一起点的独立回放后，才能把时间、兵力、库存和实际支付放进同一张表。
+Dialogue: 0,0:15:59.70,0:16:07.63,English,C04-11-S03,0,0,0,,{\an8\pos(960,1008)}Only after separate replays from the same starting point are complete can we compare time,\Nstrength, supply, and actual payments in one table.
+Dialogue: 0,0:16:08.36,0:16:11.00,Chinese,C05-01-S01,0,0,0,,{\an8\pos(960,935)}现在把这些读数放进选择里。
+Dialogue: 0,0:16:08.36,0:16:11.00,English,C05-01-S01,0,0,0,,{\an8\pos(960,1030)}Now use these readings to make choices.
+Dialogue: 0,0:16:11.60,0:16:17.06,Chinese,C05-01-S02,0,0,0,,{\an8\pos(960,935)}整军直走、分兵休整会合、换路线，都回答同一组问题：
+Dialogue: 0,0:16:11.60,0:16:17.06,English,C05-01-S02,0,0,0,,{\an8\pos(960,1008)}Marching as one army, splitting to recover and reunite,\Nand taking another route answer the same questions.
+Dialogue: 0,0:16:17.43,0:16:24.33,Chinese,C05-01-S03,0,0,0,,{\an8\pos(960,935)}什么时候真正到，剩多少兵，库存与缺员有没有恢复，途中实际付了什么钱。
+Dialogue: 0,0:16:17.43,0:16:24.33,English,C05-01-S03,0,0,0,,{\an8\pos(960,1008)}When did the army actually arrive? How many soldiers remained?\NDid supply and missing strength recover? What was actually paid along the way?
+Dialogue: 0,0:16:24.96,0:16:29.56,Chinese,C05-01-S04,0,0,0,,{\an8\pos(960,935)}比较前，先确保每次从同一个已经验收的起点出发。
+Dialogue: 0,0:16:24.96,0:16:29.56,English,C05-01-S04,0,0,0,,{\an8\pos(960,1030)}Before comparing, every replay must begin at the same verified starting point.
+Dialogue: 0,0:16:30.33,0:16:38.23,Chinese,C05-02-S01,0,0,0,,{\an8\pos(960,935)}起点要保留完整兵团、当前人数和满员数、库存、容量、位置、路线与统帅。
+Dialogue: 0,0:16:30.33,0:16:38.23,English,C05-02-S01,0,0,0,,{\an8\pos(960,1008)}That starting point preserves every regiment, current and maximum soldiers,\Nsupply, capacity, location, route, and commander.
+Dialogue: 0,0:16:38.83,0:16:46.76,Chinese,C05-02-S02,0,0,0,,{\an8\pos(960,935)}仅有一个存档文件，还不能宣布对照成立；可用休整地点和合法替代路线也要先验证。
+Dialogue: 0,0:16:38.83,0:16:46.76,English,C05-02-S02,0,0,0,,{\an8\pos(960,1008)}A save file alone does not establish a valid comparison.\NRecovery locations and legal alternative routes need checking too.
+Dialogue: 0,0:16:47.40,0:16:53.70,Chinese,C05-02-S03,0,0,0,,{\an8\pos(960,935)}三次回放各自保留操作、日期和结果，才知道在比较哪一种安排。
+Dialogue: 0,0:16:47.40,0:16:53.70,English,C05-02-S03,0,0,0,,{\an8\pos(960,1030)}Each replay keeps its own actions, dates, and results, so we know which plan we are comparing.
+Dialogue: 0,0:16:54.43,0:16:59.60,Chinese,C05-03-S01,0,0,0,,{\an8\pos(960,935)}先看方案A，整支军队沿选定路线直走，目标是伦敦。
+Dialogue: 0,0:16:54.43,0:16:59.60,English,C05-03-S01,0,0,0,,{\an8\pos(960,1030)}First, Plan A keeps the whole army together on the chosen route to London.
+Dialogue: 0,0:17:00.23,0:17:06.16,Chinese,C05-03-S02,0,0,0,,{\an8\pos(960,935)}从共同起点算起，第五十一个游戏日，我们第一次观察到它已经抵达。
+Dialogue: 0,0:17:00.23,0:17:06.16,English,C05-03-S02,0,0,0,,{\an8\pos(960,1030)}We first observed it there 51 game days after the shared start.
+Dialogue: 0,0:17:06.80,0:17:10.66,Chinese,C05-03-S03,0,0,0,,{\an8\pos(960,935)}前一个观察点是第四十九日，军队还在路上。
+Dialogue: 0,0:17:06.80,0:17:10.66,English,C05-03-S03,0,0,0,,{\an8\pos(960,1030)}At the previous observation, on day 49, the army was still travelling.
+Dialogue: 0,0:17:11.30,0:17:14.46,Chinese,C05-03-S04,0,0,0,,{\an8\pos(960,935)}所以，到达发生在这两次观察之间；
+Dialogue: 0,0:17:11.30,0:17:14.46,English,C05-03-S04,0,0,0,,{\an8\pos(960,1030)}It therefore arrived between those observations.
+Dialogue: 0,0:17:14.86,0:17:20.03,Chinese,C05-03-S05,0,0,0,,{\an8\pos(960,935)}第五十一日是首次看到结果的日期，精确到达时刻仍未知。
+Dialogue: 0,0:17:14.86,0:17:20.03,English,C05-03-S05,0,0,0,,{\an8\pos(960,1030)}Day 51 is when we first saw the result; the exact arrival time is still unknown.
+Dialogue: 0,0:17:20.76,0:17:26.73,Chinese,C05-04-S01,0,0,0,,{\an8\pos(960,935)}方案B先分兵，让两支军队分别到合格驻点休整，再会合。
+Dialogue: 0,0:17:20.76,0:17:26.73,English,C05-04-S01,0,0,0,,{\an8\pos(960,1030)}Plan B splits the army. Both groups rest at qualifying locations, then reunite.
+Dialogue: 0,0:17:27.33,0:17:29.33,Chinese,C05-04-S02,0,0,0,,{\an8\pos(960,935)}这里看一次独立的B回放：
+Dialogue: 0,0:17:27.33,0:17:29.33,English,C05-04-S02,0,0,0,,{\an8\pos(960,1030)}Here is an independent replay of B.
+Dialogue: 0,0:17:29.73,0:17:35.13,Chinese,C05-04-S03,0,0,0,,{\an8\pos(960,935)}在已核对的停驻窗口，两军当前补给月变化都读到正二十。
+Dialogue: 0,0:17:29.73,0:17:35.13,English,C05-04-S03,0,0,0,,{\an8\pos(960,1030)}During the checked rest window, both armies showed a current supply change of +20 per month.
+Dialogue: 0,0:17:35.76,0:17:39.46,Chinese,C05-04-S04,0,0,0,,{\an8\pos(960,935)}它只说当时的读数，不表示库存已经增加。
+Dialogue: 0,0:17:35.76,0:17:39.46,English,C05-04-S04,0,0,0,,{\an8\pos(960,1030)}That was the current rate. It does not show that supply had already increased.
+Dialogue: 0,0:17:40.10,0:17:43.26,Chinese,C05-04-S05,0,0,0,,{\an8\pos(960,935)}后面分别看人数和库存的实际变化；
+Dialogue: 0,0:17:40.10,0:17:43.26,English,C05-04-S05,0,0,0,,{\an8\pos(960,1030)}Next, we observe actual soldier and supply changes separately.
+Dialogue: 0,0:17:43.70,0:17:48.00,Chinese,C05-04-S06,0,0,0,,{\an8\pos(960,935)}实际合军之后，还要重新核对兵团与统帅条件，
+Dialogue: 0,0:17:43.70,0:17:48.00,English,C05-04-S06,0,0,0,,{\an8\pos(960,1030)}After the actual merge, we must check the regiments and commander again.
+Dialogue: 0,0:17:48.26,0:17:50.06,Chinese,C05-04-S07,0,0,0,,{\an8\pos(960,935)}伦敦终点仍未读到。
+Dialogue: 0,0:17:48.26,0:17:50.06,English,C05-04-S07,0,0,0,,{\an8\pos(960,1030)}B's London endpoint remains unobserved.
+Dialogue: 0,0:17:50.80,0:17:55.43,Chinese,C05-05-S01,0,0,0,,{\an8\pos(960,935)}方案C换路线，先经过已核验的中转点，再去伦敦。
+Dialogue: 0,0:17:50.80,0:17:55.43,English,C05-05-S01,0,0,0,,{\an8\pos(960,1030)}Plan C takes a different route, through verified waypoints to London.
+Dialogue: 0,0:17:56.06,0:18:00.43,Chinese,C05-05-S02,0,0,0,,{\an8\pos(960,935)}这次独立回放，在共同起点后的第七十七个游戏日，
+Dialogue: 0,0:17:56.06,0:18:00.43,English,C05-05-S02,0,0,0,,{\an8\pos(960,1030)}In this independent replay, on game day 77 after the shared start,
+Dialogue: 0,0:18:00.76,0:18:03.83,Chinese,C05-05-S03,0,0,0,,{\an8\pos(960,935)}我们首次观察到主力已经抵达伦敦；
+Dialogue: 0,0:18:00.76,0:18:03.83,English,C05-05-S03,0,0,0,,{\an8\pos(960,1030)}we first observed the main army in London.
+Dialogue: 0,0:18:04.06,0:18:06.13,Chinese,C05-05-S04,0,0,0,,{\an8\pos(960,935)}第七十五日它还在路上，
+Dialogue: 0,0:18:04.06,0:18:06.13,English,C05-05-S04,0,0,0,,{\an8\pos(960,1030)}It was still en route on day 75.
+Dialogue: 0,0:18:06.53,0:18:10.93,Chinese,C05-05-S05,0,0,0,,{\an8\pos(960,935)}所以实际到达在这两次观察之间，精确时刻未知。
+Dialogue: 0,0:18:06.53,0:18:10.93,English,C05-05-S05,0,0,0,,{\an8\pos(960,1030)}It arrived between those observations. The exact moment is unknown.
+Dialogue: 0,0:18:11.53,0:18:14.63,Chinese,C05-05-S06,0,0,0,,{\an8\pos(960,935)}这支主力从六千六百七十九人出发，
+Dialogue: 0,0:18:11.53,0:18:14.63,English,C05-05-S06,0,0,0,,{\an8\pos(960,1030)}This main army started with 6,679 soldiers.
+Dialogue: 0,0:18:15.03,0:18:19.13,Chinese,C05-05-S07,0,0,0,,{\an8\pos(960,935)}到达观测时是六千六百八十九，净增十人；
+Dialogue: 0,0:18:15.03,0:18:19.13,English,C05-05-S07,0,0,0,,{\an8\pos(960,1030)}At the arrival observation, it had 6,689: a net gain of ten.
+Dialogue: 0,0:18:19.30,0:18:22.73,Chinese,C05-05-S08,0,0,0,,{\an8\pos(960,935)}完整二十七个兵团的身份与满员数不变。
+Dialogue: 0,0:18:19.30,0:18:22.73,English,C05-05-S08,0,0,0,,{\an8\pos(960,1030)}All 27 regiments retained their identities and maximum soldier counts.
+Dialogue: 0,0:18:23.33,0:18:27.43,Chinese,C05-05-S09,0,0,0,,{\an8\pos(960,935)}补给从约一百一十点三八降到一百零一点九零，
+Dialogue: 0,0:18:23.33,0:18:27.43,English,C05-05-S09,0,0,0,,{\an8\pos(960,1030)}Supply fell from about 110.38 to 101.90.
+Dialogue: 0,0:18:27.73,0:18:28.83,Chinese,C05-05-S10,0,0,0,,{\an8\pos(960,935)}容量仍三百。
+Dialogue: 0,0:18:27.73,0:18:28.83,English,C05-05-S10,0,0,0,,{\an8\pos(960,1030)}Supply capacity remained 300.
+Dialogue: 0,0:18:29.46,0:18:32.00,Chinese,C05-05-S11,0,0,0,,{\an8\pos(960,935)}终点当前损耗读到百分之一，
+Dialogue: 0,0:18:29.46,0:18:32.00,English,C05-05-S11,0,0,0,,{\an8\pos(960,1030)}Current attrition at the endpoint was 1%.
+Dialogue: 0,0:18:32.40,0:18:37.63,Chinese,C05-05-S12,0,0,0,,{\an8\pos(960,935)}这是当时的条件读数，不能直接换算成旅途中死了多少兵。
+Dialogue: 0,0:18:32.40,0:18:37.63,English,C05-05-S12,0,0,0,,{\an8\pos(960,1030)}That was the rate under current conditions. It does not tell us how many died en route.
+Dialogue: 0,0:18:38.23,0:18:40.80,Chinese,C05-05-S13,0,0,0,,{\an8\pos(960,935)}这里报的是主力的原始编制，
+Dialogue: 0,0:18:38.23,0:18:40.80,English,C05-05-S13,0,0,0,,{\an8\pos(960,1030)}These figures describe the original main army.
+Dialogue: 0,0:18:41.13,0:18:43.40,Chinese,C05-05-S14,0,0,0,,{\an8\pos(960,935)}不是玩家所有单位的总人数。
+Dialogue: 0,0:18:41.13,0:18:43.40,English,C05-05-S14,0,0,0,,{\an8\pos(960,1030)}They are not the total soldiers in all player units.
+Dialogue: 0,0:18:44.13,0:18:48.53,Chinese,C05-06-S01,0,0,0,,{\an8\pos(960,935)}原版有“平分”“分出新军队”“整编”“合并军队”这些入口。
+Dialogue: 0,0:18:44.13,0:18:48.53,English,C05-06-S01,0,0,0,,{\an8\pos(960,1030)}The base game offers “Split in half,” “Split off new Army,” “Reorganize,” and “Merge armies.”
+Dialogue: 0,0:18:49.16,0:18:55.96,Chinese,C05-06-S02,0,0,0,,{\an8\pos(960,935)}平分把现有军队分成规模大致相等的两支，整编调整两支军队中的编制。
+Dialogue: 0,0:18:49.16,0:18:55.96,English,C05-06-S02,0,0,0,,{\an8\pos(960,1008)}Splitting in half makes two roughly equal armies.\NReorganizing changes how regiments are assigned between them.
+Dialogue: 0,0:18:56.56,0:19:01.06,Chinese,C05-06-S03,0,0,0,,{\an8\pos(960,935)}会合只是走到同地，点合并之后才真正成为一支。
+Dialogue: 0,0:18:56.56,0:19:01.06,English,C05-06-S03,0,0,0,,{\an8\pos(960,1030)}Reuniting means reaching the same location; clicking Merge makes them one army.
+Dialogue: 0,0:19:01.70,0:19:05.60,Chinese,C05-06-S04,0,0,0,,{\an8\pos(960,935)}名称、下令与实际组织变化分别核对。
+Dialogue: 0,0:19:01.70,0:19:05.60,English,C05-06-S04,0,0,0,,{\an8\pos(960,1030)}Check the name, order, and actual organizational change separately.
+Dialogue: 0,0:19:06.33,0:19:14.86,Chinese,C05-07-S01,0,0,0,,{\an8\pos(960,935)}三月五日的同一暂停点，实际平分后，原主军是三千三百三十七人、满员三千三百七十一；
+Dialogue: 0,0:19:06.33,0:19:14.86,English,C05-07-S01,0,0,0,,{\an8\pos(960,1030)}At the same paused point on March 5, the split left the main army with 3,337 soldiers out of 3,371.
+Dialogue: 0,0:19:15.13,0:19:19.50,Chinese,C05-07-S02,0,0,0,,{\an8\pos(960,935)}新分队三千三百四十二、满员三千三百七十六。
+Dialogue: 0,0:19:15.13,0:19:19.50,English,C05-07-S02,0,0,0,,{\an8\pos(960,1030)}The new detachment had 3,342 out of 3,376.
+Dialogue: 0,0:19:20.13,0:19:27.46,Chinese,C05-07-S03,0,0,0,,{\an8\pos(960,935)}合计仍六千六百七十九，满员六千七百四十七；完整二十七个兵团各归其位，
+Dialogue: 0,0:19:20.13,0:19:27.46,English,C05-07-S03,0,0,0,,{\an8\pos(960,1030)}Together they still had 6,679 soldiers out of 6,747, with all 27 regiments accounted for.
+Dialogue: 0,0:19:27.73,0:19:29.30,Chinese,C05-07-S04,0,0,0,,{\an8\pos(960,935)}没有因为平分丢失。
+Dialogue: 0,0:19:27.73,0:19:29.30,English,C05-07-S04,0,0,0,,{\an8\pos(960,1030)}No regiment was lost in the split.
+Dialogue: 0,0:19:30.03,0:19:35.00,Chinese,C05-08-S01,0,0,0,,{\an8\pos(960,935)}前面的平分样本里，两队都继承约一百一十点三八补给，
+Dialogue: 0,0:19:30.03,0:19:35.00,English,C05-08-S01,0,0,0,,{\an8\pos(960,1030)}In the earlier equal split, both armies inherited about 110.38 supply.
+Dialogue: 0,0:19:35.40,0:19:38.36,Chinese,C05-08-S02,0,0,0,,{\an8\pos(960,935)}主军容量三百，新分队容量一百。
+Dialogue: 0,0:19:35.40,0:19:38.36,English,C05-08-S02,0,0,0,,{\an8\pos(960,1030)}The main army had capacity 300; the new group had capacity 100.
+Dialogue: 0,0:19:39.00,0:19:40.93,Chinese,C05-08-S03,0,0,0,,{\an8\pos(960,935)}现在看这次B回放：
+Dialogue: 0,0:19:39.00,0:19:40.93,English,C05-08-S03,0,0,0,,{\an8\pos(960,1030)}Now look at this replay of B.
+Dialogue: 0,0:19:41.30,0:19:47.80,Chinese,C05-08-S04,0,0,0,,{\an8\pos(960,935)}起点后的第二十到二十一日，新分队库存从约一百一十点三八降到一百，
+Dialogue: 0,0:19:41.30,0:19:47.80,English,C05-08-S04,0,0,0,,{\an8\pos(960,1030)}Between days 20 and 21, the new group's supply fell from about 110.38 to 100.
+Dialogue: 0,0:19:48.23,0:19:51.70,Chinese,C05-08-S05,0,0,0,,{\an8\pos(960,935)}两军人数与完整兵团的前后读数都没变。
+Dialogue: 0,0:19:48.23,0:19:51.70,English,C05-08-S05,0,0,0,,{\an8\pos(960,1030)}Both armies' soldier counts and full regiment readings were unchanged.
+Dialogue: 0,0:19:52.30,0:19:54.83,Chinese,C05-08-S06,0,0,0,,{\an8\pos(960,935)}虽然当前月变化仍是正二十，
+Dialogue: 0,0:19:52.30,0:19:54.83,English,C05-08-S06,0,0,0,,{\an8\pos(960,1030)}The current monthly rate still showed +20.
+Dialogue: 0,0:19:55.16,0:19:58.16,Chinese,C05-08-S07,0,0,0,,{\an8\pos(960,935)}这次库存变化却是向下回到容量；
+Dialogue: 0,0:19:55.16,0:19:58.16,English,C05-08-S07,0,0,0,,{\an8\pos(960,1030)}But the actual supply change was downward, back to capacity.
+Dialogue: 0,0:19:58.53,0:20:01.76,Chinese,C05-08-S08,0,0,0,,{\an8\pos(960,935)}它不是补兵，也不是低库存补给增加。
+Dialogue: 0,0:19:58.53,0:20:01.76,English,C05-08-S08,0,0,0,,{\an8\pos(960,1030)}This was neither reinforcement nor a supply increase from a low stock.
+Dialogue: 0,0:20:02.53,0:20:05.50,Chinese,C05-09-S01,0,0,0,,{\an8\pos(960,935)}平分没有自动重开这轮补给宽限。
+Dialogue: 0,0:20:02.53,0:20:05.50,English,C05-09-S01,0,0,0,,{\an8\pos(960,1030)}Splitting did not automatically restart this supply grace period.
+Dialogue: 0,0:20:06.13,0:20:12.86,Chinese,C05-09-S02,0,0,0,,{\an8\pos(960,935)}新分队继承了原军队的这段计时，哪一天库存真正变化，还需要继续观察。
+Dialogue: 0,0:20:06.13,0:20:12.86,English,C05-09-S02,0,0,0,,{\an8\pos(960,1008)}The new detachment inherited that timing from the original army.\NWhen its stock actually changes still needs observation.
+Dialogue: 0,0:20:13.50,0:20:17.03,Chinese,C05-09-S03,0,0,0,,{\an8\pos(960,935)}容量不同，也不能代替统帅身份读取。
+Dialogue: 0,0:20:13.50,0:20:17.03,English,C05-09-S03,0,0,0,,{\an8\pos(960,1030)}A capacity difference cannot identify the commander.
+Dialogue: 0,0:20:17.63,0:20:24.13,Chinese,C05-09-S04,0,0,0,,{\an8\pos(960,935)}后来在两个驻点读到的统帅，只证明当时那一帧，不保证后面一直没变。
+Dialogue: 0,0:20:17.63,0:20:24.13,English,C05-09-S04,0,0,0,,{\an8\pos(960,1008)}Commanders read later at the two locations describe that particular frame,\Nnot a guarantee that they never changed afterward.
+Dialogue: 0,0:20:24.83,0:20:27.00,Chinese,C05-10-S01,0,0,0,,{\an8\pos(960,935)}接着看两个不同的窗口。
+Dialogue: 0,0:20:24.83,0:20:27.00,English,C05-10-S01,0,0,0,,{\an8\pos(960,1030)}Next, consider two separate observation windows.
+Dialogue: 0,0:20:27.63,0:20:33.63,Chinese,C05-10-S02,0,0,0,,{\an8\pos(960,935)}起点后的第二十六到二十七日，主军人数净增七，新分队净增三，
+Dialogue: 0,0:20:27.63,0:20:33.63,English,C05-10-S02,0,0,0,,{\an8\pos(960,1030)}Between days 26 and 27, the main army gained seven soldiers net; the new group gained three.
+Dialogue: 0,0:20:33.90,0:20:35.33,Chinese,C05-10-S03,0,0,0,,{\an8\pos(960,935)}两端库存相同。
+Dialogue: 0,0:20:33.90,0:20:35.33,English,C05-10-S03,0,0,0,,{\an8\pos(960,1030)}Supply was unchanged at both endpoints.
+Dialogue: 0,0:20:35.96,0:20:43.00,Chinese,C05-10-S04,0,0,0,,{\an8\pos(960,935)}第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，
+Dialogue: 0,0:20:35.96,0:20:43.00,English,C05-10-S04,0,0,0,,{\an8\pos(960,1030)}Between days 31 and 32, main-army supply rose from about 106.14 to 126.14.
+Dialogue: 0,0:20:43.23,0:20:45.10,Chinese,C05-10-S05,0,0,0,,{\an8\pos(960,935)}新分队两端都是一百，
+Dialogue: 0,0:20:43.23,0:20:45.10,English,C05-10-S05,0,0,0,,{\an8\pos(960,1030)}The new group had 100 at both endpoints.
+Dialogue: 0,0:20:45.46,0:20:48.13,Chinese,C05-10-S06,0,0,0,,{\an8\pos(960,935)}完整兵团的人数与编制也没变。
+Dialogue: 0,0:20:45.46,0:20:48.13,English,C05-10-S06,0,0,0,,{\an8\pos(960,1030)}The full regiment roster and soldier counts were also unchanged.
+Dialogue: 0,0:20:48.76,0:20:52.50,Chinese,C05-10-S07,0,0,0,,{\an8\pos(960,935)}人数净变化与补给增加各记自己的日期，
+Dialogue: 0,0:20:48.76,0:20:52.50,English,C05-10-S07,0,0,0,,{\an8\pos(960,1030)}Record soldier changes and supply gains on their own dates.
+Dialogue: 0,0:20:52.80,0:20:54.60,Chinese,C05-10-S08,0,0,0,,{\an8\pos(960,935)}不能剪成同一次结算。
+Dialogue: 0,0:20:52.80,0:20:54.60,English,C05-10-S08,0,0,0,,{\an8\pos(960,1030)}Keep these windows separate.
+Dialogue: 0,0:20:55.23,0:20:57.90,Chinese,C05-10-S09,0,0,0,,{\an8\pos(960,935)}后来两军回到同地实际合军，
+Dialogue: 0,0:20:55.23,0:20:57.90,English,C05-10-S09,0,0,0,,{\an8\pos(960,1030)}Later, the two armies reunited at the same location and actually merged.
+Dialogue: 0,0:20:58.30,0:21:01.43,Chinese,C05-10-S10,0,0,0,,{\an8\pos(960,935)}合前补给约一百二十六点一四和一百。
+Dialogue: 0,0:20:58.30,0:21:01.43,English,C05-10-S10,0,0,0,,{\an8\pos(960,1030)}Before merging, their supply was about 126.14 and 100.
+Dialogue: 0,0:21:02.06,0:21:05.86,Chinese,C05-10-S11,0,0,0,,{\an8\pos(960,935)}按双方各自的合军权重加权、分别取整，
+Dialogue: 0,0:21:02.06,0:21:05.86,English,C05-10-S11,0,0,0,,{\an8\pos(960,1030)}Apply each army's merge weight and round down each contribution.
+Dialogue: 0,0:21:06.26,0:21:08.50,Chinese,C05-10-S12,0,0,0,,{\an8\pos(960,935)}得到约一百一十三点零六。
+Dialogue: 0,0:21:06.26,0:21:08.50,English,C05-10-S12,0,0,0,,{\an8\pos(960,1030)}The result is about 113.06.
+Dialogue: 0,0:21:09.13,0:21:12.66,Chinese,C05-10-S13,0,0,0,,{\an8\pos(960,935)}合后容量读到一百，库存实际也是一百。
+Dialogue: 0,0:21:09.13,0:21:12.66,English,C05-10-S13,0,0,0,,{\an8\pos(960,1030)}After merging, capacity was 100, and actual supply was also 100.
+Dialogue: 0,0:21:13.30,0:21:16.16,Chinese,C05-10-S14,0,0,0,,{\an8\pos(960,935)}这个窗口能单独确认上限截断，
+Dialogue: 0,0:21:13.30,0:21:16.16,English,C05-10-S14,0,0,0,,{\an8\pos(960,1030)}This window independently confirms the upper-cap clamp.
+Dialogue: 0,0:21:16.53,0:21:19.33,Chinese,C05-10-S15,0,0,0,,{\an8\pos(960,935)}不能用两队库存的普通平均代替。
+Dialogue: 0,0:21:16.53,0:21:19.33,English,C05-10-S15,0,0,0,,{\an8\pos(960,1030)}A simple average of the two supply stocks cannot replace that calculation.
+Dialogue: 0,0:21:20.06,0:21:23.46,Chinese,C05-11-S01,0,0,0,,{\an8\pos(960,935)}费用先另读一份一月十一日的暂停样本：
+Dialogue: 0,0:21:20.06,0:21:23.46,English,C05-11-S01,0,0,0,,{\an8\pos(960,1030)}For costs, first read a separate paused January 11 sample.
+Dialogue: 0,0:21:23.90,0:21:32.56,Chinese,C05-11-S02,0,0,0,,{\an8\pos(960,935)}角色个人月总收入约四点六九金币，完整月支出约四点三九，当前净收入约正零点三零。
+Dialogue: 0,0:21:23.90,0:21:32.56,English,C05-11-S02,0,0,0,,{\an8\pos(960,1008)}The character's total monthly income was about 4.69 gold,\Ncomplete expenditure about 4.39, and current net gold income about +0.30.
+Dialogue: 0,0:21:33.16,0:21:36.26,Chinese,C05-11-S03,0,0,0,,{\an8\pos(960,935)}这不是后面所有旅途日期的固定常数；
+Dialogue: 0,0:21:33.16,0:21:36.26,English,C05-11-S03,0,0,0,,{\an8\pos(960,1030)}That is not a constant for every later travel date.
+Dialogue: 0,0:21:36.66,0:21:39.93,Chinese,C05-11-S04,0,0,0,,{\an8\pos(960,935)}军队和收支条件变了，需要重新读。
+Dialogue: 0,0:21:36.66,0:21:39.93,English,C05-11-S04,0,0,0,,{\an8\pos(960,1030)}When army or financial conditions change, read them again.
+Dialogue: 0,0:21:40.66,0:21:47.56,Chinese,C05-12-S01,0,0,0,,{\an8\pos(960,935)}同一个样本，当前军事维护约三点八九金币每月，已经含在完整支出里；
+Dialogue: 0,0:21:40.66,0:21:47.56,English,C05-12-S01,0,0,0,,{\an8\pos(960,1008)}In that same sample, current military maintenance was about 3.89 gold per month,\Nalready included in complete expenditure.
+Dialogue: 0,0:21:47.80,0:21:51.83,Chinese,C05-12-S02,0,0,0,,{\an8\pos(960,935)}全部集结情形的当前替代维护约四点八七。
+Dialogue: 0,0:21:47.80,0:21:51.83,English,C05-12-S02,0,0,0,,{\an8\pos(960,1030)}The current alternative calculation with all armies raised was about 4.87.
+Dialogue: 0,0:21:52.43,0:21:57.60,Chinese,C05-12-S03,0,0,0,,{\an8\pos(960,935)}两者分别比较，不相加，也不从净收入里再扣一次军费。
+Dialogue: 0,0:21:52.43,0:21:57.60,English,C05-12-S03,0,0,0,,{\an8\pos(960,1008)}Compare them separately.\NDo not add them together or subtract military costs from net gold income again.
+Dialogue: 0,0:21:58.23,0:22:01.96,Chinese,C05-12-S04,0,0,0,,{\an8\pos(960,935)}全部集结值没有被证明是未来费用上限。
+Dialogue: 0,0:21:58.23,0:22:01.96,English,C05-12-S04,0,0,0,,{\an8\pos(960,1030)}The all-raised value has not been proved to be an upper bound on future costs.
+Dialogue: 0,0:22:02.73,0:22:12.16,Chinese,C05-13-S01,0,0,0,,{\an8\pos(960,910)}累计费用要逐笔记实际发生的维护、登船支付、\N期间收入和其他支付，并使用一致日期范围对账。
+Dialogue: 0,0:22:02.73,0:22:12.16,English,C05-13-S01,0,0,0,,{\an8\pos(960,1008)}Accumulated costs need actual records of maintenance,\Nembarkation payments, income, and other payments over the same dates.
+Dialogue: 0,0:22:12.76,0:22:17.10,Chinese,C05-13-S02,0,0,0,,{\an8\pos(960,935)}钱包变少多少，是混合这些来源的净现金变化；
+Dialogue: 0,0:22:12.76,0:22:17.10,English,C05-13-S02,0,0,0,,{\an8\pos(960,1030)}A treasury decrease is a net gold change combining those sources.
+Dialogue: 0,0:22:17.53,0:22:20.93,Chinese,C05-13-S03,0,0,0,,{\an8\pos(960,935)}地图上“会支付登船费”只是当时提示。
+Dialogue: 0,0:22:17.53,0:22:20.93,English,C05-13-S03,0,0,0,,{\an8\pos(960,1030)}The map's embarkation warning is only the prediction at that moment.
+Dialogue: 0,0:22:21.56,0:22:27.03,Chinese,C05-13-S04,0,0,0,,{\an8\pos(960,935)}没读到实际付款，就留空，不能把余额差改名为纯行军费。
+Dialogue: 0,0:22:21.56,0:22:27.03,English,C05-13-S04,0,0,0,,{\an8\pos(960,1008)}Without an actual payment reading, leave the field empty.\NDo not rename the treasury difference “marching costs.”
+Dialogue: 0,0:22:27.76,0:22:30.90,Chinese,C05-14-S01,0,0,0,,{\an8\pos(960,935)}结果表按同日期或同事件对齐：
+Dialogue: 0,0:22:27.76,0:22:30.90,English,C05-14-S01,0,0,0,,{\an8\pos(960,1030)}Align results by the same date or event.
+Dialogue: 0,0:22:31.23,0:22:35.13,Chinese,C05-14-S02,0,0,0,,{\an8\pos(960,935)}先看实际抵达，再看完整兵团与可用人数，
+Dialogue: 0,0:22:31.23,0:22:35.13,English,C05-14-S02,0,0,0,,{\an8\pos(960,1030)}First check actual arrival, then the full regiments and available soldiers.
+Dialogue: 0,0:22:35.43,0:22:40.33,Chinese,C05-14-S03,0,0,0,,{\an8\pos(960,935)}然后是库存、补员和损耗窗口，最后是实际支付。
+Dialogue: 0,0:22:35.43,0:22:40.33,English,C05-14-S03,0,0,0,,{\an8\pos(960,1030)}Then check supply, reinforcement and attrition windows, and finally actual payments.
+Dialogue: 0,0:22:40.96,0:22:44.33,Chinese,C05-14-S04,0,0,0,,{\an8\pos(960,935)}这次B合军后，原二十七个兵团仍在，
+Dialogue: 0,0:22:40.96,0:22:44.33,English,C05-14-S04,0,0,0,,{\an8\pos(960,1030)}After B's merge, all 27 original regiments remained.
+Dialogue: 0,0:22:44.70,0:22:47.43,Chinese,C05-14-S05,0,0,0,,{\an8\pos(960,935)}但又多出一条满员一人的兵团记录；
+Dialogue: 0,0:22:44.70,0:22:47.43,English,C05-14-S05,0,0,0,,{\an8\pos(960,1030)}New regiment record: 1/1 soldier.
+Dialogue: 0,0:22:47.70,0:22:52.20,Chinese,C05-14-S06,0,0,0,,{\an8\pos(960,935)}合后共有六千六百九十人，满员六千七百四十八。
+Dialogue: 0,0:22:47.70,0:22:52.20,English,C05-14-S06,0,0,0,,{\an8\pos(960,1030)}The merged army had 6,690 soldiers, out of a maximum of 6,748.
+Dialogue: 0,0:22:52.80,0:22:56.66,Chinese,C05-14-S07,0,0,0,,{\an8\pos(960,935)}实际统帅也变了，与原先冻结的条件不符。
+Dialogue: 0,0:22:52.80,0:22:56.66,English,C05-14-S07,0,0,0,,{\an8\pos(960,1030)}The commander also changed, breaking the conditions fixed at the start.
+Dialogue: 0,0:22:57.30,0:23:01.13,Chinese,C05-14-S08,0,0,0,,{\an8\pos(960,935)}新增记录和统帅变化的原因还没有确认。
+Dialogue: 0,0:22:57.30,0:23:01.13,English,C05-14-S08,0,0,0,,{\an8\pos(960,1030)}The causes of the new record and commander change remain unconfirmed.
+Dialogue: 0,0:23:01.76,0:23:06.66,Chinese,C05-14-S09,0,0,0,,{\an8\pos(960,935)}因此，这次B在第三十八日停止，尚有五十二日预算；
+Dialogue: 0,0:23:01.76,0:23:06.66,English,C05-14-S09,0,0,0,,{\an8\pos(960,1030)}So B stopped on day 38, with 52 days left in its budget.
+Dialogue: 0,0:23:07.06,0:23:10.70,Chinese,C05-14-S10,0,0,0,,{\an8\pos(960,935)}停止是冻结条件未通过，不是时间耗尽。
+Dialogue: 0,0:23:07.06,0:23:10.70,English,C05-14-S10,0,0,0,,{\an8\pos(960,1030)}It stopped because the fixed conditions failed, not because time ran out.
+Dialogue: 0,0:23:11.30,0:23:13.76,Chinese,C05-14-S11,0,0,0,,{\an8\pos(960,935)}这段能保留为合军机制样本，
+Dialogue: 0,0:23:11.30,0:23:13.76,English,C05-14-S11,0,0,0,,{\an8\pos(960,1030)}We can retain this as a sample of the merge mechanism.
+Dialogue: 0,0:23:14.10,0:23:16.13,Chinese,C05-14-S12,0,0,0,,{\an8\pos(960,935)}却没有可比较的伦敦终点。
+Dialogue: 0,0:23:14.10,0:23:16.13,English,C05-14-S12,0,0,0,,{\an8\pos(960,1030)}But it has no comparable London endpoint.
+Dialogue: 0,0:23:16.73,0:23:19.00,Chinese,C05-14-S13,0,0,0,,{\an8\pos(960,935)}C也出现多次采样偏差：
+Dialogue: 0,0:23:16.73,0:23:19.00,English,C05-14-S13,0,0,0,,{\an8\pos(960,1030)}C also had multiple sampling deviations.
+Dialogue: 0,0:23:19.40,0:23:22.96,Chinese,C05-14-S14,0,0,0,,{\an8\pos(960,935)}原计划每次最多过一天，实际跨了两天。
+Dialogue: 0,0:23:19.40,0:23:22.96,English,C05-14-S14,0,0,0,,{\an8\pos(960,1030)}Pulses planned for at most one day actually advanced two.
+Dialogue: 0,0:23:23.56,0:23:26.13,Chinese,C05-14-S15,0,0,0,,{\an8\pos(960,935)}后续只保留为描述性观察，
+Dialogue: 0,0:23:23.56,0:23:26.13,English,C05-14-S15,0,0,0,,{\an8\pos(960,1030)}The later results are retained as descriptive observations only.
+Dialogue: 0,0:23:26.43,0:23:30.96,Chinese,C05-14-S16,0,0,0,,{\an8\pos(960,935)}即使已经到达，也不能恢复成严格公平的A/C对照。
+Dialogue: 0,0:23:26.43,0:23:30.96,English,C05-14-S16,0,0,0,,{\an8\pos(960,1030)}Reaching London does not restore a strictly controlled A/C comparison.
+Dialogue: 0,0:23:31.56,0:23:34.93,Chinese,C05-14-S17,0,0,0,,{\an8\pos(960,935)}A和C的实际到达观测各自保留。
+Dialogue: 0,0:23:31.56,0:23:34.93,English,C05-14-S17,0,0,0,,{\an8\pos(960,1030)}The actual arrival observations for A and C are retained separately.
+Dialogue: 0,0:23:35.53,0:23:37.63,Chinese,C05-14-S18,0,0,0,,{\an8\pos(960,935)}下面回到整军直走的A。
+Dialogue: 0,0:23:35.53,0:23:37.63,English,C05-14-S18,0,0,0,,{\an8\pos(960,1030)}Back to A: whole army, direct route.
+Dialogue: 0,0:23:38.36,0:23:46.20,Chinese,C05-15-S01,0,0,0,,{\an8\pos(960,935)}这一方案从六千六百七十九人出发，抵达观测时是六千六百八十九人，净增十人。
+Dialogue: 0,0:23:38.36,0:23:46.20,English,C05-15-S01,0,0,0,,{\an8\pos(960,1030)}This plan started with 6,679 soldiers. At the arrival observation it had 6,689, a net gain of 10.
+Dialogue: 0,0:23:46.83,0:23:51.93,Chinese,C05-15-S02,0,0,0,,{\an8\pos(960,935)}完整二十七个兵团都还在，满员数仍是六千七百四十七。
+Dialogue: 0,0:23:46.83,0:23:51.93,English,C05-15-S02,0,0,0,,{\an8\pos(960,1030)}All 27 regiments were still present, and their total maximum soldier count remained 6,747.
+Dialogue: 0,0:23:52.56,0:23:56.70,Chinese,C05-15-S03,0,0,0,,{\an8\pos(960,935)}补给从约一百一十点三八变为一百零六点一四。
+Dialogue: 0,0:23:52.56,0:23:56.70,English,C05-15-S03,0,0,0,,{\an8\pos(960,1030)}Supply went from about 110.38 to 106.14.
+Dialogue: 0,0:23:57.33,0:24:00.00,Chinese,C05-15-S04,0,0,0,,{\an8\pos(960,935)}净增十人只说旅途两端的差，
+Dialogue: 0,0:23:57.33,0:24:00.00,English,C05-15-S04,0,0,0,,{\an8\pos(960,1030)}The gain of 10 is only the difference between the two endpoints.
+Dialogue: 0,0:24:00.36,0:24:05.46,Chinese,C05-15-S05,0,0,0,,{\an8\pos(960,935)}不表示途中没有死伤，也不表示已经逐次读到了补员结算。
+Dialogue: 0,0:24:00.36,0:24:05.46,English,C05-15-S05,0,0,0,,{\an8\pos(960,1008)}It does not mean there were no casualties along the way,\Nor that every reinforcement update was observed.
+Dialogue: 0,0:24:06.20,0:24:12.76,Chinese,C05-16-S01,0,0,0,,{\an8\pos(960,935)}同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，
+Dialogue: 0,0:24:06.20,0:24:12.76,English,C05-16-S01,0,0,0,,{\an8\pos(960,1030)}Over that period, gold fell from about 637.55 to 621.48.
+Dialogue: 0,0:24:13.10,0:24:14.56,Chinese,C05-16-S02,0,0,0,,{\an8\pos(960,935)}净少十六点零六。
+Dialogue: 0,0:24:13.10,0:24:14.56,English,C05-16-S02,0,0,0,,{\an8\pos(960,1030)}The net decrease was 16.06.
+Dialogue: 0,0:24:15.20,0:24:18.13,Chinese,C05-16-S03,0,0,0,,{\an8\pos(960,935)}它是期间所有收支留下的净余额差，
+Dialogue: 0,0:24:15.20,0:24:18.13,English,C05-16-S03,0,0,0,,{\an8\pos(960,1030)}That is the net balance change after all income and expenses.
+Dialogue: 0,0:24:18.46,0:24:23.00,Chinese,C05-16-S04,0,0,0,,{\an8\pos(960,935)}不能改名为行军费，也不能当作已经核验的登船付款。
+Dialogue: 0,0:24:18.46,0:24:23.00,English,C05-16-S04,0,0,0,,{\an8\pos(960,1030)}It is not a march-cost ledger or a verified embarkation payment.
+Dialogue: 0,0:24:23.60,0:24:25.43,Chinese,C05-16-S05,0,0,0,,{\an8\pos(960,935)}另看换路线的C回放：
+Dialogue: 0,0:24:23.60,0:24:25.43,English,C05-16-S05,0,0,0,,{\an8\pos(960,1030)}Now consider C's replay using a different route.
+Dialogue: 0,0:24:25.80,0:24:31.30,Chinese,C05-16-S06,0,0,0,,{\an8\pos(960,935)}从共同起点到它的到达观测，余额净少约十五点八二金币。
+Dialogue: 0,0:24:25.80,0:24:31.30,English,C05-16-S06,0,0,0,,{\an8\pos(960,1030)}From the shared start to its arrival observation, gold decreased by about 15.82 net.
+Dialogue: 0,0:24:31.90,0:24:34.30,Chinese,C05-16-S07,0,0,0,,{\an8\pos(960,935)}这个数字同样只是净变化。
+Dialogue: 0,0:24:31.90,0:24:34.30,English,C05-16-S07,0,0,0,,{\an8\pos(960,1030)}That figure is also only a net change.
+Dialogue: 0,0:24:34.90,0:24:38.80,Chinese,C05-16-S08,0,0,0,,{\an8\pos(960,935)}途中登船阶段曾观察到余额净少十七金币，
+Dialogue: 0,0:24:34.90,0:24:38.80,English,C05-16-S08,0,0,0,,{\an8\pos(960,1030)}During embarkation, we observed a net decrease of 17 gold.
+Dialogue: 0,0:24:39.26,0:24:42.30,Chinese,C05-16-S09,0,0,0,,{\an8\pos(960,935)}另一个窗口又净增加约零点二五；
+Dialogue: 0,0:24:39.26,0:24:42.30,English,C05-16-S09,0,0,0,,{\an8\pos(960,1030)}In another window, it increased by about 0.25 net.
+Dialogue: 0,0:24:42.50,0:24:45.56,Chinese,C05-16-S10,0,0,0,,{\an8\pos(960,935)}各自原因都没有逐笔付款账来证明。
+Dialogue: 0,0:24:42.50,0:24:45.56,English,C05-16-S10,0,0,0,,{\an8\pos(960,1030)}Neither cause is established by an itemized payment ledger.
+Dialogue: 0,0:24:46.20,0:24:49.33,Chinese,C05-16-S11,0,0,0,,{\an8\pos(960,935)}现在A和C各有真实到达观测，
+Dialogue: 0,0:24:46.20,0:24:49.33,English,C05-16-S11,0,0,0,,{\an8\pos(960,1030)}A and C now each have an actual arrival observation.
+Dialogue: 0,0:24:49.70,0:24:52.33,Chinese,C05-16-S12,0,0,0,,{\an8\pos(960,935)}B因冻结条件未通过而停止；
+Dialogue: 0,0:24:49.70,0:24:52.33,English,C05-16-S12,0,0,0,,{\an8\pos(960,1030)}B stopped after failing the fixed conditions.
+Dialogue: 0,0:24:52.73,0:24:54.40,Chinese,C05-16-S13,0,0,0,,{\an8\pos(960,935)}C又保留采样偏差，
+Dialogue: 0,0:24:52.73,0:24:54.40,English,C05-16-S13,0,0,0,,{\an8\pos(960,1030)}C also retains its sampling deviations.
+Dialogue: 0,0:24:54.63,0:24:57.60,Chinese,C05-16-S14,0,0,0,,{\an8\pos(960,935)}本次不能排出严格三方案的赢家。
+Dialogue: 0,0:24:54.63,0:24:57.60,English,C05-16-S14,0,0,0,,{\an8\pos(960,1030)}This run cannot establish a winner in a strictly controlled three-plan comparison.
+Dialogue: 0,0:24:58.36,0:25:04.40,Chinese,C06-01-S01,0,0,0,,{\an8\pos(960,935)}带回一次普通行军，可以按出发前、途中、接战前三个时点检查。
+Dialogue: 0,0:24:58.36,0:25:04.40,English,C06-01-S01,0,0,0,,{\an8\pos(960,1030)}For an ordinary march, use three checkpoints: before departure, en route, and before battle.
+Dialogue: 0,0:25:05.03,0:25:10.30,Chinese,C06-01-S02,0,0,0,,{\an8\pos(960,935)}每次先确认哪支军队、哪个日期、哪个地点，再看数字。
+Dialogue: 0,0:25:05.03,0:25:10.30,English,C06-01-S02,0,0,0,,{\an8\pos(960,1030)}Identify the army, date, and location before reading the numbers.
+Dialogue: 0,0:25:10.93,0:25:17.30,Chinese,C06-01-S03,0,0,0,,{\an8\pos(960,935)}不同日期和地点可以比较，但不要拼成一个看似同时存在的军队状态。
+Dialogue: 0,0:25:10.93,0:25:17.30,English,C06-01-S03,0,0,0,,{\an8\pos(960,1008)}Different dates and places can be compared,\Nbut should not be combined into one apparently simultaneous army state.
+Dialogue: 0,0:25:18.03,0:25:22.66,Chinese,C06-02-S01,0,0,0,,{\an8\pos(960,935)}出发前，先看当前和满员人数，缺的是哪些兵团。
+Dialogue: 0,0:25:18.03,0:25:22.66,English,C06-02-S01,0,0,0,,{\an8\pos(960,1030)}Before departure, check current and maximum soldiers, and which regiments are understrength.
+Dialogue: 0,0:25:23.30,0:25:28.03,Chinese,C06-02-S02,0,0,0,,{\an8\pos(960,935)}再读补给库存与军队容量、当地用量与补给上限。
+Dialogue: 0,0:25:23.30,0:25:28.03,English,C06-02-S02,0,0,0,,{\an8\pos(960,1030)}Then read supply stock and army capacity, followed by local usage and the supply limit.
+Dialogue: 0,0:25:28.66,0:25:33.66,Chinese,C06-02-S03,0,0,0,,{\an8\pos(960,935)}库存够不够、当地能不能支持当前用量，是不同的问题。
+Dialogue: 0,0:25:28.66,0:25:33.66,English,C06-02-S03,0,0,0,,{\an8\pos(960,1030)}Having enough stock and being supported by the location are different questions.
+Dialogue: 0,0:25:34.26,0:25:38.06,Chinese,C06-02-S04,0,0,0,,{\an8\pos(960,935)}军队人数没变，地点条件也仍可能改变。
+Dialogue: 0,0:25:34.26,0:25:38.06,English,C06-02-S04,0,0,0,,{\an8\pos(960,1030)}Local conditions can change even when soldier numbers do not.
+Dialogue: 0,0:25:38.80,0:25:43.76,Chinese,C06-03-S01,0,0,0,,{\an8\pos(960,935)}接着看第一段路线、最终目的地和当前整条抵达估计。
+Dialogue: 0,0:25:38.80,0:25:43.76,English,C06-03-S01,0,0,0,,{\an8\pos(960,1030)}Next, check the first leg, final destination, and current whole-route arrival estimate.
+Dialogue: 0,0:25:44.40,0:25:47.53,Chinese,C06-03-S02,0,0,0,,{\an8\pos(960,935)}首段如果有独立时量，就分开保留。
+Dialogue: 0,0:25:44.40,0:25:47.53,English,C06-03-S02,0,0,0,,{\an8\pos(960,1030)}Keep any separate first-leg time reading distinct.
+Dialogue: 0,0:25:48.13,0:25:55.53,Chinese,C06-03-S03,0,0,0,,{\an8\pos(960,935)}费用和损失警告属于当前规划提示，实际行军后还要回看位置、状态和结算；
+Dialogue: 0,0:25:48.13,0:25:55.53,English,C06-03-S03,0,0,0,,{\an8\pos(960,1008)}Cost and loss warnings describe the current plan.\NAfter marching, check location, state, and actual settlement again.
+Dialogue: 0,0:25:55.73,0:25:58.73,Chinese,C06-03-S04,0,0,0,,{\an8\pos(960,935)}下令成功不代表整条计划完成。
+Dialogue: 0,0:25:55.73,0:25:58.73,English,C06-03-S04,0,0,0,,{\an8\pos(960,1030)}A successful order does not mean the whole plan is complete.
+Dialogue: 0,0:25:59.46,0:26:07.03,Chinese,C06-04-S01,0,0,0,,{\an8\pos(960,935)}途中，月变化由正变负、出现移动锁定、剩余路线改变，都需要重读当前状态。
+Dialogue: 0,0:25:59.46,0:26:07.03,English,C06-04-S01,0,0,0,,{\an8\pos(960,1008)}En route, a monthly supply change turning negative, movement locking,\Nor the remaining route changing all call for a fresh reading.
+Dialogue: 0,0:26:07.66,0:26:10.70,Chinese,C06-04-S02,0,0,0,,{\an8\pos(960,935)}库存没变，也不自动说明没有更新：
+Dialogue: 0,0:26:07.66,0:26:10.70,English,C06-04-S02,0,0,0,,{\an8\pos(960,1030)}Unchanged stock does not automatically mean there was no update.
+Dialogue: 0,0:26:11.03,0:26:17.33,Chinese,C06-04-S03,0,0,0,,{\an8\pos(960,935)}可能还没轮到、条件未通过、当前贡献为零，或增加后碰到容量。
+Dialogue: 0,0:26:11.03,0:26:17.33,English,C06-04-S03,0,0,0,,{\an8\pos(960,1008)}The army may not have reached its turn, failed a condition,\Nhad zero contribution, or gained supplies only to reach capacity.
+Dialogue: 0,0:26:17.93,0:26:22.53,Chinese,C06-04-S04,0,0,0,,{\an8\pos(960,935)}前后的日期和库存一起看，才能逐步分开这些解释。
+Dialogue: 0,0:26:17.93,0:26:22.53,English,C06-04-S04,0,0,0,,{\an8\pos(960,1030)}Compare the dates and stocks to distinguish those possibilities.
+Dialogue: 0,0:26:23.30,0:26:27.96,Chinese,C06-05-S01,0,0,0,,{\an8\pos(960,935)}人数变化以后，检查完整兵团的身份与前后整数。
+Dialogue: 0,0:26:23.30,0:26:27.96,English,C06-05-S01,0,0,0,,{\an8\pos(960,1030)}After soldier numbers change, check every regiment's identity and integer count before and after.
+Dialogue: 0,0:26:28.60,0:26:32.86,Chinese,C06-05-S02,0,0,0,,{\an8\pos(960,935)}净少或净增多少先说明，原因再按证据判断。
+Dialogue: 0,0:26:28.60,0:26:32.86,English,C06-05-S02,0,0,0,,{\an8\pos(960,1030)}State the net gain or loss first, then assess the cause from the evidence.
+Dialogue: 0,0:26:33.50,0:26:38.26,Chinese,C06-05-S03,0,0,0,,{\an8\pos(960,935)}补员许可、准备比例和损失预算都不代替实际变化；
+Dialogue: 0,0:26:33.50,0:26:38.26,English,C06-05-S03,0,0,0,,{\an8\pos(960,1030)}Reinforcement eligibility, progress, and a loss budget do not replace an actual change.
+Dialogue: 0,0:26:38.70,0:26:44.53,Chinese,C06-05-S04,0,0,0,,{\an8\pos(960,935)}登陆后条件改变，后续观察重新设基线，不沿用海上的旧条件。
+Dialogue: 0,0:26:38.70,0:26:44.53,English,C06-05-S04,0,0,0,,{\an8\pos(960,1008)}When conditions change after landing,\Nestablish a new baseline rather than reuse the sea-window conditions.
+Dialogue: 0,0:26:45.23,0:26:48.53,Chinese,C06-06-S01,0,0,0,,{\an8\pos(960,935)}分兵或合军后，重新读原军与新队。
+Dialogue: 0,0:26:45.23,0:26:48.53,English,C06-06-S01,0,0,0,,{\an8\pos(960,1030)}After splitting or merging, reread the original army and any new detachment.
+Dialogue: 0,0:26:49.16,0:26:56.43,Chinese,C06-06-S02,0,0,0,,{\an8\pos(960,935)}兵团归属是否完整，当前与满员人数是否守恒，库存和容量分别变成什么。
+Dialogue: 0,0:26:49.16,0:26:56.43,English,C06-06-S02,0,0,0,,{\an8\pos(960,1008)}Check every regiment's assignment, conservation of current and maximum soldiers,\Nand the resulting stock and capacity.
+Dialogue: 0,0:26:57.06,0:27:01.00,Chinese,C06-06-S03,0,0,0,,{\an8\pos(960,935)}新队库存暂时高于容量，就按实际值保存。
+Dialogue: 0,0:26:57.06,0:27:01.00,English,C06-06-S03,0,0,0,,{\an8\pos(960,1030)}If the new army temporarily has more stock than capacity, preserve the actual value.
+Dialogue: 0,0:27:01.63,0:27:06.63,Chinese,C06-06-S04,0,0,0,,{\an8\pos(960,935)}统帅没读到时保持未知，不从容量或头像猜一个人。
+Dialogue: 0,0:27:01.63,0:27:06.63,English,C06-06-S04,0,0,0,,{\an8\pos(960,1008)}If the commander is unread,\Nkeep that identity unknown rather than infer it from capacity or a portrait.
+Dialogue: 0,0:27:07.36,0:27:14.20,Chinese,C06-07-S01,0,0,0,,{\an8\pos(960,935)}接战前，确认实际到了哪里，还有哪些队伍在路上，可用人数和库存是多少。
+Dialogue: 0,0:27:07.36,0:27:14.20,English,C06-07-S01,0,0,0,,{\an8\pos(960,1008)}Before battle, confirm where the army has actually arrived,\Nwhich others are still traveling, and the soldiers and supplies available.
+Dialogue: 0,0:27:14.83,0:27:18.96,Chinese,C06-07-S02,0,0,0,,{\an8\pos(960,935)}当前零损耗只说眼前条件，不保证以后安全；
+Dialogue: 0,0:27:14.83,0:27:18.96,English,C06-07-S02,0,0,0,,{\an8\pos(960,1030)}Zero current attrition describes the present conditions, not future safety.
+Dialogue: 0,0:27:19.36,0:27:22.56,Chinese,C06-07-S03,0,0,0,,{\an8\pos(960,935)}当前正补给也不保证以后一直恢复。
+Dialogue: 0,0:27:19.36,0:27:22.56,English,C06-07-S03,0,0,0,,{\an8\pos(960,1030)}Positive current supply does not promise recovery forever.
+Dialogue: 0,0:27:23.16,0:27:29.46,Chinese,C06-07-S04,0,0,0,,{\an8\pos(960,935)}然后把到场的真实状态交给战斗判断，让出发计划与现实接起来。
+Dialogue: 0,0:27:23.16,0:27:29.46,English,C06-07-S04,0,0,0,,{\an8\pos(960,1030)}Then use the actual arrival state in the battle decision, connecting the departure plan to reality.
+Dialogue: 0,0:27:30.20,0:27:31.60,Chinese,C06-08-S01,0,0,0,,{\an8\pos(960,935)}费用也回看一次。
+Dialogue: 0,0:27:30.20,0:27:31.60,English,C06-08-S01,0,0,0,,{\an8\pos(960,1030)}Check costs again too.
+Dialogue: 0,0:27:32.23,0:27:38.13,Chinese,C06-08-S02,0,0,0,,{\an8\pos(960,935)}当次收入、完整支出和已经发生的支付，放在各自正确范围里；
+Dialogue: 0,0:27:32.23,0:27:38.13,English,C06-08-S02,0,0,0,,{\an8\pos(960,1030)}Keep income, complete expenditure, and actual payments within their correct scopes.
+Dialogue: 0,0:27:38.53,0:27:41.70,Chinese,C06-08-S03,0,0,0,,{\an8\pos(960,935)}净收入已经扣过的军费，不再重扣。
+Dialogue: 0,0:27:38.53,0:27:41.70,English,C06-08-S03,0,0,0,,{\an8\pos(960,1030)}Military costs already deducted in net gold income must not be deducted again.
+Dialogue: 0,0:27:42.33,0:27:45.76,Chinese,C06-08-S04,0,0,0,,{\an8\pos(960,935)}实际登船支付还没读到，就继续未知。
+Dialogue: 0,0:27:42.33,0:27:45.76,English,C06-08-S04,0,0,0,,{\an8\pos(960,1030)}An unread actual embarkation payment remains unknown.
+Dialogue: 0,0:27:46.40,0:27:50.86,Chinese,C06-08-S05,0,0,0,,{\an8\pos(960,935)}完整账比一个钱包差值更能说明路线到底花了什么。
+Dialogue: 0,0:27:46.40,0:27:50.86,English,C06-08-S05,0,0,0,,{\an8\pos(960,1030)}A complete ledger explains a route's costs better than one treasury difference.
+Dialogue: 0,0:27:51.60,0:27:57.63,Chinese,C06-09-S01,0,0,0,,{\an8\pos(960,935)}这些检查已经整理成知识专题，原生数据读取的方法也可以复用。
+Dialogue: 0,0:27:51.60,0:27:57.63,English,C06-09-S01,0,0,0,,{\an8\pos(960,1008)}These checks are now recorded in knowledge documents,\Nand the native data-reading methods can be reused.
+Dialogue: 0,0:27:58.26,0:28:05.93,Chinese,C06-09-S02,0,0,0,,{\an8\pos(960,935)}换机器或存档，可以沿用方法；版本、人物、军队和眼前读数仍要重新确认。
+Dialogue: 0,0:27:58.26,0:28:05.93,English,C06-09-S02,0,0,0,,{\an8\pos(960,1008)}Use the method on another machine or save, but confirm the version,\Ncharacter, army, and current readings afresh.
+Dialogue: 0,0:28:06.56,0:28:10.16,Chinese,C06-09-S03,0,0,0,,{\an8\pos(960,935)}缺少的信息就保持未知，不靠猜补齐。
+Dialogue: 0,0:28:06.56,0:28:10.16,English,C06-09-S03,0,0,0,,{\an8\pos(960,1030)}Missing information stays unknown instead of being guessed.
+Dialogue: 0,0:28:10.76,0:28:14.33,Chinese,C06-09-S04,0,0,0,,{\an8\pos(960,935)}离线文件检查，也不能当作新的游戏结果。
+Dialogue: 0,0:28:10.76,0:28:14.33,English,C06-09-S04,0,0,0,,{\an8\pos(960,1030)}An offline file check is not a new game result.
+Dialogue: 0,0:28:15.06,0:28:21.16,Chinese,C06-10-S01,0,0,0,,{\an8\pos(960,935)}本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，
+Dialogue: 0,0:28:15.06,0:28:21.16,English,C06-10-S01,0,0,0,,{\an8\pos(960,1030)}We observed full supply, actual reinforcement, and soldier decreases in separate windows.
+Dialogue: 0,0:28:21.43,0:28:24.63,Chinese,C06-10-S02,0,0,0,,{\an8\pos(960,935)}以及同日分合军的库存和组织变化。
+Dialogue: 0,0:28:21.43,0:28:24.63,English,C06-10-S02,0,0,0,,{\an8\pos(960,1030)}We also observed supply and roster changes during same-day splits and merges.
+Dialogue: 0,0:28:25.26,0:28:29.00,Chinese,C06-10-S03,0,0,0,,{\an8\pos(960,935)}后续休整也出现了真正的库存与人数增加。
+Dialogue: 0,0:28:25.26,0:28:29.00,English,C06-10-S03,0,0,0,,{\an8\pos(960,1030)}Later rest periods produced actual increases in supply and soldier counts.
+Dialogue: 0,0:28:29.63,0:28:33.66,Chinese,C06-10-S04,0,0,0,,{\an8\pos(960,935)}整军直走和换路线各自保留了真实到达观测；
+Dialogue: 0,0:28:29.63,0:28:33.66,English,C06-10-S04,0,0,0,,{\an8\pos(960,1030)}The whole-army direct route and the alternate route each retain an actual arrival observation.
+Dialogue: 0,0:28:34.10,0:28:36.93,Chinese,C06-10-S05,0,0,0,,{\an8\pos(960,935)}分兵方案因冻结条件变化停止，
+Dialogue: 0,0:28:34.10,0:28:36.93,English,C06-10-S05,0,0,0,,{\an8\pos(960,1030)}The split-army plan stopped after its fixed conditions changed.
+Dialogue: 0,0:28:37.20,0:28:39.86,Chinese,C06-10-S06,0,0,0,,{\an8\pos(960,935)}换路线回放又保留采样偏差，
+Dialogue: 0,0:28:37.20,0:28:39.86,English,C06-10-S06,0,0,0,,{\an8\pos(960,1030)}The alternate-route replay retains sampling deviations.
+Dialogue: 0,0:28:40.26,0:28:43.06,Chinese,C06-10-S07,0,0,0,,{\an8\pos(960,935)}因此没有严格三方案的胜负结论。
+Dialogue: 0,0:28:40.26,0:28:43.06,English,C06-10-S07,0,0,0,,{\an8\pos(960,1030)}So there is no strictly controlled three-plan verdict.
+Dialogue: 0,0:28:43.66,0:28:47.40,Chinese,C06-10-S08,0,0,0,,{\an8\pos(960,935)}真实饥饿和逐笔付款仍等待各自证据。
+Dialogue: 0,0:28:43.66,0:28:47.40,English,C06-10-S08,0,0,0,,{\an8\pos(960,1030)}Actual starvation and itemized payments still need their own evidence.
+Dialogue: 0,0:28:48.03,0:28:50.70,Chinese,C06-10-S09,0,0,0,,{\an8\pos(960,935)}你可以按这个顺序读自己的军队，
+Dialogue: 0,0:28:48.03,0:28:50.70,English,C06-10-S09,0,0,0,,{\an8\pos(960,1030)}You can read your own army in this order.
+Dialogue: 0,0:28:51.06,0:28:55.13,Chinese,C06-10-S10,0,0,0,,{\an8\pos(960,935)}再让每条新结论有自己的日期、身份和结果。
+Dialogue: 0,0:28:51.06,0:28:55.13,English,C06-10-S10,0,0,0,,{\an8\pos(960,1030)}Give every new conclusion its own date, identity and observed result.

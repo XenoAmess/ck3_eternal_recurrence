@@ -1,0 +1,129 @@
+{
+  "schema": "xar.e04.final-subtitle-increment-request.v1",
+  "baseline_subtitle_package": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-subtitle-timeline-a01\\ROOT-DELIVERY.json",
+    "bytes": 3124,
+    "sha256": "1b9fb9e6006453e94ca63ffd0f1e6a1eb261823d4e869604b8b3a27e54de7e88"
+  },
+  "layout": {
+    "width": 1920,
+    "height": 1080,
+    "Chinese_font_size": 35,
+    "English_font_size": 25,
+    "max_lines_each_language": 2,
+    "Chinese_chars_per_line": 40,
+    "English_chars_per_line": 100,
+    "maximum_font_width_px": 1700
+  },
+  "B_candidate_only": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\ROOT-DELIVERY-a02.json",
+    "bytes": 8587,
+    "sha256": "6b0fcc14efd30497b449aa8bb1b6358882f3d656a15fee69f07760d2b0f81f8b"
+  },
+  "provisional_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "final_chinese_body": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\six-chapter-final-BC-Chinese-a06.md",
+    "bytes": 23969,
+    "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+  },
+  "final_claim_ledger": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\claim-ledger-final-BC-a06.json",
+    "bytes": 199066,
+    "sha256": "2ef65357de29c0d4245886cb06dd5a0454089849b15623f7fcbf47666e1b83c9"
+  },
+  "final_English_diff": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\English-diff-final-BC-a01.json",
+    "bytes": 7093,
+    "sha256": "b2243b8d3cd8d843f416b080f4ed96de15ade494a06e9fcd78aafefc643be944"
+  },
+  "final_alignment": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\semantic-alignment-final-BC-display-a02.json",
+    "bytes": 17214,
+    "sha256": "e7d9aecd6703c9e8af5831ae746b0e811bb005b6c655942b0169ee629bc78bc4"
+  },
+  "source_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-Root-actual-source-review-a01\\Root-NO-BLOCK.json",
+    "bytes": 15648,
+    "sha256": "5874bd3c5cc0557a61a47a66fb3788841ed1dd78c00eb02ebe6323cc6902428f"
+  },
+  "final_audio_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\ROOT-DELIVERY.json",
+    "bytes": 17606,
+    "sha256": "46269c38b047b783662862c3e336e03f2978abcc67449aad330daf9b90c7b1f0"
+  },
+  "final_C_terminal_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\sources\\C-Root-terminal.json",
+    "bytes": 6937,
+    "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+  },
+  "producer_helpers": {
+    "subtitle_producer": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-subtitle-timeline-a01\\subtitle_producer.py",
+      "bytes": 16685,
+      "sha256": "b0f9a94bc29e16142a03089259a0a07ab77c4dc3176acb0cacb296928a7e4dc2"
+    },
+    "English_term_lines": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-subtitle-timeline-a01\\reflow_english_term_lines_a01.py",
+      "bytes": 4151,
+      "sha256": "e519f20eecae0771ab43d389e367aed78e361e5d68e2b555816d0b82e2ce36a9"
+    }
+  },
+  "final_audio_or_video_duration": null,
+  "final_picture_frames": null,
+  "B_comparable_London_endpoint": null,
+  "C_terminal": null,
+  "ABC_winner": null,
+  "provider_or_media_calls_authorized_by_this_file": false,
+  "current_C_Root_basis_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\sources\\C-terminal-Root-review.json",
+    "bytes": 16482,
+    "sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b"
+  },
+  "current_C_Main_scope_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\sources\\C-terminal-Main-scope.json",
+    "bytes": 6330,
+    "sha256": "cddd162f23396adf95c06ee4048be466d9795484a5a5b3eab695a84584419a57"
+  },
+  "final_subtitle_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "final_voice_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "actual_final_audio_delivery_pin": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\ROOT-DELIVERY.json",
+    "bytes": 17606,
+    "sha256": "46269c38b047b783662862c3e336e03f2978abcc67449aad330daf9b90c7b1f0"
+  },
+  "historical_A_seconds": 1579.176,
+  "Root_actual_English_source_review": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/e04-final-BC-Root-actual-English-review-a01/Root-English-NO-BLOCK.json",
+    "bytes": 2608,
+    "sha256": "cb5adf685a6895c1461cc9295b14ac247ab2f4ad648e05f9d8bee33da5b11158"
+  },
+  "actual_display_revision_only": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\Root-four-display-equivalence-review-a01.json",
+    "bytes": 2534,
+    "sha256": "82472bc0a40ad695e127b4db6a7962d2b54b9242877a59e956fd2732791eee53"
+  }
+}

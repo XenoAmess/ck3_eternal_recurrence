@@ -1,0 +1,181 @@
+{
+  "schema": "ck3.e04.actual-final-BC-audio-metadata-closure.v1",
+  "created_utc": "2026-10-06T00:42:40.037277+00:00",
+  "status": "PASS_ACTUAL_SOURCE_69_TEXT_PCM_WB_AND_SERIAL_NATIVE_AUTHORING_VALIDATION",
+  "Chinese_body": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\six-chapter-final-BC-Chinese-a06.md",
+    "bytes": 23969,
+    "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+  },
+  "ledger": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\claim-ledger-final-BC-a06.json",
+    "bytes": 199066,
+    "sha256": "2ef65357de29c0d4245886cb06dd5a0454089849b15623f7fcbf47666e1b83c9"
+  },
+  "Root_NO_BLOCK": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-Root-actual-source-review-a01\\Root-NO-BLOCK.json",
+    "bytes": 15648,
+    "sha256": "5874bd3c5cc0557a61a47a66fb3788841ed1dd78c00eb02ebe6323cc6902428f"
+  },
+  "actual_final_audio_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\ROOT-DELIVERY.json",
+    "bytes": 17606,
+    "sha256": "46269c38b047b783662862c3e336e03f2978abcc67449aad330daf9b90c7b1f0"
+  },
+  "actual_Chinese_audio_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\ROOT-DELIVERY.json",
+    "bytes": 17389,
+    "sha256": "9c0de53da5169bebd680cebaa94276d45e076de3a26cf1f565bc9147a15938ec"
+  },
+  "actual_native_publication": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-publication-a01\\RESULT.json",
+    "bytes": 1708,
+    "sha256": "dc32e5863f5397409e63be010ac06d7348eea3913d5142526636f057fe8d8003"
+  },
+  "actual_native_run": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-run\\run-manifest.json",
+    "bytes": 53335,
+    "sha256": "5d631ff0485f4e398b85b0886b2a931d73798b979fb2b91273d250407b91c557"
+  },
+  "actual_native_count": 118,
+  "actual_native_validate_returncode": 0,
+  "fresh_release_query": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\latest-release-query.json",
+    "bytes": 1106,
+    "sha256": "8c6bbef59fe1e594718ae698c445f2fcbb2fb958db86c3f3faeb5a06b00b2cc4"
+  },
+  "actual_release": "v0.2.1",
+  "wheel_SHA256": "sha256:f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+  "actual_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 41658624,
+    "seconds": 1735.776
+  },
+  "actual_minutes_seconds": "28:55.776",
+  "delivery20_to40min": true,
+  "paragraphs": 69,
+  "voice_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "new_generated_fragments": 7,
+  "exact_reused_fragments": 67,
+  "exact_reused_Chinese_paragraphs": 62,
+  "new_actual_WordBoundary_events": 774,
+  "six_original_reused_fragments_WordBoundary": null,
+  "six_original_reused_fragments_not_regenerated_or_fitted": true,
+  "chapters": [
+    {
+      "chapter_id": "E4-01",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-01\\audio-index.json",
+        "bytes": 33915,
+        "sha256": "019b21a26c2c7f48776479b21e73191c9ac6265667c76660cc42cbbbc5ccdef3"
+      },
+      "audio": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-01\\narration.wav",
+        "bytes": 8316332,
+        "sha256": "7863c61fb5e689b9034bfab24d3c7fb53edde4c7e9dc816ee658d4076f9c83d7"
+      },
+      "sample_frames": 4158144,
+      "actual_seconds": 173.256,
+      "paragraphs": 8
+    },
+    {
+      "chapter_id": "E4-02",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-02\\audio-index.json",
+        "bytes": 59797,
+        "sha256": "79f6b17cccb7d785cc462e6dcc754961fa277a9f6be54216d2ab370c7172c478"
+      },
+      "audio": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-02\\narration.wav",
+        "bytes": 13022252,
+        "sha256": "8084578527c8632c70eb935212793feaaf5d980b40533fd033251fdf2b89da60"
+      },
+      "sample_frames": 6511104,
+      "actual_seconds": 271.296,
+      "paragraphs": 12
+    },
+    {
+      "chapter_id": "E4-03",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-03\\audio-index.json",
+        "bytes": 51093,
+        "sha256": "8ac21a3a2e490da35a809a11f0b27588e85626b75dc58ade1e1b634b041c5322"
+      },
+      "audio": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-03\\narration.wav",
+        "bytes": 13357484,
+        "sha256": "16e646dcd1016f5dca87160f76c1b4834cb312e8ca83badcb202b0c84ed1b478"
+      },
+      "sample_frames": 6678720,
+      "actual_seconds": 278.28,
+      "paragraphs": 12
+    },
+    {
+      "chapter_id": "E4-04",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-04\\audio-index.json",
+        "bytes": 46619,
+        "sha256": "cb33f66e33dd201464d215bf15844e3ed9ecd9f11b3ea300c8f8aae7b05d0db3"
+      },
+      "audio": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-04\\narration.wav",
+        "bytes": 11780396,
+        "sha256": "ed1365c974bd97fdf910fd55015959958a25fe728ef683e17e130a349735f705"
+      },
+      "sample_frames": 5890176,
+      "actual_seconds": 245.424,
+      "paragraphs": 11
+    },
+    {
+      "chapter_id": "E4-05",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-05\\audio-index.json",
+        "bytes": 87185,
+        "sha256": "3c43df40f8bc7edb95ed1c8d1a0380e4c54da5495d19eeb8b94690071cd8e0f5"
+      },
+      "audio": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\chapters\\E4-05\\narration.wav",
+        "bytes": 25439660,
+        "sha256": "1de85015b47e98e3d20160b530ea606934f3a2d9e06121388da19c8cd3adcb48"
+      },
+      "sample_frames": 12719808,
+      "actual_seconds": 529.992,
+      "paragraphs": 16
+    },
+    {
+      "chapter_id": "E4-06",
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-06\\audio-index.json",
+        "bytes": 54910,
+        "sha256": "138bc362b6960d7763ce8963373639c970603bc0d5f801095baf561563851073"
+      },
+      "audio": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\chapters\\E4-06\\narration.wav",
+        "bytes": 11401388,
+        "sha256": "8f47abffd88c1132c46bac295d29f483166afad9d5a9647146edb1afadf9783b"
+      },
+      "sample_frames": 5700672,
+      "actual_seconds": 237.528,
+      "paragraphs": 10
+    }
+  ],
+  "inserted_silence_frames": 0,
+  "new_English_binding_provider_calls": 0,
+  "new_English_binding_PCM_WAVs": 0,
+  "ABC_winner": null,
+  "C_controlled_comparison_eligibility": "NOT_GRANTED",
+  "final_movie": null,
+  "human_listening_signoff": false,
+  "human_fullfilm_1x": false,
+  "film_signoff": false
+}

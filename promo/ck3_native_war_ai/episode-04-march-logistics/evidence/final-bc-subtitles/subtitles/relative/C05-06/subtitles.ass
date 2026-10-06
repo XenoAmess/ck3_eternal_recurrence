@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:04.50,Chinese,C05-06-S01,0,0,0,,{\an8\pos(960,935)}原版有“平分”“分出新军队”“整编”“合并军队”这些入口。
+Dialogue: 0,0:00:00.10,0:00:04.50,English,C05-06-S01,0,0,0,,{\an8\pos(960,1030)}The base game offers “Split in half,” “Split off new Army,” “Reorganize,” and “Merge armies.”
+Dialogue: 0,0:00:05.13,0:00:11.93,Chinese,C05-06-S02,0,0,0,,{\an8\pos(960,935)}平分把现有军队分成规模大致相等的两支，整编调整两支军队中的编制。
+Dialogue: 0,0:00:05.13,0:00:11.93,English,C05-06-S02,0,0,0,,{\an8\pos(960,1008)}Splitting in half makes two roughly equal armies.\NReorganizing changes how regiments are assigned between them.
+Dialogue: 0,0:00:12.53,0:00:17.03,Chinese,C05-06-S03,0,0,0,,{\an8\pos(960,935)}会合只是走到同地，点合并之后才真正成为一支。
+Dialogue: 0,0:00:12.53,0:00:17.03,English,C05-06-S03,0,0,0,,{\an8\pos(960,1030)}Reuniting means reaching the same location; clicking Merge makes them one army.
+Dialogue: 0,0:00:17.63,0:00:21.56,Chinese,C05-06-S04,0,0,0,,{\an8\pos(960,935)}名称、下令与实际组织变化分别核对。
+Dialogue: 0,0:00:17.63,0:00:21.56,English,C05-06-S04,0,0,0,,{\an8\pos(960,1030)}Check the name, order, and actual organizational change separately.

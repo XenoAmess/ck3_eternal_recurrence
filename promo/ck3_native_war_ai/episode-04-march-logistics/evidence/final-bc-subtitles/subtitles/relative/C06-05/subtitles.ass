@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:04.80,Chinese,C06-05-S01,0,0,0,,{\an8\pos(960,935)}人数变化以后，检查完整兵团的身份与前后整数。
+Dialogue: 0,0:00:00.10,0:00:04.80,English,C06-05-S01,0,0,0,,{\an8\pos(960,1030)}After soldier numbers change, check every regiment's identity and integer count before and after.
+Dialogue: 0,0:00:05.43,0:00:09.66,Chinese,C06-05-S02,0,0,0,,{\an8\pos(960,935)}净少或净增多少先说明，原因再按证据判断。
+Dialogue: 0,0:00:05.43,0:00:09.66,English,C06-05-S02,0,0,0,,{\an8\pos(960,1030)}State the net gain or loss first, then assess the cause from the evidence.
+Dialogue: 0,0:00:10.30,0:00:15.06,Chinese,C06-05-S03,0,0,0,,{\an8\pos(960,935)}补员许可、准备比例和损失预算都不代替实际变化；
+Dialogue: 0,0:00:10.30,0:00:15.06,English,C06-05-S03,0,0,0,,{\an8\pos(960,1030)}Reinforcement eligibility, progress, and a loss budget do not replace an actual change.
+Dialogue: 0,0:00:15.50,0:00:21.36,Chinese,C06-05-S04,0,0,0,,{\an8\pos(960,935)}登陆后条件改变，后续观察重新设基线，不沿用海上的旧条件。
+Dialogue: 0,0:00:15.50,0:00:21.36,English,C06-05-S04,0,0,0,,{\an8\pos(960,1008)}When conditions change after landing,\Nestablish a new baseline rather than reuse the sea-window conditions.

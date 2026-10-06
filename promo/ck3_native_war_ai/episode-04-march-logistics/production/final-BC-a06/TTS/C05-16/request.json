@@ -1,0 +1,33 @@
+{
+  "fragment_id": "C05-16-F01",
+  "paragraph_id": "C05-16",
+  "chapter_id": "E4-05",
+  "provider": {
+    "id": "edge-tts",
+    "version": "7.2.8"
+  },
+  "request": {
+    "text": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。另看换路线的C回放：从共同起点到它的到达观测，余额净少约十五点八二金币。这个数字同样只是净变化。途中登船阶段曾观察到余额净少十七金币，另一个窗口又净增加约零点二五；各自原因都没有逐笔付款账来证明。现在A和C各有真实到达观测，B因冻结条件未通过而停止；C又保留采样偏差，本次不能排出严格三方案的赢家。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-5%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": "episode04-a04-wordboundary-a02"
+  },
+  "metadata_request": {
+    "boundary": "WordBoundary",
+    "ticks_per_second": 10000000,
+    "save_sync_audio_and_metadata": true
+  },
+  "text_sha256": "7384b00c740e4e754b7d8fd2cc8fcf5c76910eff3c7e8f05831160e1bdd6d8cd",
+  "source_keys": [
+    "r177-A2-values",
+    "r177-A2-doc",
+    "B-research-published",
+    "C-terminal-actual",
+    "C-terminal-Root-sampling"
+  ],
+  "attempt": 1,
+  "started_utc": "2026-10-06T00:38:41.856447+00:00"
+}

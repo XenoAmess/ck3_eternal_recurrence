@@ -1,0 +1,221 @@
+{
+  "created_utc": "2026-10-06T00:38:37.388117+00:00",
+  "request": {
+    "schema": "ck3.e04.final-BC-audio-request.v1",
+    "workers": 4,
+    "oral_tool": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-oral-preparation-a01\\main-scope-connection-a05\\final_bc_increment.py",
+      "bytes": 16788,
+      "sha256": "3f6c0a10808f9becd2cbe232cdb1d45779858c65eb7eccc565f0a60a7bb3195b"
+    },
+    "oral_request": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-launch-a01\\oral-actual-final-request.json",
+      "bytes": 13394,
+      "sha256": "3804f5d6231c65b5ae1ecc4a22d363ab400d1dcea522027c2f21a5eab09dd9b2"
+    },
+    "baseline_audio_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\ROOT-DELIVERY.json",
+      "bytes": 5126,
+      "sha256": "87044ce8e9d5e0b25110f6693deeacea2f8fbf8f63563426ed96b5da8cff9633"
+    },
+    "actual_audio_helper": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-production-preparation-a01\\generate_stable_a04_audio_a02.py",
+      "bytes": 24594,
+      "sha256": "5c7580192e3b2f2712c462ec697b9b1ca8239f7d9e90303035142e2e47f2b6ed"
+    },
+    "serial_native_writer": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-result-oral-increment-a01\\serial_native_manifest_writer.py",
+      "bytes": 7185,
+      "sha256": "00ac94d2e655fdfc1e1f3aa1956fab3b3b2929401f3a72534f6774723f92e435"
+    },
+    "baseline_project_config": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\sources\\promo-project-A-only-a05.json",
+      "bytes": 80029,
+      "sha256": "015b0727203aa2cf693fc816a3ca3270e1c5ec16bed9a0e81be1ddf4d2e056a2"
+    }
+  },
+  "source_snapshots": [
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-launch-a01\\oral-actual-final-request.json",
+        "bytes": 13394,
+        "sha256": "3804f5d6231c65b5ae1ecc4a22d363ab400d1dcea522027c2f21a5eab09dd9b2"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\oral-request.json",
+        "bytes": 13394,
+        "sha256": "3804f5d6231c65b5ae1ecc4a22d363ab400d1dcea522027c2f21a5eab09dd9b2"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-oral-preparation-a01\\main-scope-connection-a05\\final_bc_increment.py",
+        "bytes": 16788,
+        "sha256": "3f6c0a10808f9becd2cbe232cdb1d45779858c65eb7eccc565f0a60a7bb3195b"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\oral-tool.py",
+        "bytes": 16788,
+        "sha256": "3f6c0a10808f9becd2cbe232cdb1d45779858c65eb7eccc565f0a60a7bb3195b"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\ROOT-DELIVERY.json",
+        "bytes": 5126,
+        "sha256": "87044ce8e9d5e0b25110f6693deeacea2f8fbf8f63563426ed96b5da8cff9633"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\baseline-audio-delivery.json",
+        "bytes": 5126,
+        "sha256": "87044ce8e9d5e0b25110f6693deeacea2f8fbf8f63563426ed96b5da8cff9633"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-production-preparation-a01\\generate_stable_a04_audio_a02.py",
+        "bytes": 24594,
+        "sha256": "5c7580192e3b2f2712c462ec697b9b1ca8239f7d9e90303035142e2e47f2b6ed"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\actual-audio-helper.py",
+        "bytes": 24594,
+        "sha256": "5c7580192e3b2f2712c462ec697b9b1ca8239f7d9e90303035142e2e47f2b6ed"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-result-oral-increment-a01\\serial_native_manifest_writer.py",
+        "bytes": 7185,
+        "sha256": "00ac94d2e655fdfc1e1f3aa1956fab3b3b2929401f3a72534f6774723f92e435"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\serial-native-writer.py",
+        "bytes": 7185,
+        "sha256": "00ac94d2e655fdfc1e1f3aa1956fab3b3b2929401f3a72534f6774723f92e435"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\sources\\promo-project-A-only-a05.json",
+        "bytes": 80029,
+        "sha256": "015b0727203aa2cf693fc816a3ca3270e1c5ec16bed9a0e81be1ddf4d2e056a2"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\baseline-project-config.json",
+        "bytes": 80029,
+        "sha256": "015b0727203aa2cf693fc816a3ca3270e1c5ec16bed9a0e81be1ddf4d2e056a2"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-Root-terminal.json",
+        "bytes": 6937,
+        "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\final_C_terminal_source.json",
+        "bytes": 6937,
+        "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\six-chapter-final-BC-Chinese-a06.md",
+        "bytes": 23969,
+        "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\final_chinese_body.md",
+        "bytes": 23969,
+        "sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\claim-ledger-final-BC-a06.json",
+        "bytes": 199066,
+        "sha256": "2ef65357de29c0d4245886cb06dd5a0454089849b15623f7fcbf47666e1b83c9"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\final_claim_ledger.json",
+        "bytes": 199066,
+        "sha256": "2ef65357de29c0d4245886cb06dd5a0454089849b15623f7fcbf47666e1b83c9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-launch-a01\\Root-NO-BLOCK-exact-snapshot.json",
+        "bytes": 15648,
+        "sha256": "5874bd3c5cc0557a61a47a66fb3788841ed1dd78c00eb02ebe6323cc6902428f"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\source_review.json",
+        "bytes": 15648,
+        "sha256": "5874bd3c5cc0557a61a47a66fb3788841ed1dd78c00eb02ebe6323cc6902428f"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-terminal-Root-review.json",
+        "bytes": 16482,
+        "sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\current_C_Root_basis_source.json",
+        "bytes": 16482,
+        "sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-terminal-Main-scope.json",
+        "bytes": 6330,
+        "sha256": "cddd162f23396adf95c06ee4048be466d9795484a5a5b3eab695a84584419a57"
+      },
+      "snapshot": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\current_C_Main_scope_source.json",
+        "bytes": 6330,
+        "sha256": "cddd162f23396adf95c06ee4048be466d9795484a5a5b3eab695a84584419a57"
+      }
+    }
+  ],
+  "actual_release": {
+    "queried_utc": "2026-10-06T00:38:37.185618+00:00",
+    "API": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/latest",
+    "response": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\latest-release-response.json",
+      "bytes": 7123,
+      "sha256": "ef6ec6090bf0b1f2c5a43fe0d3cd5aed60571b823896c07863b32c4c7b89003f"
+    },
+    "latest_tag": "v0.2.1",
+    "installed_version": "0.2.1",
+    "wheel_digest": "sha256:f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+        "hashes": {
+          "sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621"
+        }
+      },
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"
+    },
+    "matched": true,
+    "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "Pillow": "12.3.0",
+    "edge_tts": "7.2.8",
+    "install_actions": 0
+  },
+  "changed_Chinese_IDs": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "workers": 4,
+  "English_subtitle_pending_is_not_TTS_gate": true,
+  "human_signoff": false
+}

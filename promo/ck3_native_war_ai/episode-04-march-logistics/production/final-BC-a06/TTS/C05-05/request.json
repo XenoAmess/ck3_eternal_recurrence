@@ -1,0 +1,31 @@
+{
+  "fragment_id": "C05-05-F01",
+  "paragraph_id": "C05-05",
+  "chapter_id": "E4-05",
+  "provider": {
+    "id": "edge-tts",
+    "version": "7.2.8"
+  },
+  "request": {
+    "text": "方案C换路线，先经过已核验的中转点，再去伦敦。这次独立回放，在共同起点后的第七十七个游戏日，我们首次观察到主力已经抵达伦敦；第七十五日它还在路上，所以实际到达在这两次观察之间，精确时刻未知。这支主力从六千六百七十九人出发，到达观测时是六千六百八十九，净增十人；完整二十七个兵团的身份与满员数不变。补给从约一百一十点三八降到一百零一点九零，容量仍三百。终点当前损耗读到百分之一，这是当时的条件读数，不能直接换算成旅途中死了多少兵。这里报的是主力的原始编制，不是玩家所有单位的总人数。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-5%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": "episode04-a04-wordboundary-a02"
+  },
+  "metadata_request": {
+    "boundary": "WordBoundary",
+    "ticks_per_second": 10000000,
+    "save_sync_audio_and_metadata": true
+  },
+  "text_sha256": "259c161bf4d74e9fb4e864c88a7d9ceffbbf98ee46d9c2e2d0023c46b1d35341",
+  "source_keys": [
+    "C-terminal-actual",
+    "C-terminal-Main-scope",
+    "C-terminal-Root-sampling"
+  ],
+  "attempt": 1,
+  "started_utc": "2026-10-06T00:38:38.887908+00:00"
+}

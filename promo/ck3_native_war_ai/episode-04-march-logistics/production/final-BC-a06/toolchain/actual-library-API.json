@@ -1,0 +1,33 @@
+{
+  "signatures": {
+    "TtsRequest": "(text: 'str', voice: 'str', rate: 'str' = '+0%', pitch: 'str' = '+0Hz', volume: 'str' = '+0%', audio_format: 'str' = 'mp3', cache_salt: 'str' = '') -> None",
+    "EdgeTtsProvider.synthesize": "(self, request: 'TtsRequest', destination: 'Path') -> 'None'",
+    "edge_tts.Communicate": "(text: str, voice: str = 'en-US-EmmaMultilingualNeural', *, rate: str = '+0%', volume: str = '+0%', pitch: str = '+0Hz', boundary: Literal['WordBoundary', 'SentenceBoundary'] = 'SentenceBoundary', connector: aiohttp.connector.BaseConnector | None = None, proxy: str | None = None, connect_timeout: int | None = 10, receive_timeout: int | None = 60)",
+    "operations.start_run": "(config_path: 'Path', *, run_id: 'str', run_directory: 'Path | None' = None) -> 'Path'",
+    "operations.preserve_artifact": "(run_path: 'Path', source: 'Path', *, artifact_id: 'str', collection: 'str', role: 'str', label: 'str | None', media_type: 'str | None') -> 'SourceRecord'"
+  },
+  "sources": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\tts\\provider.py",
+      "bytes": 3395,
+      "sha256": "c11db348f5f51d16cc5c89c41040bc99c3e3965fae741ac99cf4a72e23df9484"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\tts\\edge.py",
+      "bytes": 2800,
+      "sha256": "5714030002470ba251fa6e85ac75b2c07f75688813d7812b26f052cb64644c80"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\operations.py",
+      "bytes": 11104,
+      "sha256": "1a55356ad26b4cf566ec3e35001e14b58b4af9c8fcb6d9cfda9c40f75790523e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\edge_tts\\communicate.py",
+      "bytes": 24038,
+      "sha256": "2944b7de57a49a6dc828186a8465e03fd0936102da2e717b9dce45c40c993bb9"
+    }
+  ],
+  "no_TTS_CLI_claimed": true,
+  "provider_calls": 0
+}

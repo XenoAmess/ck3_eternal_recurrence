@@ -1,0 +1,3092 @@
+{
+  "schema": "ck3.e04.production-omitted-assets.v1",
+  "external_audio_PCM_files": [
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-01\\narration.wav",
+        "bytes": 8316332,
+        "sha256": "7863c61fb5e689b9034bfab24d3c7fb53edde4c7e9dc816ee658d4076f9c83d7"
+      },
+      "roles": [
+        "chapter_PCM_audio"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-01-F01\\attempt-a01\\speech.mp3",
+        "bytes": 141552,
+        "sha256": "ec065427bfa03281db0b4e533ca7913ce7d54bf214f88df66309315ad9078979"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-01-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1132494,
+        "sha256": "3c9f57699ada3023bfeeb0c149a605a33a2b062e108ce378e7b56db1f7aeac3e"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-02-F01\\attempt-a01\\speech.mp3",
+        "bytes": 129744,
+        "sha256": "4743adb09d58bfbda3d18a0b9a2fad228f1664c7d6160329dbdf14ae1f481caa"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-02-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1038030,
+        "sha256": "051c219938ced07b611e02a5d0764332955e505d7a95becc0ffe0f4250186c0e"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-03-F01\\attempt-a01\\speech.mp3",
+        "bytes": 114912,
+        "sha256": "2a352e5303aceb4428cf39dab4e04ba5c8f945b93d00d01e757844a3ff049c3a"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-03-F01\\attempt-a01\\decoded.wav",
+        "bytes": 919374,
+        "sha256": "bad55e646a21ea60103b1a335734da6dd34d1473918b80db132657234d94476f"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-04-F01\\attempt-a01\\speech.mp3",
+        "bytes": 138384,
+        "sha256": "9bf014207d2c50708450bf441793317b6e5a915c850bd6717bfb60b3b0223db8"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-04-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1107150,
+        "sha256": "9d1943609789ade66fc4a9dedd2674b7371c72ac80bf945514163ad122b0e2ab"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-05-F01\\attempt-a01\\speech.mp3",
+        "bytes": 141264,
+        "sha256": "c3ece49257a11abda7082991d4f96d0f1fc4ce8d77a6c59a557f153778c9b4e0"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-05-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1130190,
+        "sha256": "dfdb349e8c66989372976593bca769bac1f478911441fb0c58ef7c33137e016f"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-06-F01\\attempt-a01\\speech.mp3",
+        "bytes": 129600,
+        "sha256": "a0fed030dec18ca24c56686f1be406aa9eec5a6ccdc60443b98d31cbd16d6c0f"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-06-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1036878,
+        "sha256": "1e4a0065a367468fe1a4b9e2cf85f98f455ea81be22dc725216b145dd5c6a0f7"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-07-F01\\attempt-a01\\speech.mp3",
+        "bytes": 131616,
+        "sha256": "f583d55b9c3cb25fff5f542e4ffda77939c7a88ca8b880568288a062ebe2f8df"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-07-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1053006,
+        "sha256": "4af83f3647b4aeefe6d4df10a19e433a2cd6710964ec34198507804b3f529c18"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-08-F01\\attempt-a01\\speech.mp3",
+        "bytes": 112464,
+        "sha256": "ad3f5509632c619c538cb784f4f439162be7e263f5413cc0c98e6c0c6063647f"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-08-F01\\attempt-a01\\decoded.wav",
+        "bytes": 899790,
+        "sha256": "44664e063c79f7230ef3967db364cf2e10cc20ee79a70b8fbcdf05e8643e24c4"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-02\\narration.wav",
+        "bytes": 13022252,
+        "sha256": "8084578527c8632c70eb935212793feaaf5d980b40533fd033251fdf2b89da60"
+      },
+      "roles": [
+        "chapter_PCM_audio"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-001\\attempt-a01\\speech.mp3",
+        "bytes": 64800,
+        "sha256": "825a02fd0498e9cfd79749553fddcc0fca39d0762bd46d5ce4622a749b74a873"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-01-F01\\decoded.wav",
+        "bytes": 518478,
+        "sha256": "673d987703195e8a18cf8fe5e740349376106bbd55549b5044be6681e0aa9f1f"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-01-F02\\attempt-a01\\speech.mp3",
+        "bytes": 47808,
+        "sha256": "dacaf26d6754c4ccbc8037d4ff865924eb6969141202f38716dbad1a71acb8f0"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-01-F02\\attempt-a01\\decoded.wav",
+        "bytes": 382542,
+        "sha256": "c134abe1e6a2ba5fc22208019e9bedc4f834df1f0cd0832276bd7fdc6077f4c2"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-002\\attempt-a01\\speech.mp3",
+        "bytes": 60768,
+        "sha256": "9c1db651a943fd3f7a5655f0f042c23c110132e86e4807f95a630bf2a61ba7a8"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-02-F01\\decoded.wav",
+        "bytes": 486222,
+        "sha256": "c9b8bf9775c05200b6deb055cb00663fee7bc1e624c6b98b917167f70b947ed5"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-003\\attempt-a01\\speech.mp3",
+        "bytes": 77472,
+        "sha256": "12f570765269d5136d63af92bd9ad58854d94876b4df9a9e78dc5ec04e019d43"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-02-F02\\decoded.wav",
+        "bytes": 619854,
+        "sha256": "5e612b411a05ab9d8d484554b3000fab23798d1e54929d94e10cfcce936f9d93"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-004\\attempt-a01\\speech.mp3",
+        "bytes": 63792,
+        "sha256": "c6f3b523090ecdb4513a104daad261f720873a392ef436b6981c1837c53049c8"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-03-F01\\decoded.wav",
+        "bytes": 510414,
+        "sha256": "31a7eee1b95e2bbe80cfd25dff8079b8b9ea32bc447200cabfb3645c341fec13"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-03-F02\\attempt-a01\\speech.mp3",
+        "bytes": 70416,
+        "sha256": "522736138bdbf6c13ee262a6e9ce8a834bc8b3a4aa215428f56e0082c296cdbb"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-03-F02\\attempt-a01\\decoded.wav",
+        "bytes": 563406,
+        "sha256": "534c6303ca265014e57d76d910d3a6d0b761be4eff39357472795f93a6ae96b9"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-005\\attempt-a01\\speech.mp3",
+        "bytes": 81072,
+        "sha256": "444920531f082f195b69f216611f7c61aa77403b8335a3d899ff48f35272aac7"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-04-F01\\decoded.wav",
+        "bytes": 648654,
+        "sha256": "5412204817541db8ae60a699935d933045143b256e429842a64fcc3338b33976"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-04-F02\\attempt-a01\\speech.mp3",
+        "bytes": 52992,
+        "sha256": "c4b4c383a2fd9faabf63d65bcc139298af4cbcefec27817e5c3c6aab8716ed73"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-04-F02\\attempt-a01\\decoded.wav",
+        "bytes": 424014,
+        "sha256": "2ea11e8b44c27897d096bb37a6391a07918664904d7718ce4f409cf2aa0a7669"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a01\\tts\\E4S02-006\\attempt-a01\\speech.mp3",
+        "bytes": 48096,
+        "sha256": "e7a54013b7062a77fd798ff4ad336b0bf68986b80db58d56cf7f2fba61b6d336"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\reused\\C02-05-F01\\decoded.wav",
+        "bytes": 384846,
+        "sha256": "14fd8472d8824df72c5d9290117ae1decfe6c6544cea6f82229701cfd8f2e2d1"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-05-F02\\attempt-a01\\speech.mp3",
+        "bytes": 119520,
+        "sha256": "eecd3de54fc96cfce2620eb93e1aee2c3229b67e9aa6c5e7404c09f7edc1abbb"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-05-F02\\attempt-a01\\decoded.wav",
+        "bytes": 956238,
+        "sha256": "7aa3a4ed2fb2fdef6cbf5966c3cd314164762ac3bcb978cbfe10ddc73ea4df5d"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-06-F01\\attempt-a01\\speech.mp3",
+        "bytes": 137088,
+        "sha256": "10c10572ede2ef55153bfbfa881d2737c58cd1235d2ae951e29a93ef71182782"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-06-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1096782,
+        "sha256": "a492f79e46ebed3186666275ef5f743689ee101f17e3446a965b073fad9c1033"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-07-F01\\attempt-a01\\speech.mp3",
+        "bytes": 134064,
+        "sha256": "24d17100cbcbd22e7c0d8b05254f7cc689bd8df9968cac6567241d5a72a4a6c5"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-07-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1072590,
+        "sha256": "350181027c80e4deabf072e70ea231f4b54c693d4b42c8278aa95a172924de83"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-08-F01\\attempt-a01\\speech.mp3",
+        "bytes": 114336,
+        "sha256": "b76dd6bd5d2e519dbd2ceca840deb497dedd10d7ea29962c0d425893c48c54a7"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-08-F01\\attempt-a01\\decoded.wav",
+        "bytes": 914766,
+        "sha256": "becf5711790196e24b3c04691066319cd54699df869e382bf4fb8838255c465a"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-09-F01\\attempt-a01\\speech.mp3",
+        "bytes": 112176,
+        "sha256": "5c993ae91bad84d2bc1ba2a2bc9179e11ea88a3cef679547f2547c4aa86d9e01"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-09-F01\\attempt-a01\\decoded.wav",
+        "bytes": 897486,
+        "sha256": "b6194a770d4e590b9aea6b87a06431dc9a841433baa8314da01243630a10ce8c"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-10-F01\\attempt-a01\\speech.mp3",
+        "bytes": 147312,
+        "sha256": "8d4cd07188229f41d85773e3ce773cb222215d8126a06dc2654935a1ea19d488"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-10-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1178574,
+        "sha256": "216abee4a0c2fa95c16c958bfd34e44100028aee6b2cb1c485176c3d8fa5ee28"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-11-F01\\attempt-a01\\speech.mp3",
+        "bytes": 140688,
+        "sha256": "91d508c74b2a11c46cb58e5387e4878c57a99800068bc565cb27da95d96fbaba"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-11-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1125582,
+        "sha256": "1dfa9701cb9f1e599c879522e13c75262c991693fc0b0a817b747ea95fcfbad6"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-12-F01\\attempt-a01\\speech.mp3",
+        "bytes": 155376,
+        "sha256": "a4ca86c921c3256e707c1b2305cb47a07ee80c5f8868268f8810764dd9dca5ac"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C02-12-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1243086,
+        "sha256": "24b1f07655680a4277e6e90be953e596782314573c559aea0d9eddb8cc6fdf39"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-03\\narration.wav",
+        "bytes": 13357484,
+        "sha256": "16e646dcd1016f5dca87160f76c1b4834cb312e8ca83badcb202b0c84ed1b478"
+      },
+      "roles": [
+        "chapter_PCM_audio"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-01-F01\\attempt-a01\\speech.mp3",
+        "bytes": 130608,
+        "sha256": "637e03078a100e9135b98072da92e50748a01aa799053644197d90cc9a7aeefa"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-01-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1044942,
+        "sha256": "76e5a16c0c733eddceac80bb5e3c10dc2c0b45440162bc9da739620f152447f6"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-02-F01\\attempt-a01\\speech.mp3",
+        "bytes": 114768,
+        "sha256": "3467b843d7b991f9eed3c7bbdaaac7fcec0ce54ea795b1121d65e24081c0fc31"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-02-F01\\attempt-a01\\decoded.wav",
+        "bytes": 918222,
+        "sha256": "f15f8f249769863d134e27815b19c264db091ebdc6687e521c02a01a8170e448"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-03-F01\\attempt-a01\\speech.mp3",
+        "bytes": 127440,
+        "sha256": "9aa65460fc4f4be1bbe4c171645a05f2f57b0ba453fadc543e661b5bcd058cbf"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-03-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1019598,
+        "sha256": "fc63f03c810f277150409cf95dd90f1c563ab0713129e6f68c887958715d74f2"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-04-F01\\attempt-a01\\speech.mp3",
+        "bytes": 139968,
+        "sha256": "514bad6285339c88827637b339f7b9fe0990b1f07a70ae7a1d99a46fc951a25f"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-04-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1119822,
+        "sha256": "0eae53c378cf2cf5ecc76f82d344b70f27318cc9d9e43d7d442d2fa1e2fd4880"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-05-F01\\attempt-a01\\speech.mp3",
+        "bytes": 135216,
+        "sha256": "18e497d78d4c99067d6a6326a4ab9ec00e7b3e35ffae7e1d1180cf331f3d9e44"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-05-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1081806,
+        "sha256": "7b6abf666fc1e008f34a27f14e4355b189af532aab37d2de32920f942a3f24ca"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-06-F01\\attempt-a01\\speech.mp3",
+        "bytes": 128304,
+        "sha256": "af67b62d95ef4dc15ac2c3031993f649d41ad3543830bd3e9927968bf4f18b46"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-06-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1026510,
+        "sha256": "139820a40b09ae59317433b6e4ad91ae4afdfcaa868c9fe67c9d20231dc23f22"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-07-F01\\attempt-a01\\speech.mp3",
+        "bytes": 133776,
+        "sha256": "67edd04aae8bf47f3f78e0481dda174853404b14311c374f9ebf120245fca79f"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-07-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1070286,
+        "sha256": "de18eccf05912db0112fcbd7739e7eb23498d3f9e31fe942a875aaa1c1269093"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-08-F01\\attempt-a01\\speech.mp3",
+        "bytes": 144576,
+        "sha256": "d6c6652c57d5a173aafd8359c66e639d1994d13716124f3149fefd0683a00172"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-08-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1156686,
+        "sha256": "3c33614d3a29be36ff8cf83e0e60740cb34b16624240f0cec6c0294d2e956771"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-09-F01\\attempt-a01\\speech.mp3",
+        "bytes": 144144,
+        "sha256": "fead3928d8c2201f807e018183324db794815e65e743cce461db51c015d5769e"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-09-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1153230,
+        "sha256": "0103cb82bf5559aa105143f4f12067d4db8db44153b1234453d4e6487a049c1c"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-10-F01\\attempt-a01\\speech.mp3",
+        "bytes": 146304,
+        "sha256": "fce5ccdc08e6425103f221dbd3d95e6a8be34dffb9554bd791513ca78141074c"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-10-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1170510,
+        "sha256": "f60e7a9aa8f2204bfd5e5d959f0e83fff57528908358e9bb873ebf0dac471c1b"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-11-F01\\attempt-a01\\speech.mp3",
+        "bytes": 166752,
+        "sha256": "3ed56d17597641f8b461e77d4f095b9fab821957d98eaeef9b5e77acdaf14b2c"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-11-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1334094,
+        "sha256": "9e2ec9d530459ba449a29dfb2e30fc9f04aa44f046adf0c8f176321593ffc9c3"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-12-F01\\attempt-a01\\speech.mp3",
+        "bytes": 157824,
+        "sha256": "4e030e41756a4626b4fc9a78d05386224b86dac38af6c405279d949faa3616eb"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C03-12-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1262670,
+        "sha256": "d755c47872409cb37ba87de22ebeff1a4aaed362103f8fddc71211216115416d"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-04\\narration.wav",
+        "bytes": 11780396,
+        "sha256": "ed1365c974bd97fdf910fd55015959958a25fe728ef683e17e130a349735f705"
+      },
+      "roles": [
+        "chapter_PCM_audio"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-01-F01\\attempt-a01\\speech.mp3",
+        "bytes": 125136,
+        "sha256": "34988fae8ef35b35c7b4f13c9fcedc4cb7e444962196a8e2e837222fa9fdf38c"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-01-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1001166,
+        "sha256": "d27cfe6be4150ec9776d6d81b417043e1699b75f71bbc44c4f83128bfcf9780d"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-02-F01\\attempt-a01\\speech.mp3",
+        "bytes": 112608,
+        "sha256": "70979e59bc4a47210bbed61be89967bb779e9ee5d348a57f0b7990c05e9303e7"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-02-F01\\attempt-a01\\decoded.wav",
+        "bytes": 900942,
+        "sha256": "bc19f07fdc43a5e361cbdcfa04ca5fa0759f7c3a15c40e9aa18b22d55de50b36"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-03-F01\\attempt-a01\\speech.mp3",
+        "bytes": 152064,
+        "sha256": "0272f5ff23f88d8fae5c6b224cefbc16e9885e8a7f5e180cc42bc7c29218f048"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-03-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1216590,
+        "sha256": "370f4c5623fcc9c15fdf1f6141e7ea688414652259e4e8316472a21c85aa992b"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-04-F01\\attempt-a01\\speech.mp3",
+        "bytes": 109152,
+        "sha256": "0aa5064d3a50d97e96bdf5650b0b4c99ca9f682cc5515fda63463ba1e259e0eb"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-04-F01\\attempt-a01\\decoded.wav",
+        "bytes": 873294,
+        "sha256": "3bdb12e0393fa3c2ddee2d29e92e6e02424ae2a16b865bd03ba08c8964fcc5aa"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-05-F01\\attempt-a01\\speech.mp3",
+        "bytes": 138096,
+        "sha256": "44c7c85d9c7a3119d3f5a180997efc029b28baad7cdc2f5bb3b25d8853412c53"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-05-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1104846,
+        "sha256": "a4118e0979e5c9dba7cfa0a5c10a5b0c26cc232f5ffb318462036d6f072bd0a9"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-06-F01\\attempt-a01\\speech.mp3",
+        "bytes": 130896,
+        "sha256": "f5a2af6985393fce2d8a41772caf4e932e07897a2c1f78b110c168ac02ff7db3"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-06-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1047246,
+        "sha256": "46c6bf5fdbd946570b638ba03e6cee33bb696ad6962cd4d97536054f465244a4"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-07-F01\\attempt-a01\\speech.mp3",
+        "bytes": 122400,
+        "sha256": "859d5c6e9008d7d5e26d8a1f7286cdb0d2b50ecaaf39c3643cfc8e581c289b58"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-07-F01\\attempt-a01\\decoded.wav",
+        "bytes": 979278,
+        "sha256": "90849a121d9302e0bb8f759ab1059451d76f16244a426d24d30fbdea6068702b"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-08-F01\\attempt-a01\\speech.mp3",
+        "bytes": 125136,
+        "sha256": "a7bd7bc0bc9d28ada206a3e96119fd649017a749547a247ca216ac3efb26909d"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-08-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1001166,
+        "sha256": "bb0dfe485c82a5bddec59ff8216cf50d101a8b306d44704b271d006c526e959d"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-09-F01\\attempt-a01\\speech.mp3",
+        "bytes": 128736,
+        "sha256": "8120e9e3abd60a7219e4b8d5ee6873babf291705f0a625ef34c714580ba1f031"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-09-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1029966,
+        "sha256": "6cb015647293bb85ab35e7c84f55afd260d90677cdc6f82db6455faae4f39c65"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-10-F01\\attempt-a01\\speech.mp3",
+        "bytes": 181728,
+        "sha256": "bc20d37a2971929a655d6063e4af56bfbdfbabf113c1d7f3ed82da14502e9b00"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-10-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1453902,
+        "sha256": "ea428df435d344dc54725d030fbe48965c504b8b4f3dff0589551c7199ff830a"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-11-F01\\attempt-a01\\speech.mp3",
+        "bytes": 146592,
+        "sha256": "9788571f3c8c0d9adc62de369a1943bd7fc78b9b85a4851a578aef38ff3d4e9e"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C04-11-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1172814,
+        "sha256": "93e79fce8b2b7677cf8cf29fa039fd8ab8caa459ccaf89461a3cb6ee62ce92b6"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\chapters\\E4-05\\narration.wav",
+        "bytes": 25439660,
+        "sha256": "1de85015b47e98e3d20160b530ea606934f3a2d9e06121388da19c8cd3adcb48"
+      },
+      "roles": [
+        "chapter_PCM_audio"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-01-F01\\attempt-a01\\speech.mp3",
+        "bytes": 131760,
+        "sha256": "caae852fd8606b041717525436a3035f19b493909bf31c19f85caabb54df0713"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-01-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1054158,
+        "sha256": "14019bdc4a3e53ea953cc8838bad7b71df04d17b88a22a6af01e61202cdbbc76"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-02-F01\\attempt-a01\\speech.mp3",
+        "bytes": 144720,
+        "sha256": "992d4b96592c253a7625c6538c165a44a7453e62ad65e4490c704996deaedaaf"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-02-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1157838,
+        "sha256": "9d181c1654bd2d12d1ab1e1bb2dfce3beeff73dbf5560c3aed74048bbc74e5c8"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\tts\\C05-03-F01\\attempt-a01\\speech.mp3",
+        "bytes": 157968,
+        "sha256": "6bfc7becc2e1e09c49310c70d4c256cb312c280084c74e5dfcf59028be83c618"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\tts\\C05-03-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1263822,
+        "sha256": "226ee3ee2ba0f8c2cfb5eace4f0f52b81b3107b8ac96ac9d48fccd2991752fbb"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-04-F01\\attempt-a01\\speech.mp3",
+        "bytes": 180144,
+        "sha256": "5d0bc0234133dfb5ebf49b4095aab7f07bdf7cfa775c430ff27bfd83e6fb136a"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-04-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1441230,
+        "sha256": "5107f29191340ee4bcb9d08c7b1e3c7ed2914aa2962e8fe345ee38b71686ff30"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-05-F01\\attempt-a01\\speech.mp3",
+        "bytes": 320112,
+        "sha256": "84908db1982f33731f81456f06e316288c78a2601e10eaceb31b88bdd61bd245"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-05-F01\\attempt-a01\\decoded.wav",
+        "bytes": 2560974,
+        "sha256": "909ea72882efac01f508f3fb15cb9c43a09b864c540240707562b640b04174de"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-06-F01\\attempt-a01\\speech.mp3",
+        "bytes": 133056,
+        "sha256": "b3ad44ca0d39db767446dffa55a2999f9b1b10223799a6b3f29900e7f98bd8a9"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-06-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1064526,
+        "sha256": "5143912e1bad08bc5c005cb54890de0f7899b7a0e8ebddf0565c3b7066365e96"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-07-F01\\attempt-a01\\speech.mp3",
+        "bytes": 142272,
+        "sha256": "d3ec2c8d41e826b1cd38dfbd3ed2eacb350b6a44a7015bbd095473afd89b0068"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-07-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1138254,
+        "sha256": "ea89e13904f9ecf19308be5cfe02f515faf11d9b8387c3e5c71919dec37cac4a"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-08-F01\\attempt-a01\\speech.mp3",
+        "bytes": 194976,
+        "sha256": "71b81b6bd7ae56ddcc369783de91c6e6b7480cb25d8ecec3802ebaee2dd41f38"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-08-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1559886,
+        "sha256": "9a79e2f4e1538505d746e6accfe9359a4c0c5a97a6e274dcece0ed67727834ac"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-09-F01\\attempt-a01\\speech.mp3",
+        "bytes": 133920,
+        "sha256": "c9ba2f30ba172b42f8cb1c1d537b406c86f9a22466b2f63f69f8b56dba218f2a"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-09-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1071438,
+        "sha256": "5461216eba47cc23815f008ce81adfb2caad4ffe287bbf885dc842ba08cad438"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-10-F01\\attempt-a01\\speech.mp3",
+        "bytes": 331344,
+        "sha256": "51aede7478ca88afd9bc3194f8e5192d0bffb8421207fae92a4697502757fa2b"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-10-F01\\attempt-a01\\decoded.wav",
+        "bytes": 2650830,
+        "sha256": "cfa6cab32a418e0501c61c1eb1c154d505f579038a892387c4d760e14cea0d43"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-11-F01\\attempt-a01\\speech.mp3",
+        "bytes": 123552,
+        "sha256": "aa1fe286bb6eedf9313043a2099c61d29285bb4e256dbed02cf7c2a3366f27a6"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-11-F01\\attempt-a01\\decoded.wav",
+        "bytes": 988494,
+        "sha256": "5deb75513d2d4e1432774f357759c34f06ef17d6cbde2a463e224a23855e3b79"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-12-F01\\attempt-a01\\speech.mp3",
+        "bytes": 132336,
+        "sha256": "e541b4f711172801d4411e48ee5ec4aae8184e34e81550372db3a9552e79b51f"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-12-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1058766,
+        "sha256": "9f65b1ffce271ca15e0316f56d3e85fff7f85d846f4210caad703317f5931ebd"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-13-F01\\attempt-a01\\speech.mp3",
+        "bytes": 150192,
+        "sha256": "5addf10d24d6280407a779d3420b7ef2833275ebc171a537d5b7d79838aa5968"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C05-13-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1201614,
+        "sha256": "5bff4a0b24d5d85f3923a7d33b255de73c13388e5b9346171a11aef82177c3e5"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-14-F01\\attempt-a01\\speech.mp3",
+        "bytes": 423792,
+        "sha256": "55c86ff5b2f444979b1b0c0eefadbaf9c94e048b8ace439b422b48240334115b"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-14-F01\\attempt-a01\\decoded.wav",
+        "bytes": 3390414,
+        "sha256": "1c244a54dbf91026106aa0b4c94608c2fdbef2235dc3a2683130971f715a5fb1"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\tts\\C05-15-F01\\attempt-a01\\speech.mp3",
+        "bytes": 166896,
+        "sha256": "0a3f5c40dbd9762a2658cc305370796adb4f21791a8bce3e00a99141398ad2ae"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\tts\\C05-15-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1335246,
+        "sha256": "825e32018066f586721a619a2cf4e8eaaf7c1af949db495c0f31639d999ee347"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-16-F01\\attempt-a01\\speech.mp3",
+        "bytes": 312912,
+        "sha256": "bb269f23c26943bdfba9e17a977de899e654c5033a0d3b1d98c207e862575e69"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-16-F01\\attempt-a01\\decoded.wav",
+        "bytes": 2503374,
+        "sha256": "573bb34170e0e6ace743aef8b15b7b9247e92cf4c453651ffd347eab29cf1a44"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\chapters\\E4-06\\narration.wav",
+        "bytes": 11401388,
+        "sha256": "8f47abffd88c1132c46bac295d29f483166afad9d5a9647146edb1afadf9783b"
+      },
+      "roles": [
+        "chapter_PCM_audio"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-01-F01\\attempt-a01\\speech.mp3",
+        "bytes": 118080,
+        "sha256": "e220b9bacfd1a46f86f0632e3707cae1dc227578ad123501158190c7886b7cdc"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-01-F01\\attempt-a01\\decoded.wav",
+        "bytes": 944718,
+        "sha256": "ef09716af4afe5c4f22d8b2d35011a97846ce88d7ce07fca00e3e13ed2eef263"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-02-F01\\attempt-a01\\speech.mp3",
+        "bytes": 124560,
+        "sha256": "b76f2668398bec42d44b411761d6df8df997a5d9830a58135d064736fa96a99d"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-02-F01\\attempt-a01\\decoded.wav",
+        "bytes": 996558,
+        "sha256": "48ee3fdafe28d1489076259c067d589cf427ae20bd0db342001a435ccd8c35f6"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-03-F01\\attempt-a01\\speech.mp3",
+        "bytes": 124128,
+        "sha256": "094b335208329922cdcef7a2a12c4892676d62af4f1c73068fc15280faff6d69"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-03-F01\\attempt-a01\\decoded.wav",
+        "bytes": 993102,
+        "sha256": "7a46caad4a810024c3722b36ecb06130a8682ec588354f0f75807e219e4d2c90"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-04-F01\\attempt-a01\\speech.mp3",
+        "bytes": 142848,
+        "sha256": "8b927235abe40520e5e2c96d1fa5371b0f90af5d8ad6c0fc79103bec5be1105f"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-04-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1142862,
+        "sha256": "fdef0e35787b4c4b98f0f81c81d235da52fd7324c5d40b807b52743dfe387dcc"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-05-F01\\attempt-a01\\speech.mp3",
+        "bytes": 131760,
+        "sha256": "dcdc94772c720fe729c75e2b1fa04488466927338bc266e12226ca559b532a67"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-05-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1054158,
+        "sha256": "0d9e72e876e9b6337d5ce727848110066344ae69c2d9673505d2c6e5ba07926c"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-06-F01\\attempt-a01\\speech.mp3",
+        "bytes": 132624,
+        "sha256": "836f6c5bb97ccd193a9a004c130d4047753b1112db01b4451a62371387200521"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-06-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1061070,
+        "sha256": "eeeff461fc83131d4281f21ec1ddb637e4677d11d4078c3830f3f97de33c012a"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-07-F01\\attempt-a01\\speech.mp3",
+        "bytes": 137088,
+        "sha256": "7a55685bce5aa8edbe66e8031cb133e961490ef6bb52571a057dafb224d3a760"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-07-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1096782,
+        "sha256": "8c2e27334a452312d821a1d073a7b0a2f35bff678af85d578a0abb474e0774b8"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-08-F01\\attempt-a01\\speech.mp3",
+        "bytes": 128448,
+        "sha256": "a0de9eda25ad3e51b7ac871a24ed93b180735a8875a6a003bb5f1d4f3ae3d0c0"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-08-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1027662,
+        "sha256": "58f7c732672c80268fca2a2420ddc8f31196566d888739c816a05b5a71e82cd5"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-09-F01\\attempt-a01\\speech.mp3",
+        "bytes": 140688,
+        "sha256": "bd907563dba8a579627e7aeacb371d595b1a5214c39561af58138d01b14a1405"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C06-09-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1125582,
+        "sha256": "c705b6e78fe4af845d3e6f741b80a671826745e498af0135849f61001ccbde0e"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C06-10-F01\\attempt-a01\\speech.mp3",
+        "bytes": 244944,
+        "sha256": "8aa774541f1797927da594ce57ababa8320ce6e8ac8e48c0e02229b9802d4566"
+      },
+      "roles": [
+        "fragment_MP3"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C06-10-F01\\attempt-a01\\decoded.wav",
+        "bytes": 1959630,
+        "sha256": "aac1fd0084c176a994b17312deca2a0b071ce7f3ffb2595d6492ff68a45aa2f1"
+      },
+      "roles": [
+        "fragment_decoded_PCM"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    },
+    {
+      "historical_production_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\final-Chinese-narration.wav",
+        "bytes": 83317292,
+        "sha256": "62f3fffe64885589ed0a43f8ab66f41ff7d080d3075037c6b74798b53bce9e0a"
+      },
+      "roles": [
+        "actual_full_PCM_narration"
+      ],
+      "carrier": "NOT_CARRIED",
+      "availability_in_this_package": "NOT_GRANTED",
+      "bytes_rehashed_by_pack_builder": false
+    }
+  ],
+  "native118_CAS_asset_records": [
+    {
+      "id": "e4-finalBC-0000",
+      "CAS_relative_path": "artifacts/derived/sha256/C2/C258BF2D9906EC1C1BB9256FADC19B5B4FCEAA05F922879602E6420B82B0DD41.json",
+      "bytes": 16849,
+      "sha256": "C258BF2D9906EC1C1BB9256FADC19B5B4FCEAA05F922879602E6420B82B0DD41",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0001",
+      "CAS_relative_path": "artifacts/derived/sha256/04/045D902B99A7500D143C10080D5AAA462D1EA1B903D6B03D8B2CD3411D5D07C9.json",
+      "bytes": 82690,
+      "sha256": "045D902B99A7500D143C10080D5AAA462D1EA1B903D6B03D8B2CD3411D5D07C9",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0002",
+      "CAS_relative_path": "artifacts/derived/sha256/1D/1DE85015B47E98E3D20160B530EA606934F3A2D9E06121388DA19C8CD3ADCB48.wav",
+      "bytes": 25439660,
+      "sha256": "1DE85015B47E98E3D20160B530EA606934F3A2D9E06121388DA19C8CD3ADCB48",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0003",
+      "CAS_relative_path": "artifacts/derived/sha256/96/96FAB2BC0CA1163CB2A9F205E50448E9B6C864DAB7BC8C9908922114367DF0DC.json",
+      "bytes": 54216,
+      "sha256": "96FAB2BC0CA1163CB2A9F205E50448E9B6C864DAB7BC8C9908922114367DF0DC",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0004",
+      "CAS_relative_path": "artifacts/derived/sha256/8F/8F47ABFFD88C1132C46BAC295D29F483166AFAD9D5A9647146EDB1AFADF9783B.wav",
+      "bytes": 11401388,
+      "sha256": "8F47ABFFD88C1132C46BAC295D29F483166AFAD9D5A9647146EDB1AFADF9783B",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0005",
+      "CAS_relative_path": "artifacts/derived/sha256/62/62F3FFFE64885589ED0A43F8AB66F41FF7D080D3075037C6B74798B53BCE9E0A.wav",
+      "bytes": 83317292,
+      "sha256": "62F3FFFE64885589ED0A43F8AB66F41FF7D080D3075037C6B74798B53BCE9E0A",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0006",
+      "CAS_relative_path": "artifacts/derived/sha256/53/536380BE951E4D6AB1CB11841AEE8C021228D323D8488ECEEE0307876D9689D8.json",
+      "bytes": 9837,
+      "sha256": "536380BE951E4D6AB1CB11841AEE8C021228D323D8488ECEEE0307876D9689D8",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0007",
+      "CAS_relative_path": "artifacts/derived/sha256/8F/8F61C80650F352EFF2DC465C0F1760C9493C6DC746FD4FDE58ACA0675F161824.argv.json",
+      "bytes": 279,
+      "sha256": "8F61C80650F352EFF2DC465C0F1760C9493C6DC746FD4FDE58ACA0675F161824",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0008",
+      "CAS_relative_path": "artifacts/derived/sha256/CC/CC3A83292E453D2D63BC7AC1BAC3C0E472C7CEFF7EFBF0FA4E3B2BC836DD5E66.receipt.json",
+      "bytes": 149,
+      "sha256": "CC3A83292E453D2D63BC7AC1BAC3C0E472C7CEFF7EFBF0FA4E3B2BC836DD5E66",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0009",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0010",
+      "CAS_relative_path": "artifacts/derived/sha256/7C/7C573A38360B5440E6A05AC1C6677D366BE4734F38CB1E80FA1315F2D6034DB4.stdout.txt",
+      "bytes": 280,
+      "sha256": "7C573A38360B5440E6A05AC1C6677D366BE4734F38CB1E80FA1315F2D6034DB4",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0011",
+      "CAS_relative_path": "artifacts/derived/sha256/3C/3CA2186B395980878827610C45DE9AFCDBDBFFC052847BED1F80910287498BE7.json",
+      "bytes": 710,
+      "sha256": "3CA2186B395980878827610C45DE9AFCDBDBFFC052847BED1F80910287498BE7",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0012",
+      "CAS_relative_path": "artifacts/derived/sha256/5C/5C7580192E3B2F2712C462EC697B9B1CA8239F7D9E90303035142E2E47F2B6ED.py",
+      "bytes": 24594,
+      "sha256": "5C7580192E3B2F2712C462EC697B9B1CA8239F7D9E90303035142E2E47F2B6ED",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0013",
+      "CAS_relative_path": "artifacts/derived/sha256/87/87044CE8E9D5E0B25110F6693DEEACEA2F8FBF8F63563426ED96B5DA8CFF9633.json",
+      "bytes": 5126,
+      "sha256": "87044CE8E9D5E0B25110F6693DEEACEA2F8FBF8F63563426ED96B5DA8CFF9633",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0014",
+      "CAS_relative_path": "artifacts/derived/sha256/01/015B0727203AA2CF693FC816A3CA3270E1C5EC16BED9A0E81BE1DDF4D2E056A2.json",
+      "bytes": 80029,
+      "sha256": "015B0727203AA2CF693FC816A3CA3270E1C5EC16BED9A0E81BE1DDF4D2E056A2",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0015",
+      "CAS_relative_path": "artifacts/derived/sha256/CD/CDDD162F23396ADF95C06EE4048BE466D9795484A5A5B3EAB695A84584419A57.json",
+      "bytes": 6330,
+      "sha256": "CDDD162F23396ADF95C06EE4048BE466D9795484A5A5B3EAB695A84584419A57",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0016",
+      "CAS_relative_path": "artifacts/derived/sha256/BF/BFBEACB02084E5C20DC58730B8BCBB40FB2F49EE62EE922FED7CE491A5129C1B.json",
+      "bytes": 16482,
+      "sha256": "BFBEACB02084E5C20DC58730B8BCBB40FB2F49EE62EE922FED7CE491A5129C1B",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0017",
+      "CAS_relative_path": "artifacts/derived/sha256/99/991F578AA40F3131681B34473636D0A8D96DC48D77F96812591F5422FE0D4817.json",
+      "bytes": 6937,
+      "sha256": "991F578AA40F3131681B34473636D0A8D96DC48D77F96812591F5422FE0D4817",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0018",
+      "CAS_relative_path": "artifacts/derived/sha256/CE/CE0C45DCCC3AE5A2A7CE60F4F7A4C3025487C3B58DAA2C561E5A7D97DFB7BCCE.md",
+      "bytes": 23969,
+      "sha256": "CE0C45DCCC3AE5A2A7CE60F4F7A4C3025487C3B58DAA2C561E5A7D97DFB7BCCE",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0019",
+      "CAS_relative_path": "artifacts/derived/sha256/2E/2EF65357DE29C0D4245886CB06DD5A0454089849B15623F7FCBF47666E1B83C9.json",
+      "bytes": 199066,
+      "sha256": "2EF65357DE29C0D4245886CB06DD5A0454089849B15623F7FCBF47666E1B83C9",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0020",
+      "CAS_relative_path": "artifacts/derived/sha256/8C/8C6BBEF59FE1E594718AE698C445F2FCBB2FB958DB86C3F3FAEB5A06B00B2CC4.json",
+      "bytes": 1106,
+      "sha256": "8C6BBEF59FE1E594718AE698C445F2FCBB2FB958DB86C3F3FAEB5A06B00B2CC4",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0021",
+      "CAS_relative_path": "artifacts/derived/sha256/EF/EF6EC6090BF0B1F2C5A43FE0D3CD5AED60571B823896C07863B32C4C7B89003F.json",
+      "bytes": 7123,
+      "sha256": "EF6EC6090BF0B1F2C5A43FE0D3CD5AED60571B823896C07863B32C4C7B89003F",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0022",
+      "CAS_relative_path": "artifacts/derived/sha256/38/3804F5D6231C65B5AE1ECC4A22D363AB400D1DCEA522027C2F21A5EAB09DD9B2.json",
+      "bytes": 13394,
+      "sha256": "3804F5D6231C65B5AE1ECC4A22D363AB400D1DCEA522027C2F21A5EAB09DD9B2",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0023",
+      "CAS_relative_path": "artifacts/derived/sha256/3F/3F6C0A10808F9BECD2CBE232CDB1D45779858C65EB7ECCC565F0A60A7BB3195B.py",
+      "bytes": 16788,
+      "sha256": "3F6C0A10808F9BECD2CBE232CDB1D45779858C65EB7ECCC565F0A60A7BB3195B",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0024",
+      "CAS_relative_path": "artifacts/derived/sha256/33/331C4A8EA3728236419EA8C4801E137D698BB6F795574583DF0F710386C597BE.json",
+      "bytes": 58843,
+      "sha256": "331C4A8EA3728236419EA8C4801E137D698BB6F795574583DF0F710386C597BE",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0025",
+      "CAS_relative_path": "artifacts/derived/sha256/00/00AC94D2E655FDFC1E1F3AA1956FAB3B3B2929401F3A72534F6774723F92E435.py",
+      "bytes": 7185,
+      "sha256": "00AC94D2E655FDFC1E1F3AA1956FAB3B3B2929401F3A72534F6774723F92E435",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0026",
+      "CAS_relative_path": "artifacts/derived/sha256/58/5874BD3C5CC0557A61A47A66FB3788841ED1DD78C00EB02EBE6323CC6902428F.json",
+      "bytes": 15648,
+      "sha256": "5874BD3C5CC0557A61A47A66FB3788841ED1DD78C00EB02EBE6323CC6902428F",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0027",
+      "CAS_relative_path": "artifacts/derived/sha256/51/5107F29191340EE4BCB9D08C7B1E3C7ED2914AA2962E8FE345EE38B71686FF30.wav",
+      "bytes": 1441230,
+      "sha256": "5107F29191340EE4BCB9D08C7B1E3C7ED2914AA2962E8FE345EE38B71686FF30",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0028",
+      "CAS_relative_path": "artifacts/derived/sha256/23/23E434EB2B48C8007FB8A4E3EC9C73D06A91CC6BC1C7FF4E5A6034EDC8020C3E.argv.json",
+      "bytes": 556,
+      "sha256": "23E434EB2B48C8007FB8A4E3EC9C73D06A91CC6BC1C7FF4E5A6034EDC8020C3E",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0029",
+      "CAS_relative_path": "artifacts/derived/sha256/7A/7ADE07D2B85D0AC7CF153336D2284F25980D68D0277E806AC9CD98445F990316.receipt.json",
+      "bytes": 149,
+      "sha256": "7ADE07D2B85D0AC7CF153336D2284F25980D68D0277E806AC9CD98445F990316",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0030",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0031",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0032",
+      "CAS_relative_path": "artifacts/derived/sha256/5C/5C261044F66709186525EB6F349E391DA8850F6BCCBE86424620D970B8287D79.argv.json",
+      "bytes": 361,
+      "sha256": "5C261044F66709186525EB6F349E391DA8850F6BCCBE86424620D970B8287D79",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0033",
+      "CAS_relative_path": "artifacts/derived/sha256/42/42FF6500BC662ADC8D7D12CC2E1D9818FC77BFFCCBCC941241E23F2F49D20835.receipt.json",
+      "bytes": 149,
+      "sha256": "42FF6500BC662ADC8D7D12CC2E1D9818FC77BFFCCBCC941241E23F2F49D20835",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0034",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0035",
+      "CAS_relative_path": "artifacts/derived/sha256/30/3075AE913937D61399C477A0245FEF23F104BEDEE3B8191982FEFB0C69725134.stdout.txt",
+      "bytes": 2029,
+      "sha256": "3075AE913937D61399C477A0245FEF23F104BEDEE3B8191982FEFB0C69725134",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0036",
+      "CAS_relative_path": "artifacts/derived/sha256/1F/1F53D163BB4B72F8B82C1569FE1BCB36CF6FD34FC93828E3444CA7731A22E871.json",
+      "bytes": 2724,
+      "sha256": "1F53D163BB4B72F8B82C1569FE1BCB36CF6FD34FC93828E3444CA7731A22E871",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0037",
+      "CAS_relative_path": "artifacts/derived/sha256/74/740AFAC6F216AFBB3E545D2C730E2D112EFE6197B217AE873FDA2DC52A5FA6D1.json",
+      "bytes": 1089,
+      "sha256": "740AFAC6F216AFBB3E545D2C730E2D112EFE6197B217AE873FDA2DC52A5FA6D1",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0038",
+      "CAS_relative_path": "artifacts/derived/sha256/5D/5D0BC0234133DFB5EBF49B4095AAB7F07BDF7CFA775C430FF27BFD83E6FB136A.mp3",
+      "bytes": 180144,
+      "sha256": "5D0BC0234133DFB5EBF49B4095AAB7F07BDF7CFA775C430FF27BFD83E6FB136A",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0039",
+      "CAS_relative_path": "artifacts/derived/sha256/0E/0E32436F08C08173A43D2E77859C4F2E4C4125B711A2328F1C96A3B4AA6CDBBB.jsonl",
+      "bytes": 6500,
+      "sha256": "0E32436F08C08173A43D2E77859C4F2E4C4125B711A2328F1C96A3B4AA6CDBBB",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0040",
+      "CAS_relative_path": "artifacts/derived/sha256/90/909EA72882EFAC01F508F3FB15CB9C43A09B864C540240707562B640B04174DE.wav",
+      "bytes": 2560974,
+      "sha256": "909EA72882EFAC01F508F3FB15CB9C43A09B864C540240707562B640B04174DE",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0041",
+      "CAS_relative_path": "artifacts/derived/sha256/3D/3DFC5E61DB4AEA23F5CE26A4EF2AAD5415D7B76FA724D58E8D87709817A13255.argv.json",
+      "bytes": 556,
+      "sha256": "3DFC5E61DB4AEA23F5CE26A4EF2AAD5415D7B76FA724D58E8D87709817A13255",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0042",
+      "CAS_relative_path": "artifacts/derived/sha256/CB/CBE809532C7F2EB6008F4E949C1D29E6016CDA4D345375D260D8DC9607B3B183.receipt.json",
+      "bytes": 149,
+      "sha256": "CBE809532C7F2EB6008F4E949C1D29E6016CDA4D345375D260D8DC9607B3B183",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0043",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0044",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0045",
+      "CAS_relative_path": "artifacts/derived/sha256/92/9226F897E33C6B5C30A4306364EBAC0FC6B22587FA400AF326E51AFE25D1145B.argv.json",
+      "bytes": 361,
+      "sha256": "9226F897E33C6B5C30A4306364EBAC0FC6B22587FA400AF326E51AFE25D1145B",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0046",
+      "CAS_relative_path": "artifacts/derived/sha256/24/24C7BE5B051A873CD18DC3D67F84907B0A994E8087CB1265E3B81EDFB586F2E6.receipt.json",
+      "bytes": 149,
+      "sha256": "24C7BE5B051A873CD18DC3D67F84907B0A994E8087CB1265E3B81EDFB586F2E6",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0047",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0048",
+      "CAS_relative_path": "artifacts/derived/sha256/1B/1BEE22481D992D6D3DAE74E73B7E720C65920E261FD8B37EBC2FA91D36199225.stdout.txt",
+      "bytes": 2029,
+      "sha256": "1BEE22481D992D6D3DAE74E73B7E720C65920E261FD8B37EBC2FA91D36199225",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0049",
+      "CAS_relative_path": "artifacts/derived/sha256/0F/0F120BE42480BF21A1027308F67796F5FFC7B6FF843BAE28448250B99B726730.json",
+      "bytes": 3062,
+      "sha256": "0F120BE42480BF21A1027308F67796F5FFC7B6FF843BAE28448250B99B726730",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0050",
+      "CAS_relative_path": "artifacts/derived/sha256/91/9164FAB4F3ED4A4A8BC72727C08C63184A1D2991867248B756FFB0921A9CA3A0.json",
+      "bytes": 1482,
+      "sha256": "9164FAB4F3ED4A4A8BC72727C08C63184A1D2991867248B756FFB0921A9CA3A0",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0051",
+      "CAS_relative_path": "artifacts/derived/sha256/84/84908DB1982F33731F81456F06E316288C78A2601E10EACEB31B88BDD61BD245.mp3",
+      "bytes": 320112,
+      "sha256": "84908DB1982F33731F81456F06E316288C78A2601E10EACEB31B88BDD61BD245",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0052",
+      "CAS_relative_path": "artifacts/derived/sha256/93/9345FE4758897EB8B6C6F9C479DDD20ADCF196F3FDB19AE121A3012DF26F6AC4.jsonl",
+      "bytes": 10805,
+      "sha256": "9345FE4758897EB8B6C6F9C479DDD20ADCF196F3FDB19AE121A3012DF26F6AC4",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0053",
+      "CAS_relative_path": "artifacts/derived/sha256/9A/9A79E2F4E1538505D746E6ACCFE9359A4C0C5A97A6E274DCECE0ED67727834AC.wav",
+      "bytes": 1559886,
+      "sha256": "9A79E2F4E1538505D746E6ACCFE9359A4C0C5A97A6E274DCECE0ED67727834AC",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0054",
+      "CAS_relative_path": "artifacts/derived/sha256/7C/7CD4465384189C82C996BD55BFAD01B1B820735B16DDA2FED2AFC774A2CBC50E.argv.json",
+      "bytes": 556,
+      "sha256": "7CD4465384189C82C996BD55BFAD01B1B820735B16DDA2FED2AFC774A2CBC50E",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0055",
+      "CAS_relative_path": "artifacts/derived/sha256/A5/A5197B581C782B69DD8EBFC9550883A1A1D06F269B09A4EB97A69A9330D443DB.receipt.json",
+      "bytes": 149,
+      "sha256": "A5197B581C782B69DD8EBFC9550883A1A1D06F269B09A4EB97A69A9330D443DB",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0056",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0057",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0058",
+      "CAS_relative_path": "artifacts/derived/sha256/8F/8F491775332444FACDB4E298A90D5C5991AB869B78C097F79D21A67EC0EC918F.argv.json",
+      "bytes": 361,
+      "sha256": "8F491775332444FACDB4E298A90D5C5991AB869B78C097F79D21A67EC0EC918F",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0059",
+      "CAS_relative_path": "artifacts/derived/sha256/83/8320383D90D34F7026613B6F249F6C893AE2FEFFDC32B659551B1C15396997B9.receipt.json",
+      "bytes": 149,
+      "sha256": "8320383D90D34F7026613B6F249F6C893AE2FEFFDC32B659551B1C15396997B9",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0060",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0061",
+      "CAS_relative_path": "artifacts/derived/sha256/54/543896C684C919E60B99E99CC6BDA7678209BCDC709003EAC95BAAB05AB6E536.stdout.txt",
+      "bytes": 2029,
+      "sha256": "543896C684C919E60B99E99CC6BDA7678209BCDC709003EAC95BAAB05AB6E536",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0062",
+      "CAS_relative_path": "artifacts/derived/sha256/54/540C4D9B5D2D7FFC816F3E2A95F8964E7DAEA8CAEC11BB9AF59A2F97D601B304.json",
+      "bytes": 2770,
+      "sha256": "540C4D9B5D2D7FFC816F3E2A95F8964E7DAEA8CAEC11BB9AF59A2F97D601B304",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0063",
+      "CAS_relative_path": "artifacts/derived/sha256/2B/2B4129FEC0F2CD3B68FAE7A98EE701C9A64F879F1D805381493DF42288EE2737.json",
+      "bytes": 1136,
+      "sha256": "2B4129FEC0F2CD3B68FAE7A98EE701C9A64F879F1D805381493DF42288EE2737",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0064",
+      "CAS_relative_path": "artifacts/derived/sha256/71/71B81B6BD7AE56DDCC369783DE91C6E6B7480CB25D8ECEC3802EBAEE2DD41F38.mp3",
+      "bytes": 194976,
+      "sha256": "71B81B6BD7AE56DDCC369783DE91C6E6B7480CB25D8ECEC3802EBAEE2DD41F38",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0065",
+      "CAS_relative_path": "artifacts/derived/sha256/77/774D07E1E4A6509C0DAD3823CDB3737630C1BD752C50129CE6864176F1325942.jsonl",
+      "bytes": 6683,
+      "sha256": "774D07E1E4A6509C0DAD3823CDB3737630C1BD752C50129CE6864176F1325942",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0066",
+      "CAS_relative_path": "artifacts/derived/sha256/CF/CFA6CAB32A418E0501C61C1EB1C154D505F579038A892387C4D760E14CEA0D43.wav",
+      "bytes": 2650830,
+      "sha256": "CFA6CAB32A418E0501C61C1EB1C154D505F579038A892387C4D760E14CEA0D43",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0067",
+      "CAS_relative_path": "artifacts/derived/sha256/C7/C7DC254DF7F43471B846B7E4B3D095A581B006423E2CE6211C4DE57C99143768.argv.json",
+      "bytes": 556,
+      "sha256": "C7DC254DF7F43471B846B7E4B3D095A581B006423E2CE6211C4DE57C99143768",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0068",
+      "CAS_relative_path": "artifacts/derived/sha256/50/50FE8421ACB75CBB544F43E9E65B7BB71DDC97F522DD6686D103BC7771654FB7.receipt.json",
+      "bytes": 149,
+      "sha256": "50FE8421ACB75CBB544F43E9E65B7BB71DDC97F522DD6686D103BC7771654FB7",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0069",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0070",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0071",
+      "CAS_relative_path": "artifacts/derived/sha256/C9/C97E2C045CC13F02BF6A4124E2B98D42AA013AD21EB155476F306808FC46FF27.argv.json",
+      "bytes": 361,
+      "sha256": "C97E2C045CC13F02BF6A4124E2B98D42AA013AD21EB155476F306808FC46FF27",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0072",
+      "CAS_relative_path": "artifacts/derived/sha256/DE/DE23E5CC14234F3CD125299D48E7981495A971C4550B23D3AF11BBF2557518F4.receipt.json",
+      "bytes": 149,
+      "sha256": "DE23E5CC14234F3CD125299D48E7981495A971C4550B23D3AF11BBF2557518F4",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0073",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0074",
+      "CAS_relative_path": "artifacts/derived/sha256/6B/6B464EE7CBD3B2AEC9711DDBECA47A0DCE3DF0106E8BEFF85167BE639A30B542.stdout.txt",
+      "bytes": 2029,
+      "sha256": "6B464EE7CBD3B2AEC9711DDBECA47A0DCE3DF0106E8BEFF85167BE639A30B542",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0075",
+      "CAS_relative_path": "artifacts/derived/sha256/17/17C9488B08FA5DA5EE9D52CC63DBB631547A4FA0E75BD7B06C61325CF63363AE.json",
+      "bytes": 3064,
+      "sha256": "17C9488B08FA5DA5EE9D52CC63DBB631547A4FA0E75BD7B06C61325CF63363AE",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0076",
+      "CAS_relative_path": "artifacts/derived/sha256/C3/C3352D43BD8D9E07ECEACF096E40ADD89FDF926C401AA5656E328490F92CF68A.json",
+      "bytes": 1426,
+      "sha256": "C3352D43BD8D9E07ECEACF096E40ADD89FDF926C401AA5656E328490F92CF68A",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0077",
+      "CAS_relative_path": "artifacts/derived/sha256/51/51AEDE7478CA88AFD9BC3194F8E5192D0BFFB8421207FAE92A4697502757FA2B.mp3",
+      "bytes": 331344,
+      "sha256": "51AEDE7478CA88AFD9BC3194F8E5192D0BFFB8421207FAE92A4697502757FA2B",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0078",
+      "CAS_relative_path": "artifacts/derived/sha256/7E/7E72C3F288AECD2F1FA449DF395A80EAD4A0A206215293AAB4C8535AE21494E7.jsonl",
+      "bytes": 10894,
+      "sha256": "7E72C3F288AECD2F1FA449DF395A80EAD4A0A206215293AAB4C8535AE21494E7",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0079",
+      "CAS_relative_path": "artifacts/derived/sha256/1C/1C244A54DBF91026106AA0B4C94608C2FDBEF2235DC3A2683130971F715A5FB1.wav",
+      "bytes": 3390414,
+      "sha256": "1C244A54DBF91026106AA0B4C94608C2FDBEF2235DC3A2683130971F715A5FB1",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0080",
+      "CAS_relative_path": "artifacts/derived/sha256/C1/C1F71D7DB1CC517167DFFBF47AA48387B1B8F07C23070D0AE17740609CD32AA1.argv.json",
+      "bytes": 556,
+      "sha256": "C1F71D7DB1CC517167DFFBF47AA48387B1B8F07C23070D0AE17740609CD32AA1",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0081",
+      "CAS_relative_path": "artifacts/derived/sha256/E6/E641FFD7786775351AF06EFA402EA11950E867DA20186266718693BA5E9DF5D1.receipt.json",
+      "bytes": 149,
+      "sha256": "E641FFD7786775351AF06EFA402EA11950E867DA20186266718693BA5E9DF5D1",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0082",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0083",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0084",
+      "CAS_relative_path": "artifacts/derived/sha256/5C/5C3448BCEC3605108EC0362AF0852DD69858902A21B6E621D019D89DB4995CA8.argv.json",
+      "bytes": 361,
+      "sha256": "5C3448BCEC3605108EC0362AF0852DD69858902A21B6E621D019D89DB4995CA8",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0085",
+      "CAS_relative_path": "artifacts/derived/sha256/D3/D3A4100F42E95215AFA53616DCBE8F050AFF846926F8C2F5F19D92A1B97F42CF.receipt.json",
+      "bytes": 149,
+      "sha256": "D3A4100F42E95215AFA53616DCBE8F050AFF846926F8C2F5F19D92A1B97F42CF",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0086",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0087",
+      "CAS_relative_path": "artifacts/derived/sha256/6F/6F15AEEBB9AA549807F8F12A18055B4016CD03AEC2BE8318448EF064BDD2997B.stdout.txt",
+      "bytes": 2029,
+      "sha256": "6F15AEEBB9AA549807F8F12A18055B4016CD03AEC2BE8318448EF064BDD2997B",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0088",
+      "CAS_relative_path": "artifacts/derived/sha256/54/5407DE9D0B12C84AEBD481687461A58B49576F3C2A025CF4CF13440DF6269DD6.json",
+      "bytes": 3241,
+      "sha256": "5407DE9D0B12C84AEBD481687461A58B49576F3C2A025CF4CF13440DF6269DD6",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0089",
+      "CAS_relative_path": "artifacts/derived/sha256/6A/6A9EC20D0B50A92775F74E8377CA08F6E27752375930F1EA1213579F6D45230A.json",
+      "bytes": 1660,
+      "sha256": "6A9EC20D0B50A92775F74E8377CA08F6E27752375930F1EA1213579F6D45230A",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0090",
+      "CAS_relative_path": "artifacts/derived/sha256/55/55C86FF5B2F444979B1B0C0EEFADBAF9C94E048B8ACE439B422B48240334115B.mp3",
+      "bytes": 423792,
+      "sha256": "55C86FF5B2F444979B1B0C0EEFADBAF9C94E048B8ACE439B422B48240334115B",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0091",
+      "CAS_relative_path": "artifacts/derived/sha256/07/07C59F41BEFFD85BF91F445BCC4BD1B242110521AEDC8D74866F6802AE50A585.jsonl",
+      "bytes": 14859,
+      "sha256": "07C59F41BEFFD85BF91F445BCC4BD1B242110521AEDC8D74866F6802AE50A585",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0092",
+      "CAS_relative_path": "artifacts/derived/sha256/57/573BB34170E0E6ACE743AEF8B15B7B9247E92CF4C453651FFD347EAB29CF1A44.wav",
+      "bytes": 2503374,
+      "sha256": "573BB34170E0E6ACE743AEF8B15B7B9247E92CF4C453651FFD347EAB29CF1A44",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0093",
+      "CAS_relative_path": "artifacts/derived/sha256/DB/DB076B6126C78296D427BE86978E3DAEC87D8EC3163E2C7D156F3FAD24705EBF.argv.json",
+      "bytes": 556,
+      "sha256": "DB076B6126C78296D427BE86978E3DAEC87D8EC3163E2C7D156F3FAD24705EBF",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0094",
+      "CAS_relative_path": "artifacts/derived/sha256/25/25FC9B83A97A0C712A078D422E66C63E8EB68A358E258C91D71898E067232717.receipt.json",
+      "bytes": 149,
+      "sha256": "25FC9B83A97A0C712A078D422E66C63E8EB68A358E258C91D71898E067232717",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0095",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0096",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0097",
+      "CAS_relative_path": "artifacts/derived/sha256/83/834F2DA60744DCCA9A6F7EDCF13AB2CB5BFB5726B1203AF3FC7AED73B755A06E.argv.json",
+      "bytes": 361,
+      "sha256": "834F2DA60744DCCA9A6F7EDCF13AB2CB5BFB5726B1203AF3FC7AED73B755A06E",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0098",
+      "CAS_relative_path": "artifacts/derived/sha256/5E/5E403C864E89956268839F61B486D5B16794082E2F6E049C7D7EA9AC5953648A.receipt.json",
+      "bytes": 149,
+      "sha256": "5E403C864E89956268839F61B486D5B16794082E2F6E049C7D7EA9AC5953648A",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0099",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0100",
+      "CAS_relative_path": "artifacts/derived/sha256/02/02EE3D9531AA7C604DBF5B6879C4E4F8B23D8826E14EAC7AFCD7AFC3A3F68181.stdout.txt",
+      "bytes": 2029,
+      "sha256": "02EE3D9531AA7C604DBF5B6879C4E4F8B23D8826E14EAC7AFCD7AFC3A3F68181",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0101",
+      "CAS_relative_path": "artifacts/derived/sha256/8F/8FB6D0B5238CC8873D617AAC477393323805274207906B1EF70A903565C1B548.json",
+      "bytes": 3021,
+      "sha256": "8FB6D0B5238CC8873D617AAC477393323805274207906B1EF70A903565C1B548",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0102",
+      "CAS_relative_path": "artifacts/derived/sha256/BC/BC8AA7F51792160B01F89ACA34A61F1A1C1894F613DA2CAB2896BAE32B44F28E.json",
+      "bytes": 1481,
+      "sha256": "BC8AA7F51792160B01F89ACA34A61F1A1C1894F613DA2CAB2896BAE32B44F28E",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0103",
+      "CAS_relative_path": "artifacts/derived/sha256/BB/BB269F23C26943BDFBA9E17A977DE899E654C5033A0D3B1D98C207E862575E69.mp3",
+      "bytes": 312912,
+      "sha256": "BB269F23C26943BDFBA9E17A977DE899E654C5033A0D3B1D98C207E862575E69",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0104",
+      "CAS_relative_path": "artifacts/derived/sha256/C1/C1F8BC6569D336FC11D8CD62C876A9B734CBA2BA5E370155BE2ED80AC354E147.jsonl",
+      "bytes": 10981,
+      "sha256": "C1F8BC6569D336FC11D8CD62C876A9B734CBA2BA5E370155BE2ED80AC354E147",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0105",
+      "CAS_relative_path": "artifacts/derived/sha256/AA/AAC1FD0084C176A994B17312DECA2A0B071CE7F3FFB2595D6492FF68A45AA2F1.wav",
+      "bytes": 1959630,
+      "sha256": "AAC1FD0084C176A994B17312DECA2A0B071CE7F3FFB2595D6492FF68A45AA2F1",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0106",
+      "CAS_relative_path": "artifacts/derived/sha256/EE/EE70804A911425BB6CE43224337FBE494285BFFBD360CB0080E8C0D18163676F.argv.json",
+      "bytes": 556,
+      "sha256": "EE70804A911425BB6CE43224337FBE494285BFFBD360CB0080E8C0D18163676F",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0107",
+      "CAS_relative_path": "artifacts/derived/sha256/95/95A84CF2651633321A8DEB14C8E7E2F402236A909CE42DDD948A99FB8BA70547.receipt.json",
+      "bytes": 149,
+      "sha256": "95A84CF2651633321A8DEB14C8E7E2F402236A909CE42DDD948A99FB8BA70547",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0108",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0109",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stdout.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0110",
+      "CAS_relative_path": "artifacts/derived/sha256/12/12120D08FC0D5FD1AF866D2934F313B4C700065061F1F13A03E58031C8A99570.argv.json",
+      "bytes": 361,
+      "sha256": "12120D08FC0D5FD1AF866D2934F313B4C700065061F1F13A03E58031C8A99570",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0111",
+      "CAS_relative_path": "artifacts/derived/sha256/F6/F670DC8E8707E4FC970D3F7AC49424DF923DEDDDCDEDFFBABEB37A7E5AC822B9.receipt.json",
+      "bytes": 149,
+      "sha256": "F670DC8E8707E4FC970D3F7AC49424DF923DEDDDCDEDFFBABEB37A7E5AC822B9",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0112",
+      "CAS_relative_path": "artifacts/derived/sha256/E3/E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855.stderr.txt",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0113",
+      "CAS_relative_path": "artifacts/derived/sha256/BD/BDC67DA101382A3DD8928B202EAF3D052BFA3626C7077A42CC56284BD624A44E.stdout.txt",
+      "bytes": 2029,
+      "sha256": "BDC67DA101382A3DD8928B202EAF3D052BFA3626C7077A42CC56284BD624A44E",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0114",
+      "CAS_relative_path": "artifacts/derived/sha256/BB/BB46D75C4101774A212D6D0C7262E2114CB9D52D68A99819E9BFFD1503DE871C.json",
+      "bytes": 2876,
+      "sha256": "BB46D75C4101774A212D6D0C7262E2114CB9D52D68A99819E9BFFD1503DE871C",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0115",
+      "CAS_relative_path": "artifacts/derived/sha256/D0/D0F25DFB7F69B66B2C730D3BC41EC745082555FBC55D94CE6638FFD8251D0D97.json",
+      "bytes": 1392,
+      "sha256": "D0F25DFB7F69B66B2C730D3BC41EC745082555FBC55D94CE6638FFD8251D0D97",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0116",
+      "CAS_relative_path": "artifacts/derived/sha256/8A/8AA774541F1797927DA594CE57ABABA8320CE6E8AC8E48C0E02229B9802D4566.mp3",
+      "bytes": 244944,
+      "sha256": "8AA774541F1797927DA594CE57ABABA8320CE6E8AC8E48C0E02229B9802D4566",
+      "historical_role": "narration",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    },
+    {
+      "id": "e4-finalBC-0117",
+      "CAS_relative_path": "artifacts/derived/sha256/DE/DEA8EA3DF4A034FD9550BE8A06D58723171A62FF7AB3A91712756CA4521F42E8.jsonl",
+      "bytes": 8961,
+      "sha256": "DEA8EA3DF4A034FD9550BE8A06D58723171A62FF7AB3A91712756CA4521F42E8",
+      "historical_role": "process-evidence",
+      "CAS_content_carried": false,
+      "current_package_native_asset_readback": "NOT_PERFORMED"
+    }
+  ],
+  "native_config_CAS_record": {
+    "path": "artifacts/project-config/sha256/33/331C4A8EA3728236419EA8C4801E137D698BB6F795574583DF0F710386C597BE.json",
+    "bytes": 58843,
+    "sha256": "331C4A8EA3728236419EA8C4801E137D698BB6F795574583DF0F710386C597BE"
+  },
+  "native_CAS_tree_carried": false,
+  "CK3_RAW_recordings_and_screenshots_carried": false,
+  "omitted_assets_not_resolved_opened_hashed_downloaded_or_defaulted_available": true
+}

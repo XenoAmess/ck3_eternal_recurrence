@@ -1,0 +1,151 @@
+{
+  "schema": "xar.e04.actual-A-only-audio-delivery.v1",
+  "created_utc": "2026-10-05T18:09:47.513307+00:00",
+  "status": "ACTUAL_A_ONLY_AUDIO_AND_SERIAL_NATIVE_PUBLICATION_COMPLETE_PENDING_LISTENING",
+  "report": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\AUDIO-RESULTS.json",
+    "bytes": 223072,
+    "sha256": "5373dcd47d15eed31d39d83ed9bf9073c5b80f738d88415a37157c9dca904ca4"
+  },
+  "native_run": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\native-run\\run-manifest.json",
+    "bytes": 30368,
+    "sha256": "b948967d1fc92e5d764f53d6d05f091d5fe675f8b3d85448a2013a0d5875f270"
+  },
+  "native_publication": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\native-publication-a01\\RESULT.json",
+    "bytes": 1696,
+    "sha256": "af8d743e70b2fe3a85f192f6276b0d6fac1bd147185fc7c0d01e4eb46f021598"
+  },
+  "chapter_timeline": [
+    {
+      "chapter_id": "E4-01",
+      "start_sample": 0,
+      "end_sample": 4158144,
+      "start_seconds": 0.0,
+      "end_seconds": 173.256,
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-01\\audio-index.json",
+        "bytes": 33915,
+        "sha256": "019b21a26c2c7f48776479b21e73191c9ac6265667c76660cc42cbbbc5ccdef3"
+      },
+      "exact_old_chapter_reuse": true
+    },
+    {
+      "chapter_id": "E4-02",
+      "start_sample": 4158144,
+      "end_sample": 10669248,
+      "start_seconds": 173.256,
+      "end_seconds": 444.552,
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-02\\audio-index.json",
+        "bytes": 59797,
+        "sha256": "79f6b17cccb7d785cc462e6dcc754961fa277a9f6be54216d2ab370c7172c478"
+      },
+      "exact_old_chapter_reuse": true
+    },
+    {
+      "chapter_id": "E4-03",
+      "start_sample": 10669248,
+      "end_sample": 17347968,
+      "start_seconds": 444.552,
+      "end_seconds": 722.832,
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-03\\audio-index.json",
+        "bytes": 51093,
+        "sha256": "8ac21a3a2e490da35a809a11f0b27588e85626b75dc58ade1e1b634b041c5322"
+      },
+      "exact_old_chapter_reuse": true
+    },
+    {
+      "chapter_id": "E4-04",
+      "start_sample": 17347968,
+      "end_sample": 23238144,
+      "start_seconds": 722.832,
+      "end_seconds": 968.256,
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-04\\audio-index.json",
+        "bytes": 46619,
+        "sha256": "cb33f66e33dd201464d215bf15844e3ed9ecd9f11b3ea300c8f8aae7b05d0db3"
+      },
+      "exact_old_chapter_reuse": true
+    },
+    {
+      "chapter_id": "E4-05",
+      "start_sample": 23238144,
+      "end_sample": 32503104,
+      "start_seconds": 968.256,
+      "end_seconds": 1354.296,
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\chapters\\E4-05\\audio-index.json",
+        "bytes": 69422,
+        "sha256": "4e2ee50b2e50c8354ccb23afe74b659a23ff5f2c42bab1dbb9b6065dca3e46d3"
+      },
+      "exact_old_chapter_reuse": false
+    },
+    {
+      "chapter_id": "E4-06",
+      "start_sample": 32503104,
+      "end_sample": 37900224,
+      "start_seconds": 1354.296,
+      "end_seconds": 1579.176,
+      "index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-06\\audio-index.json",
+        "bytes": 42398,
+        "sha256": "1bae9787730da44687bb34050625618d9a5b86ad13b991cf5420786f5b7f7e7f"
+      },
+      "exact_old_chapter_reuse": true
+    }
+  ],
+  "stable_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\stable-narration-A-only-a05.wav",
+    "bytes": 75800492,
+    "sha256": "1d43f3182d9cec3685f5e2e378157dfe2c0687fba4cafba01331e1f53ccab188"
+  },
+  "actual_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 37900224,
+    "seconds": 1579.176
+  },
+  "new_generated_fragments": 3,
+  "exact_reused_fragments": 71,
+  "failed_fragments": 0,
+  "new_metadata_events": 175,
+  "A": {
+    "first_observed_elapsed_days": 51,
+    "observed_arrival_interval_days": [
+      49,
+      51
+    ],
+    "observed_arrival_interval_endpoint_inclusion": "(49,51]",
+    "exact_arrival_tick": null,
+    "current_soldiers": {
+      "initial": 6679,
+      "terminal": 6689,
+      "net": 10
+    },
+    "maximum_soldiers": 6747,
+    "supply_raw": {
+      "initial": 11037716,
+      "terminal": 10613988,
+      "net": -423728,
+      "scale": 100000
+    },
+    "treasury_raw": {
+      "initial": 63754562,
+      "terminal": 62148329,
+      "net": -1606233,
+      "scale": 100000
+    },
+    "payment_ledger": null,
+    "source_key": "r177-A2-values"
+  },
+  "B": null,
+  "C": null,
+  "ABC_winner": null,
+  "actual_final_episode_seconds": null,
+  "human_listening_signoff": false,
+  "subtitle_or_film_signoff": false
+}

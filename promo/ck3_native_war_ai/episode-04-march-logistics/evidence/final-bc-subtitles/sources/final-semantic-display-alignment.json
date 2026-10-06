@@ -1,0 +1,412 @@
+{
+  "schema": "xar.e04.actual-final-semantic-alignment.v1",
+  "English_diff_sha256": "b2243b8d3cd8d843f416b080f4ed96de15ade494a06e9fcd78aafefc643be944",
+  "Chinese_body_sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce",
+  "paragraphs": [
+    {
+      "paragraph_id": "C05-04",
+      "units": [
+        {
+          "zh": "方案B先分兵，让两支军队分别到合格驻点休整，再会合。",
+          "en": "Plan B splits the army. Both groups rest at qualifying locations, then reunite."
+        },
+        {
+          "zh": "这里看一次独立的B回放：",
+          "en": "Here is an independent replay of B."
+        },
+        {
+          "zh": "在已核对的停驻窗口，两军当前补给月变化都读到正二十。",
+          "en": "During the checked rest window, both armies showed a current supply change of +20 per month."
+        },
+        {
+          "zh": "它只说当时的读数，不表示库存已经增加。",
+          "en": "That was the current rate. It does not show that supply had already increased."
+        },
+        {
+          "zh": "后面分别看人数和库存的实际变化；",
+          "en": "Next, we observe actual soldier and supply changes separately."
+        },
+        {
+          "zh": "实际合军之后，还要重新核对兵团与统帅条件，",
+          "en": "After the actual merge, we must check the regiments and commander again."
+        },
+        {
+          "zh": "伦敦终点仍未读到。",
+          "en": "There is still no observed London endpoint for B.",
+          "english_display_text": "B's London endpoint remains unobserved.",
+          "display_equivalence_reviewed": true,
+          "display_equivalence_review_basis": "Same actual Chinese/full English claim; observer/date/numeric/source scope preserved. Only displayed English shortened."
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C05-05",
+      "units": [
+        {
+          "zh": "方案C换路线，先经过已核验的中转点，再去伦敦。",
+          "en": "Plan C takes a different route, through verified waypoints to London."
+        },
+        {
+          "zh": "这次独立回放，在共同起点后的第七十七个游戏日，",
+          "en": "In this independent replay, on game day 77 after the shared start,"
+        },
+        {
+          "zh": "我们首次观察到主力已经抵达伦敦；",
+          "en": "we first observed the main army in London."
+        },
+        {
+          "zh": "第七十五日它还在路上，",
+          "en": "It was still en route on day 75."
+        },
+        {
+          "zh": "所以实际到达在这两次观察之间，精确时刻未知。",
+          "en": "It arrived between those observations. The exact moment is unknown."
+        },
+        {
+          "zh": "这支主力从六千六百七十九人出发，",
+          "en": "This main army started with 6,679 soldiers."
+        },
+        {
+          "zh": "到达观测时是六千六百八十九，净增十人；",
+          "en": "At the arrival observation, it had 6,689: a net gain of ten."
+        },
+        {
+          "zh": "完整二十七个兵团的身份与满员数不变。",
+          "en": "All 27 regiments retained their identities and maximum soldier counts."
+        },
+        {
+          "zh": "补给从约一百一十点三八降到一百零一点九零，",
+          "en": "Supply fell from about 110.38 to 101.90."
+        },
+        {
+          "zh": "容量仍三百。",
+          "en": "Supply capacity remained 300."
+        },
+        {
+          "zh": "终点当前损耗读到百分之一，",
+          "en": "Current attrition at the endpoint was 1%."
+        },
+        {
+          "zh": "这是当时的条件读数，不能直接换算成旅途中死了多少兵。",
+          "en": "That was the rate under current conditions. It does not tell us how many died en route."
+        },
+        {
+          "zh": "这里报的是主力的原始编制，",
+          "en": "These figures describe the original main army."
+        },
+        {
+          "zh": "不是玩家所有单位的总人数。",
+          "en": "They are not the total soldiers in all player units."
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C05-08",
+      "units": [
+        {
+          "zh": "前面的平分样本里，两队都继承约一百一十点三八补给，",
+          "en": "In the earlier equal split, both armies inherited about 110.38 supply."
+        },
+        {
+          "zh": "主军容量三百，新分队容量一百。",
+          "en": "The main army had capacity 300; the new group had capacity 100."
+        },
+        {
+          "zh": "现在看这次B回放：",
+          "en": "Now look at this replay of B."
+        },
+        {
+          "zh": "起点后的第二十到二十一日，新分队库存从约一百一十点三八降到一百，",
+          "en": "Between days 20 and 21, the new group's supply fell from about 110.38 to 100."
+        },
+        {
+          "zh": "两军人数与完整兵团的前后读数都没变。",
+          "en": "Both armies' soldier counts and full regiment readings were unchanged."
+        },
+        {
+          "zh": "虽然当前月变化仍是正二十，",
+          "en": "The current monthly rate still showed +20."
+        },
+        {
+          "zh": "这次库存变化却是向下回到容量；",
+          "en": "But the actual supply change was downward, back to capacity."
+        },
+        {
+          "zh": "它不是补兵，也不是低库存补给增加。",
+          "en": "This was neither reinforcement nor a supply increase from a low stock."
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C05-10",
+      "units": [
+        {
+          "zh": "接着看两个不同的窗口。",
+          "en": "Next, consider two separate observation windows."
+        },
+        {
+          "zh": "起点后的第二十六到二十七日，主军人数净增七，新分队净增三，",
+          "en": "Between days 26 and 27, the main army gained seven soldiers net; the new group gained three."
+        },
+        {
+          "zh": "两端库存相同。",
+          "en": "Supply was unchanged at both endpoints."
+        },
+        {
+          "zh": "第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，",
+          "en": "Between days 31 and 32, main-army supply rose from about 106.14 to 126.14."
+        },
+        {
+          "zh": "新分队两端都是一百，",
+          "en": "The new group had 100 at both endpoints."
+        },
+        {
+          "zh": "完整兵团的人数与编制也没变。",
+          "en": "The full regiment roster and soldier counts were also unchanged."
+        },
+        {
+          "zh": "人数净变化与补给增加各记自己的日期，",
+          "en": "Record soldier changes and supply gains on their own dates."
+        },
+        {
+          "zh": "不能剪成同一次结算。",
+          "en": "Do not edit them into a single update.",
+          "english_display_text": "Keep these windows separate.",
+          "display_equivalence_reviewed": true,
+          "display_equivalence_review_basis": "Same actual Chinese/full English claim; observer/date/numeric/source scope preserved. Only displayed English shortened."
+        },
+        {
+          "zh": "后来两军回到同地实际合军，",
+          "en": "Later, the two armies reunited at the same location and actually merged."
+        },
+        {
+          "zh": "合前补给约一百二十六点一四和一百。",
+          "en": "Before merging, their supply was about 126.14 and 100."
+        },
+        {
+          "zh": "按双方各自的合军权重加权、分别取整，",
+          "en": "Apply each army's merge weight and round down each contribution."
+        },
+        {
+          "zh": "得到约一百一十三点零六。",
+          "en": "The result is about 113.06."
+        },
+        {
+          "zh": "合后容量读到一百，库存实际也是一百。",
+          "en": "After merging, capacity was 100, and actual supply was also 100."
+        },
+        {
+          "zh": "这个窗口能单独确认上限截断，",
+          "en": "This window independently confirms the upper-cap clamp."
+        },
+        {
+          "zh": "不能用两队库存的普通平均代替。",
+          "en": "A simple average of the two supply stocks cannot replace that calculation."
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C05-14",
+      "units": [
+        {
+          "zh": "结果表按同日期或同事件对齐：",
+          "en": "Align results by the same date or event."
+        },
+        {
+          "zh": "先看实际抵达，再看完整兵团与可用人数，",
+          "en": "First check actual arrival, then the full regiments and available soldiers."
+        },
+        {
+          "zh": "然后是库存、补员和损耗窗口，最后是实际支付。",
+          "en": "Then check supply, reinforcement and attrition windows, and finally actual payments."
+        },
+        {
+          "zh": "这次B合军后，原二十七个兵团仍在，",
+          "en": "After B's merge, all 27 original regiments remained."
+        },
+        {
+          "zh": "但又多出一条满员一人的兵团记录；",
+          "en": "But a new regiment record appeared, with one soldier out of a maximum of one.",
+          "english_display_text": "New regiment record: 1/1 soldier.",
+          "display_equivalence_reviewed": true,
+          "display_equivalence_review_basis": "Same actual Chinese/full English claim; observer/date/numeric/source scope preserved. Only displayed English shortened."
+        },
+        {
+          "zh": "合后共有六千六百九十人，满员六千七百四十八。",
+          "en": "The merged army had 6,690 soldiers, out of a maximum of 6,748."
+        },
+        {
+          "zh": "实际统帅也变了，与原先冻结的条件不符。",
+          "en": "The commander also changed, breaking the conditions fixed at the start."
+        },
+        {
+          "zh": "新增记录和统帅变化的原因还没有确认。",
+          "en": "The causes of the new record and commander change remain unconfirmed."
+        },
+        {
+          "zh": "因此，这次B在第三十八日停止，尚有五十二日预算；",
+          "en": "So B stopped on day 38, with 52 days left in its budget."
+        },
+        {
+          "zh": "停止是冻结条件未通过，不是时间耗尽。",
+          "en": "It stopped because the fixed conditions failed, not because time ran out."
+        },
+        {
+          "zh": "这段能保留为合军机制样本，",
+          "en": "We can retain this as a sample of the merge mechanism."
+        },
+        {
+          "zh": "却没有可比较的伦敦终点。",
+          "en": "But it has no comparable London endpoint."
+        },
+        {
+          "zh": "C也出现多次采样偏差：",
+          "en": "C also had multiple sampling deviations."
+        },
+        {
+          "zh": "原计划每次最多过一天，实际跨了两天。",
+          "en": "Pulses planned for at most one day actually advanced two."
+        },
+        {
+          "zh": "后续只保留为描述性观察，",
+          "en": "The later results are retained as descriptive observations only."
+        },
+        {
+          "zh": "即使已经到达，也不能恢复成严格公平的A/C对照。",
+          "en": "Reaching London does not restore a strictly controlled A/C comparison."
+        },
+        {
+          "zh": "A和C的实际到达观测各自保留。",
+          "en": "The actual arrival observations for A and C are retained separately."
+        },
+        {
+          "zh": "下面回到整军直走的A。",
+          "en": "Now we return to A: the whole army taking the direct route.",
+          "english_display_text": "Back to A: whole army, direct route.",
+          "display_equivalence_reviewed": true,
+          "display_equivalence_review_basis": "Same actual Chinese/full English claim; observer/date/numeric/source scope preserved. Only displayed English shortened."
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C05-16",
+      "units": [
+        {
+          "zh": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，",
+          "en": "Over that period, gold fell from about 637.55 to 621.48."
+        },
+        {
+          "zh": "净少十六点零六。",
+          "en": "The net decrease was 16.06."
+        },
+        {
+          "zh": "它是期间所有收支留下的净余额差，",
+          "en": "That is the net balance change after all income and expenses."
+        },
+        {
+          "zh": "不能改名为行军费，也不能当作已经核验的登船付款。",
+          "en": "It is not a march-cost ledger or a verified embarkation payment."
+        },
+        {
+          "zh": "另看换路线的C回放：",
+          "en": "Now consider C's replay using a different route."
+        },
+        {
+          "zh": "从共同起点到它的到达观测，余额净少约十五点八二金币。",
+          "en": "From the shared start to its arrival observation, gold decreased by about 15.82 net."
+        },
+        {
+          "zh": "这个数字同样只是净变化。",
+          "en": "That figure is also only a net change."
+        },
+        {
+          "zh": "途中登船阶段曾观察到余额净少十七金币，",
+          "en": "During embarkation, we observed a net decrease of 17 gold."
+        },
+        {
+          "zh": "另一个窗口又净增加约零点二五；",
+          "en": "In another window, it increased by about 0.25 net."
+        },
+        {
+          "zh": "各自原因都没有逐笔付款账来证明。",
+          "en": "Neither cause is established by an itemized payment ledger."
+        },
+        {
+          "zh": "现在A和C各有真实到达观测，",
+          "en": "A and C now each have an actual arrival observation."
+        },
+        {
+          "zh": "B因冻结条件未通过而停止；",
+          "en": "B stopped after failing the fixed conditions."
+        },
+        {
+          "zh": "C又保留采样偏差，",
+          "en": "C also retains its sampling deviations."
+        },
+        {
+          "zh": "本次不能排出严格三方案的赢家。",
+          "en": "This run cannot establish a winner in a strictly controlled three-plan comparison."
+        }
+      ]
+    },
+    {
+      "paragraph_id": "C06-10",
+      "units": [
+        {
+          "zh": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，",
+          "en": "We observed full supply, actual reinforcement, and soldier decreases in separate windows."
+        },
+        {
+          "zh": "以及同日分合军的库存和组织变化。",
+          "en": "We also observed supply and roster changes during same-day splits and merges."
+        },
+        {
+          "zh": "后续休整也出现了真正的库存与人数增加。",
+          "en": "Later rest periods produced actual increases in supply and soldier counts."
+        },
+        {
+          "zh": "整军直走和换路线各自保留了真实到达观测；",
+          "en": "The whole-army direct route and the alternate route each retain an actual arrival observation."
+        },
+        {
+          "zh": "分兵方案因冻结条件变化停止，",
+          "en": "The split-army plan stopped after its fixed conditions changed."
+        },
+        {
+          "zh": "换路线回放又保留采样偏差，",
+          "en": "The alternate-route replay retains sampling deviations."
+        },
+        {
+          "zh": "因此没有严格三方案的胜负结论。",
+          "en": "So there is no strictly controlled three-plan verdict."
+        },
+        {
+          "zh": "真实饥饿和逐笔付款仍等待各自证据。",
+          "en": "Actual starvation and itemized payments still need their own evidence."
+        },
+        {
+          "zh": "你可以按这个顺序读自己的军队，",
+          "en": "You can read your own army in this order."
+        },
+        {
+          "zh": "再让每条新结论有自己的日期、身份和结果。",
+          "en": "Give every new conclusion its own date, identity and observed result."
+        }
+      ]
+    }
+  ],
+  "source_review_status": "NO_BLOCK",
+  "actual_audio_timing": null,
+  "human_listening_signoff": false,
+  "display_revision_only": true,
+  "prior_alignment": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\semantic-alignment-final-BC-a01.json",
+    "bytes": 15493,
+    "sha256": "0b2faa9fc27c1646c1fbd34040dfd78919fd5a2b2a93f84fc9c5ff84e2a172c0"
+  },
+  "Root_English_source_review": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/e04-final-BC-Root-actual-English-review-a01/Root-English-NO-BLOCK.json",
+    "bytes": 2608,
+    "sha256": "cb5adf685a6895c1461cc9295b14ac247ab2f4ad648e05f9d8bee33da5b11158"
+  }
+}

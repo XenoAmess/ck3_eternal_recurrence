@@ -1,0 +1,10 @@
+[
+  "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+  "-v",
+  "error",
+  "-show_format",
+  "-show_streams",
+  "-of",
+  "json",
+  "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-04-F01\\attempt-a01\\speech.mp3"
+]

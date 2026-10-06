@@ -1,0 +1,57 @@
+{
+  "fragment_id": "C06-10-F01",
+  "paragraph_id": "C06-10",
+  "chapter_id": "E4-06",
+  "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+  "kind": "new-generated-audio",
+  "started_utc": "2026-10-06T00:38:43.218792+00:00",
+  "finished_utc": "2026-10-06T00:38:46.176883+00:00",
+  "attempt": 1,
+  "request": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C06-10-F01\\attempt-a01\\request.json",
+    "bytes": 1392,
+    "sha256": "d0f25dfb7f69b66b2c730d3bc41ec745082555fbc55d94ce6638ffd8251d0d97"
+  },
+  "text_sha256": "6e53b396e95c1678ae88c252befbc5341c89548cc5634733760106caa4f4066b",
+  "text_zh": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。整军直走和换路线各自保留了真实到达观测；分兵方案因冻结条件变化停止，换路线回放又保留采样偏差，因此没有严格三方案的胜负结论。真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。",
+  "provider_return": null,
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-5%",
+  "pitch": "+0Hz",
+  "volume": "+0%",
+  "metadata": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C06-10-F01\\attempt-a01\\word-boundary.jsonl",
+    "bytes": 8961,
+    "sha256": "dea8ea3df4a034fd9550be8a06d58723171a62ff7ab3a91712756ca4521f42e8"
+  },
+  "WordBoundary_count": 100,
+  "native_metadata_seconds_divisor": 10000000,
+  "native_max_boundary_end_seconds": 40.210541,
+  "native_boundary_not_refitted_to_audio": true,
+  "boundary_extent_within_decoded_audio_plus_250ms": true,
+  "human_listening_signoff": false,
+  "subtitle_alignment_signoff": false,
+  "audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C06-10-F01\\attempt-a01\\speech.mp3",
+    "bytes": 244944,
+    "sha256": "8aa774541f1797927da594ce57ababa8320ce6e8ac8e48c0e02229b9802d4566"
+  },
+  "MP3_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C06-10-F01\\attempt-a01\\logs\\probe.stdout.txt",
+    "bytes": 2029,
+    "sha256": "bdc67da101382a3dd8928b202eaf3d052bfa3626c7077a42cc56284bd624a44e"
+  },
+  "MP3_container_seconds": 40.824,
+  "decoded_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C06-10-F01\\attempt-a01\\decoded.wav",
+    "bytes": 1959630,
+    "sha256": "aac1fd0084c176a994b17312deca2a0b071ce7f3ffb2595d6492ff68a45aa2f1"
+  },
+  "decoded_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 979776,
+    "seconds": 40.824
+  }
+}

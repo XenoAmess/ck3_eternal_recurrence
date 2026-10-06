@@ -1,0 +1,6 @@
+{
+  "error": "ValueError: New subtitle reading-rate flags require explicit alignment/display revision: [{\"id\": \"C05-04-S07\", \"flags\": [\"english_rate_above4.5wps\"]}, {\"id\": \"C05-10-S08\", \"flags\": [\"english_rate_above4.5wps\"]}, {\"id\": \"C05-14-S05\", \"flags\": [\"english_rate_above4.5wps\"]}, {\"id\": \"C05-14-S18\", \"flags\": [\"english_rate_above4.5wps\"]}]",
+  "partial_assets_retained": true,
+  "provider_calls": 0,
+  "no_old_assets_overwritten": true
+}

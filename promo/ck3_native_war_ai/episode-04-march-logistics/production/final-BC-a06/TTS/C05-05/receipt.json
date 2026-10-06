@@ -1,0 +1,57 @@
+{
+  "fragment_id": "C05-05-F01",
+  "paragraph_id": "C05-05",
+  "chapter_id": "E4-05",
+  "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+  "kind": "new-generated-audio",
+  "started_utc": "2026-10-06T00:38:38.891471+00:00",
+  "finished_utc": "2026-10-06T00:38:43.205318+00:00",
+  "attempt": 1,
+  "request": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-05-F01\\attempt-a01\\request.json",
+    "bytes": 1482,
+    "sha256": "9164fab4f3ed4a4a8bc72727c08c63184a1d2991867248b756ffb0921a9ca3a0"
+  },
+  "text_sha256": "259c161bf4d74e9fb4e864c88a7d9ceffbbf98ee46d9c2e2d0023c46b1d35341",
+  "text_zh": "方案C换路线，先经过已核验的中转点，再去伦敦。这次独立回放，在共同起点后的第七十七个游戏日，我们首次观察到主力已经抵达伦敦；第七十五日它还在路上，所以实际到达在这两次观察之间，精确时刻未知。这支主力从六千六百七十九人出发，到达观测时是六千六百八十九，净增十人；完整二十七个兵团的身份与满员数不变。补给从约一百一十点三八降到一百零一点九零，容量仍三百。终点当前损耗读到百分之一，这是当时的条件读数，不能直接换算成旅途中死了多少兵。这里报的是主力的原始编制，不是玩家所有单位的总人数。",
+  "provider_return": null,
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-5%",
+  "pitch": "+0Hz",
+  "volume": "+0%",
+  "metadata": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-05-F01\\attempt-a01\\word-boundary.jsonl",
+    "bytes": 10805,
+    "sha256": "9345fe4758897eb8b6c6f9c479ddd20adcf196f3fdb19ae121a3012df26f6ac4"
+  },
+  "WordBoundary_count": 119,
+  "native_metadata_seconds_divisor": 10000000,
+  "native_max_boundary_end_seconds": 52.723666,
+  "native_boundary_not_refitted_to_audio": true,
+  "boundary_extent_within_decoded_audio_plus_250ms": true,
+  "human_listening_signoff": false,
+  "subtitle_alignment_signoff": false,
+  "audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-05-F01\\attempt-a01\\speech.mp3",
+    "bytes": 320112,
+    "sha256": "84908db1982f33731f81456f06e316288c78a2601e10eaceb31b88bdd61bd245"
+  },
+  "MP3_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-05-F01\\attempt-a01\\logs\\probe.stdout.txt",
+    "bytes": 2029,
+    "sha256": "1bee22481d992d6d3dae74e73b7e720c65920e261fd8b37ebc2fa91d36199225"
+  },
+  "MP3_container_seconds": 53.352,
+  "decoded_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-05-F01\\attempt-a01\\decoded.wav",
+    "bytes": 2560974,
+    "sha256": "909ea72882efac01f508f3fb15cb9c43a09b864c540240707562b640b04174de"
+  },
+  "decoded_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 1280448,
+    "seconds": 53.352
+  }
+}

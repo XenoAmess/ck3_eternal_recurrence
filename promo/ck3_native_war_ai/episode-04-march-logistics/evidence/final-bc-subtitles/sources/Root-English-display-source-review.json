@@ -1,0 +1,67 @@
+{
+  "schema": "xar.e04.Root-actual-final-English-source-review.v1",
+  "source_review_status": "NO_BLOCK",
+  "final_freeze": true,
+  "reviewer": "/root",
+  "reviewed_utc": "2026-10-06T00:46:22.864225+00:00",
+  "actual_review_basis": "Prior actual whole86-pair source review remains full-English source approval. Root additionally directly read all4 old/full-English/Chinese/new-display units and actual duration/rate cases, then verified only4 display overrides differ and82units remain exact.",
+  "English_diff": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/e04-final-BC-subtitle-production-a01/English-diff-final-BC-a01.json",
+    "bytes": 7093,
+    "sha256": "b2243b8d3cd8d843f416b080f4ed96de15ade494a06e9fcd78aafefc643be944"
+  },
+  "alignment": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\semantic-alignment-final-BC-display-a02.json",
+    "bytes": 17214,
+    "sha256": "e7d9aecd6703c9e8af5831ae746b0e811bb005b6c655942b0169ee629bc78bc4"
+  },
+  "chinese_body_sha256": "ce0c45dccc3ae5a2a7ce60f4f7a4c3025487c3b58daa2c561e5a7d97dfb7bcce",
+  "chinese_ledger_sha256": "2ef65357de29c0d4245886cb06dd5a0454089849b15623f7fcbf47666e1b83c9",
+  "Root_Chinese_source_review_sha256": "5874bd3c5cc0557a61a47a66fb3788841ed1dd78c00eb02ebe6323cc6902428f",
+  "subtitle_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "actual_semantic_units": 86,
+  "actual_Root_review_notes": [
+    "Root directly read all86 exact Chinese/English units in the seven Markdown pairs. Their soldier/supply/date/payment scopes and unknown limitations match the exact Chinese source review.",
+    "C first-observed77 is not exact arrival tick, terminal6689 belongs to original Main27 regiments rather than all-player total, current1percent attrition is not applied losses.",
+    "B net soldier gains26-to27 and supply gains31-to32 remain separate. Weighted merge/cap100 fact is retained separately from failed cohort/commander conditions at38, with52 days left.",
+    "C sampling deviations remain descriptive only; no strictly controlled A/B/C winner. A is restored by the14 bridge before15 and the beginning of16; C cash15.82 and A16.06 stay separate net changes, no applied-payment inference.",
+    "Final actual starvation and itemized payment gaps remain explicit. No narration changes, TTS generation or human full listening/film signoff are requested or granted.",
+    "Timed subtitle readability still binds actual WB/PCM and encoded pictures; semantic review does not certify future unproduced film bytes.",
+    "Four shorter displayed translations preserve B endpoint unobserved, separate observation windows, additional1/1 regiment and return to whole-army A. Actual timing and all spoken Chinese/full English source remain unchanged; prior RED attempt preserved. Timed renderer bytes remain subject to actual coded-frame review."
+  ],
+  "narration_or_TTS_change_requested": false,
+  "full_human_listening_signoff": false,
+  "full_film_signoff": false,
+  "template_is_actual_review_receipt": true,
+  "prior_exact_English_source_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-Root-actual-English-review-a01\\Root-English-NO-BLOCK.json",
+    "bytes": 2608,
+    "sha256": "cb5adf685a6895c1461cc9295b14ac247ab2f4ad648e05f9d8bee33da5b11158"
+  },
+  "display_revision_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\Root-four-display-equivalence-review-a01.json",
+    "bytes": 2534,
+    "sha256": "82472bc0a40ad695e127b4db6a7962d2b54b9242877a59e956fd2732791eee53"
+  },
+  "actual_display_changed_units": [
+    "C05-04-S07",
+    "C05-10-S08",
+    "C05-14-S05",
+    "C05-14-S18"
+  ],
+  "exact_unchanged_units": 82,
+  "display_equivalence_status": "NO_BLOCK",
+  "actual_subtitle_build_result_reference": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\ROOT-DELIVERY.json",
+    "bytes": 23131,
+    "sha256": "66931359da98229b353383d90336ee2bc288d83509cafb70c94f0cb5579d4eae"
+  }
+}

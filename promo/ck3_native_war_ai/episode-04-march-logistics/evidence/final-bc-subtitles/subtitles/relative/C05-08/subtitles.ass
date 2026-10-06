@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:05.06,Chinese,C05-08-S01,0,0,0,,{\an8\pos(960,935)}前面的平分样本里，两队都继承约一百一十点三八补给，
+Dialogue: 0,0:00:00.10,0:00:05.06,English,C05-08-S01,0,0,0,,{\an8\pos(960,1030)}In the earlier equal split, both armies inherited about 110.38 supply.
+Dialogue: 0,0:00:05.46,0:00:08.43,Chinese,C05-08-S02,0,0,0,,{\an8\pos(960,935)}主军容量三百，新分队容量一百。
+Dialogue: 0,0:00:05.46,0:00:08.43,English,C05-08-S02,0,0,0,,{\an8\pos(960,1030)}The main army had capacity 300; the new group had capacity 100.
+Dialogue: 0,0:00:09.06,0:00:11.00,Chinese,C05-08-S03,0,0,0,,{\an8\pos(960,935)}现在看这次B回放：
+Dialogue: 0,0:00:09.06,0:00:11.00,English,C05-08-S03,0,0,0,,{\an8\pos(960,1030)}Now look at this replay of B.
+Dialogue: 0,0:00:11.36,0:00:17.86,Chinese,C05-08-S04,0,0,0,,{\an8\pos(960,935)}起点后的第二十到二十一日，新分队库存从约一百一十点三八降到一百，
+Dialogue: 0,0:00:11.36,0:00:17.86,English,C05-08-S04,0,0,0,,{\an8\pos(960,1030)}Between days 20 and 21, the new group's supply fell from about 110.38 to 100.
+Dialogue: 0,0:00:18.30,0:00:21.76,Chinese,C05-08-S05,0,0,0,,{\an8\pos(960,935)}两军人数与完整兵团的前后读数都没变。
+Dialogue: 0,0:00:18.30,0:00:21.76,English,C05-08-S05,0,0,0,,{\an8\pos(960,1030)}Both armies' soldier counts and full regiment readings were unchanged.
+Dialogue: 0,0:00:22.36,0:00:24.90,Chinese,C05-08-S06,0,0,0,,{\an8\pos(960,935)}虽然当前月变化仍是正二十，
+Dialogue: 0,0:00:22.36,0:00:24.90,English,C05-08-S06,0,0,0,,{\an8\pos(960,1030)}The current monthly rate still showed +20.
+Dialogue: 0,0:00:25.23,0:00:28.23,Chinese,C05-08-S07,0,0,0,,{\an8\pos(960,935)}这次库存变化却是向下回到容量；
+Dialogue: 0,0:00:25.23,0:00:28.23,English,C05-08-S07,0,0,0,,{\an8\pos(960,1030)}But the actual supply change was downward, back to capacity.
+Dialogue: 0,0:00:28.63,0:00:31.83,Chinese,C05-08-S08,0,0,0,,{\an8\pos(960,935)}它不是补兵，也不是低库存补给增加。
+Dialogue: 0,0:00:28.63,0:00:31.83,English,C05-08-S08,0,0,0,,{\an8\pos(960,1030)}This was neither reinforcement nor a supply increase from a low stock.

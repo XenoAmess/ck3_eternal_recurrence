@@ -1,0 +1,127 @@
+{
+  "schema": "ck3.e04.actual-production-recorded-integer-clock.v1",
+  "recorded_actual_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 41658624,
+    "seconds": 1735.776
+  },
+  "chapters": [
+    {
+      "chapter_id": "E4-01",
+      "start_sample": 0,
+      "end_sample": 4158144,
+      "start_seconds": 0.0,
+      "end_seconds": 173.256,
+      "carried_index_path": "audio-index/E4-01.json",
+      "source_index_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-01\\audio-index.json",
+        "bytes": 33915,
+        "sha256": "019b21a26c2c7f48776479b21e73191c9ac6265667c76660cc42cbbbc5ccdef3"
+      }
+    },
+    {
+      "chapter_id": "E4-02",
+      "start_sample": 4158144,
+      "end_sample": 10669248,
+      "start_seconds": 173.256,
+      "end_seconds": 444.552,
+      "carried_index_path": "audio-index/E4-02.json",
+      "source_index_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-02\\audio-index.json",
+        "bytes": 59797,
+        "sha256": "79f6b17cccb7d785cc462e6dcc754961fa277a9f6be54216d2ab370c7172c478"
+      }
+    },
+    {
+      "chapter_id": "E4-03",
+      "start_sample": 10669248,
+      "end_sample": 17347968,
+      "start_seconds": 444.552,
+      "end_seconds": 722.832,
+      "carried_index_path": "audio-index/E4-03.json",
+      "source_index_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-03\\audio-index.json",
+        "bytes": 51093,
+        "sha256": "8ac21a3a2e490da35a809a11f0b27588e85626b75dc58ade1e1b634b041c5322"
+      }
+    },
+    {
+      "chapter_id": "E4-04",
+      "start_sample": 17347968,
+      "end_sample": 23238144,
+      "start_seconds": 722.832,
+      "end_seconds": 968.256,
+      "carried_index_path": "audio-index/E4-04.json",
+      "source_index_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-04\\audio-index.json",
+        "bytes": 46619,
+        "sha256": "cb33f66e33dd201464d215bf15844e3ed9ecd9f11b3ea300c8f8aae7b05d0db3"
+      }
+    },
+    {
+      "chapter_id": "E4-05",
+      "start_sample": 23238144,
+      "end_sample": 35957952,
+      "start_seconds": 968.256,
+      "end_seconds": 1498.248,
+      "carried_index_path": "audio-index/E4-05.json",
+      "source_index_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-05\\audio-index.json",
+        "bytes": 87185,
+        "sha256": "3c43df40f8bc7edb95ed1c8d1a0380e4c54da5495d19eeb8b94690071cd8e0f5"
+      }
+    },
+    {
+      "chapter_id": "E4-06",
+      "start_sample": 35957952,
+      "end_sample": 41658624,
+      "start_seconds": 1498.248,
+      "end_seconds": 1735.776,
+      "carried_index_path": "audio-index/E4-06.json",
+      "source_index_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\chapters\\E4-06\\audio-index.json",
+        "bytes": 54910,
+        "sha256": "138bc362b6960d7763ce8963373639c970603bc0d5f801095baf561563851073"
+      }
+    }
+  ],
+  "global_sample_range": [
+    0,
+    41658624
+  ],
+  "recorded_seconds_exact_ratio": [
+    41658624,
+    24000
+  ],
+  "recorded_seconds": 1735.776,
+  "recorded_minutes_seconds": "28:55.776",
+  "voice_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "new_WordBoundary_files": {
+    "C05-04": "WordBoundary/C05-04.jsonl",
+    "C05-05": "WordBoundary/C05-05.jsonl",
+    "C05-08": "WordBoundary/C05-08.jsonl",
+    "C05-10": "WordBoundary/C05-10.jsonl",
+    "C05-14": "WordBoundary/C05-14.jsonl",
+    "C05-16": "WordBoundary/C05-16.jsonl",
+    "C06-10": "WordBoundary/C06-10.jsonl"
+  },
+  "new_actual_WB_events": 774,
+  "fragments": 74,
+  "new7_voice_fragments": 7,
+  "exact_reused_fragments": 67,
+  "original6_WordBoundary_unknown": true,
+  "original6_not_regenerated_or_fitted": true,
+  "inserted_silence_frames": 0,
+  "media_carried": false,
+  "human_listening_or_film_signoff": false
+}

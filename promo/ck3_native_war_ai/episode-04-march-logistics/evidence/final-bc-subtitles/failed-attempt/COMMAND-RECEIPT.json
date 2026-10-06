@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.actual-subtitle-production-command-receipt/v1",
+  "created_utc": "2026-10-06T00:43:18.006272+00:00",
+  "commands": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-execution-ready-a01\\final_subtitle_increment_a03.py",
+        "validate",
+        "--request",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-final-subtitle-request-a01.json",
+        "--output",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-input-validation-a01.json"
+      ],
+      "started_utc": "2026-10-06T00:43:18.006369+00:00",
+      "finished_utc": "2026-10-06T00:43:18.357886+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "8c4fcda7d9aa5b1cff0d5df48e40590a9f3e50ecd0ace8df1a1ef16d34e41751",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-execution-ready-a01\\final_subtitle_increment_a03.py",
+        "build",
+        "--request",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-final-subtitle-request-a01.json",
+        "--output",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a01"
+      ],
+      "started_utc": "2026-10-06T00:43:18.358001+00:00",
+      "finished_utc": "2026-10-06T00:43:19.442904+00:00",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a3f5c53c59679162523e1a4a9d375e32502cdeb64d8a359ba3f289fd1a13dcab"
+    }
+  ],
+  "provider_calls": 0,
+  "movie_reads": 0,
+  "human_signoff": false,
+  "status": "FAILED_ATTEMPT_PRESERVED"
+}

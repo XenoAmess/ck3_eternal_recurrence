@@ -1,0 +1,37 @@
+{
+  "fragment_id": "C06-10-F01",
+  "paragraph_id": "C06-10",
+  "chapter_id": "E4-06",
+  "provider": {
+    "id": "edge-tts",
+    "version": "7.2.8"
+  },
+  "request": {
+    "text": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。整军直走和换路线各自保留了真实到达观测；分兵方案因冻结条件变化停止，换路线回放又保留采样偏差，因此没有严格三方案的胜负结论。真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-5%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": "episode04-a04-wordboundary-a02"
+  },
+  "metadata_request": {
+    "boundary": "WordBoundary",
+    "ticks_per_second": 10000000,
+    "save_sync_audio_and_metadata": true
+  },
+  "text_sha256": "6e53b396e95c1678ae88c252befbc5341c89548cc5634733760106caa4f4066b",
+  "source_keys": [
+    "supply",
+    "refill",
+    "r162",
+    "r172-doc",
+    "merge",
+    "r173-qualification",
+    "B-research-published",
+    "C-terminal-actual",
+    "C-terminal-Root-sampling"
+  ],
+  "attempt": 1,
+  "started_utc": "2026-10-06T00:38:43.217918+00:00"
+}

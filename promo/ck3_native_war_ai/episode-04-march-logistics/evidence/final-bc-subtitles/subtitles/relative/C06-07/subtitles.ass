@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:06.96,Chinese,C06-07-S01,0,0,0,,{\an8\pos(960,935)}接战前，确认实际到了哪里，还有哪些队伍在路上，可用人数和库存是多少。
+Dialogue: 0,0:00:00.10,0:00:06.96,English,C06-07-S01,0,0,0,,{\an8\pos(960,1008)}Before battle, confirm where the army has actually arrived,\Nwhich others are still traveling, and the soldiers and supplies available.
+Dialogue: 0,0:00:07.56,0:00:11.70,Chinese,C06-07-S02,0,0,0,,{\an8\pos(960,935)}当前零损耗只说眼前条件，不保证以后安全；
+Dialogue: 0,0:00:07.56,0:00:11.70,English,C06-07-S02,0,0,0,,{\an8\pos(960,1030)}Zero current attrition describes the present conditions, not future safety.
+Dialogue: 0,0:00:12.13,0:00:15.30,Chinese,C06-07-S03,0,0,0,,{\an8\pos(960,935)}当前正补给也不保证以后一直恢复。
+Dialogue: 0,0:00:12.13,0:00:15.30,English,C06-07-S03,0,0,0,,{\an8\pos(960,1030)}Positive current supply does not promise recovery forever.
+Dialogue: 0,0:00:15.93,0:00:22.23,Chinese,C06-07-S04,0,0,0,,{\an8\pos(960,935)}然后把到场的真实状态交给战斗判断，让出发计划与现实接起来。
+Dialogue: 0,0:00:15.93,0:00:22.23,English,C06-07-S04,0,0,0,,{\an8\pos(960,1030)}Then use the actual arrival state in the battle decision, connecting the departure plan to reality.

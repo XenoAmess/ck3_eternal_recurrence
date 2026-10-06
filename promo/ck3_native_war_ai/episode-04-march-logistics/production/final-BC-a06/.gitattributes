@@ -1,0 +1,2 @@
+# Preserve frozen production text/provenance bytes; never normalize historical CRLF.
+**/* -text whitespace=cr-at-eol

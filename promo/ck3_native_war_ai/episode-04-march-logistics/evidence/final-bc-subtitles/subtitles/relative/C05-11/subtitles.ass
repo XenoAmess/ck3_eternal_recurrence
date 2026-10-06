@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:03.50,Chinese,C05-11-S01,0,0,0,,{\an8\pos(960,935)}费用先另读一份一月十一日的暂停样本：
+Dialogue: 0,0:00:00.10,0:00:03.50,English,C05-11-S01,0,0,0,,{\an8\pos(960,1030)}For costs, first read a separate paused January 11 sample.
+Dialogue: 0,0:00:03.93,0:00:12.60,Chinese,C05-11-S02,0,0,0,,{\an8\pos(960,935)}角色个人月总收入约四点六九金币，完整月支出约四点三九，当前净收入约正零点三零。
+Dialogue: 0,0:00:03.93,0:00:12.60,English,C05-11-S02,0,0,0,,{\an8\pos(960,1008)}The character's total monthly income was about 4.69 gold,\Ncomplete expenditure about 4.39, and current net gold income about +0.30.
+Dialogue: 0,0:00:13.20,0:00:16.30,Chinese,C05-11-S03,0,0,0,,{\an8\pos(960,935)}这不是后面所有旅途日期的固定常数；
+Dialogue: 0,0:00:13.20,0:00:16.30,English,C05-11-S03,0,0,0,,{\an8\pos(960,1030)}That is not a constant for every later travel date.
+Dialogue: 0,0:00:16.70,0:00:19.96,Chinese,C05-11-S04,0,0,0,,{\an8\pos(960,935)}军队和收支条件变了，需要重新读。
+Dialogue: 0,0:00:16.70,0:00:19.96,English,C05-11-S04,0,0,0,,{\an8\pos(960,1030)}When army or financial conditions change, read them again.

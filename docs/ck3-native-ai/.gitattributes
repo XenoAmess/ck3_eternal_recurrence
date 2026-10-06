@@ -14,3 +14,7 @@ army-r0175-B-merge-upper-cap-runtime-12003.md -text whitespace=blank-at-eol,blan
 
 # Closed R0176 C exact descriptive knowledge source.
 army-episode04-C-descriptive-march-12003.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Final episode04 text-only actual production sources.
+episode04-final-BC-production-a06.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+war-e04-final-bc-bilingual-subtitle-clock-review01.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

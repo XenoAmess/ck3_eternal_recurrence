@@ -1,0 +1,38 @@
+{
+  "finished_utc": "2026-10-06T00:41:08.304362+00:00",
+  "returncode": 0,
+  "argv": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-English-bind-launch-a01\\argv.json",
+    "bytes": 767,
+    "sha256": "b42eafd2a17cb0a379a378491cec35c21afe252d10e33242b240d8e7e16d1770"
+  },
+  "stdout": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-English-bind-launch-a01\\stdout.json",
+    "bytes": 13407,
+    "sha256": "252a3fe1a12aad5d75ab6a87bb707233cb9723eaf7aa5dff5a04105345d8ef18"
+  },
+  "stderr": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-English-bind-launch-a01\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "audio_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\AUDIO-READY.json",
+    "bytes": 16849,
+    "sha256": "c258bf2d9906ec1c1bb9256fadc19b5b4fceaa05f922879602e6420b82b0dd41"
+  },
+  "English_diff": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\English-diff-final-BC-a01.json",
+    "bytes": 7093,
+    "sha256": "b2243b8d3cd8d843f416b080f4ed96de15ade494a06e9fcd78aafefc643be944"
+  },
+  "source_body_and_ledger_exact": true,
+  "new_TTS_provider_calls": 0,
+  "new_PCM_WAVs": 0,
+  "actual_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\ROOT-DELIVERY.json",
+    "bytes": 17606,
+    "sha256": "46269c38b047b783662862c3e336e03f2978abcc67449aad330daf9b90c7b1f0"
+  },
+  "human_listening_or_film_signoff": false
+}

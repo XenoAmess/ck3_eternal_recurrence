@@ -1,0 +1,135 @@
+{
+  "schema": "ck3.e04.actual-production-method-map.v1",
+  "code_files": [
+    {
+      "path": "code/final_bc_increment.py",
+      "functions": [
+        "load_request",
+        "root_sampling_requirements",
+        "current_Main_subject_scope",
+        "validate_freeze",
+        "main"
+      ],
+      "actual_source_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-oral-preparation-a01\\main-scope-connection-a05\\final_bc_increment.py",
+        "bytes": 16788,
+        "sha256": "3f6c0a10808f9becd2cbe232cdb1d45779858c65eb7eccc565f0a60a7bb3195b"
+      }
+    },
+    {
+      "path": "code/final_BC_audio.py",
+      "functions": [
+        "voice_subtitle_ids",
+        "English_mapping",
+        "input_plan",
+        "fresh_release",
+        "generate",
+        "bind_English",
+        "prepare_final_request",
+        "main"
+      ],
+      "actual_source_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-preparation-a01\\final_BC_audio.py",
+        "bytes": 23393,
+        "sha256": "80d35f1bc1bc08172aba4d66d6933813f063379a48445d84bd2a6f5a98e5173c"
+      }
+    },
+    {
+      "path": "code/actual_WordBoundary_audio_helpers.py",
+      "functions": [
+        "request_one",
+        "generate",
+        "decode",
+        "wav_info",
+        "join_wav",
+        "command"
+      ],
+      "actual_source_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-production-preparation-a01\\generate_stable_a04_audio_a02.py",
+        "bytes": 24594,
+        "sha256": "5c7580192e3b2f2712c462ec697b9b1ca8239f7d9e90303035142e2e47f2b6ed"
+      }
+    },
+    {
+      "path": "code/serial_native_manifest_writer.py",
+      "functions": [
+        "publish_serial",
+        "validate_native"
+      ],
+      "actual_source_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-result-oral-increment-a01\\serial_native_manifest_writer.py",
+        "bytes": 7185,
+        "sha256": "00ac94d2e655fdfc1e1f3aa1956fab3b3b2929401f3a72534f6774723f92e435"
+      }
+    },
+    {
+      "path": "code/build_actual_story_a01.py",
+      "functions": [],
+      "actual_source_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\build_actual_story_a01.py",
+        "bytes": 16507,
+        "sha256": "954c2bef727abb1ee60dc2d328bef1d6a15950e948b3835581c2fa2e1a24a04b"
+      }
+    },
+    {
+      "path": "code/apply_Root_bridge_a02.py",
+      "functions": [],
+      "actual_source_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\apply_Root_bridge_a02.py",
+        "bytes": 6084,
+        "sha256": "cdacda59311a669646bcba2818940756b2e2187b6eeb6d7d438507e3f1b24aa1"
+      }
+    },
+    {
+      "path": "code/execute_actual_audio_a01.py",
+      "functions": [],
+      "actual_source_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\execute_actual_audio_a01.py",
+        "bytes": 4671,
+        "sha256": "66b693edf1688da855672193457f16cee6e9b508ab5f5fa2552bb0a8325dcee7"
+      }
+    },
+    {
+      "path": "code/bind_actual_English_a01.py",
+      "functions": [],
+      "actual_source_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\bind_actual_English_a01.py",
+        "bytes": 2659,
+        "sha256": "3760b4ea19e8e2eb3462019a1e5a1a1ec37af3c6e4fa2859cd0113551ec45bb7"
+      }
+    },
+    {
+      "path": "code/close_actual_audio_delivery_a01.py",
+      "functions": [],
+      "actual_source_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\close_actual_audio_delivery_a01.py",
+        "bytes": 6984,
+        "sha256": "b8b5f40925cdf9f2a4ac6f5a84c7fd8440bace91ecd4881969dbdffcd65d605d"
+      }
+    }
+  ],
+  "actual_API": [
+    "xar_promo.tts.TtsRequest",
+    "xar_promo.tts.EdgeTtsProvider.synthesize",
+    "edge_tts.Communicate.save_sync",
+    "xar_promo.operations.start_run",
+    "xar_promo.operations.preserve_artifact"
+  ],
+  "actual_project_CLI": {
+    "oral": [
+      "plan",
+      "validate-freeze",
+      "freeze"
+    ],
+    "audio": [
+      "plan",
+      "prepare-final-request",
+      "generate",
+      "bind-english"
+    ]
+  },
+  "generic_TTS_CLI_claimed": false,
+  "default_package_consumer": "verify_pack.py plan",
+  "archived_production_code_is_not_executed_by_consumer": true,
+  "archived_code_contains_historical_paths_requiring_explicit_new_inputs_on_reuse": true
+}

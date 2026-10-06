@@ -1,0 +1,585 @@
+{
+  "schema": "xar.e04.actual-paragraph-subtitles.v1",
+  "paragraph_id": "C06-09",
+  "source_timeline": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\E4-06\\timeline.json",
+    "bytes": 91968,
+    "sha256": "14be5e2ecdecd0e363fa759cac908409299f543d966a92dc5aad2e64e0f519e7"
+  },
+  "source_chapter_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\chapters\\E4-06\\narration.wav",
+    "bytes": 11401388,
+    "sha256": "8f47abffd88c1132c46bac295d29f483166afad9d5a9647146edb1afadf9783b"
+  },
+  "audio_slice": {
+    "start_sample": 4158144,
+    "end_sample": 4720896,
+    "sample_rate": 24000,
+    "exact_seconds": 23.448,
+    "picture_duration_frames": 704,
+    "coordinate_basis": "Actual PCM sample slice; allocate the final movie by cumulative global boundaries."
+  },
+  "events": [
+    {
+      "id": "C06-09-S01",
+      "char_start": 0,
+      "char_end": 29,
+      "zh": "这些检查已经整理成知识专题，原生数据读取的方法也可以复用。",
+      "en": "These checks are now recorded in knowledge documents, and the native data-reading methods can be reused.",
+      "english_cue_id": "C06-09-EN-01",
+      "paragraph_id": "C06-09",
+      "chapter_id": "E4-06",
+      "start_seconds": 0.10262499999998909,
+      "end_seconds": 6.155291000000005,
+      "start_frame": 3,
+      "end_frame": 184,
+      "timing_bindings": [
+        {
+          "fragment_id": "C06-09-F01",
+          "start_seconds": 173.358625,
+          "end_seconds": 179.411291,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "这些检查已经整理成知识专题，原生数据读取的方法也可以复用。"
+          ],
+          "widths_px": [
+            1015.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "These checks are now recorded in knowledge documents,",
+            "and the native data-reading methods can be reused."
+          ],
+          "widths_px": [
+            652.0,
+            585.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "reading_rate": {
+        "english_words_per_second": 2.6519337016574585,
+        "Chinese_characters_per_second": 4.475138121546961
+      },
+      "review_flags": [],
+      "english_display_line_change": {
+        "before": [
+          "These checks are now recorded in knowledge documents, and the native data-reading methods can be",
+          "reused."
+        ],
+        "after": [
+          "These checks are now recorded in knowledge documents,",
+          "and the native data-reading methods can be reused."
+        ],
+        "basis": "Prefer sentence/clause breaks; protect English logistics terms and numeric units."
+      },
+      "chapter_start_seconds": 173.358625,
+      "chapter_end_seconds": 179.411291
+    },
+    {
+      "id": "C06-09-S02",
+      "char_start": 29,
+      "char_end": 63,
+      "zh": "换机器或存档，可以沿用方法；版本、人物、军队和眼前读数仍要重新确认。",
+      "en": "Use the method on another machine or save, but confirm the version, character, army, and current readings afresh.",
+      "english_cue_id": "C06-09-EN-02",
+      "paragraph_id": "C06-09",
+      "chapter_id": "E4-06",
+      "start_seconds": 6.7631660000000124,
+      "end_seconds": 14.460541000000006,
+      "start_frame": 203,
+      "end_frame": 433,
+      "timing_bindings": [
+        {
+          "fragment_id": "C06-09-F01",
+          "start_seconds": 180.019166,
+          "end_seconds": 187.716541,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "换机器或存档，可以沿用方法；版本、人物、军队和眼前读数仍要重新确认。"
+          ],
+          "widths_px": [
+            1190.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "Use the method on another machine or save, but confirm the version,",
+            "character, army, and current readings afresh."
+          ],
+          "widths_px": [
+            775.0,
+            503.953125
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "reading_rate": {
+        "english_words_per_second": 2.3478260869565215,
+        "Chinese_characters_per_second": 3.782608695652174
+      },
+      "review_flags": [],
+      "english_display_line_change": {
+        "before": [
+          "Use the method on another machine or save, but confirm the version, character, army, and current",
+          "readings afresh."
+        ],
+        "after": [
+          "Use the method on another machine or save, but confirm the version,",
+          "character, army, and current readings afresh."
+        ],
+        "basis": "Prefer sentence/clause breaks; protect English logistics terms and numeric units."
+      },
+      "chapter_start_seconds": 180.019166,
+      "chapter_end_seconds": 187.716541
+    },
+    {
+      "id": "C06-09-S03",
+      "char_start": 63,
+      "char_end": 80,
+      "zh": "缺少的信息就保持未知，不靠猜补齐。",
+      "en": "Missing information stays unknown instead of being guessed.",
+      "english_cue_id": "C06-09-EN-03",
+      "paragraph_id": "C06-09",
+      "chapter_id": "E4-06",
+      "start_seconds": 15.06579099999999,
+      "end_seconds": 18.684208000000012,
+      "start_frame": 452,
+      "end_frame": 560,
+      "timing_bindings": [
+        {
+          "fragment_id": "C06-09-F01",
+          "start_seconds": 188.321791,
+          "end_seconds": 191.940208,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "缺少的信息就保持未知，不靠猜补齐。"
+          ],
+          "widths_px": [
+            595.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "Missing information stays unknown instead of being guessed."
+          ],
+          "widths_px": [
+            690.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "reading_rate": {
+        "english_words_per_second": 2.2222222222222223,
+        "Chinese_characters_per_second": 4.166666666666667
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 188.321791,
+      "chapter_end_seconds": 191.940208
+    },
+    {
+      "id": "C06-09-S04",
+      "char_start": 80,
+      "char_end": 99,
+      "zh": "离线文件检查，也不能当作新的游戏结果。",
+      "en": "An offline file check is not a new game result.",
+      "english_cue_id": "C06-09-EN-04",
+      "paragraph_id": "C06-09",
+      "chapter_id": "E4-06",
+      "start_seconds": 19.276332999999994,
+      "end_seconds": 22.842083000000002,
+      "start_frame": 578,
+      "end_frame": 685,
+      "timing_bindings": [
+        {
+          "fragment_id": "C06-09-F01",
+          "start_seconds": 192.532333,
+          "end_seconds": 196.098083,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "离线文件检查，也不能当作新的游戏结果。"
+          ],
+          "widths_px": [
+            665.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "An offline file check is not a new game result."
+          ],
+          "widths_px": [
+            508.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "reading_rate": {
+        "english_words_per_second": 2.8301886792452833,
+        "Chinese_characters_per_second": 4.811320754716982
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 192.532333,
+      "chapter_end_seconds": 196.098083
+    }
+  ],
+  "actual_WordBoundary_available": true,
+  "estimated_or_mixed_internal_times": false,
+  "actual_full_PCM_fragment_times_without_WB": false,
+  "relative_frame_quantization": "Exact sample-origin shift then30fps start-round/end-floor; chapter native bindings retained.",
+  "ABC_results": {
+    "A": {
+      "first_observed_elapsed_days": 51,
+      "observed_arrival_interval_days": [
+        49,
+        51
+      ],
+      "observed_arrival_interval_endpoint_inclusion": "(49,51]",
+      "exact_arrival_tick": null,
+      "current_soldiers": {
+        "initial": 6679,
+        "terminal": 6689,
+        "net": 10
+      },
+      "maximum_soldiers": 6747,
+      "supply_raw": {
+        "initial": 11037716,
+        "terminal": 10613988,
+        "net": -423728,
+        "scale": 100000
+      },
+      "treasury_raw": {
+        "initial": 63754562,
+        "terminal": 62148329,
+        "net": -1606233,
+        "scale": 100000
+      },
+      "payment_ledger": null,
+      "source_key": "r177-A2-values"
+    },
+    "B": {
+      "status": "STOPPED_GATE_INCOMPLETE",
+      "London_endpoint_metrics": null,
+      "arrival_comparable": false,
+      "actual_days_used": 38,
+      "remaining_original_days": 52,
+      "controlled_comparison_eligibility": "GATE_FAILED",
+      "winner": null
+    },
+    "C": {
+      "London_endpoint_metrics": {
+        "DATA_record_count": 37,
+        "actor_character_id": 33388,
+        "actual_player_row": {
+          "army_id": 0,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "controllable": true,
+          "current_province_id": 1527,
+          "in_combat": false,
+          "move_target_observable": false,
+          "move_target_province_id": null,
+          "owner_character_id": 33388,
+          "retreating": false,
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null,
+          "soldiers": null,
+          "source": "native"
+        },
+        "commander_character_id": 27357,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "current_soldiers": 6689,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 0,
+        "current_supply_raw": 10190260,
+        "date_raw": 53150280,
+        "exact_arrival_tick": null,
+        "maximum_soldiers": 6747,
+        "native_carmy_id": 0,
+        "public_army_id": 0,
+        "regiment_count": 27,
+        "supply_scale": 100000,
+        "treasury_raw": 62173052,
+        "treasury_scale": 100000
+      },
+      "absolute_END_raw": 53150592,
+      "actual_days_used": 77.0,
+      "applied_refill_payment_ledger": null,
+      "closed": true,
+      "common_T0_raw": 53148432,
+      "controlled_comparison_eligibility": "NOT_GRANTED",
+      "episode_run_id": "native-33388-1be6dd7a468f",
+      "global_budget_breach": false,
+      "observed_arrival_interval_days": [
+        75.0,
+        77.0
+      ],
+      "observed_terminal_date_raw": 53150280,
+      "sampling_deviations": [
+        {
+          "actual_days": 2,
+          "observed_days": [
+            12,
+            14
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-01.json",
+            "bytes": 325,
+            "sha256": "c66a2c24ffc1616d8e8a07a187b21776bae11debbcfb5128df4f260520b10995"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            20,
+            22
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-02.json",
+            "bytes": 325,
+            "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            29,
+            31
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-03.json",
+            "bytes": 325,
+            "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            34,
+            36
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-04.json",
+            "bytes": 325,
+            "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            40,
+            42
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-05.json",
+            "bytes": 325,
+            "sha256": "076267bb1ce5454fabcd8105968e019529da6e77508e65150101e4710a07e386"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            45,
+            47
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-06.json",
+            "bytes": 325,
+            "sha256": "c8cc79b46cbe77a605319937f164b90941e0198abaecef7391de6a3ea637f952"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            49,
+            51
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-07.json",
+            "bytes": 325,
+            "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            53,
+            55
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-08.json",
+            "bytes": 325,
+            "sha256": "20765b1135613b504baadc66e6f5721706ba86de98b11d21354a83cdaa4cf625"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            57,
+            59
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-09.json",
+            "bytes": 247,
+            "sha256": "d551cac1b8538587bbdabb838423bc7503108d473ce5f739ef063d3c6a8cbf93"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            60,
+            62
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-10.json",
+            "bytes": 325,
+            "sha256": "ac99d55d79bb808696d805791f0372195c16dc1ca21f13657ff4e91c6217dc8f"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            63,
+            65
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-11.json",
+            "bytes": 325,
+            "sha256": "2c3ab3672a2b2f06389ecb4981cd8d4b0a9527ddc65b6d3c52524e3274bddbe5"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            66,
+            68
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-12.json",
+            "bytes": 325,
+            "sha256": "b625a68f61b9fce6797c0ca8b63c6fe9b94152f91273829ab43c45f6529b9bef"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            70,
+            72
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-13.json",
+            "bytes": 325,
+            "sha256": "06a6e2f8de4b259cae94afa26e26512d79d2189a10fc8a505b2ca85dcb855f47"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            72,
+            74
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-14.json",
+            "bytes": 325,
+            "sha256": "ee9db71c945c1cd36c3469cc17c4331aac9a071926b6ab7fa942e81908706558"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            75,
+            77
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-15.json",
+            "bytes": 329,
+            "sha256": "92cf9cb37d2640c822a4219ae1745fa9b5ac0e0894ec3178c9d337054270b5ba"
+          }
+        }
+      ],
+      "source_sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817",
+      "status": "ARRIVED_LONDON",
+      "subject_scope": {
+        "all_player_total_soldiers": null,
+        "global_health_status": "available",
+        "kind": "required_Main_original_cohort",
+        "required_full_DATA": 37,
+        "required_full_regiments": 27,
+        "required_native_carmy_ids": [
+          0
+        ],
+        "required_public_ids": [
+          0
+        ],
+        "unassessed_CUnit_ids": [],
+        "unassessed_health": null
+      },
+      "winner": null
+    }
+  },
+  "ABC_winner": null,
+  "film_signoff": false
+}

@@ -1,0 +1,13 @@
+usage: xar-promo start-run [-h] --run-id RUN_ID
+                           [--run-directory RUN_DIRECTORY]
+                           [project_config]
+
+positional arguments:
+  project_config
+
+options:
+  -h, --help            show this help message and exit
+  --run-id RUN_ID
+  --run-directory RUN_DIRECTORY
+                        directory for run-manifest.json (default:
+                        <project>/runs/<run-id>)

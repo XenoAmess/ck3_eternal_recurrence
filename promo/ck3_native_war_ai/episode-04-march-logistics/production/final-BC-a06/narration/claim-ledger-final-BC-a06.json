@@ -1,0 +1,2840 @@
+{
+  "schema": "ck3.e04.final-BC-authoritative-claim-ledger.v1",
+  "created_utc": "2026-10-06T00:28:36.181760+00:00",
+  "subject": {
+    "actor_character_id": 33388,
+    "game_version": "1.20.0.3",
+    "Robert_numbers_imported": false
+  },
+  "source_commits": {
+    "runtime": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "TERM": "accc385ecb4086f8912cd9492f95e049c8065f7d",
+    "R0172": "3e2737b5909616cd2ab301da59352250410bafb8"
+  },
+  "narration": "six-chapter-final-BC-Chinese-a06.md",
+  "spoken_paragraph_count": 69,
+  "source_catalog": {
+    "term-index": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/accc385ecb4086f8912cd9492f95e049c8065f7d/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/index.json"
+    },
+    "terms": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/accc385ecb4086f8912cd9492f95e049c8065f7d/docs/ck3-native-ai/army-logistics-native-terminology-12003.md"
+    },
+    "term-definition": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/accc385ecb4086f8912cd9492f95e049c8065f7d/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/sources/original-term-definition.md"
+    },
+    "term-verifier": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/accc385ecb4086f8912cd9492f95e049c8065f7d/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/verify_portable_evidence.py"
+    },
+    "supply": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/army-current-supply-capacity-attrition-12003.md#L248"
+    },
+    "refill": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/army-regiment-replenishment-raised-reserve-12003.md#L547"
+    },
+    "merge": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/army-merge-r0168-no-tick-weighted-supply-12003.md"
+    },
+    "merge-tree": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/army-meeting-merge-supply-inheritance-12003.md"
+    },
+    "clock": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/army-monthly-update-order-12003.md"
+    },
+    "county": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/army-county-entry-current-inputs-12003.md"
+    },
+    "reader": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp"
+    },
+    "bindings": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_army.hpp"
+    },
+    "serializer": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/ck3_autonomous_player/native_bridge/include/xar_bridge/army_strength_v1_serializer.hpp"
+    },
+    "refill-reader": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/ck3_autonomous_player/native_bridge/src/ck3_12003_army_replenishment_records.cpp"
+    },
+    "county-python": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_entry_inputs_contract.py"
+    },
+    "war-python": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py"
+    },
+    "r171-summary": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/3e2737b5909616cd2ab301da59352250410bafb8/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0171-county-inputs/summary.json"
+    },
+    "r171-ui": {
+      "citation": "sources/r0171-ui-eta-observation.json",
+      "scope": "Root-curated original UI, no image or media"
+    },
+    "r172-review": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/3e2737b5909616cd2ab301da59352250410bafb8/docs/ck3-native-ai/army-r0172-periodic-siege-loss-runtime-12003.md"
+    },
+    "root-context": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/3e2737b5909616cd2ab301da59352250410bafb8/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0172-periodic-loss/index.json",
+      "scope": "formal portable R0172 index replaces earlier private context"
+    },
+    "r162-loss": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/army-episode04-periodic-and-county-arrival-loss-r0162.md"
+    },
+    "r168-loss-inputs": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/army-episode04-current-loss-readiness-r0168.md"
+    },
+    "halt": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/accc385ecb4086f8912cd9492f95e049c8065f7d/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/sources/native-halt-theorem.md"
+    },
+    "r169-local-b": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/accc385ecb4086f8912cd9492f95e049c8065f7d/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/sources/b_review.json"
+    },
+    "r169-lock-join": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/accc385ecb4086f8912cd9492f95e049c8065f7d/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/sources/original_locked_native_join.json"
+    },
+    "r169-encoded-review": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/accc385ecb4086f8912cd9492f95e049c8065f7d/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/sources/root_encoded_review.json"
+    },
+    "outline": {
+      "citation": "outline-and-shot-needs-a03.md",
+      "scope": "future chapter/shot policy; no outcome claim"
+    },
+    "r162": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/army-episode04-periodic-and-county-arrival-loss-r0162.md"
+    },
+    "r171-doc": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/3e2737b5909616cd2ab301da59352250410bafb8/docs/ck3-native-ai/army-county-entry-current-inputs-r0171-runtime.md"
+    },
+    "r172-doc": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/3e2737b5909616cd2ab301da59352250410bafb8/docs/ck3-native-ai/army-r0172-periodic-siege-loss-runtime-12003.md"
+    },
+    "r172-index": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/3e2737b5909616cd2ab301da59352250410bafb8/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0172-periodic-loss/index.json"
+    },
+    "r172-analysis": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/3e2737b5909616cd2ab301da59352250410bafb8/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0172-periodic-loss/periodic-analysis.json"
+    },
+    "r172-boundaries": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/3e2737b5909616cd2ab301da59352250410bafb8/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0172-periodic-loss/neutral-boundaries.json"
+    },
+    "r172-verifier": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/3e2737b5909616cd2ab301da59352250410bafb8/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0172-periodic-loss/verify_evidence.py"
+    },
+    "cash": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7f1db1a773e647b9f31378d4a9ccf57a60cf9e73/docs/ck3-native-ai/war-cash-net-live-r0168-2026-10-05.md"
+    },
+    "r173-split": {
+      "citation": "sources/r0173-half-split-facts.json",
+      "scope": "Root-curated actual same-paused half split; master integration pending"
+    },
+    "knowledge": {
+      "citation": "knowledge-code-references-a03.md",
+      "scope": "pinned reusable knowledge/code; no new runtime result"
+    },
+    "r173-qualification": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/700b6917ad7ee1a9ca7bcb930b114f8bd4f11498/docs/ck3-native-ai/army-r0173-split-rest-qualification-12003.md",
+      "bytes": 5650,
+      "sha256": "7393ef0d024ff68dbe8ab771937ae3fa91d3a1ad2a0bf0443fa149708a07485f"
+    },
+    "old-a03": {
+      "citation": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/0f76a463df4e842eb415f54fd65bfa180c6d015b/promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/claim-ledger-a03.json"
+    },
+    "r177-A2-values": {
+      "citation": "sources/A2-endpoint-values.json",
+      "bytes": 79747,
+      "sha256": "475420d14f654c4418412108603937dacd142c17419a5c32d199ea09fa7e6616",
+      "intended_repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0177-a2-arrival/A2-endpoint-values.json",
+      "public_commit": null,
+      "publication_status": "Root-authorized actual portable source; master integration not assumed in this candidate"
+    },
+    "r177-A2-doc": {
+      "citation": "sources/army-episode04-a2-london-arrival-12003.md",
+      "bytes": 3417,
+      "sha256": "296ee941a3f7873a5d8462e27b7ce5d5ef3a1d9d8d5ee3fb36f1a3c6ad7d623f",
+      "intended_repo_path": "docs/ck3-native-ai/army-episode04-a2-london-arrival-12003.md",
+      "public_commit": null
+    },
+    "B-research-published": {
+      "schema": "ck3.e04.B-published-research-reference.v1",
+      "master_commit": "a1511a5d9b9e1c9f37b9d221256c965fd1254b50",
+      "OfficialCI": {
+        "run_id": 37370629144,
+        "attempt": 2,
+        "status": "SUCCESS",
+        "steps": 82,
+        "first_hosted_runner_failure_preserved": true
+      },
+      "knowledge_repo_relative": "docs/ck3-native-ai/army-r0175-B-merge-upper-cap-runtime-12003.md",
+      "knowledge_bytes": 5252,
+      "knowledge_sha256": "29960d405828a7a1af0e0f36b27ce42390acfd2843937f405d831439495bdc57",
+      "math_index_repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/index.json",
+      "B_index_repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/INDEX.json",
+      "formal_status": "STOPPED_GATE_INCOMPLETE",
+      "day": 38,
+      "remaining_days": 52,
+      "deadline_reached": false,
+      "London_endpoint_metrics": null,
+      "arrival_comparable": false,
+      "winner": null,
+      "scope": "Published B research only; does not grant current C endpoint or production/audio progress."
+    },
+    "C-day27-actual": {
+      "citation": "sources/C-day27-source-analysis.json",
+      "bytes": 20863,
+      "sha256": "c047dc70bc5727049598d2d7603246532841cb947804f6d176ae2047fab157ef",
+      "scope": "C actual26→27 pair; no terminal or applied refill ledger"
+    },
+    "C-sampling-deviation-1": {
+      "citation": "sources/C-day14-Root-review.json",
+      "bytes": 3607,
+      "sha256": "bae4d43b8f9e271d8752fb2cfb3857bbf68e2ab0533135558454bbf660854b4c"
+    },
+    "C-sampling-deviation-2": {
+      "citation": null,
+      "sha256": null,
+      "scope": "Root known20→22 actual2days; exact final source pending"
+    },
+    "C-day31-actual": {
+      "citation": "sources/C-day31-source-analysis.json",
+      "bytes": 6118,
+      "sha256": "ebf3d2dea82920fd38141f00d50cd78e2dd6508563dfe24a5ff448f05412144b",
+      "scope": "Actual29→31 two-day packet, unchanged whole rows and treasury +0.93767. Plannedmax1 is Root authority pending final closed policy/story pin; no payment ledger."
+    },
+    "C-day32-actual": {
+      "citation": "sources/C-day32-source-analysis.json",
+      "bytes": 6251,
+      "sha256": "f3537e220d1a5effd0413c1128842fa982118b07aa1aa9d84c2d3b31701496cb",
+      "scope": "Actual31→32 stock106.13988→101.90260, stored clock update, all27/37 full rows unchanged. No terminal or controlled eligibility credit."
+    },
+    "C-sampling-deviation-3": {
+      "citation": "sources/C-day31-source-analysis.json",
+      "bytes": 6118,
+      "sha256": "ebf3d2dea82920fd38141f00d50cd78e2dd6508563dfe24a5ff448f05412144b",
+      "observed_days": [
+        29,
+        31
+      ],
+      "planned_policy_source_pin": null,
+      "scope": "Actual2days in packet; plannedmax1/one-day-false from Root task authority, final closed source review pending."
+    },
+    "C-day38-Root-actual-policy": {
+      "citation": "sources/C-day38-Root-review.json",
+      "bytes": 6015,
+      "sha256": "5d796e9005c2049e81f04919bf3a0327f0ad7b6968db8bc3dac6bd3b616bac00",
+      "scope": "Root actual current38 descriptive basis, unchanged full material, sameT0/END, all four plannedmax1/actual2day sampling deviations with preservedSTOP links; not a terminal or controlled trial."
+    },
+    "C-day59-Mainpartial-actual": {
+      "citation": "sources/C-day59-Main-scope-addendum.json",
+      "bytes": 7323,
+      "sha256": "618d42f9d02d4f41065c295e142d44ed2db044482c65fda6e5155b9197da151d",
+      "scope": "Actual required Main0 original27/37 available, excludedCUnit16777391 healthNULL, globalpartial, NOT_GRANTED_DESCRIPTIVE_ONLY. No finalC endpoint or global total."
+    },
+    "C-terminal-actual": {
+      "citation": "sources/C-Root-terminal.json",
+      "pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-Root-terminal.json",
+        "bytes": 6937,
+        "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+      }
+    },
+    "C-terminal-Root-sampling": {
+      "citation": "sources/C-terminal-Root-review.json",
+      "pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-terminal-Root-review.json",
+        "bytes": 16482,
+        "sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b"
+      }
+    },
+    "C-terminal-Main-scope": {
+      "citation": "sources/C-terminal-Main-scope.json",
+      "pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-terminal-Main-scope.json",
+        "bytes": 6330,
+        "sha256": "cddd162f23396adf95c06ee4048be466d9795484a5a5b3eab695a84584419a57"
+      }
+    },
+    "C-normalized-original": {
+      "citation": "sources/C-normalized-original.json",
+      "pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-normalized-original.json",
+        "bytes": 7599,
+        "sha256": "69cc82ed5371d11d73af1b1308f40fad516bcb15ad227ff72018951d9b9b9873"
+      }
+    }
+  },
+  "claims": [
+    {
+      "id": "C01-01",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C01-01",
+      "claim_summary": "大军出发的时候，最容易记住的是那个很大的总人数。但到接战以前，还有一整段路。军队要带着补给，经过不同地点，可能减少兵员，也可能得到补充。到了战场，还剩多少人、有没有补给、能不能及时加入，不能只靠出发时的一个数字回答。",
+      "source_keys": [
+        "terms",
+        "clock",
+        "refill"
+      ],
+      "units_and_time": "current soldier/supply/date scopes",
+      "assumptions_and_limits": "一般检查框架，无新增当次军队结果。",
+      "original_a03_summary": "大军出发的时候，最容易记住的是那个很大的总人数。但从出发到接战，中间还有一整段路：军队要带着补给，经过不同地点，跨过自己的更新时刻，可能减少兵员，也可能得到补充。到了战场，还剩多少人、有没有补给、能不能及时加入，这些问题不能只靠出发时的一个数字回答。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "current soldier/supply/date scopes",
+      "original_a03_assumptions_and_limits": "一般检查框架，无新增当次军队结果。"
+    },
+    {
+      "id": "C01-02",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C01-02",
+      "claim_summary": "这期把镜头放在行军、补给和损耗。核心问题是，怎样把足够多的兵，在合适的时间，以能够继续作战的状态送到战场。先读原版界面，再跟着真实变化看结果。下令成功、预计抵达和真正到场，要分别确认。",
+      "source_keys": [
+        "outline",
+        "terms",
+        "r172-doc"
+      ],
+      "units_and_time": "march/stock/count/date",
+      "assumptions_and_limits": "本期研究方法与主题；不同入口不由单个ACK代替结果。",
+      "original_a03_summary": "这期把镜头放在行军、补给和损耗。核心问题是，怎样把足够多的兵，在合适的时间，以能够继续作战的状态送到战场。我们会读原版已经显示的提示，再用实际前后窗口核对。一次下令、一个预计日期或一张提示框，都只回答它自己那一步。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "march/stock/count/date",
+      "original_a03_assumptions_and_limits": "本期研究方法与主题；不同入口不由单个ACK代替结果。"
+    },
+    {
+      "id": "C01-03",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C01-03",
+      "claim_summary": "本期跟着威廉的军队，使用一点二零点零点三原版。不同回放会分别标清起点和日期。另一个人物的历史人数，不放到威廉的画面上；重新载入存档后的独立观察，也不剪成一次没有中断的现场。",
+      "source_keys": [
+        "r172-doc",
+        "r173-split",
+        "supply",
+        "refill"
+      ],
+      "units_and_time": "William33388/exact1.20.0.3; independent run IDs/dates",
+      "assumptions_and_limits": "版本由独立build/session绑定，payload null不回填；不导入Robert/无缝冷载拼接。",
+      "original_a03_summary": "本期的主体是威廉在当前精确版本里的军队。不同运行会在画面和研究账里标清，各自的起点、日期和军队身份分开保留。不会把另一个角色的历史人数拿来拼成本期结果；两次重新载入存档之间，也不会靠剪辑制造成一段没有中断的现场。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "William33388/exact1.20.0.3; independent run IDs/dates",
+      "original_a03_assumptions_and_limits": "版本由独立build/session绑定，payload null不回填；不导入Robert/无缝冷载拼接。"
+    },
+    {
+      "id": "C01-04",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C01-04",
+      "claim_summary": "先看三个已经观察到的区别。有一支军队，补给回到三百，人数却还差一个；另一轮独立观察里，它真的补上了那一个。还有两军合并，兵团一个没少，补给却不是把两份库存直接相加。人数、库存、容量和组织变化，需要分开读。",
+      "source_keys": [
+        "supply",
+        "refill",
+        "merge"
+      ],
+      "units_and_time": "300capacity;1086/1087;oneintegerrefill; weightedstock",
+      "assumptions_and_limits": "R0164/R0165独立窗口，R0168独立samepausedmerge；不拼单一运行。",
+      "original_a03_summary": "先看三个已经观察到的区别。有一支军队，补给回到了300，人数却还差一个；另一个窗口，它真的补上了那一个。还有两支军队合并，完整兵团没有少，补给却不是把两份库存直接相加。这些结果告诉我们，人数、库存、容量和组织变化需要分别读。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "300capacity;1086/1087;oneintegerrefill; weightedstock",
+      "original_a03_assumptions_and_limits": "R0164/R0165独立窗口，R0168独立samepausedmerge；不拼单一运行。"
+    },
+    {
+      "id": "C01-05",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C01-05",
+      "claim_summary": "人数减少也有不同窗口。一个围城分队的观察窗口净少三十一人，主军跨到新县的另一个窗口净少一百二十七人。另一轮回放，又看到整军在两天内净少六十七人。这里说的是兵员净变化，各例的条件分别解释，不统一叫作死亡。",
+      "source_keys": [
+        "r162",
+        "r172-doc"
+      ],
+      "units_and_time": "actual net−31/−127/−67, distinct army/window",
+      "assumptions_and_limits": "净兵员变化，各条件和因果权限分别保留；非死亡统计。",
+      "original_a03_summary": "人数减少也有不同窗口。围城分队的一次周期更新净少31；主军抵达新县的另一个窗口净少127。新的一次资格旅行，又观察到完整27团在两日窗口净少67。这里说的是实际兵员变化，各例的条件和证据强度分别说明，不把所有减少统一叫作死亡。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "actual net−31/−127/−67, distinct army/window",
+      "original_a03_assumptions_and_limits": "净兵员变化，各条件和因果权限分别保留；非死亡统计。"
+    },
+    {
+      "id": "C01-06",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C01-06",
+      "claim_summary": "路线也有几种时间。下令前是预期抵达，走起来以后是当前剩余时间，真正抵达又是独立结果。军队窗口对整条路线的估计，与当前第一段还要走多久，可以有不同范围。比较以前，先确认这个时间描述的是哪一段。",
+      "source_keys": [
+        "terms",
+        "r171-ui",
+        "r171-summary"
+      ],
+      "units_and_time": "GUIwholeETA/nativefirstedge/actualarrival",
+      "assumptions_and_limits": "三种时间/状态范围，不把预计当结果。",
+      "original_a03_summary": "路线同样有几种时间。下令前是预期抵达，走起来以后是当前剩余时间，真正抵达又是独立结果。军队窗口的整条路线估计，与原生当前第一段还要走多久，范围可以不同。我们会把这些读数放到同一个问题里，但保留它们各自的含义。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "GUIwholeETA/nativefirstedge/actualarrival",
+      "original_a03_assumptions_and_limits": "三种时间/状态范围，不把预计当结果。"
+    },
+    {
+      "id": "C01-07",
+      "status": "pending-plan",
+      "narration_locator": "C01-07",
+      "claim_summary": "最后要比较三个安排：整军直走、分兵休整后会合、换路线。它们需要从同一个起点独立回放，再比较实际到达、兵力、补给和支付。一个地点不适合休整，不等于整个分兵方案已经输了；结果到齐以前，不提前选赢家。",
+      "source_keys": [
+        "outline",
+        "r169-local-b"
+      ],
+      "units_and_time": "A/B/Cfuturecomparison",
+      "assumptions_and_limits": "完整同起点三回放pending；localBfail非方案胜负。",
+      "original_a03_summary": "最后再讨论三个方案：整军直走、分兵休整后会合、换路线。完整三方案结果还没有齐，所以这里先把已闭合的机制和真实观察讲完，结果位置留给后续同一冻结起点的回放。某个地点筛选失败，不会被改写成整套方案已经输了。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "A/B/Cfuturecomparison",
+      "original_a03_assumptions_and_limits": "完整同起点三回放pending；localBfail非方案胜负。"
+    },
+    {
+      "id": "C01-08",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C01-08",
+      "claim_summary": "按这个顺序，出发前能看清眼前条件，途中能发现变化，接战前还能再核对一次。我们从最容易混在一起的一组数开始：军队现在带着多少补给，能够带多少，以及当地能支持多少士兵。",
+      "source_keys": [
+        "terms",
+        "outline"
+      ],
+      "units_and_time": "inventory/capacity/local soldierslimit",
+      "assumptions_and_limits": "教学顺序与单位分离，不新增游戏观察。",
+      "original_a03_summary": "按这个顺序看，出发前能读出眼前条件，途中能发现变化，接战前还能再核对一次。我们从最容易混在一起的那组数开始：补给现在是多少、这支军队能带多少，以及当地能容纳多少人。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "inventory/capacity/local soldierslimit",
+      "original_a03_assumptions_and_limits": "教学顺序与单位分离，不新增游戏观察。"
+    },
+    {
+      "id": "C02-01",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-01",
+      "claim_summary": "先看军队面板里的总人数和满员数。总人数是现在有多少士兵，满员数是这支军队当前能有多少人。缺的是哪几个兵团，可以继续展开看。人数缺额和补给库存不是同一个问题。",
+      "source_keys": [
+        "terms"
+      ],
+      "units_and_time": "current/max人数=名士兵；stock/cap=supply units",
+      "assumptions_and_limits": "同军当前框字段分开，不由人数差推储备或死亡。",
+      "original_a03_summary": "先把军队面板里的几个数读清楚。总人数告诉我们现在有多少士兵，满员数告诉我们这支军队目前的最大人数。补给旁边也有一组分子和分母，可它们说的是军队携带的库存和容量。人数缺了多少，补给还剩多少，是两个需要分别回答的问题。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "current/max人数=名士兵；stock/cap=supply units",
+      "original_a03_assumptions_and_limits": "同军当前框字段分开，不由人数差推储备或死亡。"
+    },
+    {
+      "id": "C02-02",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-02",
+      "claim_summary": "原版把军队携带的食物、装备等物资叫作补给。补给库存、补给容量和兵员人数，需要分别读。看到一百一十六、容量三百，前一个数是当前显示的补给，后一个是这支军队的补给容量。它不是一百一十六名士兵，也不是百分比。",
+      "source_keys": [
+        "term-index",
+        "r169-encoded-review",
+        "serializer"
+      ],
+      "units_and_time": "supply raw/100000；GUI116为显示整数，capacity300",
+      "assumptions_and_limits": "界面显示与实际raw分开；116/300不是人数或百分数。",
+      "original_a03_summary": "原版把军队带着的食物、装备等统称为“补给”。看到“116/300”，可以读成当前显示116补给、这支军队的补给容量300。不要把116读成人数，也不要把它读成116%。界面会把数字简化显示；后面核对实际变化时，我们保留原生读数的小数，避免把显示舍入误认成真正增减。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "supply raw/100000；GUI116为显示整数，capacity300",
+      "original_a03_assumptions_and_limits": "界面显示与实际raw分开；116/300不是人数或百分数。"
+    },
+    {
+      "id": "C02-03",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-03",
+      "claim_summary": "当地补给上限说的是这个地方能支持多少名士兵。军队的三百补给容量，不能直接和当地几千人的上限比较。要比较当地用量和当地上限。两支军队如果还留在同一个地方，也不能只看其中较小的一队，就宣布补给压力已经解除。",
+      "source_keys": [
+        "terms",
+        "term-index",
+        "r169-encoded-review"
+      ],
+      "units_and_time": "supply limit/use=名士兵，army capacity=supply units",
+      "assumptions_and_limits": "当地aggregate用量；同地分军不能只比较一个小队；1506不称London。",
+      "original_a03_summary": "另一个名字很像的数，是“当地补给上限”。它说的是这个地方能够容纳多少名士兵，单位是人数。军队的300容量，不能直接拿去和当地3680人的补给上限比较。要比较的是当地用量和当地上限。如果把一支军队拆成两支，却还留在同一个地方，就不能只拿其中较小的那一支人数，宣布补给压力已经解除。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "supply limit/use=名士兵，army capacity=supply units",
+      "original_a03_assumptions_and_limits": "当地aggregate用量；同地分军不能只比较一个小队；1506不称London。"
+    },
+    {
+      "id": "C02-04",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-04",
+      "claim_summary": "补给每月的正负号描述当前条件下的变化率。军队换了地点，或者条件改变，这个数也可能改变。下一次实际库存，还要重新读。容量也要单独看：一次正常增加碰到容量，与刚分军时继承库存，是不同的观察窗口。",
+      "source_keys": [
+        "supply",
+        "clock",
+        "r173-split"
+      ],
+      "units_and_time": "current signed supply/month; copied inventory and capacity raw/100000",
+      "assumptions_and_limits": "当前月率不承诺未来变化；成功更新容量处理与actualsplit继承分开；新childstock>cap实际保留。",
+      "original_a03_summary": "再看“补给/月”。正号表示按当前条件计算的增加，负号表示减少。这个提示有助于判断眼前地点，但它不是下一次库存变化的承诺：途中换了地点、军队条件发生变化，结果可以不同；成功更新还会按当时容量处理。刚分出来的新军队又有自己的继承行为，后面会看一个库存暂时超过新容量的实际暂停点。当前计算、库存继承与后续更新，要分别观察。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "current signed supply/month; copied inventory and capacity raw/100000",
+      "original_a03_assumptions_and_limits": "当前月率不承诺未来变化；成功更新容量处理与actualsplit继承分开；新childstock>cap实际保留。"
+    },
+    {
+      "id": "C02-05",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-05",
+      "claim_summary": "恢复补给不等于补满兵员。本期有两个独立窗口，可以把这两件事分别看清。第一轮回放的第十四到十五日，补给从约二百九十一点二三升到三百。军队当时还在行军，不能说已经抵达终点休整。当前月变化约正十五点六一，实际只增加约八点七七，因为库存碰到了容量。",
+      "source_keys": [
+        "supply",
+        "refill"
+      ],
+      "units_and_time": "R0164+14→15/raw53147496→53147520；库存291.22808→300；monthly+15.61404",
+      "assumptions_and_limits": "实际2174moving，route[2327,2325]；stock min吻合actualdispatch，不称到2325休整。",
+      "original_a03_summary": "本期有一个已经核过的真实恢复窗口。R0164原始第14到15日，这支军队还在2174行军，路线继续通向2327和2325。它的补给从291.22808升到300，当前月贡献是正15.61404。实际只增加了8.77192，因为库存碰到了300的容量。这段是在行军途中恢复，不能讲成已经抵达2325、驻营后才回满。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0164+14→15/raw53147496→53147520；库存291.22808→300；monthly+15.61404",
+      "original_a03_assumptions_and_limits": "实际2174moving，route[2327,2325]；stock min吻合actualdispatch，不称到2325休整。"
+    },
+    {
+      "id": "C02-06",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-06",
+      "claim_summary": "补给回满时，完整十四个兵团的人数都没有变化。整军仍是一千零八十六人，满员一千零八十七；缺员的那个小兵团还是九人，满员十人。补员条件允许，也不等于这个窗口已经补上了那一个。真正增加多少，要看实际人数。",
+      "source_keys": [
+        "supply",
+        "refill"
+      ],
+      "units_and_time": "14actual团；current1086/max1087；Reg53 current9/max10",
+      "assumptions_and_limits": "完整actual整数不变；booltrue只授当前许可，非producer永不运行。",
+      "original_a03_summary": "更有意思的是，补给回满时，兵员没有一起补满。完整14个兵团的实际人数都没变，总数仍是1086，满员数是1087。那个缺员兵团还是9/10。当前补员条件已经允许，也不等于这一个窗口已经增加了整数兵员。我们得继续等实际人数发生变化，而不能拿一个“允许”提示代替结果。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "14actual团；current1086/max1087；Reg53 current9/max10",
+      "original_a03_assumptions_and_limits": "完整actual整数不变；booltrue只授当前许可，非producer永不运行。"
+    },
+    {
+      "id": "C02-07",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-07",
+      "claim_summary": "第二轮重新载入存档，独立观察到原始第二十到二十一日。那个缺员兵团真的从九人补到十人，整军变成一千零八十七，其余十三团没有变化。这时补给两端都是三百，军队仍在去终点的路上。这才是实际兵员补齐。",
+      "source_keys": [
+        "refill",
+        "supply"
+      ],
+      "units_and_time": "R0165独立冷载+20→21/raw53147640→53147664；1actual integer",
+      "assumptions_and_limits": "仅53+1，其余13团不变；stock300/300；2327moving非到2325。",
+      "original_a03_summary": "后来，R0165重新载入存档，在原始第20到21日真的观察到了变化。同一组14个兵团中，只有53号兵团从9/10变成10/10；整军从1086变成1087，其余13团没有变化。这个窗口的补给两端都是300，军队仍在2327行军。这就是本期自己的整数补员正例。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0165独立冷载+20→21/raw53147640→53147664；1actual integer",
+      "original_a03_assumptions_and_limits": "仅53+1，其余13团不变；stock300/300；2327moving非到2325。"
+    },
+    {
+      "id": "C02-08",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-08",
+      "claim_summary": "所以画面要分别标清两次运行。前一段证明补给可以先回满，后一段证明实际兵员后来补齐；不能把两次重新载入剪成一个没有中断的现场。补员准备比例刷新，也不能直接换算成新增士兵。",
+      "source_keys": [
+        "refill",
+        "clock"
+      ],
+      "units_and_time": "人数scale1；prepared fraction/100000",
+      "assumptions_and_limits": "23prepared刷新不当23新兵；两次运行不剪成连续同一现场。",
+      "original_a03_summary": "所以这两段画面要分别标清日期和运行。前一段证明补给可以先回满，后一段证明实际兵员后来补齐。两次重新载入之间不能剪成一个没有中断的现场。补员准备比例刷新，也不能直接换算成新增士兵；真正的增加，还是看完整兵团人数前后相差多少。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "人数scale1；prepared fraction/100000",
+      "original_a03_assumptions_and_limits": "23prepared刷新不当23新兵；两次运行不剪成连续同一现场。"
+    },
+    {
+      "id": "C02-09",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-09",
+      "claim_summary": "军事页还有“每月补员”勾选框，悬停文字叫“补员兵士”。画面可以说明当前勾选，以及提示一个月达到满员、点击停止补员。这个单帧没有数字费用，也没有证明已经付款或实际切换了开关。",
+      "source_keys": [
+        "term-index",
+        "r169-encoded-review"
+      ],
+      "units_and_time": "每月补员当前checked；文本1月满员",
+      "assumptions_and_limits": "文字状态/单帧；没有数字费用、toggle、payment。",
+      "original_a03_summary": "军事页还有“每月补员”勾选框，悬停文字叫“补员兵士”。本期已经读到它显示一个月达到满员、点击停止补员。这里可以讲当前勾选与提示文字；这个单帧没有给出数字费用，我们也没有靠它执行开关或证明已经付款。人数、许可、准备比例和费用，各有自己的证据。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "每月补员当前checked；文本1月满员",
+      "original_a03_assumptions_and_limits": "文字状态/单帧；没有数字费用、toggle、payment。"
+    },
+    {
+      "id": "C02-10",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-10",
+      "claim_summary": "休整地点还要实际验证。一月二十九日的另一次观察，两支军队分别停在两个候选地点，当前补给月变化却约为负四点三九和负八点七七。这两个地点不符合当次寻找正补给的要求，不能据此说所有分兵休整都无效；负值不同的原因，也不能靠猜。",
+      "source_keys": [
+        "r169-local-b"
+      ],
+      "units_and_time": "R0169Jan29/raw53147592；1506−4.38596/月，1508−8.77192/月",
+      "assumptions_and_limits": "localBqualificationfail不是完整ABC；winter/territory/commander原因unknown；arrivalcommander未独立读。",
+      "original_a03_summary": "地点选择也要实际验证。R0169的Jan29，两支军队已经分别停在1506和1508；当前补给月变化却分别是负4.38596和负8.77192。它们不符合这一次寻找正补给地点的要求。这是两个局部候选的负例，不能据此说整个分兵休整方案无效。为什么负值不同，也要等当次条件读全后再解释。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0169Jan29/raw53147592；1506−4.38596/月，1508−8.77192/月",
+      "original_a03_assumptions_and_limits": "localBqualificationfail不是完整ABC；winter/territory/commander原因unknown；arrivalcommander未独立读。"
+    },
+    {
+      "id": "C02-11",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-11",
+      "claim_summary": "再看一月二十日同地合军的独立样本。合前两队的补给约八十三和二百九十一点二三；合后完整二十七个兵团都在，人数六千七百四十六，满员六千七百四十七。实际补给约一百一十六点五二，容量三百。库存和容量都没有简单相加。",
+      "source_keys": [
+        "merge"
+      ],
+      "units_and_time": "R0168Jan20/raw53147376；full27reg6746/max6747；116.51751/cap300",
+      "assumptions_and_limits": "同paused0ticks、D保留S消失、逐ID守恒；不相加库存/容量。",
+      "original_a03_summary": "最后看会合后的库存。R0168的Jan20，两支军队在同地合并，合后完整27个兵团都在，总人数6746，满员数6747。合前补给分别是82.99737和291.22808；合后实际读到116.51751，容量300。它不是把两份库存直接相加，也不是把两支军队的容量相加。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0168Jan20/raw53147376；full27reg6746/max6747；116.51751/cap300",
+      "original_a03_assumptions_and_limits": "同paused0ticks、D保留S消失、逐ID守恒；不相加库存/容量。"
+    },
+    {
+      "id": "C02-12",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C02-12",
+      "claim_summary": "这次合并按两军在合并中的权重，先算份额，再保留各自的一部分库存；游戏的取整也影响原始结果。完整数字复核严格吻合合后库存。它还低于三百，所以能说明这次加权合军，却没有证明超过新容量时的合军截断。那一种情况需要另一个实际样本。",
+      "source_keys": [
+        "merge",
+        "merge-tree",
+        "reader",
+        "serializer"
+      ],
+      "units_and_time": "weight/share/stock fixedQ100000；contrib6963562+4688189=11651751",
+      "assumptions_and_limits": "两个stage截断；share99999不归一；D角色非通用soldiers恒等；nonclamp不授upperclamp。",
+      "original_a03_summary": "这一次的原生计算按两军在合并中的角色权重，先算份额，再乘各自库存；两步都保留游戏的整数截断，最后再受新军队实际容量限制。核对得到的两份贡献相加，严格匹配合后116.51751。这个数还低于300，所以它证明了加权合军，却没有证明超过容量时的截断正例。我们把那一种情形留作另一条需要实际验证的结论。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "weight/share/stock fixedQ100000；contrib6963562+4688189=11651751",
+      "original_a03_assumptions_and_limits": "两个stage截断；share99999不归一；D角色非通用soldiers恒等；nonclamp不授upperclamp。"
+    },
+    {
+      "id": "C03-01",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-01",
+      "claim_summary": "补给和人数会变，还要问变化发生在哪个窗口。军队面板的“每月损耗”给出当前比例和人数，是眼前条件下的计算提示。要讲已经少了多少兵，就需要完整兵团的前后人数，并检查有没有补员、战斗、分合军或其他事件。",
+      "source_keys": [
+        "terms",
+        "r168-loss-inputs"
+      ],
+      "units_and_time": "当前monthly %/soldiers permonth；实际counts=integers",
+      "assumptions_and_limits": "检查逐团身份及事件/补员；预算不当appliedledger。",
+      "original_a03_summary": "补给和人数会变，但我们还要问变化发生在什么时候、经过什么入口。军队面板的“每月损耗”同时给出比例和每月人数，是眼前条件下的计算提示。要讲“这支军队已经少了多少人”，就要找实际前后窗口，核对完整兵团，并检查期间有没有补员、战斗、合并或其他事件。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "当前monthly %/soldiers permonth；实际counts=integers",
+      "original_a03_assumptions_and_limits": "检查逐团身份及事件/补员；预算不当appliedledger。"
+    },
+    {
+      "id": "C03-02",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-02",
+      "claim_summary": "比如一月十一日的暂停样本，当前围城损失预算是五十六。它能说明眼前相关条件怎么算，不是一条刚刚扣了五十六人的记录。预算与真正发生的减少分开，才不会把一个提示数重复记入结果。",
+      "source_keys": [
+        "r168-loss-inputs"
+      ],
+      "units_and_time": "R0168Jan11/raw53147160，siegebudget56整数",
+      "assumptions_and_limits": "本帧当前输入，不是已经扣56或死56。",
+      "original_a03_summary": "比如R0168原始Jan11的暂停点，当前围城损耗预算是56。这个数已经能从原生输入里读到，可它不是一条“刚刚扣了56人”的事件记录。预算描述如果进入相关执行分支，会分配怎样一笔损失；执行结果则要在兵团人数真正改变之后，另行确认。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0168Jan11/raw53147160，siegebudget56整数",
+      "original_a03_assumptions_and_limits": "本帧当前输入，不是已经扣56或死56。"
+    },
+    {
+      "id": "C03-03",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-03",
+      "claim_summary": "较早的一次围城观察，分队从三千一百二十人变成三千零八十九，净少三十一。同期补给从约八十三降到七十四点二三，两端都高于五十。可以讲围城背景下的周期变化和实际兵员减少，不能把这段说成饥饿。",
+      "source_keys": [
+        "r162-loss"
+      ],
+      "units_and_time": "R0162+5→6；3120→3089/−31；supply82.99737→74.22545",
+      "assumptions_and_limits": "两端>50排除这31为饥饿；未见中间事件没有全排除。",
+      "original_a03_summary": "本期较早的R0162，有一个实际的围城周期窗口。原始第5到6日，围城分队人数从3120变成3089，净少31。同期补给从82.99737降到74.22545，两个端点都高于50。可以讲围城背景下的周期变化与31名兵员净减少，不能把这一次说成饥饿减员。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0162+5→6；3120→3089/−31；supply82.99737→74.22545",
+      "original_a03_assumptions_and_limits": "两端>50排除这31为饥饿；未见中间事件没有全排除。"
+    },
+    {
+      "id": "C03-04",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-04",
+      "claim_summary": "这支分队的六个兵团也完整核对过，身份和满员数没变，人数变化能逐团对上。规则先算整军预算，再按符合条件的兵团顺序分配整数。这一例恰好也能与各团比例取整吻合，但不能推广成所有兵团永远各自独立乘百分比。",
+      "source_keys": [
+        "r162-loss",
+        "clock"
+      ],
+      "units_and_time": "6actualreg；integer remaining-budget allocation",
+      "assumptions_and_limits": "nativeorder+筛选，numericcoincidence不提升为每团独立%通则。",
+      "original_a03_summary": "我们还核对了这支分队的六个实际兵团。军队身份和满员数都保持一致，实际变化可以在这些兵团中对上。原生机制先算整军预算，再按符合条件的兵团顺序分配整数；这一例恰好也能与各团比例取整吻合，却不能把这个巧合推广成所有兵团永远各自独立乘百分比。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "6actualreg；integer remaining-budget allocation",
+      "original_a03_assumptions_and_limits": "nativeorder+筛选，numericcoincidence不提升为每团独立%通则。"
+    },
+    {
+      "id": "C03-05",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-05",
+      "claim_summary": "同一次运行，主军还有另一个窗口：从原始第六到第九日，它跨到新县，人数从二千五百四十变成二千四百一十三，净少一百二十七。这个窗口补给库存没有变化。已查明的县界移动损耗有独立入口，与这组前后观察吻合。",
+      "source_keys": [
+        "r162-loss"
+      ],
+      "units_and_time": "R0162+6→9/raw53147304→53147376；2540→2413/−127",
+      "assumptions_and_limits": "arrival1513/stock+188不变；源+端点机制判断，不是实际executorhook。",
+      "original_a03_summary": "同一次运行里，主军还有另一种窗口。原始第6到9日，它从1506抵达1513，人数由2540变成2413，净少127。这个窗口里，补给库存和该军的周期更新记录没有变化；已查明的县界移动损耗则有独立入口。源执行链与这组实际端点吻合，支持把它作为县界移动上的另一笔兵员损失来解释。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0162+6→9/raw53147304→53147376；2540→2413/−127",
+      "original_a03_assumptions_and_limits": "arrival1513/stock+188不变；源+端点机制判断，不是实际executorhook。"
+    },
+    {
+      "id": "C03-06",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-06",
+      "claim_summary": "这项解释仍有边界。当次所有判定条件没有独立读全，中间未见的事件也没有一并排除。净少一百二十七，不是死亡一百二十七的统计。口播采用兵员损失或人数净减少，具体原因按这一个窗口的证据解释。",
+      "source_keys": [
+        "r162-loss"
+      ],
+      "units_and_time": "兵员净变化，非死亡计数",
+      "assumptions_and_limits": "当次effective比例/全部condition未独立读全，中间补员/事件未全排除。",
+      "original_a03_summary": "这里仍保留具体限制：当次有效比例和所有判定条件没有独立读全，我们没有把未见的中间事件一并排除。净少127，也不是127人死亡的统计。游戏里的兵员流失可以有不同来源，口播采用“兵员损失”或“人数净减少”，不把它们统一换成死亡。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "兵员净变化，非死亡计数",
+      "original_a03_assumptions_and_limits": "当次effective比例/全部condition未独立读全，中间补员/事件未全排除。"
+    },
+    {
+      "id": "C03-07",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-07",
+      "claim_summary": "一月二十日的新暂停样本，读到了更完整的当前县域条件。下令前后整军仍是六千七百四十六，满员六千七百四十七，全部二十七团没有变化。当前有效比例约百分之三点五，预算二百三十六；预算仍然不是已经扣掉的人数。",
+      "source_keys": [
+        "r171-summary",
+        "county",
+        "county-python"
+      ],
+      "units_and_time": "R0171Jan20/raw53147376/0day；budget236 soldiers；fraction3500/100000",
+      "assumptions_and_limits": "27actualreg37DATA不变；3.5%当前输入不证明应用236。",
+      "original_a03_summary": "新的R0171读到了更完整的当前县域输入。Jan20，同一暂停日期，下令前后军队仍是6746/6747，完整27团和37条记录没有变化。当前损失预算是236，当前有效比例读数是3.5%。这组输入能够解释眼前怎么算出预算，但236仍然不是已经扣掉的人数。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0171Jan20/raw53147376/0day；budget236 soldiers；fraction3500/100000",
+      "original_a03_assumptions_and_limits": "27actualreg37DATA不变；3.5%当前输入不证明应用236。"
+    },
+    {
+      "id": "C03-08",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-08",
+      "claim_summary": "判定还要看实际储存的下一步路线。这次最终目的地虽在更远处，当前判断取的是正在走的第一步，结果不通过。下令前没有储存路线时，这项条件是未知，不能写成不通过。下令后的结果，也只说明当前暂停点，不保证以后每一步都一样。",
+      "source_keys": [
+        "r171-summary",
+        "county",
+        "reader"
+      ],
+      "units_and_time": "storedroute[725,1009,2174]；target_FIRST725/mode1/passesfalse",
+      "assumptions_and_limits": "空routeconditionnull；false本帧不代表最终2174或未来全无损失。",
+      "original_a03_summary": "判定还要看军队真正储存的下一步路线。这次完整路线是725、1009、2174，最终目的地虽然是2174，当前条件实际拿第一步725来判断，结果是false。下令前没有储存路线时，这个条件是未知；不能把未知补成false。下令后得到的false，也只描述这个暂停点，不保证以后每一步、每次抵达都一样。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "storedroute[725,1009,2174]；target_FIRST725/mode1/passesfalse",
+      "original_a03_assumptions_and_limits": "空routeconditionnull；false本帧不代表最终2174或未来全无损失。"
+    },
+    {
+      "id": "C03-09",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-09",
+      "claim_summary": "这轮行军随后观察到两日内的真实减少：整军从六千七百四十六变成六千六百七十九，净少六十七。完整二十七个兵团的身份和满员数都相同，其中十六团人数下降，合计六十七。这是实际人数变化，已经超出了仅仅读提示框的范围。",
+      "source_keys": [
+        "r172-doc",
+        "r172-analysis"
+      ],
+      "units_and_time": "Jan20+15→17/raw53147736→53147784; current6746→6679/max6747;27actual37DATA",
+      "assumptions_and_limits": "16actual团/17DATA净降；fullID/order/max不变，净67不是deathcount或完整应用ledger。",
+      "original_a03_summary": "R0172随后提供了新的实际更新窗口。Root已核的第15到17日配对中，整军人数从6746变成6679，净少67。27个兵团的完整身份、满员数和记录身份保持一致，16个兵团出现人数下降，合计正好67。我们可以明确讲这组实际减少，而不是仅把67从提示框里抄出来。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "Jan20+15→17/raw53147736→53147784; current6746→6679/max6747;27actual37DATA",
+      "original_a03_assumptions_and_limits": "16actual团/17DATA净降；fullID/order/max不变，净67不是deathcount或完整应用ledger。"
+    },
+    {
+      "id": "C03-10",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-10",
+      "claim_summary": "同期补给从约一百一十六点五二降到一百一十点三八，净少约六点一四。前一个观察点的当前月变化约负八点七七，后一个约负六点一四。后者与库存差吻合，但它是后来那个地点的当前计算，不能倒过来当成前面更新时已经确认使用的数值。",
+      "source_keys": [
+        "r172-doc",
+        "r172-analysis",
+        "clock"
+      ],
+      "units_and_time": "stock11651751→11037716; delta−614035/100000; monthly before−877192/after−614035; stamp53147760",
+      "assumptions_and_limits": "aftergetter数值吻合库存差但不是已捕获执行参数；两日窗口内stamp变化，stamp间30日不是本窗过30日。",
+      "original_a03_summary": "同窗补给从116.51751变成110.37716，净少约6.14，补给成功更新记录也在这个窗口改到了相应日期。前一个暂停点的当前月变化是负8.77192，后一个是负6.14035；后一个数与库存差吻合，但它是后来读到的当前计算，不能反写成已经捕获的执行参数。时钟与逐团整数分配支持周期围攻损失的具体判断，实际已应用损耗和补员账本仍未发布。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "stock11651751→11037716; delta−614035/100000; monthly before−877192/after−614035; stamp53147760",
+      "original_a03_assumptions_and_limits": "aftergetter数值吻合库存差但不是已捕获执行参数；两日窗口内stamp变化，stamp间30日不是本窗过30日。"
+    },
+    {
+      "id": "C03-11",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C03-11",
+      "claim_summary": "这个两日窗口跨过了该军的周期更新机会，之前的围攻预算和有条件的逐团分配都吻合实际变化。但没有逐团确认当时所有条件，也没有证明未观察的间隔绝无补员。两端库存远高于饥饿边界，第一步条件仍不通过，所以不能把这段说成县界已经扣了二百三十六，或已经证明饥饿。",
+      "source_keys": [
+        "r172-doc",
+        "r172-analysis",
+        "r171-summary"
+      ],
+      "units_and_time": "2actualdays; before siege67/after66; supplybudget0; first725false; both stock>10",
+      "assumptions_and_limits": "有条件按source顺序回放matches，perreg执行资格未新读，未证零隐藏补员/实际appliedledger；非county236/饥饿。",
+      "original_a03_summary": "因此本段可以讲：这支军队在移动中，这个两日窗口净少67人；时钟跨过该军的周期更新机会，前帧围攻预算与有条件的逐团回放都吻合实际变化。但没有每团执行时资格的新独立读数，也没有证明未观察间隔绝无补员。两端补给远高于饥饿边界，首步725条件仍是false，不能把这个窗口说成实际县界扣了236或饥饿正例。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "2actualdays; before siege67/after66; supplybudget0; first725false; both stock>10",
+      "original_a03_assumptions_and_limits": "有条件按source顺序回放matches，perreg执行资格未新读，未证零隐藏补员/实际appliedledger；非county236/饥饿。"
+    },
+    {
+      "id": "C03-12",
+      "status": "pending-plan",
+      "narration_locator": "C03-12",
+      "claim_summary": "要完成饥饿专题，仍需在威廉这一案里看见补给跨过相关边界、状态发生变化，再读到对应的整数兵员减少；同窗补员、战斗和事件也要核对。当前预算、围城窗口和移动窗口各有价值，不能彼此代替。缺的那一步保留，不从高补给减员样本里制造饥饿结果。",
+      "source_keys": [
+        "county",
+        "r168-loss-inputs"
+      ],
+      "units_and_time": "starvation threshold/actualcounts pending",
+      "assumptions_and_limits": "William本期阈值跨越＋整数写回＋完整同窗ledger仍pending，不借旧Robert。",
+      "original_a03_summary": "真正要完成饥饿专题，还要在本期威廉案例里看见补给跨过相关阈值、状态发生变化，并读到对应的整数兵员写回；同时核对同一段时间的补员、战斗和事件。当前输入、围城正例和移动正例各有价值，不能相互代替。我们的结论就停在证据能到达的位置，下一轮从缺的那一步继续。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "starvation threshold/actualcounts pending",
+      "original_a03_assumptions_and_limits": "William本期阈值跨越＋整数写回＋完整同窗ledger仍pending，不借旧Robert。"
+    },
+    {
+      "id": "C04-01",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C04-01",
+      "claim_summary": "路线先决定去哪里，再影响什么时候能到。下令前，地图显示“预期抵达时间”；下令后，军队窗口显示当前剩余时间。真正到场还要看实际位置、状态和剩余路线。看到一个日期，不能直接当成已经抵达。",
+      "source_keys": [
+        "terms",
+        "r171-ui"
+      ],
+      "units_and_time": "ETA=当前GUIdays/date；arrival=independentprovince/state/route",
+      "assumptions_and_limits": "提示不当已到。",
+      "original_a03_summary": "路线先决定走向哪里，再影响什么时候能够抵达。下令前，地图显示“预期抵达时间”；下令后，军队窗口显示当前剩余时间。实际抵达则是第三件事：军队到了哪个省份、处于什么状态、完整路线还剩什么，都要重新看。一个日期提示不能直接当成已经到场。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "ETA=当前GUIdays/date；arrival=independentprovince/state/route",
+      "original_a03_assumptions_and_limits": "提示不当已到。"
+    },
+    {
+      "id": "C04-02",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C04-02",
+      "claim_summary": "一月二十日，军队窗口显示“抵达利雪，剩余四十三天，三月四日”。这是整条路线的当前界面估计。与此同时，独立读取的当前第一段时量是三十天，进度为零，后面还储存着其他路段。",
+      "source_keys": [
+        "r171-ui",
+        "r171-summary"
+      ],
+      "units_and_time": "Jan20GUI fullroute43days/Mar4；native firstedge3000000/100000=30days/progress0",
+      "assumptions_and_limits": "两个scope，routefirst725后1009/2174；UI图独立authority，不伪造整条nativeETA。",
+      "original_a03_summary": "R0171有一组很适合说明范围的读数。Jan20，军队窗口显示“抵达利雪，剩余43天，3月4日”。这是整条路线的当前界面估计。与此同时，原生读取的首段剩余时量是30天，首段进度为0；储存路线的第一步是725，后面还有1009和2174。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "Jan20GUI fullroute43days/Mar4；native firstedge3000000/100000=30days/progress0",
+      "original_a03_assumptions_and_limits": "两个scope，routefirst725后1009/2174；UI图独立authority，不伪造整条nativeETA。"
+    },
+    {
+      "id": "C04-03",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C04-03",
+      "claim_summary": "四十三天与三十天描述的行程范围不同。不能拿首段三十天，说整支军队三十天就到利雪；也不能只因为两个数不同，就判定界面或读取出错。把整条估计与当前首段分开保留，真实抵达再核对。两数相减也不会自动得到精确的后续路程时长。",
+      "source_keys": [
+        "r171-ui",
+        "r171-summary"
+      ],
+      "units_and_time": "whole-routeestimate vscurrentfirstedge duration",
+      "assumptions_and_limits": "不拿30当利雪ETA，不用43−30造后续精确时长。",
+      "original_a03_summary": "43天与30天描述的行程范围不同。不能拿首段30天，改口说整支军队30天就能到利雪；也不能只因为两个数不相等，就判断显示或读取出错。我们把整条界面估计与当前首段时量并列保留，后面的实际抵达另行验收。也不把两数的差直接制造成一个精确的后续路段时长。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "whole-routeestimate vscurrentfirstedge duration",
+      "original_a03_assumptions_and_limits": "不拿30当利雪ETA，不用43−30造后续精确时长。"
+    },
+    {
+      "id": "C04-04",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C04-04",
+      "claim_summary": "这些查询和下令前后仍是同一个游戏日期，军队没有因为我们读到四十三天或三十天，就移动到目的地。行军之后要重新看当前估计，不能拿旧提示减去经过天数，冒充一次新的计算。",
+      "source_keys": [
+        "r171-summary",
+        "halt"
+      ],
+      "units_and_time": "samepausedraw53147376/Δraw0；ETAcurrent",
+      "assumptions_and_limits": "0newdays/未arrival；旧ETA不能仅减days冒充fresh。",
+      "original_a03_summary": "这些查询和下令前后仍处在同一个游戏日期，军队也没有因为读取到43天或30天就移动到目的地。到达时间会随着后续真实行军、路线和条件改变；后面看的是新的当前读数，不能拿旧提示简单减掉经过天数，冒充重新计算后的结果。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "samepausedraw53147376/Δraw0；ETAcurrent",
+      "original_a03_assumptions_and_limits": "0newdays/未arrival；旧ETA不能仅减days冒充fresh。"
+    },
+    {
+      "id": "C04-05",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C04-05",
+      "claim_summary": "另一轮的一月二十五日，画面出现“移动锁定”。同一暂停点，当前路段约走了百分之六十一点九；独立剩余时量约三点零八天，界面显示四天、预计一月二十九日抵达。它们可以并列读，当前路段进度也不当作任意整条路线的统一百分比。",
+      "source_keys": [
+        "r169-lock-join",
+        "term-index"
+      ],
+      "units_and_time": "R0169Jan25/raw53147496/pub17nat16；61875/100000=61.875%；3.08080days",
+      "assumptions_and_limits": "GUI4days/Jan29分开；firstedge非任意whole-routeprogress；新原图encodednull。",
+      "original_a03_summary": "本期还有“移动锁定”的原图与同暂停原生进度。R0169的Jan25，军队当前路段已经走了61.875%，画面显示移动锁定。原生首段剩余时量是3.08080天，界面显示剩余4天、预计Jan29抵达。可以分别读这些数；3.08080是首段时量，不是把任意多段路线都压成同一个进度百分比。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0169Jan25/raw53147496/pub17nat16；61875/100000=61.875%；3.08080days",
+      "original_a03_assumptions_and_limits": "GUI4days/Jan29分开；firstedge非任意whole-routeprogress；新原图encodednull。"
+    },
+    {
+      "id": "C04-06",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C04-06",
+      "claim_summary": "原生概念用一半进度说明锁定。这个超过一半的实际样本，可以证明当时已经锁定，却不能替代正好百分之五十的边界实验。画面没有单独告诉我们取消移动的精确边界，所以先讲当时锁定，刚好一半仍留给实际测试。",
+      "source_keys": [
+        "term-index",
+        "halt"
+      ],
+      "units_and_time": "staticstrict>loadedcutoff；stock0.5；runtimecutoffnull",
+      "assumptions_and_limits": "50%live未测，61.875%不能代边界实验。",
+      "original_a03_summary": "概念文字用“一半进度”说明锁定，静态执行研究则查到了严格大于加载阈值的分支。原版文件里的阈值是0.5，但这一次没有读取运行中加载的阈值，也没有实测正好50%时会怎样。这个61.875%的真实锁定样本不替代边界实验。我们先把能确认的当前状态讲清。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "staticstrict>loadedcutoff；stock0.5；runtimecutoffnull",
+      "original_a03_assumptions_and_limits": "50%live未测，61.875%不能代边界实验。"
+    },
+    {
+      "id": "C04-07",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C04-07",
+      "claim_summary": "锁定之后按“停止移动”，要看当前路段和后续路线的区别。条件允许时，可以停在当前地点，也可以保留正在走的第一段、撤掉后面的路；只剩一段等情况还可能拒绝。按钮提交成功，不等于已经原地停止。",
+      "source_keys": [
+        "halt"
+      ],
+      "units_and_time": "currentstoredfront/suffix &validator；no genericinstantidle",
+      "assumptions_and_limits": "ordinaryadmission；>cutofffront保留，singlefront==tail可拒；不是本稿新liveaction。",
+      "original_a03_summary": "锁定之后再按“停止移动”，就要看当前路段与剩余路线的区别。原生停止逻辑在条件允许时，可以停在当前省份，也可以保留正在走的第一段、移除后续路段。只剩一段等情形还可能直接拒绝。按钮提交成功也不等于路已经取消，必须读回动作后的完整路线和状态。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "currentstoredfront/suffix &validator；no genericinstantidle",
+      "original_a03_assumptions_and_limits": "ordinaryadmission；>cutofffront保留，singlefront==tail可拒；不是本稿新liveaction。"
+    },
+    {
+      "id": "C04-08",
+      "status": "pending-plan",
+      "narration_locator": "C04-08",
+      "claim_summary": "正式画面需要依次看到停止前的路线、操作后剩下什么，再到军队实际到了哪里。改道也一样：旧的首段是否保留，新目的地和后续路线是否真的改变，都要读回。一个下令确认消息，不能替代这一串真实状态。",
+      "source_keys": [
+        "halt",
+        "terms"
+      ],
+      "units_and_time": "sameactor/army/date；complete stored route",
+      "assumptions_and_limits": "未来连续动作镜头需求，ACK不等于实际状态；不授cleanspan。",
+      "original_a03_summary": "因此，正式镜头会把停止前、停止后的路线，再到实际抵达的位置依次接起来。如果发生改道，也要看原来的首段是否保留、新目的地和后续路线是否真的改变。每一步用当次军队身份和游戏日期绑定，不用一次下令的确认消息代替所有后续结果。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "sameactor/army/date；complete stored route",
+      "original_a03_assumptions_and_limits": "未来连续动作镜头需求，ACK不等于实际状态；不授cleanspan。"
+    },
+    {
+      "id": "C04-09",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C04-09",
+      "claim_summary": "下令前的警告也有自己的范围。“会支付登船费”说的是当前路线预计包含支付事件，不是钱已经扣了。县域预算二百三十六，也不是每经过一个省就必定扣二百三十六。规划提示、动作后的状态和实际结算要分别记。",
+      "source_keys": [
+        "terms",
+        "r171-summary"
+      ],
+      "units_and_time": "boardingwarning未来事件；countybudget236当前输入",
+      "assumptions_and_limits": "没有actualpaidledger；非每省必扣236。",
+      "original_a03_summary": "下令前的费用或损失警告也有时间范围。提示“会支付登船费”是在说这条路线预计包含支付事件，不是这笔钱已经扣掉；县域损失预算236也不是每经过一个省就必然扣236。要把规划提示、动作后的当前状态和实际结算记录分别保留，才能在后面的方案比较里算同一笔账。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "boardingwarning未来事件；countybudget236当前输入",
+      "original_a03_assumptions_and_limits": "没有actualpaidledger；非每省必扣236。"
+    },
+    {
+      "id": "C04-10",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C04-10",
+      "claim_summary": "这轮行军后来还核到了登船和登陆窗口。相对一月二十日起点，第三十到三十二日进入海段、变成已登船；第四十二到四十四日抵达陆地，路线走完、回到普通状态。两窗完整二十七团都仍是六千六百七十九，库存也没变。这只说明各自前后净变化；登陆后补员条件已经变化，后续要重新建立基线。",
+      "source_keys": [
+        "r172-doc",
+        "r172-boundaries"
+      ],
+      "units_and_time": "boarding Jan20+30→32/raw53148096→53148144; landing+42→44/raw53148384→53148432",
+      "assumptions_and_limits": "Main6679/full27/37整数及stock11037716端点不变，不授全球海路零损失；18DATA chunkpermission变化需新基线；Unit190unknown不补0。",
+      "original_a03_summary": "R0172后来还核到了实际路线边界：相对Jan20基线第30到32日，主军从1506进入725，状态变成已登船；第42到44日，它从1009抵达2174，路线走完，状态回到普通。两个窗口完整27团人数都保持6679，库存也没变。这两组净零变化只说明各自端点，不能推广成海路永久没有损失；登陆后补员资格已经变化，后续必须重新建立基线。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "boarding Jan20+30→32/raw53148096→53148144; landing+42→44/raw53148384→53148432",
+      "original_a03_assumptions_and_limits": "Main6679/full27/37整数及stock11037716端点不变，不授全球海路零损失；18DATA chunkpermission变化需新基线；Unit190unknown不补0。"
+    },
+    {
+      "id": "C04-11",
+      "status": "pending-plan",
+      "narration_locator": "C04-11",
+      "claim_summary": "接下来选路线，同时看合法路径、当前估计、下一步条件和沿途补给。看到一个可走地点，还要验证到了那里是否适合恢复；看到到达日期，还要等真正抵达。完成同一起点的独立回放后，才能把时间、兵力、库存和实际支付放进同一张表。",
+      "source_keys": [
+        "outline"
+      ],
+      "units_and_time": "三回放samefrozenstart/samedateor event对齐",
+      "assumptions_and_limits": "后续观察方案/待补，不赋ABC完成或赢家。",
+      "original_a03_summary": "接下来选择路线时，我们会同时看合法路径、当前估计、下一步条件和沿途补给。看见一个可走目的地，还需要实际验证到了那里能否恢复；看见到达日期，还需要等真实抵达。等同一冻结起点的三次回放都完成，再把时间、兵力、库存和实际支付逐项放到同一张结果表。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "三回放samefrozenstart/samedateor event对齐",
+      "original_a03_assumptions_and_limits": "后续观察方案/待补，不赋ABC完成或赢家。"
+    },
+    {
+      "id": "C05-01",
+      "status": "pending-plan",
+      "narration_locator": "C05-01",
+      "claim_summary": "现在把这些读数放进选择里。整军直走、分兵休整会合、换路线，都回答同一组问题：什么时候真正到，剩多少兵，库存与缺员有没有恢复，途中实际付了什么钱。比较前，先确保每次从同一个已经验收的起点出发。",
+      "source_keys": [
+        "outline"
+      ],
+      "units_and_time": "samequalifiedfrozenstart; actualarrival/count/stock/payment",
+      "assumptions_and_limits": "实验方法，三结果尚未完成。",
+      "original_a03_summary": "到这里，我们已经有了读数的方法，接下来把它们放进选择里。整军直走、分兵休整会合、换路线，都要回答同一组问题：实际什么时候到、到时还剩多少兵、库存和缺员有没有恢复、沿途实际付了什么钱。比较之前，先保证每次从同一个已经验收的冻结起点出发。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "samequalifiedfrozenstart; actualarrival/count/stock/payment",
+      "original_a03_assumptions_and_limits": "实验方法，三结果尚未完成。"
+    },
+    {
+      "id": "C05-02",
+      "status": "pending-plan",
+      "narration_locator": "C05-02",
+      "claim_summary": "起点要保留完整兵团、当前人数和满员数、库存、容量、位置、路线与统帅。仅有一个存档文件，还不能宣布对照成立；可用休整地点和合法替代路线也要先验证。三次回放各自保留操作、日期和结果，才知道在比较哪一种安排。",
+      "source_keys": [
+        "outline",
+        "reader",
+        "county-python"
+      ],
+      "units_and_time": "full27/37; owner/army/date/route/commander/status",
+      "assumptions_and_limits": "保存与readback门槛；存档存在不等于共同起点通过。",
+      "original_a03_summary": "这个起点要保存军队的完整兵团、当前人数与满员数、库存、容量、位置、路线和当前统帅。只保存一个存档文件还不够宣布对照成立；候选地点和合法路线也要先验证。正式三次回放各自保留日期、操作和结果，才知道差异来自哪一套安排。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "full27/37; owner/army/date/route/commander/status",
+      "original_a03_assumptions_and_limits": "保存与readback门槛；存档存在不等于共同起点通过。"
+    },
+    {
+      "id": "C05-03",
+      "status": "supported-actual-A-only-with-stated-bounds",
+      "narration_locator": "C05-03",
+      "claim_summary": "先看方案A，整支军队沿选定路线直走，目标是伦敦。从共同起点算起，第五十一个游戏日，我们第一次观察到它已经抵达。前一个观察点是第四十九日，军队还在路上。所以，到达发生在这两次观察之间；第五十一日是首次看到结果的日期，精确到达时刻仍未知。",
+      "source_keys": [
+        "r177-A2-values",
+        "r177-A2-doc"
+      ],
+      "units_and_time": "共同T0=53148432，+49 raw53149608仍未抵达，+51 raw53149656首次观测1527完整空路线；抵达只能限定(49,51]，exact tick NULL。只A一路完成，无B/C或排名。",
+      "assumptions_and_limits": "共同T0=53148432，+49 raw53149608仍未抵达，+51 raw53149656首次观测1527完整空路线；抵达只能限定(49,51]，exact tick NULL。只A一路完成，无B/C或排名。",
+      "original_a03_summary": "方案A整军直走，让同一支军队按已经选定的路线继续前进。我们要记录当前预期与实际抵达之间的差别，沿途跨过哪些更新或地点边界，接战前人数和库存是什么。这里不预设直走一定最快、最便宜或者损失最大，结果留给实际回放。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "Aactualfuturetime/events/endpoints",
+      "original_a03_assumptions_and_limits": "直走结果/时间/费用pending，不预设最优。",
+      "prior_a04_claim": {
+        "id": "C05-03",
+        "status": "pending-plan",
+        "narration_locator": "C05-03",
+        "claim_summary": "方案A整军直走，让同一支军队按选定路线继续前进。记录预计与实际抵达的差别，途中经过哪些更新和地点边界，接战前剩多少人、多少补给。这里不预设直走必定最快、最便宜或损失最多，成绩留给实际回放。",
+        "source_keys": [
+          "outline"
+        ],
+        "units_and_time": "Aactualfuturetime/events/endpoints",
+        "assumptions_and_limits": "直走结果/时间/费用pending，不预设最优。",
+        "original_a03_summary": "方案A整军直走，让同一支军队按已经选定的路线继续前进。我们要记录当前预期与实际抵达之间的差别，沿途跨过哪些更新或地点边界，接战前人数和库存是什么。这里不预设直走一定最快、最便宜或者损失最大，结果留给实际回放。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "Aactualfuturetime/events/endpoints",
+        "original_a03_assumptions_and_limits": "直走结果/时间/费用pending，不预设最优。"
+      }
+    },
+    {
+      "id": "C05-04",
+      "status": "supported-actual-closed-sources-narrative-review-separate",
+      "narration_locator": "C05-04",
+      "claim_summary": "方案B先分兵，让两支军队分别到合格驻点休整，再会合。这里看一次独立的B回放：在已核对的停驻窗口，两军当前补给月变化都读到正二十。它只说当时的读数，不表示库存已经增加。后面分别看人数和库存的实际变化；实际合军之后，还要重新核对兵团与统帅条件，伦敦终点仍未读到。",
+      "source_keys": [
+        "B-research-published"
+      ],
+      "units_and_time": "Actual source scopes below, scale100000 supply/cash and attrition fraction; originalT0 raw53148432 / END53150592; firstobserved C+77 interval(75,77]. Bmechanism windows separate21/27/32/38.",
+      "assumptions_and_limits": "Main originalcohort only, not allplayer totals. All endpoint integers/cash are net observations; no applied casualty/refill/payment ledger. B STOPPED_GATE_INCOMPLETE; Cdescriptive NOT_GRANTED; no controlledwinner. Audio/media/signoff not granted by text freeze.",
+      "original_a03_summary": "方案B先分兵，到实际验证能够恢复的地点，再按计划会合。这里“实际验证”很关键。R0169已经排除了两个局部候选：两军停在1506和1508，当前月变化仍为负。它们不是这一次需要的正补给地点，但还没有证明所有分兵休整安排都无效。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0169Jan29;1506−4.38596/month;1508−8.77192/month",
+      "original_a03_assumptions_and_limits": "两局部候选负例；非完整B回放或所有地点失败；未赋冬季/领土/统帅因果。",
+      "prior_A_only_claim_exact": {
+        "id": "C05-04",
+        "status": "supported-with-stated-bounds",
+        "narration_locator": "C05-04",
+        "claim_summary": "方案B先分兵，到实际验证能够恢复的地点，再会合。我们已看过两个负月变化的局部候选；后来，在另一组资格观察里，两军停在不同驻点，才分别读到正二十的当前补给月变化。找到合格地点是一个步骤，还要继续等库存和人数真正变化。",
+        "source_keys": [
+          "r169-local-b",
+          "outline",
+          "r173-qualification"
+        ],
+        "units_and_time": "R0169 Jan29 local negativegetters−4.38596/−8.77192; independent R0173 Jan20+49→50 both stationary currentmonth+20/stockunchanged",
+        "assumptions_and_limits": "Local negative candidates not generalBfail; +50actualsite qualification is currentmonth input, not stockincrease or completeB.",
+        "original_a03_summary": "方案B先分兵，到实际验证能够恢复的地点，再按计划会合。这里“实际验证”很关键。R0169已经排除了两个局部候选：两军停在1506和1508，当前月变化仍为负。它们不是这一次需要的正补给地点，但还没有证明所有分兵休整安排都无效。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "R0169Jan29;1506−4.38596/month;1508−8.77192/month",
+        "original_a03_assumptions_and_limits": "两局部候选负例；非完整B回放或所有地点失败；未赋冬季/领土/统帅因果。"
+      },
+      "historical_pre_final_claim": {
+        "id": "C05-04",
+        "status": "draft-supported-current-window-final-C-terminal-pending",
+        "narration_locator": "C05-04",
+        "claim_summary": "方案B先分兵，让两支军队分别到合格驻点休整，再会合。这里看一次独立的B回放：在已核对的停驻窗口，两军当前补给月变化都读到正二十。它只说当时的读数，不表示库存已经增加。后面分别看人数和库存的实际变化；实际合军之后，还要重新核对兵团与统帅条件，伦敦终点仍未读到。",
+        "source_keys": [
+          "B-research-published"
+        ],
+        "units_and_time": "R0169 Jan29 local negativegetters−4.38596/−8.77192; independent R0173 Jan20+49→50 both stationary currentmonth+20/stockunchanged",
+        "assumptions_and_limits": "Current partial text only. C terminal unknown; not a controlled A/C comparison. Net integers are not an applied event/payment ledger. Final source review and final69body pending.",
+        "original_a03_summary": "方案B先分兵，到实际验证能够恢复的地点，再按计划会合。这里“实际验证”很关键。R0169已经排除了两个局部候选：两军停在1506和1508，当前月变化仍为负。它们不是这一次需要的正补给地点，但还没有证明所有分兵休整安排都无效。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "R0169Jan29;1506−4.38596/month;1508−8.77192/month",
+        "original_a03_assumptions_and_limits": "两局部候选负例；非完整B回放或所有地点失败；未赋冬季/领土/统帅因果。",
+        "prior_A_only_claim_exact": {
+          "id": "C05-04",
+          "status": "supported-with-stated-bounds",
+          "narration_locator": "C05-04",
+          "claim_summary": "方案B先分兵，到实际验证能够恢复的地点，再会合。我们已看过两个负月变化的局部候选；后来，在另一组资格观察里，两军停在不同驻点，才分别读到正二十的当前补给月变化。找到合格地点是一个步骤，还要继续等库存和人数真正变化。",
+          "source_keys": [
+            "r169-local-b",
+            "outline",
+            "r173-qualification"
+          ],
+          "units_and_time": "R0169 Jan29 local negativegetters−4.38596/−8.77192; independent R0173 Jan20+49→50 both stationary currentmonth+20/stockunchanged",
+          "assumptions_and_limits": "Local negative candidates not generalBfail; +50actualsite qualification is currentmonth input, not stockincrease or completeB.",
+          "original_a03_summary": "方案B先分兵，到实际验证能够恢复的地点，再按计划会合。这里“实际验证”很关键。R0169已经排除了两个局部候选：两军停在1506和1508，当前月变化仍为负。它们不是这一次需要的正补给地点，但还没有证明所有分兵休整安排都无效。",
+          "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+          "original_a03_units_and_time": "R0169Jan29;1506−4.38596/month;1508−8.77192/month",
+          "original_a03_assumptions_and_limits": "两局部候选负例；非完整B回放或所有地点失败；未赋冬季/领土/统帅因果。"
+        }
+      }
+    },
+    {
+      "id": "C05-05",
+      "status": "supported-actual-closed-sources-narrative-review-separate",
+      "narration_locator": "C05-05",
+      "claim_summary": "方案C换路线，先经过已核验的中转点，再去伦敦。这次独立回放，在共同起点后的第七十七个游戏日，我们首次观察到主力已经抵达伦敦；第七十五日它还在路上，所以实际到达在这两次观察之间，精确时刻未知。这支主力从六千六百七十九人出发，到达观测时是六千六百八十九，净增十人；完整二十七个兵团的身份与满员数不变。补给从约一百一十点三八降到一百零一点九零，容量仍三百。终点当前损耗读到百分之一，这是当时的条件读数，不能直接换算成旅途中死了多少兵。这里报的是主力的原始编制，不是玩家所有单位的总人数。",
+      "source_keys": [
+        "C-terminal-actual",
+        "C-terminal-Main-scope",
+        "C-terminal-Root-sampling"
+      ],
+      "units_and_time": "Actual source scopes below, scale100000 supply/cash and attrition fraction; originalT0 raw53148432 / END53150592; firstobserved C+77 interval(75,77]. Bmechanism windows separate21/27/32/38.",
+      "assumptions_and_limits": "Main originalcohort only, not allplayer totals. All endpoint integers/cash are net observations; no applied casualty/refill/payment ledger. B STOPPED_GATE_INCOMPLETE; Cdescriptive NOT_GRANTED; no controlledwinner. Audio/media/signoff not granted by text freeze.",
+      "original_a03_summary": "方案C换路线，比较另一条合法路径的实际时间、沿途条件和支付事件。换路可能改变旅行阶段，也可能改变接触与停留条件；当前可走、当前预计能到，并不能保证整个过程都按最初提示完成。要把这一份回放独立保留，不能从地图上多绕几格就直接算出它的成绩。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "Calternateroute/actualtime/paidledger",
+      "original_a03_assumptions_and_limits": "换路方案仍pending，几何距离不当成绩。",
+      "prior_A_only_claim_exact": {
+        "id": "C05-05",
+        "status": "pending-plan",
+        "narration_locator": "C05-05",
+        "claim_summary": "方案C换路线，比较另一条合法路径的实际时间、沿途条件和支付。换路可能改变旅行阶段与接触、停留条件；当前能走、预计能到，并不保证整段过程都照最初提示完成。不能从地图上多绕几格，就直接算出它的成绩。",
+        "source_keys": [
+          "outline"
+        ],
+        "units_and_time": "Calternateroute/actualtime/paidledger",
+        "assumptions_and_limits": "换路方案仍pending，几何距离不当成绩。",
+        "original_a03_summary": "方案C换路线，比较另一条合法路径的实际时间、沿途条件和支付事件。换路可能改变旅行阶段，也可能改变接触与停留条件；当前可走、当前预计能到，并不能保证整个过程都按最初提示完成。要把这一份回放独立保留，不能从地图上多绕几格就直接算出它的成绩。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "Calternateroute/actualtime/paidledger",
+        "original_a03_assumptions_and_limits": "换路方案仍pending，几何距离不当成绩。"
+      },
+      "historical_pre_final_claim": {
+        "id": "C05-05",
+        "status": "draft-supported-current-window-final-C-terminal-pending",
+        "narration_locator": "C05-05",
+        "claim_summary": "方案C换路线，计划先走经已核验的中转点，再去伦敦。这里先看这次独立回放的途中窗口：从共同起点第二十六到二十七日，这支主力从六千六百七十九人变为六千六百八十九，净增十人。完整二十七个兵团的身份和满员数不变，补给库存约一百零六点一四，也没有变化。这个窗口只给前后实际读数，不能当作已经抵达；人数净增也不等于读到了逐次补员执行。伦敦的实际终点，还要等最后观察。之后另有一个单位的人数没有确认，六千六百八十九只属于这支主力，不能当作玩家所有军队的总人数。",
+        "source_keys": [
+          "B-research-published",
+          "C-day27-actual",
+          "C-sampling-deviation-1",
+          "C-sampling-deviation-2",
+          "C-day59-Mainpartial-actual"
+        ],
+        "units_and_time": "Calternateroute/actualtime/paidledger",
+        "assumptions_and_limits": "Current partial text only. C terminal unknown; not a controlled A/C comparison. Net integers are not an applied event/payment ledger. Final source review and final69body pending.",
+        "original_a03_summary": "方案C换路线，比较另一条合法路径的实际时间、沿途条件和支付事件。换路可能改变旅行阶段，也可能改变接触与停留条件；当前可走、当前预计能到，并不能保证整个过程都按最初提示完成。要把这一份回放独立保留，不能从地图上多绕几格就直接算出它的成绩。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "Calternateroute/actualtime/paidledger",
+        "original_a03_assumptions_and_limits": "换路方案仍pending，几何距离不当成绩。",
+        "prior_A_only_claim_exact": {
+          "id": "C05-05",
+          "status": "pending-plan",
+          "narration_locator": "C05-05",
+          "claim_summary": "方案C换路线，比较另一条合法路径的实际时间、沿途条件和支付。换路可能改变旅行阶段与接触、停留条件；当前能走、预计能到，并不保证整段过程都照最初提示完成。不能从地图上多绕几格，就直接算出它的成绩。",
+          "source_keys": [
+            "outline"
+          ],
+          "units_and_time": "Calternateroute/actualtime/paidledger",
+          "assumptions_and_limits": "换路方案仍pending，几何距离不当成绩。",
+          "original_a03_summary": "方案C换路线，比较另一条合法路径的实际时间、沿途条件和支付事件。换路可能改变旅行阶段，也可能改变接触与停留条件；当前可走、当前预计能到，并不能保证整个过程都按最初提示完成。要把这一份回放独立保留，不能从地图上多绕几格就直接算出它的成绩。",
+          "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+          "original_a03_units_and_time": "Calternateroute/actualtime/paidledger",
+          "original_a03_assumptions_and_limits": "换路方案仍pending，几何距离不当成绩。"
+        }
+      },
+      "actual_C_endpoint_metrics": {
+        "DATA_record_count": 37,
+        "actor_character_id": 33388,
+        "actual_player_row": {
+          "army_id": 0,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "controllable": true,
+          "current_province_id": 1527,
+          "in_combat": false,
+          "move_target_observable": false,
+          "move_target_province_id": null,
+          "owner_character_id": 33388,
+          "retreating": false,
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null,
+          "soldiers": null,
+          "source": "native"
+        },
+        "commander_character_id": 27357,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "current_soldiers": 6689,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 0,
+        "current_supply_raw": 10190260,
+        "date_raw": 53150280,
+        "exact_arrival_tick": null,
+        "maximum_soldiers": 6747,
+        "native_carmy_id": 0,
+        "public_army_id": 0,
+        "regiment_count": 27,
+        "supply_scale": 100000,
+        "treasury_raw": 62173052,
+        "treasury_scale": 100000
+      },
+      "actual_C_bounds": {
+        "T0_current": 6679,
+        "terminal_current": 6689,
+        "net_current": 10,
+        "max": 6747,
+        "stock_initial_raw": 11037716,
+        "stock_terminal_raw": 10190260,
+        "stock_net_raw": -847456,
+        "treasury_initial_raw": 63754562,
+        "treasury_terminal_raw": 62173052,
+        "treasury_net_raw": -1581510,
+        "boarding_window_treasury_net_raw": -1700000,
+        "day60_treasury_net_raw": 24723,
+        "cash_income_cause": null,
+        "cash_payment_ledger": null,
+        "applied_loss_or_refill_ledger": null,
+        "scope_terminal": {
+          "all_player_total_soldiers": null,
+          "global_health_status": "available",
+          "kind": "required_Main_original_cohort",
+          "required_full_DATA": 37,
+          "required_full_regiments": 27,
+          "required_native_carmy_ids": [
+            0
+          ],
+          "required_public_ids": [
+            0
+          ],
+          "unassessed_CUnit_ids": [],
+          "unassessed_health": null
+        },
+        "historical_unknown_CUnit16777391_health": null,
+        "historical_unknown_window_days": [
+          59,
+          75
+        ],
+        "terminal_unassessed_CUnits": [],
+        "terminal_available_is_not_allplayer_total": true
+      }
+    },
+    {
+      "id": "C05-06",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C05-06",
+      "claim_summary": "原版有“平分”“分出新军队”“整编”“合并军队”这些入口。平分把现有军队分成规模大致相等的两支，整编调整两支军队中的编制。会合只是走到同地，点合并之后才真正成为一支。名称、下令与实际组织变化分别核对。",
+      "source_keys": [
+        "terms",
+        "term-index",
+        "merge",
+        "r173-split"
+      ],
+      "units_and_time": "UIoperations vsactualregimentownership",
+      "assumptions_and_limits": "术语单帧不授操作，实际merge/split另由当次cohort支持。",
+      "original_a03_summary": "原版给了不同的编组入口，名字分别是“平分”“分出新军队”“整编”“合并军队”。平分是把现有军队分成规模大致相等的两支；整编用于调整两支军队中的编制；会合是走到同地，之后点合并才真正成为一支。操作名称、动作提交和实际组织变化分开核对。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "UIoperations vsactualregimentownership",
+      "original_a03_assumptions_and_limits": "术语单帧不授操作，实际merge/split另由当次cohort支持。"
+    },
+    {
+      "id": "C05-07",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C05-07",
+      "claim_summary": "三月五日的同一暂停点，实际平分后，原主军是三千三百三十七人、满员三千三百七十一；新分队三千三百四十二、满员三千三百七十六。合计仍六千六百七十九，满员六千七百四十七；完整二十七个兵团各归其位，没有因为平分丢失。",
+      "source_keys": [
+        "r173-split"
+      ],
+      "units_and_time": "Mar5/raw53148432/Jan20+44;3337/3371 +3342/3376 =6679/6747;27/37",
+      "assumptions_and_limits": "samepaused0newdays；public204/native199；fullrows守恒；masterintegrationpending。",
+      "original_a03_summary": "R0173已经完成一个新的实际平分窗口。Mar5，相对Jan20基线第44日，同一暂停日期，原主军变成3337人、满员3371；新分队是3342人、满员3376。两队合计仍是6679/6747，完整27个兵团和37条记录各归其位，身份与整数值没有因这个拆分丢失。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "Mar5/raw53148432/Jan20+44;3337/3371 +3342/3376 =6679/6747;27/37",
+      "original_a03_assumptions_and_limits": "samepaused0newdays；public204/native199；fullrows守恒；masterintegrationpending。"
+    },
+    {
+      "id": "C05-08",
+      "status": "supported-actual-closed-sources-narrative-review-separate",
+      "narration_locator": "C05-08",
+      "claim_summary": "前面的平分样本里，两队都继承约一百一十点三八补给，主军容量三百，新分队容量一百。现在看这次B回放：起点后的第二十到二十一日，新分队库存从约一百一十点三八降到一百，两军人数与完整兵团的前后读数都没变。虽然当前月变化仍是正二十，这次库存变化却是向下回到容量；它不是补兵，也不是低库存补给增加。",
+      "source_keys": [
+        "B-research-published"
+      ],
+      "units_and_time": "Actual source scopes below, scale100000 supply/cash and attrition fraction; originalT0 raw53148432 / END53150592; firstobserved C+77 interval(75,77]. Bmechanism windows separate21/27/32/38.",
+      "assumptions_and_limits": "Main originalcohort only, not allplayer totals. All endpoint integers/cash are net observations; no applied casualty/refill/payment ledger. B STOPPED_GATE_INCOMPLETE; Cdescriptive NOT_GRANTED; no controlledwinner. Audio/media/signoff not granted by text freeze.",
+      "original_a03_summary": "这次库存继承很值得单独看。两支军队都读到110.37716补给，但主军容量300，新分队容量100。新分队刚出现的这个暂停点，库存确实高于自己的新容量。我们保留这两个实际读数，不能看到分母100，就擅自把库存改写成100；后续真实更新如何处理，仍要另看。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "bothstock11037716/1e5; capacities30000000/10000000",
+      "original_a03_assumptions_and_limits": "childstock>cap实际端点，client不clamp；未来真实容量截断pending。",
+      "prior_A_only_claim_exact": {
+        "id": "C05-08",
+        "status": "supported-with-stated-bounds",
+        "narration_locator": "C05-08",
+        "claim_summary": "这次两支军队都继承了约一百一十点三八补给，主军容量三百，新分队容量一百。新分队刚出现时，库存确实高于新容量，不能擅自改写成一百。后来另一个更新窗口里，它才降到一百容量。这个方向是下降，不叫补兵或低库存恢复，也不是加权合军的截断样本。",
+        "source_keys": [
+          "r173-split",
+          "r173-qualification"
+        ],
+        "units_and_time": "Day44bothstock110.37716/cap300and100; separate+64→66 childstock110.37716→100/newstamp+65",
+        "assumptions_and_limits": "Actualchildovercap endpoint not clientclamped; later actual downwardcap adjustment not lowstockrecovery/soldiergain/death/weightedmergeclamp.",
+        "original_a03_summary": "这次库存继承很值得单独看。两支军队都读到110.37716补给，但主军容量300，新分队容量100。新分队刚出现的这个暂停点，库存确实高于自己的新容量。我们保留这两个实际读数，不能看到分母100，就擅自把库存改写成100；后续真实更新如何处理，仍要另看。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "bothstock11037716/1e5; capacities30000000/10000000",
+        "original_a03_assumptions_and_limits": "childstock>cap实际端点，client不clamp；未来真实容量截断pending。"
+      },
+      "historical_pre_final_claim": {
+        "id": "C05-08",
+        "status": "draft-supported-current-window-final-C-terminal-pending",
+        "narration_locator": "C05-08",
+        "claim_summary": "前面的平分样本里，两队都继承约一百一十点三八补给，主军容量三百，新分队容量一百。现在看这次B回放：起点后的第二十到二十一日，新分队库存从约一百一十点三八降到一百，两军人数与完整兵团的前后读数都没变。虽然当前月变化仍是正二十，这次库存变化却是向下回到容量；它不是补兵，也不是低库存补给增加。",
+        "source_keys": [
+          "B-research-published"
+        ],
+        "units_and_time": "Day44bothstock110.37716/cap300and100; separate+64→66 childstock110.37716→100/newstamp+65",
+        "assumptions_and_limits": "Current partial text only. C terminal unknown; not a controlled A/C comparison. Net integers are not an applied event/payment ledger. Final source review and final69body pending.",
+        "original_a03_summary": "这次库存继承很值得单独看。两支军队都读到110.37716补给，但主军容量300，新分队容量100。新分队刚出现的这个暂停点，库存确实高于自己的新容量。我们保留这两个实际读数，不能看到分母100，就擅自把库存改写成100；后续真实更新如何处理，仍要另看。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "bothstock11037716/1e5; capacities30000000/10000000",
+        "original_a03_assumptions_and_limits": "childstock>cap实际端点，client不clamp；未来真实容量截断pending。",
+        "prior_A_only_claim_exact": {
+          "id": "C05-08",
+          "status": "supported-with-stated-bounds",
+          "narration_locator": "C05-08",
+          "claim_summary": "这次两支军队都继承了约一百一十点三八补给，主军容量三百，新分队容量一百。新分队刚出现时，库存确实高于新容量，不能擅自改写成一百。后来另一个更新窗口里，它才降到一百容量。这个方向是下降，不叫补兵或低库存恢复，也不是加权合军的截断样本。",
+          "source_keys": [
+            "r173-split",
+            "r173-qualification"
+          ],
+          "units_and_time": "Day44bothstock110.37716/cap300and100; separate+64→66 childstock110.37716→100/newstamp+65",
+          "assumptions_and_limits": "Actualchildovercap endpoint not clientclamped; later actual downwardcap adjustment not lowstockrecovery/soldiergain/death/weightedmergeclamp.",
+          "original_a03_summary": "这次库存继承很值得单独看。两支军队都读到110.37716补给，但主军容量300，新分队容量100。新分队刚出现的这个暂停点，库存确实高于自己的新容量。我们保留这两个实际读数，不能看到分母100，就擅自把库存改写成100；后续真实更新如何处理，仍要另看。",
+          "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+          "original_a03_units_and_time": "bothstock11037716/1e5; capacities30000000/10000000",
+          "original_a03_assumptions_and_limits": "childstock>cap实际端点，client不clamp；未来真实容量截断pending。"
+        }
+      }
+    },
+    {
+      "id": "C05-09",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C05-09",
+      "claim_summary": "平分没有自动重开这轮补给宽限。新分队继承了原军队的这段计时，哪一天库存真正变化，还需要继续观察。容量不同，也不能代替统帅身份读取。后来在两个驻点读到的统帅，只证明当时那一帧，不保证后面一直没变。",
+      "source_keys": [
+        "r173-split",
+        "clock",
+        "r173-qualification"
+      ],
+      "units_and_time": "Day44copied supplystamp/grace anchor; +50typedcommander Main27357/child33388; latercommanderstableunknown",
+      "assumptions_and_limits": "Split doesnot restart observedhistory; nofutureexactupdate promised; capacitydoesnotidentifycommander; +50identitynotextrapolated+72/+76.",
+      "original_a03_summary": "两军还保留了原来的补给成功更新记录和集结后的历史锚点。这说明“得到新军队编号”并不等于这次平分已经重新开始了一轮补给宽限。实际桶归属又有各自的读数，后续在哪一天轮到更新，要继续观察。容量不同，也不能代替独立的统帅身份读取。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "supplystamp53147760;grace53144256;observedbuckets0/19;loadedgrace30",
+      "original_a03_assumptions_and_limits": "64bit历史字段copy；新ID不推新grace/已经执行过更新；commanderunknown。"
+    },
+    {
+      "id": "C05-10",
+      "status": "supported-actual-closed-sources-narrative-review-separate",
+      "narration_locator": "C05-10",
+      "claim_summary": "接着看两个不同的窗口。起点后的第二十六到二十七日，主军人数净增七，新分队净增三，两端库存相同。第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，新分队两端都是一百，完整兵团的人数与编制也没变。人数净变化与补给增加各记自己的日期，不能剪成同一次结算。后来两军回到同地实际合军，合前补给约一百二十六点一四和一百。按双方各自的合军权重加权、分别取整，得到约一百一十三点零六。合后容量读到一百，库存实际也是一百。这个窗口能单独确认上限截断，不能用两队库存的普通平均代替。",
+      "source_keys": [
+        "B-research-published"
+      ],
+      "units_and_time": "Actual source scopes below, scale100000 supply/cash and attrition fraction; originalT0 raw53148432 / END53150592; firstobserved C+77 interval(75,77]. Bmechanism windows separate21/27/32/38.",
+      "assumptions_and_limits": "Main originalcohort only, not allplayer totals. All endpoint integers/cash are net observations; no applied casualty/refill/payment ledger. B STOPPED_GATE_INCOMPLETE; Cdescriptive NOT_GRANTED; no controlledwinner. Audio/media/signoff not granted by text freeze.",
+      "original_a03_summary": "平分后的这个暂停点，两队仍在同一地点2174，当前补给月变化都为负4.23728。它证明了拆分和当前输入，不证明两军已经分开恢复。后面即使给新分队下达去别处的命令，也要等实际位置、当前条件和库存更新读回，才能说恢复真正发生。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "R0173 Jan20+70→72 Main3337→3344/child3342→3345, stock/stampunchanged; independent+74→76 Main106.13988→126.13988, full27actual/37DATArows unchanged",
+      "original_a03_assumptions_and_limits": "Calendar consistency not producerPC proof; separate windows not single settlement, no completedB/ABC credit.",
+      "prior_A_only_claim_exact": {
+        "id": "C05-10",
+        "status": "supported-with-stated-bounds",
+        "narration_locator": "C05-10",
+        "claim_summary": "后面的资格观察终于看到了两种真实增加。一个独立窗口，主军补进七人，新分队补进三人，库存没有变化；再之后，主军补给从约一百零六点一四升到一百二十六点一四，兵团人数没有变化。补兵与补给增加各有自己的日期，不能剪成同一次结算。这些正例也还不等于完整方案B已经会合并抵达。",
+        "source_keys": [
+          "r173-split",
+          "r173-qualification"
+        ],
+        "units_and_time": "R0173 Jan20+70→72 Main3337→3344/child3342→3345, stock/stampunchanged; independent+74→76 Main106.13988→126.13988, full27actual/37DATArows unchanged",
+        "assumptions_and_limits": "Calendar consistency not producerPC proof; separate windows not single settlement, no completedB/ABC credit.",
+        "original_a03_summary": "平分后的这个暂停点，两队仍在同一地点2174，当前补给月变化都为负4.23728。它证明了拆分和当前输入，不证明两军已经分开恢复。后面即使给新分队下达去别处的命令，也要等实际位置、当前条件和库存更新读回，才能说恢复真正发生。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "R0173 Jan20+70→72 Main3337→3344/child3342→3345, stock/stampunchanged; independent+74→76 Main106.13988→126.13988, full27actual/37DATArows unchanged",
+        "original_a03_assumptions_and_limits": "Calendar consistency not producerPC proof; separate windows not single settlement, no completedB/ABC credit."
+      },
+      "historical_pre_final_claim": {
+        "id": "C05-10",
+        "status": "draft-supported-current-window-final-C-terminal-pending",
+        "narration_locator": "C05-10",
+        "claim_summary": "接着看两个不同的窗口。起点后的第二十六到二十七日，主军人数净增七，新分队净增三，两端库存相同。第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，新分队两端都是一百，完整兵团的人数与编制也没变。人数净变化与补给增加各记自己的日期，不能剪成同一次结算。后来两军回到同地实际合军，合前补给约一百二十六点一四和一百。按双方各自的合军权重加权、分别取整，得到约一百一十三点零六。合后容量读到一百，库存实际也是一百。这个窗口能单独确认上限截断，不能用两队库存的普通平均代替。",
+        "source_keys": [
+          "B-research-published"
+        ],
+        "units_and_time": "R0173 Jan20+70→72 Main3337→3344/child3342→3345, stock/stampunchanged; independent+74→76 Main106.13988→126.13988, full27actual/37DATArows unchanged",
+        "assumptions_and_limits": "Current partial text only. C terminal unknown; not a controlled A/C comparison. Net integers are not an applied event/payment ledger. Final source review and final69body pending.",
+        "original_a03_summary": "平分后的这个暂停点，两队仍在同一地点2174，当前补给月变化都为负4.23728。它证明了拆分和当前输入，不证明两军已经分开恢复。后面即使给新分队下达去别处的命令，也要等实际位置、当前条件和库存更新读回，才能说恢复真正发生。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "R0173 Jan20+70→72 Main3337→3344/child3342→3345, stock/stampunchanged; independent+74→76 Main106.13988→126.13988, full27actual/37DATArows unchanged",
+        "original_a03_assumptions_and_limits": "Calendar consistency not producerPC proof; separate windows not single settlement, no completedB/ABC credit.",
+        "prior_A_only_claim_exact": {
+          "id": "C05-10",
+          "status": "supported-with-stated-bounds",
+          "narration_locator": "C05-10",
+          "claim_summary": "后面的资格观察终于看到了两种真实增加。一个独立窗口，主军补进七人，新分队补进三人，库存没有变化；再之后，主军补给从约一百零六点一四升到一百二十六点一四，兵团人数没有变化。补兵与补给增加各有自己的日期，不能剪成同一次结算。这些正例也还不等于完整方案B已经会合并抵达。",
+          "source_keys": [
+            "r173-split",
+            "r173-qualification"
+          ],
+          "units_and_time": "R0173 Jan20+70→72 Main3337→3344/child3342→3345, stock/stampunchanged; independent+74→76 Main106.13988→126.13988, full27actual/37DATArows unchanged",
+          "assumptions_and_limits": "Calendar consistency not producerPC proof; separate windows not single settlement, no completedB/ABC credit.",
+          "original_a03_summary": "平分后的这个暂停点，两队仍在同一地点2174，当前补给月变化都为负4.23728。它证明了拆分和当前输入，不证明两军已经分开恢复。后面即使给新分队下达去别处的命令，也要等实际位置、当前条件和库存更新读回，才能说恢复真正发生。",
+          "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+          "original_a03_units_and_time": "R0173 Jan20+70→72 Main3337→3344/child3342→3345, stock/stampunchanged; independent+74→76 Main106.13988→126.13988, full27actual/37DATArows unchanged",
+          "original_a03_assumptions_and_limits": "Calendar consistency not producerPC proof; separate windows not single settlement, no completedB/ABC credit."
+        }
+      }
+    },
+    {
+      "id": "C05-11",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C05-11",
+      "claim_summary": "费用先另读一份一月十一日的暂停样本：角色个人月总收入约四点六九金币，完整月支出约四点三九，当前净收入约正零点三零。这不是后面所有旅途日期的固定常数；军队和收支条件变了，需要重新读。",
+      "source_keys": [
+        "cash"
+      ],
+      "units_and_time": "Jan11/raw53147160; personalmonthly goldgross4.69417/total4.39469/net+.29948",
+      "assumptions_and_limits": "v2真实NET，独立日期；不外推沿途固定率，旧unmarkedgross误称net保留勘误。",
+      "original_a03_summary": "费用表也需要统一范围。在另一份原始Jan11暂停样本里，真实月总收入是4.69417，完整月支出是4.39469，净额为正0.29948。这是角色个人金币的当前月净率。这个读数与后面的Jan20旅行或Mar5分军不是同一日期，不能把它一路当成固定常数。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "Jan11/raw53147160; personalmonthly goldgross4.69417/total4.39469/net+.29948",
+      "original_a03_assumptions_and_limits": "v2真实NET，独立日期；不外推沿途固定率，旧unmarkedgross误称net保留勘误。"
+    },
+    {
+      "id": "C05-12",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C05-12",
+      "claim_summary": "同一个样本，当前军事维护约三点八九金币每月，已经含在完整支出里；全部集结情形的当前替代维护约四点八七。两者分别比较，不相加，也不从净收入里再扣一次军费。全部集结值没有被证明是未来费用上限。",
+      "source_keys": [
+        "cash"
+      ],
+      "units_and_time": "sameJan11 currentmilitary3.88749/allraised4.87050 gold/month",
+      "assumptions_and_limits": "militaryincludedtrue；不相加/再减NET；allraised非未来upperbound。",
+      "original_a03_summary": "同一个Jan11样本里，当前军事维护是3.88749金币每月，已经包含在完整支出中；另一个全部集结情形的当前原生替代维护是4.87050每月。两种维护值分别比较，不相加，也不从净额里再次扣军费。全部集结值还没有被证明是未来费用上限。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "sameJan11 currentmilitary3.88749/allraised4.87050 gold/month",
+      "original_a03_assumptions_and_limits": "militaryincludedtrue；不相加/再减NET；allraised非未来upperbound。"
+    },
+    {
+      "id": "C05-13",
+      "status": "pending-plan",
+      "narration_locator": "C05-13",
+      "claim_summary": "累计费用要逐笔记实际发生的维护、登船支付、期间收入和其他支付，并使用一致日期范围对账。钱包变少多少，是混合这些来源的净现金变化；地图上“会支付登船费”只是当时提示。没读到实际付款，就留空，不能把余额差改名为纯行军费。",
+      "source_keys": [
+        "cash",
+        "terms",
+        "outline"
+      ],
+      "units_and_time": "actualpaymentevent/dateinterval/currentmonthlyrates",
+      "assumptions_and_limits": "boardingactualledgerpending；treasurydelta混合收入支出，不当puremarchcost；不days/30拟合。",
+      "original_a03_summary": "实际累计费用需要一笔一笔记。维护、真正发生的登船支付、期间收入和其他支付事件，按一致日期范围对账。钱包减少多少是净现金变化，混合了这些来源；地图上的“会支付登船费”又只是当时的路线提示。缺少实际支付记录时，费用格就留空，不把余额差换一个名字叫纯行军费。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "actualpaymentevent/dateinterval/currentmonthlyrates",
+      "original_a03_assumptions_and_limits": "boardingactualledgerpending；treasurydelta混合收入支出，不当puremarchcost；不days/30拟合。"
+    },
+    {
+      "id": "C05-14",
+      "status": "supported-actual-closed-sources-narrative-review-separate",
+      "narration_locator": "C05-14",
+      "claim_summary": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。这次B合军后，原二十七个兵团仍在，但又多出一条满员一人的兵团记录；合后共有六千六百九十人，满员六千七百四十八。实际统帅也变了，与原先冻结的条件不符。新增记录和统帅变化的原因还没有确认。因此，这次B在第三十八日停止，尚有五十二日预算；停止是冻结条件未通过，不是时间耗尽。这段能保留为合军机制样本，却没有可比较的伦敦终点。C也出现多次采样偏差：原计划每次最多过一天，实际跨了两天。后续只保留为描述性观察，即使已经到达，也不能恢复成严格公平的A/C对照。A和C的实际到达观测各自保留。下面回到整军直走的A。",
+      "source_keys": [
+        "B-research-published",
+        "C-terminal-actual",
+        "C-terminal-Root-sampling"
+      ],
+      "units_and_time": "Actual source scopes below, scale100000 supply/cash and attrition fraction; originalT0 raw53148432 / END53150592; firstobserved C+77 interval(75,77]. Bmechanism windows separate21/27/32/38.",
+      "assumptions_and_limits": "Main originalcohort only, not allplayer totals. All endpoint integers/cash are net observations; no applied casualty/refill/payment ledger. B STOPPED_GATE_INCOMPLETE; Cdescriptive NOT_GRANTED; no controlledwinner. Audio/media/signoff not granted by text freeze.",
+      "original_a03_summary": "结果表会按同日期或同事件逐项对齐。第一项是实际抵达，第二项是完整兵团与可用人数，再看库存、补员与损耗窗口，最后看实际支付。当前维护率和预期日期可以放在旁边帮助解释，但不能填进已经发生的结果格，冒充回放成绩。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "sametime/eventalignment;fullcohort/stock/paidamount",
+      "original_a03_assumptions_and_limits": "未来结果表范围；提示率/ETA不当实际成绩。",
+      "prior_A_only_claim_exact": {
+        "id": "C05-14",
+        "status": "pending-plan",
+        "narration_locator": "C05-14",
+        "claim_summary": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。当前维护率与预计日期可放在旁边解释，不能填进已经发生的结果格，冒充回放成绩。",
+        "source_keys": [
+          "outline",
+          "cash",
+          "r172-doc"
+        ],
+        "units_and_time": "sametime/eventalignment;fullcohort/stock/paidamount",
+        "assumptions_and_limits": "未来结果表范围；提示率/ETA不当实际成绩。",
+        "original_a03_summary": "结果表会按同日期或同事件逐项对齐。第一项是实际抵达，第二项是完整兵团与可用人数，再看库存、补员与损耗窗口，最后看实际支付。当前维护率和预期日期可以放在旁边帮助解释，但不能填进已经发生的结果格，冒充回放成绩。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "sametime/eventalignment;fullcohort/stock/paidamount",
+        "original_a03_assumptions_and_limits": "未来结果表范围；提示率/ETA不当实际成绩。"
+      },
+      "historical_pre_final_claim": {
+        "id": "C05-14",
+        "status": "draft-supported-current-window-final-C-terminal-pending",
+        "narration_locator": "C05-14",
+        "claim_summary": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。这次B合军后，原二十七个兵团仍在，但又多出一条满员一人的兵团记录；合后共有六千六百九十人，满员六千七百四十八。实际统帅也变了，与原先冻结的条件不符。新增记录和统帅变化的原因还没有确认。因此，这次B在第三十八日停止，尚有五十二日预算；停止是冻结条件未通过，不是时间耗尽。这段能保留为合军机制样本，却没有可比较的伦敦终点。C也出现多次采样偏差：原计划每次最多过一天，实际都跨了两天。后续只保留为描述性观察，不能恢复成严格公平的A/C对照。接下来把A的实际终点单独保留。",
+        "source_keys": [
+          "B-research-published",
+          "C-day27-actual",
+          "C-sampling-deviation-1",
+          "C-sampling-deviation-2",
+          "C-sampling-deviation-3",
+          "C-day38-Root-actual-policy"
+        ],
+        "units_and_time": "sametime/eventalignment;fullcohort/stock/paidamount",
+        "assumptions_and_limits": "Current partial text only. C terminal unknown; not a controlled A/C comparison. Net integers are not an applied event/payment ledger. Final source review and final69body pending.",
+        "original_a03_summary": "结果表会按同日期或同事件逐项对齐。第一项是实际抵达，第二项是完整兵团与可用人数，再看库存、补员与损耗窗口，最后看实际支付。当前维护率和预期日期可以放在旁边帮助解释，但不能填进已经发生的结果格，冒充回放成绩。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "sametime/eventalignment;fullcohort/stock/paidamount",
+        "original_a03_assumptions_and_limits": "未来结果表范围；提示率/ETA不当实际成绩。",
+        "prior_A_only_claim_exact": {
+          "id": "C05-14",
+          "status": "pending-plan",
+          "narration_locator": "C05-14",
+          "claim_summary": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。当前维护率与预计日期可放在旁边解释，不能填进已经发生的结果格，冒充回放成绩。",
+          "source_keys": [
+            "outline",
+            "cash",
+            "r172-doc"
+          ],
+          "units_and_time": "sametime/eventalignment;fullcohort/stock/paidamount",
+          "assumptions_and_limits": "未来结果表范围；提示率/ETA不当实际成绩。",
+          "original_a03_summary": "结果表会按同日期或同事件逐项对齐。第一项是实际抵达，第二项是完整兵团与可用人数，再看库存、补员与损耗窗口，最后看实际支付。当前维护率和预期日期可以放在旁边帮助解释，但不能填进已经发生的结果格，冒充回放成绩。",
+          "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+          "original_a03_units_and_time": "sametime/eventalignment;fullcohort/stock/paidamount",
+          "original_a03_assumptions_and_limits": "未来结果表范围；提示率/ETA不当实际成绩。"
+        }
+      },
+      "actual_C_endpoint_metrics": {
+        "DATA_record_count": 37,
+        "actor_character_id": 33388,
+        "actual_player_row": {
+          "army_id": 0,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "controllable": true,
+          "current_province_id": 1527,
+          "in_combat": false,
+          "move_target_observable": false,
+          "move_target_province_id": null,
+          "owner_character_id": 33388,
+          "retreating": false,
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null,
+          "soldiers": null,
+          "source": "native"
+        },
+        "commander_character_id": 27357,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "current_soldiers": 6689,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 0,
+        "current_supply_raw": 10190260,
+        "date_raw": 53150280,
+        "exact_arrival_tick": null,
+        "maximum_soldiers": 6747,
+        "native_carmy_id": 0,
+        "public_army_id": 0,
+        "regiment_count": 27,
+        "supply_scale": 100000,
+        "treasury_raw": 62173052,
+        "treasury_scale": 100000
+      },
+      "actual_C_bounds": {
+        "T0_current": 6679,
+        "terminal_current": 6689,
+        "net_current": 10,
+        "max": 6747,
+        "stock_initial_raw": 11037716,
+        "stock_terminal_raw": 10190260,
+        "stock_net_raw": -847456,
+        "treasury_initial_raw": 63754562,
+        "treasury_terminal_raw": 62173052,
+        "treasury_net_raw": -1581510,
+        "boarding_window_treasury_net_raw": -1700000,
+        "day60_treasury_net_raw": 24723,
+        "cash_income_cause": null,
+        "cash_payment_ledger": null,
+        "applied_loss_or_refill_ledger": null,
+        "scope_terminal": {
+          "all_player_total_soldiers": null,
+          "global_health_status": "available",
+          "kind": "required_Main_original_cohort",
+          "required_full_DATA": 37,
+          "required_full_regiments": 27,
+          "required_native_carmy_ids": [
+            0
+          ],
+          "required_public_ids": [
+            0
+          ],
+          "unassessed_CUnit_ids": [],
+          "unassessed_health": null
+        },
+        "historical_unknown_CUnit16777391_health": null,
+        "historical_unknown_window_days": [
+          59,
+          75
+        ],
+        "terminal_unassessed_CUnits": [],
+        "terminal_available_is_not_allplayer_total": true
+      }
+    },
+    {
+      "id": "C05-15",
+      "status": "supported-actual-A-only-with-stated-bounds",
+      "narration_locator": "C05-15",
+      "claim_summary": "这一方案从六千六百七十九人出发，抵达观测时是六千六百八十九人，净增十人。完整二十七个兵团都还在，满员数仍是六千七百四十七。补给从约一百一十点三八变为一百零六点一四。净增十人只说旅途两端的差，不表示途中没有死伤，也不表示已经逐次读到了补员结算。",
+      "source_keys": [
+        "r177-A2-values",
+        "r177-A2-doc"
+      ],
+      "units_and_time": "完整27军团身份/逐行max不变；6679→6689净+10/6747；库存raw11037716→10613988 scale1e5。两端差值不证明死亡、补员实际执行账或具体策略因果。",
+      "assumptions_and_limits": "完整27军团身份/逐行max不变；6679→6689净+10/6747；库存raw11037716→10613988 scale1e5。两端差值不证明死亡、补员实际执行账或具体策略因果。",
+      "original_a03_summary": "本稿的研究切点，三种方案的完整同起点回放仍待补，分开恢复也没有闭合，饥饿实测还留着独立位置。这里保留三行结果空位，等实际证据到齐后替换；不会选一个当前看起来方便的方案，提前宣布胜出。已经完成的观察继续保留，不因为暂缺对照就重新解释旧窗口。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "ABC0/3completion;starvation/seprefillpending",
+      "original_a03_assumptions_and_limits": "研究切点非全项目完成百分比；不宣告赢家。",
+      "prior_a04_claim": {
+        "id": "C05-15",
+        "status": "pending-plan",
+        "narration_locator": "C05-15",
+        "claim_summary": "完整三方案结果尚待真实终点。两处休整资格与实际补充已经有各自正例，但它们不能代替从共同起点出发的三次完整回放。饥饿实测和完整费用账也各留自己的位置；某一部分已经完成，不替缺失部分提前选赢家。",
+        "source_keys": [
+          "outline",
+          "r173-split",
+          "r168-loss-inputs",
+          "r173-qualification"
+        ],
+        "units_and_time": "ABC0/3/winnernull; actualR0173numericqualificationsites/independentintegerandstockwindows supported; starvation/fullledgerpending",
+        "assumptions_and_limits": "Numeric qualification not completeABC common-startarms/arrival/merge or全项目完成率.",
+        "original_a03_summary": "本稿的研究切点，三种方案的完整同起点回放仍待补，分开恢复也没有闭合，饥饿实测还留着独立位置。这里保留三行结果空位，等实际证据到齐后替换；不会选一个当前看起来方便的方案，提前宣布胜出。已经完成的观察继续保留，不因为暂缺对照就重新解释旧窗口。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "ABC0/3completion;starvation/seprefillpending",
+        "original_a03_assumptions_and_limits": "研究切点非全项目完成百分比；不宣告赢家。"
+      }
+    },
+    {
+      "id": "C05-16",
+      "status": "supported-actual-closed-sources-narrative-review-separate",
+      "narration_locator": "C05-16",
+      "claim_summary": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。另看换路线的C回放：从共同起点到它的到达观测，余额净少约十五点八二金币。这个数字同样只是净变化。途中登船阶段曾观察到余额净少十七金币，另一个窗口又净增加约零点二五；各自原因都没有逐笔付款账来证明。现在A和C各有真实到达观测，B因冻结条件未通过而停止；C又保留采样偏差，本次不能排出严格三方案的赢家。",
+      "source_keys": [
+        "r177-A2-values",
+        "r177-A2-doc",
+        "B-research-published",
+        "C-terminal-actual",
+        "C-terminal-Root-sampling"
+      ],
+      "units_and_time": "Actual source scopes below, scale100000 supply/cash and attrition fraction; originalT0 raw53148432 / END53150592; firstobserved C+77 interval(75,77]. Bmechanism windows separate21/27/32/38.",
+      "assumptions_and_limits": "Main originalcohort only, not allplayer totals. All endpoint integers/cash are net observations; no applied casualty/refill/payment ledger. B STOPPED_GATE_INCOMPLETE; Cdescriptive NOT_GRANTED; no controlledwinner. Audio/media/signoff not granted by text freeze.",
+      "original_a03_summary": "这些空位不会用长静帧或重复概念撑满。完整三方案对照如果成为后续正式章节，就使用实际动态过程和逐项结果；如果关键证据仍缺，冻结文稿时就明确展示当下边界，并按真实可用内容调整节奏。正式交付仍在20到40分钟内，时间由真正的配音和可用镜头确认。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "target20–40min;unmeasured actualaudio/video",
+      "original_a03_assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。",
+      "prior_a04_claim": {
+        "id": "C05-16",
+        "status": "pending-plan",
+        "narration_locator": "C05-16",
+        "claim_summary": "正式结果段会用实际动态过程和逐项比较来讲，不用长静帧、重复概念或技术编号撑满。证据还缺的地方，就保留明确边界。节奏跟着真实配音和可用镜头调整，最后再核对二十到四十分钟的交付范围。",
+        "source_keys": [
+          "outline"
+        ],
+        "units_and_time": "target20–40min;unmeasured actualaudio/video",
+        "assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。",
+        "original_a03_summary": "这些空位不会用长静帧或重复概念撑满。完整三方案对照如果成为后续正式章节，就使用实际动态过程和逐项结果；如果关键证据仍缺，冻结文稿时就明确展示当下边界，并按真实可用内容调整节奏。正式交付仍在20到40分钟内，时间由真正的配音和可用镜头确认。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "target20–40min;unmeasured actualaudio/video",
+        "original_a03_assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。"
+      },
+      "prior_A_only_claim_exact": {
+        "id": "C05-16",
+        "status": "supported-actual-A-only-with-stated-bounds",
+        "narration_locator": "C05-16",
+        "claim_summary": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。现在只有方案A有真实终点；B和C仍等待各自结果，还不能排出三方案的赢家。",
+        "source_keys": [
+          "r177-A2-values",
+          "r177-A2-doc"
+        ],
+        "units_and_time": "共同T0至首次到达观测财库raw63754562→62148329 scale1e5，净−1606233=−16.06233；无维护、登船支付或其他支付应用账。B/C与winner NULL。",
+        "assumptions_and_limits": "共同T0至首次到达观测财库raw63754562→62148329 scale1e5，净−1606233=−16.06233；无维护、登船支付或其他支付应用账。B/C与winner NULL。",
+        "original_a03_summary": "这些空位不会用长静帧或重复概念撑满。完整三方案对照如果成为后续正式章节，就使用实际动态过程和逐项结果；如果关键证据仍缺，冻结文稿时就明确展示当下边界，并按真实可用内容调整节奏。正式交付仍在20到40分钟内，时间由真正的配音和可用镜头确认。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "target20–40min;unmeasured actualaudio/video",
+        "original_a03_assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。",
+        "prior_a04_claim": {
+          "id": "C05-16",
+          "status": "pending-plan",
+          "narration_locator": "C05-16",
+          "claim_summary": "正式结果段会用实际动态过程和逐项比较来讲，不用长静帧、重复概念或技术编号撑满。证据还缺的地方，就保留明确边界。节奏跟着真实配音和可用镜头调整，最后再核对二十到四十分钟的交付范围。",
+          "source_keys": [
+            "outline"
+          ],
+          "units_and_time": "target20–40min;unmeasured actualaudio/video",
+          "assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。",
+          "original_a03_summary": "这些空位不会用长静帧或重复概念撑满。完整三方案对照如果成为后续正式章节，就使用实际动态过程和逐项结果；如果关键证据仍缺，冻结文稿时就明确展示当下边界，并按真实可用内容调整节奏。正式交付仍在20到40分钟内，时间由真正的配音和可用镜头确认。",
+          "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+          "original_a03_units_and_time": "target20–40min;unmeasured actualaudio/video",
+          "original_a03_assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。"
+        }
+      },
+      "historical_pre_final_claim": {
+        "id": "C05-16",
+        "status": "draft-supported-current-window-final-C-terminal-pending",
+        "narration_locator": "C05-16",
+        "claim_summary": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。现在只有方案A有真实终点。B因冻结条件未通过而停止，没有可比较的伦敦结果；C正在描述性续拍，伦敦终点还没有读到；本次不能排出严格三方案的赢家。",
+        "source_keys": [
+          "B-research-published",
+          "C-day27-actual",
+          "C-sampling-deviation-1",
+          "C-sampling-deviation-2",
+          "C-day38-Root-actual-policy"
+        ],
+        "units_and_time": "共同T0至首次到达观测财库raw63754562→62148329 scale1e5，净−1606233=−16.06233；无维护、登船支付或其他支付应用账。B/C与winner NULL。",
+        "assumptions_and_limits": "Current partial text only. C terminal unknown; not a controlled A/C comparison. Net integers are not an applied event/payment ledger. Final source review and final69body pending.",
+        "original_a03_summary": "这些空位不会用长静帧或重复概念撑满。完整三方案对照如果成为后续正式章节，就使用实际动态过程和逐项结果；如果关键证据仍缺，冻结文稿时就明确展示当下边界，并按真实可用内容调整节奏。正式交付仍在20到40分钟内，时间由真正的配音和可用镜头确认。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "target20–40min;unmeasured actualaudio/video",
+        "original_a03_assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。",
+        "prior_a04_claim": {
+          "id": "C05-16",
+          "status": "pending-plan",
+          "narration_locator": "C05-16",
+          "claim_summary": "正式结果段会用实际动态过程和逐项比较来讲，不用长静帧、重复概念或技术编号撑满。证据还缺的地方，就保留明确边界。节奏跟着真实配音和可用镜头调整，最后再核对二十到四十分钟的交付范围。",
+          "source_keys": [
+            "outline"
+          ],
+          "units_and_time": "target20–40min;unmeasured actualaudio/video",
+          "assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。",
+          "original_a03_summary": "这些空位不会用长静帧或重复概念撑满。完整三方案对照如果成为后续正式章节，就使用实际动态过程和逐项结果；如果关键证据仍缺，冻结文稿时就明确展示当下边界，并按真实可用内容调整节奏。正式交付仍在20到40分钟内，时间由真正的配音和可用镜头确认。",
+          "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+          "original_a03_units_and_time": "target20–40min;unmeasured actualaudio/video",
+          "original_a03_assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。"
+        },
+        "prior_A_only_claim_exact": {
+          "id": "C05-16",
+          "status": "supported-actual-A-only-with-stated-bounds",
+          "narration_locator": "C05-16",
+          "claim_summary": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。现在只有方案A有真实终点；B和C仍等待各自结果，还不能排出三方案的赢家。",
+          "source_keys": [
+            "r177-A2-values",
+            "r177-A2-doc"
+          ],
+          "units_and_time": "共同T0至首次到达观测财库raw63754562→62148329 scale1e5，净−1606233=−16.06233；无维护、登船支付或其他支付应用账。B/C与winner NULL。",
+          "assumptions_and_limits": "共同T0至首次到达观测财库raw63754562→62148329 scale1e5，净−1606233=−16.06233；无维护、登船支付或其他支付应用账。B/C与winner NULL。",
+          "original_a03_summary": "这些空位不会用长静帧或重复概念撑满。完整三方案对照如果成为后续正式章节，就使用实际动态过程和逐项结果；如果关键证据仍缺，冻结文稿时就明确展示当下边界，并按真实可用内容调整节奏。正式交付仍在20到40分钟内，时间由真正的配音和可用镜头确认。",
+          "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+          "original_a03_units_and_time": "target20–40min;unmeasured actualaudio/video",
+          "original_a03_assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。",
+          "prior_a04_claim": {
+            "id": "C05-16",
+            "status": "pending-plan",
+            "narration_locator": "C05-16",
+            "claim_summary": "正式结果段会用实际动态过程和逐项比较来讲，不用长静帧、重复概念或技术编号撑满。证据还缺的地方，就保留明确边界。节奏跟着真实配音和可用镜头调整，最后再核对二十到四十分钟的交付范围。",
+            "source_keys": [
+              "outline"
+            ],
+            "units_and_time": "target20–40min;unmeasured actualaudio/video",
+            "assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。",
+            "original_a03_summary": "这些空位不会用长静帧或重复概念撑满。完整三方案对照如果成为后续正式章节，就使用实际动态过程和逐项结果；如果关键证据仍缺，冻结文稿时就明确展示当下边界，并按真实可用内容调整节奏。正式交付仍在20到40分钟内，时间由真正的配音和可用镜头确认。",
+            "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+            "original_a03_units_and_time": "target20–40min;unmeasured actualaudio/video",
+            "original_a03_assumptions_and_limits": "不填长静帧/重复概念；最终时长待真实配音和可用镜头。"
+          }
+        }
+      },
+      "actual_C_endpoint_metrics": {
+        "DATA_record_count": 37,
+        "actor_character_id": 33388,
+        "actual_player_row": {
+          "army_id": 0,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "controllable": true,
+          "current_province_id": 1527,
+          "in_combat": false,
+          "move_target_observable": false,
+          "move_target_province_id": null,
+          "owner_character_id": 33388,
+          "retreating": false,
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null,
+          "soldiers": null,
+          "source": "native"
+        },
+        "commander_character_id": 27357,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "current_soldiers": 6689,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 0,
+        "current_supply_raw": 10190260,
+        "date_raw": 53150280,
+        "exact_arrival_tick": null,
+        "maximum_soldiers": 6747,
+        "native_carmy_id": 0,
+        "public_army_id": 0,
+        "regiment_count": 27,
+        "supply_scale": 100000,
+        "treasury_raw": 62173052,
+        "treasury_scale": 100000
+      },
+      "actual_C_bounds": {
+        "T0_current": 6679,
+        "terminal_current": 6689,
+        "net_current": 10,
+        "max": 6747,
+        "stock_initial_raw": 11037716,
+        "stock_terminal_raw": 10190260,
+        "stock_net_raw": -847456,
+        "treasury_initial_raw": 63754562,
+        "treasury_terminal_raw": 62173052,
+        "treasury_net_raw": -1581510,
+        "boarding_window_treasury_net_raw": -1700000,
+        "day60_treasury_net_raw": 24723,
+        "cash_income_cause": null,
+        "cash_payment_ledger": null,
+        "applied_loss_or_refill_ledger": null,
+        "scope_terminal": {
+          "all_player_total_soldiers": null,
+          "global_health_status": "available",
+          "kind": "required_Main_original_cohort",
+          "required_full_DATA": 37,
+          "required_full_regiments": 27,
+          "required_native_carmy_ids": [
+            0
+          ],
+          "required_public_ids": [
+            0
+          ],
+          "unassessed_CUnit_ids": [],
+          "unassessed_health": null
+        },
+        "historical_unknown_CUnit16777391_health": null,
+        "historical_unknown_window_days": [
+          59,
+          75
+        ],
+        "terminal_unassessed_CUnits": [],
+        "terminal_available_is_not_allplayer_total": true
+      }
+    },
+    {
+      "id": "C06-01",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C06-01",
+      "claim_summary": "带回一次普通行军，可以按出发前、途中、接战前三个时点检查。每次先确认哪支军队、哪个日期、哪个地点，再看数字。不同日期和地点可以比较，但不要拼成一个看似同时存在的军队状态。",
+      "source_keys": [
+        "outline",
+        "terms",
+        "r172-doc"
+      ],
+      "units_and_time": "owner/army/currentdate/place",
+      "assumptions_and_limits": "检查方法；跨时点不拼同时状态。",
+      "original_a03_summary": "把本期内容带回一场普通行军，可以按出发前、途中、接战前三个时点检查。每次先确认你读的是哪支军队、哪个日期、哪个地点，再看数字。不同地点和不同日期的读数可以比较，但不要拼成一个看似同时存在的军队状态。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "owner/army/currentdate/place",
+      "original_a03_assumptions_and_limits": "检查方法；跨时点不拼同时状态。"
+    },
+    {
+      "id": "C06-02",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C06-02",
+      "claim_summary": "出发前，先看当前和满员人数，缺的是哪些兵团。再读补给库存与军队容量、当地用量与补给上限。库存够不够、当地能不能支持当前用量，是不同的问题。军队人数没变，地点条件也仍可能改变。",
+      "source_keys": [
+        "terms",
+        "reader"
+      ],
+      "units_and_time": "current/maxsoldiers;stock/capsupply;localuse/limitsoldiers",
+      "assumptions_and_limits": "单位与位置分开，不将300与3680直接比较。",
+      "original_a03_summary": "出发前先看当前人数和满员数，缺的是哪些具体兵团。再读补给库存与军队容量、当地用量与补给上限。库存够不够、当地能不能支持当前用量是不同问题；军队人数没变，地点条件也仍可能变化。用面板把这些单位分别确认，比较才有意义。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "current/maxsoldiers;stock/capsupply;localuse/limitsoldiers",
+      "original_a03_assumptions_and_limits": "单位与位置分开，不将300与3680直接比较。"
+    },
+    {
+      "id": "C06-03",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C06-03",
+      "claim_summary": "接着看第一段路线、最终目的地和当前整条抵达估计。首段如果有独立时量，就分开保留。费用和损失警告属于当前规划提示，实际行军后还要回看位置、状态和结算；下令成功不代表整条计划完成。",
+      "source_keys": [
+        "r171-summary",
+        "r171-ui",
+        "terms"
+      ],
+      "units_and_time": "storedfirstedge/finaldestination/wholeETA/paymentwarning",
+      "assumptions_and_limits": "预计/下令/到达/支付分开，43−30不造余程。",
+      "original_a03_summary": "接着看路线：当前储存的第一步是什么，最终目的地是什么，界面现在估计多久抵达。首段时量如果有独立读数，就和整条估计分开保留。费用和伤亡警告属于当前规划提示，真实行军后仍要回看实际位置、状态和结算，不能因为下令成功就认为整条计划已经完成。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "storedfirstedge/finaldestination/wholeETA/paymentwarning",
+      "original_a03_assumptions_and_limits": "预计/下令/到达/支付分开，43−30不造余程。"
+    },
+    {
+      "id": "C06-04",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C06-04",
+      "claim_summary": "途中，月变化由正变负、出现移动锁定、剩余路线改变，都需要重读当前状态。库存没变，也不自动说明没有更新：可能还没轮到、条件未通过、当前贡献为零，或增加后碰到容量。前后的日期和库存一起看，才能逐步分开这些解释。",
+      "source_keys": [
+        "clock",
+        "supply",
+        "term-index"
+      ],
+      "units_and_time": "currentmonthlysupply/lock/route/updatesuccessstamp",
+      "assumptions_and_limits": "库存不变有多种入口可能，不从净0独断producer未运行。",
+      "original_a03_summary": "途中，月变化由正变负、锁定状态出现、剩余路线改变，都是重新读当前状态的理由。库存没变也不自动说明没有更新：可能还没轮到、条件没有通过、当前贡献为零，或者成功增加后被容量限制。能读到的更新记录与实际库存结合，才能把这些解释逐步分开。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "currentmonthlysupply/lock/route/updatesuccessstamp",
+      "original_a03_assumptions_and_limits": "库存不变有多种入口可能，不从净0独断producer未运行。"
+    },
+    {
+      "id": "C06-05",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C06-05",
+      "claim_summary": "人数变化以后，检查完整兵团的身份与前后整数。净少或净增多少先说明，原因再按证据判断。补员许可、准备比例和损失预算都不代替实际变化；登陆后条件改变，后续观察重新设基线，不沿用海上的旧条件。",
+      "source_keys": [
+        "r172-doc",
+        "r172-boundaries",
+        "refill-reader"
+      ],
+      "units_and_time": "actualintegercount/permission/prepared/budget",
+      "assumptions_and_limits": "资格/预算不当actualdelta，landing18permission变化需要freshbaseline。",
+      "original_a03_summary": "经过人数变化窗口，就查看完整兵团的前后身份和整数。净少多少可以先说明，具体原因再按证据判断；补员许可、准备比例和当前损耗预算都不代替实际变化。登陆后已经出现新的补员许可时，后续观察重新建立基线，不能把海上端点的条件一直沿用到陆地。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "actualintegercount/permission/prepared/budget",
+      "original_a03_assumptions_and_limits": "资格/预算不当actualdelta，landing18permission变化需要freshbaseline。"
+    },
+    {
+      "id": "C06-06",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C06-06",
+      "claim_summary": "分兵或合军后，重新读原军与新队。兵团归属是否完整，当前与满员人数是否守恒，库存和容量分别变成什么。新队库存暂时高于容量，就按实际值保存。统帅没读到时保持未知，不从容量或头像猜一个人。",
+      "source_keys": [
+        "r173-split",
+        "merge"
+      ],
+      "units_and_time": "full27/37/currentmaxconservation/stock/cap/commander",
+      "assumptions_and_limits": "真实childovercap不改值，commanderunknown不猜。",
+      "original_a03_summary": "分兵和合军之后，重新读存活军队与新分队。看兵团归属有没有齐、当前与满员数是否守恒，库存与容量分别变成什么。像这次新分队库存高于新容量的情况，真实值就按真实值保存。缺少统帅身份时保持未知，不从容量或头像猜出一个确定人选。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "full27/37/currentmaxconservation/stock/cap/commander",
+      "original_a03_assumptions_and_limits": "真实childovercap不改值，commanderunknown不猜。"
+    },
+    {
+      "id": "C06-07",
+      "status": "pending-plan",
+      "narration_locator": "C06-07",
+      "claim_summary": "接战前，确认实际到了哪里，还有哪些队伍在路上，可用人数和库存是多少。当前零损耗只说眼前条件，不保证以后安全；当前正补给也不保证以后一直恢复。然后把到场的真实状态交给战斗判断，让出发计划与现实接起来。",
+      "source_keys": [
+        "outline",
+        "county",
+        "supply"
+      ],
+      "units_and_time": "actualarrival/availablecount/stock/currentattrition",
+      "assumptions_and_limits": "当前0/正率非永远安全或恢复；未来接战检查未执行。",
+      "original_a03_summary": "接战前，确认军队实际已经到达哪个位置、还有哪些队伍在路上，当前可用人数和库存分别是多少。当前零损耗只描述眼前条件，不是以后永久安全；当前正补给也不是未来永远恢复。随后才把这些已读状态交给战斗判断，让出发时的计划与到场时的现实接起来。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "actualarrival/availablecount/stock/currentattrition",
+      "original_a03_assumptions_and_limits": "当前0/正率非永远安全或恢复；未来接战检查未执行。"
+    },
+    {
+      "id": "C06-08",
+      "status": "pending-plan",
+      "narration_locator": "C06-08",
+      "claim_summary": "费用也回看一次。当次收入、完整支出和已经发生的支付，放在各自正确范围里；净收入已经扣过的军费，不再重扣。实际登船支付还没读到，就继续未知。完整账比一个钱包差值更能说明路线到底花了什么。",
+      "source_keys": [
+        "cash",
+        "outline"
+      ],
+      "units_and_time": "personalmonthlynet/currentmilitary/actualpaidevents",
+      "assumptions_and_limits": "军费已含NET不重扣；actualboardingpaymentledgerpending。",
+      "original_a03_summary": "费用也在这个时点回看一次。把当次收入、完整支出和已发生的支付放在正确范围里，当前月净额里的军费已经扣过，就不重复扣。若实际登船支付还没读到，这一项继续未知。完整费用账会比一个钱包差值更清楚地说明，这条路线究竟花了什么。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "personalmonthlynet/currentmilitary/actualpaidevents",
+      "original_a03_assumptions_and_limits": "军费已含NET不重扣；actualboardingpaymentledgerpending。"
+    },
+    {
+      "id": "C06-09",
+      "status": "supported-with-stated-bounds",
+      "narration_locator": "C06-09",
+      "claim_summary": "这些检查已经整理成知识专题，原生数据读取的方法也可以复用。换机器或存档，可以沿用方法；版本、人物、军队和眼前读数仍要重新确认。缺少的信息就保持未知，不靠猜补齐。离线文件检查，也不能当作新的游戏结果。",
+      "source_keys": [
+        "knowledge",
+        "reader",
+        "bindings",
+        "serializer",
+        "county-python",
+        "war-python"
+      ],
+      "units_and_time": "version/actor/army/date/rawscale/availablevsunknown",
+      "assumptions_and_limits": "跨机复用代码合同不外推新存档或新游戏版本验收；0/false不改unknown。",
+      "original_a03_summary": "同样的检查已经沉淀进可复用的原生读取代码、失败值处理和知识专题。换到别的机器或存档，可以复用这些合同和文件复核方法；版本、角色、军队与当次读数仍然重新绑定。缺字段保持未知，合法零与false保留，既有文件核验也不会被当作一次新游戏结果。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "version/actor/army/date/rawscale/availablevsunknown",
+      "original_a03_assumptions_and_limits": "跨机复用代码合同不外推新存档或新游戏版本验收；0/false不改unknown。"
+    },
+    {
+      "id": "C06-10",
+      "status": "supported-actual-closed-sources-narrative-review-separate",
+      "narration_locator": "C06-10",
+      "claim_summary": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。整军直走和换路线各自保留了真实到达观测；分兵方案因冻结条件变化停止，换路线回放又保留采样偏差，因此没有严格三方案的胜负结论。真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。",
+      "source_keys": [
+        "supply",
+        "refill",
+        "r162",
+        "r172-doc",
+        "merge",
+        "r173-qualification",
+        "B-research-published",
+        "C-terminal-actual",
+        "C-terminal-Root-sampling"
+      ],
+      "units_and_time": "Actual source scopes below, scale100000 supply/cash and attrition fraction; originalT0 raw53148432 / END53150592; firstobserved C+77 interval(75,77]. Bmechanism windows separate21/27/32/38.",
+      "assumptions_and_limits": "Main originalcohort only, not allplayer totals. All endpoint integers/cash are net observations; no applied casualty/refill/payment ledger. B STOPPED_GATE_INCOMPLETE; Cdescriptive NOT_GRANTED; no controlledwinner. Audio/media/signoff not granted by text freeze.",
+      "original_a03_summary": "本期已经观察到了补给回满、整数补员、不同窗口的实际兵员减少，以及同日合军和平分的库存与组织变化。完整三方案、真实饥饿和每笔付款还等待各自的实证。你现在可以按这张检查顺序读自己的军队；后续研究则从这些明确的空位继续，让下一条结论有自己的日期、身份和结果。",
+      "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+      "original_a03_units_and_time": "distinctclosedwindowsandpendingABC/starvation/ledger",
+      "original_a03_assumptions_and_limits": "已有观察各自范围；不赋新影片或完整方案信用。",
+      "prior_A_only_claim_exact": {
+        "id": "C06-10",
+        "status": "supported-with-stated-bounds",
+        "narration_locator": "C06-10",
+        "claim_summary": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。完整三方案、真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。",
+        "source_keys": [
+          "supply",
+          "refill",
+          "r162",
+          "r172-doc",
+          "merge",
+          "r173-split",
+          "outline",
+          "r173-qualification"
+        ],
+        "units_and_time": "Closed independentstock/refill/net-loss/merge/splitwindows plus R0173+70→72/+74→76; noABCwinner orfilmcredit",
+        "assumptions_and_limits": "Eachactualwindow keepsownsource/time/cohort; no deathcount/uniqueproducerledger/fullABC outcome.",
+        "original_a03_summary": "本期已经观察到了补给回满、整数补员、不同窗口的实际兵员减少，以及同日合军和平分的库存与组织变化。完整三方案、真实饥饿和每笔付款还等待各自的实证。你现在可以按这张检查顺序读自己的军队；后续研究则从这些明确的空位继续，让下一条结论有自己的日期、身份和结果。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "distinctclosedwindowsandpendingABC/starvation/ledger",
+        "original_a03_assumptions_and_limits": "已有观察各自范围；不赋新影片或完整方案信用。"
+      },
+      "historical_pre_final_claim": {
+        "id": "C06-10",
+        "status": "draft-supported-current-window-final-C-terminal-pending",
+        "narration_locator": "C06-10",
+        "claim_summary": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。本次B的冻结条件没有通过，C又保留采样偏差，因此没有严格三方案的胜负结论。真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。",
+        "source_keys": [
+          "B-research-published",
+          "C-day27-actual",
+          "C-sampling-deviation-1",
+          "C-sampling-deviation-2",
+          "C-day38-Root-actual-policy"
+        ],
+        "units_and_time": "Closed independentstock/refill/net-loss/merge/splitwindows plus R0173+70→72/+74→76; noABCwinner orfilmcredit",
+        "assumptions_and_limits": "Current partial text only. C terminal unknown; not a controlled A/C comparison. Net integers are not an applied event/payment ledger. Final source review and final69body pending.",
+        "original_a03_summary": "本期已经观察到了补给回满、整数补员、不同窗口的实际兵员减少，以及同日合军和平分的库存与组织变化。完整三方案、真实饥饿和每笔付款还等待各自的实证。你现在可以按这张检查顺序读自己的军队；后续研究则从这些明确的空位继续，让下一条结论有自己的日期、身份和结果。",
+        "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+        "original_a03_units_and_time": "distinctclosedwindowsandpendingABC/starvation/ledger",
+        "original_a03_assumptions_and_limits": "已有观察各自范围；不赋新影片或完整方案信用。",
+        "prior_A_only_claim_exact": {
+          "id": "C06-10",
+          "status": "supported-with-stated-bounds",
+          "narration_locator": "C06-10",
+          "claim_summary": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。完整三方案、真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。",
+          "source_keys": [
+            "supply",
+            "refill",
+            "r162",
+            "r172-doc",
+            "merge",
+            "r173-split",
+            "outline",
+            "r173-qualification"
+          ],
+          "units_and_time": "Closed independentstock/refill/net-loss/merge/splitwindows plus R0173+70→72/+74→76; noABCwinner orfilmcredit",
+          "assumptions_and_limits": "Eachactualwindow keepsownsource/time/cohort; no deathcount/uniqueproducerledger/fullABC outcome.",
+          "original_a03_summary": "本期已经观察到了补给回满、整数补员、不同窗口的实际兵员减少，以及同日合军和平分的库存与组织变化。完整三方案、真实饥饿和每笔付款还等待各自的实证。你现在可以按这张检查顺序读自己的军队；后续研究则从这些明确的空位继续，让下一条结论有自己的日期、身份和结果。",
+          "audience_display_policy": "Spoken decimals usually2places/about; exact raw units and bounds retained in this ledger.",
+          "original_a03_units_and_time": "distinctclosedwindowsandpendingABC/starvation/ledger",
+          "original_a03_assumptions_and_limits": "已有观察各自范围；不赋新影片或完整方案信用。"
+        }
+      },
+      "actual_C_endpoint_metrics": {
+        "DATA_record_count": 37,
+        "actor_character_id": 33388,
+        "actual_player_row": {
+          "army_id": 0,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "controllable": true,
+          "current_province_id": 1527,
+          "in_combat": false,
+          "move_target_observable": false,
+          "move_target_province_id": null,
+          "owner_character_id": 33388,
+          "retreating": false,
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null,
+          "soldiers": null,
+          "source": "native"
+        },
+        "commander_character_id": 27357,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "current_soldiers": 6689,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 0,
+        "current_supply_raw": 10190260,
+        "date_raw": 53150280,
+        "exact_arrival_tick": null,
+        "maximum_soldiers": 6747,
+        "native_carmy_id": 0,
+        "public_army_id": 0,
+        "regiment_count": 27,
+        "supply_scale": 100000,
+        "treasury_raw": 62173052,
+        "treasury_scale": 100000
+      },
+      "actual_C_bounds": {
+        "T0_current": 6679,
+        "terminal_current": 6689,
+        "net_current": 10,
+        "max": 6747,
+        "stock_initial_raw": 11037716,
+        "stock_terminal_raw": 10190260,
+        "stock_net_raw": -847456,
+        "treasury_initial_raw": 63754562,
+        "treasury_terminal_raw": 62173052,
+        "treasury_net_raw": -1581510,
+        "boarding_window_treasury_net_raw": -1700000,
+        "day60_treasury_net_raw": 24723,
+        "cash_income_cause": null,
+        "cash_payment_ledger": null,
+        "applied_loss_or_refill_ledger": null,
+        "scope_terminal": {
+          "all_player_total_soldiers": null,
+          "global_health_status": "available",
+          "kind": "required_Main_original_cohort",
+          "required_full_DATA": 37,
+          "required_full_regiments": 27,
+          "required_native_carmy_ids": [
+            0
+          ],
+          "required_public_ids": [
+            0
+          ],
+          "unassessed_CUnit_ids": [],
+          "unassessed_health": null
+        },
+        "historical_unknown_CUnit16777391_health": null,
+        "historical_unknown_window_days": [
+          59,
+          75
+        ],
+        "terminal_unassessed_CUnits": [],
+        "terminal_available_is_not_allplayer_total": true
+      }
+    }
+  ],
+  "pending_slots": [
+    {
+      "id": "P-ABC-CONTROLLED",
+      "status": "not_granted",
+      "needs": "New qualified experiment; current Bgatefailed and C15samplingdeviations cannot yield controlledwinner"
+    },
+    {
+      "id": "P-STARVATION",
+      "status": "pending",
+      "needs": "Actual starvation threshold/state/integers evidence"
+    },
+    {
+      "id": "P-APPLIED-LEDGER",
+      "status": "pending",
+      "needs": "Actual applied losses/refill/payments distinct from endpointnet"
+    },
+    {
+      "id": "P-REVIEW01",
+      "status": "production_pending",
+      "needs": "Actual minimalnewvoice/English/subtitles/picture/movieaudit; humanreview/signoff separate"
+    }
+  ],
+  "overall_research_completion_percent": null,
+  "actual_audio_duration_seconds": null,
+  "actual_video_duration_seconds": null,
+  "ABC_winner": null,
+  "R0173_master_integration": "published700b; originalday44 split summary remains historical source",
+  "authority_limits": {
+    "newSDKqueries": 0,
+    "newUIactions": 0,
+    "newgamecalls": 0,
+    "newproviders": 0,
+    "newmediareads": 0,
+    "newGitcalls": 0,
+    "newsecuritycalls": 0,
+    "newtaskbuscalls": 0,
+    "clean_spans_certified": false,
+    "human_full_1x_review": false,
+    "signoff": false
+  },
+  "draft_direction": "Player-readable body; internal run IDs/Root/37DATA/raw/SHA/low-level update fields are ledger-only.",
+  "ABC_results": {
+    "A": {
+      "first_observed_elapsed_days": 51,
+      "observed_arrival_interval_days": [
+        49,
+        51
+      ],
+      "observed_arrival_interval_endpoint_inclusion": "(49,51]",
+      "exact_arrival_tick": null,
+      "current_soldiers": {
+        "initial": 6679,
+        "terminal": 6689,
+        "net": 10
+      },
+      "maximum_soldiers": 6747,
+      "supply_raw": {
+        "initial": 11037716,
+        "terminal": 10613988,
+        "net": -423728,
+        "scale": 100000
+      },
+      "treasury_raw": {
+        "initial": 63754562,
+        "terminal": 62148329,
+        "net": -1606233,
+        "scale": 100000
+      },
+      "payment_ledger": null,
+      "source_key": "r177-A2-values"
+    },
+    "B": {
+      "status": "STOPPED_GATE_INCOMPLETE",
+      "London_endpoint_metrics": null,
+      "arrival_comparable": false,
+      "actual_days_used": 38,
+      "remaining_original_days": 52,
+      "controlled_comparison_eligibility": "GATE_FAILED",
+      "winner": null
+    },
+    "C": {
+      "London_endpoint_metrics": {
+        "DATA_record_count": 37,
+        "actor_character_id": 33388,
+        "actual_player_row": {
+          "army_id": 0,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "controllable": true,
+          "current_province_id": 1527,
+          "in_combat": false,
+          "move_target_observable": false,
+          "move_target_province_id": null,
+          "owner_character_id": 33388,
+          "retreating": false,
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null,
+          "soldiers": null,
+          "source": "native"
+        },
+        "commander_character_id": 27357,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "current_soldiers": 6689,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 0,
+        "current_supply_raw": 10190260,
+        "date_raw": 53150280,
+        "exact_arrival_tick": null,
+        "maximum_soldiers": 6747,
+        "native_carmy_id": 0,
+        "public_army_id": 0,
+        "regiment_count": 27,
+        "supply_scale": 100000,
+        "treasury_raw": 62173052,
+        "treasury_scale": 100000
+      },
+      "absolute_END_raw": 53150592,
+      "actual_days_used": 77.0,
+      "applied_refill_payment_ledger": null,
+      "closed": true,
+      "common_T0_raw": 53148432,
+      "controlled_comparison_eligibility": "NOT_GRANTED",
+      "episode_run_id": "native-33388-1be6dd7a468f",
+      "global_budget_breach": false,
+      "observed_arrival_interval_days": [
+        75.0,
+        77.0
+      ],
+      "observed_terminal_date_raw": 53150280,
+      "sampling_deviations": [
+        {
+          "actual_days": 2,
+          "observed_days": [
+            12,
+            14
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-01.json",
+            "bytes": 325,
+            "sha256": "c66a2c24ffc1616d8e8a07a187b21776bae11debbcfb5128df4f260520b10995"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            20,
+            22
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-02.json",
+            "bytes": 325,
+            "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            29,
+            31
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-03.json",
+            "bytes": 325,
+            "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            34,
+            36
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-04.json",
+            "bytes": 325,
+            "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            40,
+            42
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-05.json",
+            "bytes": 325,
+            "sha256": "076267bb1ce5454fabcd8105968e019529da6e77508e65150101e4710a07e386"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            45,
+            47
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-06.json",
+            "bytes": 325,
+            "sha256": "c8cc79b46cbe77a605319937f164b90941e0198abaecef7391de6a3ea637f952"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            49,
+            51
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-07.json",
+            "bytes": 325,
+            "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            53,
+            55
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-08.json",
+            "bytes": 325,
+            "sha256": "20765b1135613b504baadc66e6f5721706ba86de98b11d21354a83cdaa4cf625"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            57,
+            59
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-09.json",
+            "bytes": 247,
+            "sha256": "d551cac1b8538587bbdabb838423bc7503108d473ce5f739ef063d3c6a8cbf93"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            60,
+            62
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-10.json",
+            "bytes": 325,
+            "sha256": "ac99d55d79bb808696d805791f0372195c16dc1ca21f13657ff4e91c6217dc8f"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            63,
+            65
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-11.json",
+            "bytes": 325,
+            "sha256": "2c3ab3672a2b2f06389ecb4981cd8d4b0a9527ddc65b6d3c52524e3274bddbe5"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            66,
+            68
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-12.json",
+            "bytes": 325,
+            "sha256": "b625a68f61b9fce6797c0ca8b63c6fe9b94152f91273829ab43c45f6529b9bef"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            70,
+            72
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-13.json",
+            "bytes": 325,
+            "sha256": "06a6e2f8de4b259cae94afa26e26512d79d2189a10fc8a505b2ca85dcb855f47"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            72,
+            74
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-14.json",
+            "bytes": 325,
+            "sha256": "ee9db71c945c1cd36c3469cc17c4331aac9a071926b6ab7fa942e81908706558"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            75,
+            77
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-15.json",
+            "bytes": 329,
+            "sha256": "92cf9cb37d2640c822a4219ae1745fa9b5ac0e0894ec3178c9d337054270b5ba"
+          }
+        }
+      ],
+      "source_sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817",
+      "status": "ARRIVED_LONDON",
+      "subject_scope": {
+        "all_player_total_soldiers": null,
+        "global_health_status": "available",
+        "kind": "required_Main_original_cohort",
+        "required_full_DATA": 37,
+        "required_full_regiments": 27,
+        "required_native_carmy_ids": [
+          0
+        ],
+        "required_public_ids": [
+          0
+        ],
+        "unassessed_CUnit_ids": [],
+        "unassessed_health": null
+      },
+      "winner": null
+    }
+  },
+  "voice_revision_source_commit": "0f76a463df4e842eb415f54fd65bfa180c6d015b",
+  "late_source_commit": "700b6917ad7ee1a9ca7bcb930b114f8bd4f11498",
+  "note": "Existing source cuts and raw units are preserved; new body may use approximate displays. Updated qualifiedsite/refill/stockfacts cite separate formal late source, not altered old raw.",
+  "historical_a03_pending_slots": [
+    {
+      "id": "P-ABC",
+      "status": "pending",
+      "needs": "Three actual comparable qualified same-start runs, result table and any winner"
+    },
+    {
+      "id": "P-STARVATION",
+      "status": "pending",
+      "needs": "William actual threshold crossing, state and integer writeback, same-window loss/refill/events"
+    },
+    {
+      "id": "P-R0173-RECOVERY",
+      "status": "pending",
+      "needs": "Separated actual positions, fresh conditions and successful stock/count update"
+    },
+    {
+      "id": "P-APPLIED-LEDGER",
+      "status": "pending",
+      "needs": "Actual applied loss/refill execution and payment ledger; endpoint net values alone insufficient"
+    },
+    {
+      "id": "P-MERGE-UPPERCLAMP",
+      "status": "pending",
+      "needs": "Actual weightedmerge preclamp above resultingcapacity and actual clamp output"
+    },
+    {
+      "id": "P-LOCK-BOUNDARY",
+      "status": "pending",
+      "needs": "Actual loadedcutoff and exact50percent live behavior"
+    },
+    {
+      "id": "P-MEDIA",
+      "status": "pending",
+      "needs": "Sentencefreeze/TTS/actualtiming/encodedclean spans/full1xreview/signoff; none granted here"
+    }
+  ],
+  "authority_limits_scope": "Source-bound narration candidate only; no new audio/movie/continuousclean/human1x/signoff. Root source review is a separate receipt, not implied by final_freeze text immutability.",
+  "original_body_source": {
+    "path": "six-chapter-player-narration-a04.md",
+    "bytes": 21969,
+    "sha256": "430f3d9966596a9fbdb267365c0b805a1b1c9a9eb79e0766a89bd4290642c6cc"
+  },
+  "original_a04_ledger": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-oral-draft-a04\\claim-ledger-player-a04.json",
+    "bytes": 112913,
+    "sha256": "77bb6290949ce9e40a8fed7ac95f34742dc34a3ac1e2d9d1ffbfb60893a20225"
+  },
+  "source_cut": "Actual descriptive C London endpoint +77; exact Root terminal/newavailable Main scope/latest15deviations bound. Root narrative review pending in separate hash-bound receipt.",
+  "baseline_a04_audio_seconds": 1564.752,
+  "changed_paragraph_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "a05_A_only_authority_limits": [
+    "Numeric A completion is 1 of 3 arms, not a weighted overall research or film completion percentage.",
+    "No media reread, encoded clean spans or human review/signoff granted by narration/source projection.",
+    "Treasury/soldiers are net observations; application causes and payment ledger remain unknown.",
+    "The original a04 full narration, ledger, audio and native manifest remain unchanged."
+  ],
+  "final_freeze": true,
+  "source_review_status": "SEPARATE_HASH_BOUND_ROOT_REVIEW_REQUIRED",
+  "C_controlled_comparison_eligibility": "NOT_GRANTED",
+  "required_final_endpoint_fields": [
+    "status",
+    "observed_terminal_date_raw",
+    "actual_days_used",
+    "London_endpoint_metrics",
+    "observed_arrival_interval_days",
+    "controlled_comparison_eligibility",
+    "sampling_deviations",
+    "global_budget_breach"
+  ],
+  "current_C_source_cut_day": 77,
+  "required_sampling_deviation_windows": [
+    [
+      12,
+      14
+    ],
+    [
+      20,
+      22
+    ],
+    [
+      29,
+      31
+    ],
+    [
+      34,
+      36
+    ],
+    [
+      40,
+      42
+    ],
+    [
+      45,
+      47
+    ],
+    [
+      49,
+      51
+    ],
+    [
+      53,
+      55
+    ],
+    [
+      57,
+      59
+    ],
+    [
+      60,
+      62
+    ],
+    [
+      63,
+      65
+    ],
+    [
+      66,
+      68
+    ],
+    [
+      70,
+      72
+    ],
+    [
+      72,
+      74
+    ],
+    [
+      75,
+      77
+    ]
+  ],
+  "sampling_requirements_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-terminal-Root-review.json",
+    "bytes": 16482,
+    "sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b"
+  },
+  "C_subject_scope": {
+    "all_player_total_soldiers": null,
+    "global_health_status": "available",
+    "kind": "required_Main_original_cohort",
+    "required_full_DATA": 37,
+    "required_full_regiments": 27,
+    "required_native_carmy_ids": [
+      0
+    ],
+    "required_public_ids": [
+      0
+    ],
+    "unassessed_CUnit_ids": [],
+    "unassessed_health": null
+  },
+  "C_Main_scope_source_sha256": "cddd162f23396adf95c06ee4048be466d9795484a5a5b3eab695a84584419a57",
+  "historical_pre_final_metadata": {
+    "schema": "ck3.e04.final-BC-claim-ledger-template.v1",
+    "created_utc": "2026-10-05T17:54:30.882041+00:00",
+    "source_cut": "A2 numeric observed completion closed; B/C remain pending; a04 unchanged paragraphs preserved.",
+    "source_review_status": null,
+    "current_C_source_cut_day": 38,
+    "required_sampling_deviation_windows": [
+      [
+        12,
+        14
+      ],
+      [
+        20,
+        22
+      ],
+      [
+        29,
+        31
+      ],
+      [
+        34,
+        36
+      ]
+    ],
+    "authority_limits_scope": "File-only a04 editorial preparation. Separate actual stable-audio run has6produced MP3s and66s sum; no whole-a04audio or video measured.",
+    "changed_paragraph_ids": [
+      "C05-03",
+      "C05-15",
+      "C05-16"
+    ],
+    "pending_slots": [
+      {
+        "id": "P-ABC",
+        "status": "A-only-observed-completion; B/C-pending",
+        "needs": "B/C comparable common-start actual endpoints, complete comparison and any justified recommendation; no winner yet",
+        "closed_arms": [
+          "A"
+        ],
+        "planned_arms": 3
+      },
+      {
+        "id": "P-STARVATION",
+        "status": "pending",
+        "needs": "William actual threshold crossing, state and integer writeback, same-window loss/refill/events"
+      },
+      {
+        "id": "P-R0173-RECOVERY",
+        "status": "numeric-supported-with-stated-bounds",
+        "source_key": "r173-qualification",
+        "closed": "Separated stationary currentinputs, independent+7/+3integer and Mainstock+20 actualwindows.",
+        "still_pending": "Full samewhole-startB route/rest/remerge/arrival and comparativeA/B/C result."
+      },
+      {
+        "id": "P-APPLIED-LEDGER",
+        "status": "pending",
+        "needs": "Actual applied loss/refill execution and payment ledger; endpoint net values alone insufficient"
+      },
+      {
+        "id": "P-MERGE-UPPERCLAMP",
+        "status": "pending",
+        "needs": "Actual weightedmerge preclamp above resultingcapacity and actual clamp output"
+      },
+      {
+        "id": "P-LOCK-BOUNDARY",
+        "status": "pending",
+        "needs": "Actual loadedcutoff and exact50percent live behavior"
+      },
+      {
+        "id": "P-MEDIA",
+        "status": "pending",
+        "needs": "Sentencefreeze/TTS/actualtiming/encodedclean spans/full1xreview/signoff; none granted here"
+      }
+    ]
+  },
+  "subtitle_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "C_sampling_Root_receipt_sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b",
+  "C_terminal_source_sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817",
+  "historical_a05_pending_slots_exact": [
+    {
+      "id": "P-ABC",
+      "status": "A-only-observed-completion; B/C-pending",
+      "needs": "B/C comparable common-start actual endpoints, complete comparison and any justified recommendation; no winner yet",
+      "closed_arms": [
+        "A"
+      ],
+      "planned_arms": 3
+    },
+    {
+      "id": "P-STARVATION",
+      "status": "pending",
+      "needs": "William actual threshold crossing, state and integer writeback, same-window loss/refill/events"
+    },
+    {
+      "id": "P-R0173-RECOVERY",
+      "status": "numeric-supported-with-stated-bounds",
+      "source_key": "r173-qualification",
+      "closed": "Separated stationary currentinputs, independent+7/+3integer and Mainstock+20 actualwindows.",
+      "still_pending": "Full samewhole-startB route/rest/remerge/arrival and comparativeA/B/C result."
+    },
+    {
+      "id": "P-APPLIED-LEDGER",
+      "status": "pending",
+      "needs": "Actual applied loss/refill execution and payment ledger; endpoint net values alone insufficient"
+    },
+    {
+      "id": "P-MERGE-UPPERCLAMP",
+      "status": "pending",
+      "needs": "Actual weightedmerge preclamp above resultingcapacity and actual clamp output"
+    },
+    {
+      "id": "P-LOCK-BOUNDARY",
+      "status": "pending",
+      "needs": "Actual loadedcutoff and exact50percent live behavior"
+    },
+    {
+      "id": "P-MEDIA",
+      "status": "pending",
+      "needs": "Sentencefreeze/TTS/actualtiming/encodedclean spans/full1xreview/signoff; none granted here"
+    }
+  ],
+  "Root_single_bridge_revision": {
+    "previous_body": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\six-chapter-final-BC-Chinese-a06.md",
+      "bytes": 23938,
+      "sha256": "aa5336e4a57dd58baad2c9cabb88a9a870e27494e2c9366e89c0577223b6a5ef"
+    },
+    "previous_ledger": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\claim-ledger-final-BC-a06.json",
+      "bytes": 198195,
+      "sha256": "225596f54939e9aba215c2acaeaed1a87ae323efa3b909b53bed7713ebfe4928"
+    },
+    "changed_only_paragraph": "C05-14",
+    "appended_exact_Chinese": "下面回到整军直走的A。",
+    "other68_Chinese_paragraphs_exact": true,
+    "stable_C05_15_audio_not_changed": true,
+    "required_picture_A_label_at_C05_15_16_start": true
+  }
+}

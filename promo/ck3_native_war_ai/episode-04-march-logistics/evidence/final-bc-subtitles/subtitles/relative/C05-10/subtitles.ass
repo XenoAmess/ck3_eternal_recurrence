@@ -1,0 +1,42 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:02.26,Chinese,C05-10-S01,0,0,0,,{\an8\pos(960,935)}接着看两个不同的窗口。
+Dialogue: 0,0:00:00.10,0:00:02.26,English,C05-10-S01,0,0,0,,{\an8\pos(960,1030)}Next, consider two separate observation windows.
+Dialogue: 0,0:00:02.90,0:00:08.90,Chinese,C05-10-S02,0,0,0,,{\an8\pos(960,935)}起点后的第二十六到二十七日，主军人数净增七，新分队净增三，
+Dialogue: 0,0:00:02.90,0:00:08.90,English,C05-10-S02,0,0,0,,{\an8\pos(960,1030)}Between days 26 and 27, the main army gained seven soldiers net; the new group gained three.
+Dialogue: 0,0:00:09.16,0:00:10.60,Chinese,C05-10-S03,0,0,0,,{\an8\pos(960,935)}两端库存相同。
+Dialogue: 0,0:00:09.16,0:00:10.60,English,C05-10-S03,0,0,0,,{\an8\pos(960,1030)}Supply was unchanged at both endpoints.
+Dialogue: 0,0:00:11.23,0:00:18.23,Chinese,C05-10-S04,0,0,0,,{\an8\pos(960,935)}第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，
+Dialogue: 0,0:00:11.23,0:00:18.23,English,C05-10-S04,0,0,0,,{\an8\pos(960,1030)}Between days 31 and 32, main-army supply rose from about 106.14 to 126.14.
+Dialogue: 0,0:00:18.50,0:00:20.36,Chinese,C05-10-S05,0,0,0,,{\an8\pos(960,935)}新分队两端都是一百，
+Dialogue: 0,0:00:18.50,0:00:20.36,English,C05-10-S05,0,0,0,,{\an8\pos(960,1030)}The new group had 100 at both endpoints.
+Dialogue: 0,0:00:20.73,0:00:23.40,Chinese,C05-10-S06,0,0,0,,{\an8\pos(960,935)}完整兵团的人数与编制也没变。
+Dialogue: 0,0:00:20.73,0:00:23.40,English,C05-10-S06,0,0,0,,{\an8\pos(960,1030)}The full regiment roster and soldier counts were also unchanged.
+Dialogue: 0,0:00:24.00,0:00:27.73,Chinese,C05-10-S07,0,0,0,,{\an8\pos(960,935)}人数净变化与补给增加各记自己的日期，
+Dialogue: 0,0:00:24.00,0:00:27.73,English,C05-10-S07,0,0,0,,{\an8\pos(960,1030)}Record soldier changes and supply gains on their own dates.
+Dialogue: 0,0:00:28.06,0:00:29.86,Chinese,C05-10-S08,0,0,0,,{\an8\pos(960,935)}不能剪成同一次结算。
+Dialogue: 0,0:00:28.06,0:00:29.86,English,C05-10-S08,0,0,0,,{\an8\pos(960,1030)}Keep these windows separate.
+Dialogue: 0,0:00:30.46,0:00:33.16,Chinese,C05-10-S09,0,0,0,,{\an8\pos(960,935)}后来两军回到同地实际合军，
+Dialogue: 0,0:00:30.46,0:00:33.16,English,C05-10-S09,0,0,0,,{\an8\pos(960,1030)}Later, the two armies reunited at the same location and actually merged.
+Dialogue: 0,0:00:33.53,0:00:36.70,Chinese,C05-10-S10,0,0,0,,{\an8\pos(960,935)}合前补给约一百二十六点一四和一百。
+Dialogue: 0,0:00:33.53,0:00:36.70,English,C05-10-S10,0,0,0,,{\an8\pos(960,1030)}Before merging, their supply was about 126.14 and 100.
+Dialogue: 0,0:00:37.30,0:00:41.13,Chinese,C05-10-S11,0,0,0,,{\an8\pos(960,935)}按双方各自的合军权重加权、分别取整，
+Dialogue: 0,0:00:37.30,0:00:41.13,English,C05-10-S11,0,0,0,,{\an8\pos(960,1030)}Apply each army's merge weight and round down each contribution.
+Dialogue: 0,0:00:41.50,0:00:43.76,Chinese,C05-10-S12,0,0,0,,{\an8\pos(960,935)}得到约一百一十三点零六。
+Dialogue: 0,0:00:41.50,0:00:43.76,English,C05-10-S12,0,0,0,,{\an8\pos(960,1030)}The result is about 113.06.
+Dialogue: 0,0:00:44.36,0:00:47.93,Chinese,C05-10-S13,0,0,0,,{\an8\pos(960,935)}合后容量读到一百，库存实际也是一百。
+Dialogue: 0,0:00:44.36,0:00:47.93,English,C05-10-S13,0,0,0,,{\an8\pos(960,1030)}After merging, capacity was 100, and actual supply was also 100.
+Dialogue: 0,0:00:48.56,0:00:51.43,Chinese,C05-10-S14,0,0,0,,{\an8\pos(960,935)}这个窗口能单独确认上限截断，
+Dialogue: 0,0:00:48.56,0:00:51.43,English,C05-10-S14,0,0,0,,{\an8\pos(960,1030)}This window independently confirms the upper-cap clamp.
+Dialogue: 0,0:00:51.80,0:00:54.60,Chinese,C05-10-S15,0,0,0,,{\an8\pos(960,935)}不能用两队库存的普通平均代替。
+Dialogue: 0,0:00:51.80,0:00:54.60,English,C05-10-S15,0,0,0,,{\an8\pos(960,1030)}A simple average of the two supply stocks cannot replace that calculation.

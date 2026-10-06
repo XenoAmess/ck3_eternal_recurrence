@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:09.53,Chinese,C05-13-S01,0,0,0,,{\an8\pos(960,910)}累计费用要逐笔记实际发生的维护、登船支付、\N期间收入和其他支付，并使用一致日期范围对账。
+Dialogue: 0,0:00:00.10,0:00:09.53,English,C05-13-S01,0,0,0,,{\an8\pos(960,1008)}Accumulated costs need actual records of maintenance,\Nembarkation payments, income, and other payments over the same dates.
+Dialogue: 0,0:00:10.16,0:00:14.46,Chinese,C05-13-S02,0,0,0,,{\an8\pos(960,935)}钱包变少多少，是混合这些来源的净现金变化；
+Dialogue: 0,0:00:10.16,0:00:14.46,English,C05-13-S02,0,0,0,,{\an8\pos(960,1030)}A treasury decrease is a net gold change combining those sources.
+Dialogue: 0,0:00:14.93,0:00:18.33,Chinese,C05-13-S03,0,0,0,,{\an8\pos(960,935)}地图上“会支付登船费”只是当时提示。
+Dialogue: 0,0:00:14.93,0:00:18.33,English,C05-13-S03,0,0,0,,{\an8\pos(960,1030)}The map's embarkation warning is only the prediction at that moment.
+Dialogue: 0,0:00:18.93,0:00:24.40,Chinese,C05-13-S04,0,0,0,,{\an8\pos(960,935)}没读到实际付款，就留空，不能把余额差改名为纯行军费。
+Dialogue: 0,0:00:18.93,0:00:24.40,English,C05-13-S04,0,0,0,,{\an8\pos(960,1008)}Without an actual payment reading, leave the field empty.\NDo not rename the treasury difference “marching costs.”

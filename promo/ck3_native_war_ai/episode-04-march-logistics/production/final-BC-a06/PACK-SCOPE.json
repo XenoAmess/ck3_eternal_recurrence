@@ -1,0 +1,13 @@
+{
+  "schema": "ck3.e04.production-text-pack-scope.v1",
+  "actual_source_run": "e04-final-BC-audio-production-a01",
+  "carried_text_only": true,
+  "recorded_actual_seconds": 1735.776,
+  "Root_Chinese_review_sha256": "5874bd3c5cc0557a61a47a66fb3788841ed1dd78c00eb02ebe6323cc6902428f",
+  "old_failed_attempts_and_inputs_retained_in_original_locations": true,
+  "no_old_assets_overwritten_or_removed": true,
+  "old_research_sourcepacks_not_copied": true,
+  "source_audio_RAW_not_read_or_hashed_by_builder": true,
+  "subtitle_picture_and_finalfilm_code_ownership_separate": true,
+  "human_listening_fullfilm_signoff": false
+}

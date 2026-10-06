@@ -1,0 +1,20 @@
+{
+  "status": "ACTUAL_INPUTS_VALIDATED_NOT_SUBTITLES_BUILT",
+  "changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "actual_PCM_samples": 41658624,
+  "actual_seconds": 1735.776,
+  "actual_new_fragments": 7,
+  "source_request": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-final-subtitle-request-a02.json",
+    "bytes": 5225,
+    "sha256": "cff021b01bbd26d13fec7a4d5bed2661797d2e779973aa04c9d9b5a5c5f535c3"
+  }
+}

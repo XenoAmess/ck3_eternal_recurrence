@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:05.10,Chinese,C06-03-S01,0,0,0,,{\an8\pos(960,935)}接着看第一段路线、最终目的地和当前整条抵达估计。
+Dialogue: 0,0:00:00.10,0:00:05.10,English,C06-03-S01,0,0,0,,{\an8\pos(960,1030)}Next, check the first leg, final destination, and current whole-route arrival estimate.
+Dialogue: 0,0:00:05.70,0:00:08.83,Chinese,C06-03-S02,0,0,0,,{\an8\pos(960,935)}首段如果有独立时量，就分开保留。
+Dialogue: 0,0:00:05.70,0:00:08.83,English,C06-03-S02,0,0,0,,{\an8\pos(960,1030)}Keep any separate first-leg time reading distinct.
+Dialogue: 0,0:00:09.46,0:00:16.86,Chinese,C06-03-S03,0,0,0,,{\an8\pos(960,935)}费用和损失警告属于当前规划提示，实际行军后还要回看位置、状态和结算；
+Dialogue: 0,0:00:09.46,0:00:16.86,English,C06-03-S03,0,0,0,,{\an8\pos(960,1008)}Cost and loss warnings describe the current plan.\NAfter marching, check location, state, and actual settlement again.
+Dialogue: 0,0:00:17.06,0:00:20.03,Chinese,C06-03-S04,0,0,0,,{\an8\pos(960,935)}下令成功不代表整条计划完成。
+Dialogue: 0,0:00:17.06,0:00:20.03,English,C06-03-S04,0,0,0,,{\an8\pos(960,1030)}A successful order does not mean the whole plan is complete.

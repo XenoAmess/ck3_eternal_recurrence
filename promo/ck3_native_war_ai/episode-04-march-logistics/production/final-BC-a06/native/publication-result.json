@@ -1,0 +1,42 @@
+{
+  "mode": "ACTUAL_PUBLIC_LIBRARY_API",
+  "status": "SERIAL_PUBLICATION_AND_NATIVE_VALIDATION_RETURNED_ZERO",
+  "started_utc": "2026-10-06T00:38:48.931860+00:00",
+  "finished_utc": "2026-10-06T00:39:47.878693+00:00",
+  "completed_count": 118,
+  "queued_count": 118,
+  "before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-run\\run-manifest.json",
+    "bytes": 711,
+    "sha256": "a3638c2d3ad683b4e56d8c3071194c75897369dd845ca70a1d62b0ce78264952"
+  },
+  "after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-run\\run-manifest.json",
+    "bytes": 53335,
+    "sha256": "5d631ff0485f4e398b85b0886b2a931d73798b979fb2b91273d250407b91c557"
+  },
+  "final_validation": {
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "xar_promo",
+      "validate",
+      "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-run\\run-manifest.json",
+      "--json"
+    ],
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-publication-a01\\validate-stdout.txt",
+      "bytes": 262,
+      "sha256": "aad8231dd8124698b869315044a9639f2a8fdcfaa88ce2fbd0437413491e6165"
+    },
+    "stderr": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-publication-a01\\validate-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "human_signoff": false,
+  "film_or_external_publication_credit": false
+}

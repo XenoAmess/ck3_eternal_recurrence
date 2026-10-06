@@ -1,0 +1,15 @@
+{
+  "schema": "ck3.e04.production-pack-interpreter-provenance.v1",
+  "actual_pack_builder_utc": "2026-10-06T00:52:46.635230+00:00",
+  "explicit_main_venv_python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "actual_python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "actual_packages": {
+    "xar-promo-toolchain": "0.2.1",
+    "Pillow": "12.3.0",
+    "edge-tts": "7.2.8"
+  },
+  "production_interpreter_from_fresh_query": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "production_wheel_SHA256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+  "install_actions": 0,
+  "package_builder_provider_media_SDK_UI_Game_Git_calls": 0
+}

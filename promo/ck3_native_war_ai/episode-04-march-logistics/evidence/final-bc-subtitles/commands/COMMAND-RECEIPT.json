@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.actual-subtitle-production-command-receipt/v1",
+  "created_utc": "2026-10-06T00:45:26.395842+00:00",
+  "commands": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-execution-ready-a01\\final_subtitle_increment_a03.py",
+        "validate",
+        "--request",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-final-subtitle-request-a02.json",
+        "--output",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-input-validation-a02.json"
+      ],
+      "started_utc": "2026-10-06T00:45:26.395918+00:00",
+      "finished_utc": "2026-10-06T00:45:26.681900+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "92ad890520a3084ed6a424672a962ddbad28cdccca89eea70b761c7de89d63c0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-execution-ready-a01\\final_subtitle_increment_a03.py",
+        "build",
+        "--request",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-final-subtitle-request-a02.json",
+        "--output",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02"
+      ],
+      "started_utc": "2026-10-06T00:45:26.682007+00:00",
+      "finished_utc": "2026-10-06T00:45:27.738582+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "5591e92df653dbc9ae6084458c294bc6945c0f8b8f8fcc5d6e3a040e2fba3317",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "provider_calls": 0,
+  "movie_reads": 0,
+  "human_signoff": false,
+  "status": "ACTUAL_SUBTITLE_BUILD_COMPLETED"
+}

@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:07.93,Chinese,C05-15-S01,0,0,0,,{\an8\pos(960,935)}这一方案从六千六百七十九人出发，抵达观测时是六千六百八十九人，净增十人。
+Dialogue: 0,0:00:00.10,0:00:07.93,English,C05-15-S01,0,0,0,,{\an8\pos(960,1030)}This plan started with 6,679 soldiers. At the arrival observation it had 6,689, a net gain of 10.
+Dialogue: 0,0:00:08.53,0:00:13.66,Chinese,C05-15-S02,0,0,0,,{\an8\pos(960,935)}完整二十七个兵团都还在，满员数仍是六千七百四十七。
+Dialogue: 0,0:00:08.53,0:00:13.66,English,C05-15-S02,0,0,0,,{\an8\pos(960,1030)}All 27 regiments were still present, and their total maximum soldier count remained 6,747.
+Dialogue: 0,0:00:14.30,0:00:18.43,Chinese,C05-15-S03,0,0,0,,{\an8\pos(960,935)}补给从约一百一十点三八变为一百零六点一四。
+Dialogue: 0,0:00:14.30,0:00:18.43,English,C05-15-S03,0,0,0,,{\an8\pos(960,1030)}Supply went from about 110.38 to 106.14.
+Dialogue: 0,0:00:19.03,0:00:21.73,Chinese,C05-15-S04,0,0,0,,{\an8\pos(960,935)}净增十人只说旅途两端的差，
+Dialogue: 0,0:00:19.03,0:00:21.73,English,C05-15-S04,0,0,0,,{\an8\pos(960,1030)}The gain of 10 is only the difference between the two endpoints.
+Dialogue: 0,0:00:22.10,0:00:27.16,Chinese,C05-15-S05,0,0,0,,{\an8\pos(960,935)}不表示途中没有死伤，也不表示已经逐次读到了补员结算。
+Dialogue: 0,0:00:22.10,0:00:27.16,English,C05-15-S05,0,0,0,,{\an8\pos(960,1008)}It does not mean there were no casualties along the way,\Nor that every reinforcement update was observed.

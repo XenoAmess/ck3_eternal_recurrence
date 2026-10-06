@@ -1,0 +1,26 @@
+{
+  "queried_utc": "2026-10-06T00:38:37.185618+00:00",
+  "API": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/latest",
+  "response": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\latest-release-response.json",
+    "bytes": 7123,
+    "sha256": "ef6ec6090bf0b1f2c5a43fe0d3cd5aed60571b823896c07863b32c4c7b89003f"
+  },
+  "latest_tag": "v0.2.1",
+  "installed_version": "0.2.1",
+  "wheel_digest": "sha256:f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+  "direct_url": {
+    "archive_info": {
+      "hash": "sha256=f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+      "hashes": {
+        "sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621"
+      }
+    },
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"
+  },
+  "matched": true,
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "Pillow": "12.3.0",
+  "edge_tts": "7.2.8",
+  "install_actions": 0
+}

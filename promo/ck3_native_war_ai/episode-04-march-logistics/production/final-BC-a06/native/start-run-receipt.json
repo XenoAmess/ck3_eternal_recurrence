@@ -1,0 +1,14 @@
+{
+  "actual_public_API": "xar_promo.operations.start_run",
+  "config": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\sources\\promo-project-final-Chinese-audio.json",
+    "bytes": 58843,
+    "sha256": "331c4a8ea3728236419ea8c4801e137d698bb6f795574583df0f710386c597be"
+  },
+  "run_manifest_after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-run\\run-manifest.json",
+    "bytes": 711,
+    "sha256": "a3638c2d3ad683b4e56d8c3071194c75897369dd845ca70a1d62b0ce78264952"
+  },
+  "returned_path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-run\\run-manifest.json"
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "ck3.e04.production-published-research-links.v1",
+  "policy": "Reference already committed research by exact commit/repo-relative path/source hashes; no old research pack duplicated.",
+  "A": {
+    "public_commit": "3b4bbcadcbadf05474dadfc388dfabe3eb26af44",
+    "source_last_commit": "d5966bfc02769ed0c6d36015c40f6f268bf87dc6",
+    "OfficialCI": {
+      "run_id": 37353742153,
+      "status": "SUCCESS",
+      "authority": "Prior actual Root record; not re-queried by this package"
+    },
+    "files": [
+      {
+        "path": "docs/ck3-native-ai/army-episode04-a2-london-arrival-12003.md",
+        "bytes": 3417,
+        "sha256": "296ee941a3f7873a5d8462e27b7ce5d5ef3a1d9d8d5ee3fb36f1a3c6ad7d623f"
+      },
+      {
+        "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0177-a2-arrival/A2-endpoint-values.json",
+        "bytes": 79747,
+        "sha256": "475420d14f654c4418412108603937dacd142c17419a5c32d199ea09fa7e6616"
+      }
+    ],
+    "approved_ledger_old_A_publication_pending_is_historical": "This new companion records real publication; approved ledger original bytes not rewritten."
+  },
+  "B": {
+    "public_commit": "a1511a5d9b9e1c9f37b9d221256c965fd1254b50",
+    "OfficialCI": {
+      "run_id": 37370629144,
+      "attempt": 2,
+      "status": "SUCCESS",
+      "first_failure_preserved": true
+    },
+    "files": [
+      {
+        "path": "docs/ck3-native-ai/army-r0175-B-merge-upper-cap-runtime-12003.md",
+        "bytes": 5252,
+        "sha256": "29960d405828a7a1af0e0f36b27ce42390acfd2843937f405d831439495bdc57"
+      }
+    ],
+    "index_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/INDEX.json"
+  },
+  "C": {
+    "public_commit": "71ec5c592d20e283c1e84bc527c6eb2fdb557ba0",
+    "OfficialCI": {
+      "run_id": 37394700958,
+      "status": "SUCCESS",
+      "steps": 82
+    },
+    "files": [
+      {
+        "path": "docs/ck3-native-ai/army-episode04-C-descriptive-march-12003.md",
+        "bytes": 3536,
+        "sha256": "7942d3d432d2693ff6b42a3938e1ca09b6daef2b3f731be8f39650336d3f7f51"
+      },
+      {
+        "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0176-c-descriptive-march/normalized_C_result.json",
+        "bytes": 7599,
+        "sha256": "69cc82ed5371d11d73af1b1308f40fad516bcb15ad227ff72018951d9b9b9873"
+      }
+    ]
+  },
+  "current_audio_or_film_credit_from_research_links": false
+}

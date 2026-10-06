@@ -1,0 +1,57 @@
+{
+  "fragment_id": "C05-16-F01",
+  "paragraph_id": "C05-16",
+  "chapter_id": "E4-05",
+  "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+  "kind": "new-generated-audio",
+  "started_utc": "2026-10-06T00:38:41.857280+00:00",
+  "finished_utc": "2026-10-06T00:38:45.201488+00:00",
+  "attempt": 1,
+  "request": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-16-F01\\attempt-a01\\request.json",
+    "bytes": 1481,
+    "sha256": "bc8aa7f51792160b01f89aca34a61f1a1c1894f613da2cab2896bae32b44f28e"
+  },
+  "text_sha256": "7384b00c740e4e754b7d8fd2cc8fcf5c76910eff3c7e8f05831160e1bdd6d8cd",
+  "text_zh": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。另看换路线的C回放：从共同起点到它的到达观测，余额净少约十五点八二金币。这个数字同样只是净变化。途中登船阶段曾观察到余额净少十七金币，另一个窗口又净增加约零点二五；各自原因都没有逐笔付款账来证明。现在A和C各有真实到达观测，B因冻结条件未通过而停止；C又保留采样偏差，本次不能排出严格三方案的赢家。",
+  "provider_return": null,
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-5%",
+  "pitch": "+0Hz",
+  "volume": "+0%",
+  "metadata": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-16-F01\\attempt-a01\\word-boundary.jsonl",
+    "bytes": 10981,
+    "sha256": "c1f8bc6569d336fc11d8cd62c876a9b734cba2ba5e370155be2ed80ac354e147"
+  },
+  "WordBoundary_count": 122,
+  "native_metadata_seconds_divisor": 10000000,
+  "native_max_boundary_end_seconds": 51.513166,
+  "native_boundary_not_refitted_to_audio": true,
+  "boundary_extent_within_decoded_audio_plus_250ms": true,
+  "human_listening_signoff": false,
+  "subtitle_alignment_signoff": false,
+  "audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-16-F01\\attempt-a01\\speech.mp3",
+    "bytes": 312912,
+    "sha256": "bb269f23c26943bdfba9e17a977de899e654c5033a0d3b1d98c207e862575e69"
+  },
+  "MP3_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-16-F01\\attempt-a01\\logs\\probe.stdout.txt",
+    "bytes": 2029,
+    "sha256": "02ee3d9531aa7c604dbf5b6879c4e4f8b23d8826e14eac7afcd7afc3a3f68181"
+  },
+  "MP3_container_seconds": 52.152,
+  "decoded_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-16-F01\\attempt-a01\\decoded.wav",
+    "bytes": 2503374,
+    "sha256": "573bb34170e0e6ace743aef8b15b7b9247e92cf4c453651ffd347eab29cf1a44"
+  },
+  "decoded_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 1251648,
+    "seconds": 52.152
+  }
+}

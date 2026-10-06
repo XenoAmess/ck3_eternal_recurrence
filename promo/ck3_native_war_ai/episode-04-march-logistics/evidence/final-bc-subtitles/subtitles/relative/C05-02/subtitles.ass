@@ -1,0 +1,18 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:08.00,Chinese,C05-02-S01,0,0,0,,{\an8\pos(960,935)}起点要保留完整兵团、当前人数和满员数、库存、容量、位置、路线与统帅。
+Dialogue: 0,0:00:00.10,0:00:08.00,English,C05-02-S01,0,0,0,,{\an8\pos(960,1008)}That starting point preserves every regiment, current and maximum soldiers,\Nsupply, capacity, location, route, and commander.
+Dialogue: 0,0:00:08.63,0:00:16.53,Chinese,C05-02-S02,0,0,0,,{\an8\pos(960,935)}仅有一个存档文件，还不能宣布对照成立；可用休整地点和合法替代路线也要先验证。
+Dialogue: 0,0:00:08.63,0:00:16.53,English,C05-02-S02,0,0,0,,{\an8\pos(960,1008)}A save file alone does not establish a valid comparison.\NRecovery locations and legal alternative routes need checking too.
+Dialogue: 0,0:00:17.16,0:00:23.50,Chinese,C05-02-S03,0,0,0,,{\an8\pos(960,935)}三次回放各自保留操作、日期和结果，才知道在比较哪一种安排。
+Dialogue: 0,0:00:17.16,0:00:23.50,English,C05-02-S03,0,0,0,,{\an8\pos(960,1030)}Each replay keeps its own actions, dates, and results, so we know which plan we are comparing.

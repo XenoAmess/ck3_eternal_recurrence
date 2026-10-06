@@ -1,0 +1,29 @@
+{
+  "fragment_id": "C05-04-F01",
+  "paragraph_id": "C05-04",
+  "chapter_id": "E4-05",
+  "provider": {
+    "id": "edge-tts",
+    "version": "7.2.8"
+  },
+  "request": {
+    "text": "方案B先分兵，让两支军队分别到合格驻点休整，再会合。这里看一次独立的B回放：在已核对的停驻窗口，两军当前补给月变化都读到正二十。它只说当时的读数，不表示库存已经增加。后面分别看人数和库存的实际变化；实际合军之后，还要重新核对兵团与统帅条件，伦敦终点仍未读到。",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-5%",
+    "pitch": "+0Hz",
+    "volume": "+0%",
+    "audio_format": "mp3",
+    "cache_salt": "episode04-a04-wordboundary-a02"
+  },
+  "metadata_request": {
+    "boundary": "WordBoundary",
+    "ticks_per_second": 10000000,
+    "save_sync_audio_and_metadata": true
+  },
+  "text_sha256": "0b011b01286adad9fa1075829a4bbe26bf84116c35781f402daef5f5d15014f6",
+  "source_keys": [
+    "B-research-published"
+  ],
+  "attempt": 1,
+  "started_utc": "2026-10-06T00:38:38.882174+00:00"
+}

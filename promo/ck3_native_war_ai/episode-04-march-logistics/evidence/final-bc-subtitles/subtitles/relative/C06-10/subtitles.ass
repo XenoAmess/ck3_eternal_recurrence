@@ -1,0 +1,32 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:06.23,Chinese,C06-10-S01,0,0,0,,{\an8\pos(960,935)}本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，
+Dialogue: 0,0:00:00.10,0:00:06.23,English,C06-10-S01,0,0,0,,{\an8\pos(960,1030)}We observed full supply, actual reinforcement, and soldier decreases in separate windows.
+Dialogue: 0,0:00:06.50,0:00:09.70,Chinese,C06-10-S02,0,0,0,,{\an8\pos(960,935)}以及同日分合军的库存和组织变化。
+Dialogue: 0,0:00:06.50,0:00:09.70,English,C06-10-S02,0,0,0,,{\an8\pos(960,1030)}We also observed supply and roster changes during same-day splits and merges.
+Dialogue: 0,0:00:10.30,0:00:14.06,Chinese,C06-10-S03,0,0,0,,{\an8\pos(960,935)}后续休整也出现了真正的库存与人数增加。
+Dialogue: 0,0:00:10.30,0:00:14.06,English,C06-10-S03,0,0,0,,{\an8\pos(960,1030)}Later rest periods produced actual increases in supply and soldier counts.
+Dialogue: 0,0:00:14.70,0:00:18.73,Chinese,C06-10-S04,0,0,0,,{\an8\pos(960,935)}整军直走和换路线各自保留了真实到达观测；
+Dialogue: 0,0:00:14.70,0:00:18.73,English,C06-10-S04,0,0,0,,{\an8\pos(960,1030)}The whole-army direct route and the alternate route each retain an actual arrival observation.
+Dialogue: 0,0:00:19.16,0:00:21.96,Chinese,C06-10-S05,0,0,0,,{\an8\pos(960,935)}分兵方案因冻结条件变化停止，
+Dialogue: 0,0:00:19.16,0:00:21.96,English,C06-10-S05,0,0,0,,{\an8\pos(960,1030)}The split-army plan stopped after its fixed conditions changed.
+Dialogue: 0,0:00:22.23,0:00:24.93,Chinese,C06-10-S06,0,0,0,,{\an8\pos(960,935)}换路线回放又保留采样偏差，
+Dialogue: 0,0:00:22.23,0:00:24.93,English,C06-10-S06,0,0,0,,{\an8\pos(960,1030)}The alternate-route replay retains sampling deviations.
+Dialogue: 0,0:00:25.30,0:00:28.10,Chinese,C06-10-S07,0,0,0,,{\an8\pos(960,935)}因此没有严格三方案的胜负结论。
+Dialogue: 0,0:00:25.30,0:00:28.10,English,C06-10-S07,0,0,0,,{\an8\pos(960,1030)}So there is no strictly controlled three-plan verdict.
+Dialogue: 0,0:00:28.73,0:00:32.46,Chinese,C06-10-S08,0,0,0,,{\an8\pos(960,935)}真实饥饿和逐笔付款仍等待各自证据。
+Dialogue: 0,0:00:28.73,0:00:32.46,English,C06-10-S08,0,0,0,,{\an8\pos(960,1030)}Actual starvation and itemized payments still need their own evidence.
+Dialogue: 0,0:00:33.06,0:00:35.73,Chinese,C06-10-S09,0,0,0,,{\an8\pos(960,935)}你可以按这个顺序读自己的军队，
+Dialogue: 0,0:00:33.06,0:00:35.73,English,C06-10-S09,0,0,0,,{\an8\pos(960,1030)}You can read your own army in this order.
+Dialogue: 0,0:00:36.13,0:00:40.20,Chinese,C06-10-S10,0,0,0,,{\an8\pos(960,935)}再让每条新结论有自己的日期、身份和结果。
+Dialogue: 0,0:00:36.13,0:00:40.20,English,C06-10-S10,0,0,0,,{\an8\pos(960,1030)}Give every new conclusion its own date, identity and observed result.

@@ -1,0 +1,1069 @@
+{
+  "schema": "xar.e04.actual-paragraph-subtitles.v1",
+  "paragraph_id": "C05-16",
+  "source_timeline": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\E4-05\\timeline.json",
+    "bytes": 201760,
+    "sha256": "505f6f5639db9a2b2945a3d37536529fff3318752a1e5c740f36f66081e17b36"
+  },
+  "source_chapter_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\chapters\\E4-05\\narration.wav",
+    "bytes": 25439660,
+    "sha256": "1de85015b47e98e3d20160b530ea606934f3a2d9e06121388da19c8cd3adcb48"
+  },
+  "audio_slice": {
+    "start_sample": 11468160,
+    "end_sample": 12719808,
+    "sample_rate": 24000,
+    "exact_seconds": 52.152,
+    "picture_duration_frames": 1565,
+    "coordinate_basis": "Actual PCM sample slice; allocate the final movie by cumulative global boundaries."
+  },
+  "events": [
+    {
+      "zh": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，",
+      "en": "Over that period, gold fell from about 637.55 to 621.48.",
+      "id": "C05-16-S01",
+      "char_start": 0,
+      "char_end": 32,
+      "english_cue_id": "C05-16-EN-01",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 0.10262499999998909,
+      "end_seconds": 6.681582999999989,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 477.94262499999996,
+          "end_seconds": 484.52158299999996,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，"
+          ],
+          "widths_px": [
+            1120.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "Over that period, gold fell from about 637.55 to 621.48."
+          ],
+          "widths_px": [
+            612.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 3,
+      "end_frame": 200,
+      "reading_rate": {
+        "english_words_per_second": 1.5228426395939088,
+        "Chinese_characters_per_second": 4.416243654822336
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 477.94262499999996,
+      "chapter_end_seconds": 484.52158299999996
+    },
+    {
+      "zh": "净少十六点零六。",
+      "en": "The net decrease was 16.06.",
+      "id": "C05-16-S02",
+      "char_start": 32,
+      "char_end": 40,
+      "english_cue_id": "C05-16-EN-02",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 6.997374999999977,
+      "end_seconds": 8.484208000000024,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 484.83737499999995,
+          "end_seconds": 486.324208,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "净少十六点零六。"
+          ],
+          "widths_px": [
+            280.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "The net decrease was 16.06."
+          ],
+          "widths_px": [
+            325.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 210,
+      "end_frame": 254,
+      "reading_rate": {
+        "english_words_per_second": 3.409090909090909,
+        "Chinese_characters_per_second": 4.772727272727273
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 484.83737499999995,
+      "chapter_end_seconds": 486.324208
+    },
+    {
+      "zh": "它是期间所有收支留下的净余额差，",
+      "en": "That is the net balance change after all income and expenses.",
+      "id": "C05-16-S03",
+      "char_start": 40,
+      "char_end": 56,
+      "english_cue_id": "C05-16-EN-03",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 9.09212500000001,
+      "end_seconds": 12.06579099999999,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 486.932125,
+          "end_seconds": 489.90579099999997,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "它是期间所有收支留下的净余额差，"
+          ],
+          "widths_px": [
+            560.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "That is the net balance change after all income and expenses."
+          ],
+          "widths_px": [
+            697.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 273,
+      "end_frame": 361,
+      "reading_rate": {
+        "english_words_per_second": 3.7078651685393256,
+        "Chinese_characters_per_second": 5.056179775280898
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 486.932125,
+      "chapter_end_seconds": 489.90579099999997
+    },
+    {
+      "zh": "不能改名为行军费，也不能当作已经核验的登船付款。",
+      "en": "It is not a march-cost ledger or a verified embarkation payment.",
+      "id": "C05-16-S04",
+      "char_start": 56,
+      "char_end": 80,
+      "english_cue_id": "C05-16-EN-04",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 12.368416000000025,
+      "end_seconds": 16.90787499999999,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 490.208416,
+          "end_seconds": 494.74787499999996,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "不能改名为行军费，也不能当作已经核验的登船付款。"
+          ],
+          "widths_px": [
+            840.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "It is not a march-cost ledger or a verified embarkation payment."
+          ],
+          "widths_px": [
+            708.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 371,
+      "end_frame": 507,
+      "reading_rate": {
+        "english_words_per_second": 2.4264705882352944,
+        "Chinese_characters_per_second": 4.852941176470589
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 490.208416,
+      "chapter_end_seconds": 494.74787499999996
+    },
+    {
+      "zh": "另看换路线的C回放：",
+      "en": "Now consider C's replay using a different route.",
+      "id": "C05-16-S05",
+      "char_start": 80,
+      "char_end": 90,
+      "english_cue_id": "C05-16-EN-05",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 17.513166000000012,
+      "end_seconds": 19.368416000000025,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 495.353166,
+          "end_seconds": 497.208416,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "另看换路线的C回放："
+          ],
+          "widths_px": [
+            338.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "Now consider C's replay using a different route."
+          ],
+          "widths_px": [
+            530.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 525,
+      "end_frame": 581,
+      "reading_rate": {
+        "english_words_per_second": 4.363636363636364,
+        "Chinese_characters_per_second": 4.909090909090909
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 495.353166,
+      "chapter_end_seconds": 497.208416
+    },
+    {
+      "zh": "从共同起点到它的到达观测，余额净少约十五点八二金币。",
+      "en": "From the shared start to its arrival observation, gold decreased by about 15.82 net.",
+      "id": "C05-16-S06",
+      "char_start": 90,
+      "char_end": 116,
+      "english_cue_id": "C05-16-EN-06",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 19.710540999999978,
+      "end_seconds": 25.210540999999978,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 497.55054099999995,
+          "end_seconds": 503.05054099999995,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "从共同起点到它的到达观测，余额净少约十五点八二金币。"
+          ],
+          "widths_px": [
+            910.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "From the shared start to its arrival observation, gold decreased by about 15.82 net."
+          ],
+          "widths_px": [
+            925.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 591,
+      "end_frame": 756,
+      "reading_rate": {
+        "english_words_per_second": 2.5609756097560976,
+        "Chinese_characters_per_second": 4.390243902439025
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 497.55054099999995,
+      "chapter_end_seconds": 503.05054099999995
+    },
+    {
+      "zh": "这个数字同样只是净变化。",
+      "en": "That figure is also only a net change.",
+      "id": "C05-16-S07",
+      "char_start": 116,
+      "char_end": 128,
+      "english_cue_id": "C05-16-EN-07",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 25.802624999999978,
+      "end_seconds": 28.22366599999998,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 503.64262499999995,
+          "end_seconds": 506.06366599999996,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "这个数字同样只是净变化。"
+          ],
+          "widths_px": [
+            420.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "That figure is also only a net change."
+          ],
+          "widths_px": [
+            414.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 774,
+      "end_frame": 846,
+      "reading_rate": {
+        "english_words_per_second": 3.3333333333333335,
+        "Chinese_characters_per_second": 4.583333333333334
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 503.64262499999995,
+      "chapter_end_seconds": 506.06366599999996
+    },
+    {
+      "zh": "途中登船阶段曾观察到余额净少十七金币，",
+      "en": "During embarkation, we observed a net decrease of 17 gold.",
+      "id": "C05-16-S08",
+      "char_start": 128,
+      "char_end": 147,
+      "english_cue_id": "C05-16-EN-08",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 28.81579099999999,
+      "end_seconds": 32.73683199999999,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 506.65579099999997,
+          "end_seconds": 510.57683199999997,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "途中登船阶段曾观察到余额净少十七金币，"
+          ],
+          "widths_px": [
+            665.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "During embarkation, we observed a net decrease of 17 gold."
+          ],
+          "widths_px": [
+            676.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 864,
+      "end_frame": 982,
+      "reading_rate": {
+        "english_words_per_second": 2.5641025641025643,
+        "Chinese_characters_per_second": 4.615384615384616
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 506.65579099999997,
+      "chapter_end_seconds": 510.57683199999997
+    },
+    {
+      "zh": "另一个窗口又净增加约零点二五；",
+      "en": "In another window, it increased by about 0.25 net.",
+      "id": "C05-16-S09",
+      "char_start": 147,
+      "char_end": 162,
+      "english_cue_id": "C05-16-EN-09",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 33.15787499999999,
+      "end_seconds": 36.21054099999998,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 510.99787499999996,
+          "end_seconds": 514.050541,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "另一个窗口又净增加约零点二五；"
+          ],
+          "widths_px": [
+            525.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "In another window, it increased by about 0.25 net."
+          ],
+          "widths_px": [
+            556.984375
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 995,
+      "end_frame": 1086,
+      "reading_rate": {
+        "english_words_per_second": 2.967032967032967,
+        "Chinese_characters_per_second": 4.615384615384616
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 510.99787499999996,
+      "chapter_end_seconds": 514.050541
+    },
+    {
+      "zh": "各自原因都没有逐笔付款账来证明。",
+      "en": "Neither cause is established by an itemized payment ledger.",
+      "id": "C05-16-S10",
+      "char_start": 162,
+      "char_end": 178,
+      "english_cue_id": "C05-16-EN-10",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 36.40787500000005,
+      "end_seconds": 39.48683199999999,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 514.247875,
+          "end_seconds": 517.326832,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "各自原因都没有逐笔付款账来证明。"
+          ],
+          "widths_px": [
+            560.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "Neither cause is established by an itemized payment ledger."
+          ],
+          "widths_px": [
+            676.984375
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1092,
+      "end_frame": 1184,
+      "reading_rate": {
+        "english_words_per_second": 2.934782608695652,
+        "Chinese_characters_per_second": 4.891304347826087
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 514.247875,
+      "chapter_end_seconds": 517.326832
+    },
+    {
+      "zh": "现在A和C各有真实到达观测，",
+      "en": "A and C now each have an actual arrival observation.",
+      "id": "C05-16-S11",
+      "char_start": 178,
+      "char_end": 192,
+      "english_cue_id": "C05-16-EN-11",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 40.09212499999995,
+      "end_seconds": 43.24999900000006,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 517.9321249999999,
+          "end_seconds": 521.089999,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "现在A和C各有真实到达观测，"
+          ],
+          "widths_px": [
+            468.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "A and C now each have an actual arrival observation."
+          ],
+          "widths_px": [
+            598.984375
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1203,
+      "end_frame": 1297,
+      "reading_rate": {
+        "english_words_per_second": 3.1914893617021276,
+        "Chinese_characters_per_second": 4.148936170212766
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 517.9321249999999,
+      "chapter_end_seconds": 521.089999
+    },
+    {
+      "zh": "B因冻结条件未通过而停止；",
+      "en": "B stopped after failing the fixed conditions.",
+      "id": "C05-16-S12",
+      "char_start": 192,
+      "char_end": 205,
+      "english_cue_id": "C05-16-EN-12",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 43.60525000000001,
+      "end_seconds": 46.24999999999994,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 521.44525,
+          "end_seconds": 524.0899999999999,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "B因冻结条件未通过而停止；"
+          ],
+          "widths_px": [
+            442.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "B stopped after failing the fixed conditions."
+          ],
+          "widths_px": [
+            477.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1308,
+      "end_frame": 1387,
+      "reading_rate": {
+        "english_words_per_second": 2.6582278481012658,
+        "Chinese_characters_per_second": 4.556962025316456
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 521.44525,
+      "chapter_end_seconds": 524.0899999999999
+    },
+    {
+      "zh": "C又保留采样偏差，",
+      "en": "C also retains its sampling deviations.",
+      "id": "C05-16-S13",
+      "char_start": 205,
+      "char_end": 214,
+      "english_cue_id": "C05-16-EN-13",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 46.64474999999999,
+      "end_seconds": 48.328958,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 524.48475,
+          "end_seconds": 526.168958,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "C又保留采样偏差，"
+          ],
+          "widths_px": [
+            303.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "C also retains its sampling deviations."
+          ],
+          "widths_px": [
+            426.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1399,
+      "end_frame": 1449,
+      "reading_rate": {
+        "english_words_per_second": 3.5999999999999996,
+        "Chinese_characters_per_second": 4.8
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 524.48475,
+      "chapter_end_seconds": 526.168958
+    },
+    {
+      "zh": "本次不能排出严格三方案的赢家。",
+      "en": "This run cannot establish a winner in a strictly controlled three-plan comparison.",
+      "id": "C05-16-S14",
+      "char_start": 214,
+      "char_end": 229,
+      "english_cue_id": "C05-16-EN-14",
+      "paragraph_id": "C05-16",
+      "chapter_id": "E4-05",
+      "start_seconds": 48.55262499999998,
+      "end_seconds": 51.51316600000001,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-16-F01",
+          "start_seconds": 526.392625,
+          "end_seconds": 529.353166,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "本次不能排出严格三方案的赢家。"
+          ],
+          "widths_px": [
+            525.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "This run cannot establish a winner in a strictly controlled three-plan comparison."
+          ],
+          "widths_px": [
+            894.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1457,
+      "end_frame": 1545,
+      "reading_rate": {
+        "english_words_per_second": 4.090909090909091,
+        "Chinese_characters_per_second": 4.772727272727273
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 526.392625,
+      "chapter_end_seconds": 529.353166
+    }
+  ],
+  "actual_WordBoundary_available": true,
+  "estimated_or_mixed_internal_times": false,
+  "actual_full_PCM_fragment_times_without_WB": false,
+  "relative_frame_quantization": "Exact sample-origin shift then30fps start-round/end-floor; chapter native bindings retained.",
+  "ABC_results": {
+    "A": {
+      "first_observed_elapsed_days": 51,
+      "observed_arrival_interval_days": [
+        49,
+        51
+      ],
+      "observed_arrival_interval_endpoint_inclusion": "(49,51]",
+      "exact_arrival_tick": null,
+      "current_soldiers": {
+        "initial": 6679,
+        "terminal": 6689,
+        "net": 10
+      },
+      "maximum_soldiers": 6747,
+      "supply_raw": {
+        "initial": 11037716,
+        "terminal": 10613988,
+        "net": -423728,
+        "scale": 100000
+      },
+      "treasury_raw": {
+        "initial": 63754562,
+        "terminal": 62148329,
+        "net": -1606233,
+        "scale": 100000
+      },
+      "payment_ledger": null,
+      "source_key": "r177-A2-values"
+    },
+    "B": {
+      "status": "STOPPED_GATE_INCOMPLETE",
+      "London_endpoint_metrics": null,
+      "arrival_comparable": false,
+      "actual_days_used": 38,
+      "remaining_original_days": 52,
+      "controlled_comparison_eligibility": "GATE_FAILED",
+      "winner": null
+    },
+    "C": {
+      "London_endpoint_metrics": {
+        "DATA_record_count": 37,
+        "actor_character_id": 33388,
+        "actual_player_row": {
+          "army_id": 0,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "controllable": true,
+          "current_province_id": 1527,
+          "in_combat": false,
+          "move_target_observable": false,
+          "move_target_province_id": null,
+          "owner_character_id": 33388,
+          "retreating": false,
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null,
+          "soldiers": null,
+          "source": "native"
+        },
+        "commander_character_id": 27357,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "current_soldiers": 6689,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 0,
+        "current_supply_raw": 10190260,
+        "date_raw": 53150280,
+        "exact_arrival_tick": null,
+        "maximum_soldiers": 6747,
+        "native_carmy_id": 0,
+        "public_army_id": 0,
+        "regiment_count": 27,
+        "supply_scale": 100000,
+        "treasury_raw": 62173052,
+        "treasury_scale": 100000
+      },
+      "absolute_END_raw": 53150592,
+      "actual_days_used": 77.0,
+      "applied_refill_payment_ledger": null,
+      "closed": true,
+      "common_T0_raw": 53148432,
+      "controlled_comparison_eligibility": "NOT_GRANTED",
+      "episode_run_id": "native-33388-1be6dd7a468f",
+      "global_budget_breach": false,
+      "observed_arrival_interval_days": [
+        75.0,
+        77.0
+      ],
+      "observed_terminal_date_raw": 53150280,
+      "sampling_deviations": [
+        {
+          "actual_days": 2,
+          "observed_days": [
+            12,
+            14
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-01.json",
+            "bytes": 325,
+            "sha256": "c66a2c24ffc1616d8e8a07a187b21776bae11debbcfb5128df4f260520b10995"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            20,
+            22
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-02.json",
+            "bytes": 325,
+            "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            29,
+            31
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-03.json",
+            "bytes": 325,
+            "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            34,
+            36
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-04.json",
+            "bytes": 325,
+            "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            40,
+            42
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-05.json",
+            "bytes": 325,
+            "sha256": "076267bb1ce5454fabcd8105968e019529da6e77508e65150101e4710a07e386"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            45,
+            47
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-06.json",
+            "bytes": 325,
+            "sha256": "c8cc79b46cbe77a605319937f164b90941e0198abaecef7391de6a3ea637f952"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            49,
+            51
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-07.json",
+            "bytes": 325,
+            "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            53,
+            55
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-08.json",
+            "bytes": 325,
+            "sha256": "20765b1135613b504baadc66e6f5721706ba86de98b11d21354a83cdaa4cf625"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            57,
+            59
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-09.json",
+            "bytes": 247,
+            "sha256": "d551cac1b8538587bbdabb838423bc7503108d473ce5f739ef063d3c6a8cbf93"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            60,
+            62
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-10.json",
+            "bytes": 325,
+            "sha256": "ac99d55d79bb808696d805791f0372195c16dc1ca21f13657ff4e91c6217dc8f"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            63,
+            65
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-11.json",
+            "bytes": 325,
+            "sha256": "2c3ab3672a2b2f06389ecb4981cd8d4b0a9527ddc65b6d3c52524e3274bddbe5"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            66,
+            68
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-12.json",
+            "bytes": 325,
+            "sha256": "b625a68f61b9fce6797c0ca8b63c6fe9b94152f91273829ab43c45f6529b9bef"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            70,
+            72
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-13.json",
+            "bytes": 325,
+            "sha256": "06a6e2f8de4b259cae94afa26e26512d79d2189a10fc8a505b2ca85dcb855f47"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            72,
+            74
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-14.json",
+            "bytes": 325,
+            "sha256": "ee9db71c945c1cd36c3469cc17c4331aac9a071926b6ab7fa942e81908706558"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            75,
+            77
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-15.json",
+            "bytes": 329,
+            "sha256": "92cf9cb37d2640c822a4219ae1745fa9b5ac0e0894ec3178c9d337054270b5ba"
+          }
+        }
+      ],
+      "source_sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817",
+      "status": "ARRIVED_LONDON",
+      "subject_scope": {
+        "all_player_total_soldiers": null,
+        "global_health_status": "available",
+        "kind": "required_Main_original_cohort",
+        "required_full_DATA": 37,
+        "required_full_regiments": 27,
+        "required_native_carmy_ids": [
+          0
+        ],
+        "required_public_ids": [
+          0
+        ],
+        "unassessed_CUnit_ids": [],
+        "unassessed_health": null
+      },
+      "winner": null
+    }
+  },
+  "ABC_winner": null,
+  "film_signoff": false
+}

@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:03.40,Chinese,C06-06-S01,0,0,0,,{\an8\pos(960,935)}分兵或合军后，重新读原军与新队。
+Dialogue: 0,0:00:00.10,0:00:03.40,English,C06-06-S01,0,0,0,,{\an8\pos(960,1030)}After splitting or merging, reread the original army and any new detachment.
+Dialogue: 0,0:00:04.00,0:00:11.30,Chinese,C06-06-S02,0,0,0,,{\an8\pos(960,935)}兵团归属是否完整，当前与满员人数是否守恒，库存和容量分别变成什么。
+Dialogue: 0,0:00:04.00,0:00:11.30,English,C06-06-S02,0,0,0,,{\an8\pos(960,1008)}Check every regiment's assignment, conservation of current and maximum soldiers,\Nand the resulting stock and capacity.
+Dialogue: 0,0:00:11.93,0:00:15.86,Chinese,C06-06-S03,0,0,0,,{\an8\pos(960,935)}新队库存暂时高于容量，就按实际值保存。
+Dialogue: 0,0:00:11.93,0:00:15.86,English,C06-06-S03,0,0,0,,{\an8\pos(960,1030)}If the new army temporarily has more stock than capacity, preserve the actual value.
+Dialogue: 0,0:00:16.50,0:00:21.50,Chinese,C06-06-S04,0,0,0,,{\an8\pos(960,935)}统帅没读到时保持未知，不从容量或头像猜一个人。
+Dialogue: 0,0:00:16.50,0:00:21.50,English,C06-06-S04,0,0,0,,{\an8\pos(960,1008)}If the commander is unread,\Nkeep that identity unknown rather than infer it from capacity or a portrait.

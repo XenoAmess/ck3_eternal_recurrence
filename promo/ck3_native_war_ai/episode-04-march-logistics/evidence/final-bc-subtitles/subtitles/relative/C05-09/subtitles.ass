@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:03.06,Chinese,C05-09-S01,0,0,0,,{\an8\pos(960,935)}平分没有自动重开这轮补给宽限。
+Dialogue: 0,0:00:00.10,0:00:03.06,English,C05-09-S01,0,0,0,,{\an8\pos(960,1030)}Splitting did not automatically restart this supply grace period.
+Dialogue: 0,0:00:03.70,0:00:10.46,Chinese,C05-09-S02,0,0,0,,{\an8\pos(960,935)}新分队继承了原军队的这段计时，哪一天库存真正变化，还需要继续观察。
+Dialogue: 0,0:00:03.70,0:00:10.46,English,C05-09-S02,0,0,0,,{\an8\pos(960,1008)}The new detachment inherited that timing from the original army.\NWhen its stock actually changes still needs observation.
+Dialogue: 0,0:00:11.06,0:00:14.60,Chinese,C05-09-S03,0,0,0,,{\an8\pos(960,935)}容量不同，也不能代替统帅身份读取。
+Dialogue: 0,0:00:11.06,0:00:14.60,English,C05-09-S03,0,0,0,,{\an8\pos(960,1030)}A capacity difference cannot identify the commander.
+Dialogue: 0,0:00:15.23,0:00:21.70,Chinese,C05-09-S04,0,0,0,,{\an8\pos(960,935)}后来在两个驻点读到的统帅，只证明当时那一帧，不保证后面一直没变。
+Dialogue: 0,0:00:15.23,0:00:21.70,English,C05-09-S04,0,0,0,,{\an8\pos(960,1008)}Commanders read later at the two locations describe that particular frame,\Nnot a guarantee that they never changed afterward.

@@ -1,0 +1,1069 @@
+{
+  "schema": "xar.e04.actual-paragraph-subtitles.v1",
+  "paragraph_id": "C05-05",
+  "source_timeline": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\E4-05\\timeline.json",
+    "bytes": 201760,
+    "sha256": "505f6f5639db9a2b2945a3d37536529fff3318752a1e5c740f36f66081e17b36"
+  },
+  "source_chapter_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\chapters\\E4-05\\narration.wav",
+    "bytes": 25439660,
+    "sha256": "1de85015b47e98e3d20160b530ea606934f3a2d9e06121388da19c8cd3adcb48"
+  },
+  "audio_slice": {
+    "start_sample": 2458368,
+    "end_sample": 3738816,
+    "sample_rate": 24000,
+    "exact_seconds": 53.352,
+    "picture_duration_frames": 1601,
+    "coordinate_basis": "Actual PCM sample slice; allocate the final movie by cumulative global boundaries."
+  },
+  "events": [
+    {
+      "zh": "方案C换路线，先经过已核验的中转点，再去伦敦。",
+      "en": "Plan C takes a different route, through verified waypoints to London.",
+      "id": "C05-05-S01",
+      "char_start": 0,
+      "char_end": 23,
+      "english_cue_id": "C05-05-EN-01",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 0.1026250000000033,
+      "end_seconds": 4.773707999999999,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 102.534625,
+          "end_seconds": 107.205708,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "方案C换路线，先经过已核验的中转点，再去伦敦。"
+          ],
+          "widths_px": [
+            793.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "Plan C takes a different route, through verified waypoints to London."
+          ],
+          "widths_px": [
+            761.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 3,
+      "end_frame": 143,
+      "reading_rate": {
+        "english_words_per_second": 2.357142857142857,
+        "Chinese_characters_per_second": 4.285714285714286
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 102.534625,
+      "chapter_end_seconds": 107.205708
+    },
+    {
+      "zh": "这次独立回放，在共同起点后的第七十七个游戏日，",
+      "en": "In this independent replay, on game day 77 after the shared start,",
+      "id": "C05-05-S02",
+      "char_start": 23,
+      "char_end": 46,
+      "english_cue_id": "C05-05-EN-02",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 5.381583000000006,
+      "end_seconds": 9.75,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 107.81358300000001,
+          "end_seconds": 112.182,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "这次独立回放，在共同起点后的第七十七个游戏日，"
+          ],
+          "widths_px": [
+            805.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "In this independent replay, on game day 77 after the shared start,"
+          ],
+          "widths_px": [
+            730.96875
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 161,
+      "end_frame": 292,
+      "reading_rate": {
+        "english_words_per_second": 2.7480916030534353,
+        "Chinese_characters_per_second": 4.809160305343512
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 107.81358300000001,
+      "chapter_end_seconds": 112.182
+    },
+    {
+      "zh": "我们首次观察到主力已经抵达伦敦；",
+      "en": "we first observed the main army in London.",
+      "id": "C05-05-S03",
+      "char_start": 46,
+      "char_end": 62,
+      "english_cue_id": "C05-05-EN-03",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 10.092124999999996,
+      "end_seconds": 13.171041000000002,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 112.524125,
+          "end_seconds": 115.603041,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "我们首次观察到主力已经抵达伦敦；"
+          ],
+          "widths_px": [
+            560.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "we first observed the main army in London."
+          ],
+          "widths_px": [
+            483.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 303,
+      "end_frame": 395,
+      "reading_rate": {
+        "english_words_per_second": 2.608695652173913,
+        "Chinese_characters_per_second": 4.891304347826087
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 112.524125,
+      "chapter_end_seconds": 115.603041
+    },
+    {
+      "zh": "第七十五日它还在路上，",
+      "en": "It was still en route on day 75.",
+      "id": "C05-05-S04",
+      "char_start": 62,
+      "char_end": 73,
+      "english_cue_id": "C05-05-EN-04",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 13.394750000000002,
+      "end_seconds": 15.473665999999994,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 115.82675,
+          "end_seconds": 117.905666,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "第七十五日它还在路上，"
+          ],
+          "widths_px": [
+            385.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "It was still en route on day 75."
+          ],
+          "widths_px": [
+            335.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 402,
+      "end_frame": 464,
+      "reading_rate": {
+        "english_words_per_second": 3.8709677419354835,
+        "Chinese_characters_per_second": 4.838709677419354
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 115.82675,
+      "chapter_end_seconds": 117.905666
+    },
+    {
+      "zh": "所以实际到达在这两次观察之间，精确时刻未知。",
+      "en": "It arrived between those observations. The exact moment is unknown.",
+      "id": "C05-05-S05",
+      "char_start": 73,
+      "char_end": 95,
+      "english_cue_id": "C05-05-EN-05",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 15.842124999999996,
+      "end_seconds": 20.249999000000003,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 118.274125,
+          "end_seconds": 122.681999,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "所以实际到达在这两次观察之间，精确时刻未知。"
+          ],
+          "widths_px": [
+            770.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "It arrived between those observations. The exact moment is unknown."
+          ],
+          "widths_px": [
+            784.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 475,
+      "end_frame": 607,
+      "reading_rate": {
+        "english_words_per_second": 2.2727272727272725,
+        "Chinese_characters_per_second": 4.545454545454545
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 118.274125,
+      "chapter_end_seconds": 122.681999
+    },
+    {
+      "zh": "这支主力从六千六百七十九人出发，",
+      "en": "This main army started with 6,679 soldiers.",
+      "id": "C05-05-S06",
+      "char_start": 95,
+      "char_end": 111,
+      "english_cue_id": "C05-05-EN-06",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 20.855249999999998,
+      "end_seconds": 23.960499,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 123.28725,
+          "end_seconds": 126.392499,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "这支主力从六千六百七十九人出发，"
+          ],
+          "widths_px": [
+            560.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "This main army started with 6,679 soldiers."
+          ],
+          "widths_px": [
+            481.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 626,
+      "end_frame": 718,
+      "reading_rate": {
+        "english_words_per_second": 2.282608695652174,
+        "Chinese_characters_per_second": 4.891304347826087
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 123.28725,
+      "chapter_end_seconds": 126.392499
+    },
+    {
+      "zh": "到达观测时是六千六百八十九，净增十人；",
+      "en": "At the arrival observation, it had 6,689: a net gain of ten.",
+      "id": "C05-05-S07",
+      "char_start": 111,
+      "char_end": 130,
+      "english_cue_id": "C05-05-EN-07",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 24.342124999999996,
+      "end_seconds": 28.447375000000008,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 126.774125,
+          "end_seconds": 130.879375,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "到达观测时是六千六百八十九，净增十人；"
+          ],
+          "widths_px": [
+            665.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "At the arrival observation, it had 6,689: a net gain of ten."
+          ],
+          "widths_px": [
+            628.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 730,
+      "end_frame": 853,
+      "reading_rate": {
+        "english_words_per_second": 2.9268292682926833,
+        "Chinese_characters_per_second": 4.146341463414634
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 126.774125,
+      "chapter_end_seconds": 130.879375
+    },
+    {
+      "zh": "完整二十七个兵团的身份与满员数不变。",
+      "en": "All 27 regiments retained their identities and maximum soldier counts.",
+      "id": "C05-05-S08",
+      "char_start": 130,
+      "char_end": 148,
+      "english_cue_id": "C05-05-EN-08",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 28.61841600000001,
+      "end_seconds": 32.052623999999994,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 131.050416,
+          "end_seconds": 134.484624,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "完整二十七个兵团的身份与满员数不变。"
+          ],
+          "widths_px": [
+            630.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "All 27 regiments retained their identities and maximum soldier counts."
+          ],
+          "widths_px": [
+            781.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 859,
+      "end_frame": 961,
+      "reading_rate": {
+        "english_words_per_second": 2.9411764705882355,
+        "Chinese_characters_per_second": 5.0
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 131.050416,
+      "chapter_end_seconds": 134.484624
+    },
+    {
+      "zh": "补给从约一百一十点三八降到一百零一点九零，",
+      "en": "Supply fell from about 110.38 to 101.90.",
+      "id": "C05-05-S09",
+      "char_start": 148,
+      "char_end": 169,
+      "english_cue_id": "C05-05-EN-09",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 32.64475,
+      "end_seconds": 36.77633300000001,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 135.07675,
+          "end_seconds": 139.208333,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "补给从约一百一十点三八降到一百零一点九零，"
+          ],
+          "widths_px": [
+            735.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "Supply fell from about 110.38 to 101.90."
+          ],
+          "widths_px": [
+            447.96875
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 979,
+      "end_frame": 1103,
+      "reading_rate": {
+        "english_words_per_second": 1.693548387096774,
+        "Chinese_characters_per_second": 4.838709677419354
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 135.07675,
+      "chapter_end_seconds": 139.208333
+    },
+    {
+      "zh": "容量仍三百。",
+      "en": "Supply capacity remained 300.",
+      "id": "C05-05-S10",
+      "char_start": 169,
+      "char_end": 175,
+      "english_cue_id": "C05-05-EN-10",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 37.05262499999999,
+      "end_seconds": 38.171082999999996,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 139.484625,
+          "end_seconds": 140.603083,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "容量仍三百。"
+          ],
+          "widths_px": [
+            210.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "Supply capacity remained 300."
+          ],
+          "widths_px": [
+            347.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1112,
+      "end_frame": 1145,
+      "reading_rate": {
+        "english_words_per_second": 3.6363636363636362,
+        "Chinese_characters_per_second": 4.545454545454545
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 139.484625,
+      "chapter_end_seconds": 140.603083
+    },
+    {
+      "zh": "终点当前损耗读到百分之一，",
+      "en": "Current attrition at the endpoint was 1%.",
+      "id": "C05-05-S11",
+      "char_start": 175,
+      "char_end": 188,
+      "english_cue_id": "C05-05-EN-11",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 38.763166,
+      "end_seconds": 41.315791000000004,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 141.195166,
+          "end_seconds": 143.747791,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "终点当前损耗读到百分之一，"
+          ],
+          "widths_px": [
+            455.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "Current attrition at the endpoint was 1%."
+          ],
+          "widths_px": [
+            449.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1163,
+      "end_frame": 1239,
+      "reading_rate": {
+        "english_words_per_second": 2.763157894736842,
+        "Chinese_characters_per_second": 4.736842105263158
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 141.195166,
+      "chapter_end_seconds": 143.747791
+    },
+    {
+      "zh": "这是当时的条件读数，不能直接换算成旅途中死了多少兵。",
+      "en": "That was the rate under current conditions. It does not tell us how many died en route.",
+      "id": "C05-05-S12",
+      "char_start": 188,
+      "char_end": 214,
+      "english_cue_id": "C05-05-EN-12",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 41.69737500000001,
+      "end_seconds": 46.960498999999984,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 144.129375,
+          "end_seconds": 149.392499,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "这是当时的条件读数，不能直接换算成旅途中死了多少兵。"
+          ],
+          "widths_px": [
+            910.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "That was the rate under current conditions. It does not tell us how many died en route."
+          ],
+          "widths_px": [
+            961.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1251,
+      "end_frame": 1408,
+      "reading_rate": {
+        "english_words_per_second": 3.248407643312102,
+        "Chinese_characters_per_second": 4.585987261146497
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 144.129375,
+      "chapter_end_seconds": 149.392499
+    },
+    {
+      "zh": "这里报的是主力的原始编制，",
+      "en": "These figures describe the original main army.",
+      "id": "C05-05-S13",
+      "char_start": 214,
+      "char_end": 227,
+      "english_cue_id": "C05-05-EN-13",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 47.55262499999999,
+      "end_seconds": 50.11841600000001,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 149.984625,
+          "end_seconds": 152.550416,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "这里报的是主力的原始编制，"
+          ],
+          "widths_px": [
+            455.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "These figures describe the original main army."
+          ],
+          "widths_px": [
+            518.96875
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1427,
+      "end_frame": 1503,
+      "reading_rate": {
+        "english_words_per_second": 2.763157894736842,
+        "Chinese_characters_per_second": 4.736842105263158
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 149.984625,
+      "chapter_end_seconds": 152.550416
+    },
+    {
+      "zh": "不是玩家所有单位的总人数。",
+      "en": "They are not the total soldiers in all player units.",
+      "id": "C05-05-S14",
+      "char_start": 227,
+      "char_end": 240,
+      "english_cue_id": "C05-05-EN-14",
+      "paragraph_id": "C05-05",
+      "chapter_id": "E4-05",
+      "start_seconds": 50.44737500000001,
+      "end_seconds": 52.723665999999994,
+      "timing_bindings": [
+        {
+          "fragment_id": "C05-05-F01",
+          "start_seconds": 152.879375,
+          "end_seconds": 155.155666,
+          "basis": "actual-provider-WordBoundary"
+        }
+      ],
+      "display": {
+        "zh": {
+          "lines": [
+            "不是玩家所有单位的总人数。"
+          ],
+          "widths_px": [
+            455.0
+          ],
+          "font": "C:\\Windows\\Fonts\\msyh.ttc",
+          "font_size": 35
+        },
+        "en": {
+          "lines": [
+            "They are not the total soldiers in all player units."
+          ],
+          "widths_px": [
+            537.0
+          ],
+          "font": "C:\\Windows\\Fonts\\arial.ttf",
+          "font_size": 25
+        }
+      },
+      "start_frame": 1513,
+      "end_frame": 1581,
+      "reading_rate": {
+        "english_words_per_second": 4.411764705882353,
+        "Chinese_characters_per_second": 5.294117647058823
+      },
+      "review_flags": [],
+      "chapter_start_seconds": 152.879375,
+      "chapter_end_seconds": 155.155666
+    }
+  ],
+  "actual_WordBoundary_available": true,
+  "estimated_or_mixed_internal_times": false,
+  "actual_full_PCM_fragment_times_without_WB": false,
+  "relative_frame_quantization": "Exact sample-origin shift then30fps start-round/end-floor; chapter native bindings retained.",
+  "ABC_results": {
+    "A": {
+      "first_observed_elapsed_days": 51,
+      "observed_arrival_interval_days": [
+        49,
+        51
+      ],
+      "observed_arrival_interval_endpoint_inclusion": "(49,51]",
+      "exact_arrival_tick": null,
+      "current_soldiers": {
+        "initial": 6679,
+        "terminal": 6689,
+        "net": 10
+      },
+      "maximum_soldiers": 6747,
+      "supply_raw": {
+        "initial": 11037716,
+        "terminal": 10613988,
+        "net": -423728,
+        "scale": 100000
+      },
+      "treasury_raw": {
+        "initial": 63754562,
+        "terminal": 62148329,
+        "net": -1606233,
+        "scale": 100000
+      },
+      "payment_ledger": null,
+      "source_key": "r177-A2-values"
+    },
+    "B": {
+      "status": "STOPPED_GATE_INCOMPLETE",
+      "London_endpoint_metrics": null,
+      "arrival_comparable": false,
+      "actual_days_used": 38,
+      "remaining_original_days": 52,
+      "controlled_comparison_eligibility": "GATE_FAILED",
+      "winner": null
+    },
+    "C": {
+      "London_endpoint_metrics": {
+        "DATA_record_count": 37,
+        "actor_character_id": 33388,
+        "actual_player_row": {
+          "army_id": 0,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "controllable": true,
+          "current_province_id": 1527,
+          "in_combat": false,
+          "move_target_observable": false,
+          "move_target_province_id": null,
+          "owner_character_id": 33388,
+          "retreating": false,
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null,
+          "soldiers": null,
+          "source": "native"
+        },
+        "commander_character_id": 27357,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "current_soldiers": 6689,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 0,
+        "current_supply_raw": 10190260,
+        "date_raw": 53150280,
+        "exact_arrival_tick": null,
+        "maximum_soldiers": 6747,
+        "native_carmy_id": 0,
+        "public_army_id": 0,
+        "regiment_count": 27,
+        "supply_scale": 100000,
+        "treasury_raw": 62173052,
+        "treasury_scale": 100000
+      },
+      "absolute_END_raw": 53150592,
+      "actual_days_used": 77.0,
+      "applied_refill_payment_ledger": null,
+      "closed": true,
+      "common_T0_raw": 53148432,
+      "controlled_comparison_eligibility": "NOT_GRANTED",
+      "episode_run_id": "native-33388-1be6dd7a468f",
+      "global_budget_breach": false,
+      "observed_arrival_interval_days": [
+        75.0,
+        77.0
+      ],
+      "observed_terminal_date_raw": 53150280,
+      "sampling_deviations": [
+        {
+          "actual_days": 2,
+          "observed_days": [
+            12,
+            14
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-01.json",
+            "bytes": 325,
+            "sha256": "c66a2c24ffc1616d8e8a07a187b21776bae11debbcfb5128df4f260520b10995"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            20,
+            22
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-02.json",
+            "bytes": 325,
+            "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            29,
+            31
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-03.json",
+            "bytes": 325,
+            "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            34,
+            36
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-04.json",
+            "bytes": 325,
+            "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            40,
+            42
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-05.json",
+            "bytes": 325,
+            "sha256": "076267bb1ce5454fabcd8105968e019529da6e77508e65150101e4710a07e386"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            45,
+            47
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-06.json",
+            "bytes": 325,
+            "sha256": "c8cc79b46cbe77a605319937f164b90941e0198abaecef7391de6a3ea637f952"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            49,
+            51
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-07.json",
+            "bytes": 325,
+            "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            53,
+            55
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-08.json",
+            "bytes": 325,
+            "sha256": "20765b1135613b504baadc66e6f5721706ba86de98b11d21354a83cdaa4cf625"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            57,
+            59
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-09.json",
+            "bytes": 247,
+            "sha256": "d551cac1b8538587bbdabb838423bc7503108d473ce5f739ef063d3c6a8cbf93"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            60,
+            62
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-10.json",
+            "bytes": 325,
+            "sha256": "ac99d55d79bb808696d805791f0372195c16dc1ca21f13657ff4e91c6217dc8f"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            63,
+            65
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-11.json",
+            "bytes": 325,
+            "sha256": "2c3ab3672a2b2f06389ecb4981cd8d4b0a9527ddc65b6d3c52524e3274bddbe5"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            66,
+            68
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-12.json",
+            "bytes": 325,
+            "sha256": "b625a68f61b9fce6797c0ca8b63c6fe9b94152f91273829ab43c45f6529b9bef"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            70,
+            72
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-13.json",
+            "bytes": 325,
+            "sha256": "06a6e2f8de4b259cae94afa26e26512d79d2189a10fc8a505b2ca85dcb855f47"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            72,
+            74
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-14.json",
+            "bytes": 325,
+            "sha256": "ee9db71c945c1cd36c3469cc17c4331aac9a071926b6ab7fa942e81908706558"
+          }
+        },
+        {
+          "actual_days": 2,
+          "observed_days": [
+            75,
+            77
+          ],
+          "one_day_eligible": false,
+          "planned_max_days": 1,
+          "source_pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a01\\sources\\C-original-sampling-STOP-15.json",
+            "bytes": 329,
+            "sha256": "92cf9cb37d2640c822a4219ae1745fa9b5ac0e0894ec3178c9d337054270b5ba"
+          }
+        }
+      ],
+      "source_sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817",
+      "status": "ARRIVED_LONDON",
+      "subject_scope": {
+        "all_player_total_soldiers": null,
+        "global_health_status": "available",
+        "kind": "required_Main_original_cohort",
+        "required_full_DATA": 37,
+        "required_full_regiments": 27,
+        "required_native_carmy_ids": [
+          0
+        ],
+        "required_public_ids": [
+          0
+        ],
+        "unassessed_CUnit_ids": [],
+        "unassessed_health": null
+      },
+      "winner": null
+    }
+  },
+  "ABC_winner": null,
+  "film_signoff": false
+}

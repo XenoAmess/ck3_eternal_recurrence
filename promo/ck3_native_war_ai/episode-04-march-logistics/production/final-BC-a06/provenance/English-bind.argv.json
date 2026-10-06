@@ -1,0 +1,19 @@
+[
+  "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "-I",
+  "-S",
+  "-B",
+  "-X",
+  "utf8",
+  "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-preparation-a01\\final_BC_audio.py",
+  "bind-english",
+  "--request",
+  "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-launch-a01\\audio-actual-final-request.json",
+  "--audio-delivery-pin",
+  "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-English-bind-launch-a01\\audio-delivery-pin.json",
+  "--English-diff-pin",
+  "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-English-bind-launch-a01\\English-diff-pin.json",
+  "--output-dir",
+  "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01",
+  "--execute"
+]

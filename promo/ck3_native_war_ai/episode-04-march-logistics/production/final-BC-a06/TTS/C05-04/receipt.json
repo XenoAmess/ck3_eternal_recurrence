@@ -1,0 +1,57 @@
+{
+  "fragment_id": "C05-04-F01",
+  "paragraph_id": "C05-04",
+  "chapter_id": "E4-05",
+  "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+  "kind": "new-generated-audio",
+  "started_utc": "2026-10-06T00:38:38.883487+00:00",
+  "finished_utc": "2026-10-06T00:38:41.779546+00:00",
+  "attempt": 1,
+  "request": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-04-F01\\attempt-a01\\request.json",
+    "bytes": 1089,
+    "sha256": "740afac6f216afbb3e545d2c730e2d112efe6197b217ae873fda2dc52a5fa6d1"
+  },
+  "text_sha256": "0b011b01286adad9fa1075829a4bbe26bf84116c35781f402daef5f5d15014f6",
+  "text_zh": "方案B先分兵，让两支军队分别到合格驻点休整，再会合。这里看一次独立的B回放：在已核对的停驻窗口，两军当前补给月变化都读到正二十。它只说当时的读数，不表示库存已经增加。后面分别看人数和库存的实际变化；实际合军之后，还要重新核对兵团与统帅条件，伦敦终点仍未读到。",
+  "provider_return": null,
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-5%",
+  "pitch": "+0Hz",
+  "volume": "+0%",
+  "metadata": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-04-F01\\attempt-a01\\word-boundary.jsonl",
+    "bytes": 6500,
+    "sha256": "0e32436f08c08173a43d2e77859c4f2e4c4125b711a2328f1c96a3b4aa6cdbbb"
+  },
+  "WordBoundary_count": 73,
+  "native_metadata_seconds_divisor": 10000000,
+  "native_max_boundary_end_seconds": 29.421041,
+  "native_boundary_not_refitted_to_audio": true,
+  "boundary_extent_within_decoded_audio_plus_250ms": true,
+  "human_listening_signoff": false,
+  "subtitle_alignment_signoff": false,
+  "audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-04-F01\\attempt-a01\\speech.mp3",
+    "bytes": 180144,
+    "sha256": "5d0bc0234133dfb5ebf49b4095aab7f07bdf7cfa775c430ff27bfd83e6fb136a"
+  },
+  "MP3_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-04-F01\\attempt-a01\\logs\\probe.stdout.txt",
+    "bytes": 2029,
+    "sha256": "3075ae913937d61399c477a0245fef23f104bedee3b8191982fefb0c69725134"
+  },
+  "MP3_container_seconds": 30.024,
+  "decoded_audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\tts\\C05-04-F01\\attempt-a01\\decoded.wav",
+    "bytes": 1441230,
+    "sha256": "5107f29191340ee4bcb9d08c7b1e3c7ed2914aa2962e8fe345ee38b71686ff30"
+  },
+  "decoded_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 720576,
+    "seconds": 30.024
+  }
+}

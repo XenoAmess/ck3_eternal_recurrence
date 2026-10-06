@@ -1,0 +1,12 @@
+usage: xar-promo validate [-h] [--profile {authoring,release}]
+                          [--structure-only] [--json]
+                          [document]
+
+positional arguments:
+  document
+
+options:
+  -h, --help            show this help message and exit
+  --profile {authoring,release}
+  --structure-only      skip referenced-file byte and SHA checks
+  --json                write the GREEN result as JSON

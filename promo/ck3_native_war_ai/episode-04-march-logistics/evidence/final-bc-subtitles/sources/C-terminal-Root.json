@@ -1,0 +1,99 @@
+{
+  "schema": "ck3.e04.C.actual-descriptive-terminal/v1",
+  "status": "ARRIVED_LONDON",
+  "numeric_accepted": true,
+  "at_utc": "2026-10-06T00:17:42.093155+00:00",
+  "actual_date_raw": 53150280,
+  "actual_days_from_common": 77,
+  "actual_paused": true,
+  "no_further_resume": true,
+  "last_not_arrived": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-strict-serial-a10-s02\\initial\\observation.json",
+    "bytes": 569650,
+    "sha256": "35b20689637f4664deaea5f3fcce807383250811ec79743a82d821528bc21d5b"
+  },
+  "last_not_arrived_commander": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-strict-serial-a10-s02\\initial\\commander-0.json",
+    "bytes": 11375,
+    "sha256": "e1de1e96adfdde69a30704543c567c08752e6f7fdc177166f3c3d2e42d8e50ad"
+  },
+  "first_observed": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-strict-serial-a10-s02\\pulse-01\\inspect\\observation.json",
+    "bytes": 353022,
+    "sha256": "ad05a9f3c1b3fe8e538a60556403321914b383877731aa42484407666a323962"
+  },
+  "first_observed_commander": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-strict-serial-a10-s02\\pulse-01\\inspect\\commander-0.json",
+    "bytes": 11384,
+    "sha256": "19ec29e7297f0a6ef65bcec8820016b3553c322faacf66fc83d53ac4d206dd4e"
+  },
+  "independent_endpoint": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-endpoint-four-a01\\four\\observation.json",
+    "bytes": 545849,
+    "sha256": "ecd24bb6508ef3628bc6264aece481a4620b0763ae1da81bd13b9ced36fe9987"
+  },
+  "independent_endpoint_commander": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-endpoint-four-a01\\four\\commander-0.json",
+    "bytes": 11384,
+    "sha256": "5f9ba24571857ee39ccdbd9cfe47ebf1e974d89a2fdc07d2cfb2125e3590f0ec"
+  },
+  "arrival_interval_common_days_open_closed": [
+    75,
+    77
+  ],
+  "exact_arrival_tick": null,
+  "actual_main_current_soldiers": 6689,
+  "actual_main_maximum_soldiers": 6747,
+  "full_Reg": 27,
+  "full_DATA": 37,
+  "commander_character_id": 27357,
+  "current_province_id": 1527,
+  "army_state": "sieging",
+  "route_province_ids": [],
+  "supply_raw": 10190260,
+  "supply_scale": 100000,
+  "supply_capacity_raw": 30000000,
+  "supply_change_monthly_raw": 0,
+  "attrition_fraction_raw": 1000,
+  "attrition_fraction_scale": 100000,
+  "gold_raw": 62173052,
+  "gold_scale": 100000,
+  "own_integer_net_from_T0": 10,
+  "supply_net_from_T0_raw": -847456,
+  "gold_net_from_T0_raw": -1581510,
+  "cash_payment_or_actual_loss_application_ledger": null,
+  "current_Main_scope": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\Root-Main-scope-addendum.json",
+    "bytes": 6330,
+    "sha256": "cddd162f23396adf95c06ee4048be466d9795484a5a5b3eab695a84584419a57"
+  },
+  "latest_Root_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\Root-review.json",
+    "bytes": 16482,
+    "sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b"
+  },
+  "sampling_deviation_count": 15,
+  "controlled_comparison_eligibility_granted": false,
+  "descriptive_continuation_only": true,
+  "ABC_winner": null,
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "remaining_original_days": 13,
+  "deadline_censor": false,
+  "Root_direct_original_review": {
+    "original": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-endpoint-four-a01\\desktop.png",
+      "bytes": 3070572,
+      "sha256": "0a1b5d536be359afc66441eb29e4ed97fafd295648fc819fb857419dd7a4bd9a"
+    },
+    "direct_original_review": true,
+    "reviewer": "/root",
+    "observed_pixels": "Root directly viewed exact original1920x1080 at actual May21 1067/+77: large暂停, Main Army selected6689/supply101/300/redskull1%, helmetcommanderportrait, land/siege artwork with围攻. Own map6689 marker at London with siege/flames, no remaining yellow movement route. UI topbar6696 is separately visible and is NOT treated as native all-player army total. Native independent four exactsame77 source/owner/episode/war, full27Reg37DATA/max6747/current typed27357 matches first-observed77, all material/world/fullrow/cash deltasempty. Main1527sieging/route[] no combat/retreat; onlyMain0 currentroster, prior unassessed16777391 absent rather than zero/dead. rawglobal available, onlyMain health/allplayer total/completenessNULL. Root accepts this actualMain endpoint numerically as descriptive Londonarrival, interval(75,77], exacttickNULL. 1percent attrition getter is not applied casualties. T0 integer6679->6689 net+10; S11037716->10190260 net-847456; cash63754562->62173052 net-1581510 atscale100000. Cash-17 atboarding+59 only net, later+24723 UNKNOWN income; no payment ledger or cause attribution. Originalbudgetstart53148432/end53150592/unspent13; not90censor. All15 sampling deviations preserved; controlledcomparison NOT_GRANTED/winnerNULL. Originalscope-mismatch wrapper actualpause/dateNULL retained, completed producer77 and new independent four prove actualpaused endpoint. No newresume/reload/reset; neither directPNG review nor numeric endpoint is exactencodedeventPTS/continuousclean/human1x/signoff."
+  },
+  "Root_full_actual_review_notes": "Root directly viewed exact original1920x1080 at actual May21 1067/+77: large暂停, Main Army selected6689/supply101/300/redskull1%, helmetcommanderportrait, land/siege artwork with围攻. Own map6689 marker at London with siege/flames, no remaining yellow movement route. UI topbar6696 is separately visible and is NOT treated as native all-player army total. Native independent four exactsame77 source/owner/episode/war, full27Reg37DATA/max6747/current typed27357 matches first-observed77, all material/world/fullrow/cash deltasempty. Main1527sieging/route[] no combat/retreat; onlyMain0 currentroster, prior unassessed16777391 absent rather than zero/dead. rawglobal available, onlyMain health/allplayer total/completenessNULL. Root accepts this actualMain endpoint numerically as descriptive Londonarrival, interval(75,77], exacttickNULL. 1percent attrition getter is not applied casualties. T0 integer6679->6689 net+10; S11037716->10190260 net-847456; cash63754562->62173052 net-1581510 atscale100000. Cash-17 atboarding+59 only net, later+24723 UNKNOWN income; no payment ledger or cause attribution. Originalbudgetstart53148432/end53150592/unspent13; not90censor. All15 sampling deviations preserved; controlledcomparison NOT_GRANTED/winnerNULL. Originalscope-mismatch wrapper actualpause/dateNULL retained, completed producer77 and new independent four prove actualpaused endpoint. No newresume/reload/reset; neither directPNG review nor numeric endpoint is exactencodedeventPTS/continuousclean/human1x/signoff.",
+  "raw_timecode_binding": null,
+  "continuous_clean": false,
+  "human_1x_full_review": false,
+  "human_signoff": false,
+  "runtime_closed": null
+}

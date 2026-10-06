@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:08.66,Chinese,C05-07-S01,0,0,0,,{\an8\pos(960,935)}三月五日的同一暂停点，实际平分后，原主军是三千三百三十七人、满员三千三百七十一；
+Dialogue: 0,0:00:00.10,0:00:08.66,English,C05-07-S01,0,0,0,,{\an8\pos(960,1030)}At the same paused point on March 5, the split left the main army with 3,337 soldiers out of 3,371.
+Dialogue: 0,0:00:08.93,0:00:13.30,Chinese,C05-07-S02,0,0,0,,{\an8\pos(960,935)}新分队三千三百四十二、满员三千三百七十六。
+Dialogue: 0,0:00:08.93,0:00:13.30,English,C05-07-S02,0,0,0,,{\an8\pos(960,1030)}The new detachment had 3,342 out of 3,376.
+Dialogue: 0,0:00:13.90,0:00:21.26,Chinese,C05-07-S03,0,0,0,,{\an8\pos(960,935)}合计仍六千六百七十九，满员六千七百四十七；完整二十七个兵团各归其位，
+Dialogue: 0,0:00:13.90,0:00:21.26,English,C05-07-S03,0,0,0,,{\an8\pos(960,1030)}Together they still had 6,679 soldiers out of 6,747, with all 27 regiments accounted for.
+Dialogue: 0,0:00:21.50,0:00:23.10,Chinese,C05-07-S04,0,0,0,,{\an8\pos(960,935)}没有因为平分丢失。
+Dialogue: 0,0:00:21.50,0:00:23.10,English,C05-07-S04,0,0,0,,{\an8\pos(960,1030)}No regiment was lost in the split.

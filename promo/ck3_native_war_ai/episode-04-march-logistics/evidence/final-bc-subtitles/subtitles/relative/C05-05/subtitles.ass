@@ -1,0 +1,40 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Chinese,Microsoft YaHei,35,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+Style: English,Arial,25,&H00C8C8C8,&H00FFFFFF,&H00101010,&H00101010,0,0,0,0,100,100,0,0,1,1,0,8,110,110,0,1
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:04.76,Chinese,C05-05-S01,0,0,0,,{\an8\pos(960,935)}方案C换路线，先经过已核验的中转点，再去伦敦。
+Dialogue: 0,0:00:00.10,0:00:04.76,English,C05-05-S01,0,0,0,,{\an8\pos(960,1030)}Plan C takes a different route, through verified waypoints to London.
+Dialogue: 0,0:00:05.36,0:00:09.73,Chinese,C05-05-S02,0,0,0,,{\an8\pos(960,935)}这次独立回放，在共同起点后的第七十七个游戏日，
+Dialogue: 0,0:00:05.36,0:00:09.73,English,C05-05-S02,0,0,0,,{\an8\pos(960,1030)}In this independent replay, on game day 77 after the shared start,
+Dialogue: 0,0:00:10.10,0:00:13.16,Chinese,C05-05-S03,0,0,0,,{\an8\pos(960,935)}我们首次观察到主力已经抵达伦敦；
+Dialogue: 0,0:00:10.10,0:00:13.16,English,C05-05-S03,0,0,0,,{\an8\pos(960,1030)}we first observed the main army in London.
+Dialogue: 0,0:00:13.40,0:00:15.46,Chinese,C05-05-S04,0,0,0,,{\an8\pos(960,935)}第七十五日它还在路上，
+Dialogue: 0,0:00:13.40,0:00:15.46,English,C05-05-S04,0,0,0,,{\an8\pos(960,1030)}It was still en route on day 75.
+Dialogue: 0,0:00:15.83,0:00:20.23,Chinese,C05-05-S05,0,0,0,,{\an8\pos(960,935)}所以实际到达在这两次观察之间，精确时刻未知。
+Dialogue: 0,0:00:15.83,0:00:20.23,English,C05-05-S05,0,0,0,,{\an8\pos(960,1030)}It arrived between those observations. The exact moment is unknown.
+Dialogue: 0,0:00:20.86,0:00:23.93,Chinese,C05-05-S06,0,0,0,,{\an8\pos(960,935)}这支主力从六千六百七十九人出发，
+Dialogue: 0,0:00:20.86,0:00:23.93,English,C05-05-S06,0,0,0,,{\an8\pos(960,1030)}This main army started with 6,679 soldiers.
+Dialogue: 0,0:00:24.33,0:00:28.43,Chinese,C05-05-S07,0,0,0,,{\an8\pos(960,935)}到达观测时是六千六百八十九，净增十人；
+Dialogue: 0,0:00:24.33,0:00:28.43,English,C05-05-S07,0,0,0,,{\an8\pos(960,1030)}At the arrival observation, it had 6,689: a net gain of ten.
+Dialogue: 0,0:00:28.63,0:00:32.03,Chinese,C05-05-S08,0,0,0,,{\an8\pos(960,935)}完整二十七个兵团的身份与满员数不变。
+Dialogue: 0,0:00:28.63,0:00:32.03,English,C05-05-S08,0,0,0,,{\an8\pos(960,1030)}All 27 regiments retained their identities and maximum soldier counts.
+Dialogue: 0,0:00:32.63,0:00:36.76,Chinese,C05-05-S09,0,0,0,,{\an8\pos(960,935)}补给从约一百一十点三八降到一百零一点九零，
+Dialogue: 0,0:00:32.63,0:00:36.76,English,C05-05-S09,0,0,0,,{\an8\pos(960,1030)}Supply fell from about 110.38 to 101.90.
+Dialogue: 0,0:00:37.06,0:00:38.16,Chinese,C05-05-S10,0,0,0,,{\an8\pos(960,935)}容量仍三百。
+Dialogue: 0,0:00:37.06,0:00:38.16,English,C05-05-S10,0,0,0,,{\an8\pos(960,1030)}Supply capacity remained 300.
+Dialogue: 0,0:00:38.76,0:00:41.30,Chinese,C05-05-S11,0,0,0,,{\an8\pos(960,935)}终点当前损耗读到百分之一，
+Dialogue: 0,0:00:38.76,0:00:41.30,English,C05-05-S11,0,0,0,,{\an8\pos(960,1030)}Current attrition at the endpoint was 1%.
+Dialogue: 0,0:00:41.70,0:00:46.93,Chinese,C05-05-S12,0,0,0,,{\an8\pos(960,935)}这是当时的条件读数，不能直接换算成旅途中死了多少兵。
+Dialogue: 0,0:00:41.70,0:00:46.93,English,C05-05-S12,0,0,0,,{\an8\pos(960,1030)}That was the rate under current conditions. It does not tell us how many died en route.
+Dialogue: 0,0:00:47.56,0:00:50.10,Chinese,C05-05-S13,0,0,0,,{\an8\pos(960,935)}这里报的是主力的原始编制，
+Dialogue: 0,0:00:47.56,0:00:50.10,English,C05-05-S13,0,0,0,,{\an8\pos(960,1030)}These figures describe the original main army.
+Dialogue: 0,0:00:50.43,0:00:52.70,Chinese,C05-05-S14,0,0,0,,{\an8\pos(960,935)}不是玩家所有单位的总人数。
+Dialogue: 0,0:00:50.43,0:00:52.70,English,C05-05-S14,0,0,0,,{\an8\pos(960,1030)}They are not the total soldiers in all player units.

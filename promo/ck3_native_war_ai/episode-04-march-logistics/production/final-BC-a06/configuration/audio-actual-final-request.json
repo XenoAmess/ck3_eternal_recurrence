@@ -1,0 +1,34 @@
+{
+  "schema": "ck3.e04.final-BC-audio-request.v1",
+  "workers": 4,
+  "oral_tool": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-oral-preparation-a01\\main-scope-connection-a05\\final_bc_increment.py",
+    "bytes": 16788,
+    "sha256": "3f6c0a10808f9becd2cbe232cdb1d45779858c65eb7eccc565f0a60a7bb3195b"
+  },
+  "oral_request": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-launch-a01\\oral-actual-final-request.json",
+    "bytes": 13394,
+    "sha256": "3804f5d6231c65b5ae1ecc4a22d363ab400d1dcea522027c2f21a5eab09dd9b2"
+  },
+  "baseline_audio_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\ROOT-DELIVERY.json",
+    "bytes": 5126,
+    "sha256": "87044ce8e9d5e0b25110f6693deeacea2f8fbf8f63563426ed96b5da8cff9633"
+  },
+  "actual_audio_helper": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-production-preparation-a01\\generate_stable_a04_audio_a02.py",
+    "bytes": 24594,
+    "sha256": "5c7580192e3b2f2712c462ec697b9b1ca8239f7d9e90303035142e2e47f2b6ed"
+  },
+  "serial_native_writer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-result-oral-increment-a01\\serial_native_manifest_writer.py",
+    "bytes": 7185,
+    "sha256": "00ac94d2e655fdfc1e1f3aa1956fab3b3b2929401f3a72534f6774723f92e435"
+  },
+  "baseline_project_config": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\sources\\promo-project-A-only-a05.json",
+    "bytes": 80029,
+    "sha256": "015b0727203aa2cf693fc816a3ca3270e1c5ec16bed9a0e81be1ddf4d2e056a2"
+  }
+}

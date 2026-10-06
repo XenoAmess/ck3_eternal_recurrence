@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\ck3-war-episode04-research-20261004-a01\e04-final-BC-execution-ready-a01\final_subtitle_increment_a03.py", line 507, in <module>
+    main()
+    ~~~~^^
+  File "C:\ck3-war-episode04-research-20261004-a01\e04-final-BC-execution-ready-a01\final_subtitle_increment_a03.py", line 503, in main
+    print(json.dumps(build(request, args.output), ensure_ascii=False, indent=2))
+                     ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ck3-war-episode04-research-20261004-a01\e04-final-BC-execution-ready-a01\final_subtitle_increment_a03.py", line 436, in build
+    raise ValueError('New subtitle reading-rate flags require explicit alignment/display revision: ' + json.dumps(rate_flags))
+ValueError: New subtitle reading-rate flags require explicit alignment/display revision: [{"id": "C05-04-S07", "flags": ["english_rate_above4.5wps"]}, {"id": "C05-10-S08", "flags": ["english_rate_above4.5wps"]}, {"id": "C05-14-S05", "flags": ["english_rate_above4.5wps"]}, {"id": "C05-14-S18", "flags": ["english_rate_above4.5wps"]}]

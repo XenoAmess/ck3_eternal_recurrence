@@ -1,0 +1,602 @@
+{
+  "schema": "xar.e04.actual-stable-chapter-audio.v2",
+  "chapter_id": "E4-01",
+  "created_utc": "2026-10-05T16:15:31.841493+00:00",
+  "audio": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\chapters\\E4-01\\narration.wav",
+    "bytes": 8316332,
+    "sha256": "7863c61fb5e689b9034bfab24d3c7fb53edde4c7e9dc816ee658d4076f9c83d7"
+  },
+  "actual_PCM": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 4158144,
+    "seconds": 173.256
+  },
+  "paragraphs": [
+    {
+      "id": "C01-01",
+      "subtitles_zh": "大军出发的时候，最容易记住的是那个很大的总人数。但到接战以前，还有一整段路。军队要带着补给，经过不同地点，可能减少兵员，也可能得到补充。到了战场，还剩多少人、有没有补给、能不能及时加入，不能只靠出发时的一个数字回答。",
+      "subtitles_en": "When a large army sets out, its total soldier count is easy to remember. But there is a whole journey before it joins the battle. It carries supplies through different places, and may lose soldiers or receive reinforcement along the way. That starting number alone cannot tell us how many soldiers will arrive, whether they will have supplies, or whether they can join in time.",
+      "chapter_start_sample": 0,
+      "chapter_end_sample": 566208,
+      "chapter_start_seconds": 0.0,
+      "chapter_end_seconds": 23.592,
+      "fragments": [
+        {
+          "fragment_id": "C01-01-F01",
+          "paragraph_id": "C01-01",
+          "chapter_id": "E4-01",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:23.886358+00:00",
+          "finished_utc": "2026-10-05T16:15:27.157347+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-01-F01\\attempt-a01\\request.json",
+            "bytes": 1042,
+            "sha256": "5dda1eeaa79f278a57f334a1c0eda97b66721ff39d661a5956440f3bd4a7b010"
+          },
+          "text_sha256": "87090d8d8ef920400dd5ee490936d496322a10e5da3618204ffe4107db8e9a51",
+          "text_zh": "大军出发的时候，最容易记住的是那个很大的总人数。但到接战以前，还有一整段路。军队要带着补给，经过不同地点，可能减少兵员，也可能得到补充。到了战场，还剩多少人、有没有补给、能不能及时加入，不能只靠出发时的一个数字回答。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-01-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 5412,
+            "sha256": "386e63f8e716c5ae5c869a60ce9aefbc53a440ba5b5a21cca274116e8d6b071e"
+          },
+          "WordBoundary_count": 61,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 22.973708,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-01-F01\\attempt-a01\\speech.mp3",
+            "bytes": 141552,
+            "sha256": "ec065427bfa03281db0b4e533ca7913ce7d54bf214f88df66309315ad9078979"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-01-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "26a1fdbc5e4b1671e1b94683fbd850dc67c87c25b501b99eff9243b948a7907d"
+          },
+          "MP3_container_seconds": 23.592,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-01-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1132494,
+            "sha256": "3c9f57699ada3023bfeeb0c149a605a33a2b062e108ce378e7b56db1f7aeac3e"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 566208,
+            "seconds": 23.592
+          },
+          "chapter_start_sample": 0,
+          "chapter_end_sample": 566208,
+          "chapter_start_seconds": 0.0,
+          "chapter_end_seconds": 23.592
+        }
+      ]
+    },
+    {
+      "id": "C01-02",
+      "subtitles_zh": "这期把镜头放在行军、补给和损耗。核心问题是，怎样把足够多的兵，在合适的时间，以能够继续作战的状态送到战场。先读原版界面，再跟着真实变化看结果。下令成功、预计抵达和真正到场，要分别确认。",
+      "subtitles_en": "This episode follows marching, supply, and attrition. How do we bring enough soldiers to the battlefield, at the right time, ready to keep fighting? First, read the base game's interface. Then follow the actual changes. A successful order, predicted arrival, and actual arrival need separate checks.",
+      "chapter_start_sample": 566208,
+      "chapter_end_sample": 1085184,
+      "chapter_start_seconds": 23.592,
+      "chapter_end_seconds": 45.216,
+      "fragments": [
+        {
+          "fragment_id": "C01-02-F01",
+          "paragraph_id": "C01-02",
+          "chapter_id": "E4-01",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:23.884967+00:00",
+          "finished_utc": "2026-10-05T16:15:27.028814+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-02-F01\\attempt-a01\\request.json",
+            "bytes": 998,
+            "sha256": "d3b344225c760f561539f5b47b022b6c4d9f2966c5c62a7e21ad1dc7b3a11826"
+          },
+          "text_sha256": "61880d19b30aa150166006ad00a7b9d003cddc632cca763d3e40c62d43231dd2",
+          "text_zh": "这期把镜头放在行军、补给和损耗。核心问题是，怎样把足够多的兵，在合适的时间，以能够继续作战的状态送到战场。先读原版界面，再跟着真实变化看结果。下令成功、预计抵达和真正到场，要分别确认。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-02-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4535,
+            "sha256": "00cf56324e58a6c7f3d5e0c3321c63f02902c169171ef7c9a3b07a701196f82a"
+          },
+          "WordBoundary_count": 51,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 21.0,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-02-F01\\attempt-a01\\speech.mp3",
+            "bytes": 129744,
+            "sha256": "4743adb09d58bfbda3d18a0b9a2fad228f1664c7d6160329dbdf14ae1f481caa"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-02-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "7ff6fb552d1b5c2f86502aeb0b5d33e120e979da8fa27ba04338caae9e50f581"
+          },
+          "MP3_container_seconds": 21.624,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-02-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1038030,
+            "sha256": "051c219938ced07b611e02a5d0764332955e505d7a95becc0ffe0f4250186c0e"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 518976,
+            "seconds": 21.624
+          },
+          "chapter_start_sample": 566208,
+          "chapter_end_sample": 1085184,
+          "chapter_start_seconds": 23.592,
+          "chapter_end_seconds": 45.216
+        }
+      ]
+    },
+    {
+      "id": "C01-03",
+      "subtitles_zh": "本期跟着威廉的军队，使用一点二零点零点三原版。不同回放会分别标清起点和日期。另一个人物的历史人数，不放到威廉的画面上；重新载入存档后的独立观察，也不剪成一次没有中断的现场。",
+      "subtitles_en": "We are following William's armies in the unmodified game, version 1.20.0.3. Separate replays will retain their own starting points and dates. Another character's historical soldier counts will not become William's results. Separate observations after reloading a save will not be edited into one uninterrupted journey.",
+      "chapter_start_sample": 1085184,
+      "chapter_end_sample": 1544832,
+      "chapter_start_seconds": 45.216,
+      "chapter_end_seconds": 64.368,
+      "fragments": [
+        {
+          "fragment_id": "C01-03-F01",
+          "paragraph_id": "C01-03",
+          "chapter_id": "E4-01",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:23.885537+00:00",
+          "finished_utc": "2026-10-05T16:15:26.564463+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-03-F01\\attempt-a01\\request.json",
+            "bytes": 998,
+            "sha256": "0cc5a4b980a63ea76e634130141b1c9d109bea67e46f6d9e62561e51832bdf35"
+          },
+          "text_sha256": "13c8ad8d55101b54dd082c27a576e522188d678436ad0e929999d7983d8691fc",
+          "text_zh": "本期跟着威廉的军队，使用一点二零点零点三原版。不同回放会分别标清起点和日期。另一个人物的历史人数，不放到威廉的画面上；重新载入存档后的独立观察，也不剪成一次没有中断的现场。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-03-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4207,
+            "sha256": "577799c69af136a747018b95d329e8443fdfd6186852a50a3e952be4876e1bda"
+          },
+          "WordBoundary_count": 47,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 18.526291,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-03-F01\\attempt-a01\\speech.mp3",
+            "bytes": 114912,
+            "sha256": "2a352e5303aceb4428cf39dab4e04ba5c8f945b93d00d01e757844a3ff049c3a"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-03-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "7a8cb1b4a08675d3a938d0fa970b514c74805d683076d32731a3b32d5ccbea9c"
+          },
+          "MP3_container_seconds": 19.152,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-03-F01\\attempt-a01\\decoded.wav",
+            "bytes": 919374,
+            "sha256": "bad55e646a21ea60103b1a335734da6dd34d1473918b80db132657234d94476f"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 459648,
+            "seconds": 19.152
+          },
+          "chapter_start_sample": 1085184,
+          "chapter_end_sample": 1544832,
+          "chapter_start_seconds": 45.216,
+          "chapter_end_seconds": 64.368
+        }
+      ]
+    },
+    {
+      "id": "C01-04",
+      "subtitles_zh": "先看三个已经观察到的区别。有一支军队，补给回到三百，人数却还差一个；另一轮独立观察里，它真的补上了那一个。还有两军合并，兵团一个没少，补给却不是把两份库存直接相加。人数、库存、容量和组织变化，需要分开读。",
+      "subtitles_en": "Start with three differences we have already observed. One army recovered to 300 supply while still missing one soldier. In a separate observation, that soldier was actually reinforced. Two armies also merged without losing any regiments, but their supplies were not simply added together. Soldier count, supply stock, capacity, and army organization each need their own reading.",
+      "chapter_start_sample": 1544832,
+      "chapter_end_sample": 2098368,
+      "chapter_start_seconds": 64.368,
+      "chapter_end_seconds": 87.432,
+      "fragments": [
+        {
+          "fragment_id": "C01-04-F01",
+          "paragraph_id": "C01-04",
+          "chapter_id": "E4-01",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:23.883141+00:00",
+          "finished_utc": "2026-10-05T16:15:26.470092+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-04-F01\\attempt-a01\\request.json",
+            "bytes": 1025,
+            "sha256": "130779d89b470ae3ff9c1ea981db768057626b9ca3cfb9fc824311b783b935f7"
+          },
+          "text_sha256": "15802c7ce4652b8d2081c3d0c688e36387b61a0a49a9eb07ea136a3b417fc4d3",
+          "text_zh": "先看三个已经观察到的区别。有一支军队，补给回到三百，人数却还差一个；另一轮独立观察里，它真的补上了那一个。还有两军合并，兵团一个没少，补给却不是把两份库存直接相加。人数、库存、容量和组织变化，需要分开读。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-04-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 5218,
+            "sha256": "5a9be82354fa0a4b97916e23abf1216bcda517c2ef8bf4ea1a5041f5e1cfac39"
+          },
+          "WordBoundary_count": 59,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 22.4605,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-04-F01\\attempt-a01\\speech.mp3",
+            "bytes": 138384,
+            "sha256": "9bf014207d2c50708450bf441793317b6e5a915c850bd6717bfb60b3b0223db8"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-04-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "b8b3fd1b4cfc4c96408a3ffffd6feed14eda357db07ac8ab622cb65efc409d8d"
+          },
+          "MP3_container_seconds": 23.064,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-04-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1107150,
+            "sha256": "9d1943609789ade66fc4a9dedd2674b7371c72ac80bf945514163ad122b0e2ab"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 553536,
+            "seconds": 23.064
+          },
+          "chapter_start_sample": 1544832,
+          "chapter_end_sample": 2098368,
+          "chapter_start_seconds": 64.368,
+          "chapter_end_seconds": 87.432
+        }
+      ]
+    },
+    {
+      "id": "C01-05",
+      "subtitles_zh": "人数减少也有不同窗口。一个围城分队的观察窗口净少三十一人，主军跨到新县的另一个窗口净少一百二十七人。另一轮回放，又看到整军在两天内净少六十七人。这里说的是兵员净变化，各例的条件分别解释，不统一叫作死亡。",
+      "subtitles_en": "Soldier losses also appear in different windows. A besieging detachment lost a net 31 soldiers. The main army lost a net 127 in another window as it entered a new county. A separate replay showed a net loss of 67 in two days. These are net changes in soldiers. We will explain the conditions for each, without calling every decrease a death count.",
+      "chapter_start_sample": 2098368,
+      "chapter_end_sample": 2663424,
+      "chapter_start_seconds": 87.432,
+      "chapter_end_seconds": 110.976,
+      "fragments": [
+        {
+          "fragment_id": "C01-05-F01",
+          "paragraph_id": "C01-05",
+          "chapter_id": "E4-01",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:26.484002+00:00",
+          "finished_utc": "2026-10-05T16:15:31.804730+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-05-F01\\attempt-a01\\request.json",
+            "bytes": 1009,
+            "sha256": "88b20a3f930242e9533206fbfd47e110755c959074a8ed6384918b2c99f631cc"
+          },
+          "text_sha256": "222dacfaffd5f78c9b93b2b051715d50fa266056692c176cc1c04a5ba5ae936c",
+          "text_zh": "人数减少也有不同窗口。一个围城分队的观察窗口净少三十一人，主军跨到新县的另一个窗口净少一百二十七人。另一轮回放，又看到整军在两天内净少六十七人。这里说的是兵员净变化，各例的条件分别解释，不统一叫作死亡。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-05-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 5329,
+            "sha256": "bfe2f79d34f71f249cd3f35219d39ff7e5908e27570268d8a1089689445e6652"
+          },
+          "WordBoundary_count": 60,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 22.921083,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-05-F01\\attempt-a01\\speech.mp3",
+            "bytes": 141264,
+            "sha256": "c3ece49257a11abda7082991d4f96d0f1fc4ce8d77a6c59a557f153778c9b4e0"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-05-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "0147ea6e55b91a325eab44cc3f37e9c019b0295c5dc6ddee2c40fa3f4a518b54"
+          },
+          "MP3_container_seconds": 23.544,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-05-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1130190,
+            "sha256": "dfdb349e8c66989372976593bca769bac1f478911441fb0c58ef7c33137e016f"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 565056,
+            "seconds": 23.544
+          },
+          "chapter_start_sample": 2098368,
+          "chapter_end_sample": 2663424,
+          "chapter_start_seconds": 87.432,
+          "chapter_end_seconds": 110.976
+        }
+      ]
+    },
+    {
+      "id": "C01-06",
+      "subtitles_zh": "路线也有几种时间。下令前是预期抵达，走起来以后是当前剩余时间，真正抵达又是独立结果。军队窗口对整条路线的估计，与当前第一段还要走多久，可以有不同范围。比较以前，先确认这个时间描述的是哪一段。",
+      "subtitles_en": "A route also has several kinds of time. Before the order, there is predicted arrival. Once moving, there is the current time remaining. Actual arrival is a separate result. The army window's whole-route estimate can cover a different distance from the first leg's remaining time. Before comparing, check which part of the journey each time describes.",
+      "chapter_start_sample": 2663424,
+      "chapter_end_sample": 3181824,
+      "chapter_start_seconds": 110.976,
+      "chapter_end_seconds": 132.576,
+      "fragments": [
+        {
+          "fragment_id": "C01-06-F01",
+          "paragraph_id": "C01-06",
+          "chapter_id": "E4-01",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:26.580705+00:00",
+          "finished_utc": "2026-10-05T16:15:29.156780+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-06-F01\\attempt-a01\\request.json",
+            "bytes": 1011,
+            "sha256": "4c83bb167e50ea02f9f9c3b567d783eab46a857c4a707b1a5defc53c787ec960"
+          },
+          "text_sha256": "5a4d70f9b445af123724779cf075021610d5ee45ce845a54b4b08f4eede4ba63",
+          "text_zh": "路线也有几种时间。下令前是预期抵达，走起来以后是当前剩余时间，真正抵达又是独立结果。军队窗口对整条路线的估计，与当前第一段还要走多久，可以有不同范围。比较以前，先确认这个时间描述的是哪一段。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-06-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4649,
+            "sha256": "f28d1422a1f90debb0633923b172c3e7c61e9766b9540bd825cdb2c88f4c17f2"
+          },
+          "WordBoundary_count": 52,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 21.0,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-06-F01\\attempt-a01\\speech.mp3",
+            "bytes": 129600,
+            "sha256": "a0fed030dec18ca24c56686f1be406aa9eec5a6ccdc60443b98d31cbd16d6c0f"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-06-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "04cc1ffc7507ed9649d597c168881e6276803b1cf6175dd7f10f004cdd00a936"
+          },
+          "MP3_container_seconds": 21.6,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-06-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1036878,
+            "sha256": "1e4a0065a367468fe1a4b9e2cf85f98f455ea81be22dc725216b145dd5c6a0f7"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 518400,
+            "seconds": 21.6
+          },
+          "chapter_start_sample": 2663424,
+          "chapter_end_sample": 3181824,
+          "chapter_start_seconds": 110.976,
+          "chapter_end_seconds": 132.576
+        }
+      ]
+    },
+    {
+      "id": "C01-07",
+      "subtitles_zh": "最后要比较三个安排：整军直走、分兵休整后会合、换路线。它们需要从同一个起点独立回放，再比较实际到达、兵力、补给和支付。一个地点不适合休整，不等于整个分兵方案已经输了；结果到齐以前，不提前选赢家。",
+      "subtitles_en": "Finally, we will compare three plans: march as one army, split to recover and reunite, or take another route. Each needs a separate replay from the same starting point, comparing actual arrival, strength, supply, and payments. One unsuitable recovery location does not mean the entire split-army plan has lost. We will not choose a winner before the results are complete.",
+      "chapter_start_sample": 3181824,
+      "chapter_end_sample": 3708288,
+      "chapter_start_seconds": 132.576,
+      "chapter_end_seconds": 154.512,
+      "fragments": [
+        {
+          "fragment_id": "C01-07-F01",
+          "paragraph_id": "C01-07",
+          "chapter_id": "E4-01",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:27.043424+00:00",
+          "finished_utc": "2026-10-05T16:15:29.782153+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-07-F01\\attempt-a01\\request.json",
+            "bytes": 1004,
+            "sha256": "da768ee7e48876ecbeda370d1f55368c1df89b34dbb136cd17252d4cca08faa4"
+          },
+          "text_sha256": "3a280971f2e78b4ffdeaf01bacf32746471ffbe322dc7f2213884882ee3e2d74",
+          "text_zh": "最后要比较三个安排：整军直走、分兵休整后会合、换路线。它们需要从同一个起点独立回放，再比较实际到达、兵力、补给和支付。一个地点不适合休整，不等于整个分兵方案已经输了；结果到齐以前，不提前选赢家。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-07-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4720,
+            "sha256": "0c60548799ba1a47c393790133d6c9a351b36542ce466eec813c742fcd64f991"
+          },
+          "WordBoundary_count": 53,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 21.328957,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-07-F01\\attempt-a01\\speech.mp3",
+            "bytes": 131616,
+            "sha256": "f583d55b9c3cb25fff5f542e4ffda77939c7a88ca8b880568288a062ebe2f8df"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-07-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "4f613a7ec2b5d8b9ef000a679074dafbc7034ad1b477f36506c786cd304fabde"
+          },
+          "MP3_container_seconds": 21.936,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-07-F01\\attempt-a01\\decoded.wav",
+            "bytes": 1053006,
+            "sha256": "4af83f3647b4aeefe6d4df10a19e433a2cd6710964ec34198507804b3f529c18"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 526464,
+            "seconds": 21.936
+          },
+          "chapter_start_sample": 3181824,
+          "chapter_end_sample": 3708288,
+          "chapter_start_seconds": 132.576,
+          "chapter_end_seconds": 154.512
+        }
+      ]
+    },
+    {
+      "id": "C01-08",
+      "subtitles_zh": "按这个顺序，出发前能看清眼前条件，途中能发现变化，接战前还能再核对一次。我们从最容易混在一起的一组数开始：军队现在带着多少补给，能够带多少，以及当地能支持多少士兵。",
+      "subtitles_en": "This gives us three chances to check: before departure, along the way, and before battle. We begin with the numbers most easily confused: how much supply the army has, how much it can carry, and how many soldiers the location can support.",
+      "chapter_start_sample": 3708288,
+      "chapter_end_sample": 4158144,
+      "chapter_start_seconds": 154.512,
+      "chapter_end_seconds": 173.256,
+      "fragments": [
+        {
+          "fragment_id": "C01-08-F01",
+          "paragraph_id": "C01-08",
+          "chapter_id": "E4-01",
+          "status": "PRODUCED_ACTUAL_AUDIO_AND_WORD_BOUNDARY_PENDING_LISTENING",
+          "kind": "new-generated-audio",
+          "started_utc": "2026-10-05T16:15:27.176299+00:00",
+          "finished_utc": "2026-10-05T16:15:30.140451+00:00",
+          "attempt": 1,
+          "request": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-08-F01\\attempt-a01\\request.json",
+            "bytes": 952,
+            "sha256": "2e86ed8189a36505d793281d02c3b24ad49c4b8d4b79d2fca52800a7d1d5d96c"
+          },
+          "text_sha256": "e3d18d79b9a5890e39422a16deea6eac35bbb5d420853c69faf59a20d66cad21",
+          "text_zh": "按这个顺序，出发前能看清眼前条件，途中能发现变化，接战前还能再核对一次。我们从最容易混在一起的一组数开始：军队现在带着多少补给，能够带多少，以及当地能支持多少士兵。",
+          "provider_return": null,
+          "voice": "zh-CN-XiaoxiaoNeural",
+          "rate": "-5%",
+          "pitch": "+0Hz",
+          "volume": "+0%",
+          "metadata": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-08-F01\\attempt-a01\\word-boundary.jsonl",
+            "bytes": 4175,
+            "sha256": "70067d2e7551fa1a44489041559c4fccb8142c122ea77aabecf11cf017cb5196"
+          },
+          "WordBoundary_count": 47,
+          "native_metadata_seconds_divisor": 10000000,
+          "native_max_boundary_end_seconds": 18.131582,
+          "native_boundary_not_refitted_to_audio": true,
+          "boundary_extent_within_decoded_audio_plus_250ms": true,
+          "human_listening_signoff": false,
+          "subtitle_alignment_signoff": false,
+          "audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-08-F01\\attempt-a01\\speech.mp3",
+            "bytes": 112464,
+            "sha256": "ad3f5509632c619c538cb784f4f439162be7e263f5413cc0c98e6c0c6063647f"
+          },
+          "MP3_probe": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-08-F01\\attempt-a01\\logs\\probe.stdout.txt",
+            "bytes": 2027,
+            "sha256": "a27e8a4fc60e8fb387f7dc95837e67202d1aa7990ff58cfdd89668a0eb91af3e"
+          },
+          "MP3_container_seconds": 18.744,
+          "decoded_audio": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-stable-audio-production-a02\\tts\\C01-08-F01\\attempt-a01\\decoded.wav",
+            "bytes": 899790,
+            "sha256": "44664e063c79f7230ef3967db364cf2e10cc20ee79a70b8fbcdf05e8643e24c4"
+          },
+          "decoded_PCM": {
+            "sample_rate": 24000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "sample_frames": 449856,
+            "seconds": 18.744
+          },
+          "chapter_start_sample": 3708288,
+          "chapter_end_sample": 4158144,
+          "chapter_start_seconds": 154.512,
+          "chapter_end_seconds": 173.256
+        }
+      ]
+    }
+  ],
+  "sample_offsets_are_actual_concatenated_PCM": true,
+  "inserted_silence_frames": 0,
+  "WordBoundary_scope": "New fragments preserve actual provider ticks relative to returned fragment audio; six reused fragments have null word metadata.",
+  "ABC_results": null,
+  "ABC_winner": null,
+  "human_listening_signoff": false,
+  "final_film_ready": false
+}

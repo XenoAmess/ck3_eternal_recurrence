@@ -1,0 +1,20 @@
+{
+  "default_readonly_plan": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-I",
+    "-S",
+    "-B",
+    "verify_pack.py",
+    "plan"
+  ],
+  "explicit_readonly_verify": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-I",
+    "-S",
+    "-B",
+    "verify_pack.py",
+    "verify"
+  ],
+  "current_metadata_does_not_authorize_actual_generation_without_explicit_assets": true,
+  "historical_generate_argv_carried_at": "provenance/generate.argv.json"
+}

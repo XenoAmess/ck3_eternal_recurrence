@@ -1,0 +1,20 @@
+{
+  "status": "PASS_EXACT_SINGLE_ROOT_REQUESTED_BRIDGE",
+  "actual_changed_since_a01": [
+    "C05-14"
+  ],
+  "other68_exact": true,
+  "all7_voice_diff_vsA_unchanged": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "C05_01_03_15_exact_old_Chinese": true,
+  "C05_15_16_picture_A_label_required": true,
+  "new_TTS_requests": 0,
+  "human_signoff": false
+}

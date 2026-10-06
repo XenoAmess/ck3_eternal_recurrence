@@ -1,0 +1,9 @@
+[
+  "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "-B",
+  "-m",
+  "xar_promo",
+  "validate",
+  "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\native-run\\run-manifest.json",
+  "--json"
+]
