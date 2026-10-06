@@ -788,6 +788,10 @@ class AtomicReportWriteTests(unittest.TestCase):
                     with self.assertRaises(OSError) as failure:
                         harness.write_atomic_report(output, {"status": "RED", "attempt": attempt})
                     self.assertEqual(failure.exception.errno, errno.ENOSPC)
+                    context = failure.exception.ck3_write_error_context
+                    self.assertEqual(context["operation"], "write-report-json")
+                    self.assertEqual(context["report_path"], str(output))
+                    self.assertIn("injected full disk", context["original_exception_traceback"])
                     self.assertEqual(output.read_bytes(), original)
                     partials = list(Path(directory).glob(".report.json.partial-*"))
                     self.assertEqual(len(partials), attempt + 1)
@@ -891,6 +895,11 @@ class AtomicReportWriteTests(unittest.TestCase):
                     with self.assertRaises(type(failure)) as raised:
                         harness.write_atomic_report(output, intended)
                 self.assertIs(raised.exception, failure)
+                context = failure.ck3_write_error_context
+                self.assertEqual(context["operation"], "replace-report-from-partial")
+                self.assertEqual(context["sink_path"], str(output))
+                self.assertEqual(context["partial_path"], str(partials[0]))
+                self.assertTrue(failure.__notes__)
                 self.assertEqual(replace.call_count, limit)
                 self.assertEqual(sleep.call_args_list, [mock.call(0.05)] * (limit - 1))
                 self.assertEqual(len(set(partials)), 1)
@@ -898,6 +907,57 @@ class AtomicReportWriteTests(unittest.TestCase):
                 preserved = list(Path(directory).glob(".report.json.partial-*"))
                 self.assertEqual(preserved, [partials[0]])
                 self.assertEqual(json.loads(preserved[0].read_text(encoding="utf-8")), intended)
+
+    def test_execute_keeps_finished_advance_and_stops_followup_on_report_sync_fault(self):
+        import errno
+        import run_ck3_12002_mcp_live as harness
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "report.json"
+            report = {"phase": "hold", "steps": []}
+            args = Namespace(output=output)
+            client = PlanClient(None, args, report, lambda: harness.write_atomic_report(output, report))
+            client.advance = mock.AsyncMock(return_value={"elapsed_hours": 24})
+            client.fresh = mock.AsyncMock(return_value={"date_raw": 124, "paused": True})
+            client.invoke = mock.AsyncMock(side_effect=AssertionError("followup must remain undispatched"))
+            failure = OSError(errno.ENOSPC, "injected finished-step report sync fault")
+            real_fsync = os.fsync
+            sync_count = 0
+
+            def synced(fd):
+                nonlocal sync_count
+                sync_count += 1
+                if sync_count == 2:
+                    raise failure
+                return real_fsync(fd)
+
+            with mock.patch.object(harness.os, "fsync", side_effect=synced), \
+                    mock.patch.object(harness.os, "replace", wraps=os.replace) as replaced:
+                with self.assertRaises(OSError) as raised:
+                    asyncio.run(client.execute([
+                        {"id": "advance-D3-once", "kind": "advance_day", "days": 1},
+                        {"id": "next-D3-frame", "tool": "NO_DISPATCH"},
+                    ]))
+            self.assertIs(raised.exception, failure)
+            client.advance.assert_awaited_once()
+            client.fresh.assert_awaited_once()
+            client.invoke.assert_not_awaited()
+            self.assertEqual(sync_count, 2)
+            self.assertEqual(replaced.call_count, 1)
+            self.assertEqual(len(report["steps"]), 1)
+            last = report["steps"][0]
+            self.assertIs(last["ok"], True)
+            self.assertTrue(last["finished_at"])
+            self.assertNotIn("error", last)
+            context = failure.ck3_write_error_context
+            self.assertEqual(context["operation"], "fsync-report-partial")
+            self.assertEqual(context["phase"], "hold")
+            self.assertEqual(context["last_step_id"], "advance-D3-once")
+            self.assertIs(context["last_step_ok"], True)
+            self.assertEqual(context["last_step_finished_at"], last["finished_at"])
+            self.assertFalse(json.loads(output.read_text(encoding="utf-8"))["steps"][0]["ok"])
+            preserved = list(Path(directory).glob(".report.json.partial-*"))
+            self.assertEqual(len(preserved), 1)
+            self.assertEqual(json.loads(preserved[0].read_text(encoding="utf-8")), report)
 
 
 if __name__ == "__main__":

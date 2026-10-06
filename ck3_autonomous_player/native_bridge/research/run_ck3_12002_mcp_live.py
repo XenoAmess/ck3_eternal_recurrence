@@ -44,10 +44,17 @@ class JsonLines:
         path.parent.mkdir(parents=True, exist_ok=True)
 
     def write(self, direction: str, value: object) -> None:
-        with self.lock, self.path.open("a", encoding="utf-8") as stream:
-            stream.write(json.dumps({
-                "at": now(), "direction": direction, "message": serialized(value),
-            }, ensure_ascii=False) + "\n")
+        operation = "open-append"
+        try:
+            with self.lock, self.path.open("a", encoding="utf-8") as stream:
+                operation = "append-json-line"
+                stream.write(json.dumps({
+                    "at": now(), "direction": direction, "message": serialized(value),
+                }, ensure_ascii=False) + "\n")
+                operation = "close-append-stream"
+        except OSError as error:
+            annotate_write_error(error, self.path, operation, {"journal_direction": direction})
+            raise
 
 
 class RecordedStream:
@@ -1270,22 +1277,49 @@ async def prepare_rules_diagnostic_bookmarks(
     return result
 
 
+def annotate_write_error(error: OSError, path: Path, operation: str,
+                         stage: dict[str, object]) -> None:
+    """Attach the failing sink to the same exception; do not perform a new write."""
+    context = {"sink_path": str(path), "operation": operation, **stage,
+        "exception_type": type(error).__name__, "exception_message": str(error),
+        "errno": error.errno, "winerror": getattr(error, "winerror", None),
+        "filename": error.filename, "filename2": getattr(error, "filename2", None),
+        "original_exception_traceback": traceback.format_exc()}
+    error.ck3_write_error_context = context
+    error.add_note("CK3 write-error context: " + json.dumps(context, ensure_ascii=False))
+
+
 def write_atomic_report(path: Path, report: dict[str, object]) -> None:
     """Install one complete report; preserve old report and partial on failure."""
     partial = path.with_name(f".{path.name}.partial-{uuid.uuid4().hex}")
-    with partial.open("x", encoding="utf-8") as stream:
-        stream.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
-        stream.flush()
-        os.fsync(stream.fileno())
-    for attempt in range(20):
-        try:
-            os.replace(partial, path)
-        except PermissionError as error:
-            if os.name != "nt" or getattr(error, "winerror", None) not in (5, 32, 33) or attempt == 19:
-                raise
-            time.sleep(0.05)
-        else:
-            return
+    operation = "open-exclusive-partial"
+    try:
+        with partial.open("x", encoding="utf-8") as stream:
+            operation = "write-report-json"
+            stream.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+            operation = "flush-report-partial"
+            stream.flush()
+            operation = "fsync-report-partial"
+            os.fsync(stream.fileno())
+            operation = "close-report-partial"
+        operation = "replace-report-from-partial"
+        for attempt in range(20):
+            try:
+                os.replace(partial, path)
+            except PermissionError as error:
+                if os.name != "nt" or getattr(error, "winerror", None) not in (5, 32, 33) or attempt == 19:
+                    raise
+                time.sleep(0.05)
+            else:
+                return
+    except OSError as error:
+        rows = report.get("steps", [])
+        last = rows[-1] if rows else {}
+        annotate_write_error(error, partial if operation != "replace-report-from-partial" else path,
+            operation, {"report_path": str(path), "partial_path": str(partial),
+                "phase": report.get("phase"), "last_step_id": last.get("id"),
+                "last_step_ok": last.get("ok"), "last_step_finished_at": last.get("finished_at")})
+        raise
 
 
 async def run(args: argparse.Namespace) -> dict[str, object]:
@@ -1534,6 +1568,9 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                             await client.hold(args.hold_seconds)
                     except BaseException as error:
                         report["error"] = f"{type(error).__name__}: {error}"
+                        report["exception_traceback"] = traceback.format_exc()
+                        if getattr(error, "ck3_write_error_context", None) is not None:
+                            report["write_error_context"] = error.ck3_write_error_context
                         if (args.frontend_robert_bootstrap and args.hold_seconds
                                 and report.get("phase") == "native-frontend-robert-bootstrap"
                                 and not done.is_set() and "frontend_diagnostic_hold" not in report):
@@ -1557,6 +1594,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     except BaseException as error:
         report["error"] = report["error"] or f"{type(error).__name__}: {error}"
         report["exception_traceback"] = traceback.format_exc()
+        if getattr(error, "ck3_write_error_context", None) is not None:
+            report.setdefault("write_error_context", error.ck3_write_error_context)
     finally:
         stop.set()
         if supervisor is not None and supervisor.ident is not None and supervisor.is_alive():

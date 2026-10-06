@@ -1,0 +1,90 @@
+{
+  "schema": "ck3.runtime.write-diagnostic-integration/v1",
+  "status": "PASS_SOURCE_INTEGRATION_AND_5_LOCAL_TESTS_NOT_LIVE",
+  "at_utc": "2026-10-06T10:44:21.254011+00:00",
+  "source": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 102471,
+    "sha256": "b75cc3a6eb7cea83c00fadf4316bdf6c798e38541e6d4fc88735f436bc67d2a3"
+  },
+  "source_before": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 100207,
+    "sha256": "e47fd1bad5efaf0f2dd1f8993197aae2359ce70c69ca89442c1d392af8e92c32"
+  },
+  "test_source": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\test_ck3_12002_mcp_live.py",
+    "bytes": 57997,
+    "sha256": "c81b876a93f62bdc40f943e874b5b6583464b1a11c9ebb37dba010f565583a49"
+  },
+  "archive_byte_exact": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\handover\\2026-10-06-ck3-upgrade-handoff-artifacts\\ccc-r4-write-diagnostic-candidate.json",
+      "bytes": 3276,
+      "sha256": "e4d97296521a1e934c07226813027eb2704ee6cacd847a1b50bbf39a3ae1d716",
+      "matches_original": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\handover\\2026-10-06-ck3-upgrade-handoff-artifacts\\ccc-write-error-context-NOT-APPLIED.patch",
+      "bytes": 5404,
+      "sha256": "9e0a26165577e76d17eee29c02adbe75eca057cf3e3836ec6623ea6dc86f2021",
+      "matches_original": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\handover\\2026-10-06-ck3-upgrade-handoff-artifacts\\ccc-runtime-harness-NOT-APPLIED.py.txt",
+      "bytes": 115287,
+      "sha256": "568d9aeecf7b2a4d758017de138349de04f7b2dad29b76fa29cf8157dcc5df33",
+      "matches_original": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\handover\\2026-10-06-ck3-upgrade-handoff-artifacts\\ccc-nine-writefaults-receipt.json",
+      "bytes": 835,
+      "sha256": "07aa1b46672ccbe547a18f4ef7351a6ae4d9bd3210a2391725a90305b6f22ddf",
+      "matches_original": true
+    }
+  ],
+  "minimal_patch_reproduces_H81_candidate": true,
+  "diagnostic_AST_exact_to_reviewed_candidate": [
+    "JsonLines",
+    "JsonLines.write",
+    "annotate_write_error",
+    "write_atomic_report"
+  ],
+  "changed_definitions": [
+    "JsonLines",
+    "JsonLines.write",
+    "annotate_write_error",
+    "run",
+    "write_atomic_report"
+  ],
+  "PlanClient_execute_unchanged": true,
+  "reuse": {
+    "cases_1_to_8": "same diagnostic AST, reuse archived receipt; not rerun",
+    "case_9": "valid only for original H81 execute; current master execute differs, supplemented once below"
+  },
+  "tests": {
+    "command": "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe -m unittest test_ck3_12002_mcp_live.AtomicReportWriteTests -v",
+    "cwd": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research",
+    "test_count": 5,
+    "elapsed_seconds_reported_by_unittest": 0.196,
+    "exit_code": 0,
+    "scope": "local filesystem partial preservation, same exception, finished advance blocks followup, success sync and unchanged bounded Windows Permission retries",
+    "earlier_import_attempt": {
+      "command": "tools/.venv/Scripts/python.exe -m unittest ck3_autonomous_player.native_bridge.research.test_ck3_12002_mcp_live.AtomicReportWriteTests -v",
+      "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+      "exit_code": 1,
+      "reason": "research helper is imported by top-level module name; no tests executed, corrected cwd"
+    }
+  },
+  "compile_and_git_diff_check": "PASS",
+  "reviewable_diff": {
+    "path": "C:\\workspace\\ck3-upgrade-20261006\\write-diagnostic-resume-agent-01\\reviewable-source-test-diff-01.patch",
+    "bytes": 10842,
+    "sha256": "d3a1916a7f06d91643711da3af8b72dc19efb3d1809ec446c607b76ec13a82c2"
+  },
+  "no_CK3_desktop_Steam_SDK_or_actual_disk_exhaustion": true,
+  "no_changes_to_Source10_H81_or_archives": true,
+  "live_validation": "NOT_RUN",
+  "capacity_root_cause": "UNKNOWN",
+  "commit_or_push_by_this_agent": false
+}
