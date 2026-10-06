@@ -1120,3 +1120,7 @@ flowchart TD
 ## Associated refill current and phase input source continuation (2026-10-06T09:26:17+08:00)
 
 仅后台继续：associated refill物理ADD一次、DATA按occurrence刷新current/max的新生产字段首次1/1 GREEN，bounded static-ready，actual仍false/null；完整月度、真实兵力变化未完成。phase adopted Rite参数最小source树/Mermaid已交，仍research，optional V2叶与人物identity census正在施工，不授完整V3/forecast/live。新game/nativebuild/旧tests0，原h9586/5996日/natural0不变。[FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/associated-refill-current-assembly/FIRST-PYTHON-CASE-RECEIPT.json)、[phase原生入口](combat-phase-readonly-input-frontier-12003.md)。
+
+## Three readonly observer FIRST qualification and source continuation (2026-10-06T10:29:11+08:00)
+
+三个可达生产叶（current/old/pair模型身份、phase adopted Rite参数、Province补给contributors）完成 g85@01d98c73ca42b91b5e39c827e32a07b1afe51479 fresh native编译及FIRST3Ct 3/3 GREEN，新actualwire4/5/4首次生产消费GREEN；**bounded static-ready**，未live/部署。两个compiler/link RED保留，实际fix后通过；无旧tests重跑。warmonger Core membership与land resupply新叶正在实现，person2921350/2921020数值source闭合、observer/emitter尚待施工。用户自行重启解决Steam环境继承造成的启动失败；Root无再次游戏/Steam/SDK操作。Z新worktree空间不足已缩减Root两树、编译转C盘。原h9586/5996日/natural0、G2 5/8/NW2 2/4不变。[资格证据](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/readonly-observer-batch/root-publication/ROOT-FIRST-QUALIFICATION.json)、[源树入口](combat-phase-warmonger-predicate-12003.md)。
