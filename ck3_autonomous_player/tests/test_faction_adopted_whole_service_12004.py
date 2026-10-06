@@ -340,7 +340,7 @@ class FactionAdoptedWholeService12004Tests(unittest.TestCase):
                             self.assertIsNone(raw["planner_projection"]["present"])
                             self.assertIsNone(raw["planner_projection"]["dangerous"])
                             self.assertIs(type(raw["unavailable_reason"]), str)
-                            self.assertEqual(raw["unavailable_reason"], "exact_build_not_admitted")
+                    self.assertEqual(raw["unavailable_reason"], "unsupported_build")
                         else:
                             self.assertEqual(raw["status"], "available")
                             self.assertEqual(raw["date_raw"], 53175816)

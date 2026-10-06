@@ -195,7 +195,7 @@ void RunAlertWholes(Fixture &fixture, RouterAdapter &adapter,
   CheckRouter(wire.find("\"native_county_join_score\":{\"raw\":0,\"scale\":100000}") != std::string::npos);
   environment.exact_build_admitted = false;
   call("alerts-unavailable.command-result.json");
-  CheckRouter(wire.find("exact_build_not_admitted") != std::string::npos);
+  CheckRouter(wire.find("\"unavailable_reason\":\"unsupported_build\"") != std::string::npos);
   fixture.factions = original;
   Put(fixture.characters[0].data(), 0x1C0, static_cast<void *>(nullptr));
   Put(fixture.faction.data(), 0x54, std::int32_t{1});
