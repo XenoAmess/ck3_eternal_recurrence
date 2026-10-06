@@ -118,6 +118,10 @@ std::string Boolean(const std::optional<bool> &value) {
 }
 } // namespace
 
+void *ResolveConversionTargetRite12002(const Bindings &b, std::uint32_t target) noexcept {
+  return ResolveRite(b, target);
+}
+
 Bindings BindReligionConversionGatesImage12002(std::uintptr_t base, std::string_view sha) noexcept {
   Bindings b{};
   if (!base || sha != kExecutableSha256) return b;

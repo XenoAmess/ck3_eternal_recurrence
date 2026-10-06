@@ -9060,8 +9060,8 @@ endif()
 include(cmake/current_army_flag21_inputs_12003.cmake)
 include(cmake/current_fleet_supply_tick_inputs_12003.cmake)
 include(cmake/army_strength_result_write_diagnostic_v1.cmake)
-<<<<<<< HEAD
 include(cmake/current_army_flag31_inputs_12003.cmake)
-=======
 include(cmake/current_finalizer_manager_inputs_12003.cmake)
->>>>>>> c8ab5c26 (Add readonly combat manager finalizer inputs)
+
+# Additive selected-target fervor observation and its four FIRST scenarios.
+include("${CMAKE_CURRENT_SOURCE_DIR}/conversion-fervor-inputs.cmake")

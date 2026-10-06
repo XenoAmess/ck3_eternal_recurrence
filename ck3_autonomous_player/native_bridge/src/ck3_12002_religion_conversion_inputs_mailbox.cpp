@@ -64,6 +64,11 @@ bool ExecutePlayerReligionConversionInputsMailbox12002(void *opaque,
         q.gates_bindings, q.target_rite_id, stamp.pump_epoch, g);
     (void)religion_conversion_ai_inputs::ReadExpectedRiteFulfillment12002(
         q.prediction_bindings, stamp.pump_epoch, q.target_rite_id, p);
+    q.conversion_fervor_enabled = xar::game::IsCk3_12003Descriptor(envelope->game->descriptor());
+    if (q.conversion_fervor_enabled) {
+      (void)religion::conversion_fervor::ReadPlayedConversionFervorInputs12003(
+          q.gates_bindings, q.target_rite_id, stamp.pump_epoch, q.conversion_fervor);
+    }
     const auto actor = static_cast<std::uint32_t>(frame.played_character_id);
     const bool gates_drift = g.available && (g.played_character_id != actor ||
         g.date_raw != frame.date_raw || g.capture_epoch != stamp.pump_epoch ||
@@ -79,6 +84,19 @@ bool ExecutePlayerReligionConversionInputsMailbox12002(void *opaque,
     if (!p.available) {
       p.capture_epoch = stamp.pump_epoch; p.date_raw = static_cast<std::int32_t>(frame.date_raw);
       p.played_character_id = frame.played_character_id; p.target_rite_id = q.target_rite_id;
+    }
+    if (q.conversion_fervor_enabled) {
+      auto &f = q.conversion_fervor;
+      const bool fervor_drift = f.available && (f.played_character_id != actor ||
+          f.date_raw != frame.date_raw || f.capture_epoch != stamp.pump_epoch ||
+          f.requested_target_rite_id != q.target_rite_id ||
+          (g.available && (f.actor_faith_id != g.actor_faith_id ||
+                           f.target_faith_id != g.target_faith_id)));
+      if (fervor_drift) { f = {}; f.failure = religion::conversion_fervor::Failure::state_changed; }
+      if (!f.available) {
+        f.capture_epoch = stamp.pump_epoch; f.date_raw = static_cast<std::int32_t>(frame.date_raw);
+        f.played_character_id = actor; f.requested_target_rite_id = q.target_rite_id;
+      }
     }
     q.available = g.available && p.available;
     if (gates_drift || prediction_drift) q.unavailable_reason = "conversion_inputs_state_changed";
@@ -103,7 +121,9 @@ std::string SerializePlayerReligionConversionInputsResult12002(
       ",\"played_character_id\":" + std::to_string(frame.played_character_id) +
       ",\"target_rite_id\":" + std::to_string(q.target_rite_id) +
       ",\"conversion_gates\":" + religion::conversion_gates::SerializePlayedReligionConversionGates12002(q.conversion_gates) +
-      ",\"predicted_base_fulfillment\":" + religion_conversion_ai_inputs::SerializeExpectedRiteFulfillment12002(q.predicted_base_fulfillment) + "}";
+      ",\"predicted_base_fulfillment\":" + religion_conversion_ai_inputs::SerializeExpectedRiteFulfillment12002(q.predicted_base_fulfillment) +
+      (q.conversion_fervor_enabled ? ",\"conversion_fervor\":" +
+          religion::conversion_fervor::SerializeConversionFervorInputs12003(q.conversion_fervor) : std::string{}) + "}";
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerReligionConversionInputsPrivateStep12002) +
       ",\"accepted\":true,\"status\":" + Quote(q.available ? "observed" : "unavailable") +

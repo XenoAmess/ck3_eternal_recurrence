@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002_religion_conversion_gates.hpp"
 #include "xar_bridge/ck3_12002_religion_conversion_ai_inputs.hpp"
+#include "xar_bridge/ck3_12003_conversion_fervor_inputs.hpp"
 
 namespace xar::ck3_12002 {
 inline constexpr char kPlayerReligionConversionInputsPrivateStep12002[] =
@@ -20,6 +21,8 @@ struct PlayerReligionConversionInputsMailboxContext12002 {
   std::uint32_t target_rite_id = religion::kAbsentReference;
   religion::conversion_gates::Context conversion_gates;
   religion_conversion_ai_inputs::FulfillmentInput predicted_base_fulfillment;
+  bool conversion_fervor_enabled = false;
+  religion::conversion_fervor::Context conversion_fervor;
   bool available = false;
   std::string unavailable_reason;
   bool completed = false;

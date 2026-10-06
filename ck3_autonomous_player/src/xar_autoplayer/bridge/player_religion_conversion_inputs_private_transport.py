@@ -1,4 +1,4 @@
-"""Read native conversion inputs and predicted Rite base fulfillment only."""
+"""Read native conversion inputs, predicted base fulfillment and optional fervor."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ from copy import deepcopy
 from .driver import BridgeUnavailableError
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
 from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
+from .player_conversion_fervor_inputs import normalize_player_conversion_fervor_inputs_v1
 from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
@@ -55,7 +56,8 @@ def normalize_player_religion_conversion_inputs_v1(
     value: object, *, snapshot: Mapping[str, object], target_rite_id: object,
 ) -> dict[str, object]:
     target = _target(target_rite_id)
-    top = _source(value, private_native_schema(SCHEMA, snapshot), _TOP)
+    top_keys = _TOP | ({"conversion_fervor"} if isinstance(value, dict) and "conversion_fervor" in value else set())
+    top = _source(value, private_native_schema(SCHEMA, snapshot), top_keys)
     gates = _source(top["conversion_gates"], private_native_schema("ck3_12002_religion_conversion_gates_v1", snapshot), _GATES)
     prediction = _source(top["predicted_base_fulfillment"], private_native_schema("ck3_12002_expected_rite_base_fulfillment_v1", snapshot), _PREDICTION)
     build = require_exact_native_build(prediction["game_version"], prediction["executable_sha256"])
@@ -88,6 +90,10 @@ def normalize_player_religion_conversion_inputs_v1(
         raise ValueError("available native conversion base prediction lacks its raw values")
     if top["available"] and (not gates["available"] or not prediction["available"]):
         raise ValueError("available native conversion inputs lack a source component")
+    if "conversion_fervor" in top:
+        normalize_player_conversion_fervor_inputs_v1(
+            top["conversion_fervor"], conversion_inputs=top, snapshot=snapshot,
+        )
     return deepcopy(top)
 
 

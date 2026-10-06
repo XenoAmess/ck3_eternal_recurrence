@@ -75,6 +75,8 @@ Bindings BindReligionConversionGatesImage12002(std::uintptr_t module_base,
 // existing paused owner. This observes inputs; it is not final conversion legality.
 bool ReadPlayedReligionConversionGates12002(const Bindings &, std::uint32_t target_rite_id,
                                           std::uint64_t capture_epoch, Context &) noexcept;
+// Thin public seam over the existing full-generation target resolver.
+void *ResolveConversionTargetRite12002(const Bindings &, std::uint32_t target_rite_id) noexcept;
 std::string SerializePlayedReligionConversionGates12002(const Context &);
 const char *ReligionConversionGatesFailureKey(Failure) noexcept;
 
