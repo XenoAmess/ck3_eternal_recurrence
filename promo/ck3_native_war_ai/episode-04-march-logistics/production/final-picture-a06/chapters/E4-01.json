@@ -1,0 +1,91 @@
+{
+  "id": "E4-01",
+  "type": "documentary",
+  "state": "planned",
+  "title": {
+    "zh-CN": "同一支军队，为什么抵达时不同？"
+  },
+  "cues": [
+    {
+      "id": "C01-01",
+      "narration": {
+        "zh": "大军出发的时候，最容易记住的是那个很大的总人数。但到接战以前，还有一整段路。军队要带着补给，经过不同地点，可能减少兵员，也可能得到补充。到了战场，还剩多少人、有没有补给、能不能及时加入，不能只靠出发时的一个数字回答。"
+      },
+      "subtitles": {
+        "zh": "大军出发的时候，最容易记住的是那个很大的总人数。但到接战以前，还有一整段路。军队要带着补给，经过不同地点，可能减少兵员，也可能得到补充。到了战场，还剩多少人、有没有补给、能不能及时加入，不能只靠出发时的一个数字回答。",
+        "en": "When a large army sets out, its total soldier count is easy to remember. But there is a whole journey before it joins the battle. It carries supplies through different places, and may lose soldiers or receive reinforcement along the way. That starting number alone cannot tell us how many soldiers will arrive, whether they will have supplies, or whether they can join in time."
+      }
+    },
+    {
+      "id": "C01-02",
+      "narration": {
+        "zh": "这期把镜头放在行军、补给和损耗。核心问题是，怎样把足够多的兵，在合适的时间，以能够继续作战的状态送到战场。先读原版界面，再跟着真实变化看结果。下令成功、预计抵达和真正到场，要分别确认。"
+      },
+      "subtitles": {
+        "zh": "这期把镜头放在行军、补给和损耗。核心问题是，怎样把足够多的兵，在合适的时间，以能够继续作战的状态送到战场。先读原版界面，再跟着真实变化看结果。下令成功、预计抵达和真正到场，要分别确认。",
+        "en": "This episode follows marching, supply, and attrition. How do we bring enough soldiers to the battlefield, at the right time, ready to keep fighting? First, read the base game's interface. Then follow the actual changes. A successful order, predicted arrival, and actual arrival need separate checks."
+      }
+    },
+    {
+      "id": "C01-03",
+      "narration": {
+        "zh": "本期跟着威廉的军队，使用一点二零点零点三原版。不同回放会分别标清起点和日期。另一个人物的历史人数，不放到威廉的画面上；重新载入存档后的独立观察，也不剪成一次没有中断的现场。"
+      },
+      "subtitles": {
+        "zh": "本期跟着威廉的军队，使用一点二零点零点三原版。不同回放会分别标清起点和日期。另一个人物的历史人数，不放到威廉的画面上；重新载入存档后的独立观察，也不剪成一次没有中断的现场。",
+        "en": "We are following William's armies in the unmodified game, version 1.20.0.3. Separate replays will retain their own starting points and dates. Another character's historical soldier counts will not become William's results. Separate observations after reloading a save will not be edited into one uninterrupted journey."
+      }
+    },
+    {
+      "id": "C01-04",
+      "narration": {
+        "zh": "先看三个已经观察到的区别。有一支军队，补给回到三百，人数却还差一个；另一轮独立观察里，它真的补上了那一个。还有两军合并，兵团一个没少，补给却不是把两份库存直接相加。人数、库存、容量和组织变化，需要分开读。"
+      },
+      "subtitles": {
+        "zh": "先看三个已经观察到的区别。有一支军队，补给回到三百，人数却还差一个；另一轮独立观察里，它真的补上了那一个。还有两军合并，兵团一个没少，补给却不是把两份库存直接相加。人数、库存、容量和组织变化，需要分开读。",
+        "en": "Start with three differences we have already observed. One army recovered to 300 supply while still missing one soldier. In a separate observation, that soldier was actually reinforced. Two armies also merged without losing any regiments, but their supplies were not simply added together. Soldier count, supply stock, capacity, and army organization each need their own reading."
+      }
+    },
+    {
+      "id": "C01-05",
+      "narration": {
+        "zh": "人数减少也有不同窗口。一个围城分队的观察窗口净少三十一人，主军跨到新县的另一个窗口净少一百二十七人。另一轮回放，又看到整军在两天内净少六十七人。这里说的是兵员净变化，各例的条件分别解释，不统一叫作死亡。"
+      },
+      "subtitles": {
+        "zh": "人数减少也有不同窗口。一个围城分队的观察窗口净少三十一人，主军跨到新县的另一个窗口净少一百二十七人。另一轮回放，又看到整军在两天内净少六十七人。这里说的是兵员净变化，各例的条件分别解释，不统一叫作死亡。",
+        "en": "Soldier losses also appear in different windows. A besieging detachment lost a net 31 soldiers. The main army lost a net 127 in another window as it entered a new county. A separate replay showed a net loss of 67 in two days. These are net changes in soldiers. We will explain the conditions for each, without calling every decrease a death count."
+      }
+    },
+    {
+      "id": "C01-06",
+      "narration": {
+        "zh": "路线也有几种时间。下令前是预期抵达，走起来以后是当前剩余时间，真正抵达又是独立结果。军队窗口对整条路线的估计，与当前第一段还要走多久，可以有不同范围。比较以前，先确认这个时间描述的是哪一段。"
+      },
+      "subtitles": {
+        "zh": "路线也有几种时间。下令前是预期抵达，走起来以后是当前剩余时间，真正抵达又是独立结果。军队窗口对整条路线的估计，与当前第一段还要走多久，可以有不同范围。比较以前，先确认这个时间描述的是哪一段。",
+        "en": "A route also has several kinds of time. Before the order, there is predicted arrival. Once moving, there is the current time remaining. Actual arrival is a separate result. The army window's whole-route estimate can cover a different distance from the first leg's remaining time. Before comparing, check which part of the journey each time describes."
+      }
+    },
+    {
+      "id": "C01-07",
+      "narration": {
+        "zh": "最后要比较三个安排：整军直走、分兵休整后会合、换路线。它们需要从同一个起点独立回放，再比较实际到达、兵力、补给和支付。一个地点不适合休整，不等于整个分兵方案已经输了；结果到齐以前，不提前选赢家。"
+      },
+      "subtitles": {
+        "zh": "最后要比较三个安排：整军直走、分兵休整后会合、换路线。它们需要从同一个起点独立回放，再比较实际到达、兵力、补给和支付。一个地点不适合休整，不等于整个分兵方案已经输了；结果到齐以前，不提前选赢家。",
+        "en": "Finally, we will compare three plans: march as one army, split to recover and reunite, or take another route. Each needs a separate replay from the same starting point, comparing actual arrival, strength, supply, and payments. One unsuitable recovery location does not mean the entire split-army plan has lost. We will not choose a winner before the results are complete."
+      }
+    },
+    {
+      "id": "C01-08",
+      "narration": {
+        "zh": "按这个顺序，出发前能看清眼前条件，途中能发现变化，接战前还能再核对一次。我们从最容易混在一起的一组数开始：军队现在带着多少补给，能够带多少，以及当地能支持多少士兵。"
+      },
+      "subtitles": {
+        "zh": "按这个顺序，出发前能看清眼前条件，途中能发现变化，接战前还能再核对一次。我们从最容易混在一起的一组数开始：军队现在带着多少补给，能够带多少，以及当地能支持多少士兵。",
+        "en": "This gives us three chances to check: before departure, along the way, and before battle. We begin with the numbers most easily confused: how much supply the army has, how much it can carry, and how many soldiers the location can support."
+      }
+    }
+  ],
+  "artifact_ids": []
+}

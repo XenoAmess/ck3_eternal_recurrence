@@ -1,0 +1,10 @@
+{
+  "schema": "xar.e04.final-picture-external-input-map.v1",
+  "Root_approved_pipeline_input": "inputs/pipeline-input.Root-frozen.original.json",
+  "large_media_included": false,
+  "absolute_paths_are_historical_locators": true,
+  "render_uses_the_original_exact_source_bindings": true,
+  "cross_machine_render_admitted": false,
+  "source_images_and_all_audio_video_raw_remain_external": true,
+  "automatic_download_upload_Game_UI_SDK_Git": false
+}

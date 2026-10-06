@@ -1,0 +1,4 @@
+** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve the exact frozen Root row note, including its historical final blank line.
+ROOT-READABLE-PICTURE-ROWS.md -text whitespace=-blank-at-eof,blank-at-eol,space-before-tab,cr-at-eol

@@ -1,0 +1,629 @@
+{
+  "samples": 41658624,
+  "seconds": 1735.776,
+  "frames": 52074,
+  "rows": [
+    {
+      "id": "C01-01",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 708,
+      "start_frame": 0,
+      "end_frame": 708,
+      "start_sample": 0,
+      "end_sample": 566208
+    },
+    {
+      "id": "C01-02",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 649,
+      "start_frame": 708,
+      "end_frame": 1357,
+      "start_sample": 566208,
+      "end_sample": 1085184
+    },
+    {
+      "id": "C01-03",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 575,
+      "start_frame": 1357,
+      "end_frame": 1932,
+      "start_sample": 1085184,
+      "end_sample": 1544832
+    },
+    {
+      "id": "C01-04",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 691,
+      "start_frame": 1932,
+      "end_frame": 2623,
+      "start_sample": 1544832,
+      "end_sample": 2098368
+    },
+    {
+      "id": "C01-05",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 707,
+      "start_frame": 2623,
+      "end_frame": 3330,
+      "start_sample": 2098368,
+      "end_sample": 2663424
+    },
+    {
+      "id": "C01-06",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 648,
+      "start_frame": 3330,
+      "end_frame": 3978,
+      "start_sample": 2663424,
+      "end_sample": 3181824
+    },
+    {
+      "id": "C01-07",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 658,
+      "start_frame": 3978,
+      "end_frame": 4636,
+      "start_sample": 3181824,
+      "end_sample": 3708288
+    },
+    {
+      "id": "C01-08",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 562,
+      "start_frame": 4636,
+      "end_frame": 5198,
+      "start_sample": 3708288,
+      "end_sample": 4158144
+    },
+    {
+      "id": "C02-01",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 563,
+      "start_frame": 5198,
+      "end_frame": 5761,
+      "start_sample": 4158144,
+      "end_sample": 4608576
+    },
+    {
+      "id": "C02-02",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 691,
+      "start_frame": 5761,
+      "end_frame": 6452,
+      "start_sample": 4608576,
+      "end_sample": 5161536
+    },
+    {
+      "id": "C02-03",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 671,
+      "start_frame": 6452,
+      "end_frame": 7123,
+      "start_sample": 5161536,
+      "end_sample": 5698368
+    },
+    {
+      "id": "C02-04",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 671,
+      "start_frame": 7123,
+      "end_frame": 7794,
+      "start_sample": 5698368,
+      "end_sample": 6234624
+    },
+    {
+      "id": "C02-05",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 838,
+      "start_frame": 7794,
+      "end_frame": 8632,
+      "start_sample": 6234624,
+      "end_sample": 6905088
+    },
+    {
+      "id": "C02-06",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 685,
+      "start_frame": 8632,
+      "end_frame": 9317,
+      "start_sample": 6905088,
+      "end_sample": 7453440
+    },
+    {
+      "id": "C02-07",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 671,
+      "start_frame": 9317,
+      "end_frame": 9988,
+      "start_sample": 7453440,
+      "end_sample": 7989696
+    },
+    {
+      "id": "C02-08",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 571,
+      "start_frame": 9988,
+      "end_frame": 10559,
+      "start_sample": 7989696,
+      "end_sample": 8447040
+    },
+    {
+      "id": "C02-09",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 561,
+      "start_frame": 10559,
+      "end_frame": 11120,
+      "start_sample": 8447040,
+      "end_sample": 8895744
+    },
+    {
+      "id": "C02-10",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 737,
+      "start_frame": 11120,
+      "end_frame": 11857,
+      "start_sample": 8895744,
+      "end_sample": 9484992
+    },
+    {
+      "id": "C02-11",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 703,
+      "start_frame": 11857,
+      "end_frame": 12560,
+      "start_sample": 9484992,
+      "end_sample": 10047744
+    },
+    {
+      "id": "C02-12",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 777,
+      "start_frame": 12560,
+      "end_frame": 13337,
+      "start_sample": 10047744,
+      "end_sample": 10669248
+    },
+    {
+      "id": "C03-01",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 653,
+      "start_frame": 13337,
+      "end_frame": 13990,
+      "start_sample": 10669248,
+      "end_sample": 11191680
+    },
+    {
+      "id": "C03-02",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 574,
+      "start_frame": 13990,
+      "end_frame": 14564,
+      "start_sample": 11191680,
+      "end_sample": 11650752
+    },
+    {
+      "id": "C03-03",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 637,
+      "start_frame": 14564,
+      "end_frame": 15201,
+      "start_sample": 11650752,
+      "end_sample": 12160512
+    },
+    {
+      "id": "C03-04",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 700,
+      "start_frame": 15201,
+      "end_frame": 15901,
+      "start_sample": 12160512,
+      "end_sample": 12720384
+    },
+    {
+      "id": "C03-05",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 676,
+      "start_frame": 15901,
+      "end_frame": 16577,
+      "start_sample": 12720384,
+      "end_sample": 13261248
+    },
+    {
+      "id": "C03-06",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 642,
+      "start_frame": 16577,
+      "end_frame": 17219,
+      "start_sample": 13261248,
+      "end_sample": 13774464
+    },
+    {
+      "id": "C03-07",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 668,
+      "start_frame": 17219,
+      "end_frame": 17887,
+      "start_sample": 13774464,
+      "end_sample": 14309568
+    },
+    {
+      "id": "C03-08",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 723,
+      "start_frame": 17887,
+      "end_frame": 18610,
+      "start_sample": 14309568,
+      "end_sample": 14887872
+    },
+    {
+      "id": "C03-09",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 721,
+      "start_frame": 18610,
+      "end_frame": 19331,
+      "start_sample": 14887872,
+      "end_sample": 15464448
+    },
+    {
+      "id": "C03-10",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 732,
+      "start_frame": 19331,
+      "end_frame": 20063,
+      "start_sample": 15464448,
+      "end_sample": 16049664
+    },
+    {
+      "id": "C03-11",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 833,
+      "start_frame": 20063,
+      "end_frame": 20896,
+      "start_sample": 16049664,
+      "end_sample": 16716672
+    },
+    {
+      "id": "C03-12",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 789,
+      "start_frame": 20896,
+      "end_frame": 21685,
+      "start_sample": 16716672,
+      "end_sample": 17347968
+    },
+    {
+      "id": "C04-01",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 626,
+      "start_frame": 21685,
+      "end_frame": 22311,
+      "start_sample": 17347968,
+      "end_sample": 17848512
+    },
+    {
+      "id": "C04-02",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 563,
+      "start_frame": 22311,
+      "end_frame": 22874,
+      "start_sample": 17848512,
+      "end_sample": 18298944
+    },
+    {
+      "id": "C04-03",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 760,
+      "start_frame": 22874,
+      "end_frame": 23634,
+      "start_sample": 18298944,
+      "end_sample": 18907200
+    },
+    {
+      "id": "C04-04",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 546,
+      "start_frame": 23634,
+      "end_frame": 24180,
+      "start_sample": 18907200,
+      "end_sample": 19343808
+    },
+    {
+      "id": "C04-05",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 691,
+      "start_frame": 24180,
+      "end_frame": 24871,
+      "start_sample": 19343808,
+      "end_sample": 19896192
+    },
+    {
+      "id": "C04-06",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 654,
+      "start_frame": 24871,
+      "end_frame": 25525,
+      "start_sample": 19896192,
+      "end_sample": 20419776
+    },
+    {
+      "id": "C04-07",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 612,
+      "start_frame": 25525,
+      "end_frame": 26137,
+      "start_sample": 20419776,
+      "end_sample": 20909376
+    },
+    {
+      "id": "C04-08",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 626,
+      "start_frame": 26137,
+      "end_frame": 26763,
+      "start_sample": 20909376,
+      "end_sample": 21409920
+    },
+    {
+      "id": "C04-09",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 644,
+      "start_frame": 26763,
+      "end_frame": 27407,
+      "start_sample": 21409920,
+      "end_sample": 21924864
+    },
+    {
+      "id": "C04-10",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 908,
+      "start_frame": 27407,
+      "end_frame": 28315,
+      "start_sample": 21924864,
+      "end_sample": 22651776
+    },
+    {
+      "id": "C04-11",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 733,
+      "start_frame": 28315,
+      "end_frame": 29048,
+      "start_sample": 22651776,
+      "end_sample": 23238144
+    },
+    {
+      "id": "C05-01",
+      "mode": "derived-picture-card-refresh",
+      "frames": 659,
+      "start_frame": 29048,
+      "end_frame": 29707,
+      "start_sample": 23238144,
+      "end_sample": 23765184
+    },
+    {
+      "id": "C05-02",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 724,
+      "start_frame": 29707,
+      "end_frame": 30431,
+      "start_sample": 23765184,
+      "end_sample": 24344064
+    },
+    {
+      "id": "C05-03",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 789,
+      "start_frame": 30431,
+      "end_frame": 31220,
+      "start_sample": 24344064,
+      "end_sample": 24975936
+    },
+    {
+      "id": "C05-04",
+      "mode": "new-native-picture",
+      "frames": 901,
+      "start_frame": 31220,
+      "end_frame": 32121,
+      "start_sample": 24975936,
+      "end_sample": 25696512
+    },
+    {
+      "id": "C05-05",
+      "mode": "new-native-picture",
+      "frames": 1601,
+      "start_frame": 32121,
+      "end_frame": 33722,
+      "start_sample": 25696512,
+      "end_sample": 26976960
+    },
+    {
+      "id": "C05-06",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 665,
+      "start_frame": 33722,
+      "end_frame": 34387,
+      "start_sample": 26976960,
+      "end_sample": 27509184
+    },
+    {
+      "id": "C05-07",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 712,
+      "start_frame": 34387,
+      "end_frame": 35099,
+      "start_sample": 27509184,
+      "end_sample": 28078272
+    },
+    {
+      "id": "C05-08",
+      "mode": "new-native-picture",
+      "frames": 974,
+      "start_frame": 35099,
+      "end_frame": 36073,
+      "start_sample": 28078272,
+      "end_sample": 28858176
+    },
+    {
+      "id": "C05-09",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 669,
+      "start_frame": 36073,
+      "end_frame": 36742,
+      "start_sample": 28858176,
+      "end_sample": 29393856
+    },
+    {
+      "id": "C05-10",
+      "mode": "new-native-picture",
+      "frames": 1658,
+      "start_frame": 36742,
+      "end_frame": 38400,
+      "start_sample": 29393856,
+      "end_sample": 30719232
+    },
+    {
+      "id": "C05-11",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 618,
+      "start_frame": 38400,
+      "end_frame": 39018,
+      "start_sample": 30719232,
+      "end_sample": 31213440
+    },
+    {
+      "id": "C05-12",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 661,
+      "start_frame": 39018,
+      "end_frame": 39679,
+      "start_sample": 31213440,
+      "end_sample": 31742784
+    },
+    {
+      "id": "C05-13",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 751,
+      "start_frame": 39679,
+      "end_frame": 40430,
+      "start_sample": 31742784,
+      "end_sample": 32343552
+    },
+    {
+      "id": "C05-14",
+      "mode": "new-native-picture",
+      "frames": 2119,
+      "start_frame": 40430,
+      "end_frame": 42549,
+      "start_sample": 32343552,
+      "end_sample": 34038720
+    },
+    {
+      "id": "C05-15",
+      "mode": "derived-picture-card-refresh",
+      "frames": 834,
+      "start_frame": 42549,
+      "end_frame": 43383,
+      "start_sample": 34038720,
+      "end_sample": 34706304
+    },
+    {
+      "id": "C05-16",
+      "mode": "new-native-picture",
+      "frames": 1565,
+      "start_frame": 43383,
+      "end_frame": 44948,
+      "start_sample": 34706304,
+      "end_sample": 35957952
+    },
+    {
+      "id": "C06-01",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 591,
+      "start_frame": 44948,
+      "end_frame": 45539,
+      "start_sample": 35957952,
+      "end_sample": 36430272
+    },
+    {
+      "id": "C06-02",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 622,
+      "start_frame": 45539,
+      "end_frame": 46161,
+      "start_sample": 36430272,
+      "end_sample": 36928512
+    },
+    {
+      "id": "C06-03",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 621,
+      "start_frame": 46161,
+      "end_frame": 46782,
+      "start_sample": 36928512,
+      "end_sample": 37425024
+    },
+    {
+      "id": "C06-04",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 714,
+      "start_frame": 46782,
+      "end_frame": 47496,
+      "start_sample": 37425024,
+      "end_sample": 37996416
+    },
+    {
+      "id": "C06-05",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 659,
+      "start_frame": 47496,
+      "end_frame": 48155,
+      "start_sample": 37996416,
+      "end_sample": 38523456
+    },
+    {
+      "id": "C06-06",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 663,
+      "start_frame": 48155,
+      "end_frame": 48818,
+      "start_sample": 38523456,
+      "end_sample": 39053952
+    },
+    {
+      "id": "C06-07",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 686,
+      "start_frame": 48818,
+      "end_frame": 49504,
+      "start_sample": 39053952,
+      "end_sample": 39602304
+    },
+    {
+      "id": "C06-08",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 642,
+      "start_frame": 49504,
+      "end_frame": 50146,
+      "start_sample": 39602304,
+      "end_sample": 40116096
+    },
+    {
+      "id": "C06-09",
+      "mode": "exact-dry-picture-reuse",
+      "frames": 703,
+      "start_frame": 50146,
+      "end_frame": 50849,
+      "start_sample": 40116096,
+      "end_sample": 40678848
+    },
+    {
+      "id": "C06-10",
+      "mode": "new-native-picture",
+      "frames": 1225,
+      "start_frame": 50849,
+      "end_frame": 52074,
+      "start_sample": 40678848,
+      "end_sample": 41658624
+    }
+  ],
+  "real_last_frames_to_trim": 0
+}

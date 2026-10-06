@@ -1,0 +1,21 @@
+{
+  "returncode": 0,
+  "start_utc": "2026-10-06T01:06:29.799129+00:00",
+  "end_utc": "2026-10-06T01:06:30.148670+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "xar_promo",
+    "start-run",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\promo-project-final-Review01.json",
+    "--run-id",
+    "war-e04-final-BC-Review01-20261006-a01",
+    "--run-directory",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\toolchain-run-a01"
+  ],
+  "stdout": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\execution-a01\\formal-start-run\\stdout.txt",
+  "stderr": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\execution-a01\\formal-start-run\\stderr.txt"
+}

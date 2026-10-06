@@ -1,0 +1,131 @@
+{
+  "id": "E4-03",
+  "type": "documentary",
+  "state": "planned",
+  "title": {
+    "zh-CN": "人数为什么下降"
+  },
+  "cues": [
+    {
+      "id": "C03-01",
+      "narration": {
+        "zh": "补给和人数会变，还要问变化发生在哪个窗口。军队面板的“每月损耗”给出当前比例和人数，是眼前条件下的计算提示。要讲已经少了多少兵，就需要完整兵团的前后人数，并检查有没有补员、战斗、分合军或其他事件。"
+      },
+      "subtitles": {
+        "zh": "补给和人数会变，还要问变化发生在哪个窗口。军队面板的“每月损耗”给出当前比例和人数，是眼前条件下的计算提示。要讲已经少了多少兵，就需要完整兵团的前后人数，并检查有没有补员、战斗、分合军或其他事件。",
+        "en": "When supply or strength changes, we need to identify the observation window. “Monthly Attrition” shows the current percentage and soldiers per month, calculated under present conditions. To say how many soldiers have already been lost, compare every regiment before and after. Check for reinforcement, combat, splitting or merging, and other events too."
+      }
+    },
+    {
+      "id": "C03-02",
+      "narration": {
+        "zh": "比如一月十一日的暂停样本，当前围城损失预算是五十六。它能说明眼前相关条件怎么算，不是一条刚刚扣了五十六人的记录。预算与真正发生的减少分开，才不会把一个提示数重复记入结果。"
+      },
+      "subtitles": {
+        "zh": "比如一月十一日的暂停样本，当前围城损失预算是五十六。它能说明眼前相关条件怎么算，不是一条刚刚扣了五十六人的记录。预算与真正发生的减少分开，才不会把一个提示数重复记入结果。",
+        "en": "For example, at a paused January 11 observation, the current siege loss budget was 56. It describes the calculation under relevant current conditions, not a record saying 56 soldiers were just removed. Keeping the budget separate from an actual decrease prevents us from counting a tooltip number as a result."
+      }
+    },
+    {
+      "id": "C03-03",
+      "narration": {
+        "zh": "较早的一次围城观察，分队从三千一百二十人变成三千零八十九，净少三十一。同期补给从约八十三降到七十四点二三，两端都高于五十。可以讲围城背景下的周期变化和实际兵员减少，不能把这段说成饥饿。"
+      },
+      "subtitles": {
+        "zh": "较早的一次围城观察，分队从三千一百二十人变成三千零八十九，净少三十一。同期补给从约八十三降到七十四点二三，两端都高于五十。可以讲围城背景下的周期变化和实际兵员减少，不能把这段说成饥饿。",
+        "en": "In an earlier siege observation, the detachment went from 3,120 to 3,089 soldiers: a net loss of 31. Supply fell from about 83 to 74.23, with both endpoints above 50. We can describe a periodic change under siege conditions and actual soldier losses. We cannot call this starvation."
+      }
+    },
+    {
+      "id": "C03-04",
+      "narration": {
+        "zh": "这支分队的六个兵团也完整核对过，身份和满员数没变，人数变化能逐团对上。规则先算整军预算，再按符合条件的兵团顺序分配整数。这一例恰好也能与各团比例取整吻合，但不能推广成所有兵团永远各自独立乘百分比。"
+      },
+      "subtitles": {
+        "zh": "这支分队的六个兵团也完整核对过，身份和满员数没变，人数变化能逐团对上。规则先算整军预算，再按符合条件的兵团顺序分配整数。这一例恰好也能与各团比例取整吻合，但不能推广成所有兵团永远各自独立乘百分比。",
+        "en": "All six regiments were checked, with identities and maximum strengths unchanged. Their soldier changes reconcile individually. The rule first calculates an army-wide budget, then distributes integer losses to eligible regiments in order. This example also happens to match percentages rounded down separately for each regiment. That does not mean every regiment always receives its own independent percentage calculation."
+      }
+    },
+    {
+      "id": "C03-05",
+      "narration": {
+        "zh": "同一次运行，主军还有另一个窗口：从原始第六到第九日，它跨到新县，人数从二千五百四十变成二千四百一十三，净少一百二十七。这个窗口补给库存没有变化。已查明的县界移动损耗有独立入口，与这组前后观察吻合。"
+      },
+      "subtitles": {
+        "zh": "同一次运行，主军还有另一个窗口：从原始第六到第九日，它跨到新县，人数从二千五百四十变成二千四百一十三，净少一百二十七。这个窗口补给库存没有变化。已查明的县界移动损耗有独立入口，与这组前后观察吻合。",
+        "en": "In another window of the same playthrough, from the original day 6 to day 9, the main army entered a new county. It fell from 2,540 to 2,413 soldiers: a net loss of 127. Supply stock did not change. The separate native path for county-entry attrition agrees with these before-and-after observations."
+      }
+    },
+    {
+      "id": "C03-06",
+      "narration": {
+        "zh": "这项解释仍有边界。当次所有判定条件没有独立读全，中间未见的事件也没有一并排除。净少一百二十七，不是死亡一百二十七的统计。口播采用兵员损失或人数净减少，具体原因按这一个窗口的证据解释。"
+      },
+      "subtitles": {
+        "zh": "这项解释仍有边界。当次所有判定条件没有独立读全，中间未见的事件也没有一并排除。净少一百二十七，不是死亡一百二十七的统计。口播采用兵员损失或人数净减少，具体原因按这一个窗口的证据解释。",
+        "en": "That explanation still has limits. Not every condition was independently read at the time, and unseen intermediate events were not all ruled out. A net decrease of 127 is not a count of 127 deaths. We say “soldier losses” or “net decrease,” and explain the cause within the evidence for this window."
+      }
+    },
+    {
+      "id": "C03-07",
+      "narration": {
+        "zh": "一月二十日的新暂停样本，读到了更完整的当前县域条件。下令前后整军仍是六千七百四十六，满员六千七百四十七，全部二十七团没有变化。当前有效比例约百分之三点五，预算二百三十六；预算仍然不是已经扣掉的人数。"
+      },
+      "subtitles": {
+        "zh": "一月二十日的新暂停样本，读到了更完整的当前县域条件。下令前后整军仍是六千七百四十六，满员六千七百四十七，全部二十七团没有变化。当前有效比例约百分之三点五，预算二百三十六；预算仍然不是已经扣掉的人数。",
+        "en": "A new paused January 20 sample gave us more complete current county-entry conditions. Before and after the order, the army remained at 6,746 soldiers out of 6,747, with all 27 regiments unchanged. The current effective percentage was about 3.5%, with a budget of 236. That budget is still not a count already removed."
+      }
+    },
+    {
+      "id": "C03-08",
+      "narration": {
+        "zh": "判定还要看实际储存的下一步路线。这次最终目的地虽在更远处，当前判断取的是正在走的第一步，结果不通过。下令前没有储存路线时，这项条件是未知，不能写成不通过。下令后的结果，也只说明当前暂停点，不保证以后每一步都一样。"
+      },
+      "subtitles": {
+        "zh": "判定还要看实际储存的下一步路线。这次最终目的地虽在更远处，当前判断取的是正在走的第一步，结果不通过。下令前没有储存路线时，这项条件是未知，不能写成不通过。下令后的结果，也只说明当前暂停点，不保证以后每一步都一样。",
+        "en": "The condition also uses the actual stored next step. Although the final destination was farther away, this check used the first step being traveled, and did not pass. Before the order, there was no stored route, so this condition was unknown. Unknown cannot be written as a failed condition. The result after the order describes the current paused point, not every later step."
+      }
+    },
+    {
+      "id": "C03-09",
+      "narration": {
+        "zh": "这轮行军随后观察到两日内的真实减少：整军从六千七百四十六变成六千六百七十九，净少六十七。完整二十七个兵团的身份和满员数都相同，其中十六团人数下降，合计六十七。这是实际人数变化，已经超出了仅仅读提示框的范围。"
+      },
+      "subtitles": {
+        "zh": "这轮行军随后观察到两日内的真实减少：整军从六千七百四十六变成六千六百七十九，净少六十七。完整二十七个兵团的身份和满员数都相同，其中十六团人数下降，合计六十七。这是实际人数变化，已经超出了仅仅读提示框的范围。",
+        "en": "That journey later showed an actual two-day decrease, from 6,746 to 6,679 soldiers: a net loss of 67. All 27 regiments kept the same identities and maximum strengths. Sixteen regiments lost soldiers, adding up to 67. This is an actual change in strength, beyond simply reading a tooltip."
+      }
+    },
+    {
+      "id": "C03-10",
+      "narration": {
+        "zh": "同期补给从约一百一十六点五二降到一百一十点三八，净少约六点一四。前一个观察点的当前月变化约负八点七七，后一个约负六点一四。后者与库存差吻合，但它是后来那个地点的当前计算，不能倒过来当成前面更新时已经确认使用的数值。"
+      },
+      "subtitles": {
+        "zh": "同期补给从约一百一十六点五二降到一百一十点三八，净少约六点一四。前一个观察点的当前月变化约负八点七七，后一个约负六点一四。后者与库存差吻合，但它是后来那个地点的当前计算，不能倒过来当成前面更新时已经确认使用的数值。",
+        "en": "In the same window, supply fell from about 116.52 to 110.38: a net decrease of about 6.14. The current monthly change was about −8.77 at the first observation, and −6.14 at the second. The latter matches the stock difference, but is the current calculation read afterward. We cannot turn it into a value confirmed to have been used during the earlier update."
+      }
+    },
+    {
+      "id": "C03-11",
+      "narration": {
+        "zh": "这个两日窗口跨过了该军的周期更新机会，之前的围攻预算和有条件的逐团分配都吻合实际变化。但没有逐团确认当时所有条件，也没有证明未观察的间隔绝无补员。两端库存远高于饥饿边界，第一步条件仍不通过，所以不能把这段说成县界已经扣了二百三十六，或已经证明饥饿。"
+      },
+      "subtitles": {
+        "zh": "这个两日窗口跨过了该军的周期更新机会，之前的围攻预算和有条件的逐团分配都吻合实际变化。但没有逐团确认当时所有条件，也没有证明未观察的间隔绝无补员。两端库存远高于饥饿边界，第一步条件仍不通过，所以不能把这段说成县界已经扣了二百三十六，或已经证明饥饿。",
+        "en": "This two-day window crossed the army's periodic update opportunity. The earlier siege budget and a conditional regiment-by-regiment distribution both match the actual change. But not every condition was confirmed for each regiment at execution, and we have not proved there was no reinforcement between observations. Both stocks were far above the starvation threshold, and the first-step condition still did not pass. This does not show 236 soldiers already lost at a county boundary, or prove starvation."
+      }
+    },
+    {
+      "id": "C03-12",
+      "narration": {
+        "zh": "要完成饥饿专题，仍需在威廉这一案里看见补给跨过相关边界、状态发生变化，再读到对应的整数兵员减少；同窗补员、战斗和事件也要核对。当前预算、围城窗口和移动窗口各有价值，不能彼此代替。缺的那一步保留，不从高补给减员样本里制造饥饿结果。"
+      },
+      "subtitles": {
+        "zh": "要完成饥饿专题，仍需在威廉这一案里看见补给跨过相关边界、状态发生变化，再读到对应的整数兵员减少；同窗补员、战斗和事件也要核对。当前预算、围城窗口和移动窗口各有价值，不能彼此代替。缺的那一步保留，不从高补给减员样本里制造饥饿结果。",
+        "en": "To complete the starvation case, we still need to see William's supplies cross the relevant threshold, the state change, and corresponding integer soldier losses. Reinforcement, combat, and events must be checked in the same window. Current budgets, siege windows, and movement windows each have value, but cannot replace one another. The missing step remains open. A high-supply loss sample cannot become a starvation result."
+      }
+    }
+  ],
+  "artifact_ids": []
+}

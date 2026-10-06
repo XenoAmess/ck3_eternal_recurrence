@@ -1,0 +1,111 @@
+{
+  "id": "E4-06",
+  "type": "documentary",
+  "state": "planned",
+  "title": {
+    "zh-CN": "出发、途中、接战前各看什么？"
+  },
+  "cues": [
+    {
+      "id": "C06-01",
+      "narration": {
+        "zh": "带回一次普通行军，可以按出发前、途中、接战前三个时点检查。每次先确认哪支军队、哪个日期、哪个地点，再看数字。不同日期和地点可以比较，但不要拼成一个看似同时存在的军队状态。"
+      },
+      "subtitles": {
+        "zh": "带回一次普通行军，可以按出发前、途中、接战前三个时点检查。每次先确认哪支军队、哪个日期、哪个地点，再看数字。不同日期和地点可以比较，但不要拼成一个看似同时存在的军队状态。",
+        "en": "For an ordinary march, use three checkpoints: before departure, en route, and before battle. Identify the army, date, and location before reading the numbers. Different dates and places can be compared, but should not be combined into one apparently simultaneous army state."
+      }
+    },
+    {
+      "id": "C06-02",
+      "narration": {
+        "zh": "出发前，先看当前和满员人数，缺的是哪些兵团。再读补给库存与军队容量、当地用量与补给上限。库存够不够、当地能不能支持当前用量，是不同的问题。军队人数没变，地点条件也仍可能改变。"
+      },
+      "subtitles": {
+        "zh": "出发前，先看当前和满员人数，缺的是哪些兵团。再读补给库存与军队容量、当地用量与补给上限。库存够不够、当地能不能支持当前用量，是不同的问题。军队人数没变，地点条件也仍可能改变。",
+        "en": "Before departure, check current and maximum soldiers, and which regiments are understrength. Then read supply stock and army capacity, followed by local usage and the supply limit. Having enough stock and being supported by the location are different questions. Local conditions can change even when soldier numbers do not."
+      }
+    },
+    {
+      "id": "C06-03",
+      "narration": {
+        "zh": "接着看第一段路线、最终目的地和当前整条抵达估计。首段如果有独立时量，就分开保留。费用和损失警告属于当前规划提示，实际行军后还要回看位置、状态和结算；下令成功不代表整条计划完成。"
+      },
+      "subtitles": {
+        "zh": "接着看第一段路线、最终目的地和当前整条抵达估计。首段如果有独立时量，就分开保留。费用和损失警告属于当前规划提示，实际行军后还要回看位置、状态和结算；下令成功不代表整条计划完成。",
+        "en": "Next, check the first leg, final destination, and current whole-route arrival estimate. Keep any separate first-leg time reading distinct. Cost and loss warnings describe the current plan. After marching, check location, state, and actual settlement again. A successful order does not mean the whole plan is complete."
+      }
+    },
+    {
+      "id": "C06-04",
+      "narration": {
+        "zh": "途中，月变化由正变负、出现移动锁定、剩余路线改变，都需要重读当前状态。库存没变，也不自动说明没有更新：可能还没轮到、条件未通过、当前贡献为零，或增加后碰到容量。前后的日期和库存一起看，才能逐步分开这些解释。"
+      },
+      "subtitles": {
+        "zh": "途中，月变化由正变负、出现移动锁定、剩余路线改变，都需要重读当前状态。库存没变，也不自动说明没有更新：可能还没轮到、条件未通过、当前贡献为零，或增加后碰到容量。前后的日期和库存一起看，才能逐步分开这些解释。",
+        "en": "En route, a monthly supply change turning negative, movement locking, or the remaining route changing all call for a fresh reading. Unchanged stock does not automatically mean there was no update. The army may not have reached its turn, failed a condition, had zero contribution, or gained supplies only to reach capacity. Compare the dates and stocks to distinguish those possibilities."
+      }
+    },
+    {
+      "id": "C06-05",
+      "narration": {
+        "zh": "人数变化以后，检查完整兵团的身份与前后整数。净少或净增多少先说明，原因再按证据判断。补员许可、准备比例和损失预算都不代替实际变化；登陆后条件改变，后续观察重新设基线，不沿用海上的旧条件。"
+      },
+      "subtitles": {
+        "zh": "人数变化以后，检查完整兵团的身份与前后整数。净少或净增多少先说明，原因再按证据判断。补员许可、准备比例和损失预算都不代替实际变化；登陆后条件改变，后续观察重新设基线，不沿用海上的旧条件。",
+        "en": "After soldier numbers change, check every regiment's identity and integer count before and after. State the net gain or loss first, then assess the cause from the evidence. Reinforcement eligibility, progress, and a loss budget do not replace an actual change. When conditions change after landing, establish a new baseline rather than reuse the sea-window conditions."
+      }
+    },
+    {
+      "id": "C06-06",
+      "narration": {
+        "zh": "分兵或合军后，重新读原军与新队。兵团归属是否完整，当前与满员人数是否守恒，库存和容量分别变成什么。新队库存暂时高于容量，就按实际值保存。统帅没读到时保持未知，不从容量或头像猜一个人。"
+      },
+      "subtitles": {
+        "zh": "分兵或合军后，重新读原军与新队。兵团归属是否完整，当前与满员人数是否守恒，库存和容量分别变成什么。新队库存暂时高于容量，就按实际值保存。统帅没读到时保持未知，不从容量或头像猜一个人。",
+        "en": "After splitting or merging, reread the original army and any new detachment. Check every regiment's assignment, conservation of current and maximum soldiers, and the resulting stock and capacity. If the new army temporarily has more stock than capacity, preserve the actual value. If the commander is unread, keep that identity unknown rather than infer it from capacity or a portrait."
+      }
+    },
+    {
+      "id": "C06-07",
+      "narration": {
+        "zh": "接战前，确认实际到了哪里，还有哪些队伍在路上，可用人数和库存是多少。当前零损耗只说眼前条件，不保证以后安全；当前正补给也不保证以后一直恢复。然后把到场的真实状态交给战斗判断，让出发计划与现实接起来。"
+      },
+      "subtitles": {
+        "zh": "接战前，确认实际到了哪里，还有哪些队伍在路上，可用人数和库存是多少。当前零损耗只说眼前条件，不保证以后安全；当前正补给也不保证以后一直恢复。然后把到场的真实状态交给战斗判断，让出发计划与现实接起来。",
+        "en": "Before battle, confirm where the army has actually arrived, which others are still traveling, and the soldiers and supplies available. Zero current attrition describes the present conditions, not future safety. Positive current supply does not promise recovery forever. Then use the actual arrival state in the battle decision, connecting the departure plan to reality."
+      }
+    },
+    {
+      "id": "C06-08",
+      "narration": {
+        "zh": "费用也回看一次。当次收入、完整支出和已经发生的支付，放在各自正确范围里；净收入已经扣过的军费，不再重扣。实际登船支付还没读到，就继续未知。完整账比一个钱包差值更能说明路线到底花了什么。"
+      },
+      "subtitles": {
+        "zh": "费用也回看一次。当次收入、完整支出和已经发生的支付，放在各自正确范围里；净收入已经扣过的军费，不再重扣。实际登船支付还没读到，就继续未知。完整账比一个钱包差值更能说明路线到底花了什么。",
+        "en": "Check costs again too. Keep income, complete expenditure, and actual payments within their correct scopes. Military costs already deducted in net gold income must not be deducted again. An unread actual embarkation payment remains unknown. A complete ledger explains a route's costs better than one treasury difference."
+      }
+    },
+    {
+      "id": "C06-09",
+      "narration": {
+        "zh": "这些检查已经整理成知识专题，原生数据读取的方法也可以复用。换机器或存档，可以沿用方法；版本、人物、军队和眼前读数仍要重新确认。缺少的信息就保持未知，不靠猜补齐。离线文件检查，也不能当作新的游戏结果。"
+      },
+      "subtitles": {
+        "zh": "这些检查已经整理成知识专题，原生数据读取的方法也可以复用。换机器或存档，可以沿用方法；版本、人物、军队和眼前读数仍要重新确认。缺少的信息就保持未知，不靠猜补齐。离线文件检查，也不能当作新的游戏结果。",
+        "en": "These checks are now recorded in knowledge documents, and the native data-reading methods can be reused. Use the method on another machine or save, but confirm the version, character, army, and current readings afresh. Missing information stays unknown instead of being guessed. An offline file check is not a new game result."
+      }
+    },
+    {
+      "id": "C06-10",
+      "narration": {
+        "zh": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。整军直走和换路线各自保留了真实到达观测；分兵方案因冻结条件变化停止，换路线回放又保留采样偏差，因此没有严格三方案的胜负结论。真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。"
+      },
+      "subtitles": {
+        "zh": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。整军直走和换路线各自保留了真实到达观测；分兵方案因冻结条件变化停止，换路线回放又保留采样偏差，因此没有严格三方案的胜负结论。真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。",
+        "en": "We observed full supply, actual reinforcement, and soldier decreases in separate windows. We also observed supply and roster changes during same-day splits and merges. Later rest periods produced actual increases in supply and soldier counts. The whole-army direct route and the alternate route each retain an actual arrival observation. The split-army plan stopped after its fixed conditions changed. The alternate-route replay retains sampling deviations. So there is no strictly controlled three-plan verdict. Actual starvation and itemized payments still need their own evidence. You can read your own army in this order. Give every new conclusion its own date, identity and observed result."
+      }
+    }
+  ],
+  "artifact_ids": []
+}

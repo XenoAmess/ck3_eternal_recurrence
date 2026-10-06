@@ -1,0 +1,38 @@
+--- preserved-a03
++++ candidate-a04
+@@ -180,7 +180,7 @@
+     for chapter_id in ('E4-01','E4-02','E4-03','E4-04','E4-06'):
+         if chapter_id == 'E4-06' and 'C06-10' in changed|subtitle_changed:
+             continue
+-        require(chapters[chapter_id][0]['index'] == old_chapters[chapter_id][0]['index'],
++        require((chapters[chapter_id][0]['index']['bytes'], chapters[chapter_id][0]['index']['sha256'].lower()) == (old_chapters[chapter_id][0]['index']['bytes'], old_chapters[chapter_id][0]['index']['sha256'].lower()),
+                 'stable chapter index must remain exact: '+chapter_id)
+     for key in changed:
+         for fragment in rows[key][0]['fragments']:
+@@ -327,7 +327,7 @@
+         n = visual['duration_frames']
+         require(isinstance(n,int) and n>0 and 0<=begin<end and
+                 review['start_seconds']<=begin<end<=review['end_seconds_exclusive'] and
+-                end<=float(probe['format']['duration']) and end-begin>=n/FPS-1e-8,
++                end<=float(probe['format']['duration'])+float(Fraction(visual['source_time_base']))+1e-8 and end-begin>=n/FPS-float(Fraction(visual['source_time_base']))-1e-8,
+                 'moving source exceeds sampled/closed bounded window')
+         key = str(Path(visual['source']['path']).resolve()).casefold()
+         require(all(end<=a or b<=begin for a,b in prior_used.get(key,[])+used.get(key,[])),
+@@ -496,7 +496,7 @@
+                     source_reads.append({'source_index':i,'decoded_frames':len(pts),'first_actual_pts':pts[0],'last_actual_pts':pts[-1],'time_base':v['source_time_base']})
+             probe_and_write_bound_media(str(ffprobe),output_path,output_path=cue_root/'picture.bound-probe.json',audit_directory=cue_root/'probe-command-audit')
+             base.verify_output_probe(read(cue_root/'picture.bound-probe.json'),entry['duration_frames'],pcm=None)
+-            output=read(cue_root/'picture.bound-probe.json')['subject']
++            output={'path':str(output_path), **read(cue_root/'picture.bound-probe.json')['subject']}
+             record={'output':output,'old_or_increment_bound_probe':binding(cue_root/'picture.bound-probe.json'),
+                     'dynamic_source_windows':row['visuals'] if mode=='new-native-picture' else prior['dynamic_source_windows'],
+                     'actual_source_decodes':source_reads,'packaging':row,
+@@ -522,7 +522,7 @@
+     audio_stream=next(v for v in final_probe['ffprobe']['streams'] if v['codec_type']=='audio')
+     require(audio_stream['time_base']=='1/48000' and audio_stream['start_pts']==0, 'encoded AAC sample time base/origin differs')
+     report={'schema':'xar.e04.final-BC-review-picture.v1','state':'ACTUAL_FINAL_BC_REVIEW_CANDIDATE_RENDERED',
+-            'created_utc':datetime.now(timezone.utc).isoformat(),'picture':final_probe['subject'],
++            'created_utc':datetime.now(timezone.utc).isoformat(),'picture':{'path':str(final_path), **final_probe['subject']},
+             'bound_probe':binding(root/'picture.bound-probe.json'),'producer':binding(__file__),
+             'input':binding(root/'input-snapshot.json'),'timeline':timeline,
+             'actual_PCM_samples':ready['samples'],'actual_PCM_seconds':ready['samples']/RATE,

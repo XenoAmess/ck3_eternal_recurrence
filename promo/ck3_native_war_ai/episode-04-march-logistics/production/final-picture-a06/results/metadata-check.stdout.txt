@@ -1,0 +1,29 @@
+{
+  "state": "ROOT_BOUND_A02_METADATA_READY_FOR_ONE_REVIEW_RENDER",
+  "audio_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "subtitle_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "picture_refresh_ids": [
+    "C05-01",
+    "C05-15"
+  ],
+  "samples": 41658624,
+  "frames": 52074,
+  "media_reads": 0,
+  "human_signoff": false
+}

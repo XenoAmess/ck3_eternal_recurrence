@@ -1,0 +1,171 @@
+{
+  "id": "E4-05",
+  "type": "documentary",
+  "state": "planned",
+  "title": {
+    "zh-CN": "三种方案对照"
+  },
+  "cues": [
+    {
+      "id": "C05-01",
+      "narration": {
+        "zh": "现在把这些读数放进选择里。整军直走、分兵休整会合、换路线，都回答同一组问题：什么时候真正到，剩多少兵，库存与缺员有没有恢复，途中实际付了什么钱。比较前，先确保每次从同一个已经验收的起点出发。"
+      },
+      "subtitles": {
+        "zh": "现在把这些读数放进选择里。整军直走、分兵休整会合、换路线，都回答同一组问题：什么时候真正到，剩多少兵，库存与缺员有没有恢复，途中实际付了什么钱。比较前，先确保每次从同一个已经验收的起点出发。",
+        "en": "Now use these readings to make choices. Marching as one army, splitting to recover and reunite, and taking another route answer the same questions. When did the army actually arrive? How many soldiers remained? Did supply and missing strength recover? What was actually paid along the way? Before comparing, every replay must begin at the same verified starting point."
+      }
+    },
+    {
+      "id": "C05-02",
+      "narration": {
+        "zh": "起点要保留完整兵团、当前人数和满员数、库存、容量、位置、路线与统帅。仅有一个存档文件，还不能宣布对照成立；可用休整地点和合法替代路线也要先验证。三次回放各自保留操作、日期和结果，才知道在比较哪一种安排。"
+      },
+      "subtitles": {
+        "zh": "起点要保留完整兵团、当前人数和满员数、库存、容量、位置、路线与统帅。仅有一个存档文件，还不能宣布对照成立；可用休整地点和合法替代路线也要先验证。三次回放各自保留操作、日期和结果，才知道在比较哪一种安排。",
+        "en": "That starting point preserves every regiment, current and maximum soldiers, supply, capacity, location, route, and commander. A save file alone does not establish a valid comparison. Recovery locations and legal alternative routes need checking too. Each replay keeps its own actions, dates, and results, so we know which plan we are comparing."
+      }
+    },
+    {
+      "id": "C05-03",
+      "narration": {
+        "zh": "先看方案A，整支军队沿选定路线直走，目标是伦敦。从共同起点算起，第五十一个游戏日，我们第一次观察到它已经抵达。前一个观察点是第四十九日，军队还在路上。所以，到达发生在这两次观察之间；第五十一日是首次看到结果的日期，精确到达时刻仍未知。"
+      },
+      "subtitles": {
+        "zh": "先看方案A，整支军队沿选定路线直走，目标是伦敦。从共同起点算起，第五十一个游戏日，我们第一次观察到它已经抵达。前一个观察点是第四十九日，军队还在路上。所以，到达发生在这两次观察之间；第五十一日是首次看到结果的日期，精确到达时刻仍未知。",
+        "en": "First, Plan A keeps the whole army together on the chosen route to London. We first observed it there 51 game days after the shared start. At the previous observation, on day 49, the army was still travelling. It therefore arrived between those observations. Day 51 is when we first saw the result; the exact arrival time is still unknown."
+      }
+    },
+    {
+      "id": "C05-04",
+      "narration": {
+        "zh": "方案B先分兵，让两支军队分别到合格驻点休整，再会合。这里看一次独立的B回放：在已核对的停驻窗口，两军当前补给月变化都读到正二十。它只说当时的读数，不表示库存已经增加。后面分别看人数和库存的实际变化；实际合军之后，还要重新核对兵团与统帅条件，伦敦终点仍未读到。"
+      },
+      "subtitles": {
+        "zh": "方案B先分兵，让两支军队分别到合格驻点休整，再会合。这里看一次独立的B回放：在已核对的停驻窗口，两军当前补给月变化都读到正二十。它只说当时的读数，不表示库存已经增加。后面分别看人数和库存的实际变化；实际合军之后，还要重新核对兵团与统帅条件，伦敦终点仍未读到。",
+        "en": "Plan B splits the army. Both groups rest at qualifying locations, then reunite. Here is an independent replay of B. During the checked rest window, both armies showed a current supply change of +20 per month. That was the current rate. It does not show that supply had already increased. Next, we observe actual soldier and supply changes separately. After the actual merge, we must check the regiments and commander again. There is still no observed London endpoint for B."
+      }
+    },
+    {
+      "id": "C05-05",
+      "narration": {
+        "zh": "方案C换路线，先经过已核验的中转点，再去伦敦。这次独立回放，在共同起点后的第七十七个游戏日，我们首次观察到主力已经抵达伦敦；第七十五日它还在路上，所以实际到达在这两次观察之间，精确时刻未知。这支主力从六千六百七十九人出发，到达观测时是六千六百八十九，净增十人；完整二十七个兵团的身份与满员数不变。补给从约一百一十点三八降到一百零一点九零，容量仍三百。终点当前损耗读到百分之一，这是当时的条件读数，不能直接换算成旅途中死了多少兵。这里报的是主力的原始编制，不是玩家所有单位的总人数。"
+      },
+      "subtitles": {
+        "zh": "方案C换路线，先经过已核验的中转点，再去伦敦。这次独立回放，在共同起点后的第七十七个游戏日，我们首次观察到主力已经抵达伦敦；第七十五日它还在路上，所以实际到达在这两次观察之间，精确时刻未知。这支主力从六千六百七十九人出发，到达观测时是六千六百八十九，净增十人；完整二十七个兵团的身份与满员数不变。补给从约一百一十点三八降到一百零一点九零，容量仍三百。终点当前损耗读到百分之一，这是当时的条件读数，不能直接换算成旅途中死了多少兵。这里报的是主力的原始编制，不是玩家所有单位的总人数。",
+        "en": "Plan C takes a different route, through verified waypoints to London. In this independent replay, on game day 77 after the shared start, we first observed the main army in London. It was still en route on day 75. It arrived between those observations. The exact moment is unknown. This main army started with 6,679 soldiers. At the arrival observation, it had 6,689: a net gain of ten. All 27 regiments retained their identities and maximum soldier counts. Supply fell from about 110.38 to 101.90. Supply capacity remained 300. Current attrition at the endpoint was 1%. That was the rate under current conditions. It does not tell us how many died en route. These figures describe the original main army. They are not the total soldiers in all player units."
+      }
+    },
+    {
+      "id": "C05-06",
+      "narration": {
+        "zh": "原版有“平分”“分出新军队”“整编”“合并军队”这些入口。平分把现有军队分成规模大致相等的两支，整编调整两支军队中的编制。会合只是走到同地，点合并之后才真正成为一支。名称、下令与实际组织变化分别核对。"
+      },
+      "subtitles": {
+        "zh": "原版有“平分”“分出新军队”“整编”“合并军队”这些入口。平分把现有军队分成规模大致相等的两支，整编调整两支军队中的编制。会合只是走到同地，点合并之后才真正成为一支。名称、下令与实际组织变化分别核对。",
+        "en": "The base game offers “Split in half,” “Split off new Army,” “Reorganize,” and “Merge armies.” Splitting in half makes two roughly equal armies. Reorganizing changes how regiments are assigned between them. Reuniting means reaching the same location; clicking Merge makes them one army. Check the name, order, and actual organizational change separately."
+      }
+    },
+    {
+      "id": "C05-07",
+      "narration": {
+        "zh": "三月五日的同一暂停点，实际平分后，原主军是三千三百三十七人、满员三千三百七十一；新分队三千三百四十二、满员三千三百七十六。合计仍六千六百七十九，满员六千七百四十七；完整二十七个兵团各归其位，没有因为平分丢失。"
+      },
+      "subtitles": {
+        "zh": "三月五日的同一暂停点，实际平分后，原主军是三千三百三十七人、满员三千三百七十一；新分队三千三百四十二、满员三千三百七十六。合计仍六千六百七十九，满员六千七百四十七；完整二十七个兵团各归其位，没有因为平分丢失。",
+        "en": "At the same paused point on March 5, the split left the main army with 3,337 soldiers out of 3,371. The new detachment had 3,342 out of 3,376. Together they still had 6,679 soldiers out of 6,747, with all 27 regiments accounted for. No regiment was lost in the split."
+      }
+    },
+    {
+      "id": "C05-08",
+      "narration": {
+        "zh": "前面的平分样本里，两队都继承约一百一十点三八补给，主军容量三百，新分队容量一百。现在看这次B回放：起点后的第二十到二十一日，新分队库存从约一百一十点三八降到一百，两军人数与完整兵团的前后读数都没变。虽然当前月变化仍是正二十，这次库存变化却是向下回到容量；它不是补兵，也不是低库存补给增加。"
+      },
+      "subtitles": {
+        "zh": "前面的平分样本里，两队都继承约一百一十点三八补给，主军容量三百，新分队容量一百。现在看这次B回放：起点后的第二十到二十一日，新分队库存从约一百一十点三八降到一百，两军人数与完整兵团的前后读数都没变。虽然当前月变化仍是正二十，这次库存变化却是向下回到容量；它不是补兵，也不是低库存补给增加。",
+        "en": "In the earlier equal split, both armies inherited about 110.38 supply. The main army had capacity 300; the new group had capacity 100. Now look at this replay of B. Between days 20 and 21, the new group's supply fell from about 110.38 to 100. Both armies' soldier counts and full regiment readings were unchanged. The current monthly rate still showed +20. But the actual supply change was downward, back to capacity. This was neither reinforcement nor a supply increase from a low stock."
+      }
+    },
+    {
+      "id": "C05-09",
+      "narration": {
+        "zh": "平分没有自动重开这轮补给宽限。新分队继承了原军队的这段计时，哪一天库存真正变化，还需要继续观察。容量不同，也不能代替统帅身份读取。后来在两个驻点读到的统帅，只证明当时那一帧，不保证后面一直没变。"
+      },
+      "subtitles": {
+        "zh": "平分没有自动重开这轮补给宽限。新分队继承了原军队的这段计时，哪一天库存真正变化，还需要继续观察。容量不同，也不能代替统帅身份读取。后来在两个驻点读到的统帅，只证明当时那一帧，不保证后面一直没变。",
+        "en": "Splitting did not automatically restart this supply grace period. The new detachment inherited that timing from the original army. When its stock actually changes still needs observation. A capacity difference cannot identify the commander. Commanders read later at the two locations describe that particular frame, not a guarantee that they never changed afterward."
+      }
+    },
+    {
+      "id": "C05-10",
+      "narration": {
+        "zh": "接着看两个不同的窗口。起点后的第二十六到二十七日，主军人数净增七，新分队净增三，两端库存相同。第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，新分队两端都是一百，完整兵团的人数与编制也没变。人数净变化与补给增加各记自己的日期，不能剪成同一次结算。后来两军回到同地实际合军，合前补给约一百二十六点一四和一百。按双方各自的合军权重加权、分别取整，得到约一百一十三点零六。合后容量读到一百，库存实际也是一百。这个窗口能单独确认上限截断，不能用两队库存的普通平均代替。"
+      },
+      "subtitles": {
+        "zh": "接着看两个不同的窗口。起点后的第二十六到二十七日，主军人数净增七，新分队净增三，两端库存相同。第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，新分队两端都是一百，完整兵团的人数与编制也没变。人数净变化与补给增加各记自己的日期，不能剪成同一次结算。后来两军回到同地实际合军，合前补给约一百二十六点一四和一百。按双方各自的合军权重加权、分别取整，得到约一百一十三点零六。合后容量读到一百，库存实际也是一百。这个窗口能单独确认上限截断，不能用两队库存的普通平均代替。",
+        "en": "Next, consider two separate observation windows. Between days 26 and 27, the main army gained seven soldiers net; the new group gained three. Supply was unchanged at both endpoints. Between days 31 and 32, main-army supply rose from about 106.14 to 126.14. The new group had 100 at both endpoints. The full regiment roster and soldier counts were also unchanged. Record soldier changes and supply gains on their own dates. Do not edit them into a single update. Later, the two armies reunited at the same location and actually merged. Before merging, their supply was about 126.14 and 100. Apply each army's merge weight and round down each contribution. The result is about 113.06. After merging, capacity was 100, and actual supply was also 100. This window independently confirms the upper-cap clamp. A simple average of the two supply stocks cannot replace that calculation."
+      }
+    },
+    {
+      "id": "C05-11",
+      "narration": {
+        "zh": "费用先另读一份一月十一日的暂停样本：角色个人月总收入约四点六九金币，完整月支出约四点三九，当前净收入约正零点三零。这不是后面所有旅途日期的固定常数；军队和收支条件变了，需要重新读。"
+      },
+      "subtitles": {
+        "zh": "费用先另读一份一月十一日的暂停样本：角色个人月总收入约四点六九金币，完整月支出约四点三九，当前净收入约正零点三零。这不是后面所有旅途日期的固定常数；军队和收支条件变了，需要重新读。",
+        "en": "For costs, first read a separate paused January 11 sample. The character's total monthly income was about 4.69 gold, complete expenditure about 4.39, and current net gold income about +0.30. That is not a constant for every later travel date. When army or financial conditions change, read them again."
+      }
+    },
+    {
+      "id": "C05-12",
+      "narration": {
+        "zh": "同一个样本，当前军事维护约三点八九金币每月，已经含在完整支出里；全部集结情形的当前替代维护约四点八七。两者分别比较，不相加，也不从净收入里再扣一次军费。全部集结值没有被证明是未来费用上限。"
+      },
+      "subtitles": {
+        "zh": "同一个样本，当前军事维护约三点八九金币每月，已经含在完整支出里；全部集结情形的当前替代维护约四点八七。两者分别比较，不相加，也不从净收入里再扣一次军费。全部集结值没有被证明是未来费用上限。",
+        "en": "In that same sample, current military maintenance was about 3.89 gold per month, already included in complete expenditure. The current alternative calculation with all armies raised was about 4.87. Compare them separately. Do not add them together or subtract military costs from net gold income again. The all-raised value has not been proved to be an upper bound on future costs."
+      }
+    },
+    {
+      "id": "C05-13",
+      "narration": {
+        "zh": "累计费用要逐笔记实际发生的维护、登船支付、期间收入和其他支付，并使用一致日期范围对账。钱包变少多少，是混合这些来源的净现金变化；地图上“会支付登船费”只是当时提示。没读到实际付款，就留空，不能把余额差改名为纯行军费。"
+      },
+      "subtitles": {
+        "zh": "累计费用要逐笔记实际发生的维护、登船支付、期间收入和其他支付，并使用一致日期范围对账。钱包变少多少，是混合这些来源的净现金变化；地图上“会支付登船费”只是当时提示。没读到实际付款，就留空，不能把余额差改名为纯行军费。",
+        "en": "Accumulated costs need actual records of maintenance, embarkation payments, income, and other payments over the same dates. A treasury decrease is a net gold change combining those sources. The map's embarkation warning is only the prediction at that moment. Without an actual payment reading, leave the field empty. Do not rename the treasury difference “marching costs.”"
+      }
+    },
+    {
+      "id": "C05-14",
+      "narration": {
+        "zh": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。这次B合军后，原二十七个兵团仍在，但又多出一条满员一人的兵团记录；合后共有六千六百九十人，满员六千七百四十八。实际统帅也变了，与原先冻结的条件不符。新增记录和统帅变化的原因还没有确认。因此，这次B在第三十八日停止，尚有五十二日预算；停止是冻结条件未通过，不是时间耗尽。这段能保留为合军机制样本，却没有可比较的伦敦终点。C也出现多次采样偏差：原计划每次最多过一天，实际跨了两天。后续只保留为描述性观察，即使已经到达，也不能恢复成严格公平的A/C对照。A和C的实际到达观测各自保留。下面回到整军直走的A。"
+      },
+      "subtitles": {
+        "zh": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。这次B合军后，原二十七个兵团仍在，但又多出一条满员一人的兵团记录；合后共有六千六百九十人，满员六千七百四十八。实际统帅也变了，与原先冻结的条件不符。新增记录和统帅变化的原因还没有确认。因此，这次B在第三十八日停止，尚有五十二日预算；停止是冻结条件未通过，不是时间耗尽。这段能保留为合军机制样本，却没有可比较的伦敦终点。C也出现多次采样偏差：原计划每次最多过一天，实际跨了两天。后续只保留为描述性观察，即使已经到达，也不能恢复成严格公平的A/C对照。A和C的实际到达观测各自保留。下面回到整军直走的A。",
+        "en": "Align results by the same date or event. First check actual arrival, then the full regiments and available soldiers. Then check supply, reinforcement and attrition windows, and finally actual payments. After B's merge, all 27 original regiments remained. But a new regiment record appeared, with one soldier out of a maximum of one. The merged army had 6,690 soldiers, out of a maximum of 6,748. The commander also changed, breaking the conditions fixed at the start. The causes of the new record and commander change remain unconfirmed. So B stopped on day 38, with 52 days left in its budget. It stopped because the fixed conditions failed, not because time ran out. We can retain this as a sample of the merge mechanism. But it has no comparable London endpoint. C also had multiple sampling deviations. Pulses planned for at most one day actually advanced two. The later results are retained as descriptive observations only. Reaching London does not restore a strictly controlled A/C comparison. The actual arrival observations for A and C are retained separately. Now we return to A: the whole army taking the direct route."
+      }
+    },
+    {
+      "id": "C05-15",
+      "narration": {
+        "zh": "这一方案从六千六百七十九人出发，抵达观测时是六千六百八十九人，净增十人。完整二十七个兵团都还在，满员数仍是六千七百四十七。补给从约一百一十点三八变为一百零六点一四。净增十人只说旅途两端的差，不表示途中没有死伤，也不表示已经逐次读到了补员结算。"
+      },
+      "subtitles": {
+        "zh": "这一方案从六千六百七十九人出发，抵达观测时是六千六百八十九人，净增十人。完整二十七个兵团都还在，满员数仍是六千七百四十七。补给从约一百一十点三八变为一百零六点一四。净增十人只说旅途两端的差，不表示途中没有死伤，也不表示已经逐次读到了补员结算。",
+        "en": "This plan started with 6,679 soldiers. At the arrival observation it had 6,689, a net gain of 10. All 27 regiments were still present, and their total maximum soldier count remained 6,747. Supply went from about 110.38 to 106.14. The gain of 10 is only the difference between the two endpoints. It does not mean there were no casualties along the way, or that every reinforcement update was observed."
+      }
+    },
+    {
+      "id": "C05-16",
+      "narration": {
+        "zh": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。另看换路线的C回放：从共同起点到它的到达观测，余额净少约十五点八二金币。这个数字同样只是净变化。途中登船阶段曾观察到余额净少十七金币，另一个窗口又净增加约零点二五；各自原因都没有逐笔付款账来证明。现在A和C各有真实到达观测，B因冻结条件未通过而停止；C又保留采样偏差，本次不能排出严格三方案的赢家。"
+      },
+      "subtitles": {
+        "zh": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。另看换路线的C回放：从共同起点到它的到达观测，余额净少约十五点八二金币。这个数字同样只是净变化。途中登船阶段曾观察到余额净少十七金币，另一个窗口又净增加约零点二五；各自原因都没有逐笔付款账来证明。现在A和C各有真实到达观测，B因冻结条件未通过而停止；C又保留采样偏差，本次不能排出严格三方案的赢家。",
+        "en": "Over that period, gold fell from about 637.55 to 621.48. The net decrease was 16.06. That is the net balance change after all income and expenses. It is not a march-cost ledger or a verified embarkation payment. Now consider C's replay using a different route. From the shared start to its arrival observation, gold decreased by about 15.82 net. That figure is also only a net change. During embarkation, we observed a net decrease of 17 gold. In another window, it increased by about 0.25 net. Neither cause is established by an itemized payment ledger. A and C now each have an actual arrival observation. B stopped after failing the fixed conditions. C also retains its sampling deviations. This run cannot establish a winner in a strictly controlled three-plan comparison."
+      }
+    }
+  ],
+  "artifact_ids": []
+}

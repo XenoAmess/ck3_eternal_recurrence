@@ -1,0 +1,121 @@
+{
+  "id": "E4-04",
+  "type": "documentary",
+  "state": "planned",
+  "title": {
+    "zh-CN": "路线与到达时间"
+  },
+  "cues": [
+    {
+      "id": "C04-01",
+      "narration": {
+        "zh": "路线先决定去哪里，再影响什么时候能到。下令前，地图显示“预期抵达时间”；下令后，军队窗口显示当前剩余时间。真正到场还要看实际位置、状态和剩余路线。看到一个日期，不能直接当成已经抵达。"
+      },
+      "subtitles": {
+        "zh": "路线先决定去哪里，再影响什么时候能到。下令前，地图显示“预期抵达时间”；下令后，军队窗口显示当前剩余时间。真正到场还要看实际位置、状态和剩余路线。看到一个日期，不能直接当成已经抵达。",
+        "en": "A route determines where an army goes, then affects when it can arrive. Before the order, the map shows “Predicted arrival.” Afterward, the army window shows the current time remaining. Actual arrival still requires checking location, state, and the remaining route. A displayed date does not mean the army is already there."
+      }
+    },
+    {
+      "id": "C04-02",
+      "narration": {
+        "zh": "一月二十日，军队窗口显示“抵达利雪，剩余四十三天，三月四日”。这是整条路线的当前界面估计。与此同时，独立读取的当前第一段时量是三十天，进度为零，后面还储存着其他路段。"
+      },
+      "subtitles": {
+        "zh": "一月二十日，军队窗口显示“抵达利雪，剩余四十三天，三月四日”。这是整条路线的当前界面估计。与此同时，独立读取的当前第一段时量是三十天，进度为零，后面还储存着其他路段。",
+        "en": "On January 20, the army window showed arrival at Lisieux in 43 days, on March 4. That was the current interface estimate for the whole route. At the same time, a separate first-leg reading showed 30 days remaining and zero progress, with later legs still stored."
+      }
+    },
+    {
+      "id": "C04-03",
+      "narration": {
+        "zh": "四十三天与三十天描述的行程范围不同。不能拿首段三十天，说整支军队三十天就到利雪；也不能只因为两个数不同，就判定界面或读取出错。把整条估计与当前首段分开保留，真实抵达再核对。两数相减也不会自动得到精确的后续路程时长。"
+      },
+      "subtitles": {
+        "zh": "四十三天与三十天描述的行程范围不同。不能拿首段三十天，说整支军队三十天就到利雪；也不能只因为两个数不同，就判定界面或读取出错。把整条估计与当前首段分开保留，真实抵达再核对。两数相减也不会自动得到精确的后续路程时长。",
+        "en": "Those 43 days and 30 days describe different parts of the journey. We cannot use the first leg's 30 days to claim the whole army will reach Lisieux in 30 days. Their difference alone does not establish an error in either reading. Keep the whole-route estimate and the first-leg time separate, then check actual arrival. Subtracting them does not automatically give the exact duration of the later legs."
+      }
+    },
+    {
+      "id": "C04-04",
+      "narration": {
+        "zh": "这些查询和下令前后仍是同一个游戏日期，军队没有因为我们读到四十三天或三十天，就移动到目的地。行军之后要重新看当前估计，不能拿旧提示减去经过天数，冒充一次新的计算。"
+      },
+      "subtitles": {
+        "zh": "这些查询和下令前后仍是同一个游戏日期，军队没有因为我们读到四十三天或三十天，就移动到目的地。行军之后要重新看当前估计，不能拿旧提示减去经过天数，冒充一次新的计算。",
+        "en": "The queries and order were still on the same game date. Reading 43 days or 30 days did not move the army to its destination. After marching, check the current estimate afresh. Subtracting elapsed days from an old tooltip does not create a new calculation."
+      }
+    },
+    {
+      "id": "C04-05",
+      "narration": {
+        "zh": "另一轮的一月二十五日，画面出现“移动锁定”。同一暂停点，当前路段约走了百分之六十一点九；独立剩余时量约三点零八天，界面显示四天、预计一月二十九日抵达。它们可以并列读，当前路段进度也不当作任意整条路线的统一百分比。"
+      },
+      "subtitles": {
+        "zh": "另一轮的一月二十五日，画面出现“移动锁定”。同一暂停点，当前路段约走了百分之六十一点九；独立剩余时量约三点零八天，界面显示四天、预计一月二十九日抵达。它们可以并列读，当前路段进度也不当作任意整条路线的统一百分比。",
+        "en": "On January 25 of another replay, the screen showed “Movement Locked.” At that same paused point, the current leg was about 61.9% complete. The separate remaining-time reading was about 3.08 days, while the interface showed four days and arrival predicted for January 29. Read these side by side, without treating the current leg's progress as a percentage for any entire route."
+      }
+    },
+    {
+      "id": "C04-06",
+      "narration": {
+        "zh": "原生概念用一半进度说明锁定。这个超过一半的实际样本，可以证明当时已经锁定，却不能替代正好百分之五十的边界实验。画面没有单独告诉我们取消移动的精确边界，所以先讲当时锁定，刚好一半仍留给实际测试。"
+      },
+      "subtitles": {
+        "zh": "原生概念用一半进度说明锁定。这个超过一半的实际样本，可以证明当时已经锁定，却不能替代正好百分之五十的边界实验。画面没有单独告诉我们取消移动的精确边界，所以先讲当时锁定，刚好一半仍留给实际测试。",
+        "en": "The Chinese game concept describes the lock at halfway. This actual sample beyond halfway shows the army was locked then, but does not replace a test at exactly 50%. The image alone does not give us the exact boundary for cancelling movement. We can explain the observed lock; exactly halfway still needs an actual test."
+      }
+    },
+    {
+      "id": "C04-07",
+      "narration": {
+        "zh": "锁定之后按“停止移动”，要看当前路段和后续路线的区别。条件允许时，可以停在当前地点，也可以保留正在走的第一段、撤掉后面的路；只剩一段等情况还可能拒绝。按钮提交成功，不等于已经原地停止。"
+      },
+      "subtitles": {
+        "zh": "锁定之后按“停止移动”，要看当前路段和后续路线的区别。条件允许时，可以停在当前地点，也可以保留正在走的第一段、撤掉后面的路；只剩一段等情况还可能拒绝。按钮提交成功，不等于已经原地停止。",
+        "en": "After movement locks, “Halt movement” needs a check of the current leg versus the later route. When conditions allow, the army may stop at its current location, or keep the active first leg and remove the rest. Cases such as only one leg remaining may be refused. A successful button submission does not mean the army has stopped in place."
+      }
+    },
+    {
+      "id": "C04-08",
+      "narration": {
+        "zh": "正式画面需要依次看到停止前的路线、操作后剩下什么，再到军队实际到了哪里。改道也一样：旧的首段是否保留，新目的地和后续路线是否真的改变，都要读回。一个下令确认消息，不能替代这一串真实状态。"
+      },
+      "subtitles": {
+        "zh": "正式画面需要依次看到停止前的路线、操作后剩下什么，再到军队实际到了哪里。改道也一样：旧的首段是否保留，新目的地和后续路线是否真的改变，都要读回。一个下令确认消息，不能替代这一串真实状态。",
+        "en": "The footage needs to show the route before halting, what remains after the action, and where the army actually arrives. For a reroute, read back whether the old first leg remains and whether the new destination and later route changed. One order acknowledgement cannot replace that sequence of actual states."
+      }
+    },
+    {
+      "id": "C04-09",
+      "narration": {
+        "zh": "下令前的警告也有自己的范围。“会支付登船费”说的是当前路线预计包含支付事件，不是钱已经扣了。县域预算二百三十六，也不是每经过一个省就必定扣二百三十六。规划提示、动作后的状态和实际结算要分别记。"
+      },
+      "subtitles": {
+        "zh": "下令前的警告也有自己的范围。“会支付登船费”说的是当前路线预计包含支付事件，不是钱已经扣了。县域预算二百三十六，也不是每经过一个省就必定扣二百三十六。规划提示、动作后的状态和实际结算要分别记。",
+        "en": "Pre-order warnings also have their own scope. “Will pay embarkation fees” says the current route is expected to include a payment event, not that gold has already been deducted. A county-entry budget of 236 does not mean every province crossed must cost 236 soldiers. Record planning warnings, the state after the order, and actual settlement separately."
+      }
+    },
+    {
+      "id": "C04-10",
+      "narration": {
+        "zh": "这轮行军后来还核到了登船和登陆窗口。相对一月二十日起点，第三十到三十二日进入海段、变成已登船；第四十二到四十四日抵达陆地，路线走完、回到普通状态。两窗完整二十七团都仍是六千六百七十九，库存也没变。这只说明各自前后净变化；登陆后补员条件已经变化，后续要重新建立基线。"
+      },
+      "subtitles": {
+        "zh": "这轮行军后来还核到了登船和登陆窗口。相对一月二十日起点，第三十到三十二日进入海段、变成已登船；第四十二到四十四日抵达陆地，路线走完、回到普通状态。两窗完整二十七团都仍是六千六百七十九，库存也没变。这只说明各自前后净变化；登陆后补员条件已经变化，后续要重新建立基线。",
+        "en": "This journey later gave us boarding and landing windows. From day 30 to day 32 after the January 20 start, the army entered the sea leg and became embarked. From day 42 to day 44, it reached land, completed the route, and returned to a regular state. All 27 regiments stayed at a total of 6,679 soldiers in both windows, with supply unchanged. That describes each window's net change. Reinforcement conditions changed after landing, so later observations need a new baseline."
+      }
+    },
+    {
+      "id": "C04-11",
+      "narration": {
+        "zh": "接下来选路线，同时看合法路径、当前估计、下一步条件和沿途补给。看到一个可走地点，还要验证到了那里是否适合恢复；看到到达日期，还要等真正抵达。完成同一起点的独立回放后，才能把时间、兵力、库存和实际支付放进同一张表。"
+      },
+      "subtitles": {
+        "zh": "接下来选路线，同时看合法路径、当前估计、下一步条件和沿途补给。看到一个可走地点，还要验证到了那里是否适合恢复；看到到达日期，还要等真正抵达。完成同一起点的独立回放后，才能把时间、兵力、库存和实际支付放进同一张表。",
+        "en": "When choosing a route, check the legal path, current estimate, next-step condition, and supply along the way. A reachable location still needs testing for recovery. An arrival date still needs an actual arrival. Only after separate replays from the same starting point are complete can we compare time, strength, supply, and actual payments in one table."
+      }
+    }
+  ],
+  "artifact_ids": []
+}

@@ -1,0 +1,128 @@
+{
+  "status": "LATEST_FORMAL_RELEASE_MATCHES_INSTALLED_AND_PINNED",
+  "endpoint": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/latest",
+  "raw_release": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\latest-formal-release.raw.json",
+    "bytes": 7123,
+    "sha256": "c4017c5d9067872b12bf143dd0b60e6c9e3f353a9e1b523c914970ff2c3d94ba"
+  },
+  "release_tag": "v0.2.1",
+  "wheel": {
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "bytes": 190405
+  },
+  "explicit_python": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "distribution_version": "0.2.1"
+  },
+  "actual_probes": {
+    "version": {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\toolchain-probes\\version.stdout.txt",
+        "bytes": 16,
+        "sha256": "991ede384a3e94036964aade9fb334611cf5f31441fb1847516671426c50902b"
+      }
+    },
+    "top-help": {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\toolchain-probes\\top-help.stdout.txt",
+        "bytes": 1629,
+        "sha256": "851c404fc3e56a1d792eca9439bd4c8cf93b74dd213685afc79b141f94286f6e"
+      }
+    },
+    "start-run-help": {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "start-run",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\toolchain-probes\\start-run-help.stdout.txt",
+        "bytes": 422,
+        "sha256": "6d2b92c4d2b6717d821ff588d060fe15c260c1a7cba8677084ab8870661ddca4"
+      }
+    },
+    "preserve-help": {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "preserve",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\toolchain-probes\\preserve-help.stdout.txt",
+        "bytes": 617,
+        "sha256": "7ad6d2ead7268769e59767b23eba780f4920e5c47020f422e0db3443f8395b35"
+      }
+    },
+    "validate-help": {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "validate",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\toolchain-probes\\validate-help.stdout.txt",
+        "bytes": 406,
+        "sha256": "fdacfedf4a71d77a47a75261290071b0ec1b573d67ad325641a5d5e08cba00fc"
+      }
+    },
+    "review-help": {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "review",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\toolchain-probes\\review-help.stdout.txt",
+        "bytes": 901,
+        "sha256": "a4d446acdeb2d702fedce22703b420cceb75aef2a058913f06240d08b5aa6b56"
+      }
+    }
+  }
+}

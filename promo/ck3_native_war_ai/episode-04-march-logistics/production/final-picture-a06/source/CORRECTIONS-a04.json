@@ -1,0 +1,7 @@
+{
+  "public_bound_probe_subject_path": "explicit actual output path + public subject bytes/SHA; one movie hash owner",
+  "stable_four_chapter_indices": "same current byte count/SHA, fresh directory path allowed; input bytes independently verified",
+  "millisecond_native_source_intervals": "one original 1/1000 source tick for timestamp quantization only; actual decoded source PTS/count and exact picture frames still independently checked",
+  "old_candidates_unchanged": true,
+  "rendered": false
+}

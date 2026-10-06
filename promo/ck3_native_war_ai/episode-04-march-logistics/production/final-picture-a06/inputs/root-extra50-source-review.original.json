@@ -1,0 +1,344 @@
+{
+  "schema": "ck3.e04.Root-actual-extra-S04-50s-source-sample-review.v1",
+  "status": "ACTUAL_SOURCE_SAMPLES_ACCEPTED_PAUSED_LONDON_CONTEXT_ONLY",
+  "source_review_status": "NO_BLOCK",
+  "reviewer": "/root",
+  "reviewed_utc": "2026-10-06T00:52:46.800999+00:00",
+  "review_basis": "Root directly viewed all7 original RAW-decoded PNGs at native1920x1080, including first,last and each of five segment centers. Exact small source/index/report/image pins checked. Existing original S04 closed/audited identity reused; no RAW rehash/probe.",
+  "source_samples_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\seven-original-RAW-samples-a01\\SOURCE-SAMPLES-a01.json",
+    "bytes": 6424,
+    "sha256": "3c332dede884845fb1552c50f6a2b32fc928aac9cba696ae6f20a7097996e37f"
+  },
+  "machine50s_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\ROOT-DELIVERY-a01.json",
+    "bytes": 17798,
+    "sha256": "b0c1ad38f5c91dc33b7edf27e019cc9bede5540b2949e617aa3523a51f74e352"
+  },
+  "samples": [
+    {
+      "role": "first",
+      "source_frame_zero_based": 55481,
+      "source_pts": 1849367,
+      "source_time_base": "1/1000",
+      "source_seconds": "1849.367",
+      "original_RAW_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\seven-original-RAW-samples-a01\\original-00.png",
+        "bytes": 2635415,
+        "sha256": "99afc1bd61d604b59e93e7f41f28001b16fcc4af4893444f65ce609407f60dc3"
+      },
+      "Root_actual_pixel_review": {
+        "directly_viewed_original_pixels": true,
+        "visible_game_date": "1067-05-21",
+        "paused": true,
+        "selected_main_soldiers": 6689,
+        "visible_stock_capacity": "101/300",
+        "visible_current_attrition": "1%",
+        "selected_commander": "helmet visible; identity not inferred from portrait",
+        "London_land_army_marker": 6689,
+        "London_siege_flames_visible": true,
+        "visible_player_topbar_soldiers": 6696,
+        "topbar_not_native_allplayer_total": true,
+        "army_action_or_date_advance_observed": false,
+        "water_fire_highlight_variation_only": true
+      },
+      "native_event_exact_PTS": null
+    },
+    {
+      "role": "segment_center_0",
+      "source_frame_zero_based": 55631,
+      "source_pts": 1854367,
+      "source_time_base": "1/1000",
+      "source_seconds": "1854.367",
+      "original_RAW_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\seven-original-RAW-samples-a01\\original-01.png",
+        "bytes": 2588458,
+        "sha256": "eeb53bffee87e9e0cdd14d8660348b3749b803d9d0d3940d4dc9f35e554b6dff"
+      },
+      "Root_actual_pixel_review": {
+        "directly_viewed_original_pixels": true,
+        "visible_game_date": "1067-05-21",
+        "paused": true,
+        "selected_main_soldiers": 6689,
+        "visible_stock_capacity": "101/300",
+        "visible_current_attrition": "1%",
+        "selected_commander": "helmet visible; identity not inferred from portrait",
+        "London_land_army_marker": 6689,
+        "London_siege_flames_visible": true,
+        "visible_player_topbar_soldiers": 6696,
+        "topbar_not_native_allplayer_total": true,
+        "army_action_or_date_advance_observed": false,
+        "water_fire_highlight_variation_only": true
+      },
+      "native_event_exact_PTS": null
+    },
+    {
+      "role": "segment_center_1",
+      "source_frame_zero_based": 55931,
+      "source_pts": 1864367,
+      "source_time_base": "1/1000",
+      "source_seconds": "1864.367",
+      "original_RAW_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\seven-original-RAW-samples-a01\\original-02.png",
+        "bytes": 2591034,
+        "sha256": "414eb416e3b9a7146681a86e8ec0590fd3db73649bf3e78f530c8ac8b7e774bd"
+      },
+      "Root_actual_pixel_review": {
+        "directly_viewed_original_pixels": true,
+        "visible_game_date": "1067-05-21",
+        "paused": true,
+        "selected_main_soldiers": 6689,
+        "visible_stock_capacity": "101/300",
+        "visible_current_attrition": "1%",
+        "selected_commander": "helmet visible; identity not inferred from portrait",
+        "London_land_army_marker": 6689,
+        "London_siege_flames_visible": true,
+        "visible_player_topbar_soldiers": 6696,
+        "topbar_not_native_allplayer_total": true,
+        "army_action_or_date_advance_observed": false,
+        "water_fire_highlight_variation_only": true
+      },
+      "native_event_exact_PTS": null
+    },
+    {
+      "role": "segment_center_2",
+      "source_frame_zero_based": 56231,
+      "source_pts": 1874367,
+      "source_time_base": "1/1000",
+      "source_seconds": "1874.367",
+      "original_RAW_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\seven-original-RAW-samples-a01\\original-03.png",
+        "bytes": 2631659,
+        "sha256": "6231071f280f176e1acf444039b8263fbe48eeeb41610b602971520ca935535c"
+      },
+      "Root_actual_pixel_review": {
+        "directly_viewed_original_pixels": true,
+        "visible_game_date": "1067-05-21",
+        "paused": true,
+        "selected_main_soldiers": 6689,
+        "visible_stock_capacity": "101/300",
+        "visible_current_attrition": "1%",
+        "selected_commander": "helmet visible; identity not inferred from portrait",
+        "London_land_army_marker": 6689,
+        "London_siege_flames_visible": true,
+        "visible_player_topbar_soldiers": 6696,
+        "topbar_not_native_allplayer_total": true,
+        "army_action_or_date_advance_observed": false,
+        "water_fire_highlight_variation_only": true
+      },
+      "native_event_exact_PTS": null
+    },
+    {
+      "role": "segment_center_3",
+      "source_frame_zero_based": 56531,
+      "source_pts": 1884367,
+      "source_time_base": "1/1000",
+      "source_seconds": "1884.367",
+      "original_RAW_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\seven-original-RAW-samples-a01\\original-04.png",
+        "bytes": 2608195,
+        "sha256": "6aee4976a69f53b0b9838ef3a3b30644576fe992669c8b8c4fc6d08399b40ece"
+      },
+      "Root_actual_pixel_review": {
+        "directly_viewed_original_pixels": true,
+        "visible_game_date": "1067-05-21",
+        "paused": true,
+        "selected_main_soldiers": 6689,
+        "visible_stock_capacity": "101/300",
+        "visible_current_attrition": "1%",
+        "selected_commander": "helmet visible; identity not inferred from portrait",
+        "London_land_army_marker": 6689,
+        "London_siege_flames_visible": true,
+        "visible_player_topbar_soldiers": 6696,
+        "topbar_not_native_allplayer_total": true,
+        "army_action_or_date_advance_observed": false,
+        "water_fire_highlight_variation_only": true
+      },
+      "native_event_exact_PTS": null
+    },
+    {
+      "role": "segment_center_4",
+      "source_frame_zero_based": 56831,
+      "source_pts": 1894367,
+      "source_time_base": "1/1000",
+      "source_seconds": "1894.367",
+      "original_RAW_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\seven-original-RAW-samples-a01\\original-05.png",
+        "bytes": 2626176,
+        "sha256": "e1c0236c667b606149d23e7c72404acc50809c6eefa3f03a01632892f0fa0191"
+      },
+      "Root_actual_pixel_review": {
+        "directly_viewed_original_pixels": true,
+        "visible_game_date": "1067-05-21",
+        "paused": true,
+        "selected_main_soldiers": 6689,
+        "visible_stock_capacity": "101/300",
+        "visible_current_attrition": "1%",
+        "selected_commander": "helmet visible; identity not inferred from portrait",
+        "London_land_army_marker": 6689,
+        "London_siege_flames_visible": true,
+        "visible_player_topbar_soldiers": 6696,
+        "topbar_not_native_allplayer_total": true,
+        "army_action_or_date_advance_observed": false,
+        "water_fire_highlight_variation_only": true
+      },
+      "native_event_exact_PTS": null
+    },
+    {
+      "role": "last",
+      "source_frame_zero_based": 56980,
+      "source_pts": 1899333,
+      "source_time_base": "1/1000",
+      "source_seconds": "1899.333",
+      "original_RAW_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\seven-original-RAW-samples-a01\\original-06.png",
+        "bytes": 2639205,
+        "sha256": "627a50f205832dd6770ba5c7d9a09ee2bba5992ac5d2bc33af9aaf769070a8b9"
+      },
+      "Root_actual_pixel_review": {
+        "directly_viewed_original_pixels": true,
+        "visible_game_date": "1067-05-21",
+        "paused": true,
+        "selected_main_soldiers": 6689,
+        "visible_stock_capacity": "101/300",
+        "visible_current_attrition": "1%",
+        "selected_commander": "helmet visible; identity not inferred from portrait",
+        "London_land_army_marker": 6689,
+        "London_siege_flames_visible": true,
+        "visible_player_topbar_soldiers": 6696,
+        "topbar_not_native_allplayer_total": true,
+        "army_action_or_date_advance_observed": false,
+        "water_fire_highlight_variation_only": true
+      },
+      "native_event_exact_PTS": null
+    }
+  ],
+  "windows": [
+    {
+      "id": "C-S04-extra-terminal-context-00",
+      "clip": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-00\\candidate.mp4",
+        "bytes": 13619714,
+        "sha256": "6592942b9efc0955fa6570625c297c8f6d54bde519d059311b2184f7d2b3f158"
+      },
+      "report": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-00\\report-a01.json",
+        "bytes": 8602,
+        "sha256": "782c713a397ce6ef4e664f765d20f11c0eb8f242c971ef41ac677fd1801938dd"
+      },
+      "actual_frames": 300,
+      "source_first_frame": 55481,
+      "source_last_frame": 55780,
+      "source_first_pts": 1849367,
+      "source_last_pts": 1859333
+    },
+    {
+      "id": "C-S04-extra-terminal-context-01",
+      "clip": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-01\\candidate.mp4",
+        "bytes": 13600182,
+        "sha256": "b609da6daa792caaa85f69c34513063d4c9527732d8cfe57b0393786522dd02f"
+      },
+      "report": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-01\\report-a01.json",
+        "bytes": 8602,
+        "sha256": "b6c89e452e1e0705f7a8725f39f7f5318f02cc41b090648597988be7568973d5"
+      },
+      "actual_frames": 300,
+      "source_first_frame": 55781,
+      "source_last_frame": 56080,
+      "source_first_pts": 1859367,
+      "source_last_pts": 1869333
+    },
+    {
+      "id": "C-S04-extra-terminal-context-02",
+      "clip": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-02\\candidate.mp4",
+        "bytes": 13508515,
+        "sha256": "21118afe6b869a6be5bddcafac38a6e00bb8ad676fc87e68db483542df71ac82"
+      },
+      "report": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-02\\report-a01.json",
+        "bytes": 8602,
+        "sha256": "301a3472fc3daf0e8664996a49d1841f9aaf483fa8f89c350c66967083b8a369"
+      },
+      "actual_frames": 300,
+      "source_first_frame": 56081,
+      "source_last_frame": 56380,
+      "source_first_pts": 1869367,
+      "source_last_pts": 1879333
+    },
+    {
+      "id": "C-S04-extra-terminal-context-03",
+      "clip": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-03\\candidate.mp4",
+        "bytes": 13691734,
+        "sha256": "4dd8eabff5cc63e5c1ff0e940ce518903d1c5fb6fef37fca3e780d3a4852ec75"
+      },
+      "report": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-03\\report-a01.json",
+        "bytes": 8602,
+        "sha256": "bef773a91169293f0ff4337a1946af3336c5b5bac1c47067ccfaa4582ce1257f"
+      },
+      "actual_frames": 300,
+      "source_first_frame": 56381,
+      "source_last_frame": 56680,
+      "source_first_pts": 1879367,
+      "source_last_pts": 1889333
+    },
+    {
+      "id": "C-S04-extra-terminal-context-04",
+      "clip": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-04\\candidate.mp4",
+        "bytes": 13749216,
+        "sha256": "99abc9f0a37e6c75ded33520c4804c9c539e9229a1a63f301c62d922ab8f606a"
+      },
+      "report": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\extra-C-S04-50s-a01\\windows-a01\\c-s04-extra-terminal-context-04\\report-a01.json",
+        "bytes": 8602,
+        "sha256": "087bd48dd19fa20f64b553615ae09a1f45488b602df1b2c63818cdcb93ba2bb9"
+      },
+      "actual_frames": 300,
+      "source_first_frame": 56681,
+      "source_last_frame": 56980,
+      "source_first_pts": 1889367,
+      "source_last_pts": 1899333
+    }
+  ],
+  "actual_eligible_frames": 1500,
+  "actual_eligible_seconds": 50,
+  "source_frame_range_inclusive": [
+    55481,
+    56980
+  ],
+  "nonoverlap_existing_last360": true,
+  "permitted_usage": "Independent historical C+77 paused actual London poststate background with explicit C/date/observation labels. Use actual original raw and source frame ranges; not a new moving-army event or a strict controlledcomparison result.",
+  "C_terminal_pin": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\terminal.json",
+    "bytes": 6937,
+    "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+  },
+  "C_Main_scope_pin": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\Root-Main-scope-addendum.json",
+    "bytes": 6330,
+    "sha256": "cddd162f23396adf95c06ee4048be466d9795484a5a5b3eab695a84584419a57"
+  },
+  "C_sampling_review_pin": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\Root-review.json",
+    "bytes": 16482,
+    "sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b"
+  },
+  "C_controlled_comparison_eligibility": "NOT_GRANTED",
+  "ABC_winner": null,
+  "all_player_total_soldiers": null,
+  "continuous_clean_span": false,
+  "actual_full_dynamic_span_review": false,
+  "exact_native_event_PTS": null,
+  "arrival_exact_tick": null,
+  "whole_film_1x_review": false,
+  "human_listening_signoff": false,
+  "human_film_signoff": false,
+  "final_film_approved": false,
+  "picture_rows_approved": false,
+  "limitations": "All7 directly reviewed images are paused May21 with same Main integer6689, UI stock101/300 and red1percent getter. Natural water/fire/highlight variations do not demonstrate army movement, applied losses or a day77 arrival tick. This admits source background only; final rows/subtitles/composition require their own exact review."
+}

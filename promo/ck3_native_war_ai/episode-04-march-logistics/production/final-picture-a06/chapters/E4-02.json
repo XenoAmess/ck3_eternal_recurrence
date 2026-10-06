@@ -1,0 +1,131 @@
+{
+  "id": "E4-02",
+  "type": "documentary",
+  "state": "planned",
+  "title": {
+    "zh-CN": "看懂补给"
+  },
+  "cues": [
+    {
+      "id": "C02-01",
+      "narration": {
+        "zh": "先看军队面板里的总人数和满员数。总人数是现在有多少士兵，满员数是这支军队当前能有多少人。缺的是哪几个兵团，可以继续展开看。人数缺额和补给库存不是同一个问题。"
+      },
+      "subtitles": {
+        "zh": "先看军队面板里的总人数和满员数。总人数是现在有多少士兵，满员数是这支军队当前能有多少人。缺的是哪几个兵团，可以继续展开看。人数缺额和补给库存不是同一个问题。",
+        "en": "First, read current soldiers and maximum soldiers in the army panel. Current soldiers tell us how many are present. Maximum soldiers tell us the army's current full strength. Expand the roster to see which regiments are understrength. Missing soldiers and supply stock are different questions."
+      }
+    },
+    {
+      "id": "C02-02",
+      "narration": {
+        "zh": "原版把军队携带的食物、装备等物资叫作补给。补给库存、补给容量和兵员人数，需要分别读。看到一百一十六、容量三百，前一个数是当前显示的补给，后一个是这支军队的补给容量。它不是一百一十六名士兵，也不是百分比。"
+      },
+      "subtitles": {
+        "zh": "原版把军队携带的食物、装备等物资叫作补给。补给库存、补给容量和兵员人数，需要分别读。看到一百一十六、容量三百，前一个数是当前显示的补给，后一个是这支军队的补给容量。它不是一百一十六名士兵，也不是百分比。",
+        "en": "The base game calls the food, equipment, and other resources an army carries “Supplies.” Supply stock, supply capacity, and soldier count need separate readings. A displayed 116 with a capacity of 300 means 116 supply out of a capacity of 300. It does not mean 116 soldiers or a percentage."
+      }
+    },
+    {
+      "id": "C02-03",
+      "narration": {
+        "zh": "当地补给上限说的是这个地方能支持多少名士兵。军队的三百补给容量，不能直接和当地几千人的上限比较。要比较当地用量和当地上限。两支军队如果还留在同一个地方，也不能只看其中较小的一队，就宣布补给压力已经解除。"
+      },
+      "subtitles": {
+        "zh": "当地补给上限说的是这个地方能支持多少名士兵。军队的三百补给容量，不能直接和当地几千人的上限比较。要比较当地用量和当地上限。两支军队如果还留在同一个地方，也不能只看其中较小的一队，就宣布补给压力已经解除。",
+        "en": "The local supply limit measures how many soldiers a location can support. The army's supply capacity of 300 cannot be compared directly with a local limit of several thousand soldiers. Compare local supply usage with the local limit. If two armies remain at the same location, counting only the smaller one does not prove the supply pressure is gone."
+      }
+    },
+    {
+      "id": "C02-04",
+      "narration": {
+        "zh": "补给每月的正负号描述当前条件下的变化率。军队换了地点，或者条件改变，这个数也可能改变。下一次实际库存，还要重新读。容量也要单独看：一次正常增加碰到容量，与刚分军时继承库存，是不同的观察窗口。"
+      },
+      "subtitles": {
+        "zh": "补给每月的正负号描述当前条件下的变化率。军队换了地点，或者条件改变，这个数也可能改变。下一次实际库存，还要重新读。容量也要单独看：一次正常增加碰到容量，与刚分军时继承库存，是不同的观察窗口。",
+        "en": "The sign of supplies per month describes the rate under current conditions. That number may change when the army moves or its conditions change. Read the next actual stock separately, and check capacity too. A normal gain reaching capacity and inherited stock after splitting are different observations."
+      }
+    },
+    {
+      "id": "C02-05",
+      "narration": {
+        "zh": "恢复补给不等于补满兵员。本期有两个独立窗口，可以把这两件事分别看清。第一轮回放的第十四到十五日，补给从约二百九十一点二三升到三百。军队当时还在行军，不能说已经抵达终点休整。当前月变化约正十五点六一，实际只增加约八点七七，因为库存碰到了容量。"
+      },
+      "subtitles": {
+        "zh": "恢复补给不等于补满兵员。本期有两个独立窗口，可以把这两件事分别看清。第一轮回放的第十四到十五日，补给从约二百九十一点二三升到三百。军队当时还在行军，不能说已经抵达终点休整。当前月变化约正十五点六一，实际只增加约八点七七，因为库存碰到了容量。",
+        "en": "Recovering supply does not mean recovering full strength. Two separate observations let us see the difference. From day 14 to day 15 of the first replay, supply rose from about 291.23 to 300. The army was still marching, rather than already resting at its destination. Its current monthly change was about +15.61, but it gained only about 8.77 because it reached capacity."
+      }
+    },
+    {
+      "id": "C02-06",
+      "narration": {
+        "zh": "补给回满时，完整十四个兵团的人数都没有变化。整军仍是一千零八十六人，满员一千零八十七；缺员的那个小兵团还是九人，满员十人。补员条件允许，也不等于这个窗口已经补上了那一个。真正增加多少，要看实际人数。"
+      },
+      "subtitles": {
+        "zh": "补给回满时，完整十四个兵团的人数都没有变化。整军仍是一千零八十六人，满员一千零八十七；缺员的那个小兵团还是九人，满员十人。补员条件允许，也不等于这个窗口已经补上了那一个。真正增加多少，要看实际人数。",
+        "en": "When supply reached capacity, all 14 regiments kept the same soldier counts. The army still had 1,086 soldiers out of 1,087. The small understrength regiment remained at nine out of ten. Being eligible for reinforcement did not mean that missing soldier had been added in this window. The actual count tells us how many were added."
+      }
+    },
+    {
+      "id": "C02-07",
+      "narration": {
+        "zh": "第二轮重新载入存档，独立观察到原始第二十到二十一日。那个缺员兵团真的从九人补到十人，整军变成一千零八十七，其余十三团没有变化。这时补给两端都是三百，军队仍在去终点的路上。这才是实际兵员补齐。"
+      },
+      "subtitles": {
+        "zh": "第二轮重新载入存档，独立观察到原始第二十到二十一日。那个缺员兵团真的从九人补到十人，整军变成一千零八十七，其余十三团没有变化。这时补给两端都是三百，军队仍在去终点的路上。这才是实际兵员补齐。",
+        "en": "A second, separate reload was observed from its original day 20 to day 21. The understrength regiment actually rose from nine to ten soldiers. The army reached 1,087, with the other 13 regiments unchanged. Supply was 300 at both endpoints, and the army was still on the way to its destination. This was an actual recovery to full strength."
+      }
+    },
+    {
+      "id": "C02-08",
+      "narration": {
+        "zh": "所以画面要分别标清两次运行。前一段证明补给可以先回满，后一段证明实际兵员后来补齐；不能把两次重新载入剪成一个没有中断的现场。补员准备比例刷新，也不能直接换算成新增士兵。"
+      },
+      "subtitles": {
+        "zh": "所以画面要分别标清两次运行。前一段证明补给可以先回满，后一段证明实际兵员后来补齐；不能把两次重新载入剪成一个没有中断的现场。补员准备比例刷新，也不能直接换算成新增士兵。",
+        "en": "The footage must identify these as separate playthroughs. The first shows supply reaching capacity before strength recovers. The second shows the missing soldier actually being reinforced. They cannot be edited into one uninterrupted observation across two save reloads. A refreshed reinforcement progress value is not itself a new soldier."
+      }
+    },
+    {
+      "id": "C02-09",
+      "narration": {
+        "zh": "军事页还有“每月补员”勾选框，悬停文字叫“补员兵士”。画面可以说明当前勾选，以及提示一个月达到满员、点击停止补员。这个单帧没有数字费用，也没有证明已经付款或实际切换了开关。"
+      },
+      "subtitles": {
+        "zh": "军事页还有“每月补员”勾选框，悬停文字叫“补员兵士”。画面可以说明当前勾选，以及提示一个月达到满员、点击停止补员。这个单帧没有数字费用，也没有证明已经付款或实际切换了开关。",
+        "en": "The military page also has a “Monthly Reinforcement” checkbox, with a “Reinforcing Men-at-Arms” tooltip. The image shows its current checked state, with full strength predicted in one month and a click to stop reinforcement. This frame gives no numeric cost, and does not prove a payment or an actual toggle."
+      }
+    },
+    {
+      "id": "C02-10",
+      "narration": {
+        "zh": "休整地点还要实际验证。一月二十九日的另一次观察，两支军队分别停在两个候选地点，当前补给月变化却约为负四点三九和负八点七七。这两个地点不符合当次寻找正补给的要求，不能据此说所有分兵休整都无效；负值不同的原因，也不能靠猜。"
+      },
+      "subtitles": {
+        "zh": "休整地点还要实际验证。一月二十九日的另一次观察，两支军队分别停在两个候选地点，当前补给月变化却约为负四点三九和负八点七七。这两个地点不符合当次寻找正补给的要求，不能据此说所有分兵休整都无效；负值不同的原因，也不能靠猜。",
+        "en": "Recovery locations also need testing. In another observation on January 29, two armies had stopped at candidate locations, but their monthly supply changes were about −4.39 and −8.77. Neither met that search's requirement for positive supply. That does not rule out every split-and-recover plan, and we cannot guess why the two negative values differed."
+      }
+    },
+    {
+      "id": "C02-11",
+      "narration": {
+        "zh": "再看一月二十日同地合军的独立样本。合前两队的补给约八十三和二百九十一点二三；合后完整二十七个兵团都在，人数六千七百四十六，满员六千七百四十七。实际补给约一百一十六点五二，容量三百。库存和容量都没有简单相加。"
+      },
+      "subtitles": {
+        "zh": "再看一月二十日同地合军的独立样本。合前两队的补给约八十三和二百九十一点二三；合后完整二十七个兵团都在，人数六千七百四十六，满员六千七百四十七。实际补给约一百一十六点五二，容量三百。库存和容量都没有简单相加。",
+        "en": "Now consider a separate same-location merge on January 20. The armies had about 83 and 291.23 supply beforehand. After merging, all 27 regiments remained: 6,746 current soldiers out of 6,747. The actual supply was about 116.52, with a capacity of 300. Neither stock nor capacity was simply added together."
+      }
+    },
+    {
+      "id": "C02-12",
+      "narration": {
+        "zh": "这次合并按两军在合并中的权重，先算份额，再保留各自的一部分库存；游戏的取整也影响原始结果。完整数字复核严格吻合合后库存。它还低于三百，所以能说明这次加权合军，却没有证明超过新容量时的合军截断。那一种情况需要另一个实际样本。"
+      },
+      "subtitles": {
+        "zh": "这次合并按两军在合并中的权重，先算份额，再保留各自的一部分库存；游戏的取整也影响原始结果。完整数字复核严格吻合合后库存。它还低于三百，所以能说明这次加权合军，却没有证明超过新容量时的合军截断。那一种情况需要另一个实际样本。",
+        "en": "This merge uses each army's weight to calculate its share, then retain part of its stock. The game's integer truncation also affects the exact result. Checking the full numbers gives an exact match with the merged stock. Because it is below 300, this verifies weighted merging, but not clamping a merged stock above its new capacity. That needs a separate actual example."
+      }
+    }
+  ],
+  "artifact_ids": []
+}
