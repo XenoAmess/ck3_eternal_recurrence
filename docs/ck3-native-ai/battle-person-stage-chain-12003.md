@@ -1449,3 +1449,104 @@ native build, local game/Steam/process/SDK/pipe/live operation, runtime write
 or new game day. Earlier real Diac/Rule43 admission, fresh-stage association,
 the following caller and full person/Entry remain partial; Oct6/W41 fields
 are delivered to Root for merging.
+
+## Readonly following2921350 and following2921020 numerical inputs
+
+The source packets above precede implementation. The same existing current
+person query now has optional `current_context_source_inputs.following_2921350`
+and `following_2921020` leaves. Their exact-build bindings, native readers,
+DTOs and serializers only read actual fields. They never call the native
+DFS/getter/initializer/diagnostic/merger or execute a source effect. The
+shared normalizer validates each strict leaf and its Character full-ID join;
+individually complete leaves can be ready while the wider source census
+remains partial. Existing forecast and full Entry readiness are not promoted.
+
+`following_2921350` publishes the actual Title DFS trace, first full physical
+Title-pointer dedup, distinct Province occurrences, loaded manager dimension,
+ordered source IDs, exact full-generation resolutions, group indexes,
+physical FNV Robin-Hood probes, signed map operands, demanded threshold
+prefixes and actual selected tier PCs. The pure group consumer reuses
+`_fold_property_request` for inner unit merges. Its empty-destination copy
+preserves FFFF; subsequent merges use the existing sentinel rule. It emits
+one outer unit request for each nonempty numerical group in index order.
+An actual map miss is operand0. A demanded cold default is partial, while an
+actual initialized default PC is usable. Cold PC input in known group1 can
+leave complete group0 independently available; unknown source census or
+unknown group indexes cannot establish any complete group.
+
+`following_2921020` publishes actual Lege resolution/admission, signed rank,
+table/selected row and owner comparison. Owner matches additionally publish
+the actual selected28 header, signed weights and Definition40 PCs. The pure
+consumer reuses the existing consecutive-pointer run kernel: adjacent equal
+pointers sum with signed64 wrap; nonadjacent duplicates and zero weights
+remain separate. The owner/nonowner pair of constituent PCs is folded into
+one numerical temporary, then emitted as one outer unit request only when
+nonempty. It is not two additional outer requests. Nonowner skips the owner
+header; a present zero-valued key remains one occurrence. Ranks outside0..2
+retain precise `rank_diagnostic_3f7ab90_result`, without clamping or executing
+the diagnostic. Missing owner input preserves an independently complete
+two-PC composite.
+
+The public pure connection is
+`continue_explicit_person_following_stages_12003(person_state,
+start_baseline=PersonStageChainStart12003(...), through_stage="2921020")`.
+It accepts explicit `post2920D60_pre291CD9D` to consume both helpers, or
+explicit `post2921350_pre291CDA8` to consume2921020 alone. Its result uses the
+existing `PersonStageChainResult12003` type and remains directly usable by
+`project_stage_chain_six_skills_12003`. Only a contiguous complete fold can
+advance to `post2921020_pre291CDB3`. Unknown earlier Diac admission is not
+manufactured; absent baseline and `current_final` do not supply a context.
+Later complete helper outputs remain independent across a gap. Independent
+groups do not advance the native helper's context, because its entire source
+collection occurs before its final outer-group loop.
+
+```mermaid
+flowchart TD
+  U[Real earlier Diac admission and fresh stage association] -. not supplied .-> I
+  I[Explicit same-Character post2920D60 context] --> P[2921350 strict actual source leaf]
+  P -->|complete groups| A[Inner groups then ordered outer unit requests]
+  P -. cold or unread source .-> C[Retain incoming context; independent complete groups]
+  A --> M[post2921350_pre291CDA8]
+  M --> L[2921020 strict actual Lege inputs]
+  L -->|owner| W[Consecutive signed-weight runs]
+  W --> B[Two constituent PCs; one composite outer request]
+  L -->|nonowner| B
+  L -. invalid diagnostic rank .-> D[Retain post2921350; exact missing outcome]
+  B --> F[post2921020_pre291CDB3]
+  F --> S[Existing six-skill projection at this declared stage]
+  C --> O[Independent later2921020 outputs; no context jump]
+  F -. subsequent caller not included .-> N[Character1C8 and B70 direct family]
+```
+
+One new compound production-normalizer -> both helpers -> explicit context ->
+six-skill case covers nonempty modifiers, repeated Provinces, Title-pointer
+dedup, signed/zero owner runs, nonowner zero-valued keys, cold local input,
+diagnostic rank and unavailable explicit stage. Its first execution at
+2026-10-06 10:56:12CST was RED: the parent connection used `.properties`
+instead of the existing request's `.base_property_block`. That concrete
+connection error was fixed, and the necessary second execution at10:57:05
+passed1/1 in0.2426s. Both attempts are preserved. There was no earlier
+successful case rerun, old case execution or child producer case execution.
+
+The complete conditional frame emits2 then4 outer requests, produces
+aggregate keys `(0,1,2,4,5)` with values `(-3Q,Q,2Q,-Q,11Q)` and six skills
+`(3,7,8,6,5,17)`. Its deliberately different held current-final input is
+preserved. Cold group1 leaves the incoming stage and independent group0;
+diagnostic2921020 leaves the post2921350 stage. Legal zero source paths
+advance, while a present zero-valued nonowner key creates one weighted row.
+This is a supplied explicit fixture stage, not historical evidence that real
+Rule43 admission ran or that a held model became a fresh installed model.
+
+The exclusive implementation packet is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-stage-chain/following-stages-implementation/`.
+`attempt-01/RESULT.json` and `attempt-02/RESULT.json` are the actual receipts.
+Two dedicated native targets prepare9 and8 whole production DTO/serializer
+wires respectively. Their external CMake recipe is for Root's later central
+integration; no target has been configured, compiled, executed or qualified
+by this lane. New EXE reads are0; preceding source costs5273B/945B remain
+separate reused evidence, not implementation credit. Local CK3, Steam,
+process inspection, SDK, UI, pipe, live query, runtime writes and game days
+are0. The Python numerical connection is **static-ready conditional on held
+source values and an explicit incoming stage**; native production readiness,
+fresh-stage identity, real Diac/Rule43 selection, following caller, full person
+preparation and full Entry remain incomplete.

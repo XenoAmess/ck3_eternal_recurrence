@@ -35,6 +35,8 @@ struct ContextSourceTokenCursorV1 { void *node = nullptr; };
 #include "xar_bridge/ck3_12003_following_2920b50_sources.inc.hpp"
 #include "xar_bridge/ck3_12003_following_2bca620_sources.inc.hpp"
 #include "xar_bridge/ck3_12003_following_312a950_sources.inc.hpp"
+#include "xar_bridge/ck3_12003_following_2921350_sources.inc.hpp"
+#include "xar_bridge/ck3_12003_following_2921020_sources.inc.hpp"
 static_assert(sizeof(ContextSourceTokenSliceV1) == 16);
 static_assert(offsetof(ContextSourceTokenSliceV1, length) == 8);
 static_assert(offsetof(ContextSourceTokenSliceV1, flag) == 0xC);
@@ -102,6 +104,8 @@ struct ContextSourceBindingsV1 {
   ContextSourceFollowing2920b50BindingsV1 following_2920b50{};
   ContextSourceFollowing2bca620BindingsV1 following_2bca620{};
   ContextSourceFollowing312a950BindingsV1 following_312a950{};
+  ContextSourceFollowing2921350BindingsV1 following_2921350{};
+  ContextSourceFollowing2921020BindingsV1 following_2921020{};
   void *(*provider)() = nullptr;
   bool post_291d7e0_sources_enabled = false;
   const void *post_ab_object_fallback_slot = nullptr;

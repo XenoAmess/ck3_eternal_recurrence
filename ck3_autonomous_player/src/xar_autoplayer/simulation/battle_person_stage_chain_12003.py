@@ -792,3 +792,144 @@ def continue_current_person_stage_chain_tail_12003(
         raise ValueError("current person and previous stage characters disagree")
     return continue_person_stage_chain_tail_12003(previous,
         person_state.get("current_context_source_inputs"), through_stage=through_stage)
+
+
+def continue_explicit_person_following_stages_12003(
+    person_state: Mapping, *, start_baseline: PersonStageChainStart12003,
+    through_stage: str = "2921020",
+) -> PersonStageChainResult12003:
+    """Condition held source values on an explicitly supplied later-stage context.
+
+    This entry point never manufactures the intervening Diac/admission stages.
+    It releases the two bounded numerical helpers independently while the
+    earlier full-person chain remains partial.
+    """
+    stages = (
+        ("2921350", "post2920D60_pre291CD9D", "post2921350_pre291CDA8"),
+        ("2921020", "post2921350_pre291CDA8", "post2921020_pre291CDB3"),
+    )
+    names = tuple(row[0] for row in stages)
+    if through_stage not in names:
+        raise ValueError("Unknown bounded following stage: " + through_stage)
+    actor, stage = start_baseline.character_full_id, start_baseline.stage
+    source = person_state.get("current_context_source_inputs")
+    gaps, keys, values, weighted = [], [], [], []
+    initial = start_baseline.context
+    if isinstance(initial, Mapping):
+        initial = from_raw_numeric_inputs_12003({"context": initial}).context
+    if type(actor) is not int:
+        gaps.append("start_baseline.character_full_id")
+    begin = next((index for index, row in enumerate(stages) if row[1] == stage), None)
+    if begin is None or begin > names.index(through_stage):
+        gaps.append("start_baseline.explicit_following_stage")
+        begin = 0
+    if not isinstance(initial, NativeModifierContext12003):
+        gaps.append("start_baseline.context")
+    else:
+        arrays = None if initial.aggregate_properties is None else _block_arrays(
+            initial.aggregate_properties, "start_baseline.aggregate_properties", gaps)
+        if arrays is None:
+            gaps.append("start_baseline.aggregate_properties")
+        else:
+            keys, values = list(arrays[0]), list(arrays[1])
+        count, rows = initial.weighted_count, initial.weighted_rows
+        if type(count) is int and count == 0:
+            pass
+        elif type(count) is not int or count < 0 or rows is None or len(rows) < count:
+            gaps.append("start_baseline.weighted_rows")
+        else:
+            for index, row in enumerate(rows[:count]):
+                if (row is None or type(row.weight_q64) is not int or row.properties is None
+                        or _block_arrays(row.properties, f"start_baseline.weighted_rows[{index}]", gaps) is None):
+                    gaps.append(f"start_baseline.weighted_rows[{index}]")
+                else:
+                    weighted.append(row)
+    actor_matches = isinstance(source, Mapping) and source.get("character_id") == actor
+    if not actor_matches:
+        gaps.append("source_inputs.character_id_matches_baseline")
+    contiguous = not gaps
+
+    def snapshot():
+        return NativeModifierContext12003(
+            PropertyContainer12003(tuple(keys), tuple(values), len(keys)),
+            tuple(weighted), len(weighted))
+
+    contexts = {stage: snapshot()} if contiguous else {}
+    outputs, ordered, updates = {}, [], []
+    for index, (name, incoming, outgoing) in enumerate(stages):
+        if index < begin or index > names.index(through_stage):
+            continue
+        local, requests, independent = [], (), {}
+        try:
+            if not actor_matches:
+                raise ValueError("matching_character_source_unavailable")
+            module = import_module("xar_autoplayer.bridge.battle_person_following_" + name + "_contract")
+            requests = getattr(module, "emit_following_" + name + "_requests_from_current_source_inputs_12003")(source)
+        except (ValueError, TypeError) as exc:
+            local.append(str(exc))
+            if actor_matches:
+                # Source numeric outputs remain useful independently. A cold
+                # source selector occurs before the final group append loop,
+                # so these sparse groups never advance the verified context.
+                if name == "2921350":
+                    leaf = source.get("following_2921350")
+                    manager = leaf.get("manager") if isinstance(leaf, Mapping) else None
+                    count = manager.get("group_count_raw_i32") if isinstance(manager, Mapping) else None
+                    if type(count) is int and count >= 0:
+                        for group in range(count):
+                            try:
+                                independent[f"2921350.group{group}"] = (
+                                    module.emit_following_2921350_group_requests_from_current_source_inputs_12003(source, group))
+                            except (ValueError, TypeError):
+                                pass
+                else:
+                    for family in ("owner", "composite"):
+                        try:
+                            independent["2921020." + family] = getattr(module,
+                                "emit_following_2921020_" + family + "_requests_from_current_source_inputs_12003")(source)
+                        except (ValueError, TypeError):
+                            pass
+        outputs.update(independent)
+        validated = []
+        for request in requests:
+            pc = _property_input(request.base_property_block)
+            arrays = None if pc is None else _block_arrays(pc, name + ".properties", local)
+            if arrays is None or type(request.weight_q64) is not int:
+                local.append(name + ".complete_numeric_request")
+                break
+            validated.append((request, pc, arrays))
+        outputs[name] = tuple(row[0] for row in validated)
+        folded = contiguous and not local
+        if folded:
+            for request, pc, arrays in validated:
+                if not arrays[0]:
+                    continue  # Actual empty PC source occurrence has no context row.
+                weight = native_wrap64_12003(request.weight_q64)
+                weighted.append(WeightedModifierRow12003(pc, weight, len(weighted)))
+                _fold_property_request(keys, values, arrays[0], arrays[1], weight,
+                    {"stage": name, "source_ordinal": request.source_ordinal,
+                     "definition_identity": request.definition_identity}, updates)
+            stage = outgoing
+            contexts[stage] = snapshot()
+        ordered.append({"stage": name, "explicit_incoming_stage": incoming,
+                        "prospective_output_stage": outgoing, "requests_ready": not local,
+                        "folded_into_contiguous_context": folded, "request_count": len(validated),
+                        "missing_inputs": tuple(local)})
+        gaps.extend(name + ":" + item for item in local)
+        contiguous = contiguous and not local
+    ledger = {
+        "source_exe_sha256": SOURCE_EXE_SHA256_12003,
+        "explicit_start_stage": start_baseline.stage,
+        "explicit_baseline_provenance": deepcopy(start_baseline.source_provenance),
+        "requested_stop": through_stage, "actual_returned_stage": stage,
+        "ordered_stages": tuple(ordered), "aggregate_updates": tuple(updates),
+        "conditional_on_held_source_values": True,
+        "fresh_installed_stage_identity_inferred": False,
+        "earlier_admission_assumed_complete": False,
+        "current_final_context_used_as_default": False,
+        "unknown_stages_assumed_empty": False,
+        "full_person_preparation_ready": False, "full_entry_ready": False,
+        "native_write_performed": False, "game_operations": 0,
+    }
+    return PersonStageChainResult12003(actor, stage, contexts.get(stage), contiguous and not gaps,
+        tuple(gaps), ledger, contexts, outputs)

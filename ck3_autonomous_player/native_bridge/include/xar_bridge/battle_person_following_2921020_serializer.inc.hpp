@@ -1,0 +1,63 @@
+// Included inside the existing context-source serializer detail namespace.
+inline void Following2921020Json(std::string &out, const game::ContextSourceFollowing2921020InputsV1 &p) {
+  out += "{\"status\":";
+  String(out, p.status);
+  out += ",\"ready\":";
+  out += p.ready ? "true" : "false";
+  out += ",\"character_id\":" + std::to_string(p.character_id);
+  out += ",\"component_present\":";
+  Boolean(out, p.component_present);
+  out += ",\"requested_full_id_raw\":";
+  Number(out, p.requested_full_id_raw);
+  out += ",\"resolution_selection\":";
+  HelperString(out, p.resolution_selection);
+  out += ",\"selected_full_id_raw\":";
+  Number(out, p.selected_full_id_raw);
+  out += ",\"object_identity\":";
+  HelperString(out, p.object_identity);
+  out += ",\"magic_u32\":";
+  Number(out, p.magic_u32);
+  out += ",\"full_id_raw\":";
+  Number(out, p.full_id_raw);
+  out += ",\"admitted\":";
+  Boolean(out, p.admitted);
+  out += ",\"character_full_id_raw\":";
+  Number(out, p.character_full_id_raw);
+  out += ",\"owner_full_id_raw\":";
+  Number(out, p.owner_full_id_raw);
+  out += ",\"owner_matches\":";
+  Boolean(out, p.owner_matches);
+  out += ",\"table_identity\":";
+  HelperString(out, p.table_identity);
+  out += ",\"definition_identity\":";
+  HelperString(out, p.definition_identity);
+  out += ",\"rank_raw_i8\":";
+  Number(out, p.rank_raw_i8);
+  out += ",\"tier_selection\":";
+  HelperString(out, p.tier_selection);
+  out += ",\"selected_row_identity\":";
+  HelperString(out, p.selected_row_identity);
+  out += ",\"owner_weighted_header\":";
+  WeightedSpan(out, p.owner_weighted_header);
+  out += ",\"owner_definition_blocks\":[";
+  for (std::size_t i = 0; i < p.owner_definition_blocks.size(); ++i) {
+    if (i) out += ',';
+    const auto &block = p.owner_definition_blocks[i];
+    out += "{\"definition_identity\":";
+    String(out, block.definition_identity);
+    out += ",\"properties\":";
+    Properties(out, block.properties);
+    out += '}';
+  }
+  out += "],\"owner_header_ready\":";
+  Boolean(out, p.owner_header_ready);
+  out += ",\"base_pc\":";
+  AfterPcJson(out, p.base_pc);
+  out += ",\"tier_pc\":";
+  AfterPcJson(out, p.tier_pc);
+  out += ",\"composite_ready\":";
+  out += p.composite_ready ? "true" : "false";
+  out += ",\"reason\":";
+  Reason(out, p.reason);
+  out += '}';
+}

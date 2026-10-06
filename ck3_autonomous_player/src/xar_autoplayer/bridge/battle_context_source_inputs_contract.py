@@ -632,7 +632,8 @@ def normalize_current_context_source_inputs(
                      "qualifier_28bc0d0", "list_predicate_2530dd0",
                      "gated_temporary_tail_291c7a7", "after_gated_tail_326a8e0_2920310",
                      "provider192_and2920850", "following_2920b50", "following_2bca620",
-                     "following_government_land_312a950"):
+                     "following_government_land_312a950", "following_2921350",
+                     "following_2921020"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -792,6 +793,15 @@ def normalize_current_context_source_inputs(
         if following is not None and following["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".following_government_land_312a950 character disagrees with source actor")
         normalized["following_government_land_312a950"] = following
+    for suffix in ("2921350", "2921020"):
+        leaf = "following_" + suffix
+        if leaf in raw:
+            from importlib import import_module
+            module = import_module("xar_autoplayer.bridge.battle_person_" + leaf + "_contract")
+            following = getattr(module, "normalize_" + leaf)(raw[leaf], field + "." + leaf)
+            if following is not None and following["character_id"] != normalized["character_id"]:
+                raise ValueError(field + "." + leaf + " character disagrees with source actor")
+            normalized[leaf] = following
     return normalized
 
 

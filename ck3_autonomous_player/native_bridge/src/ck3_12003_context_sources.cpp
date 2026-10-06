@@ -1158,6 +1158,8 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
 #include "ck3_12003_person_following_2920b50.inc.hpp"
 #include "ck3_12003_person_following_2bca620.inc.hpp"
 #include "ck3_12003_person_following_312a950.inc.hpp"
+#include "ck3_12003_person_following_2921350.inc.hpp"
+#include "ck3_12003_person_following_2921020.inc.hpp"
 
 game::ContextSourceLaterDirectV1 LaterDirect(
     const ContextSourceBindingsV1 &b, const void *character,
@@ -1365,6 +1367,8 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.following_2920b50 = BindFollowing2920b50Sources12003(base);
   b.following_2bca620 = BindFollowing2bca620Sources12003(base);
   b.following_312a950 = BindFollowing312a950Sources12003(base);
+  b.following_2921350 = BindFollowing2921350Sources12003(base);
+  b.following_2921020 = BindFollowing2921020Sources12003(base);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.post_291d7e0_sources_enabled = true;
   b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
@@ -1460,6 +1464,10 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.following_2bca620 = Following2bca620Inputs(b, character, character_id);
   if (b.following_312a950.enabled)
     out.following_government_land_312a950 = Following312a950Inputs(b, character, character_id);
+  if (b.following_2921350.enabled)
+    out.following_2921350 = Following2921350Inputs(b, character, character_id);
+  if (b.following_2921020.enabled)
+    out.following_2921020 = Following2921020Inputs(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   if (b.post_291d7e0_sources_enabled)
@@ -1512,6 +1520,10 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.following_2bca620->ready;
   if (out.following_government_land_312a950)
     out.ready = out.ready && out.following_government_land_312a950->ready;
+  if (out.following_2921350)
+    out.ready = out.ready && out.following_2921350->ready;
+  if (out.following_2921020)
+    out.ready = out.ready && out.following_2921020->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;
