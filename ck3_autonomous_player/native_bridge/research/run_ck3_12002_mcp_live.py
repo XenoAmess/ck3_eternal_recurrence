@@ -510,6 +510,9 @@ class PlanClient:
         before = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
         await self.invoke("ck3_execute_step", {"step": "set-speed-1"})
         await self.wait_snapshot({"speed": 1}, self.args.command_timeout)
+        wait_for_actor_change = row.get("wait_for_played_character_change") is True
+        if wait_for_actor_change and before.get("episode_projection") != "native_campaign":
+            raise ValueError("player transition wait requires a native campaign")
         start = int(before["date_raw"])
         target = start + 24 * int(row.get("days", 1))
         await self.invoke("ck3_execute_step", {"step": "resume-map"})
@@ -526,6 +529,28 @@ class PlanClient:
                         f"active_event={json.dumps(current['active_event'], ensure_ascii=False, sort_keys=True)}"
                     )
                 if int(current["date_raw"]) >= target:
+                    if wait_for_actor_change:
+                        diagnostics = current.get("diagnostics") or {}
+                        initial = before.get("diagnostics") or {}
+                        if (current.get("episode_projection") != "native_campaign"
+                                or any(diagnostics.get(key) != initial.get(key) for key in
+                                       ("bridge_pid", "connection_generation", "pipe_name"))
+                                or current.get("local_player_id") != before.get("local_player_id")):
+                            raise ValueError("player transition crossed the admitted campaign process")
+                        played = current.get("played_character") or {}
+                        observer = (diagnostics.get("last_heartbeat") or {}).get("snapshot_observer_12002") or {}
+                        if not (current.get("map_ready") is True and played.get("source") == "native"
+                                and played.get("alive") is True and type(played.get("character_id")) is int
+                                and played["character_id"] > 0
+                                and played["character_id"] != before["played_character"]["character_id"]
+                                and type(current.get("native_revision")) is int
+                                and current["native_revision"] > int(before["native_revision"])
+                                and observer.get("read_in_progress") is False
+                                and type(observer.get("started_ms")) is int
+                                and type(observer.get("completed_ms")) is int
+                                and observer["completed_ms"] >= observer["started_ms"]):
+                            await asyncio.sleep(self.args.poll_interval)
+                            continue
                     reached = current
                     break
                 await asyncio.sleep(self.args.poll_interval)

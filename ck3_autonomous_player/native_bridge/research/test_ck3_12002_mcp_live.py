@@ -238,6 +238,63 @@ class OfflinePlanTests(unittest.TestCase):
             self.assertTrue(followup["ok"])
             self.assertEqual(followup["result"], event)
 
+    def test_campaign_d1_actor_transition_wait_is_explicit_before_terminal_pause(self):
+        # R9 thin states: D1 date publishes with old actor before the new native
+        # actor frame. Only the mocked command ACK and pause postcondition vary.
+        before = {"date_raw": 53144328, "paused": True, "speed": 1,
+            "active_event": None, "map_ready": True, "native_revision": 4,
+            "episode_projection": "native_campaign", "local_player_id": 1,
+            "played_character": {"character_id": 34422, "alive": True, "source": "native"},
+            "diagnostics": {"bridge_pid": 16256, "connection_generation": 1,
+                "pipe_name": "actual-R9-bound-pipe", "last_heartbeat": {
+                    "snapshot_observer_12002": {"started_ms": 567866593,
+                        "completed_ms": 567866593, "read_in_progress": False}}}}
+        for opted_in in (False, True):
+            with self.subTest(opted_in=opted_in), tempfile.TemporaryDirectory() as temporary:
+                client = PlanClient(None, Namespace(output=Path(temporary) / "report.json",
+                    command_timeout=180, poll_interval=0), {"steps": []}, lambda: None)
+                old_actor = json.loads(json.dumps(before))
+                old_actor.update(date_raw=53144352, paused=False, native_revision=8)
+                new_actor = json.loads(json.dumps(old_actor))
+                new_actor["played_character"]["character_id"] = 29959
+                new_actor["native_revision"] = 9
+                trajectory = [old_actor, new_actor]
+                control = {"stage": "before", "index": 0}
+                calls, observed = [], []
+
+                async def fresh():
+                    if control["stage"] == "before":
+                        value = before
+                    elif control["stage"] == "paused":
+                        value = dict(client.snapshot, paused=True)
+                    else:
+                        value = trajectory[control["index"]]
+                        control["index"] += 1
+                    client.snapshot = json.loads(json.dumps(value))
+                    observed.append(client.snapshot["played_character"]["character_id"])
+                    return client.snapshot
+
+                async def invoke(name, arguments=None, **kwargs):
+                    self.assertEqual(name, "ck3_execute_step")
+                    step = arguments["step"]
+                    calls.append(step)
+                    if step == "resume-map":
+                        control["stage"] = "running"
+                    elif step == "pause-map" and control["stage"] == "running":
+                        self.assertEqual(observed[-1], 29959 if opted_in else 34422)
+                        control["stage"] = "paused"
+                    return {"accepted": True, "status": "submitted"}
+
+                client.fresh, client.invoke = fresh, invoke
+                row = {"days": 1}
+                if opted_in:
+                    row["wait_for_played_character_change"] = True
+                result = asyncio.run(client.advance(row))
+                self.assertEqual(calls, ["pause-map", "set-speed-1", "resume-map", "pause-map"])
+                self.assertEqual(control["index"], 2 if opted_in else 1)
+                self.assertEqual(result["elapsed_hours"], 24)
+                self.assertTrue(result["after"]["paused"])
+
     def test_nested_hold_finishes_first_control_plan_before_next_file(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
