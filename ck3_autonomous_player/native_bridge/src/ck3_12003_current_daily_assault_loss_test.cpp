@@ -50,7 +50,7 @@ struct Registry {
 constexpr std::uint32_t UA=0x11000001U,UB=0x11000002U,AA=0x22000001U,AB=0x22000002U;
 constexpr std::uint32_t RA=0x2B000001U,RB=0x2B000002U,RP=0x2B000003U,RI=0xAB000004U;
 constexpr std::uint32_t SA=0xFE000001U,SB=0xFE000002U,SC=0xFE000003U;
-constexpr std::uint32_t PA=0xCC000001U,PP=0xCC000002U;
+constexpr std::uint32_t PA=0x4C000001U,PP=0x4C000002U;
 Registry *reg_registry=nullptr; void *army_a=nullptr,*army_b=nullptr,*province_current=nullptr;
 std::int32_t Current(void *descriptor,std::uint8_t flags) {
   Check(flags==0,"daily-loss requires actual whole flags0 counts");
