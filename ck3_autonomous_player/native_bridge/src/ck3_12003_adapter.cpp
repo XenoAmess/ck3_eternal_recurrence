@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
 #include "xar_bridge/ordinary_interaction_request_v1.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
@@ -168,6 +169,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         ck3_12003::BindCurrentArmyFlag20Inputs12003(image_base, executable_sha256);
     result.armies.current_army_flag21_bindings =
         ck3_12003::BindCurrentArmyFlag21Inputs12003(image_base, executable_sha256);
+    result.armies.current_fleet_supply_tick_bindings =
+        ck3_12003::BindCurrentFleetSupplyTickImage12003(image_base, executable_sha256);
     result.armies.current_candidate_detachment_mapper_bindings =
         ck3_12003::BindCurrentCandidateDetachmentMapper12003(image_base, executable_sha256);
     result.armies.current_pre_date_pending_update_bindings =

@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12003_current_daily_assault_loss.hpp"
+#include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_province_besieging_contributors.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002.hpp"
@@ -989,6 +990,28 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
             bindings.current_land_supply_rate_bindings, army, unit, province,
             &*result.current_land_resupply_v1);
       }
+    }
+    if (bindings.current_fleet_supply_tick_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("current_fleet_supply_tick_inputs_readonly");
+      void *province = Load<void *>(unit, 0x20);
+      void *game_data = bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr
+          ? Load<void *>(*bindings.game_state_slot, 0xA0) : nullptr;
+      if (province != nullptr &&
+          Province(game_data, Load<std::int32_t>(province, 0x10)) != province) province = nullptr;
+      std::optional<bool> native_fleet_branch;
+      if (result.current_land_resupply_v1 &&
+          result.current_land_resupply_v1->native_land_branch_applicable.has_value())
+        native_fleet_branch = !*result.current_land_resupply_v1->native_land_branch_applicable;
+      std::optional<std::int32_t> native_date;
+      if (result.army_update_clock_v1) native_date = result.army_update_clock_v1->current_date_raw;
+      std::optional<std::int64_t> divisor_floor, max_loss;
+      if (result.current_land_supply_rate_inputs_v1) {
+        divisor_floor = result.current_land_supply_rate_inputs_v1->loaded_divisor_floor_raw;
+        max_loss = result.current_land_supply_rate_inputs_v1->loaded_max_loss_raw;
+      }
+      result.current_fleet_supply_tick_inputs_v1 = ck3_12003::ReadCurrentFleetSupplyTickInputs12003(
+          bindings.current_fleet_supply_tick_bindings, bindings, army, unit, province,
+          native_fleet_branch, native_date, divisor_floor, max_loss);
     }
     if (bindings.county_entry_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");

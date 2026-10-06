@@ -13,6 +13,7 @@
 #include "xar_bridge/ck3_12003_army_supply_timing.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp"
+#include "xar_bridge/army_current_fleet_supply_tick_inputs_v1.hpp"
 #include "xar_bridge/ck3_12003_fixed_chunk0_preparation.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1.hpp"
 #include "xar_bridge/army_ordered_besieging_fixed_chunk0_preparation_v1.hpp"
@@ -800,6 +801,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentProvinceBesiegingContributorsV1> current_province_besieging_contributors_v1;
   std::optional<ArmyCurrentLandResupplyV1> current_land_resupply_v1;
   std::optional<ArmyCurrentLandSupplyRateInputsV1> current_land_supply_rate_inputs_v1;
+  std::optional<ArmyCurrentFleetSupplyTickInputsV1> current_fleet_supply_tick_inputs_v1;
   std::optional<ArmyScopedOrderedRefillInputsV1> scoped_ordered_refill_inputs_v1;
   std::optional<ArmyOrderedBesiegingRefillInputsV1> ordered_besieging_refill_inputs_v1;
   std::optional<ArmyOrderedBesiegingFixedChunk0PreparationInputsV1> ordered_besieging_fixed_chunk0_preparation_inputs_v1;

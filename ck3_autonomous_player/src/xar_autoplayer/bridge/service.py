@@ -15,6 +15,7 @@ from ..simulation.battle_current_special_knight_value_12003 import (
 from .version_identity import require_exact_native_build
 from .army_loss_allocation_projection import project_observed_army_loss_requests
 from .army_post_refill_land_supply_rate_projection import project_observed_post_refill_land_supply_rates_v1
+from .army_next_admitted_day_fleet_rate_projection import project_next_admitted_day_fleet_rate_v1
 from .army_selected_refill_monthly_assembly import project_selected_refill_monthly_assemblies_v1
 from .army_scoped_ordered_refill_projection import project_scoped_ordered_refills_v1
 from .army_daily_assault_active_table_projection import project_current_daily_assault_group_inputs_many_v1
@@ -4580,6 +4581,9 @@ class GameplayBridgeService:
             "army_strengths": selected_rows,
             "same_input_replenishment_v1": project_observed_replenishment_v1(selected_rows),
             "loss_allocation_requests_v1": project_observed_army_loss_requests(selected_rows),
+            "same_input_conditional_next_admitted_day_fleet_rate_v1": [
+                {"army_id": row["army_id"], "projection": project_next_admitted_day_fleet_rate_v1(row)}
+                for row in selected_rows],
             "same_input_conditional_post_refill_land_supply_rate_v1":
                 joined_land_rates,
             "same_input_conditional_selected_refill_monthly_assembly_v1":

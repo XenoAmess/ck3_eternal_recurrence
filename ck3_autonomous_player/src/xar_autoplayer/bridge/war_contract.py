@@ -20,6 +20,7 @@ from .army_current_province_supply_contributors_contract import normalize_curren
 from .army_province_besieging_contributors_contract import normalize_current_province_besieging_contributors_v1
 from .army_current_land_resupply_contract import normalize_current_land_resupply_v1
 from .army_current_land_supply_rate_contract import normalize_current_land_supply_rate_inputs_v1
+from .army_current_fleet_supply_tick_inputs_contract import normalize_current_fleet_supply_tick_inputs_v1
 from .army_scoped_ordered_refill_contract import normalize_scoped_ordered_refill_inputs_v1
 from .army_daily_assault_active_table_contract import normalize_current_daily_assault_table_v1
 from .army_daily_assault_roster_admission_contract import normalize_current_daily_assault_roster_admission_v1
@@ -313,6 +314,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_condition30_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag20_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag21_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag31_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_fleet_supply_tick_inputs_v1"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1927,6 +1929,9 @@ def _normalize_army_strength_row(
         result["current_land_supply_rate_inputs_v1"] = normalize_current_land_supply_rate_inputs_v1(
             value["current_land_supply_rate_inputs_v1"]
         )
+    if "current_fleet_supply_tick_inputs_v1" in value:
+        result["current_fleet_supply_tick_inputs_v1"] = normalize_current_fleet_supply_tick_inputs_v1(
+            value["current_fleet_supply_tick_inputs_v1"])
     if "current_daily_assault_loss_inputs_v1" in value:
         result["current_daily_assault_loss_inputs_v1"] = normalize_current_daily_assault_loss_inputs_v1(
             value["current_daily_assault_loss_inputs_v1"])
