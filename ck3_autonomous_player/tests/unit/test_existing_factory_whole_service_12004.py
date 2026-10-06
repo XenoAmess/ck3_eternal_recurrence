@@ -221,8 +221,14 @@ class ExistingFactoryWholeService12004Tests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(leaf["current_commander"]["status"], "absent")
                 self.assertIsNone(leaf["current_commander"]["character_id"])
                 martial = leaf["current_commander"]["current_total_martial"]
-                self.assertEqual(martial["status"], "absent")
-                self.assertIsNone(martial["value"])
+                self.assertEqual(martial, {
+                    "status": "unavailable",
+                    "source": "native_current_assigned_commander_total_skill_cache",
+                    "source_character_id": None,
+                    "skill_index": 1,
+                    "value": None,
+                    "unavailable_reason": "current_commander_absent",
+                })
                 movement = leaf["current_movement_speed"]
                 for name in ("land", "naval"):
                     self.assertEqual(movement[name]["status"], "available")
