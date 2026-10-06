@@ -16,6 +16,9 @@ from .nonwar_private_build import (
 from .version_identity import (
     CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
 )
+from .target_rite_tenet_comparison_12003 import (
+    normalize_target_rite_tenet_comparison_12003,
+)
 
 
 STEP = "query-player-religion-tenets-v1"
@@ -58,9 +61,11 @@ def _rite_tenets(value: object) -> None:
 
 def normalize_player_religion_tenets_v1(
     value: object, *, snapshot: Mapping[str, object],
+    target_rite_id: int | None = None, tenet_key: str | None = None,
 ) -> dict[str, object]:
     """Preserve source collections, zero states, absent Rite and native failure."""
-    if not isinstance(value, dict) or set(value) != _TENET_KEYS or value.get("schema") != private_native_schema(SCHEMA, snapshot):
+    expected_keys = _TENET_KEYS | ({"target_rite_tenet_comparison"} if target_rite_id is not None else set())
+    if not isinstance(value, dict) or set(value) != expected_keys or value.get("schema") != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion Tenets schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
     if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
@@ -92,15 +97,42 @@ def normalize_player_religion_tenets_v1(
     elif not isinstance(value["unavailable_reason"], str) or not value["unavailable_reason"]:
         raise ValueError("native player religion Tenets lost its unavailable reason")
     # Owner-pump epoch, legal zero references/states and source nulls stay native.
-    return deepcopy(value)
+    result = deepcopy(value)
+    if target_rite_id is not None:
+        if tenet_key is None:
+            raise ValueError("native player religion comparison request lost its Tenet key")
+        result["target_rite_tenet_comparison"] = normalize_target_rite_tenet_comparison_12003(
+            value["target_rite_tenet_comparison"], snapshot=snapshot, tenet_rows=value,
+            target_rite_id=target_rite_id, tenet_key=tenet_key,
+        )
+    return result
+
+
+def _comparison_request_fields(
+    target_rite_id: int | None, tenet_key: str | None,
+) -> dict[str, object]:
+    if (target_rite_id is None) != (tenet_key is None):
+        raise ValueError("target_rite_id and tenet_key must be provided together")
+    if target_rite_id is None:
+        return {}
+    if (not _full_reference(target_rite_id) or not isinstance(tenet_key, str)
+            or not tenet_key or len(tenet_key.encode("utf-8")) > 128):
+        raise ValueError("target Rite and named Tenet comparison request is malformed")
+    return {"target_rite_id": target_rite_id, "tenet_key": tenet_key}
 
 
 def query_player_religion_tenets_private_v1(
     driver: object, *, expected_revision: int, timeout_seconds: float = 30.0,
+    target_rite_id: int | None = None, tenet_key: str | None = None,
 ) -> dict[str, object]:
+    try:
+        request_fields = _comparison_request_fields(target_rite_id, tenet_key)
+    except ValueError as error:
+        raise BridgeUnavailableError(str(error)) from error
     before, result = read_private_g2_native_query_v1(
         driver, permission=PERMISSION, step=STEP,
         expected_revision=expected_revision, timeout_seconds=timeout_seconds,
+        request_fields=request_fields,
     )
     try:
         build = require_exact_native_backend(
@@ -114,6 +146,7 @@ def query_player_religion_tenets_private_v1(
             raise ValueError("native player religion Tenets envelope differs from the queried build/frame")
         value = normalize_player_religion_tenets_v1(
             result.get("player_religion_tenets"), snapshot=before,
+            target_rite_id=target_rite_id, tenet_key=tenet_key,
         )
         if result.get("status") != ("observed" if value["available"] else "unavailable"):
             raise ValueError("native player religion Tenets envelope lost its source status")

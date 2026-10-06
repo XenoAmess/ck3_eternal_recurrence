@@ -4,6 +4,7 @@
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
+#include "xar_bridge/religion_reform12002_tenet_sources.hpp"
 
 #include <windows.h>
 
@@ -50,6 +51,26 @@ bool ParsePlayerReligionTenetsRevision12002(std::string_view payload,
   } catch (...) { revision = 0; return false; }
 }
 
+bool ParsePlayerReligionTenetsComparisonRequest12003(std::string_view payload,
+    std::optional<std::uint32_t> &target_rite_id, std::string &tenet_key) noexcept {
+  target_rite_id.reset(); tenet_key.clear();
+  try {
+    const bool target_present = HasField(payload, "target_rite_id");
+    const bool key_present = HasField(payload, "tenet_key");
+    if (target_present != key_present) return false;
+    if (!target_present) return true;
+    std::uint64_t target = 0;
+    if (!bridge::JsonUnsignedField(payload, "target_rite_id", target) ||
+        target > 0xFFFFFFFFULL ||
+        !bridge::JsonStringField(payload, "tenet_key", tenet_key,
+            bridge::kMaximumControlStringBytes) || tenet_key.empty()) {
+      tenet_key.clear(); return false;
+    }
+    target_rite_id = static_cast<std::uint32_t>(target);
+    return true;
+  } catch (...) { target_rite_id.reset(); tenet_key.clear(); return false; }
+}
+
 bool ExecutePlayerReligionTenetsMailbox12002(
     void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   auto *envelope = static_cast<QueryMailboxEnvelope *>(opaque);
@@ -75,6 +96,25 @@ bool ExecutePlayerReligionTenetsMailbox12002(
       out.date_raw = static_cast<std::int32_t>(frame.date_raw);
       out.played_character_id = static_cast<std::uint32_t>(frame.played_character_id);
     }
+    if (query.target_rite_id.has_value()) {
+      (void)ck3_12003::religion::target_tenet::ReadPlayedTargetRiteTenetComparison12003(
+          query.comparison_bindings, *query.target_rite_id, query.tenet_key,
+          stamp.pump_epoch, query.comparison);
+      auto &comparison = query.comparison;
+      if (comparison.available &&
+          (comparison.played_character_id != static_cast<std::uint32_t>(frame.played_character_id) ||
+           comparison.date_raw != frame.date_raw)) {
+        comparison = {};
+        comparison.requested_target_rite_id = *query.target_rite_id;
+        comparison.tenet_key = query.tenet_key;
+        comparison.failure = ck3_12003::religion::target_tenet::Failure::state_changed;
+      }
+      // Failure still belongs to this actual owner frame, independently of
+      // whether the original current-member query succeeded.
+      comparison.capture_epoch = stamp.pump_epoch;
+      comparison.date_raw = static_cast<std::int32_t>(frame.date_raw);
+      comparison.played_character_id = static_cast<std::uint32_t>(frame.played_character_id);
+    }
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -88,6 +128,12 @@ std::string SerializePlayerReligionTenetsResult12002(
     const PlayerReligionTenetsMailboxContext12002 &query, std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
+  auto tenets = religion::doctrine12002::SerializeTenetRows12002(query.observation);
+  if (query.target_rite_id.has_value()) {
+    tenets.pop_back();
+    tenets += ",\"target_rite_tenet_comparison\":" +
+        ck3_12003::religion::target_tenet::SerializeTargetRiteTenetComparison12003(query.comparison) + "}";
+  }
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerReligionTenetsPrivateStep12002) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
@@ -97,7 +143,7 @@ std::string SerializePlayerReligionTenetsResult12002(
       ",\"backend_id\":" + Quote(kPlayerReligionTenetsBackend12002) +
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
-      ",\"player_religion_tenets\":" + religion::doctrine12002::SerializeTenetRows12002(query.observation) + "}}";
+      ",\"player_religion_tenets\":" + tenets + "}}";
 }
 
 bool RunPlayerReligionTenetsMailbox12002(PlayerReligionTenetsMailboxContext12002 &query,
@@ -146,7 +192,11 @@ bool HandlePlayerReligionTenetsPrivate12002(const game::GameAdapter &adapter,
     failure = "player_religion_tenets_step_unavailable"; return false;
   }
   std::uint64_t expected = 0;
-  if (!ParsePlayerReligionTenetsRevision12002(payload, expected)) {
+  std::optional<std::uint32_t> target_rite_id;
+  std::string tenet_key;
+  if (!ParsePlayerReligionTenetsRevision12002(payload, expected) ||
+      !ParsePlayerReligionTenetsComparisonRequest12003(payload, target_rite_id, tenet_key) ||
+      (target_rite_id.has_value() && !xar::game::IsCk3_12003Descriptor(adapter.descriptor()))) {
     failure = "player_religion_tenets_request_invalid"; return false;
   }
   if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
@@ -166,6 +216,16 @@ bool HandlePlayerReligionTenetsPrivate12002(const game::GameAdapter &adapter,
     query.tenet_bindings = religion::doctrine12002::BindTenetRows12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (target_rite_id.has_value()) {
+      query.target_rite_id = target_rite_id;
+      query.tenet_key = std::move(tenet_key);
+      const auto source = religion_reform::BindCurrentDraftTenetSources12002(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      // Bind only. The current draft reader/window is never invoked.
+      query.comparison_bindings = {query.bindings, source.rite_storage_global,
+          source.tenet_database_global, query.tenet_bindings.tenet_state};
+    }
     return RunPlayerReligionTenetsMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_tenets_handler_exception"; return false; }
 }

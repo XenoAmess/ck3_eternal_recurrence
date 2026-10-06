@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/religion_doctrine12002_tenet_rows.hpp"
+#include "xar_bridge/ck3_12003_target_rite_tenet_comparison.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -17,6 +18,11 @@ struct PlayerReligionTenetsMailboxContext12002 {
   religion::Bindings bindings{};
   religion::doctrine12002::TenetRowsBindings tenet_bindings{};
   religion::doctrine12002::TenetRowsContext observation{};
+  // Absent pair keeps the original Tenet DTO byte-for-byte unchanged.
+  std::optional<std::uint32_t> target_rite_id;
+  std::string tenet_key;
+  ck3_12003::religion::target_tenet::Bindings comparison_bindings{};
+  ck3_12003::religion::target_tenet::Comparison comparison{};
   bool completed = false;
   std::string failure;
 };
@@ -24,6 +30,8 @@ struct PlayerReligionTenetsMailboxContext12002 {
 bool IsPlayerReligionTenetsPrivateStep12002(std::string_view step) noexcept;
 bool ParsePlayerReligionTenetsRevision12002(std::string_view payload,
                                      std::uint64_t &expected_revision) noexcept;
+bool ParsePlayerReligionTenetsComparisonRequest12003(std::string_view payload,
+    std::optional<std::uint32_t> &target_rite_id, std::string &tenet_key) noexcept;
 bool ExecutePlayerReligionTenetsMailbox12002(
     void *, const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 std::string SerializePlayerReligionTenetsResult12002(

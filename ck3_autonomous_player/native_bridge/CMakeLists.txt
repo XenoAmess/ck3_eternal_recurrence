@@ -1015,6 +1015,9 @@ endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_tenet_rows.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_target_rite_tenet_comparison.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_tenet_sources.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_reform12002_window.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_doctrine12002_tenet_rows_mailbox.cpp")
 endif()
 if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
@@ -3292,6 +3295,9 @@ if(BUILD_TESTING)
       src/main_thread_query_mailbox_v1.cpp
       src/ck3_12002_religion_context.cpp
       src/religion_doctrine12002_tenet_rows.cpp
+      src/ck3_12003_target_rite_tenet_comparison.cpp
+      src/religion_reform12002_tenet_sources.cpp
+      src/religion_reform12002_window.cpp
       src/religion_doctrine12002_tenet_rows_mailbox.cpp
       src/r3_religion_tenets_named_test.cpp)
     target_include_directories(xar_r3_religion_tenets_named_test PRIVATE include)
@@ -3305,6 +3311,34 @@ if(BUILD_TESTING)
     endif()
     add_test(NAME xar_r3_religion_tenets_named_test
       COMMAND xar_r3_religion_tenets_named_test "${CMAKE_BINARY_DIR}/r3-religion-tenets-wire")
+
+    # FIRST_NOTRUN: one focused compound fixture, old tests are not rerun here.
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/target-rite-tenet-comparison-wire")
+    add_executable(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test
+      src/ck3_12002.cpp
+      src/ck3_12002_query_mailbox.cpp
+      src/ck3_12003_abi_profile.cpp
+      src/ck3_12003_adapter.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/ck3_12002_religion_context.cpp
+      src/religion_doctrine12002_tenet_rows.cpp
+      src/ck3_12003_target_rite_tenet_comparison.cpp
+      src/religion_reform12002_tenet_sources.cpp
+      src/religion_reform12002_window.cpp
+      src/religion_doctrine12002_tenet_rows_mailbox.cpp
+      src/ck3_12003_target_rite_tenet_comparison_mailbox_test.cpp)
+    target_include_directories(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE include)
+    target_link_libraries(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE xar_bridge_protocol user32)
+    target_compile_definitions(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE
+      XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1=1
+      XAR_RELIGION_MAILBOX_STANDALONE_ADAPTER=1)
+    if(MSVC)
+      target_compile_options(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE
+        /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+    add_test(NAME xar_ck3_12003_target_rite_tenet_comparison_mailbox_test
+      COMMAND xar_ck3_12003_target_rite_tenet_comparison_mailbox_test
+        "${CMAKE_BINARY_DIR}/target-rite-tenet-comparison-wire")
   endif()
 
   if(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)

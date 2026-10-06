@@ -1841,9 +1841,15 @@ def create_server(
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_religion_tenets_v1(
             expected_revision: int,
+            target_rite_id: int | None = None, tenet_key: str | None = None,
         ) -> dict[str, object]:
-            """Read the current player's native tenet rows."""
-            return driver.query_player_religion_tenets_private_v1(expected_revision=expected_revision)
+            """Read player Tenets; pair target_rite_id with tenet_key for .3 comparison."""
+            if target_rite_id is None and tenet_key is None:
+                return driver.query_player_religion_tenets_private_v1(expected_revision=expected_revision)
+            return driver.query_player_religion_tenets_private_v1(
+                expected_revision=expected_revision,
+                target_rite_id=target_rite_id, tenet_key=tenet_key,
+            )
 
     if getattr(driver, "allow_private_player_religion_conversion_choices_query", False) is True:
         @server.tool(annotations=read_only_tool)

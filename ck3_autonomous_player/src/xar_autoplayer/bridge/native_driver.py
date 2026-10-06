@@ -3138,13 +3138,15 @@ class NativeHeadlessGameplayDriver:
 
     def query_player_religion_tenets_private_v1(
         self, *, expected_revision: int,
+        target_rite_id: int | None = None, tenet_key: str | None = None,
     ) -> dict[str, object]:
-        """Read the current player's native tenet rows."""
+        """Read player Tenets and an optional paired target Rite/named Tenet."""
         from .player_religion_tenets_private_transport import query_player_religion_tenets_private_v1
 
         return query_player_religion_tenets_private_v1(
             self, expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
+            target_rite_id=target_rite_id, tenet_key=tenet_key,
         )
 
     def query_player_religion_conversion_choices_private_v1(
