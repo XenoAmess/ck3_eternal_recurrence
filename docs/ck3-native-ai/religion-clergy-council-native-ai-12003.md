@@ -175,3 +175,51 @@ flowchart TD
 实际证据：[`actual-v28-current-can-fire-finite-02/result.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-clergy-12003/can-fire-leaf/actual-v28-current-can-fire-preparation-01/actual-v28-current-can-fire-finite-02/result.json)、同目录两个原始MCP packet与`native-wire.jsonl`；独立摘录和pins为[`actual-observed-02/ACTUAL-OBSERVATION.json`](../../artifacts/g2-maintainer-2026-10-02/resume-12003/religion-clergy-12003/can-fire-leaf/actual-v28-current-can-fire-preparation-01/actual-observed-02/ACTUAL-OBSERVATION.json)。本包新增query由ROOT执行；本代理只读已closed文件，无额外SDK、pipe或窗口调用。
 
 这次增量为current realm-priest **只读production-live primitive**。新增任命、解职、任务切换、付费宗教动作、改宗、游戏日和G2 credit均为0。原nullable空席／缺席／读取失败边界仍由唯一static fixture证明，本帧只验证occupied/available的实际false，未把空席fixture称为Robert实测。ROOT随后恢复原normal window；不重复此查询，也不等待未纳入本叶子的task catalog或付费动作。
+
+## 2026-10-06：指定候选的实际 collection 与任命条款源候选
+
+本增量复用本页 exact **1.20.0.3 Crozier / Steam25652598 / EXE94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6** 和已闭 native clergy/council 树。初始外置候选来自 `df87fd8562120b901413793ded4680b7b4dabd8e`，实际整合基线为 `be06a134b9a5472275e08ea452a8e3542b192fb8`；没有新 EXE bytes/hash 或旧 verifier 重验。当前是 **research／已整合源候选**，新编译、fixture、注册 MCP、官方 SDK 和 live 均为 **FIRST NOTRUN**，由 Root 下一次联合批次验收。原有 v28 只读 primitive 保留其原资格，不给新字段补记 live。
+
+具体缺口位于真实源码分支：composition profile 已支持 `councillor_court_chaplain / learning / +E8`，但 `EvaluateCouncilGates12002` 先使用只含 Steward／Chancellor／Spymaster 的 `CouncilCandidatesProfile12002`，使 chaplain 在 native predicates 前返回 unavailable。新增 `EvaluateCouncilCandidateObservationGates12002` 使用已存在的 composition profile；原 assignment evaluator 仍通过原三席 profile。新增查询没有任命、招募、换岗、交换、解职或其他 mutation 入口。
+
+同一个 `ck3_query_player_clergy_appointment_v1(expected_revision,candidate_character_id)` 新增独立 `candidate_terms` sibling，schema 为 `xar.ck3.clergy-candidate-terms/v1`。它提供同帧完整原生 collection 的 count／requested full CharacterID match、learning／native ordinal，以及独立 `candidate_already_councillor`、`candidate_is_guest`、`pending_character_interaction` 和候选特定 `native_can_confirm_replacement`。入口依次复用 `2C47EC0`、`2917560`、`1A8F780`、`115CA80→2A307B0` 与 `11604A0`；occupied confirmation 使用 actual incumbent `+130` 和 requested full candidate `+134`，不能误传 task，也不能把它称为 standalone CanFire。两个原 ABI 的 `.3` reuse PASS 在 `ck3_1_20_0_3_abi_reuse.json` 已闭，本增量没有重新读取或证明同一函数体。
+
+producer 合法排除当前 incumbent，因此 requested incumbent 在 collection 中 match0 是 available membership=false，final route flags 留 null。vacancy 不调用 replacement confirmation。原生 false 是可用拒绝，读取失败是独立 unavailable：已经取得的完整 collection 字段保留，final predicates 清为 null。不同 candidate court owner 也不自动推为拒任；既有 producer 的 owner-relative eligibility 仍是实际来源。base clergy 的独立 CanReassign／CanFire、可选 county sibling 与 `action_eligibility_complete=false` 保留，不能合成一个 invented can_assign/action_ready。
+
+同一 clergy owning mailbox 读取实际 CoreSnapshot，核对 published owner／date／paused／map／player 与 execution stamp，再由已有 composition capture 解析实际 task／incumbent。新 callback 的 snapshot key 复用 query-owned `native:<revision>`；caller actual public revision、envelope native revision、drain stamp capture epoch 分别保留。Python 将 MCP caller 的 public revision 作为 optional `expected_public_revision` 传入；旧请求未带该字段时不新增 sibling。组件只在实际 `.3` descriptor 下绑定，完整 serializer 后仍使用原 Crozier renderer。
+
+```mermaid
+flowchart TD
+    M[现有 clergy MCP / explicit full candidate] --> Q[同一 paused owning envelope]
+    Q --> S[actual CoreSnapshot / owner / actual task]
+    Q --> V[public revision / native revision / epoch 分别绑定]
+    S --> C[existing native producer + release / learning]
+    C --> I{requested fullID 在完整 collection 一次?}
+    I -->|no| N[available membership false / route terms null]
+    I -->|yes| G[observation-only evaluator]
+    G --> A[独立 IsCouncillor / IsGuest]
+    G --> P[actual owner pending manager / full candidate]
+    G --> O{actual occupied?}
+    O -->|yes| F[actual incumbent + requested candidate / CanConfirm]
+    O -->|no| E[confirmation null]
+    N --> J[完整 existing clergy serializer + candidate_terms]
+    A --> J
+    P --> J
+    F --> J
+    E --> J
+    V --> J
+    J --> R[Crozier renderer / real protocol / current MCP registration]
+    R -. FIRST whole native + sole consumer NOTRUN .-> T[static-ready 待 Root 资格]
+    T -. fresh Robert paused artifact unknown .-> L[production-live primitive]
+    L -. observed route action/result unknown .-> D[appointment loop]
+```
+
+源候选为 [`ck3_12003_clergy_candidate_terms.hpp`](../../ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_clergy_candidate_terms.hpp)、同名 getter/serializer、原 gate/mailbox 两对 projection 和 Python strict sibling normalizer/transport。runtime 原 glob 只匹配 `.2`，故现有 clergy flag 的 explicit source list 加入 `.3` helper；两个直接编译 mailbox 的旧 fixture 也补齐 helper/gates 链接，**不要求重跑旧矩阵**。
+
+唯一新 whole target 是 `xar_ck3_12003_clergy_candidate_terms_whole_mailbox_test`，CTest 为 `xar_ck3_12003_clergy_candidate_terms_whole_mailbox_first`，recipe 在 [`clergy_candidate_terms_whole_fixture.cmake`](../../ck3_autonomous_player/native_bridge/cmake/clergy_candidate_terms_whole_fixture.cmake)。六场景通过 actual parser → Run／named Permit／Execute → actual Core capture → base/new readers → full serializer → actual Crozier renderer，覆盖 occupied confirm false／true、guest+councillor+pending true、现任合法 collection absence、vacant confirm null、native terms unavailable。engine storage／callbacks／source revision／seed 是明确 synthetic；actual pump stamp 传入 epoch。offline fixture 从手工绑定 context 开始，不运行 real image-binding Handle。未涉及的 adapter factory/unwrap 是 link-only stub，并断言零调用。原 assignment profile只做一个 focused chaplain rejection check，native predicate calls=0。
+
+随后唯一新复合方法 [`test_six_compiled_whole_clergy_wires_registered_mcp_and_original_action_profile`](../../ck3_autonomous_player/tests/test_player_clergy_candidate_terms_12003_whole_wire.py) 消费六份**实际编译产生的完整 packets**及 `native-whole-receipt.json`，不构造／修补 envelope 或 native rows。它只将 outgoing UUID 对齐 actual request IDs，沿 current registered MCP → actual Native Driver/private transport → actual `NativeProtocolState.ingest/wait` → strict normalizers，保留完整 base／terms／已有 county、native false／null／partial collection 与 actual epoch。基线 `GameplayBridgeService` 没有 clergy-query method；`create_server(driver)` 虽构造它，现有注册工具直接调用 `NativeHeadlessGameplayDriver.query_player_clergy_appointment_private_v1`。本候选验证真实注册链，不补造 Service method，也不将 Root 后续官方 SDK 资格算作已执行。
+
+Root 首次 batch 后保留原六 whole files、compiled receipt、consumer `RESULT.json`／`OBSERVED.json` 和任何首个 RED。`open_kaishek` 为 not-applicable：新增的是 native getter／ABI／codec，不实现 Paradox script evaluator。当前 imports／tests／build／SDK／pipe／game／new EXE／hash=0；没有真实 wire/receipt、额外 game days/actions、任命收益、完整 loop 或 G2 credit。源交付与 Oct6/W41 字段入口在外置 `Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/clergy-inputs/ROOT-DELIVERY.json`。
+
+首次 live 只使用原 ordinary Robert29829 campaign，在 fresh actual composition 中选择 alternate full candidate，再以 fresh public revision 调用同一 clergy MCP并保存 paused artifact。guest true 指向招募 cost/acceptance；already-councillor true 指向 reassign/swap；pending true 是实际 interaction blocker；CanConfirm 与独立 CanReassign／CanFire 各自保留。observed route 所需后续 terms/action/result 是下一施工入口，当前不修改 appointment policy。

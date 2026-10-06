@@ -957,6 +957,7 @@ if(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_clergy_candidate_terms.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_county_conversion.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_county_conversion_task_action_v1.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_county_conversion_task_action_serializer.cpp"
@@ -3082,6 +3083,8 @@ if(BUILD_TESTING)
       src/religion_rite_governance12002_clergy_mailbox.cpp
       src/ck3_12003_county_conversion.cpp
       src/ck3_12002_council_candidates.cpp
+      src/ck3_12002_council_gates.cpp
+      src/ck3_12003_clergy_candidate_terms.cpp
       src/council_composition_candidates_public_v1.cpp
       src/council_composition_candidates_public_v1_serializer.cpp
       src/r3_clergy_named_test.cpp)
@@ -3110,6 +3113,8 @@ if(BUILD_TESTING)
       src/religion_rite_governance12002_clergy_mailbox.cpp
       src/ck3_12003_county_conversion.cpp
       src/ck3_12002_council_candidates.cpp
+      src/ck3_12002_council_gates.cpp
+      src/ck3_12003_clergy_candidate_terms.cpp
       src/council_composition_candidates_public_v1.cpp
       src/council_composition_candidates_public_v1_serializer.cpp
       src/ck3_12003_county_conversion_clergy_full_wire_test.cpp)
@@ -9100,3 +9105,6 @@ include(cmake/current_finalizer_manager_inputs_12003.cmake)
 
 # Additive selected-target fervor observation and its four FIRST scenarios.
 include("${CMAKE_CURRENT_SOURCE_DIR}/conversion-fervor-inputs.cmake")
+if(BUILD_TESTING AND WIN32)
+  include(cmake/clergy_candidate_terms_whole_fixture.cmake)
+endif()

@@ -11,6 +11,7 @@ from .g2_private_query_transport import (
 )
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .player_county_conversion_private_observation import normalize_player_county_conversion_v1
+from .player_clergy_candidate_terms_private_observation import normalize_player_clergy_candidate_terms_v1
 from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
@@ -99,7 +100,8 @@ def query_player_clergy_appointment_private_v1(
     _candidate_id(candidate_character_id)
     before, result = read_private_g2_native_query_v1(
         driver, permission=PERMISSION, step=STEP, expected_revision=expected_revision,
-        request_fields={"candidate_character_id": candidate_character_id},
+        request_fields={"candidate_character_id": candidate_character_id,
+                        "expected_public_revision": expected_revision},
         timeout_seconds=timeout_seconds,
     )
     try:
@@ -124,10 +126,16 @@ def query_player_clergy_appointment_private_v1(
             )}
             if "county_conversion" in result else {}
         )
+        terms = (
+            {"candidate_terms": normalize_player_clergy_candidate_terms_v1(
+                result["candidate_terms"], snapshot=before, clergy=value,
+            )}
+            if "candidate_terms" in result else {}
+        )
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
     return {
-        **value, **county, **private_native_provenance(before), **private_g2_query_metadata_v1(before),
+        **value, **county, **terms, **private_native_provenance(before), **private_g2_query_metadata_v1(before),
         "snapshot_revision": result["snapshot_revision"], "query_date_raw": result["date_raw"],
         "backend_id": result["backend_id"], "domain_key": DOMAIN_KEY,
         "query_status": result["status"], "read_only": True, "advertised": False,

@@ -58,4 +58,12 @@ bool EvaluateCouncilGates12002(
     std::int32_t candidate_character_id, void *resolved_candidate,
     game::CouncilAssignCouncillorFinalLegalityV1 &output) noexcept;
 
+// Read-only candidate observation profile. This includes chaplain composition
+// without expanding the original three-seat assignment evaluator above.
+bool EvaluateCouncilCandidateObservationGates12002(
+    const CouncilGatesEnvironment12002 &environment,
+    const game::CouncilAssignCouncillorFrameV1 &frame,
+    std::int32_t candidate_character_id, void *resolved_candidate,
+    game::CouncilAssignCouncillorFinalLegalityV1 &output) noexcept;
+
 } // namespace xar::ck3_12002

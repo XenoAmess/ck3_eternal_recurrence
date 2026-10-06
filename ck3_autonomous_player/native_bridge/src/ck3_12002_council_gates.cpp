@@ -127,11 +127,12 @@ CouncilGatesEnvironment12002 BindCouncilGates12002(
   return e;
 }
 
-bool EvaluateCouncilGates12002(
+static bool EvaluateCouncilGatesWithProfile12002(
     const CouncilGatesEnvironment12002 &e,
     const game::CouncilAssignCouncillorFrameV1 &frame,
     std::int32_t candidate_character_id, void *resolved_candidate,
-    game::CouncilAssignCouncillorFinalLegalityV1 &output) noexcept {
+    game::CouncilAssignCouncillorFinalLegalityV1 &output,
+    bool observation_only) noexcept {
   output.available = false;
   output.candidate_already_councillor = false;
   output.candidate_is_guest = false;
@@ -142,7 +143,9 @@ bool EvaluateCouncilGates12002(
       !frame.map_ready || !frame.owner_identity_round_trip ||
       !frame.active_task_identity_round_trip || frame.owner_character_id <= 0 ||
       frame.active_task_id <= 0 ||
-      CouncilCandidatesProfile12002(frame.position_key).position_key.empty() ||
+      (observation_only
+          ? CouncilCandidatesCompositionProfile12002(frame.position_key).position_key.empty()
+          : CouncilCandidatesProfile12002(frame.position_key).position_key.empty()) ||
       candidate_character_id <= 0 || resolved_candidate == nullptr ||
       (frame.has_incumbent && (!frame.incumbent_identity_round_trip ||
                               frame.incumbent_character_id <= 0)) ||
@@ -183,6 +186,24 @@ bool EvaluateCouncilGates12002(
   output.incumbent_can_be_fired = can_confirm;
   output.available = true;
   return true;
+}
+
+bool EvaluateCouncilGates12002(
+    const CouncilGatesEnvironment12002 &e,
+    const game::CouncilAssignCouncillorFrameV1 &frame,
+    std::int32_t candidate_character_id, void *resolved_candidate,
+    game::CouncilAssignCouncillorFinalLegalityV1 &output) noexcept {
+  return EvaluateCouncilGatesWithProfile12002(e, frame, candidate_character_id,
+      resolved_candidate, output, false);
+}
+
+bool EvaluateCouncilCandidateObservationGates12002(
+    const CouncilGatesEnvironment12002 &e,
+    const game::CouncilAssignCouncillorFrameV1 &frame,
+    std::int32_t candidate_character_id, void *resolved_candidate,
+    game::CouncilAssignCouncillorFinalLegalityV1 &output) noexcept {
+  return EvaluateCouncilGatesWithProfile12002(e, frame, candidate_character_id,
+      resolved_candidate, output, true);
 }
 
 } // namespace xar::ck3_12002

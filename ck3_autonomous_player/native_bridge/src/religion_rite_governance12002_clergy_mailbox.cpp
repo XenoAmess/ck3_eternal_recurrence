@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
+#include <algorithm>
 #include <limits>
 #include <windows.h>
 
@@ -30,6 +31,52 @@ bool ValidFrame(const game::Snapshot &frame, std::uint64_t revision) noexcept {
 }
 } // namespace
 
+bool IsPlayerClergyCandidateTermsMainThread12002(void *opaque) noexcept {
+  auto *query = static_cast<PlayerClergyAppointmentMailboxContext12002 *>(opaque);
+  return query && query->candidate_terms_environment &&
+      IsQueryOwningThread(&query->envelope);
+}
+
+bool CapturePlayerClergyCandidateTermsFrame12002(
+    void *opaque, CouncilCandidatesFrameV1 &output) noexcept {
+  output = {};
+  auto *query = static_cast<PlayerClergyAppointmentMailboxContext12002 *>(opaque);
+  if (!IsPlayerClergyCandidateTermsMainThread12002(opaque) ||
+      query->request.expected_public_revision == 0 || !query->bindings.core.enabled ||
+      query->candidate_terms_snapshot_id.empty() ||
+      query->candidate_terms_snapshot_id.size() >= output.snapshot_id.size()) return false;
+  const auto &envelope = query->envelope;
+  const auto &published = envelope.expected_snapshot;
+  const auto &stamp = envelope.execution_stamp;
+  if (!stamp.paused || !stamp.game_state || !stamp.jomini_state ||
+      !envelope.expected_snapshot_revision) return false;
+  CoreSnapshotPrefix current{};
+  if (!ReadCoreSnapshot(query->bindings.core, current) ||
+      current.clock.date_raw != published.date_raw || current.clock.date_raw != stamp.date_raw ||
+      current.clock.paused != published.paused || current.local_player_id != published.player_id ||
+      current.map_ready != published.map_ready ||
+      current.has_played_character != published.has_played_character ||
+      current.played_character_alive != published.played_character_alive ||
+      current.played_character_id != published.played_character_id) return false;
+  const void *owner = nullptr;
+  const auto &terms = *query->candidate_terms_environment;
+  if (!ResolveCouncilCharacter12002(terms.candidates, terms.access,
+      current.played_character_id, owner) || !owner) return false;
+  std::copy(query->candidate_terms_snapshot_id.begin(), query->candidate_terms_snapshot_id.end(),
+      output.snapshot_id.begin());
+  output.public_revision = query->request.expected_public_revision;
+  output.native_revision = envelope.expected_snapshot_revision;
+  output.date_raw = current.clock.date_raw;
+  output.paused = current.clock.paused;
+  output.map_ready = current.map_ready;
+  output.has_played_character = current.has_played_character;
+  output.played_character_alive = current.played_character_alive;
+  output.played_character_id = current.played_character_id;
+  output.played_character = reinterpret_cast<std::uintptr_t>(owner);
+  output.played_character_identity_round_trip = true;
+  return true;
+}
+
 bool IsPlayerClergyAppointmentPrivateStep12002(std::string_view step) noexcept {
   return step == kPlayerClergyAppointmentPrivateStep12002;
 }
@@ -49,6 +96,9 @@ bool ParsePlayerClergyAppointmentRequest12002(
     if (has_canonical && has_alias && canonical != alias) return false;
     request.candidate_character_id = static_cast<std::int32_t>(candidate);
     request.expected_revision = has_canonical ? canonical : alias;
+    if (HasField(payload,"expected_public_revision") &&
+        (!bridge::JsonUnsignedField(payload,"expected_public_revision",request.expected_public_revision) ||
+         request.expected_public_revision == 0)) return false;
     return true;
   } catch (...) { request = {}; return false; }
 }
@@ -97,6 +147,23 @@ bool ExecutePlayerClergyAppointmentMailbox12002(
         county_out.owner_character_id = static_cast<std::int32_t>(frame.played_character_id);
       }
     }
+    if (query.candidate_terms_environment) {
+      namespace terms = ck3_12003::religion::clergy_candidate_terms;
+      auto &environment = *query.candidate_terms_environment;
+      environment.access.context = &query;
+      environment.access.capture_frame = &CapturePlayerClergyCandidateTermsFrame12002;
+      environment.access.is_main_thread = &IsPlayerClergyCandidateTermsMainThread12002;
+      environment.gates.current_thread_id = stamp.thread_id;
+      environment.gates.application_main_thread_id = stamp.thread_id;
+      query.candidate_terms_snapshot_id = "native:" + std::to_string(envelope->expected_snapshot_revision);
+      terms::Request request{};
+      request.frame = {query.candidate_terms_snapshot_id, query.request.expected_public_revision,
+          envelope->expected_snapshot_revision, static_cast<std::int32_t>(frame.date_raw),
+          static_cast<std::int32_t>(frame.played_character_id), kCouncilCandidatesChaplainPosition12002};
+      request.candidate_character_id = query.request.candidate_character_id;
+      auto &terms_out = query.candidate_terms_observation.emplace();
+      (void)terms::ReadClergyCandidateTerms12003(environment, request, stamp.pump_epoch, terms_out);
+    }
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -114,6 +181,10 @@ std::string SerializePlayerClergyAppointmentResult12002(
       ? ",\"county_conversion\":" + ck3_12003::religion::county_conversion::SerializeCountyConversion12003(
           *query.county_conversion_observation)
       : std::string{};
+  const auto terms_wire = query.candidate_terms_environment && query.candidate_terms_observation
+      ? ",\"candidate_terms\":" + ck3_12003::religion::clergy_candidate_terms::SerializeClergyCandidateTerms12003(
+          *query.candidate_terms_observation)
+      : std::string{};
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerClergyAppointmentPrivateStep12002) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
@@ -123,7 +194,7 @@ std::string SerializePlayerClergyAppointmentResult12002(
       ",\"backend_id\":" + Quote(kPlayerClergyAppointmentBackend12002) +
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
-      ",\"player_clergy_appointment\":" + religion::clergy::SerializeClergyAppointment12002(query.observation) + county_wire + "}}";
+      ",\"player_clergy_appointment\":" + religion::clergy::SerializeClergyAppointment12002(query.observation) + county_wire + terms_wire + "}}";
 }
 
 bool RunPlayerClergyAppointmentMailbox12002(
@@ -190,6 +261,10 @@ bool HandlePlayerClergyAppointmentPrivate12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (game::IsCk3_12003Descriptor(adapter.descriptor())) {
       query.county_conversion_environment = ck3_12003::religion::county_conversion::BindCountyConversionImage12003(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), adapter.descriptor().executable_sha256);
+    }
+    if (game::IsCk3_12003Descriptor(adapter.descriptor()) && request.expected_public_revision != 0) {
+      query.candidate_terms_environment = ck3_12003::religion::clergy_candidate_terms::BindClergyCandidateTermsImage12003(
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), adapter.descriptor().executable_sha256);
     }
     return RunPlayerClergyAppointmentMailbox12002(query,request_id,serialized,failure);
