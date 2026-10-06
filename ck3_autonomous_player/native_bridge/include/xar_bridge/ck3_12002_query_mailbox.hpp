@@ -11,6 +11,7 @@ enum class QuerySnapshotComparison12002 {
   full_snapshot,
   war_termination_options,
   fixture_inbox_mutation,
+  core_frame,
 };
 
 // The semantic snapshot is captured with the selected adapter; this envelope
