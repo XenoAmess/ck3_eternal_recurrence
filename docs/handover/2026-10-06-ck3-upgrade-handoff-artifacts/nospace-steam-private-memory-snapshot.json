@@ -1,0 +1,63 @@
+{
+  "utc": "2026-10-06T09:22:01.013400+00:00",
+  "processes": [
+    {
+      "pid": 16360,
+      "name": "steamwebhelper.exe",
+      "ctime": 1790964538.4286163,
+      "memory": {
+        "rss": 3909107712,
+        "vms": 294674432,
+        "num_page_faults": 2605918,
+        "peak_wset": 3954667520,
+        "wset": 3909107712,
+        "peak_paged_pool": 8760856,
+        "paged_pool": 8603080,
+        "peak_nonpaged_pool": 177504,
+        "nonpaged_pool": 166600,
+        "pagefile": 294674432,
+        "peak_pagefile": 294899712,
+        "private": 294674432
+      }
+    },
+    {
+      "pid": 2900,
+      "name": "steamwebhelper.exe",
+      "ctime": 1791211660.9532714,
+      "memory": {
+        "rss": 2658177024,
+        "vms": 3392278528,
+        "num_page_faults": 13724499,
+        "peak_wset": 2939994112,
+        "wset": 2658177024,
+        "peak_paged_pool": 997664,
+        "paged_pool": 918384,
+        "peak_nonpaged_pool": 93288,
+        "nonpaged_pool": 73960,
+        "pagefile": 3392278528,
+        "peak_pagefile": 3474468864,
+        "private": 3392278528
+      }
+    },
+    {
+      "pid": 17200,
+      "name": "steam.exe",
+      "ctime": 1790964537.9125264,
+      "memory": {
+        "rss": 386113536,
+        "vms": 664498176,
+        "num_page_faults": 2745312,
+        "peak_wset": 1482924032,
+        "wset": 386113536,
+        "peak_paged_pool": 1139208,
+        "paged_pool": 1116656,
+        "peak_nonpaged_pool": 17547448,
+        "nonpaged_pool": 12261512,
+        "pagefile": 664498176,
+        "peak_pagefile": 1577177088,
+        "private": 664498176
+      }
+    }
+  ],
+  "boundary": "read-only Windows memory_info private commit and rss; no stop/restart"
+}

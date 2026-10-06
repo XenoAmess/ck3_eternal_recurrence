@@ -1,0 +1,13 @@
+{
+  "captured_at_utc": "2026-10-06T09:47:05.677442+00:00",
+  "managed_game_harness_keeper_publisher_candidates": [],
+  "c_disk": {
+    "total": 511776722944,
+    "used": 508183760896,
+    "free": 3592962048,
+    "percent": 99.3
+  },
+  "no_new_game_started": true,
+  "no_Steam_restart_or_offline_change_performed": true,
+  "no_NVIDIA_793353272B_cache_deletion_performed": true
+}

@@ -1,0 +1,388 @@
+{
+  "schema": "ccc.a77.actual-red-boundary/v1",
+  "live": "C:\\workspace\\ck3-upgrade-20261005\\live\\4-8e1c2f1861--celestial-commerce-corruption--R0004",
+  "native_report": {
+    "path": "C:\\workspace\\ck3-upgrade-20261005\\live\\4-8e1c2f1861--celestial-commerce-corruption--R0004\\native-report.json",
+    "bytes": 22763909,
+    "sha256": "59069a67cbff8f8a310d97bf374fb8c087f21692b1373baae7e0fea5c0cee4ac"
+  },
+  "status": "RED",
+  "error": "OSError: [Errno 28] No space left on device",
+  "finished_at": "2026-10-06T09:05:55.565978+00:00",
+  "managed_session_thread_finished": true,
+  "cleanup_ok": true,
+  "session_finished_at": "2026-10-06T09:05:54.705751+00:00",
+  "shutdown": {
+    "nonce": "1a1c46e50cc7407ea0ceaedb97dbce91",
+    "ck3_pid": 16840,
+    "ck3_creation_date": "20261006085920.676742+000",
+    "ck3_exit_code": 1,
+    "job_active_processes_before_termination": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 21768,
+    "watchdog_creation_date": "20261006085919.897487+000",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\inputs-08\\fixture-state\\control\\ck3.json": true,
+      "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\inputs-08\\fixture-state\\control\\watchdog-1a1c46e50cc7407ea0ceaedb97dbce91.ready.json": true,
+      "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\inputs-08\\fixture-state\\control\\ck3.watchdog_error": true,
+      "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\inputs-08\\fixture-state\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  },
+  "actual_processes": [
+    {
+      "pid": 16840,
+      "exists": false
+    },
+    {
+      "pid": 14404,
+      "exists": false
+    },
+    {
+      "pid": 21768,
+      "exists": false
+    }
+  ],
+  "rules_actual_pair_count": 86,
+  "rules_actual_applied_proven": true,
+  "core11_credit": "R0003 prior exact product+Source10; not rerun in R0004",
+  "steps": [
+    {
+      "id": "a77-d1-frame",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-06T09:04:49.117071+00:00",
+      "finished_at": "2026-10-06T09:04:49.427272+00:00",
+      "result_scalars": {
+        "date_raw": 53144352,
+        "speed": 1,
+        "paused": true,
+        "local_player_id": 1,
+        "map_ready": true,
+        "one_life_settlement": null,
+        "active_event": null,
+        "pending_character_interaction": null,
+        "last_checkpoint_submission": null,
+        "format_version": 1,
+        "snapshot_id": "native:9",
+        "revision": 10,
+        "native_revision": 9,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe",
+        "episode_projection": "native_campaign",
+        "native_rollback_war_failure": null
+      },
+      "played_character": {
+        "character_id": 29959,
+        "alive": true,
+        "source": "native",
+        "stress_points": 0,
+        "betrothed_id": null,
+        "primary_spouse_id": 64875,
+        "spouse_ids": [
+          64875
+        ]
+      },
+      "active_event": null
+    },
+    {
+      "id": "a77-d1-root",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-06T09:04:49.679747+00:00",
+      "finished_at": "2026-10-06T09:04:50.177237+00:00",
+      "result_scalars": {
+        "step": "query-campaign-root-context-v1",
+        "accepted": true,
+        "status": "available",
+        "query_sequence": 4,
+        "snapshot_revision": 9,
+        "backend_id": "native-headless",
+        "schema_version": 1,
+        "date_raw": 53144352,
+        "local_player_id": 1,
+        "player_character_id": 29959,
+        "player_character_alive": true,
+        "player_domain_size": 1,
+        "player_domain_limit": 6,
+        "player_targeting_faction_count": 0,
+        "capital_province_id": 10430,
+        "immediate_liege_character_id": 34422,
+        "top_liege_character_id": 34422,
+        "independent": false,
+        "native_selected_game_rule_token_count": 86,
+        "unavailable_reason": null,
+        "campaign_root_context_ready": true,
+        "queried_snapshot_id": "native:9",
+        "queried_revision": 10,
+        "queried_native_revision": 9,
+        "scope": "exact-campaign-root-context"
+      }
+    },
+    {
+      "id": "a77-d2-paused-event",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-06T09:05:20.899372+00:00",
+      "finished_at": "2026-10-06T09:05:21.358727+00:00",
+      "result_scalars": {
+        "date_raw": 53144376,
+        "speed": 1,
+        "paused": true,
+        "local_player_id": 1,
+        "map_ready": true,
+        "one_life_settlement": null,
+        "pending_character_interaction": null,
+        "last_checkpoint_submission": null,
+        "format_version": 1,
+        "snapshot_id": "native:12",
+        "revision": 13,
+        "native_revision": 12,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe",
+        "episode_projection": "native_campaign",
+        "native_rollback_war_failure": null
+      },
+      "played_character": {
+        "character_id": 29959,
+        "alive": true,
+        "source": "native",
+        "stress_points": 0,
+        "betrothed_id": null,
+        "primary_spouse_id": 64875,
+        "spouse_ids": [
+          64875
+        ]
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 2,
+        "option_count": 6,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 2,
+            "option_number": 3,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 3,
+            "option_number": 4,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 4,
+            "option_number": 5,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 5,
+            "option_number": 6,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "a77-d2-event-context",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-06T09:05:21.701314+00:00",
+      "finished_at": "2026-10-06T09:05:22.314254+00:00",
+      "event": {
+        "status": "available",
+        "date_raw": 53144376,
+        "current_event_instance_id": 2,
+        "event_definition_key": "xccc.1001",
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 29959
+          }
+        },
+        "options": [
+          {
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "只取无伤大雅的一份"
+          },
+          {
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "让聚敛成为惯例"
+          },
+          {
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "把官署织成利益之网"
+          },
+          {
+            "native_option_index": 3,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "榨尽这官位所能承受的一切"
+          },
+          {
+            "native_option_index": 4,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "暂且收手，避一避风头"
+          },
+          {
+            "native_option_index": 5,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "从此封存这本账册"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a77-tier4-select-once",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-06T09:05:44.245935+00:00",
+      "finished_at": "2026-10-06T09:05:45.218021+00:00",
+      "result_scalars": {
+        "step": "select-event-option-4",
+        "accepted": true,
+        "status": "submitted",
+        "backend_id": "native-headless",
+        "progress_status": "postcondition",
+        "active_event": null,
+        "paused": true,
+        "snapshot_id": "native:13",
+        "revision": 14,
+        "event_instance_id": 2,
+        "option_number": 4,
+        "option_index": 3
+      },
+      "active_event": null
+    },
+    {
+      "id": "a77-tier4-event-gone",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-06T09:05:45.623892+00:00",
+      "finished_at": "2026-10-06T09:05:46.136272+00:00",
+      "result_scalars": {
+        "date_raw": 53144376,
+        "speed": 1,
+        "paused": true,
+        "local_player_id": 1,
+        "map_ready": true,
+        "one_life_settlement": null,
+        "active_event": null,
+        "pending_character_interaction": null,
+        "last_checkpoint_submission": null,
+        "format_version": 1,
+        "snapshot_id": "native:13",
+        "revision": 14,
+        "native_revision": 13,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe",
+        "episode_projection": "native_campaign",
+        "native_rollback_war_failure": null
+      },
+      "played_character": {
+        "character_id": 29959,
+        "alive": true,
+        "source": "native",
+        "stress_points": 0,
+        "betrothed_id": null,
+        "primary_spouse_id": 64875,
+        "spouse_ids": [
+          64875
+        ]
+      },
+      "active_event": null
+    },
+    {
+      "id": "a77-tier4-advance-D3-once",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-06T09:05:46.547442+00:00",
+      "finished_at": "2026-10-06T09:05:52.545882+00:00",
+      "result_scalars": {
+        "requested_days": 1,
+        "elapsed_hours": 24
+      }
+    }
+  ],
+  "pending": [
+    "production real Confirm",
+    "new event f cancellation",
+    "all four traits absent",
+    "three-year cooldown original tooltip",
+    "normal OS0/native0 exit"
+  ],
+  "business_pass": false,
+  "normal_exit_proven": false,
+  "failing_sink_proven": false,
+  "failing_sink": "unknown",
+  "error_eof": {
+    "path": "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\inputs-08\\fixture-state\\profile\\logs\\error.log",
+    "bytes": 17893,
+    "sha256": "5c63d83cec0a8eb5e3a42cd295d257adc17935b367795af9a058240890e6beac",
+    "eof_complete_after_native_tree_gone": true,
+    "total_E_blocks": 60,
+    "fixture_initialized_warning_count": 2,
+    "source_attribution": "Frozen fixture common/scripted_effects/xca_effects.txt line12 add_character_flag = xca_fixture_initialized; two unused variable warnings. Other blocks name vanilla gfx/court_scene/scene_cultures/00_default_cultures.txt and court_scene_manager.cpp invalid character4294967295. StrictBaseline UNKNOWN; no new production xccc source path appears in final error text.",
+    "strict_baseline": "UNKNOWN"
+  },
+  "actual_original_reviews": [
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-foreground18-agent-01\\recovery\\probe-1\\steam-moved.png",
+      "reviewer": "/root/ccc_ui18_foreground",
+      "observed": "Steam Offline"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-foreground18-agent-01\\challenge\\challenge-2.png",
+      "reviewer": "/root/ccc_ui18_foreground",
+      "observed": "Steam Offline + nonce cd0206b1c1c6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-foreground18-agent-01\\intro-original-01.png",
+      "reviewer": "/root/ccc_ui18_foreground",
+      "observed": "actual intro one visible option; one mapped click then native eventgone"
+    }
+  ],
+  "closure_intent": "ActualRED already terminated native/session/harness. No GUI quit or finish_hold queued; native1 retained. Keeper stop only after exact cleanup."
+}

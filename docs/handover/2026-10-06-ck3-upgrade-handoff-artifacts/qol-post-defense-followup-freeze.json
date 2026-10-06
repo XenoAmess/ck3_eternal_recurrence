@@ -1,0 +1,22 @@
+{
+  "schema": "xqol-followup-handoff-freeze-v1",
+  "status": "READY_NOT_RUN_FILE_INPUTS_ONLY",
+  "files": [
+    {
+      "path": "C:/workspace/ck3-upgrade-20261006/xqol-post-defense-followup-ready-02/ROOT_POST_DEFENSE_FOLLOWUP_READY_02.md",
+      "bytes": 5644,
+      "sha256": "23710b975dc8349e6c16a8d0b631ed4bf7056cb245102b416c96da7e8a52dc0d"
+    },
+    {
+      "path": "C:/workspace/ck3-upgrade-20261006/xqol-post-defense-followup-ready-02/followup-input-reference-pins-02.json",
+      "bytes": 3532,
+      "sha256": "04deccaee6452275a74cdec947766cdddb998ba0f291ce76327991fa79e0f410"
+    }
+  ],
+  "verification": {
+    "local_links_existing": 3,
+    "reference_count": 13,
+    "new_runtime_mutation": false,
+    "game_bus_controls_git_writes": false
+  }
+}

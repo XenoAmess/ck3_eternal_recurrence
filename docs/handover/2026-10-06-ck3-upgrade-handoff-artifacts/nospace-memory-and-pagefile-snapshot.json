@@ -1,0 +1,144 @@
+{
+  "utc": "2026-10-06T09:20:45.478470+00:00",
+  "performance_api_ok": true,
+  "performance_pages": {
+    "cb": 104,
+    "CommitTotal": 5537674,
+    "CommitLimit": 9609365,
+    "CommitPeak": 10257914,
+    "PhysicalTotal": 8364181,
+    "PhysicalAvailable": 3989921,
+    "SystemCache": 2029218,
+    "KernelTotal": 545134,
+    "KernelPaged": 327703,
+    "KernelNonpaged": 217431,
+    "PageSize": 4096,
+    "HandleCount": 92019,
+    "ProcessCount": 210,
+    "ThreadCount": 3163
+  },
+  "commit_bytes": {
+    "CommitTotal": 22682312704,
+    "CommitLimit": 39359959040,
+    "CommitPeak": 42016415744
+  },
+  "free_bytes": 3609554944,
+  "ram": {
+    "total": 34259685376,
+    "available": 16342523904,
+    "percent": 52.3,
+    "used": 17917161472,
+    "free": 16342523904
+  },
+  "swap": {
+    "total": 5100273664,
+    "used": 403013632,
+    "free": 4697260032,
+    "percent": 7.9,
+    "sin": 0,
+    "sout": 0
+  },
+  "paging_registry": {
+    "PagingFiles": [
+      "?:\\pagefile.sys"
+    ],
+    "ExistingPageFiles": [
+      "\\??\\C:\\pagefile.sys"
+    ],
+    "TempPageFile": "ABSENT",
+    "ClearPageFileAtShutdown": 0
+  },
+  "top_rss": [
+    {
+      "pid": 16360,
+      "name": "steamwebhelper.exe",
+      "ctime": 1790964538.4286163,
+      "rss_bytes": 3909107712
+    },
+    {
+      "pid": 2900,
+      "name": "steamwebhelper.exe",
+      "ctime": 1791211660.9532714,
+      "rss_bytes": 2623172608
+    },
+    {
+      "pid": 2316,
+      "name": "MemCompression",
+      "ctime": 1790731628.8639512,
+      "rss_bytes": 1821618176
+    },
+    {
+      "pid": 328,
+      "name": "codex.exe",
+      "ctime": 1791135602.2283556,
+      "rss_bytes": 868216832
+    },
+    {
+      "pid": 6332,
+      "name": "Paseo.exe",
+      "ctime": 1790731829.4818163,
+      "rss_bytes": 578224128
+    },
+    {
+      "pid": 12984,
+      "name": "svchost.exe",
+      "ctime": 1790731646.1409516,
+      "rss_bytes": 463544320
+    },
+    {
+      "pid": 18500,
+      "name": "Paseo.exe",
+      "ctime": 1791135598.842362,
+      "rss_bytes": 458784768
+    },
+    {
+      "pid": 3884,
+      "name": "MsMpEng.exe",
+      "ctime": 1790731629.669922,
+      "rss_bytes": 399925248
+    },
+    {
+      "pid": 17200,
+      "name": "steam.exe",
+      "ctime": 1790964537.9125264,
+      "rss_bytes": 386113536
+    },
+    {
+      "pid": 4952,
+      "name": "v2rayN.exe",
+      "ctime": 1790731837.3140018,
+      "rss_bytes": 274206720
+    },
+    {
+      "pid": 9364,
+      "name": "SearchApp.exe",
+      "ctime": 1790731634.3966663,
+      "rss_bytes": 252858368
+    },
+    {
+      "pid": 7804,
+      "name": "NVIDIA Overlay.exe",
+      "ctime": 1790731632.7809825,
+      "rss_bytes": 184147968
+    },
+    {
+      "pid": 10980,
+      "name": "ToDesk.exe",
+      "ctime": 1790731635.4929545,
+      "rss_bytes": 172957696
+    },
+    {
+      "pid": 6700,
+      "name": "explorer.exe",
+      "ctime": 1790731632.035224,
+      "rss_bytes": 169975808
+    },
+    {
+      "pid": 4948,
+      "name": "MSPCManagerService.exe",
+      "ctime": 1790731630.254298,
+      "rss_bytes": 149680128
+    }
+  ],
+  "boundary": "readonly snapshot; CommitPeak is since boot, not CCC-only; no paging settings/process/input writes"
+}

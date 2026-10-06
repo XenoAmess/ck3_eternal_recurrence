@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "45c432f4090541ef8905bf9312f86750a95c0708"
+    },
+    "last_sequence": 4212,
+    "next_step": "",
+    "pid": 20768,
+    "repo": "C:\\workspace\\ck3-live-screen-slot-20261005",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "CCC R0004 actualRED Errno28 after d accepted/eventgone/D3 advance; native1 full cleanup proved; production Confirm f cooldown normalOS0 pending",
+    "task_id": "ck3-upgrade-screen-20261004-a77",
+    "updated_at_utc": "2026-10-06T09:23:29.686628+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 4212,
+    "event_id": "14ecbbbe8905432f826a0ec97960c6f5",
+    "timestamp_utc": "2026-10-06T09:23:29.687577+00:00",
+    "kind": "completed",
+    "task_id": "ck3-upgrade-screen-20261004-a77",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "CCC R0004 actualRED Errno28 after d accepted/eventgone/D3 advance; native1 full cleanup proved; production Confirm f cooldown normalOS0 pending",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3-live-screen-slot-20261005",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "45c432f4090541ef8905bf9312f86750a95c0708"
+    }
+  }
+}

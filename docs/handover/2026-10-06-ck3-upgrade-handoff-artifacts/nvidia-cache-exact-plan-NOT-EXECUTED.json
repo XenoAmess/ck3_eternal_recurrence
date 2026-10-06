@@ -1,0 +1,88 @@
+{
+  "status": "EXACT_REDOWNLOADABLE_NVIDIA_61692_CACHE_CANDIDATE_METADATA_PREPARED_NOT_DELETED",
+  "finished_at_utc": "2026-10-06T09:21:55.297739+00:00",
+  "classification": "official NVIDIA App OTA driver download cache; newer unconsumed 616.92, not installed 581.80 driver tree; root states no current driver install task demand",
+  "target_root": "C:/ProgramData/NVIDIA Corporation/NVIDIA App/UpdateFramework/ota-artifacts/grd/222e3fc2fbb5a311b745b9b47097ca1a",
+  "candidates": [
+    {
+      "path": "C:/ProgramData/NVIDIA Corporation/NVIDIA App/UpdateFramework/ota-artifacts/grd/222e3fc2fbb5a311b745b9b47097ca1a/616.92-notebook-win10-win11-64bit-international-dch-whql-g.exe",
+      "resolved": "C:/ProgramData/NVIDIA Corporation/NVIDIA App/UpdateFramework/ota-artifacts/grd/222e3fc2fbb5a311b745b9b47097ca1a/616.92-notebook-win10-win11-64bit-international-dch-whql-g.exe",
+      "logical_bytes": 793353272,
+      "GetCompressedFileSizeW_bytes": 793353272,
+      "mtime_ns": 1789130164323964800,
+      "mtime_utc": "2026-09-11T12:36:04.323965+00:00",
+      "ctime_ns": 1789130153310680600,
+      "file_id": 562949953679236,
+      "links": 1,
+      "attrs": 8224,
+      "fresh_exclusive_DELETE_READ_ATTRIBUTES_share0_native_identity": {
+        "final_path": "C:\\ProgramData\\NVIDIA Corporation\\NVIDIA App\\UpdateFramework\\ota-artifacts\\grd\\222e3fc2fbb5a311b745b9b47097ca1a\\616.92-notebook-win10-win11-64bit-international-dch-whql-g.exe",
+        "attributes": 8224,
+        "links": 1,
+        "size": 793353272,
+        "file_id": 562949953679236,
+        "volume_serial": 1996358582,
+        "creation_filetime": 134336037533106806,
+        "access_filetime": 134336073764804976,
+        "write_filetime": 134336037643239648
+      },
+      "old_retained_identity_equal": true,
+      "current_exclusive_guard_observed_then_closed": true,
+      "occupied_error": null
+    }
+  ],
+  "retained_observation": {
+    "path": "C:/ProgramData/NVIDIA Corporation/NVIDIA App/UpdateFramework/ota-artifacts/grd/222e3fc2fbb5a311b745b9b47097ca1a/616.92-notebook-win10-win11-64bit-international-dch-whql-g.exe",
+    "resolved": "C:/ProgramData/NVIDIA Corporation/NVIDIA App/UpdateFramework/ota-artifacts/grd/222e3fc2fbb5a311b745b9b47097ca1a/616.92-notebook-win10-win11-64bit-international-dch-whql-g.exe",
+    "logical_bytes": 793353272,
+    "GetCompressedFileSizeW_bytes": 793353272,
+    "mtime_ns": 1789130164323964800,
+    "mtime_utc": "2026-09-11T12:36:04.323965+00:00",
+    "ctime_ns": 1789130153310680600,
+    "file_id": 562949953679236,
+    "links": 1,
+    "attrs": 8224,
+    "fresh_exclusive_DELETE_READ_ATTRIBUTES_share0_native_identity": {
+      "final_path": "C:\\ProgramData\\NVIDIA Corporation\\NVIDIA App\\UpdateFramework\\ota-artifacts\\grd\\222e3fc2fbb5a311b745b9b47097ca1a\\616.92-notebook-win10-win11-64bit-international-dch-whql-g.exe",
+      "attributes": 8224,
+      "links": 1,
+      "size": 793353272,
+      "file_id": 562949953679236,
+      "volume_serial": 1996358582,
+      "creation_filetime": 134336037533106806,
+      "access_filetime": 134336073764804976,
+      "write_filetime": 134336037643239648
+    },
+    "old_retained_identity_equal": true,
+    "current_exclusive_guard_observed_then_closed": true,
+    "occupied_error": null
+  },
+  "installer_or_extractor_processes": [],
+  "Root_exact_deletion_instruction_required_before_execution": true,
+  "payload_integrity": "UNKNOWN_NOT_HASHED_SIGNED_OR_EXECUTED",
+  "redownload_capability": "standard official update download cache by path; no online download attempted or guaranteed",
+  "bytes_read_hashed_from_cache_payload": 0,
+  "installer_executed": false,
+  "driver_installation_or_update_performed": false,
+  "files_deleted_compressed_moved": 0,
+  "services_Git_network_changed": 0,
+  "disk_before": {
+    "captured_at_utc": "2026-10-06T09:21:55.279995+00:00",
+    "total_bytes": 511776722944,
+    "used_bytes": 508168585216,
+    "free_bytes": 3608137728
+  },
+  "disk_after": {
+    "captured_at_utc": "2026-10-06T09:21:55.297802+00:00",
+    "total_bytes": 511776722944,
+    "used_bytes": 508168585216,
+    "free_bytes": 3608137728
+  },
+  "prior_identity_evidence": {
+    "path": "C:/workspace/ck3-upgrade-20261006/c-drive-nvidia-exact470-unpack-cache-delete-agent-01/result-01.json",
+    "bytes": 131254,
+    "sha256": "47bf5c9e32406862fff004707aab93b282f9045b574a101efdd65ccf3f1ae9cf"
+  },
+  "free_delta_attributed": false,
+  "physical_reclaim_bytes": null
+}

@@ -1,0 +1,162 @@
+{
+  "schema": "ck3.source10-stock-mixedcase-key-build-only-packet.v1",
+  "status": "BUILD_SUCCESS_ONLY_NOT_LIVE_VALIDATED",
+  "source_root": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/strictcopy_source10",
+  "source_file_count": 2638,
+  "producer_source_index": {
+    "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/source-composite-index-10.json",
+    "bytes": 604216,
+    "sha256": "05d2af1cce184def9ab93474c6ddb95f9d47e04b8e1c5f89948fe2d9385c3fd2"
+  },
+  "consumer_source_index": {
+    "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/source10-complete-consumer-index-01.json",
+    "bytes": 606209,
+    "sha256": "1dc9cac44f94c60537d5818e9dfc031cc76dbb716c062ed4115564de8c9980c1"
+  },
+  "source_chain": {
+    "source05": {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\main-native-root-exit-signaled-order-fix-agent-01\\source05-final-complete-file-index-02.json",
+      "bytes": 616616,
+      "sha256": "5bf54e3fb4d6621de532ac76a541848de2fdbf0da27d59b7751d89c8c7b62fb9"
+    },
+    "source08": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\xqol-source08-county-trace-build-agent-01\\source-composite-index-08.json",
+      "bytes": 604201,
+      "sha256": "03d44284931a13989f9911508f13a97c2cc13c1591afeadf14b20149e32dab78"
+    },
+    "source09": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\xqol-source09-held-landless-capital-build-agent-01\\source-composite-index-09.json",
+      "bytes": 611353,
+      "sha256": "a8037df353d85f708d8b6c243dcc3919f39905d43051ae762d34ba69c07a409d"
+    },
+    "source10": {
+      "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/source-composite-index-10.json",
+      "bytes": 604216,
+      "sha256": "05d2af1cce184def9ab93474c6ddb95f9d47e04b8e1c5f89948fe2d9385c3fd2"
+    }
+  },
+  "compile_base_commit": "fa327124b71908d4022872faf036a385b34a1b11",
+  "compile_base_scope": "Actual Source05 compile BASE plus Source08/09 overlays plus two Source10 case-only overrides; no single Source10 Git commit and no current-master claim.",
+  "actual_build_receipt": {
+    "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/build-execution-01/result.json",
+    "bytes": 607149,
+    "sha256": "f4066ca4daf7ec765d6294c315bcc2699753e4e4dc43d1442b5465f853537913"
+  },
+  "actual_build_exit_code": 0,
+  "actual_build_duration_seconds": 254.14855,
+  "actual_build_graph": {
+    "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/build-01/build.ninja",
+    "bytes": 534421,
+    "sha256": "7c6b232ba00636a241fc41d7f8f2a959d88d3674001c906cb1e4d5f9bec73691"
+  },
+  "bridge_dll": {
+    "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/build-01/xar_ck3_bridge.dll",
+    "bytes": 5565440,
+    "sha256": "f150c4cf1aa8a121ab44ab41d3052b0b7db6729644a7958bd53156abf682d754"
+  },
+  "interpreter": {
+    "path": "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "bytes": 255200,
+    "sha256": "9b7bffc26240463c965a2a2a5fada1d8e741c21c25cd2e977728c339b82d9977"
+  },
+  "injector": {
+    "path": "C:/workspace/ck3-upgrade-20261004/current-runtime-parallel-01/build-02/xar_ck3_bridge_injector.exe",
+    "bytes": 39936,
+    "sha256": "ba33048d406e04110f27dea8f2784aac301a3b0020d9721a34e92cbec8f52348"
+  },
+  "injector_reused_unchanged": true,
+  "components": {
+    "runtime": {
+      "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/strictcopy_source10/ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+      "bytes": 162882,
+      "sha256": "312ea72b0dc9008e3089d57ce22802d559eeb9e773f10ce9a00db51848c7d9c7"
+    },
+    "native_driver": {
+      "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/strictcopy_source10/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1340530,
+      "sha256": "3c2f3783ce317209bd1ca2d72123824e244084c629a00ee7b31c31b7ed2eb98b"
+    },
+    "mcp_server": {
+      "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/strictcopy_source10/ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 184645,
+      "sha256": "85caa7f76da1700411b4fa622db15198bb25731e23fc857a9fa767b649afcfc6"
+    },
+    "service": {
+      "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/strictcopy_source10/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 597968,
+      "sha256": "18b5528bdaee2f9ae05bc9c7dfbabcc035a4c07226fd71c8320faa328f85bc83"
+    },
+    "campaign_root_context_contract": {
+      "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/strictcopy_source10/ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_root_context_contract.py",
+      "bytes": 53940,
+      "sha256": "616ee9d09278cccc2af90607ce115ce815f9567883af5eedff03483662edf684"
+    },
+    "turn_bundle_contract": {
+      "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/strictcopy_source10/ck3_autonomous_player/src/xar_autoplayer/bridge/turn_bundle_contract.py",
+      "bytes": 23913,
+      "sha256": "c196ea01350563cf10156875adcba75036ec99758bdc513c17e89dd0cfb88e70"
+    },
+    "strategy": {
+      "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/strictcopy_source10/ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 872954,
+      "sha256": "71947702f6a441821c2032570aaa725fd053176e9baa1044c70f8d8e323f0698"
+    }
+  },
+  "shared_harness": {
+    "path": "C:/workspace/ck3-upgrade-20261006/rmtm-fixture-prequery-readiness-agent-01/runtime_harness_fixture_prequery_readiness_01.py",
+    "bytes": 113023,
+    "sha256": "81a1a36dba7845543dfc9c7131d611879aa40078e92154aa6fbce35787aa81d8"
+  },
+  "existing_shared_pure16": {
+    "path": "C:\\workspace\\ck3-upgrade-20261006\\rmtm-fixture-prequery-readiness-agent-01\\pure-boundary-receipt-02.json",
+    "bytes": 3207,
+    "sha256": "79eb0ff207db1a9700b1710a01814088d2111723df142ba8d34fbc5358776b54"
+  },
+  "candidate_override_input": {
+    "path": "C:/workspace/ck3-upgrade-20261006/held-family-county-stock-key-case-fix-prep-agent-01/CANDIDATE_PINS_01.json",
+    "bytes": 5331,
+    "sha256": "8b11641efaf5ac647adf7100f4d9bcefbaa259a18471c4ea56d69006939098f4"
+  },
+  "candidate_finite_pass": {
+    "path": "C:/workspace/ck3-upgrade-20261006/held-family-county-stock-key-case-fix-prep-agent-01/FINAL_CANDIDATE_01.json",
+    "bytes": 7467,
+    "sha256": "7e7946d366a287690fecd632145d501008da7ad0a7bfad6c89aebbea0d3068b8"
+  },
+  "fresh_build": true,
+  "old_objects_or_old_staticlibs_reused": false,
+  "actual_object_count": 358,
+  "actual_graph_edges": 361,
+  "jobs": 4,
+  "configuration": "Release",
+  "same_tree_python_import_required": true,
+  "source10_single_git_commit_claimed": false,
+  "current_master_claimed": false,
+  "live_root_availability_proven": false,
+  "product_business_pass": false,
+  "published": false,
+  "runtime_status": "NOT_RUN",
+  "consumer_binding": {
+    "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/source10-shared-consumer-binding-01.json",
+    "bytes": 7121,
+    "sha256": "88e4767fa798f4cae57b4009105184e8f520de429081489b7274b3b346300f03"
+  },
+  "candidate_override_count": 2,
+  "other_2636_exact_source09": true,
+  "frozen_at_utc": "2026-10-06T07:14:55.823086+00:00",
+  "stdout": {
+    "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/build-execution-01/compile-link.stdout.raw",
+    "bytes": 523536,
+    "sha256": "71b6bc3a8ebad1c9ff3882473e6c1bcabb3ea76c4ad32b2f43ea0212f97b7209"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/build-execution-01/compile-link.stderr.raw",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "source10_consumer_paths_match_exact_index": true,
+  "pure_fixtures": "Candidate owner finite-PASS receipt consumed without rerunning original 50/78 tests.",
+  "business_credit": "NONE: compilation does not prove live root-context availability or product business acceptance.",
+  "game_accessed": false,
+  "DLL_injected": false,
+  "production_modified": false
+}

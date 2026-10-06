@@ -105,3 +105,13 @@ R15副本 native-state-003.jsonl 实际9,204B、-004.jsonl实际9,216B；sidecar
 启动前C空闲4,460,802,048B→运行时337,387,520B，pagefile同路径5,100,273,664B→8,371,859,456B，仅记录Root本轮独立观察；完整空间下降因果未知，不以差额推断全部由pagefile引起，系统文件未改。目录复核结束C空闲4,041,342,976B也仅为当时快照。
 
 两条并行窄缓存检查没有确认GiB级可释放候选：浏览器/pip旧缓存196叶合12,325,142B（11.75MiB）只做metadata/native占用探测，未删除或压缩；Temp近期、未知用途文件和全部项目过程资产保留。未遍历的浏览器/Temp子树容量UNKNOWN，此边界不能表述为全C无可清空间。没有继续宽扫、处理小文件或改动daily/CCC/src。
+
+## 2026-10-06 度假收尾：新场继承已验，环境不足仍未解决
+
+CCC R0004新run目录、control与零字节probe已实际读回继承压缩属性，纠正上节“下一场待读回”的时点状态；该场仍在D3推进后遇Errno28，属性成功不等于空间故障解决。本次未增加压缩或删除量，61文件API差不重复计数。09:47:05 UTC停机盘点C空闲3,592,962,048B（约3.35GiB），不是失败瞬时余量；本轮CK3/harness/watchdog/keeper/publisher候选为空。
+
+新增只读[内存/pagefile快照](../handover/2026-10-06-ck3-upgrade-handoff-artifacts/nospace-memory-and-pagefile-snapshot.json)与[Steam private快照](../handover/2026-10-06-ck3-upgrade-handoff-artifacts/nospace-steam-private-memory-snapshot.json)保全。当前系统管理pagefile5,100,273,664B、CommitTotal22,682,312,704B/Limit39,359,959,040B；Peak42,016,415,744B属于OS启动以来，不隔离为CK3峰值。三实际Steam进程private共4,351,451,136B，RSS含共享页，不按RSS累加估释放量。正常Steam重启、pagefile设置或系统重启都未执行。
+
+新增单叶NVIDIA OTA下载616.92 cache为793,353,272B/0.739GiB，较新未消费，安装驱动仍581.80，不能称安装后残留。固定叶[计划](../handover/2026-10-06-ck3-upgrade-handoff-artifacts/nvidia-cache-exact-plan-NOT-EXECUTED.json)及[入口原件](../handover/2026-10-06-ck3-upgrade-handoff-artifacts/nvidia-cache-delete-NOT-EXECUTED.py.txt)保全，本轮未发执行指令、未删除/执行EXE，不动父目录/DriverStore。WU Download仅17.27MiB、pending UNKNOWN且更新协调进程活跃，全部保留；有限浏览器/Temp检查没有扩扫。
+
+用户要求平稳结束在手任务、不新增任务，故不在本轮开始新的清理或游戏。所有原资产和失败字节保留，具体接手边界见[最新交接](../ck3-upgrade-handoff-2026-10-06.md)。新增清理释放信用0，NoSpace根因和瞬时峰值仍UNKNOWN。

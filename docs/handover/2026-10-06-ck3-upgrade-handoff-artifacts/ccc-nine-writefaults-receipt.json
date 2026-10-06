@@ -1,0 +1,16 @@
+{
+  "status": "PASS_9_FINITE_OFFLINE_WRITEFAULTS_NOT_LIVE",
+  "cases": [
+    "atomic report open: same OSError identity/context/no retry",
+    "atomic report write: same OSError identity/context/no retry",
+    "atomic report flush: same OSError identity/context/no retry",
+    "atomic report fsync: same OSError identity/context/no retry",
+    "atomic report close: same OSError identity/context/no retry",
+    "atomic report replace: same OSError identity/context/no retry",
+    "JsonLines write: original lock released/same error",
+    "JsonLines close: original lock released/same error",
+    "unchanged execute: finished ok advance then finally writer fault/no next-frame append"
+  ],
+  "candidate_sha256": "568d9aeecf7b2a4d758017de138349de04f7b2dad29b76fa29cf8157dcc5df33",
+  "game_SDK_native_IO_or_real_disk_exhaustion": false
+}

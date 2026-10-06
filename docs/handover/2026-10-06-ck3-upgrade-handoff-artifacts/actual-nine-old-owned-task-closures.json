@@ -1,0 +1,69 @@
+{
+  "actual_utc": "2026-10-06T09:49:53.562945+00:00",
+  "execution_stop_not_product_PASS": true,
+  "closures": [
+    {
+      "task_id": "ck3-361-parallel-startup-20261004-z03",
+      "state": "done",
+      "resources": [],
+      "sequence": 4214,
+      "receipt": "C:\\workspace\\ck3-upgrade-20261006\\root-vacation-handoff-20261006-01\\ck3-361-parallel-startup-20261004-z03-vacation-close.json"
+    },
+    {
+      "task_id": "ck3-upgrade-courtier-vivhite-core-20261004",
+      "state": "done",
+      "resources": [],
+      "sequence": 4215,
+      "receipt": "C:\\workspace\\ck3-upgrade-20261006\\root-vacation-handoff-20261006-01\\ck3-upgrade-courtier-vivhite-core-20261004-vacation-close.json"
+    },
+    {
+      "task_id": "ck3-upgrade-parallel-resume-20261005",
+      "state": "done",
+      "resources": [],
+      "sequence": 4216,
+      "receipt": "C:\\workspace\\ck3-upgrade-20261006\\root-vacation-handoff-20261006-01\\ck3-upgrade-parallel-resume-20261005-vacation-close.json"
+    },
+    {
+      "task_id": "ck3-upgrade-resume-20261003",
+      "state": "done",
+      "resources": [],
+      "sequence": 4217,
+      "receipt": "C:\\workspace\\ck3-upgrade-20261006\\root-vacation-handoff-20261006-01\\ck3-upgrade-resume-20261003-vacation-close.json"
+    },
+    {
+      "task_id": "ck3-white-control-actions-20261004-z01",
+      "state": "done",
+      "resources": [],
+      "sequence": 4218,
+      "receipt": "C:\\workspace\\ck3-upgrade-20261006\\root-vacation-handoff-20261006-01\\ck3-white-control-actions-20261004-z01-vacation-close.json"
+    },
+    {
+      "task_id": "ck3-white-control-actions-20261004-z02",
+      "state": "done",
+      "resources": [],
+      "sequence": 4219,
+      "receipt": "C:\\workspace\\ck3-upgrade-20261006\\root-vacation-handoff-20261006-01\\ck3-white-control-actions-20261004-z02-vacation-close.json"
+    },
+    {
+      "task_id": "ck3-white-decision-take-20261004-z01",
+      "state": "done",
+      "resources": [],
+      "sequence": 4220,
+      "receipt": "C:\\workspace\\ck3-upgrade-20261006\\root-vacation-handoff-20261006-01\\ck3-white-decision-take-20261004-z01-vacation-close.json"
+    },
+    {
+      "task_id": "ck3-white-new-trait-delivery-20261004-z03",
+      "state": "done",
+      "resources": [],
+      "sequence": 4221,
+      "receipt": "C:\\workspace\\ck3-upgrade-20261006\\root-vacation-handoff-20261006-01\\ck3-white-new-trait-delivery-20261004-z03-vacation-close.json"
+    },
+    {
+      "task_id": "ck3-white-rendered-controls-20261004-z03",
+      "state": "done",
+      "resources": [],
+      "sequence": 4222,
+      "receipt": "C:\\workspace\\ck3-upgrade-20261006\\root-vacation-handoff-20261006-01\\ck3-white-rendered-controls-20261004-z03-vacation-close.json"
+    }
+  ]
+}

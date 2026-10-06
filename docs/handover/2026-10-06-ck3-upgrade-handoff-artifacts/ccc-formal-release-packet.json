@@ -1,0 +1,179 @@
+{
+  "schema": "ccc-formal-release-minimal-preparation-v1",
+  "created_utc": "2026-10-06T06:53:39.166501+00:00",
+  "status": "EXTERNAL_PREPARATION_ONLY_NOT_ACTUAL_ACCEPTANCE_OR_PUBLICATION",
+  "version": "1.0.1",
+  "game_version": "1.20.0.3",
+  "maintenance_item_id": "3804807463",
+  "forbidden_upstream_target": "3596263413",
+  "previous_public_version": "1.0.0",
+  "previous_tag": "celestial-commerce-corruption-v1.0.0",
+  "previous_commit": "dc91dc1f0a1abd733d274382833a0ab9b3cdb51f",
+  "actual_current_tag": null,
+  "actual_public_entry": null,
+  "actual_business_pass": null,
+  "actual_cache_business_pass": null,
+  "required_cache_scope": "one representative Simplified Chinese production cell from fresh exact22 and same accepted fixture; current source core11/event.d plus separate production Confirm/event.f/current cooldown evidence; no all-tier/multilocale/save-reload expansion",
+  "cache_contract": {
+    "source": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\celestial-commerce-corruption-acceptance-1.0.0.md",
+      "bytes": 6610,
+      "sha256": "b49e9f612f9fe94f9cea3fc56902a780f0a5807922a67e90ed4d266f3fc784f8"
+    },
+    "lines": [
+      {
+        "line": 30,
+        "text": "The source runner used an isolated user directory and the exact then-current 15-file gameplay projection plus an external acceptance fixture. The seven files added afterward contain localization only. The final subscriber-cache runner loaded the public 22-file tree plus the same external fixture and repeated the complete Simplified-Chinese production path. Through the native UI it:"
+      },
+      {
+        "line": 31,
+        "text": ""
+      },
+      {
+        "line": 32,
+        "text": "1. proved the Song celestial government returns `government_allows = barter`;"
+      },
+      {
+        "line": 33,
+        "text": "2. switched to a current-build landed celestial official;"
+      },
+      {
+        "line": 34,
+        "text": "3. opened and confirmed the production `定夺贪墨之策` decision;"
+      },
+      {
+        "line": 35,
+        "text": "4. selected the production fourth-tier option;"
+      },
+      {
+        "line": 36,
+        "text": "5. proved `xccc_corruption_4` was applied; and"
+      },
+      {
+        "line": 37,
+        "text": "6. evaluated the production constants from `0.75 - 0.25` to exactly `0.50`."
+      },
+      {
+        "line": 38,
+        "text": ""
+      }
+    ]
+  },
+  "old_closeout_card16_cache_business_omission_corrected_without_overwriting_it": true,
+  "new_files": [
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-formal-release-minimal-prep-agent-01\\ROOT_CCC_MINIMAL_FORMAL_RELEASE_CARD_01.md",
+      "bytes": 10625,
+      "sha256": "95d7d311f121cb8e8425b0018c200374de21e240d3be960637bf8d17bf6720ce"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-formal-release-minimal-prep-agent-01\\materialize_ccc_publish_inputs_01.py",
+      "bytes": 6289,
+      "sha256": "aff37715c76ad2cb8d7a8cd21452fd8b9f8ddda56c43524f82c212d6e230cb02"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-formal-release-minimal-prep-agent-01\\prepare_ccc_cache_profile_01.py",
+      "bytes": 8337,
+      "sha256": "a82014f6654c7c3cfc268c5e5f3f4f72d3a78f27eb5cb4e80c24ba8b04c287a1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-formal-release-minimal-prep-agent-01\\verify_ccc_tags_from_existing_readback_01.py",
+      "bytes": 3511,
+      "sha256": "f3af9469fb3d53db314ca952c0c4cc436333e6eb5b53135d2ccbdb3ec95e3ef9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-formal-release-minimal-prep-agent-01\\source22-notes-readonly-audit-01.json",
+      "bytes": 19819,
+      "sha256": "64f58c956688008abdc76d7b9c5b06d77a1fcab67abfa905e26c3baf5678e270"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-formal-release-minimal-prep-agent-01\\previous-public-tag-resolution-01.json",
+      "bytes": 448,
+      "sha256": "8baf11a368a64305aefaa30cf56ddc540349c941ddf1488c9efb6f8e124839de"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-formal-release-minimal-prep-agent-01\\new-scripts-static-contract-01.json",
+      "bytes": 4966,
+      "sha256": "15b0687041f0e3c350705e74cdc7b1885a5ef052333056004cd7737a2b9349d6"
+    }
+  ],
+  "reused_files": [
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\formal-publication-16\\verify_ccc_101.TEMPLATE.py",
+      "bytes": 17049,
+      "sha256": "247913885492eb85459c8eecf332ae060ec01dee429f68866fd8c8b017fd36c1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\formal-publication-16\\white_verified_publication_helpers.py",
+      "bytes": 6394,
+      "sha256": "480159defac934fd725a6c85662ec7c9faef93c6ba11af34125fe9cb79529253"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\formal-publication-16\\template-package-freeze-16.json",
+      "bytes": 8616,
+      "sha256": "2b16a783570b0ef0a58d99c4f5b041d33be29d2f9c4c1c2f89d59dbfccb6d9a1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\formal-publication-16\\frozen-inputs\\expected.json",
+      "bytes": 3924,
+      "sha256": "6488577b586444a9ac3574dd7577b4da62cb516cf98f83c6ebeb3ba6523d7da7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\anonymous-public-baseline-11\\public-baseline-readback-13.json",
+      "bytes": 12207,
+      "sha256": "2f011dad380484a3fecc16dd861bb6e582763418659b2d4de04747dad6e61b95"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\allocator-input-freeze-16.json",
+      "bytes": 31416,
+      "sha256": "c855d9b2c03c7e1e15bc57c41c07fc9f140de21d0f4f900cd552455591cd93d6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261005\\ccc-12003-readiness-agent-01\\ROOT-OPERATOR-CARD-16.md",
+      "bytes": 7317,
+      "sha256": "2a6c1c1886e52df095c1c439e1bebbfa037b59cf2af9c2aea7901a3205b30c90"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\release-changelogs\\celestial-commerce-corruption\\1.0.0.md",
+      "bytes": 8147,
+      "sha256": "f13bb87a725d9eff1e5b7934c7f958142b00527b7238552886787b554e706427"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\release-changelogs\\celestial-commerce-corruption\\1.0.1.md",
+      "bytes": 4962,
+      "sha256": "56689dc9c9e98e147537d170a531998dd8c02c0458e04884fd8d8fa61bd7550c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\workshop\\change_notes\\celestial-commerce-corruption\\1.0.1.txt",
+      "bytes": 1708,
+      "sha256": "2d74578e9feca3dac77e2efca4791c8cb90c469ad8145b6586d244e3302e0ae3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\workshop\\change_notes\\celestial-commerce-corruption\\1.0.1.freeze.json",
+      "bytes": 634,
+      "sha256": "2f4d3f792ced9be8c0252f17e93ece27ff8fc25c64919d5cee36e961c62aa53a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\workshop\\celestial_commerce_corruption_description.bbcode",
+      "bytes": 3194,
+      "sha256": "f5591e6357add8f55dd049705cf2664ce7baa13e7288fb9c7611ddf13fde1957"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\compatibility_tags.py",
+      "bytes": 3226,
+      "sha256": "47ff303baf94867db406ec9dab52037b83551b8c39a8dff0a0bdceafed7c2d90"
+    },
+    {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\workshop-eight-items-curl-baseline-agent-01\\readback_tags_sidebar_notes_template_02.py",
+      "bytes": 7920,
+      "sha256": "26caaa608f3f23988bd4232d583ef8ac8763c8f3893582bacb65954d727c5291"
+    }
+  ],
+  "old_templates_no_change": true,
+  "missing_player_visible_Notes_or_description": false,
+  "Root_actual_source_PASS_and_launch_input_review_required": true,
+  "new_materializer_cache_profile_main_not_executed": true,
+  "new_public_HTTP_requests": 0,
+  "source_build_static_pure_precheck_repeated": false,
+  "game_Steam_sdk_bus_Git_calls": 0
+}

@@ -1,0 +1,191 @@
+{
+  "schema": "ck3.upgrade.vacation-handoff/v1",
+  "archived_at_utc": "2026-10-06T09:50:58.226674+00:00",
+  "copies_are_byte_exact": true,
+  "runtime_references_remain_machine_local": true,
+  "no_candidate_applied_or_new_scene_executed": true,
+  "files": [
+    {
+      "archived_file": "ccc-r4-red-and-cleanup.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/ccc-foreground18-agent-01/a77-actual-red-boundary-and-cleanup-thin-01.json",
+      "bytes": 12885,
+      "sha256": "9d153f92b4f6225b71a3c896c092ac01e1d89a1a8ff7137fd2f30328673b3fb2",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "ccc-r4-screen-release.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/ccc-foreground18-agent-01/a77-actual-screen-release-01.json",
+      "bytes": 1403,
+      "sha256": "953e069d6051176f52dae155274c64d49e02d681f3c1471d04b7003bcff2c109",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "ccc-r4-write-diagnostic-candidate.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/ccc-write-error-context-agent-01/ACTUAL_R4_SINK_FINDING_AND_DIAGNOSTIC_CANDIDATE_01.json",
+      "bytes": 3276,
+      "sha256": "e4d97296521a1e934c07226813027eb2704ee6cacd847a1b50bbf39a3ae1d716",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "ccc-write-error-context-NOT-APPLIED.patch",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/ccc-write-error-context-agent-01/write-error-context-only-01.patch",
+      "bytes": 5404,
+      "sha256": "9e0a26165577e76d17eee29c02adbe75eca057cf3e3836ec6623ea6dc86f2021",
+      "candidate_status": "NOT_APPLIED_NOT_LIVE"
+    },
+    {
+      "archived_file": "ccc-runtime-harness-NOT-APPLIED.py.txt",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/ccc-write-error-context-agent-01/runtime_harness_write_error_context_candidate_01.py",
+      "bytes": 115287,
+      "sha256": "568d9aeecf7b2a4d758017de138349de04f7b2dad29b76fa29cf8157dcc5df33",
+      "candidate_status": "NOT_APPLIED_NOT_LIVE"
+    },
+    {
+      "archived_file": "ccc-nine-writefaults-receipt.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/ccc-write-error-context-agent-01/pure-writefault-receipt-01.json",
+      "bytes": 835,
+      "sha256": "07aa1b46672ccbe547a18f4ef7351a6ae4d9bd3210a2391725a90305b6f22ddf",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "ccc-formal-release-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/ccc-formal-release-minimal-prep-agent-01/ROOT_CCC_MINIMAL_FORMAL_RELEASE_CARD_01.md",
+      "bytes": 10625,
+      "sha256": "95d7d311f121cb8e8425b0018c200374de21e240d3be960637bf8d17bf6720ce",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "ccc-formal-release-packet.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/ccc-formal-release-minimal-prep-agent-01/FINAL_CCC_MINIMAL_RELEASE_PREP_PACKET_01.json",
+      "bytes": 8110,
+      "sha256": "e62d96f12ec65713d0f5fe236b22663f3896766043ba42e59cbfe596b4419306",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "qol-defense-cold18-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/xqol-cold18-entry-prep-agent-01/FOREOPERATOR_COLD18_ENTRY_CARD_09.md",
+      "bytes": 5998,
+      "sha256": "e83c6f77a5cd0e0efe15eded6360350c77e76cd429f4e1a4bce14dd2f9617ce7",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "qol-post-defense-followup-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/xqol-post-defense-followup-ready-02/ROOT_POST_DEFENSE_FOLLOWUP_READY_02.md",
+      "bytes": 5644,
+      "sha256": "23710b975dc8349e6c16a8d0b631ed4bf7056cb245102b416c96da7e8a52dc0d",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "qol-post-defense-followup-freeze.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/xqol-post-defense-followup-ready-02/followup-handoff-freeze-02.json",
+      "bytes": 758,
+      "sha256": "4f25e3e6e7d8bda0c316f64816c5c9785594c4614b0f0f345cd6e88b29584078",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "qol-government-entry-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/xqol-post-defense-appointment-ui-next-agent-01/government-entry-ready-01/GOVERNMENT_ENTRY_CARD_01.md",
+      "bytes": 9985,
+      "sha256": "562d8c4217e3786678303c9af4b72dfe4d560149ea127d6cf5a73c066a5c564e",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "qol-pam-two-entry-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/xqol-pam-natural-conversion-next-cold-agent-01/ROOT_PAM_TWO_FINAL_ENTRIES_CARD_03.md",
+      "bytes": 3544,
+      "sha256": "e0ce4ce5becf9378127f9de14d16146984b12b815b81511ec48268ca62a60a6c",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "qol-ransom-entry-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/ransom-next-cold-agent-01/ransom-entry-01/ROOT_RANSOM_ENTRY_CARD_02.md",
+      "bytes": 3871,
+      "sha256": "c39005c1202aa509258386fb93c3813ab48a16946cf873f1ef4d479f24bb982f",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "qol-post-defense-direct-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/xqol-post-defense-direct-next-agent-01/ROOT_POST_DEFENSE_DIRECT_NEXT_CARD_01.md",
+      "bytes": 12830,
+      "sha256": "bf6da4b1b82c4d68d18786799e35ac6b2ec300a69c9b5ac58e2503f1a5a4dba6",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "qol-async-entry-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/xqol-post-defense-async-next-cold-agent-01/async-entry-01/ROOT_ASYNC_ENTRY_CARD_01.md",
+      "bytes": 3088,
+      "sha256": "2c3e3160599c9f77bf8a140534920359f0df2e9263fab2d52fa08d6e99f195f4",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "rmtm-operation10-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/rmtm-stock-join-dispatch-operation10-agent-01/ROOT-OPERATION10.md",
+      "bytes": 3346,
+      "sha256": "566b06be356627b84a1207962dbd2368123f6996ce948594a58cfcea3a42e746",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "rmtm-shared05-controller-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/rmtm-campaign-shared05-reuse-01/RUN-CARD.md",
+      "bytes": 2127,
+      "sha256": "60493fc29efc950790358edf66f050bb29cdd8a745adfe5611574f062c2d0d37",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "ted-operation11-card.md",
+      "original_path": "C:/workspace/ck3-upgrade-20261005/ted-runtime-plan-audit-01/profile-bound-operation-11/ROOT-CARD.md",
+      "bytes": 4689,
+      "sha256": "6d527b64aed5ce32ff3e378e308705fa397d7ba714caf746b2e132b752e6f4eb",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "source10-build-only-packet.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/source10-stock-mixedcase-key-build-agent-01/SOURCE10_BUILD_ONLY_PACKET_01.json",
+      "bytes": 8412,
+      "sha256": "eefa35572820316b92d2f7e4179dff255e2fff7ada2ed816fecb5898e1b50b2f",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "nospace-memory-and-pagefile-snapshot.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/root-nospace-r4-memory-readonly-01/actual-performance-paging-snapshot-01.json",
+      "bytes": 3300,
+      "sha256": "99a5a870ccb564de7774a683951f8980f581d85f3cffa00f51b62719d61218da",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "nospace-steam-private-memory-snapshot.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/root-nospace-r4-memory-readonly-01/actual-steam-private-memory-02.json",
+      "bytes": 1755,
+      "sha256": "778135f07bc211e9d2f2e6cf7e0288e4c67ea2f579faba0ae1acd5529a3e66a5",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "nvidia-cache-exact-plan-NOT-EXECUTED.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/c-drive-nvidia-retained-installer-metadata-agent-03/exact-nvidia-retained-installer-cache-plan-03.json",
+      "bytes": 4439,
+      "sha256": "3a4cc627daad8113a2d70ad1f3d959f05260dff7afaf9c00039fa1cfbc9df3e4",
+      "candidate_status": "NOT_EXECUTED"
+    },
+    {
+      "archived_file": "nvidia-cache-delete-NOT-EXECUTED.py.txt",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/delete_exact1_nvidia_retained_download_cache_03.py",
+      "bytes": 6387,
+      "sha256": "9f0b052ec04154ca0cfc3ee9c5b769e62b259eddfab51fe49583af466acf38be",
+      "candidate_status": "NOT_EXECUTED"
+    },
+    {
+      "archived_file": "actual-local-shutdown-inventory.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/root-vacation-handoff-20261006-01/actual-local-shutdown-inventory-01.json",
+      "bytes": 391,
+      "sha256": "1221773afc33527ac9c131d31a27ccc467f86a2ba68a8091d39e7cbd76e67cf7",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    },
+    {
+      "archived_file": "actual-nine-old-owned-task-closures.json",
+      "original_path": "C:/workspace/ck3-upgrade-20261006/root-vacation-handoff-20261006-01/actual-nine-stale-owned-task-closures-01.json",
+      "bytes": 2801,
+      "sha256": "3b4bbd2e437e4dcd4ee0267725cbdc2f470ea96e4b4d91da4bf80f0bac24b965",
+      "candidate_status": "FROZEN_HANDOFF_COPY"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "status": "ACTUAL_R4_PRIMARY_ERROR_CODEPATH_NARROWED_SUBOPERATION_UNKNOWN",
+  "actual_primary_receipt": {
+    "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-foreground18-agent-01\\a77-actual-red-boundary-and-cleanup-thin-01.json",
+    "bytes": 12885,
+    "sha256": "9d153f92b4f6225b71a3c896c092ac01e1d89a1a8ff7137fd2f30328673b3fb2"
+  },
+  "actual_primary_error": "OSError: [Errno 28] No space left on device",
+  "actual_error_has_filename_or_traceback": false,
+  "actual_last_successful_step": {
+    "id": "a77-tier4-advance-D3-once",
+    "finished_at": "2026-10-06T09:05:52.545882+00:00",
+    "ok": true,
+    "result_and_after_snapshot_present": true,
+    "error_field_absent": true
+  },
+  "actual_next_D3_frame_not_appended": true,
+  "actual_queued_tier4_plan": {
+    "path": "C:\\workspace\\ck3-upgrade-20261005\\live\\4-8e1c2f1861--celestial-commerce-corruption--R0004\\controls\\a77-tier4-once.json",
+    "bytes": 3128,
+    "sha256": "32c8733a9f6c7548e73eb41afd63b682982462f583715eef6ffb0166a2e5e761"
+  },
+  "actual_last_bounded_MCP_diagnostic_response": {
+    "tool": "ck3_migration_pipe_diagnostics",
+    "finished_at": "2026-10-06T09:05:52.897539+00:00",
+    "ok": true,
+    "read_source": "C:\\workspace\\ck3-upgrade-20261005\\live\\4-8e1c2f1861--celestial-commerce-corruption--R0004\\native-report.mcp-calls.jsonl",
+    "tail_bytes_read": 350000
+  },
+  "codepath_inference": {
+    "scope": "Strong control-flow inference, not an actual captured write stack",
+    "harness_execute_lines": "827-829 finished_at then self.write; next step append occurs745",
+    "narrowest_call": "last successful advance step finally -> self.write -> run.write -> write_atomic_report",
+    "logical_sink": "C:\\workspace\\ck3-upgrade-20261005\\live\\4-8e1c2f1861--celestial-commerce-corruption--R0004\\native-report.json",
+    "partial_seen": "C:\\workspace\\ck3-upgrade-20261005\\live\\4-8e1c2f1861--celestial-commerce-corruption--R0004\\.native-report.json.partial-06e9f42a95e747fe8431b1f4ec6d2970",
+    "partial_bytes": 0,
+    "exact_atomic_suboperation": "UNKNOWN: open/write/flush/fsync/close/replace; no original traceback",
+    "disk_peak_and_root_cause_of_transient_exhaustion": "UNKNOWN; no pagefile-only or compression-failure inference"
+  },
+  "diagnostic_overlay": {
+    "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-write-error-context-agent-01\\runtime_harness_write_error_context_candidate_01.py",
+    "bytes": 115287,
+    "sha256": "568d9aeecf7b2a4d758017de138349de04f7b2dad29b76fa29cf8157dcc5df33"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-write-error-context-agent-01\\write-error-context-only-01.patch",
+    "bytes": 5404,
+    "sha256": "9e0a26165577e76d17eee29c02adbe75eca057cf3e3836ec6623ea6dc86f2021"
+  },
+  "finite_offline_writefaults": {
+    "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-write-error-context-agent-01\\pure-writefault-receipt-01.json",
+    "bytes": 835,
+    "sha256": "07aa1b46672ccbe547a18f4ef7351a6ae4d9bd3210a2391725a90305b6f22ddf"
+  },
+  "reverse_restores_complete_H81": true,
+  "new_context_writes_added": false,
+  "same_OSError_rethrown": true,
+  "Source10_used_inputs_business_budgets_unchanged": true,
+  "live_validation": "NOT_RUN",
+  "no_scene_allocation_game_GUI_controls_SDK_Git": true
+}

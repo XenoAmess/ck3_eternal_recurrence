@@ -1,0 +1,99 @@
+import ctypes
+from ctypes import wintypes
+from datetime import datetime, timezone
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import psutil
+
+TARGET = Path('C:/ProgramData/NVIDIA Corporation/NVIDIA App/UpdateFramework/ota-artifacts/grd/222e3fc2fbb5a311b745b9b47097ca1a/616.92-notebook-win10-win11-64bit-international-dch-whql-g.exe')
+PLAN = Path('C:/workspace/ck3-upgrade-20261006/c-drive-nvidia-retained-installer-metadata-agent-03/exact-nvidia-retained-installer-cache-plan-03.json')
+PLAN_SHA = '3a4cc627daad8113a2d70ad1f3d959f05260dff7afaf9c00039fa1cfbc9df3e4'
+HELPER = Path('C:/workspace/ck3-upgrade-20261005/c-drive-incremental-audit-agent-01/next-closed-compression-prep-11/run_exact5_ntfs_preserve.py')
+HELPER_SHA = 'efd24d91094ff768a56984e5413a62f1cadeeeee3011f81f4e08bbf4a9d4d5df'
+OUT = Path('C:/workspace/ck3-upgrade-20261006/c-drive-nvidia-exact1-download-cache-delete-agent-03')
+
+
+def require(condition, message):
+    if not condition:
+        raise RuntimeError(message)
+
+
+def installers():
+    return [p.info for p in psutil.process_iter(['pid', 'name', 'exe']) if (p.info['name'] or '').lower() in ['setup.exe', 'nvidiapackagelauncher.exe', 'nvidia installer.exe', 'nvinstaller.exe', 'msiexec.exe', '7z.exe']]
+
+
+def main():
+    data = PLAN.read_bytes()
+    require(hashlib.sha256(data).hexdigest() == PLAN_SHA and hashlib.sha256(HELPER.read_bytes()).hexdigest() == HELPER_SHA, 'Frozen plan/approved helper changed')
+    plan = json.loads(data)
+    require(len(plan['candidates']) == 1 and Path(plan['candidates'][0]['path']) == TARGET, 'Exact1 cache scope differs')
+    row = plan['candidates'][0]
+    spec = importlib.util.spec_from_file_location('approved_native_leaf_delete', HELPER)
+    native = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(native)
+    api = native.NativeAPI()
+    psutil.Process().nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)
+    native.no_reparse(TARGET)
+    require(TARGET.resolve(strict=True) == TARGET and TARGET.parent == Path(plan['target_root']), 'Resolved exact NVIDIA download cache differs')
+    require(not installers(), 'Installer/extractor active; retain cache')
+    value = TARGET.lstat()
+    require(value.st_size == row['logical_bytes'] and value.st_mtime_ns == row['mtime_ns'] and value.st_ctime_ns == row['ctime_ns'] and value.st_ino == row['file_id'] and value.st_nlink == 1 and value.st_file_attributes == row['attrs'], 'Fresh exact cache metadata changed')
+    handle = api.k.CreateFileW(str(TARGET), 0x10000 | 0x80, 0, None, 3, 0x00200000, None)
+    if handle == ctypes.c_void_p(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    error = None
+    deleted = False
+    before = None
+    before_disk = native.disk_snapshot()
+    api_size = None
+    try:
+        before = api.information(handle)
+        expected = row['fresh_exclusive_DELETE_READ_ATTRIBUTES_share0_native_identity']
+        require(Path(before['final_path']) == TARGET and all(before[k] == expected[k] for k in ['size', 'attributes', 'links', 'file_id', 'volume_serial', 'creation_filetime', 'write_filetime']), 'Fresh exclusive native cache identity changed')
+        require(not installers(), 'Installer/extractor appeared; retain cache')
+        api_size = api.compressed_api_size(TARGET)
+        require(api_size == row['GetCompressedFileSizeW_bytes'], 'Exact cache API allocation changed')
+        OUT.mkdir(exist_ok=False)
+        (OUT / 'frozen-plan-03.json').write_bytes(data)
+        (OUT / 'runner-source-snapshot.py').write_bytes(Path(__file__).read_bytes())
+        with (OUT / 'journal-03.jsonl').open('x', encoding='utf-8', newline='\n') as stream:
+            def append(event):
+                stream.write(json.dumps(event) + '\n')
+                stream.flush()
+                os.fsync(stream.fileno())
+            append({'event': 'EXACT1_CACHE_NATIVE_DELETE_INTENT', 'path': TARGET.as_posix(), 'native_before': before, 'before_disk': before_disk, 'GetCompressedFileSizeW_bytes': api_size})
+            api.k.SetFileInformationByHandle.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD]
+            api.k.SetFileInformationByHandle.restype = wintypes.BOOL
+            disposition = ctypes.c_ubyte(1)
+            if not api.k.SetFileInformationByHandle(handle, 4, ctypes.byref(disposition), ctypes.sizeof(disposition)):
+                raise ctypes.WinError(ctypes.get_last_error())
+            append({'event': 'FileDispositionInfo_ACK', 'path': TARGET.as_posix()})
+            require(api.k.CloseHandle(handle), 'Exact native delete handle close failed')
+            handle = None
+            try:
+                TARGET.lstat()
+            except FileNotFoundError:
+                deleted = True
+            else:
+                raise RuntimeError('Exact cache leaf remains after native unlink')
+            append({'event': 'EXACT1_CACHE_ACTUAL_PATH_ABSENT', 'path': TARGET.as_posix()})
+    except Exception as failure:
+        error = {'type': type(failure).__name__, 'message': str(failure)}
+    finally:
+        if handle is not None:
+            api.k.CloseHandle(handle)
+    result = {'status': 'EXACT1_REDOWNLOADABLE_NVIDIA_CACHE_DELETED_PATH_ABSENT' if deleted and error is None else 'EXACT1_CACHE_ERROR_NO_SCOPE_SUBSTITUTE', 'finished_at_utc': datetime.now(timezone.utc).isoformat(), 'path': TARGET.as_posix(), 'deleted_count': int(deleted), 'logical_deleted_bytes': row['logical_bytes'] if deleted else 0, 'before_GetCompressedFileSizeW_bytes': api_size, 'native_before': before, 'actual_path_absent': deleted, 'classification': 'newer unconsumed NVIDIA 616.92 official download cache, not old consumed/installed driver; root states no installation task demand', 'payload_integrity': 'UNKNOWN_NOT_HASHED_OR_EXECUTED', 'disk_before': before_disk, 'disk_after': native.disk_snapshot(), 'free_delta_attributed_to_deletion': False, 'physical_reclaim_bytes': None, 'directories_other_cache_DriverStore_installed58180_projects_assets_services_Git_changed': 0, 'error': error}
+    if OUT.exists():
+        with (OUT / 'result-03.json').open('x', encoding='utf-8', newline='\n') as stream:
+            json.dump(result, stream, ensure_ascii=False, indent=2)
+            stream.write('\n')
+    print(json.dumps(result, ensure_ascii=False))
+    if error:
+        raise RuntimeError(error['message'])
+
+
+if __name__ == '__main__':
+    main()
