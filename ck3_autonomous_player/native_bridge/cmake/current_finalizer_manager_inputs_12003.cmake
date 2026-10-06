@@ -1,5 +1,5 @@
 # Additive current manager source. Root integrates this include last, once.
-# g104 first link failed; this source-only closure repair has not been built/run.
+# g104 adapter/helper link attempts remain RED; this repair is source-only.
 get_property(finalizer_manager_targets DIRECTORY PROPERTY BUILDSYSTEM_TARGETS)
 foreach(finalizer_manager_target IN LISTS finalizer_manager_targets)
   get_target_property(finalizer_manager_sources ${finalizer_manager_target} SOURCES)
@@ -23,6 +23,10 @@ if(BUILD_TESTING AND WIN32)
     src/raiktor_war_bound_regiment_v1.cpp
     src/raiktor_surrender_truce_v1.cpp
     src/raiktor_actual_truce_expiry_v1.cpp
+    # Runtime PUBLIC definitions enable these existing adapter helper branches.
+    src/current_first_heir_relationship_v1.cpp
+    src/marriage_candidate_alliance_projection_v1.cpp
+    src/marriage_native_outcome_classifier_v1.cpp
     src/ck3_12003_battle_finalizer_manager_inputs_test.cpp)
   target_link_libraries(xar_ck3_12003_current_finalizer_manager_inputs PRIVATE
     xar_ck3_12002_runtime user32)
