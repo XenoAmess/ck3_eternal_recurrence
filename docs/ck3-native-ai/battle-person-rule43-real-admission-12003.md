@@ -124,3 +124,32 @@ flowchart TD
 This actual-child addition is **274B =238 code+36 pdata**. The complete current Rule43 source lane now totals **850B =654 code+180 pdata+16 static data**. Reused855AB0 and earlier bodies are not reread or charged again. No broader children, callee cascade or trigger catalogue was captured.
 
 `ROOT-FIRST-CHILD-REFERENCE-READ-REQUEST.json` asks Root for a **new paused receipt**: childDWORD74(4B), referentQWORD40(8B), rawcomparisonBYTE80(1B), total13B. Any nonzero74 stops at the exact37B6C50 source dependency. Actual74zero then demands only referentQWORD110(8B); null requires21B total. A nonnull nestedtrigger adds itsvptr and58/60/C8 targets32B, maximum53B. After Root's session restoration, neither the old frame nor source-specific operands are silently treated as current. No wholeRule43 Boolean, fullperson/Entry/live promotion, source implementation, build or test is claimed.
+
+## Actual nested conjunction reuse — October6 08:42 onward
+
+Root's new53-byte actual read at2026-10-06 00:42:24.967947 UTC is `g2-resume-20261006/rule43-reference-prefix-r0048-once.json`. The fresh source context is R0048/PID4692, g80 sessiongeneration0/connectiongeneration2, pausedframe846/public3/native34/rawdate53288232. The previously identified referencechild29919C8B450 now has actualDWORD74=**0**, referentQWORD40=**2991B88ED10**, rawBYTE80=**1**. The source-selected referent110 nestedtrigger is **29987C98B00**, whose actualvptr is **RVA449BEB0** and actual58/60/C8 targets are the already closed **855AB0/9CFEC0/372F780**. These functions, the zero mask constant, applicability shell and evaluation shell are reused without any EXE reread.
+
+The actual zero parameter count selects the direct-reference branch, so37B6C50 is undemanded for this frame. This reference wrapper compares raw1 to nestedAL, meaning its result equals a Boolean nested result once the actual nested predicate is independently known. The actual nonnull nested object has known zero-scope/zero-mask applicability and the same mode-selected conjunction algorithm. Its mode, selected physical header, ordered child operands and preceding root-scope/CharacterScriptContext validation are not replaced with supplied outcomes. Earlier815 outer-list observations and current846 reference observations remain separately dated; no wholeRule43 current result is derived across those frames.
+
+```mermaid
+flowchart TD
+  R[Root846 actual74=0/referent40=2991B88ED10/raw80=1] --> N[Actualreferent110=29987C98B00]
+  N --> V[Actualvptr449BEB0;855AB0/9CFEC0/372F780 reused]
+  V --> A[Known zero-mask applicability after separate rootvalidation]
+  A --> M{Fresh actualmode5D1DADC}
+  M -- 2 --> G2[Exact372F880 gap]
+  M -- 4 --> G4[Exact37354A0 gap]
+  M -- 1/3 --> H88[Actualnestedheader88/count94]
+  M -- ordinary other --> H40[Actualnestedheader40/count4C]
+  H88 --> C{Actualsignedcount=0}
+  H40 --> C
+  C -- yes --> T[NativeANDtrue without child]
+  C -- no --> F[Only first physical ordered child and actualvptr/58/60/C8]
+  F -. first demanded child operands unknown .-> AL[NestedAL]
+  T --> EQ[Raw1==nestedAL]
+  AL --> EQ
+```
+
+`ROOT-NESTED-CONJUNCTION-PREFIX-READ-REQUEST.json` is the next Root-only recipe. One fresh actualmode byte plus only its selected8-byte array/4-byte signedcount is **13B**. Mode2/4 stops at the exact named source gap instead of reading an ordinary header. Actualcount0 stops with known conjunctiontrue. Any nonzero count, including negative, is not known-empty and demands only the first physical child8B plus itsvptr and58/60/C8 targets32B, maximum **53B**. A larger array is not dumped; any later demand follows the first child's actual source result and source order.
+
+This continuation adds **0 EXE bytes**. Rule43 lane cost remains **850B =654 code+180 pdata+16 static data**. Root's53-byte reference read is actual memory evidence owned by Root, not an EXE source-cost addition or an executed predicate. No callbacks, source implementation, native builds, tests, old numeric repeats or Root-report edits are performed by this continuation. Readiness remains source-only actual reference and nested-dispatch closure, with real root-scope/context and first demanded nested operands still explicit.
