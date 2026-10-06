@@ -1,0 +1,13 @@
+# R0051 bounded waypoint: order and independent current state (1.20.0.3)
+
+Recorded 2026-10-07T00:43:22.107037+08:00. Original ordinary Robert29829 campaign; R0051 PID155556, runtime source71b729f0, DLL64e934f2. Source integration97a2a77d is a separate offline candidate. The owned visible CK3 window was actually minimized in the metadata check; no focus input was used.
+
+The existing native source tree and bounded policy selected one waypoint after route/contact and encounter-input observations. The forecast remains research-only-bounded-core: native parity, phase events and character-death prediction are incomplete. Native parity is not the existing policy's admission requirement; no new gate was introduced.
+
+021 proved current route2619→2618 with arrival53288328 and hostile134218098 stationary2606. The one-day horizon53288232→53288256 had no conflicts. 022 selected move-army-218104048-to-2618. 023 executed16:28:33.140673→16:30:34.953475UTC and returned accepted/submitted. Independent 024 snapshot16:30:34.999655→16:30:35.017602UTC confirmed public4/native3, native:3, paused and date53288232, with current province2619, observable target2618, route[2618], native moving state7. This proves the current movement order and route; arrival, a new game day, battle outcome and normal save are not yet observed.
+
+Movement changes the frame revision and invalidates cached army/combat inputs. 025 therefore requested current Army strengths. Actual026 queried both war sides16:33:56.321278→16:37:14.586863UTC (198.265585s), accepted/available, querysequence2, public4/native3. Own218104048/CArmy67109093:1833/2367 soldiers,39regiments, basepower6224500000, supply100, attrition0. Enemy134218098/CArmy167772499:348/536,8regiments, basepower1635200000, supply100, attrition0. Registered SDK response135422159B. This real latency and response size justify a separate transport/materialization performance package; no original large response or old qualification is repeated for that package.
+
+028 refreshed the committed route's actual contact horizon16:40:32.308094→16:41:15.557765UTC. Current origin became2618 while current province remained2619; one-day contact-free remained true, conflicts empty. It is a current in-flight route observation, not a claimed arrival.
+
+Evidence directory: `Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/gameplay-responses/` retains actual021–028 originals. Compact actual026: `Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-ACTUAL-ARMY-AFTER-MOVE026-COMPACT.json`. Current qualifications remain production-live primitives; saved campaign total5996, today's normal saved increment0, natural successions0.
