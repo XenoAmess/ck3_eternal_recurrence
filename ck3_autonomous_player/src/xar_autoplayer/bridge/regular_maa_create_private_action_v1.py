@@ -7,7 +7,7 @@ import uuid
 
 from .driver import BridgeUnavailableError
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12003
+from .version_identity import CK3_12003, CK3_12004
 
 STEP = "maa-regular-personal-create-private-v1"
 ACTION_SCHEMA = "xar.ck3.regular-maa-create-private-action.v1"
@@ -40,7 +40,7 @@ def submit_regular_maa_create_private_v1(
             or actor.get("character_id") == -1
             or not _integer(before.get("native_revision"), 1, (1 << 64) - 1)
             or type(before.get("date_raw")) is not int
-            or private_native_build_identity(before) != CK3_12003):
+            or private_native_build_identity(before) not in (CK3_12003, CK3_12004)):
         raise BridgeUnavailableError("regular MAA Create requires its current paused Crozier player frame")
     request_id = "maa-create-" + uuid.uuid4().hex
     driver.endpoint.send({
