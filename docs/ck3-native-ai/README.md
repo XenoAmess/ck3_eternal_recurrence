@@ -433,6 +433,7 @@ candidate DLL `def2617b7dd67b01b08a576c99c3bfa8dc90fa908921671b4b79f9bbad47da1e`
   vector、直属有地封臣和相邻外部省份持有者 full-generation ID 的 exact-build 状态解析树；该域没有原生 AI 决策树。typed bridge/service/MCP 已在两个不同角色的 independent/vassal
   checkpoint 上完成双查询与冷恢复，artifact SHA 为 `DA5EB7F0...02CDDC`、`677C4FF9...B279F9`；非-duchy、非-feudal 与
   landless/legal-absent live 矩阵仍待补。
+- [source implemented, actual4 qualification pending] [ck3-1.20.0.4-full-campaign-root.md](ck3-1.20.0.4-full-campaign-root.md) 独立 actual4 完整 CampaignRoot environment、reader 与真实 RVA 发布器；保留完整 held-title/primary-heir 缓存，明确区分可用常规路径、尚缺 typed position key 的议会状态与尚缺 CTitle30/32 的无 Province 特殊分支。
 - [static-ready, live pending] [entity-directory-v1.md](entity-directory-v1.md) 发布独立 `ck3_search_entities_v1` MCP 工具，以
   relation filter 与 keyset pagination 发现 self、直属有地封臣和相邻外部 Province holder 的稳定 CharacterID。self 与直属封臣
   及相邻 holder 的 primary-title/capital/immediate/top-liege 已由同一 campaign-root frame 逐实体解析；相邻 holder 保留来源角色，

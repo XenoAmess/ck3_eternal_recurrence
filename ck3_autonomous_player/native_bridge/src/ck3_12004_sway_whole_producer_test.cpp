@@ -99,6 +99,8 @@ void Destroy(void *context) {
 }
 void *Send(void *out, const void *context) {
   ++gSends;
+  // The embedded caller-owned copy has its own destroy(native + 0x20).
+  ++gContexts;
   Put(out, 0, reinterpret_cast<std::uintptr_t>(gCommandVtable.data()));
   Put(out, 0x18, gSendSecondaryVtable);
   std::memcpy(static_cast<std::byte *>(out) + 0x20, context, 0x338);

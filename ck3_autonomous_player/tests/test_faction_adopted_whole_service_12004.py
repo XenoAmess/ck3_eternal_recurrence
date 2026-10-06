@@ -330,7 +330,7 @@ class FactionAdoptedWholeService12004Tests(unittest.TestCase):
                                 self.assertIs(value, name != "exact_ultimatum_timing_ready")
                         elif case == "unavailable":
                             self.assertEqual(raw["status"], "unavailable")
-                            self.assertEqual(raw["date_raw"], 0)
+                            self.assertIsNone(raw["date_raw"])
                             self.assertIsNone(raw["player_character_id"])
                             self.assertIsNone(raw["targeting_faction_count"])
                             self.assertEqual(raw["targeting_factions"], [])
@@ -340,7 +340,7 @@ class FactionAdoptedWholeService12004Tests(unittest.TestCase):
                             self.assertIsNone(raw["planner_projection"]["present"])
                             self.assertIsNone(raw["planner_projection"]["dangerous"])
                             self.assertIs(type(raw["unavailable_reason"]), str)
-                            self.assertEqual(raw["unavailable_reason"], "exact_build_not_admitted")
+                            self.assertEqual(raw["unavailable_reason"], "unsupported_build")
                         else:
                             self.assertEqual(raw["status"], "available")
                             self.assertEqual(raw["date_raw"], 53175816)
@@ -475,6 +475,8 @@ def _gift_stage(test, stage_dir, case, mode, revision, whole_wire, entrance,
                 build_identity, compound):
     from xar_autoplayer.bridge import faction_gift_formal_route_v1 as formal
     from xar_autoplayer.bridge.mcp_server import create_server
+    from xar_autoplayer.bridge.driver import BridgeUnavailableError, StepPostconditionError
+    from mcp.server.mcpserver.exceptions import ToolError
     from xar_autoplayer.faction_gift_formal_candidate_v1 import choose_private_faction_gift_candidate_v1
     from xar_autoplayer.faction_gift_pending_v1 import (
         begin_faction_gift_submission_v1, mark_faction_gift_ack_pending_v1,
@@ -567,7 +569,7 @@ def _gift_stage(test, stage_dir, case, mode, revision, whole_wire, entrance,
             "capabilities": ["game.state.snapshot"],
         }
         frame = _gift_frame(revision)
-        heartbeat = {"type": "heartbeat", "protocol_version": 1,
+        heartbeat = {"type": "heartbeat", "protocol_version": 1, "sequence": 1,
                      "g2_faction_gift_mitigation_async_glue_v1": {"private_build": True}}
         for name, item in (("synthetic-hello.json", hello), ("synthetic-paused-frame.json", frame),
                            ("synthetic-heartbeat.json", heartbeat)):
@@ -645,18 +647,30 @@ def _gift_stage(test, stage_dir, case, mode, revision, whole_wire, entrance,
                     arguments["pending"] = pending
                 receipt["registered_tool"] = tool_name
                 receipt["registered_arguments"] = deepcopy(arguments)
+
+                def expect_direct_tool_rejection(call_arguments, source_error_type, source_message):
+                    with test.assertRaises(ToolError) as rejected:
+                        asyncio.run(server.call_tool(tool_name, call_arguments))
+                    error = rejected.exception
+                    test.assertIs(type(error), ToolError)
+                    test.assertEqual(str(error), f"Error executing tool {tool_name}: {source_message}")
+                    test.assertIs(type(error.__cause__), source_error_type)
+                    test.assertEqual(str(error.__cause__), source_message)
+                    return {"type": type(error).__name__, "message": str(error),
+                            "cause": {"type": type(error.__cause__).__name__,
+                                      "message": str(error.__cause__)}}
+
                 if case == "known-empty":
                     zero_root = {**root, "player_targeting_faction_count": 0}
                     zero_arguments = {**arguments, "same_frame_root": zero_root}
                     request_count_before = len(endpoint.requests)
-                    zero_result = asyncio.run(server.call_tool(tool_name, zero_arguments))
-                    test.assertIs(zero_result.is_error, True)
-                    zero_text = "\n".join(getattr(item, "text", "") for item in zero_result.content)
-                    test.assertIn("private faction query lacks a nonempty exact targeting count", zero_text)
+                    zero_error = expect_direct_tool_rejection(
+                        zero_arguments, BridgeUnavailableError,
+                        "private faction query lacks a nonempty exact targeting count")
                     test.assertEqual(len(endpoint.requests), request_count_before)
                     receipt["known_empty_authoritative_zero_root"] = {
                         "input": deepcopy(zero_arguments),
-                        "actual_mcp_result": zero_result.model_dump(mode="json", by_alias=True),
+                        "actual_mcp_result": None, "actual_mcp_exception": zero_error,
                         "transport_requests": 0, "expected_preflight_error": True,
                     }
                     _write_json(stage_dir / "known-empty-zero-root-input.json", zero_arguments)
@@ -664,16 +678,14 @@ def _gift_stage(test, stage_dir, case, mode, revision, whole_wire, entrance,
                                 receipt["known_empty_authoritative_zero_root"])
                     receipt["known_empty_positive_root_boundary"] = (
                         "Explicit synthetic positive-root negative protocol probe only; native empty body is unchanged and no readiness is credited.")
-                mcp_result = asyncio.run(server.call_tool(tool_name, arguments))
-                receipt["actual_mcp_result"] = mcp_result.model_dump(mode="json", by_alias=True)
                 if case == "receipt-unchanged":
-                    test.assertIs(mcp_result.is_error, True)
-                    error_text = "\n".join(getattr(item, "text", "") for item in mcp_result.content)
-                    expected_text = "private faction receipt did not prove material application"
-                    test.assertIn(expected_text, error_text)
-                    receipt["expected_error"] = {"MCP_is_error": True, "message": error_text,
-                                                 "expected_source_error": "StepPostconditionError"}
+                    receipt["expected_error"] = expect_direct_tool_rejection(
+                        arguments, StepPostconditionError,
+                        "private faction receipt did not prove material application")
+                    receipt["actual_mcp_exception"] = deepcopy(receipt["expected_error"])
                 else:
+                    mcp_result = asyncio.run(server.call_tool(tool_name, arguments))
+                    receipt["actual_mcp_result"] = mcp_result.model_dump(mode="json", by_alias=True)
                     test.assertIs(mcp_result.is_error, False)
                     observed = mcp_result.structured_content
                     test.assertIsInstance(observed, dict)

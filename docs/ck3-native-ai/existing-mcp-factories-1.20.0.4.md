@@ -78,3 +78,11 @@ closed. The final piety getter is `0x28BE0B0`, proved by a complete 86-byte body
 already in the shared cache. At source delivery, FIRST is NOTRUN and this
 package claims no live capability. The final pins, actual finite read cost and
 remaining Root compilation/FIRST are recorded in ROOT-DELIVERY and Oct7/W41.
+
+The Oct7 joint-domain FIRST02 native producer passed. Its first consumer stopped
+before production imports because the harness expected nested martial status
+`absent`. The existing `ReadCurrentCommanderTotalMartial(-1, ...)` instead retains
+DTO status `unavailable`, with reason `current_commander_absent`, null source ID
+and value, skill index 1 and the native current-skill-cache source. The parent
+commander status remains `absent`. The corrected consumer asserts that entire
+six-field DTO exactly and reuses the unchanged GREEN native whole packet.

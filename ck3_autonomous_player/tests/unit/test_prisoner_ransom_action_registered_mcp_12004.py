@@ -47,6 +47,7 @@ def main() -> int:
     parser.add_argument("--output-dir", required=True, type=Path)
     args = parser.parse_args()
     sys.path.insert(0, str(args.source_root / "ck3_autonomous_player/src"))
+    from mcp.server.mcpserver.exceptions import ToolError
     from xar_autoplayer.bridge.driver import BridgeUnavailableError
     from xar_autoplayer.bridge.mcp_server import create_server
     from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
@@ -215,9 +216,25 @@ def main() -> int:
                               and ledger["pending"]["pre_player_gold_raw"] == 5000000,
                               f"{case}: the existing formal writer persists the fence before send")
                         action_calls += 1
-                        result = asyncio.run(server.call_tool(_ACTION_TOOL, {
-                            "collection": collection, "prisoner_character_id": prisoner_character_id,
-                        }))
+                        try:
+                            result = asyncio.run(server.call_tool(_ACTION_TOOL, {
+                                "collection": collection, "prisoner_character_id": prisoner_character_id,
+                            }))
+                        except ToolError as error:
+                            if case in _RECEIPTS:
+                                raise
+                            native_error = packet["command_result"].get("error")
+                            check(packet["command_result"].get("ok") is False
+                                  and isinstance(native_error, str) and native_error in str(error),
+                                  f"{case}: direct MCP ToolError retains the explicit native rejection")
+                            action_responses.append({
+                                "is_error": True, "structured_content": None,
+                                "text": [str(error)],
+                                "tool_error_type": f"{type(error).__module__}.{type(error).__qualname__}",
+                            })
+                            raise BridgeUnavailableError(
+                                "registered native ransom rejected: " + str(error)
+                            ) from error
                         action_responses.append({
                             "is_error": result.is_error,
                             "structured_content": result.structured_content,

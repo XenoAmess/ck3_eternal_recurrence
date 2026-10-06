@@ -1,5 +1,6 @@
 // Fixture-owned native stores and typed queue use the same exact-build
 // layouts as the provider fixture; its standalone matrix is not rerun.
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "ck3_12004_faction_adopted_fixture.hpp"
 
 #include "xar_bridge/ck3_12004_faction_gift_router.hpp"
@@ -170,8 +171,10 @@ void RunAlertWholes(Fixture &fixture, RouterAdapter &adapter,
   mailbox.permitted_executor_secondary = &ExecutePlayerFactionAlertsMailbox12004;
   std::string wire, failure;
   const auto call = [&](std::string_view filename) {
-    CheckRouter(HandlePlayerFactionAlerts12004(adapter, mailbox, adapter.snapshot,
-        1, "{\"expected_revision\":1}", filename, wire, failure, &environment));
+    const bool handled = HandlePlayerFactionAlerts12004(adapter, mailbox, adapter.snapshot,
+        1, "{\"expected_revision\":1}", filename, wire, failure, &environment);
+    if (!handled) std::cerr << "faction alerts handler failed: " << filename << ": " << failure << '\n';
+    CheckRouter(handled);
     CheckRouter(wire.find("\"game_version\":\"1.20.0.4\"") != std::string::npos);
     WriteWire(out, filename, wire);
   };
@@ -188,11 +191,11 @@ void RunAlertWholes(Fixture &fixture, RouterAdapter &adapter,
   Put(fixture.faction_type.data(), 0x28, std::uint64_t{populist.size()});
   Put(fixture.faction_type.data(), 0x30, std::uint64_t{16});
   call("alerts-county-member.command-result.json");
-  CheckRouter(wire.find("\"county_opinion\":0") != std::string::npos);
-  CheckRouter(wire.find("\"native_county_join_score_raw\":0") != std::string::npos);
+  CheckRouter(wire.find("\"county_opinion\":{\"raw\":0,\"scale\":1}") != std::string::npos);
+  CheckRouter(wire.find("\"native_county_join_score\":{\"raw\":0,\"scale\":100000}") != std::string::npos);
   environment.exact_build_admitted = false;
   call("alerts-unavailable.command-result.json");
-  CheckRouter(wire.find("exact_build_not_admitted") != std::string::npos);
+  CheckRouter(wire.find("\"unavailable_reason\":\"unsupported_build\"") != std::string::npos);
   fixture.factions = original;
   Put(fixture.characters[0].data(), 0x1C0, static_cast<void *>(nullptr));
   Put(fixture.faction.data(), 0x54, std::int32_t{1});
@@ -224,6 +227,24 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(MainThreadQueryMailboxV
   stamp.tls_initialized = stamp.tls_main_thread_marker = 1;
   stamp.tls_context = stamp.jomini_state = stamp.game_state = 1;
   const bool ok = executor(opaque, stamp);
+  const auto &envelope = *static_cast<const ck3_12002::QueryMailboxEnvelope *>(opaque);
+  if (!envelope.entered || !envelope.frame_stable) {
+    game::Snapshot captured{};
+    const bool read = envelope.game != nullptr && envelope.game->read_snapshot(captured);
+    std::cerr << "faction fixture envelope failed: entered=" << envelope.entered
+        << " frame_stable=" << envelope.frame_stable << " snapshot_read=" << read
+        << " snapshot_equal=" << (read && captured == envelope.expected_snapshot)
+        << " descriptor_12004=" << (envelope.game != nullptr && game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+        << " owning_thread=" << ck3_12002::IsQueryOwningThread(const_cast<ck3_12002::QueryMailboxEnvelope *>(&envelope))
+        << " expected_revision=" << envelope.expected_snapshot_revision
+        << " captured_date=" << captured.date_raw << " stamp_date=" << stamp.date_raw
+        << " ticket=" << envelope.ticket.sequence << " published=" << mailbox.published_sequence.load()
+        << " owner=" << mailbox.owner_thread_id.load() << " thread=" << stamp.thread_id
+        << " executor_equal=" << (mailbox.executor == envelope.executor)
+        << " context_equal=" << (mailbox.executor_context == &envelope)
+        << " failure_flags=" << mailbox.failure_flags.load()
+        << " stop_requested=" << mailbox.stop_requested.load() << '\n';
+  }
   mailbox.state = ok ? MainThreadQueryMailboxStateV1::completed : MainThreadQueryMailboxStateV1::executor_failed;
   return MainThreadQuerySubmitResultV1::submitted;
 }

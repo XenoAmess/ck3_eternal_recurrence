@@ -91,7 +91,8 @@ def _binding(driver: object, *, expected_revision: int,
             and snapshot.get("snapshot_id") == f"native:{snapshot['native_revision']}"
             and snapshot.get("revision") == expected_revision
             and type(snapshot.get("date_raw")) is int
-            and isinstance(snapshot.get("episode_run_id"), str)):
+            and (wartime_observation
+                 or isinstance(snapshot.get("episode_run_id"), str))):
         raise BridgeUnavailableError(
             "construction trial lacks a stable admitted paused actor frame")
     return snapshot
@@ -188,6 +189,9 @@ def query_construction_private(driver: object, *, expected_revision: int,
     starting = _binding(driver, expected_revision=expected_revision,
                         material_receipt=material_receipt,
                         wartime_observation=wartime_observation)
+    # native_campaign intentionally has no one-life episode projection. Its
+    # wartime read is bound to the real actor/native frame, without an action ledger.
+    episode_run_id = starting.get("episode_run_id")
     revision = starting["native_revision"]
     build = private_native_build_identity(starting)
     provenance = ({} if build == CK3_11906
@@ -224,14 +228,14 @@ def query_construction_private(driver: object, *, expected_revision: int,
             and _positive(probe.get("proof_epoch"))
             and ending.get("snapshot_id") == starting["snapshot_id"]
             and ending.get("revision") == starting["revision"]
-            and ending.get("episode_run_id") == starting["episode_run_id"]):
+            and ending.get("episode_run_id") == episode_run_id):
         return {**provenance, "status": "source_red", "native_result": result,
                 "native_query_request_id": request_id,
                 "source_frame": {"snapshot_id": starting["snapshot_id"],
                                  "revision": starting["revision"],
                                  "native_revision": revision,
                                  "date_raw": starting["date_raw"],
-                                 "episode_run_id": starting["episode_run_id"],
+                                 "episode_run_id": episode_run_id,
                                  "actor_character_id": starting["played_character"]["character_id"]},
                 "ending_frame": {"snapshot_id": ending.get("snapshot_id"),
                                  "revision": ending.get("revision"),
@@ -247,7 +251,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
                                  "revision": expected_revision,
                                  "native_revision": revision,
                                  "date_raw": starting["date_raw"],
-                                 "episode_run_id": starting["episode_run_id"],
+                                 "episode_run_id": episode_run_id,
                                  "actor_character_id": starting["played_character"]["character_id"]}}
     selected = _candidate(world, exact_ck3_build=build.game_version)
     if selected is None:
@@ -262,7 +266,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
             "snapshot_id": starting["snapshot_id"],
             "revision": expected_revision, "native_revision": revision,
             "date_raw": starting["date_raw"],
-            "episode_run_id": starting["episode_run_id"],
+            "episode_run_id": episode_run_id,
             "actor_character_id": starting["played_character"]["character_id"]}}
     return {**provenance, "status": "selected", "candidate": selected, "world": dict(world),
             "native_query_request_id": request_id,
@@ -270,7 +274,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
             "source_frame": {"snapshot_id": starting["snapshot_id"],
                              "revision": expected_revision, "native_revision": revision,
                              "date_raw": starting["date_raw"],
-                             "episode_run_id": starting["episode_run_id"],
+                             "episode_run_id": episode_run_id,
                              "actor_character_id": starting["played_character"]["character_id"]}}
 
 

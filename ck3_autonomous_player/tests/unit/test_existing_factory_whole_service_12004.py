@@ -42,7 +42,7 @@ def _write_json(path: Path, value: object) -> None:
 class _CompiledWholeEndpoint:
     """Offline endpoint; it serves three untouched compiled result bodies."""
 
-    pipe_name = "offline-existing-factory-whole-12004"
+    pipe_name = r"\\.\pipe\offline-existing-factory-whole-12004"
 
     def __init__(
         self, frames: dict[str, dict[str, object]],
@@ -53,6 +53,7 @@ class _CompiledWholeEndpoint:
         self.state_frame = state_frame
         self.capabilities = capabilities
         self.requests: list[dict[str, object]] = []
+        self.control_requests: list[dict[str, object]] = []
         self.correlations: list[dict[str, object]] = []
         self._on_frame = None
         self._on_disconnect = None
@@ -71,6 +72,23 @@ class _CompiledWholeEndpoint:
         on_frame(copy.deepcopy(self.state_frame))
 
     def send(self, request: dict[str, object]) -> None:
+        if request.get("type") == "ping":
+            if (
+                set(request) != {"type", "protocol_version", "request_id"}
+                or type(request["protocol_version"]) is not int
+                or request["protocol_version"] != 1
+                or not isinstance(request["request_id"], str)
+                or not request["request_id"]
+            ):
+                raise AssertionError("initialization ping differs from the production contract")
+            self.control_requests.append(copy.deepcopy(request))
+            self._on_frame({
+                "type": "pong",
+                "protocol_version": 1,
+                "request_id": request["request_id"],
+                "pid": 12004,
+            })
+            return
         index = len(self.requests)
         if index >= len(_ORDER):
             raise AssertionError("unexpected fourth native command")
@@ -221,8 +239,14 @@ class ExistingFactoryWholeService12004Tests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(leaf["current_commander"]["status"], "absent")
                 self.assertIsNone(leaf["current_commander"]["character_id"])
                 martial = leaf["current_commander"]["current_total_martial"]
-                self.assertEqual(martial["status"], "absent")
-                self.assertIsNone(martial["value"])
+                self.assertEqual(martial, {
+                    "status": "unavailable",
+                    "source": "native_current_assigned_commander_total_skill_cache",
+                    "source_character_id": None,
+                    "skill_index": 1,
+                    "value": None,
+                    "unavailable_reason": "current_commander_absent",
+                })
                 movement = leaf["current_movement_speed"]
                 for name in ("land", "naval"):
                     self.assertEqual(movement[name]["status"], "available")
@@ -312,6 +336,9 @@ class ExistingFactoryWholeService12004Tests(unittest.IsolatedAsyncioTestCase):
             )
             service = GameplayBridgeService(driver)
             starting = service.snapshot()
+            self.assertEqual(len(endpoint.control_requests), 1)
+            self.assertEqual(endpoint.control_requests[0]["type"], "ping")
+            self.assertEqual(len(endpoint.requests), 0)
             self.assertIs(starting["paused"], True)
             self.assertEqual(starting["native_revision"], 7)
             self.assertEqual(starting["date_raw"], 10000)
@@ -384,6 +411,7 @@ class ExistingFactoryWholeService12004Tests(unittest.IsolatedAsyncioTestCase):
             _write_json(output_dir / "registered-assignment-mcp.json", mcp_wire)
             _write_json(output_dir / "endpoint-requests-and-correlations.json", {
                 "requests": endpoint.requests,
+                "control_requests": endpoint.control_requests,
                 "correlations": endpoint.correlations,
                 "native_result_bodies_unchanged": True,
             })
@@ -391,6 +419,7 @@ class ExistingFactoryWholeService12004Tests(unittest.IsolatedAsyncioTestCase):
                 "status": "GREEN",
                 "active_phase": "complete",
                 "native_packet_count": 3,
+                "initialization_pings": len(endpoint.control_requests),
                 "native_command_order": ["before", "assignment", "after"],
                 "registered_tool_calls": 1,
                 "assignment_submissions": 1,

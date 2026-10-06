@@ -8,10 +8,15 @@
 #include "xar_bridge/protocol.hpp"
 
 #include <windows.h>
+#include <atomic>
 #include <utility>
 
 namespace xar::ck3_12002 {
 namespace {
+std::atomic<const char *> g_religion_capture_stage{"not_entered"};
+void SetCaptureStage(const char *stage) noexcept {
+  g_religion_capture_stage.store(stage, std::memory_order_relaxed);
+}
 std::string Quote(std::string_view text) {
   static constexpr char hex[] = "0123456789abcdef";
   std::string out = "\"";
@@ -66,10 +71,12 @@ bool ExecutePlayerReligionMailbox12002(
   if (!envelope || !envelope->typed_context) return false;
   auto &query = *static_cast<PlayerReligionMailboxContext12002 *>(envelope->typed_context);
   try {
+    SetCaptureStage("enter_paused_frame");
     if (!EnterQueryMailbox(*envelope, stamp, &ExecutePlayerReligionMailbox12002)) {
       query.failure = "player_religion_published_frame_changed";
       return true;
     }
+    SetCaptureStage("base_religion_context");
     if (game::IsCk3_12004Descriptor(envelope->game->descriptor()))
       (void)ck3_12004::religion::ReadPlayedReligionContext12004(
           query.bindings, stamp.pump_epoch, query.observation);
@@ -91,22 +98,26 @@ bool ExecutePlayerReligionMailbox12002(
     }
     // Resolve the fixed confession definition against this current Context
     // and actual player. A legal false permission remains an observed value.
+    SetCaptureStage("confession_rite_permission");
     (void)ck3_12003::religion::confession_permission::ReadPlayerConfessionRitePermission12003(
         query.confession_permission_bindings, query.bindings,
         out.available ? ResolveReligionCharacter(query, out.played_character_id) : nullptr,
         out, query.confession_rite_permission);
     // Read the independent milestone component on the same owner callback.
     // Its availability does not alter the existing Context or conversion inputs.
+    SetCaptureStage("spiritual_fulfillment_progress");
     (void)religion::fulfillment_progress12003::ReadPlayerSpiritualFulfillmentProgress12003(
         query.progress_bindings,
         out.available ? ResolveReligionCharacter(query, out.played_character_id) : nullptr,
         out, query.progress);
     // Reuse the exact progress binding for an independent stable type key.
+    SetCaptureStage("spiritual_fulfillment_type");
     (void)ck3_12003::religion::fulfillment_type::ReadPlayerSpiritualFulfillmentType12003(
         query.progress_bindings,
         out.available ? ResolveReligionCharacter(query, out.played_character_id) : nullptr,
         out, query.spiritual_fulfillment_type);
     // The fixed decision read is independent of Faith Context and loan numerics.
+    SetCaptureStage("mystical_communion_decision_terms");
     (void)ck3_12003::religion::mystical_communion::ReadPlayerMysticalCommunionDecisionTerms12003(
         query.mystical_communion_bindings,
         ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
@@ -114,6 +125,7 @@ bool ExecutePlayerReligionMailbox12002(
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.mystical_communion_terms);
     // Read fixed pilgrimage CanPlan and its tooltip without opening a planner.
     // This independent component does not change the existing Context.
+    SetCaptureStage("pilgrimage_activity_type_terms");
     (void)ck3_12003::religion::pilgrimage::ReadPlayerPilgrimageActivityTypeTerms12003(
         query.pilgrimage_bindings,
         ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
@@ -123,12 +135,14 @@ bool ExecutePlayerReligionMailbox12002(
     // Route defaults are a separate observation; neither is a live planner.
     auto *pilgrimage_actor = out.available
         ? ResolveReligionCharacter(query, out.played_character_id) : nullptr;
+    SetCaptureStage("pilgrimage_headless_activity_terms");
     (void)ck3_12003::religion::pilgrimage_activity_terms::ReadPlayerPilgrimageActivityTerms12003(
         query.pilgrimage_activity_bindings, pilgrimage_actor, out,
         query.pilgrimage_activity_terms);
     query.pilgrimage_candidate_routes.clear();
     for (const auto &candidate : query.pilgrimage_activity_terms.candidates) {
       ck3_12003::religion::pilgrimage_route::Terms route;
+      SetCaptureStage("pilgrimage_candidate_route");
       (void)ck3_12003::religion::pilgrimage_route::ReadPlayerPilgrimageCandidateRoute12003(
           query.pilgrimage_route_bindings, pilgrimage_actor, out.played_character_id,
           out.date_raw, out.capture_epoch, candidate.province_id, route);
@@ -136,17 +150,20 @@ bool ExecutePlayerReligionMailbox12002(
     }
     // Independent fixed confession and church-income components use the
     // same resolved current player/frame; neither gates existing Context.
+    SetCaptureStage("confession_decision_terms");
     (void)ck3_12003::religion::confession::ReadPlayerConfessionDecisionTerms12003(
         query.confession_bindings,
         ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.confession_terms);
+    SetCaptureStage("church_income_profile");
     (void)ck3_12003::religion::church_income::ReadPlayerChurchIncomeProfile12003(
         query.church_income_bindings,
         ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.church_income_terms);
     // The selected native church tax rule is a separate optional observation.
+    SetCaptureStage("church_tax_inputs");
     (void)ck3_12003::religion::church_tax_inputs::ReadPlayerChurchTaxInputs12003(
         query.church_tax_bindings,
         ResolveReligionCharacter(query, static_cast<std::int32_t>(frame.played_character_id)),
@@ -155,16 +172,20 @@ bool ExecutePlayerReligionMailbox12002(
     // Three independent read-only religion inputs share the actual owner frame.
     auto *religion_actor = ResolveReligionCharacter(query,
         static_cast<std::int32_t>(frame.played_character_id));
+    SetCaptureStage("piety_devotion_profile");
     (void)religion::devotion_profile12003::ReadPlayerDevotionProfile12003(
         query.devotion_bindings, religion_actor, out, query.devotion_profile);
+    SetCaptureStage("rite_virtue_sin_profile");
     (void)religion::rite_virtue_sin_profile12003::ReadPlayerRiteVirtueSinProfile12003(
         query.rite_virtue_sin_bindings, religion_actor, out, query.rite_virtue_sin_profile);
+    SetCaptureStage("vow_of_poverty_terms");
     (void)ck3_12003::religion::vow_of_poverty_terms12003::ReadVowOfPovertyTerms12003(
         query.vow_of_poverty_bindings, religion_actor,
         static_cast<std::int32_t>(frame.played_character_id),
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.vow_of_poverty_terms);
     query.completed = true;
-    (void)FinishQueryMailbox(*envelope);
+    SetCaptureStage("finish_paused_frame");
+    if (FinishQueryMailbox(*envelope)) SetCaptureStage("completed");
     return true;
   } catch (...) {
     query.failure = "player_religion_native_capture_exception";
@@ -240,6 +261,7 @@ bool RunPlayerReligionMailbox12002(PlayerReligionMailboxContext12002 &query,
       failure = "player_religion_current_frame_unavailable"; return false;
     }
     envelope.typed_context = &query;
+    SetCaptureStage("not_entered");
     if (TrySubmitMainThreadQueryV1(*envelope.mailbox,
         &ExecutePlayerReligionMailbox12002, &envelope, envelope.ticket) !=
         MainThreadQuerySubmitResultV1::submitted) {
@@ -248,11 +270,21 @@ bool RunPlayerReligionMailbox12002(PlayerReligionMailboxContext12002 &query,
     auto wait = WaitForMainThreadQueryV1(*envelope.mailbox, envelope.ticket, 5000);
     while (wait == MainThreadQueryWaitResultV1::timeout_executor_already_running)
       wait = WaitForMainThreadQueryV1(*envelope.mailbox, envelope.ticket, 100);
+    const auto mailbox_failure_flags =
+        envelope.mailbox->failure_flags.load(std::memory_order_acquire);
     const auto reclaim = ReclaimMainThreadQueryV1(*envelope.mailbox, envelope.ticket);
     if (wait != MainThreadQueryWaitResultV1::completed ||
         reclaim != MainThreadQueryReclaimResultV1::reclaimed ||
         !query.completed || !envelope.frame_stable) {
-      failure = query.failure.empty() ? "player_religion_paused_capture_unavailable" : query.failure;
+      failure = query.failure.empty()
+          ? std::string("player_religion_paused_capture_unavailable:stage=") +
+                g_religion_capture_stage.load(std::memory_order_relaxed) + ";wait=" + std::to_string(static_cast<int>(wait)) +
+                ";reclaim=" + std::to_string(static_cast<int>(reclaim)) +
+                ";entered=" + std::to_string(envelope.entered) +
+                ";completed=" + std::to_string(query.completed) +
+                ";frame_stable=" + std::to_string(envelope.frame_stable) +
+                ";mailbox_failure_flags=" + std::to_string(mailbox_failure_flags)
+          : query.failure;
       return false;
     }
     serialized = SerializePlayerReligionResult12002(query, request_id);

@@ -86,12 +86,12 @@ class SyntheticLifestyle12004Endpoint:
         pass
 
 
-def _synthetic_paused_frame() -> dict[str, object]:
+def _synthetic_paused_frame(binding_snapshot_id: str) -> dict[str, object]:
     # The native fixture's Frame/Source callbacks are synthetic too. These are
     # their explicit context values, including for the two unavailable wires.
     return {
         "type": "state_snapshot", "protocol_version": 1,
-        "snapshot_id": "synthetic-lifestyle-current-state-12004:7", "revision": 7,
+        "snapshot_id": binding_snapshot_id, "revision": 7,
         "state": {
             "phase": "map_hud", "date": "synthetic-not-live", "date_raw": 1234,
             "speed": 1, "paused": True, "map_ready": True, "history": [],
@@ -154,6 +154,17 @@ class LifestyleWholeService12004Tests(unittest.TestCase):
                 self.assertTrue(module_path.is_relative_to((source / "src").resolve()))
                 compound[key] = module_path.as_posix()
 
+            companion_path = Path(CONFIG.native_wire_dir) / "01-no-current-focus.json"
+            companion = json.loads(companion_path.read_bytes())["result"]["snapshot"]
+            self.assertEqual(companion["status"], "available")
+            shared_binding_id = companion["snapshot_id"]
+            self.assertEqual(shared_binding_id, f"native:{companion['native_revision']}")
+            compound["shared_producer_frame_binding"] = {
+                "snapshot_id": shared_binding_id,
+                "source": companion_path.as_posix(),
+                "boundary": "Synthetic frame context for unavailable cases only; no native snapshot field is injected",
+            }
+
             for case, native_failure in SCENES:
                 with self.subTest(case=case):
                     case_dir = output / case
@@ -181,6 +192,17 @@ class LifestyleWholeService12004Tests(unittest.TestCase):
                         self.assertEqual(wire["request_id"], case)
                         self.assertIs(raw_snapshot["private_build"], True)
                         self.assertIs(raw_snapshot["advertised"], False)
+                        if native_failure is None:
+                            binding_snapshot_id = raw_snapshot["snapshot_id"]
+                            self.assertEqual(binding_snapshot_id, wire["result"]["snapshot"]["snapshot_id"])
+                            binding_source = "this-case unchanged native snapshot"
+                        else:
+                            binding_snapshot_id = shared_binding_id
+                            binding_source = "admitted companion's shared producer Frame; synthetic context only"
+                        receipt["synthetic_frame_binding"] = {
+                            "snapshot_id": binding_snapshot_id, "source": binding_source,
+                            "unavailable_native_snapshot_modified": False,
+                        }
 
                         endpoint = SyntheticLifestyle12004Endpoint(wire)
                         driver = NativeHeadlessGameplayDriver(
@@ -199,13 +221,14 @@ class LifestyleWholeService12004Tests(unittest.TestCase):
                             "expected_ck3_sha256": CK3_12004.executable_sha256,
                             "capabilities": ["game.state.snapshot"],
                         }
-                        paused_frame = _synthetic_paused_frame()
+                        paused_frame = _synthetic_paused_frame(binding_snapshot_id)
                         _write_json(case_dir / "synthetic-hello.json", hello)
                         _write_json(case_dir / "synthetic-paused-frame.json", paused_frame)
                         endpoint.publish(hello)
                         endpoint.publish(paused_frame)
                         before = driver.take_internal_semantic_snapshot()
-                        self.assertEqual(before["snapshot_id"], "native:7")
+                        self.assertEqual(before["snapshot_id"], binding_snapshot_id)
+                        self.assertEqual(binding_snapshot_id, f"native:{before['native_revision']}")
                         self.assertEqual(before["native_revision"], 7)
                         self.assertEqual(before["date_raw"], 1234)
                         self.assertEqual(before["episode_run_id"], EPISODE)
@@ -249,7 +272,7 @@ class LifestyleWholeService12004Tests(unittest.TestCase):
                         request = requests[0]
                         self.assertEqual(request["step"], STEP)
                         self.assertEqual(request["expected_revision"], 7)
-                        self.assertEqual(request["expected_snapshot_id"], "native:7")
+                        self.assertEqual(request["expected_snapshot_id"], binding_snapshot_id)
                         self.assertEqual(request["episode_run_id"], EPISODE)
                         self.assertEqual(request["expected_date_raw"], 1234)
                         self.assertEqual(request["expected_player_character_id"], 29829)
