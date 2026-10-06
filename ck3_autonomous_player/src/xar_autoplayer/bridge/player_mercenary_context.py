@@ -3,11 +3,16 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from .timeline_blocker_private_transport import _binding
-from .version_identity import CK3_12003, require_exact_native_build
+from .nonwar_private_build import private_native_build_identity
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 STEP = "query-player-mercenary-context-v1"
 CAPABILITY = "game.command." + STEP
 SCHEMA = "ck3_12003_player_mercenary_context_v1"
+_SCHEMAS_BY_BUILD = {
+    CK3_12003: SCHEMA,
+    CK3_12004: "ck3_12004_player_mercenary_context_v1",
+}
 
 
 def player_mercenary_context_frame_binding(snapshot: Mapping[str, object]) -> tuple[object, ...]:
@@ -157,11 +162,15 @@ def _location(value: object) -> None:
 
 
 def normalize_player_mercenary_context_v1(value: object, *, snapshot: Mapping[str, object]) -> dict[str, object]:
-    if not isinstance(value, dict) or value.get("schema") != SCHEMA:
+    if not isinstance(value, dict):
         raise ValueError("native mercenary context schema is malformed")
     build = require_exact_native_build(value.get("game_version"), value.get("executable_sha256"))
+    if build not in _SCHEMAS_BY_BUILD or value.get("schema") != _SCHEMAS_BY_BUILD[build]:
+        raise ValueError("native mercenary context schema is malformed")
+    if build == CK3_12004 and build != private_native_build_identity(snapshot):
+        raise ValueError("native mercenary context belongs to another build")
     player = snapshot.get("played_character")
-    if (build != CK3_12003 or not isinstance(player, Mapping)
+    if (not isinstance(player, Mapping)
             or type(value.get("actor_character_id")) is not int
             or value["actor_character_id"] != player.get("character_id")
             or type(value.get("date_raw")) is not int

@@ -1,15 +1,24 @@
 #include "xar_bridge/ck3_12003_player_mercenary_hire_mailbox.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_mercenary_bindings.hpp"
 
 namespace xar::ck3_12003 {
 
 bool BindPlayerMercenaryHireMailboxImageV1(PlayerMercenaryHireMailboxContextV1 &action,
     std::uintptr_t image_base, const game::AdapterDescriptor &descriptor) noexcept {
-  if (image_base == 0 || !game::IsCk3_12003Descriptor(descriptor)) return false;
-  action.core = ck3_12002::BindCoreImage(image_base,
-      game::ReviewedCrozierAbiSha256(descriptor));
-  action.bindings = mercenary::BindMercenaryHireActionImage12003(
-      image_base, descriptor.executable_sha256);
+  if (image_base == 0) return false;
+  if (game::IsCk3_12004Descriptor(descriptor)) {
+    action.core = ck3_12004::BindCoreImage(image_base,
+        descriptor.executable_sha256);
+    action.bindings = ck3_12004::mercenary::BindMercenaryHireActionImage12004(
+        image_base, descriptor.executable_sha256);
+  } else if (game::IsCk3_12003Descriptor(descriptor)) {
+    action.core = ck3_12002::BindCoreImage(image_base,
+        game::ReviewedCrozierAbiSha256(descriptor));
+    action.bindings = mercenary::BindMercenaryHireActionImage12003(
+        image_base, descriptor.executable_sha256);
+  } else return false;
   return action.core.enabled && action.bindings.enabled;
 }
 
@@ -22,7 +31,8 @@ bool ExecutePlayerMercenaryHireMailboxV1(void *opaque,
     if (envelope != &action.envelope || action.completed ||
         !ck3_12002::EnterQueryMailbox(*envelope, stamp,
             &ExecutePlayerMercenaryHireMailboxV1) ||
-        !game::IsCk3_12003Descriptor(envelope->game->descriptor())) return false;
+        (!game::IsCk3_12003Descriptor(envelope->game->descriptor()) &&
+         !game::IsCk3_12004Descriptor(envelope->game->descriptor()))) return false;
     const auto actor_id = static_cast<std::int32_t>(
         envelope->expected_snapshot.played_character_id);
     void *const actor = ck3_12002::ResolveCoreCharacter(action.core, actor_id);

@@ -1,5 +1,8 @@
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_mercenary_bindings.hpp"
+#include "xar_bridge/ck3_12004_province.hpp"
 
 #include <cstring>
 #include <windows.h>
@@ -40,24 +43,42 @@ const void *ResolveMercenaryWorldProvince(void *opaque,
 
 bool BindPlayerMercenaryMailboxImageV1(PlayerMercenaryMailboxContextV1 &query,
     std::uintptr_t image_base, const game::AdapterDescriptor &descriptor) noexcept {
-  if (image_base == 0 || !game::IsCk3_12003Descriptor(descriptor)) return false;
-  const auto reviewed_sha = game::ReviewedCrozierAbiSha256(descriptor);
-  query.core = ck3_12002::BindCoreImage(image_base, reviewed_sha);
-  // The exact .3 title-holder and military-world paths reuse these reviewed
-  // full-reference storage and current Province array bindings.
-  query.provinces = ck3_12002::BindProvinceImage(image_base, reviewed_sha);
-  query.bindings.candidates = mercenary::BindMercenaryCandidatesImage12003(
-      image_base, descriptor.executable_sha256);
-  query.bindings.final_terms = mercenary::BindMercenaryFinalTermsImage12003(
-      image_base, descriptor.executable_sha256);
-  query.bindings.composition = mercenary::BindMercenaryCompositionImage12003(
-      image_base, descriptor.executable_sha256);
-  query.bindings.position.get_title_province =
-      reinterpret_cast<decltype(query.bindings.position.get_title_province)>(
-          image_base + kMercenaryTitleProvinceRvaV1);
-  query.bindings.position.select_hire_raise_province =
-      reinterpret_cast<decltype(query.bindings.position.select_hire_raise_province)>(
-          image_base + kMercenaryHireRaiseSelectorRvaV1);
+  if (image_base == 0) return false;
+  if (game::IsCk3_12004Descriptor(descriptor)) {
+    query.core = ck3_12004::BindCoreImage(image_base,
+        descriptor.executable_sha256);
+    query.provinces = ck3_12004::BindProvinceImage12004(image_base,
+        descriptor.executable_sha256);
+    query.bindings.candidates =
+        ck3_12004::mercenary::BindMercenaryCandidatesImage12004(
+            image_base, descriptor.executable_sha256);
+    query.bindings.final_terms =
+        ck3_12004::mercenary::BindMercenaryFinalTermsImage12004(
+            image_base, descriptor.executable_sha256);
+    query.bindings.composition =
+        ck3_12004::mercenary::BindMercenaryCompositionImage12004(
+            image_base, descriptor.executable_sha256);
+    query.bindings.position =
+        ck3_12004::mercenary::BindMercenaryPositionImage12004(
+            image_base, descriptor.executable_sha256);
+  } else if (game::IsCk3_12003Descriptor(descriptor)) {
+    const auto reviewed_sha = game::ReviewedCrozierAbiSha256(descriptor);
+    query.core = ck3_12002::BindCoreImage(image_base, reviewed_sha);
+    query.provinces = ck3_12002::BindProvinceImage(image_base, reviewed_sha);
+    query.bindings.candidates = mercenary::BindMercenaryCandidatesImage12003(
+        image_base, descriptor.executable_sha256);
+    query.bindings.final_terms = mercenary::BindMercenaryFinalTermsImage12003(
+        image_base, descriptor.executable_sha256);
+    query.bindings.composition = mercenary::BindMercenaryCompositionImage12003(
+        image_base, descriptor.executable_sha256);
+    query.bindings.position.get_title_province =
+        reinterpret_cast<decltype(query.bindings.position.get_title_province)>(
+            image_base + kMercenaryTitleProvinceRvaV1);
+    query.bindings.position.select_hire_raise_province =
+        reinterpret_cast<decltype(query.bindings.position.select_hire_raise_province)>(
+            image_base + kMercenaryHireRaiseSelectorRvaV1);
+    query.bindings.position.skip_selector_when_no_active_wars = false;
+  } else return false;
   query.bindings.world.context = &query.provinces;
   query.bindings.world.read_memory = &ReadMercenaryWorldMemory;
   query.bindings.world.resolve_title = &ResolveMercenaryWorldTitle;
@@ -76,7 +97,8 @@ bool ExecutePlayerMercenaryMailboxV1(void *opaque,
     if (envelope != &query.envelope || query.completed ||
         !ck3_12002::EnterQueryMailbox(*envelope, stamp,
             &ExecutePlayerMercenaryMailboxV1) ||
-        !game::IsCk3_12003Descriptor(envelope->game->descriptor())) return false;
+        (!game::IsCk3_12003Descriptor(envelope->game->descriptor()) &&
+         !game::IsCk3_12004Descriptor(envelope->game->descriptor()))) return false;
     const auto &frame = envelope->expected_snapshot;
     const auto actor_id = static_cast<std::int32_t>(frame.played_character_id);
     void *const actor = ck3_12002::ResolveCoreCharacter(query.core, actor_id);

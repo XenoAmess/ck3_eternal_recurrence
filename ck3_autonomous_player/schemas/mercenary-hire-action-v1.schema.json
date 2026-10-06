@@ -143,7 +143,7 @@
       ],
       "properties": {
         "schema": {
-          "const": "ck3_12003_mercenary_hire_action_v1"
+          "enum": ["ck3_12003_mercenary_hire_action_v1", "ck3_12004_mercenary_hire_action_v1"]
         },
         "status": {
           "enum": [
@@ -221,6 +221,22 @@
     },
     "result": {
       "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "game_version": {"const": "1.20.0.3"},
+            "executable_sha256": {"const": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"},
+            "mercenary_hire": {"properties": {"schema": {"const": "ck3_12003_mercenary_hire_action_v1"}}}
+          }
+        },
+        {
+          "properties": {
+            "game_version": {"const": "1.20.0.4"},
+            "executable_sha256": {"const": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"},
+            "mercenary_hire": {"properties": {"schema": {"const": "ck3_12004_mercenary_hire_action_v1"}}}
+          }
+        }
+      ],
       "required": [
         "step",
         "accepted",
@@ -252,10 +268,10 @@
           "const": false
         },
         "game_version": {
-          "const": "1.20.0.3"
+          "enum": ["1.20.0.3", "1.20.0.4"]
         },
         "executable_sha256": {
-          "const": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+          "enum": ["94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6", "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"]
         },
         "command_sequence": {
           "type": "integer",

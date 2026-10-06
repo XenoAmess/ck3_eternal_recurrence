@@ -3,12 +3,17 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from .player_holy_order_context_private_transport import normalize_player_holy_order_context_v1
-from .version_identity import CK3_12003, require_exact_native_build
+from .nonwar_private_build import private_native_build_identity
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 from .war_contract import HIRE_HOLY_ORDER_V1_CAPABILITY, HIRE_HOLY_ORDER_V1_STEP
 
 STEP = HIRE_HOLY_ORDER_V1_STEP
 CAPABILITY = HIRE_HOLY_ORDER_V1_CAPABILITY
 SCHEMA = "ck3_12003_holy_order_hire_action_v1"
+_SCHEMAS_BY_BUILD = {
+    CK3_12003: SCHEMA,
+    CK3_12004: "ck3_12004_holy_order_hire_action_v1",
+}
 
 
 def validate_hire_holy_order_request_v1(holy_order_id: object, expected_revision: object) -> None:
@@ -23,14 +28,16 @@ def normalize_hire_holy_order_v1(value: object, *, snapshot: Mapping[str, object
     if not isinstance(value, dict) or value.get("step") != STEP:
         raise ValueError("native holy-order hire ACK is malformed")
     build = require_exact_native_build(value.get("game_version"), value.get("executable_sha256"))
-    if (build != CK3_12003 or value.get("read_only") is not False
+    if (build not in _SCHEMAS_BY_BUILD
+            or build == CK3_12004 and build != private_native_build_identity(snapshot)
+            or value.get("read_only") is not False
             or type(value.get("command_sequence")) is not int or value["command_sequence"] <= 0
             or type(value.get("snapshot_revision")) is not int
             or value["snapshot_revision"] != snapshot.get("native_revision")
             or type(value.get("date_raw")) is not int or value["date_raw"] != snapshot.get("date_raw")):
         raise ValueError("native holy-order hire ACK differs from its submission frame")
     action = value.get("holy_order_hire")
-    if not isinstance(action, Mapping) or action.get("schema") != SCHEMA:
+    if not isinstance(action, Mapping) or action.get("schema") != _SCHEMAS_BY_BUILD[build]:
         raise ValueError("native holy-order hire action schema is malformed")
     status = action.get("status")
     accepted = status in {"submitted", "already_hired"}
