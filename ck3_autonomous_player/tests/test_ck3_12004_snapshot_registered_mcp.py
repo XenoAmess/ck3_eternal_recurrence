@@ -45,6 +45,23 @@ EXPECTED_STATE = {
     "last_checkpoint_submission": None,
     "history": [],
 }
+# The registered tool exposes the planner-facing event contract produced by
+# normalize_active_event(), not the raw bridge event's option_indexes field.
+# Keep the native assertion above separate so neither representation can hide
+# a change to the compiled whole state_snapshot supplied to the Driver.
+EXPECTED_REGISTERED_STATE = {
+    **EXPECTED_STATE,
+    "active_event": {
+        "source": "native",
+        "instance_id": 77,
+        "option_count": 2,
+        "title": None,
+        "options": [
+            {"index": 0, "option_number": 1, "label": None, "enabled": True},
+            {"index": 1, "option_number": 2, "label": None, "enabled": True},
+        ],
+    },
+}
 
 
 def read_object(path: Path) -> dict:
@@ -175,7 +192,7 @@ async def consume_registered_snapshot(wire_path: Path, source_root: Path) -> dic
         observed = result.structured_content
         if not isinstance(observed, dict):
             raise AssertionError("registered Snapshot did not return structured data")
-        check_subset(observed, EXPECTED_STATE, "registered.snapshot")
+        check_subset(observed, EXPECTED_REGISTERED_STATE, "registered.snapshot")
         if (observed.get("snapshot_id") != whole_wire["snapshot_id"]
                 or observed.get("native_revision") != whole_wire["revision"]):
             raise AssertionError("registered Snapshot lost the native producer revision/identity")
@@ -238,4 +255,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
