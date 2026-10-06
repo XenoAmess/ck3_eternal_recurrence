@@ -1,4 +1,5 @@
 #include "xar_bridge/religion_doctrine12002_tenet.hpp"
+#include "xar_bridge/rite_boolean_parameters_copy.hpp"
 
 #include <cstring>
 #include <limits>
@@ -13,36 +14,9 @@ template <typename T> T Load(const void *object, std::size_t offset) noexcept {
 bool Matches(const void *object, std::uint32_t id) noexcept {
   return object && Load<std::uint32_t>(object, religion::kReferenceIdentityOffset) == id;
 }
-bool CopyKey(const void *native_string, std::string &out) {
-  if (!native_string) return false;
-  const auto size = Load<std::uint64_t>(native_string, 0x10);
-  const auto capacity = Load<std::uint64_t>(native_string, 0x18);
-  if (!size || size > capacity || size > 4096) return false;
-  const auto *data = capacity < 16 ? static_cast<const char *>(native_string)
-                                 : Load<const char *>(native_string, 0);
-  if (!data) return false;
-  out.assign(data, static_cast<std::size_t>(size));
-  return true;
-}
 std::string ReadRite(const TenetParameterBindings &b, const void *rite,
-                     std::uint32_t id, RiteBooleanParameters &out) {
-  if (!Matches(rite, id)) return "rite_unavailable";
-  const auto *collection = static_cast<const std::byte *>(rite) + kRiteBooleanParameterOffset;
-  const auto count = Load<std::int32_t>(collection, kArrayCountOffset);
-  const auto *data = Load<const std::int32_t *>(collection, kArrayDataOffset);
-  if (count < 0 || count > 8192 || (count && !data)) return "parameter_collection_unavailable";
-  out.rite_id = id;
-  for (std::int32_t i = 0; i < count; ++i) {
-    const auto token = Load<std::int32_t>(data, static_cast<std::size_t>(i) * sizeof(std::int32_t));
-    if (!b.contains_boolean_parameter(collection, &token)) return "parameter_membership_unavailable";
-    std::string key;
-    if (!CopyKey(b.parameter_key(token), key)) return "parameter_key_unavailable";
-    out.parameters.push_back({std::move(key), true});
-  }
-  if (Load<const std::int32_t *>(collection, kArrayDataOffset) != data ||
-      Load<std::int32_t>(collection, kArrayCountOffset) != count || !Matches(rite, id))
-    return "state_changed";
-  return {};
+                      std::uint32_t id, RiteBooleanParameters &out) {
+  return detail::CopyRiteBooleanParameters(b, rite, id, out);
 }
 std::string ReadOnce(const religion::Bindings &r, const TenetParameterBindings &b,
                      std::uint64_t epoch, TenetParameterContext &out) {

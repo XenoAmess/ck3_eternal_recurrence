@@ -1,12 +1,12 @@
 # CK3 1.20.0.3：phase 候选角色 Rite 参数的最小只读施工包
 
-2026-10-06，状态 **research / 原生来源 static-confirmed**；本轮交付输入合同与施工方案，尚未实现新 provider，不增加 `static-ready` 或 live 能力数。冻结游戏为 CK3 1.20.0.3 Crozier / Steam build 25652598，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。源码基线 `57e8386d249723839bbb9dec532d352db07b46c9`；复用现有专题、生产源码与封存 native 片段，本轮新 EXE 读取、测试、build、游戏操作均为零。
+2026-10-06，初始 source-only 包于 **09:19:55 Asia/Shanghai** 完成，状态为 research / 原生来源 static-confirmed。随后获准实施最小叶子，当前为 **Python contract/adapter offline-ready；native candidate 已写、待中央首次编译/新 CTest/实际 wire资格**；没有新 live 能力。冻结游戏为 CK3 1.20.0.3 Crozier / Steam build 25652598，EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。原生 source 基线 `57e8386d249723839bbb9dec532d352db07b46c9`，source-only 本地 commit `3cd63d3505f2f97d22f8ae02540d91a6707e0f6f`；后续实现仍复用同一来源，无新 EXE 读取、native build/test或游戏操作。
 
 本机用户当前只允许后台工作；没有启动、连接或查询 CK3。本专题不恢复旧宗教或非战限制，也不改变执行授权。当前 bounded V2 planner 仍可独立推进；本包针对更完整 forecast 的真实缺输入。
 
 ## 已有链与当前缺口
 
-[ReadCombatPhaseInputs](../../ck3_autonomous_player/native_bridge/src/ck3_12002_phase.cpp) 先读非宗教 operands，再无条件写 `available=false`，返回 `phase_inputs_unavailable`。非宗教读取成功时 reason 为 `phase_religion_and_rites_implementation_pending`。候选角色循环已解析同一 Character 的 traits、culture、misc、MAA 输入，但没有填角色 Faith/Religion、Rite 参数、Tenet 与敌方参与者 Faith hostility。旧 DTO 的三个默认 false 字段不能证明这些值被读过。
+source 基线的 [ReadCombatPhaseInputs](../../ck3_autonomous_player/native_bridge/src/ck3_12002_phase.cpp) 先读非宗教 operands，再无条件写 `available=false`，返回 `phase_inputs_unavailable`。非宗教读取成功时 reason 为 `phase_religion_and_rites_implementation_pending`。当时候选角色循环已解析同一 Character 的 traits、culture、misc、MAA 输入，但没有填角色 Faith/Religion、Rite 参数、Tenet 与敌方参与者 Faith hostility。旧 DTO 的三个默认 false 字段不能证明这些值被读过；下节的新叶子只补其中已闭合的参数来源。
 
 现有 V2 `contextual_advantage` 已有独立的构造阶段宗教输入，包括选中 commander 的 adopted Rite hostility；[构造阶段 Faith/Rite 专题](combat-constructor-faith-rite-context-12003.md) 已闭合来源。它不覆盖 phase 的所有 commander/knight root，也不证明 phase 脚本中的 `Faith` hostility。不得为本任务重新研究它，或把它当成 phase 已完成。
 
@@ -85,4 +85,20 @@ flowchart TD
 
 外置包：[phase-input-readonly-frontier](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/phase-input-readonly-frontier/)。`CACHED-OPERAND-INVENTORY.json` 逐行列当前 manifest 的实际 refs；文件 SHA-256 `0bb56e3e14d481eccf69949266367df21eef8aa6ac4a606e1cb15d061f55c0b0`，与 [v7 effects](battle-phase-leaf-effect-fidelity-12003-2026-10-05.md) 的 canonical payload SHA属于不同哈希口径。`SOURCE-EVIDENCE.json` 保留读取片段、原路径和字节哈希；`RESEARCH-PLAN.json` / `MINIMUM-CONTRACT.json` / `FRAME-DATA-REQUEST.json` 将图与后续施工、实际帧依赖分开。
 
-Oct6 / W41：已完成 source-only最小输入包、Mermaid、六行具体 consumer与 exact RVA施工入口；候选宗教 provider实现与资格未完成，原因是本轮只授权 source计划且本机禁止游戏连接。下一步为独立 helper/optional V2 leaf与一个新 serializer→normalizer→source adapter fixture；live资格等待获准窗口。Root统一合并日报/周报字段，不编辑共享报告。
+Oct6 / W41 **09:19 source-only里程碑**：完成最小输入包、Mermaid、六行具体 consumer与 exact RVA施工入口；当时 provider实现与资格尚未完成，原因是该轮只授权 source计划且本机禁止游戏连接。Root统一合并日报/周报字段，不编辑共享报告。
+
+## 后续最小实现与唯一新验证
+
+已写的 [候选 helper](../../ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_phase_rite_parameters.hpp) 只消费 combat query 中已有的实际 Character pointer。旧 played-Rite reader 的内部 `ReadRite` / stable-key copy 已抽为 [共享 copier](../../ck3_autonomous_player/native_bridge/include/xar_bridge/rite_boolean_parameters_copy.hpp)，旧 reader 和新 helper 调同一完整集合算法。没有用玩家专用 query 代替候选角色来源。
+
+V2 commander 与 knight 行的 optional `phase_rite_parameters_v1` 已接入实际 collector、[独立 serializer](../../ck3_autonomous_player/native_bridge/include/xar_bridge/phase_rite_parameters_v1_serializer.hpp) 与 production normalizer。只有 exact `.3` adapter启用 helper；旧 `.2` 的缺叶子及旧 wire继续规范化为 `None`。实际 adopted Rite absent 为独立 `absent`，ref0保留；available 可有合法 absent source Faith。读取失败保留已读 raw/identity与 reason，完整集合标记 false且keys为空。它不添加 whole V2 input gap、不改 Monte Carlo gate。
+
+[Python adapter](../../ck3_autonomous_player/src/xar_autoplayer/simulation/phase_rite_parameters_12003.py) 的 `PhaseRiteOccurrence12003` 明确携带 role、public source Army、Regiment与Character；`adapt_phase_rite_parameters_12003` 按该 occurrence消费规范化 V2叶子，同角色ID跨Army/role不合并。`apply_death_is_glory_modifier_12003` 只应用六行源码中的当前1.1 modifier，输入是该步骤前的running Q100000，不生成事件选择或整体 chance。V3 candidate loop复用同一helper与optional leaf serializer，`available=false` 和 advertisement保持原实际边界。
+
+唯一新 [compound Python case](../../ck3_autonomous_player/tests/unit/test_phase_rite_parameters_12003.py) 经 **production full V2 normalizer → occurrence adapter →六行单步 consumer**：首次调用因 sparse checkout缺少已跟踪 `ck3_workshop_mcp` 导入依赖出现 harness RED，0 methods执行；保留原回执，最小 materialize该目录后，**方法首次实际执行 GREEN：1 method、0.010秒；进程1.3050092秒、exit0**。没有重跑旧 case或任何 passed path。覆盖 complete true/knownfalse、ref0、full generation、合法 source Faith absence、adopted/main来源分离、absent/unavailable/oldmissing、同Character多个occurrence、selected-enemy参数与signed Q100000 trunc0。
+
+中央只需新 target **`xar_ck3_12003_phase_rite_parameters_test`** / 同名 CTest。它用 fake-memory callbacks运行实际 `ReadCombatSimulationInputs`，再投影 actual `AppendCombatCommander` / `AppendCombatKnights` 函数体，输出 `${CMAKE_BINARY_DIR}/ck3_12003_phase_rite_parameters_wire/` 下**五个新 wire**：`complete_true.json`、`known_false_main_different.json`、`zero_reference.json`、`absent_rite.json`、`unavailable_key.json`。`SERIALIZER-PROJECTION.json` 与 literal CPP是构建元数据，不计入 wire。子代理没有编译或执行 native fixture。
+
+实现外置包：[phase-rite-parameters-provider](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/phase-rite-parameters-provider/)。`FIRST-PYTHON-TEST.json/log` 保留导入 harness RED；`RETRY-PYTHON-TEST.json/log` 是首次实际方法 GREEN。`consume_new_phase_rite_wires.py` 是 Root首次新 native GREEN后才可执行的唯一生产消费 recipe；它消费刚产生的五个 wire，经过实际 commander/knight严格 normalizer与source adapter，不再次运行本 Python case或任何旧 wire。
+
+尚未完成：中央 native build、新 CTest、这五个新 wire的生产消费、实际 paused candidate provider资格，以及上节列明的 warmonger/participant Faith hostility/loaded selection与完整 phase依赖。测试成功仅提高当前 Python输入合同资格，不声称完整 phase、forecast或人物未来最终状态。Oct6/W41的后续实现字段外置封存，由Root合并共享日报/周报。

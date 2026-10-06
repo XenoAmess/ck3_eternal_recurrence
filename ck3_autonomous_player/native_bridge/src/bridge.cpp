@@ -19,6 +19,7 @@
 #include "xar_bridge/projected_contact_scope_v1_serializer.hpp"
 #include "xar_bridge/contextual_advantage_v1.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
+#include "xar_bridge/phase_rite_parameters_v1_serializer.hpp"
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_war_cash_current_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
@@ -3473,6 +3474,10 @@ void AppendCombatCommander(
       result,
       commander.status == xar::game::CombatObservationStatus::unavailable,
       commander.unavailable_reason);
+  if (commander.phase_rite_parameters_v1) {
+    result += ",\"phase_rite_parameters_v1\":";
+    xar::game::AppendPhaseRiteParametersV1(result, *commander.phase_rite_parameters_v1);
+  }
   result += '}';
 }
 
@@ -3494,6 +3499,10 @@ void AppendCombatKnights(std::string &result,
       result += knight.eligible ? "true" : "false";
       result += ",\"character_id\":";
       result += SignedNumber(knight.character_id);
+      if (knight.phase_rite_parameters_v1) {
+        result += ",\"phase_rite_parameters_v1\":";
+        xar::game::AppendPhaseRiteParametersV1(result, *knight.phase_rite_parameters_v1);
+      }
       result += ",\"source_regiment_id\":";
       result += SignedNumber(knight.source_regiment_id);
       result += ",\"army_id\":";
@@ -10555,8 +10564,11 @@ bool ExecuteTypedQuery12002(
         query.actual.snapshot_revision = envelope->expected_snapshot_revision;
       }
     } else if constexpr (Kind == QueryKind12002::combat_v3) {
+      auto phase_bindings = xar::ck3_12002::BindPhaseImage(query.image_base, sha);
+      phase_bindings.combat.phase_rite_parameters = xar::ck3_12003::phase_rite::BindImage(
+          query.image_base, envelope->game->descriptor().executable_sha256);
       query.combat_result = xar::ck3_12002::ReadCombatSimulationInputsV3(
-          xar::ck3_12002::BindPhaseImage(query.image_base, sha), snapshot,
+          phase_bindings, snapshot,
           query.combat_request, query.combat);
       query.typed_result = query.combat_result ==
           xar::game::ReadCombatSimulationInputsV3Result::available ||

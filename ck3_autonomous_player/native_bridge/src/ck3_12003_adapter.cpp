@@ -132,6 +132,9 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
       result.combat, image_base, executable_sha256);
   ck3_12002::EnableKnightModelAssociation12003(
       result.combat, image_base, executable_sha256);
+  result.combat.phase_rite_parameters = ck3_12003::phase_rite::BindImage(
+      image_base, executable_sha256);
+  result.phase.combat.phase_rite_parameters = result.combat.phase_rite_parameters;
   // Current cash uses its actual .3 descriptor identity and native getters.
   // The private MCP remains unadvertised; the .2 binder leaves this disabled.
   result.war_cash_current = ck3_12003::war_cash_current::BindImage(

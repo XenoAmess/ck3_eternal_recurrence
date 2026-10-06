@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_phase.hpp"
+#include "xar_bridge/phase_rite_parameters_v1_serializer.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 
 #ifndef NOMINMAX
@@ -1129,6 +1130,10 @@ void AppendCharacter(std::string &output,
   output += character.garuda_court_position ? "true" : "false";
   output += ",\"government_is_nomadic\":";
   output += character.government_is_nomadic ? "true" : "false";
+  if (character.phase_rite_parameters_v1) {
+    output += ",\"phase_rite_parameters_v1\":";
+    game::AppendPhaseRiteParametersV1(output, *character.phase_rite_parameters_v1);
+  }
   output += '}';
 }
 
@@ -1860,6 +1865,9 @@ bool ReadNonReligiousPhaseOperands(
     bool traits_ready = bindings.traits.enabled;
     for (auto &character : output.fields.characters) {
       void *object = environment.resolve_character(environment.context, character.character_id);
+      character.phase_rite_parameters_v1 = ck3_12003::phase_rite::Read(
+          bindings.combat.phase_rite_parameters, object,
+          static_cast<std::uint32_t>(character.character_id));
       if (!object || !phase_character::ReadPhaseCharacterIdentityTraits(bindings.traits,
                                                                        object, character))
         traits_ready = false;

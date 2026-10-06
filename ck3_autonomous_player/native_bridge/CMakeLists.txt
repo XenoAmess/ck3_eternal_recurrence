@@ -8011,6 +8011,7 @@ endif()
 include(cmake/initialization_context_stats_12003.cmake)
 include(cmake/ordinary_stat_inputs_12003.cmake)
 include(cmake/maa_stat_inputs_12003.cmake)
+include(cmake/phase_rite_parameters_12003.cmake)
 
 if(BUILD_TESTING AND WIN32)
   find_package(Python3 COMPONENTS Interpreter REQUIRED)

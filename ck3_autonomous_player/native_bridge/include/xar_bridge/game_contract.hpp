@@ -12,6 +12,7 @@
 #include "xar_bridge/battle_native_owner_recall_inputs_12003.hpp"
 #include "xar_bridge/ck3_12003_army_supply_timing.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
+#include "xar_bridge/phase_rite_parameters_v1.hpp"
 
 #include <array>
 #include <cstdint>
@@ -843,6 +844,7 @@ struct CombatCommanderSnapshot {
   std::int32_t generic_advantage_points = 0;
   CombatCommanderContextSnapshot battle_context;
   std::string unavailable_reason;
+  std::optional<PhaseRiteParametersV1> phase_rite_parameters_v1;
 
   friend bool operator==(const CombatCommanderSnapshot &,
                          const CombatCommanderSnapshot &) = default;
@@ -880,6 +882,7 @@ struct CombatKnightSnapshot {
   std::int64_t effective_toughness_raw = 0;
   std::int64_t scale = 100'000;
   std::optional<CombatKnightEffectivenessContextSnapshot> effectiveness_context;
+  std::optional<PhaseRiteParametersV1> phase_rite_parameters_v1;
 
   friend bool operator==(const CombatKnightSnapshot &,
                          const CombatKnightSnapshot &) = default;

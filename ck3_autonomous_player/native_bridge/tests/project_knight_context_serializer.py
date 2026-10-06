@@ -53,9 +53,10 @@ def main() -> None:
     functions = {name: literal_function(source, name) for name in names}
     output = (
         '#include "xar_bridge/game_contract.hpp"\n'
+        '#include "xar_bridge/phase_rite_parameters_v1_serializer.hpp"\n'
         '#include <array>\n#include <charconv>\n#include <cstdint>\n'
         '#include <string>\n#include <string_view>\n#include <system_error>\n'
-        'namespace knight_context_wire {\n' + "\n".join(functions.values()) +
+        'namespace knight_context_wire {\nusing namespace xar;\n' + "\n".join(functions.values()) +
         '\nstd::string SerializeKnights(const xar::game::CombatKnightsSnapshot &value) {\n'
         '  std::string result; AppendCombatKnights(result, value); return result;\n}\n}\n'
     )

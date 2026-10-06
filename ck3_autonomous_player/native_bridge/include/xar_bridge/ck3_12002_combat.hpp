@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/ck3_12003_phase_rite_parameters.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -73,6 +74,7 @@ struct CombatBindings {
   MaaGetSelectorFactor maa_get_selector_factor = nullptr;
   std::array<MaaGetTypeEnvironment, 3> maa_get_type_environment{};
   std::array<MaaGetLinkedEnvironment, 3> maa_get_linked_environment{};
+  ck3_12003::phase_rite::Bindings phase_rite_parameters;
 };
 
 // Source-closed only for exact .3; the unchanged .2 binder leaves this disabled.

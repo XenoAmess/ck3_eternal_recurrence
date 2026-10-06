@@ -76,6 +76,7 @@ struct CombatPhaseCharacterV3 {
   bool heritage_north_germanic = false;
   bool knights_slightly_more_prone_to_injury = false;
   bool death_is_glory = false;
+  std::optional<PhaseRiteParametersV1> phase_rite_parameters_v1;
   bool tenet_warmonger = false;
   bool germanic_religion = false;
   bool blademaster_traits_more_common = false;

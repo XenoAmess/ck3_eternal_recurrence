@@ -21,6 +21,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from .war_contract import army_strength_scope
+from .phase_rite_parameters_contract import normalize_phase_rite_parameters_v1
 
 
 QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY = (
@@ -2956,6 +2957,8 @@ def _normalize_commander(
     name: str,
     target_province_id: int,
 ) -> dict[str, object]:
+    optional_keys = ({"phase_rite_parameters_v1"} if isinstance(value, dict)
+                     and "phase_rite_parameters_v1" in value else set())
     row = _exact_object(
         value,
         {
@@ -2964,7 +2967,7 @@ def _normalize_commander(
             "generic_advantage_points",
             "battle_context",
             "unavailable_reason",
-        },
+        } | optional_keys,
         name,
     )
     status = _tri_status(row.get("status"), f"{name}.status")
@@ -3028,6 +3031,9 @@ def _normalize_commander(
         },
         "unavailable_reason": _status_reason(
             status, row.get("unavailable_reason"), name
+        ),
+        "phase_rite_parameters_v1": normalize_phase_rite_parameters_v1(
+            row.get("phase_rite_parameters_v1"), expected_character_id=character_id
         ),
     }
 
@@ -3365,6 +3371,8 @@ def _normalize_knights(
                 member_keys.add("effectiveness_components")
             if isinstance(raw_member, dict) and "effectiveness_context" in raw_member:
                 member_keys.add("effectiveness_context")
+            if isinstance(raw_member, dict) and "phase_rite_parameters_v1" in raw_member:
+                member_keys.add("phase_rite_parameters_v1")
             member = _exact_object(
                 raw_member,
                 member_keys,
@@ -3437,6 +3445,9 @@ def _normalize_knights(
                 "effective_damage_raw": damage,
                 "effective_toughness_raw": toughness,
                 "scale": CK3_COMBAT_FIXED_POINT_SCALE,
+                "phase_rite_parameters_v1": normalize_phase_rite_parameters_v1(
+                    member.get("phase_rite_parameters_v1"), expected_character_id=character_id
+                ),
             }
             if "effectiveness_components" in member:
                 component_name = f"{member_name}.effectiveness_components"

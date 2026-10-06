@@ -414,6 +414,9 @@ CombatCommanderSnapshot ReadCombatCommander(
       bindings.get_commander_advantage(commander, -1, false);
   output.generic_advantage_observable = true;
   output.status = CombatObservationStatus::available;
+  output.phase_rite_parameters_v1 = ck3_12003::phase_rite::Read(
+      bindings.phase_rite_parameters, commander,
+      static_cast<std::uint32_t>(commander_id));
   return output;
 }
 
@@ -836,6 +839,9 @@ bool ReadCombatKnights(
 
     game::CombatKnightSnapshot knight{};
     knight.character_id = knight_character_id;
+    knight.phase_rite_parameters_v1 = ck3_12003::phase_rite::Read(
+        bindings.phase_rite_parameters, character,
+        static_cast<std::uint32_t>(knight_character_id));
     knight.source_regiment_id = regiment_row.regiment_id;
     knight.army_id = internal_army_id;
     knight.prowess = LoadAt<std::int32_t>(
