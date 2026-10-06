@@ -68,6 +68,7 @@ struct Registry {
   }
 };
 constexpr std::uint32_t kUnit = 0x11000001U, kArmy = 0x22000001U;
+constexpr std::uint32_t kRegiment = 0x2B000001U;
 constexpr std::uint32_t kWrongGeneration = 0xAB00000CU, kInvalidArmy = 0x22000002U;
 constexpr std::uint32_t kHelper = 12U, kSiege = 0xDD000001U;
 void *expected_army = nullptr;
@@ -89,6 +90,7 @@ struct Fixture {
   void *entries = memory.Allocate(3 * 0x40);
   void *record = static_cast<std::byte *>(entries) + 0x40;
   void *unit = memory.Allocate(0x180), *army = memory.Allocate(0x208);
+  void *regiment = memory.Allocate(0x48), *regiment_ids = memory.Allocate(4);
   void *helper = memory.Allocate(0x208), *passed_fallback = memory.Allocate(0x208);
   void *invalid = memory.Allocate(0x208), *siege = memory.Allocate(0x10);
   void *army_allocator = memory.Allocate(8), *arrg_allocator = memory.Allocate(8);
@@ -126,6 +128,12 @@ struct Fixture {
       memory.Put(object, 0x14, std::uint32_t{0x41726D79U});
     memory.Put(invalid, 0x14, std::uint32_t{0x446C7464U});
     memory.Put(unit, 0x178, kArmy); memory.Put(army, 0x124, kUnit);
+    arrgs.Add(kRegiment, regiment, 0x10);
+    memory.Put(regiment, 0x14, std::uint32_t{0x41725267U});
+    memory.Put(regiment, 0x38, std::int32_t{20}); memory.Put(regiment, 0x3C, std::int32_t{40});
+    memory.Put(regiment, 0x40, std::int64_t{100000}); memory.Put(regiment_ids, 0, kRegiment);
+    memory.Put(army, 0x38, regiment_ids); memory.Put(army, 0x40, std::int32_t{1});
+    memory.Put(army, 0x44, std::int32_t{1});
     Global(0x50, {12, 91, 12, 92});
     Pending({static_cast<std::int32_t>(kWrongGeneration), static_cast<std::int32_t>(kInvalidArmy),
              12, static_cast<std::int32_t>(kWrongGeneration)});
