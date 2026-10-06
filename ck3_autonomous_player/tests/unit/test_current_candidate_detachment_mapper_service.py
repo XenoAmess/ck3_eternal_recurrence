@@ -254,7 +254,8 @@ class CurrentCandidateDetachmentMapperServiceTests(unittest.TestCase):
 
         missing_raw = candidate_mapper_packet()
         missing_raw[FAMILY]["occurrences"][0].update(_state(False, "actual_roster_DWORD_unreadable"),
-            raw_full_id_u32=None, mapper_index=None, resolution=unknown_resolution(None))
+            raw_full_id_u32=None, mapper_index=None,
+            resolution={**unknown_resolution(0), "requested_full_id_u32": None})
         missing_raw[FAMILY].update(_state(False, "actual_roster_DWORD_unreadable"), roster_ready=False)
         value = query("partial-roster-DWORD-does-not-substitute-legacy-strength-list", missing_raw)
         self.assertFalse(value["roster_ready"])
