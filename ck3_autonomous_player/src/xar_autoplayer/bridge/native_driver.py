@@ -681,7 +681,7 @@ from .war31_one_shot_surrender import (
 
 PROTOCOL_VERSION = 1
 # Paired with native protocol.hpp; sender, reader and pipe buffers share it.
-MAXIMUM_FRAME_BYTES = 2 * 1024 * 1024
+MAXIMUM_FRAME_BYTES = 64 * 1024 * 1024
 DEFAULT_PIPE_NAME = r"\\.\pipe\xar_ck3_bridge_mcp"
 _ACTION_CAPABILITY_PREFIX = "game.command."
 _NATIVE_LIFE_ADVANCE_PRIMITIVES = frozenset(

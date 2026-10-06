@@ -273,8 +273,8 @@ struct ZhongguoScoreboardAccessV1 : ZhongguoCaseAccessV1 {
 };
 
 inline constexpr std::size_t kNamedGuiTreeInspectionMaximumWidgetsV1 = 2048;
-// Paired with the unchanged process-local protocol frame admission.
-inline constexpr std::size_t kNamedGuiTreeInspectionMaximumFrameBytesV1 = 2U * 1024U * 1024U;
+// Paired with the process-local protocol frame admission.
+inline constexpr std::size_t kNamedGuiTreeInspectionMaximumFrameBytesV1 = 64U * 1024U * 1024U;
 constexpr bool NamedGuiTreeInspectionFrameBytesFitV1(std::size_t bytes) noexcept {
   return bytes <= kNamedGuiTreeInspectionMaximumFrameBytesV1;
 }

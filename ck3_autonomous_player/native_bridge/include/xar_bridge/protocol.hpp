@@ -14,7 +14,7 @@ namespace xar::bridge {
 inline constexpr std::uint32_t kProtocolVersion = 1;
 // Paired with native_driver.MAXIMUM_FRAME_BYTES, including both pipe buffers
 // and length-header admission. The scoped daily DTO can exceed 1 MiB.
-inline constexpr std::uint32_t kMaximumFrameBytes = 2U * 1024U * 1024U;
+inline constexpr std::uint32_t kMaximumFrameBytes = 64U * 1024U * 1024U;
 inline constexpr std::size_t kMaximumControlStringBytes = 128U;
 
 enum class ReadStatus {
