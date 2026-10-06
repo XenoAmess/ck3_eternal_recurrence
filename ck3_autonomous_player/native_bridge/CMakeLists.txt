@@ -3338,7 +3338,8 @@ if(BUILD_TESTING)
       src/religion_doctrine12002_tenet_rows_mailbox.cpp
       src/ck3_12003_target_rite_tenet_comparison_mailbox_test.cpp)
     target_include_directories(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE include)
-    target_link_libraries(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE xar_bridge_protocol user32)
+    target_link_libraries(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE
+      xar_bridge_protocol xar_ck3_12002_runtime user32)
     target_compile_definitions(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE
       XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1=1
       XAR_RELIGION_MAILBOX_STANDALONE_ADAPTER=1)

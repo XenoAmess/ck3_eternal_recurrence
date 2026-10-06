@@ -6,6 +6,15 @@ set(native "${XAR_TARGET_TENET_SOURCE_ROOT}/ck3_autonomous_player/native_bridge"
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+# The real .3 renderer includes the adapter's binding closure. Standalone
+# qualification reuses Root's already-built actual runtime, not stub binders.
+if(NOT TARGET xar_ck3_12002_runtime)
+  set(XAR_TARGET_TENET_RUNTIME_LIBRARY "" CACHE FILEPATH "Root's actual existing xar_ck3_12002_runtime library")
+  add_library(xar_ck3_12002_runtime STATIC IMPORTED)
+  set_target_properties(xar_ck3_12002_runtime PROPERTIES
+    IMPORTED_LOCATION "${XAR_TARGET_TENET_RUNTIME_LIBRARY}"
+    INTERFACE_LINK_LIBRARIES bcrypt)
+endif()
 add_executable(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test
   "${native}/src/protocol.cpp"
   "${native}/src/ck3_12002.cpp"
@@ -21,7 +30,8 @@ add_executable(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test
   "${native}/src/religion_doctrine12002_tenet_rows_mailbox.cpp"
   "${native}/src/ck3_12003_target_rite_tenet_comparison_mailbox_test.cpp")
 target_include_directories(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE "${native}/include")
-target_link_libraries(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE user32)
+target_link_libraries(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE
+  xar_ck3_12002_runtime user32)
 target_compile_definitions(xar_ck3_12003_target_rite_tenet_comparison_mailbox_test PRIVATE
   NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1=1
