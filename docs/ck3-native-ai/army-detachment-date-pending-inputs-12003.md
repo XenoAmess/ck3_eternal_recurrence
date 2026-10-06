@@ -238,3 +238,16 @@ flowchart TD
 ```
 
 `PENDING-REACHED-CONTINUATION-METADATA-PLAN.json` proposes only metadata selectors containing those two actual reached addresses, reusing held pdata records; exact start/range/header/chain facts must precede any continuation code read. `WHOLE-INCOMING-DATA-IMPLEMENTATION-PLAN.json` defines the concrete family/files and alias-order recipe while leaving pending effects unimplemented until this finite source step closes. No test, native build, game operation or policy change was performed.
+
+## Actual pending continuation extent and chain provenance
+
+Root approved only those reached metadata selectors. October 6 **19:54:46 CST**, both reached addresses were actual fragment starts. New frozen-file cost was only **44 metadata B / 5 seeks**; prior search records and the original prologue header were reused.
+
+| Reached address | Actual record / raw bytes | Exact selected fragment | Selected header / chain |
+| --- | --- | --- | --- |
+| `2A9BE92` | index 146739, RVA `5F70E64`, file `5E08064`; `92bea90259bfa90264d12905` | `[2A9BE92,2A9BF59)`, **199 B** | `529D164`: `210f0600`, version 1, flags 4, prologue 15, codes 6, frame 0; chain at `529D174` |
+| `2A9BF59` | index 146740, RVA `5F70E70`, file `5E08070`; `59bfa90292bfa90280d12905` | `[2A9BF59,2A9BF92)`, **57 B** | `529D180`: `21000000`, version 1, flags 4, prologue 0, codes 0, frame 0; chain at `529D184` |
+
+Both selected CHAININFO records contain raw **`60bea90292bea902e4cb1405`**, pointing to the already held primary fragment `[2A9BE60,2A9BE92)` and unwind `514CBE4`. The new physical chain-record addresses were read once for their actual provenance; the original record/header and 50 B code were not reread. The first selector cost 28 B / 3 seeks; the second cost 16 B / 2 seeks. Cumulative source I/O is **596 metadata B + 1,164 code B = 1,760 B / 346 seeks**.
+
+The unique finite next body proposal is exactly **199 + 57 = 256 new B / 2 seeks**. Combine only those new ranges with the cached 50 B prologue to decode the real ordered normal-return append and its count/capacity/pointer writes. A return or actual transfer, not the end of a metadata fragment, decides source closure. No code beyond `2A9BF92`, handler, allocator body, old source hash or route/capital expansion is authorized by the plan. `PENDING-CONTINUATION-EXACT-BODY-PLAN.json` seals these exact extents; both continuation bodies are **NOTRUN** pending Root's separate review.
