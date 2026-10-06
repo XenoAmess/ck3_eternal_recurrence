@@ -1,0 +1,106 @@
+{
+  "schema": "lyd.actual-closed-boundary-source-index.v1",
+  "status": "ACTUAL_R14_CLOSED_RELEASED_BOUNDARY_VERIFIED",
+  "review": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3054,
+    "sha256": "de1a0fee95083b1db75ece4c6231b428ac78e660f1b3802a4da8cf9f1d62a172"
+  },
+  "verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/verify_r14_previous_boundary.py",
+    "bytes": 10888,
+    "sha256": "1c79c54f5042dcba44bffc028be850e05a85bd98b77b66f8d284f187343b75b1"
+  },
+  "verifier_dependencies": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/DEPENDENCIES.json",
+    "bytes": 6259,
+    "sha256": "4857d2a2d1516f6c8d136bf2a40c0c0762b75b430ca5d0457aa04febcc107e83"
+  },
+  "actual_metadata_capture_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-metadata-capture-20261006-001/RESULT.json",
+    "bytes": 6331,
+    "sha256": "35c46e596428950c38c17d92f9c7263be60737ea5e7178120a80aa342141ea93"
+  },
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/BUS-AFTER-RELEASE.parsed.json",
+      "bytes": 101046,
+      "sha256": "8d405426511441145e3092f50219004abc5446aee946f549a8327b34d42d122e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/DEPENDENCIES.json",
+      "bytes": 6259,
+      "sha256": "4857d2a2d1516f6c8d136bf2a40c0c0762b75b430ca5d0457aa04febcc107e83"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 3054,
+      "sha256": "de1a0fee95083b1db75ece4c6231b428ac78e660f1b3802a4da8cf9f1d62a172"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/PROCESS-ABSENCE.actual.json",
+      "bytes": 1330,
+      "sha256": "9f2e0880a214eae8c6b656c4894818f8610c615e59582914802d475cdd23a574"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/PROCESS-ENUMERATION.actual.json",
+      "bytes": 20018,
+      "sha256": "1a5da2bb2dee58911c1e733cf2a8230bbf395caf9bc5203dee1fe15848b69381"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/RECONCILIATION.actual.json",
+      "bytes": 10205,
+      "sha256": "ccaacf8a4848030cdd8f52b01d1a6c72f006caae51a2e96880095fcbbd4b0295"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/STEAM-OFFLINE-FLAG.readonly.json",
+      "bytes": 435,
+      "sha256": "4949c67ec0a786c620bf63e6ce5f666e582d50da65d608fb0f91d55056196de3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/VERIFIED.actual.json",
+      "bytes": 3574,
+      "sha256": "5c78fbcd6871e27fbe64be4ce8026b8b0c3e9505787d9b76305dcdc4ccb84a94"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/VERIFIER-ARGV.actual.json",
+      "bytes": 532,
+      "sha256": "f3b5acafef15ebb6ddea2fbecfd771e2a8fbac49b50e12fc3c09db459b065cd0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/VERIFIER-EXECUTION.actual.json",
+      "bytes": 1026,
+      "sha256": "e6ed8f9b8522448598350cdf398c7f89c0fc72e82aac611589583b8938da96fe"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/VERIFIER.stderr.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/VERIFIER.stdout.raw",
+      "bytes": 3653,
+      "sha256": "0c40bf8eea9bdc50fd83d1d0d9368800e069a58b720de4119a95e2a133bd8f99"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/verify_r14_previous_boundary.py",
+      "bytes": 10888,
+      "sha256": "1c79c54f5042dcba44bffc028be850e05a85bd98b77b66f8d284f187343b75b1"
+    }
+  ],
+  "author_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-reconciliation-20261007-001/reconcile_actual_closed_boundary.py",
+    "bytes": 16892,
+    "sha256": "7e6782ecd35493f0c3aed9fcbb05c0a50b406b7270ed5782defe74ea37b8f42d"
+  },
+  "recorded_at_utc": "2026-10-06T17:38:19.379878+00:00",
+  "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "business_GREEN": false,
+  "autosave_verified": false,
+  "game_started": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "desktop_contacted": false,
+  "lease_mutated": false,
+  "CAS_reissued": false
+}

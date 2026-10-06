@@ -1,0 +1,33 @@
+{
+  "schema": "lyd.r14.actual-present-zero-focused.v1",
+  "command": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-actual-checkpoint-reader-author-20261006-003\\tests",
+    "-p",
+    "test_*.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "passed": true,
+  "actual_shape_fixture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/tests/fixtures/ACTUAL-B1-present-numeric-zero.json",
+    "bytes": 1975,
+    "sha256": "493c768cfded50c7659658bbe4d501526517b86cb681759377721217f4e584f0"
+  },
+  "candidate_reader": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+    "bytes": 41081,
+    "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+  },
+  "save_body_reads": 0,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "formal_acceptance": null
+}

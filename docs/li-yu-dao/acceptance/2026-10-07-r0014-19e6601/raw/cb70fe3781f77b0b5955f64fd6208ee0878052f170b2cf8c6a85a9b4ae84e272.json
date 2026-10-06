@@ -1,0 +1,52 @@
+{
+  "schema": "lyd.r14.root-preserved-checkpoint-metadata-translation.v1",
+  "status": "ROOT_IMMUTABLE_COPY_REF_AND_ORIGINAL_RECEIPTS_BOUND",
+  "root_RESULT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-formal-guarded-steps-20261007-001/165837478975/RESULT.actual.json",
+    "bytes": 1245181,
+    "sha256": "66047513385fb4afc50d4f74e53a322f2d16e70deac3b4a60a8d641a8e10c560"
+  },
+  "root_PRESERVATION": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-formal-guarded-steps-20261007-001/165837478975/PRESERVATION.actual.json",
+    "bytes": 2478991,
+    "sha256": "68891522fe6556f4f327b8761d4b7ae45aabdb48c68dc841908609fee4e8e69a"
+  },
+  "preserved_checkpoint": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-formal-guarded-steps-20261007-001/165837478975/content-3ea0484b301431deec43d55b8f1979528cbe1ebdfeca9a68fd75cd96837e4440.ck3",
+    "bytes": 91677583,
+    "sha256": "3ea0484b301431deec43d55b8f1979528cbe1ebdfeca9a68fd75cd96837e4440"
+  },
+  "original_sdk_checkpoint_descriptor": {
+    "status": "saved",
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\userdir\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 91677583,
+    "sha256": "3ea0484b301431deec43d55b8f1979528cbe1ebdfeca9a68fd75cd96837e4440",
+    "date_raw": 53144712,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 74,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "preserved_SDK": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/SDK-WRAPPER.original.json",
+    "bytes": 5362115,
+    "sha256": "a14471f206b12d5bb450566b567c90d96062efbf484a497076a4eca56fc92698"
+  },
+  "preserved_native_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/NATIVE-CHECKPOINT.original.json",
+    "bytes": 2545534,
+    "sha256": "ec0440c53371f0bcecc61c2d38e7cc525206d3c1d3ecd3c4fa8dfa508a400c49"
+  },
+  "translation": "root actual copy ref3 copied exactly; original SDK/rawbody/rawframes unchanged; body SHA will be checked by existing author once",
+  "root_copy_already_preserved": true,
+  "child_copy_body_reads_at_metadata_translation": 0,
+  "child_live_autosave_reads": 0,
+  "raw_snapshot_rewritten": false,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "formal_credit": null
+}

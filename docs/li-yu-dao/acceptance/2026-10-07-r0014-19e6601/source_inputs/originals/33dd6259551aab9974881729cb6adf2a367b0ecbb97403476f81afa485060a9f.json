@@ -1,0 +1,98 @@
+{
+  "schema": "lyd.factory-law.actual-R14-B3-B4-law-only.v1",
+  "origin": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-B3-B4-AST-DELTAS.json",
+    "bytes": 24488,
+    "sha256": "973d111ff2fa5ca8f3511c8e14fd4c1a35a5a60ae828d3c6f5407beaf4e1325c"
+  },
+  "actual_actor": 31254,
+  "actual_Faith": 107,
+  "actual_Rite": 169,
+  "actual_new_title": 18373,
+  "law_list_delta": {
+    "path": "/3/value",
+    "before": [
+      {
+        "key": null,
+        "value": "crown_authority_0"
+      },
+      {
+        "key": null,
+        "value": "confederate_partition_succession_law"
+      },
+      {
+        "key": null,
+        "value": "male_preference_law"
+      },
+      {
+        "key": null,
+        "value": "top_liege_redirected_to_border_wars_law"
+      }
+    ],
+    "after": [
+      {
+        "key": null,
+        "value": "crown_authority_0"
+      },
+      {
+        "key": null,
+        "value": "confederate_partition_succession_law"
+      },
+      {
+        "key": null,
+        "value": "male_preference_law"
+      },
+      {
+        "key": null,
+        "value": "same_faith_succession_law"
+      },
+      {
+        "key": null,
+        "value": "top_liege_redirected_to_border_wars_law"
+      }
+    ]
+  },
+  "political_changed_title_hashes": {
+    "2230": {
+      "before_AST": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+      "after_AST": "c3989692ff88f71cd665ab03bc74e9858bf7994cb12fd5abe8dcadfd733d8a92",
+      "holder_before": 31254,
+      "holder_after": 31254
+    },
+    "2231": {
+      "before_AST": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+      "after_AST": "d4a8ba910fec430cb9d1f9a7cb769f697dc98ec9d007f42cdae1d6c17301cb39",
+      "holder_before": 31254,
+      "holder_after": 31254
+    },
+    "2235": {
+      "before_AST": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+      "after_AST": "996c2580e48f9c8cf9332777d377f704a1d6a9a9cd00f7aee6157a27a43ceab8",
+      "holder_before": 31254,
+      "holder_after": 31254
+    },
+    "2262": {
+      "before_AST": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+      "after_AST": "2289c2d2a50f509ea0a94ae7bee5c7bd8396e62587056f953733e1f73f4ec9a9",
+      "holder_before": 31254,
+      "holder_after": 31254
+    },
+    "2264": {
+      "before_AST": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
+      "after_AST": "1f0b9df68aa23d329e2740cac9fa62599ed801957f509d2f8ef6fa3fbb73f813",
+      "holder_before": 31254,
+      "holder_after": 31254
+    }
+  },
+  "original_TYPED_false_names": [
+    "political_2230_full_AST",
+    "political_2231_full_AST",
+    "political_2235_full_AST",
+    "political_2262_full_AST",
+    "political_2264_full_AST",
+    "actor_complete_protected_landed_projection",
+    "faiths_107_complete_tenet_status_projection"
+  ],
+  "runtime_candidate": null,
+  "source_HEAD19_original_factory_body_AST_sha256": "d79fad675555e5ed4082f48a16086615e1a5ed5e7e6cd8b0308e201991c8e213"
+}

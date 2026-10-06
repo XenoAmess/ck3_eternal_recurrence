@@ -1,0 +1,145 @@
+--- a/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in
++++ b/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in
+@@ -13,10 +13,10 @@
+             rite = faith.main_rite
+         }
+         # Capture only this realm-law presence before native HoF creation. No persistent actor flag.
+-        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 0 }
++        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
+         if = {
+             limit = { has_realm_law = same_faith_succession_law }
+-            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
++            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 2 }
+         }
+         faith = { save_scope_as = my_faith save_scope_as = lyd_c3_factory_faith }
+         create_dynamic_title = { tier = duchy name = REL_HEAD_TITLE_NAME adj = REL_HEAD_TITLE_ADJ }
+@@ -39,7 +39,7 @@
+             limit = {
+                 trigger_if = {
+                     limit = { exists = scope:lyd_c3_factory_had_same_faith_law }
+-                    scope:lyd_c3_factory_had_same_faith_law = 0
++                    scope:lyd_c3_factory_had_same_faith_law = 1
+                 }
+                 trigger_else = { always = no }
+                 has_realm_law = same_faith_succession_law
+--- a/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt
++++ b/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt
+@@ -13,10 +13,10 @@
+             rite = faith.main_rite
+         }
+         # Capture only this realm-law presence before native HoF creation. No persistent actor flag.
+-        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 0 }
++        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
+         if = {
+             limit = { has_realm_law = same_faith_succession_law }
+-            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
++            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 2 }
+         }
+         faith = { save_scope_as = my_faith save_scope_as = lyd_c3_factory_faith }
+         create_dynamic_title = { tier = duchy name = REL_HEAD_TITLE_NAME adj = REL_HEAD_TITLE_ADJ }
+@@ -39,7 +39,7 @@
+             limit = {
+                 trigger_if = {
+                     limit = { exists = scope:lyd_c3_factory_had_same_faith_law }
+-                    scope:lyd_c3_factory_had_same_faith_law = 0
++                    scope:lyd_c3_factory_had_same_faith_law = 1
+                 }
+                 trigger_else = { always = no }
+                 has_realm_law = same_faith_succession_law
+--- a/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt
++++ b/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt
+@@ -14,10 +14,10 @@
+             rite = faith.main_rite
+         }
+         # Capture only this realm-law presence before native HoF creation. No persistent actor flag.
+-        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 0 }
++        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
+         if = {
+             limit = { has_realm_law = same_faith_succession_law }
+-            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
++            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 2 }
+         }
+         faith = { save_scope_as = my_faith save_scope_as = lyd_c3_factory_faith }
+         create_dynamic_title = { tier = duchy name = REL_HEAD_TITLE_NAME adj = REL_HEAD_TITLE_ADJ }
+@@ -40,7 +40,7 @@
+             limit = {
+                 trigger_if = {
+                     limit = { exists = scope:lyd_c3_factory_had_same_faith_law }
+-                    scope:lyd_c3_factory_had_same_faith_law = 0
++                    scope:lyd_c3_factory_had_same_faith_law = 1
+                 }
+                 trigger_else = { always = no }
+                 has_realm_law = same_faith_succession_law
+--- a/mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py
++++ b/mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py
+@@ -71,24 +71,29 @@
+         self.assertEqual(body[0].key, 'limit')
+         self.assertEqual(body[1].key, 'save_scope_value_as')
+         self.assertEqual(single(body[1].value, 'name'), SAVED)
+-        self.assertEqual(single(body[1].value, 'value'), '0')
++        self.assertEqual(single(body[1].value, 'value'), '1')
+         self.assertEqual(body[2].key, 'if')
+         self.assertEqual(single(single(self.capture, 'limit'), 'has_realm_law'), LAW)
+         capture = single(self.capture, 'save_scope_value_as')
+         self.assertEqual(single(capture, 'name'), SAVED)
+-        self.assertEqual(single(capture, 'value'), '1')
++        self.assertEqual(single(capture, 'value'), '2')
++        # An old zero capture is rejected by the positive sentinel contract.
++        unsafe = self.text.replace('name = ' + SAVED + ' value = 1', 'name = ' + SAVED + ' value = 0')
++        unsafe_body = factory_body(unsafe)
++        self.assertNotEqual(single(unsafe_body.entries[1].value, 'value'), '1')
+         self.assertLess(2, next(i for i,e in enumerate(body) if e.key == 'create_dynamic_title'))
+ 
+     def test_only_newly_present_law_is_removed(self):
+-        self.assertTrue(should_cleanup(self.limit, {SAVED: 0}, {LAW}))
++        self.assertTrue(should_cleanup(self.limit, {SAVED: 1}, {LAW}))
++        self.assertFalse(should_cleanup(self.limit, {SAVED: 0}, {LAW}))
+         self.assertEqual(single(self.cleanup, 'remove_realm_law'), LAW)
+         self.assertEqual([e.key for e in self.cleanup.entries], ['limit', 'remove_realm_law'])
+ 
+     def test_preexisting_law_is_preserved(self):
+-        self.assertFalse(should_cleanup(self.limit, {SAVED: 1}, {LAW}))
++        self.assertFalse(should_cleanup(self.limit, {SAVED: 2}, {LAW}))
+ 
+     def test_law_not_present_after_creation_is_not_removed(self):
+-        self.assertFalse(should_cleanup(self.limit, {SAVED: 0}, set()))
++        self.assertFalse(should_cleanup(self.limit, {SAVED: 1}, set()))
+ 
+     def test_absent_snapshot_rejects_without_numeric_read(self):
+         self.assertFalse(should_cleanup(self.limit, {}, {LAW}))
+@@ -129,7 +134,7 @@
+         self.assertIn(LAW, after)
+         self.assertEqual(set(after) - set(before), {LAW})
+         self.assertEqual(set(before) - set(after), set())
+-        self.assertTrue(should_cleanup(self.limit, {SAVED: 0}, set(after)))
++        self.assertTrue(should_cleanup(self.limit, {SAVED: 1}, set(after)))
+         self.assertEqual(set(fixture['political_changed_title_hashes']), {'2230','2231','2235','2262','2264'})
+         self.assertTrue(all(r['holder_before'] == r['holder_after'] == 31254 and r['before_AST'] != r['after_AST']
+                             for r in fixture['political_changed_title_hashes'].values()))
+--- a/docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md
++++ b/docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md
+@@ -7,10 +7,10 @@
+ political protection pass.
+ 
+ The shared factory records only whether same_faith_succession_law already
+-exists, before native creation. It resets a saved scope value to 0 on every
+-authorized invocation and sets it to 1 only when that law already exists.
++exists, before native creation. It resets a saved scope value to positive sentinel 1 on every
++authorized invocation and sets it to positive sentinel 2 only when that law already exists.
+ After native title setup, it removes this one law only if the snapshot exists,
+-equals 0, and the law now exists. An absent snapshot rejects cleanup. It uses
++equals 1, and the law now exists. An absent snapshot rejects cleanup. It uses
+ no persistent character flags, no realm-law list replay, no inherited heir IDs,
+ no title holder rewrite, and no rollback of native state. A preexisting law is
+ preserved. Both shared templates remain identical; gen_leadership generates
+@@ -36,3 +36,10 @@
+ RED receipts may be rewritten to make these checks pass. If the engine re-adds
+ the law or succession ASTs remain changed, reject this candidate and retain the
+ new failed attempt. Static guard/AST tests give no native or reload credit.
++
++Candidate 004 uses only positive sentinels: 1 means no preexisting law and 2
++means preexisting law. Numeric zero is never a valid snapshot and never
++authorizes cleanup. The presence guard still rejects an unbound snapshot;
++no proof of generic numeric-zero existence is required. The original 003
++source and its offline receipts remain unchanged. These source checks do not
++prove engine maintenance or actual cold/reload protection.

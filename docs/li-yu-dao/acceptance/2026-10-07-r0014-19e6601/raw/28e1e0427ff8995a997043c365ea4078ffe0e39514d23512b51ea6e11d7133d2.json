@@ -1,0 +1,643 @@
+{
+  "status": "CURRENT_DEFENDER_ENGINE_SERVICES_DISABLED_EXACT_FIVE_EXE_REGISTRATION_INCOMPLETE",
+  "current_platform": {
+    "sys_getwindowsversion": [
+      10,
+      0,
+      19045,
+      2,
+      ""
+    ],
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+    "admin_token": true
+  },
+  "original_read_artifacts": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/PLATFORM-READS.actual.json",
+    "bytes": 37918,
+    "sha256": "f13e92d9a35dfea9e6e7c40e8bc1d287c986fef058dc77ef7c7f9b8d28a04aba"
+  },
+  "service_actual": {
+    "SecurityHealthService": {
+      "ExitCode": 0,
+      "Name": "SecurityHealthService",
+      "PathName": "C:\\Windows\\system32\\SecurityHealthService.exe",
+      "ProcessId": 8576,
+      "ServiceSpecificExitCode": 0,
+      "StartMode": "Manual",
+      "State": "Running",
+      "Status": "OK"
+    },
+    "WdNisSvc": {
+      "ExitCode": 1077,
+      "Name": "WdNisSvc",
+      "PathName": "\"C:\\Program Files\\Windows Defender\\NisSrv.exe\"",
+      "ProcessId": 0,
+      "ServiceSpecificExitCode": 0,
+      "StartMode": "Disabled",
+      "State": "Stopped",
+      "Status": "OK"
+    },
+    "WinDefend": {
+      "ExitCode": 1077,
+      "Name": "WinDefend",
+      "PathName": "\"C:\\Program Files\\Windows Defender\\MsMpEng.exe\"",
+      "ProcessId": 0,
+      "ServiceSpecificExitCode": 0,
+      "StartMode": "Disabled",
+      "State": "Stopped",
+      "Status": "OK"
+    },
+    "Winmgmt": {
+      "ExitCode": 0,
+      "Name": "Winmgmt",
+      "PathName": "C:\\Windows\\system32\\svchost.exe -k netsvcs -p",
+      "ProcessId": 3120,
+      "ServiceSpecificExitCode": 0,
+      "StartMode": "Auto",
+      "State": "Running",
+      "Status": "OK"
+    },
+    "wscsvc": {
+      "ExitCode": 0,
+      "Name": "wscsvc",
+      "PathName": "C:\\Windows\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+      "ProcessId": 5292,
+      "ServiceSpecificExitCode": 0,
+      "StartMode": "Auto",
+      "State": "Running",
+      "Status": "OK"
+    }
+  },
+  "narrow_policy_registry_actual": [
+    {
+      "key": "SOFTWARE\\Policies\\Microsoft\\Windows Defender",
+      "key_read_success": true,
+      "present_values": {
+        "DisableAntiVirus": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        }
+      },
+      "absent_or_unreadable": {
+        "DisableAntiSpyware": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        },
+        "ForceDefenderPassiveMode": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        },
+        "PUAProtection": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        }
+      }
+    },
+    {
+      "key": "SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection",
+      "key_read_success": false,
+      "present_values": {},
+      "absent_or_unreadable": {},
+      "error": {
+        "stage": "OpenKey",
+        "type": "FileNotFoundError",
+        "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+        "args": [
+          2,
+          "系统找不到指定的文件。",
+          null,
+          2,
+          null
+        ],
+        "strerror": "系统找不到指定的文件。",
+        "winerror": 2,
+        "errno": 2,
+        "HRESULTs_unsigned_hex": []
+      }
+    },
+    {
+      "key": "SOFTWARE\\Policies\\Microsoft\\Windows Advanced Threat Protection",
+      "key_read_success": true,
+      "present_values": {},
+      "absent_or_unreadable": {
+        "ForceDefenderPassiveMode": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        }
+      }
+    },
+    {
+      "key": "SOFTWARE\\Microsoft\\Windows Defender",
+      "key_read_success": true,
+      "present_values": {
+        "DisableAntiSpyware": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "DisableAntiVirus": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "ProductStatus": {
+          "type": 4,
+          "value": 0,
+          "read_success": true
+        }
+      },
+      "absent_or_unreadable": {
+        "PassiveMode": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        },
+        "IsServiceRunning": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        }
+      }
+    },
+    {
+      "key": "SOFTWARE\\Microsoft\\Windows Defender\\Features",
+      "key_read_success": true,
+      "present_values": {
+        "TamperProtection": {
+          "type": 4,
+          "value": 0,
+          "read_success": true
+        }
+      },
+      "absent_or_unreadable": {
+        "TamperProtectionSource": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        }
+      }
+    },
+    {
+      "key": "SOFTWARE\\Microsoft\\Windows Defender\\Real-Time Protection",
+      "key_read_success": true,
+      "present_values": {
+        "DisableRealtimeMonitoring": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        }
+      },
+      "absent_or_unreadable": {
+        "DisableBehaviorMonitoring": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        },
+        "DisableOnAccessProtection": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        },
+        "DisableIOAVProtection": {
+          "stage": "QueryValueEx",
+          "type": "FileNotFoundError",
+          "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+          "args": [
+            2,
+            "系统找不到指定的文件。",
+            null,
+            2,
+            null
+          ],
+          "strerror": "系统找不到指定的文件。",
+          "winerror": 2,
+          "errno": 2,
+          "HRESULTs_unsigned_hex": []
+        }
+      }
+    },
+    {
+      "key": "SYSTEM\\CurrentControlSet\\Services\\WinDefend",
+      "key_read_success": true,
+      "present_values": {
+        "Start": {
+          "type": 4,
+          "value": 4,
+          "read_success": true
+        },
+        "ImagePath": {
+          "type": 2,
+          "value": "\"%ProgramFiles%\\Windows Defender\\MsMpEng.exe\"",
+          "read_success": true
+        },
+        "Type": {
+          "type": 4,
+          "value": 16,
+          "read_success": true
+        },
+        "ErrorControl": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "DependOnService": {
+          "type": 7,
+          "value": [
+            "RpcSs"
+          ],
+          "read_success": true
+        },
+        "LaunchProtected": {
+          "type": 4,
+          "value": 3,
+          "read_success": true
+        }
+      },
+      "absent_or_unreadable": {}
+    },
+    {
+      "key": "SYSTEM\\CurrentControlSet\\Services\\WdNisSvc",
+      "key_read_success": true,
+      "present_values": {
+        "Start": {
+          "type": 4,
+          "value": 4,
+          "read_success": true
+        },
+        "ImagePath": {
+          "type": 2,
+          "value": "\"%ProgramFiles%\\Windows Defender\\NisSrv.exe\"",
+          "read_success": true
+        },
+        "Type": {
+          "type": 4,
+          "value": 16,
+          "read_success": true
+        },
+        "ErrorControl": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "DependOnService": {
+          "type": 7,
+          "value": [
+            "WdNisDrv"
+          ],
+          "read_success": true
+        }
+      },
+      "absent_or_unreadable": {}
+    },
+    {
+      "key": "SYSTEM\\CurrentControlSet\\Services\\Winmgmt",
+      "key_read_success": true,
+      "present_values": {
+        "Start": {
+          "type": 4,
+          "value": 2,
+          "read_success": true
+        },
+        "ImagePath": {
+          "type": 2,
+          "value": "%systemroot%\\system32\\svchost.exe -k netsvcs -p",
+          "read_success": true
+        },
+        "Type": {
+          "type": 4,
+          "value": 32,
+          "read_success": true
+        },
+        "ErrorControl": {
+          "type": 4,
+          "value": 0,
+          "read_success": true
+        },
+        "DependOnService": {
+          "type": 7,
+          "value": [
+            "RPCSS"
+          ],
+          "read_success": true
+        }
+      },
+      "absent_or_unreadable": {}
+    }
+  ],
+  "MpComputerStatus_actual": {
+    "operation": "ExecQuery-read",
+    "query": "SELECT * FROM MSFT_MpComputerStatus",
+    "query_success": false,
+    "error": {
+      "stage": "ExecQuery-enumerate",
+      "type": "com_error",
+      "repr": "com_error(-2147217407, 'OLE error 0x80041001', None, None)",
+      "args": [
+        -2147217407,
+        "OLE error 0x80041001",
+        null,
+        null
+      ],
+      "hresult": -2147217407,
+      "strerror": "OLE error 0x80041001",
+      "excepinfo": null,
+      "argerror": null,
+      "HRESULTs_unsigned_hex": [
+        "0x80041001"
+      ]
+    }
+  },
+  "MpPreference_actual": {
+    "operation": "ExecQuery-read",
+    "query": "SELECT * FROM MSFT_MpPreference",
+    "rows": [
+      {
+        "DisableBehaviorMonitoring": {
+          "cim_type": 11,
+          "value": false
+        },
+        "DisableBlockAtFirstSeen": {
+          "cim_type": 11,
+          "value": false
+        },
+        "DisableIntrusionPreventionSystem": {
+          "cim_type": 11,
+          "value": null
+        },
+        "DisableIOAVProtection": {
+          "cim_type": 11,
+          "value": false
+        },
+        "DisableRealtimeMonitoring": {
+          "cim_type": 11,
+          "value": true
+        },
+        "DisableScriptScanning": {
+          "cim_type": 11,
+          "value": false
+        },
+        "ExclusionExtension": {
+          "cim_type": 8,
+          "value": null
+        },
+        "ExclusionPath": {
+          "cim_type": 8,
+          "value": null
+        },
+        "ExclusionProcess": {
+          "cim_type": 8,
+          "value": null
+        }
+      }
+    ],
+    "row_count": 1,
+    "query_success": true
+  },
+  "registered_WMI_provider_actual": {
+    "operation": "ExecQuery-read",
+    "query": "SELECT * FROM __Win32Provider",
+    "rows": [
+      {
+        "ClientLoadableCLSID": {
+          "cim_type": 8,
+          "value": null
+        },
+        "CLSID": {
+          "cim_type": 8,
+          "value": "{A7C452EF-8E9F-42EB-9F2B-245613CA0DC9}"
+        },
+        "Concurrency": {
+          "cim_type": 3,
+          "value": null
+        },
+        "DefaultMachineName": {
+          "cim_type": 8,
+          "value": null
+        },
+        "Enabled": {
+          "cim_type": 11,
+          "value": null
+        },
+        "HostingModel": {
+          "cim_type": 8,
+          "value": "LocalServiceHost"
+        },
+        "ImpersonationLevel": {
+          "cim_type": 3,
+          "value": 1
+        },
+        "InitializationReentrancy": {
+          "cim_type": 3,
+          "value": 0
+        },
+        "InitializationTimeoutInterval": {
+          "cim_type": 101,
+          "value": null
+        },
+        "InitializeAsAdminFirst": {
+          "cim_type": 11,
+          "value": null
+        },
+        "Name": {
+          "cim_type": 8,
+          "value": "ProtectionManagement"
+        },
+        "OperationTimeoutInterval": {
+          "cim_type": 101,
+          "value": null
+        },
+        "PerLocaleInitialization": {
+          "cim_type": 11,
+          "value": false
+        },
+        "PerUserInitialization": {
+          "cim_type": 11,
+          "value": false
+        },
+        "Pure": {
+          "cim_type": 11,
+          "value": true
+        },
+        "SecurityDescriptor": {
+          "cim_type": 8,
+          "value": null
+        },
+        "SupportsExplicitShutdown": {
+          "cim_type": 11,
+          "value": null
+        },
+        "SupportsExtendedStatus": {
+          "cim_type": 11,
+          "value": null
+        },
+        "SupportsQuotas": {
+          "cim_type": 11,
+          "value": null
+        },
+        "SupportsSendStatus": {
+          "cim_type": 11,
+          "value": null
+        },
+        "SupportsShutdown": {
+          "cim_type": 11,
+          "value": null
+        },
+        "SupportsThrottling": {
+          "cim_type": 11,
+          "value": null
+        },
+        "UnloadTimeout": {
+          "cim_type": 101,
+          "value": null
+        },
+        "Version": {
+          "cim_type": 19,
+          "value": 1073741825
+        }
+      }
+    ],
+    "row_count": 1,
+    "query_success": true
+  },
+  "SecurityCenter2_AntiVirusProduct_actual": {
+    "operation": "ExecQuery-read",
+    "query": "SELECT displayName,productState,pathToSignedProductExe,pathToSignedReportingExe,timestamp FROM AntiVirusProduct",
+    "rows": [],
+    "query_success": true,
+    "row_count": 0
+  },
+  "confirmed_current_blocking_configuration": "WinDefend and WdNisSvc disabled/stopped with PID0; Winmgmt running and Defender classes/provider declared.",
+  "inference": "The disabled/unavailable Defender engine is a concrete explanation to investigate for both actual Add generalfailure and MpComputerStatus generalfailure; this read-only observation does not prove sole cause or restoration success.",
+  "specific_future_repair_target_not_executed": "Resolve the actual intentional/managed Defender service and policy disablement, restore intended protection if authorized, then require an actual working status read and a new exact-five-path Add+readback receipt. Broker installation/elevation alone cannot be credited as engine recovery.",
+  "who_disabled_Defender": null,
+  "exact_settings_repair_tested": false,
+  "original_manifest_ref": {
+    "path": "C:/lyd14-native-clean-20261006-004/defender-exe-exclusions/20261006T135354Z-f2d9a211/manifest.json",
+    "bytes": 5305,
+    "sha256": "4f83c1179245c5f6818ad645fe43348b84847bfa3ff7065ca655e0ca5b9138e2"
+  },
+  "original_Add_failure_ref": {
+    "path": "C:/lyd14-native-clean-20261006-004/defender-exe-exclusions/20261006T135354Z-f2d9a211/receipt.json",
+    "bytes": 3525,
+    "sha256": "f5e55d64acd6a602ec885d47942d6317a228e6d4ebcccd48009c1223114f48d8"
+  },
+  "new_exclusion_registration": false,
+  "settings_verified": false,
+  "no_hidden_NULL_exclusion_array_credit": "Administrative preference ExclusionPath NULL is preserved as returned; does not fabricate a new successful registration/readback or infer undocumented historical machine settings.",
+  "mutations": {
+    "service_control_start_stop_config_called": false,
+    "policy_registry_writes": false,
+    "broker_install_or_task_mutation": false,
+    "new_exclusions": false,
+    "game_SDK_desktop_lease_calls": false,
+    "main_changes": false,
+    "network_calls": false
+  },
+  "target_manifest_recollection_called": false,
+  "old_other_machine_installation_assumed_current": false
+}

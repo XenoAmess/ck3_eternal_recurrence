@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+    "-v"
+  ],
+  "exit_code": 2,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002331199-preview-tests.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002331199-preview-tests.stderr",
+    "bytes": 305,
+    "sha256": "911ee8e7d1a8cea45ecc5d7375b909620e68e73df061417c876ed04c5f0a72de"
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "schema": "lyd.r14.round3-actual-B5-terminal-RED-summary.v1",
+  "utc": "2026-10-06T17:15:49.891468+00:00",
+  "status": "ACTUAL_FAILED_TERMINAL_PROTECTION_PRESERVED",
+  "round": {
+    "serial": 3,
+    "nonce": 6,
+    "phase": null,
+    "result_code": 1
+  },
+  "stage": "success_postcommit",
+  "author_status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+  "reader_checks": {
+    "matched": 38,
+    "total": 47,
+    "false_names": [
+      "faiths_107_complete_tenet_status_projection",
+      "faiths_107_native_temporal_doctrine",
+      "political_2230_full_AST_protected",
+      "political_2231_full_AST_protected",
+      "political_2235_full_AST_protected",
+      "political_2262_full_AST_protected",
+      "political_2264_full_AST_protected",
+      "faith_and_receipt_actual_title_agree",
+      "actual_faith_religious_head_actor"
+    ]
+  },
+  "protection_checks": {
+    "matched": 80,
+    "total": 87,
+    "false_names": [
+      "political_2230_full_AST",
+      "political_2231_full_AST",
+      "political_2235_full_AST",
+      "political_2262_full_AST",
+      "political_2264_full_AST",
+      "actor_complete_protected_landed_projection",
+      "faiths_107_complete_tenet_status_projection"
+    ]
+  },
+  "full51_member_and_Rite_cleanup": {
+    "checks": 387,
+    "matched": 387,
+    "all_checks_match": true,
+    "original_rows": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/readback-001/CURRENT-FAITH-RAW.shared-buffer.json",
+      "bytes": 926630,
+      "sha256": "c04a497942aed644b313a9ef28d4d340010a9ecbe9f996890b316d820bed3569"
+    },
+    "actual": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/POST-CLEANUP.actual.json",
+      "bytes": 64507,
+      "sha256": "f1f4896efc66b60b625d44717a037287f62a8a563d99647c21f6d98b13888878"
+    },
+    "focused_test_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/FOCUSED-POST-CLEANUP.actual.json",
+      "bytes": 1970,
+      "sha256": "f8e368612ef2e985902eb33af0f8d25de235e64c6f6eb9509a773dd572ae76df"
+    }
+  },
+  "B4_B5_continuity": {
+    "checks": 20,
+    "all_checks_match": true,
+    "actual": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/B4-B5-ACK-CONTINUITY.actual.json",
+      "bytes": 41432,
+      "sha256": "bb5bc0ea975afd6a0b1e02cc9d936e7d60f12716d9e4ff2e109e5f4f2d384cd8"
+    }
+  },
+  "actual_post_ACK_fee_delta": {
+    "gold": "0",
+    "piety": "0",
+    "prestige": "0"
+  },
+  "wallet": {
+    "gold": "1043",
+    "piety": "3150",
+    "prestige": "2200"
+  },
+  "native_Title": {
+    "full_ID": 18373,
+    "holder_full_ID": 31254,
+    "Faith_full_ID": 107,
+    "saved_full_AST_SHA": "b5442141d1e697aa1aa0bac871eadebc91cf3fa3abfab0cdd3d493aefc74c3a7",
+    "saved_type": "lt",
+    "owned_marker": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "100000"
+        }
+      ],
+      "number": "1",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_owned_head_title"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ]
+        }
+      ]
+    },
+    "ownerFaith": {
+      "present": true,
+      "tick": null,
+      "type": "faith",
+      "identity": "107",
+      "entries": [
+        {
+          "key": "type",
+          "value": "faith"
+        },
+        {
+          "key": "identity",
+          "value": "107"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_owner_faith"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "faith"
+            },
+            {
+              "key": "identity",
+              "value": "107"
+            }
+          ]
+        }
+      ]
+    },
+    "four_properties": {
+      "available": true,
+      "unavailable_reason": null,
+      "destroy_if_invalid_heir": true,
+      "no_automatic_claims": true,
+      "definitive_form": true,
+      "always_follows_primary_heir": true
+    },
+    "laws": {
+      "available": true,
+      "unavailable_reason": null,
+      "native_count": 1,
+      "complete_laws": [
+        {
+          "native_definition_id": 95,
+          "key": "temporal_head_of_faith_succession_law"
+        }
+      ],
+      "expected_law_key": "temporal_head_of_faith_succession_law",
+      "temporal_head_of_faith_succession_law_member": true
+    },
+    "factory_match": true
+  },
+  "actual_actor_lists_and_all_member_Rite_old_stamps_cleared": true,
+  "saved_HoR": {
+    "169": "31254"
+  },
+  "native_HoR_credit": null,
+  "frame": {
+    "queried_snapshot_id": "native:43",
+    "queried_revision": 44,
+    "queried_native_revision": 43,
+    "date_raw": 53144712,
+    "game_pid": 14776,
+    "connection_generation": 1,
+    "G2_capture_epoch": 875751,
+    "G3_capture_epoch": 875983
+  },
+  "actual_paused": true,
+  "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+  "G3_status": "BOUND_NATIVE_TITLE_FIELDS_OBSERVATION",
+  "STATE_converter_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/readback-001/STATE.json",
+    "bytes": 621929,
+    "sha256": "cff3c9da9527f881eb31833e56782fbd14cda6f8f011be8d2f42faadd728f27c"
+  },
+  "STATE_native_qualified": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/readback-001/STATE.native-qualified.json",
+    "bytes": 621929,
+    "sha256": "cff3c9da9527f881eb31833e56782fbd14cda6f8f011be8d2f42faadd728f27c"
+  },
+  "TYPED": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/readback-001/TYPED-PROTECTION.json",
+    "bytes": 1004259,
+    "sha256": "36cdfb311d4001732616e713f4078319ac431cb6437c193b2faa08337183d095"
+  },
+  "QUALIFIED": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+    "bytes": 2707019,
+    "sha256": "1a3090cebe7356de2f7a1957839be785de94f18deb162977204f076f8503487c"
+  },
+  "RESULT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/readback-001/RESULT.json",
+    "bytes": 935160,
+    "sha256": "b8426eecd5db76f54af76cad369f60444b6c4c5bda15e426664c0f2e73d02a91"
+  },
+  "observer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/observe_author003_post_checkpoint.py",
+    "bytes": 2844,
+    "sha256": "0d09f4bb6e60e11c6701e3de6491a1054b9cb17c27d90113dfe6af7877860b8c"
+  },
+  "executing_original_author003": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/author_actual_checkpoint.py",
+    "bytes": 31038,
+    "sha256": "8efcb4b1b048ea2b4819fecd48be8a9e934babc2dbe73461f91e622e8b66ca05"
+  },
+  "executing_original_reader003": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+    "bytes": 41081,
+    "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+  },
+  "legacy_assessment": "OBSERVED_CONTRACT_MISMATCH",
+  "legacy_native_reference_qualification": {
+    "status": "UNKNOWN",
+    "binding": null
+  },
+  "original_frozen_political_protection_contract_unchanged": true,
+  "actual_code1_not_recast_partial": true,
+  "full_B5_pass": false,
+  "whole_formal_acceptance_credit": null,
+  "product_credit": null,
+  "R15_success_cold_baseline_credit": null,
+  "save_body_reads": 1,
+  "original_raw_scan_observed_once": 1,
+  "additional_save_body_reads": 0,
+  "child_live_autosave_reads": 0,
+  "game_calls": 0,
+  "SDK_calls": 0
+}

@@ -1,0 +1,337 @@
+{
+  "schema": "lyd.r14.actual-B0-baseline-native-saved-readback.v1",
+  "utc": "2026-10-06T15:12:41.989361+00:00",
+  "status": "ACTUAL_B0_BASELINE_TYPED_PROTECTION_AND_NATIVE_JOIN_OBSERVED",
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "save_body_reads": 1,
+  "actual_pass": null,
+  "formal_acceptance": null,
+  "nominal_I3b_begin": false,
+  "formal_reader_executed": false,
+  "actual_source_native_profile_binding": {
+    "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+    "source_export_report": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/REPORT.json",
+      "bytes": 21311,
+      "sha256": "2460c05683f5f74d06c0554c230ef7a31abad093bb016c525a4f974b20be3e83"
+    },
+    "compiled_RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/RESULT.json",
+      "bytes": 882949,
+      "sha256": "a8d51253ccf4cf79687f1d4b3fdc93c9c21837278b04f27cdffe376680885e85"
+    },
+    "metadata_RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-metadata-capture-20261006-001/RESULT.json",
+      "bytes": 6331,
+      "sha256": "35c46e596428950c38c17d92f9c7263be60737ea5e7178120a80aa342141ea93"
+    },
+    "profile": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/native-profile-with-exit-inventory.json",
+      "bytes": 1154,
+      "sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150"
+    },
+    "actual_DLL": {
+      "path": "C:/lyd14-native-clean-20261006-004/xar_ck3_bridge.dll",
+      "bytes": 7924736,
+      "sha256": "4e10f698fc133ddb4c047d8a90b1d2633f4494db5eafdfe5a1d3d61c48423849"
+    },
+    "profile_DLL_readback": {
+      "path": "C:/lyd14-native-clean-20261006-004/xar_ck3_bridge.dll",
+      "bytes": 7924736,
+      "sha256": "4e10f698fc133ddb4c047d8a90b1d2633f4494db5eafdfe5a1d3d61c48423849"
+    },
+    "new_runtime_library": {
+      "path": "C:/lyd14-native-clean-20261006-004/xar_ck3_12002_runtime.lib",
+      "bytes": 75138158,
+      "sha256": "2051f6227c42541404361d3ae868053ffc5644ae2fe20a97780d864a671d9041"
+    },
+    "eleven_flags_actual": {
+      "BUILD_TESTING": "ON",
+      "XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1": "ON",
+      "XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1": "ON",
+      "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1": "ON",
+      "XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1": "OFF",
+      "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1": "OFF",
+      "XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1": "OFF",
+      "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1": "OFF"
+    },
+    "six_actual_artifacts_count": 6,
+    "four_actual_focused_tests_count": 4,
+    "actual_codec": {
+      "path": "C:/lr14s1/ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+      "bytes": 23750,
+      "sha256": "9b9e87e1c6981f6b74382d291ad1f9c33c10f1f1e0002e1bfd704ec11e800681"
+    },
+    "actual_metadata": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-metadata-capture-20261006-001/ACTUAL-challenger24-profile-all-tools.json",
+      "bytes": 23777,
+      "sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9"
+    },
+    "actual_metadata_tool_count": 24
+  },
+  "actual_checkpoint_transition_qualified": true,
+  "baseline_stage": "pre_proposal_baseline",
+  "identity": {
+    "actor_id": 31254,
+    "faith_id": 107,
+    "main_rite_id": 169,
+    "pid": 14776,
+    "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+    "revision": 2,
+    "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\userdir\\save games\\xar_checkpoint.ck3"
+  },
+  "baseline_save": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/content-da83d5b153ebe3d96e28a059e41340c73c3f817956a4e76d112d354f08131326.ck3",
+    "bytes": 91669783,
+    "sha256": "da83d5b153ebe3d96e28a059e41340c73c3f817956a4e76d112d354f08131326"
+  },
+  "protection_check_count": 87,
+  "protection_checks_match": 87,
+  "all_protection_checks_match": true,
+  "wallet": {
+    "gold": "1043",
+    "piety": "3150",
+    "prestige": "2200"
+  },
+  "I3b_typed_fields": {},
+  "round_numeric_fields": {
+    "lyd_i3b_serial": null,
+    "lyd_i3b_nonce": null,
+    "lyd_i3b_phase": null,
+    "lyd_i3b_active": null,
+    "lyd_i3b_authority_mode": null,
+    "lyd_i3b_result_serial": null,
+    "lyd_i3b_result_nonce": null,
+    "lyd_i3b_result_code": null,
+    "lyd_i3b_result_authority_mode": null
+  },
+  "whole_world_living_count": 35658,
+  "living_section_record_count": 35660,
+  "excluded_explicit_dead_record_count": 2,
+  "native_G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+  "G2_faith_member_count": 51,
+  "G2_human_ids": [
+    31254
+  ],
+  "G2_rite_counties": {
+    "169": 0
+  },
+  "native_G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+  "native_legal_head_absent": true,
+  "G2_G3_capture_epochs": {
+    "assembly_predicates": 37885,
+    "religious_title": 39141
+  },
+  "after_frame_binding": {
+    "revision": 3,
+    "native_revision": 2,
+    "date_raw": 53144712,
+    "game_pid": 14776,
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "snapshot_id": "native:2"
+  },
+  "original_frozen_business_files_match": true,
+  "qualified_native_output": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+    "bytes": 80544,
+    "sha256": "83b3ef081429d73807d016991bc518c2e428f23ebc86b6ab3467eafbcb4131b6"
+  },
+  "output_schema_passed": true,
+  "baseline_windows_not_used": "No formal window is executed in pre-proposal baseline; same-HEAD B1-B5 windows remain required for formal reader requests.",
+  "actual_acceptance_credit": null,
+  "formal_mandate_credit": null,
+  "elapsed_seconds": 55.6125483000651,
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 26678,
+      "sha256": "ef959978d316313f629633e09d4d9fe500836f0ae740118ec54fa067ecc2ea66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/CONVERSION-REQUEST.actual.json",
+      "bytes": 10226,
+      "sha256": "bedca9edda1ee4e25fc0f256d3920bafabbb2498d37aec76264e181f2a73345e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/G2-NATIVE.original.json",
+      "bytes": 29020,
+      "sha256": "5feeeb3e55f178dd83380784642a40570bfd8e362d77051703c1b5ff35584368"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/G2-SDK-WRAPPER.original.json",
+      "bytes": 61859,
+      "sha256": "74573852081a6ebf90026958fcda2f0b4f25678635ffb0482a4228ffa9b00cf1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/G3-NATIVE.original.json",
+      "bytes": 4120,
+      "sha256": "af1c6238a7823b7b90bf68fb3cbe168db7b6a7b7ba47a4ba40dbee1850bd15c1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/G3-SDK-WRAPPER.original.json",
+      "bytes": 9021,
+      "sha256": "eb42b02ce3a2b424ca2ad83659b1d73b7e5b888538835c0343ada18b6cde4446"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "bytes": 884844,
+      "sha256": "87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 80544,
+      "sha256": "83b3ef081429d73807d016991bc518c2e428f23ebc86b6ab3467eafbcb4131b6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/PROVENANCE.actual.json",
+      "bytes": 10168,
+      "sha256": "5ee5bdc0f7416de1f9f7c0e9e54c483cfc0f9cd7a35fe89e93e69cdc5db34113"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/SDK-CODEC-LINEAGE.actual.json",
+      "bytes": 951,
+      "sha256": "33fc6e32143afad4fc6036df247ccf7262d5ef0994293d4c6b06bf5f86a70131"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/SDK-METADATA-LINEAGE.actual.json",
+      "bytes": 547,
+      "sha256": "263cfb61e6c459d2eea52a87075f4378c2a50251e42126457aafcc11755106e3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/STATE.json",
+      "bytes": 1317829,
+      "sha256": "592a2dc82656cab0dfec1f39c70e99a30ea7e8f1969e1dfb8d024fa2b4f2d0b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/TYPED-PROTECTION.json",
+      "bytes": 966666,
+      "sha256": "82f70adaab156bfb650ff093cd5fcc74e9bebea601a65f6f4bb8ea2885a483ba"
+    }
+  ]
+}

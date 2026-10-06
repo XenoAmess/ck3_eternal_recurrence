@@ -1,0 +1,911 @@
+{
+  "schema": "lyd.r14.normal-exit-original-raw-index-and-derived-result-projection.v1",
+  "original_files": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0142-r14-171336515375.sdk-result.json",
+        "bytes": 5455143,
+        "sha256": "9bc0a5fc868a56b784a3acba5031f77830e6f657808b7ce881b4328cb1086c2c"
+      },
+      "preserved": null,
+      "archive_relative_path": null,
+      "kind": "EXTERNAL_IMMUTABLE_FULL_RAW_REFERENCE_ONLY",
+      "reason": "Full serialized SDK contains repeated large native snapshots; exact original remains in permanent external run, bounded receipt/result projections explicitly derived"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0143-r14-171351894833.sdk-result.json",
+        "bytes": 2733097,
+        "sha256": "c349c3fccf027c232246d3963f24f270455ce07d2516add762958794e215fc62"
+      },
+      "preserved": null,
+      "archive_relative_path": null,
+      "kind": "EXTERNAL_IMMUTABLE_FULL_RAW_REFERENCE_ONLY",
+      "reason": "Full serialized SDK contains repeated large native snapshots; exact original remains in permanent external run, bounded receipt/result projections explicitly derived"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0144-r14-171415248202.sdk-result.json",
+        "bytes": 5455141,
+        "sha256": "1c7d894b10424ac6fed5f2122905ebdf0bf75975d9672e60346bf627faf3da04"
+      },
+      "preserved": null,
+      "archive_relative_path": null,
+      "kind": "EXTERNAL_IMMUTABLE_FULL_RAW_REFERENCE_ONLY",
+      "reason": "Full serialized SDK contains repeated large native snapshots; exact original remains in permanent external run, bounded receipt/result projections explicitly derived"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0145-r14-171437247082.sdk-result.json",
+        "bytes": 2727359,
+        "sha256": "97322f09a7d8d4415ae6e67e567adab3c43fb7810a0f07a2d6a9cfc7462eb91f"
+      },
+      "preserved": null,
+      "archive_relative_path": null,
+      "kind": "EXTERNAL_IMMUTABLE_FULL_RAW_REFERENCE_ONLY",
+      "reason": "Full serialized SDK contains repeated large native snapshots; exact original remains in permanent external run, bounded receipt/result projections explicitly derived"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0146-r14-171846609352.sdk-result.json",
+        "bytes": 5455131,
+        "sha256": "d366b62284704ad91b2b52b0ff88ad6af634e24e8e5d4cd2d9f8867b3b354bd7"
+      },
+      "preserved": null,
+      "archive_relative_path": null,
+      "kind": "EXTERNAL_IMMUTABLE_FULL_RAW_REFERENCE_ONLY",
+      "reason": "Full serialized SDK contains repeated large native snapshots; exact original remains in permanent external run, bounded receipt/result projections explicitly derived"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0147-r14-171859632352.sdk-result.json",
+        "bytes": 2735257,
+        "sha256": "7be4555bff2f1140357075a5c993cfb2ef79a33124e7fcf9fd13e138499456c6"
+      },
+      "preserved": null,
+      "archive_relative_path": null,
+      "kind": "EXTERNAL_IMMUTABLE_FULL_RAW_REFERENCE_ONLY",
+      "reason": "Full serialized SDK contains repeated large native snapshots; exact original remains in permanent external run, bounded receipt/result projections explicitly derived"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0148-r14-171915621909.sdk-result.json",
+        "bytes": 12819,
+        "sha256": "fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945.json",
+        "bytes": 12819,
+        "sha256": "fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945"
+      },
+      "archive_relative_path": "raw/fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945.json"
+    }
+  ],
+  "all_original_bytes_SHA_verified": true,
+  "full_SDK_142_147_external_reference_only": true,
+  "canonical_SDK148_and_native148_preserved": true,
+  "derived_timeline": [
+    {
+      "sequence": 142,
+      "SDK_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0142-r14-171336515375.sdk-result.json",
+        "bytes": 5455143,
+        "sha256": "9bc0a5fc868a56b784a3acba5031f77830e6f657808b7ce881b4328cb1086c2c"
+      },
+      "SDK_isError": false,
+      "request_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0142-r14-171336515375.request.json",
+        "bytes": 201,
+        "sha256": "bec5e4cd31b9b965f4f63953782d8f557de00b3039e3ea1a105c7b8942a083b3"
+      },
+      "status": "context_observed",
+      "result_projection_from_exact_original": {
+        "schema": "ck3-normal-exit-context-result-v1",
+        "status": "context_observed",
+        "public_revision": 44,
+        "native_observation": {
+          "schema": "ck3-normal-exit-map-v1",
+          "step": "normal-exit-map-v1",
+          "action": "query_context",
+          "status": "context_observed",
+          "native_revision": 43,
+          "connection_generation": 1,
+          "game_pid": 14776,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": 134357694970696165,
+          "pump_epoch": 908641,
+          "exact_build_verified": true,
+          "owner_verified": true,
+          "process_identity_verified": true,
+          "source_abi_pins_verified": true,
+          "stock_files_verified": true,
+          "loaded_source_binding_verified": true,
+          "frame_verified": true,
+          "context_signature_verified": false,
+          "confirmation_visible": false,
+          "orderly_exit_verified": false,
+          "autosave_verified": false,
+          "exit_context_signature": "97b47c08b76df4c485382c116e4215fbaf7d2f227fbb7d81d3b768c3f5e788b5",
+          "reason": "fresh_backend_context_observed",
+          "stage_consumed": [
+            false,
+            false,
+            false
+          ],
+          "targets": [
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": 76961464
+            }
+          ],
+          "dispatches": [
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            }
+          ]
+        },
+        "exit_context_signature": "97b47c08b76df4c485382c116e4215fbaf7d2f227fbb7d81d3b768c3f5e788b5",
+        "source_inventory_sha256": "2118fe7d45f3086144d0320300ddd9f8399b6049d0a5f7bc83aa685c8dcef54f",
+        "process_creation_filetime_100ns": 134357694970696165,
+        "claim_consumed": false,
+        "retry_authorized": false,
+        "orderly_exit_verified": false,
+        "autosave_verified": false
+      },
+      "projection_is_full_raw_receipt": false
+    },
+    {
+      "sequence": 143,
+      "SDK_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0143-r14-171351894833.sdk-result.json",
+        "bytes": 2733097,
+        "sha256": "c349c3fccf027c232246d3963f24f270455ce07d2516add762958794e215fc62"
+      },
+      "SDK_isError": false,
+      "request_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0143-r14-171351894833.request.json",
+        "bytes": 340,
+        "sha256": "788c71771634f913f0707546f11f13daa613efd062fd8798fffc009fcf5051af"
+      },
+      "status": "dispatch_unknown_claimed",
+      "result_projection_from_exact_original": {
+        "schema": "ck3-normal-exit-request-result-v1",
+        "action": "prepare_confirmation",
+        "status": "dispatch_unknown_claimed",
+        "native_observation": {
+          "schema": "ck3-normal-exit-map-v1",
+          "step": "normal-exit-map-v1",
+          "action": "prepare_confirmation",
+          "status": "dispatch_unknown_claimed",
+          "native_revision": 43,
+          "connection_generation": 1,
+          "game_pid": 14776,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": 134357694970696165,
+          "pump_epoch": 910471,
+          "exact_build_verified": true,
+          "owner_verified": true,
+          "process_identity_verified": true,
+          "source_abi_pins_verified": true,
+          "stock_files_verified": true,
+          "loaded_source_binding_verified": true,
+          "frame_verified": true,
+          "context_signature_verified": true,
+          "confirmation_visible": false,
+          "orderly_exit_verified": false,
+          "autosave_verified": false,
+          "exit_context_signature": "97b47c08b76df4c485382c116e4215fbaf7d2f227fbb7d81d3b768c3f5e788b5",
+          "reason": "opening_callback_postcondition_not_yet_observed_no_retry",
+          "stage_consumed": [
+            true,
+            false,
+            false
+          ],
+          "targets": [
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": 76961464
+            }
+          ],
+          "dispatches": [
+            {
+              "claim_latched": true,
+              "dispatch_invoked": true,
+              "native_handled": true,
+              "post_read_complete": true,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            }
+          ]
+        },
+        "claim_consumed": true,
+        "retry_authorized": false,
+        "confirmation_observed": false,
+        "process_exit_observed": false,
+        "typed_normal_exit_observed": false,
+        "orderly_exit_verified": false,
+        "autosave_verified": false,
+        "reason": null,
+        "public_revision": 44,
+        "request_id": "normal-exit-prepare_confirmation-740f7547b4a243ba80d098583d794dfd",
+        "claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\normal-exit-map-requests\\e7a4bd822a452862ff03cc0292ac1e98e4f43f9f34a7b4165fa6a59d9081aa0f.claim.json",
+        "source_inventory_sha256": "2118fe7d45f3086144d0320300ddd9f8399b6049d0a5f7bc83aa685c8dcef54f",
+        "process_creation_filetime_100ns": 134357694970696165,
+        "uses_desktop_input": false,
+        "uses_ocr": false,
+        "native_submission_count": 1
+      },
+      "projection_is_full_raw_receipt": false
+    },
+    {
+      "sequence": 144,
+      "SDK_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0144-r14-171415248202.sdk-result.json",
+        "bytes": 5455141,
+        "sha256": "1c7d894b10424ac6fed5f2122905ebdf0bf75975d9672e60346bf627faf3da04"
+      },
+      "SDK_isError": false,
+      "request_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0144-r14-171415248202.request.json",
+        "bytes": 201,
+        "sha256": "d0a7e6b5f925d7ea7106ece8d5b81c3c145ab8240f85e0d72aaeb6b401c87afc"
+      },
+      "status": "context_observed",
+      "result_projection_from_exact_original": {
+        "schema": "ck3-normal-exit-context-result-v1",
+        "status": "context_observed",
+        "public_revision": 44,
+        "native_observation": {
+          "schema": "ck3-normal-exit-map-v1",
+          "step": "normal-exit-map-v1",
+          "action": "query_context",
+          "status": "context_observed",
+          "native_revision": 43,
+          "connection_generation": 1,
+          "game_pid": 14776,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": 134357694970696165,
+          "pump_epoch": 913123,
+          "exact_build_verified": true,
+          "owner_verified": true,
+          "process_identity_verified": true,
+          "source_abi_pins_verified": true,
+          "stock_files_verified": true,
+          "loaded_source_binding_verified": true,
+          "frame_verified": true,
+          "context_signature_verified": false,
+          "confirmation_visible": false,
+          "orderly_exit_verified": false,
+          "autosave_verified": false,
+          "exit_context_signature": "8fba7bae2787c03e37ee08035f8a819bcb79d6b489897f849f0fb664583a1dca",
+          "reason": "fresh_backend_context_observed",
+          "stage_consumed": [
+            true,
+            false,
+            false
+          ],
+          "targets": [
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": 76961464
+            }
+          ],
+          "dispatches": [
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            }
+          ]
+        },
+        "exit_context_signature": "8fba7bae2787c03e37ee08035f8a819bcb79d6b489897f849f0fb664583a1dca",
+        "source_inventory_sha256": "2118fe7d45f3086144d0320300ddd9f8399b6049d0a5f7bc83aa685c8dcef54f",
+        "process_creation_filetime_100ns": 134357694970696165,
+        "claim_consumed": false,
+        "retry_authorized": false,
+        "orderly_exit_verified": false,
+        "autosave_verified": false
+      },
+      "projection_is_full_raw_receipt": false
+    },
+    {
+      "sequence": 145,
+      "SDK_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0145-r14-171437247082.sdk-result.json",
+        "bytes": 2727359,
+        "sha256": "97322f09a7d8d4415ae6e67e567adab3c43fb7810a0f07a2d6a9cfc7462eb91f"
+      },
+      "SDK_isError": false,
+      "request_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0145-r14-171437247082.request.json",
+        "bytes": 340,
+        "sha256": "46e836728cb5104ee818c9ec25037014fd4fd6e4010881a6477490ddc3f40f2c"
+      },
+      "status": "dispatch_unknown_claimed",
+      "result_projection_from_exact_original": {
+        "schema": "ck3-normal-exit-request-result-v1",
+        "action": "continue_preparation",
+        "status": "dispatch_unknown_claimed",
+        "native_observation": null,
+        "claim_consumed": true,
+        "retry_authorized": false,
+        "confirmation_observed": false,
+        "process_exit_observed": false,
+        "typed_normal_exit_observed": false,
+        "orderly_exit_verified": false,
+        "autosave_verified": false,
+        "reason": "ValueError: expected_exit_context_signature requires 64 lowercase hexadecimal characters",
+        "public_revision": 44,
+        "request_id": "normal-exit-continue_preparation-6cf77424be5241a2ba229b483e252303",
+        "claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\normal-exit-map-requests\\e7d9ee29c928a0eaa9804229db33a959f582b6f9daa527872a69582d48341737.claim.json",
+        "source_inventory_sha256": "2118fe7d45f3086144d0320300ddd9f8399b6049d0a5f7bc83aa685c8dcef54f",
+        "process_creation_filetime_100ns": 134357694970696165,
+        "uses_desktop_input": false,
+        "uses_ocr": false,
+        "native_submission_count": 1
+      },
+      "projection_is_full_raw_receipt": false
+    },
+    {
+      "sequence": 146,
+      "SDK_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0146-r14-171846609352.sdk-result.json",
+        "bytes": 5455131,
+        "sha256": "d366b62284704ad91b2b52b0ff88ad6af634e24e8e5d4cd2d9f8867b3b354bd7"
+      },
+      "SDK_isError": false,
+      "request_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0146-r14-171846609352.request.json",
+        "bytes": 201,
+        "sha256": "d7131434f95a6bf7d1636df5466d609d3846a30b2c2a97a31ff99830db5f9606"
+      },
+      "status": "context_observed",
+      "result_projection_from_exact_original": {
+        "schema": "ck3-normal-exit-context-result-v1",
+        "status": "context_observed",
+        "public_revision": 44,
+        "native_observation": {
+          "schema": "ck3-normal-exit-map-v1",
+          "step": "normal-exit-map-v1",
+          "action": "query_context",
+          "status": "context_observed",
+          "native_revision": 43,
+          "connection_generation": 1,
+          "game_pid": 14776,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": 134357694970696165,
+          "pump_epoch": 945027,
+          "exact_build_verified": true,
+          "owner_verified": true,
+          "process_identity_verified": true,
+          "source_abi_pins_verified": true,
+          "stock_files_verified": true,
+          "loaded_source_binding_verified": true,
+          "frame_verified": true,
+          "context_signature_verified": false,
+          "confirmation_visible": true,
+          "orderly_exit_verified": false,
+          "autosave_verified": false,
+          "exit_context_signature": "d347a7cc8b99a1f6e6211ce8ec386142720b0d853d37c26fe772290addadf39b",
+          "reason": "fresh_backend_context_observed",
+          "stage_consumed": [
+            true,
+            true,
+            false
+          ],
+          "targets": [
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": 76961464
+            }
+          ],
+          "dispatches": [
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            }
+          ]
+        },
+        "exit_context_signature": "d347a7cc8b99a1f6e6211ce8ec386142720b0d853d37c26fe772290addadf39b",
+        "source_inventory_sha256": "2118fe7d45f3086144d0320300ddd9f8399b6049d0a5f7bc83aa685c8dcef54f",
+        "process_creation_filetime_100ns": 134357694970696165,
+        "claim_consumed": false,
+        "retry_authorized": false,
+        "orderly_exit_verified": false,
+        "autosave_verified": false
+      },
+      "projection_is_full_raw_receipt": false
+    },
+    {
+      "sequence": 147,
+      "SDK_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0147-r14-171859632352.sdk-result.json",
+        "bytes": 2735257,
+        "sha256": "7be4555bff2f1140357075a5c993cfb2ef79a33124e7fcf9fd13e138499456c6"
+      },
+      "SDK_isError": false,
+      "request_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0147-r14-171859632352.request.json",
+        "bytes": 335,
+        "sha256": "699ab0a9c575d96a484c0269e261e458501b89e2d8a6d56a9172fad6bf412dad"
+      },
+      "status": "dispatch_pending",
+      "result_projection_from_exact_original": {
+        "schema": "ck3-normal-exit-request-result-v1",
+        "action": "confirm_desktop",
+        "claim_consumed": true,
+        "retry_authorized": false,
+        "process_exit_observed": false,
+        "exit_code": null,
+        "typed_normal_exit_observed": false,
+        "autosave_verified": false,
+        "status": "dispatch_pending",
+        "native_observation": {
+          "schema": "ck3-normal-exit-map-v1",
+          "step": "normal-exit-map-v1",
+          "action": "confirm_desktop",
+          "status": "dispatch_pending",
+          "native_revision": 43,
+          "connection_generation": 1,
+          "game_pid": 14776,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": 134357694970696165,
+          "pump_epoch": 946655,
+          "exact_build_verified": true,
+          "owner_verified": true,
+          "process_identity_verified": true,
+          "source_abi_pins_verified": true,
+          "stock_files_verified": true,
+          "loaded_source_binding_verified": true,
+          "frame_verified": true,
+          "context_signature_verified": true,
+          "confirmation_visible": true,
+          "orderly_exit_verified": false,
+          "autosave_verified": false,
+          "exit_context_signature": "d347a7cc8b99a1f6e6211ce8ec386142720b0d853d37c26fe772290addadf39b",
+          "reason": "desktop_dispatch_pending_independent_process_observation",
+          "stage_consumed": [
+            true,
+            true,
+            true
+          ],
+          "targets": [
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": 76961464
+            }
+          ],
+          "dispatches": [
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": true,
+              "dispatch_invoked": true,
+              "native_handled": true,
+              "post_read_complete": true,
+              "postcondition_observed": false
+            }
+          ]
+        },
+        "process_observation": {
+          "pid": 14776,
+          "creation_filetime_100ns": 134357694970696165,
+          "retained_handle_token": "8345f504f533bbc4ed641c481ed32730",
+          "wait_result": 258,
+          "wait_state": "timeout",
+          "exit_code": 259,
+          "process_identity_verified": true,
+          "process_exit_observed": false,
+          "observed_monotonic_ns": 777624730550600,
+          "timeout_ms": 5000,
+          "observation_deadline_reached": true,
+          "observation_clock_domain": "driver_monotonic_v1",
+          "errors": []
+        },
+        "process_preconfirm_pin": {
+          "pid": 14776,
+          "creation_filetime_100ns": 134357694970696165,
+          "retained_handle_token": "8345f504f533bbc4ed641c481ed32730",
+          "wait_result": 258,
+          "verified_monotonic_ns": 777619032515800,
+          "observation_clock_domain": "driver_monotonic_v1"
+        },
+        "driver_dispatch_receipt_observed_monotonic_ns": 777619641207600,
+        "receipt_clock_meaning": "driver observed a validated dispatch_invoked native response; not native callback time",
+        "snapshot_after_required": false,
+        "reason": null,
+        "observer_retained": true,
+        "public_revision": 44,
+        "request_id": "normal-exit-confirm_desktop-73d78c535a9a40eb9e04ca625e6b43a0",
+        "claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\normal-exit-map-requests\\b6211f48241f5f0789682fc9f033e5297193e4810f36881acb4d412604612e1f.claim.json",
+        "source_inventory_sha256": "2118fe7d45f3086144d0320300ddd9f8399b6049d0a5f7bc83aa685c8dcef54f",
+        "process_creation_filetime_100ns": 134357694970696165,
+        "uses_desktop_input": false,
+        "uses_ocr": false,
+        "native_submission_count": 1
+      },
+      "projection_is_full_raw_receipt": false
+    },
+    {
+      "sequence": 148,
+      "SDK_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0148-r14-171915621909.sdk-result.json",
+        "bytes": 12819,
+        "sha256": "fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945"
+      },
+      "SDK_isError": false,
+      "request_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0148-r14-171915621909.request.json",
+        "bytes": 172,
+        "sha256": "091722e349cebb6ce295078a2bedb0924bfb9392d4ec731f58f73ee47c1cf1e1"
+      },
+      "status": "process_exit_observed_zero",
+      "result_projection_from_exact_original": {
+        "schema": "ck3-normal-exit-process-observation-result-v1",
+        "action": "confirm_desktop",
+        "public_revision": 44,
+        "request_id": "normal-exit-confirm_desktop-73d78c535a9a40eb9e04ca625e6b43a0",
+        "claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\normal-exit-map-requests\\b6211f48241f5f0789682fc9f033e5297193e4810f36881acb4d412604612e1f.claim.json",
+        "source_inventory_sha256": "2118fe7d45f3086144d0320300ddd9f8399b6049d0a5f7bc83aa685c8dcef54f",
+        "process_creation_filetime_100ns": 134357694970696165,
+        "process_preconfirm_pin": {
+          "pid": 14776,
+          "creation_filetime_100ns": 134357694970696165,
+          "retained_handle_token": "8345f504f533bbc4ed641c481ed32730",
+          "wait_result": 258,
+          "verified_monotonic_ns": 777619032515800,
+          "observation_clock_domain": "driver_monotonic_v1"
+        },
+        "claim_consumed": true,
+        "retry_authorized": false,
+        "process_exit_observed": true,
+        "exit_code": 0,
+        "typed_normal_exit_observed": true,
+        "autosave_verified": false,
+        "status": "process_exit_observed_zero",
+        "native_observation": {
+          "schema": "ck3-normal-exit-map-v1",
+          "step": "normal-exit-map-v1",
+          "action": "confirm_desktop",
+          "status": "dispatch_pending",
+          "native_revision": 43,
+          "connection_generation": 1,
+          "game_pid": 14776,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": 134357694970696165,
+          "pump_epoch": 946655,
+          "exact_build_verified": true,
+          "owner_verified": true,
+          "process_identity_verified": true,
+          "source_abi_pins_verified": true,
+          "stock_files_verified": true,
+          "loaded_source_binding_verified": true,
+          "frame_verified": true,
+          "context_signature_verified": true,
+          "confirmation_visible": true,
+          "orderly_exit_verified": false,
+          "autosave_verified": false,
+          "exit_context_signature": "d347a7cc8b99a1f6e6211ce8ec386142720b0d853d37c26fe772290addadf39b",
+          "reason": "desktop_dispatch_pending_independent_process_observation",
+          "stage_consumed": [
+            true,
+            true,
+            true
+          ],
+          "targets": [
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": 76961464
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": 76961464
+            }
+          ],
+          "dispatches": [
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": true,
+              "dispatch_invoked": true,
+              "native_handled": true,
+              "post_read_complete": true,
+              "postcondition_observed": false
+            }
+          ]
+        },
+        "process_observation": {
+          "pid": 14776,
+          "creation_filetime_100ns": 134357694970696165,
+          "retained_handle_token": "8345f504f533bbc4ed641c481ed32730",
+          "wait_result": 0,
+          "wait_state": "signaled",
+          "exit_code": 0,
+          "process_identity_verified": true,
+          "process_exit_observed": true,
+          "observed_monotonic_ns": 777632881783300,
+          "timeout_ms": 5000,
+          "observation_deadline_reached": false,
+          "observation_clock_domain": "driver_monotonic_v1",
+          "errors": []
+        },
+        "driver_dispatch_receipt_observed_monotonic_ns": 777619641207600,
+        "receipt_clock_meaning": "driver observed validated dispatch_invoked response; not native callback time",
+        "observer_retained": false,
+        "snapshot_after_required": false,
+        "native_submission_count": 0,
+        "uses_desktop_input": false,
+        "uses_ocr": false,
+        "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\normal-exit-map-requests\\34518b3c483e946ce3e1.observe-a1e034251ee544ac.json",
+        "observer_close_receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\normal-exit-map-requests\\34518b3c483e946ce3e1.observer-close-6b168495b92345f7.json"
+      },
+      "projection_is_full_raw_receipt": false
+    }
+  ],
+  "additional_game_or_SDK_calls": 0,
+  "autosave_credit": null,
+  "full_run_closed": true,
+  "actual_close_boundary_original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3054,
+    "sha256": "de1a0fee95083b1db75ece4c6231b428ac78e660f1b3802a4da8cf9f1d62a172"
+  }
+}

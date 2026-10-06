@@ -1,0 +1,71 @@
+{
+  "status": "EXISTING_FACTS_VALIDATED_NO_ACTION",
+  "command": "check-game-exit",
+  "game": {
+    "game_sdk": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0148-r14-171915621909.sdk-result.json",
+      "bytes": 12819,
+      "sha256": "fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945"
+    },
+    "game_native": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0148-r14-171915621909.native-01.json",
+      "bytes": 5908,
+      "sha256": "a97c79b3fbc86a044ae614f4cf389e8c4e085ee0bd69e747b7c46a3c82bfc13c"
+    },
+    "original_game_native": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/native-evidence/065244bdf4ce4b3fbfbf667eb8a9c757/0146-normal-exit-observe.json",
+      "bytes": 5908,
+      "sha256": "a97c79b3fbc86a044ae614f4cf389e8c4e085ee0bd69e747b7c46a3c82bfc13c"
+    },
+    "game_dispatch": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0148-r14-171915621909.response.json",
+      "bytes": 1274,
+      "sha256": "cbae16436a70ebc82483083824ce21f6ed01039073847671f0d50be7e76a38e5"
+    },
+    "game_request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-queue-001/r14-171915621909.request.json",
+      "bytes": 172,
+      "sha256": "091722e349cebb6ce295078a2bedb0924bfb9392d4ec731f58f73ee47c1cf1e1"
+    },
+    "game_result_schema": "ck3-normal-exit-process-observation-result-v1",
+    "game_original_pid": 14776,
+    "game_original_creation_filetime_100ns": 134357694970696165,
+    "game_original_create_time": 1791295897.0696163,
+    "autosave_verified": false,
+    "dispatch_is_error_original": null,
+    "SDK_isError_original": false
+  },
+  "pins": {
+    "capture": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-retained-helper-handles-20261006-001/capture-001/CAPTURED.actual.json",
+      "bytes": 3985,
+      "sha256": "f740734f79b786b79decee8fae6fc524892f11b09984dcb37b095cacf241be8f"
+    },
+    "session": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/session.json",
+      "bytes": 1233,
+      "sha256": "0740fe7510d1b9226d8f24f23ebe015bfe5d310e43f8d5e8b446a5f39550c2d0"
+    },
+    "holder_start": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-retained-helper-handles-20261006-001/HOLDER-START.actual.json",
+      "bytes": 1372,
+      "sha256": "97fd69c80da9f3d6d669a0ac05ad973fe08758b288bf70c606bdd51a12669197"
+    },
+    "keeper_start": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/KEEPER-START.actual.json",
+      "bytes": 753,
+      "sha256": "0f773c80033e39a5dd50c862b086da236ccfca65f14c06371a7db78f4cc3adee"
+    },
+    "profile": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/native-profile-with-exit-inventory.json",
+      "bytes": 1154,
+      "sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150"
+    }
+  },
+  "phase": {},
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "close_requested": false,
+  "stop_requested": false,
+  "release_requested": false
+}

@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "--bus-dir",
+    "C:\\workspace\\.codex-task-bus",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "release-screen-cas",
+    "--task",
+    "ck3-lyd-r14-preflight-20261006-001",
+    "--expected-sequence",
+    "3428",
+    "--summary",
+    "R14 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen"
+  ],
+  "started_at_utc": "2026-10-06T17:29:21.702805+00:00"
+}

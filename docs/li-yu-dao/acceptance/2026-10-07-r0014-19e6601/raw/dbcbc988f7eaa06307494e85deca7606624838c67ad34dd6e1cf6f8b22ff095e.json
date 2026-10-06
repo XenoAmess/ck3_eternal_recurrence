@@ -1,0 +1,96 @@
+{
+  "schema": "ck3.native-profile-receipt.v1",
+  "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+  "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+  "pipe_name": "\\\\.\\pipe\\xar_profile_065244bdf4ce4b3fbfbf667eb8a9c757",
+  "recorded_at_utc": "2026-10-06T15:08:00.426566+00:00",
+  "status": "native_confucian_readonly_observed",
+  "result": {
+    "schema": "ck3-confucian-readonly-public-v1",
+    "operation": "challenger_graph",
+    "native_result": {
+      "step": "query-confucian-challenger-graph-v1",
+      "accepted": true,
+      "status": "observed",
+      "private_build": true,
+      "read_only": true,
+      "advertised": false,
+      "game_version": "1.20.0.3",
+      "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "domain_key": "confucian_challenger_graph_v1",
+      "backend_id": "ck3-1.20.0.3-native-confucian-challenger-graph-v1",
+      "snapshot_revision": 1,
+      "date_raw": 53144712,
+      "confucian_challenger_graph": {
+        "schema": "ck3_12003_confucian_challenger_graph_v1",
+        "game_version": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "read_only": true,
+        "available": true,
+        "graph_complete": true,
+        "unavailable_reason": null,
+        "capture_epoch": 31513,
+        "date_raw": 53144712,
+        "played_character_id": 31254,
+        "played_character_full_id": 31254,
+        "requested_faith_full_ids": [
+          107,
+          104,
+          106
+        ],
+        "faiths": [
+          {
+            "requested_faith_full_id": 107,
+            "available": true,
+            "collection_complete": true,
+            "unavailable_reason": null,
+            "native_count": 0,
+            "complete_native_challenger_title_ids": [],
+            "challengers": []
+          },
+          {
+            "requested_faith_full_id": 104,
+            "available": true,
+            "collection_complete": true,
+            "unavailable_reason": null,
+            "native_count": 0,
+            "complete_native_challenger_title_ids": [],
+            "challengers": []
+          },
+          {
+            "requested_faith_full_id": 106,
+            "available": true,
+            "collection_complete": true,
+            "unavailable_reason": null,
+            "native_count": 0,
+            "complete_native_challenger_title_ids": [],
+            "challengers": []
+          }
+        ],
+        "mod_owned_markers": null,
+        "saved_owner_faith_variables": null,
+        "qualification": {
+          "kind": "exact_current_static_abi",
+          "faith_rtti_index_sha256": "712298a183573a588c24fd0a357e0d83d4e6886a9e5ddd45db7ddf8e5a3aba2d",
+          "faith_challenger_abi_index_sha256": "3dffb1d4ee1fa0e100ea26b12f577841317ebdcae4d6e702282bad768ceadfb1",
+          "record_layout_index_sha256": "3e24fe49a46749ce353274c2a22659f229802a972b720b6153349effe01af35f",
+          "title_properties_index_sha256": "14bf997b58a8ff33d7407ece6be2675917a2b7ed7e6ffdba70ca8ea938347a0a",
+          "title_laws_index_sha256": "9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60",
+          "runtime_acceptance": null
+        }
+      }
+    },
+    "queried_snapshot_id": "native:1",
+    "queried_revision": 2,
+    "queried_native_revision": 1,
+    "date_raw": 53144712,
+    "game_pid": 14776,
+    "connection_generation": 1,
+    "player_character_id": 31254,
+    "business_postcondition_verified": false,
+    "full_product_acceptance_credit": false
+  },
+  "business_effects_verified": false,
+  "full_product_acceptance_credit": false,
+  "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-evidence\\065244bdf4ce4b3fbfbf667eb8a9c757\\0006-confucian-readonly-challenger_graph.json"
+}

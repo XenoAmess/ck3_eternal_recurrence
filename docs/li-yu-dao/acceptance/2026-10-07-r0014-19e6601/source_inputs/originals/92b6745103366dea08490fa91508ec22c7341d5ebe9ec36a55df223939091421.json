@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+    "--report",
+    "C:/workspace/ck3_lyd_runtime_20261004/r14-postclose-root-sync-20261007-001/PREVIEW-CHECKS.actual.json"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181124400806-preview-tests-002.stdout",
+    "bytes": 838,
+    "sha256": "b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181124400806-preview-tests-002.stderr",
+    "bytes": 1055,
+    "sha256": "b17a6644cb4efa54fa1e5e599ef2a6c2064e5758aaa635695c7128e9ea8f4514"
+  }
+}

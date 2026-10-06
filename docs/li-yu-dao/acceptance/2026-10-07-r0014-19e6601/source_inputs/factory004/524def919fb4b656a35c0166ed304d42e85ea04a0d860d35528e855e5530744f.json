@@ -1,0 +1,111 @@
+{
+  "schema": "lyd.factory-law.positive-sentinel-004.incremental.v1",
+  "base": "root working tree seven exact raw targets; original business and four MODIFY bytes exact003; two ADD targets root-normalized CRLF to LF, normalized exact003; exact actual main LF before bytes retained",
+  "base_source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "new_ROOT_HEAD": null,
+  "targets": [
+    {
+      "path": "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "operation": "MODIFY",
+      "base003": {
+        "bytes": 2901,
+        "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+      },
+      "candidate004": {
+        "bytes": 2901,
+        "sha256": "fd438b2d2dee8102bf9a8b45241e7ad9f244d248062705c834d4b641205eb263"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "operation": "MODIFY",
+      "base003": {
+        "bytes": 2901,
+        "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+      },
+      "candidate004": {
+        "bytes": 2901,
+        "sha256": "fd438b2d2dee8102bf9a8b45241e7ad9f244d248062705c834d4b641205eb263"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "operation": "MODIFY",
+      "base003": {
+        "bytes": 2984,
+        "sha256": "7bedf43f9efa087f39d3c434b120fd9e609ae04f04b92b18e331b968c2c3c2b8"
+      },
+      "candidate004": {
+        "bytes": 2984,
+        "sha256": "6ad85b8f73a48077befa78b68b51c7930177d93b537904c905b6c9a704ad1d66"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/validate_static.py",
+      "operation": "UNCHANGED",
+      "base003": {
+        "bytes": 21914,
+        "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+      },
+      "candidate004": {
+        "bytes": 21914,
+        "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+      "operation": "MODIFY",
+      "base003": {
+        "bytes": 8088,
+        "sha256": "8194927052bc17c7ed19e597d4987541d9f54ffe56faf12a3b5257ef01594248"
+      },
+      "candidate004": {
+        "bytes": 8463,
+        "sha256": "d7aeea810bc6fdcf957fd5eec8875b05c6ab4982fa517636feb2f76d36051cfa"
+      }
+    },
+    {
+      "path": "docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md",
+      "operation": "MODIFY",
+      "base003": {
+        "bytes": 2527,
+        "sha256": "f6bffc3c40f7694834f1ff4fedc6d9a2645e43e1b3cb5ba84582f73293936e3d"
+      },
+      "candidate004": {
+        "bytes": 2996,
+        "sha256": "348704c3745499dd26c96d7e0a463569e0c4c878871a3f86295ded70fef4d0f7"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/fixtures/c3_factory_laws/ACTUAL-R14-B3-B4-SAMEFAITH-LAW.json",
+      "operation": "UNCHANGED",
+      "base003": {
+        "bytes": 3045,
+        "sha256": "242237017665de9ba1a8c9298dc7f7c46b8b0799886bc32894f65381e000c3b1"
+      },
+      "candidate004": {
+        "bytes": 3045,
+        "sha256": "242237017665de9ba1a8c9298dc7f7c46b8b0799886bc32894f65381e000c3b1"
+      }
+    }
+  ],
+  "incremental_modified_targets": 5,
+  "unchanged_target_refs": 2,
+  "business_changed_only": "common/scripted_effects/lyd_c3_head_factory.txt",
+  "three_numeric_tokens_per_owner_shared_generated": true,
+  "gen_leadership_other_11_outputs_exact": true,
+  "all_other_factory_AST_expected_exact": true,
+  "sentinels": {
+    "no_preexisting_law": 1,
+    "preexisting_law": 2,
+    "cleanup_expected": 1,
+    "zero_capture_valid": false,
+    "zero_cleanup_authorized": false,
+    "unbound_cleanup_authorized": false
+  },
+  "main_applied": false,
+  "game_sdk_calls": 0,
+  "runtime": null,
+  "engine_readd": null,
+  "formal": null
+}

@@ -1,0 +1,778 @@
+{
+  "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "timeline": [
+    {
+      "SDK_sequence": 13,
+      "request": {
+        "schema": "ck3.lyd.mcp-request.v1",
+        "request_id": "r14-151218600374",
+        "operation": "call_tool",
+        "name": "ck3_query_profile_decision_item_v1",
+        "arguments": {
+          "decision_key": "lyd_i3b_begin_decision",
+          "expected_revision": 3
+        }
+      },
+      "request_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0013-r14-151218600374.request.json",
+        "bytes": 248,
+        "sha256": "13eecc83674261705577a639fd4af80bfe7a84055a78aef5662dbc2b73580dcd"
+      },
+      "original_full_sdk_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0013-r14-151218600374.sdk-result.json",
+        "bytes": 4733,
+        "sha256": "6130c07495bd49b34c7a57090e5d28d9054716c9e2d2750c1566219967cae531"
+      },
+      "original_full_native_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0013-r14-151218600374.native-01.json",
+        "bytes": 2069,
+        "sha256": "7b329c3834cbf83aa53c458741731f6492fc88bd89f3435455049ac32a65022f"
+      },
+      "recorded_at_utc": "2026-10-06T15:12:21.375933+00:00",
+      "status": "native_decision_query_observed",
+      "native_action": {
+        "action": null,
+        "status": null,
+        "postcondition_verified": null,
+        "verification_pending": null,
+        "native_handled": null,
+        "dispatch_invoked": null,
+        "decision_key": "lyd_i3b_begin_decision",
+        "expected_outcome": null
+      },
+      "models": {},
+      "queried_model": {
+        "available": true,
+        "detail_root_visible": false,
+        "detail_definition_matches_target": false,
+        "detail_actor_binding_verified": false,
+        "decision_key": "lyd_i3b_begin_decision",
+        "detail_decision_key": "",
+        "action_qualified": false,
+        "detail_actor_reference_key": -1
+      },
+      "frame_before": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "frame_after": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "actual_after_event": {
+        "definition": null,
+        "instance": null,
+        "root_scope": null
+      }
+    },
+    {
+      "SDK_sequence": 14,
+      "request": {
+        "schema": "ck3.lyd.mcp-request.v1",
+        "request_id": "r14-151229245088",
+        "operation": "call_tool",
+        "name": "ck3_select_profile_decision_item_v1",
+        "arguments": {
+          "decision_key": "lyd_i3b_begin_decision",
+          "expected_revision": 3
+        }
+      },
+      "request_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0014-r14-151229245088.request.json",
+        "bytes": 249,
+        "sha256": "d8b9898c79713b588ddc174b27ba676e1b2dc059ce260e8c9a4bb9f61a9b11c9"
+      },
+      "original_full_sdk_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0014-r14-151229245088.sdk-result.json",
+        "bytes": 485591,
+        "sha256": "11eff9b490f18e853850d090b4bca22daa13f8a9521b947d20e313b6c4e42941"
+      },
+      "original_full_native_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0014-r14-151229245088.native-01.json",
+        "bytes": 229834,
+        "sha256": "2fba263f60b2acf85bf304edeea76dd3544c2765487fd9c9d32a865df4ecf809"
+      },
+      "recorded_at_utc": "2026-10-06T15:12:31.907119+00:00",
+      "status": "native_gameplay_postcondition_verified",
+      "native_action": {
+        "action": "select",
+        "status": "verified_selected_detail",
+        "postcondition_verified": true,
+        "verification_pending": false,
+        "native_handled": false,
+        "dispatch_invoked": true,
+        "decision_key": "lyd_i3b_begin_decision",
+        "expected_outcome": null
+      },
+      "models": {
+        "before_actual_model": {
+          "available": true,
+          "detail_root_visible": false,
+          "detail_definition_matches_target": false,
+          "detail_actor_binding_verified": false,
+          "decision_key": "lyd_i3b_begin_decision",
+          "detail_decision_key": "",
+          "action_qualified": false,
+          "detail_actor_reference_key": -1
+        },
+        "after_actual_model": {
+          "available": true,
+          "detail_root_visible": false,
+          "detail_definition_matches_target": true,
+          "detail_actor_binding_verified": true,
+          "decision_key": "lyd_i3b_begin_decision",
+          "detail_decision_key": "lyd_i3b_begin_decision",
+          "action_qualified": false,
+          "detail_actor_reference_key": 31254
+        }
+      },
+      "queried_model": null,
+      "frame_before": {
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": null
+      },
+      "frame_after": {
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": null
+      },
+      "actual_after_event": {
+        "definition": null,
+        "instance": null,
+        "root_scope": null
+      }
+    },
+    {
+      "SDK_sequence": 15,
+      "request": {
+        "schema": "ck3.lyd.mcp-request.v1",
+        "request_id": "r14-151307695202",
+        "operation": "call_tool",
+        "name": "ck3_query_profile_decision_item_v1",
+        "arguments": {
+          "decision_key": "lyd_i3b_begin_decision",
+          "expected_revision": 3
+        }
+      },
+      "request_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0015-r14-151307695202.request.json",
+        "bytes": 248,
+        "sha256": "746041fd0447798f6399e3652c25f8a47285aa4c3d7719429267663598db67db"
+      },
+      "original_full_sdk_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0015-r14-151307695202.sdk-result.json",
+        "bytes": 4775,
+        "sha256": "c772ac57b100cac1e8c5832b708726a27fd3e0c7beea0707472b4f5a3276422d"
+      },
+      "original_full_native_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0015-r14-151307695202.native-01.json",
+        "bytes": 2090,
+        "sha256": "6888008a0466f15af928d0c91f958394f1f4dbf34dd2d8c1e70f2c33ad256d45"
+      },
+      "recorded_at_utc": "2026-10-06T15:13:09.232593+00:00",
+      "status": "native_decision_query_observed",
+      "native_action": {
+        "action": null,
+        "status": null,
+        "postcondition_verified": null,
+        "verification_pending": null,
+        "native_handled": null,
+        "dispatch_invoked": null,
+        "decision_key": "lyd_i3b_begin_decision",
+        "expected_outcome": null
+      },
+      "models": {},
+      "queried_model": {
+        "available": true,
+        "detail_root_visible": true,
+        "detail_definition_matches_target": true,
+        "detail_actor_binding_verified": true,
+        "decision_key": "lyd_i3b_begin_decision",
+        "detail_decision_key": "lyd_i3b_begin_decision",
+        "action_qualified": false,
+        "detail_actor_reference_key": 31254
+      },
+      "frame_before": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "frame_after": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "actual_after_event": {
+        "definition": null,
+        "instance": null,
+        "root_scope": null
+      }
+    },
+    {
+      "SDK_sequence": 16,
+      "request": {
+        "schema": "ck3.lyd.mcp-request.v1",
+        "request_id": "r14-151520115535",
+        "operation": "call_tool",
+        "name": "ck3_confirm_profile_decision_outcome_v1",
+        "arguments": {
+          "decision_key": "lyd_i3b_begin_decision",
+          "expected_outcome": "event_window",
+          "expected_event_definition_key": "lyd.430",
+          "expected_revision": 3
+        }
+      },
+      "request_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0016-r14-151520115535.request.json",
+        "bytes": 341,
+        "sha256": "b3bdced08567b4c7e0fdbbfdb8e553b74f91f55173d0cf54986f797c240784e3"
+      },
+      "original_full_sdk_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0016-r14-151520115535.sdk-result.json",
+        "bytes": 665317,
+        "sha256": "11fc0b867228ee89ef82357e94c27852fe09b8cd027d308c3ea1f296f463f1b3"
+      },
+      "original_full_native_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0016-r14-151520115535.native-01.json",
+        "bytes": 315252,
+        "sha256": "2a3cb361e96816446d8c74e2447c41ebced1a028f6ce140b5dbfc9f889a00abc"
+      },
+      "recorded_at_utc": "2026-10-06T15:15:23.051987+00:00",
+      "status": "native_gameplay_postcondition_verified",
+      "native_action": {
+        "action": "confirm_outcome",
+        "status": "observed_current_event_window",
+        "postcondition_verified": true,
+        "verification_pending": false,
+        "native_handled": true,
+        "dispatch_invoked": true,
+        "decision_key": "lyd_i3b_begin_decision",
+        "expected_outcome": "event_window"
+      },
+      "models": {
+        "before_actual_model": {
+          "available": true,
+          "detail_root_visible": true,
+          "detail_definition_matches_target": true,
+          "detail_actor_binding_verified": true,
+          "decision_key": "lyd_i3b_begin_decision",
+          "detail_decision_key": "lyd_i3b_begin_decision",
+          "action_qualified": false,
+          "detail_actor_reference_key": 31254
+        },
+        "after_actual_model": {
+          "available": false,
+          "detail_root_visible": false,
+          "detail_definition_matches_target": false,
+          "detail_actor_binding_verified": false,
+          "decision_key": "",
+          "detail_decision_key": "",
+          "action_qualified": false,
+          "detail_actor_reference_key": -1
+        }
+      },
+      "queried_model": null,
+      "frame_before": {
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": null
+      },
+      "frame_after": {
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 101,
+          "option_count": 4,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 2,
+              "option_number": 3,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 3,
+              "option_number": 4,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        }
+      },
+      "actual_after_event": {
+        "definition": "lyd.430",
+        "instance": 101,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      }
+    },
+    {
+      "SDK_sequence": 54,
+      "request": {
+        "schema": "ck3.lyd.mcp-request.v1",
+        "request_id": "r14-161249577498",
+        "operation": "call_tool",
+        "name": "ck3_query_profile_decision_item_v1",
+        "arguments": {
+          "decision_key": "lyd_i3b_begin_decision",
+          "expected_revision": 15
+        }
+      },
+      "request_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0054-r14-161249577498.request.json",
+        "bytes": 249,
+        "sha256": "ca60e91a07346a7539b3d0399bcadb63ec1ac6405e26d769cc62539013138eb3"
+      },
+      "original_full_sdk_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0054-r14-161249577498.sdk-result.json",
+        "bytes": 4737,
+        "sha256": "58048443d3071e54b21a64d4826fdf742172e2e9c920be7d8d895c4f8cdc37cb"
+      },
+      "original_full_native_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0054-r14-161249577498.native-01.json",
+        "bytes": 2071,
+        "sha256": "8c83404261b680d563034ca37ea74c6a33a3fdb55cdb0a38b6ac5902ad12233a"
+      },
+      "recorded_at_utc": "2026-10-06T16:12:51.015724+00:00",
+      "status": "native_decision_query_observed",
+      "native_action": {
+        "action": null,
+        "status": null,
+        "postcondition_verified": null,
+        "verification_pending": null,
+        "native_handled": null,
+        "dispatch_invoked": null,
+        "decision_key": "lyd_i3b_begin_decision",
+        "expected_outcome": null
+      },
+      "models": {},
+      "queried_model": {
+        "available": true,
+        "detail_root_visible": false,
+        "detail_definition_matches_target": false,
+        "detail_actor_binding_verified": false,
+        "decision_key": "lyd_i3b_begin_decision",
+        "detail_decision_key": "",
+        "action_qualified": false,
+        "detail_actor_reference_key": -1
+      },
+      "frame_before": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "frame_after": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "actual_after_event": {
+        "definition": null,
+        "instance": null,
+        "root_scope": null
+      }
+    },
+    {
+      "SDK_sequence": 55,
+      "request": {
+        "schema": "ck3.lyd.mcp-request.v1",
+        "request_id": "r14-161305130774",
+        "operation": "call_tool",
+        "name": "ck3_select_profile_decision_item_v1",
+        "arguments": {
+          "decision_key": "lyd_i3b_begin_decision",
+          "expected_revision": 15
+        }
+      },
+      "request_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0055-r14-161305130774.request.json",
+        "bytes": 250,
+        "sha256": "d0cbd999647d99dc32e3b0e06a0ebd3c854cd8f3296547497235e3acb1d1fe42"
+      },
+      "original_full_sdk_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0055-r14-161305130774.sdk-result.json",
+        "bytes": 2528371,
+        "sha256": "b907ae17d0b470bcd9aa8c9446f52f4eb12a68bba7d07e64eecbbda4bbc4dbf3"
+      },
+      "original_full_native_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0055-r14-161305130774.native-01.json",
+        "bytes": 1199310,
+        "sha256": "8e19a7ce032add34152cc0c72926573f3055a22098a0b705440510832c6c2512"
+      },
+      "recorded_at_utc": "2026-10-06T16:13:08.581536+00:00",
+      "status": "native_gameplay_postcondition_verified",
+      "native_action": {
+        "action": "select",
+        "status": "verified_selected_detail",
+        "postcondition_verified": true,
+        "verification_pending": false,
+        "native_handled": false,
+        "dispatch_invoked": true,
+        "decision_key": "lyd_i3b_begin_decision",
+        "expected_outcome": null
+      },
+      "models": {
+        "before_actual_model": {
+          "available": true,
+          "detail_root_visible": false,
+          "detail_definition_matches_target": false,
+          "detail_actor_binding_verified": false,
+          "decision_key": "lyd_i3b_begin_decision",
+          "detail_decision_key": "",
+          "action_qualified": false,
+          "detail_actor_reference_key": -1
+        },
+        "after_actual_model": {
+          "available": true,
+          "detail_root_visible": false,
+          "detail_definition_matches_target": true,
+          "detail_actor_binding_verified": true,
+          "decision_key": "lyd_i3b_begin_decision",
+          "detail_decision_key": "lyd_i3b_begin_decision",
+          "action_qualified": false,
+          "detail_actor_reference_key": 31254
+        }
+      },
+      "queried_model": null,
+      "frame_before": {
+        "revision": 15,
+        "native_revision": 14,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": null
+      },
+      "frame_after": {
+        "revision": 15,
+        "native_revision": 14,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": null
+      },
+      "actual_after_event": {
+        "definition": null,
+        "instance": null,
+        "root_scope": null
+      }
+    },
+    {
+      "SDK_sequence": 56,
+      "request": {
+        "schema": "ck3.lyd.mcp-request.v1",
+        "request_id": "r14-161309607948",
+        "operation": "call_tool",
+        "name": "ck3_query_profile_decision_item_v1",
+        "arguments": {
+          "decision_key": "lyd_i3b_begin_decision",
+          "expected_revision": 15
+        }
+      },
+      "request_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0056-r14-161309607948.request.json",
+        "bytes": 249,
+        "sha256": "66fe46e0fd066f1bc5ef48493a47ac7ee0bc5e38db80ce9da239179660ee3a53"
+      },
+      "original_full_sdk_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0056-r14-161309607948.sdk-result.json",
+        "bytes": 4779,
+        "sha256": "2558ee314b3c3e4c30fa8edcded2ed38d66571d0b647881c4dee540669a1e05b"
+      },
+      "original_full_native_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0056-r14-161309607948.native-01.json",
+        "bytes": 2092,
+        "sha256": "86f76b0095a8688388fcbccbb17498367a3bfab4d1d558ffe53d40fd26cb6ea5"
+      },
+      "recorded_at_utc": "2026-10-06T16:13:15.654703+00:00",
+      "status": "native_decision_query_observed",
+      "native_action": {
+        "action": null,
+        "status": null,
+        "postcondition_verified": null,
+        "verification_pending": null,
+        "native_handled": null,
+        "dispatch_invoked": null,
+        "decision_key": "lyd_i3b_begin_decision",
+        "expected_outcome": null
+      },
+      "models": {},
+      "queried_model": {
+        "available": true,
+        "detail_root_visible": true,
+        "detail_definition_matches_target": true,
+        "detail_actor_binding_verified": true,
+        "decision_key": "lyd_i3b_begin_decision",
+        "detail_decision_key": "lyd_i3b_begin_decision",
+        "action_qualified": false,
+        "detail_actor_reference_key": 31254
+      },
+      "frame_before": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "frame_after": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "actual_after_event": {
+        "definition": null,
+        "instance": null,
+        "root_scope": null
+      }
+    },
+    {
+      "SDK_sequence": 57,
+      "request": {
+        "schema": "ck3.lyd.mcp-request.v1",
+        "request_id": "r14-161602241822",
+        "operation": "call_tool",
+        "name": "ck3_query_profile_confucian_challenger_graph_v1",
+        "arguments": {
+          "expected_revision": 15,
+          "faith_full_ids": [
+            107,
+            104,
+            106
+          ]
+        }
+      },
+      "request_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0057-r14-161602241822.request.json",
+        "bytes": 279,
+        "sha256": "43d281b2d966107e12620f056258c164efa86579d0cd677733d843d4ca99dc1e"
+      },
+      "original_full_sdk_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0057-r14-161602241822.sdk-result.json",
+        "bytes": 8631,
+        "sha256": "db8673fb0a3f99a5a08cf966387d07ecc8d2f6baa3266e88adb3a7f74283feb8"
+      },
+      "original_full_native_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0057-r14-161602241822.native-01.json",
+        "bytes": 3936,
+        "sha256": "337805781b6f11cb8d242ece915c5b878077a1f331d7a4ebb4c24e45b03c90a9"
+      },
+      "recorded_at_utc": "2026-10-06T16:16:03.598000+00:00",
+      "status": "native_confucian_readonly_observed",
+      "native_action": {
+        "action": null,
+        "status": null,
+        "postcondition_verified": null,
+        "verification_pending": null,
+        "native_handled": null,
+        "dispatch_invoked": null,
+        "decision_key": null,
+        "expected_outcome": null
+      },
+      "models": {},
+      "queried_model": {
+        "available": null,
+        "detail_root_visible": null,
+        "detail_definition_matches_target": null,
+        "detail_actor_binding_verified": null,
+        "decision_key": null,
+        "detail_decision_key": null,
+        "action_qualified": null,
+        "detail_actor_reference_key": null
+      },
+      "frame_before": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "frame_after": {
+        "revision": null,
+        "native_revision": null,
+        "date_raw": null,
+        "paused": null,
+        "active_event": null
+      },
+      "actual_after_event": {
+        "definition": null,
+        "instance": null,
+        "root_scope": null
+      }
+    },
+    {
+      "SDK_sequence": 58,
+      "request": {
+        "schema": "ck3.lyd.mcp-request.v1",
+        "request_id": "r14-161603927700",
+        "operation": "call_tool",
+        "name": "ck3_confirm_profile_decision_outcome_v1",
+        "arguments": {
+          "decision_key": "lyd_i3b_begin_decision",
+          "expected_outcome": "event_window",
+          "expected_event_definition_key": "lyd.430",
+          "expected_revision": 15
+        }
+      },
+      "request_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0058-r14-161603927700.request.json",
+        "bytes": 342,
+        "sha256": "519a9c65989570e5c2f34a695dc2f8acc9c23cf13b2a819e76a8023a2a98c71e"
+      },
+      "original_full_sdk_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0058-r14-161603927700.sdk-result.json",
+        "bytes": 2708167,
+        "sha256": "0f3da749d73afb6bceef95b0af29ee7080ae08eba6dd898952cbafa2b0c775c6"
+      },
+      "original_full_native_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0058-r14-161603927700.native-01.json",
+        "bytes": 1284763,
+        "sha256": "ad7752fc148aaf90e3f65b46809e577690cb2a1b66f26f846a5cde7db01e35f0"
+      },
+      "recorded_at_utc": "2026-10-06T16:16:07.464401+00:00",
+      "status": "native_gameplay_postcondition_verified",
+      "native_action": {
+        "action": "confirm_outcome",
+        "status": "observed_current_event_window",
+        "postcondition_verified": true,
+        "verification_pending": false,
+        "native_handled": true,
+        "dispatch_invoked": true,
+        "decision_key": "lyd_i3b_begin_decision",
+        "expected_outcome": "event_window"
+      },
+      "models": {
+        "before_actual_model": {
+          "available": true,
+          "detail_root_visible": true,
+          "detail_definition_matches_target": true,
+          "detail_actor_binding_verified": true,
+          "decision_key": "lyd_i3b_begin_decision",
+          "detail_decision_key": "lyd_i3b_begin_decision",
+          "action_qualified": false,
+          "detail_actor_reference_key": 31254
+        },
+        "after_actual_model": {
+          "available": false,
+          "detail_root_visible": false,
+          "detail_definition_matches_target": false,
+          "detail_actor_binding_verified": false,
+          "decision_key": "",
+          "detail_decision_key": "",
+          "action_qualified": false,
+          "detail_actor_reference_key": -1
+        }
+      },
+      "queried_model": null,
+      "frame_before": {
+        "revision": 15,
+        "native_revision": 14,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": null
+      },
+      "frame_after": {
+        "revision": 16,
+        "native_revision": 15,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 106,
+          "option_count": 4,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 2,
+              "option_number": 3,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 3,
+              "option_number": 4,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        }
+      },
+      "actual_after_event": {
+        "definition": "lyd.430",
+        "instance": 106,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      }
+    }
+  ],
+  "interpretation": "Log explicit preview errors begin during selected decision detail, before business confirm. Record times are actual native receipt UTC; local log wall time alignment +08 is an inference using current machine timezone and matching observed action windows. No engine invocation ID exists in log.",
+  "log_header_records_total_100000": true,
+  "engine_error_cap_confirmed": null,
+  "all_post_snapshot_errors_known": false,
+  "runtime_calls": 0
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "lyd.i3b.actual-context-present-guard-offline-test.v1",
+  "status": "PASS_SOURCE_ONLY",
+  "tests": 6,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "parser": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-r14-preview-error-diagnostic-20261007-001\\frozen-source\\tools\\extract_auto_upgrade_buildings.py",
+    "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+  },
+  "candidate_source_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-r14-preview-error-diagnostic-20261007-001\\candidate-002\\mod_li_yu_dao",
+  "fixtures": "Preserved actual R14 parsed context subsets; no fresh savebody read.",
+  "old_undefined_read_mutants": [
+    "actual B0 missing serial",
+    "actual cancellation missing phase"
+  ],
+  "engine_effect_if_preview_semantics": "UNPROVEN_NEXT_COLD_REQUIRED",
+  "live_preview_pass": null,
+  "new_native_or_business_credit": null,
+  "old_preview_test_rerun": false
+}

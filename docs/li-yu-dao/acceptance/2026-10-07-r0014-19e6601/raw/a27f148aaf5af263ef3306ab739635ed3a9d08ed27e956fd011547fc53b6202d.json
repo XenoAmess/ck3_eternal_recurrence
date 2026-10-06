@@ -1,0 +1,72 @@
+{
+  "status": "ACTUAL_SDK148_READONLY_GAME_EXIT_CHECK_PASS_CLOSURE_SOURCE_ONLY",
+  "created_at_utc": "2026-10-06T17:23:27.569777+00:00",
+  "original_package_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-001/INDEX.json",
+    "bytes": 2078,
+    "sha256": "644f8ad21ce1817eda8521b498d135fcc8e5b1f0440ea5e835ca78611461c9a6"
+  },
+  "refs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-003/guarded_r14_helper_close.py",
+      "bytes": 24141,
+      "sha256": "ab316e7b11a133a6ba81a27b1abbf17fdee17edc7f7063c708f9f6cdb4dc6e82"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-003/prepare_and_check_successor.py",
+      "bytes": 7613,
+      "sha256": "972b6ed58f0a0ac11ed9ab028ecb5a180c68626e7bd3521a441a3fdb029b0e96"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-003/DELTA.json",
+      "bytes": 2823,
+      "sha256": "ba67cf0e0d35e7b5c8b48760a0a649c29e53275e9a1764e17aabda6509bd51e4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-003/ROOT-RUNBOOK.md",
+      "bytes": 7837,
+      "sha256": "b85588ad843f81fafa7a60c42df87ed170f5912ef24da8baa22ccd72495896bc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-003/ACTUAL-NORMAL-EXIT-TOOL-ROWS.json",
+      "bytes": 3494,
+      "sha256": "540b99a573c3597fbe558bd381fe8d4955d47fa9ffe72b1a3fdb321b4e4afbbe"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-003/SOURCE-AND-ORIGINAL-PIN-REFS.json",
+      "bytes": 3111,
+      "sha256": "c2caff94dc4711102aadbcdca07fcd278561be22f1e2e0f0adccd23c3e823e0e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-003/FUTURE-ROOT-INPUT-TEMPLATE.json",
+      "bytes": 821,
+      "sha256": "cba06fa3f28000381ccb872996d7e25d5410a653874d62a05dc62939cb8831e3"
+    }
+  ],
+  "old_readonly_failures": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-002/001-OLD-READONLY-FAILURE-REPLAY/CHECK.actual.json",
+      "bytes": 2254,
+      "sha256": "299e89422cef6682ece6ae7ed6508191ac5af550484033a65b64ef6b93da589d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-002/002-ACTUAL-READONLY-CHECK/CHECK.actual.json",
+      "bytes": 2242,
+      "sha256": "0714a03456c1f5d6786222e4c3e5df86bebc8cc0187fb4d974382e2b1fca9515"
+    }
+  ],
+  "actual_readonly_check": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-003/ACTUAL-READONLY-CHECK/CHECK.actual.json",
+    "bytes": 2234,
+    "sha256": "6b58f5bfe28b25d266181578d3874f8dde7a9df16230003e661ad85acf5a7726"
+  },
+  "Client_close_requested": false,
+  "keeper_STOP_requested": false,
+  "lease_mutated": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "autosave_verified": false,
+  "business_GREEN": false,
+  "future_helper_exits": null,
+  "future_CAS_release": null
+}

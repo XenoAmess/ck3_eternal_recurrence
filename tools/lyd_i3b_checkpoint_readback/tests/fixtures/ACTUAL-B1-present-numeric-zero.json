@@ -1,0 +1,89 @@
+{
+  "schema": "lyd.actual-B1-present-numeric-zero-fixture.v1",
+  "checkpoint_sha256": "e672a13c0745103784cb3b363ab61d8ccbd643214c2da4482ff9691cd3fffd29",
+  "zero_member_id": 34232,
+  "zero_row": {
+    "present": true,
+    "tick": null,
+    "type": "value",
+    "identity": null,
+    "entries": [
+      {
+        "key": "type",
+        "value": "value"
+      }
+    ],
+    "row_entries": [
+      {
+        "key": "flag",
+        "value": "lyd_i3b_was_elector"
+      },
+      {
+        "key": "data",
+        "value": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ]
+      }
+    ]
+  },
+  "native_member": {
+    "character_id": 34232,
+    "rite_id": 169,
+    "faith_id": 107,
+    "alive": true,
+    "adult": true,
+    "imprisoned": false,
+    "incapable": false,
+    "is_ai": true,
+    "effective_learning": 4,
+    "adult_measure_raw": 35,
+    "adult_selector_raw": 0,
+    "adult_threshold_raw": 16,
+    "complete": true,
+    "unavailable_reason": null
+  },
+  "positive_actor_id": 31254,
+  "positive_actor_elector_row": {
+    "present": true,
+    "tick": null,
+    "type": "value",
+    "identity": "100000",
+    "entries": [
+      {
+        "key": "type",
+        "value": "value"
+      },
+      {
+        "key": "identity",
+        "value": "100000"
+      }
+    ],
+    "number": "1",
+    "scale": 100000,
+    "row_entries": [
+      {
+        "key": "flag",
+        "value": "lyd_i3b_was_elector"
+      },
+      {
+        "key": "data",
+        "value": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ]
+      }
+    ]
+  },
+  "source_observation": "The source explicitly sets numeric was_elector0, then sets1 only for eligible members. Zero member raw block is present data={type=value}, with omitted identity. No absent variable maps to zero.",
+  "raw_fixture_projected": true,
+  "formal_acceptance": null
+}

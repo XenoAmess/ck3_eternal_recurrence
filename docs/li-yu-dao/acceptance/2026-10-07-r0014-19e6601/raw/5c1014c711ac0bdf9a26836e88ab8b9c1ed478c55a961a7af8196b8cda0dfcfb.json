@@ -1,0 +1,24 @@
+{
+  "original_closed_boundary_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/INDEX.json",
+    "bytes": 4812,
+    "sha256": "639cea99a6d099679361fa205852f810d24165a259958658aba88de7c6207c91"
+  },
+  "append": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/STEAM-ACTUAL-OFFLINE-FIELDS.readonly.json",
+    "bytes": 1135,
+    "sha256": "061982aa0051c4c042ab7881d06628f918e0bc66d74b5fcb85e4e5c52a14092a"
+  },
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-reconciliation-20261007-001/read_actual_offline_field_names.py",
+    "bytes": 3288,
+    "sha256": "6458ecb5b284ee2b0bd720e71bc257d053f3c0e5fc537326d5f461b4a60cbfc0"
+  },
+  "earlier_selector_read": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-boundary-20261007-001/STEAM-WANT-OFFLINE-FLAG.readonly.json",
+    "bytes": 853,
+    "sha256": "f80c03f522ca6316ca9970d5059c618ecc6357527abc518f1085a40b5b81257f"
+  },
+  "original_index_unchanged": true,
+  "Steam_mutated": false
+}

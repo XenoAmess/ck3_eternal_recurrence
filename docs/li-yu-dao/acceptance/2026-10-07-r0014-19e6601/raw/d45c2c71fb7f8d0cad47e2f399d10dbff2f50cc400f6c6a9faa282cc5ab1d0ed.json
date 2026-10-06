@@ -1,0 +1,152 @@
+{
+  "schema": "lyd.r14.reviewable-append-archive-proposal.v1",
+  "status": "EXTERNAL_DRAFT_PENDING_OWNER_ROUND2_AND_ACTUAL_CLOSE_APPEND",
+  "source_HEAD": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "main_clean_before_after": true,
+  "operations": [
+    {
+      "operation": "ADD_AFTER_FINAL_SUCCESSOR_REVIEW",
+      "target": "docs/li-yu-dao/acceptance/2026-10-07-r0014-19e6601/REPORT.md",
+      "before": null,
+      "external_draft": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round1-daily-acceptance-archive-draft-20261007-002/prepared-report/REPORT.md",
+        "bytes": 9165,
+        "sha256": "c897879786e973a5c3fd6181ce508d7940bbff4661ce281b82d393d7645f2dc3"
+      },
+      "blocked_until_actual_close_and_owner_round2_append": true
+    },
+    {
+      "operation": "ADD_AFTER_FINAL_SUCCESSOR_REVIEW",
+      "target": "docs/li-yu-dao/acceptance/2026-10-07-r0014-19e6601/REPORT.json",
+      "before": null,
+      "external_draft": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round1-daily-acceptance-archive-draft-20261007-002/prepared-report/REPORT.json",
+        "bytes": 83420,
+        "sha256": "50ba5869ed9d4469cfbd5a33a77b9b31368ab1022cb5b1255367ba72dc2fa73f"
+      },
+      "blocked_until_actual_close_and_owner_round2_append": true
+    },
+    {
+      "operation": "ADD_AFTER_FINAL_SUCCESSOR_REVIEW",
+      "target": "docs/li-yu-dao/acceptance/2026-10-07-r0014-19e6601/EVIDENCE-INDEX.json",
+      "before": null,
+      "external_draft": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round1-daily-acceptance-archive-draft-20261007-002/prepared-report/EVIDENCE-INDEX.json",
+        "bytes": 43734,
+        "sha256": "5b82bf40b3f5bbbf88a2f796c6cd34ab4b87906eee41b6100229363415090ee6"
+      },
+      "blocked_until_actual_close_and_owner_round2_append": true
+    },
+    {
+      "operation": "ADD_AFTER_FINAL_SUCCESSOR_REVIEW",
+      "target": "docs/autonomous-agent-progress/daily/2026-10-07.md",
+      "before": null,
+      "external_draft": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round1-daily-acceptance-archive-draft-20261007-002/append-drafts/DAILY-2026-10-07.new.md",
+        "bytes": 753,
+        "sha256": "e034be7a891b675dcfdd3067c4e9b6e27f1318a6a8c13fa274045cc6f9e87f43"
+      },
+      "preserve_existing_history": true,
+      "blocked_until_actual_close_and_owner_round2_append": true
+    },
+    {
+      "operation": "APPEND_AFTER_FINAL_SUCCESSOR_REVIEW",
+      "target": "docs/li-yu-dao/README.md",
+      "before": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/README.md",
+        "bytes": 10688,
+        "sha256": "d085e026e113bd5b9845d2b4e1c4c02e38e66310344b49fd387e77226c646744"
+      },
+      "external_draft": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round1-daily-acceptance-archive-draft-20261007-002/append-drafts/LI-YU-DAO-README.append.md",
+        "bytes": 611,
+        "sha256": "29d6ea06ccab0eace17039c2be40972b37cb8970b770c8f75dfc98884562dddf"
+      },
+      "preserve_existing_history": true,
+      "blocked_until_actual_close_and_owner_round2_append": true
+    },
+    {
+      "operation": "APPEND_AFTER_FINAL_SUCCESSOR_REVIEW",
+      "target": "docs/li-yu-dao/2026-10-06-progress.md",
+      "before": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/2026-10-06-progress.md",
+        "bytes": 3005,
+        "sha256": "b519fceb9c660ea89ae61610a51321f6cb257404f6271c5db4cdf89b8d208c04"
+      },
+      "external_draft": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round1-daily-acceptance-archive-draft-20261007-002/append-drafts/LI-YU-DAO-PROGRESS.append.md",
+        "bytes": 684,
+        "sha256": "ef1228737947e171376db86cd69185fdb0842cd71403c118c79faab51b3b1667"
+      },
+      "preserve_existing_history": true,
+      "blocked_until_actual_close_and_owner_round2_append": true
+    },
+    {
+      "operation": "APPEND_AFTER_FINAL_SUCCESSOR_REVIEW",
+      "target": "docs/autonomous-agent-progress/README.md",
+      "before": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/autonomous-agent-progress/README.md",
+        "bytes": 233542,
+        "sha256": "51e38ddc1185b59299ede13cf1ad9bed8decaf3127fd444fd1fd9585db8474f5"
+      },
+      "external_draft": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round1-daily-acceptance-archive-draft-20261007-002/append-drafts/AUTONOMOUS-README.append.md",
+        "bytes": 603,
+        "sha256": "23bbbc219c145f355e2f8aca87efdf3a5eb43c2d1e0799282a2fac44e513f936"
+      },
+      "preserve_existing_history": true,
+      "blocked_until_actual_close_and_owner_round2_append": true
+    }
+  ],
+  "evidence_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round1-daily-acceptance-archive-draft-20261007-002/prepared-report/EVIDENCE-INDEX.json",
+    "bytes": 43734,
+    "sha256": "5b82bf40b3f5bbbf88a2f796c6cd34ab4b87906eee41b6100229363415090ee6"
+  },
+  "external_raw_count": 62,
+  "original_reference_count": 66,
+  "no_automatic_apply": true,
+  "no_commit_push": true,
+  "required_owner_append": [
+    "Round2 independent original receipts, never overwrite Round1 NO or cancel",
+    "B3–B5 actual result or precise nonexecution boundary",
+    "original game HANDLE exit and normal-exit postconditions",
+    "original Client/keeper HANDLE closure",
+    "fresh screen CAS release",
+    "final log coverage and exact source/current application facts"
+  ],
+  "future": {
+    "draft_semantics": "null means no credit imported into this Round1-cutoff draft; later live activity may already exist in separate owner packages",
+    "round2": null,
+    "B3_signed_precommit": null,
+    "B4_commit": null,
+    "B5_postcommit": null,
+    "new_religious_title_created": null,
+    "formal_mandate": null,
+    "normal_game_exit": null,
+    "client_retained_handle_exit": null,
+    "keeper_retained_handle_exit": null,
+    "screen_CAS_release": null,
+    "final_log_coverage": null,
+    "main_archive_import": null,
+    "Workshop_release": null
+  },
+  "side_effects": {
+    "main_writes": 0,
+    "new_tests": 0,
+    "new_builds": 0,
+    "save_body_reads": 0,
+    "game_calls": 0,
+    "SDK_calls": 0,
+    "native_pipe_calls": 0,
+    "desktop_calls": 0,
+    "lease_changes": 0,
+    "settings_changes": 0,
+    "signals": 0
+  },
+  "generator": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/prepare_r14_round1_review_draft_readonly_20261007_002.py",
+    "bytes": 28761,
+    "sha256": "f8a9d7be3ccaa433784dbedbcc891ab4a0412343a843b5d4722ecef3e6b3927a"
+  }
+}

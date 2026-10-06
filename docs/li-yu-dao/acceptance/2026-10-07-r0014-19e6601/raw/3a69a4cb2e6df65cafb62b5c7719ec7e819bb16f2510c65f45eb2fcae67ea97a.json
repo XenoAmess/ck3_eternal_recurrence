@@ -1,0 +1,53 @@
+{
+  "schema": "lyd.r14.actual-B1-school-assessment-supplement.v1",
+  "STATE": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/readback-003/STATE.native-qualified.json",
+    "bytes": 2642023,
+    "sha256": "0928ee8412e193251960e65e0fb9436f91db372573baad73a91a517434e0fea7"
+  },
+  "prior_summary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/B1-FINAL-SUMMARY.actual.json",
+    "bytes": 3532,
+    "sha256": "71737659ef4b560871f688e65cadb7513db3942b5a4c29d810943a0ecf9df948"
+  },
+  "correction": "prior summary rites[] selected raw Rite rows for derived school counters; authoritative derived counts are state.schools[]; original file retained",
+  "schools": [
+    {
+      "rite_id": 169,
+      "owner_id": 31254,
+      "serial": 1,
+      "members_total": 51,
+      "total": 2,
+      "yes": 0,
+      "signed": 0,
+      "dormant": 0,
+      "counties": 0,
+      "delegate_id": null,
+      "counted_members_total": 51,
+      "counted_total": 2,
+      "counted_yes": 0,
+      "quorum_numerator": -4
+    }
+  ],
+  "native_reference_qualification": {
+    "status": "UNKNOWN",
+    "binding": null
+  },
+  "native_predicate_qualification_status": "CALLER_SUPPLIED_NOT_NATIVE_AUTHENTICATED",
+  "native_predicate_authority": "input contract only; hash syntax is not a native receipt authenticity proof",
+  "assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+  "assessment_unknown_condition": "native_reference_qualification.status == UNKNOWN; frozen request native_reference_binding is null; reader line574 retains INCOMPLETE_NATIVE_QUALIFICATION",
+  "readiness_now": false,
+  "readiness_evidence": {
+    "phase": 1,
+    "all_schools_signed": false,
+    "quorum_numerators": [
+      -4
+    ]
+  },
+  "actual_acceptance_credit": null,
+  "formal_mandate_credit": null,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "additional_save_body_reads": 0
+}

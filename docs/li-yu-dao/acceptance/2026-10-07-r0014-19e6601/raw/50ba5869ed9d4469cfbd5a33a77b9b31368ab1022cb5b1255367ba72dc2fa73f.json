@@ -1,0 +1,2247 @@
+{
+  "schema": "lyd.r14.round1-cutoff-reviewable-draft.v1",
+  "status": "EXTERNAL_DRAFT_PENDING_OWNER_ROUND2_AND_ACTUAL_CLOSE_APPEND",
+  "prepared_at_utc": "2026-10-06T16:38:38.734248+00:00",
+  "cutoff": "Original Round1 cancellation package; Round2 and lifecycle evidence deliberately left for owner append",
+  "scope": "Current C:/workspace CK3 machine; separate Z-machine daily history is unchanged",
+  "source": {
+    "HEAD": "19e660105e05395caa6cc95e76c299312ee89d51",
+    "source_binding": {
+      "actual_HEAD": "19e660105e05395caa6cc95e76c299312ee89d51",
+      "native_tree": "2b20246d5efaacea0e2be8082121f3b3f1165899",
+      "export_root": "C:/lr14s1",
+      "native_export": "C:/lr14s1/ck3_autonomous_player/native_bridge",
+      "canonical_helpers": {
+        "tools/run_native_msvc.py": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/run_native_msvc.py",
+          "bytes": 12782,
+          "sha256": "3b2cbff2a4e725dfd0b92ba5bce839d798e2bc85b6a06209f2b4dc73c868eace"
+        },
+        "tools/register_project_exe_exclusions.py": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/register_project_exe_exclusions.py",
+          "bytes": 26813,
+          "sha256": "a750bb69c738f930050aa1f939fdaa70805d415a7de5ab48a2e6bb08884645e8"
+        },
+        "tools/project_exe_exclusion_broker_client.py": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/project_exe_exclusion_broker_client.py",
+          "bytes": 31474,
+          "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8"
+        }
+      },
+      "clean_source": true
+    },
+    "native_files": 3563,
+    "before_after_unchanged": true,
+    "export_ref": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/REPORT.json",
+      "bytes": 21311,
+      "sha256": "2460c05683f5f74d06c0554c230ef7a31abad093bb016c525a4f974b20be3e83"
+    }
+  },
+  "build": {
+    "actual_compilation_pass": true,
+    "actual_focused_tests_pass": true,
+    "source_before_after_unchanged": true,
+    "old_objects_or_DLL_reused": false,
+    "queue_denominator": 426,
+    "actual_visible_numbered_lines": 425,
+    "last_visible_numbered_line": "[425/426] Linking CXX shared library xar_ck3_bridge.dll",
+    "raw_stdout": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/build.stdout",
+      "bytes": 51696,
+      "sha256": "1684d2b1aa3c1acf13c2a7c4f183b0fef45ec05994f4c8f2445c1a90839b21a0"
+    },
+    "targets": {
+      "xar_ck3_bridge": {
+        "path": "C:/lyd14-native-clean-20261006-004/xar_ck3_bridge.dll",
+        "bytes": 7924736,
+        "sha256": "4e10f698fc133ddb4c047d8a90b1d2633f4494db5eafdfe5a1d3d61c48423849"
+      },
+      "xar_ck3_bridge_injector": {
+        "path": "C:/lyd14-native-clean-20261006-004/xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "205a8800205757abff68c253572db2b1960d94fa6069fc693c70bf6f0ee4a872"
+      },
+      "xar_confucian_assembly_predicates_v1_test": {
+        "path": "C:/lyd14-native-clean-20261006-004/xar_confucian_assembly_predicates_v1_test.exe",
+        "bytes": 119808,
+        "sha256": "84080156841ff7e2824f80fbe4cfee17c9fabd6e5f075b6730b92b89e433c0b4"
+      },
+      "xar_confucian_religious_title_readback_v1_test": {
+        "path": "C:/lyd14-native-clean-20261006-004/xar_confucian_religious_title_readback_v1_test.exe",
+        "bytes": 109568,
+        "sha256": "e230e7d42c02dbeeb3a39d624e23535eeb1539a65cc5cbea8d02a60f9b1de650"
+      },
+      "xar_confucian_challenger_graph_v1_test": {
+        "path": "C:/lyd14-native-clean-20261006-004/xar_confucian_challenger_graph_v1_test.exe",
+        "bytes": 171520,
+        "sha256": "af67be2931d2f851c4ad87d292d39156ea85f6f18d5e8faa4be189b537096b89"
+      },
+      "xar_ck3_main_thread_query_mailbox_v1_test": {
+        "path": "C:/lyd14-native-clean-20261006-004/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+        "bytes": 128512,
+        "sha256": "47b77cdfef727af348fbeb7eb832d18e1d3051d01e9a60963edec21ed4eb987c"
+      }
+    },
+    "new_runtime_library": {
+      "path": "C:/lyd14-native-clean-20261006-004/xar_ck3_12002_runtime.lib",
+      "bytes": 75138158,
+      "sha256": "2051f6227c42541404361d3ae868053ffc5644ae2fe20a97780d864a671d9041"
+    },
+    "flags": {
+      "BUILD_TESTING": "ON",
+      "XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1": "ON",
+      "XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1": "ON",
+      "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1": "ON",
+      "XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1": "OFF",
+      "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1": "OFF",
+      "XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1": "OFF",
+      "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1": "OFF"
+    },
+    "focused_tests": [
+      {
+        "target": "xar_confucian_assembly_predicates_v1_test",
+        "argv": [
+          "C:\\lyd14-native-clean-20261006-004\\xar_confucian_assembly_predicates_v1_test.exe"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lyd14-native-clean-20261006-004/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "84080156841ff7e2824f80fbe4cfee17c9fabd6e5f075b6730b92b89e433c0b4"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/xar_confucian_assembly_predicates_v1_test.stdout",
+          "bytes": 69,
+          "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/xar_confucian_assembly_predicates_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "reported_check_count": 70,
+        "empty_stdout_exit0_is_not_a_claim_of_zero_cases": false
+      },
+      {
+        "target": "xar_confucian_religious_title_readback_v1_test",
+        "argv": [
+          "C:\\lyd14-native-clean-20261006-004\\xar_confucian_religious_title_readback_v1_test.exe"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lyd14-native-clean-20261006-004/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 109568,
+          "sha256": "e230e7d42c02dbeeb3a39d624e23535eeb1539a65cc5cbea8d02a60f9b1de650"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/xar_confucian_religious_title_readback_v1_test.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/xar_confucian_religious_title_readback_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "reported_check_count": null,
+        "empty_stdout_exit0_is_not_a_claim_of_zero_cases": true
+      },
+      {
+        "target": "xar_confucian_challenger_graph_v1_test",
+        "argv": [
+          "C:\\lyd14-native-clean-20261006-004\\xar_confucian_challenger_graph_v1_test.exe",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-root-clean-native-build-20261006-004\\actual-graph-native-fixtures"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lyd14-native-clean-20261006-004/xar_confucian_challenger_graph_v1_test.exe",
+          "bytes": 171520,
+          "sha256": "af67be2931d2f851c4ad87d292d39156ea85f6f18d5e8faa4be189b537096b89"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/xar_confucian_challenger_graph_v1_test.stdout",
+          "bytes": 71,
+          "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/xar_confucian_challenger_graph_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "reported_check_count": 1342,
+        "empty_stdout_exit0_is_not_a_claim_of_zero_cases": false
+      },
+      {
+        "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+        "argv": [
+          "C:\\lyd14-native-clean-20261006-004\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+          "--confucian-registration-only",
+          "C:\\lr14s1\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lyd14-native-clean-20261006-004/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+          "bytes": 128512,
+          "sha256": "47b77cdfef727af348fbeb7eb832d18e1d3051d01e9a60963edec21ed4eb987c"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+          "bytes": 153,
+          "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "reported_check_count": 37,
+        "empty_stdout_exit0_is_not_a_claim_of_zero_cases": false
+      }
+    ],
+    "original_outer_exit_code": 1,
+    "Defender": {
+      "status": "settings_failed",
+      "manifest": "C:\\lyd14-native-clean-20261006-004\\defender-exe-exclusions\\20261006T135354Z-f2d9a211\\manifest.json",
+      "receipt": "C:\\lyd14-native-clean-20261006-004\\defender-exe-exclusions\\20261006T135354Z-f2d9a211\\receipt.json",
+      "receipt_sha256": "f5e55d64acd6a602ec885d47942d6317a228e6d4ebcccd48009c1223114f48d8",
+      "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)"
+    },
+    "Defender_refs": {
+      "receipt": {
+        "path": "C:/lyd14-native-clean-20261006-004/defender-exe-exclusions/20261006T135354Z-f2d9a211/receipt.json",
+        "bytes": 3525,
+        "sha256": "f5e55d64acd6a602ec885d47942d6317a228e6d4ebcccd48009c1223114f48d8"
+      },
+      "manifest": {
+        "path": "C:/lyd14-native-clean-20261006-004/defender-exe-exclusions/20261006T135354Z-f2d9a211/manifest.json",
+        "bytes": 5305,
+        "sha256": "4f83c1179245c5f6818ad645fe43348b84847bfa3ff7065ca655e0ca5b9138e2"
+      }
+    },
+    "broker_installed_here": false,
+    "runtime_credit_from_build": null
+  },
+  "metadata": {
+    "raw_actual_24": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-metadata-capture-20261006-001/ACTUAL-challenger24-profile-all-tools.json",
+      "bytes": 23777,
+      "sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9"
+    },
+    "original_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-metadata-capture-20261006-001/RESULT.json",
+      "bytes": 6331,
+      "sha256": "35c46e596428950c38c17d92f9c7263be60737ea5e7178120a80aa342141ea93"
+    },
+    "default_tool_count": 21,
+    "explicit_confucian_readonly_count": 23,
+    "explicit_challenger_tool_count": 24,
+    "player_control_enabled": false
+  },
+  "actual_sessions": {
+    "client_session_id": "c78874edd4204810a50ce436e2296753",
+    "native_session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+    "profile_binding_from_original_session": {
+      "schema": "ck3.lyd.persistent-mcp-session.v1",
+      "client_session_id": "c78874edd4204810a50ce436e2296753",
+      "profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-profile-with-exit-inventory.json",
+      "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+      "server": "C:\\lr14s1\\tools\\ck3_native_profile_mcp.py",
+      "server_sha256": "9e8848a9292be45d627bf70a33c96abfadd406e6d7c50dd12ea8eaa2a525ae23",
+      "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "queue": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-queue-001",
+      "started_at_utc": "2026-10-06T14:58:36.228373+00:00",
+      "cache": null,
+      "automatic_attach": false,
+      "automatic_retry": false,
+      "binding_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-binding-001\\ROOT-BINDING.json",
+      "binding_sha256": "5ae7f7f4f395ba8f7a1f5d41bbe87a8fe083fcdb339fa320cdbaec7b5bb5dc22",
+      "epoch_id": "r14-native-charter-c3-001",
+      "source_revision": "19e660105e05395caa6cc95e76c299312ee89d51",
+      "target": {
+        "pid": 14776,
+        "process_create_time": 1791295897.0696163
+      },
+      "live_inventory_verified": false
+    },
+    "initial_retained_handles_capture": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-retained-helper-handles-20261006-001/capture-001/CAPTURED.actual.json",
+      "bytes": 3985,
+      "sha256": "f740734f79b786b79decee8fae6fc524892f11b09984dcb37b095cacf241be8f"
+    },
+    "actual_close_credit": null
+  },
+  "first_actual_routes": [
+    {
+      "stage": "G2",
+      "sdk": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0005-r14-150419602308.sdk-result.json",
+        "bytes": 61857,
+        "sha256": "24e6e1b68f0c4b734afb19bb596fdc7bcf2527879826c548fc86d8819624ae16"
+      },
+      "tool": "ck3_query_profile_confucian_assembly_predicates_v1",
+      "SDK_isError": false,
+      "accepted": true,
+      "status": "observed",
+      "available": true,
+      "capture_epoch": 5791,
+      "date_raw": 53144712,
+      "query": {
+        "schema": "ck3_12003_confucian_assembly_predicates_v1",
+        "read_only": true,
+        "game_version": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "available": true,
+        "predicates_complete": true,
+        "unavailable_reason": null,
+        "capture_epoch": 5791,
+        "date_raw": 53144712,
+        "played_character_id": 31254,
+        "faith_id": 107,
+        "played_rite_id": 169,
+        "religion_id": 9,
+        "alive_source_pool_count": 35660,
+        "religion_county_source_pool_count": 25,
+        "complete_native_faith_member_ids": [
+          31254,
+          31538,
+          31692,
+          32236,
+          32535,
+          32536,
+          33234,
+          33542,
+          34232,
+          34741,
+          34973,
+          35386,
+          35598,
+          35899,
+          36311,
+          36329,
+          36445,
+          36638,
+          36663,
+          36847,
+          36873,
+          37064,
+          37221,
+          37244,
+          37702,
+          38561,
+          38924,
+          38925,
+          39045,
+          39171,
+          39348,
+          39352,
+          39527,
+          39979,
+          40259,
+          40507,
+          40526,
+          40694,
+          40695,
+          40843,
+          40847,
+          41028,
+          41032,
+          41235,
+          41288,
+          41495,
+          65851,
+          65852,
+          65853,
+          65854,
+          65865
+        ],
+        "complete_native_faith_rite_ids": [
+          169
+        ],
+        "members": [
+          {
+            "character_id": 31254,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": false,
+            "effective_learning": 15,
+            "adult_measure_raw": 51,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 31538,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 3,
+            "adult_measure_raw": 49,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 31692,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 11,
+            "adult_measure_raw": 48,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 32236,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 3,
+            "adult_measure_raw": 46,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 32535,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 1,
+            "adult_measure_raw": 44,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 32536,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 5,
+            "adult_measure_raw": 44,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 33234,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 0,
+            "adult_measure_raw": 40,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 33542,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 5,
+            "adult_measure_raw": 38,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 34232,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 4,
+            "adult_measure_raw": 35,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 34741,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 9,
+            "adult_measure_raw": 32,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 34973,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 6,
+            "adult_measure_raw": 31,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 35386,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 4,
+            "adult_measure_raw": 29,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 35598,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 3,
+            "adult_measure_raw": 28,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 35899,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 6,
+            "adult_measure_raw": 27,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 36311,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 7,
+            "adult_measure_raw": 26,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 36329,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 13,
+            "adult_measure_raw": 26,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 36445,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 11,
+            "adult_measure_raw": 26,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 36638,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 11,
+            "adult_measure_raw": 25,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 36663,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 14,
+            "adult_measure_raw": 25,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 36847,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 14,
+            "adult_measure_raw": 24,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 36873,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 0,
+            "adult_measure_raw": 24,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 37064,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 3,
+            "adult_measure_raw": 23,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 37221,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 12,
+            "adult_measure_raw": 22,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 37244,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 13,
+            "adult_measure_raw": 22,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 37702,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 3,
+            "adult_measure_raw": 20,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 38561,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 9,
+            "adult_measure_raw": 16,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 38924,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 10,
+            "adult_measure_raw": 14,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 38925,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 10,
+            "adult_measure_raw": 14,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 39045,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 4,
+            "adult_measure_raw": 13,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 39171,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 6,
+            "adult_measure_raw": 12,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 39348,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 12,
+            "adult_measure_raw": 11,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 39352,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 9,
+            "adult_measure_raw": 11,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 39527,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 3,
+            "adult_measure_raw": 10,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 39979,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 6,
+            "adult_measure_raw": 7,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 40259,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 1,
+            "adult_measure_raw": 6,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 40507,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 1,
+            "adult_measure_raw": 5,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 40526,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 2,
+            "adult_measure_raw": 5,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 40694,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 1,
+            "adult_measure_raw": 4,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 40695,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 2,
+            "adult_measure_raw": 4,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 40843,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 2,
+            "adult_measure_raw": 3,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 40847,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 1,
+            "adult_measure_raw": 3,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 41028,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 1,
+            "adult_measure_raw": 2,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 41032,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 0,
+            "adult_measure_raw": 2,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 41235,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 0,
+            "adult_measure_raw": 1,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 41288,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 0,
+            "adult_measure_raw": 1,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 41495,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": false,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 0,
+            "adult_measure_raw": 0,
+            "adult_selector_raw": 1,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 65851,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 7,
+            "adult_measure_raw": 50,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 65852,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 10,
+            "adult_measure_raw": 40,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 65853,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 6,
+            "adult_measure_raw": 47,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 65854,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 10,
+            "adult_measure_raw": 25,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          },
+          {
+            "character_id": 65865,
+            "rite_id": 169,
+            "faith_id": 107,
+            "alive": true,
+            "adult": true,
+            "imprisoned": false,
+            "incapable": false,
+            "is_ai": true,
+            "effective_learning": 28,
+            "adult_measure_raw": 40,
+            "adult_selector_raw": 0,
+            "adult_threshold_raw": 16,
+            "complete": true,
+            "unavailable_reason": null
+          }
+        ],
+        "rites": [
+          {
+            "rite_id": 169,
+            "county_title_ids": [],
+            "native_county_count": 0,
+            "complete": true,
+            "unavailable_reason": null
+          }
+        ]
+      }
+    },
+    {
+      "stage": "G3",
+      "sdk": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0006-r14-150427873500.sdk-result.json",
+        "bytes": 9019,
+        "sha256": "f8a2608287fd715d3a7349730a8656bc1f8062db84133e36c091e9b078477cbb"
+      },
+      "tool": "ck3_query_profile_confucian_religious_title_v1",
+      "SDK_isError": false,
+      "accepted": true,
+      "status": "observed",
+      "available": true,
+      "capture_epoch": 6627,
+      "date_raw": 53144712,
+      "query": {
+        "schema": "ck3_12003_confucian_religious_title_v1",
+        "game_version": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "available": true,
+        "unavailable_reason": null,
+        "capture_epoch": 6627,
+        "date_raw": 53144712,
+        "played_character_id": 31254,
+        "played_character_full_id": 31254,
+        "graph_available": true,
+        "graph_unavailable_reason": null,
+        "legal_head_title_absent": true,
+        "faith_full_id": 107,
+        "head_title_full_id": null,
+        "native_title_holder_full_id": null,
+        "native_title_holder_absent": null,
+        "native_title_class": null,
+        "title_holder": {
+          "available": false,
+          "unavailable_reason": "native_head_title_absent",
+          "title_tier_raw": null,
+          "title_tier_key": null,
+          "holder_character_full_id": null,
+          "holder_is_player": null,
+          "holder_in_player_realm": null,
+          "holder_immediate_liege_character_full_id": null,
+          "holder_top_liege_character_full_id": null
+        },
+        "title_properties": {
+          "available": false,
+          "unavailable_reason": "native_head_title_absent",
+          "destroy_if_invalid_heir": null,
+          "no_automatic_claims": null,
+          "definitive_form": null,
+          "always_follows_primary_heir": null
+        },
+        "title_laws": {
+          "available": false,
+          "unavailable_reason": "native_head_title_absent",
+          "native_count": null,
+          "complete_laws": null,
+          "expected_law_key": "temporal_head_of_faith_succession_law",
+          "temporal_head_of_faith_succession_law_member": null
+        },
+        "mod_owned_marker": null,
+        "mod_owner_faith_variable": null,
+        "qualification": {
+          "kind": "exact_current_static_abi",
+          "title_properties_index_sha256": "14bf997b58a8ff33d7407ece6be2675917a2b7ed7e6ffdba70ca8ea938347a0a",
+          "title_laws_index_sha256": "9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60",
+          "head_getters_index_sha256": "d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973",
+          "faith_reference_identity_offset": 8,
+          "title_full_id_offset": 16,
+          "faith_typed_fallback_slot_rva": "0x5D1E2E0",
+          "runtime_acceptance": null
+        }
+      }
+    },
+    {
+      "stage": "G4",
+      "sdk": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0007-r14-150758869068.sdk-result.json",
+        "bytes": 8621,
+        "sha256": "a2b12b000f7622cbddd9954c016e95a3aa471701bc16facce9406244418dc94d"
+      },
+      "tool": "ck3_query_profile_confucian_challenger_graph_v1",
+      "SDK_isError": false,
+      "accepted": true,
+      "status": "observed",
+      "available": true,
+      "capture_epoch": 31513,
+      "date_raw": 53144712,
+      "query": {
+        "schema": "ck3_12003_confucian_challenger_graph_v1",
+        "game_version": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "read_only": true,
+        "available": true,
+        "graph_complete": true,
+        "unavailable_reason": null,
+        "capture_epoch": 31513,
+        "date_raw": 53144712,
+        "played_character_id": 31254,
+        "played_character_full_id": 31254,
+        "requested_faith_full_ids": [
+          107,
+          104,
+          106
+        ],
+        "faiths": [
+          {
+            "requested_faith_full_id": 107,
+            "available": true,
+            "collection_complete": true,
+            "unavailable_reason": null,
+            "native_count": 0,
+            "complete_native_challenger_title_ids": [],
+            "challengers": []
+          },
+          {
+            "requested_faith_full_id": 104,
+            "available": true,
+            "collection_complete": true,
+            "unavailable_reason": null,
+            "native_count": 0,
+            "complete_native_challenger_title_ids": [],
+            "challengers": []
+          },
+          {
+            "requested_faith_full_id": 106,
+            "available": true,
+            "collection_complete": true,
+            "unavailable_reason": null,
+            "native_count": 0,
+            "complete_native_challenger_title_ids": [],
+            "challengers": []
+          }
+        ],
+        "mod_owned_markers": null,
+        "saved_owner_faith_variables": null,
+        "qualification": {
+          "kind": "exact_current_static_abi",
+          "faith_rtti_index_sha256": "712298a183573a588c24fd0a357e0d83d4e6886a9e5ddd45db7ddf8e5a3aba2d",
+          "faith_challenger_abi_index_sha256": "3dffb1d4ee1fa0e100ea26b12f577841317ebdcae4d6e702282bad768ceadfb1",
+          "record_layout_index_sha256": "3e24fe49a46749ce353274c2a22659f229802a972b720b6153349effe01af35f",
+          "title_properties_index_sha256": "14bf997b58a8ff33d7407ece6be2675917a2b7ed7e6ffdba70ca8ea938347a0a",
+          "title_laws_index_sha256": "9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60",
+          "runtime_acceptance": null
+        }
+      }
+    }
+  ],
+  "formal_begin": {
+    "SDK": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0016-r14-151520115535.sdk-result.json",
+      "bytes": 665317,
+      "sha256": "11fc0b867228ee89ef82357e94c27852fe09b8cd027d308c3ea1f296f463f1b3"
+    },
+    "postcondition_verified": true,
+    "query_false_qualification_flags_explained_separately": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-decision-confirm-gate-readonly-20261006-002/RESULT.json",
+      "bytes": 10119,
+      "sha256": "74d21984afa641e3cfe3fc05a3e078ef9debe7ad76143763978612d8358fe90a"
+    }
+  },
+  "round1": {
+    "B0": {
+      "protection_checks": 87,
+      "all_match": true,
+      "baseline_typed_and_native_join": true,
+      "formal_reader_executed": false,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/RESULT.json",
+        "bytes": 18168,
+        "sha256": "49be4255f6769db8537c48329883e47c3b40f1f11ca132117f3f2e40fa030eec"
+      }
+    },
+    "B1": {
+      "schema": "lyd.r14.actual-B1-final-typed-native-summary.v1",
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/readback-003/RESULT.json",
+        "bytes": 934572,
+        "sha256": "07d8f95aee34e09513958720beaba1ef2bd533a741463b14ce7b5530d8dbc51e"
+      },
+      "STATE_native_qualified": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/readback-003/STATE.native-qualified.json",
+        "bytes": 2642023,
+        "sha256": "0928ee8412e193251960e65e0fb9436f91db372573baad73a91a517434e0fea7"
+      },
+      "TYPED_PROTECTION": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/readback-003/TYPED-PROTECTION.json",
+        "bytes": 1155305,
+        "sha256": "7bb0a20a7fbbbde0ee6aa3bda529c1f1d4fe6bb6c2f08c111beacd149908792e"
+      },
+      "QUALIFIED_NATIVE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/readback-003/native-qualification/QUALIFIED-NATIVE.json",
+        "bytes": 422850,
+        "sha256": "6545c287e17ab25a298be9a02ea0a9c6a78d8e6304c40c65642fe595b6989c85"
+      },
+      "executing_reader": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+        "bytes": 41081,
+        "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+      },
+      "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "stage": "proposal",
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 14776,
+        "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+        "revision": 5,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "round": {
+        "serial": 1,
+        "nonce": 1,
+        "phase": 1,
+        "result_code": null
+      },
+      "native_reader_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "reader_check_count": 403,
+      "reader_check_matches": 403,
+      "reader_checks_false": [],
+      "protection_check_count": 87,
+      "protection_check_matches": 87,
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "member_count": 51,
+      "electors": [
+        {
+          "character_id": 31254,
+          "rite_id": 169,
+          "was_elector": 1,
+          "was_player": 1,
+          "player_yes": 0,
+          "vote": -1,
+          "member_serial": 1
+        },
+        {
+          "character_id": 65865,
+          "rite_id": 169,
+          "was_elector": 1,
+          "was_player": 0,
+          "player_yes": 0,
+          "vote": -1,
+          "member_serial": 1
+        }
+      ],
+      "human_member_ids": [
+        31254
+      ],
+      "vote_counts": {
+        "-1": 51,
+        "0": 0,
+        "1": 0
+      },
+      "rites": [
+        {
+          "id": 169,
+          "owner_id": null,
+          "serial": null,
+          "county_count": null,
+          "members_total": null,
+          "total": null,
+          "yes": null,
+          "signed": null,
+          "dormant": null,
+          "delegate_id": null
+        }
+      ],
+      "native_G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+      "native_G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+      "G2_epoch": 88933,
+      "G3_epoch": 90067,
+      "frame": {
+        "queried_snapshot_id": "native:5",
+        "queried_revision": 6,
+        "queried_native_revision": 5,
+        "date_raw": 53144712,
+        "game_pid": 14776,
+        "connection_generation": 1
+      },
+      "save_body_reads_this_successful_attempt": 1,
+      "prior_failed_attempts_preserved": [
+        "readback-001",
+        "readback-002"
+      ],
+      "game_calls": 0,
+      "SDK_calls": 0,
+      "actual_acceptance_credit": null,
+      "formal_mandate_credit": null
+    },
+    "B1_derived_school_correction": {
+      "schema": "lyd.r14.actual-B1-school-assessment-supplement.v1",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/readback-003/STATE.native-qualified.json",
+        "bytes": 2642023,
+        "sha256": "0928ee8412e193251960e65e0fb9436f91db372573baad73a91a517434e0fea7"
+      },
+      "prior_summary": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/B1-FINAL-SUMMARY.actual.json",
+        "bytes": 3532,
+        "sha256": "71737659ef4b560871f688e65cadb7513db3942b5a4c29d810943a0ecf9df948"
+      },
+      "correction": "prior summary rites[] selected raw Rite rows for derived school counters; authoritative derived counts are state.schools[]; original file retained",
+      "schools": [
+        {
+          "rite_id": 169,
+          "owner_id": 31254,
+          "serial": 1,
+          "members_total": 51,
+          "total": 2,
+          "yes": 0,
+          "signed": 0,
+          "dormant": 0,
+          "counties": 0,
+          "delegate_id": null,
+          "counted_members_total": 51,
+          "counted_total": 2,
+          "counted_yes": 0,
+          "quorum_numerator": -4
+        }
+      ],
+      "native_reference_qualification": {
+        "status": "UNKNOWN",
+        "binding": null
+      },
+      "native_predicate_qualification_status": "CALLER_SUPPLIED_NOT_NATIVE_AUTHENTICATED",
+      "native_predicate_authority": "input contract only; hash syntax is not a native receipt authenticity proof",
+      "assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "assessment_unknown_condition": "native_reference_qualification.status == UNKNOWN; frozen request native_reference_binding is null; reader line574 retains INCOMPLETE_NATIVE_QUALIFICATION",
+      "readiness_now": false,
+      "readiness_evidence": {
+        "phase": 1,
+        "all_schools_signed": false,
+        "quorum_numerators": [
+          -4
+        ]
+      },
+      "actual_acceptance_credit": null,
+      "formal_mandate_credit": null,
+      "game_calls": 0,
+      "SDK_calls": 0,
+      "additional_save_body_reads": 0
+    },
+    "B2": {
+      "schema": "lyd.r14.actual-B2-final-typed-native-summary.v1",
+      "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2-representatives-preservation-20261006-001/readback-001/STATE.native-qualified.json",
+        "bytes": 2643636,
+        "sha256": "a402cf4e850906fc20780db407c443cbd64272166718ef241f3605d86555f1b0"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2-representatives-preservation-20261006-001/readback-001/TYPED-PROTECTION.json",
+        "bytes": 1156896,
+        "sha256": "37209c2443cfd384ca4279c7d70f56dbba8ab3a822254c8c4ec7d9dfc9675d71"
+      },
+      "QUALIFIED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2-representatives-preservation-20261006-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+        "bytes": 569708,
+        "sha256": "fe754661bdc2fb882393bbdfd140380c22fac03eacc7623ca67e54e893235597"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2-representatives-preservation-20261006-001/readback-001/RESULT.json",
+        "bytes": 934733,
+        "sha256": "d3bc7a98fe8c41d21fe6b0a09675e677cc086e66ffab314a032517212d9f49b6"
+      },
+      "reader": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+        "bytes": 41081,
+        "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 14776,
+        "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+        "revision": 8,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "round": {
+        "serial": 1,
+        "nonce": 1,
+        "phase": 1,
+        "result_code": null
+      },
+      "schools": [
+        {
+          "rite_id": 169,
+          "owner_id": 31254,
+          "serial": 1,
+          "members_total": 51,
+          "total": 2,
+          "yes": 0,
+          "signed": 0,
+          "dormant": 0,
+          "counties": 0,
+          "delegate_id": 31254,
+          "counted_members_total": 51,
+          "counted_total": 2,
+          "counted_yes": 0,
+          "quorum_numerator": -4
+        }
+      ],
+      "checks": {
+        "total": 404,
+        "matched": 404,
+        "false": []
+      },
+      "protection": {
+        "total": 87,
+        "matched": 87,
+        "false": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "members": 51,
+      "electors": [
+        {
+          "character_id": 31254,
+          "rite_id": 169,
+          "was_elector": 1,
+          "was_player": 1,
+          "vote": -1,
+          "player_yes": 0
+        },
+        {
+          "character_id": 65865,
+          "rite_id": 169,
+          "was_elector": 1,
+          "was_player": 0,
+          "vote": -1,
+          "player_yes": 0
+        }
+      ],
+      "frame": {
+        "queried_snapshot_id": "native:8",
+        "queried_revision": 9,
+        "queried_native_revision": 8,
+        "date_raw": 53144712,
+        "game_pid": 14776,
+        "connection_generation": 1,
+        "G2_capture_epoch": 254833,
+        "G3_capture_epoch": 255969
+      },
+      "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+      "G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+      "native_reader_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "native_reference_qualification": {
+        "status": "UNKNOWN",
+        "binding": null
+      },
+      "native_predicate_status": "CALLER_SUPPLIED_NOT_NATIVE_AUTHENTICATED",
+      "save_body_reads_this_attempt": 1,
+      "formal_acceptance_credit": null,
+      "product_acceptance_credit": null,
+      "game_calls": 0,
+      "SDK_calls": 0
+    },
+    "B2a": {
+      "schema": "lyd.r14.actual-B2a-ballot-final-summary.v1",
+      "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "stage": "ballot",
+      "round": {
+        "serial": 1,
+        "nonce": 2,
+        "phase": 2,
+        "result_code": null
+      },
+      "schools": [
+        {
+          "rite_id": 169,
+          "owner_id": 31254,
+          "serial": 1,
+          "members_total": 51,
+          "total": 2,
+          "yes": 1,
+          "signed": 0,
+          "dormant": 0,
+          "counties": 0,
+          "delegate_id": 31254,
+          "counted_members_total": 51,
+          "counted_total": 2,
+          "counted_yes": 1,
+          "quorum_numerator": -1
+        }
+      ],
+      "actual_members": [
+        {
+          "character_id": 31254,
+          "was_elector": 1,
+          "was_player": 1,
+          "vote": 1,
+          "player_yes": 1,
+          "raw_saved_vote": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_vote"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_saved_player_yes": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_player_yes"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "request_variables": {}
+        },
+        {
+          "character_id": 65865,
+          "was_elector": 1,
+          "was_player": 0,
+          "vote": 0,
+          "player_yes": 0,
+          "raw_saved_vote": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_vote"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_saved_player_yes": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_player_yes"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          "request_variables": {}
+        }
+      ],
+      "Rite_request_variables": [
+        {
+          "rite_id": 169,
+          "request_variables": {}
+        }
+      ],
+      "checks": {
+        "total": 353,
+        "matched": 353,
+        "false": []
+      },
+      "protection": {
+        "total": 87,
+        "matched": 87,
+        "false": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 14776,
+        "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+        "revision": 13,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "frame": {
+        "queried_snapshot_id": "native:13",
+        "queried_revision": 14,
+        "queried_native_revision": 13,
+        "date_raw": 53144712,
+        "game_pid": 14776,
+        "connection_generation": 1,
+        "G2_capture_epoch": 331791,
+        "G3_capture_epoch": 333151
+      },
+      "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+      "G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+      "assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "native_reference_qualification": {
+        "status": "UNKNOWN",
+        "binding": null
+      },
+      "save_body_reads": 1,
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/STATE.native-qualified.json",
+        "bytes": 2636989,
+        "sha256": "8e3bbdd42c3b9bd522c73049a870d68fdf8860f5f5b08368d813107c0b1ac498"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/TYPED-PROTECTION.json",
+        "bytes": 1157889,
+        "sha256": "ee42f23b674980eda6fbc6b49e98ed7da956301021022c8cbf8da9d6d194c31d"
+      },
+      "QUALIFIED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+        "bytes": 780355,
+        "sha256": "8261e838deab35c7d2a50cc027d3896957a76115686ff2cf41d4601c6f43aa27"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/RESULT.json",
+        "bytes": 934767,
+        "sha256": "72ea94f83c71ff13f114cc2fa0d479846ca5b386184a79b69beeae50c087fa64"
+      },
+      "readiness": false,
+      "signature_quorum_numerator": -1,
+      "interpretation": "Actual NPC elector vote0 is a recorded NO vote, not -1 pending; yes1/total2 fails quorum; no signature_requested field is expected while quorum negative.",
+      "formal_acceptance_credit": null,
+      "B3_signed_precommit_credit": null,
+      "B4_B5_actuals": null,
+      "game_calls": 0,
+      "SDK_calls": 0,
+      "additional_save_body_reads": 0
+    },
+    "cancel": {
+      "index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/INDEX.json",
+        "bytes": 12008,
+        "sha256": "9190005d8df9ec5df50cebd433b26ec8e2d4757c129dd4b361837011bc72946d"
+      },
+      "cleanup_checks": 393,
+      "all_cleanup_match": true,
+      "protection_checks": 87,
+      "all_protection_match": true,
+      "focused_tests_already_run": 10,
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "wallet_delta": {
+        "gold": "0",
+        "piety": "0",
+        "prestige": "0"
+      },
+      "frame": {
+        "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "source_export_sha256": "e9cf7fc4a92b168a1bec5c5c8c44d6bc53367da16a7f625b7b36501c5c23e567",
+        "DLL_sha256": "4e10f698fc133ddb4c047d8a90b1d2633f4494db5eafdfe5a1d3d61c48423849",
+        "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+        "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+        "pipe_name": "\\\\.\\pipe\\xar_profile_065244bdf4ce4b3fbfbf667eb8a9c757",
+        "game_pid": 14776,
+        "connection_generation": 1,
+        "queried_snapshot_id": "native:14",
+        "queried_revision": 15,
+        "queried_native_revision": 14,
+        "date_raw": 53144712,
+        "played_character_id": 31254,
+        "played_character_full_id": 31254,
+        "checkpoint": {
+          "status": "saved",
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\userdir\\save games\\xar_checkpoint.ck3",
+          "name": "xar_checkpoint.ck3",
+          "size": 91670781,
+          "sha256": "72cb93d2158a57a28f312fb58765c60ab65a8d54304216f3a9f66688d2f2d7cf",
+          "date_raw": 53144712,
+          "overwrite_confirmed": true,
+          "strategy": "native-autosave-command-v1",
+          "episode_projection": "native_campaign",
+          "succession_lifecycle": null,
+          "history_index": 25,
+          "episode_character_id": null,
+          "episode_run_id": null
+        },
+        "artifact_sha256": {
+          "G2_receipt": "1c40e82444a2c8ccf23036fab3815d0da7c0adddef7a5298719a7dceca94e8cc",
+          "checkpoint_receipt": "ac03ea7a453bef13d9ce34671537a3c711ae2e8a23e9b8ce977c6096ccbc37ac",
+          "G3_receipt": "b5439646421cfd279a6fd95d4524a56d2cd935e754184bdcfc4f2d710842b94a",
+          "provenance": "cae382b7fe951603b2754052b172a43a3bd99bd085fd2754cbc845b005d28142",
+          "saved_state": "8153096ffeccf7360a6bea8e6dde88b2a1894a4debd9a69101cd6f8ab9a2f530"
+        },
+        "G2_capture_epoch": 466505,
+        "G3_capture_epoch": 466717,
+        "sdk_metadata_sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9",
+        "sdk_metadata_artifact": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-metadata-capture-20261006-001/ACTUAL-challenger24-profile-all-tools.json",
+          "bytes": 23777,
+          "sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9"
+        },
+        "sdk_metadata_tool_count": 24,
+        "sdk_metadata_contract_sha256": "8f8ee5c1d59ef7c3456b46d697ff35033b4fb9cbb971948b135c03bf17247aec",
+        "sdk_codec_sha256": "9b9e87e1c6981f6b74382d291ad1f9c33c10f1f1e0002e1bfd704ec11e800681",
+        "sdk_codec_artifact": {
+          "path": "C:/lr14s1/ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+          "bytes": 23750,
+          "sha256": "9b9e87e1c6981f6b74382d291ad1f9c33c10f1f1e0002e1bfd704ec11e800681"
+        },
+        "sdk_codec_contract_sha256": "a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969",
+        "sdk_codec_DTO_AST": {
+          "actual_artifact": {
+            "path": "C:/lr14s1/ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+            "bytes": 23750,
+            "sha256": "9b9e87e1c6981f6b74382d291ad1f9c33c10f1f1e0002e1bfd704ec11e800681"
+          },
+          "actual_sha256": "9b9e87e1c6981f6b74382d291ad1f9c33c10f1f1e0002e1bfd704ec11e800681",
+          "frozen_codec_contract_sha256": "a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969",
+          "frozen_primitives_sha256": "4f63059ad9c7842cc88502366cafb5e2d3701671d40d648e47f40b6c54be1b39",
+          "pure_DTO_AST_matches": {
+            "integer": true,
+            "exact": true,
+            "optional": true,
+            "full_id": true,
+            "nullable_id": true,
+            "reason": true,
+            "_common_payload": true,
+            "_ids": true,
+            "normalize_assembly": true,
+            "normalize_title": true,
+            "project_native_query": true,
+            "normalize_public_query": true
+          },
+          "all_12_match": true,
+          "source_executed": false,
+          "actual_acceptance_credit": null
+        },
+        "checkpoint_transition_contract_sha256": "81e19ff2ee75c4b499129f33edf1efdb4558c8bc2be8781b7e8538b29464133d"
+      },
+      "saved_HoR": "31254",
+      "native_HoR_from_G2_G3": null,
+      "formal_mandate_credit": null
+    }
+  },
+  "numeric_reader": {
+    "external003_reader": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+      "bytes": 41081,
+      "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+    },
+    "external003_author": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/author_actual_checkpoint.py",
+      "bytes": 31038,
+      "sha256": "8efcb4b1b048ea2b4819fecd48be8a9e934babc2dbe73461f91e622e8b66ca05"
+    },
+    "actual14": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/FOCUSED-ZERO.json",
+      "bytes": 1058,
+      "sha256": "8f387d0b9d830dd2b5946914c639a44cd2cac9a3cf847ed4494ff36034abc26d"
+    },
+    "actual14_stderr": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/FOCUSED-ZERO.stderr.txt",
+      "bytes": 2596,
+      "sha256": "c405291381cea0f4ceb718b8849a1523b66803ef66fcec9eba0bcdb2648b66ec"
+    },
+    "afterclose_manifest": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/AFTERCLOSE-INTEGRATION-MANIFEST.json",
+      "bytes": 6421,
+      "sha256": "e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b"
+    },
+    "afterclose_target_count": 6,
+    "existing20": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/EXISTING20.actual.json",
+      "bytes": 2113,
+      "sha256": "34c03f04a6e2c3bb2a9779e1b54be296798e3c8de3e968f12d2e509245c0d571"
+    },
+    "patch": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/NUMERIC-LEAF-AFTERCLOSE.patch",
+      "bytes": 13475,
+      "sha256": "709277b4b04f6cd664cc8e761f4f2fba9fd08f4e7252816f426335e5a27e3cfd"
+    },
+    "actual_main_application": false,
+    "afterclose_only": true,
+    "change_scope": "number() handles present numeric with omitted zero and uint64 encoding of signed -1; absent/unknown/reference kinds remain strict"
+  },
+  "qualification_boundaries": {
+    "legacy_native_reference_status": "UNKNOWN",
+    "legacy_predicate_status": "CALLER_SUPPLIED_NOT_NATIVE_AUTHENTICATED",
+    "legacy_reader_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+    "observed_stage_matches_do_not_grant_whole_formal_acceptance": true,
+    "native_HoR_not_read_by_G2_G3": true,
+    "G4_empty_challenger_collections_not_native_HoR_proof": true,
+    "semantic_protocol_HEAD": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+    "actual_execution_HEAD": "19e660105e05395caa6cc95e76c299312ee89d51"
+  },
+  "history": {
+    "R13_report": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-06-r0013-768fd56/REPORT.json",
+      "bytes": 26384,
+      "sha256": "4408280e905c8441eda1bac32bab499a280e741d3fd9b00aed2368af44d49c37"
+    },
+    "R13_runtime_status": "NOT_GREEN",
+    "first_failed_G2_G3_preserved": [
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/mcp-client-001/0005-r13-123547426411.sdk-result.json",
+        "bytes": 510,
+        "sha256": "ffaa79b981897325910ac0457048ee336d9ca56df0af3d60c940495f3bc91678"
+      },
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/mcp-client-001/0006-r13-123744406001.sdk-result.json",
+        "bytes": 502,
+        "sha256": "ba8ed220a08957da8221118f6584cf8bad42d7f0e1fde3f8aed5249d74407fea"
+      }
+    ],
+    "B1_failed_reader_attempts_001_002_retained_by_original_index": true,
+    "original_B1_summary_retained_with_corrective_supplement": true
+  },
+  "product": {
+    "whole_mod_status": "NOT_GREEN",
+    "completion_estimate_percent": 70,
+    "estimate_not_acceptance": true,
+    "Workshop_published": false
+  },
+  "future": {
+    "draft_semantics": "null means no credit imported into this Round1-cutoff draft; later live activity may already exist in separate owner packages",
+    "round2": null,
+    "B3_signed_precommit": null,
+    "B4_commit": null,
+    "B5_postcommit": null,
+    "new_religious_title_created": null,
+    "formal_mandate": null,
+    "normal_game_exit": null,
+    "client_retained_handle_exit": null,
+    "keeper_retained_handle_exit": null,
+    "screen_CAS_release": null,
+    "final_log_coverage": null,
+    "main_archive_import": null,
+    "Workshop_release": null
+  },
+  "side_effects": {
+    "main_writes": 0,
+    "new_tests": 0,
+    "new_builds": 0,
+    "save_body_reads": 0,
+    "game_calls": 0,
+    "SDK_calls": 0,
+    "native_pipe_calls": 0,
+    "desktop_calls": 0,
+    "lease_changes": 0,
+    "settings_changes": 0,
+    "signals": 0
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "schema": "lyd.r14.decision-confirm-preflight-readonly.v1",
+  "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "main_clean_at_read": true,
+  "conclusion": "The two false model-observation fields are required serializer constants; they are not a rejected Confirm or script-is_valid observation. Actual selected-detail gate passes. No source repair is justified.",
+  "actual_receipt_refs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-client-001\\0013-r14-151218600374.sdk-result.json",
+      "bytes": 4733,
+      "sha256": "6130c07495bd49b34c7a57090e5d28d9054716c9e2d2750c1566219967cae531"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-client-001\\0014-r14-151229245088.sdk-result.json",
+      "bytes": 485591,
+      "sha256": "11eff9b490f18e853850d090b4bca22daa13f8a9521b947d20e313b6c4e42941"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-client-001\\0015-r14-151307695202.sdk-result.json",
+      "bytes": 4775,
+      "sha256": "c772ac57b100cac1e8c5832b708726a27fd3e0c7beea0707472b4f5a3276422d"
+    }
+  ],
+  "exact_source_refs": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ingame_decision_item_v1.cpp",
+      "bytes": 51070,
+      "sha256": "6762b3c89d4c17c66f7e7e310d26ea94458f073da71ae88a5070b19fc7c00f9e",
+      "exact_export_bytes_match": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1390965,
+      "sha256": "072b9ff5406f847fae412769f4dc296c50ebf9f30abaa6fd44dcaffbe4071b5e",
+      "exact_export_bytes_match": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_item_contract.py",
+      "bytes": 3636,
+      "sha256": "79a24b14d6d7462f6eca24011eb090628e7cc2f1bc5852f1741db98c478903ec",
+      "exact_export_bytes_match": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_item_action_contract.py",
+      "bytes": 5856,
+      "sha256": "4d37320c979f7b1bf9bbeaba1ae9cd0d19bd41f81e9ac477d13229d2a616dd87",
+      "exact_export_bytes_match": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_outcome_contract.py",
+      "bytes": 9016,
+      "sha256": "7a6b0533f77f9032c6f2c3cf5ca17c90c5c3108df471cc59a22b8a0e64552ea2",
+      "exact_export_bytes_match": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py",
+      "bytes": 72524,
+      "sha256": "9e8848a9292be45d627bf70a33c96abfadd406e6d7c50dd12ea8eaa2a525ae23",
+      "exact_export_bytes_match": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\decisions\\lyd_i3b_institution_decisions.txt",
+      "bytes": 4599,
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+      "exact_export_bytes_match": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+      "bytes": 6448,
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "exact_export_bytes_match": true
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+      "bytes": 11379,
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "exact_export_bytes_match": true
+    }
+  ],
+  "actual_selected_detail_pure_contract": true,
+  "last_observed_frame": {
+    "native_revision": 2,
+    "connection_generation": 1,
+    "game_pid": 14776,
+    "played_character_id": 31254,
+    "date_raw": 53144712,
+    "episode_run_id": null,
+    "public_revision": 3,
+    "paused": true,
+    "speed": 1,
+    "active_event": null,
+    "pending_character_interaction": null
+  },
+  "required_event_outcome_capabilities_observed": [
+    "game.command.confirm-ingame-decision-outcome-v1",
+    "game.command.query-current-event-window-context-v1",
+    "game.command.query-ingame-decision-item-v1"
+  ],
+  "required_capabilities_present": true,
+  "existing_claim_refs_at_read": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\ingame-decision-item-actions\\386c477cee76bb4637c0ea05e84134b98473e07880fd7630b17adb39af2e89a8.claim.json",
+      "bytes": 671,
+      "sha256": "4ca73ba0da9c2ff91d4a8861f12416902e43d020db408549cd809bfde73d881e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\ingame-decision-item-actions\\8e1adbb0a3b52860bd5b25938d431e2c7903c6a223068cbd9be7e4aeaddb9a06.claim.json",
+      "bytes": 655,
+      "sha256": "0af5fb40bef98b7158c9622868927ca1ee1742bc84364df5b4228c119b45275e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\ingame-decision-item-actions\\bba866383bfda66928436f7f9523440d793f4e39eed9dc8bbd55d6a3c3022ad6.claim.json",
+      "bytes": 729,
+      "sha256": "3a453b0856b0ea0628a496b742ff6e088b7fbde962b1f38ad4cce8840ecdc3ef"
+    }
+  ],
+  "matching_begin_confirm_claim_count_at_read": 1,
+  "unresolved_matching_claim_gate_at_read": "PASS_RESOLVED_CLAIMS",
+  "owner_confirm_claims_observed_after_seq15": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\ingame-decision-item-actions\\bba866383bfda66928436f7f9523440d793f4e39eed9dc8bbd55d6a3c3022ad6.claim.json",
+      "bytes": 729,
+      "sha256": "3a453b0856b0ea0628a496b742ff6e088b7fbde962b1f38ad4cce8840ecdc3ef"
+    }
+  ],
+  "owner_confirm_verified_refs_observed_after_seq15": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-state\\native-session\\ingame-decision-item-actions\\bba866383bfda66928436f7f9523440d793f4e39eed9dc8bbd55d6a3c3022ad6.claim.verified.json",
+      "bytes": 37412,
+      "sha256": "f70856cd34d7458509df0eaae4031dbaecd9021fc08d448952c716b382278d8a"
+    }
+  ],
+  "first_collection_boundary": "001 stopped at assertion because the owner created a new Confirm claim after the requested seq15 inputs; this is a read-time transition, not a seq15 blocker",
+  "source_reader001_sha256": "3eb8a792008a9d2070ec791639cfae8b83db7c2cc1d2604159040b8f7cb99d6d",
+  "source_expected_confirm_arguments": {
+    "decision_key": "lyd_i3b_begin_decision",
+    "expected_outcome": "event_window",
+    "expected_event_definition_key": "lyd.430",
+    "expected_revision": "use actual fresh public revision at owner execution"
+  },
+  "confirm_native_receiver_qualification": "NOT_CREDITED_FROM_SEQ13_TO15; later owner Confirm claim observed separately; native resolves and requalifies enabled unique receiver immediately before one stock dispatch",
+  "script_is_valid_enabled_live_observation": null,
+  "B0_business_typed_qualification": "OWNER_SEPARATE_REQUIRED; not derived from model flags",
+  "source_business_gates": [
+    "actor trigger",
+    "no active I3b/C2/C3 process",
+    "current Faith headless trigger",
+    "all current Faith Rites compatible",
+    "no C2/C3/I3b owner variable on any current Faith Rite"
+  ],
+  "historical_index": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-06-r0010-d0f8fa3b9\\SDK201-254-EVIDENCE.json",
+    "bytes": 157864,
+    "sha256": "d7880388e5d113cd375d85e8998e323f064d39b826f7797a9ffdd02cf1f0277c"
+  },
+  "historical_confirm_comparisons": [
+    {
+      "sequence": 203,
+      "actual_sdk": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0203-r10-0204-detach-confirm.sdk-result.json",
+        "bytes": 8416653,
+        "sha256": "93fecaca9405e15cac2f8a0345c89ea0aca024ad07f2ecc1b32e86cf3ff58859"
+      },
+      "isError": false,
+      "status": "native_gameplay_postcondition_verified",
+      "reason": null,
+      "result_status": "observed_current_event_window",
+      "decision_key": "lyd_c2_propose_detach_decision",
+      "expected_outcome": "event_window",
+      "expected_event_definition_key": "lyd.200",
+      "before_action_qualified": false,
+      "before_row_widget_datacontext_verified": false,
+      "receiver_qualified": true,
+      "detail_actor_binding_verified": true,
+      "dispatch_invoked": true,
+      "native_call_completed": true,
+      "postcondition_verified": true,
+      "verification_pending": false,
+      "business_effects_verified": false
+    },
+    {
+      "sequence": 243,
+      "actual_sdk": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0243-r10-0244-after-detach-reset-confirm.sdk-result.json",
+        "bytes": 5151065,
+        "sha256": "356691422b79776defe19cd621abde02f9e3515d55b8fbcae559ec3fe63beb2c"
+      },
+      "isError": false,
+      "status": "RED",
+      "reason": "BridgeUnavailableError: decision action already claimed with an unresolved result; no retry at any revision",
+      "result_status": null,
+      "decision_key": null,
+      "expected_outcome": null,
+      "expected_event_definition_key": null,
+      "before_action_qualified": null,
+      "before_row_widget_datacontext_verified": null,
+      "receiver_qualified": null,
+      "detail_actor_binding_verified": null,
+      "dispatch_invoked": null,
+      "native_call_completed": null,
+      "postcondition_verified": null,
+      "verification_pending": null,
+      "business_effects_verified": null
+    }
+  ],
+  "once_boundary": "Any unresolved actual confirm claim survives changed revisions, reconnects and switching generic/fixed API; no automatic retry.",
+  "formal_confirm_or_business_execute_invoked_by_this_reader": false,
+  "source_or_main_modified": false,
+  "game_or_sdk_called": false,
+  "business_effects_verified": false,
+  "full_product_acceptance_credit": false
+}

@@ -1,0 +1,43 @@
+{
+  "pid": 14976,
+  "create_time": 1791298694.8157728,
+  "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "cmdline": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-official-consumer-successor-20261006-002\\persistent_native_mcp_queue_24.py",
+    "serve",
+    "--profile",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/native-profile-with-exit-inventory.json",
+    "--queue",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-queue-001",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001",
+    "--binding",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-binding-001\\ROOT-BINDING.json",
+    "--binding-sha256",
+    "5ae7f7f4f395ba8f7a1f5d41bbe87a8fe083fcdb339fa320cdbaec7b5bb5dc22"
+  ],
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/root-dispatch-001/CLIENT-START.actual.json",
+    "bytes": 1080,
+    "sha256": "dd43ea05d7e7e46d828875d3cab3ddaad8403d5842af528e3a5df7dd43081fa8"
+  },
+  "role": "client",
+  "handle_value": 500,
+  "handle_local_to_holder_pid": 16108,
+  "handle_access": 1052672,
+  "process_creation_filetime_100ns": 134357722948157728,
+  "handle_retained_before_close": true,
+  "initial_wait_result": 258,
+  "initial_exit_code": 259,
+  "captured_at_utc": "2026-10-06T15:18:49.112648+00:00",
+  "wait_result": 0,
+  "exit_code": 0,
+  "observed_at_utc": "2026-10-06T17:24:50.448016+00:00",
+  "observation": "ORIGINAL_RETAINED_HANDLE",
+  "close_requested_by_observer": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "status": "ORIGINAL_PROCESS_EXIT_OBSERVED"
+}

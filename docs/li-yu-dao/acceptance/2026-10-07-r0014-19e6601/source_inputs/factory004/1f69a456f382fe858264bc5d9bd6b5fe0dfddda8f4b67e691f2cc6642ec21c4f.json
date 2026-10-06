@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/182632582515-final004-law-tests.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/182632582515-final004-law-tests.stderr",
+    "bytes": 1683,
+    "sha256": "9a28627b54284aba00c0eab9901dfd877fda10bdd61bb03f9f7bf292c9af6dcf"
+  }
+}

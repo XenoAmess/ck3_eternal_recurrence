@@ -1,0 +1,4 @@
+usage: test_i3b_event_bind_present.py [-h] [--source-root SOURCE_ROOT]
+                                      [--parser-root PARSER_ROOT]
+                                      [--catalogue CATALOGUE] --report REPORT
+test_i3b_event_bind_present.py: error: the following arguments are required: --report

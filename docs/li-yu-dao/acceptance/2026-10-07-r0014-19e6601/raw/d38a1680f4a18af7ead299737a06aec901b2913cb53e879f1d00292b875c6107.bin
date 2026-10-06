@@ -1,0 +1,14 @@
+test_actor_active_rejected (test_actual_post_cleanup.ActualPostCleanup.test_actor_active_rejected) ... ok
+test_additional_body_read_rejected (test_actual_post_cleanup.ActualPostCleanup.test_additional_body_read_rejected) ... ok
+test_artificial_partial_code_rejected (test_actual_post_cleanup.ActualPostCleanup.test_artificial_partial_code_rejected) ... ok
+test_exact_actual_projection_matches (test_actual_post_cleanup.ActualPostCleanup.test_exact_actual_projection_matches) ... ok
+test_missing_member_projection_rejected (test_actual_post_cleanup.ActualPostCleanup.test_missing_member_projection_rejected) ... ok
+test_nonce_drift_rejected (test_actual_post_cleanup.ActualPostCleanup.test_nonce_drift_rejected) ... ok
+test_nonempty_captured_list_rejected (test_actual_post_cleanup.ActualPostCleanup.test_nonempty_captured_list_rejected) ... ok
+test_remaining_Rite_signature_rejected (test_actual_post_cleanup.ActualPostCleanup.test_remaining_Rite_signature_rejected) ... ok
+test_remaining_member_stamp_rejected (test_actual_post_cleanup.ActualPostCleanup.test_remaining_member_stamp_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.018s
+
+OK

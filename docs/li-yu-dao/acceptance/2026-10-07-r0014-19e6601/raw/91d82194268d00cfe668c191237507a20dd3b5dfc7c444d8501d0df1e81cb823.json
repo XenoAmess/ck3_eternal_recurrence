@@ -1,0 +1,36 @@
+{
+  "schema": "lyd.r14.build004.defender-failure-readonly.v1",
+  "actual_receipt": "C:\\lyd14-native-clean-20261006-004\\defender-exe-exclusions\\20261006T135354Z-f2d9a211\\receipt.json",
+  "actual_receipt_bytes": 3525,
+  "actual_receipt_sha256": "f5e55d64acd6a602ec885d47942d6317a228e6d4ebcccd48009c1223114f48d8",
+  "status": "settings_failed",
+  "method": "WMI MSFT_MpPreference.Add ExclusionPath only",
+  "namespace": "root\\Microsoft\\Windows\\Defender",
+  "error_stage": "Add-invocation",
+  "error_type": "com_error",
+  "actual_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+  "first_add_call": {
+    "path": "C:\\lyd14-native-clean-20261006-004\\xar_ck3_bridge_injector.exe",
+    "method": "Add",
+    "return_value": null,
+    "return_value_available": false,
+    "call_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+    "call_error_type": "com_error"
+  },
+  "admin_token": true,
+  "readback_visibility": "same administrative token and WMI client for before/after",
+  "before": [],
+  "after": [],
+  "verified_requested_paths": [],
+  "missing_requested_paths": [
+    "C:\\lyd14-native-clean-20261006-004\\xar_ck3_bridge_injector.exe",
+    "C:\\lyd14-native-clean-20261006-004\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+    "C:\\lyd14-native-clean-20261006-004\\xar_confucian_assembly_predicates_v1_test.exe",
+    "C:\\lyd14-native-clean-20261006-004\\xar_confucian_challenger_graph_v1_test.exe",
+    "C:\\lyd14-native-clean-20261006-004\\xar_confucian_religious_title_readback_v1_test.exe"
+  ],
+  "observed_prior_settings_preserved": true,
+  "partial_mutation": false,
+  "new_registration_or_settings_mutation_attempted": false,
+  "runtime_acceptance": "NOT_RUN"
+}

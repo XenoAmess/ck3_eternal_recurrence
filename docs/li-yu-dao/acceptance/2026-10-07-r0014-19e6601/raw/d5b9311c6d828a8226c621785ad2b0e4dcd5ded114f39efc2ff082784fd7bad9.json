@@ -1,0 +1,34 @@
+{
+  "schema": "lyd.r14.cancelled-cleanup-actual-focused.v1",
+  "command": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-live-round1-cancel-preservation-20261007-001\\tests",
+    "-p",
+    "test_*.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "passed": true,
+  "test_count": 10,
+  "actual_fixture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/ACTUAL-CANCEL-CLEANUP.mechanical-fixture.json",
+    "bytes": 171753,
+    "sha256": "6016e01f906f4cd934ca36a46eb03c2dc87f08db02f0db37e2f7b60802fb8b72"
+  },
+  "validator": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/cancelled_cleanup_checks.py",
+    "bytes": 3152,
+    "sha256": "fdc1da1855cf22b5c64b7bdb7940080eab582ef468e4c741384019eae7d53f29"
+  },
+  "additional_save_body_reads": 0,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "formal_credit": null
+}

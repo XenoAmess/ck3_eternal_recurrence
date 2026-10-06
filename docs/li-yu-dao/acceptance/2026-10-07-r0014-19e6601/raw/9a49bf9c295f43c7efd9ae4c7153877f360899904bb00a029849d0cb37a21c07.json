@@ -1,0 +1,119 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"schema\": \"ck3.native-profile-receipt.v1\",\n  \"session_id\": \"065244bdf4ce4b3fbfbf667eb8a9c757\",\n  \"profile_sha256\": \"6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150\",\n  \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_profile_065244bdf4ce4b3fbfbf667eb8a9c757\",\n  \"recorded_at_utc\": \"2026-10-06T17:09:01.136906+00:00\",\n  \"status\": \"native_confucian_readonly_observed\",\n  \"result\": {\n    \"schema\": \"ck3-confucian-readonly-public-v1\",\n    \"operation\": \"religious_title\",\n    \"native_result\": {\n      \"step\": \"query-confucian-religious-title-v1\",\n      \"accepted\": true,\n      \"status\": \"observed\",\n      \"private_build\": true,\n      \"read_only\": true,\n      \"advertised\": false,\n      \"game_version\": \"1.20.0.3\",\n      \"executable_sha256\": \"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\",\n      \"domain_key\": \"confucian_religious_title_v1\",\n      \"backend_id\": \"ck3-1.20.0.3-native-confucian-religious-title-v1\",\n      \"snapshot_revision\": 43,\n      \"date_raw\": 53144712,\n      \"confucian_religious_title\": {\n        \"schema\": \"ck3_12003_confucian_religious_title_v1\",\n        \"game_version\": \"1.20.0.3\",\n        \"executable_sha256\": \"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\",\n        \"available\": true,\n        \"unavailable_reason\": null,\n        \"capture_epoch\": 875983,\n        \"date_raw\": 53144712,\n        \"played_character_id\": 31254,\n        \"played_character_full_id\": 31254,\n        \"graph_available\": true,\n        \"graph_unavailable_reason\": null,\n        \"legal_head_title_absent\": false,\n        \"faith_full_id\": 107,\n        \"head_title_full_id\": 18373,\n        \"native_title_holder_full_id\": 31254,\n        \"native_title_holder_absent\": false,\n        \"native_title_class\": \"CLandedTitle\",\n        \"title_holder\": {\n          \"available\": true,\n          \"unavailable_reason\": null,\n          \"title_tier_raw\": 3,\n          \"title_tier_key\": \"duchy\",\n          \"holder_character_full_id\": 31254,\n          \"holder_is_player\": true,\n          \"holder_in_player_realm\": true,\n          \"holder_immediate_liege_character_full_id\": null,\n          \"holder_top_liege_character_full_id\": 31254\n        },\n        \"title_properties\": {\n          \"available\": true,\n          \"unavailable_reason\": null,\n          \"destroy_if_invalid_heir\": true,\n          \"no_automatic_claims\": true,\n          \"definitive_form\": true,\n          \"always_follows_primary_heir\": true\n        },\n        \"title_laws\": {\n          \"available\": true,\n          \"unavailable_reason\": null,\n          \"native_count\": 1,\n          \"complete_laws\": [\n            {\n              \"native_definition_id\": 95,\n              \"key\": \"temporal_head_of_faith_succession_law\"\n            }\n          ],\n          \"expected_law_key\": \"temporal_head_of_faith_succession_law\",\n          \"temporal_head_of_faith_succession_law_member\": true\n        },\n        \"mod_owned_marker\": null,\n        \"mod_owner_faith_variable\": null,\n        \"qualification\": {\n          \"kind\": \"exact_current_static_abi\",\n          \"title_properties_index_sha256\": \"14bf997b58a8ff33d7407ece6be2675917a2b7ed7e6ffdba70ca8ea938347a0a\",\n          \"title_laws_index_sha256\": \"9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60\",\n          \"head_getters_index_sha256\": \"d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973\",\n          \"faith_reference_identity_offset\": 8,\n          \"title_full_id_offset\": 16,\n          \"faith_typed_fallback_slot_rva\": \"0x5D1E2E0\",\n          \"runtime_acceptance\": null\n        }\n      }\n    },\n    \"queried_snapshot_id\": \"native:43\",\n    \"queried_revision\": 44,\n    \"queried_native_revision\": 43,\n    \"date_raw\": 53144712,\n    \"game_pid\": 14776,\n    \"connection_generation\": 1,\n    \"player_character_id\": 31254,\n    \"business_postcondition_verified\": false,\n    \"full_product_acceptance_credit\": false\n  },\n  \"business_effects_verified\": false,\n  \"full_product_acceptance_credit\": false,\n  \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-014\\\\native-evidence\\\\065244bdf4ce4b3fbfbf667eb8a9c757\\\\0139-confucian-readonly-religious_title.json\"\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+    "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_065244bdf4ce4b3fbfbf667eb8a9c757",
+    "recorded_at_utc": "2026-10-06T17:09:01.136906+00:00",
+    "status": "native_confucian_readonly_observed",
+    "result": {
+      "schema": "ck3-confucian-readonly-public-v1",
+      "operation": "religious_title",
+      "native_result": {
+        "step": "query-confucian-religious-title-v1",
+        "accepted": true,
+        "status": "observed",
+        "private_build": true,
+        "read_only": true,
+        "advertised": false,
+        "game_version": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "domain_key": "confucian_religious_title_v1",
+        "backend_id": "ck3-1.20.0.3-native-confucian-religious-title-v1",
+        "snapshot_revision": 43,
+        "date_raw": 53144712,
+        "confucian_religious_title": {
+          "schema": "ck3_12003_confucian_religious_title_v1",
+          "game_version": "1.20.0.3",
+          "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+          "available": true,
+          "unavailable_reason": null,
+          "capture_epoch": 875983,
+          "date_raw": 53144712,
+          "played_character_id": 31254,
+          "played_character_full_id": 31254,
+          "graph_available": true,
+          "graph_unavailable_reason": null,
+          "legal_head_title_absent": false,
+          "faith_full_id": 107,
+          "head_title_full_id": 18373,
+          "native_title_holder_full_id": 31254,
+          "native_title_holder_absent": false,
+          "native_title_class": "CLandedTitle",
+          "title_holder": {
+            "available": true,
+            "unavailable_reason": null,
+            "title_tier_raw": 3,
+            "title_tier_key": "duchy",
+            "holder_character_full_id": 31254,
+            "holder_is_player": true,
+            "holder_in_player_realm": true,
+            "holder_immediate_liege_character_full_id": null,
+            "holder_top_liege_character_full_id": 31254
+          },
+          "title_properties": {
+            "available": true,
+            "unavailable_reason": null,
+            "destroy_if_invalid_heir": true,
+            "no_automatic_claims": true,
+            "definitive_form": true,
+            "always_follows_primary_heir": true
+          },
+          "title_laws": {
+            "available": true,
+            "unavailable_reason": null,
+            "native_count": 1,
+            "complete_laws": [
+              {
+                "native_definition_id": 95,
+                "key": "temporal_head_of_faith_succession_law"
+              }
+            ],
+            "expected_law_key": "temporal_head_of_faith_succession_law",
+            "temporal_head_of_faith_succession_law_member": true
+          },
+          "mod_owned_marker": null,
+          "mod_owner_faith_variable": null,
+          "qualification": {
+            "kind": "exact_current_static_abi",
+            "title_properties_index_sha256": "14bf997b58a8ff33d7407ece6be2675917a2b7ed7e6ffdba70ca8ea938347a0a",
+            "title_laws_index_sha256": "9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60",
+            "head_getters_index_sha256": "d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973",
+            "faith_reference_identity_offset": 8,
+            "title_full_id_offset": 16,
+            "faith_typed_fallback_slot_rva": "0x5D1E2E0",
+            "runtime_acceptance": null
+          }
+        }
+      },
+      "queried_snapshot_id": "native:43",
+      "queried_revision": 44,
+      "queried_native_revision": 43,
+      "date_raw": 53144712,
+      "game_pid": 14776,
+      "connection_generation": 1,
+      "player_character_id": 31254,
+      "business_postcondition_verified": false,
+      "full_product_acceptance_credit": false
+    },
+    "business_effects_verified": false,
+    "full_product_acceptance_credit": false,
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-evidence\\065244bdf4ce4b3fbfbf667eb8a9c757\\0139-confucian-readonly-religious_title.json"
+  },
+  "isError": false,
+  "resultType": "complete"
+}

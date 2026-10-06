@@ -1,0 +1,51 @@
+{
+  "schema": "lyd.r14.round2-cancel-compact-actual-summary.v1",
+  "summary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/CANCEL-CLEANUP.actual.json",
+    "bytes": 70300,
+    "sha256": "a0bd0945ab5d3638a06210d87dbd11418673b149af76be9d16b6b6d29b519bf4"
+  },
+  "round": {
+    "serial": 2,
+    "nonce": 4,
+    "phase": null,
+    "result_code": null
+  },
+  "cleanup393_match": true,
+  "protection87_match": true,
+  "wallet": {
+    "gold": "1043",
+    "piety": "3150",
+    "prestige": "2200"
+  },
+  "wallet_delta": {
+    "gold": "0",
+    "piety": "0",
+    "prestige": "0"
+  },
+  "saved_HoR": "31254",
+  "native_HoR_credit": null,
+  "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+  "G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+  "frame": {
+    "queried_snapshot_id": "native:26",
+    "queried_revision": 27,
+    "queried_native_revision": 26,
+    "date_raw": 53144712,
+    "game_pid": 14776,
+    "connection_generation": 1,
+    "G2_capture_epoch": 630671,
+    "G3_capture_epoch": 630891
+  },
+  "root_checkpoint_ref3": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-formal-guarded-steps-20261007-001/163340034514/content-f4c245080299c00c0ad323e928d1d96acb4190930a8e436673964b84c360f089.ck3",
+    "bytes": 91671418,
+    "sha256": "f4c245080299c00c0ad323e928d1d96acb4190930a8e436673964b84c360f089"
+  },
+  "actual_body_reads": 1,
+  "live_autosave_reads": 0,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "formal_credit": null,
+  "next_round_actuals": null
+}

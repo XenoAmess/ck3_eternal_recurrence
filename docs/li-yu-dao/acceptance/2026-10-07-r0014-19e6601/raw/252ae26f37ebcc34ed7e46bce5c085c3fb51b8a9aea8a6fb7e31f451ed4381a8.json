@@ -1,0 +1,83 @@
+{
+  "schema": "lyd.i3b.afterclose-event-bind-preview-candidate-manifest.v1",
+  "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "status": "READY_FOR_REVIEW_SOURCE_ONLY_NOT_APPLIED",
+  "targets": [
+    {
+      "action": "MODIFY",
+      "repo_path": "mod_li_yu_dao/tools/gen_institution.py",
+      "before_sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3",
+      "before_bytes": 52050,
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/gen_institution.py",
+        "bytes": 52360,
+        "sha256": "d2dde0753cb7ab3540304733634a7fc5fae603f360fcc8c6ae950f0aebe6ce11"
+      }
+    },
+    {
+      "action": "MODIFY",
+      "repo_path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "before_sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "before_bytes": 6448,
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "bytes": 6758,
+        "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+      }
+    },
+    {
+      "action": "ADD",
+      "repo_path": "mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+      "before_sha256": null,
+      "before_bytes": null,
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+        "bytes": 7286,
+        "sha256": "b30d2eff23127ebce4a7620323a50e3ef9b16c134d2bba7e585699e835501ca7"
+      }
+    },
+    {
+      "action": "ADD",
+      "repo_path": "mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json",
+      "before_sha256": null,
+      "before_bytes": null,
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json",
+        "bytes": 10539,
+        "sha256": "ce4b99940b3254bbd3c3fd671cbb48c16ffb48ee0e71e03e6c643e02da5722f6"
+      }
+    },
+    {
+      "action": "ADD",
+      "repo_path": "docs/li-yu-dao/i3b-event-bind-preview.md",
+      "before_sha256": null,
+      "before_bytes": null,
+      "candidate": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/docs/li-yu-dao/i3b-event-bind-preview.md",
+        "bytes": 1893,
+        "sha256": "cf8a3c18f978e76b534efd36b77878570da93a1292159e505d9dafbaa59faa77"
+      }
+    }
+  ],
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/AFTERCLOSE-EVENT-BIND-PREVIEW.patch",
+    "bytes": 22851,
+    "sha256": "67a0ea23087b2220fc8b76fa5d7d96252a5de440d2085917f912980473f5446c"
+  },
+  "git_apply_check_exit": 0,
+  "offline_test": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED002.actual.json",
+    "bytes": 966,
+    "sha256": "f5eea35b57f8522424232505adf2d98cd473639499d339fb418571cfbb4c794d"
+  },
+  "first_new_test_failure_preserved": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED.actual.json",
+    "bytes": 962,
+    "sha256": "ca1902c0dc842a6bae6588a040814aba83ea26cd538fee5f09c8428c5a0b908a"
+  },
+  "runtime_acceptance": null,
+  "engine_preview_fix_proven_live": null,
+  "main_writes": 0,
+  "game_or_SDK_calls": 0,
+  "integration_boundary": "Afterclose only; root review owns integration. Current HEAD19 loaded mod bytes must remain untouched."
+}

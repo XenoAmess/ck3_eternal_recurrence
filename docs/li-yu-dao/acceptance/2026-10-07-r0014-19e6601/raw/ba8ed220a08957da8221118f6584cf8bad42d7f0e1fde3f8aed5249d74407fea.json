@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "Error executing tool ck3_query_profile_confucian_religious_title_v1: Confucian readonly native error: confucian_religious_title_mailbox_submit_unavailable",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": null,
+  "isError": true,
+  "resultType": "complete"
+}

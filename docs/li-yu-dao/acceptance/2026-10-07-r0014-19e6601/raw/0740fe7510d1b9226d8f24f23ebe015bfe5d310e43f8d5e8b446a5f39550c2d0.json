@@ -1,0 +1,23 @@
+{
+  "schema": "ck3.lyd.persistent-mcp-session.v1",
+  "client_session_id": "c78874edd4204810a50ce436e2296753",
+  "profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-profile-with-exit-inventory.json",
+  "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+  "server": "C:\\lr14s1\\tools\\ck3_native_profile_mcp.py",
+  "server_sha256": "9e8848a9292be45d627bf70a33c96abfadd406e6d7c50dd12ea8eaa2a525ae23",
+  "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "queue": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-queue-001",
+  "started_at_utc": "2026-10-06T14:58:36.228373+00:00",
+  "cache": null,
+  "automatic_attach": false,
+  "automatic_retry": false,
+  "binding_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-binding-001\\ROOT-BINDING.json",
+  "binding_sha256": "5ae7f7f4f395ba8f7a1f5d41bbe87a8fe083fcdb339fa320cdbaec7b5bb5dc22",
+  "epoch_id": "r14-native-charter-c3-001",
+  "source_revision": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "target": {
+    "pid": 14776,
+    "process_create_time": 1791295897.0696163
+  },
+  "live_inventory_verified": false
+}

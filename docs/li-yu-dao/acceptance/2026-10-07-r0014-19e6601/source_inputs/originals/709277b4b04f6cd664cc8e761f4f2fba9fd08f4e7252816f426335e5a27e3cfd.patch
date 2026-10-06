@@ -1,0 +1,302 @@
+--- a/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py
++++ b/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py
+@@ -76,8 +76,22 @@
+     row = variables.get(name)
+     if row is None and not required:
+         return None
++    # CK3 omits the default identity only inside an explicitly present numeric
++    # data={type=value} block. Preserve raw fields; absent variables remain absent.
++    if (type(row) is dict and row.get('present') is True and row.get('type') == 'value'
++            and row.get('identity') is None and 'number' not in row
++            and row.get('entries') == [{'key': 'type', 'value': 'value'}]):
++        return 0
+     require(row is not None and row.get('type') == 'value' and 'number' in row, 'missing numeric ' + name)
+-    value = Decimal(row['number'])
++    # Save identity is the fixed-point signed64 bit pattern, rendered unsigned
++    # for negative values. Entity/reference IDs never enter this numeric helper.
++    raw_identity = row.get('identity')
++    require(type(raw_identity) is str and re.fullmatch(r'-?[0-9]+', raw_identity) is not None
++            and row.get('scale') == 100000, 'invalid fixed-point identity/scale ' + name)
++    encoded = int(raw_identity)
++    require(-(2**63) <= encoded < 2**64, 'fixed-point identity outside signed64/uint64 ' + name)
++    signed = encoded - 2**64 if encoded >= 2**63 else encoded
++    value = Decimal(signed) / Decimal(100000)
+     require(value == value.to_integral_value(), 'nonintegral ' + name)
+     return int(value)
+ 
+--- /dev/null
++++ b/tools/lyd_i3b_checkpoint_readback/tests/test_present_numeric_zero.py
+@@ -0,0 +1,49 @@
++from pathlib import Path
++from copy import deepcopy
++import sys,json,hashlib,importlib.util,unittest
++sys.dont_write_bytecode=True
++ROOT=Path(__file__).parents[1]
++sys.path.insert(0,str(ROOT/'reader/dependencies'))
++spec=importlib.util.spec_from_file_location('actual_shape_strict_reader',ROOT/'reader/i3b_checkpoint_reader.py')
++reader=importlib.util.module_from_spec(spec);spec.loader.exec_module(reader)
++fixture=json.loads((ROOT/'tests/fixtures/ACTUAL-B1-present-numeric-zero.json').read_bytes())
++NAME='lyd_i3b_was_elector'
++
++class PresentNumericZeroTests(unittest.TestCase):
++    def zero(self):return deepcopy(fixture['zero_row'])
++    def test_actual_present_zero_matches_native_ineligible_and_preserves_raw(self):
++        row=self.zero();before=json.dumps(row,sort_keys=True)
++        member=fixture['native_member']
++        eligible=member['alive'] and member['adult'] and not member['imprisoned'] and not member['incapable'] and member['effective_learning']>=15
++        self.assertFalse(eligible);self.assertEqual(reader.number({NAME:row},NAME),int(eligible))
++        self.assertEqual(json.dumps(row,sort_keys=True),before);self.assertIsNone(row['identity']);self.assertNotIn('number',row)
++    def test_actual_positive_elector_preserved(self):
++        self.assertEqual(reader.number({NAME:deepcopy(fixture['positive_actor_elector_row'])},NAME),1)
++    def test_missing_variable_required_rejected_optional_remains_null(self):
++        with self.assertRaises(reader.ReadbackError):reader.number({},NAME)
++        self.assertIsNone(reader.number({},NAME,required=False))
++    def test_wrong_type_or_not_present_rejected(self):
++        for field,value in (('type','faith'),('type','boolean'),('present',False),('identity','0')):
++            row=self.zero();row[field]=value
++            with self.assertRaises(reader.ReadbackError):reader.number({NAME:row},NAME)
++    def test_missing_or_empty_data_block_rejected(self):
++        for entries in (None,[],[{'key':'identity','value':None}]):
++            row=self.zero();row['entries']=entries
++            with self.assertRaises(reader.ReadbackError):reader.number({NAME:row},NAME)
++    def test_extra_data_identity_or_timestamp_is_not_default_zero(self):
++        for extra in ({'key':'identity','value':None},{'key':'tick','value':'53144712'},{'key':'future_unknown','value':'0'}):
++            row=self.zero();row['entries'].append(extra)
++            with self.assertRaises(reader.ReadbackError):reader.number({NAME:row},NAME)
++    def test_owner_expiry_timestamp_is_preserved_and_not_numeric_identity(self):
++        row=self.zero();row['tick']='53145177';row['row_entries'].append({'key':'tick','value':'53145177'})
++        before=json.dumps(row,sort_keys=True)
++        self.assertEqual(reader.number({NAME:row},NAME),0)
++        self.assertEqual(row['tick'],'53145177');self.assertEqual(json.dumps(row,sort_keys=True),before)
++    def test_nonintegral_explicit_numeric_identity_is_rejected(self):
++        row=self.zero();row.update(identity='53144712',number='531.44712',scale=100000);row['entries'].append({'key':'identity','value':'53144712'})
++        with self.assertRaises(reader.ReadbackError):reader.number({NAME:row},NAME)
++    def test_explicit_negative_vote_remains_negative_one(self):
++        row=self.zero();row.update(identity='-100000',number='-1',scale=100000);row['entries'].append({'key':'identity','value':'-100000'})
++        self.assertEqual(reader.number({'lyd_i3b_vote':row},'lyd_i3b_vote'),-1)
++
++if __name__=='__main__':unittest.main(verbosity=2)
+--- /dev/null
++++ b/tools/lyd_i3b_checkpoint_readback/tests/test_actual_signed64_value.py
+@@ -0,0 +1,30 @@
++from pathlib import Path
++from copy import deepcopy
++import json,unittest
++from test_present_numeric_zero import reader,ROOT
++fixture=json.loads((ROOT/'tests/fixtures/ACTUAL-B1-uint64-signed-vote.json').read_bytes())
++NAME='lyd_i3b_vote'
++
++class ActualSignedValueTests(unittest.TestCase):
++    def vote(self):return deepcopy(fixture['actual_vote_row'])
++    def test_actual_unsigned_bit_pattern_decodes_source_pending_minus_one_without_rewrite(self):
++        row=self.vote();before=json.dumps(row,sort_keys=True)
++        self.assertEqual(int(row['identity']),2**64-100000)
++        self.assertEqual(reader.number({NAME:row},NAME),fixture['source_declared_vote'])
++        self.assertEqual(json.dumps(row,sort_keys=True),before)
++    def test_optional_present_numeric_routes_same_signed_decode_and_missing_remains_null(self):
++        self.assertEqual(reader.number({NAME:self.vote()},NAME,required=False),-1)
++        self.assertIsNone(reader.number({},NAME,required=False))
++    def test_actual_positive_serial_keeps_one(self):
++        self.assertEqual(reader.number({'lyd_i3b_serial':deepcopy(fixture['actual_serial_row'])},'lyd_i3b_serial'),1)
++    def test_uint64_overflow_wrong_scale_nonvalue_and_highbit_fraction_rejected(self):
++        for field,value in (('identity',str(2**64)),('identity',str(2**63)),('identity',str(2**64-1)),('scale',1000),('type','char'),('identity','1e5'),('identity',str(-(2**63)-1))):
++            row=self.vote();row[field]=value
++            with self.assertRaises(reader.ReadbackError):reader.number({NAME:row},NAME)
++    def test_entity_full_id_uses_reference_binding_without_numeric_signed_decode(self):
++        variables={'lyd_i3b_result_head_title':{'type':'synthetic_saved_title_discriminator','identity':str(0xF1000001)}}
++        # The primitive scalar ID path stays an unsigned reference, independently
++        # of signed fixed-point values. No entity is passed through number().
++        self.assertEqual(reader.scalar_id(variables['lyd_i3b_result_head_title']['identity'],'actual Title'),0xF1000001)
++
++if __name__=='__main__':unittest.main(verbosity=2)
+--- /dev/null
++++ b/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-present-numeric-zero.json
+@@ -0,0 +1,89 @@
++{
++  "schema": "lyd.actual-B1-present-numeric-zero-fixture.v1",
++  "checkpoint_sha256": "e672a13c0745103784cb3b363ab61d8ccbd643214c2da4482ff9691cd3fffd29",
++  "zero_member_id": 34232,
++  "zero_row": {
++    "present": true,
++    "tick": null,
++    "type": "value",
++    "identity": null,
++    "entries": [
++      {
++        "key": "type",
++        "value": "value"
++      }
++    ],
++    "row_entries": [
++      {
++        "key": "flag",
++        "value": "lyd_i3b_was_elector"
++      },
++      {
++        "key": "data",
++        "value": [
++          {
++            "key": "type",
++            "value": "value"
++          }
++        ]
++      }
++    ]
++  },
++  "native_member": {
++    "character_id": 34232,
++    "rite_id": 169,
++    "faith_id": 107,
++    "alive": true,
++    "adult": true,
++    "imprisoned": false,
++    "incapable": false,
++    "is_ai": true,
++    "effective_learning": 4,
++    "adult_measure_raw": 35,
++    "adult_selector_raw": 0,
++    "adult_threshold_raw": 16,
++    "complete": true,
++    "unavailable_reason": null
++  },
++  "positive_actor_id": 31254,
++  "positive_actor_elector_row": {
++    "present": true,
++    "tick": null,
++    "type": "value",
++    "identity": "100000",
++    "entries": [
++      {
++        "key": "type",
++        "value": "value"
++      },
++      {
++        "key": "identity",
++        "value": "100000"
++      }
++    ],
++    "number": "1",
++    "scale": 100000,
++    "row_entries": [
++      {
++        "key": "flag",
++        "value": "lyd_i3b_was_elector"
++      },
++      {
++        "key": "data",
++        "value": [
++          {
++            "key": "type",
++            "value": "value"
++          },
++          {
++            "key": "identity",
++            "value": "100000"
++          }
++        ]
++      }
++    ]
++  },
++  "source_observation": "The source explicitly sets numeric was_elector0, then sets1 only for eligible members. Zero member raw block is present data={type=value}, with omitted identity. No absent variable maps to zero.",
++  "raw_fixture_projected": true,
++  "formal_acceptance": null
++}
+--- /dev/null
++++ b/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json
+@@ -0,0 +1,82 @@
++{
++  "schema": "lyd.actual-B1-unsigned-signed64-fixed-vote-fixture.v1",
++  "checkpoint_sha256": "e672a13c0745103784cb3b363ab61d8ccbd643214c2da4482ff9691cd3fffd29",
++  "actor_id": 31254,
++  "actual_vote_row": {
++    "present": true,
++    "tick": null,
++    "type": "value",
++    "identity": "18446744073709451616",
++    "entries": [
++      {
++        "key": "type",
++        "value": "value"
++      },
++      {
++        "key": "identity",
++        "value": "18446744073709451616"
++      }
++    ],
++    "number": "184467440737094.51616",
++    "scale": 100000,
++    "row_entries": [
++      {
++        "key": "flag",
++        "value": "lyd_i3b_vote"
++      },
++      {
++        "key": "data",
++        "value": [
++          {
++            "key": "type",
++            "value": "value"
++          },
++          {
++            "key": "identity",
++            "value": "18446744073709451616"
++          }
++        ]
++      }
++    ]
++  },
++  "actual_serial_row": {
++    "present": true,
++    "tick": null,
++    "type": "value",
++    "identity": "100000",
++    "entries": [
++      {
++        "key": "type",
++        "value": "value"
++      },
++      {
++        "key": "identity",
++        "value": "100000"
++      }
++    ],
++    "number": "1",
++    "scale": 100000,
++    "row_entries": [
++      {
++        "key": "flag",
++        "value": "lyd_i3b_serial"
++      },
++      {
++        "key": "data",
++        "value": [
++          {
++            "key": "type",
++            "value": "value"
++          },
++          {
++            "key": "identity",
++            "value": "100000"
++          }
++        ]
++      }
++    ]
++  },
++  "raw_fixture_projected": true,
++  "source_declared_vote": -1,
++  "formal_acceptance": null
++}
+--- /dev/null
++++ b/tools/lyd_i3b_checkpoint_readback/SAVED-NUMERIC-VALUES.md
+@@ -0,0 +1,11 @@
++# Serialized numeric values observed during R14 I3b proposal
++
++Two stored numeric forms blocked the B1 formal reader while the original checkpoint parser and typed identity reader remained correct. The change is limited to `number()`; saved rows, parser output, entity IDs, original save bytes, and phase/ownership checks remain unchanged.
++
++An explicit present `type=value` row with no identity and a data block containing exactly the `type=value` entry represents numeric zero. A missing variable, absent row, wrong type, empty block, identity entry, or additional data entry is not defaulted to zero. The owner row expiry tick is retained separately.
++
++Explicit identities are fixed-point signed64 values at scale 100000. CK3 serialized B1 pending vote -1 as the unsigned bit pattern 18446744073709451616. `number()` decodes the high bit as signed64, divides by 100000, and requires an integral result. Signed/unsigned overflow, a wrong scale, malformed identity, fractional high-bit values, and entity/reference types are rejected. Reference identity readers do not use this signed numeric conversion.
++
++The two small fixtures are exact extracted saved-row shapes from R14 B1, not complete save bodies. Their original checkpoint SHA is retained in each fixture. Nine explicit-zero tests and five signed-value tests passed against external reader003; their original receipts are preserved. The existing 20 reader tests are separately run against that exact candidate in an external mirror with unchanged test logic, dependencies and raw parser. These checks provide reader compatibility evidence; native query and formal mandate credit remain separate actual evidence.
++
++Apply only after normal game exit, helper closure and screen CAS release. While R14 runs at clean HEAD19, the main reader, executable and build inputs remain unchanged. Failed B1 reader001/002 and the earlier failed manifest author attempt remain preserved externally.

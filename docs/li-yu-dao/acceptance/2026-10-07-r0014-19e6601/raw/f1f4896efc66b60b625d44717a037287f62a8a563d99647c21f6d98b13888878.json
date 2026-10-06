@@ -1,0 +1,2610 @@
+{
+  "schema": "lyd.r14.actual-postcommit-cleanup-observation.v1",
+  "status": "ACTUAL_POSTCOMMIT_CLEANUP_OBSERVATIONS_MATCH",
+  "cleanup": {
+    "checks": [
+      {
+        "name": "same_actual_result_round",
+        "matches": true,
+        "observed": {
+          "serial": 3,
+          "nonce": 6,
+          "phase": null,
+          "result_code": 1
+        },
+        "expected": {
+          "serial": 3,
+          "nonce": 6,
+          "phase": null,
+          "result_code": 1
+        }
+      },
+      {
+        "name": "phase_removed",
+        "matches": true,
+        "observed": null,
+        "expected": null
+      },
+      {
+        "name": "actual_real_success_code_not_recast_partial",
+        "matches": true,
+        "observed": 1,
+        "expected": 1
+      },
+      {
+        "name": "current_members_equal_prior_B3_captured_full_IDs",
+        "matches": true,
+        "observed": [
+          31254,
+          31538,
+          31692,
+          32236,
+          32535,
+          32536,
+          33234,
+          33542,
+          34232,
+          34741,
+          34973,
+          35386,
+          35598,
+          35899,
+          36311,
+          36329,
+          36445,
+          36638,
+          36663,
+          36847,
+          36873,
+          37064,
+          37221,
+          37244,
+          37702,
+          38561,
+          38924,
+          38925,
+          39045,
+          39171,
+          39348,
+          39352,
+          39527,
+          39979,
+          40259,
+          40507,
+          40526,
+          40694,
+          40695,
+          40843,
+          40847,
+          41028,
+          41032,
+          41235,
+          41288,
+          41495,
+          65851,
+          65852,
+          65853,
+          65854,
+          65865
+        ],
+        "expected": [
+          31254,
+          31538,
+          31692,
+          32236,
+          32535,
+          32536,
+          33234,
+          33542,
+          34232,
+          34741,
+          34973,
+          35386,
+          35598,
+          35899,
+          36311,
+          36329,
+          36445,
+          36638,
+          36663,
+          36847,
+          36873,
+          37064,
+          37221,
+          37244,
+          37702,
+          38561,
+          38924,
+          38925,
+          39045,
+          39171,
+          39348,
+          39352,
+          39527,
+          39979,
+          40259,
+          40507,
+          40526,
+          40694,
+          40695,
+          40843,
+          40847,
+          41028,
+          41032,
+          41235,
+          41288,
+          41495,
+          65851,
+          65852,
+          65853,
+          65854,
+          65865
+        ]
+      },
+      {
+        "name": "current_Rites_equal_prior_B3_captured_full_IDs",
+        "matches": true,
+        "observed": [
+          169
+        ],
+        "expected": [
+          169
+        ]
+      },
+      {
+        "name": "complete_member_raw_projection",
+        "matches": true,
+        "observed": [
+          31254,
+          31538,
+          31692,
+          32236,
+          32535,
+          32536,
+          33234,
+          33542,
+          34232,
+          34741,
+          34973,
+          35386,
+          35598,
+          35899,
+          36311,
+          36329,
+          36445,
+          36638,
+          36663,
+          36847,
+          36873,
+          37064,
+          37221,
+          37244,
+          37702,
+          38561,
+          38924,
+          38925,
+          39045,
+          39171,
+          39348,
+          39352,
+          39527,
+          39979,
+          40259,
+          40507,
+          40526,
+          40694,
+          40695,
+          40843,
+          40847,
+          41028,
+          41032,
+          41235,
+          41288,
+          41495,
+          65851,
+          65852,
+          65853,
+          65854,
+          65865
+        ],
+        "expected": [
+          31254,
+          31538,
+          31692,
+          32236,
+          32535,
+          32536,
+          33234,
+          33542,
+          34232,
+          34741,
+          34973,
+          35386,
+          35598,
+          35899,
+          36311,
+          36329,
+          36445,
+          36638,
+          36663,
+          36847,
+          36873,
+          37064,
+          37221,
+          37244,
+          37702,
+          38561,
+          38924,
+          38925,
+          39045,
+          39171,
+          39348,
+          39352,
+          39527,
+          39979,
+          40259,
+          40507,
+          40526,
+          40694,
+          40695,
+          40843,
+          40847,
+          41028,
+          41032,
+          41235,
+          41288,
+          41495,
+          65851,
+          65852,
+          65853,
+          65854,
+          65865
+        ]
+      },
+      {
+        "name": "complete_Rite_raw_projection",
+        "matches": true,
+        "observed": [
+          169
+        ],
+        "expected": [
+          169
+        ]
+      },
+      {
+        "name": "actor_lyd_i3b_active_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "actor_lyd_i3b_phase_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "actor_lyd_i3b_authority_mode_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "actor_lyd_i3b_required_native_hor_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "actor_lyd_i3b_rites_absent_or_exact_empty",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "actor_lyd_i3b_members_absent_or_exact_empty",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "actor_lyd_i3b_political_titles_absent_or_exact_empty",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31254_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31254_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31254_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31254_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31254_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31254_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31254_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31538_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31538_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31538_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31538_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31538_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31538_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31538_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31692_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31692_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31692_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31692_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31692_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31692_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_31692_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32236_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32236_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32236_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32236_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32236_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32236_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32236_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32535_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32535_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32535_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32535_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32535_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32535_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32535_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32536_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32536_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32536_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32536_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32536_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32536_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_32536_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33234_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33234_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33234_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33234_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33234_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33234_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33234_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33542_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33542_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33542_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33542_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33542_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33542_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_33542_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34232_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34232_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34232_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34232_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34232_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34232_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34232_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34741_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34741_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34741_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34741_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34741_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34741_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34741_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34973_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34973_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34973_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34973_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34973_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34973_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_34973_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35386_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35386_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35386_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35386_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35386_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35386_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35386_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35598_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35598_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35598_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35598_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35598_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35598_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35598_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35899_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35899_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35899_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35899_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35899_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35899_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_35899_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36311_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36311_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36311_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36311_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36311_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36311_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36311_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36329_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36329_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36329_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36329_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36329_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36329_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36329_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36445_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36445_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36445_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36445_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36445_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36445_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36445_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36638_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36638_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36638_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36638_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36638_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36638_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36638_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36663_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36663_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36663_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36663_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36663_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36663_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36663_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36847_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36847_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36847_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36847_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36847_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36847_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36847_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36873_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36873_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36873_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36873_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36873_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36873_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_36873_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37064_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37064_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37064_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37064_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37064_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37064_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37064_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37221_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37221_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37221_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37221_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37221_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37221_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37221_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37244_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37244_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37244_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37244_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37244_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37244_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37244_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37702_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37702_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37702_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37702_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37702_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37702_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_37702_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38561_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38561_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38561_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38561_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38561_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38561_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38561_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38924_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38924_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38924_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38924_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38924_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38924_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38924_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38925_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38925_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38925_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38925_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38925_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38925_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_38925_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39045_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39045_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39045_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39045_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39045_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39045_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39045_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39171_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39171_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39171_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39171_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39171_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39171_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39171_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39348_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39348_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39348_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39348_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39348_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39348_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39348_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39352_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39352_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39352_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39352_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39352_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39352_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39352_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39527_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39527_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39527_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39527_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39527_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39527_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39527_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39979_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39979_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39979_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39979_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39979_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39979_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_39979_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40259_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40259_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40259_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40259_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40259_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40259_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40259_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40507_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40507_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40507_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40507_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40507_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40507_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40507_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40526_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40526_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40526_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40526_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40526_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40526_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40526_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40694_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40694_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40694_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40694_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40694_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40694_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40694_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40695_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40695_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40695_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40695_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40695_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40695_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40695_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40843_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40843_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40843_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40843_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40843_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40843_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40843_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40847_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40847_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40847_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40847_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40847_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40847_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_40847_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41028_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41028_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41028_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41028_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41028_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41028_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41028_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41032_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41032_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41032_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41032_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41032_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41032_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41032_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41235_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41235_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41235_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41235_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41235_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41235_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41235_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41288_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41288_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41288_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41288_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41288_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41288_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41288_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41495_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41495_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41495_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41495_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41495_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41495_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_41495_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65851_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65851_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65851_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65851_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65851_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65851_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65851_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65852_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65852_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65852_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65852_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65852_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65852_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65852_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65853_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65853_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65853_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65853_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65853_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65853_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65853_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65854_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65854_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65854_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65854_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65854_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65854_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65854_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65865_lyd_i3b_member_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65865_lyd_i3b_member_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65865_lyd_i3b_member_rite_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65865_lyd_i3b_was_elector_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65865_lyd_i3b_was_player_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65865_lyd_i3b_player_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "member_65865_lyd_i3b_vote_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_owner_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_delegate_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_signed_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_serial_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_yes_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_total_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_dormant_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_counties_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_members_total_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "Rite_169_lyd_i3b_signature_requested_absent",
+        "matches": true,
+        "observed": true,
+        "expected": true
+      },
+      {
+        "name": "same_saved_HoR_actual",
+        "matches": true,
+        "observed": {
+          "169": "31254"
+        },
+        "expected": {
+          "169": "31254"
+        }
+      },
+      {
+        "name": "original_raw_scan_once",
+        "matches": true,
+        "observed": 1,
+        "expected": 1
+      },
+      {
+        "name": "raw_scan_return_unchanged",
+        "matches": true,
+        "observed": false,
+        "expected": false
+      },
+      {
+        "name": "raw_fields_unchanged",
+        "matches": true,
+        "observed": false,
+        "expected": false
+      },
+      {
+        "name": "no_additional_body_read",
+        "matches": true,
+        "observed": 0,
+        "expected": 0
+      },
+      {
+        "name": "original_author_body_read_once",
+        "matches": true,
+        "observed": 1,
+        "expected": 1
+      }
+    ],
+    "all_checks_match": true,
+    "whole_B5_pass": false,
+    "whole_formal_acceptance_credit": null,
+    "political_protection_credit": null
+  },
+  "round": {
+    "serial": 3,
+    "nonce": 6,
+    "phase": null,
+    "result_code": 1
+  },
+  "current_members": 51,
+  "prior_B3_captured_members": 51,
+  "current_Rites": [
+    169
+  ],
+  "original_shared_buffer_rows": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/readback-001/CURRENT-FAITH-RAW.shared-buffer.json",
+    "bytes": 926630,
+    "sha256": "c04a497942aed644b313a9ef28d4d340010a9ecbe9f996890b316d820bed3569"
+  },
+  "fixture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/ACTUAL-POST-CLEANUP.mechanical-fixture.json",
+    "bytes": 164953,
+    "sha256": "682736363b146354427846324201db90f848a2b358da93411b6ce07e2a9b1f5f"
+  },
+  "prior_B3_STATE": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B3-signed-precommit-preservation-20261007-001/readback-001/STATE.native-qualified.json",
+    "bytes": 2640120,
+    "sha256": "007d43d4185d8844dae21a2ec8876ed35ae780476a3428012398bb3d056e3682"
+  },
+  "prior_B4_STATE": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/STATE.native-qualified.json",
+    "bytes": 621929,
+    "sha256": "8d9e322777d4fd72fb8de7a4823a34171b1b0bc80a8723b7f0e084d42c5eae3a"
+  },
+  "current_B5_STATE": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/readback-001/STATE.native-qualified.json",
+    "bytes": 621929,
+    "sha256": "cff3c9da9527f881eb31833e56782fbd14cda6f8f011be8d2f42faadd728f27c"
+  },
+  "checker": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/post_commit_cleanup_checks.py",
+    "bytes": 2779,
+    "sha256": "6a1ae1b151c2385db2d7cec000612a31dfffa7798e1d210a567206afd8965180"
+  },
+  "additional_save_body_reads": 0,
+  "raw_fields_rewritten": false,
+  "whole_B5_pass": false,
+  "whole_formal_acceptance_credit": null,
+  "native_HoR_credit": null
+}

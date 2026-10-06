@@ -1,0 +1,189 @@
+{
+  "schema": "lyd.r14.round2-ballot-immutable-package-index.v1",
+  "status": "ACTUAL_ROUND2_BALLOT_RECORDS_OBSERVED_NO_QUORUM",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/AUTHOR-CLI.json",
+      "bytes": 1636,
+      "sha256": "950594530578c9dbd1706242bb30108c42958f36e5c83108f00ff7c4571bd764"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/AUTHOR.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/AUTHOR.stdout.txt",
+      "bytes": 245,
+      "sha256": "8ac84ea06c5dbbc2efff25c1af0518a419a246e913ae98e8e903b0f5339748a3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/CHECKPOINT-STRUCTURED.frozen.json",
+      "bytes": 1638210,
+      "sha256": "a8dc3120ce4753015a00492bd5302571d22e676440a41fad7a74698d15bacb95"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/content-da27ebf923782aa2aff21541d1f30c80401842704fa205b50e6f8fa8552745ed.ck3",
+      "bytes": 91707942,
+      "sha256": "da27ebf923782aa2aff21541d1f30c80401842704fa205b50e6f8fa8552745ed"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/G2-NATIVE.original.json",
+      "bytes": 29025,
+      "sha256": "fbd8cee8dd04fd9e5aeb1f1698b6be402a7301efa8268d7bd3326daf17e189c6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/G2-SDK-WRAPPER.original.json",
+      "bytes": 61869,
+      "sha256": "4e0fdaf95e742fadb4efc78c84ab06fae75aaac9b9c19e40e65175627cd9c476"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/G3-NATIVE.original.json",
+      "bytes": 4125,
+      "sha256": "e22d1d1ddfb66c77c018e2dbf7db05552c9a376dc0e6fdb4728f690e190e3852"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/G3-SDK-WRAPPER.original.json",
+      "bytes": 9031,
+      "sha256": "a11623914d334582c8d27f05f58569d9837bb25e206b31a5f937ec2b144d3df9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/INPUT.actual.json",
+      "bytes": 2430,
+      "sha256": "dc5ca9b10ca4f9c224a7752bafcf5ad2f569b6c704f538e3d3583352d56c982a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/NATIVE-CHECKPOINT.original.json",
+      "bytes": 1681650,
+      "sha256": "e8bdee0b97b4171f9e40859313bfb929a41d94d8e193563b32b73cad7453e114"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/prepare_and_preserve_round2_B2a.py",
+      "bytes": 1039,
+      "sha256": "4c008d9f6b0494187db1453d9ade3a05426a0e8e4b800ffe939583ec2091729b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/prepare_round2_ballot_window.py",
+      "bytes": 3112,
+      "sha256": "b8c87cef02de5bf6a7b143aa14cbc4792a1c8a30c05c8b46eede8ac7498fc94b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/PRESERVATION.json",
+      "bytes": 2912,
+      "sha256": "c5d508f2071f6a40b373ae208c3a66a3d3a147013135da81b09dc863189fd4eb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/preserve_round2_B2a_now.py",
+      "bytes": 3141,
+      "sha256": "e87441bf401ce6b70cb60267d1181dd70804d25c0b942a750b0b0b7d8302f8ed"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/CHECKPOINT-REQUEST.actual.json",
+      "bytes": 130257,
+      "sha256": "c369cfbb5d33ac9a7a4cbc71112337d222a49ba91272b6975a06320690fef7b6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/CHECKPOINT-REQUEST.native-qualified.json",
+      "bytes": 141066,
+      "sha256": "9eca36e9131539f05597e91efc6f6daa4acdf0a5aac6feac3ac23424a38e2f5a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 1635883,
+      "sha256": "0d350802a8362a441ef5328aba7b7841f8bdbfa5231df9b60fb27bf56077c7f7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/CONVERSION-REQUEST.actual-or-pending.json",
+      "bytes": 10255,
+      "sha256": "46e4da7b1fe7a02bd43c3fd793963991b0056ceb68704094b2f6743d5371c518"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/INPUT.exact.json",
+      "bytes": 2430,
+      "sha256": "dc5ca9b10ca4f9c224a7752bafcf5ad2f569b6c704f538e3d3583352d56c982a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "bytes": 884844,
+      "sha256": "87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 1775171,
+      "sha256": "ac04b618dd18adf1ff10d84c167b3a341b76141b8de46915192bbce92ec2ae51"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/PROVENANCE.actual-or-pending.json",
+      "bytes": 10170,
+      "sha256": "3f0b5684ffcf3ee9c88b7b209903b08a89391509f5637542221b900729affca7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/RESULT.json",
+      "bytes": 934753,
+      "sha256": "2988b39e79de032cb78f2b69f8c7e3b25f1bc28dda02d953011e9e3275f83bed"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/STATE.json",
+      "bytes": 2599351,
+      "sha256": "aa8dc2ecd00c795e6acecce4d27dd8f169410d85705568044d7e6257c79abe61"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/STATE.native-qualified.json",
+      "bytes": 2636989,
+      "sha256": "c8374be6ff05fde5eddfed5577272e016d3f492dea2327dcf6b27ebd1decc0d2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/readback-001/TYPED-PROTECTION.json",
+      "bytes": 1157889,
+      "sha256": "c4c89d52b48230441d390918ede65c4444f8cd2f0662eae8b7aa4d8b8148c8dc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/ROUND2-B2a-SUMMARY.actual.json",
+      "bytes": 8488,
+      "sha256": "60614b9a802c784f316c102068c60bc02b0f9172caf93384c46ed3f06c6e8591"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/ROUND2-B2a.source-proof.json",
+      "bytes": 1855,
+      "sha256": "5a8b466acc66fac809e0d97a0dbbd8f186e9b36944e14a2562cf2c0c0dfeee2c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/run_round2_ballot_author_once.py",
+      "bytes": 2703,
+      "sha256": "3c0ad07e94431a22901d5514268567aab0bdf9554b9481bae181bea467dec7e3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/SDK-WRAPPER.original.json",
+      "bytes": 3543427,
+      "sha256": "34a42a6432c9e53f59ee29bae4822a482808220af28ae3f78ea83f9487779176"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/snapshot_after.original.json",
+      "bytes": 774629,
+      "sha256": "569177d410531b7b01fed5dc68150bbae013bca34b74df4ca1cf7263c91a6532"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/snapshot_before.original.json",
+      "bytes": 773340,
+      "sha256": "3566c15cf850e4fc0b91d41bcc2806742b89fd1951bd0e81a53f97454770ff77"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/summarize_and_seal_round2_ballot.py",
+      "bytes": 5071,
+      "sha256": "f4ca5b8482f3d55d1e62a171fe281741e1379acbf3b0c3d536edda218f24c421"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2a-ballots-preservation-20261007-001/WINDOWS.with-round2-B2a.source-derived.json",
+      "bytes": 8839,
+      "sha256": "e20f82c65254a295296e13a7690c0ab324122a48d898f2008063f59be89a6e04"
+    }
+  ],
+  "source_window_checks_all_match": true,
+  "checkpoint_SHA_checked_at_preservation": true,
+  "additional_save_body_reads_for_seal": 0,
+  "formal_credit": null,
+  "native_HoR_credit": null,
+  "B3_B4_B5_actuals": null,
+  "game_calls": 0,
+  "SDK_calls": 0
+}

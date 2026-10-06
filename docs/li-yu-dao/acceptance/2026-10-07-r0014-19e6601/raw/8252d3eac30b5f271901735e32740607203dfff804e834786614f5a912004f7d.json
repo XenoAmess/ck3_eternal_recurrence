@@ -1,0 +1,152 @@
+{
+  "schema": "lyd.i3b.preview-error-evidence-decision.v1",
+  "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "explicit_preview_path_error_proven": true,
+  "unguarded_serial_nonce_phase_values_in_generated_bind_helper_proven": true,
+  "old_begin_business_failed_due_to_these_errors": null,
+  "every_unlabeled_wrongtype_error_is_preview": null,
+  "log_snapshot": {
+    "schema": "lyd.i3b.actual-error-log-snapshot.v1",
+    "source_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/userdir/logs/error.log",
+    "capture_utc": "2026-10-06T16:39:00.386272+00:00",
+    "source_before": {
+      "bytes": 37862448,
+      "mtime_ns": 1791303269715945300,
+      "ctime_ns": 1791295898355969300,
+      "mtime_utc": "2026-10-06T16:14:29.715945+00:00"
+    },
+    "source_after": {
+      "bytes": 37862448,
+      "mtime_ns": 1791303269715945300,
+      "ctime_ns": 1791295898355969300,
+      "mtime_utc": "2026-10-06T16:14:29.715945+00:00"
+    },
+    "snapshot": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/error.snapshot001.log",
+      "bytes": 37862448,
+      "sha256": "7c578191d35383e9f685c66866789dde6df4a8198d4e57c02f1ba77bfb88584d"
+    },
+    "copied_exact_initial_byte_count": true,
+    "source_size_and_mtime_stable_during_capture": true,
+    "snapshot_semantics": "Exact initial-length raw-byte snapshot; append/change during capture is disclosed by before/after observations. No source modification.",
+    "SDK_or_game_calls": 0,
+    "source_log_writes": 0,
+    "main_writes": 0
+  },
+  "counts": {
+    "all_error_header_records": 100000,
+    "I3b_related_error_records": 99422,
+    "I3b_explicit_tooltip_description_records": 66282
+  },
+  "distinct_signatures": 9,
+  "periods": {
+    "second_detail_preview_00": {
+      "records": 12824,
+      "min": "00:13:07",
+      "max": "00:14:29"
+    },
+    "first_detail_preview_23": {
+      "records": 86598,
+      "min": "23:12:30",
+      "max": "23:15:21"
+    }
+  },
+  "bounded_signature_ref": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/BOUNDED-SIGNATURES.actual.json",
+    "bytes": 67436,
+    "sha256": "41639661f9c26deb6c9a7652ba8be2f553a27e88317f622817847ab0f37b5cba"
+  },
+  "fulltoolstate_timeline_ref": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/ACTUAL-DECISION-TIMELINE.json",
+    "bytes": 26839,
+    "sha256": "255a792087013fd5b994e7d69e326951e49971f1d48fcf2fa9325e028f2b380b"
+  },
+  "actual_saved_result_refs_reused_no_rerun": [
+    {
+      "label": "round1-B1",
+      "actual_original_RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/readback-003/RESULT.json",
+        "bytes": 934572,
+        "sha256": "07d8f95aee34e09513958720beaba1ef2bd533a741463b14ce7b5530d8dbc51e"
+      },
+      "summary": {
+        "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+        "actual_pass": null,
+        "formal_mandate_credit": null
+      }
+    },
+    {
+      "label": "round1-B2",
+      "actual_original_RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2-representatives-preservation-20261006-001/readback-001/RESULT.json",
+        "bytes": 934733,
+        "sha256": "d3bc7a98fe8c41d21fe6b0a09675e677cc086e66ffab314a032517212d9f49b6"
+      },
+      "summary": {
+        "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+        "actual_pass": null,
+        "formal_mandate_credit": null
+      }
+    },
+    {
+      "label": "round2-B1",
+      "actual_original_RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B1-begin-preservation-20261007-001/readback-001/RESULT.json",
+        "bytes": 934701,
+        "sha256": "74b3e080776d1a0c18af2df6846662c34a6df96075344ec055af9b004fbaebc1"
+      },
+      "summary": {
+        "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+        "actual_pass": null,
+        "formal_mandate_credit": null
+      }
+    },
+    {
+      "label": "round2-B2",
+      "actual_original_RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B2-representatives-preservation-20261007-001/readback-001/RESULT.json",
+        "bytes": 934871,
+        "sha256": "e5b4caa724ba6ad0b2ac0c6b5a54ac47db7a2ae6f71f0c3465f90eab94288fd0"
+      },
+      "summary": {
+        "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+        "actual_pass": null,
+        "formal_mandate_credit": null
+      }
+    }
+  ],
+  "existing_test_scope": {
+    "original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/frozen-source/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+      "bytes": 17345,
+      "sha256": "69e31ff67440ee846cb2e7457f26b365151214f6a51529e7b43c62038ed8ba8e"
+    },
+    "evaluates": [
+      "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "common/scripted_triggers/lyd_i3b_institution_triggers.txt"
+    ],
+    "does_not_evaluate_effects_or_CK3_tooltip_renderer": true,
+    "old_tests_rerun": false
+  },
+  "new_focused": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED002.actual.json",
+    "bytes": 966,
+    "sha256": "f5eea35b57f8522424232505adf2d98cd473639499d339fb418571cfbb4c794d"
+  },
+  "first_focused_failure": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED.actual.json",
+    "bytes": 962,
+    "sha256": "ca1902c0dc842a6bae6588a040814aba83ea26cd538fee5f09c8428c5a0b908a"
+  },
+  "unknowns": [
+    "CK3 renderer handling of the candidate effect-if guard; next cold required.",
+    "Whether engine stops emitting E logs after100000; count alone does not prove a configured cap.",
+    "All errors outside the frozen byte boundary; raw snapshot is not a future observation.",
+    "Exact log-to-SDK invocation ID; log carries wallclock/script stack, not SDK sequence."
+  ],
+  "candidate_native_preview_pass": null,
+  "future_business_result": null,
+  "SDK_or_game_calls": 0,
+  "main_writes": 0,
+  "new_savebody_reads": 0
+}

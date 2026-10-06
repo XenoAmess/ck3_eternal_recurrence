@@ -1,0 +1,419 @@
+--- a/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in
++++ b/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in
+@@ -11,6 +11,12 @@
+             religion = religion:confucianism_religion
+             faith = { has_doctrine_parameter = temporal_head_of_faith NOT = { exists = religious_head_title } }
+             rite = faith.main_rite
++        }
++        # Capture only this realm-law presence before native HoF creation. No persistent actor flag.
++        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 0 }
++        if = {
++            limit = { has_realm_law = same_faith_succession_law }
++            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
+         }
+         faith = { save_scope_as = my_faith save_scope_as = lyd_c3_factory_faith }
+         create_dynamic_title = { tier = duchy name = REL_HEAD_TITLE_NAME adj = REL_HEAD_TITLE_ADJ }
+@@ -27,6 +33,19 @@
+         resolve_title_and_vassal_change = scope:lyd_c3_head_change
+         faith = { set_religious_head_title = scope:new_title }
+         scope:new_title = { generate_coa = religious_title add_title_law = temporal_head_of_faith_succession_law }
++        # Preserve a preexisting law; remove only the law newly added by this factory's native path.
++        # Future native maintenance/reload may re-add it: full political AST protection remains mandatory.
++        if = {
++            limit = {
++                trigger_if = {
++                    limit = { exists = scope:lyd_c3_factory_had_same_faith_law }
++                    scope:lyd_c3_factory_had_same_faith_law = 0
++                }
++                trigger_else = { always = no }
++                has_realm_law = same_faith_succession_law
++            }
++            remove_realm_law = same_faith_succession_law
++        }
+         set_variable = { name = lyd_c3_office_faith value = faith }
+         remove_variable = lyd_c3_head_creation_authorized
+         debug_log = "LYD_C3_OWNED_TEMPORAL_HEAD_CREATED"
+--- a/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt
++++ b/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt
+@@ -11,6 +11,12 @@
+             religion = religion:confucianism_religion
+             faith = { has_doctrine_parameter = temporal_head_of_faith NOT = { exists = religious_head_title } }
+             rite = faith.main_rite
++        }
++        # Capture only this realm-law presence before native HoF creation. No persistent actor flag.
++        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 0 }
++        if = {
++            limit = { has_realm_law = same_faith_succession_law }
++            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
+         }
+         faith = { save_scope_as = my_faith save_scope_as = lyd_c3_factory_faith }
+         create_dynamic_title = { tier = duchy name = REL_HEAD_TITLE_NAME adj = REL_HEAD_TITLE_ADJ }
+@@ -27,6 +33,19 @@
+         resolve_title_and_vassal_change = scope:lyd_c3_head_change
+         faith = { set_religious_head_title = scope:new_title }
+         scope:new_title = { generate_coa = religious_title add_title_law = temporal_head_of_faith_succession_law }
++        # Preserve a preexisting law; remove only the law newly added by this factory's native path.
++        # Future native maintenance/reload may re-add it: full political AST protection remains mandatory.
++        if = {
++            limit = {
++                trigger_if = {
++                    limit = { exists = scope:lyd_c3_factory_had_same_faith_law }
++                    scope:lyd_c3_factory_had_same_faith_law = 0
++                }
++                trigger_else = { always = no }
++                has_realm_law = same_faith_succession_law
++            }
++            remove_realm_law = same_faith_succession_law
++        }
+         set_variable = { name = lyd_c3_office_faith value = faith }
+         remove_variable = lyd_c3_head_creation_authorized
+         debug_log = "LYD_C3_OWNED_TEMPORAL_HEAD_CREATED"
+--- a/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt
++++ b/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt
+@@ -12,6 +12,12 @@
+             religion = religion:confucianism_religion
+             faith = { has_doctrine_parameter = temporal_head_of_faith NOT = { exists = religious_head_title } }
+             rite = faith.main_rite
++        }
++        # Capture only this realm-law presence before native HoF creation. No persistent actor flag.
++        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 0 }
++        if = {
++            limit = { has_realm_law = same_faith_succession_law }
++            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
+         }
+         faith = { save_scope_as = my_faith save_scope_as = lyd_c3_factory_faith }
+         create_dynamic_title = { tier = duchy name = REL_HEAD_TITLE_NAME adj = REL_HEAD_TITLE_ADJ }
+@@ -28,6 +34,19 @@
+         resolve_title_and_vassal_change = scope:lyd_c3_head_change
+         faith = { set_religious_head_title = scope:new_title }
+         scope:new_title = { generate_coa = religious_title add_title_law = temporal_head_of_faith_succession_law }
++        # Preserve a preexisting law; remove only the law newly added by this factory's native path.
++        # Future native maintenance/reload may re-add it: full political AST protection remains mandatory.
++        if = {
++            limit = {
++                trigger_if = {
++                    limit = { exists = scope:lyd_c3_factory_had_same_faith_law }
++                    scope:lyd_c3_factory_had_same_faith_law = 0
++                }
++                trigger_else = { always = no }
++                has_realm_law = same_faith_succession_law
++            }
++            remove_realm_law = same_faith_succession_law
++        }
+         set_variable = { name = lyd_c3_office_faith value = faith }
+         remove_variable = lyd_c3_head_creation_authorized
+         debug_log = "LYD_C3_OWNED_TEMPORAL_HEAD_CREATED"
+--- a/mod_li_yu_dao/tools/validate_static.py
++++ b/mod_li_yu_dao/tools/validate_static.py
+@@ -79,6 +79,8 @@
+     "add_doctrine", "remove_doctrine", "change_rite_doctrine", "set_character_rite",
+     "trigger_event", "create_dynamic_title", "create_title_and_vassal_change", "change_title_holder",
+     "resolve_title_and_vassal_change", "set_religious_head_title", "remove_religious_head_title",
++    # Current stock 00_decisions_effects.txt:1681-1697 proves character-scope removal.
++    "remove_realm_law",
+     "detach_rite_to_new_faith", "set_parent_faith", "destroy_title", "generate_coa", "add_title_law",
+     "set_destroy_if_invalid_heir", "set_no_automatic_claims", "set_definitive_form", "set_always_follows_primary_heir",
+     "set_can_be_named_after_dynasty", "set_capital_county", "set_landless_title",
+--- /dev/null
++++ b/mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py
+@@ -0,0 +1,158 @@
++"""Focused AST contract for conditional factory cleanup; no native runtime claim.
++
++The actual R14 B3/B4 law delta motivates this candidate. Cases with a preexisting
++law or absent scope are offline guard checks, not fabricated live observations.
++"""
++from __future__ import annotations
++from copy import deepcopy
++from dataclasses import replace
++import hashlib
++import json
++import importlib.util
++import unittest
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++REPOSITORY = ROOT.parent
++PARSER = REPOSITORY / 'tools/extract_auto_upgrade_buildings.py'
++spec = importlib.util.spec_from_file_location('candidate_law_clausewitz_parser', PARSER)
++parser = importlib.util.module_from_spec(spec)
++import sys
++sys.modules[spec.name] = parser
++spec.loader.exec_module(parser)
++Block = parser.Block
++parse_clausewitz = parser.parse_clausewitz
++LAW = 'same_faith_succession_law'
++SAVED = 'lyd_c3_factory_had_same_faith_law'
++
++def entries(block, key):
++    return [e for e in block.entries if e.key == key]
++
++def single(block, key):
++    rows = entries(block, key)
++    if len(rows) != 1:
++        raise AssertionError((key, len(rows)))
++    return rows[0].value
++
++def factory_body(text):
++    definition = single(parse_clausewitz(text), 'lyd_c3_create_owned_temporal_head_effect')
++    return single(definition, 'if')
++
++def fingerprint(value):
++    if isinstance(value, Block):
++        return [(e.key, e.operator, fingerprint(e.value)) for e in value.entries]
++    return value
++
++def should_cleanup(limit, scope_values, present_laws):
++    # Interpret only the candidate's exact trigger vocabulary. Missing values
++    # raise if read; trigger_if/else must reject absent scope before numeric use.
++    branch = single(limit, 'trigger_if')
++    presence = single(single(branch, 'limit'), 'exists')
++    scope_name = presence.removeprefix('scope:')
++    if scope_name in scope_values:
++        match = single(branch, 'scope:' + scope_name)
++        gate = scope_values[scope_name] == int(match)
++    else:
++        gate = single(single(limit, 'trigger_else'), 'always') == 'yes'
++    law = single(limit, 'has_realm_law')
++    return gate and law in present_laws
++
++class FactoryLawProtectionTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.text = (ROOT / 'common/scripted_effects/lyd_c3_head_factory.txt').read_text(encoding='utf-8-sig')
++        cls.body = factory_body(cls.text)
++        cls.capture = entries(cls.body, 'if')[0].value
++        cls.cleanup = entries(cls.body, 'if')[1].value
++        cls.limit = single(cls.cleanup, 'limit')
++
++    def test_snapshot_is_reset_before_any_native_creation(self):
++        body = self.body.entries
++        self.assertEqual(body[0].key, 'limit')
++        self.assertEqual(body[1].key, 'save_scope_value_as')
++        self.assertEqual(single(body[1].value, 'name'), SAVED)
++        self.assertEqual(single(body[1].value, 'value'), '0')
++        self.assertEqual(body[2].key, 'if')
++        self.assertEqual(single(single(self.capture, 'limit'), 'has_realm_law'), LAW)
++        capture = single(self.capture, 'save_scope_value_as')
++        self.assertEqual(single(capture, 'name'), SAVED)
++        self.assertEqual(single(capture, 'value'), '1')
++        self.assertLess(2, next(i for i,e in enumerate(body) if e.key == 'create_dynamic_title'))
++
++    def test_only_newly_present_law_is_removed(self):
++        self.assertTrue(should_cleanup(self.limit, {SAVED: 0}, {LAW}))
++        self.assertEqual(single(self.cleanup, 'remove_realm_law'), LAW)
++        self.assertEqual([e.key for e in self.cleanup.entries], ['limit', 'remove_realm_law'])
++
++    def test_preexisting_law_is_preserved(self):
++        self.assertFalse(should_cleanup(self.limit, {SAVED: 1}, {LAW}))
++
++    def test_law_not_present_after_creation_is_not_removed(self):
++        self.assertFalse(should_cleanup(self.limit, {SAVED: 0}, set()))
++
++    def test_absent_snapshot_rejects_without_numeric_read(self):
++        self.assertFalse(should_cleanup(self.limit, {}, {LAW}))
++
++    def test_cleanup_occurs_after_temporal_title_law(self):
++        body = self.body.entries
++        addition = next(i for i,e in enumerate(body) if e.key == 'scope:new_title' and entries(e.value, 'add_title_law'))
++        cleanup = next(i for i,e in enumerate(body) if e.value is self.cleanup)
++        self.assertGreater(cleanup, addition)
++        self.assertLess(cleanup, next(i for i,e in enumerate(body) if e.key == 'set_variable'))
++
++    def test_owner_and_shared_template_ast_match_generated(self):
++        for relative in ['tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in',
++                         'tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt']:
++            text = (ROOT / relative).read_text(encoding='utf-8-sig')
++            self.assertEqual(fingerprint(parse_clausewitz(text)), fingerprint(parse_clausewitz(self.text)))
++
++    def test_no_persistent_flag_or_law_list_or_heir_id_replay(self):
++        def visit(value):
++            if isinstance(value, Block):
++                for e in value.entries:
++                    yield e
++                    yield from visit(e.value)
++        all_entries = list(visit(self.body))
++        self.assertFalse(any(e.key in {'add_character_flag','remove_character_flag','add_realm_law','add_realm_law_skip_effects','set_player_heir','set_heir'} for e in all_entries))
++        self.assertEqual(sum(e.key == 'remove_realm_law' for e in all_entries), 1)
++        self.assertEqual([single(e.value, 'name') for e in all_entries if e.key == 'set_variable'],
++                         ['lyd_c2_owned_head_title', 'lyd_c2_owner_faith', 'lyd_c3_office_faith'])
++
++    def test_actual_B3_B4_delta_matches_candidate_trigger(self):
++        fixture = json.loads((ROOT / 'tools/fixtures/c3_factory_laws/ACTUAL-R14-B3-B4-SAMEFAITH-LAW.json').read_bytes())
++        before_rows = fixture['law_list_delta']['before']
++        after_rows = fixture['law_list_delta']['after']
++        self.assertTrue(all(r['key'] is None for r in before_rows + after_rows))
++        before = [r['value'] for r in before_rows]
++        after = [r['value'] for r in after_rows]
++        self.assertNotIn(LAW, before)
++        self.assertIn(LAW, after)
++        self.assertEqual(set(after) - set(before), {LAW})
++        self.assertEqual(set(before) - set(after), set())
++        self.assertTrue(should_cleanup(self.limit, {SAVED: 0}, set(after)))
++        self.assertEqual(set(fixture['political_changed_title_hashes']), {'2230','2231','2235','2262','2264'})
++        self.assertTrue(all(r['holder_before'] == r['holder_after'] == 31254 and r['before_AST'] != r['after_AST']
++                            for r in fixture['political_changed_title_hashes'].values()))
++
++    def test_entire_original_factory_AST_unchanged_after_pruning_new_guard(self):
++        original = deepcopy(self.body)
++        original = replace(original, entries=[e for e in original.entries
++                            if e is not None and e.key != 'save_scope_value_as'
++                            and not (e.key == 'if' and (entries(e.value, 'save_scope_value_as') or entries(e.value, 'remove_realm_law')))])
++        actual = hashlib.sha256(json.dumps(fingerprint(original), ensure_ascii=True, separators=(',',':')).encode()).hexdigest()
++        self.assertEqual(actual, 'd79fad675555e5ed4082f48a16086615e1a5ed5e7e6cd8b0308e201991c8e213')
++
++    def test_missing_scope_fallback_regression_is_detected(self):
++        mutant = deepcopy(self.limit)
++        fallback = single(single(mutant, 'trigger_else'), 'always')
++        self.assertEqual(fallback, 'no')
++        # Parse the intentionally unsafe source variant, rather than mutating
++        # the frozen parser's immutable Entry/Block tuples.
++        self.assertEqual(self.text.count('trigger_else = { always = no }'), 1)
++        unsafe_text = self.text.replace('trigger_else = { always = no }', 'trigger_else = { always = yes }')
++        mutant_cleanup = entries(factory_body(unsafe_text), 'if')[1].value
++        mutant = single(mutant_cleanup, 'limit')
++        self.assertTrue(should_cleanup(mutant, {}, {LAW}))
++
++if __name__ == '__main__':
++    unittest.main()
+--- /dev/null
++++ b/docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md
+@@ -0,0 +1,38 @@
++# C3 shared factory realm-law protection candidate
++
++This source-only experiment is motivated by R14 round 3 B4 on fixed HEAD19:
++new owned temporal HoF title 18373 was real, but five protected political title
++succession ASTs and the actor realm-law projection changed. The original 80/87
++protection RED is preserved. A successful native head receipt is not a whole
++political protection pass.
++
++The shared factory records only whether same_faith_succession_law already
++exists, before native creation. It resets a saved scope value to 0 on every
++authorized invocation and sets it to 1 only when that law already exists.
++After native title setup, it removes this one law only if the snapshot exists,
++equals 0, and the law now exists. An absent snapshot rejects cleanup. It uses
++no persistent character flags, no realm-law list replay, no inherited heir IDs,
++no title holder rewrite, and no rollback of native state. A preexisting law is
++preserved. Both shared templates remain identical; gen_leadership generates
++the single changed production file, and all other 11 leadership outputs remain
++byte-for-byte equal to HEAD19.
++
++Current stock 00_decisions_effects.txt:1681-1697 demonstrates character-scope
++has_realm_law plus remove_realm_law. Stock 00_religion_effects.txt:347-380 has a
++separate explicit same-faith-law add that LYD omits. Actual 1.20.0.3 EXE static
++disassembly shows set_religious_head_title enters native realm-law maintenance
++after writing the Faith head title and resolving the new holder. This explains
++why omitting the stock explicit add does not guarantee protection. It does not
++prove a later maintenance pass or reload will leave the law absent.
++
++Runtime acceptance is UNKNOWN. After closure and source integration, use a new
++clean export/build and a new cold run with its own fresh offline evidence and
++lease. Capture the full precommit law/title AST baseline, the postcommit save
++and native owned title semantics, then the real reload checkpoint. All original
++protected political title ASTs and the complete actor landed law projection
++must equal the baseline, except the newly created owned religious title which
++has its separate contract. Preserve title-law 95 on that new title. Existing
++same-faith-law cases must keep the law. No flags, laws, voters, heir IDs or prior
++RED receipts may be rewritten to make these checks pass. If the engine re-adds
++the law or succession ASTs remain changed, reject this candidate and retain the
++new failed attempt. Static guard/AST tests give no native or reload credit.
+--- /dev/null
++++ b/mod_li_yu_dao/tools/fixtures/c3_factory_laws/ACTUAL-R14-B3-B4-SAMEFAITH-LAW.json
+@@ -0,0 +1,98 @@
++{
++  "schema": "lyd.factory-law.actual-R14-B3-B4-law-only.v1",
++  "origin": {
++    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-B3-B4-AST-DELTAS.json",
++    "bytes": 24488,
++    "sha256": "973d111ff2fa5ca8f3511c8e14fd4c1a35a5a60ae828d3c6f5407beaf4e1325c"
++  },
++  "actual_actor": 31254,
++  "actual_Faith": 107,
++  "actual_Rite": 169,
++  "actual_new_title": 18373,
++  "law_list_delta": {
++    "path": "/3/value",
++    "before": [
++      {
++        "key": null,
++        "value": "crown_authority_0"
++      },
++      {
++        "key": null,
++        "value": "confederate_partition_succession_law"
++      },
++      {
++        "key": null,
++        "value": "male_preference_law"
++      },
++      {
++        "key": null,
++        "value": "top_liege_redirected_to_border_wars_law"
++      }
++    ],
++    "after": [
++      {
++        "key": null,
++        "value": "crown_authority_0"
++      },
++      {
++        "key": null,
++        "value": "confederate_partition_succession_law"
++      },
++      {
++        "key": null,
++        "value": "male_preference_law"
++      },
++      {
++        "key": null,
++        "value": "same_faith_succession_law"
++      },
++      {
++        "key": null,
++        "value": "top_liege_redirected_to_border_wars_law"
++      }
++    ]
++  },
++  "political_changed_title_hashes": {
++    "2230": {
++      "before_AST": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
++      "after_AST": "c3989692ff88f71cd665ab03bc74e9858bf7994cb12fd5abe8dcadfd733d8a92",
++      "holder_before": 31254,
++      "holder_after": 31254
++    },
++    "2231": {
++      "before_AST": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
++      "after_AST": "d4a8ba910fec430cb9d1f9a7cb769f697dc98ec9d007f42cdae1d6c17301cb39",
++      "holder_before": 31254,
++      "holder_after": 31254
++    },
++    "2235": {
++      "before_AST": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
++      "after_AST": "996c2580e48f9c8cf9332777d377f704a1d6a9a9cd00f7aee6157a27a43ceab8",
++      "holder_before": 31254,
++      "holder_after": 31254
++    },
++    "2262": {
++      "before_AST": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
++      "after_AST": "2289c2d2a50f509ea0a94ae7bee5c7bd8396e62587056f953733e1f73f4ec9a9",
++      "holder_before": 31254,
++      "holder_after": 31254
++    },
++    "2264": {
++      "before_AST": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
++      "after_AST": "1f0b9df68aa23d329e2740cac9fa62599ed801957f509d2f8ef6fa3fbb73f813",
++      "holder_before": 31254,
++      "holder_after": 31254
++    }
++  },
++  "original_TYPED_false_names": [
++    "political_2230_full_AST",
++    "political_2231_full_AST",
++    "political_2235_full_AST",
++    "political_2262_full_AST",
++    "political_2264_full_AST",
++    "actor_complete_protected_landed_projection",
++    "faiths_107_complete_tenet_status_projection"
++  ],
++  "runtime_candidate": null,
++  "source_HEAD19_original_factory_body_AST_sha256": "d79fad675555e5ed4082f48a16086615e1a5ed5e7e6cd8b0308e201991c8e213"
++}

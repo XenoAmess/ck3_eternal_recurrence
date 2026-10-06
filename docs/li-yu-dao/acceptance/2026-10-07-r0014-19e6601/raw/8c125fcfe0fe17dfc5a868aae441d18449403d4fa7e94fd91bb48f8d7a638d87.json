@@ -1,0 +1,39 @@
+{
+  "schema": "lyd.r14.B4-classification-immutable-index.v1",
+  "status": "WHOLE_B4_RED_UNCHANGED",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round3-B4-contract-classification-20261007-001/author_classification_report.py",
+      "bytes": 10822,
+      "sha256": "459812abd04ba5b34647913e0e975324fe8912af7fbd6fd03f983b5d23170cf6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round3-B4-contract-classification-20261007-001/REPORT.actual.json",
+      "bytes": 8848,
+      "sha256": "31ac676cc6f345d786e9cde2e56b5c5fb7609c689bc15800aec14e69f6d85a59"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round3-B4-contract-classification-20261007-001/REPORT.md",
+      "bytes": 1714,
+      "sha256": "c363474db1e9d6b0abcfb761f12cd645f05349967574f6ef97237b2739c05e51"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round3-B4-contract-classification-20261007-001/SOURCE-EXCERPTS.exact.json",
+      "bytes": 15820,
+      "sha256": "6491d62d69cd833e3848ad1fbb68710560a89044eb72ef1d58ff6640793c2cbc"
+    }
+  ],
+  "original_B4_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/INDEX.json",
+    "bytes": 13562,
+    "sha256": "1a87e71cf80c20c54083b2bb877734e6a8a2ee906c56abf54fdebb699d242fba"
+  },
+  "whole_B4_pass": false,
+  "product_credit": null,
+  "future_B5_success_credit": null,
+  "R15_success_cold_baseline_credit": null,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "save_body_reads": 0,
+  "main_source_changes": 0
+}

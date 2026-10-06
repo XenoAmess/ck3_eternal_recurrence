@@ -1,0 +1,127 @@
+{
+  "legacy": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-continuation-cold-helper-20261006-001/candidate/prepare_r0011_continuation.py",
+    "bytes": 22623,
+    "sha256": "e4598c8338ab3b7b5ee042e37e5ae50bf2d2d89f7933c3043dd5bfabb96d41bb"
+  },
+  "generated": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-continuation-cold-helper-20261006-001/candidate/continuation_generated.py",
+    "bytes": 21003,
+    "sha256": "b643686e36fc223efe721a5c372f49b18c22f9fcd717a0a59a79851c0e5beb95"
+  },
+  "source_R12_launcher": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-launch-profile-helper-20261006-002/root_r12_launch_profile.py",
+    "bytes": 28755,
+    "sha256": "6f21af3e574a0c8adfcedfc886a3ee57f1421f2dda5f132d994a7e7aa4497ece"
+  },
+  "source_R12_lifecycle": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-launch-profile-helper-20261006-002/offline_launch_lifecycle.py",
+    "bytes": 5425,
+    "sha256": "34f719e1d759a520997a67bc5b2c8137c26d1ef91fa845a315638b66202cdc7c"
+  },
+  "cold_helper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-six-mount-cold-successor-20261007-004/prepare_r15_cold.py",
+    "bytes": 27205,
+    "sha256": "135a1a1b7ea72f15ec29b695d5f8b4a69449818ec9d86625f19ce0938762a6a9"
+  },
+  "launch_common": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-six-mount-cold-successor-20261007-004/launch_common_r15.py",
+    "bytes": 5611,
+    "sha256": "17645c211dc41609157a95e247e829a856eb13de398e9be53c109fe023035f75"
+  },
+  "postlaunch_appmanifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-six-mount-cold-successor-20261007-004/postlaunch_appmanifest.py",
+    "bytes": 2835,
+    "sha256": "1ef34cf628240cc11b43d10c2b91dbcb27f266a082816561b859e6d188c1ca5d"
+  },
+  "source_R14_package_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-cold-launch-successor-20261006-002/INDEX.json",
+    "bytes": 4119,
+    "sha256": "099cd5452e047bf6b09ff1dc6b74fa8095ba5367cc01b2a832883d16fb52e490"
+  },
+  "source_R14_cold_helper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-cold-launch-successor-20261006-002/prepare_r14_cold.py",
+    "bytes": 23315,
+    "sha256": "48a410cd8731d3c2443e4adf9b73a315f43739d38f9988535ff2679687b23aac"
+  },
+  "source_R14_launcher": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-cold-launch-successor-20261006-002/root_r14_launch_profile.py",
+    "bytes": 27819,
+    "sha256": "faa0d858bf9c4f57e5a328c23ba210569d4e5d41c764bac9b8e18d6385fbba2a"
+  },
+  "source_R13_boundary_verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-closed-boundary-20261006-001/verify_r13_previous_boundary.py",
+    "bytes": 8897,
+    "sha256": "1548eb8edc16244c6a7b97c46379e0a331e64651b650ee5c10b5d5c49edcecaf"
+  },
+  "b5_baseline_adapter": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-six-mount-cold-successor-20261007-004/b5_baseline_adapter.py",
+    "bytes": 11569,
+    "sha256": "ed8cb82620714a7ecf851443319b88e62f25cc36dd45f12be70560d1c1aada34"
+  },
+  "prior_cold_source_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-future-b5-cold-successor-20261006-002/INDEX.json",
+    "bytes": 8009,
+    "sha256": "0dd8d5f8d5374c9098dffca6be6e7139032e58ae86da6e6fa0fa1e5a006c8970"
+  },
+  "baseline_adapter": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-future-b5-cold-successor-20261006-002/b5_baseline_adapter.py",
+    "bytes": 11569,
+    "sha256": "ed8cb82620714a7ecf851443319b88e62f25cc36dd45f12be70560d1c1aada34"
+  },
+  "native_qualification": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-metadata-capture-20261006-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+    "bytes": 884844,
+    "sha256": "87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0"
+  },
+  "original_handoff_effect": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-c3-distinct-npc-source-contract-20261006-001/handoff-existing-i3b-title.txt.template",
+    "bytes": 5662,
+    "sha256": "4ba4c69df50074025de4c6cf6ce64b08ae1b680ac1242d7629ba810d823390d7"
+  },
+  "original_handoff_contract": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-c3-distinct-npc-source-contract-20261006-001/CONTRACT.json",
+    "bytes": 7413,
+    "sha256": "e302d190836dc65c75487670811ea8da46bdf53f52abaa49890a456fcfdc7c05"
+  },
+  "live_preparation_interface": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-npc65865-prerequisites-20261007-001/INDEX.json",
+    "bytes": 1716,
+    "sha256": "7b60c3f04cf47bad72c796f0d35e686b280a8c0ecf1a8d37403b85135342243a"
+  },
+  "candidate_source_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-six-mount-cold-successor-20261007-004/CANDIDATE-SOURCE-INVENTORY.json",
+    "bytes": 1284,
+    "sha256": "3d8df085fd2fc98d0cb81d090926d51abd00b18c947e6d2a047a966bc65f84a5"
+  },
+  "handoff_renderer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-six-mount-cold-successor-20261007-004/author_handoff_fixture.py",
+    "bytes": 9682,
+    "sha256": "e955b8645fa692fad8e7444f336ce4ed3a5e28dd960d0ff3169fc08a32cf1253"
+  },
+  "handoff_mount": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-six-mount-cold-successor-20261007-004/handoff_mount.py",
+    "bytes": 6161,
+    "sha256": "259fd9f8a10b850dfe9f0da96a540a4828aaa32ba4dc02b757d67ca0a594c2db"
+  },
+  "prior_002_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-future-b5-cold-successor-20261006-002/INDEX.json",
+    "bytes": 8009,
+    "sha256": "0dd8d5f8d5374c9098dffca6be6e7139032e58ae86da6e6fa0fa1e5a006c8970"
+  },
+  "prior_003_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-future-b5-cold-successor-20261007-003/INDEX.json",
+    "bytes": 4859,
+    "sha256": "03e0cc462315709363d0eff9ce408c1c096ef509c00569af896c1d2f92776f51"
+  },
+  "normal_exit_contract": {
+    "path": "C:/lr14s1/ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_contract_v1.py",
+    "bytes": 22690,
+    "sha256": "b794d7176c4928c5c74c22ce0cbb6894d18d74e787f3418512fec11b5ba5b942"
+  },
+  "normal_exit_process_observer": {
+    "path": "C:/lr14s1/ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_process_observer_v1.py",
+    "bytes": 10155,
+    "sha256": "ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema": "lyd.r14.factory-law.afterclose-candidate.v1",
+  "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "producer": "mod_li_yu_dao/tools/leadership_templates + gen_leadership.build_outputs",
+  "targets": [
+    {
+      "path": "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "operation": "MODIFY",
+      "before": {
+        "bytes": 1910,
+        "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+      },
+      "after": {
+        "bytes": 2901,
+        "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "operation": "MODIFY",
+      "before": {
+        "bytes": 1910,
+        "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+      },
+      "after": {
+        "bytes": 2901,
+        "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "operation": "MODIFY",
+      "before": {
+        "bytes": 1993,
+        "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+      },
+      "after": {
+        "bytes": 2984,
+        "sha256": "7bedf43f9efa087f39d3c434b120fd9e609ae04f04b92b18e331b968c2c3c2b8"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/validate_static.py",
+      "operation": "MODIFY",
+      "before": {
+        "bytes": 21803,
+        "sha256": "396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072"
+      },
+      "after": {
+        "bytes": 21914,
+        "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+      "operation": "ADD",
+      "before": null,
+      "after": {
+        "bytes": 8246,
+        "sha256": "ba32bc578b898784989dc99ab3a83ac4b6891c9cb39a92b2538064524975f849"
+      }
+    },
+    {
+      "path": "docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md",
+      "operation": "ADD",
+      "before": null,
+      "after": {
+        "bytes": 2527,
+        "sha256": "f6bffc3c40f7694834f1ff4fedc6d9a2645e43e1b3cb5ba84582f73293936e3d"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/fixtures/c3_factory_laws/ACTUAL-R14-B3-B4-SAMEFAITH-LAW.json",
+      "operation": "ADD",
+      "before": null,
+      "after": {
+        "bytes": 3143,
+        "sha256": "33dd6259551aab9974881729cb6adf2a367b0ecbb97403476f81afa485060a9f"
+      }
+    }
+  ],
+  "leadership_generated_outputs": 12,
+  "changed_generated_outputs": [
+    "common/scripted_effects/lyd_c3_head_factory.txt"
+  ],
+  "other_11_outputs_bytes_equal": true,
+  "runtime": null,
+  "engine_law_readd": null,
+  "formal": null,
+  "original_R14_protection": "RED_80_of_87_preserved",
+  "main_applied": false,
+  "game_sdk_calls": 0,
+  "no_actor_flags": true,
+  "saved_scope_snapshot_only": true,
+  "sourceproof": {
+    "path": "../SOURCE-PROOF.json",
+    "sha256": "eab6fe1f002b54ecfafe61db4a76deb10af914dcbf5d276787cb09fbdb63c30a"
+  },
+  "successor": {
+    "prior": "candidate-002",
+    "failures_preserved": [
+      "candidate-001: 9 tests, 8 pass, immutable Entry assignment error",
+      "candidate-002: 11 tests, 10 pass, immutable tuple assignment error"
+    ],
+    "correction": "Negative guard variant is parsed from altered source text; no immutable AST assignment. All four production/source MODIFY bytes unchanged from candidate-001."
+  },
+  "source_head_original_factory_body_AST_sha256": "d79fad675555e5ed4082f48a16086615e1a5ed5e7e6cd8b0308e201991c8e213"
+}

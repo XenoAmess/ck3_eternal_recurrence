@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "mod_li_yu_dao/tools/validate_static.py"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002334971-static.stdout",
+    "bytes": 9254,
+    "sha256": "71bf3f47d056b9b535ddd08c164c83363a9fb65eae98d4f07ea7eda6de9cec47"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002334971-static.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

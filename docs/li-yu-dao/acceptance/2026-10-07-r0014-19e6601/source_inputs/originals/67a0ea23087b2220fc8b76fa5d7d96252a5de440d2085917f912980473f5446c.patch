@@ -1,0 +1,545 @@
+--- a/mod_li_yu_dao/tools/gen_institution.py
++++ b/mod_li_yu_dao/tools/gen_institution.py
+@@ -276,9 +276,17 @@
+     script('common/scripted_effects/lyd_i3b_setup_effects.txt',r'''
+ lyd_i3b_bind_event_effect = {
+     save_scope_as = lyd_i3b_actor
+-    save_scope_value_as = { name = lyd_i3b_event_serial value = var:lyd_i3b_serial }
+-    save_scope_value_as = { name = lyd_i3b_event_nonce value = var:lyd_i3b_nonce }
+-    save_scope_value_as = { name = lyd_i3b_event_phase value = var:lyd_i3b_phase }
++    # Decision effect tooltips do not materialize the preceding round writes.
++    # Bind numeric event scope values only from a complete existing round.
++    if = { limit = {
++        has_variable = lyd_i3b_serial
++        has_variable = lyd_i3b_nonce
++        has_variable = lyd_i3b_phase
++    }
++        save_scope_value_as = { name = lyd_i3b_event_serial value = var:lyd_i3b_serial }
++        save_scope_value_as = { name = lyd_i3b_event_nonce value = var:lyd_i3b_nonce }
++        save_scope_value_as = { name = lyd_i3b_event_phase value = var:lyd_i3b_phase }
++    }
+ }
+ lyd_i3b_begin_effect = {
+     if = { limit = { lyd_i3b_can_begin_trigger = yes }
+--- a/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt
++++ b/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt
+@@ -1,9 +1,17 @@
+ ﻿# GENERATED FILE: edit tools/gen_institution.py; regenerate through gen_runtime.py.
+ lyd_i3b_bind_event_effect = {
+     save_scope_as = lyd_i3b_actor
+-    save_scope_value_as = { name = lyd_i3b_event_serial value = var:lyd_i3b_serial }
+-    save_scope_value_as = { name = lyd_i3b_event_nonce value = var:lyd_i3b_nonce }
+-    save_scope_value_as = { name = lyd_i3b_event_phase value = var:lyd_i3b_phase }
++    # Decision effect tooltips do not materialize the preceding round writes.
++    # Bind numeric event scope values only from a complete existing round.
++    if = { limit = {
++        has_variable = lyd_i3b_serial
++        has_variable = lyd_i3b_nonce
++        has_variable = lyd_i3b_phase
++    }
++        save_scope_value_as = { name = lyd_i3b_event_serial value = var:lyd_i3b_serial }
++        save_scope_value_as = { name = lyd_i3b_event_nonce value = var:lyd_i3b_nonce }
++        save_scope_value_as = { name = lyd_i3b_event_phase value = var:lyd_i3b_phase }
++    }
+ }
+ lyd_i3b_begin_effect = {
+     if = { limit = { lyd_i3b_can_begin_trigger = yes }
+--- /dev/null
++++ b/mod_li_yu_dao/tools/test_i3b_event_bind_present.py
+@@ -0,0 +1,103 @@
++"""SOURCE_ONLY guard regression using preserved R14 context subsets.
++
++This model checks authored effect conditions and value reads. It does not emulate
++CK3's tooltip renderer and cannot award native preview or business acceptance.
++"""
++from pathlib import Path
++import argparse, hashlib, importlib.util, json, sys, unittest
++
++SOURCE=Path(__file__).resolve().parents[1]
++FIELDS=('lyd_i3b_serial','lyd_i3b_nonce','lyd_i3b_phase')
++HELPER='lyd_i3b_bind_event_effect'
++
++class UndefinedRead(Exception):pass
++
++def definition(tree,name):return next(e.value for e in tree.entries if e.key==name)
++
++def evaluate_effect(block,values):
++    saved={};reads=[]
++    def run(body):
++        for e in body.entries:
++            if e.key=='save_scope_as':saved[e.value]='actual_actor'
++            elif e.key=='if':
++                limit=e.value.entries[0]
++                assert limit.key=='limit'
++                assert all(c.key=='has_variable' for c in limit.value.entries)
++                if all(c.value in values for c in limit.value.entries):run(Block(e.value.entries[1:]))
++            elif e.key=='save_scope_value_as':
++                parts={x.key:x.value for x in e.value.entries}
++                assert parts['value'].startswith('var:')
++                var=parts['value'][4:]
++                if var not in values:raise UndefinedRead(var)
++                reads.append(var);saved[parts['name']]=values[var]
++            else:raise AssertionError('Model does not handle '+str(e.key))
++    run(block);return saved,reads
++
++class ActualContextContract(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.fixture=json.loads((SOURCE/'tools/fixtures/i3b_event_bind_actual_r14.json').read_bytes())
++        cls.contexts={x['name']:x for x in cls.fixture['contexts']}
++        cls.actual=parse_clausewitz((SOURCE/'common/scripted_effects/lyd_i3b_setup_effects.txt').read_text('utf-8-sig'))
++        cls.new=definition(cls.actual,HELPER)
++        cls.old=parse_clausewitz(cls.fixture['baseline_helper_text']).entries[0].value
++    def test_actual_prebegin_old_undefined_candidate_skips_numeric_binding(self):
++        c=self.contexts['B0-before-first-begin'];self.assertEqual(c['missing_fields'],list(FIELDS))
++        with self.assertRaisesRegex(UndefinedRead,'^lyd_i3b_serial$'):evaluate_effect(self.old,c['values'])
++        self.assertEqual(evaluate_effect(self.new,c['values']),({'lyd_i3b_actor':'actual_actor'},[]))
++    def test_actual_cancel_old_phase_undefined_candidate_skips_atomic_binding(self):
++        c=self.contexts['round1-cancel-before-second-begin'];self.assertEqual(c['missing_fields'],['lyd_i3b_phase'])
++        with self.assertRaisesRegex(UndefinedRead,'^lyd_i3b_phase$'):evaluate_effect(self.old,c['values'])
++        self.assertEqual(evaluate_effect(self.new,c['values']),({'lyd_i3b_actor':'actual_actor'},[]))
++    def test_actual_first_live_round_preserves_numeric_context(self):
++        c=self.contexts['round1-B1-actual-live'];self.assertEqual(c['missing_fields'],[])
++        self.assertEqual(evaluate_effect(self.new,c['values']),evaluate_effect(self.old,c['values']))
++        self.assertEqual(evaluate_effect(self.new,c['values'])[1],list(FIELDS))
++    def test_actual_second_live_round_preserves_numeric_context(self):
++        c=self.contexts['round2-B1-actual-live'];self.assertEqual(c['missing_fields'],[])
++        self.assertEqual(evaluate_effect(self.new,c['values']),evaluate_effect(self.old,c['values']))
++        self.assertEqual(evaluate_effect(self.new,c['values'])[1],list(FIELDS))
++    def test_exact_guard_and_all_original_business_AST_preserved(self):
++        self.assertEqual(len(self.new.entries),2)
++        guarded=self.new.entries[1];self.assertEqual(guarded.key,'if')
++        limit=guarded.value.entries[0];self.assertEqual(limit.key,'limit')
++        self.assertEqual([(e.key,e.operator,e.value) for e in limit.value.entries],[('has_variable','=',f) for f in FIELDS])
++        projected=Block((self.new.entries[0],)+guarded.value.entries[1:])
++        self.assertEqual(projected,self.old)
++        original=Block(tuple(Entry(e.key,e.operator,projected if e.key==HELPER else e.value) for e in self.actual.entries))
++        self.assertEqual(hashlib.sha256(repr(original).encode('utf-8')).hexdigest(),self.fixture['baseline_complete_setup_AST_sha256'])
++    def test_generator_owns_exact_candidate_setup_bytes(self):
++        sys.path.insert(0,str(SOURCE/'tools'))
++        spec=importlib.util.spec_from_file_location('candidate_institution_present_test',SOURCE/'tools/gen_institution.py')
++        gen=importlib.util.module_from_spec(spec);spec.loader.exec_module(gen)
++        sys.path.insert(0,str(CATALOGUE.parent))
++        catalogue_spec=importlib.util.spec_from_file_location('actual_catalogue_for_event_bind_test',CATALOGUE)
++        catalogue=importlib.util.module_from_spec(catalogue_spec);sys.modules[catalogue_spec.name]=catalogue;catalogue_spec.loader.exec_module(catalogue)
++        outputs=gen.build_outputs(catalogue)
++        self.assertEqual(outputs['common/scripted_effects/lyd_i3b_setup_effects.txt'],(SOURCE/'common/scripted_effects/lyd_i3b_setup_effects.txt').read_bytes())
++
++def main():
++    global SOURCE,Block,Entry,parse_clausewitz,CATALOGUE
++    p=argparse.ArgumentParser(description=__doc__)
++    p.add_argument('--source-root',type=Path,default=SOURCE)
++    p.add_argument('--parser-root',type=Path)
++    p.add_argument('--catalogue',type=Path)
++    p.add_argument('--report',type=Path,required=True)
++    a=p.parse_args();SOURCE=a.source_root.resolve()
++    parser_root=(a.parser_root or SOURCE.parent/'tools').resolve()
++    CATALOGUE=(a.catalogue or SOURCE/'tools/content_data.py').resolve()
++    spec=importlib.util.spec_from_file_location('actual_frozen_clausewitz_parser',parser_root/'extract_auto_upgrade_buildings.py')
++    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
++    Block,Entry,parse_clausewitz=module.Block,module.Entry,module.parse_clausewitz
++    suite=unittest.defaultTestLoader.loadTestsFromTestCase(ActualContextContract)
++    result=unittest.TextTestRunner(verbosity=2).run(suite)
++    report={'schema':'lyd.i3b.actual-context-present-guard-offline-test.v1','status':'PASS_SOURCE_ONLY' if result.wasSuccessful() else 'FAIL_SOURCE_ONLY',
++      'tests':result.testsRun,'failures':len(result.failures),'errors':len(result.errors),'skipped':len(result.skipped),
++      'parser':{'path':str(parser_root/'extract_auto_upgrade_buildings.py'),'sha256':hashlib.sha256((parser_root/'extract_auto_upgrade_buildings.py').read_bytes()).hexdigest()},
++      'candidate_source_root':str(SOURCE),'fixtures':'Preserved actual R14 parsed context subsets; no fresh savebody read.',
++      'old_undefined_read_mutants':['actual B0 missing serial','actual cancellation missing phase'],
++      'engine_effect_if_preview_semantics':'UNPROVEN_NEXT_COLD_REQUIRED','live_preview_pass':None,'new_native_or_business_credit':None,'old_preview_test_rerun':False}
++    if a.report.exists():raise FileExistsError(a.report)
++    a.report.parent.mkdir(parents=True,exist_ok=True);a.report.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
++    print(json.dumps(report,ensure_ascii=False,indent=2));return 0 if result.wasSuccessful() else 1
++if __name__=='__main__':raise SystemExit(main())
+--- /dev/null
++++ b/mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json
+@@ -0,0 +1,378 @@
++{
++  "schema": "lyd.i3b.actual-R14-event-bind-context-subsets.v1",
++  "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
++  "contexts": [
++    {
++      "name": "B0-before-first-begin",
++      "original_STATE_ref": {
++        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/STATE.json",
++        "bytes": 1317829,
++        "sha256": "592a2dc82656cab0dfec1f39c70e99a30ea7e8f1969e1dfb8d024fa2b4f2d0b2"
++      },
++      "actor_id": 31254,
++      "raw_variables": {},
++      "values": {},
++      "missing_fields": [
++        "lyd_i3b_serial",
++        "lyd_i3b_nonce",
++        "lyd_i3b_phase"
++      ]
++    },
++    {
++      "name": "round1-cancel-before-second-begin",
++      "original_STATE_ref": {
++        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/STATE.json",
++        "bytes": 1335770,
++        "sha256": "8153096ffeccf7360a6bea8e6dde88b2a1894a4debd9a69101cd6f8ab9a2f530"
++      },
++      "actor_id": 31254,
++      "raw_variables": {
++        "lyd_i3b_serial": {
++          "present": true,
++          "tick": null,
++          "type": "value",
++          "identity": "100000",
++          "entries": [
++            {
++              "key": "type",
++              "value": "value"
++            },
++            {
++              "key": "identity",
++              "value": "100000"
++            }
++          ],
++          "number": "1",
++          "scale": 100000,
++          "row_entries": [
++            {
++              "key": "flag",
++              "value": "lyd_i3b_serial"
++            },
++            {
++              "key": "data",
++              "value": [
++                {
++                  "key": "type",
++                  "value": "value"
++                },
++                {
++                  "key": "identity",
++                  "value": "100000"
++                }
++              ]
++            }
++          ]
++        },
++        "lyd_i3b_nonce": {
++          "present": true,
++          "tick": null,
++          "type": "value",
++          "identity": "200000",
++          "entries": [
++            {
++              "key": "type",
++              "value": "value"
++            },
++            {
++              "key": "identity",
++              "value": "200000"
++            }
++          ],
++          "number": "2",
++          "scale": 100000,
++          "row_entries": [
++            {
++              "key": "flag",
++              "value": "lyd_i3b_nonce"
++            },
++            {
++              "key": "data",
++              "value": [
++                {
++                  "key": "type",
++                  "value": "value"
++                },
++                {
++                  "key": "identity",
++                  "value": "200000"
++                }
++              ]
++            }
++          ]
++        }
++      },
++      "values": {
++        "lyd_i3b_serial": "1",
++        "lyd_i3b_nonce": "2"
++      },
++      "missing_fields": [
++        "lyd_i3b_phase"
++      ]
++    },
++    {
++      "name": "round1-B1-actual-live",
++      "original_STATE_ref": {
++        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/readback-003/STATE.json",
++        "bytes": 2604521,
++        "sha256": "58f4a3ae56f69358f780440555159adc55cf71a7e7e2336b03b6cc7768b23f92"
++      },
++      "actor_id": 31254,
++      "raw_variables": {
++        "lyd_i3b_serial": {
++          "present": true,
++          "tick": null,
++          "type": "value",
++          "identity": "100000",
++          "entries": [
++            {
++              "key": "type",
++              "value": "value"
++            },
++            {
++              "key": "identity",
++              "value": "100000"
++            }
++          ],
++          "number": "1",
++          "scale": 100000,
++          "row_entries": [
++            {
++              "key": "flag",
++              "value": "lyd_i3b_serial"
++            },
++            {
++              "key": "data",
++              "value": [
++                {
++                  "key": "type",
++                  "value": "value"
++                },
++                {
++                  "key": "identity",
++                  "value": "100000"
++                }
++              ]
++            }
++          ]
++        },
++        "lyd_i3b_nonce": {
++          "present": true,
++          "tick": null,
++          "type": "value",
++          "identity": "100000",
++          "entries": [
++            {
++              "key": "type",
++              "value": "value"
++            },
++            {
++              "key": "identity",
++              "value": "100000"
++            }
++          ],
++          "number": "1",
++          "scale": 100000,
++          "row_entries": [
++            {
++              "key": "flag",
++              "value": "lyd_i3b_nonce"
++            },
++            {
++              "key": "data",
++              "value": [
++                {
++                  "key": "type",
++                  "value": "value"
++                },
++                {
++                  "key": "identity",
++                  "value": "100000"
++                }
++              ]
++            }
++          ]
++        },
++        "lyd_i3b_phase": {
++          "present": true,
++          "tick": null,
++          "type": "value",
++          "identity": "100000",
++          "entries": [
++            {
++              "key": "type",
++              "value": "value"
++            },
++            {
++              "key": "identity",
++              "value": "100000"
++            }
++          ],
++          "number": "1",
++          "scale": 100000,
++          "row_entries": [
++            {
++              "key": "flag",
++              "value": "lyd_i3b_phase"
++            },
++            {
++              "key": "data",
++              "value": [
++                {
++                  "key": "type",
++                  "value": "value"
++                },
++                {
++                  "key": "identity",
++                  "value": "100000"
++                }
++              ]
++            }
++          ]
++        }
++      },
++      "values": {
++        "lyd_i3b_serial": "1",
++        "lyd_i3b_nonce": "1",
++        "lyd_i3b_phase": "1"
++      },
++      "missing_fields": []
++    },
++    {
++      "name": "round2-B1-actual-live",
++      "original_STATE_ref": {
++        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B1-begin-preservation-20261007-001/readback-001/STATE.json",
++        "bytes": 2604522,
++        "sha256": "1424b094cfafc18f743cac523e21f16143627c1d4f5dd75343368183395b3029"
++      },
++      "actor_id": 31254,
++      "raw_variables": {
++        "lyd_i3b_serial": {
++          "present": true,
++          "tick": null,
++          "type": "value",
++          "identity": "200000",
++          "entries": [
++            {
++              "key": "type",
++              "value": "value"
++            },
++            {
++              "key": "identity",
++              "value": "200000"
++            }
++          ],
++          "number": "2",
++          "scale": 100000,
++          "row_entries": [
++            {
++              "key": "flag",
++              "value": "lyd_i3b_serial"
++            },
++            {
++              "key": "data",
++              "value": [
++                {
++                  "key": "type",
++                  "value": "value"
++                },
++                {
++                  "key": "identity",
++                  "value": "200000"
++                }
++              ]
++            }
++          ]
++        },
++        "lyd_i3b_nonce": {
++          "present": true,
++          "tick": null,
++          "type": "value",
++          "identity": "300000",
++          "entries": [
++            {
++              "key": "type",
++              "value": "value"
++            },
++            {
++              "key": "identity",
++              "value": "300000"
++            }
++          ],
++          "number": "3",
++          "scale": 100000,
++          "row_entries": [
++            {
++              "key": "flag",
++              "value": "lyd_i3b_nonce"
++            },
++            {
++              "key": "data",
++              "value": [
++                {
++                  "key": "type",
++                  "value": "value"
++                },
++                {
++                  "key": "identity",
++                  "value": "300000"
++                }
++              ]
++            }
++          ]
++        },
++        "lyd_i3b_phase": {
++          "present": true,
++          "tick": null,
++          "type": "value",
++          "identity": "100000",
++          "entries": [
++            {
++              "key": "type",
++              "value": "value"
++            },
++            {
++              "key": "identity",
++              "value": "100000"
++            }
++          ],
++          "number": "1",
++          "scale": 100000,
++          "row_entries": [
++            {
++              "key": "flag",
++              "value": "lyd_i3b_phase"
++            },
++            {
++              "key": "data",
++              "value": [
++                {
++                  "key": "type",
++                  "value": "value"
++                },
++                {
++                  "key": "identity",
++                  "value": "100000"
++                }
++              ]
++            }
++          ]
++        }
++      },
++      "values": {
++        "lyd_i3b_serial": "2",
++        "lyd_i3b_nonce": "3",
++        "lyd_i3b_phase": "1"
++      },
++      "missing_fields": []
++    }
++  ],
++  "boundary": "Subsets from already parsed complete actual preserved STATE files. No fabricated actor values or new body read; Python model is not CK3 tooltip execution.",
++  "baseline_helper_text": "lyd_i3b_bind_event_effect = {\n    save_scope_as = lyd_i3b_actor\n    save_scope_value_as = { name = lyd_i3b_event_serial value = var:lyd_i3b_serial }\n    save_scope_value_as = { name = lyd_i3b_event_nonce value = var:lyd_i3b_nonce }\n    save_scope_value_as = { name = lyd_i3b_event_phase value = var:lyd_i3b_phase }\n}",
++  "baseline_complete_setup_AST_sha256": "d9e2dad47f9b85c6dca96d908cf49ecb6eab6ecd2409a9b4ef6ba9a1d0a75585",
++  "baseline_setup_original_ref": {
++    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-r14-preview-error-diagnostic-20261007-001\\frozen-source\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
++    "bytes": 6448,
++    "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
++  }
++}
+--- /dev/null
++++ b/docs/li-yu-dao/i3b-event-bind-preview.md
+@@ -0,0 +1,9 @@
++# I3b 事件上下文绑定与决议预览
++
++R14 HEAD19 的原始日志在构建决议 tooltip/description 时重复报告 `lyd_i3b_bind_event_effect` 对尚未设置的 serial、nonce、phase 的读取。第一段发生于选择 begin 决议详情后、实际 confirm 前；第二段发生于已取消章程、只保留 serial/nonce 的同类详情预览。日志的预览标记及未确认时的真实工具状态支持这一分类。真实 B1/B2 保存读回与预览错误分别记录；错误不自动推翻实执状态，也不替未完成的章程结果授信。
++
++生成器在绑定 numeric saved scopes 前增加三个 `has_variable` 条件，仅在完整已有轮次上读取值。它不为预览创建假 serial/nonce/phase，不加零默认，不改变 begin 的初始化、授权、收费、名册、关闭逻辑或事件 ID。有效业务轮次三字段已存在，绑定值与旧版本相同；不完整状态不绑定 numeric scopes。
++
++`tools/test_i3b_event_bind_present.py` 使用已保存 R14 B0、取消基线、两轮 B1 的精确字段子集，检查旧版本 undefined-read 负例、候选完整轮次数值、只移除新增守卫后整个 setup AST 与旧源相同，以及生成器生成的正式字节。模型只检查 authored effect 条件与取值，不能证明 CK3 renderer 的 effect-if 预览行为。
++
++既有 `test_c3_i3b_preview_scope.py` 只评估 trigger 里的 optional-target 守卫；它不执行 setup effect，也不模拟 CK3 renderer。此修复不得声称沿用该历史通过结果已消除实际预览刷屏。候选本身尚未实机，须关闭旧会话、审核并合入、生成新生产包，下一次冷启动选择 begin 详情时保全 fresh 日志、真实未确认状态与之后 B1/B2。使用 has_variable 守卫在引擎中确实停止 unset 读取仍待该实证；失败则永久保留新 attempt，不热换当前加载源码。

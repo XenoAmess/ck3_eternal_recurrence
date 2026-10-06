@@ -12,6 +12,12 @@ lyd_c3_create_owned_temporal_head_effect = {
             faith = { has_doctrine_parameter = temporal_head_of_faith NOT = { exists = religious_head_title } }
             rite = faith.main_rite
         }
+        # Capture only this realm-law presence before native HoF creation. No persistent actor flag.
+        save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 1 }
+        if = {
+            limit = { has_realm_law = same_faith_succession_law }
+            save_scope_value_as = { name = lyd_c3_factory_had_same_faith_law value = 2 }
+        }
         faith = { save_scope_as = my_faith save_scope_as = lyd_c3_factory_faith }
         create_dynamic_title = { tier = duchy name = REL_HEAD_TITLE_NAME adj = REL_HEAD_TITLE_ADJ }
         create_title_and_vassal_change = { type = created save_scope_as = lyd_c3_head_change add_claim_on_loss = no }
@@ -27,6 +33,19 @@ lyd_c3_create_owned_temporal_head_effect = {
         resolve_title_and_vassal_change = scope:lyd_c3_head_change
         faith = { set_religious_head_title = scope:new_title }
         scope:new_title = { generate_coa = religious_title add_title_law = temporal_head_of_faith_succession_law }
+        # Preserve a preexisting law; remove only the law newly added by this factory's native path.
+        # Future native maintenance/reload may re-add it: full political AST protection remains mandatory.
+        if = {
+            limit = {
+                trigger_if = {
+                    limit = { exists = scope:lyd_c3_factory_had_same_faith_law }
+                    scope:lyd_c3_factory_had_same_faith_law = 1
+                }
+                trigger_else = { always = no }
+                has_realm_law = same_faith_succession_law
+            }
+            remove_realm_law = same_faith_succession_law
+        }
         set_variable = { name = lyd_c3_office_faith value = faith }
         remove_variable = lyd_c3_head_creation_authorized
         debug_log = "LYD_C3_OWNED_TEMPORAL_HEAD_CREATED"

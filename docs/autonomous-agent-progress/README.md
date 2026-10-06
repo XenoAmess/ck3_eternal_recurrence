@@ -942,3 +942,12 @@ R0050 已完整关闭：SDK81997 与 owned job 均正常 exit0，cleanup_proven=
 证据入口：[Army007真实恢复](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-ARMY-CAP64-RECOVERY.json)；[恢复事实小索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/LATEST-R0051-ACTUAL-ARMY-RECOVERY-FACTS.json)；[R0050关闭/R0051恢复及历史pending](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/candidates-child/LATEST-R0050-CLOSED-R0051-ARMY-PENDING-FACTS.json)；[Commander新增FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/battle-commander/OCT6-W41-ACTUAL-FIRST-FIELDS.json)；[原始构建、修复与正式archive分层](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/local-user-reservation-20261006/report-preparation-current21/qualification-child/G104-BUILD-FAILURE-REPAIR-INCREMENT.json)。authority由Root/事实兄弟唯一读取，本版消费兄弟小索引并复用已封fields，不重读authority、CI或旧proof。
 
 最新跨日：2026-10-07T00:05:28.382542+08:00 [Oct6正式收口](daily/2026-10-06.md)，紧接[Oct7早会](meetings/daily/2026-10-07.md)及[Oct7滚动日报](daily/2026-10-07.md)；W41保持rolling，normal5996/natural0。
+
+
+## 礼与道 R14 已闭合、业务 RED（2026-10-07）
+
+R14已以原game/client/keeper HANDLE exit0及CAS3429 DONE/resources[]闭合，释放后大小写文件冲突与首次CAS拒绝均保留。两轮自然NPC NO分别正式取消393/87；第三轮B3签署357+87+20通过、Title18373创建局部事实存在，但B4/B5原STATE38/47和保护80/87保持RED。ACK387/387清理、20/20连续性与9focused通过；autosave及最终日志覆盖UNKNOWN。loaded/export/build仍绑定19e6601，afterclose候选未获本轮实机资格；Defender Disabled/5新EXE未登记。全产品NOT_GREEN，70%仅估计，未发布Workshop。
+
+[日报](daily/2026-10-07.md)与[验收报告](../li-yu-dao/acceptance/2026-10-07-r0014-19e6601/REPORT.md)。保留已有一般进度、Z机器和战争专题追加。
+
+闭合后 root 已完成 numeric/preview/factory/reader3 源码整合；实际 reader112、law11、preview6 通过，static70 runtime files GREEN。详见[独立 afterclose 附录](../li-yu-dao/acceptance/2026-10-07-r0014-19e6601/AFTERCLOSE-INTEGRATION.md)；原 R14 runtime19/B4B5 RED不改，新修复提交HEAD及新cold验收尚无信用。

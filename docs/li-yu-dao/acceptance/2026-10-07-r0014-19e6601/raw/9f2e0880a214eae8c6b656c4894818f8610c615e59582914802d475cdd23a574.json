@@ -1,0 +1,44 @@
+{
+  "schema": "lyd.root.actual-process-absence.v1",
+  "started_at_utc": "2026-10-06T17:38:19.057149+00:00",
+  "observed_at_utc": "2026-10-06T17:38:19.087654+00:00",
+  "method": "fresh psutil enumeration after actual CAS; no PID reopen exit-code proof",
+  "original_identities": [
+    {
+      "role": "game",
+      "pid": 14776,
+      "create_time": 1791295897.0696163,
+      "same_original_identity_alive": false,
+      "current_pid_exists": false
+    },
+    {
+      "role": "client",
+      "pid": 14976,
+      "create_time": 1791298694.8157728,
+      "same_original_identity_alive": false,
+      "current_pid_exists": false
+    },
+    {
+      "role": "keeper",
+      "pid": 19384,
+      "create_time": 1791295509.0686316,
+      "same_original_identity_alive": false,
+      "current_pid_exists": false
+    },
+    {
+      "role": "holder",
+      "pid": 16108,
+      "create_time": 1791299928.95478,
+      "same_original_identity_alive": false,
+      "current_pid_exists": false
+    }
+  ],
+  "remaining_managed_game_or_native_services": [],
+  "same_original_identities_absent": true,
+  "no_current_managed_game_or_native_services": true,
+  "unresolved_python_identities": [],
+  "enumeration_errors": [],
+  "enumerated_process_count": 195,
+  "absence_is_not_exit0_evidence": true,
+  "original_HANDLE_exit_evidence_unchanged": true
+}

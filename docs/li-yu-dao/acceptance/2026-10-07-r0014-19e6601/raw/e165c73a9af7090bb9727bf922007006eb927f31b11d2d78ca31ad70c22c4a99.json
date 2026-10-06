@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 141,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-queue-001\\r14-170859387206.request.json",
+  "request_sha256": "5a07eae6128b6f5a525811ae945087221ba00a2c878516b7e4e6cd162f86fe5a",
+  "started_at_utc": "2026-10-06T17:08:59.819730+00:00",
+  "request_id": "r14-170859387206",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0141-r14-170859387206.sdk-result.json",
+  "sdk_result_sha256": "9a49bf9c295f43c7efd9ae4c7153877f360899904bb00a029849d0cb37a21c07",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\native-evidence\\065244bdf4ce4b3fbfbf667eb8a9c757\\0139-confucian-readonly-religious_title.json",
+      "copy": "0141-r14-170859387206.native-01.json",
+      "sha256": "4fe38e385dab92ebdf2f1a4a0ec3b038bd4b5787fe89f733531955dbd9beef3b"
+    }
+  ],
+  "finished_at_utc": "2026-10-06T17:09:01.145003+00:00"
+}

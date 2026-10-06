@@ -1,0 +1,343 @@
+{
+  "schema": "lyd.r14.numeric-leaf-afterclose-review-index.v1",
+  "status": "READY_REVIEW_AFTER_ACTUAL_CLOSE_ONLY",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/AFTERCLOSE-INTEGRATION-MANIFEST.json",
+      "bytes": 6421,
+      "sha256": "e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b",
+      "relative_path": "AFTERCLOSE-INTEGRATION-MANIFEST.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+      "bytes": 41081,
+      "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb",
+      "relative_path": "candidate/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/SAVED-NUMERIC-VALUES.md",
+      "bytes": 1938,
+      "sha256": "69c62f431b90f8cab4cd4a261803596312e6084f8adf53b55bdb8c78e1bbba3f",
+      "relative_path": "candidate/tools/lyd_i3b_checkpoint_readback/SAVED-NUMERIC-VALUES.md"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-present-numeric-zero.json",
+      "bytes": 1975,
+      "sha256": "493c768cfded50c7659658bbe4d501526517b86cb681759377721217f4e584f0",
+      "relative_path": "candidate/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-present-numeric-zero.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json",
+      "bytes": 1632,
+      "sha256": "dc99a7a28bda84332f967a793187a18c8ae535011f756223a67f1ab179e17b7a",
+      "relative_path": "candidate/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/test_actual_signed64_value.py",
+      "bytes": 2079,
+      "sha256": "a60a758f1c9905b379501b4f04cbd255726a725dd09a22fb746066a50a11255d",
+      "relative_path": "candidate/tools/lyd_i3b_checkpoint_readback/tests/test_actual_signed64_value.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/test_present_numeric_zero.py",
+      "bytes": 3499,
+      "sha256": "d3f8abbf3d4158bba6fa9eb5a79ffbc0f33daa7004c60532f8c3412f8babc267",
+      "relative_path": "candidate/tools/lyd_i3b_checkpoint_readback/tests/test_present_numeric_zero.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/execute_and_seal.py",
+      "bytes": 5264,
+      "sha256": "55545106e4b4ae62d5f8fb748bf363c05333fd9c9770818cbecbd3d58bb3d26f",
+      "relative_path": "execute_and_seal.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/EXISTING20.actual.json",
+      "bytes": 2113,
+      "sha256": "34c03f04a6e2c3bb2a9779e1b54be296798e3c8de3e968f12d2e509245c0d571",
+      "relative_path": "EXISTING20.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/EXISTING20.INVOCATION.actual.json",
+      "bytes": 778,
+      "sha256": "3d9f859502035707b52ed86625a7be1a1db2e667171fc7dc22c4d9dbfe5b96ec",
+      "relative_path": "EXISTING20.INVOCATION.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/EXISTING20.original.stderr.bin",
+      "bytes": 3406,
+      "sha256": "85c3e2c0213fe2ddfc92b22dba397a331f7ce43156c356a617de2204dce1536a",
+      "relative_path": "EXISTING20.original.stderr.bin"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/EXISTING20.original.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relative_path": "EXISTING20.original.stdout.bin"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/MANIFEST.prepared.json",
+      "bytes": 5468,
+      "sha256": "99b06e511ad1fbd980c637a2ba1ca08ee582f170f9d3dca9316e1ac1ec7201d6",
+      "relative_path": "MANIFEST.prepared.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-BINDING-CONTRACT.json",
+      "bytes": 2659,
+      "sha256": "66357c9f66d9c3bf5b61b8031aefbd5f9dc47984cf966f1f32d75c312eaa1d0a",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-BINDING-CONTRACT.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-REQUEST.template.json",
+      "bytes": 129789,
+      "sha256": "eb3985bf3e791464a46d62f10b9fea7fbdebdf5eb91742be3765ef516420e3c4",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-REQUEST.template.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-TRANSITION-CONTRACT.v2.json",
+      "bytes": 5117,
+      "sha256": "81e19ff2ee75c4b499129f33edf1efdb4558c8bc2be8781b7e8538b29464133d",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-TRANSITION-CONTRACT.v2.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-TRANSITION-V2.md",
+      "bytes": 3784,
+      "sha256": "a50ab9b13179f114f15317cbae25721978321436ed114555f857963ffb488e5e",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-TRANSITION-V2.md"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/CONVERSION-REQUEST.template.json",
+      "bytes": 9213,
+      "sha256": "676daa6c1e4002480eb023d4fb8433b8d8701eeea9d5c650dd532e70c288b506",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/CONVERSION-REQUEST.template.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/CONVERSION-REQUEST.v2.template.json",
+      "bytes": 9213,
+      "sha256": "21d216290421110715ad8da2c892048d1befa2978b78a85e5a2984129a796de8",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/CONVERSION-REQUEST.v2.template.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/FORMAL-EVENT-CONTEXT.template.json",
+      "bytes": 1040,
+      "sha256": "9a50d798f79233f176f9e7c8e98b1ca919c2c7a36ebcc4e474cb8147da8069eb",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/FORMAL-EVENT-CONTEXT.template.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/NATIVE-ADDON-CONTRACT.json",
+      "bytes": 5367,
+      "sha256": "45b434f5831d7471c546c0ad5c4a20646f48826fe1b19cc36b5acfc5a40d4865",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/NATIVE-ADDON-CONTRACT.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/NATIVE-PREDICATES.template.json",
+      "bytes": 641,
+      "sha256": "5e8ddec7db3b3fbc66cb129fa5e91a2511724206132da3d5f3fd671935ee9382",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/NATIVE-PREDICATES.template.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/OUTPUT.schema.json",
+      "bytes": 2546,
+      "sha256": "cd7e7c54a892514b6535710439ab86b0986a698dffec4cca8bd9cea612b96580",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/OUTPUT.schema.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/QUALIFIED-NATIVE.schema.json",
+      "bytes": 2126,
+      "sha256": "65a27bce7c95b9ea8867ba099bb7c3bee1f1451beadd218469134f6be20c1295",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/QUALIFIED-NATIVE.schema.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/QUALIFIED-NATIVE.v2.schema.json",
+      "bytes": 3894,
+      "sha256": "8f826989045ffdbbc2d4713aec2932926a299aa7fe72219a96d41b984e5ff75c",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/QUALIFIED-NATIVE.v2.schema.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/checkpoint_transition_v2.py",
+      "bytes": 7522,
+      "sha256": "1114a145b2c600c070d2e5326233d6c50bdd7c5e84acded3dc1e2fc44eef5fa3",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/checkpoint_transition_v2.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/bounded_save_parser.py",
+      "bytes": 1998,
+      "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/bounded_save_parser.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py",
+      "bytes": 18056,
+      "sha256": "4f63059ad9c7842cc88502366cafb5e2d3701671d40d648e47f40b6c54be1b39",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/frozen_business_contract.json",
+      "bytes": 8755,
+      "sha256": "a95b8f65cf46b731c4556ffb12bbce38d47de61ede8222c383f85209c9730643",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/frozen_business_contract.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/frozen_sdk_g2_g3_metadata.json",
+      "bytes": 3642,
+      "sha256": "422f55005412f68b24ded177e63ba616a35a2c74a2982d0559eb704327e6803a",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/frozen_sdk_g2_g3_metadata.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/save_fields.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+      "bytes": 41081,
+      "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/sdk_artifact_lineage.py",
+      "bytes": 5110,
+      "sha256": "aa44e614a5704a59164667ecd380dc3ce9f6041a9227f661a9382d1eb5b5c3f7",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/sdk_artifact_lineage.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/sdk_checkpoint_qualification.py",
+      "bytes": 19238,
+      "sha256": "2d2cb9fe80bab3462eca38f28162a1a0d6f6cde7d8051c8e36f3dbb587ea1c94",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/sdk_checkpoint_qualification.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/sdk_checkpoint_transition_qualification_v2.py",
+      "bytes": 20749,
+      "sha256": "ef9de0613a569ddd913eb996e44c614744bbb29911a7a6541a28661bb2946f7e",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/reader/sdk_checkpoint_transition_qualification_v2.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/README.md",
+      "bytes": 7507,
+      "sha256": "6bed6090b8ed24c729469519261ef96d3899128ff1d30740539652c116f8ec48",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/README.md"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/SDK-CHECKPOINT-QUALIFICATION.md",
+      "bytes": 3655,
+      "sha256": "43f3993ad220bb65f00ec860b2f152b2d9f82cdcc5897c0b2f503eeb049a8229",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/SDK-CHECKPOINT-QUALIFICATION.md"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/tests/fixtures/inert_sdk_codec.py",
+      "bytes": 18107,
+      "sha256": "8ba2cc7f7f7d7adc743d6cbae56b8f4d8f7a6b5dc90aa034a040d313b3ef1ee1",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/tests/fixtures/inert_sdk_codec.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/tests/fixtures/readonly23_metadata.json",
+      "bytes": 22399,
+      "sha256": "4c97e3866eb9e14c98834ab192eb851ccde9585c0bdcb04f5fd01d7c01538da4",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/tests/fixtures/readonly23_metadata.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/tests/sdk_fixture_builders.py",
+      "bytes": 5007,
+      "sha256": "1741635f06bf194c83fb72ce35e3c2795e0c1131b17b6906b320b069f37041e9",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/tests/sdk_fixture_builders.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/tests/test_checkpoint_transition_v2.py",
+      "bytes": 18959,
+      "sha256": "5bbdfbed6f76a81203e642b6144c66cb18afbcc6110a4d2fbf2a79ad12cdf1b0",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/tests/test_checkpoint_transition_v2.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+      "bytes": 18651,
+      "sha256": "243e5c51b3892362e05c657fe27fe732f7c7da63908f3c3995cfeb4ccf44dab5",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/tests/test_sdk_checkpoint_seam.py",
+      "bytes": 12654,
+      "sha256": "54586a1ecfc82f1d03ebb4324ef6f42c0a08892596ab2edb26e82eeb92f4bb57",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/tests/test_sdk_checkpoint_seam.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/TITLE-FIELDS-BINDING.template.json",
+      "bytes": 660,
+      "sha256": "d37d99e03b903750bdd5929898a1e5570f74ea77aa7548dc49fa1bf4bea459f5",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/TITLE-FIELDS-BINDING.template.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/TITLE-REFERENCE-BINDING.template.json",
+      "bytes": 166,
+      "sha256": "753091ffc982dfde79008c3be53fd43b6fbc1ea2d6786670aed3713dfa81aafa",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/TITLE-REFERENCE-BINDING.template.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/UNBOUND-PROVENANCE.template.json",
+      "bytes": 602,
+      "sha256": "4d7d5753b29ef96ceaad6dd1007ff9633b799b6ed1cc812ecc4d8908dc16601f",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/UNBOUND-PROVENANCE.template.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/UNBOUND-PROVENANCE.v2.template.json",
+      "bytes": 779,
+      "sha256": "95724264debb66a193e8c3871fc5b629c0569230c79af855ad5fbae2fec9ab9e",
+      "relative_path": "mirror/tools/lyd_i3b_checkpoint_readback/UNBOUND-PROVENANCE.v2.template.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/NUMERIC-LEAF-AFTERCLOSE.patch",
+      "bytes": 13475,
+      "sha256": "709277b4b04f6cd664cc8e761f4f2fba9fd08f4e7252816f426335e5a27e3cfd",
+      "relative_path": "NUMERIC-LEAF-AFTERCLOSE.patch"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/PATCH-CHECK.actual.json",
+      "bytes": 568,
+      "sha256": "cc2ef39c9ab8977d486b611365085399f8d29fd70b0ad0de4e025b4a872896f0",
+      "relative_path": "PATCH-CHECK.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/PATCH-CHECK.original.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relative_path": "PATCH-CHECK.original.stderr.bin"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/PATCH-CHECK.original.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relative_path": "PATCH-CHECK.original.stdout.bin"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/PREPARATION.actual.json",
+      "bytes": 24592,
+      "sha256": "9abf4212e99a5ca68d275f4956feed1503c39b884cabde3ec39802dff339b2f0",
+      "relative_path": "PREPARATION.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/prepare_review.py",
+      "bytes": 7755,
+      "sha256": "1fa0ee2c76368cb2dfb1026557fa37cd0d04802ecd830c453d422d0031c93bc7",
+      "relative_path": "prepare_review.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/REPORT.md",
+      "bytes": 1896,
+      "sha256": "216de19390c0540bfa500c84a326845372c9f1999362117c84476f187740069a",
+      "relative_path": "REPORT.md"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/run_existing20.py",
+      "bytes": 2006,
+      "sha256": "fc84f54341b578891d9f9b8cc8eeecfd1f6b049310e59e58b3690eb619f90556",
+      "relative_path": "run_existing20.py"
+    }
+  ],
+  "main_writes": 0,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "save_body_reads": 0,
+  "main_source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "main_still_clean": true,
+  "actual_main_application": false
+}

@@ -1,0 +1,11 @@
+test_actual_cancel_old_phase_undefined_candidate_skips_atomic_binding (__main__.ActualContextContract.test_actual_cancel_old_phase_undefined_candidate_skips_atomic_binding) ... ok
+test_actual_first_live_round_preserves_numeric_context (__main__.ActualContextContract.test_actual_first_live_round_preserves_numeric_context) ... ok
+test_actual_prebegin_old_undefined_candidate_skips_numeric_binding (__main__.ActualContextContract.test_actual_prebegin_old_undefined_candidate_skips_numeric_binding) ... ok
+test_actual_second_live_round_preserves_numeric_context (__main__.ActualContextContract.test_actual_second_live_round_preserves_numeric_context) ... ok
+test_exact_guard_and_all_original_business_AST_preserved (__main__.ActualContextContract.test_exact_guard_and_all_original_business_AST_preserved) ... ok
+test_generator_owns_exact_candidate_setup_bytes (__main__.ActualContextContract.test_generator_owns_exact_candidate_setup_bytes) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.023s
+
+OK

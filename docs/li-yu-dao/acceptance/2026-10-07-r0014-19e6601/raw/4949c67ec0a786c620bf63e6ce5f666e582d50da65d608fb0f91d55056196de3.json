@@ -1,0 +1,15 @@
+{
+  "observed_at_utc": "2026-10-06T17:38:19.090811+00:00",
+  "hive": "HKEY_CURRENT_USER",
+  "key": "Software\\Valve\\Steam",
+  "value_name": "Offline",
+  "access": "KEY_READ",
+  "fresh_Steam_offline_frame_verified": false,
+  "next_runtime_requires_fresh_offline_frame_review": true,
+  "actual_value": null,
+  "flag_is_one": null,
+  "read_error": {
+    "winerror": 2,
+    "error": "[WinError 2] 系统找不到指定的文件。"
+  }
+}

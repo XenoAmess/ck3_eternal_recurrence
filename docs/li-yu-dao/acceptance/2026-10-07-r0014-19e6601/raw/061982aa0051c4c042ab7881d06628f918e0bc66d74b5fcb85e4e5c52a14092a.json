@@ -1,0 +1,31 @@
+{
+  "observed_at_utc": "2026-10-06T17:51:32.025445+00:00",
+  "source": {
+    "path": "C:/Program Files (x86)/Steam/config/loginusers.vdf",
+    "bytes": 226,
+    "sha256": "94e993d04f118c58758fb0d6da7dff581c9a7c91c7d0e8fa823440f74c9b2097"
+  },
+  "SteamPath_registry": {
+    "value": "c:/program files (x86)/steam",
+    "type": 1
+  },
+  "account_count": 1,
+  "actual_account_fields": [
+    {
+      "account_identity_sha256": "7ccc2b037ad0da298aeb08599530a096c90499fc1073b68639f6b28983f92490",
+      "actual_offline_and_selector_fields": {
+        "WantsOfflineMode": "1",
+        "SkipOfflineModeWarning": "0"
+      }
+    }
+  ],
+  "MostRecent_selector_scope": "No selector is invented if the actual field is absent.",
+  "corroborative_preference_only": true,
+  "fresh_Steam_offline_frame_verified": false,
+  "next_runtime_requires_fresh_offline_frame_review": true,
+  "Steam_mutated": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "lease_mutated": false,
+  "earlier_single_WantOfflineMode_selector_note": "Missing exact MostRecent/WantOfflineMode does not prove online; actual named fields here are authoritative for this preference."
+}

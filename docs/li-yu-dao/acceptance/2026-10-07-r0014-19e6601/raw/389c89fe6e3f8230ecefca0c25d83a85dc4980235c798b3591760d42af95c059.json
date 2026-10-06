@@ -1,0 +1,33 @@
+{
+  "schema": "lyd.r14.actual-commit-and-result-context-refs.v1",
+  "contexts": {
+    "ACTUAL-COMMIT": {
+      "SDK": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-COMMIT-SDK-WRAPPER.original.json",
+        "bytes": 5282607,
+        "sha256": "8cd45f4b0fbd7cb0561464b5f45802a9f9a9046295e1ad9ee2dfa98f057df032"
+      },
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-COMMIT-NATIVE.original.json",
+        "bytes": 2507986,
+        "sha256": "2966f7f95ea496d455c85dec042563061dbfa53c5f050f0eb4574bb5b01428fb"
+      }
+    },
+    "ACTUAL-SUCCESS-CONTEXT": {
+      "SDK": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-SUCCESS-CONTEXT-SDK-WRAPPER.original.json",
+        "bytes": 33275,
+        "sha256": "b96b2d607bd2b4bf02eca077df971e02bc3712fa80a83a7dfa44c962f76136fc"
+      },
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-SUCCESS-CONTEXT-NATIVE.original.json",
+        "bytes": 15378,
+        "sha256": "a35c8a0e1338172d12d117300390065395fe1550e05d549a9bf9c291e4e097e9"
+      }
+    }
+  },
+  "raw_receipts_equal_SDK_structuredContent": true,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "product_credit": null
+}

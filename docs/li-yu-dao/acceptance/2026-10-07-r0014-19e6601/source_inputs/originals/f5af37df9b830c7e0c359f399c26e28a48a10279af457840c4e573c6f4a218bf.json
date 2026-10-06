@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools/lyd_i3b_checkpoint_readback/tests",
+    "-v"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002317580-reader-tests.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002317580-reader-tests.stderr",
+    "bytes": 17669,
+    "sha256": "31d5ae21572aa4cbb90daa2d90b33b68600405138c3f8e75d62a8bc93d1d22a4"
+  }
+}

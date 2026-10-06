@@ -1,0 +1,190 @@
+{
+  "schema": "lyd.r14.round3-actual-window-immutable-index.v1",
+  "kind": "B1",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/AUTHOR-CLI.json",
+      "bytes": 1927,
+      "sha256": "002c771f81873106a3b758c10bf6a9c58fe881c7700a8027375550cdccf25ddf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/AUTHOR.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/AUTHOR.stdout.txt",
+      "bytes": 242,
+      "sha256": "9ebfaf31d72fa36a3606915bfc99f394421dfc3db935f724ecce676e60954e63"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/FORMAL-BEGIN-NATIVE.original.json",
+      "bytes": 1925485,
+      "sha256": "35872e37a91bd48766b6785fd70b23d07406d32d03ce06ec7debef059b37235d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/FORMAL-BEGIN-SDK-WRAPPER.original.json",
+      "bytes": 4056487,
+      "sha256": "03f40b6fd0197c59bcdb1aeb8857fa7e1581fe9553e886045ec0368886c76446"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/G2-NATIVE.original.json",
+      "bytes": 29025,
+      "sha256": "06dbc940994337c25d5363f3120a7de49286c01ad265896120cb773a536613c3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/G2-SDK-WRAPPER.original.json",
+      "bytes": 61869,
+      "sha256": "d9dbd6dbfd4816fd5756fea618d2eb1e48a6bc9f43140dd382b4da7cd2b6216d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/G3-NATIVE.original.json",
+      "bytes": 4125,
+      "sha256": "a60ded14b29221eb638524fdc905effdf9daa91d3fde68aafd0876bb37785bf4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/G3-SDK-WRAPPER.original.json",
+      "bytes": 9031,
+      "sha256": "d83608fccec4d16f78de340e1550f648b7cc826094ac562880ff89b35137688c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/INPUT.actual.json",
+      "bytes": 2409,
+      "sha256": "e36537d6da3e279b3a168359f1ca9037037d7ec7f7fed9baa78413096f2caf09"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/NATIVE-CHECKPOINT.original.json",
+      "bytes": 1973487,
+      "sha256": "1fd6fc5bd174804394a181328d702bf788b2ee32940378972dd2d865f519db1f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/prepare_root_copy_and_run_round3_B1.py",
+      "bytes": 7646,
+      "sha256": "3ad23d92a7603eac488158c5b148dd45b402d5ff44ecdf12fd65dffba91749ea"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/PRESERVATION.json",
+      "bytes": 2472,
+      "sha256": "758edcce8192caeb854cee090cc1a557ba006eef4b9f16557fb0f50c6c2c8c18"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/CHECKPOINT-REQUEST.actual.json",
+      "bytes": 130254,
+      "sha256": "034e076e28b0666e35af92c1781630ff22031c1ab2c00be2260681dc8c81055b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/CHECKPOINT-REQUEST.native-qualified.json",
+      "bytes": 141063,
+      "sha256": "9017f89e1c4295b6353ccbb6212ec30a71d1a4602532008ef49f8a7f5a2c9b59"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 1920488,
+      "sha256": "90356327a6b4a42b9157fad3a83e7b0c89ed651c5ffe7d530ea60e9f27c243f8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/CONVERSION-REQUEST.actual-or-pending.json",
+      "bytes": 10237,
+      "sha256": "501d3cb984725a4b1effc4cff19fd7b3c9dbaa70965cdc05cd26ca2cfd3f9f1e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/INPUT.exact.json",
+      "bytes": 2409,
+      "sha256": "e36537d6da3e279b3a168359f1ca9037037d7ec7f7fed9baa78413096f2caf09"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "bytes": 884844,
+      "sha256": "87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 2074240,
+      "sha256": "19edac4a52132a756a8dc5ff16e8db9e1de8aac17a0d9944190ce486eea695b7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/PROVENANCE.actual-or-pending.json",
+      "bytes": 10170,
+      "sha256": "2def8633634b60ed523eef943ff14d2273453433b2c7e0a2a2a799e4a0b0de3e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/RESULT.json",
+      "bytes": 934701,
+      "sha256": "ab78e7f13c2631528fded85bdcb733c59d850eb5786935be68c34326a074ff4e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/STATE.json",
+      "bytes": 2604522,
+      "sha256": "eb394811a18584716389afab1a705d63c3b571bff016edcba9190628acf8bcde"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/STATE.native-qualified.json",
+      "bytes": 2642025,
+      "sha256": "65e32ef34ce4419fab460e5d5ecd84bdb2831ad8fe14bde2ff4ab6198607c381"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/readback-001/TYPED-PROTECTION.json",
+      "bytes": 1155306,
+      "sha256": "d3e180fff4dd6c24d7bce0702e92ffd26f2b66387b50c9fdf08777429ad688bf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/ROOT-PRESERVATION.original.json",
+      "bytes": 1921401,
+      "sha256": "94253a8ec161bd567ade1e76c3c82d1c66612152b7921e47e8ea2014fc4921a9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/ROOT-RESULT.original.json",
+      "bytes": 966386,
+      "sha256": "f6c5cedcf9751b2f3ab98e455d35d2fba1b4ce5dd8414905d6aaae7e8cb6054c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/ROUND3-B1-SUMMARY.actual.json",
+      "bytes": 6647,
+      "sha256": "68666c6cc610b380bcd3e56dca5b285741478ab68a4dfe94c9f8fc728774d204"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/ROUND3-B1.source-proof.json",
+      "bytes": 1853,
+      "sha256": "4657a0f974bc947e8cb164387b687a0867ffd5d5cacee05bdc7d997a4b487518"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/SDK-WRAPPER.original.json",
+      "bytes": 4157377,
+      "sha256": "d668fd2a5ff0226392f6c73f7309ecc79937cd21efcbb323cb7ca09af2153888"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/snapshot_after.original.json",
+      "bytes": 909700,
+      "sha256": "4fab9d93d3f29e86cbd8d0b18a861d4467d68c224d9c61d7644f66a4a8227302"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/snapshot_before.original.json",
+      "bytes": 908409,
+      "sha256": "8212337be99a3715e7e693ace34000cfde25f142301561218e659703b8d6b1bf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B1-begin-preservation-20261007-001/WINDOWS.with-round3-B1.source-derived.json",
+      "bytes": 9237,
+      "sha256": "c1f45afa689b1bc6752ea4293bba7e2ab536c00f371e3724875c46d425cc20c7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-formal-guarded-steps-20261007-001/164200695816/content-822978460c6474edf27cc139dc4de287369408496759e23ee9ad90a83ab94c6b.ck3",
+      "bytes": 91708485,
+      "sha256": "822978460c6474edf27cc139dc4de287369408496759e23ee9ad90a83ab94c6b"
+    }
+  ],
+  "summary_producer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-round3-observation-seal-utils-20261007-001/summarize_round3_window.py",
+    "bytes": 5342,
+    "sha256": "5b0a54fb98733bdf0dc9b00374ace256b05be8e4012c71c87afc4be38edccd8c"
+  },
+  "source_summary_checks_all_match": true,
+  "checkpoint_SHA_checked_by_original_author_once": true,
+  "additional_save_body_reads_for_seal": 0,
+  "formal_credit": null,
+  "native_HoR_credit": null,
+  "future_B3_B5_actuals": null,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "child_live_autosave_reads": 0
+}

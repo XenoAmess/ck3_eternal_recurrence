@@ -1,0 +1,9 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r14-171846609352",
+  "operation": "call_tool",
+  "name": "ck3_query_normal_exit_context_v1",
+  "arguments": {
+    "expected_revision": 44
+  }
+}

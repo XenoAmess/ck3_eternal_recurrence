@@ -1,0 +1,49 @@
+{
+  "schema": "lyd.r14.actual-post-cleanup-focused-test-receipt.v1",
+  "start_utc": "2026-10-06T17:15:49.710164+00:00",
+  "finish_utc": "2026-10-06T17:15:49.884496+00:00",
+  "command": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-live-round3-B5-final-protection-preservation-20261007-001",
+    "-p",
+    "test_actual_post_cleanup.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "actual_fixture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/ACTUAL-POST-CLEANUP.mechanical-fixture.json",
+    "bytes": 164953,
+    "sha256": "682736363b146354427846324201db90f848a2b358da93411b6ce07e2a9b1f5f"
+  },
+  "checker": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/post_commit_cleanup_checks.py",
+    "bytes": 2779,
+    "sha256": "6a1ae1b151c2385db2d7cec000612a31dfffa7798e1d210a567206afd8965180"
+  },
+  "tests": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/test_actual_post_cleanup.py",
+    "bytes": 1635,
+    "sha256": "ce5c48825635b6ac872a366c886e048bfd2107a344b2c17b7c6e5aaf6e67402f"
+  },
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/FOCUSED-POST-CLEANUP.stdout.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/FOCUSED-POST-CLEANUP.stderr.bin",
+    "bytes": 1212,
+    "sha256": "d38a1680f4a18af7ead299737a06aec901b2913cb53e879f1d00292b875c6107"
+  },
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "save_body_reads": 0,
+  "product_credit": null
+}

@@ -1,0 +1,981 @@
+{
+  "observed_at_utc": "2026-10-06T17:38:19.087654+00:00",
+  "rows": [
+    {
+      "pid": 0,
+      "name": "System Idle Process",
+      "create_time": 0.0
+    },
+    {
+      "pid": 4,
+      "name": "System",
+      "create_time": 1790529495.556878
+    },
+    {
+      "pid": 292,
+      "name": "Registry",
+      "create_time": 1790529492.040768
+    },
+    {
+      "pid": 664,
+      "name": "smss.exe",
+      "create_time": 1790529495.5860188
+    },
+    {
+      "pid": 676,
+      "name": "svchost.exe",
+      "create_time": 1790529817.3841276
+    },
+    {
+      "pid": 736,
+      "name": "services.exe",
+      "create_time": 1790529506.7742012
+    },
+    {
+      "pid": 788,
+      "name": "lsass.exe",
+      "create_time": 1790529506.788201
+    },
+    {
+      "pid": 796,
+      "name": "csrss.exe",
+      "create_time": 1790529500.2758393
+    },
+    {
+      "pid": 884,
+      "name": "csrss.exe",
+      "create_time": 1790529501.861119
+    },
+    {
+      "pid": 908,
+      "name": "wininit.exe",
+      "create_time": 1790529501.8646753
+    },
+    {
+      "pid": 924,
+      "name": "conhost.exe",
+      "create_time": 1791134418.615229
+    },
+    {
+      "pid": 952,
+      "name": "winlogon.exe",
+      "create_time": 1790529501.9443433
+    },
+    {
+      "pid": 1084,
+      "name": "svchost.exe",
+      "create_time": 1790529507.3059237
+    },
+    {
+      "pid": 1108,
+      "name": "svchost.exe",
+      "create_time": 1790529508.973826
+    },
+    {
+      "pid": 1120,
+      "name": "fontdrvhost.exe",
+      "create_time": 1790529507.3590655
+    },
+    {
+      "pid": 1128,
+      "name": "fontdrvhost.exe",
+      "create_time": 1790529507.3591044
+    },
+    {
+      "pid": 1140,
+      "name": "RuntimeBroker.exe",
+      "create_time": 1790529763.7255242
+    },
+    {
+      "pid": 1192,
+      "name": "WUDFHost.exe",
+      "create_time": 1790529507.402769
+    },
+    {
+      "pid": 1268,
+      "name": "svchost.exe",
+      "create_time": 1790529507.6801167
+    },
+    {
+      "pid": 1316,
+      "name": "svchost.exe",
+      "create_time": 1790529507.7302265
+    },
+    {
+      "pid": 1360,
+      "name": "SearchFilterHost.exe",
+      "create_time": 1791308179.453637
+    },
+    {
+      "pid": 1404,
+      "name": "svchost.exe",
+      "create_time": 1790529508.1663284
+    },
+    {
+      "pid": 1440,
+      "name": "svchost.exe",
+      "create_time": 1790529508.1984372
+    },
+    {
+      "pid": 1448,
+      "name": "svchost.exe",
+      "create_time": 1790529508.19903
+    },
+    {
+      "pid": 1464,
+      "name": "steamwebhelper.exe",
+      "create_time": 1790980013.1523955
+    },
+    {
+      "pid": 1492,
+      "name": "msedge.exe",
+      "create_time": 1791027696.2026489
+    },
+    {
+      "pid": 1508,
+      "name": "dwm.exe",
+      "create_time": 1790529508.2083592
+    },
+    {
+      "pid": 1552,
+      "name": "node.exe",
+      "create_time": 1791134418.671529
+    },
+    {
+      "pid": 1564,
+      "name": "msedge.exe",
+      "create_time": 1791294539.0060344
+    },
+    {
+      "pid": 1584,
+      "name": "svchost.exe",
+      "create_time": 1790529508.27885
+    },
+    {
+      "pid": 1644,
+      "name": "svchost.exe",
+      "create_time": 1790529509.160453
+    },
+    {
+      "pid": 1660,
+      "name": "svchost.exe",
+      "create_time": 1790529509.1598744
+    },
+    {
+      "pid": 1676,
+      "name": "svchost.exe",
+      "create_time": 1790529509.1597722
+    },
+    {
+      "pid": 1684,
+      "name": "svchost.exe",
+      "create_time": 1790529508.3640203
+    },
+    {
+      "pid": 1728,
+      "name": "svchost.exe",
+      "create_time": 1790529508.4345348
+    },
+    {
+      "pid": 1756,
+      "name": "svchost.exe",
+      "create_time": 1790529508.4871612
+    },
+    {
+      "pid": 1796,
+      "name": "svchost.exe",
+      "create_time": 1790529508.5466533
+    },
+    {
+      "pid": 1832,
+      "name": "svchost.exe",
+      "create_time": 1790529508.6528432
+    },
+    {
+      "pid": 1892,
+      "name": "svchost.exe",
+      "create_time": 1790529508.7421517
+    },
+    {
+      "pid": 1924,
+      "name": "svchost.exe",
+      "create_time": 1790529508.7644525
+    },
+    {
+      "pid": 1964,
+      "name": "NVDisplay.Container.exe",
+      "create_time": 1790529508.787778
+    },
+    {
+      "pid": 2124,
+      "name": "svchost.exe",
+      "create_time": 1790529509.187948
+    },
+    {
+      "pid": 2188,
+      "name": "svchost.exe",
+      "create_time": 1790529509.272124
+    },
+    {
+      "pid": 2236,
+      "name": "svchost.exe",
+      "create_time": 1790529509.3090475
+    },
+    {
+      "pid": 2244,
+      "name": "svchost.exe",
+      "create_time": 1790529509.3200028
+    },
+    {
+      "pid": 2284,
+      "name": "MemCompression",
+      "create_time": 1790529509.3559268
+    },
+    {
+      "pid": 2460,
+      "name": "svchost.exe",
+      "create_time": 1790529509.8257337
+    },
+    {
+      "pid": 2508,
+      "name": "svchost.exe",
+      "create_time": 1790529509.9047892
+    },
+    {
+      "pid": 2544,
+      "name": "svchost.exe",
+      "create_time": 1790529509.9853778
+    },
+    {
+      "pid": 2552,
+      "name": "svchost.exe",
+      "create_time": 1790529509.9855876
+    },
+    {
+      "pid": 2560,
+      "name": "svchost.exe",
+      "create_time": 1790529509.9857051
+    },
+    {
+      "pid": 2648,
+      "name": "svchost.exe",
+      "create_time": 1790529510.139797
+    },
+    {
+      "pid": 2684,
+      "name": "Paseo.exe",
+      "create_time": 1790529732.0694456
+    },
+    {
+      "pid": 2692,
+      "name": "steamwebhelper.exe",
+      "create_time": 1791027756.0937624
+    },
+    {
+      "pid": 2708,
+      "name": "svchost.exe",
+      "create_time": 1790529510.161688
+    },
+    {
+      "pid": 2720,
+      "name": "svchost.exe",
+      "create_time": 1790529510.1625056
+    },
+    {
+      "pid": 2740,
+      "name": "SystemSettingsBroker.exe",
+      "create_time": 1790529817.6467483
+    },
+    {
+      "pid": 2884,
+      "name": "codex.exe",
+      "create_time": 1791134418.7880454
+    },
+    {
+      "pid": 3028,
+      "name": "steamwebhelper.exe",
+      "create_time": 1790980012.3969574
+    },
+    {
+      "pid": 3040,
+      "name": "spoolsv.exe",
+      "create_time": 1790529510.4327292
+    },
+    {
+      "pid": 3120,
+      "name": "svchost.exe",
+      "create_time": 1790529510.6864307
+    },
+    {
+      "pid": 3128,
+      "name": "svchost.exe",
+      "create_time": 1790529510.6864588
+    },
+    {
+      "pid": 3136,
+      "name": "svchost.exe",
+      "create_time": 1790529510.686571
+    },
+    {
+      "pid": 3204,
+      "name": "svchost.exe",
+      "create_time": 1790529510.7400165
+    },
+    {
+      "pid": 3232,
+      "name": "svchost.exe",
+      "create_time": 1790529510.753436
+    },
+    {
+      "pid": 3256,
+      "name": "svchost.exe",
+      "create_time": 1790529510.762422
+    },
+    {
+      "pid": 3376,
+      "name": "sihost.exe",
+      "create_time": 1790529522.5157416
+    },
+    {
+      "pid": 3404,
+      "name": "svchost.exe",
+      "create_time": 1790529522.5552018
+    },
+    {
+      "pid": 3428,
+      "name": "svchost.exe",
+      "create_time": 1790529510.9468224
+    },
+    {
+      "pid": 3436,
+      "name": "svchost.exe",
+      "create_time": 1790529510.9470809
+    },
+    {
+      "pid": 3444,
+      "name": "svchost.exe",
+      "create_time": 1790529510.9471965
+    },
+    {
+      "pid": 3452,
+      "name": "svchost.exe",
+      "create_time": 1790529510.9480665
+    },
+    {
+      "pid": 3460,
+      "name": "svchost.exe",
+      "create_time": 1790529510.94842
+    },
+    {
+      "pid": 3468,
+      "name": "svchost.exe",
+      "create_time": 1790529510.9484773
+    },
+    {
+      "pid": 3564,
+      "name": "MSPCManagerService.exe",
+      "create_time": 1790529518.057392
+    },
+    {
+      "pid": 3652,
+      "name": "svchost.exe",
+      "create_time": 1790529511.1097996
+    },
+    {
+      "pid": 3660,
+      "name": "svchost.exe",
+      "create_time": 1790529511.1098857
+    },
+    {
+      "pid": 3744,
+      "name": "svchost.exe",
+      "create_time": 1790529511.1470785
+    },
+    {
+      "pid": 3784,
+      "name": "ToDesk.exe",
+      "create_time": 1790529511.2175713
+    },
+    {
+      "pid": 3852,
+      "name": "svchost.exe",
+      "create_time": 1790529511.4260018
+    },
+    {
+      "pid": 3900,
+      "name": "conhost.exe",
+      "create_time": 1791134418.6280506
+    },
+    {
+      "pid": 4452,
+      "name": "NVDisplay.Container.exe",
+      "create_time": 1790529512.1305015
+    },
+    {
+      "pid": 4468,
+      "name": "MicrosoftEdgeUpdate.exe",
+      "create_time": 1791002294.1621325
+    },
+    {
+      "pid": 4800,
+      "name": "RAVCpl64.exe",
+      "create_time": 1790529542.644982
+    },
+    {
+      "pid": 4808,
+      "name": "svchost.exe",
+      "create_time": 1790529512.2894447
+    },
+    {
+      "pid": 4892,
+      "name": "cmd.exe",
+      "create_time": 1791283240.2819805
+    },
+    {
+      "pid": 5236,
+      "name": "OneDrive.Sync.Service.exe",
+      "create_time": 1791284999.4527924
+    },
+    {
+      "pid": 5240,
+      "name": "msedge.exe",
+      "create_time": 1791016715.207732
+    },
+    {
+      "pid": 5292,
+      "name": "svchost.exe",
+      "create_time": 1790529642.45099
+    },
+    {
+      "pid": 5296,
+      "name": "svchost.exe",
+      "create_time": 1790529514.7786953
+    },
+    {
+      "pid": 5308,
+      "name": "Paseo.exe",
+      "create_time": 1790529728.497687
+    },
+    {
+      "pid": 5432,
+      "name": "SearchIndexer.exe",
+      "create_time": 1790529518.1697533
+    },
+    {
+      "pid": 5440,
+      "name": "UserOOBEBroker.exe",
+      "create_time": 1790530132.4380877
+    },
+    {
+      "pid": 5932,
+      "name": "node.exe",
+      "create_time": 1791134418.6641884
+    },
+    {
+      "pid": 5948,
+      "name": "svchost.exe",
+      "create_time": 1790529517.3020525
+    },
+    {
+      "pid": 5956,
+      "name": "steamwebhelper.exe",
+      "create_time": 1790980013.1199436
+    },
+    {
+      "pid": 6136,
+      "name": "codex.exe",
+      "create_time": 1791134418.7930465
+    },
+    {
+      "pid": 6344,
+      "name": "WUDFHost.exe",
+      "create_time": 1790529522.0940478
+    },
+    {
+      "pid": 6556,
+      "name": "taskhostw.exe",
+      "create_time": 1790531914.067186
+    },
+    {
+      "pid": 6696,
+      "name": "taskhostw.exe",
+      "create_time": 1790529522.7002623
+    },
+    {
+      "pid": 6728,
+      "name": "AggregatorHost.exe",
+      "create_time": 1790529520.6311564
+    },
+    {
+      "pid": 6828,
+      "name": "ShellExperienceHost.exe",
+      "create_time": 1790529763.136725
+    },
+    {
+      "pid": 6832,
+      "name": "svchost.exe",
+      "create_time": 1790545427.8750284
+    },
+    {
+      "pid": 6852,
+      "name": "svchost.exe",
+      "create_time": 1790529522.7868264
+    },
+    {
+      "pid": 7028,
+      "name": "svchost.exe",
+      "create_time": 1790529522.572061
+    },
+    {
+      "pid": 7052,
+      "name": "svchost.exe",
+      "create_time": 1791016416.548143
+    },
+    {
+      "pid": 7084,
+      "name": "svchost.exe",
+      "create_time": 1790666486.773774
+    },
+    {
+      "pid": 7172,
+      "name": "svchost.exe",
+      "create_time": 1790529522.9011095
+    },
+    {
+      "pid": 7220,
+      "name": "ctfmon.exe",
+      "create_time": 1790529522.9945357
+    },
+    {
+      "pid": 7296,
+      "name": "conhost.exe",
+      "create_time": 1791134418.594786
+    },
+    {
+      "pid": 7344,
+      "name": "svchost.exe",
+      "create_time": 1790529523.3407595
+    },
+    {
+      "pid": 7420,
+      "name": "svchost.exe",
+      "create_time": 1790529523.5221117
+    },
+    {
+      "pid": 7484,
+      "name": "explorer.exe",
+      "create_time": 1790529523.5889812
+    },
+    {
+      "pid": 7808,
+      "name": "ChsIME.exe",
+      "create_time": 1790529524.0795836
+    },
+    {
+      "pid": 7856,
+      "name": "conhost.exe",
+      "create_time": 1791283251.8917677
+    },
+    {
+      "pid": 8092,
+      "name": "cmd.exe",
+      "create_time": 1791134418.629135
+    },
+    {
+      "pid": 8248,
+      "name": "svchost.exe",
+      "create_time": 1790529526.661736
+    },
+    {
+      "pid": 8268,
+      "name": "ToDesk.exe",
+      "create_time": 1790529525.4791858
+    },
+    {
+      "pid": 8456,
+      "name": "cmd.exe",
+      "create_time": 1791134418.6009264
+    },
+    {
+      "pid": 8464,
+      "name": "svchost.exe",
+      "create_time": 1790529532.0620136
+    },
+    {
+      "pid": 8556,
+      "name": "RuntimeBroker.exe",
+      "create_time": 1790529530.7990568
+    },
+    {
+      "pid": 8576,
+      "name": "SecurityHealthService.exe",
+      "create_time": 1790529762.7922127
+    },
+    {
+      "pid": 8948,
+      "name": "StartMenuExperienceHost.exe",
+      "create_time": 1790529529.4368167
+    },
+    {
+      "pid": 8964,
+      "name": "msedge.exe",
+      "create_time": 1791016714.9650424
+    },
+    {
+      "pid": 9296,
+      "name": "msedge.exe",
+      "create_time": 1791016715.2078753
+    },
+    {
+      "pid": 9300,
+      "name": "msedge.exe",
+      "create_time": 1791294539.3308563
+    },
+    {
+      "pid": 9684,
+      "name": "msedge.exe",
+      "create_time": 1791016715.2515092
+    },
+    {
+      "pid": 9768,
+      "name": "RuntimeBroker.exe",
+      "create_time": 1790529530.0196748
+    },
+    {
+      "pid": 9776,
+      "name": "svchost.exe",
+      "create_time": 1790529530.031624
+    },
+    {
+      "pid": 9800,
+      "name": "Paseo.exe",
+      "create_time": 1790529729.0794024
+    },
+    {
+      "pid": 9980,
+      "name": "dllhost.exe",
+      "create_time": 1790722824.3363562
+    },
+    {
+      "pid": 10144,
+      "name": "conhost.exe",
+      "create_time": 1791308298.8531752
+    },
+    {
+      "pid": 10200,
+      "name": "SearchApp.exe",
+      "create_time": 1790529530.5181434
+    },
+    {
+      "pid": 10232,
+      "name": "cmd.exe",
+      "create_time": 1791308298.8489392
+    },
+    {
+      "pid": 10780,
+      "name": "svchost.exe",
+      "create_time": 1790580090.9102874
+    },
+    {
+      "pid": 11120,
+      "name": "TextInputHost.exe",
+      "create_time": 1790529536.0956643
+    },
+    {
+      "pid": 11140,
+      "name": "Paseo.exe",
+      "create_time": 1790529729.0844593
+    },
+    {
+      "pid": 11244,
+      "name": "RuntimeBroker.exe",
+      "create_time": 1790529536.4160929
+    },
+    {
+      "pid": 11392,
+      "name": "svchost.exe",
+      "create_time": 1790529543.3619275
+    },
+    {
+      "pid": 11664,
+      "name": "conhost.exe",
+      "create_time": 1791307714.1171205
+    },
+    {
+      "pid": 11940,
+      "name": "MoUsoCoreWorker.exe",
+      "create_time": 1791061904.1247344
+    },
+    {
+      "pid": 12640,
+      "name": "v2rayN.exe",
+      "create_time": 1790529556.8535705
+    },
+    {
+      "pid": 12764,
+      "name": "svchost.exe",
+      "create_time": 1790631219.3714657
+    },
+    {
+      "pid": 12980,
+      "name": "CompPkgSrv.exe",
+      "create_time": 1790529564.8523238
+    },
+    {
+      "pid": 12988,
+      "name": "conhost.exe",
+      "create_time": 1791134418.6329343
+    },
+    {
+      "pid": 13188,
+      "name": "ApplicationFrameHost.exe",
+      "create_time": 1790530694.0585608
+    },
+    {
+      "pid": 13228,
+      "name": "codex.exe",
+      "create_time": 1791134418.814011
+    },
+    {
+      "pid": 13272,
+      "name": "Paseo.exe",
+      "create_time": 1790529729.1665146
+    },
+    {
+      "pid": 13592,
+      "name": "conhost.exe",
+      "create_time": 1791134418.5771065
+    },
+    {
+      "pid": 13640,
+      "name": "xray.exe",
+      "create_time": 1791307714.1123211
+    },
+    {
+      "pid": 13696,
+      "name": "node.exe",
+      "create_time": 1791134418.6895492
+    },
+    {
+      "pid": 13964,
+      "name": "svchost.exe",
+      "create_time": 1790529571.723532
+    },
+    {
+      "pid": 14180,
+      "name": "conhost.exe",
+      "create_time": 1791134418.6108325
+    },
+    {
+      "pid": 14204,
+      "name": "SystemSettings.exe",
+      "create_time": 1790530694.0527225
+    },
+    {
+      "pid": 14304,
+      "name": "svchost.exe",
+      "create_time": 1790529642.5882704
+    },
+    {
+      "pid": 14316,
+      "name": "svchost.exe",
+      "create_time": 1790529569.2856324
+    },
+    {
+      "pid": 14340,
+      "name": "codex-code-mode-host.exe",
+      "create_time": 1791138023.9325058
+    },
+    {
+      "pid": 14784,
+      "name": "conhost.exe",
+      "create_time": 1791138024.0972378
+    },
+    {
+      "pid": 14788,
+      "name": "codex.exe",
+      "create_time": 1791134418.792043
+    },
+    {
+      "pid": 14884,
+      "name": "node.exe",
+      "create_time": 1791134418.6413124
+    },
+    {
+      "pid": 14888,
+      "name": "steamwebhelper.exe",
+      "create_time": 1790980013.1243167
+    },
+    {
+      "pid": 15148,
+      "name": "codex.exe",
+      "create_time": 1791134418.7943845
+    },
+    {
+      "pid": 15388,
+      "name": "cmd.exe",
+      "create_time": 1791283107.7616322
+    },
+    {
+      "pid": 15636,
+      "name": "node.exe",
+      "create_time": 1791134418.6489975
+    },
+    {
+      "pid": 15840,
+      "name": "codex.exe",
+      "create_time": 1791134418.814056
+    },
+    {
+      "pid": 15860,
+      "name": "msedge.exe",
+      "create_time": 1791027741.1940503
+    },
+    {
+      "pid": 16068,
+      "name": "svchost.exe",
+      "create_time": 1790859371.5681052
+    },
+    {
+      "pid": 16212,
+      "name": "Paseo.exe",
+      "create_time": 1791134409.2779531
+    },
+    {
+      "pid": 16824,
+      "name": "Paseo.exe",
+      "create_time": 1791134411.8390098
+    },
+    {
+      "pid": 16836,
+      "name": "conhost.exe",
+      "create_time": 1791134418.6051111
+    },
+    {
+      "pid": 17380,
+      "name": "codex.exe",
+      "create_time": 1791134418.7843893
+    },
+    {
+      "pid": 17400,
+      "name": "cmd.exe",
+      "create_time": 1791134418.5840352
+    },
+    {
+      "pid": 17460,
+      "name": "node.exe",
+      "create_time": 1791134418.6727648
+    },
+    {
+      "pid": 17604,
+      "name": "cmd.exe",
+      "create_time": 1791134418.611055
+    },
+    {
+      "pid": 17864,
+      "name": "conhost.exe",
+      "create_time": 1791283240.284078
+    },
+    {
+      "pid": 17928,
+      "name": "node.exe",
+      "create_time": 1791134418.65409
+    },
+    {
+      "pid": 18028,
+      "name": "codex.exe",
+      "create_time": 1791134418.8189132
+    },
+    {
+      "pid": 18076,
+      "name": "node.exe",
+      "create_time": 1791134418.685671
+    },
+    {
+      "pid": 18100,
+      "name": "steam.exe",
+      "create_time": 1790980011.1466615
+    },
+    {
+      "pid": 18292,
+      "name": "msedge.exe",
+      "create_time": 1791016715.0862489
+    },
+    {
+      "pid": 18428,
+      "name": "steamservice.exe",
+      "create_time": 1790980012.5040221
+    },
+    {
+      "pid": 18564,
+      "name": "steamwebhelper.exe",
+      "create_time": 1790980014.4099422
+    },
+    {
+      "pid": 18772,
+      "name": "codex-code-mode-host.exe",
+      "create_time": 1791283251.6616826
+    },
+    {
+      "pid": 18840,
+      "name": "conhost.exe",
+      "create_time": 1791283107.188494
+    },
+    {
+      "pid": 18892,
+      "name": "svchost.exe",
+      "create_time": 1790682320.1878176
+    },
+    {
+      "pid": 19284,
+      "name": "SearchProtocolHost.exe",
+      "create_time": 1791294777.2891476
+    },
+    {
+      "pid": 19308,
+      "name": "codex.exe",
+      "create_time": 1791283240.408394
+    },
+    {
+      "pid": 19568,
+      "name": "python.exe",
+      "create_time": 1791308298.8903184
+    },
+    {
+      "pid": 19588,
+      "name": "node.exe",
+      "create_time": 1791283240.3171792
+    },
+    {
+      "pid": 19592,
+      "name": "cmd.exe",
+      "create_time": 1791134418.6241055
+    },
+    {
+      "pid": 19664,
+      "name": "cmd.exe",
+      "create_time": 1791134418.571686
+    },
+    {
+      "pid": 19752,
+      "name": "cmd.exe",
+      "create_time": 1791134418.6058183
+    },
+    {
+      "pid": 19856,
+      "name": "conhost.exe",
+      "create_time": 1791134418.5883722
+    },
+    {
+      "pid": 20024,
+      "name": "svchost.exe",
+      "create_time": 1791307761.174267
+    },
+    {
+      "pid": 20188,
+      "name": "cmd.exe",
+      "create_time": 1791134418.5898087
+    }
+  ],
+  "purpose": "fresh presence/absence metadata only; never original HANDLE exit0 witness"
+}

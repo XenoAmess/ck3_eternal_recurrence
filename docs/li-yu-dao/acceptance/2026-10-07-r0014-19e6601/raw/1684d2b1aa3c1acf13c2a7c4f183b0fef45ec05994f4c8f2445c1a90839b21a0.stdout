@@ -1,0 +1,489 @@
+{"command": ["C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe", "-S", "C:\\lr14s1\\ck3_autonomous_player\\native_bridge", "-B", "C:\\lyd14-native-clean-20261006-004", "-G", "Ninja", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_MAKE_PROGRAM=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe", "-DCMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe", "-DCMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe", "-DBUILD_TESTING=ON", "-DXAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1=OFF", "-DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=ON", "-DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=ON", "-DXAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=ON", "-DXAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1=ON", "-DXAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=ON", "-DXAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1=ON", "-DXAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=ON", "-DXAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1=ON", "-DXAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1=ON", "-DXAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1=ON", "-DXAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1=ON"], "log": "C:\\lyd14-native-clean-20261006-004\\msvc-configure.log"}
+-- The CXX compiler identification is MSVC 19.51.36260.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe (found version "3.13.15") found components: Interpreter
+-- Configuring done (4.0s)
+-- Generating done (1.7s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_C_COMPILER
+
+
+-- Build files have been written to: C:/lyd14-native-clean-20261006-004
+{"command": ["C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe", "--build", "C:\\lyd14-native-clean-20261006-004", "--parallel", "64", "--target", "xar_ck3_bridge", "xar_ck3_bridge_injector", "xar_confucian_assembly_predicates_v1_test", "xar_confucian_religious_title_readback_v1_test", "xar_confucian_challenger_graph_v1_test", "xar_ck3_main_thread_query_mailbox_v1_test"], "log": "C:\\lyd14-native-clean-20261006-004\\msvc-build.log"}
+[0/2] Re-checking globbed directories...
+[1/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002.cpp.obj
+[2/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_value.cpp.obj
+[3/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_runtime.cpp.obj
+[4/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_actor_resources.cpp.obj
+[5/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_outbound.cpp.obj
+[6/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_assign.cpp.obj
+[7/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_feast_outcome_values.cpp.obj
+[8/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_console_fixture.cpp.obj
+[9/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_projection.cpp.obj
+[10/426] Building CXX object CMakeFiles\xar_bridge_protocol.dir\src\protocol.cpp.obj
+[11/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_gift_opinion.cpp.obj
+[12/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_gates.cpp.obj
+[13/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_candidates.cpp.obj
+[14/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_mailbox.cpp.obj
+[15/426] Building CXX object CMakeFiles\xar_bridge_injector.dir\src\injector.cpp.obj
+[16/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_ranked.cpp.obj
+[17/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_diplomacy.cpp.obj
+[18/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_events.cpp.obj
+[19/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_construction_held.cpp.obj
+[20/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_subject.cpp.obj
+[21/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family.cpp.obj
+[22/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_declarations.cpp.obj
+[23/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_feature_serializer.cpp.obj
+[24/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_break_penalty.cpp.obj
+[25/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_campaign.cpp.obj
+[26/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_campaign_serializer.cpp.obj
+[27/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_commands.cpp.obj
+[28/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_perk.cpp.obj
+[29/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_feast_planner_private_transport_v1.cpp.obj
+[30/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_stage5_canstart_private_transport_v1.cpp.obj
+[31/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_wire.cpp.obj
+[32/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_context.cpp.obj
+[33/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_event_window_context.cpp.obj
+[34/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_claim_terms.cpp.obj
+[35/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_break.cpp.obj
+[36/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_commands.cpp.obj
+[37/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_faction_alerts.cpp.obj
+[38/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_features.cpp.obj
+[39/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_lineage.cpp.obj
+[40/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_faction_gift.cpp.obj
+[41/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_active_collection.cpp.obj
+[42/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_battle_journal.cpp.obj
+[43/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_marriage_probe.cpp.obj
+[44/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_construction_mailbox.cpp.obj
+[45/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_state.cpp.obj
+[46/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_feast_private_transport_v1.cpp.obj
+[47/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_construction_process.cpp.obj
+[48/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_wire.cpp.obj
+[49/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_focus.cpp.obj
+[50/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_feast_cost_private_transport_v1.cpp.obj
+[51/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_final_terms.cpp.obj
+[52/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_feast_guest_transport.cpp.obj
+[53/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_candidate_collection.cpp.obj
+[54/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_event_window_context_serializer.cpp.obj
+[55/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_enact_mutation_abi_v1.cpp.obj
+[56/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_components.cpp.obj
+[57/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_action.cpp.obj
+[58/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_enact_command_v1.cpp.obj
+[59/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_military.cpp.obj
+[60/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_feast_planner_native.cpp.obj
+[61/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_ranked_mailbox.cpp.obj
+[62/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_character.cpp.obj
+[63/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_faction_mailbox.cpp.obj
+[64/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_construction.cpp.obj
+[65/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_lifestyle_wire.cpp.obj
+[66/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_pending_context_serializer.cpp.obj
+[67/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_war_cash_treasury.cpp.obj
+[68/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_combat.cpp.obj
+[69/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_maa_recruitment.cpp.obj
+[70/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_thread_runtime.cpp.obj
+[71/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_state.cpp.obj
+[72/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_title_map_serializer.cpp.obj
+[73/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_war_entry_serializer.cpp.obj
+[74/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_metrics.cpp.obj
+[75/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_council.cpp.obj
+[76/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_council_transport.cpp.obj
+[77/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_maa_create.cpp.obj
+[78/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\owned_regiments.cpp.obj
+[79/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_culture.cpp.obj
+[80/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_realm.cpp.obj
+[81/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_title_map_camera.cpp.obj
+[82/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_definitions.cpp.obj
+[83/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_government_mailbox.cpp.obj
+[84/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_title_map.cpp.obj
+[85/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_family_obligations_mailbox.cpp.obj
+[86/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_advantage.cpp.obj
+[87/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_pending_context.cpp.obj
+[88/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_activity_feast_router.cpp.obj
+[89/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_position.cpp.obj
+[90/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_adapter.cpp.obj
+[91/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_diagnostic.cpp.obj
+[92/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_mercenary_context.cpp.obj
+[93/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner.cpp.obj
+[94/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase_misc.cpp.obj
+[95/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_war_entry.cpp.obj
+[96/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner_wire.cpp.obj
+[97/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_candidates.cpp.obj
+[98/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_confucian_assembly_predicates.cpp.obj
+[99/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_phase.cpp.obj
+[100/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_faction_gift_router.cpp.obj
+[101/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_mercenary_wire.cpp.obj
+[102/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner_collection.cpp.obj
+[103/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_war_cash_current_reader.cpp.obj
+[104/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_final_terms.cpp.obj
+[105/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_battle.cpp.obj
+[106/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_composition.cpp.obj
+[107/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_holy_order_context.cpp.obj
+[108/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_army.cpp.obj
+[109/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_settlement.cpp.obj
+[110/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_command.cpp.obj
+[111/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_mailbox.cpp.obj
+[112/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law.cpp.obj
+[113/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\player_lifestyle_window_candidates_v1.cpp.obj
+[114/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_province.cpp.obj
+[115/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_nonwar_router.cpp.obj
+[116/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner_war_retention.cpp.obj
+[117/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_routes.cpp.obj
+[118/426] Linking CXX static library xar_bridge_protocol.lib
+[119/426] Linking CXX static library xar_bridge_injector.lib
+[120/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\diac_literal_numeric_inputs_12003.cpp.obj
+[121/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\main_thread_query_mailbox_v1.cpp.obj
+[122/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_battle_current_state.cpp.obj
+[123/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_serializer.cpp.obj
+[124/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_rule43_diac_sources.cpp.obj
+[125/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_world.cpp.obj
+[126/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_task_position_inputs.cpp.obj
+[127/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prewar_muster.cpp.obj
+[128/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_mailbox.cpp.obj
+[129/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_query_mailbox.cpp.obj
+[130/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_source_adapter.cpp.obj
+[131/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_holy_order_hire_action.cpp.obj
+[132/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_prisoner_mailbox.cpp.obj
+[133/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_hire_wire.cpp.obj
+[134/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_army_supply_timing.cpp.obj
+[135/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\named_path_583_root_observer_v1.cpp.obj
+[136/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_war_cash_current_serializer.cpp.obj
+[137/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_holy_order_hire_wire.cpp.obj
+[138/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\physfs_mounted_data_observer_v1.cpp.obj
+[139/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_mercenary_hire_action.cpp.obj
+[140/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\pdx_paths_583_producer_observer_v1.cpp.obj
+[141/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\cold_map_vfs_observer_v1.cpp.obj
+[142/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_army_replenishment_records.cpp.obj
+[143/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_army_reserve.cpp.obj
+[144/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_title_laws_leaf.cpp.obj
+[145/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\vfs_mount_lifecycle_observer_v1.cpp.obj
+[146/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_sway_handler.cpp.obj
+[147/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_commander.cpp.obj
+[148/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\county_faction_final_12003.cpp.obj
+[149/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_title_holder.cpp.obj
+[150/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_family_terminal_events.cpp.obj
+[151/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_maa_create_private_mailbox.cpp.obj
+[152/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_construction_view_probe_v1.cpp.obj
+[153/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_title_properties_leaf.cpp.obj
+[154/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_semantic_adapter.cpp.obj
+[155/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_land_resupply.cpp.obj
+[156/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_mercenary_hire_mailbox.cpp.obj
+[157/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_war_occupation.cpp.obj
+[158/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_faction_alerts_v1.cpp.obj
+[159/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_land_supply_rate.cpp.obj
+[160/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_faction_alerts_v1_serializer.cpp.obj
+[161/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12002_realm_law_action_mailbox.cpp.obj
+[162/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_commander_assignment.cpp.obj
+[163/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\research\domain_construction_candidate_identity_decoder_v1.cpp.obj
+[164/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\research\domain_construction_cost_legality_collector_source_adapter_v1.cpp.obj
+[165/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\steward_develop_county_action_v1.cpp.obj
+[166/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\research\domain_construction_candidate_cost_legality_decoder_v1.cpp.obj
+[167/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_holy_order_hire_mailbox.cpp.obj
+[168/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_default_raise_mailbox.cpp.obj
+[169/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_confucian_assembly_mailbox.cpp.obj
+[170/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_war_cash_current_mailbox.cpp.obj
+[171/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\steward_develop_county_enumerator_observer_v1.cpp.obj
+[172/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\research\domain_construction_semantic_action_core_v1.cpp.obj
+[173/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\research\domain_construction_cost_legality_live_observer_v1.cpp.obj
+[174/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\research\ck3_12002_construction_submit_binding.cpp.obj
+[175/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_composition_candidates_public_v1.cpp.obj
+[176/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_composition_steward_candidates_reader_v1.cpp.obj
+[177/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_ordered_besieging_fixed_chunk0_preparation.cpp.obj
+[178/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_confucian_religious_title_mailbox.cpp.obj
+[179/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_adapter.cpp.obj
+[180/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_composition_candidate_observer_v1.cpp.obj
+[181/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_assign_councillor_action_v1.cpp.obj
+[182/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\domain_construction_shared_glue_v1.cpp.obj
+[183/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_commander_mailbox.cpp.obj
+[184/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_composition_candidates_public_v1_serializer.cpp.obj
+[185/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_religious_title_readback.cpp.obj
+[186/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\research\domain_construction_native_submit_adapter_v1.cpp.obj
+[187/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_ordered_besieging_refill_inputs.cpp.obj
+[188/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_player_mercenary_mailbox.cpp.obj
+[189/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_composition_candidates_enrichment_v1.cpp.obj
+[190/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_abi_profile.cpp.obj
+[191/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_context_sources.cpp.obj
+[192/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_province_supply_contributors.cpp.obj
+[193/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_assault_removal_reference.cpp.obj
+[194/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_composition_steward_candidates_binding_v1.cpp.obj
+[195/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_province_besieging_contributors.cpp.obj
+[196/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_replacement_fireability_v1.cpp.obj
+[197/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_production_final_gates_v1.cpp.obj
+[198/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_current_daily_assault_loss.cpp.obj
+[199/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_composition_candidate_observer_v1_serializer.cpp.obj
+[200/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_assign_councillor_native_submit_adapter_v1.cpp.obj
+[201/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_commander_assignment_mailbox.cpp.obj
+[202/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\actual_contact_scope_v1_mailbox.cpp.obj
+[203/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_scoped_ordered_refill_core.cpp.obj
+[204/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\battle_terminal_journal_v1.cpp.obj
+[205/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\coat_of_arms_designer_probe_v1.cpp.obj
+[206/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_fixed_chunk0_preparation.cpp.obj
+[207/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_counter_output_readout_v1.cpp.obj
+[208/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\battle_control_snapshot_v1_mailbox.cpp.obj
+[209/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_application_main_v1.cpp.obj
+[210/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\battle_reinforcement_assignment_v1_mailbox.cpp.obj
+[211/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\campaign_root_context_v1_mailbox.cpp.obj
+[212/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_held_construction_model_enumerator_v1.cpp.obj
+[213/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_faction_alerts_v1_mailbox.cpp.obj
+[214/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\campaign_root_context_v1_serializer.cpp.obj
+[215/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_confucian_challenger_graph_mailbox.cpp.obj
+[216/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_world_building_definition_source_v1_process.cpp.obj
+[217/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_v3_test_only.cpp.obj
+[218/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_world_building_action_candidate_v1.cpp.obj
+[219/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_advantage_components_observer_v1.cpp.obj
+[220/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\battle_transition_v1_mailbox.cpp.obj
+[221/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_construction_view_probe_v1_process.cpp.obj
+[222/426] Building CXX object CMakeFiles\xar_ck3_12002_runtime.dir\src\ck3_12003_challenger_graph_readback.cpp.obj
+[223/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\steward_develop_county_candidates_v1_serializer.cpp.obj
+[224/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\steward_develop_county_candidates_v1.cpp.obj
+[225/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_world_building_definition_source_v1.cpp.obj
+[226/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\steward_develop_county_candidates_v1_mailbox.cpp.obj
+[227/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\battle_terminal_transition_v1_mailbox.cpp.obj
+[228/426] Linking CXX static library xar_ck3_12002_runtime.lib
+[229/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\g2_truce_preview_entry_observer_v1.cpp.obj
+[230/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\campaign_root_context_v1.cpp.obj
+[231/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\government_runtime_adapter_observer_v1.cpp.obj
+[232/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\domain_construction_application_main_runtime_v1.cpp.obj
+[233/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\g2_truce_native_callsite_observer_v1.cpp.obj
+[234/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\major_decision_found_kingdom_source_adapter_v1.cpp.obj
+[235/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ck3_12003_steward_develop_county.cpp.obj
+[236/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_construction_view_probe_v1_mailbox.cpp.obj
+[237/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\major_decision_found_kingdom_observer_v1.cpp.obj
+[238/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\major_decision_found_kingdom_action_core_v1.cpp.obj
+[239/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\loaded_feature_manifest_v1_serializer.cpp.obj
+[240/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\current_timeline_blocker_context_v1.cpp.obj
+[241/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\major_decision_found_kingdom_native_binder_v1.cpp.obj
+[242/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\main_thread_query_mailbox_v1.cpp.obj
+[243/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\loaded_feature_manifest_v1.cpp.obj
+[244/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\major_decision_found_kingdom_native_submit_v1.cpp.obj
+[245/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\major_decision_found_kingdom_shared_glue_v1.cpp.obj
+[246/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_application_main_receipt_v1.cpp.obj
+[247/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\major_decision_found_kingdom_internal_route_v1.cpp.obj
+[248/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_alliance_projection_adapter_v1.cpp.obj
+[249/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\death_succession_modal_continue_v1.cpp.obj
+[250/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\council_application_main_private_transport_v1.cpp.obj
+[251/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_v3_serializer.cpp.obj
+[252/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_alliance_readback_adapter_v1.cpp.obj
+[253/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_matchmaking_source_adapter_v1.cpp.obj
+[254/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_phase_event_trace_v1_mailbox.cpp.obj
+[255/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ck3_12003_succession_modal.cpp.obj
+[256/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\event_window_context_v1.cpp.obj
+[257/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_native_outcome_classifier_v1.cpp.obj
+[258/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\current_timeline_blocker_context_v1_native.cpp.obj
+[259/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_proposal_action_core_v1.cpp.obj
+[260/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_epidemic_treatment_presence_v1_mailbox.cpp.obj
+[261/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_matchmaking_observer_v1.cpp.obj
+[262/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\current_timeline_blocker_context_v1_mailbox.cpp.obj
+[263/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_phase_event_trace_v1.cpp.obj
+[264/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_epidemic_recovery_v1_mailbox.cpp.obj
+[265/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_ranked_container_adapter_v1.cpp.obj
+[266/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ck3_11906_adapter.cpp.obj
+[267/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_epidemic_treatment_presence_v1.cpp.obj
+[268/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\aub_policy_options_v1.cpp.obj
+[269/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\event_window_context_v1_mailbox.cpp.obj
+[270/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_simulation_inputs_v3_mailbox.cpp.obj
+[271/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\player_epidemic_recovery_v1.cpp.obj
+[272/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\frontend_bookmark_model_probe_v1.cpp.obj
+[273/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_proposal_native_binder_v1.cpp.obj
+[274/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\white_rendered_text_v1.cpp.obj
+[275/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\death_succession_modal_continue_v1_mailbox.cpp.obj
+[276/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\realm_law_governance_snapshot_v1.cpp.obj
+[277/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\event_window_context_v1_serializer.cpp.obj
+[278/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_proposal_resolution_journal_v1.cpp.obj
+[279/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ingame_decisions_opener_v1.cpp.obj
+[280/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\realm_law_enact_mutation_abi_v1.cpp.obj
+[281/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\phase2_wrapper_entry_observer_v1.cpp.obj
+[282/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_shared_glue_v1.cpp.obj
+[283/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\startup_widget_null_flag_call_guard_v1.cpp.obj
+[284/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\phase2_post_call_observer_v1.cpp.obj
+[285/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\government_runtime_adapter_source_adapter_v1.cpp.obj
+[286/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\phase2_completion_observer_v1.cpp.obj
+[287/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\startup_localize_current_root_guard_v1.cpp.obj
+[288/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\startup_particle2_stage_recorder_v1.cpp.obj
+[289/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\loaded_feature_manifest_v1_mailbox.cpp.obj
+[290/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\realm_law_native_shared_glue_v1.cpp.obj
+[291/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\startup_dx11_render_context_draw_guard_v1.cpp.obj
+[292/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\frontend_gui_route_v1.cpp.obj
+[293/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\phase2_wrapper_consumer_edge_observer_v1.cpp.obj
+[294/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\raiktor_surrender_truce_v1.cpp.obj
+[295/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\startup_particle2_null_guard_v1.cpp.obj
+[296/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\current_first_heir_relationship_v1.cpp.obj
+[297/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\startup_particle2_consumer_null_guard_v1.cpp.obj
+[298/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\phase2_producer_identity_observer_v1.cpp.obj
+[299/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\startup_rbx_null_call_guard_v1.cpp.obj
+[300/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\normal_exit_map_request_v1.cpp.obj
+[301/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\realm_law_governance_source_adapter_v1.cpp.obj
+[302/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\observed_heir_marriage_private_v1.cpp.obj
+[303/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\aub_business_state_v1.cpp.obj
+[304/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\realm_law_enact_action_v1.cpp.obj
+[305/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\white_control_action_v1.cpp.obj
+[306/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\phase2_post_call_list_identity_observer_v1.cpp.obj
+[307/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\aub_policy_options_mailbox_v1.cpp.obj
+[308/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\frontend_game_rules_v1.cpp.obj
+[309/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_v3.cpp.obj
+[310/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\title_map_navigation_v1.cpp.obj
+[311/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\white_player_business_variables_v1.cpp.obj
+[312/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\realm_law_native_binder_v1.cpp.obj
+[313/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ingame_decision_item_v1.cpp.obj
+[314/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\government_runtime_adapter_bridge_binder_v1.cpp.obj
+[315/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\title_map_navigation_v1_serializer.cpp.obj
+[316/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\war_entry_assessments_v1_serializer.cpp.obj
+[317/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\realm_law_application_main_v1.cpp.obj
+[318/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\title_holder_v1_serializer.cpp.obj
+[319/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\title_map_navigation_v1_camera.cpp.obj
+[320/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\projected_contact_scope_v1_serializer.cpp.obj
+[321/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\war_entry_assessments_v1_mailbox.cpp.obj
+[322/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\normal_exit_map_v1.cpp.obj
+[323/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\war_occupation_targets_v1_serializer.cpp.obj
+[324/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\marriage_candidate_internal_route_v1.cpp.obj
+[325/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\normal_exit_map_source_v1.cpp.obj
+[326/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\war_entry_assessments_v1.cpp.obj
+[327/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\pending_character_interaction_context_v1_serializer.cpp.obj
+[328/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\raiktor_actual_truce_expiry_v1.cpp.obj
+[329/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\game_adapter.cpp.obj
+[330/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\set_played_character_v1_mailbox.cpp.obj
+[331/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\pending_character_interaction_context_v1_mailbox.cpp.obj
+[332/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\raiktor_war_bound_regiment_v1.cpp.obj
+[333/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\route_contact_horizon_v1_mailbox.cpp.obj
+[334/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\pending_character_interaction_context_v1.cpp.obj
+[335/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_case_snapshot_v1_serializer.cpp.obj
+[336/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_case_snapshot_v1_mailbox.cpp.obj
+[337/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\title_map_navigation_v1_mailbox.cpp.obj
+[338/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\h2743_stock_native_source_adapter_v1.cpp.obj
+[339/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ck3_11906.cpp.obj
+[340/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\tactical_daily_sentinel_v1.cpp.obj
+[341/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_b1_cycle_snapshot_v1.cpp.obj
+[342/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_b1_cycle_snapshot_v1_serializer.cpp.obj
+[343/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_b1_cycle_snapshot_v1_mailbox.cpp.obj
+[344/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_case_snapshot_v1.cpp.obj
+[345/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\h2743_stock_predicate_reader_v1.cpp.obj
+[346/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_b2_pip_snapshot_v1.cpp.obj
+[347/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_manager_governance_snapshot_v1_serializer.cpp.obj
+[348/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_manager_subordinate_selector_v1_serializer.cpp.obj
+[349/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_b2_pip_snapshot_v1_serializer.cpp.obj
+[350/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_incident_snapshot_v1.cpp.obj
+[351/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_manager_governance_snapshot_v1.cpp.obj
+[352/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ordinary_interaction_request_v1.cpp.obj
+[353/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_ai_owned_case_snapshot_v1_serializer.cpp.obj
+[354/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_b2_pip_snapshot_v1_mailbox.cpp.obj
+[355/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_manager_governance_snapshot_v1_mailbox.cpp.obj
+[356/426] Building CXX object CMakeFiles\xar_confucian_assembly_predicates_v1_test.dir\src\ck3_12002.cpp.obj
+[357/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_career_hc_workforce_postcondition_v1.cpp.obj
+[358/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_career_hc_workforce_postcondition_v1_serializer.cpp.obj
+[359/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_ai_owned_case_snapshot_v1.cpp.obj
+[360/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_ai_owned_case_snapshot_v1_mailbox.cpp.obj
+[361/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_incident_snapshot_v1_serializer.cpp.obj
+[362/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_projects_metrics_postcondition_v1.cpp.obj
+[363/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_manager_subordinate_selector_v1.cpp.obj
+[364/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_incident_snapshot_v1_mailbox.cpp.obj
+[365/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_compensation_af5_snapshot_v1_mailbox.cpp.obj
+[366/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_scoreboard_production_v1.cpp.obj
+[367/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_compensation_af5_snapshot_v1.cpp.obj
+[368/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_counter_output_detour_v1.cpp.obj
+[369/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_phase_event_trace_detour_v1.cpp.obj
+[370/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp.obj
+[371/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_promotion_source_progress_v1_mailbox.cpp.obj
+[372/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_projects_metrics_postcondition_v1_serializer.cpp.obj
+[373/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_career_hc_workforce_postcondition_v1_mailbox.cpp.obj
+[374/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ingame_ui_navigation_v1.cpp.obj
+[375/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_projects_metrics_postcondition_v1_mailbox.cpp.obj
+[376/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_promotion_compensation_postcondition_v1.cpp.obj
+[377/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_scoreboard_state_v1_mailbox.cpp.obj
+[378/426] Building CXX object CMakeFiles\xar_ck3_main_thread_query_mailbox_v1_test.dir\src\main_thread_query_mailbox_v1.cpp.obj
+[379/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_scoreboard_state_v1_serializer.cpp.obj
+[380/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_scoreboard_action_v1.cpp.obj
+[381/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_workforce_collective_snapshot_v1_mailbox.cpp.obj
+[382/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\bridge.cpp.obj
+[383/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_scoreboard_action_v1_mailbox.cpp.obj
+[384/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_workforce_collective_snapshot_v1_serializer.cpp.obj
+[385/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_workforce_owner_snapshot_v1.cpp.obj
+[386/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_phase_event_trace_wire_v1.cpp.obj
+[387/426] Building CXX object CMakeFiles\xar_ck3_bridge_injector.dir\src\injector_main.cpp.obj
+[388/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_workforce_owner_snapshot_v1_mailbox.cpp.obj
+[389/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_scoreboard_state_v1.cpp.obj
+[390/426] Building CXX object CMakeFiles\xar_confucian_assembly_predicates_v1_test.dir\src\ck3_12003_confucian_assembly_predicates.cpp.obj
+[391/426] Building CXX object CMakeFiles\xar_confucian_assembly_predicates_v1_test.dir\src\ck3_12003_confucian_assembly_predicates_test.cpp.obj
+[392/426] Linking CXX executable xar_ck3_bridge_injector.exe
+[393/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_workforce_normal_exit_snapshot_v1_serializer.cpp.obj
+[394/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_result_case_snapshot_v1_serializer.cpp.obj
+[395/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_result_case_snapshot_v1_mailbox.cpp.obj
+[396/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_workforce_normal_exit_snapshot_v1.cpp.obj
+[397/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_result_case_snapshot_v1.cpp.obj
+[398/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_workforce_normal_exit_snapshot_v1_mailbox.cpp.obj
+[399/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\zhongguo_workforce_collective_snapshot_v1.cpp.obj
+[400/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ordinary_character_interaction_v1.cpp.obj
+[401/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\current_actor_stress_adjustment_v1.cpp.obj
+[402/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\h2743_stock_private_query_v1.cpp.obj
+[403/426] Building CXX object CMakeFiles\xar_confucian_assembly_predicates_v1_test.dir\src\ck3_12002_phase_character.cpp.obj
+[404/426] Linking CXX executable xar_confucian_assembly_predicates_v1_test.exe
+[405/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\current_actor_stress_adjustment_v1_mailbox.cpp.obj
+[406/426] Building CXX object CMakeFiles\xar_confucian_religious_title_readback_v1_test.dir\src\ck3_12003_title_properties_leaf.cpp.obj
+cl: √¸¡Ó–– warning D9025 :’˝‘⁄÷ÿ–¥°∞/DNDEBUG°±(”√°∞/UNDEBUG°±)
+[407/426] Building CXX object CMakeFiles\xar_confucian_challenger_graph_v1_test.dir\src\ck3_12003_title_properties_leaf.cpp.obj
+cl: √¸¡Ó–– warning D9025 :’˝‘⁄÷ÿ–¥°∞/DNDEBUG°±(”√°∞/UNDEBUG°±)
+[408/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\ordinary_interaction_mailbox_v1.cpp.obj
+[409/426] Building CXX object CMakeFiles\xar_confucian_challenger_graph_v1_test.dir\src\ck3_12003_title_laws_leaf.cpp.obj
+cl: √¸¡Ó–– warning D9025 :’˝‘⁄÷ÿ–¥°∞/DNDEBUG°±(”√°∞/UNDEBUG°±)
+[410/426] Building CXX object CMakeFiles\xar_confucian_religious_title_readback_v1_test.dir\tests\ck3_12003_religious_title_readback_fixture.cpp.obj
+cl: √¸¡Ó–– warning D9025 :’˝‘⁄÷ÿ–¥°∞/DNDEBUG°±(”√°∞/UNDEBUG°±)
+[411/426] Building CXX object CMakeFiles\xar_confucian_religious_title_readback_v1_test.dir\src\ck3_12003_title_laws_leaf.cpp.obj
+cl: √¸¡Ó–– warning D9025 :’˝‘⁄÷ÿ–¥°∞/DNDEBUG°±(”√°∞/UNDEBUG°±)
+[412/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_phase_event_trace_ring_v1.cpp.obj
+[413/426] Building CXX object CMakeFiles\xar_confucian_challenger_graph_v1_test.dir\src\ck3_12003_religious_title_readback.cpp.obj
+cl: √¸¡Ó–– warning D9025 :’˝‘⁄÷ÿ–¥°∞/DNDEBUG°±(”√°∞/UNDEBUG°±)
+[414/426] Building CXX object CMakeFiles\xar_confucian_religious_title_readback_v1_test.dir\src\ck3_12003_religious_title_readback.cpp.obj
+cl: √¸¡Ó–– warning D9025 :’˝‘⁄÷ÿ–¥°∞/DNDEBUG°±(”√°∞/UNDEBUG°±)
+[415/426] Linking CXX executable xar_confucian_religious_title_readback_v1_test.exe
+[416/426] Building CXX object CMakeFiles\xar_ck3_main_thread_query_mailbox_v1_test.dir\src\main_thread_query_mailbox_v1_test.cpp.obj
+[417/426] Linking CXX executable xar_ck3_main_thread_query_mailbox_v1_test.exe
+[418/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_scoped_transition_chain_v1.cpp.obj
+[419/426] Building CXX object CMakeFiles\xar_confucian_challenger_graph_v1_test.dir\src\ck3_12003_challenger_graph_readback.cpp.obj
+cl: √¸¡Ó–– warning D9025 :’˝‘⁄÷ÿ–¥°∞/DNDEBUG°±(”√°∞/UNDEBUG°±)
+[420/426] Building CXX object CMakeFiles\xar_confucian_challenger_graph_v1_test.dir\tests\ck3_12003_challenger_graph_fixture.cpp.obj
+cl: √¸¡Ó–– warning D9025 :’˝‘⁄÷ÿ–¥°∞/DNDEBUG°±(”√°∞/UNDEBUG°±)
+[421/426] Linking CXX executable xar_confucian_challenger_graph_v1_test.exe
+[422/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_scoped_transition_chain_v1_wire.cpp.obj
+[423/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\scoped_character_variable_monitor_v1.cpp.obj
+[424/426] Building CXX object CMakeFiles\xar_ck3_bridge.dir\src\combat_phase_event_trace_managed_v1.cpp.obj
+[425/426] Linking CXX shared library xar_ck3_bridge.dll
+{
+  "schema": "xar.native.msvc-build.v1",
+  "source_dir": "C:\\lr14s1\\ck3_autonomous_player\\native_bridge",
+  "build_dir": "C:\\lyd14-native-clean-20261006-004",
+  "configuration": "Release",
+  "jobs": 64,
+  "targets": [
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector",
+    "xar_confucian_assembly_predicates_v1_test",
+    "xar_confucian_religious_title_readback_v1_test",
+    "xar_confucian_challenger_graph_v1_test",
+    "xar_ck3_main_thread_query_mailbox_v1_test"
+  ],
+  "tools": {
+    "vcvars64": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+    "cmake": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "ninja": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "cl": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe"
+  },
+  "local_ck3_contacted": false,
+  "temporary_dir": "C:\\lyd14-native-clean-20261006-004\\.msvc-temp",
+  "python_cache": "C:\\lyd14-native-clean-20261006-004\\.python-cache",
+  "configured": true,
+  "built": true,
+  "dependency_prefix_mode": "direct-2052-cp936",
+  "status": "built_defender_registration_failed",
+  "build_succeeded": true,
+  "defender_exclusions": {
+    "status": "settings_failed",
+    "manifest": "C:\\lyd14-native-clean-20261006-004\\defender-exe-exclusions\\20261006T135354Z-f2d9a211\\manifest.json",
+    "receipt": "C:\\lyd14-native-clean-20261006-004\\defender-exe-exclusions\\20261006T135354Z-f2d9a211\\receipt.json",
+    "receipt_sha256": "f5e55d64acd6a602ec885d47942d6317a228e6d4ebcccd48009c1223114f48d8",
+    "error": "(-2147352567, 'ÂèëÁîüÊÑèÂ§ñ„ÄÇ', (0, 'SWbemObjectEx', 'Â∏∏ËßÑÊïÖÈöú ', None, 0, -2147217407), None)"
+  }
+}

@@ -1,0 +1,1811 @@
+{
+  "schema": "lyd.r14.actual-B4-reader-differences.v1",
+  "round": {
+    "serial": 3,
+    "nonce": 6,
+    "phase": null,
+    "result_code": 1
+  },
+  "stage": "success_postcommit",
+  "STATE_matches": 38,
+  "STATE_total": 47,
+  "STATE_false": [
+    {
+      "name": "faiths_107_complete_tenet_status_projection",
+      "matches": false,
+      "observed": [
+        {
+          "key": "tenets",
+          "value": {
+            "tenets_count": 36
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 28
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 26
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 24
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 33
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 23
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 27
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 44
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 25
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 16
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 35
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 34
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 34
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 49
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 21
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 22
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 27
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 26
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 33
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 35
+          }
+        }
+      ],
+      "expected": [
+        {
+          "key": "tenets",
+          "value": {
+            "tenets_count": 36
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 28
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 26
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 24
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 33
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 23
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 27
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 44
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 25
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 22
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 35
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 34
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 34
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 49
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 21
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 22
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 27
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 26
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 33
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 35
+          }
+        }
+      ]
+    },
+    {
+      "name": "faiths_107_native_temporal_doctrine",
+      "matches": false,
+      "observed": null,
+      "expected": null
+    },
+    {
+      "name": "political_2230_full_AST_protected",
+      "matches": false,
+      "observed": null,
+      "expected": null
+    },
+    {
+      "name": "political_2231_full_AST_protected",
+      "matches": false,
+      "observed": null,
+      "expected": null
+    },
+    {
+      "name": "political_2235_full_AST_protected",
+      "matches": false,
+      "observed": null,
+      "expected": null
+    },
+    {
+      "name": "political_2262_full_AST_protected",
+      "matches": false,
+      "observed": null,
+      "expected": null
+    },
+    {
+      "name": "political_2264_full_AST_protected",
+      "matches": false,
+      "observed": null,
+      "expected": null
+    },
+    {
+      "name": "faith_and_receipt_actual_title_agree",
+      "matches": false,
+      "observed": null,
+      "expected": null
+    },
+    {
+      "name": "actual_faith_religious_head_actor",
+      "matches": false,
+      "observed": null,
+      "expected": null
+    }
+  ],
+  "TYPED_matches": 80,
+  "TYPED_total": 87,
+  "TYPED_false": [
+    {
+      "name": "political_2230_full_AST",
+      "matches": false,
+      "observed": "c3989692ff88f71cd665ab03bc74e9858bf7994cb12fd5abe8dcadfd733d8a92",
+      "expected": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b"
+    },
+    {
+      "name": "political_2231_full_AST",
+      "matches": false,
+      "observed": "d4a8ba910fec430cb9d1f9a7cb769f697dc98ec9d007f42cdae1d6c17301cb39",
+      "expected": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce"
+    },
+    {
+      "name": "political_2235_full_AST",
+      "matches": false,
+      "observed": "996c2580e48f9c8cf9332777d377f704a1d6a9a9cd00f7aee6157a27a43ceab8",
+      "expected": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de"
+    },
+    {
+      "name": "political_2262_full_AST",
+      "matches": false,
+      "observed": "2289c2d2a50f509ea0a94ae7bee5c7bd8396e62587056f953733e1f73f4ec9a9",
+      "expected": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e"
+    },
+    {
+      "name": "political_2264_full_AST",
+      "matches": false,
+      "observed": "1f0b9df68aa23d329e2740cac9fa62599ed801957f509d2f8ef6fa3fbb73f813",
+      "expected": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9"
+    },
+    {
+      "name": "actor_complete_protected_landed_projection",
+      "matches": false,
+      "observed": [
+        {
+          "key": "domain",
+          "value": [
+            {
+              "key": null,
+              "value": "2230"
+            },
+            {
+              "key": null,
+              "value": "2231"
+            },
+            {
+              "key": null,
+              "value": "2262"
+            },
+            {
+              "key": null,
+              "value": "2232"
+            },
+            {
+              "key": null,
+              "value": "2263"
+            },
+            {
+              "key": null,
+              "value": "2235"
+            },
+            {
+              "key": null,
+              "value": "2264"
+            }
+          ]
+        },
+        {
+          "key": "vassal_contracts",
+          "value": [
+            {
+              "key": null,
+              "value": "8663"
+            },
+            {
+              "key": null,
+              "value": "8691"
+            },
+            {
+              "key": null,
+              "value": "8809"
+            },
+            {
+              "key": null,
+              "value": "8812"
+            },
+            {
+              "key": null,
+              "value": "9402"
+            },
+            {
+              "key": null,
+              "value": "16786427"
+            },
+            {
+              "key": null,
+              "value": "16786415"
+            }
+          ]
+        },
+        {
+          "key": "became_ruler_date",
+          "value": "1066.9.15"
+        },
+        {
+          "key": "laws",
+          "value": [
+            {
+              "key": null,
+              "value": "crown_authority_0"
+            },
+            {
+              "key": null,
+              "value": "confederate_partition_succession_law"
+            },
+            {
+              "key": null,
+              "value": "male_preference_law"
+            },
+            {
+              "key": null,
+              "value": "same_faith_succession_law"
+            },
+            {
+              "key": null,
+              "value": "top_liege_redirected_to_border_wars_law"
+            }
+          ]
+        },
+        {
+          "key": "current_strength",
+          "value": "1205"
+        },
+        {
+          "key": "strength",
+          "value": "1205"
+        },
+        {
+          "key": "strength_without_hires",
+          "value": "1205"
+        },
+        {
+          "key": "power",
+          "value": "40820"
+        },
+        {
+          "key": "max_power",
+          "value": "40820"
+        },
+        {
+          "key": "levy",
+          "value": "891"
+        },
+        {
+          "key": "succession_result_type",
+          "value": "inheritance_child_line"
+        },
+        {
+          "key": "succession",
+          "value": [
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            },
+            {
+              "key": null,
+              "value": "31692"
+            },
+            {
+              "key": null,
+              "value": "34973"
+            },
+            {
+              "key": null,
+              "value": "40259"
+            },
+            {
+              "key": null,
+              "value": "35598"
+            },
+            {
+              "key": null,
+              "value": "36638"
+            },
+            {
+              "key": null,
+              "value": "32536"
+            },
+            {
+              "key": null,
+              "value": "33234"
+            },
+            {
+              "key": null,
+              "value": "37702"
+            },
+            {
+              "key": null,
+              "value": "33542"
+            },
+            {
+              "key": null,
+              "value": "34232"
+            },
+            {
+              "key": null,
+              "value": "31538"
+            },
+            {
+              "key": null,
+              "value": "35899"
+            },
+            {
+              "key": null,
+              "value": "40507"
+            },
+            {
+              "key": null,
+              "value": "40843"
+            },
+            {
+              "key": null,
+              "value": "41028"
+            },
+            {
+              "key": null,
+              "value": "36329"
+            },
+            {
+              "key": null,
+              "value": "36847"
+            },
+            {
+              "key": null,
+              "value": "41495"
+            },
+            {
+              "key": null,
+              "value": "37064"
+            },
+            {
+              "key": null,
+              "value": "40694"
+            },
+            {
+              "key": null,
+              "value": "41235"
+            },
+            {
+              "key": null,
+              "value": "41288"
+            }
+          ]
+        },
+        {
+          "key": "domain_limit",
+          "value": "6"
+        },
+        {
+          "key": "vassal_limit",
+          "value": "20"
+        },
+        {
+          "key": "vassals_towards_limit",
+          "value": "5"
+        },
+        {
+          "key": "government",
+          "value": "feudal_government"
+        },
+        {
+          "key": "realm_capital",
+          "value": "2232"
+        },
+        {
+          "key": "council",
+          "value": [
+            {
+              "key": null,
+              "value": "7870"
+            },
+            {
+              "key": null,
+              "value": "7871"
+            },
+            {
+              "key": null,
+              "value": "7872"
+            },
+            {
+              "key": null,
+              "value": "7873"
+            },
+            {
+              "key": null,
+              "value": "7874"
+            },
+            {
+              "key": null,
+              "value": "7875"
+            }
+          ]
+        },
+        {
+          "key": "diplo_centers",
+          "value": [
+            {
+              "key": null,
+              "value": "1938"
+            },
+            {
+              "key": null,
+              "value": "2418"
+            },
+            {
+              "key": null,
+              "value": "1895"
+            },
+            {
+              "key": null,
+              "value": "2283"
+            },
+            {
+              "key": null,
+              "value": "1711"
+            },
+            {
+              "key": null,
+              "value": "2539"
+            },
+            {
+              "key": null,
+              "value": "1826"
+            },
+            {
+              "key": null,
+              "value": "2461"
+            },
+            {
+              "key": null,
+              "value": "1796"
+            },
+            {
+              "key": null,
+              "value": "2160"
+            },
+            {
+              "key": null,
+              "value": "1866"
+            },
+            {
+              "key": null,
+              "value": "2381"
+            }
+          ]
+        },
+        {
+          "key": "legend_seeds",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "type",
+                  "value": "holy"
+                },
+                {
+                  "key": "chronicle",
+                  "value": "new_faith_legend"
+                },
+                {
+                  "key": "properties",
+                  "value": [
+                    {
+                      "key": "\"reformer\"",
+                      "value": [
+                        {
+                          "key": "type",
+                          "value": "char"
+                        },
+                        {
+                          "key": "identity",
+                          "value": "31254"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "\"faith\"",
+                      "value": [
+                        {
+                          "key": "type",
+                          "value": "faith"
+                        },
+                        {
+                          "key": "identity",
+                          "value": "105"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "\"religion\"",
+                      "value": [
+                        {
+                          "key": "type",
+                          "value": "religion"
+                        },
+                        {
+                          "key": "identity",
+                          "value": "9"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "\"reason\"",
+                      "value": [
+                        {
+                          "key": "type",
+                          "value": "flag"
+                        },
+                        {
+                          "key": "flag",
+                          "value": "\"new_faith\""
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "key": "quality",
+                  "value": "famed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "barter_goods",
+          "value": []
+        }
+      ],
+      "expected": [
+        {
+          "key": "domain",
+          "value": [
+            {
+              "key": null,
+              "value": "2230"
+            },
+            {
+              "key": null,
+              "value": "2231"
+            },
+            {
+              "key": null,
+              "value": "2262"
+            },
+            {
+              "key": null,
+              "value": "2232"
+            },
+            {
+              "key": null,
+              "value": "2263"
+            },
+            {
+              "key": null,
+              "value": "2235"
+            },
+            {
+              "key": null,
+              "value": "2264"
+            }
+          ]
+        },
+        {
+          "key": "vassal_contracts",
+          "value": [
+            {
+              "key": null,
+              "value": "8663"
+            },
+            {
+              "key": null,
+              "value": "8691"
+            },
+            {
+              "key": null,
+              "value": "8809"
+            },
+            {
+              "key": null,
+              "value": "8812"
+            },
+            {
+              "key": null,
+              "value": "9402"
+            },
+            {
+              "key": null,
+              "value": "16786427"
+            },
+            {
+              "key": null,
+              "value": "16786415"
+            }
+          ]
+        },
+        {
+          "key": "became_ruler_date",
+          "value": "1066.9.15"
+        },
+        {
+          "key": "laws",
+          "value": [
+            {
+              "key": null,
+              "value": "crown_authority_0"
+            },
+            {
+              "key": null,
+              "value": "confederate_partition_succession_law"
+            },
+            {
+              "key": null,
+              "value": "male_preference_law"
+            },
+            {
+              "key": null,
+              "value": "top_liege_redirected_to_border_wars_law"
+            }
+          ]
+        },
+        {
+          "key": "current_strength",
+          "value": "1205"
+        },
+        {
+          "key": "strength",
+          "value": "1205"
+        },
+        {
+          "key": "strength_without_hires",
+          "value": "1205"
+        },
+        {
+          "key": "power",
+          "value": "40820"
+        },
+        {
+          "key": "max_power",
+          "value": "40820"
+        },
+        {
+          "key": "levy",
+          "value": "891"
+        },
+        {
+          "key": "succession_result_type",
+          "value": "inheritance_child_line"
+        },
+        {
+          "key": "succession",
+          "value": [
+            {
+              "key": null,
+              "value": "40526"
+            },
+            {
+              "key": null,
+              "value": "40695"
+            },
+            {
+              "key": null,
+              "value": "39979"
+            },
+            {
+              "key": null,
+              "value": "40847"
+            },
+            {
+              "key": null,
+              "value": "41032"
+            },
+            {
+              "key": null,
+              "value": "37244"
+            },
+            {
+              "key": null,
+              "value": "38098"
+            },
+            {
+              "key": null,
+              "value": "36445"
+            },
+            {
+              "key": null,
+              "value": "36663"
+            },
+            {
+              "key": null,
+              "value": "36873"
+            },
+            {
+              "key": null,
+              "value": "31692"
+            },
+            {
+              "key": null,
+              "value": "34973"
+            },
+            {
+              "key": null,
+              "value": "40259"
+            },
+            {
+              "key": null,
+              "value": "35598"
+            },
+            {
+              "key": null,
+              "value": "36638"
+            },
+            {
+              "key": null,
+              "value": "32536"
+            },
+            {
+              "key": null,
+              "value": "38561"
+            },
+            {
+              "key": null,
+              "value": "39045"
+            },
+            {
+              "key": null,
+              "value": "39171"
+            },
+            {
+              "key": null,
+              "value": "39352"
+            },
+            {
+              "key": null,
+              "value": "39527"
+            },
+            {
+              "key": null,
+              "value": "33234"
+            },
+            {
+              "key": null,
+              "value": "37702"
+            },
+            {
+              "key": null,
+              "value": "33542"
+            },
+            {
+              "key": null,
+              "value": "34232"
+            },
+            {
+              "key": null,
+              "value": "32236"
+            },
+            {
+              "key": null,
+              "value": "38560"
+            },
+            {
+              "key": null,
+              "value": "38902"
+            },
+            {
+              "key": null,
+              "value": "31538"
+            },
+            {
+              "key": null,
+              "value": "35899"
+            },
+            {
+              "key": null,
+              "value": "40507"
+            },
+            {
+              "key": null,
+              "value": "40843"
+            },
+            {
+              "key": null,
+              "value": "41028"
+            },
+            {
+              "key": null,
+              "value": "36329"
+            },
+            {
+              "key": null,
+              "value": "36847"
+            },
+            {
+              "key": null,
+              "value": "41495"
+            },
+            {
+              "key": null,
+              "value": "37064"
+            },
+            {
+              "key": null,
+              "value": "33028"
+            },
+            {
+              "key": null,
+              "value": "38782"
+            },
+            {
+              "key": null,
+              "value": "39032"
+            },
+            {
+              "key": null,
+              "value": "39309"
+            },
+            {
+              "key": null,
+              "value": "39932"
+            },
+            {
+              "key": null,
+              "value": "40694"
+            },
+            {
+              "key": null,
+              "value": "41235"
+            },
+            {
+              "key": null,
+              "value": "41288"
+            }
+          ]
+        },
+        {
+          "key": "domain_limit",
+          "value": "6"
+        },
+        {
+          "key": "vassal_limit",
+          "value": "20"
+        },
+        {
+          "key": "vassals_towards_limit",
+          "value": "5"
+        },
+        {
+          "key": "government",
+          "value": "feudal_government"
+        },
+        {
+          "key": "realm_capital",
+          "value": "2232"
+        },
+        {
+          "key": "council",
+          "value": [
+            {
+              "key": null,
+              "value": "7870"
+            },
+            {
+              "key": null,
+              "value": "7871"
+            },
+            {
+              "key": null,
+              "value": "7872"
+            },
+            {
+              "key": null,
+              "value": "7873"
+            },
+            {
+              "key": null,
+              "value": "7874"
+            },
+            {
+              "key": null,
+              "value": "7875"
+            }
+          ]
+        },
+        {
+          "key": "diplo_centers",
+          "value": [
+            {
+              "key": null,
+              "value": "1938"
+            },
+            {
+              "key": null,
+              "value": "2418"
+            },
+            {
+              "key": null,
+              "value": "1895"
+            },
+            {
+              "key": null,
+              "value": "2283"
+            },
+            {
+              "key": null,
+              "value": "1711"
+            },
+            {
+              "key": null,
+              "value": "2539"
+            },
+            {
+              "key": null,
+              "value": "1826"
+            },
+            {
+              "key": null,
+              "value": "2461"
+            },
+            {
+              "key": null,
+              "value": "1796"
+            },
+            {
+              "key": null,
+              "value": "2160"
+            },
+            {
+              "key": null,
+              "value": "1866"
+            },
+            {
+              "key": null,
+              "value": "2381"
+            }
+          ]
+        },
+        {
+          "key": "legend_seeds",
+          "value": [
+            {
+              "key": null,
+              "value": [
+                {
+                  "key": "type",
+                  "value": "holy"
+                },
+                {
+                  "key": "chronicle",
+                  "value": "new_faith_legend"
+                },
+                {
+                  "key": "properties",
+                  "value": [
+                    {
+                      "key": "\"reformer\"",
+                      "value": [
+                        {
+                          "key": "type",
+                          "value": "char"
+                        },
+                        {
+                          "key": "identity",
+                          "value": "31254"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "\"faith\"",
+                      "value": [
+                        {
+                          "key": "type",
+                          "value": "faith"
+                        },
+                        {
+                          "key": "identity",
+                          "value": "105"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "\"religion\"",
+                      "value": [
+                        {
+                          "key": "type",
+                          "value": "religion"
+                        },
+                        {
+                          "key": "identity",
+                          "value": "9"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "\"reason\"",
+                      "value": [
+                        {
+                          "key": "type",
+                          "value": "flag"
+                        },
+                        {
+                          "key": "flag",
+                          "value": "\"new_faith\""
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "key": "quality",
+                  "value": "famed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "barter_goods",
+          "value": []
+        }
+      ]
+    },
+    {
+      "name": "faiths_107_complete_tenet_status_projection",
+      "matches": false,
+      "observed": [
+        {
+          "key": "tenets",
+          "value": {
+            "tenets_count": 36
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 28
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 26
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 24
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 33
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 23
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 27
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 44
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 25
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 16
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 35
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 34
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 34
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 49
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 21
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 22
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 27
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 26
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 33
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 35
+          }
+        }
+      ],
+      "expected": [
+        {
+          "key": "tenets",
+          "value": {
+            "tenets_count": 36
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "tenet",
+          "value": {
+            "tenets_count": 28
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 26
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 24
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 33
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 23
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 27
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 44
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 25
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 30
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 29
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 22
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 35
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 34
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 34
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 49
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 31
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 21
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 22
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 19
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 27
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 26
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 33
+          }
+        },
+        {
+          "key": "doctrine",
+          "value": {
+            "tenets_count": 35
+          }
+        }
+      ]
+    }
+  ],
+  "STATE": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/STATE.json",
+    "bytes": 621929,
+    "sha256": "8d9e322777d4fd72fb8de7a4823a34171b1b0bc80a8723b7f0e084d42c5eae3a"
+  },
+  "TYPED": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/TYPED-PROTECTION.json",
+    "bytes": 1004259,
+    "sha256": "0146e048c34b1072460ff6de1849f04ff22e6ceb3d5ee2ade26a06d9ded919e5"
+  },
+  "actual_fullpost_pass": null,
+  "ACK_credit": null,
+  "additional_save_body_reads": 0
+}

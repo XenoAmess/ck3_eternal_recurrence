@@ -1,0 +1,8 @@
+{
+  "status": "ERROR_STOP_NO_RETRY_NO_NEXT_ACTION",
+  "command": "release-screen",
+  "error": "FileExistsError: [Errno 17] File exists: 'C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\r14-root-screen-release-20261007-002\\\\AFTER-LIST.actual.json'",
+  "observed_at_utc": "2026-10-06T17:29:22.041003+00:00",
+  "SDK_calls": 0,
+  "game_calls": 0
+}

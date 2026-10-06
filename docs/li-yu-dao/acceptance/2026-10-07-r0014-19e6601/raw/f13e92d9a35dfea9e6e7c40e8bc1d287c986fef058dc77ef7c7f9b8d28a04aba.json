@@ -1,0 +1,1167 @@
+{
+  "observed_at_utc": "2026-10-06T16:32:29.679643+00:00",
+  "platform": {
+    "sys_getwindowsversion": [
+      10,
+      0,
+      19045,
+      2,
+      ""
+    ],
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+    "admin_token": true
+  },
+  "original_existing_five_target_manifest": {
+    "path": "C:/lyd14-native-clean-20261006-004/defender-exe-exclusions/20261006T135354Z-f2d9a211/manifest.json",
+    "bytes": 5305,
+    "sha256": "4f83c1179245c5f6818ad645fe43348b84847bfa3ff7065ca655e0ca5b9138e2"
+  },
+  "original_failed_Add_receipt": {
+    "path": "C:/lyd14-native-clean-20261006-004/defender-exe-exclusions/20261006T135354Z-f2d9a211/receipt.json",
+    "bytes": 3525,
+    "sha256": "f5e55d64acd6a602ec885d47942d6317a228e6d4ebcccd48009c1223114f48d8"
+  },
+  "manifest_recollection_called": false,
+  "new_Add_or_settings_method_calls": 0,
+  "commands": [
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "query",
+        "WinDefend"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/01-sc-query-WinDefend.stdout.bin",
+        "bytes": 275,
+        "sha256": "028362f66a58a52d3230d1dbd6ea7e78c88e256eb8de1678531313517d487981"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/01-sc-query-WinDefend.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "qc",
+        "WinDefend"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/02-sc-qc-WinDefend.stdout.bin",
+        "bytes": 480,
+        "sha256": "8109440a0ff0f4942ac3181e754785d4e9295ce34d255eef28320c02025b2305"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/02-sc-qc-WinDefend.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "query",
+        "WdNisSvc"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/03-sc-query-WdNisSvc.stdout.bin",
+        "bytes": 274,
+        "sha256": "27403a5bef7bafd8c655a816bd7d64f3596f42a123f0713e7e808639279fe500"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/03-sc-query-WdNisSvc.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "qc",
+        "WdNisSvc"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/04-sc-qc-WdNisSvc.stdout.bin",
+        "bytes": 514,
+        "sha256": "3a4e89f8f4a67d44fd4f660784bd90ca7cc22713dff25ba5c3ca62ae732e8dd3"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/04-sc-qc-WdNisSvc.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "query",
+        "Winmgmt"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/05-sc-query-Winmgmt.stdout.bin",
+        "bytes": 329,
+        "sha256": "e5f24719c475ff4b71a7cbb1a0638c18c4902221d08d26f98a7196e5314139c4"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/05-sc-query-Winmgmt.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "qc",
+        "Winmgmt"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/06-sc-qc-Winmgmt.stdout.bin",
+        "bytes": 478,
+        "sha256": "aef114fbb9cc5ab922fe6f6fd417cb4aeff28aebd150e6d45c27d0552c9ea866"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/06-sc-qc-Winmgmt.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "query",
+        "wscsvc"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/07-sc-query-wscsvc.stdout.bin",
+        "bytes": 332,
+        "sha256": "c6bfaf6c520227519dfe43988d42378c225f526fd2dc445fc33df9eb51b673e6"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/07-sc-query-wscsvc.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "qc",
+        "wscsvc"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/08-sc-qc-wscsvc.stdout.bin",
+        "bytes": 505,
+        "sha256": "a3964a2bf007a0055b863b4e40f6228643eafa5e77f6b2f7cf8946c896af8fe8"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/08-sc-qc-wscsvc.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "query",
+        "SecurityHealthService"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/09-sc-query-SecurityHealthService.stdout.bin",
+        "bytes": 366,
+        "sha256": "881ef0a6c19e567ef2486a42b3417628222bf22e23c16381dff32b53073af149"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/09-sc-query-SecurityHealthService.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Windows\\System32\\sc.exe",
+        "qc",
+        "SecurityHealthService"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/10-sc-qc-SecurityHealthService.stdout.bin",
+        "bytes": 478,
+        "sha256": "b7375d5bea4c3e56ca2cdbf4bbebf718a741484a427964ed2517fad045ec92b4"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/10-sc-qc-SecurityHealthService.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-defender-platform-readonly-20261007-001\\diagnose_current_defender.py",
+        "--worker",
+        "cimv2"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/11-wmi-cimv2.stdout.bin",
+        "bytes": 3045,
+        "sha256": "72ebf9723e4b27a3cb38e8c5601e4c6877e1db345bb6f86cd8028768c93f103e"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/11-wmi-cimv2.stderr.bin",
+        "bytes": 134,
+        "sha256": "1931b7350a9651941954b78a0cb3b967e5eb053ff0cd9613ca7266f7d473cf3a"
+      },
+      "parsed_stdout_actual": {
+        "namespace": "root\\cimv2",
+        "server": ".",
+        "local_only": true,
+        "operations": [
+          {
+            "operation": "ExecQuery-read",
+            "query": "SELECT Caption,Version,BuildNumber,ProductType,OSArchitecture FROM Win32_OperatingSystem",
+            "rows": [
+              {
+                "BuildNumber": {
+                  "cim_type": 8,
+                  "value": "19045"
+                },
+                "Caption": {
+                  "cim_type": 8,
+                  "value": "Microsoft Windows 10 专业版"
+                },
+                "OSArchitecture": {
+                  "cim_type": 8,
+                  "value": "64 位"
+                },
+                "ProductType": {
+                  "cim_type": 19,
+                  "value": 1
+                },
+                "Version": {
+                  "cim_type": 8,
+                  "value": "10.0.19045"
+                }
+              }
+            ],
+            "query_success": true,
+            "row_count": 1
+          },
+          {
+            "operation": "ExecQuery-read",
+            "query": "SELECT Name,State,Status,StartMode,ExitCode,ServiceSpecificExitCode,PathName,ProcessId FROM Win32_Service WHERE Name='WinDefend' OR Name='WdNisSvc' OR Name='Winmgmt' OR Name='wscsvc' OR Name='SecurityHealthService'",
+            "rows": [
+              {
+                "ExitCode": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "Name": {
+                  "cim_type": 8,
+                  "value": "SecurityHealthService"
+                },
+                "PathName": {
+                  "cim_type": 8,
+                  "value": "C:\\Windows\\system32\\SecurityHealthService.exe"
+                },
+                "ProcessId": {
+                  "cim_type": 19,
+                  "value": 8576
+                },
+                "ServiceSpecificExitCode": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "StartMode": {
+                  "cim_type": 8,
+                  "value": "Manual"
+                },
+                "State": {
+                  "cim_type": 8,
+                  "value": "Running"
+                },
+                "Status": {
+                  "cim_type": 8,
+                  "value": "OK"
+                }
+              },
+              {
+                "ExitCode": {
+                  "cim_type": 19,
+                  "value": 1077
+                },
+                "Name": {
+                  "cim_type": 8,
+                  "value": "WdNisSvc"
+                },
+                "PathName": {
+                  "cim_type": 8,
+                  "value": "\"C:\\Program Files\\Windows Defender\\NisSrv.exe\""
+                },
+                "ProcessId": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "ServiceSpecificExitCode": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "StartMode": {
+                  "cim_type": 8,
+                  "value": "Disabled"
+                },
+                "State": {
+                  "cim_type": 8,
+                  "value": "Stopped"
+                },
+                "Status": {
+                  "cim_type": 8,
+                  "value": "OK"
+                }
+              },
+              {
+                "ExitCode": {
+                  "cim_type": 19,
+                  "value": 1077
+                },
+                "Name": {
+                  "cim_type": 8,
+                  "value": "WinDefend"
+                },
+                "PathName": {
+                  "cim_type": 8,
+                  "value": "\"C:\\Program Files\\Windows Defender\\MsMpEng.exe\""
+                },
+                "ProcessId": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "ServiceSpecificExitCode": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "StartMode": {
+                  "cim_type": 8,
+                  "value": "Disabled"
+                },
+                "State": {
+                  "cim_type": 8,
+                  "value": "Stopped"
+                },
+                "Status": {
+                  "cim_type": 8,
+                  "value": "OK"
+                }
+              },
+              {
+                "ExitCode": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "Name": {
+                  "cim_type": 8,
+                  "value": "Winmgmt"
+                },
+                "PathName": {
+                  "cim_type": 8,
+                  "value": "C:\\Windows\\system32\\svchost.exe -k netsvcs -p"
+                },
+                "ProcessId": {
+                  "cim_type": 19,
+                  "value": 3120
+                },
+                "ServiceSpecificExitCode": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "StartMode": {
+                  "cim_type": 8,
+                  "value": "Auto"
+                },
+                "State": {
+                  "cim_type": 8,
+                  "value": "Running"
+                },
+                "Status": {
+                  "cim_type": 8,
+                  "value": "OK"
+                }
+              },
+              {
+                "ExitCode": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "Name": {
+                  "cim_type": 8,
+                  "value": "wscsvc"
+                },
+                "PathName": {
+                  "cim_type": 8,
+                  "value": "C:\\Windows\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p"
+                },
+                "ProcessId": {
+                  "cim_type": 19,
+                  "value": 5292
+                },
+                "ServiceSpecificExitCode": {
+                  "cim_type": 19,
+                  "value": 0
+                },
+                "StartMode": {
+                  "cim_type": 8,
+                  "value": "Auto"
+                },
+                "State": {
+                  "cim_type": 8,
+                  "value": "Running"
+                },
+                "Status": {
+                  "cim_type": 8,
+                  "value": "OK"
+                }
+              }
+            ],
+            "query_success": true,
+            "row_count": 5
+          }
+        ],
+        "provider_mutating_methods_called": [],
+        "connected": true
+      }
+    },
+    {
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-defender-platform-readonly-20261007-001\\diagnose_current_defender.py",
+        "--worker",
+        "defender"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/12-wmi-defender.stdout.bin",
+        "bytes": 3122,
+        "sha256": "8b9525813e95295dd77dcdc0f8f4b1e7424172bfba7793e4934a9824113571ce"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/12-wmi-defender.stderr.bin",
+        "bytes": 335,
+        "sha256": "e57f2f1091018617756270c48f862aaf73eb70a9f498160438e2207f93333f9f"
+      },
+      "parsed_stdout_actual": {
+        "namespace": "root\\Microsoft\\Windows\\Defender",
+        "server": ".",
+        "local_only": true,
+        "operations": [
+          {
+            "operation": "Get-class",
+            "class": "MSFT_MpComputerStatus",
+            "class_read_success": true,
+            "qualifiers": {
+              "dynamic": true,
+              "provider": "ProtectionManagement"
+            },
+            "method_definitions_only": []
+          },
+          {
+            "operation": "ExecQuery-read",
+            "query": "SELECT * FROM MSFT_MpComputerStatus",
+            "query_success": false,
+            "error": {
+              "stage": "ExecQuery-enumerate",
+              "type": "com_error",
+              "repr": "com_error(-2147217407, 'OLE error 0x80041001', None, None)",
+              "args": [
+                -2147217407,
+                "OLE error 0x80041001",
+                null,
+                null
+              ],
+              "hresult": -2147217407,
+              "strerror": "OLE error 0x80041001",
+              "excepinfo": null,
+              "argerror": null,
+              "HRESULTs_unsigned_hex": [
+                "0x80041001"
+              ]
+            }
+          },
+          {
+            "operation": "Get-class",
+            "class": "MSFT_MpPreference",
+            "class_read_success": true,
+            "qualifiers": {
+              "dynamic": true,
+              "provider": "ProtectionManagement"
+            },
+            "method_definitions_only": [
+              "Set",
+              "Remove",
+              "Add"
+            ]
+          },
+          {
+            "operation": "ExecQuery-read",
+            "query": "SELECT * FROM MSFT_MpPreference",
+            "rows": [
+              {
+                "DisableBehaviorMonitoring": {
+                  "cim_type": 11,
+                  "value": false
+                },
+                "DisableBlockAtFirstSeen": {
+                  "cim_type": 11,
+                  "value": false
+                },
+                "DisableIntrusionPreventionSystem": {
+                  "cim_type": 11,
+                  "value": null
+                },
+                "DisableIOAVProtection": {
+                  "cim_type": 11,
+                  "value": false
+                },
+                "DisableRealtimeMonitoring": {
+                  "cim_type": 11,
+                  "value": true
+                },
+                "DisableScriptScanning": {
+                  "cim_type": 11,
+                  "value": false
+                },
+                "ExclusionExtension": {
+                  "cim_type": 8,
+                  "value": null
+                },
+                "ExclusionPath": {
+                  "cim_type": 8,
+                  "value": null
+                },
+                "ExclusionProcess": {
+                  "cim_type": 8,
+                  "value": null
+                }
+              }
+            ],
+            "row_count": 1,
+            "query_success": true
+          },
+          {
+            "operation": "ExecQuery-read",
+            "query": "SELECT * FROM __Win32Provider",
+            "rows": [
+              {
+                "ClientLoadableCLSID": {
+                  "cim_type": 8,
+                  "value": null
+                },
+                "CLSID": {
+                  "cim_type": 8,
+                  "value": "{A7C452EF-8E9F-42EB-9F2B-245613CA0DC9}"
+                },
+                "Concurrency": {
+                  "cim_type": 3,
+                  "value": null
+                },
+                "DefaultMachineName": {
+                  "cim_type": 8,
+                  "value": null
+                },
+                "Enabled": {
+                  "cim_type": 11,
+                  "value": null
+                },
+                "HostingModel": {
+                  "cim_type": 8,
+                  "value": "LocalServiceHost"
+                },
+                "ImpersonationLevel": {
+                  "cim_type": 3,
+                  "value": 1
+                },
+                "InitializationReentrancy": {
+                  "cim_type": 3,
+                  "value": 0
+                },
+                "InitializationTimeoutInterval": {
+                  "cim_type": 101,
+                  "value": null
+                },
+                "InitializeAsAdminFirst": {
+                  "cim_type": 11,
+                  "value": null
+                },
+                "Name": {
+                  "cim_type": 8,
+                  "value": "ProtectionManagement"
+                },
+                "OperationTimeoutInterval": {
+                  "cim_type": 101,
+                  "value": null
+                },
+                "PerLocaleInitialization": {
+                  "cim_type": 11,
+                  "value": false
+                },
+                "PerUserInitialization": {
+                  "cim_type": 11,
+                  "value": false
+                },
+                "Pure": {
+                  "cim_type": 11,
+                  "value": true
+                },
+                "SecurityDescriptor": {
+                  "cim_type": 8,
+                  "value": null
+                },
+                "SupportsExplicitShutdown": {
+                  "cim_type": 11,
+                  "value": null
+                },
+                "SupportsExtendedStatus": {
+                  "cim_type": 11,
+                  "value": null
+                },
+                "SupportsQuotas": {
+                  "cim_type": 11,
+                  "value": null
+                },
+                "SupportsSendStatus": {
+                  "cim_type": 11,
+                  "value": null
+                },
+                "SupportsShutdown": {
+                  "cim_type": 11,
+                  "value": null
+                },
+                "SupportsThrottling": {
+                  "cim_type": 11,
+                  "value": null
+                },
+                "UnloadTimeout": {
+                  "cim_type": 101,
+                  "value": null
+                },
+                "Version": {
+                  "cim_type": 19,
+                  "value": 1073741825
+                }
+              }
+            ],
+            "row_count": 1,
+            "query_success": true
+          }
+        ],
+        "provider_mutating_methods_called": [],
+        "connected": true
+      }
+    },
+    {
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-defender-platform-readonly-20261007-001\\diagnose_current_defender.py",
+        "--worker",
+        "securitycenter2"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001",
+      "timeout_seconds": 20,
+      "shell": false,
+      "creationflags": "CREATE_NO_WINDOW",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/13-wmi-securitycenter2.stdout.bin",
+        "bytes": 358,
+        "sha256": "2e978a37327add77840f301cabecf4278e2b5b7a8d68e763fc621230fc3da877"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/actual-001/13-wmi-securitycenter2.stderr.bin",
+        "bytes": 134,
+        "sha256": "a312351bccac954a71ef754630b2d0204275b08eb8e416db14723b6c7d435cd5"
+      },
+      "parsed_stdout_actual": {
+        "namespace": "root\\SecurityCenter2",
+        "server": ".",
+        "local_only": true,
+        "operations": [
+          {
+            "operation": "ExecQuery-read",
+            "query": "SELECT displayName,productState,pathToSignedProductExe,pathToSignedReportingExe,timestamp FROM AntiVirusProduct",
+            "rows": [],
+            "query_success": true,
+            "row_count": 0
+          }
+        ],
+        "provider_mutating_methods_called": [],
+        "connected": true
+      }
+    }
+  ],
+  "narrow_registry_read_actual": [
+    {
+      "hive": "HKLM",
+      "key": "SOFTWARE\\Policies\\Microsoft\\Windows Defender",
+      "access": "KEY_READ|KEY_WOW64_64KEY",
+      "values": {
+        "DisableAntiSpyware": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        },
+        "DisableAntiVirus": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "ForceDefenderPassiveMode": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        },
+        "PUAProtection": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        }
+      },
+      "key_read_success": true
+    },
+    {
+      "hive": "HKLM",
+      "key": "SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection",
+      "access": "KEY_READ|KEY_WOW64_64KEY",
+      "values": {},
+      "key_read_success": false,
+      "error": {
+        "stage": "OpenKey",
+        "type": "FileNotFoundError",
+        "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+        "args": [
+          2,
+          "系统找不到指定的文件。",
+          null,
+          2,
+          null
+        ],
+        "strerror": "系统找不到指定的文件。",
+        "winerror": 2,
+        "errno": 2,
+        "HRESULTs_unsigned_hex": []
+      }
+    },
+    {
+      "hive": "HKLM",
+      "key": "SOFTWARE\\Policies\\Microsoft\\Windows Advanced Threat Protection",
+      "access": "KEY_READ|KEY_WOW64_64KEY",
+      "values": {
+        "ForceDefenderPassiveMode": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        }
+      },
+      "key_read_success": true
+    },
+    {
+      "hive": "HKLM",
+      "key": "SOFTWARE\\Microsoft\\Windows Defender",
+      "access": "KEY_READ|KEY_WOW64_64KEY",
+      "values": {
+        "DisableAntiSpyware": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "DisableAntiVirus": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "PassiveMode": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        },
+        "ProductStatus": {
+          "type": 4,
+          "value": 0,
+          "read_success": true
+        },
+        "IsServiceRunning": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        }
+      },
+      "key_read_success": true
+    },
+    {
+      "hive": "HKLM",
+      "key": "SOFTWARE\\Microsoft\\Windows Defender\\Features",
+      "access": "KEY_READ|KEY_WOW64_64KEY",
+      "values": {
+        "TamperProtection": {
+          "type": 4,
+          "value": 0,
+          "read_success": true
+        },
+        "TamperProtectionSource": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        }
+      },
+      "key_read_success": true
+    },
+    {
+      "hive": "HKLM",
+      "key": "SOFTWARE\\Microsoft\\Windows Defender\\Real-Time Protection",
+      "access": "KEY_READ|KEY_WOW64_64KEY",
+      "values": {
+        "DisableRealtimeMonitoring": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "DisableBehaviorMonitoring": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        },
+        "DisableOnAccessProtection": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        },
+        "DisableIOAVProtection": {
+          "read_success": false,
+          "error": {
+            "stage": "QueryValueEx",
+            "type": "FileNotFoundError",
+            "repr": "FileNotFoundError(2, '系统找不到指定的文件。', None, 2, None)",
+            "args": [
+              2,
+              "系统找不到指定的文件。",
+              null,
+              2,
+              null
+            ],
+            "strerror": "系统找不到指定的文件。",
+            "winerror": 2,
+            "errno": 2,
+            "HRESULTs_unsigned_hex": []
+          }
+        }
+      },
+      "key_read_success": true
+    },
+    {
+      "hive": "HKLM",
+      "key": "SYSTEM\\CurrentControlSet\\Services\\WinDefend",
+      "access": "KEY_READ|KEY_WOW64_64KEY",
+      "values": {
+        "Start": {
+          "type": 4,
+          "value": 4,
+          "read_success": true
+        },
+        "ImagePath": {
+          "type": 2,
+          "value": "\"%ProgramFiles%\\Windows Defender\\MsMpEng.exe\"",
+          "read_success": true
+        },
+        "Type": {
+          "type": 4,
+          "value": 16,
+          "read_success": true
+        },
+        "ErrorControl": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "DependOnService": {
+          "type": 7,
+          "value": [
+            "RpcSs"
+          ],
+          "read_success": true
+        },
+        "LaunchProtected": {
+          "type": 4,
+          "value": 3,
+          "read_success": true
+        }
+      },
+      "key_read_success": true
+    },
+    {
+      "hive": "HKLM",
+      "key": "SYSTEM\\CurrentControlSet\\Services\\WdNisSvc",
+      "access": "KEY_READ|KEY_WOW64_64KEY",
+      "values": {
+        "Start": {
+          "type": 4,
+          "value": 4,
+          "read_success": true
+        },
+        "ImagePath": {
+          "type": 2,
+          "value": "\"%ProgramFiles%\\Windows Defender\\NisSrv.exe\"",
+          "read_success": true
+        },
+        "Type": {
+          "type": 4,
+          "value": 16,
+          "read_success": true
+        },
+        "ErrorControl": {
+          "type": 4,
+          "value": 1,
+          "read_success": true
+        },
+        "DependOnService": {
+          "type": 7,
+          "value": [
+            "WdNisDrv"
+          ],
+          "read_success": true
+        }
+      },
+      "key_read_success": true
+    },
+    {
+      "hive": "HKLM",
+      "key": "SYSTEM\\CurrentControlSet\\Services\\Winmgmt",
+      "access": "KEY_READ|KEY_WOW64_64KEY",
+      "values": {
+        "Start": {
+          "type": 4,
+          "value": 2,
+          "read_success": true
+        },
+        "ImagePath": {
+          "type": 2,
+          "value": "%systemroot%\\system32\\svchost.exe -k netsvcs -p",
+          "read_success": true
+        },
+        "Type": {
+          "type": 4,
+          "value": 32,
+          "read_success": true
+        },
+        "ErrorControl": {
+          "type": 4,
+          "value": 0,
+          "read_success": true
+        },
+        "DependOnService": {
+          "type": 7,
+          "value": [
+            "RPCSS"
+          ],
+          "read_success": true
+        }
+      },
+      "key_read_success": true
+    }
+  ],
+  "closed_scope": {
+    "service_control_start_stop_config_called": false,
+    "policy_registry_writes": false,
+    "broker_install_or_task_mutation": false,
+    "new_exclusions": false,
+    "game_SDK_desktop_lease_calls": false,
+    "main_changes": false,
+    "network_calls": false
+  },
+  "settings_registered_or_verified": false
+}

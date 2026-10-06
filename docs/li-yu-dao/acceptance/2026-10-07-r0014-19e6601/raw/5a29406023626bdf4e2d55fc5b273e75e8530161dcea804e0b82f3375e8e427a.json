@@ -1,0 +1,101 @@
+{
+  "status": "ACTUAL_RELEASE_PREREQUISITES_READONLY_PASS_CORRECTED_CLI_CANDIDATE",
+  "created_at_utc": "2026-10-06T17:27:26.368199+00:00",
+  "original_package_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-003/INDEX.json",
+    "bytes": 3186,
+    "sha256": "a27f148aaf5af263ef3306ab739635ed3a9d08ed27e956fd011547fc53b6202d"
+  },
+  "refs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/guarded_r14_helper_close.py",
+      "bytes": 24157,
+      "sha256": "49ec457d713da1bbe62b21263ed9dbd7b072292b3571062160095b18410e23e6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/prepare_and_check_successor.py",
+      "bytes": 6935,
+      "sha256": "63429b39c4e1e1e08cd36d80710441666087adb9295d9203e87407cf628d7a03"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/DELTA.json",
+      "bytes": 2781,
+      "sha256": "67df7340968aea0c705ccb60ae109c78209913d3fb5e19f4527793538ee1af75"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/ROOT-CORRECTED-CAS-ARGV.json",
+      "bytes": 7004,
+      "sha256": "7436fa7b0252f87df4364f2dcea72b75d1285c5359c2e09d7ce80dedc1cc8a7c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/ROOT-RUNBOOK.md",
+      "bytes": 7837,
+      "sha256": "b85588ad843f81fafa7a60c42df87ed170f5912ef24da8baa22ccd72495896bc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/ACTUAL-NORMAL-EXIT-TOOL-ROWS.json",
+      "bytes": 3494,
+      "sha256": "540b99a573c3597fbe558bd381fe8d4955d47fa9ffe72b1a3fdb321b4e4afbbe"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/SOURCE-AND-ORIGINAL-PIN-REFS.json",
+      "bytes": 3111,
+      "sha256": "c2caff94dc4711102aadbcdca07fcd278561be22f1e2e0f0adccd23c3e823e0e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/FUTURE-ROOT-INPUT-TEMPLATE.json",
+      "bytes": 821,
+      "sha256": "cba06fa3f28000381ccb872996d7e25d5410a653874d62a05dc62939cb8831e3"
+    }
+  ],
+  "help": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/HELP/CHECK.actual.json",
+    "bytes": 1223,
+    "sha256": "5b32c17c73d11a4959dc848634ed883e07fed5fa7f4c28b735e34d74673c2501"
+  },
+  "actual_readonly_release_check": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/ACTUAL-RELEASE-READONLY-CHECK/CHECK.actual.json",
+    "bytes": 1756,
+    "sha256": "5a3e81d9ac9b0cd92df2668f9d6e4569b710f0c5ee1e8f75da3607b078a6dbff"
+  },
+  "old_failed_release_files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-screen-release-20261007-001/FAILURE.actual.json",
+      "bytes": 295,
+      "sha256": "6f87f7175c2e6cc8743b7c7e4b0f6e3799679646fdf030fafa7638831324173d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-screen-release-20261007-001/INPUTS.actual.json",
+      "bytes": 9322,
+      "sha256": "8708e5edb6b3bc43b82fd8dea60edc3ed721df8bba5b771015cae4846f616bac"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-screen-release-20261007-001/release-screen-cas.actual.json",
+      "bytes": 1162,
+      "sha256": "c9f0d37f8cfd8689aae906a95d54fc5e95376f3afc09dc22ba7895dceab33526"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-screen-release-20261007-001/release-screen-cas.argv.json",
+      "bytes": 677,
+      "sha256": "7b73808f7cc101c940a4e6b132857ef3f615f3fb6aa873588d507f49988f43a6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-screen-release-20261007-001/release-screen-cas.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-screen-release-20261007-001/release-screen-cas.stdout",
+      "bytes": 171,
+      "sha256": "f2af5c90ef00c7e811a3873bf48f3098eba716104bb732376e15db873588c8c3"
+    }
+  ],
+  "Client_close_requested": false,
+  "keeper_STOP_requested": false,
+  "lease_mutated": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "future_CAS_release": null,
+  "autosave_verified": false,
+  "business_GREEN": false
+}

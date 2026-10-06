@@ -1,0 +1,1272 @@
+{
+  "schema": "lyd.r14.afterclose-integration-original-source-inputs.v1",
+  "actual_R14_runtime_HEAD": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "business_GREEN": false,
+  "prepared_at_utc": "2026-10-06T18:21:56.577492+00:00",
+  "four_ordered_candidate_manifests": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/AFTERCLOSE-INTEGRATION-MANIFEST.json",
+        "bytes": 6421,
+        "sha256": "e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b.json",
+        "bytes": 6421,
+        "sha256": "e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b"
+      },
+      "archive_relative_path": "source_inputs/originals/e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b.json"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/AFTERCLOSE-INTEGRATION-MANIFEST.json",
+        "bytes": 3743,
+        "sha256": "252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8.json",
+        "bytes": 3743,
+        "sha256": "252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8"
+      },
+      "archive_relative_path": "source_inputs/originals/252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8.json"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/AFTERCLOSE-MANIFEST.json",
+        "bytes": 3835,
+        "sha256": "87845f078cffd5483d14692efede8a117e47da3eac13e398a5f24c1374952f82"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/87845f078cffd5483d14692efede8a117e47da3eac13e398a5f24c1374952f82.json",
+        "bytes": 3835,
+        "sha256": "87845f078cffd5483d14692efede8a117e47da3eac13e398a5f24c1374952f82"
+      },
+      "archive_relative_path": "source_inputs/originals/87845f078cffd5483d14692efede8a117e47da3eac13e398a5f24c1374952f82.json"
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/MAIN-INTEGRATION.manifest.json",
+        "bytes": 7388,
+        "sha256": "95bd475c12e80fb154256e3ed2e7fc2e4db094f68bddced6b24d85286c57413c"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/95bd475c12e80fb154256e3ed2e7fc2e4db094f68bddced6b24d85286c57413c.json",
+        "bytes": 7388,
+        "sha256": "95bd475c12e80fb154256e3ed2e7fc2e4db094f68bddced6b24d85286c57413c"
+      },
+      "archive_relative_path": "source_inputs/originals/95bd475c12e80fb154256e3ed2e7fc2e4db094f68bddced6b24d85286c57413c.json"
+    }
+  ],
+  "root_actual_afterclose_offline_checks": {
+    "reader": 112,
+    "factory_law": 11,
+    "preview": 6,
+    "static_runtime_files": 70,
+    "static_result": "GREEN",
+    "initial_preview_CLI_exit2_preserved": true,
+    "generate_exit_code": 0
+  },
+  "three_new_source_CRLF_to_LF_receipt": {
+    "original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-postclose-root-sync-20261007-001/NEW-TEXT-LF.actual.json",
+      "bytes": 1142,
+      "sha256": "92769f96c20c11e85cf38572bb89bf780f30b45197d18b066f2d266bc61ae779"
+    },
+    "preserved": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/92769f96c20c11e85cf38572bb89bf780f30b45197d18b066f2d266bc61ae779.json",
+      "bytes": 1142,
+      "sha256": "92769f96c20c11e85cf38572bb89bf780f30b45197d18b066f2d266bc61ae779"
+    },
+    "archive_relative_path": "source_inputs/originals/92769f96c20c11e85cf38572bb89bf780f30b45197d18b066f2d266bc61ae779.json"
+  },
+  "current_worktree_readback": {
+    "HEAD": "1a09b47d352e0a93243e9f12420ec6948dac2e8c",
+    "status_porcelain_branch": "## master...origin/master [behind 6]\n M mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt\n M mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt\n M mod_li_yu_dao/tools/gen_institution.py\n M mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in\n M mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt\n M mod_li_yu_dao/tools/validate_static.py\n M tools/lyd_i3b_checkpoint_readback/README.md\n M tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py\n M tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py\n?? docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md\n?? docs/li-yu-dao/i3b-event-bind-preview.md\n?? mod_li_yu_dao/tools/fixtures/\n?? mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py\n?? mod_li_yu_dao/tools/test_i3b_event_bind_present.py\n?? tools/lyd_i3b_checkpoint_readback/SAVED-FAITH-SEMANTICS-V2.md\n?? tools/lyd_i3b_checkpoint_readback/SAVED-NUMERIC-VALUES.md\n?? tools/lyd_i3b_checkpoint_readback/reader/dependencies/saved_faith_semantics_12003.json\n?? tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-present-numeric-zero.json\n?? tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json\n?? tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-saved-Faith-head-selected-AST.json\n?? tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-v2-Faith-semantics-request.json\n?? tools/lyd_i3b_checkpoint_readback/tests/test_actual_signed64_value.py\n?? tools/lyd_i3b_checkpoint_readback/tests/test_present_numeric_zero.py\n?? tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_effective_doctrine_v2.py\n?? tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_head_field_map.py",
+    "observed_at_utc": "2026-10-06T18:21:56.577466+00:00",
+    "integrated_unique_targets": [
+      {
+        "target": "docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md",
+          "bytes": 2527,
+          "sha256": "f6bffc3c40f7694834f1ff4fedc6d9a2645e43e1b3cb5ba84582f73293936e3d"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md",
+          "bytes": 2527,
+          "sha256": "f6bffc3c40f7694834f1ff4fedc6d9a2645e43e1b3cb5ba84582f73293936e3d"
+        }
+      },
+      {
+        "target": "docs/li-yu-dao/i3b-event-bind-preview.md",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/i3b-event-bind-preview.md",
+          "bytes": 1893,
+          "sha256": "cf8a3c18f978e76b534efd36b77878570da93a1292159e505d9dafbaa59faa77"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/docs/li-yu-dao/i3b-event-bind-preview.md",
+          "bytes": 1893,
+          "sha256": "cf8a3c18f978e76b534efd36b77878570da93a1292159e505d9dafbaa59faa77"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+          "bytes": 2984,
+          "sha256": "7bedf43f9efa087f39d3c434b120fd9e609ae04f04b92b18e331b968c2c3c2b8"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+          "bytes": 2984,
+          "sha256": "7bedf43f9efa087f39d3c434b120fd9e609ae04f04b92b18e331b968c2c3c2b8"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+          "bytes": 6758,
+          "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+          "bytes": 6758,
+          "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/tools/fixtures/c3_factory_laws/ACTUAL-R14-B3-B4-SAMEFAITH-LAW.json",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/fixtures/c3_factory_laws/ACTUAL-R14-B3-B4-SAMEFAITH-LAW.json",
+          "bytes": 3045,
+          "sha256": "242237017665de9ba1a8c9298dc7f7c46b8b0799886bc32894f65381e000c3b1"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/fixtures/c3_factory_laws/ACTUAL-R14-B3-B4-SAMEFAITH-LAW.json",
+          "bytes": 3045,
+          "sha256": "242237017665de9ba1a8c9298dc7f7c46b8b0799886bc32894f65381e000c3b1"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json",
+          "bytes": 10161,
+          "sha256": "0c91b346626382d1fe6e6cc05de90435c822f9e8a1c68d35b6a9c6c8b7ff5262"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json",
+          "bytes": 10161,
+          "sha256": "0c91b346626382d1fe6e6cc05de90435c822f9e8a1c68d35b6a9c6c8b7ff5262"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/tools/gen_institution.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/gen_institution.py",
+          "bytes": 52360,
+          "sha256": "d2dde0753cb7ab3540304733634a7fc5fae603f360fcc8c6ae950f0aebe6ce11"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/gen_institution.py",
+          "bytes": 52360,
+          "sha256": "d2dde0753cb7ab3540304733634a7fc5fae603f360fcc8c6ae950f0aebe6ce11"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+          "bytes": 2901,
+          "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+          "bytes": 2901,
+          "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+          "bytes": 2901,
+          "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+          "bytes": 2901,
+          "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+          "bytes": 8088,
+          "sha256": "8194927052bc17c7ed19e597d4987541d9f54ffe56faf12a3b5257ef01594248"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+          "bytes": 8088,
+          "sha256": "8194927052bc17c7ed19e597d4987541d9f54ffe56faf12a3b5257ef01594248"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+          "bytes": 7286,
+          "sha256": "b30d2eff23127ebce4a7620323a50e3ef9b16c134d2bba7e585699e835501ca7"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+          "bytes": 7286,
+          "sha256": "b30d2eff23127ebce4a7620323a50e3ef9b16c134d2bba7e585699e835501ca7"
+        }
+      },
+      {
+        "target": "mod_li_yu_dao/tools/validate_static.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/validate_static.py",
+          "bytes": 21914,
+          "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/tools/validate_static.py",
+          "bytes": 21914,
+          "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/README.md",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/README.md",
+          "bytes": 7890,
+          "sha256": "f6c149b2423708c0cd164e61b1d25c17d942b23af864bdacc6e55318f854ed54"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/README.md",
+          "bytes": 7890,
+          "sha256": "f6c149b2423708c0cd164e61b1d25c17d942b23af864bdacc6e55318f854ed54"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/SAVED-FAITH-SEMANTICS-V2.md",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/SAVED-FAITH-SEMANTICS-V2.md",
+          "bytes": 3090,
+          "sha256": "02d8553a0d84e889273f0f8c4a72fa4909c66b263b75b38f9c47d53e0a736f2f"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/SAVED-FAITH-SEMANTICS-V2.md",
+          "bytes": 3090,
+          "sha256": "02d8553a0d84e889273f0f8c4a72fa4909c66b263b75b38f9c47d53e0a736f2f"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/SAVED-NUMERIC-VALUES.md",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/SAVED-NUMERIC-VALUES.md",
+          "bytes": 1938,
+          "sha256": "69c62f431b90f8cab4cd4a261803596312e6084f8adf53b55bdb8c78e1bbba3f"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/SAVED-NUMERIC-VALUES.md",
+          "bytes": 1938,
+          "sha256": "69c62f431b90f8cab4cd4a261803596312e6084f8adf53b55bdb8c78e1bbba3f"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/saved_faith_semantics_12003.json",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/reader/dependencies/saved_faith_semantics_12003.json",
+          "bytes": 2877,
+          "sha256": "dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/reader/dependencies/saved_faith_semantics_12003.json",
+          "bytes": 2877,
+          "sha256": "dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+          "bytes": 51455,
+          "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+          "bytes": 51455,
+          "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-present-numeric-zero.json",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-present-numeric-zero.json",
+          "bytes": 1975,
+          "sha256": "493c768cfded50c7659658bbe4d501526517b86cb681759377721217f4e584f0"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-present-numeric-zero.json",
+          "bytes": 1975,
+          "sha256": "493c768cfded50c7659658bbe4d501526517b86cb681759377721217f4e584f0"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json",
+          "bytes": 1632,
+          "sha256": "dc99a7a28bda84332f967a793187a18c8ae535011f756223a67f1ab179e17b7a"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json",
+          "bytes": 1632,
+          "sha256": "dc99a7a28bda84332f967a793187a18c8ae535011f756223a67f1ab179e17b7a"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-saved-Faith-head-selected-AST.json",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-saved-Faith-head-selected-AST.json",
+          "bytes": 953177,
+          "sha256": "882b78e3099a614d24f4f75cbcb11eed2af543565a56537c7b875b85bcf306a2"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-saved-Faith-head-selected-AST.json",
+          "bytes": 953177,
+          "sha256": "882b78e3099a614d24f4f75cbcb11eed2af543565a56537c7b875b85bcf306a2"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-v2-Faith-semantics-request.json",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-v2-Faith-semantics-request.json",
+          "bytes": 153317,
+          "sha256": "837ee4ab05b932d20fafaee13f7d58eef966e6967847383df3753dcad1592db2"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-v2-Faith-semantics-request.json",
+          "bytes": 153317,
+          "sha256": "837ee4ab05b932d20fafaee13f7d58eef966e6967847383df3753dcad1592db2"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/tests/test_actual_signed64_value.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/test_actual_signed64_value.py",
+          "bytes": 2079,
+          "sha256": "a60a758f1c9905b379501b4f04cbd255726a725dd09a22fb746066a50a11255d"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/test_actual_signed64_value.py",
+          "bytes": 2079,
+          "sha256": "a60a758f1c9905b379501b4f04cbd255726a725dd09a22fb746066a50a11255d"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+          "bytes": 18612,
+          "sha256": "12c0dbcb59519f854b7e08267d3de73330fbeedd548eeec52fdfd87e44d5fa9f"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+          "bytes": 18612,
+          "sha256": "12c0dbcb59519f854b7e08267d3de73330fbeedd548eeec52fdfd87e44d5fa9f"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/tests/test_present_numeric_zero.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/test_present_numeric_zero.py",
+          "bytes": 3499,
+          "sha256": "d3f8abbf3d4158bba6fa9eb5a79ffbc0f33daa7004c60532f8c3412f8babc267"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/test_present_numeric_zero.py",
+          "bytes": 3499,
+          "sha256": "d3f8abbf3d4158bba6fa9eb5a79ffbc0f33daa7004c60532f8c3412f8babc267"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_effective_doctrine_v2.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_effective_doctrine_v2.py",
+          "bytes": 7619,
+          "sha256": "f6889bd408142c3acfb4df350a3dac8788b55c7591761e638cc7a370ec24136d"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_effective_doctrine_v2.py",
+          "bytes": 7619,
+          "sha256": "f6889bd408142c3acfb4df350a3dac8788b55c7591761e638cc7a370ec24136d"
+        }
+      },
+      {
+        "target": "tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_head_field_map.py",
+        "actual_current_worktree": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_head_field_map.py",
+          "bytes": 5472,
+          "sha256": "437a832f8db287f141afce2a650d4ffbed151618a87cb8bd0d3281047e9e454f"
+        },
+        "expected_candidate_or_three_new_LF_normalized_bytes": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_head_field_map.py",
+          "bytes": 5472,
+          "sha256": "437a832f8db287f141afce2a650d4ffbed151618a87cb8bd0d3281047e9e454f"
+        }
+      }
+    ],
+    "new_committed_source_HEAD_credit": null,
+    "new_cold_runtime_credit": null
+  },
+  "files": {
+    "final_closed_ARCHIVE-APPEND-PROPOSAL": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-RED-final-review-archive-draft-20261007-001/ARCHIVE-APPEND-PROPOSAL.json",
+        "bytes": 140360,
+        "sha256": "840442b41d98dff4b1f3a9dc3c60e4538ebe18806c5ae356a597bb9421b93f7f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/840442b41d98dff4b1f3a9dc3c60e4538ebe18806c5ae356a597bb9421b93f7f.json",
+        "bytes": 140360,
+        "sha256": "840442b41d98dff4b1f3a9dc3c60e4538ebe18806c5ae356a597bb9421b93f7f"
+      },
+      "archive_relative_path": "source_inputs/originals/840442b41d98dff4b1f3a9dc3c60e4538ebe18806c5ae356a597bb9421b93f7f.json"
+    },
+    "final_closed_INDEX": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-RED-final-review-archive-draft-20261007-001/INDEX.json",
+        "bytes": 74717,
+        "sha256": "93e7d31c9c72e4c8504aaeae99ef3fd24712df748a9f0234d405d0ff385868ea"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/93e7d31c9c72e4c8504aaeae99ef3fd24712df748a9f0234d405d0ff385868ea.json",
+        "bytes": 74717,
+        "sha256": "93e7d31c9c72e4c8504aaeae99ef3fd24712df748a9f0234d405d0ff385868ea"
+      },
+      "archive_relative_path": "source_inputs/originals/93e7d31c9c72e4c8504aaeae99ef3fd24712df748a9f0234d405d0ff385868ea.json"
+    },
+    "final_closed_DRAFT-READBACK": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-closed-RED-final-review-archive-draft-20261007-001/DRAFT-READBACK.json",
+        "bytes": 1892,
+        "sha256": "4b91fbb1195a4952ff93da084e330a2e48ab56d1f2faca253bfb6b8d9e69cc10"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/4b91fbb1195a4952ff93da084e330a2e48ab56d1f2faca253bfb6b8d9e69cc10.json",
+        "bytes": 1892,
+        "sha256": "4b91fbb1195a4952ff93da084e330a2e48ab56d1f2faca253bfb6b8d9e69cc10"
+      },
+      "archive_relative_path": "source_inputs/originals/4b91fbb1195a4952ff93da084e330a2e48ab56d1f2faca253bfb6b8d9e69cc10.json"
+    },
+    "numeric_manifest": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/AFTERCLOSE-INTEGRATION-MANIFEST.json",
+        "bytes": 6421,
+        "sha256": "e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b.json",
+        "bytes": 6421,
+        "sha256": "e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b"
+      },
+      "archive_relative_path": "source_inputs/originals/e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b.json"
+    },
+    "preview_manifest": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/AFTERCLOSE-INTEGRATION-MANIFEST.json",
+        "bytes": 3743,
+        "sha256": "252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8.json",
+        "bytes": 3743,
+        "sha256": "252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8"
+      },
+      "archive_relative_path": "source_inputs/originals/252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8.json"
+    },
+    "factory_manifest": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/AFTERCLOSE-MANIFEST.json",
+        "bytes": 3835,
+        "sha256": "87845f078cffd5483d14692efede8a117e47da3eac13e398a5f24c1374952f82"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/87845f078cffd5483d14692efede8a117e47da3eac13e398a5f24c1374952f82.json",
+        "bytes": 3835,
+        "sha256": "87845f078cffd5483d14692efede8a117e47da3eac13e398a5f24c1374952f82"
+      },
+      "archive_relative_path": "source_inputs/originals/87845f078cffd5483d14692efede8a117e47da3eac13e398a5f24c1374952f82.json"
+    },
+    "reader3_manifest": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/MAIN-INTEGRATION.manifest.json",
+        "bytes": 7388,
+        "sha256": "95bd475c12e80fb154256e3ed2e7fc2e4db094f68bddced6b24d85286c57413c"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/95bd475c12e80fb154256e3ed2e7fc2e4db094f68bddced6b24d85286c57413c.json",
+        "bytes": 7388,
+        "sha256": "95bd475c12e80fb154256e3ed2e7fc2e4db094f68bddced6b24d85286c57413c"
+      },
+      "archive_relative_path": "source_inputs/originals/95bd475c12e80fb154256e3ed2e7fc2e4db094f68bddced6b24d85286c57413c.json"
+    },
+    "factory_parent_index": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/INDEX.json",
+        "bytes": 39495,
+        "sha256": "4106e3ae28c364e8517fdcf99617e95537bafef65a6949be31253d6befe4c2c2"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/4106e3ae28c364e8517fdcf99617e95537bafef65a6949be31253d6befe4c2c2.json",
+        "bytes": 39495,
+        "sha256": "4106e3ae28c364e8517fdcf99617e95537bafef65a6949be31253d6befe4c2c2"
+      },
+      "archive_relative_path": "source_inputs/originals/4106e3ae28c364e8517fdcf99617e95537bafef65a6949be31253d6befe4c2c2.json"
+    },
+    "factory_sourceproof": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/SOURCE-PROOF.json",
+        "bytes": 14384,
+        "sha256": "eab6fe1f002b54ecfafe61db4a76deb10af914dcbf5d276787cb09fbdb63c30a"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/eab6fe1f002b54ecfafe61db4a76deb10af914dcbf5d276787cb09fbdb63c30a.json",
+        "bytes": 14384,
+        "sha256": "eab6fe1f002b54ecfafe61db4a76deb10af914dcbf5d276787cb09fbdb63c30a"
+      },
+      "archive_relative_path": "source_inputs/originals/eab6fe1f002b54ecfafe61db4a76deb10af914dcbf5d276787cb09fbdb63c30a.json"
+    },
+    "factory_patch": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/AFTERCLOSE-CANDIDATE.patch",
+        "bytes": 21504,
+        "sha256": "7f1662661097831194d258475d317021a1c5bf3642b5c5b1e84b459df001d42b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/7f1662661097831194d258475d317021a1c5bf3642b5c5b1e84b459df001d42b.patch",
+        "bytes": 21504,
+        "sha256": "7f1662661097831194d258475d317021a1c5bf3642b5c5b1e84b459df001d42b"
+      },
+      "archive_relative_path": "source_inputs/originals/7f1662661097831194d258475d317021a1c5bf3642b5c5b1e84b459df001d42b.patch"
+    },
+    "numeric_source_0": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+        "bytes": 41081,
+        "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb.py",
+        "bytes": 41081,
+        "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+      },
+      "archive_relative_path": "source_inputs/originals/6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb.py"
+    },
+    "numeric_source_1": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/test_present_numeric_zero.py",
+        "bytes": 3499,
+        "sha256": "d3f8abbf3d4158bba6fa9eb5a79ffbc0f33daa7004c60532f8c3412f8babc267"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/d3f8abbf3d4158bba6fa9eb5a79ffbc0f33daa7004c60532f8c3412f8babc267.py",
+        "bytes": 3499,
+        "sha256": "d3f8abbf3d4158bba6fa9eb5a79ffbc0f33daa7004c60532f8c3412f8babc267"
+      },
+      "archive_relative_path": "source_inputs/originals/d3f8abbf3d4158bba6fa9eb5a79ffbc0f33daa7004c60532f8c3412f8babc267.py"
+    },
+    "numeric_source_2": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/test_actual_signed64_value.py",
+        "bytes": 2079,
+        "sha256": "a60a758f1c9905b379501b4f04cbd255726a725dd09a22fb746066a50a11255d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/a60a758f1c9905b379501b4f04cbd255726a725dd09a22fb746066a50a11255d.py",
+        "bytes": 2079,
+        "sha256": "a60a758f1c9905b379501b4f04cbd255726a725dd09a22fb746066a50a11255d"
+      },
+      "archive_relative_path": "source_inputs/originals/a60a758f1c9905b379501b4f04cbd255726a725dd09a22fb746066a50a11255d.py"
+    },
+    "numeric_source_3": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-present-numeric-zero.json",
+        "bytes": 1975,
+        "sha256": "493c768cfded50c7659658bbe4d501526517b86cb681759377721217f4e584f0"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/493c768cfded50c7659658bbe4d501526517b86cb681759377721217f4e584f0.json",
+        "bytes": 1975,
+        "sha256": "493c768cfded50c7659658bbe4d501526517b86cb681759377721217f4e584f0"
+      },
+      "archive_relative_path": "source_inputs/originals/493c768cfded50c7659658bbe4d501526517b86cb681759377721217f4e584f0.json"
+    },
+    "numeric_source_4": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json",
+        "bytes": 1632,
+        "sha256": "dc99a7a28bda84332f967a793187a18c8ae535011f756223a67f1ab179e17b7a"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/dc99a7a28bda84332f967a793187a18c8ae535011f756223a67f1ab179e17b7a.json",
+        "bytes": 1632,
+        "sha256": "dc99a7a28bda84332f967a793187a18c8ae535011f756223a67f1ab179e17b7a"
+      },
+      "archive_relative_path": "source_inputs/originals/dc99a7a28bda84332f967a793187a18c8ae535011f756223a67f1ab179e17b7a.json"
+    },
+    "numeric_source_5": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/candidate/tools/lyd_i3b_checkpoint_readback/SAVED-NUMERIC-VALUES.md",
+        "bytes": 1938,
+        "sha256": "69c62f431b90f8cab4cd4a261803596312e6084f8adf53b55bdb8c78e1bbba3f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/69c62f431b90f8cab4cd4a261803596312e6084f8adf53b55bdb8c78e1bbba3f.md",
+        "bytes": 1938,
+        "sha256": "69c62f431b90f8cab4cd4a261803596312e6084f8adf53b55bdb8c78e1bbba3f"
+      },
+      "archive_relative_path": "source_inputs/originals/69c62f431b90f8cab4cd4a261803596312e6084f8adf53b55bdb8c78e1bbba3f.md"
+    },
+    "numeric_patch": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/NUMERIC-LEAF-AFTERCLOSE.patch",
+        "bytes": 13475,
+        "sha256": "709277b4b04f6cd664cc8e761f4f2fba9fd08f4e7252816f426335e5a27e3cfd"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/709277b4b04f6cd664cc8e761f4f2fba9fd08f4e7252816f426335e5a27e3cfd.patch",
+        "bytes": 13475,
+        "sha256": "709277b4b04f6cd664cc8e761f4f2fba9fd08f4e7252816f426335e5a27e3cfd"
+      },
+      "archive_relative_path": "source_inputs/originals/709277b4b04f6cd664cc8e761f4f2fba9fd08f4e7252816f426335e5a27e3cfd.patch"
+    },
+    "preview_source_0": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/gen_institution.py",
+        "bytes": 52360,
+        "sha256": "d2dde0753cb7ab3540304733634a7fc5fae603f360fcc8c6ae950f0aebe6ce11"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/d2dde0753cb7ab3540304733634a7fc5fae603f360fcc8c6ae950f0aebe6ce11.py",
+        "bytes": 52360,
+        "sha256": "d2dde0753cb7ab3540304733634a7fc5fae603f360fcc8c6ae950f0aebe6ce11"
+      },
+      "archive_relative_path": "source_inputs/originals/d2dde0753cb7ab3540304733634a7fc5fae603f360fcc8c6ae950f0aebe6ce11.py"
+    },
+    "preview_source_1": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "bytes": 6758,
+        "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207.txt",
+        "bytes": 6758,
+        "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+      },
+      "archive_relative_path": "source_inputs/originals/1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207.txt"
+    },
+    "preview_source_2": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+        "bytes": 7286,
+        "sha256": "b30d2eff23127ebce4a7620323a50e3ef9b16c134d2bba7e585699e835501ca7"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/b30d2eff23127ebce4a7620323a50e3ef9b16c134d2bba7e585699e835501ca7.py",
+        "bytes": 7286,
+        "sha256": "b30d2eff23127ebce4a7620323a50e3ef9b16c134d2bba7e585699e835501ca7"
+      },
+      "archive_relative_path": "source_inputs/originals/b30d2eff23127ebce4a7620323a50e3ef9b16c134d2bba7e585699e835501ca7.py"
+    },
+    "preview_source_3": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json",
+        "bytes": 10539,
+        "sha256": "ce4b99940b3254bbd3c3fd671cbb48c16ffb48ee0e71e03e6c643e02da5722f6"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/ce4b99940b3254bbd3c3fd671cbb48c16ffb48ee0e71e03e6c643e02da5722f6.json",
+        "bytes": 10539,
+        "sha256": "ce4b99940b3254bbd3c3fd671cbb48c16ffb48ee0e71e03e6c643e02da5722f6"
+      },
+      "archive_relative_path": "source_inputs/originals/ce4b99940b3254bbd3c3fd671cbb48c16ffb48ee0e71e03e6c643e02da5722f6.json"
+    },
+    "preview_source_4": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/docs/li-yu-dao/i3b-event-bind-preview.md",
+        "bytes": 1893,
+        "sha256": "cf8a3c18f978e76b534efd36b77878570da93a1292159e505d9dafbaa59faa77"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/cf8a3c18f978e76b534efd36b77878570da93a1292159e505d9dafbaa59faa77.md",
+        "bytes": 1893,
+        "sha256": "cf8a3c18f978e76b534efd36b77878570da93a1292159e505d9dafbaa59faa77"
+      },
+      "archive_relative_path": "source_inputs/originals/cf8a3c18f978e76b534efd36b77878570da93a1292159e505d9dafbaa59faa77.md"
+    },
+    "preview_patch": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/AFTERCLOSE-EVENT-BIND-PREVIEW.patch",
+        "bytes": 22851,
+        "sha256": "67a0ea23087b2220fc8b76fa5d7d96252a5de440d2085917f912980473f5446c"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/67a0ea23087b2220fc8b76fa5d7d96252a5de440d2085917f912980473f5446c.patch",
+        "bytes": 22851,
+        "sha256": "67a0ea23087b2220fc8b76fa5d7d96252a5de440d2085917f912980473f5446c"
+      },
+      "archive_relative_path": "source_inputs/originals/67a0ea23087b2220fc8b76fa5d7d96252a5de440d2085917f912980473f5446c.patch"
+    },
+    "factory_source_0": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+        "bytes": 2901,
+        "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9.in",
+        "bytes": 2901,
+        "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+      },
+      "archive_relative_path": "source_inputs/originals/9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9.in"
+    },
+    "factory_source_1": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+        "bytes": 2901,
+        "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9.txt",
+        "bytes": 2901,
+        "sha256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9"
+      },
+      "archive_relative_path": "source_inputs/originals/9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9.txt"
+    },
+    "factory_source_2": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+        "bytes": 2984,
+        "sha256": "7bedf43f9efa087f39d3c434b120fd9e609ae04f04b92b18e331b968c2c3c2b8"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/7bedf43f9efa087f39d3c434b120fd9e609ae04f04b92b18e331b968c2c3c2b8.txt",
+        "bytes": 2984,
+        "sha256": "7bedf43f9efa087f39d3c434b120fd9e609ae04f04b92b18e331b968c2c3c2b8"
+      },
+      "archive_relative_path": "source_inputs/originals/7bedf43f9efa087f39d3c434b120fd9e609ae04f04b92b18e331b968c2c3c2b8.txt"
+    },
+    "factory_source_3": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/tools/validate_static.py",
+        "bytes": 21914,
+        "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189.py",
+        "bytes": 21914,
+        "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+      },
+      "archive_relative_path": "source_inputs/originals/ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189.py"
+    },
+    "factory_source_4": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+        "bytes": 8246,
+        "sha256": "ba32bc578b898784989dc99ab3a83ac4b6891c9cb39a92b2538064524975f849"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/ba32bc578b898784989dc99ab3a83ac4b6891c9cb39a92b2538064524975f849.py",
+        "bytes": 8246,
+        "sha256": "ba32bc578b898784989dc99ab3a83ac4b6891c9cb39a92b2538064524975f849"
+      },
+      "archive_relative_path": "source_inputs/originals/ba32bc578b898784989dc99ab3a83ac4b6891c9cb39a92b2538064524975f849.py"
+    },
+    "factory_source_5": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md",
+        "bytes": 2527,
+        "sha256": "f6bffc3c40f7694834f1ff4fedc6d9a2645e43e1b3cb5ba84582f73293936e3d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/f6bffc3c40f7694834f1ff4fedc6d9a2645e43e1b3cb5ba84582f73293936e3d.md",
+        "bytes": 2527,
+        "sha256": "f6bffc3c40f7694834f1ff4fedc6d9a2645e43e1b3cb5ba84582f73293936e3d"
+      },
+      "archive_relative_path": "source_inputs/originals/f6bffc3c40f7694834f1ff4fedc6d9a2645e43e1b3cb5ba84582f73293936e3d.md"
+    },
+    "factory_source_6": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/source/mod_li_yu_dao/tools/fixtures/c3_factory_laws/ACTUAL-R14-B3-B4-SAMEFAITH-LAW.json",
+        "bytes": 3143,
+        "sha256": "33dd6259551aab9974881729cb6adf2a367b0ecbb97403476f81afa485060a9f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/33dd6259551aab9974881729cb6adf2a367b0ecbb97403476f81afa485060a9f.json",
+        "bytes": 3143,
+        "sha256": "33dd6259551aab9974881729cb6adf2a367b0ecbb97403476f81afa485060a9f"
+      },
+      "archive_relative_path": "source_inputs/originals/33dd6259551aab9974881729cb6adf2a367b0ecbb97403476f81afa485060a9f.json"
+    },
+    "reader3_source_0": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+        "bytes": 51455,
+        "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736.py",
+        "bytes": 51455,
+        "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+      },
+      "archive_relative_path": "source_inputs/originals/eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736.py"
+    },
+    "reader3_source_1": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+        "bytes": 18612,
+        "sha256": "12c0dbcb59519f854b7e08267d3de73330fbeedd548eeec52fdfd87e44d5fa9f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/12c0dbcb59519f854b7e08267d3de73330fbeedd548eeec52fdfd87e44d5fa9f.py",
+        "bytes": 18612,
+        "sha256": "12c0dbcb59519f854b7e08267d3de73330fbeedd548eeec52fdfd87e44d5fa9f"
+      },
+      "archive_relative_path": "source_inputs/originals/12c0dbcb59519f854b7e08267d3de73330fbeedd548eeec52fdfd87e44d5fa9f.py"
+    },
+    "reader3_source_2": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/README.md",
+        "bytes": 7890,
+        "sha256": "f6c149b2423708c0cd164e61b1d25c17d942b23af864bdacc6e55318f854ed54"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/f6c149b2423708c0cd164e61b1d25c17d942b23af864bdacc6e55318f854ed54.md",
+        "bytes": 7890,
+        "sha256": "f6c149b2423708c0cd164e61b1d25c17d942b23af864bdacc6e55318f854ed54"
+      },
+      "archive_relative_path": "source_inputs/originals/f6c149b2423708c0cd164e61b1d25c17d942b23af864bdacc6e55318f854ed54.md"
+    },
+    "reader3_source_3": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/reader/dependencies/saved_faith_semantics_12003.json",
+        "bytes": 2877,
+        "sha256": "dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90.json",
+        "bytes": 2877,
+        "sha256": "dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90"
+      },
+      "archive_relative_path": "source_inputs/originals/dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90.json"
+    },
+    "reader3_source_4": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_head_field_map.py",
+        "bytes": 5472,
+        "sha256": "437a832f8db287f141afce2a650d4ffbed151618a87cb8bd0d3281047e9e454f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/437a832f8db287f141afce2a650d4ffbed151618a87cb8bd0d3281047e9e454f.py",
+        "bytes": 5472,
+        "sha256": "437a832f8db287f141afce2a650d4ffbed151618a87cb8bd0d3281047e9e454f"
+      },
+      "archive_relative_path": "source_inputs/originals/437a832f8db287f141afce2a650d4ffbed151618a87cb8bd0d3281047e9e454f.py"
+    },
+    "reader3_source_5": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_effective_doctrine_v2.py",
+        "bytes": 7619,
+        "sha256": "f6889bd408142c3acfb4df350a3dac8788b55c7591761e638cc7a370ec24136d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/f6889bd408142c3acfb4df350a3dac8788b55c7591761e638cc7a370ec24136d.py",
+        "bytes": 7619,
+        "sha256": "f6889bd408142c3acfb4df350a3dac8788b55c7591761e638cc7a370ec24136d"
+      },
+      "archive_relative_path": "source_inputs/originals/f6889bd408142c3acfb4df350a3dac8788b55c7591761e638cc7a370ec24136d.py"
+    },
+    "reader3_source_6": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-saved-Faith-head-selected-AST.json",
+        "bytes": 953177,
+        "sha256": "882b78e3099a614d24f4f75cbcb11eed2af543565a56537c7b875b85bcf306a2"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/882b78e3099a614d24f4f75cbcb11eed2af543565a56537c7b875b85bcf306a2.json",
+        "bytes": 953177,
+        "sha256": "882b78e3099a614d24f4f75cbcb11eed2af543565a56537c7b875b85bcf306a2"
+      },
+      "archive_relative_path": "source_inputs/originals/882b78e3099a614d24f4f75cbcb11eed2af543565a56537c7b875b85bcf306a2.json"
+    },
+    "reader3_source_7": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-v2-Faith-semantics-request.json",
+        "bytes": 153317,
+        "sha256": "837ee4ab05b932d20fafaee13f7d58eef966e6967847383df3753dcad1592db2"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/837ee4ab05b932d20fafaee13f7d58eef966e6967847383df3753dcad1592db2.json",
+        "bytes": 153317,
+        "sha256": "837ee4ab05b932d20fafaee13f7d58eef966e6967847383df3753dcad1592db2"
+      },
+      "archive_relative_path": "source_inputs/originals/837ee4ab05b932d20fafaee13f7d58eef966e6967847383df3753dcad1592db2.json"
+    },
+    "reader3_source_8": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/SAVED-FAITH-SEMANTICS-V2.md",
+        "bytes": 3090,
+        "sha256": "02d8553a0d84e889273f0f8c4a72fa4909c66b263b75b38f9c47d53e0a736f2f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/02d8553a0d84e889273f0f8c4a72fa4909c66b263b75b38f9c47d53e0a736f2f.md",
+        "bytes": 3090,
+        "sha256": "02d8553a0d84e889273f0f8c4a72fa4909c66b263b75b38f9c47d53e0a736f2f"
+      },
+      "archive_relative_path": "source_inputs/originals/02d8553a0d84e889273f0f8c4a72fa4909c66b263b75b38f9c47d53e0a736f2f.md"
+    },
+    "reader3_patch": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/MAIN-READER3-AFTERNUMERIC.incremental.patch",
+        "bytes": 1186740,
+        "sha256": "9b418fd062f37cf08e0b61f5c0f804c85d431dd1f69dd23b746d72d91ddd383d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/9b418fd062f37cf08e0b61f5c0f804c85d431dd1f69dd23b746d72d91ddd383d.patch",
+        "bytes": 1186740,
+        "sha256": "9b418fd062f37cf08e0b61f5c0f804c85d431dd1f69dd23b746d72d91ddd383d"
+      },
+      "archive_relative_path": "source_inputs/originals/9b418fd062f37cf08e0b61f5c0f804c85d431dd1f69dd23b746d72d91ddd383d.patch"
+    },
+    "root_reader112": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002317580-reader-tests.json",
+        "bytes": 733,
+        "sha256": "f5af37df9b830c7e0c359f399c26e28a48a10279af457840c4e573c6f4a218bf"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/f5af37df9b830c7e0c359f399c26e28a48a10279af457840c4e573c6f4a218bf.json",
+        "bytes": 733,
+        "sha256": "f5af37df9b830c7e0c359f399c26e28a48a10279af457840c4e573c6f4a218bf"
+      },
+      "archive_relative_path": "source_inputs/originals/f5af37df9b830c7e0c359f399c26e28a48a10279af457840c4e573c6f4a218bf.json"
+    },
+    "root_factory11": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002331914-law-tests.json",
+        "bytes": 693,
+        "sha256": "abead694db25f282d41300541415b6ce7af539b9114975aa0bbb1c30b21da19c"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/abead694db25f282d41300541415b6ce7af539b9114975aa0bbb1c30b21da19c.json",
+        "bytes": 693,
+        "sha256": "abead694db25f282d41300541415b6ce7af539b9114975aa0bbb1c30b21da19c"
+      },
+      "archive_relative_path": "source_inputs/originals/abead694db25f282d41300541415b6ce7af539b9114975aa0bbb1c30b21da19c.json"
+    },
+    "root_static70files": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002334971-static.json",
+        "bytes": 657,
+        "sha256": "a7b95092720d85f020b13f2904adf6759e546bb9fb8dc0ba354c81c1f72edf54"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/a7b95092720d85f020b13f2904adf6759e546bb9fb8dc0ba354c81c1f72edf54.json",
+        "bytes": 657,
+        "sha256": "a7b95092720d85f020b13f2904adf6759e546bb9fb8dc0ba354c81c1f72edf54"
+      },
+      "archive_relative_path": "source_inputs/originals/a7b95092720d85f020b13f2904adf6759e546bb9fb8dc0ba354c81c1f72edf54.json"
+    },
+    "root_preview_first_exit2": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002331199-preview-tests.json",
+        "bytes": 692,
+        "sha256": "3967cd746c0b4e33c021ba37542600a176dfcf30e5b21f3e1fd09a4b291aebcb"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/3967cd746c0b4e33c021ba37542600a176dfcf30e5b21f3e1fd09a4b291aebcb.json",
+        "bytes": 692,
+        "sha256": "3967cd746c0b4e33c021ba37542600a176dfcf30e5b21f3e1fd09a4b291aebcb"
+      },
+      "archive_relative_path": "source_inputs/originals/3967cd746c0b4e33c021ba37542600a176dfcf30e5b21f3e1fd09a4b291aebcb.json"
+    },
+    "root_preview_correct_exit0": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181124400806-preview-tests-002.json",
+        "bytes": 818,
+        "sha256": "92b6745103366dea08490fa91508ec22c7341d5ebe9ec36a55df223939091421"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/92b6745103366dea08490fa91508ec22c7341d5ebe9ec36a55df223939091421.json",
+        "bytes": 818,
+        "sha256": "92b6745103366dea08490fa91508ec22c7341d5ebe9ec36a55df223939091421"
+      },
+      "archive_relative_path": "source_inputs/originals/92b6745103366dea08490fa91508ec22c7341d5ebe9ec36a55df223939091421.json"
+    },
+    "root_generate": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/180952717175-generate-afterclose.json",
+        "bytes": 677,
+        "sha256": "42bb6fa015b80e2a88876c594fd5be274e320e44904db24086c994e85a56a406"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/42bb6fa015b80e2a88876c594fd5be274e320e44904db24086c994e85a56a406.json",
+        "bytes": 677,
+        "sha256": "42bb6fa015b80e2a88876c594fd5be274e320e44904db24086c994e85a56a406"
+      },
+      "archive_relative_path": "source_inputs/originals/42bb6fa015b80e2a88876c594fd5be274e320e44904db24086c994e85a56a406.json"
+    },
+    "root_preview6": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-postclose-root-sync-20261007-001/PREVIEW-CHECKS.actual.json",
+        "bytes": 838,
+        "sha256": "b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199.json",
+        "bytes": 838,
+        "sha256": "b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199"
+      },
+      "archive_relative_path": "source_inputs/originals/b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199.json"
+    },
+    "root_new_text_LF": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-postclose-root-sync-20261007-001/NEW-TEXT-LF.actual.json",
+        "bytes": 1142,
+        "sha256": "92769f96c20c11e85cf38572bb89bf780f30b45197d18b066f2d266bc61ae779"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/92769f96c20c11e85cf38572bb89bf780f30b45197d18b066f2d266bc61ae779.json",
+        "bytes": 1142,
+        "sha256": "92769f96c20c11e85cf38572bb89bf780f30b45197d18b066f2d266bc61ae779"
+      },
+      "archive_relative_path": "source_inputs/originals/92769f96c20c11e85cf38572bb89bf780f30b45197d18b066f2d266bc61ae779.json"
+    },
+    "root_normalizer_source": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-postclose-root-sync-20261007-001/canonicalize_new_source_text.py",
+        "bytes": 1580,
+        "sha256": "eca9d457312d89a781d47a161a38a5bb2b2db096c323c8dc6f97965efff8f9a7"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/eca9d457312d89a781d47a161a38a5bb2b2db096c323c8dc6f97965efff8f9a7.py",
+        "bytes": 1580,
+        "sha256": "eca9d457312d89a781d47a161a38a5bb2b2db096c323c8dc6f97965efff8f9a7"
+      },
+      "archive_relative_path": "source_inputs/originals/eca9d457312d89a781d47a161a38a5bb2b2db096c323c8dc6f97965efff8f9a7.py"
+    },
+    "root_reader112_stdout": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002317580-reader-tests.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "source_inputs/originals/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout"
+    },
+    "root_reader112_stderr": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002317580-reader-tests.stderr",
+        "bytes": 17669,
+        "sha256": "31d5ae21572aa4cbb90daa2d90b33b68600405138c3f8e75d62a8bc93d1d22a4"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/31d5ae21572aa4cbb90daa2d90b33b68600405138c3f8e75d62a8bc93d1d22a4.stderr",
+        "bytes": 17669,
+        "sha256": "31d5ae21572aa4cbb90daa2d90b33b68600405138c3f8e75d62a8bc93d1d22a4"
+      },
+      "archive_relative_path": "source_inputs/originals/31d5ae21572aa4cbb90daa2d90b33b68600405138c3f8e75d62a8bc93d1d22a4.stderr"
+    },
+    "root_factory11_stdout": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002331914-law-tests.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "source_inputs/originals/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout"
+    },
+    "root_factory11_stderr": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002331914-law-tests.stderr",
+        "bytes": 1683,
+        "sha256": "8c1fdbbce2ac6fff45d15b797e0d28bffd6301fd4387ed10223f3e564b2dc0e2"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/8c1fdbbce2ac6fff45d15b797e0d28bffd6301fd4387ed10223f3e564b2dc0e2.stderr",
+        "bytes": 1683,
+        "sha256": "8c1fdbbce2ac6fff45d15b797e0d28bffd6301fd4387ed10223f3e564b2dc0e2"
+      },
+      "archive_relative_path": "source_inputs/originals/8c1fdbbce2ac6fff45d15b797e0d28bffd6301fd4387ed10223f3e564b2dc0e2.stderr"
+    },
+    "root_static70files_stdout": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002334971-static.stdout",
+        "bytes": 9254,
+        "sha256": "71bf3f47d056b9b535ddd08c164c83363a9fb65eae98d4f07ea7eda6de9cec47"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/71bf3f47d056b9b535ddd08c164c83363a9fb65eae98d4f07ea7eda6de9cec47.stdout",
+        "bytes": 9254,
+        "sha256": "71bf3f47d056b9b535ddd08c164c83363a9fb65eae98d4f07ea7eda6de9cec47"
+      },
+      "archive_relative_path": "source_inputs/originals/71bf3f47d056b9b535ddd08c164c83363a9fb65eae98d4f07ea7eda6de9cec47.stdout"
+    },
+    "root_static70files_stderr": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002334971-static.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "source_inputs/originals/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr"
+    },
+    "root_preview_first_exit2_stdout": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002331199-preview-tests.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "source_inputs/originals/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout"
+    },
+    "root_preview_first_exit2_stderr": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181002331199-preview-tests.stderr",
+        "bytes": 305,
+        "sha256": "911ee8e7d1a8cea45ecc5d7375b909620e68e73df061417c876ed04c5f0a72de"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/911ee8e7d1a8cea45ecc5d7375b909620e68e73df061417c876ed04c5f0a72de.stderr",
+        "bytes": 305,
+        "sha256": "911ee8e7d1a8cea45ecc5d7375b909620e68e73df061417c876ed04c5f0a72de"
+      },
+      "archive_relative_path": "source_inputs/originals/911ee8e7d1a8cea45ecc5d7375b909620e68e73df061417c876ed04c5f0a72de.stderr"
+    },
+    "root_preview_correct_exit0_stdout": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181124400806-preview-tests-002.stdout",
+        "bytes": 838,
+        "sha256": "b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199.stdout",
+        "bytes": 838,
+        "sha256": "b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199"
+      },
+      "archive_relative_path": "source_inputs/originals/b2918730a2ceeb554c692384406e1384bf1b2f434f5b3dbe7cbcf38835836199.stdout"
+    },
+    "root_preview_correct_exit0_stderr": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/181124400806-preview-tests-002.stderr",
+        "bytes": 1055,
+        "sha256": "b17a6644cb4efa54fa1e5e599ef2a6c2064e5758aaa635695c7128e9ea8f4514"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/b17a6644cb4efa54fa1e5e599ef2a6c2064e5758aaa635695c7128e9ea8f4514.stderr",
+        "bytes": 1055,
+        "sha256": "b17a6644cb4efa54fa1e5e599ef2a6c2064e5758aaa635695c7128e9ea8f4514"
+      },
+      "archive_relative_path": "source_inputs/originals/b17a6644cb4efa54fa1e5e599ef2a6c2064e5758aaa635695c7128e9ea8f4514.stderr"
+    },
+    "root_generate_stdout": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/180952717175-generate-afterclose.stdout",
+        "bytes": 51,
+        "sha256": "8d9eaaab88e3f3b680343ce4aef9de68622cd09e523f2b2118b8a0075955c858"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/8d9eaaab88e3f3b680343ce4aef9de68622cd09e523f2b2118b8a0075955c858.stdout",
+        "bytes": 51,
+        "sha256": "8d9eaaab88e3f3b680343ce4aef9de68622cd09e523f2b2118b8a0075955c858"
+      },
+      "archive_relative_path": "source_inputs/originals/8d9eaaab88e3f3b680343ce4aef9de68622cd09e523f2b2118b8a0075955c858.stdout"
+    },
+    "root_generate_stderr": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-operations-20261006-001/180952717175-generate-afterclose.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/source_inputs-cas/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "source_inputs/originals/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr"
+    },
+    "publisher001_actual_failed_check": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/CHECK.actual.json",
+        "bytes": 876,
+        "sha256": "67d85fc01e93fc24937ec555e1342c3ae3f0ea136e5b17f64c0f5c8b641d06fe"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-002/source_inputs-cas/67d85fc01e93fc24937ec555e1342c3ae3f0ea136e5b17f64c0f5c8b641d06fe.json",
+        "bytes": 876,
+        "sha256": "67d85fc01e93fc24937ec555e1342c3ae3f0ea136e5b17f64c0f5c8b641d06fe"
+      },
+      "archive_relative_path": "source_inputs/originals/67d85fc01e93fc24937ec555e1342c3ae3f0ea136e5b17f64c0f5c8b641d06fe.json"
+    },
+    "publisher001_source": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/publish_r14_archive.py",
+        "bytes": 12786,
+        "sha256": "819dd2d4d1e0a466b61029ff1f43c4fd5c5e1ba122c758daa549ccbaa5884e5a"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-002/source_inputs-cas/819dd2d4d1e0a466b61029ff1f43c4fd5c5e1ba122c758daa549ccbaa5884e5a.py",
+        "bytes": 12786,
+        "sha256": "819dd2d4d1e0a466b61029ff1f43c4fd5c5e1ba122c758daa549ccbaa5884e5a"
+      },
+      "archive_relative_path": "source_inputs/originals/819dd2d4d1e0a466b61029ff1f43c4fd5c5e1ba122c758daa549ccbaa5884e5a.py"
+    },
+    "publisher001_manifest": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/MANIFEST.json",
+        "bytes": 317707,
+        "sha256": "391f5a73a0a755f9be76becd3e437a856bec08aa48dd7b34c967bb4cb019e20f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-002/source_inputs-cas/391f5a73a0a755f9be76becd3e437a856bec08aa48dd7b34c967bb4cb019e20f.json",
+        "bytes": 317707,
+        "sha256": "391f5a73a0a755f9be76becd3e437a856bec08aa48dd7b34c967bb4cb019e20f"
+      },
+      "archive_relative_path": "source_inputs/originals/391f5a73a0a755f9be76becd3e437a856bec08aa48dd7b34c967bb4cb019e20f.json"
+    }
+  },
+  "new_source_commit_HEAD": null,
+  "new_cold_live_acceptance": null,
+  "full_ck3_save_body_or_error_log_copied": false,
+  "report_agent_main_writes": 0,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "new_tests": 0,
+  "new_builds": 0,
+  "publisher_successor_note": "First publisher001 readonly check rejected the already-existing daily because of an ADD-only routing omission. Source002 binds the original daily beforeHash and appends without replacing the prefix. Old source, manifest and actual failed check are preserved; no main write occurred."
+}

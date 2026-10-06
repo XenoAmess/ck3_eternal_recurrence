@@ -1,0 +1,898 @@
+{
+  "schema": "lyd.r14.B5-game-exit-pending-helper-external-successor-draft-index.v1",
+  "status": "EXTERNAL_DRAFT_B5_RED_GAME_EXIT_ZERO_HELPER_CAS_CLOSE_PENDING",
+  "source_HEAD": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "previous": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B4-contract-mismatch-review-archive-draft-20261007-001/INDEX.json",
+    "bytes": 43179,
+    "sha256": "13e4c0a09ca707b4146d8a636babfa4bb15249cf596219a63163f88532811654"
+  },
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/append-drafts/AUTONOMOUS-README.append.md",
+      "bytes": 664,
+      "sha256": "95bead40f64efd024a4ac80f841b0f7e58681d9caf68e99adb85554ac047a981"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/append-drafts/DAILY-2026-10-07.new.md",
+      "bytes": 670,
+      "sha256": "71b14b5f497fa65c1ff3effc8aa838872f9824a1be147767aed88d3d9364c822"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/append-drafts/LI-YU-DAO-PROGRESS.append.md",
+      "bytes": 602,
+      "sha256": "139083ae650b31c56112fda65c3c4e8d5b2eac5f2f7fa3a4029e8778d58d3840"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/append-drafts/LI-YU-DAO-README.append.md",
+      "bytes": 609,
+      "sha256": "38ed42e7770063588047d551a8bcfb1782765d24d2ae2c1b9310ce8135dcc9a4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/ARCHIVE-APPEND-PROPOSAL.json",
+      "bytes": 102854,
+      "sha256": "3c96a9a4723ddced6eade72e3a8e3ee24747f0ce76616219dcc53a16b11fafde"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/DRAFT-READBACK.json",
+      "bytes": 351,
+      "sha256": "90ebc4d82b7c8229d7e291a2a3004515876d49591a97e5643cd66f1c33292828"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/EVIDENCE-INDEX.json",
+      "bytes": 130823,
+      "sha256": "3b6f6241432dbe7e2aafb299dfa50419c0c9af7c0ea99cdcd2f0278c54282de1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/NORMAL-EXIT-RAW-REFERENCE-INDEX.json",
+      "bytes": 36785,
+      "sha256": "dfd4a35c5fff7abaa131983e36691cce82acff38e38af35edf38dd36fa1d7423"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/0146e048c34b1072460ff6de1849f04ff22e6ceb3d5ee2ade26a06d9ded919e5.json",
+      "bytes": 1004259,
+      "sha256": "0146e048c34b1072460ff6de1849f04ff22e6ceb3d5ee2ade26a06d9ded919e5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/064806302597f39ecf7812b384d534dab87d54de9c7df435233ac04897bb68b7.json",
+      "bytes": 219,
+      "sha256": "064806302597f39ecf7812b384d534dab87d54de9c7df435233ac04897bb68b7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/0714a03456c1f5d6786222e4c3e5df86bebc8cc0187fb4d974382e2b1fca9515.json",
+      "bytes": 2242,
+      "sha256": "0714a03456c1f5d6786222e4c3e5df86bebc8cc0187fb4d974382e2b1fca9515"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/0740fe7510d1b9226d8f24f23ebe015bfe5d310e43f8d5e8b446a5f39550c2d0.json",
+      "bytes": 1233,
+      "sha256": "0740fe7510d1b9226d8f24f23ebe015bfe5d310e43f8d5e8b446a5f39550c2d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/07d8f95aee34e09513958720beaba1ef2bd533a741463b14ce7b5530d8dbc51e.json",
+      "bytes": 934572,
+      "sha256": "07d8f95aee34e09513958720beaba1ef2bd533a741463b14ce7b5530d8dbc51e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/091722e349cebb6ce295078a2bedb0924bfb9392d4ec731f58f73ee47c1cf1e1.json",
+      "bytes": 172,
+      "sha256": "091722e349cebb6ce295078a2bedb0924bfb9392d4ec731f58f73ee47c1cf1e1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/0928ee8412e193251960e65e0fb9436f91db372573baad73a91a517434e0fea7.json",
+      "bytes": 2642023,
+      "sha256": "0928ee8412e193251960e65e0fb9436f91db372573baad73a91a517434e0fea7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/0dab5919248114b52d476b8f80a6b484d4bebc3f7a7d796592a20cbcbc3e5bec.json",
+      "bytes": 55801,
+      "sha256": "0dab5919248114b52d476b8f80a6b484d4bebc3f7a7d796592a20cbcbc3e5bec"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/0f2de0a2bb85e1e16e1554b0cac7398a4dcb7022c4ac333647f317491f07ca40.json",
+      "bytes": 29603,
+      "sha256": "0f2de0a2bb85e1e16e1554b0cac7398a4dcb7022c4ac333647f317491f07ca40"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/10ddec54a750511dc7bbe505a17b63246bf196ae78807aff28395f4d852e3ea1.json",
+      "bytes": 4974559,
+      "sha256": "10ddec54a750511dc7bbe505a17b63246bf196ae78807aff28395f4d852e3ea1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/11606588171586e7284771642d1810d029381e556276fc2dcaa26ec058c0b5b9.json",
+      "bytes": 11404,
+      "sha256": "11606588171586e7284771642d1810d029381e556276fc2dcaa26ec058c0b5b9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/11fc0b867228ee89ef82357e94c27852fe09b8cd027d308c3ea1f296f463f1b3.json",
+      "bytes": 665317,
+      "sha256": "11fc0b867228ee89ef82357e94c27852fe09b8cd027d308c3ea1f296f463f1b3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/13e4c0a09ca707b4146d8a636babfa4bb15249cf596219a63163f88532811654.json",
+      "bytes": 43179,
+      "sha256": "13e4c0a09ca707b4146d8a636babfa4bb15249cf596219a63163f88532811654"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/144f802b4c2f090fbd2fef1bdac33bc0a09915082ebf6041b222a26def3a34d2.json",
+      "bytes": 1431,
+      "sha256": "144f802b4c2f090fbd2fef1bdac33bc0a09915082ebf6041b222a26def3a34d2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/15aeb39fe3cb3e106869ed378224b93ff0ba963bc18593a769d03ead094b409b.json",
+      "bytes": 934906,
+      "sha256": "15aeb39fe3cb3e106869ed378224b93ff0ba963bc18593a769d03ead094b409b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/1684d2b1aa3c1acf13c2a7c4f183b0fef45ec05994f4c8f2445c1a90839b21a0.stdout",
+      "bytes": 51696,
+      "sha256": "1684d2b1aa3c1acf13c2a7c4f183b0fef45ec05994f4c8f2445c1a90839b21a0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/1782caee4b90dd2a455272e0e20f6f6f55e9c7a6e205e23be75d7820efecde71.json",
+      "bytes": 40833,
+      "sha256": "1782caee4b90dd2a455272e0e20f6f6f55e9c7a6e205e23be75d7820efecde71"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/19fe3f0202383607c27fd6b06bc864b141116af1e1a870d1c2b3ca3e896cf0b0.json",
+      "bytes": 199,
+      "sha256": "19fe3f0202383607c27fd6b06bc864b141116af1e1a870d1c2b3ca3e896cf0b0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/1a87e71cf80c20c54083b2bb877734e6a8a2ee906c56abf54fdebb699d242fba.json",
+      "bytes": 13562,
+      "sha256": "1a87e71cf80c20c54083b2bb877734e6a8a2ee906c56abf54fdebb699d242fba"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/1f119ed37c61693429edb306cd914557044890875d557f03af3ffd3b96e44a04.json",
+      "bytes": 4119,
+      "sha256": "1f119ed37c61693429edb306cd914557044890875d557f03af3ffd3b96e44a04"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/2460c05683f5f74d06c0554c230ef7a31abad093bb016c525a4f974b20be3e83.json",
+      "bytes": 21311,
+      "sha256": "2460c05683f5f74d06c0554c230ef7a31abad093bb016c525a4f974b20be3e83"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/24e6e1b68f0c4b734afb19bb596fdc7bcf2527879826c548fc86d8819624ae16.json",
+      "bytes": 61857,
+      "sha256": "24e6e1b68f0c4b734afb19bb596fdc7bcf2527879826c548fc86d8819624ae16"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8.json",
+      "bytes": 3743,
+      "sha256": "252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/255a792087013fd5b994e7d69e326951e49971f1d48fcf2fa9325e028f2b380b.json",
+      "bytes": 26839,
+      "sha256": "255a792087013fd5b994e7d69e326951e49971f1d48fcf2fa9325e028f2b380b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/270b5407b7b54ffa26cdd6c3d157113a9a761375c9b5787c8434535ef909135d.json",
+      "bytes": 232,
+      "sha256": "270b5407b7b54ffa26cdd6c3d157113a9a761375c9b5787c8434535ef909135d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/28e1e0427ff8995a997043c365ea4078ffe0e39514d23512b51ea6e11d7133d2.json",
+      "bytes": 18394,
+      "sha256": "28e1e0427ff8995a997043c365ea4078ffe0e39514d23512b51ea6e11d7133d2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/299e89422cef6682ece6ae7ed6508191ac5af550484033a65b64ef6b93da589d.json",
+      "bytes": 2254,
+      "sha256": "299e89422cef6682ece6ae7ed6508191ac5af550484033a65b64ef6b93da589d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/2c2522df95f10119ff39db4915584300d353619b4409e1ec9b12dcb5f2005d9d.md",
+      "bytes": 18084,
+      "sha256": "2c2522df95f10119ff39db4915584300d353619b4409e1ec9b12dcb5f2005d9d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/2e26b9f6856f68b2723555061f9e998e765ee24d47b0f85dfdeb97f372f72c3a.json",
+      "bytes": 10016,
+      "sha256": "2e26b9f6856f68b2723555061f9e998e765ee24d47b0f85dfdeb97f372f72c3a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/308f66a47ad7544807106fcf0558d7b5e2c74ebc6a8bfabe126fd21b00de8f63.json",
+      "bytes": 22152,
+      "sha256": "308f66a47ad7544807106fcf0558d7b5e2c74ebc6a8bfabe126fd21b00de8f63"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/31ac676cc6f345d786e9cde2e56b5c5fb7609c689bc15800aec14e69f6d85a59.json",
+      "bytes": 8848,
+      "sha256": "31ac676cc6f345d786e9cde2e56b5c5fb7609c689bc15800aec14e69f6d85a59"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/3347438bb02a614afeb08974b8fe5af77f30fbcbfe814801018edef9f3455ec6.json",
+      "bytes": 3975177,
+      "sha256": "3347438bb02a614afeb08974b8fe5af77f30fbcbfe814801018edef9f3455ec6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/34c03f04a6e2c3bb2a9779e1b54be296798e3c8de3e968f12d2e509245c0d571.json",
+      "bytes": 2113,
+      "sha256": "34c03f04a6e2c3bb2a9779e1b54be296798e3c8de3e968f12d2e509245c0d571"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/35c46e596428950c38c17d92f9c7263be60737ea5e7178120a80aa342141ea93.json",
+      "bytes": 6331,
+      "sha256": "35c46e596428950c38c17d92f9c7263be60737ea5e7178120a80aa342141ea93"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/369cb05c1d2901105ffef7b58bcb41d565fe5c00b919daf02eb885ff02469eac.json",
+      "bytes": 9661,
+      "sha256": "369cb05c1d2901105ffef7b58bcb41d565fe5c00b919daf02eb885ff02469eac"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/385c102198007f19e122566c4fd5e957a4a08dfa2e7683b2a3c1c72f199fb7aa.json",
+      "bytes": 232,
+      "sha256": "385c102198007f19e122566c4fd5e957a4a08dfa2e7683b2a3c1c72f199fb7aa"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/389c89fe6e3f8230ecefca0c25d83a85dc4980235c798b3591760d42af95c059.json",
+      "bytes": 1463,
+      "sha256": "389c89fe6e3f8230ecefca0c25d83a85dc4980235c798b3591760d42af95c059"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/3a69a4cb2e6df65cafb62b5c7719ec7e819bb16f2510c65f45eb2fcae67ea97a.json",
+      "bytes": 1922,
+      "sha256": "3a69a4cb2e6df65cafb62b5c7719ec7e819bb16f2510c65f45eb2fcae67ea97a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/3be500995d35f96131d64fd4181371ed87400b896541b7e1cecd3e25b9e196ef.json",
+      "bytes": 2458621,
+      "sha256": "3be500995d35f96131d64fd4181371ed87400b896541b7e1cecd3e25b9e196ef"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/3e3985be7ed269e03622698b14b01b75170da66bca0e38292b11f641d9321535.json",
+      "bytes": 828,
+      "sha256": "3e3985be7ed269e03622698b14b01b75170da66bca0e38292b11f641d9321535"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/4074aff0f07f7d0511d3af704b4da1150c20145b3427155aff334274bff5382c.json",
+      "bytes": 4523,
+      "sha256": "4074aff0f07f7d0511d3af704b4da1150c20145b3427155aff334274bff5382c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/41639661f9c26deb6c9a7652ba8be2f553a27e88317f622817847ab0f37b5cba.json",
+      "bytes": 67436,
+      "sha256": "41639661f9c26deb6c9a7652ba8be2f553a27e88317f622817847ab0f37b5cba"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd.stdout",
+      "bytes": 153,
+      "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/41a45d3edbbf13300eec904850ca59bbd66331a0ac65256662988dbd2e035946.json",
+      "bytes": 4969481,
+      "sha256": "41a45d3edbbf13300eec904850ca59bbd66331a0ac65256662988dbd2e035946"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/41be1d40ed1763a425940c4f45e385bdc237ada864e592790c5f7cc244f1ba3a.json",
+      "bytes": 1517,
+      "sha256": "41be1d40ed1763a425940c4f45e385bdc237ada864e592790c5f7cc244f1ba3a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/424d9970dec0a290f0c8ae2b581b81256a9ff222a1f2fd1e405dcc2a20cfba9e.json",
+      "bytes": 61869,
+      "sha256": "424d9970dec0a290f0c8ae2b581b81256a9ff222a1f2fd1e405dcc2a20cfba9e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/4408280e905c8441eda1bac32bab499a280e741d3fd9b00aed2368af44d49c37.json",
+      "bytes": 26384,
+      "sha256": "4408280e905c8441eda1bac32bab499a280e741d3fd9b00aed2368af44d49c37"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/46e836728cb5104ee818c9ec25037014fd4fd6e4010881a6477490ddc3f40f2c.json",
+      "bytes": 340,
+      "sha256": "46e836728cb5104ee818c9ec25037014fd4fd6e4010881a6477490ddc3f40f2c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/4975c339c36cb29c18a9eed82251ca5eb7b8b5b6ebc5e74f570499a0e4af5d0a.json",
+      "bytes": 4890151,
+      "sha256": "4975c339c36cb29c18a9eed82251ca5eb7b8b5b6ebc5e74f570499a0e4af5d0a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/49be4255f6769db8537c48329883e47c3b40f1f11ca132117f3f2e40fa030eec.json",
+      "bytes": 18168,
+      "sha256": "49be4255f6769db8537c48329883e47c3b40f1f11ca132117f3f2e40fa030eec"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/4e2d5a1726b59c0bd3dfb20013c89e643dd2e0f4e317a9db9d7d129ff8eac24a.json",
+      "bytes": 232,
+      "sha256": "4e2d5a1726b59c0bd3dfb20013c89e643dd2e0f4e317a9db9d7d129ff8eac24a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/4f83c1179245c5f6818ad645fe43348b84847bfa3ff7065ca655e0ca5b9138e2.json",
+      "bytes": 5305,
+      "sha256": "4f83c1179245c5f6818ad645fe43348b84847bfa3ff7065ca655e0ca5b9138e2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/50ba5869ed9d4469cfbd5a33a77b9b31368ab1022cb5b1255367ba72dc2fa73f.json",
+      "bytes": 83420,
+      "sha256": "50ba5869ed9d4469cfbd5a33a77b9b31368ab1022cb5b1255367ba72dc2fa73f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/51819c3548e2a6238b3fc69dde0ef7445e263d5a2a8be0eb0343507b6dcd05ce.json",
+      "bytes": 9466,
+      "sha256": "51819c3548e2a6238b3fc69dde0ef7445e263d5a2a8be0eb0343507b6dcd05ce"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/5550c5d3a9d524e216530284ffed1d8542e8bc8f405bc475a93d4288bd60f1d0.json",
+      "bytes": 232,
+      "sha256": "5550c5d3a9d524e216530284ffed1d8542e8bc8f405bc475a93d4288bd60f1d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/59bd06ac43eb269458994762c21eac8e5e7a0e04f61661c6e18b91803a7dad6d.json",
+      "bytes": 14085,
+      "sha256": "59bd06ac43eb269458994762c21eac8e5e7a0e04f61661c6e18b91803a7dad6d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/60614b9a802c784f316c102068c60bc02b0f9172caf93384c46ed3f06c6e8591.json",
+      "bytes": 8488,
+      "sha256": "60614b9a802c784f316c102068c60bc02b0f9172caf93384c46ed3f06c6e8591"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/60872db84a0c1cdb1960efe608c525430d15803793f5470504e4b7776735dce4.json",
+      "bytes": 9257,
+      "sha256": "60872db84a0c1cdb1960efe608c525430d15803793f5470504e4b7776735dce4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/61bd3c006cc77707e1e84148158c3504d693fe7b6e0983b984aca83a044293ef.json",
+      "bytes": 36962,
+      "sha256": "61bd3c006cc77707e1e84148158c3504d693fe7b6e0983b984aca83a044293ef"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/6412daf665b0aeb262d7cee553c0dfe9f9811ec66b7410412d0f2e027d449762.json",
+      "bytes": 8961,
+      "sha256": "6412daf665b0aeb262d7cee553c0dfe9f9811ec66b7410412d0f2e027d449762"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/66047513385fb4afc50d4f74e53a322f2d16e70deac3b4a60a8d641a8e10c560.json",
+      "bytes": 1245181,
+      "sha256": "66047513385fb4afc50d4f74e53a322f2d16e70deac3b4a60a8d641a8e10c560"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/675cd18d3ed7bd839951462896778d7e5b3e199e2fb9b13232c842a83d4e52bf.json",
+      "bytes": 9456,
+      "sha256": "675cd18d3ed7bd839951462896778d7e5b3e199e2fb9b13232c842a83d4e52bf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/67a0ea23087b2220fc8b76fa5d7d96252a5de440d2085917f912980473f5446c.patch",
+      "bytes": 22851,
+      "sha256": "67a0ea23087b2220fc8b76fa5d7d96252a5de440d2085917f912980473f5446c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/68666c6cc610b380bcd3e56dca5b285741478ab68a4dfe94c9f8fc728774d204.json",
+      "bytes": 6647,
+      "sha256": "68666c6cc610b380bcd3e56dca5b285741478ab68a4dfe94c9f8fc728774d204"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/68891522fe6556f4f327b8761d4b7ae45aabdb48c68dc841908609fee4e8e69a.json",
+      "bytes": 2478991,
+      "sha256": "68891522fe6556f4f327b8761d4b7ae45aabdb48c68dc841908609fee4e8e69a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/699ab0a9c575d96a484c0269e261e458501b89e2d8a6d56a9172fad6bf412dad.json",
+      "bytes": 335,
+      "sha256": "699ab0a9c575d96a484c0269e261e458501b89e2d8a6d56a9172fad6bf412dad"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/6aaa7cfe1d2b43a58f0ef32e1d74a9a4825d188ff073920bb75bca619f46717e.json",
+      "bytes": 6295,
+      "sha256": "6aaa7cfe1d2b43a58f0ef32e1d74a9a4825d188ff073920bb75bca619f46717e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/6b58f5bfe28b25d266181578d3874f8dde7a9df16230003e661ad85acf5a7726.json",
+      "bytes": 2234,
+      "sha256": "6b58f5bfe28b25d266181578d3874f8dde7a9df16230003e661ad85acf5a7726"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/6b7bf170b8f52f07061cd5fa836c3763d21823beaf4de02ca9cbf4e2c5c06a6f.json",
+      "bytes": 207655,
+      "sha256": "6b7bf170b8f52f07061cd5fa836c3763d21823beaf4de02ca9cbf4e2c5c06a6f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/6d50f6dfe8dede401bb65fef40748a2af1840a33a58b0efcd96b85d67892f07e.json",
+      "bytes": 199,
+      "sha256": "6d50f6dfe8dede401bb65fef40748a2af1840a33a58b0efcd96b85d67892f07e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/6ea4e424ed414ad439aede43ce649f866807e10879495325bf8fd5701d3502ae.raw",
+      "bytes": 1614,
+      "sha256": "6ea4e424ed414ad439aede43ce649f866807e10879495325bf8fd5701d3502ae"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb.py",
+      "bytes": 41081,
+      "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/709277b4b04f6cd664cc8e761f4f2fba9fd08f4e7252816f426335e5a27e3cfd.patch",
+      "bytes": 13475,
+      "sha256": "709277b4b04f6cd664cc8e761f4f2fba9fd08f4e7252816f426335e5a27e3cfd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/71737659ef4b560871f688e65cadb7513db3942b5a4c29d810943a0ecf9df948.json",
+      "bytes": 3532,
+      "sha256": "71737659ef4b560871f688e65cadb7513db3942b5a4c29d810943a0ecf9df948"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/72ea94f83c71ff13f114cc2fa0d479846ca5b386184a79b69beeae50c087fa64.json",
+      "bytes": 934767,
+      "sha256": "72ea94f83c71ff13f114cc2fa0d479846ca5b386184a79b69beeae50c087fa64"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/74d21984afa641e3cfe3fc05a3e078ef9debe7ad76143763978612d8358fe90a.json",
+      "bytes": 10119,
+      "sha256": "74d21984afa641e3cfe3fc05a3e078ef9debe7ad76143763978612d8358fe90a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/7863fcdb3782f37743af0e08ab1f0ab644c9cff216f17f43cc8c4d17d889fb5d.json",
+      "bytes": 9049,
+      "sha256": "7863fcdb3782f37743af0e08ab1f0ab644c9cff216f17f43cc8c4d17d889fb5d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/788c71771634f913f0707546f11f13daa613efd062fd8798fffc009fcf5051af.json",
+      "bytes": 340,
+      "sha256": "788c71771634f913f0707546f11f13daa613efd062fd8798fffc009fcf5051af"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/793c3f2899e0e63abd05dd10e70b2897af3bef6d72d97b106e954802d8a7cf0d.raw",
+      "bytes": 1348,
+      "sha256": "793c3f2899e0e63abd05dd10e70b2897af3bef6d72d97b106e954802d8a7cf0d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/7db0e9ddf1c451b70d422e2501676f7a04d31dddc87f24cce6b13e05d363ec9e.json",
+      "bytes": 6700,
+      "sha256": "7db0e9ddf1c451b70d422e2501676f7a04d31dddc87f24cce6b13e05d363ec9e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/8244b11939c75fcf1badfc30d3c2196963cd693640817b30f7c7b95895f1993d.json",
+      "bytes": 257,
+      "sha256": "8244b11939c75fcf1badfc30d3c2196963cd693640817b30f7c7b95895f1993d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/8252d3eac30b5f271901735e32740607203dfff804e834786614f5a912004f7d.json",
+      "bytes": 6156,
+      "sha256": "8252d3eac30b5f271901735e32740607203dfff804e834786614f5a912004f7d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0.json",
+      "bytes": 884844,
+      "sha256": "87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/8c125fcfe0fe17dfc5a868aae441d18449403d4fa7e94fd91bb48f8d7a638d87.json",
+      "bytes": 1580,
+      "sha256": "8c125fcfe0fe17dfc5a868aae441d18449403d4fa7e94fd91bb48f8d7a638d87"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/8cd45f4b0fbd7cb0561464b5f45802a9f9a9046295e1ad9ee2dfa98f057df032.json",
+      "bytes": 5282607,
+      "sha256": "8cd45f4b0fbd7cb0561464b5f45802a9f9a9046295e1ad9ee2dfa98f057df032"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/8d9e322777d4fd72fb8de7a4823a34171b1b0bc80a8723b7f0e084d42c5eae3a.json",
+      "bytes": 621929,
+      "sha256": "8d9e322777d4fd72fb8de7a4823a34171b1b0bc80a8723b7f0e084d42c5eae3a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/8efcb4b1b048ea2b4819fecd48be8a9e934babc2dbe73461f91e622e8b66ca05.py",
+      "bytes": 31038,
+      "sha256": "8efcb4b1b048ea2b4819fecd48be8a9e934babc2dbe73461f91e622e8b66ca05"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/8f387d0b9d830dd2b5946914c639a44cd2cac9a3cf847ed4494ff36034abc26d.json",
+      "bytes": 1058,
+      "sha256": "8f387d0b9d830dd2b5946914c639a44cd2cac9a3cf847ed4494ff36034abc26d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/9190005d8df9ec5df50cebd433b26ec8e2d4757c129dd4b361837011bc72946d.json",
+      "bytes": 12008,
+      "sha256": "9190005d8df9ec5df50cebd433b26ec8e2d4757c129dd4b361837011bc72946d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/91d82194268d00cfe668c191237507a20dd3b5dfc7c444d8501d0df1e81cb823.json",
+      "bytes": 1804,
+      "sha256": "91d82194268d00cfe668c191237507a20dd3b5dfc7c444d8501d0df1e81cb823"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/973d111ff2fa5ca8f3511c8e14fd4c1a35a5a60ae828d3c6f5407beaf4e1325c.json",
+      "bytes": 24488,
+      "sha256": "973d111ff2fa5ca8f3511c8e14fd4c1a35a5a60ae828d3c6f5407beaf4e1325c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/976d8b0824485c528221fc6edbfb7aea38ed8530ad61e961d151bf3cf8e53c93.json",
+      "bytes": 5445965,
+      "sha256": "976d8b0824485c528221fc6edbfb7aea38ed8530ad61e961d151bf3cf8e53c93"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/9a03709c15bdf0f074374c033c28661a0d83a7a24aa78e220e88a4e94e2d6713.json",
+      "bytes": 9965,
+      "sha256": "9a03709c15bdf0f074374c033c28661a0d83a7a24aa78e220e88a4e94e2d6713"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/a0bd0945ab5d3638a06210d87dbd11418673b149af76be9d16b6b6d29b519bf4.json",
+      "bytes": 70300,
+      "sha256": "a0bd0945ab5d3638a06210d87dbd11418673b149af76be9d16b6b6d29b519bf4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/a14471f206b12d5bb450566b567c90d96062efbf484a497076a4eca56fc92698.json",
+      "bytes": 5362115,
+      "sha256": "a14471f206b12d5bb450566b567c90d96062efbf484a497076a4eca56fc92698"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/a27f148aaf5af263ef3306ab739635ed3a9d08ed27e956fd011547fc53b6202d.json",
+      "bytes": 3186,
+      "sha256": "a27f148aaf5af263ef3306ab739635ed3a9d08ed27e956fd011547fc53b6202d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/a2b12b000f7622cbddd9954c016e95a3aa471701bc16facce9406244418dc94d.json",
+      "bytes": 8621,
+      "sha256": "a2b12b000f7622cbddd9954c016e95a3aa471701bc16facce9406244418dc94d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/a35ac8187ca39726914839eea1bed88a87f7f61740e63016952250e7b897034c.json",
+      "bytes": 4823899,
+      "sha256": "a35ac8187ca39726914839eea1bed88a87f7f61740e63016952250e7b897034c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/a8d51253ccf4cf79687f1d4b3fdc93c9c21837278b04f27cdffe376680885e85.json",
+      "bytes": 882949,
+      "sha256": "a8d51253ccf4cf79687f1d4b3fdc93c9c21837278b04f27cdffe376680885e85"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/a97c79b3fbc86a044ae614f4cf389e8c4e085ee0bd69e747b7c46a3c82bfc13c.json",
+      "bytes": 5908,
+      "sha256": "a97c79b3fbc86a044ae614f4cf389e8c4e085ee0bd69e747b7c46a3c82bfc13c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/ab316e7b11a133a6ba81a27b1abbf17fdee17edc7f7063c708f9f6cdb4dc6e82.py",
+      "bytes": 24141,
+      "sha256": "ab316e7b11a133a6ba81a27b1abbf17fdee17edc7f7063c708f9f6cdb4dc6e82"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/b0e84f3e187fe1686711e28d4ef0bffa968957521eb8d495d2a49c0659f2361c.json",
+      "bytes": 6348,
+      "sha256": "b0e84f3e187fe1686711e28d4ef0bffa968957521eb8d495d2a49c0659f2361c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/b3df0c977249db90ed7845b80d3b72568260c5d63eb05256e45e90c0273cc359.json",
+      "bytes": 257,
+      "sha256": "b3df0c977249db90ed7845b80d3b72568260c5d63eb05256e45e90c0273cc359"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/b3e73cbb03d194051437db5fdff9b7f84990e55b80e907c7a8159c5ba1592a2e.json",
+      "bytes": 215,
+      "sha256": "b3e73cbb03d194051437db5fdff9b7f84990e55b80e907c7a8159c5ba1592a2e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/b8692ee865dce11f215cad448a166e62548de5744731f2e91fb30e416507ad05.json",
+      "bytes": 6301,
+      "sha256": "b8692ee865dce11f215cad448a166e62548de5744731f2e91fb30e416507ad05"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/b87ac60181ed7353706b761f713de0041a6e35fe07038f62a74de24cc0e0de05.json",
+      "bytes": 7912,
+      "sha256": "b87ac60181ed7353706b761f713de0041a6e35fe07038f62a74de24cc0e0de05"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/b96b2d607bd2b4bf02eca077df971e02bc3712fa80a83a7dfa44c962f76136fc.json",
+      "bytes": 33275,
+      "sha256": "b96b2d607bd2b4bf02eca077df971e02bc3712fa80a83a7dfa44c962f76136fc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/ba67cf0e0d35e7b5c8b48760a0a649c29e53275e9a1764e17aabda6509bd51e4.json",
+      "bytes": 2823,
+      "sha256": "ba67cf0e0d35e7b5c8b48760a0a649c29e53275e9a1764e17aabda6509bd51e4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/ba8ed220a08957da8221118f6584cf8bad42d7f0e1fde3f8aed5249d74407fea.json",
+      "bytes": 502,
+      "sha256": "ba8ed220a08957da8221118f6584cf8bad42d7f0e1fde3f8aed5249d74407fea"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/bb5bc0ea975afd6a0b1e02cc9d936e7d60f12716d9e4ff2e109e5f4f2d384cd8.json",
+      "bytes": 41432,
+      "sha256": "bb5bc0ea975afd6a0b1e02cc9d936e7d60f12716d9e4ff2e109e5f4f2d384cd8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf.stdout",
+      "bytes": 71,
+      "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/bec5e4cd31b9b965f4f63953782d8f557de00b3039e3ea1a105c7b8942a083b3.json",
+      "bytes": 201,
+      "sha256": "bec5e4cd31b9b965f4f63953782d8f557de00b3039e3ea1a105c7b8942a083b3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/c0706c873754632f6356181ef390c1f67c0c610f59ba21bdec60ac2b48a0302b.json",
+      "bytes": 21103,
+      "sha256": "c0706c873754632f6356181ef390c1f67c0c610f59ba21bdec60ac2b48a0302b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/c39b4f6c892d95e0facb1293d04e8e68a160fb39d5ce940dd84bbdeda371ffe2.json",
+      "bytes": 3519,
+      "sha256": "c39b4f6c892d95e0facb1293d04e8e68a160fb39d5ce940dd84bbdeda371ffe2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/c405291381cea0f4ceb718b8849a1523b66803ef66fcec9eba0bcdb2648b66ec.txt",
+      "bytes": 2596,
+      "sha256": "c405291381cea0f4ceb718b8849a1523b66803ef66fcec9eba0bcdb2648b66ec"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/c791bd0cd5c2fd0c137539e32a63f1832644947632568111aeb376591a71910b.json",
+      "bytes": 18440,
+      "sha256": "c791bd0cd5c2fd0c137539e32a63f1832644947632568111aeb376591a71910b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/ca1902c0dc842a6bae6588a040814aba83ea26cd538fee5f09c8428c5a0b908a.json",
+      "bytes": 962,
+      "sha256": "ca1902c0dc842a6bae6588a040814aba83ea26cd538fee5f09c8428c5a0b908a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/cb70fe3781f77b0b5955f64fd6208ee0878052f170b2cf8c6a85a9b4ae84e272.json",
+      "bytes": 2499,
+      "sha256": "cb70fe3781f77b0b5955f64fd6208ee0878052f170b2cf8c6a85a9b4ae84e272"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/cc94e521064d5b2badbd1412a6c90438434207fe96461a9f5bdf50d692f26d9d.json",
+      "bytes": 20886,
+      "sha256": "cc94e521064d5b2badbd1412a6c90438434207fe96461a9f5bdf50d692f26d9d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/ccd18e85d533bc5b5ad29ca54a4b102a5b2aaf28075bdc07e9d12a4939606548.json",
+      "bytes": 70300,
+      "sha256": "ccd18e85d533bc5b5ad29ca54a4b102a5b2aaf28075bdc07e9d12a4939606548"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/cdcab82acf86f03650ac61f5bddd2f991239d56dc0573be96a1bd492fe76795b.json",
+      "bytes": 257,
+      "sha256": "cdcab82acf86f03650ac61f5bddd2f991239d56dc0573be96a1bd492fe76795b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9.json",
+      "bytes": 23777,
+      "sha256": "d08c6d24be13b32b0cd3bbef30c2f31141a4222caf67bd57836444ed33085fd9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/d0a7e6b5f925d7ea7106ece8d5b81c3c145ab8240f85e0d72aaeb6b401c87afc.json",
+      "bytes": 201,
+      "sha256": "d0a7e6b5f925d7ea7106ece8d5b81c3c145ab8240f85e0d72aaeb6b401c87afc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/d21f77e81a4be5a4b6c04334ab9c56985cba9e7abbb46e5d24ac2c931f3740eb.json",
+      "bytes": 41617,
+      "sha256": "d21f77e81a4be5a4b6c04334ab9c56985cba9e7abbb46e5d24ac2c931f3740eb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/d3659d96e46ad039a377b430f5c11125253fceacc38e4ba18778afbf63512f60.json",
+      "bytes": 24331,
+      "sha256": "d3659d96e46ad039a377b430f5c11125253fceacc38e4ba18778afbf63512f60"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/d38a1680f4a18af7ead299737a06aec901b2913cb53e879f1d00292b875c6107.bin",
+      "bytes": 1212,
+      "sha256": "d38a1680f4a18af7ead299737a06aec901b2913cb53e879f1d00292b875c6107"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/d3bc7a98fe8c41d21fe6b0a09675e677cc086e66ffab314a032517212d9f49b6.json",
+      "bytes": 934733,
+      "sha256": "d3bc7a98fe8c41d21fe6b0a09675e677cc086e66ffab314a032517212d9f49b6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/d45c2c71fb7f8d0cad47e2f399d10dbff2f50cc400f6c6a9faa282cc5ab1d0ed.json",
+      "bytes": 6511,
+      "sha256": "d45c2c71fb7f8d0cad47e2f399d10dbff2f50cc400f6c6a9faa282cc5ab1d0ed"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/d5b9311c6d828a8226c621785ad2b0e4dcd5ded114f39efc2ff082784fd7bad9.json",
+      "bytes": 1069,
+      "sha256": "d5b9311c6d828a8226c621785ad2b0e4dcd5ded114f39efc2ff082784fd7bad9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/d7131434f95a6bf7d1636df5466d609d3846a30b2c2a97a31ff99830db5f9606.json",
+      "bytes": 201,
+      "sha256": "d7131434f95a6bf7d1636df5466d609d3846a30b2c2a97a31ff99830db5f9606"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/da744d162cc1611116ac6369688bbcb93eda3a4b7a6c2522eb6a572ba9bf569f.json",
+      "bytes": 9223,
+      "sha256": "da744d162cc1611116ac6369688bbcb93eda3a4b7a6c2522eb6a572ba9bf569f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/da9f81bc5cb7f56bfd4e49a58aaa390cbe0d2b392ce72995a2127d6171ad5a4c.json",
+      "bytes": 8299,
+      "sha256": "da9f81bc5cb7f56bfd4e49a58aaa390cbe0d2b392ce72995a2127d6171ad5a4c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/dbcbc988f7eaa06307494e85deca7606624838c67ad34dd6e1cf6f8b22ff095e.json",
+      "bytes": 3931,
+      "sha256": "dbcbc988f7eaa06307494e85deca7606624838c67ad34dd6e1cf6f8b22ff095e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/dbdb4e01a5d5608e39956042da141f8d6dd8e0953dd7528cb5d3ba6e5b283c13.raw",
+      "bytes": 3189,
+      "sha256": "dbdb4e01a5d5608e39956042da141f8d6dd8e0953dd7528cb5d3ba6e5b283c13"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/dd7e1a3b06345eff90f7410ecce294f481a6430547a4085b7304d00f90f6b9a2.json",
+      "bytes": 257,
+      "sha256": "dd7e1a3b06345eff90f7410ecce294f481a6430547a4085b7304d00f90f6b9a2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/dd9d97dffe355149ff054c2562a3ac6eef26ac7199a274b233b40cfe71857f34.json",
+      "bytes": 248007,
+      "sha256": "dd9d97dffe355149ff054c2562a3ac6eef26ac7199a274b233b40cfe71857f34"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419.stdout",
+      "bytes": 69,
+      "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e25e302416e8327b343caf1a6883f50869daabe5d22748c60f837275c98b7ef3.json",
+      "bytes": 2585122,
+      "sha256": "e25e302416e8327b343caf1a6883f50869daabe5d22748c60f837275c98b7ef3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e3c81d15a7de79e22f21854f0be97dcf3d784b46e7500344ca6c165f681463f1.json",
+      "bytes": 12122,
+      "sha256": "e3c81d15a7de79e22f21854f0be97dcf3d784b46e7500344ca6c165f681463f1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e469f9ddfdb0e385f75392ca7271e713e9bbbc5ed49f6b9972f70278ec6947d6.json",
+      "bytes": 9551,
+      "sha256": "e469f9ddfdb0e385f75392ca7271e713e9bbbc5ed49f6b9972f70278ec6947d6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e683e74b72b0e442b25cb4c25cf28d424ebe2df1252205c7d290892a7ccdb7f9.json",
+      "bytes": 31363,
+      "sha256": "e683e74b72b0e442b25cb4c25cf28d424ebe2df1252205c7d290892a7ccdb7f9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e6a72be07d9057d7f28faed5585eccf88afc489005c71a80e28fc28c6358c066.json",
+      "bytes": 35508,
+      "sha256": "e6a72be07d9057d7f28faed5585eccf88afc489005c71a80e28fc28c6358c066"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b.json",
+      "bytes": 6421,
+      "sha256": "e72b541b4c04f89df532a9f4e489dd12fb6259e7b11e1809fb751fc47693c45b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/ea2f0f13b1b832556ac6d30e0e8989eb6864f3bb65a2aacd642908740b354691.json",
+      "bytes": 19594,
+      "sha256": "ea2f0f13b1b832556ac6d30e0e8989eb6864f3bb65a2aacd642908740b354691"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/eb59a494b9ce429cad25f870006642e6057db29f201ce128a822ce11e9a6a9af.json",
+      "bytes": 9882,
+      "sha256": "eb59a494b9ce429cad25f870006642e6057db29f201ce128a822ce11e9a6a9af"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f13e92d9a35dfea9e6e7c40e8bc1d287c986fef058dc77ef7c7f9b8d28a04aba.json",
+      "bytes": 37918,
+      "sha256": "f13e92d9a35dfea9e6e7c40e8bc1d287c986fef058dc77ef7c7f9b8d28a04aba"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f1f4896efc66b60b625d44717a037287f62a8a563d99647c21f6d98b13888878.json",
+      "bytes": 64507,
+      "sha256": "f1f4896efc66b60b625d44717a037287f62a8a563d99647c21f6d98b13888878"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f3c3d937dd785e9ccd46684b16f754792f035ce66f94f4499f6bdbacfd45110d.md",
+      "bytes": 4297,
+      "sha256": "f3c3d937dd785e9ccd46684b16f754792f035ce66f94f4499f6bdbacfd45110d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f43dc1a598acf6880da9225179f73090ef409dff7c4bcf18215a6361d6111c34.json",
+      "bytes": 24331,
+      "sha256": "f43dc1a598acf6880da9225179f73090ef409dff7c4bcf18215a6361d6111c34"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f5e55d64acd6a602ec885d47942d6317a228e6d4ebcccd48009c1223114f48d8.json",
+      "bytes": 3525,
+      "sha256": "f5e55d64acd6a602ec885d47942d6317a228e6d4ebcccd48009c1223114f48d8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f5eea35b57f8522424232505adf2d98cd473639499d339fb418571cfbb4c794d.json",
+      "bytes": 966,
+      "sha256": "f5eea35b57f8522424232505adf2d98cd473639499d339fb418571cfbb4c794d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f740734f79b786b79decee8fae6fc524892f11b09984dcb37b095cacf241be8f.json",
+      "bytes": 3985,
+      "sha256": "f740734f79b786b79decee8fae6fc524892f11b09984dcb37b095cacf241be8f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f8a2608287fd715d3a7349730a8656bc1f8062db84133e36c091e9b078477cbb.json",
+      "bytes": 9019,
+      "sha256": "f8a2608287fd715d3a7349730a8656bc1f8062db84133e36c091e9b078477cbb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f8e368612ef2e985902eb33af0f8d25de235e64c6f6eb9509a773dd572ae76df.json",
+      "bytes": 1970,
+      "sha256": "f8e368612ef2e985902eb33af0f8d25de235e64c6f6eb9509a773dd572ae76df"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/f975debd5d913cd0146f6e52857c01e4cfa1cf3ab4605c4ad57c15a7f2080ee1.json",
+      "bytes": 232,
+      "sha256": "f975debd5d913cd0146f6e52857c01e4cfa1cf3ab4605c4ad57c15a7f2080ee1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/fa4682a7311d1a8efe8fcc01428dc120008128d5dee90535b062fb35c7f0c544.json",
+      "bytes": 14549,
+      "sha256": "fa4682a7311d1a8efe8fcc01428dc120008128d5dee90535b062fb35c7f0c544"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/fb1a5a9a6094e0c57f2c122b084c126d7c1e7881fb291d9260f702de1a397eba.json",
+      "bytes": 668978,
+      "sha256": "fb1a5a9a6094e0c57f2c122b084c126d7c1e7881fb291d9260f702de1a397eba"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945.json",
+      "bytes": 12819,
+      "sha256": "fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/fe0564c8659c14a2e0ccae6fe9746d103896b40c1da79f9eb05636a0533d9392.json",
+      "bytes": 29019,
+      "sha256": "fe0564c8659c14a2e0ccae6fe9746d103896b40c1da79f9eb05636a0533d9392"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/raw/ffaa79b981897325910ac0457048ee336d9ca56df0af3d60c940495f3bc91678.json",
+      "bytes": 510,
+      "sha256": "ffaa79b981897325910ac0457048ee336d9ca56df0af3d60c940495f3bc91678"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/REPORT.json",
+      "bytes": 311124,
+      "sha256": "1bc0fd6a8c3577a8cd624b38a0eec910207e041a071da3ccbd2a2d50e2c04eff"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-B5-game-exit-pending-helpers-review-draft-20261007-001/REPORT.md",
+      "bytes": 20814,
+      "sha256": "54b1e4c983f478e1eb08496682d0b89b1ebf40ad80fb4b924e05904358b02919"
+    }
+  ],
+  "future": {
+    "draft_semantics": "null denotes no helper/CAS/finalization credit imported in this SDK148/source003 cutoff draft; later owner activities may exist in separate packages",
+    "formal_mandate": null,
+    "client_retained_handle_exit": null,
+    "keeper_retained_handle_exit": null,
+    "screen_CAS_release": null,
+    "final_log_coverage": null,
+    "main_archive_import": null,
+    "Workshop_release": null,
+    "afterclose_numeric_candidate_applied": null,
+    "afterclose_preview_candidate_applied": null,
+    "actual_upstream_integration": null,
+    "B4_contract_remediation": null
+  },
+  "main_still_clean": true,
+  "full_run_closed": false
+}

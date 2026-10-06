@@ -1,0 +1,28 @@
+{
+  "schema": "lyd.new-source-canonical-LF.v1",
+  "changes": [
+    {
+      "path": "mod_li_yu_dao/tools/fixtures/c3_factory_laws/ACTUAL-R14-B3-B4-SAMEFAITH-LAW.json",
+      "before_bytes": 3143,
+      "before_sha256": "33dd6259551aab9974881729cb6adf2a367b0ecbb97403476f81afa485060a9f",
+      "after_bytes": 3045,
+      "after_sha256": "242237017665de9ba1a8c9298dc7f7c46b8b0799886bc32894f65381e000c3b1"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json",
+      "before_bytes": 10539,
+      "before_sha256": "ce4b99940b3254bbd3c3fd671cbb48c16ffb48ee0e71e03e6c643e02da5722f6",
+      "after_bytes": 10161,
+      "after_sha256": "0c91b346626382d1fe6e6cc05de90435c822f9e8a1c68d35b6a9c6c8b7ff5262"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+      "before_bytes": 8246,
+      "before_sha256": "ba32bc578b898784989dc99ab3a83ac4b6891c9cb39a92b2538064524975f849",
+      "after_bytes": 8088,
+      "after_sha256": "8194927052bc17c7ed19e597d4987541d9f54ffe56faf12a3b5257ef01594248"
+    }
+  ],
+  "historical_raw_files_changed": false,
+  "generated_files_changed": false
+}

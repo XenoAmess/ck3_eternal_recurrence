@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r14-normal-exit-close-candidate-20261007-001\guarded_r14_helper_close.py", line 374, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r14-normal-exit-close-candidate-20261007-001\guarded_r14_helper_close.py", line 347, in main
+    values, pins = fixed()
+                   ~~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r14-normal-exit-close-candidate-20261007-001\guarded_r14_helper_close.py", line 107, in fixed
+    read_ref(capture['holder_source']); read_ref(capture['request'])
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r14-normal-exit-close-candidate-20261007-001\guarded_r14_helper_close.py", line 85, in read_ref
+    value, actual = read(row['path'], row['sha256'])
+                    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r14-normal-exit-close-candidate-20261007-001\guarded_r14_helper_close.py", line 80, in read
+    return json.loads(Path(row['path']).read_bytes()), row
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\json\decoder.py", line 348, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 3 (char 2)

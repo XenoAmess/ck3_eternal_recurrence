@@ -1,0 +1,197 @@
+{
+  "schema": "lyd.r14.immutable-actual-ballot-supplement-package.v1",
+  "label": "B2a-ballots-pending",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/AUTHOR-CLI.json",
+      "bytes": 1398,
+      "sha256": "385551b8d01b6f43dd3a074c09872a685978e8e0d2318e8285d1f4ab09be1fd0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/AUTHOR.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/AUTHOR.stdout.txt",
+      "bytes": 246,
+      "sha256": "452462e638594e655101e0c53c2c9cae83b0bb4016a76f87c61d6807e59cb61a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/B2a-FAST-BALLOT.actual.json",
+      "bytes": 1450,
+      "sha256": "0569f2b2846ab2716d3ec5a3bb0a7fe105e909d8226381fc5bca396668f173bd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/B2a-FINAL-SUMMARY.actual.json",
+      "bytes": 6301,
+      "sha256": "b8692ee865dce11f215cad448a166e62548de5744731f2e91fb30e416507ad05"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/CHECKPOINT-STRUCTURED.frozen.json",
+      "bytes": 693698,
+      "sha256": "64a26dd425c5abcdf3dc5e5775062facb1db496ca93efff5eedd2e901117f089"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/content-e3c69d2b9f90603a42495ebea57f7517671254be2631463746d0a475e084bbda.ck3",
+      "bytes": 91707305,
+      "sha256": "e3c69d2b9f90603a42495ebea57f7517671254be2631463746d0a475e084bbda"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/G2-NATIVE.original.json",
+      "bytes": 29025,
+      "sha256": "db4dea3bd8685cfa0a4fdf864e6147af9ea2fa15c6a93a57be508e2a334e84e8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/G2-SDK-WRAPPER.original.json",
+      "bytes": 61869,
+      "sha256": "46036292560306d598ddce825fb22523c910abee1eb5ad499b45f4f600a348b7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/G3-NATIVE.original.json",
+      "bytes": 4125,
+      "sha256": "753ac56aa02dce56da46b341a26897d78bcc2cb66769301cf919e5f50f794bc8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/G3-SDK-WRAPPER.original.json",
+      "bytes": 9031,
+      "sha256": "e8bd31c812570897b4937b14ab94274f11ec6e77e84a837b2c3b729cc7ca9f2b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/INPUT.actual.json",
+      "bytes": 2437,
+      "sha256": "ee4dc9f77765d3bea97b5a425c1ed8b766918c9ae5942282edc2f26b1dcdd322"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/NATIVE-CHECKPOINT.original.json",
+      "bytes": 711986,
+      "sha256": "7688b1554cc33d0dd454d61aaefaa3db458e151fac542c0ea7afc57ec4e1e494"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/prepare_and_preserve_B2a.py",
+      "bytes": 1003,
+      "sha256": "d4e989b20bec427f5f0920d6be53c74d44f0b2886a7ce9f4b382fbb1cd3b1e8d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/prepare_ballot_window_and_run.py",
+      "bytes": 5122,
+      "sha256": "aa6378e4ac1bffb24ca5f902ced4c6d2f2d93279aa536f437b170b7efcf2b1e2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/PRESERVATION.json",
+      "bytes": 2907,
+      "sha256": "bb2cbe297d7d973baa08a86f72be04d84d0391e6d47ef8225f9591c2625faea5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/preserve_ballots_pending_now.py",
+      "bytes": 3135,
+      "sha256": "613f3ee3726a2564c327401c5822b2d22ac42aa5c531ff1765e52ad66831e4ea"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/read_completed_ballot_state_fast.py",
+      "bytes": 1699,
+      "sha256": "5f7256e9d4ed981e58689c0a65fb3a2ac025a9653439bd8ff9b6e8c8da857256"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/CHECKPOINT-REQUEST.actual.json",
+      "bytes": 130259,
+      "sha256": "88f20ac03e16ebd0e68064c8748a90b1a47438a1feb29833b4549fb75935fe67"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/CHECKPOINT-REQUEST.native-qualified.json",
+      "bytes": 141068,
+      "sha256": "a7f59e180f9fce361bd277dd3efc36cb9f417ca82ec5fe3f3bddbc233a514e24"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 691371,
+      "sha256": "883e4331b0e0ed3c74103a8f5416394ee58c7c34f1910ef76df46cb02c8570f7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/CONVERSION-REQUEST.actual-or-pending.json",
+      "bytes": 10260,
+      "sha256": "5c0543734b892c127db1bb17b2bf740c6d35145cfe32c1ce0b09a250e2c27742"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/INPUT.exact.json",
+      "bytes": 2437,
+      "sha256": "ee4dc9f77765d3bea97b5a425c1ed8b766918c9ae5942282edc2f26b1dcdd322"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "bytes": 884844,
+      "sha256": "87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 780355,
+      "sha256": "8261e838deab35c7d2a50cc027d3896957a76115686ff2cf41d4601c6f43aa27"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/PROVENANCE.actual-or-pending.json",
+      "bytes": 10170,
+      "sha256": "cb5faf19197bf32bc9d8f37dd05876ca6036838d35f6e8e3e3da5113c055d105"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/RESULT.json",
+      "bytes": 934767,
+      "sha256": "72ea94f83c71ff13f114cc2fa0d479846ca5b386184a79b69beeae50c087fa64"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/STATE.json",
+      "bytes": 2599351,
+      "sha256": "d8829181b36c637e8088623edd39e70eb31168ab20a82777301ab9fd5cdabe28"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/STATE.native-qualified.json",
+      "bytes": 2636989,
+      "sha256": "8e3bbdd42c3b9bd522c73049a870d68fdf8860f5f5b08368d813107c0b1ac498"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/readback-001/TYPED-PROTECTION.json",
+      "bytes": 1157889,
+      "sha256": "ee42f23b674980eda6fbc6b49e98ed7da956301021022c8cbf8da9d6d194c31d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/SDK-WRAPPER.original.json",
+      "bytes": 1500271,
+      "sha256": "f4a5fffc7ea0a68e0257b4cf6a4e8baf19164c1de033bfdb51ce95a63fdda131"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/snapshot_after.original.json",
+      "bytes": 327525,
+      "sha256": "c394b09e99bd69b7507df8244167a4b8895bd0f73e69f905493d4d4a37b32ded"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/snapshot_before.original.json",
+      "bytes": 326236,
+      "sha256": "20497cf0d4be1f2ab441bbc54f57f82174667c0c32c9f52ebfb380faca8fae45"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/summarize_and_seal_actual_B2a.py",
+      "bytes": 3679,
+      "sha256": "95e3f4eda7fad11bdc55900a008dd6aace7d2d0979b7f377fe872249077d990d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/SUPPLEMENTAL-WINDOW.source-proof.json",
+      "bytes": 2068,
+      "sha256": "1425964b46da03e15e2d11f30be4d012e641dadbeafa768b0a9dc2a0c2ffc41f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B2a-ballots-pending-preservation-20261006-001/WINDOWS.with-B2a-ballot.source-derived.json",
+      "bytes": 8962,
+      "sha256": "264f731ab8bf9d760d98c6ab7152d2ca96cefcfbbff058b954f2613c135d4925"
+    }
+  ],
+  "checkpoint_SHA_already_verified_at_preservation": true,
+  "additional_save_body_reads_for_seal": 0,
+  "reader": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+    "bytes": 41081,
+    "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+  },
+  "B3_B5_future_actuals": null,
+  "formal_credit": null,
+  "game_calls": 0,
+  "SDK_calls": 0
+}

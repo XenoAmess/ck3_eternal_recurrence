@@ -1,0 +1,82 @@
+{
+  "schema": "lyd.actual-B1-unsigned-signed64-fixed-vote-fixture.v1",
+  "checkpoint_sha256": "e672a13c0745103784cb3b363ab61d8ccbd643214c2da4482ff9691cd3fffd29",
+  "actor_id": 31254,
+  "actual_vote_row": {
+    "present": true,
+    "tick": null,
+    "type": "value",
+    "identity": "18446744073709451616",
+    "entries": [
+      {
+        "key": "type",
+        "value": "value"
+      },
+      {
+        "key": "identity",
+        "value": "18446744073709451616"
+      }
+    ],
+    "number": "184467440737094.51616",
+    "scale": 100000,
+    "row_entries": [
+      {
+        "key": "flag",
+        "value": "lyd_i3b_vote"
+      },
+      {
+        "key": "data",
+        "value": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "18446744073709451616"
+          }
+        ]
+      }
+    ]
+  },
+  "actual_serial_row": {
+    "present": true,
+    "tick": null,
+    "type": "value",
+    "identity": "100000",
+    "entries": [
+      {
+        "key": "type",
+        "value": "value"
+      },
+      {
+        "key": "identity",
+        "value": "100000"
+      }
+    ],
+    "number": "1",
+    "scale": 100000,
+    "row_entries": [
+      {
+        "key": "flag",
+        "value": "lyd_i3b_serial"
+      },
+      {
+        "key": "data",
+        "value": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ]
+      }
+    ]
+  },
+  "raw_fixture_projected": true,
+  "source_declared_vote": -1,
+  "formal_acceptance": null
+}

@@ -1,0 +1,294 @@
+{
+  "schema": "lyd.i3b.R14-preview-error-frozen-diagnostic-index.v1",
+  "status": "ACTUAL_PREVIEW_ERROR_PROVEN_CANDIDATE_SOURCE_ONLY",
+  "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/ACTUAL-DECISION-TIMELINE.json",
+      "bytes": 26839,
+      "sha256": "255a792087013fd5b994e7d69e326951e49971f1d48fcf2fa9325e028f2b380b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/actual-fixture-subsets.original.json",
+      "bytes": 9377,
+      "sha256": "9c62bc114571372ad4c0f8e9b6f48f5cc58c47d42d481f559d421277a6fd1f1f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/AFTERCLOSE-EVENT-BIND-PREVIEW.patch",
+      "bytes": 22851,
+      "sha256": "67a0ea23087b2220fc8b76fa5d7d96252a5de440d2085917f912980473f5446c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/AFTERCLOSE-INTEGRATION-MANIFEST.json",
+      "bytes": 3743,
+      "sha256": "252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/author_candidate.py",
+      "bytes": 7959,
+      "sha256": "c95d18e0ec0d4342c908753cac139e330decfa126c391490ccebac760756061f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/BOUNDED-SIGNATURES.actual.json",
+      "bytes": 67436,
+      "sha256": "41639661f9c26deb6c9a7652ba8be2f553a27e88317f622817847ab0f37b5cba"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 6758,
+      "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate/mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json",
+      "bytes": 10539,
+      "sha256": "ce4b99940b3254bbd3c3fd671cbb48c16ffb48ee0e71e03e6c643e02da5722f6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate/mod_li_yu_dao/tools/gen_institution.py",
+      "bytes": 52360,
+      "sha256": "d2dde0753cb7ab3540304733634a7fc5fae603f360fcc8c6ae950f0aebe6ce11"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate/mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+      "bytes": 7237,
+      "sha256": "7b8ccead9a363eef433df2f971b727d479a7f5c77d8ecc80119251641d491d06"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/docs/li-yu-dao/i3b-event-bind-preview.md",
+      "bytes": 1893,
+      "sha256": "cf8a3c18f978e76b534efd36b77878570da93a1292159e505d9dafbaa59faa77"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 6758,
+      "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/fixtures/i3b_event_bind_actual_r14.json",
+      "bytes": 10539,
+      "sha256": "ce4b99940b3254bbd3c3fd671cbb48c16ffb48ee0e71e03e6c643e02da5722f6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/gen_institution.py",
+      "bytes": 52360,
+      "sha256": "d2dde0753cb7ab3540304733634a7fc5fae603f360fcc8c6ae950f0aebe6ce11"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/candidate-002/mod_li_yu_dao/tools/test_i3b_event_bind_present.py",
+      "bytes": 7286,
+      "sha256": "b30d2eff23127ebce4a7620323a50e3ef9b16c134d2bba7e585699e835501ca7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/count_log_signatures.py",
+      "bytes": 3386,
+      "sha256": "8d8ab0fe35ea22333938d9cd7d68be3093fc6c8ccec411f9f7de9895ccfce2e8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/DIAGNOSTIC-DECISION.actual.json",
+      "bytes": 6156,
+      "sha256": "8252d3eac30b5f271901735e32740607203dfff804e834786614f5a912004f7d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/ERROR-SNAPSHOT.actual.json",
+      "bytes": 1162,
+      "sha256": "e7c7f3974bd824a56b280eda08a5d88dd48c64bd568a8651b07c974e4db79428"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/error.snapshot001.log",
+      "bytes": 37862448,
+      "sha256": "7c578191d35383e9f685c66866789dde6df4a8198d4e57c02f1ba77bfb88584d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED-DEPENDENCY-CORRECTION.actual.json",
+      "bytes": 1429,
+      "sha256": "5ed49746615c12a06239caeea7e53fb5efc2d95624b11e3db3db8d1a2d59e6bb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED-INVOKE.actual.json",
+      "bytes": 935,
+      "sha256": "58d8c701dedb9619d487a65bff57a2bd788fc457f08512d115ac5331ff5be91f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED.actual.json",
+      "bytes": 962,
+      "sha256": "ca1902c0dc842a6bae6588a040814aba83ea26cd538fee5f09c8428c5a0b908a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED.stderr.txt",
+      "bytes": 2359,
+      "sha256": "7cdb5e67fd1d096bd3cb949ef138bd119d7d162aacfc6ceb66be9661edf427e8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED.stdout.txt",
+      "bytes": 962,
+      "sha256": "ca1902c0dc842a6bae6588a040814aba83ea26cd538fee5f09c8428c5a0b908a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED002-INVOKE.actual.json",
+      "bytes": 946,
+      "sha256": "2761d817dc907865428bb61a87da64d0bfcdc638ee5472c4e27061b98bfc3e32"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED002.actual.json",
+      "bytes": 966,
+      "sha256": "f5eea35b57f8522424232505adf2d98cd473639499d339fb418571cfbb4c794d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED002.stderr.txt",
+      "bytes": 1055,
+      "sha256": "d7e3e5a2d069d7c705078fdb4d18fd129af393757c9cb3a39bf04719c9750782"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED002.stdout.txt",
+      "bytes": 966,
+      "sha256": "f5eea35b57f8522424232505adf2d98cd473639499d339fb418571cfbb4c794d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/freeze_error_snapshot.py",
+      "bytes": 2099,
+      "sha256": "dec6a8258a1eb78f13de04efc221ac4c11e3c6f9ed42cdc159ed01b48376f64b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/frozen-source/mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 4599,
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/frozen-source/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 6448,
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/frozen-source/mod_li_yu_dao/tools/additional_practices.py",
+      "bytes": 51685,
+      "sha256": "cbae8ccf96a33d893ab2c8084ab09046aa34c46596f41ac7241429d2ca56d583"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/frozen-source/mod_li_yu_dao/tools/content_data.py",
+      "bytes": 62030,
+      "sha256": "cb368c771dc4b99a612e560b9bb4ce04992a403c7598f24d9ae3aaeae4bcda73"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/frozen-source/mod_li_yu_dao/tools/gen_institution.py",
+      "bytes": 52050,
+      "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/frozen-source/mod_li_yu_dao/tools/gen_runtime.py",
+      "bytes": 17569,
+      "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/frozen-source/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+      "bytes": 17345,
+      "sha256": "69e31ff67440ee846cb2e7457f26b365151214f6a51529e7b43c62038ed8ba8e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/frozen-source/tools/extract_auto_upgrade_buildings.py",
+      "bytes": 15976,
+      "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/GENERATOR-DELTA.actual.json",
+      "bytes": 1032,
+      "sha256": "0dbc395b600ea7f122c6a31b77e1b7594a3e31761b5809cade65ebdb89935a56"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/inspect_queue.py",
+      "bytes": 874,
+      "sha256": "52db74cfc494a64492ea6c59e36f026f70f696c4c70ae196d4092e5558e46c0c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/inspect_selected.py",
+      "bytes": 1166,
+      "sha256": "691c8dd1f5fc1eda89ea48e6ae2e4b766e72edccb4721c83e8e7eb2058cb0dbb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/inspect_source.py",
+      "bytes": 844,
+      "sha256": "a8b44b397bc977318d62e9514401f9f54459578697437c4acbecb7beaed4009a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/inspect_tools.py",
+      "bytes": 908,
+      "sha256": "c816cef7a468956449af9c3be058d9d700d6da18d14a18fe1262f8294ffccfe5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/PATCH-CHECK.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/PATCH-CHECK.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/prepare_and_run_focused.py",
+      "bytes": 2297,
+      "sha256": "ca9e7269c0b25f402f590cbd7ec93efaeb8df8ea51598c05a131f142514886a8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/repair_focused_dependency002.py",
+      "bytes": 2669,
+      "sha256": "b35f63eee97f14b20c95db0dd236b339390c9b7df443be271a1bf4ca158ae05a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/REPORT.zh.md",
+      "bytes": 4297,
+      "sha256": "f3c3d937dd785e9ccd46684b16f754792f035ce66f94f4499f6bdbacfd45110d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/sdk-candidate-paths.txt",
+      "bytes": 2178456,
+      "sha256": "6ea23e9b17d4529f356e879574c151f981b3f3edf22a6b161c0db186f21dedbe"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/seal_report_and_patch.py",
+      "bytes": 13310,
+      "sha256": "2260b6125c1b14365224b64339f2bbb4013eb8015935f915a9769280c78f566e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/VERIFIED-SOURCE-BINDING.actual.json",
+      "bytes": 5055,
+      "sha256": "b342192b8df7be28ee9418e3570a8fe4366aecc7f273ca91822b26650b418ecf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/WORKTREE-UNCHANGED.actual.json",
+      "bytes": 183,
+      "sha256": "33ae2ddd07c446ebf9ed133c9e26c6da7a3f4b6ca8f4a3b0c7237c0936b06960"
+    }
+  ],
+  "report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/REPORT.zh.md",
+    "bytes": 4297,
+    "sha256": "f3c3d937dd785e9ccd46684b16f754792f035ce66f94f4499f6bdbacfd45110d"
+  },
+  "manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/AFTERCLOSE-INTEGRATION-MANIFEST.json",
+    "bytes": 3743,
+    "sha256": "252ae26f37ebcc34ed7e46bce5c085c3fb51b8a9aea8a6fb7e31f451ed4381a8"
+  },
+  "frozen_log": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/error.snapshot001.log",
+    "bytes": 37862448,
+    "sha256": "7c578191d35383e9f685c66866789dde6df4a8198d4e57c02f1ba77bfb88584d"
+  },
+  "sdk_or_game_calls": 0,
+  "main_writes": 0,
+  "savebody_reads": 0,
+  "offline_new_tests_actual": {
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-preview-error-diagnostic-20261007-001/FOCUSED002.actual.json",
+      "bytes": 966,
+      "sha256": "f5eea35b57f8522424232505adf2d98cd473639499d339fb418571cfbb4c794d"
+    }
+  },
+  "candidate_engine_preview_fix_live": null,
+  "future_begin_actual": null,
+  "future_formal_result": null
+}

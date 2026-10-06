@@ -1,0 +1,499 @@
+{
+  "status": "ACTUAL_R14_SDK_RECORDS_AND_ORIGINAL_HELPER_HANDLE_CAPTURE_PRESERVED",
+  "observed_at_utc": "2026-10-06T15:21:25.993608+00:00",
+  "client_session": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/session.json",
+    "bytes": 1233,
+    "sha256": "0740fe7510d1b9226d8f24f23ebe015bfe5d310e43f8d5e8b446a5f39550c2d0"
+  },
+  "client_session_id": "c78874edd4204810a50ce436e2296753",
+  "native_session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+  "source_revision": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "epoch_id": "r14-native-charter-c3-001",
+  "original_helper_handle_capture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-retained-helper-handles-20261006-001/capture-001/CAPTURED.actual.json",
+    "bytes": 3985,
+    "sha256": "f740734f79b786b79decee8fae6fc524892f11b09984dcb37b095cacf241be8f"
+  },
+  "holder_liveness": {
+    "pid": 16108,
+    "create_time": 1791299928.95478,
+    "cmdline": [
+      "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-retained-helper-handles-20261006-001\\retain_helper_handles.py",
+      "hold",
+      "--request",
+      "C:/workspace/ck3_lyd_runtime_20261004/r14-retained-helper-handles-20261006-001/REQUEST.actual.json",
+      "--sha256",
+      "dc7d22abffdaeb8cfe1d0d39af3805e1ab2abc3ecc326d6aaa3e1477af69203b",
+      "--output",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-retained-helper-handles-20261006-001\\capture-001"
+    ],
+    "actual_identity_verified": true
+  },
+  "SDK_records": [
+    {
+      "sequence": 1,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0001-r14-145828153337.request.json",
+        "bytes": 106,
+        "sha256": "cf8d81077a6182e53343904275ac4d310cf3979ea5d51277d03a427d9d71a847"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0001-r14-145828153337.response.json",
+        "bytes": 663,
+        "sha256": "83d945944379795b01436c92c15e6c7e738b6dae5ee3160402a617bb1f723fb2"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0001-r14-145828153337.sdk-result.json",
+        "bytes": 26820,
+        "sha256": "dc05549b77eba34178244ff18d7ead45f05e710e975c8fa3e02eb1a74c323e3c"
+      },
+      "operation": "list_tools",
+      "tool_name": null,
+      "arguments": null,
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": null,
+      "native_receipts": [],
+      "actual_tool_count": 24,
+      "actual_tool_names": [
+        "ck3_query_native_profile_v1",
+        "ck3_attach_profile_bridge_v1",
+        "ck3_resume_profile_bridge_v1",
+        "ck3_take_profile_native_snapshot_v1",
+        "ck3_query_profile_character_interaction_ordinary_v1",
+        "ck3_initiate_profile_character_interaction_ordinary_v1",
+        "ck3_observe_profile_normal_exit_v1",
+        "ck3_query_normal_exit_context_v1",
+        "ck3_request_normal_exit_v1",
+        "ck3_query_profile_current_actor_stress_adjustment_v1",
+        "ck3_query_profile_event_window_v1",
+        "ck3_query_profile_pending_interaction_v1",
+        "ck3_reply_profile_pending_interaction_v1",
+        "ck3_set_profile_simulation_v1",
+        "ck3_pause_profile_simulation_v1",
+        "ck3_select_profile_event_option_v1",
+        "ck3_save_profile_checkpoint_v1",
+        "ck3_query_profile_decision_item_v1",
+        "ck3_open_profile_decisions_v1",
+        "ck3_select_profile_decision_item_v1",
+        "ck3_confirm_profile_decision_outcome_v1",
+        "ck3_query_profile_confucian_assembly_predicates_v1",
+        "ck3_query_profile_confucian_religious_title_v1",
+        "ck3_query_profile_confucian_challenger_graph_v1"
+      ]
+    },
+    {
+      "sequence": 2,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0002-r14-145852833636.request.json",
+        "bytes": 165,
+        "sha256": "0e33a5bb08a0a30aded13656634201c60df021d4b496904abc8f6ddf654c6af8"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0002-r14-145852833636.response.json",
+        "bytes": 966,
+        "sha256": "3199cf9410d7ab2750db05df719489d7544bc2aa2a2dc723648cc81683a8eb90"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0002-r14-145852833636.sdk-result.json",
+        "bytes": 5567,
+        "sha256": "151659a8767853bf85162b4ec348587aadebea44f558a2e0ce55d4defce1abbe"
+      },
+      "operation": "call_tool",
+      "tool_name": "ck3_query_native_profile_v1",
+      "arguments": {},
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": false,
+      "native_receipts": [
+        {
+          "reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0002-r14-145852833636.native-01.json",
+            "bytes": 2451,
+            "sha256": "b76b063e6806f4ee009a1e39a81c597fb5ccc3445844e6a3feadb6041b170742"
+          },
+          "recorded_native_fact_leaves": {
+            "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+            "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+            "status": "profile_bound"
+          }
+        }
+      ]
+    },
+    {
+      "sequence": 3,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0003-r14-150327860055.request.json",
+        "bytes": 166,
+        "sha256": "caba0e1137a81b024b914b7756fbda0fc45d204e82d945afebec92a76e658a23"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0003-r14-150327860055.response.json",
+        "bytes": 965,
+        "sha256": "67031836f50dafc82c19fc783174409fd0ccdebb2df495748266953d4dee6454"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0003-r14-150327860055.sdk-result.json",
+        "bytes": 41617,
+        "sha256": "d21f77e81a4be5a4b6c04334ab9c56985cba9e7abbb46e5d24ac2c931f3740eb"
+      },
+      "operation": "call_tool",
+      "tool_name": "ck3_attach_profile_bridge_v1",
+      "arguments": {},
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": false,
+      "native_receipts": [
+        {
+          "reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0003-r14-150327860055.native-01.json",
+            "bytes": 19594,
+            "sha256": "ea2f0f13b1b832556ac6d30e0e8989eb6864f3bb65a2aacd642908740b354691"
+          },
+          "recorded_native_fact_leaves": {
+            "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+            "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+            "status": "attached_snapshot_verified",
+            "native_clock_before.date_raw": 53144712,
+            "injector.status": "EXIT",
+            "snapshot.date_raw": 53144712,
+            "snapshot.snapshot_id": "native:1",
+            "snapshot.revision": 2,
+            "snapshot.native_revision": 1,
+            "snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.date_raw": 53144712
+          }
+        }
+      ]
+    },
+    {
+      "sequence": 4,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0004-r14-150408998287.request.json",
+        "bytes": 173,
+        "sha256": "6d26e29148209fb209a9ccd0685c45765c756b689126570ccf4fb2044629877d"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0004-r14-150408998287.response.json",
+        "bytes": 967,
+        "sha256": "8484b4296d29547b065a568d3b00c4632bcb9645c90f52f97518b23aa00e91cc"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0004-r14-150408998287.sdk-result.json",
+        "bytes": 31309,
+        "sha256": "66ab85d4daaf01930c08dcc18a66f4fd33e19c62413c5c7e63eb9b6bfa5bc1fe"
+      },
+      "operation": "call_tool",
+      "tool_name": "ck3_take_profile_native_snapshot_v1",
+      "arguments": {},
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": false,
+      "native_receipts": [
+        {
+          "reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0004-r14-150408998287.native-01.json",
+            "bytes": 14728,
+            "sha256": "4f2661276ad9219a523e83587a0af773c1958cd5f308ea9cf0c39e838cc0a98a"
+          },
+          "recorded_native_fact_leaves": {
+            "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+            "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+            "status": "native_snapshot_verified",
+            "snapshot.date_raw": 53144712,
+            "snapshot.snapshot_id": "native:1",
+            "snapshot.revision": 2,
+            "snapshot.native_revision": 1,
+            "snapshot.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.date_raw": 53144712
+          }
+        }
+      ]
+    },
+    {
+      "sequence": 5,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0005-r14-150419602308.request.json",
+        "bytes": 218,
+        "sha256": "43e5a551aca1737b3e94381ad2ed181c846f7fb736f770284e149583b82061d9"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0005-r14-150419602308.response.json",
+        "bytes": 997,
+        "sha256": "00eafa9a0e294e1f5dfe7a9bd25e7dfeb424c1289bbd8671af17f5ac96d3e2ae"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0005-r14-150419602308.sdk-result.json",
+        "bytes": 61857,
+        "sha256": "24e6e1b68f0c4b734afb19bb596fdc7bcf2527879826c548fc86d8819624ae16"
+      },
+      "operation": "call_tool",
+      "tool_name": "ck3_query_profile_confucian_assembly_predicates_v1",
+      "arguments": {
+        "expected_revision": 2
+      },
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": false,
+      "native_receipts": [
+        {
+          "reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0005-r14-150419602308.native-01.json",
+            "bytes": 29019,
+            "sha256": "fe0564c8659c14a2e0ccae6fe9746d103896b40c1da79f9eb05636a0533d9392"
+          },
+          "recorded_native_fact_leaves": {
+            "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+            "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+            "status": "native_confucian_readonly_observed",
+            "result.native_result.status": "observed",
+            "result.native_result.date_raw": 53144712,
+            "result.native_result.confucian_assembly_predicates.date_raw": 53144712,
+            "result.date_raw": 53144712
+          }
+        }
+      ]
+    },
+    {
+      "sequence": 6,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0006-r14-150427873500.request.json",
+        "bytes": 214,
+        "sha256": "81d9c2ff4125017cf387086722e4af982fa85c5893df3246ed489f588b7175f0"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0006-r14-150427873500.response.json",
+        "bytes": 993,
+        "sha256": "08f0aed9dfc61808b8c3d3fd56e6d8f7b50401734f39712966af79827154cdc9"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0006-r14-150427873500.sdk-result.json",
+        "bytes": 9019,
+        "sha256": "f8a2608287fd715d3a7349730a8656bc1f8062db84133e36c091e9b078477cbb"
+      },
+      "operation": "call_tool",
+      "tool_name": "ck3_query_profile_confucian_religious_title_v1",
+      "arguments": {
+        "expected_revision": 2
+      },
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": false,
+      "native_receipts": [
+        {
+          "reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0006-r14-150427873500.native-01.json",
+            "bytes": 4119,
+            "sha256": "1f119ed37c61693429edb306cd914557044890875d557f03af3ffd3b96e44a04"
+          },
+          "recorded_native_fact_leaves": {
+            "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+            "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+            "status": "native_confucian_readonly_observed",
+            "result.native_result.status": "observed",
+            "result.native_result.date_raw": 53144712,
+            "result.native_result.confucian_religious_title.date_raw": 53144712,
+            "result.date_raw": 53144712
+          }
+        }
+      ]
+    },
+    {
+      "sequence": 7,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0007-r14-150758869068.request.json",
+        "bytes": 278,
+        "sha256": "e8543ab2cb274f93f6024d2a76e19d984a0d88d7b6b92ad68faec985dcc9e4fa"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0007-r14-150758869068.response.json",
+        "bytes": 994,
+        "sha256": "24674cdb3c4fad5c76ed0ad159eb5cf19220777cf827c00260ada1b4edd6a292"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0007-r14-150758869068.sdk-result.json",
+        "bytes": 8621,
+        "sha256": "a2b12b000f7622cbddd9954c016e95a3aa471701bc16facce9406244418dc94d"
+      },
+      "operation": "call_tool",
+      "tool_name": "ck3_query_profile_confucian_challenger_graph_v1",
+      "arguments": {
+        "expected_revision": 2,
+        "faith_full_ids": [
+          107,
+          104,
+          106
+        ]
+      },
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": false,
+      "native_receipts": [
+        {
+          "reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0007-r14-150758869068.native-01.json",
+            "bytes": 3931,
+            "sha256": "dbcbc988f7eaa06307494e85deca7606624838c67ad34dd6e1cf6f8b22ff095e"
+          },
+          "recorded_native_fact_leaves": {
+            "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+            "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+            "status": "native_confucian_readonly_observed",
+            "result.native_result.status": "observed",
+            "result.native_result.date_raw": 53144712,
+            "result.native_result.confucian_challenger_graph.date_raw": 53144712,
+            "result.date_raw": 53144712
+          }
+        }
+      ]
+    },
+    {
+      "sequence": 8,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0008-r14-150811401687.request.json",
+        "bytes": 198,
+        "sha256": "fe89cf7664ee8d49d72c0536462f94dfc4306b5a34d519535d742f41617714ac"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0008-r14-150811401687.response.json",
+        "bytes": 969,
+        "sha256": "1b9d457291014f512be9a429cad0d49c7f3db7ba6bec46730867bcb170bd107e"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0008-r14-150811401687.sdk-result.json",
+        "bytes": 62927,
+        "sha256": "251aa88096b0b9808cedbe9c61cae9e919afed934769ab39ff41cd310dbe4e1d"
+      },
+      "operation": "call_tool",
+      "tool_name": "ck3_save_profile_checkpoint_v1",
+      "arguments": {
+        "expected_revision": 2
+      },
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": false,
+      "native_receipts": [
+        {
+          "reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0008-r14-150811401687.native-01.json",
+            "bytes": 29752,
+            "sha256": "f50934f6acc6447c64a3a01ee6c071a29f7bdf88602919f118037b1a8aef7579"
+          },
+          "recorded_native_fact_leaves": {
+            "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+            "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+            "status": "native_gameplay_postcondition_verified",
+            "result.status": "submitted",
+            "result.submission.date_raw": 53144712,
+            "result.checkpoint.status": "saved",
+            "result.checkpoint.date_raw": 53144712,
+            "snapshot_before.date_raw": 53144712,
+            "snapshot_before.snapshot_id": "native:1",
+            "snapshot_before.revision": 2,
+            "snapshot_before.native_revision": 1,
+            "snapshot_before.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.date_raw": 53144712,
+            "snapshot_after.date_raw": 53144712,
+            "snapshot_after.last_checkpoint_submission.date_raw": 53144712,
+            "snapshot_after.last_checkpoint_submission.status": "submitted",
+            "snapshot_after.snapshot_id": "native:2",
+            "snapshot_after.revision": 3,
+            "snapshot_after.native_revision": 2,
+            "snapshot_after.diagnostics.last_heartbeat.main_thread_query_mailbox_v1.date_raw": 53144712,
+            "snapshot_after.native_command_history[0].result.status": "submitted",
+            "snapshot_after.native_command_history[0].result.submission.date_raw": 53144712,
+            "snapshot_after.native_command_history[0].result.checkpoint.status": "saved",
+            "snapshot_after.native_command_history[0].result.checkpoint.date_raw": 53144712
+          }
+        }
+      ]
+    },
+    {
+      "sequence": 9,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0009-r14-150853166411.request.json",
+        "bytes": 218,
+        "sha256": "fb1808b228bb4faafee995173ad9d1cfd2b85135f068a3c216c7d60428ae27e2"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0009-r14-150853166411.response.json",
+        "bytes": 997,
+        "sha256": "f5e744c71a7c9fd25e245bc3c4de6bb24cb0069d62bce0ebdac22417fbd28710"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0009-r14-150853166411.sdk-result.json",
+        "bytes": 61859,
+        "sha256": "74573852081a6ebf90026958fcda2f0b4f25678635ffb0482a4228ffa9b00cf1"
+      },
+      "operation": "call_tool",
+      "tool_name": "ck3_query_profile_confucian_assembly_predicates_v1",
+      "arguments": {
+        "expected_revision": 3
+      },
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": false,
+      "native_receipts": [
+        {
+          "reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0009-r14-150853166411.native-01.json",
+            "bytes": 29020,
+            "sha256": "5feeeb3e55f178dd83380784642a40570bfd8e362d77051703c1b5ff35584368"
+          },
+          "recorded_native_fact_leaves": {
+            "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+            "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+            "status": "native_confucian_readonly_observed",
+            "result.native_result.status": "observed",
+            "result.native_result.date_raw": 53144712,
+            "result.native_result.confucian_assembly_predicates.date_raw": 53144712,
+            "result.date_raw": 53144712
+          }
+        }
+      ]
+    },
+    {
+      "sequence": 10,
+      "request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0010-r14-150903894141.request.json",
+        "bytes": 214,
+        "sha256": "32fcd86d5d74f4c5e508f769c97f6de56a3a080a64505f33658c6f0c5d786ca5"
+      },
+      "response": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0010-r14-150903894141.response.json",
+        "bytes": 994,
+        "sha256": "aac9093c631d227c0a6f0ac715795b598c0add12256a87701f2253877782b3af"
+      },
+      "sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0010-r14-150903894141.sdk-result.json",
+        "bytes": 9021,
+        "sha256": "eb42b02ce3a2b424ca2ad83659b1d73b7e5b888538835c0343ada18b6cde4446"
+      },
+      "operation": "call_tool",
+      "tool_name": "ck3_query_profile_confucian_religious_title_v1",
+      "arguments": {
+        "expected_revision": 3
+      },
+      "dispatch_status": "MCP_RESULT_RECORDED",
+      "SDK_isError": false,
+      "native_receipts": [
+        {
+          "reference": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0010-r14-150903894141.native-01.json",
+            "bytes": 4120,
+            "sha256": "af1c6238a7823b7b90bf68fb3cbe168db7b6a7b7ba47a4ba40dbee1850bd15c1"
+          },
+          "recorded_native_fact_leaves": {
+            "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+            "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+            "status": "native_confucian_readonly_observed",
+            "result.native_result.status": "observed",
+            "result.native_result.date_raw": 53144712,
+            "result.native_result.confucian_religious_title.date_raw": 53144712,
+            "result.date_raw": 53144712
+          }
+        }
+      ]
+    }
+  ],
+  "new_SDK_calls": 0,
+  "new_game_calls": 0,
+  "close_requested": false,
+  "stop_requested": false,
+  "product_acceptance_credit": false,
+  "formal_route_credit": false,
+  "typed_checkpoint_readback_credit": "ROOT_CONVERTER_INDEPENDENT_TASK"
+}

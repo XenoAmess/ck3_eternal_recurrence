@@ -1,0 +1,332 @@
+{
+  "schema": "lyd.r14.factory-samefaith-law.source-proof.v1",
+  "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "source_export": "C:/lr14s1",
+  "mod_tree": "6ac828e3539b668e6b2dcf11d3dbd198fab6c4c2",
+  "source_files": [
+    {
+      "path": "C:/lr14s1/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 1993,
+      "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24.gz",
+      "gzip_bytes": 808,
+      "gzip_sha256": "05c37d2356628a4eec198f3673822667d4fbfc355380a47314dc3e06b4cd3666",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 4751,
+      "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec.gz",
+      "gzip_bytes": 1120,
+      "gzip_sha256": "1433ad819611b7d76875b22cb6fabfe4d9cbaa9edeca640e75b2763eb7a02d34",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "bytes": 1910,
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c.gz",
+      "gzip_bytes": 749,
+      "gzip_sha256": "2bb9b8a30dd51c6cd3e54918f3511e56b92709c8d1e748291597603fa244ec51",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 1910,
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c.gz",
+      "gzip_bytes": 749,
+      "gzip_sha256": "2bb9b8a30dd51c6cd3e54918f3511e56b92709c8d1e748291597603fa244ec51",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/mod_li_yu_dao/tools/gen_leadership.py",
+      "bytes": 2327,
+      "sha256": "785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820.gz",
+      "gzip_bytes": 1094,
+      "gzip_sha256": "c30aa76f8574be0b42fdba8c06f703b8248c32fc46efba012ebd668abe91a9ef",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "mod_li_yu_dao/tools/gen_leadership.py",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/mod_li_yu_dao/tools/gen_school_consent.py",
+      "bytes": 43067,
+      "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20.gz",
+      "gzip_bytes": 12134,
+      "gzip_sha256": "8262de4af328346931a1e05099108ac28cc0d6674d556a458a4e0d3723847a8f",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "mod_li_yu_dao/tools/gen_school_consent.py",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/mod_li_yu_dao/tools/gen_runtime.py",
+      "bytes": 17569,
+      "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26.gz",
+      "gzip_bytes": 5605,
+      "gzip_sha256": "2dd4ac84deef2c2168ea8bbebbe1e02697c5c2a55d9abf4c020075b9a3658277",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "mod_li_yu_dao/tools/gen_runtime.py",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/mod_li_yu_dao/tools/gen_institution.py",
+      "bytes": 52050,
+      "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3.gz",
+      "gzip_bytes": 12647,
+      "gzip_sha256": "3d892b707b7949209bb20d58e7fd0f5e380f71cfbe49d9b1308ca832555ca58a",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "mod_li_yu_dao/tools/gen_institution.py",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/mod_li_yu_dao/tools/validate_static.py",
+      "bytes": 21803,
+      "sha256": "396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072.gz",
+      "gzip_bytes": 6187,
+      "gzip_sha256": "f09f378057ed81ad6ab2d707f9b8843b2fcf29c0f00363249451bbb755eebfc6",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "mod_li_yu_dao/tools/validate_static.py",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+      "bytes": 40084,
+      "sha256": "8ff6d37d202870d4a4d25dd7447654be4d96433f1b48bbb35cad12ad828492d1",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/8ff6d37d202870d4a4d25dd7447654be4d96433f1b48bbb35cad12ad828492d1.gz",
+      "gzip_bytes": 10611,
+      "gzip_sha256": "d30e77f9fe3d7422baabefa59f06b9efa88acf850a220efa58f1354f57c9e7d9",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/lr14s1/tools/lyd_i3b_checkpoint_readback/reader/dependencies/frozen_business_contract.json",
+      "bytes": 8755,
+      "sha256": "a95b8f65cf46b731c4556ffb12bbce38d47de61ede8222c383f85209c9730643",
+      "kind": "frozen_HEAD19_product_source",
+      "object": "objects/a95b8f65cf46b731c4556ffb12bbce38d47de61ede8222c383f85209c9730643.gz",
+      "gzip_bytes": 3475,
+      "gzip_sha256": "0657427439636dc5449ecd93a78cc2c7f1fe9c24b7728a87b548430a9033de0f",
+      "git": {
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+        "path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/frozen_business_contract.json",
+        "object_bytes_equal": true
+      }
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_religion_effects.txt",
+      "bytes": 41530,
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "kind": "actual_current_stock_script",
+      "object": "objects/5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931.gz",
+      "gzip_bytes": 8438,
+      "gzip_sha256": "fef5e35ee4a38fd322a58a04e8b92e59678e20f98c4e22721868f308ebd7a53e"
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_decisions_effects.txt",
+      "bytes": 92722,
+      "sha256": "a30e06ea5c3c3c0cc24e8be823600f12a5f5cb0caf3fa52c3ca98648b0f8f2d5",
+      "kind": "actual_current_stock_script",
+      "object": "objects/a30e06ea5c3c3c0cc24e8be823600f12a5f5cb0caf3fa52c3ca98648b0f8f2d5.gz",
+      "gzip_bytes": 16707,
+      "gzip_sha256": "bb0e1a32c168db15a344168c6c86eb267f784a2c9082b297f85fca5bad9ab6b8"
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/laws/00_succession_laws.txt",
+      "bytes": 56216,
+      "sha256": "71c914a17ba184e2e00d0cfabe028b99dded04e9b6ab11db0e0acfacdaf3ccaa",
+      "kind": "actual_current_stock_script",
+      "object": "objects/71c914a17ba184e2e00d0cfabe028b99dded04e9b6ab11db0e0acfacdaf3ccaa.gz",
+      "gzip_bytes": 5202,
+      "gzip_sha256": "e4b1ec455ade78ba6d150c87a2d0c2325ad3dac299d1c292bc4351ff670dd4af"
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/laws/01_title_succession_laws.txt",
+      "bytes": 9179,
+      "sha256": "48593c818edb66b1ad1b41602f77ad9395ab92d6d16f11cf5b95b378b92e0d14",
+      "kind": "actual_current_stock_script",
+      "object": "objects/48593c818edb66b1ad1b41602f77ad9395ab92d6d16f11cf5b95b378b92e0d14.gz",
+      "gzip_bytes": 1461,
+      "gzip_sha256": "2716e97b6b71de4e1a1d9fbd9f568ba3ecebea14006acf7c8171433bb59c4567"
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/law_groups/00_succession_law_groups.txt",
+      "bytes": 544,
+      "sha256": "cc5d673e6fb667bddeaa7bc08aade9391add1d234480dc89b87073214a5b2fa8",
+      "kind": "actual_current_stock_script",
+      "object": "objects/cc5d673e6fb667bddeaa7bc08aade9391add1d234480dc89b87073214a5b2fa8.gz",
+      "gzip_bytes": 274,
+      "gzip_sha256": "6a1d74da38d9f509f9d247a60820c66091eb6bd2c9c064b10668c128589b4eb0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-B3-B4-AST-DELTAS.json",
+      "bytes": 24488,
+      "sha256": "973d111ff2fa5ca8f3511c8e14fd4c1a35a5a60ae828d3c6f5407beaf4e1325c",
+      "kind": "actual_R14_B3_B4_AST_delta_no_save_body",
+      "object": "objects/973d111ff2fa5ca8f3511c8e14fd4c1a35a5a60ae828d3c6f5407beaf4e1325c.gz",
+      "gzip_bytes": 2481,
+      "gzip_sha256": "1596ca8f5e85faa8c620ca644dc8e4d0714479a97fb88f9e53c17ee07aab8eaa"
+    }
+  ],
+  "bounded_literal_scans": [
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "-g",
+        "*.txt",
+        "-g",
+        "*.info",
+        "same_faith_succession_law",
+        "."
+      ],
+      "cwd": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common",
+      "exit_code": 0,
+      "stdout": {
+        "path": "STOCK-COMMON-SAMEFAITH-REFERENCES.actual.stdout.txt",
+        "bytes": 1435,
+        "sha256": "9703043e1491f8a2c4ffc86581735eccb5320db9cc5989cd9239e8cb0462d70f"
+      },
+      "stderr": {
+        "path": "STOCK-COMMON-SAMEFAITH-REFERENCES.actual.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "-g",
+        "*.txt",
+        "-g",
+        "*.info",
+        "same_faith_succession_law",
+        "."
+      ],
+      "cwd": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/events",
+      "exit_code": 1,
+      "stdout": {
+        "path": "STOCK-EVENTS-SAMEFAITH-REFERENCES.actual.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "STOCK-EVENTS-SAMEFAITH-REFERENCES.actual.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "facts": [
+    {
+      "file": "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "lines": [
+        1,
+        40
+      ],
+      "fact": "LYD factory uses current stock title creation primitives but contains no explicit same_faith_succession_law or add_realm_law call."
+    },
+    {
+      "file": "common/scripted_effects/00_religion_effects.txt",
+      "lines": [
+        347,
+        380
+      ],
+      "fact": "Stock temporal HoF factory separately adds same_faith_succession_law after setting the religious head title, guarded by absence."
+    },
+    {
+      "file": "common/laws/00_succession_laws.txt",
+      "lines": [
+        2478,
+        2492
+      ],
+      "fact": "same_faith law can_keep requires current Faith religious head ROOT and temporal doctrine; succession filters faith=same_faith."
+    },
+    {
+      "file": "common/law_groups/00_succession_law_groups.txt",
+      "lines": [
+        28,
+        30
+      ],
+      "fact": "succession_rel_head group has no default/automatic rule in this current script."
+    },
+    {
+      "file": "common/laws/01_title_succession_laws.txt",
+      "lines": [
+        215,
+        234
+      ],
+      "fact": "Temporal title law selects player_heir and has no script on_add realm-law effect."
+    },
+    {
+      "file": "common/scripted_effects/00_decisions_effects.txt",
+      "lines": [
+        1681,
+        1697
+      ],
+      "fact": "Current stock character effect uses has_realm_law then remove_realm_law=<law>."
+    },
+    {
+      "file": "tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+      "lines": [
+        523,
+        530
+      ],
+      "fact": "Strict fixed source requires all protected political title AST bytes unchanged, beyond holder identity."
+    }
+  ],
+  "uncertain": [
+    "Which exact native operation automatically adds this realm law in LYD remains unproved.",
+    "Whether a conditional removal can survive the next engine maintenance or reload remains unproved."
+  ],
+  "runtime": null,
+  "game_or_sdk_calls": 0,
+  "main_mutations": 0,
+  "original_RED_preserved": true
+}

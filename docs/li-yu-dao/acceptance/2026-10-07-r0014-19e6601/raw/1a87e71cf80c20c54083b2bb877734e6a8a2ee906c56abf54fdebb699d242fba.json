@@ -1,0 +1,257 @@
+{
+  "schema": "lyd.r14.round3-actual-B4-RED-immutable-index.v1",
+  "status": "ACTUAL_CONTRACT_MISMATCH_PRESERVED",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-B3-B4-AST-DELTAS.json",
+      "bytes": 24488,
+      "sha256": "973d111ff2fa5ca8f3511c8e14fd4c1a35a5a60ae828d3c6f5407beaf4e1325c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-B4-DIFFERENCES.compact.json",
+      "bytes": 40833,
+      "sha256": "1782caee4b90dd2a455272e0e20f6f6f55e9c7a6e205e23be75d7820efecde71"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-COMMIT-NATIVE.original.json",
+      "bytes": 2507986,
+      "sha256": "2966f7f95ea496d455c85dec042563061dbfa53c5f050f0eb4574bb5b01428fb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-COMMIT-SDK-WRAPPER.original.json",
+      "bytes": 5282607,
+      "sha256": "8cd45f4b0fbd7cb0561464b5f45802a9f9a9046295e1ad9ee2dfa98f057df032"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-SUCCESS-CONTEXT-NATIVE.original.json",
+      "bytes": 15378,
+      "sha256": "a35c8a0e1338172d12d117300390065395fe1550e05d549a9bf9c291e4e097e9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ACTUAL-SUCCESS-CONTEXT-SDK-WRAPPER.original.json",
+      "bytes": 33275,
+      "sha256": "b96b2d607bd2b4bf02eca077df971e02bc3712fa80a83a7dfa44c962f76136fc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/AUTHOR-CLI.json",
+      "bytes": 1966,
+      "sha256": "16950ebf07ba597b813e917eeeadc922a6ac7bf15e42f70feec25693fe24bd76"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/AUTHOR.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/AUTHOR.stdout.txt",
+      "bytes": 255,
+      "sha256": "3c119cfc7f2d925a91f12dc8adb4032c710e3c52649ee47219bbc8bdc0b3e0fb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/diagnose_actual_B3_B4_AST_deltas.py",
+      "bytes": 3354,
+      "sha256": "3df4e6f5650d5655d9b67f6f0644d14c55f277a6275dea03f32c5e0c54827540"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/FORMAL-COMMIT-CONTEXT.original-refs.json",
+      "bytes": 1463,
+      "sha256": "389c89fe6e3f8230ecefca0c25d83a85dc4980235c798b3591760d42af95c059"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/G2-NATIVE.original.json",
+      "bytes": 29025,
+      "sha256": "e09dd013aa75ed11e2c0da58aeed53b5cac830da370f84744c828cbbffde5a43"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/G2-SDK-WRAPPER.original.json",
+      "bytes": 61869,
+      "sha256": "424d9970dec0a290f0c8ae2b581b81256a9ff222a1f2fd1e405dcc2a20cfba9e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/G3-NATIVE.original.json",
+      "bytes": 4214,
+      "sha256": "70bf8d3593a1aa9774245681d54d06723be1ceb1c262ca7d74472f1ccf1096f3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/G3-SDK-WRAPPER.original.json",
+      "bytes": 9223,
+      "sha256": "da744d162cc1611116ac6369688bbcb93eda3a4b7a6c2522eb6a572ba9bf569f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/G4-READONLY-NATIVE.original.json",
+      "bytes": 3936,
+      "sha256": "642b740c77932c022d8f2f8362b0460a47ab0a59e935731543839d1fee648a67"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/G4-READONLY-SDK-WRAPPER.original.json",
+      "bytes": 8631,
+      "sha256": "33e423b9634673a7d68338bd58b3acff176b77c45bd5337fc0fe2f270049636a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/G4-READONLY-SUPPLEMENT.original-refs.json",
+      "bytes": 862,
+      "sha256": "f29e2e59b1a1334abb194c794573d665576dee86259b0d90f594b832b2eef4eb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/INPUT.actual.json",
+      "bytes": 2475,
+      "sha256": "046fb51475218180353b9c753fd9dadb56d9ecfd34c5d9c4f00a5b75b7517f40"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/inspect_actual_post_fields.py",
+      "bytes": 1137,
+      "sha256": "39bfc39e0691e47cb8d82a3bb34543e390643438c55c8d46993fb10f2e2b7972"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/inspect_actual_post_fields_002.py",
+      "bytes": 1618,
+      "sha256": "c3be47b643f8470acf4c3577c774022809e76d756d35c43ca851379fb0285ae2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/NATIVE-CHECKPOINT.original.json",
+      "bytes": 2545534,
+      "sha256": "ec0440c53371f0bcecc61c2d38e7cc525206d3c1d3ecd3c4fa8dfa508a400c49"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ORCHESTRATOR-ADAPTATION.source.json",
+      "bytes": 1034,
+      "sha256": "3eb69c88e89e501439a00fc83a09ce451e9b75575573611455d7dac9b00f3757"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/prepare_root_copy_and_run_round3_B4.py",
+      "bytes": 8576,
+      "sha256": "ffa9b22cae97fe39b664ad172f47ff1385074eb51480b301ba89b46070b67aad"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/prepare_source_adapter.py",
+      "bytes": 5662,
+      "sha256": "d39f5cb9227e76779c670c1d3dce98093a48e27094a1e5026dae09f8997f028f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/PRESERVATION.json",
+      "bytes": 2499,
+      "sha256": "cb70fe3781f77b0b5955f64fd6208ee0878052f170b2cf8c6a85a9b4ae84e272"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/CHECKPOINT-REQUEST.actual.json",
+      "bytes": 130277,
+      "sha256": "18f55984700839ad59014fcad4f720fbc636031640f66c5c77920a788414682f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/CHECKPOINT-REQUEST.native-qualified.json",
+      "bytes": 141086,
+      "sha256": "965b64760351f7077dd40e7d653a75cbc21bfac3ca81833c6634cfd8e5a9c61e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 2478077,
+      "sha256": "3dd0cc418fc09bcc7d112b053136292e7726328535099f724e25c0ad4da4496f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/CONVERSION-REQUEST.actual-or-pending.json",
+      "bytes": 10314,
+      "sha256": "0c858ed146bf3a386707f199980266803f1a159482653c2c28ab8d0cf4bd1c40"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/INPUT.exact.json",
+      "bytes": 2475,
+      "sha256": "046fb51475218180353b9c753fd9dadb56d9ecfd34c5d9c4f00a5b75b7517f40"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "bytes": 884844,
+      "sha256": "87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 2663583,
+      "sha256": "459449e0144f825f340400dad7a6b8886f5251f0a39a4cc84b463652a21bc050"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/PROVENANCE.actual-or-pending.json",
+      "bytes": 10170,
+      "sha256": "0ed39ffd6abfa688a3a8a551cd64b191f9e0a31bc2d03e50a37d6ee68bc1ffc7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/RESULT.json",
+      "bytes": 934906,
+      "sha256": "15aeb39fe3cb3e106869ed378224b93ff0ba963bc18593a769d03ead094b409b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/STATE.json",
+      "bytes": 621929,
+      "sha256": "8d9e322777d4fd72fb8de7a4823a34171b1b0bc80a8723b7f0e084d42c5eae3a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/STATE.native-qualified.json",
+      "bytes": 621929,
+      "sha256": "8d9e322777d4fd72fb8de7a4823a34171b1b0bc80a8723b7f0e084d42c5eae3a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/TYPED-PROTECTION.json",
+      "bytes": 1004259,
+      "sha256": "0146e048c34b1072460ff6de1849f04ff22e6ceb3d5ee2ade26a06d9ded919e5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ROOT-PRESERVATION.original.json",
+      "bytes": 2478991,
+      "sha256": "68891522fe6556f4f327b8761d4b7ae45aabdb48c68dc841908609fee4e8e69a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ROOT-RESULT.original.json",
+      "bytes": 1245181,
+      "sha256": "66047513385fb4afc50d4f74e53a322f2d16e70deac3b4a60a8d641a8e10c560"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ROUND3-B4-SUMMARY.actual-RED.json",
+      "bytes": 17301,
+      "sha256": "9aeb79570e065ee203ff48a84f94664a1e08398fcc04245ef4a8cfeaf1e0f922"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/ROUND3-B4.source-proof.json",
+      "bytes": 1873,
+      "sha256": "147fece03a0fd74e979a1ebb78164fd0b0f6bf2ee04e2a11f0bc84bf972f0d30"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/SDK-WRAPPER.original.json",
+      "bytes": 5362115,
+      "sha256": "a14471f206b12d5bb450566b567c90d96062efbf484a497076a4eca56fc92698"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/seal_actual_B4_RED_observations.py",
+      "bytes": 10920,
+      "sha256": "9ab98f9c117b335ca5928a9baffb0f43b0d7f7a8f8ff3a18a8bd197dd45a84bb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/snapshot_after.original.json",
+      "bytes": 1174036,
+      "sha256": "91c56f9eb32f153465603f95821143ef342c8ba97ca0afce40805db57f877800"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/snapshot_before.original.json",
+      "bytes": 1172746,
+      "sha256": "b9f5766533fe50750fd18c32c3df765fae45b17dbaf09ea47570b36f2f6fd286"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/WINDOWS.with-round3-B4.source-derived.json",
+      "bytes": 9963,
+      "sha256": "5a01019eae078cc47f4927448dd15a2a90de9e45da480c59a8e0d4a25c487293"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-formal-guarded-steps-20261007-001/165837478975/content-3ea0484b301431deec43d55b8f1979528cbe1ebdfeca9a68fd75cd96837e4440.ck3",
+      "bytes": 91677583,
+      "sha256": "3ea0484b301431deec43d55b8f1979528cbe1ebdfeca9a68fd75cd96837e4440"
+    }
+  ],
+  "failed_reader_and_protection_checks_unchanged": true,
+  "checkpoint_SHA_checked_by_original_author_once": true,
+  "additional_save_body_reads_for_seal": 0,
+  "whole_formal_acceptance_credit": null,
+  "native_HoR_credit": null,
+  "full_B4_pass": false,
+  "ACK_credit": null,
+  "future_B5_actuals": null,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "child_live_autosave_reads": 0
+}

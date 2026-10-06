@@ -1,0 +1,82 @@
+{
+  "schema": "lyd.factory-positive-sentinel.three-token-byte-proof.actual.v1",
+  "files": [
+    {
+      "path": "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "before_SHA256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9",
+      "candidate004_SHA256": "fd438b2d2dee8102bf9a8b45241e7ad9f244d248062705c834d4b641205eb263",
+      "bytes": 2901,
+      "only_byte_differences": [
+        {
+          "offset": 834,
+          "before": "0",
+          "after": "1"
+        },
+        {
+          "offset": 1004,
+          "before": "1",
+          "after": "2"
+        },
+        {
+          "offset": 2446,
+          "before": "0",
+          "after": "1"
+        }
+      ]
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "before_SHA256": "9524ba5f3195d54b230e3a587284ae7466fe7ef4a8d777d26a37e6bb08c32dc9",
+      "candidate004_SHA256": "fd438b2d2dee8102bf9a8b45241e7ad9f244d248062705c834d4b641205eb263",
+      "bytes": 2901,
+      "only_byte_differences": [
+        {
+          "offset": 834,
+          "before": "0",
+          "after": "1"
+        },
+        {
+          "offset": 1004,
+          "before": "1",
+          "after": "2"
+        },
+        {
+          "offset": 2446,
+          "before": "0",
+          "after": "1"
+        }
+      ]
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "before_SHA256": "7bedf43f9efa087f39d3c434b120fd9e609ae04f04b92b18e331b968c2c3c2b8",
+      "candidate004_SHA256": "6ad85b8f73a48077befa78b68b51c7930177d93b537904c905b6c9a704ad1d66",
+      "bytes": 2984,
+      "only_byte_differences": [
+        {
+          "offset": 917,
+          "before": "0",
+          "after": "1"
+        },
+        {
+          "offset": 1087,
+          "before": "1",
+          "after": "2"
+        },
+        {
+          "offset": 2529,
+          "before": "0",
+          "after": "1"
+        }
+      ]
+    }
+  ],
+  "all_non_three_tokens_raw_bytes_exact": true,
+  "original_factory_erased_new_guards_AST_sha256": "d79fad675555e5ed4082f48a16086615e1a5ed5e7e6cd8b0308e201991c8e213",
+  "full_AST_preservation_check": "FOCUSED004 actual test_entire_original_factory_AST_unchanged_after_pruning_new_guard",
+  "generated_business_only_changed": "common/scripted_effects/lyd_c3_head_factory.txt",
+  "other11leadership_outputs_exact": "actual author generator comparison, AUTHOR-004-successor003.stdout.txt",
+  "main_applied": false,
+  "ROOT_new_HEAD": null,
+  "runtime": null
+}

@@ -1,0 +1,51 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-normal-exit-close-candidate-20261007-001\\guarded_r14_helper_close.py",
+    "check-game-exit",
+    "--game-sdk",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-client-001\\0148-r14-171915621909.sdk-result.json",
+    "--game-sdk-sha256",
+    "fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945",
+    "--game-native",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-client-001\\0148-r14-171915621909.native-01.json",
+    "--game-native-sha256",
+    "a97c79b3fbc86a044ae614f4cf389e8c4e085ee0bd69e747b7c46a3c82bfc13c"
+  ],
+  "exit_code": 1,
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-001/guarded_r14_helper_close.py",
+    "bytes": 23290,
+    "sha256": "67e2584960d5b2579c49e9666cf132c6de315cc21b9af99d45b60ba24ec2007e"
+  },
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-002/001-OLD-READONLY-FAILURE-REPLAY/stdout.raw",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-002/001-OLD-READONLY-FAILURE-REPLAY/stderr.raw",
+    "bytes": 1614,
+    "sha256": "6ea4e424ed414ad439aede43ce649f866807e10879495325bf8fd5701d3502ae"
+  },
+  "SDK_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0148-r14-171915621909.sdk-result.json",
+    "bytes": 12819,
+    "sha256": "fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945"
+  },
+  "native_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0148-r14-171915621909.native-01.json",
+    "bytes": 5908,
+    "sha256": "a97c79b3fbc86a044ae614f4cf389e8c4e085ee0bd69e747b7c46a3c82bfc13c"
+  },
+  "finished_at_utc": "2026-10-06T17:21:43.565592+00:00",
+  "mutation_requested": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "Client_close_requested": false,
+  "keeper_STOP_requested": false,
+  "lease_mutated": false
+}

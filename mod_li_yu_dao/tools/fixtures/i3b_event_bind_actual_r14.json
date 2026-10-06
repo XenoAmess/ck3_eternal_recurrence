@@ -1,0 +1,378 @@
+{
+  "schema": "lyd.i3b.actual-R14-event-bind-context-subsets.v1",
+  "source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "contexts": [
+    {
+      "name": "B0-before-first-begin",
+      "original_STATE_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B0-baseline-preservation-20261006-001/readback-001/STATE.json",
+        "bytes": 1317829,
+        "sha256": "592a2dc82656cab0dfec1f39c70e99a30ea7e8f1969e1dfb8d024fa2b4f2d0b2"
+      },
+      "actor_id": 31254,
+      "raw_variables": {},
+      "values": {},
+      "missing_fields": [
+        "lyd_i3b_serial",
+        "lyd_i3b_nonce",
+        "lyd_i3b_phase"
+      ]
+    },
+    {
+      "name": "round1-cancel-before-second-begin",
+      "original_STATE_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/STATE.json",
+        "bytes": 1335770,
+        "sha256": "8153096ffeccf7360a6bea8e6dde88b2a1894a4debd9a69101cd6f8ab9a2f530"
+      },
+      "actor_id": 31254,
+      "raw_variables": {
+        "lyd_i3b_serial": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "100000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ],
+          "number": "1",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_i3b_serial"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "100000"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_i3b_nonce": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "200000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "200000"
+            }
+          ],
+          "number": "2",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_i3b_nonce"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "200000"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "values": {
+        "lyd_i3b_serial": "1",
+        "lyd_i3b_nonce": "2"
+      },
+      "missing_fields": [
+        "lyd_i3b_phase"
+      ]
+    },
+    {
+      "name": "round1-B1-actual-live",
+      "original_STATE_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-B1-begin-preservation-20261006-001/readback-003/STATE.json",
+        "bytes": 2604521,
+        "sha256": "58f4a3ae56f69358f780440555159adc55cf71a7e7e2336b03b6cc7768b23f92"
+      },
+      "actor_id": 31254,
+      "raw_variables": {
+        "lyd_i3b_serial": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "100000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ],
+          "number": "1",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_i3b_serial"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "100000"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_i3b_nonce": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "100000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ],
+          "number": "1",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_i3b_nonce"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "100000"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_i3b_phase": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "100000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ],
+          "number": "1",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_i3b_phase"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "100000"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "values": {
+        "lyd_i3b_serial": "1",
+        "lyd_i3b_nonce": "1",
+        "lyd_i3b_phase": "1"
+      },
+      "missing_fields": []
+    },
+    {
+      "name": "round2-B1-actual-live",
+      "original_STATE_ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-B1-begin-preservation-20261007-001/readback-001/STATE.json",
+        "bytes": 2604522,
+        "sha256": "1424b094cfafc18f743cac523e21f16143627c1d4f5dd75343368183395b3029"
+      },
+      "actor_id": 31254,
+      "raw_variables": {
+        "lyd_i3b_serial": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "200000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "200000"
+            }
+          ],
+          "number": "2",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_i3b_serial"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "200000"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_i3b_nonce": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "300000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "300000"
+            }
+          ],
+          "number": "3",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_i3b_nonce"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "300000"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_i3b_phase": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "100000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ],
+          "number": "1",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_i3b_phase"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "100000"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "values": {
+        "lyd_i3b_serial": "2",
+        "lyd_i3b_nonce": "3",
+        "lyd_i3b_phase": "1"
+      },
+      "missing_fields": []
+    }
+  ],
+  "boundary": "Subsets from already parsed complete actual preserved STATE files. No fabricated actor values or new body read; Python model is not CK3 tooltip execution.",
+  "baseline_helper_text": "lyd_i3b_bind_event_effect = {\n    save_scope_as = lyd_i3b_actor\n    save_scope_value_as = { name = lyd_i3b_event_serial value = var:lyd_i3b_serial }\n    save_scope_value_as = { name = lyd_i3b_event_nonce value = var:lyd_i3b_nonce }\n    save_scope_value_as = { name = lyd_i3b_event_phase value = var:lyd_i3b_phase }\n}",
+  "baseline_complete_setup_AST_sha256": "d9e2dad47f9b85c6dca96d908cf49ecb6eab6ecd2409a9b4ef6ba9a1d0a75585",
+  "baseline_setup_original_ref": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i3b-r14-preview-error-diagnostic-20261007-001\\frozen-source\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+    "bytes": 6448,
+    "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+  }
+}

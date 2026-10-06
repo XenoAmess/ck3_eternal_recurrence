@@ -1,0 +1,30 @@
+{
+  "status": "ACTUAL_REQUESTED_PHASE_COMPLETE",
+  "command": "close-client",
+  "result": {
+    "consumer_closed": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/session-closed.json",
+      "bytes": 5813,
+      "sha256": "cd74d864c6a38322401e7620d2209da8d4fda1196524d078f218cf2e20de80c0"
+    },
+    "consumer_close_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0149-r14-root-close-aff92fad00ba4b9abd4d996f6173dcca.response.json",
+      "bytes": 533,
+      "sha256": "d75d7b6606c04262e0ea1d9f230e9e125a1463cfb5a44803ee3c5e69407f6071"
+    },
+    "consumer_close_request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-queue-001/r14-root-close-aff92fad00ba4b9abd4d996f6173dcca.request.json",
+      "bytes": 132,
+      "sha256": "b1f112b53680fb2152e9ec7296e5c05f3939818799ab997e6fa89e8242087fd7"
+    },
+    "client_original_handle_exit": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-retained-helper-handles-20261006-001/capture-001/EXIT-client.actual.json",
+      "bytes": 1735,
+      "sha256": "775461ce37cfb24ef8bb73c6a86a922e88890602ebfbca92722f0ebf55382f58"
+    }
+  },
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "finished_at_utc": "2026-10-06T17:24:50.617748+00:00",
+  "autosave_verified": false
+}

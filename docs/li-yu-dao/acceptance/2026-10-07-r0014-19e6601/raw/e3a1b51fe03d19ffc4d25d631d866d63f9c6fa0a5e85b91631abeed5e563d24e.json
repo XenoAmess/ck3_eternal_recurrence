@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "--bus-dir",
+    "C:\\workspace\\.codex-task-bus",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "release-screen-cas",
+    "--task",
+    "ck3-lyd-r14-preflight-20261006-001",
+    "--expected-sequence",
+    "3428",
+    "--summary",
+    "R14 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen"
+  ],
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-06T17:29:21.909013+00:00",
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-screen-release-20261007-002/release-screen-cas.stdout",
+    "bytes": 1333,
+    "sha256": "136e5b8ead7a0d0df5753dd1215478833c849239ed84613270900caf58c877e6"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-screen-release-20261007-002/release-screen-cas.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

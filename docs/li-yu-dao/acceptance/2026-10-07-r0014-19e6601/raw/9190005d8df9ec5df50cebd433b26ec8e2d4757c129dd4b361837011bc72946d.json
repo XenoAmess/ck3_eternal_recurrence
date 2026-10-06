@@ -1,0 +1,242 @@
+{
+  "schema": "lyd.r14.round1-cancel-immutable-package-index.v1",
+  "utc": "2026-10-06T16:16:21.235684+00:00",
+  "status": "ACTUAL_CANCELLED_ROUND1_CLEANUP_AND_PROTECTION_OBSERVED",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/ACTUAL-CANCEL-CLEANUP.mechanical-fixture.json",
+      "bytes": 171753,
+      "sha256": "6016e01f906f4cd934ca36a46eb03c2dc87f08db02f0db37e2f7b60802fb8b72"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/AUTHOR-CLI.json",
+      "bytes": 1691,
+      "sha256": "38571cb5cfda081a22beafda3d6c2f855abaffff7365c3badcada52ad78e5ec8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/AUTHOR.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/AUTHOR.stdout.txt",
+      "bytes": 240,
+      "sha256": "6a9b5f38cba9089ac6c3927330cd2408cf1418f3b7beca29b92dbe193e39401d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/CANCEL-ACTION-NATIVE.original.json",
+      "bytes": 1165803,
+      "sha256": "6ecbd88dfd2ccbf301851f26a627b58ce0477c9f61193744c7af6a377cf7673e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/CANCEL-ACTION-PRESERVATION.json",
+      "bytes": 1420,
+      "sha256": "dc1f814789390620d97048b172dd8571bfe576b7b2cc23977896d0715d9de055"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/CANCEL-ACTION-SDK-WRAPPER.original.json",
+      "bytes": 2458621,
+      "sha256": "3be500995d35f96131d64fd4181371ed87400b896541b7e1cecd3e25b9e196ef"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/CANCEL-CLEANUP.actual.json",
+      "bytes": 70300,
+      "sha256": "ccd18e85d533bc5b5ad29ca54a4b102a5b2aaf28075bdc07e9d12a4939606548"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/CANCELLED-WINDOW.source-proof.json",
+      "bytes": 1637,
+      "sha256": "e3f108f6bb794ae85cc16d8f86d6c4da81bfde6f349dffa3a17a71b71e5b4f5a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/cancelled_cleanup_checks.py",
+      "bytes": 3152,
+      "sha256": "fdc1da1855cf22b5c64b7bdb7940080eab582ef468e4c741384019eae7d53f29"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/CHECKPOINT-STRUCTURED.frozen.json",
+      "bytes": 1145852,
+      "sha256": "e4a1d0c373188c040061507ec7ec0fe3c1c69189275326df72ab5b4da8cace82"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/content-72cb93d2158a57a28f312fb58765c60ab65a8d54304216f3a9f66688d2f2d7cf.ck3",
+      "bytes": 91670781,
+      "sha256": "72cb93d2158a57a28f312fb58765c60ab65a8d54304216f3a9f66688d2f2d7cf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/FOCUSED-CANCEL.json",
+      "bytes": 1069,
+      "sha256": "d5b9311c6d828a8226c621785ad2b0e4dcd5ded114f39efc2ff082784fd7bad9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/FOCUSED-CANCEL.stderr.txt",
+      "bytes": 1660,
+      "sha256": "ae3fb2d6f9a2a50f18b2d94dd7d28bba8a14e9ccfafb5acfecc5915f7f027a4a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/FOCUSED-CANCEL.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/G2-NATIVE.original.json",
+      "bytes": 29025,
+      "sha256": "1c40e82444a2c8ccf23036fab3815d0da7c0adddef7a5298719a7dceca94e8cc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/G2-SDK-WRAPPER.original.json",
+      "bytes": 61869,
+      "sha256": "e6f734f79f24527cb948f985f9dcc95e2c90a2255dd76fcf569807f6117177da"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/G3-NATIVE.original.json",
+      "bytes": 4125,
+      "sha256": "b5439646421cfd279a6fd95d4524a56d2cd935e754184bdcfc4f2d710842b94a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/G3-SDK-WRAPPER.original.json",
+      "bytes": 9031,
+      "sha256": "4e49e2176f53f1731c7e168129fc11af6a907241fb2629ca3889d1d04194ba2f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/INPUT.actual.cancel-baseline-path.json",
+      "bytes": 2393,
+      "sha256": "f595498ed3369f165e19aa45c1f126d01470b063f6863f9d6a9189a5ae55812c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/NATIVE-CHECKPOINT.original.json",
+      "bytes": 1176750,
+      "sha256": "ac03ea7a453bef13d9ce34671537a3c711ae2e8a23e9b8ce977c6096ccbc37ac"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/prepare_and_preserve_cancel.py",
+      "bytes": 1002,
+      "sha256": "9c7470c4a5b2504dd88f1ce12bd071fb76cc2923dfca8a9825bf864f8c17595c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/prepare_and_run_cancel_author.py",
+      "bytes": 4931,
+      "sha256": "df6fe13bf1b3668891992b8059d551e48b976d5b22059964237f9ec8c7f93dce"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/PRESERVATION.json",
+      "bytes": 2909,
+      "sha256": "5daa35707d0f7d3d86f27c043a6334a441f62d028bc31c6d561d7ece08810783"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/preserve_cancel_now.py",
+      "bytes": 3153,
+      "sha256": "952734c9d704975be9812d442e0e4bf38e0abca5138de6da66cb1527083205ba"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/qualify_cancelled_cleanup_actual.py",
+      "bytes": 5917,
+      "sha256": "835d4a684c79f25bb84d35f5337f190633d2c0de06a54f77c670a02b8e5947c0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 1143525,
+      "sha256": "e7224dbda3def75f88830ec1d59f82d64ff7f7f2008a88773bc67b5484e6b099"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/CONVERSION-REQUEST.actual-or-pending.json",
+      "bytes": 10225,
+      "sha256": "10c041c1652ba45f930889f8291ca68d518c3000e350f035e31369da56aaa6e6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/INPUT.exact.json",
+      "bytes": 2393,
+      "sha256": "f595498ed3369f165e19aa45c1f126d01470b063f6863f9d6a9189a5ae55812c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "bytes": 884844,
+      "sha256": "87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 1257729,
+      "sha256": "d8699810fd220833cef77486de34845f41c397c1e0a3b948f90a5b59bfd83ec8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/PROVENANCE.actual-or-pending.json",
+      "bytes": 10170,
+      "sha256": "cae382b7fe951603b2754052b172a43a3bd99bd085fd2754cbc845b005d28142"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/RESULT.json",
+      "bytes": 933357,
+      "sha256": "e4760b48e0f5d3dcf6da254f0db93f90224f0d33e81d65cce95ba4e203175198"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/STATE.json",
+      "bytes": 1335770,
+      "sha256": "8153096ffeccf7360a6bea8e6dde88b2a1894a4debd9a69101cd6f8ab9a2f530"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/readback-001/TYPED-PROTECTION.json",
+      "bytes": 980752,
+      "sha256": "ffd0270392312312ffff71b23a4caca1938199cfaf2a3cdd4a4969ab92a6bc9a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/run_cancel_focused_and_seal.py",
+      "bytes": 3532,
+      "sha256": "28a4b547d1de8ebb62f92e0cdac4070e0b0251ebd1feefa0082b780824329a2e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/SDK-WRAPPER.original.json",
+      "bytes": 2480879,
+      "sha256": "65ba843b7c2baeab003e2522c974ef8554602d1ed2c968bd01d00482c4688850"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/snapshot_after.original.json",
+      "bytes": 540992,
+      "sha256": "ab01906bd0efdbc02a1a95cb86029ecfa60c7da391f524f822d25cbb3f3479ac"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/snapshot_before.original.json",
+      "bytes": 539703,
+      "sha256": "8d98eeeed141cda0b774b12f1ebe419c6f875c4da233f75a55a9538849642773"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/tests/test_actual_cancelled_cleanup.py",
+      "bytes": 1882,
+      "sha256": "8ecc4418bd5543ae9e94bbef035bcacf12d056af65be1225a8cdefbdb72051ba"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/WINDOWS.with-round1-cancel.source-derived.json",
+      "bytes": 8952,
+      "sha256": "806d44db429af62df3ea52a8c4f0aaa240d3dc64ba5af3a4182792e81c19bcf1"
+    }
+  ],
+  "preserved_checkpoint": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/content-72cb93d2158a57a28f312fb58765c60ab65a8d54304216f3a9f66688d2f2d7cf.ck3",
+    "bytes": 91670781,
+    "sha256": "72cb93d2158a57a28f312fb58765c60ab65a8d54304216f3a9f66688d2f2d7cf"
+  },
+  "preserved_checkpoint_SHA_verified_at_copy": true,
+  "additional_save_body_reads_for_seal": 0,
+  "executing_author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/author_actual_checkpoint.py",
+    "bytes": 31038,
+    "sha256": "8efcb4b1b048ea2b4819fecd48be8a9e934babc2dbe73461f91e622e8b66ca05"
+  },
+  "executing_reader": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+    "bytes": 41081,
+    "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+  },
+  "cancelled_cleanup_checks": 393,
+  "cancelled_cleanup_checks_matched": 393,
+  "protection_checks": 87,
+  "protection_checks_matched": 87,
+  "focused_negative_and_actual_tests": 10,
+  "native_HoR_from_G2_G3": null,
+  "native_HoR_independent_ROOT_G4_ref": null,
+  "saved_HoR": "31254",
+  "new_round_actual": null,
+  "B3_B4_B5_credit": null,
+  "formal_credit": null,
+  "game_calls": 0,
+  "SDK_calls": 0
+}

@@ -1,0 +1,19 @@
+{
+  "original_capture_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/INDEX.json",
+    "bytes": 7970,
+    "sha256": "5af1e910e28ea1f0aa2b72c85e91d63aaa652be8637b69db17c2d27ab47e4253"
+  },
+  "diagnosis": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/DIAGNOSIS.actual.json",
+    "bytes": 18394,
+    "sha256": "28e1e0427ff8995a997043c365ea4078ffe0e39514d23512b51ea6e11d7133d2"
+  },
+  "summary_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-defender-platform-readonly-20261007-001/summarize_actual.py",
+    "bytes": 4179,
+    "sha256": "2971956433300d89419e568d9c5c66f77b6b482ad107cd5ed7837f6ebabfe445"
+  },
+  "source_note": null,
+  "all_new_settings_service_policy_broker_game_lease_main_mutations": 0
+}

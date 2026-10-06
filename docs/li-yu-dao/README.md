@@ -54,3 +54,12 @@
 最新安排见[2026-10-06 进度](2026-10-06-progress.md)。
 
 R0004 证明本版不存在此前候选使用的 `has_same_core_doctrines` 接口。当前改用原版有依据的 `any_doctrine`、`rite_has_doctrine`，比较两个主礼仪的有效 Doctrine 集合；这是本 mod 的保守批准条件，并非已经证明的原生同核心接口。礼仪的核心 Tenet 可不同，实际偏离度和领袖条件继续单独限制。旧报告保持原文；修复后的运行含义仍须新实机证明。
+
+
+## 2026-10-07 R14 已闭合、业务 RED
+
+R14已以原game/client/keeper HANDLE exit0及CAS3429 DONE/resources[]闭合，释放后大小写文件冲突与首次CAS拒绝均保留。两轮自然NPC NO分别正式取消393/87；第三轮B3签署357+87+20通过、Title18373创建局部事实存在，但B4/B5原STATE38/47和保护80/87保持RED。ACK387/387清理、20/20连续性与9focused通过；autosave及最终日志覆盖UNKNOWN。loaded/export/build仍绑定19e6601，afterclose候选未获本轮实机资格；Defender Disabled/5新EXE未登记。全产品NOT_GREEN，70%仅估计，未发布Workshop。
+
+[验收报告](acceptance/2026-10-07-r0014-19e6601/REPORT.md)。修复后新HEAD/新cold验收另行记录。
+
+闭合后 root 已完成 numeric/preview/factory/reader3 源码整合；实际 reader112、law11、preview6 通过，static70 runtime files GREEN。详见[独立 afterclose 附录](acceptance/2026-10-07-r0014-19e6601/AFTERCLOSE-INTEGRATION.md)；原 R14 runtime19/B4B5 RED不改，新修复提交HEAD及新cold验收尚无信用。

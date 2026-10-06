@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r14-171915621909",
+  "operation": "call_tool",
+  "name": "ck3_observe_profile_normal_exit_v1",
+  "arguments": {}
+}

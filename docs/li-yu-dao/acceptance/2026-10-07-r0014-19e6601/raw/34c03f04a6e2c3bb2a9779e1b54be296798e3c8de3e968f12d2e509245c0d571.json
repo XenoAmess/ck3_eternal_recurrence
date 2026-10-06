@@ -1,0 +1,44 @@
+{
+  "schema": "lyd.r14.existing20-isolated-candidate-reader-validation.v1",
+  "scope": "Existing unchanged test_i3b_reader.py against authoritative reader003 in exact external source mirror",
+  "existing_test_file": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+    "bytes": 18651,
+    "sha256": "243e5c51b3892362e05c657fe27fe732f7c7da63908f3c3995cfeb4ccf44dab5"
+  },
+  "actual_loaded_modules": {
+    "i3b_checkpoint_reader": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+      "bytes": 41081,
+      "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+    },
+    "bounded_save_parser": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/bounded_save_parser.py",
+      "bytes": 1998,
+      "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+    },
+    "save_fields": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/dependencies/save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+    }
+  },
+  "candidate_reader": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-reader-numeric-afterclose-review-20261006-001/mirror/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+    "bytes": 41081,
+    "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+  },
+  "tests_run": 20,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": true,
+  "seconds": 0.3321165000088513,
+  "test_logic_modified": false,
+  "main_old_reader_imported": false,
+  "save_body_reads": 0,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "native_acceptance_credit": null,
+  "formal_mandate_credit": null
+}

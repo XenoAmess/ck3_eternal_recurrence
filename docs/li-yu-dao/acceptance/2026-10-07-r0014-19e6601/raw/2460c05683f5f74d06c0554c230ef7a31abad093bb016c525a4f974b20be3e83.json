@@ -1,0 +1,536 @@
+{
+  "schema": "lyd.root.exact-head-export-build.v1",
+  "status": "ACTUAL_CLEAN_HEAD_EXPORTED_FORMAL_STAGE_BUILT",
+  "utc": "2026-10-06T13:38:18.556650+00:00",
+  "workspace": "C:/workspace/ck3_eternal_recurrence",
+  "source": {
+    "head": "19e660105e05395caa6cc95e76c299312ee89d51",
+    "tree": "f8380e7d4d29db9ff2e9150e363ca5f5bea001b8",
+    "product_tree": "6ac828e3539b668e6b2dcf11d3dbd198fab6c4c2",
+    "native_tree": "2b20246d5efaacea0e2be8082121f3b3f1165899",
+    "autoplayer_tree": "6ec3c8a27c58dcd0439a4d3dd49fd56ae5db33de",
+    "tools_tree": "b8e8fd6ba72184fb68435c0b46448cacc9dca95d",
+    "workshop_src_tree": "800ca0c0ba4a256d20ef81d0bc70e202eedcf501",
+    "product_file_count": 70,
+    "inventory": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/MOD-SOURCE-INVENTORY.json",
+      "bytes": 28251,
+      "sha256": "f40158f379e241d3a3d37ea9a1cdab6b23658646409dd943d717f5d9763fabd4"
+    }
+  },
+  "source_root": "C:/lr14s1",
+  "source_archive": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/SOURCE.tar",
+    "bytes": 133857280,
+    "sha256": "e9cf7fc4a92b168a1bec5c5c8c44d6bc53367da16a7f625b7b36501c5c23e567"
+  },
+  "source_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/SOURCE-INVENTORY.json",
+    "bytes": 1484395,
+    "sha256": "f028b4bd14f84cd24fdf4c7c78745868df0bbe3e180379197673a00435ea8a51"
+  },
+  "native_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/NATIVE-SOURCE-INVENTORY.json",
+    "bytes": 668978,
+    "sha256": "fb1a5a9a6094e0c57f2c122b084c126d7c1e7881fb291d9260f702de1a397eba"
+  },
+  "tracked_file_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/TRACKED-FILES.json",
+    "bytes": 2304445,
+    "sha256": "46f2ef31dcd56a52eef916dddbf5e61b069946dacac563b9a5c852159b5ae95e"
+  },
+  "archive_readonly": true,
+  "archive_only_actual_tracked_files": true,
+  "all_archive_file_bytes_equal_tracked_Git_blobs": true,
+  "production_comparison": {
+    "before_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+    "before_manifest": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-root-head-export-20261006-002/production/mod_li_yu_dao.manifest.json",
+      "bytes": 12940,
+      "sha256": "f0ef038814af21d9d0fde45bcbbbb9adeb11a8a7f876cbed99788985c77afe1e"
+    },
+    "runtime_files": 70,
+    "all70_runtime_bytes_equal": true
+  },
+  "native_artifact_reuse_credit": null,
+  "future_native_build_receipt": null,
+  "source_counts": {
+    "all_exported": 6776,
+    "mod_li_yu_dao": 147,
+    "native_bridge": 3563,
+    "complete_ck3_autonomous_player": 5740,
+    "tools": 873,
+    "ck3_workshop_mcp_src": 16
+  },
+  "archive_paths": [
+    "mod_li_yu_dao",
+    "ck3_autonomous_player",
+    "tools",
+    "ck3_workshop_mcp/src"
+  ],
+  "build": {
+    "staging": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/production/mod_li_yu_dao",
+    "manifest": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/production/mod_li_yu_dao.manifest.json",
+      "bytes": 12940,
+      "sha256": "edc43d98e2332bd4e1388177fb49da8d6f5adff1540aa0e7eaa442aae90c44aa"
+    },
+    "archive": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/production/mod_li_yu_dao.zip",
+      "bytes": 124795,
+      "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e"
+    },
+    "file_count": 70,
+    "manifest_sha256": "edc43d98e2332bd4e1388177fb49da8d6f5adff1540aa0e7eaa442aae90c44aa",
+    "zip_sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+    "archived_import_sources": [
+      {
+        "module": "ck3_workshop_mcp",
+        "raw_origin": "\\\\?\\C:\\lr14s1\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\__init__.py",
+        "source": {
+          "path": "C:/lr14s1/ck3_workshop_mcp/src/ck3_workshop_mcp/__init__.py",
+          "bytes": 469,
+          "sha256": "981791a2cd6932c2e622795482205cae0dca1f1f48721330158bb3d2d9ab8b8a"
+        }
+      },
+      {
+        "module": "ck3_workshop_mcp.compatibility_tags",
+        "raw_origin": "\\\\?\\C:\\lr14s1\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\compatibility_tags.py",
+        "source": {
+          "path": "C:/lr14s1/ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+          "bytes": 3226,
+          "sha256": "47ff303baf94867db406ec9dab52037b83551b8c39a8dff0a0bdceafed7c2d90"
+        }
+      },
+      {
+        "module": "ck3_workshop_mcp.engine",
+        "raw_origin": "\\\\?\\C:\\lr14s1\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\engine.py",
+        "source": {
+          "path": "C:/lr14s1/ck3_workshop_mcp/src/ck3_workshop_mcp/engine.py",
+          "bytes": 19599,
+          "sha256": "413d92ae4e7c8d243f784e932cd7390258f80e8214a0d6583466f875bdf32191"
+        }
+      },
+      {
+        "module": "ck3_workshop_mcp.errors",
+        "raw_origin": "\\\\?\\C:\\lr14s1\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\errors.py",
+        "source": {
+          "path": "C:/lr14s1/ck3_workshop_mcp/src/ck3_workshop_mcp/errors.py",
+          "bytes": 1394,
+          "sha256": "9662846f25a784cb752e7a8d8151824f1d9ae84816a68d4fcfe54bef857ce91b"
+        }
+      },
+      {
+        "module": "ck3_workshop_mcp.models",
+        "raw_origin": "\\\\?\\C:\\lr14s1\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\models.py",
+        "source": {
+          "path": "C:/lr14s1/ck3_workshop_mcp/src/ck3_workshop_mcp/models.py",
+          "bytes": 8018,
+          "sha256": "016a95d0599106d04d96ea5883412097997000625d48d0adf9074b9f2954bf60"
+        }
+      },
+      {
+        "module": "ck3_workshop_mcp.providers",
+        "raw_origin": "\\\\?\\C:\\lr14s1\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\providers.py",
+        "source": {
+          "path": "C:/lr14s1/ck3_workshop_mcp/src/ck3_workshop_mcp/providers.py",
+          "bytes": 8106,
+          "sha256": "77372f38cb1b8396e462178b9608e51eb9cf79f211eb9bd2ac1dc5bb589db9a9"
+        }
+      },
+      {
+        "module": "ck3_workshop_mcp.validation",
+        "raw_origin": "\\\\?\\C:\\lr14s1\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\validation.py",
+        "source": {
+          "path": "C:/lr14s1/ck3_workshop_mcp/src/ck3_workshop_mcp/validation.py",
+          "bytes": 6954,
+          "sha256": "7cd0e0a9f752025ac06481ef260180ed16b792a9308b55fe4cde0c1a3f340814"
+        }
+      },
+      {
+        "module": "ck3_workshop_mcp.wal",
+        "raw_origin": "\\\\?\\C:\\lr14s1\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\wal.py",
+        "source": {
+          "path": "C:/lr14s1/ck3_workshop_mcp/src/ck3_workshop_mcp/wal.py",
+          "bytes": 11813,
+          "sha256": "ca123c06a51c62de11e90d16cdcb13adeab72595ec9d9d102bdf6422f7803c69"
+        }
+      },
+      {
+        "module": "workshop_compatibility_tags",
+        "raw_origin": "\\\\?\\C:\\lr14s1\\tools\\workshop_compatibility_tags.py",
+        "source": {
+          "path": "C:/lr14s1/tools/workshop_compatibility_tags.py",
+          "bytes": 3351,
+          "sha256": "20fbb78f2d3ad571f1ad32fc111ee87af2d6c9b951259be35297bb28fc9bf491"
+        }
+      }
+    ],
+    "files": [
+      {
+        "path": "common/character_interactions/lyd_c2_consent_interactions.txt",
+        "bytes": 986,
+        "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+      },
+      {
+        "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+        "bytes": 4931,
+        "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+      },
+      {
+        "path": "common/character_interactions/lyd_i3b_nomination_interactions.txt",
+        "bytes": 954,
+        "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+      },
+      {
+        "path": "common/character_interactions/lyd_interactions.txt",
+        "bytes": 127,
+        "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+      },
+      {
+        "path": "common/decisions/lyd_c2_consent_decisions.txt",
+        "bytes": 2408,
+        "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+      },
+      {
+        "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+        "bytes": 8528,
+        "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba"
+      },
+      {
+        "path": "common/decisions/lyd_decisions.txt",
+        "bytes": 1774,
+        "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+      },
+      {
+        "path": "common/decisions/lyd_i3b_institution_decisions.txt",
+        "bytes": 4599,
+        "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+      },
+      {
+        "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+        "bytes": 544,
+        "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+      },
+      {
+        "path": "common/religion/faith_types/lyd_faiths.txt",
+        "bytes": 424,
+        "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+      },
+      {
+        "path": "common/religion/rite_types/lyd_rites.txt",
+        "bytes": 13028,
+        "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+      },
+      {
+        "path": "common/religion/tenet_types/lyd_tenets.txt",
+        "bytes": 19451,
+        "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+      },
+      {
+        "path": "common/script_values/lyd_c2_consent_values.txt",
+        "bytes": 533,
+        "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+      },
+      {
+        "path": "common/script_values/lyd_i3b_institution_values.txt",
+        "bytes": 205,
+        "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c2_commit_effects.txt",
+        "bytes": 5885,
+        "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c2_head_effects.txt",
+        "bytes": 1352,
+        "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c2_response_effects.txt",
+        "bytes": 1369,
+        "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c2_setup_effects.txt",
+        "bytes": 12698,
+        "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c2_snapshot_effects.txt",
+        "bytes": 22655,
+        "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c2_vote_effects.txt",
+        "bytes": 5368,
+        "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+        "bytes": 9550,
+        "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+        "bytes": 9687,
+        "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c3_head_factory.txt",
+        "bytes": 1993,
+        "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+        "bytes": 5360,
+        "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88"
+      },
+      {
+        "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+        "bytes": 1366,
+        "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+      },
+      {
+        "path": "common/scripted_effects/lyd_entry_effects.txt",
+        "bytes": 3415,
+        "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+      },
+      {
+        "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+        "bytes": 4751,
+        "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+      },
+      {
+        "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+        "bytes": 4939,
+        "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6"
+      },
+      {
+        "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "bytes": 6448,
+        "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+      },
+      {
+        "path": "common/scripted_effects/lyd_i3b_terms_effects.txt",
+        "bytes": 3842,
+        "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_10_effects.txt",
+        "bytes": 3002,
+        "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_11_effects.txt",
+        "bytes": 2887,
+        "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_12_effects.txt",
+        "bytes": 2948,
+        "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_13_effects.txt",
+        "bytes": 3035,
+        "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_14_effects.txt",
+        "bytes": 1526,
+        "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_1_effects.txt",
+        "bytes": 2798,
+        "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_2_effects.txt",
+        "bytes": 2703,
+        "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_3_effects.txt",
+        "bytes": 2756,
+        "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_4_effects.txt",
+        "bytes": 2990,
+        "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_5_effects.txt",
+        "bytes": 2901,
+        "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_6_effects.txt",
+        "bytes": 2926,
+        "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_7_effects.txt",
+        "bytes": 2972,
+        "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_8_effects.txt",
+        "bytes": 2912,
+        "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+      },
+      {
+        "path": "common/scripted_effects/lyd_practice_9_effects.txt",
+        "bytes": 2983,
+        "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+      },
+      {
+        "path": "common/scripted_effects/lyd_school_2_effects.txt",
+        "bytes": 3902,
+        "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+      },
+      {
+        "path": "common/scripted_effects/lyd_school_3_effects.txt",
+        "bytes": 3877,
+        "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+      },
+      {
+        "path": "common/scripted_effects/lyd_school_4_effects.txt",
+        "bytes": 3982,
+        "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+      },
+      {
+        "path": "common/scripted_effects/lyd_school_5_effects.txt",
+        "bytes": 1968,
+        "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+      },
+      {
+        "path": "common/scripted_effects/lyd_school_effects.txt",
+        "bytes": 3872,
+        "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+      },
+      {
+        "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "bytes": 16511,
+        "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+      },
+      {
+        "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+        "bytes": 8361,
+        "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34"
+      },
+      {
+        "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+        "bytes": 11379,
+        "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e"
+      },
+      {
+        "path": "common/scripted_triggers/lyd_player_triggers.txt",
+        "bytes": 2885,
+        "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+      },
+      {
+        "path": "descriptor.mod",
+        "bytes": 156,
+        "sha256": "20f413d234c3c42c3f797c2cad72995ea7d41debd583dc31e7a6d326f769383b"
+      },
+      {
+        "path": "events/lyd_c2_consent_events.txt",
+        "bytes": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      },
+      {
+        "path": "events/lyd_c3_leadership_events.txt",
+        "bytes": 3260,
+        "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062"
+      },
+      {
+        "path": "events/lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      },
+      {
+        "path": "events/lyd_i3b_institution_events.txt",
+        "bytes": 5666,
+        "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02"
+      },
+      {
+        "path": "history/faiths/lyd_faith_history.txt",
+        "bytes": 1171,
+        "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+      },
+      {
+        "path": "localization/english/lyd_c2_consent_l_english.yml",
+        "bytes": 13439,
+        "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+      },
+      {
+        "path": "localization/english/lyd_c3_leadership_l_english.yml",
+        "bytes": 11285,
+        "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77"
+      },
+      {
+        "path": "localization/english/lyd_content_l_english.yml",
+        "bytes": 66904,
+        "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+      },
+      {
+        "path": "localization/english/lyd_i3b_institution_l_english.yml",
+        "bytes": 11134,
+        "sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2"
+      },
+      {
+        "path": "localization/english/lyd_runtime_l_english.yml",
+        "bytes": 4461,
+        "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+      },
+      {
+        "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+        "bytes": 11744,
+        "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+      },
+      {
+        "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+        "bytes": 10389,
+        "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6"
+      },
+      {
+        "path": "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+        "bytes": 52952,
+        "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+      },
+      {
+        "path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+        "bytes": 9819,
+        "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439"
+      },
+      {
+        "path": "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+        "bytes": 3707,
+        "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+      }
+    ],
+    "builder": {
+      "path": "C:/lr14s1/mod_li_yu_dao/tools/build_release.py",
+      "bytes": 10844,
+      "sha256": "a5f0343ced67d68438116a4424adac579c6b3913429c558df6ec638a17c754ce"
+    },
+    "source_revision": "19e660105e05395caa6cc95e76c299312ee89d51"
+  },
+  "source_clean_before_and_after": true,
+  "imported_builder_from_archived_HEAD": true,
+  "native_compiled": false,
+  "game_launched": false,
+  "queue_invoked": false,
+  "lease_mutated": false,
+  "tracked_written": false,
+  "static_and_native_acceptance": "NOT_RUN_BY_THIS_EXPORT_HELPER"
+}

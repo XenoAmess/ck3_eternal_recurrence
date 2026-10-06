@@ -1,0 +1,104 @@
+{
+  "schema": "lyd.r14.saved-Title-type-actual-mapping-evidence.v1",
+  "status": "ACTUAL_SAVED_LT_AND_NATIVE_LANDED_TITLE_FULL_ID_JOIN_OBSERVED",
+  "semantic_protocol_source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "actual_source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "actual_export_report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/REPORT.json",
+    "bytes": 21311,
+    "sha256": "2460c05683f5f74d06c0554c230ef7a31abad093bb016c525a4f974b20be3e83"
+  },
+  "actual_native_build_RESULT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-clean-native-build-20261006-004/RESULT.json",
+    "bytes": 882949,
+    "sha256": "a8d51253ccf4cf79687f1d4b3fdc93c9c21837278b04f27cdffe376680885e85"
+  },
+  "source_reader": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+    "bytes": 41081,
+    "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+  },
+  "source_fullID_producer": {
+    "path": "C:/lr14s1/ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context.cpp",
+    "bytes": 50678,
+    "sha256": "b69628f51186f11b45f110cd63f2c5578f7f1665d31010c2c0ff5d253756f0cc"
+  },
+  "source_fullID_serializer": {
+    "path": "C:/lr14s1/ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context_serializer.cpp",
+    "bytes": 18226,
+    "sha256": "795be300e8a0d8bceb1385c5ab7d331c19f4e1fd56a2817dbacc4fad481b2413"
+  },
+  "producer_semantics": "ResolveLandedTitleScopeIdentity line324-346 reads complete uint32 token+8 identity; index masks only lookup; complete int32 identity equality checked against Title+0x10 and returned in typed_identity.title_id; source bytes covered by actual clean native source qualification",
+  "original_SDK": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/mcp-client-001/0017-r14-151531348442.sdk-result.json",
+    "bytes": 33089,
+    "sha256": "73e6f5af1d19b7ac245c44378e94a0d20615a579fdab06d6dbd660b4754f7749"
+  },
+  "original_native": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-014/native-evidence/065244bdf4ce4b3fbfbf667eb8a9c757/0016-event-query.json",
+    "bytes": 15305,
+    "sha256": "620bbee6ac9efb1101eee1267c33e0f8c3b715464d57b8b202ffbb1f3a3e14ef"
+  },
+  "preserved_SDK": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-title-reference-basis-20261006-001/EVENT430-SDK-WRAPPER.original.json",
+    "bytes": 33089,
+    "sha256": "73e6f5af1d19b7ac245c44378e94a0d20615a579fdab06d6dbd660b4754f7749"
+  },
+  "preserved_native": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-title-reference-basis-20261006-001/EVENT430-NATIVE.original.json",
+    "bytes": 15305,
+    "sha256": "620bbee6ac9efb1101eee1267c33e0f8c3b715464d57b8b202ffbb1f3a3e14ef"
+  },
+  "session_id": "065244bdf4ce4b3fbfbf667eb8a9c757",
+  "profile_sha256": "6676d37ebae3f2d80e35c4e6cbd440c9e0882eec1713df19ebd57ff3f9b26150",
+  "event_instance": 101,
+  "event_key": "lyd.430",
+  "event_snapshot_native_revision": 3,
+  "date_raw": 53144712,
+  "native_title_scope": {
+    "name": "lyd_i3b_title",
+    "name_identifier": 47258,
+    "scope": {
+      "status": "available",
+      "raw_type_index": 5,
+      "type_key": "landed_title",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "landed_title",
+        "title_id": 2264
+      }
+    }
+  },
+  "saved_title_item": {
+    "type": "lt",
+    "identity": "2264",
+    "entries": [
+      {
+        "key": "type",
+        "value": "lt"
+      },
+      {
+        "key": "identity",
+        "value": "2264"
+      }
+    ]
+  },
+  "saved_title_database_2264_AST_sha256": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
+  "saved_title_database_2264_key": "b_cotrone",
+  "saved_observation_basis": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-title-reference-basis-20261006-001/ACTUAL-EXISTING-BASIS.json",
+    "bytes": 16375,
+    "sha256": "efece8ba24b3122468424ec0d79fc53004ba93d6e9fda6cdcd894bfe48f95417"
+  },
+  "save_checkpoint_sha256": "e672a13c0745103784cb3b363ab61d8ccbd643214c2da4482ff9691cd3fffd29",
+  "observed_saved_title_type": "lt",
+  "observed_native_full_id": 2264,
+  "prior_B1_B2_qualification_unchanged": true,
+  "future_T_same_frame_G3_and_saved_join": null,
+  "future_native_title_property_law_binding": null,
+  "formal_acceptance_credit": null,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "additional_save_body_reads": 0
+}

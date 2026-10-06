@@ -1,0 +1,33 @@
+{
+  "schema": "lyd.r14.actual-ACK-and-result-context-refs.v1",
+  "contexts": {
+    "ACTUAL-ACK": {
+      "SDK": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/ACTUAL-ACK-SDK-WRAPPER.original.json",
+        "bytes": 5445965,
+        "sha256": "976d8b0824485c528221fc6edbfb7aea38ed8530ad61e961d151bf3cf8e53c93"
+      },
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/ACTUAL-ACK-NATIVE.original.json",
+        "bytes": 2585122,
+        "sha256": "e25e302416e8327b343caf1a6883f50869daabe5d22748c60f837275c98b7ef3"
+      }
+    },
+    "ACTUAL-ACK-CONTEXT": {
+      "SDK": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/ACTUAL-ACK-CONTEXT-SDK-WRAPPER.original.json",
+        "bytes": 33275,
+        "sha256": "d97af24c860e19c712102a8dfec21202724e42f17d82c782f0b609db12a9cb2c"
+      },
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B5-final-protection-preservation-20261007-001/ACTUAL-ACK-CONTEXT-NATIVE.original.json",
+        "bytes": 15378,
+        "sha256": "16704301d23722c96d170265f50c0dd592962f7bba0ad8d100297419cd4e5662"
+      }
+    }
+  },
+  "raw_receipts_equal_SDK_structuredContent": true,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "product_credit": null
+}

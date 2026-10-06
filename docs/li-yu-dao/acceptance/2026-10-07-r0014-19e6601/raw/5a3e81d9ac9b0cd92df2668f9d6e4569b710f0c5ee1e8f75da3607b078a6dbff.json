@@ -1,0 +1,41 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-normal-exit-close-candidate-20261007-004\\guarded_r14_helper_close.py",
+    "release-screen",
+    "--game-sdk",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-client-001\\0148-r14-171915621909.sdk-result.json",
+    "--game-sdk-sha256",
+    "fb9c0814c9f7069011653f67c001d027823319631bee011135eaf4e4b62e5945",
+    "--game-native",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-014\\mcp-client-001\\0148-r14-171915621909.native-01.json",
+    "--game-native-sha256",
+    "a97c79b3fbc86a044ae614f4cf389e8c4e085ee0bd69e747b7c46a3c82bfc13c"
+  ],
+  "exit_code": 0,
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/guarded_r14_helper_close.py",
+    "bytes": 24157,
+    "sha256": "49ec457d713da1bbe62b21263ed9dbd7b072292b3571062160095b18410e23e6"
+  },
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/ACTUAL-RELEASE-READONLY-CHECK/stdout.raw",
+    "bytes": 9326,
+    "sha256": "826983573cb9d806370b8d258a760d667365bc634140f327704e6ad2c507e6f8"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-normal-exit-close-candidate-20261007-004/ACTUAL-RELEASE-READONLY-CHECK/stderr.raw",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "finished_at_utc": "2026-10-06T17:27:26.356003+00:00",
+  "mutation_requested": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "Client_close_requested": false,
+  "keeper_STOP_requested": false,
+  "lease_mutated": false
+}

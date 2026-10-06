@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r14-165828301503",
+  "operation": "call_tool",
+  "name": "ck3_query_profile_event_window_v1",
+  "arguments": {
+    "event_instance_id": 118,
+    "expected_revision": 41
+  }
+}

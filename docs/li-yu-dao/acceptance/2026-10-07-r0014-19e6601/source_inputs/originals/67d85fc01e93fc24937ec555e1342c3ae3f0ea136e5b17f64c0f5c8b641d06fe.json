@@ -1,0 +1,23 @@
+{
+  "schema": "lyd.r14.archive-publisher.actual-execution.v1",
+  "mode": "READONLY_CHECK",
+  "started_at_utc": "2026-10-06T18:22:05.679216+00:00",
+  "publisher": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-archive-publisher-source-20261007-001/publish_r14_archive.py",
+    "bytes": 12786,
+    "sha256": "819dd2d4d1e0a466b61029ff1f43c4fd5c5e1ba122c758daa549ccbaa5884e5a"
+  },
+  "main_writes": 0,
+  "actual_R14_runtime_HEAD": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "business_GREEN": false,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "lease_changes": 0,
+  "new_tests": 0,
+  "new_builds": 0,
+  "status": "FAILED_BEFORE_ANY_MAIN_MUTATION",
+  "error": "ValueError: New daily target must be absent: docs/autonomous-agent-progress/daily/2026-10-07.md",
+  "automatic_retry_authorized": false,
+  "exit_code": 1,
+  "finished_at_utc": "2026-10-06T18:22:06.319633+00:00"
+}

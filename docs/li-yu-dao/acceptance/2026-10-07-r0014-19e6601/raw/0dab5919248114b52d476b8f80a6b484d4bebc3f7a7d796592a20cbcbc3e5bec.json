@@ -1,0 +1,627 @@
+{
+  "schema": "lyd.r14.formal-cancel-reproposal-source-readonly.v1",
+  "observed_at_utc": "2026-10-06T16:14:41.485801+00:00",
+  "source_HEAD": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "main_clean_before_and_after": true,
+  "frozen_export": "C:\\lr14s1",
+  "all_15_sources_main_HEAD_blob_export_equal_and_unchanged": true,
+  "source_refs": [
+    {
+      "path": "mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\decisions\\lyd_i3b_institution_decisions.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\decisions\\lyd_i3b_institution_decisions.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__decisions__lyd_i3b_institution_decisions.txt",
+      "bytes": 4599,
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+      "exact_HEAD_blob_sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__scripted_effects__lyd_i3b_setup_effects.txt",
+      "bytes": 6448,
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "exact_HEAD_blob_sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_response_effects.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_response_effects.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__scripted_effects__lyd_i3b_response_effects.txt",
+      "bytes": 4939,
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "exact_HEAD_blob_sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_commit_effects.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_commit_effects.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__scripted_effects__lyd_i3b_commit_effects.txt",
+      "bytes": 4751,
+      "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec",
+      "exact_HEAD_blob_sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_terms_effects.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_terms_effects.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__scripted_effects__lyd_i3b_terms_effects.txt",
+      "bytes": 3842,
+      "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633",
+      "exact_HEAD_blob_sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__scripted_triggers__lyd_i3b_institution_triggers.txt",
+      "bytes": 11379,
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "exact_HEAD_blob_sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__scripted_triggers__lyd_c3_leadership_triggers.txt",
+      "bytes": 8361,
+      "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34",
+      "exact_HEAD_blob_sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_player_triggers.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_player_triggers.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__scripted_triggers__lyd_player_triggers.txt",
+      "bytes": 2885,
+      "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e",
+      "exact_HEAD_blob_sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/script_values/lyd_i3b_institution_values.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\script_values\\lyd_i3b_institution_values.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\script_values\\lyd_i3b_institution_values.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__script_values__lyd_i3b_institution_values.txt",
+      "bytes": 205,
+      "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156",
+      "exact_HEAD_blob_sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\character_interactions\\lyd_i3b_nomination_interactions.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\common\\character_interactions\\lyd_i3b_nomination_interactions.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__common__character_interactions__lyd_i3b_nomination_interactions.txt",
+      "bytes": 954,
+      "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98",
+      "exact_HEAD_blob_sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\events\\lyd_i3b_institution_events.txt",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\events\\lyd_i3b_institution_events.txt",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__events__lyd_i3b_institution_events.txt",
+      "bytes": 5666,
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "exact_HEAD_blob_sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_i3b_institution_l_simp_chinese.yml",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_i3b_institution_l_simp_chinese.yml",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__localization__simp_chinese__lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 9819,
+      "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439",
+      "exact_HEAD_blob_sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "mod_li_yu_dao/tools/gen_institution.py",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_institution.py",
+      "frozen_export_path": "C:\\lr14s1\\mod_li_yu_dao\\tools\\gen_institution.py",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\mod_li_yu_dao__tools__gen_institution.py",
+      "bytes": 52050,
+      "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3",
+      "exact_HEAD_blob_sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "frozen_export_path": "C:\\lr14s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\ck3_autonomous_player__src__xar_autoplayer__bridge__native_driver.py",
+      "bytes": 1390965,
+      "sha256": "072b9ff5406f847fae412769f4dc296c50ebf9f30abaa6fd44dcaffbe4071b5e",
+      "exact_HEAD_blob_sha256": "072b9ff5406f847fae412769f4dc296c50ebf9f30abaa6fd44dcaffbe4071b5e",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_outcome_contract.py",
+      "main_path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_outcome_contract.py",
+      "frozen_export_path": "C:\\lr14s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_outcome_contract.py",
+      "source_snapshot": "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-formal-cancel-reproposal-source-readonly-20261007-001\\source\\ck3_autonomous_player__src__xar_autoplayer__bridge__ingame_decision_outcome_contract.py",
+      "bytes": 9016,
+      "sha256": "7a6b0533f77f9032c6f2c3cf5ca17c90c5c3108df471cc59a22b8a0e64552ea2",
+      "exact_HEAD_blob_sha256": "7a6b0533f77f9032c6f2c3cf5ca17c90c5c3108df471cc59a22b8a0e64552ea2",
+      "main_equals_HEAD_blob_equals_frozen_export": true
+    }
+  ],
+  "rule_findings": [
+    {
+      "id": "cancel_admission",
+      "finding": "Living human actor with actor active and phase variables may formally cancel even after identity/authority drift. It does not require full current_trigger.",
+      "evidence": [
+        "lyd_i3b_cancel_decision",
+        "lyd_i3b_cancel_actor_trigger"
+      ]
+    },
+    {
+      "id": "cleanup_scope",
+      "finding": "Only actor captured lists are traversed. Rite cleanup requires matching owner+actor serial; member cleanup requires matching owner+member serial. Unmatched foreign/later stamps are retained. Actor active/phase/authority fields and three lists are removed/cleared; actor serial/nonce, captured faith/main and result receipt fields survive.",
+      "evidence": [
+        "lyd_i3b_close_effect"
+      ]
+    },
+    {
+      "id": "repeat_limits",
+      "finding": "No explicit retry count, interval, cooldown or fee assignment in this cancel/begin/nominate/seal flow. New begin remains blocked by active I3b/C2/C3, any current Faith Rite C2/C3/I3b owner, incompatible/non-headless Faith, or actor ineligibility. No successful enactment is implied: an enacted Faith would fail the required headless gate.",
+      "evidence": [
+        "lyd_i3b_can_begin_trigger",
+        "lyd_i3b_begin_decision",
+        "lyd_i3b_actor_trigger"
+      ],
+      "fee_scan": [
+        {
+          "path": "mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt",
+          "searched_assignment_regex": "\\b(?:cost|cooldown|add_gold|add_piety|add_prestige|remove_gold|remove_piety|remove_prestige)\\s*=",
+          "matches": []
+        },
+        {
+          "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+          "searched_assignment_regex": "\\b(?:cost|cooldown|add_gold|add_piety|add_prestige|remove_gold|remove_piety|remove_prestige)\\s*=",
+          "matches": []
+        },
+        {
+          "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt",
+          "searched_assignment_regex": "\\b(?:cost|cooldown|add_gold|add_piety|add_prestige|remove_gold|remove_piety|remove_prestige)\\s*=",
+          "matches": []
+        },
+        {
+          "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt",
+          "searched_assignment_regex": "\\b(?:cost|cooldown|add_gold|add_piety|add_prestige|remove_gold|remove_piety|remove_prestige)\\s*=",
+          "matches": []
+        },
+        {
+          "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_terms_effects.txt",
+          "searched_assignment_regex": "\\b(?:cost|cooldown|add_gold|add_piety|add_prestige|remove_gold|remove_piety|remove_prestige)\\s*=",
+          "matches": []
+        },
+        {
+          "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+          "searched_assignment_regex": "\\b(?:cost|cooldown|add_gold|add_piety|add_prestige|remove_gold|remove_piety|remove_prestige)\\s*=",
+          "matches": []
+        },
+        {
+          "path": "mod_li_yu_dao/common/script_values/lyd_i3b_institution_values.txt",
+          "searched_assignment_regex": "\\b(?:cost|cooldown|add_gold|add_piety|add_prestige|remove_gold|remove_piety|remove_prestige)\\s*=",
+          "matches": []
+        },
+        {
+          "path": "mod_li_yu_dao/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+          "searched_assignment_regex": "\\b(?:cost|cooldown|add_gold|add_piety|add_prestige|remove_gold|remove_piety|remove_prestige)\\s*=",
+          "matches": []
+        },
+        {
+          "path": "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+          "searched_assignment_regex": "\\b(?:cost|cooldown|add_gold|add_piety|add_prestige|remove_gold|remove_piety|remove_prestige)\\s*=",
+          "matches": []
+        }
+      ]
+    },
+    {
+      "id": "monotone_round_identity",
+      "finding": "Cancel does not increment actor S or N. New begin increments S and N each by1 (initializes only if absent); nominate/accept preserves N; seal advances phase1 to2 and increments N by1. Symbols derive from the actual old checkpoint, not assumed values.",
+      "evidence": [
+        "lyd_i3b_close_effect",
+        "lyd_i3b_begin_effect",
+        "lyd_i3b_accept_nomination_effect",
+        "lyd_i3b_seal_effect"
+      ]
+    },
+    {
+      "id": "old_event_isolation",
+      "finding": "Ordinary nomination/ballot/signature/review callbacks require current full roster/authority plus exact actor saved S,N,phase. Old event scopes are never rewritten inside callbacks. Old cancel popup additionally matches actor S,N,phase; after cancel active/phase absent, after new begin S/N differ. Hidden 439 expiry compares original S and remaining phase, so phase/nonce changes within its own round do not disable expiry, while a newer S prevents closing the new round.",
+      "evidence": [
+        "lyd_i3b_event_context_trigger",
+        "lyd_i3b_cancel_context_trigger",
+        "lyd.439",
+        "lyd_i3b_current_trigger"
+      ]
+    },
+    {
+      "id": "fresh_npc_vote",
+      "finding": "Ordinary 411 NO writes vote0 and leaves the proposal active; it does not add yes or close. New begin resets current captured living member vote=-1, was_elector/was_player capture and player_yes=0; new seal creates 411 for each fresh elector. NPC has source AI weights YES60/NO40 each new valid event. A repeat is allowed; neither different RNG outcome nor eventual YES is guaranteed.",
+      "evidence": [
+        "lyd_i3b_vote_effect",
+        "lyd_i3b_begin_effect",
+        "lyd_i3b_seal_effect",
+        "lyd_i3b_ballot_trigger",
+        "lyd.411"
+      ]
+    },
+    {
+      "id": "other_refusals",
+      "finding": "Separate 412 human refusal or 413 representative refusal closes the actor round. Do not equate these with an elector 411 NO.",
+      "evidence": [
+        "lyd_i3b_player_no_effect",
+        "lyd_i3b_sign_no_effect",
+        "lyd.412",
+        "lyd.413"
+      ]
+    },
+    {
+      "id": "zero_county_active_school",
+      "finding": "Dormant is set only when both rite_counties==0 and captured members_total==0. Rite169 with0counties and51living members is active, and2eligible electors require2YES: 3*1-2*2=-1; 3*2-2*2=2. Future counts must be recaptured; county possession is not a prerequisite for elector eligibility.",
+      "evidence": [
+        "lyd_i3b_begin_effect",
+        "lyd_i3b_current_trigger",
+        "lyd_i3b_elector_trigger",
+        "lyd_i3b_representatives_ready_trigger",
+        "lyd_i3b_ready_trigger"
+      ]
+    },
+    {
+      "id": "topology_and_receipts",
+      "finding": "Cancel/begin/nominate/seal manipulate captured round variables and event delivery, not doctrine/head/title/holder setters. Old enactment result receipt variables survive cleanup; old result431/432 are receipt review, not authorization for a new round.",
+      "evidence": [
+        "lyd_i3b_close_effect",
+        "lyd_i3b_begin_effect",
+        "lyd_i3b_nominate_self_effect",
+        "lyd_i3b_seal_effect"
+      ]
+    },
+    {
+      "id": "formal_once_boundary",
+      "finding": "Existing generic Confirm writes a persistent once claim before one dispatch. An unresolved claim blocks the same semantic Confirm across revisions/reconnects and generic/fixed APIs. A source-legal new proposal does not authorize replay of an unresolved prior API claim; use actual fresh revision and keep all prior claims/verification artifacts.",
+      "source_refs": [
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py:6453",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_outcome_contract.py:123"
+      ]
+    }
+  ],
+  "exact_block_evidence": {
+    "lyd_i3b_cancel_decision": {
+      "path": "mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt",
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+      "key": "lyd_i3b_cancel_decision",
+      "line_start": 38,
+      "line_end": 46,
+      "exact_source": "lyd_i3b_cancel_decision = {\n    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }\n    decision_group_type = religious ai_check_interval = 0\n    desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_cancel_decision\n    is_shown = { lyd_i3b_cancel_actor_trigger = yes }\n    is_valid = { custom_description = { text = lyd_i3b_cancel_valid_tt subject = root lyd_i3b_cancel_actor_trigger = yes } }\n    effect = { hidden_effect = { if = { limit = { lyd_i3b_cancel_actor_trigger = yes lyd_i3b_cancel_actor_trigger = yes } lyd_i3b_close_effect = yes } } }\n    ai_will_do = { base = 0 }\n}"
+    },
+    "lyd_i3b_begin_decision": {
+      "path": "mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt",
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+      "key": "lyd_i3b_begin_decision",
+      "line_start": 2,
+      "line_end": 10,
+      "exact_source": "lyd_i3b_begin_decision = {\n    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }\n    decision_group_type = religious ai_check_interval = 0\n    desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_begin_decision\n    is_shown = { lyd_i3b_actor_trigger = yes NOT = { has_variable = lyd_i3b_active } }\n    is_valid = { custom_description = { text = lyd_i3b_begin_valid_tt subject = root lyd_i3b_can_begin_trigger = yes } }\n    effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_can_begin_trigger = yes } lyd_i3b_begin_effect = yes } } }\n    ai_will_do = { base = 0 }\n}"
+    },
+    "lyd_i3b_nominate_self_decision": {
+      "path": "mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt",
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+      "key": "lyd_i3b_nominate_self_decision",
+      "line_start": 11,
+      "line_end": 19,
+      "exact_source": "lyd_i3b_nominate_self_decision = {\n    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }\n    decision_group_type = religious ai_check_interval = 0\n    desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_nominate_self_decision\n    is_shown = { lyd_i3b_actor_trigger = yes has_variable = lyd_i3b_active var:lyd_i3b_phase = 1 }\n    is_valid = { custom_description = { text = lyd_i3b_nominate_valid_tt subject = root lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } }\n    effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } lyd_i3b_nominate_self_effect = yes } } }\n    ai_will_do = { base = 0 }\n}"
+    },
+    "lyd_i3b_seal_decision": {
+      "path": "mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt",
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+      "key": "lyd_i3b_seal_decision",
+      "line_start": 20,
+      "line_end": 28,
+      "exact_source": "lyd_i3b_seal_decision = {\n    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }\n    decision_group_type = religious ai_check_interval = 0\n    desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_seal_decision\n    is_shown = { lyd_i3b_actor_trigger = yes has_variable = lyd_i3b_active var:lyd_i3b_phase = 1 }\n    is_valid = { custom_description = { text = lyd_i3b_seal_valid_tt subject = root lyd_i3b_can_seal_trigger = { ACTOR = root } } }\n    effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_can_seal_trigger = { ACTOR = root } } lyd_i3b_seal_effect = yes } } }\n    ai_will_do = { base = 0 }\n}"
+    },
+    "lyd_i3b_bind_event_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "key": "lyd_i3b_bind_event_effect",
+      "line_start": 2,
+      "line_end": 7,
+      "exact_source": "lyd_i3b_bind_event_effect = {\n    save_scope_as = lyd_i3b_actor\n    save_scope_value_as = { name = lyd_i3b_event_serial value = var:lyd_i3b_serial }\n    save_scope_value_as = { name = lyd_i3b_event_nonce value = var:lyd_i3b_nonce }\n    save_scope_value_as = { name = lyd_i3b_event_phase value = var:lyd_i3b_phase }\n}"
+    },
+    "lyd_i3b_begin_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "key": "lyd_i3b_begin_effect",
+      "line_start": 8,
+      "line_end": 69,
+      "exact_source": "lyd_i3b_begin_effect = {\n    if = { limit = { lyd_i3b_can_begin_trigger = yes }\n        save_scope_as = lyd_i3b_actor\n        if = { limit = { NOT = { has_variable = lyd_i3b_serial } } set_variable = { name = lyd_i3b_serial value = 0 } }\n        if = { limit = { NOT = { has_variable = lyd_i3b_nonce } } set_variable = { name = lyd_i3b_nonce value = 0 } }\n        change_variable = { name = lyd_i3b_serial add = 1 }\n        change_variable = { name = lyd_i3b_nonce add = 1 }\n        set_variable = { name = lyd_i3b_active value = 1 days = 365 }\n        set_variable = { name = lyd_i3b_phase value = 1 }\n        set_variable = { name = lyd_i3b_faith value = faith }\n        set_variable = { name = lyd_i3b_main value = faith.main_rite }\n        remove_variable = lyd_i3b_required_native_hor\n        if = { limit = { faith = faith:lyd_common_faith }\n            set_variable = { name = lyd_i3b_authority_mode value = 0 }\n        }\n        else = {\n            set_variable = { name = lyd_i3b_authority_mode value = 1 }\n            set_variable = { name = lyd_i3b_required_native_hor value = rite.head_of_rite }\n        }\n        clear_variable_list = lyd_i3b_rites\n        clear_variable_list = lyd_i3b_members\n        clear_variable_list = lyd_i3b_political_titles\n        every_held_title = { save_scope_as = lyd_i3b_title scope:lyd_i3b_actor = { add_to_variable_list = { name = lyd_i3b_political_titles target = scope:lyd_i3b_title } } }\n        faith = {\n            every_faith_rite = {\n                save_scope_as = lyd_i3b_rite\n                # Keep ownership through the scheduled day-365 cleanup; approval\n                # still expires at day 365 via the actor's active field.\n                set_variable = { name = lyd_i3b_owner value = scope:lyd_i3b_actor days = 366 }\n                set_variable = { name = lyd_i3b_serial value = scope:lyd_i3b_actor.var:lyd_i3b_serial }\n                set_variable = { name = lyd_i3b_counties value = rite_counties }\n                set_variable = { name = lyd_i3b_members_total value = 0 }\n                set_variable = { name = lyd_i3b_total value = 0 }\n                set_variable = { name = lyd_i3b_yes value = 0 }\n                set_variable = { name = lyd_i3b_signed value = 0 }\n                set_variable = { name = lyd_i3b_dormant value = 0 }\n                remove_variable = lyd_i3b_delegate\n                remove_variable = lyd_i3b_signature_requested\n                scope:lyd_i3b_actor = { add_to_variable_list = { name = lyd_i3b_rites target = scope:lyd_i3b_rite } }\n            }\n            every_faith_character = {\n                limit = { is_alive = yes }\n                save_scope_as = lyd_i3b_member\n                set_variable = { name = lyd_i3b_member_owner value = scope:lyd_i3b_actor }\n                set_variable = { name = lyd_i3b_member_serial value = scope:lyd_i3b_actor.var:lyd_i3b_serial }\n                set_variable = { name = lyd_i3b_member_rite value = rite }\n                set_variable = { name = lyd_i3b_was_elector value = 0 }\n                set_variable = { name = lyd_i3b_was_player value = 0 }\n                set_variable = { name = lyd_i3b_player_yes value = 0 }\n                set_variable = { name = lyd_i3b_vote value = -1 }\n                if = { limit = { lyd_i3b_elector_trigger = yes } set_variable = { name = lyd_i3b_was_elector value = 1 } rite = { change_variable = { name = lyd_i3b_total add = 1 } } }\n                if = { limit = { is_ai = no } set_variable = { name = lyd_i3b_was_player value = 1 } }\n                rite = { change_variable = { name = lyd_i3b_members_total add = 1 } }\n                scope:lyd_i3b_actor = { add_to_variable_list = { name = lyd_i3b_members target = scope:lyd_i3b_member } }\n            }\n        }\n        every_in_list = { variable = lyd_i3b_rites if = { limit = { rite_counties = 0 var:lyd_i3b_members_total = 0 } set_variable = { name = lyd_i3b_dormant value = 1 } } }\n        lyd_i3b_bind_event_effect = yes\n        trigger_event = lyd.430\n        trigger_event = { id = lyd.439 days = 365 }\n    }\n}"
+    },
+    "lyd_i3b_nominate_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "key": "lyd_i3b_nominate_effect",
+      "line_start": 71,
+      "line_end": 79,
+      "exact_source": "lyd_i3b_nominate_effect = {\n    if = { limit = {\n        scope:actor = { lyd_i3b_current_trigger = { ACTOR = scope:actor } var:lyd_i3b_phase = 1 }\n        scope:recipient = { lyd_i3b_nomination_target_trigger = { ACTOR = scope:actor } }\n    }\n        scope:actor = { lyd_i3b_bind_event_effect = yes }\n        scope:recipient = { save_scope_as = lyd_i3b_nominee rite = { save_scope_as = lyd_i3b_ballot_rite } trigger_event = lyd.410 }\n    }\n}"
+    },
+    "lyd_i3b_accept_nomination_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "key": "lyd_i3b_accept_nomination_effect",
+      "line_start": 80,
+      "line_end": 91,
+      "exact_source": "lyd_i3b_accept_nomination_effect = {\n    if = { limit = {\n        lyd_i3b_event_context_trigger = yes\n        scope:lyd_i3b_actor = { var:lyd_i3b_phase = 1 }\n        this = scope:lyd_i3b_nominee\n        lyd_i3b_elector_trigger = yes\n        rite = scope:lyd_i3b_ballot_rite\n        scope:lyd_i3b_ballot_rite = { var:lyd_i3b_dormant = 0 NOT = { has_variable = lyd_i3b_delegate } }\n    }\n        scope:lyd_i3b_ballot_rite = { set_variable = { name = lyd_i3b_delegate value = scope:lyd_i3b_nominee } }\n    }\n}"
+    },
+    "lyd_i3b_nominate_self_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "key": "lyd_i3b_nominate_self_effect",
+      "line_start": 92,
+      "line_end": 102,
+      "exact_source": "lyd_i3b_nominate_self_effect = {\n    if = { limit = {\n        lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1\n        rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 }\n    }\n        lyd_i3b_bind_event_effect = yes\n        save_scope_as = lyd_i3b_nominee\n        rite = { save_scope_as = lyd_i3b_ballot_rite }\n        trigger_event = lyd.410\n    }\n}"
+    },
+    "lyd_i3b_seal_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "key": "lyd_i3b_seal_effect",
+      "line_start": 103,
+      "line_end": 116,
+      "exact_source": "lyd_i3b_seal_effect = {\n    if = { limit = {\n        lyd_i3b_can_seal_trigger = { ACTOR = root }\n    }\n        set_variable = { name = lyd_i3b_phase value = 2 }\n        change_variable = { name = lyd_i3b_nonce add = 1 }\n        lyd_i3b_bind_event_effect = yes\n        every_in_list = { variable = lyd_i3b_members\n            if = { limit = { var:lyd_i3b_was_elector = 1 } trigger_event = lyd.411 }\n            if = { limit = { var:lyd_i3b_was_player = 1 } trigger_event = lyd.412 }\n        }\n        trigger_event = lyd.430\n    }\n}"
+    },
+    "lyd_i3b_vote_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "key": "lyd_i3b_vote_effect",
+      "line_start": 2,
+      "line_end": 10,
+      "exact_source": "lyd_i3b_vote_effect = {\n    if = { limit = { lyd_i3b_ballot_trigger = yes }\n        set_variable = { name = lyd_i3b_vote value = $YES$ }\n        if = { limit = { var:lyd_i3b_vote = 1 }\n            rite = { change_variable = { name = lyd_i3b_yes add = 1 } }\n            scope:lyd_i3b_actor = { lyd_i3b_request_signatures_effect = yes }\n        }\n    }\n}"
+    },
+    "lyd_i3b_close_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "key": "lyd_i3b_close_effect",
+      "line_start": 71,
+      "line_end": 90,
+      "exact_source": "lyd_i3b_close_effect = {\n    save_scope_as = lyd_i3b_closing_actor\n    every_in_list = { variable = lyd_i3b_rites\n        if = { limit = { var:lyd_i3b_owner = scope:lyd_i3b_closing_actor var:lyd_i3b_serial = scope:lyd_i3b_closing_actor.var:lyd_i3b_serial }\n            remove_variable = lyd_i3b_owner remove_variable = lyd_i3b_delegate remove_variable = lyd_i3b_signed\n            remove_variable = lyd_i3b_serial remove_variable = lyd_i3b_yes remove_variable = lyd_i3b_total\n            remove_variable = lyd_i3b_dormant remove_variable = lyd_i3b_counties remove_variable = lyd_i3b_members_total remove_variable = lyd_i3b_signature_requested\n        }\n    }\n    every_in_list = { variable = lyd_i3b_members\n        if = { limit = { var:lyd_i3b_member_owner = scope:lyd_i3b_closing_actor var:lyd_i3b_member_serial = scope:lyd_i3b_closing_actor.var:lyd_i3b_serial }\n            remove_variable = lyd_i3b_member_owner remove_variable = lyd_i3b_member_serial remove_variable = lyd_i3b_member_rite\n            remove_variable = lyd_i3b_was_elector remove_variable = lyd_i3b_was_player remove_variable = lyd_i3b_player_yes remove_variable = lyd_i3b_vote\n        }\n    }\n    remove_variable = lyd_i3b_active remove_variable = lyd_i3b_phase\n    remove_variable = lyd_i3b_authority_mode remove_variable = lyd_i3b_required_native_hor\n    clear_variable_list = lyd_i3b_rites clear_variable_list = lyd_i3b_members clear_variable_list = lyd_i3b_political_titles\n    # Actor serial and nonce are intentionally monotone and survive cleanup.\n}"
+    },
+    "lyd_i3b_cancel_event_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "key": "lyd_i3b_cancel_event_effect",
+      "line_start": 66,
+      "line_end": 70,
+      "exact_source": "lyd_i3b_cancel_event_effect = {\n    if = { limit = { lyd_i3b_cancel_context_trigger = yes }\n        lyd_i3b_close_effect = yes debug_log = \"LYD_I3B_CANCELLED\"\n    }\n}"
+    },
+    "lyd_i3b_player_no_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "key": "lyd_i3b_player_no_effect",
+      "line_start": 48,
+      "line_end": 57,
+      "exact_source": "lyd_i3b_player_no_effect = {\n    if = { limit = {\n        lyd_i3b_event_context_trigger = yes is_ai = no is_alive = yes\n        scope:lyd_i3b_actor = { var:lyd_i3b_phase = 2 }\n        var:lyd_i3b_member_owner = scope:lyd_i3b_actor var:lyd_i3b_member_serial = scope:lyd_i3b_event_serial\n        var:lyd_i3b_was_player = 1 var:lyd_i3b_player_yes = 0\n    }\n        scope:lyd_i3b_actor = { lyd_i3b_close_effect = yes debug_log = \"LYD_I3B_REJECTED\" }\n    }\n}"
+    },
+    "lyd_i3b_sign_no_effect": {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "key": "lyd_i3b_sign_no_effect",
+      "line_start": 58,
+      "line_end": 65,
+      "exact_source": "lyd_i3b_sign_no_effect = {\n    if = { limit = {\n        lyd_i3b_event_context_trigger = yes\n        scope:lyd_i3b_actor = { var:lyd_i3b_phase = 2 }\n        this = scope:lyd_i3b_ballot_rite.var:lyd_i3b_delegate\n        scope:lyd_i3b_ballot_rite = { var:lyd_i3b_signed = 0 }\n    } scope:lyd_i3b_actor = { lyd_i3b_close_effect = yes debug_log = \"LYD_I3B_REPRESENTATIVE_REFUSED\" } }\n}"
+    },
+    "lyd_i3b_elector_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_elector_trigger",
+      "line_start": 22,
+      "line_end": 22,
+      "exact_source": "lyd_i3b_elector_trigger = { is_alive = yes is_adult = yes is_imprisoned = no NOT = { has_trait = incapable } learning >= 15 }"
+    },
+    "lyd_i3b_actor_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_actor_trigger",
+      "line_start": 65,
+      "line_end": 76,
+      "exact_source": "lyd_i3b_actor_trigger = {\n    lyd_c3_player_actor_trigger = yes\n    lyd_i3b_no_other_office_trigger = yes\n    OR = {\n        faith = faith:lyd_common_faith\n        lyd_i3b_detached_authority_trigger = yes\n    }\n    rite = faith.main_rite\n    highest_held_title_tier >= tier_duchy\n    save_temporary_scope_as = lyd_i3b_actor_check\n    rite = { rite_has_allowed_gender_for_clergy = scope:lyd_i3b_actor_check }\n}"
+    },
+    "lyd_i3b_cancel_actor_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_cancel_actor_trigger",
+      "line_start": 112,
+      "line_end": 117,
+      "exact_source": "lyd_i3b_cancel_actor_trigger = {\n    is_ai = no\n    is_alive = yes\n    has_variable = lyd_i3b_active\n    has_variable = lyd_i3b_phase\n}"
+    },
+    "lyd_i3b_can_begin_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_can_begin_trigger",
+      "line_start": 124,
+      "line_end": 134,
+      "exact_source": "lyd_i3b_can_begin_trigger = {\n    lyd_i3b_actor_trigger = yes\n    NOT = { has_variable = lyd_i3b_active }\n    NOT = { has_variable = lyd_c2_active }\n    NOT = { has_variable = lyd_c3_active }\n    faith = {\n        lyd_i3b_headless_faith_trigger = yes\n        NOT = { any_faith_rite = { NOT = { lyd_i3b_compatible_rite_trigger = yes } } }\n        NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } }\n    }\n}"
+    },
+    "lyd_i3b_current_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_current_trigger",
+      "line_start": 136,
+      "line_end": 188,
+      "exact_source": "lyd_i3b_current_trigger = {\n    lyd_i3b_actor_trigger = yes\n    lyd_i3b_captured_authority_trigger = yes\n    has_variable = lyd_i3b_active\n    faith = var:lyd_i3b_faith\n    rite = var:lyd_i3b_main\n    faith.main_rite = var:lyd_i3b_main\n    NOT = { has_variable = lyd_c2_active }\n    NOT = { has_variable = lyd_c3_active }\n    faith = {\n        lyd_i3b_headless_faith_trigger = yes\n        NOT = { any_faith_rite = { NOT = { lyd_i3b_compatible_rite_trigger = yes var:lyd_i3b_owner = $ACTOR$ var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial } } }\n        NOT = { any_faith_character = {\n            is_alive = yes\n            NOT = { var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial }\n        } }\n    }\n    NOT = { any_in_list = {\n        variable = lyd_i3b_rites\n        save_temporary_scope_as = lyd_i3b_checked_rite\n        NOT = {\n            faith = $ACTOR$.var:lyd_i3b_faith\n            lyd_i3b_compatible_rite_trigger = yes\n            var:lyd_i3b_owner = $ACTOR$\n            var:lyd_i3b_serial = $ACTOR$.var:lyd_i3b_serial\n            rite_counties = var:lyd_i3b_counties\n            NOT = { has_variable = lyd_c2_proposal_owner }\n            NOT = { has_variable = lyd_c3_proposal_owner }\n            trigger_if = {\n                limit = { var:lyd_i3b_dormant = 1 }\n                rite_counties = 0\n                $ACTOR$.var:lyd_i3b_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_i3b_checked_rite } } }\n            }\n            trigger_else = {\n                var:lyd_i3b_total > 0\n                trigger_if = { limit = { exists = var:lyd_i3b_delegate }\n                    var:lyd_i3b_delegate = { lyd_i3b_elector_trigger = yes rite = scope:lyd_i3b_checked_rite faith = $ACTOR$.var:lyd_i3b_faith }\n                }\n            }\n        }\n    } }\n    NOT = { any_in_list = {\n        variable = lyd_i3b_members\n        NOT = {\n            is_alive = yes faith = $ACTOR$.var:lyd_i3b_faith rite = var:lyd_i3b_member_rite\n            var:lyd_i3b_member_owner = $ACTOR$ var:lyd_i3b_member_serial = $ACTOR$.var:lyd_i3b_serial\n            trigger_if = { limit = { var:lyd_i3b_was_elector = 1 } lyd_i3b_elector_trigger = yes }\n            trigger_else = { NOT = { lyd_i3b_elector_trigger = yes } }\n            trigger_if = { limit = { var:lyd_i3b_was_player = 1 } is_ai = no }\n            trigger_else = { is_ai = yes }\n        }\n    } }\n}"
+    },
+    "lyd_i3b_event_context_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_event_context_trigger",
+      "line_start": 190,
+      "line_end": 198,
+      "exact_source": "lyd_i3b_event_context_trigger = {\n    exists = scope:lyd_i3b_actor\n    scope:lyd_i3b_actor = {\n        lyd_i3b_current_trigger = { ACTOR = scope:lyd_i3b_actor }\n        var:lyd_i3b_serial = scope:lyd_i3b_event_serial\n        var:lyd_i3b_nonce = scope:lyd_i3b_event_nonce\n        var:lyd_i3b_phase = scope:lyd_i3b_event_phase\n    }\n}"
+    },
+    "lyd_i3b_cancel_context_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_cancel_context_trigger",
+      "line_start": 199,
+      "line_end": 206,
+      "exact_source": "lyd_i3b_cancel_context_trigger = {\n    exists = scope:lyd_i3b_actor\n    this = scope:lyd_i3b_actor\n    lyd_i3b_cancel_actor_trigger = yes\n    var:lyd_i3b_serial = scope:lyd_i3b_event_serial\n    var:lyd_i3b_nonce = scope:lyd_i3b_event_nonce\n    var:lyd_i3b_phase = scope:lyd_i3b_event_phase\n}"
+    },
+    "lyd_i3b_representatives_ready_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_representatives_ready_trigger",
+      "line_start": 207,
+      "line_end": 213,
+      "exact_source": "lyd_i3b_representatives_ready_trigger = {\n    NOT = { any_in_list = {\n        variable = lyd_i3b_rites\n        var:lyd_i3b_dormant = 0\n        NOT = { exists = var:lyd_i3b_delegate var:lyd_i3b_total > 0 }\n    } }\n}"
+    },
+    "lyd_i3b_can_seal_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_can_seal_trigger",
+      "line_start": 214,
+      "line_end": 218,
+      "exact_source": "lyd_i3b_can_seal_trigger = {\n    lyd_i3b_current_trigger = { ACTOR = $ACTOR$ }\n    var:lyd_i3b_phase = 1\n    lyd_i3b_representatives_ready_trigger = yes\n}"
+    },
+    "lyd_i3b_ballot_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_ballot_trigger",
+      "line_start": 226,
+      "line_end": 234,
+      "exact_source": "lyd_i3b_ballot_trigger = {\n    lyd_i3b_event_context_trigger = yes\n    scope:lyd_i3b_actor = { var:lyd_i3b_phase = 2 }\n    lyd_i3b_elector_trigger = yes\n    var:lyd_i3b_member_owner = scope:lyd_i3b_actor\n    var:lyd_i3b_member_serial = scope:lyd_i3b_event_serial\n    var:lyd_i3b_was_elector = 1\n    var:lyd_i3b_vote = -1\n}"
+    },
+    "lyd_i3b_ready_trigger": {
+      "path": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "key": "lyd_i3b_ready_trigger",
+      "line_start": 235,
+      "line_end": 245,
+      "exact_source": "lyd_i3b_ready_trigger = {\n    lyd_i3b_current_trigger = { ACTOR = $ACTOR$ }\n    var:lyd_i3b_phase = 2\n    NOT = { any_in_list = {\n        variable = lyd_i3b_rites\n        var:lyd_i3b_dormant = 0\n        NOT = { var:lyd_i3b_total > 0 lyd_i3b_quorum_value >= 0 var:lyd_i3b_signed = 1 exists = var:lyd_i3b_delegate }\n    } }\n    NOT = { any_in_list = { variable = lyd_i3b_members var:lyd_i3b_was_player = 1 NOT = { var:lyd_i3b_player_yes = 1 } } }\n    NOT = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = $ACTOR$ } } }\n}"
+    },
+    "lyd.410": {
+      "path": "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "key": "lyd.410",
+      "line_start": 3,
+      "line_end": 3,
+      "exact_source": "lyd.410 = { type = character_event title = lyd_i3b_nomination_t desc = lyd_i3b_terms_desc theme = faith trigger = { lyd_i3b_event_context_trigger = yes this = scope:lyd_i3b_nominee } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_yes custom_tooltip = lyd_i3b_nomination_choice_tt hidden_effect = { lyd_i3b_accept_nomination_effect = yes } ai_chance = { base = 60 } } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_no ai_chance = { base = 40 } } }"
+    },
+    "lyd.411": {
+      "path": "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "key": "lyd.411",
+      "line_start": 4,
+      "line_end": 4,
+      "exact_source": "lyd.411 = { type = character_event title = lyd_i3b_ballot_t desc = lyd_i3b_terms_desc theme = faith trigger = { lyd_i3b_ballot_trigger = yes } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_yes custom_tooltip = lyd_i3b_ballot_choice_tt hidden_effect = { lyd_i3b_vote_effect = { YES = 1 } } ai_chance = { base = 60 } } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_no custom_tooltip = lyd_i3b_ballot_no_choice_tt hidden_effect = { lyd_i3b_vote_effect = { YES = 0 } } ai_chance = { base = 40 } } }"
+    },
+    "lyd.412": {
+      "path": "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "key": "lyd.412",
+      "line_start": 5,
+      "line_end": 5,
+      "exact_source": "lyd.412 = { type = character_event title = lyd_i3b_player_t desc = lyd_i3b_terms_desc theme = faith trigger = { lyd_i3b_event_context_trigger = yes is_ai = no is_alive = yes var:lyd_i3b_was_player = 1 } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_yes custom_tooltip = lyd_i3b_player_choice_tt hidden_effect = { lyd_i3b_player_yes_effect = yes } } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_no custom_tooltip = lyd_i3b_refuse_choice_tt hidden_effect = { lyd_i3b_player_no_effect = yes } } }"
+    },
+    "lyd.413": {
+      "path": "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "key": "lyd.413",
+      "line_start": 6,
+      "line_end": 6,
+      "exact_source": "lyd.413 = { type = character_event title = lyd_i3b_sign_t desc = lyd_i3b_terms_desc theme = faith trigger = { lyd_i3b_event_context_trigger = yes this = scope:lyd_i3b_ballot_rite.var:lyd_i3b_delegate } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_sign trigger = { custom_description = { text = lyd_i3b_quorum_valid_tt subject = root scope:lyd_i3b_ballot_rite = { var:lyd_i3b_total > 0 lyd_i3b_quorum_value >= 0 } } } custom_tooltip = lyd_i3b_sign_choice_tt hidden_effect = { lyd_i3b_sign_effect = yes } ai_chance = { base = 60 } } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_wait custom_tooltip = lyd_i3b_defer_choice_tt hidden_effect = { lyd_i3b_defer_signature_effect = yes } ai_chance = { base = 0 } } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_no custom_tooltip = lyd_i3b_refuse_choice_tt hidden_effect = { lyd_i3b_sign_no_effect = yes } ai_chance = { base = 40 } } }"
+    },
+    "lyd.430": {
+      "path": "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "key": "lyd.430",
+      "line_start": 7,
+      "line_end": 7,
+      "exact_source": "lyd.430 = { type = character_event title = lyd_i3b_review_t desc = lyd_i3b_terms_desc theme = faith trigger = { lyd_i3b_event_context_trigger = yes this = scope:lyd_i3b_actor } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_confirm trigger = { custom_description = { text = lyd_i3b_commit_valid_tt subject = root lyd_i3b_ready_trigger = { ACTOR = root } lyd_i3b_native_admitted_trigger = yes } } custom_tooltip = lyd_i3b_commit_choice_tt hidden_effect = { lyd_i3b_commit_effect = yes } } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_pending trigger = { custom_description = { text = lyd_i3b_native_closed_tt subject = root NOT = { lyd_i3b_native_admitted_trigger = yes } } } } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_wait } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_cancel custom_tooltip = lyd_i3b_cancel_choice_tt hidden_effect = { lyd_i3b_cancel_event_effect = yes } } }"
+    },
+    "lyd.439": {
+      "path": "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "key": "lyd.439",
+      "line_start": 23,
+      "line_end": 29,
+      "exact_source": "lyd.439 = { type = character_event hidden = yes immediate = { hidden_effect = {\n        # Phase/nomination nonce may legitimately change after start; expiration\n        # checks original serial plus active status, never rewrites event context.\n        if = { limit = { var:lyd_i3b_serial = scope:lyd_i3b_event_serial has_variable = lyd_i3b_phase }\n            lyd_i3b_close_effect = yes debug_log = \"LYD_I3B_EXPIRED\"\n        }\n    } } }"
+    }
+  },
+  "source_quorum_value": {
+    "path": "mod_li_yu_dao/common/script_values/lyd_i3b_institution_values.txt",
+    "line": 2,
+    "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156",
+    "expression": "3*yes - 2*total"
+  },
+  "recommended_saved_windows": [
+    {
+      "key": "FIRST_NO_IMMUTABLE",
+      "action": "retain old independent B2a checkpoint + typed ballot receipt + author result",
+      "expected_event": "old lyd.411 NPC65865 NO",
+      "expected_saved_state": "old S/N/phase2, full roster51 if actual old checkpoint says so, actual vote0, yes/total and separate player consent; preserve original refusal",
+      "future_execution": null
+    },
+    {
+      "key": "AFTER_FORMAL_CANCEL",
+      "action": "formal cancel once; declared UI decision_closed; independent save afterward",
+      "expected_event": null,
+      "expected_saved_state": "matching rite/member locks/stamps absent, actor active/phase/authority absent; 3 captured lists empty/absent; actor S,N and prior faith/main/result retained; compare currency + protected graph",
+      "future_execution": null
+    },
+    {
+      "key": "AFTER_NEW_BEGIN",
+      "action": "new begin once; native exact lyd.430; independent save afterward",
+      "expected_event": "lyd.430",
+      "expected_saved_state": "S_old+1,N_old+1,phase1,new complete current living roster/Rite capture, vote=-1/player_yes=0, counters reset, dormant classification recaptured; compare protected fields and currency",
+      "future_execution": null
+    },
+    {
+      "key": "NOMINATION_AND_ACCEPTANCE",
+      "action": "nominate self or qualified target once; preserve exact scoped nomination then ordinary YES acceptance; independent save after delegate assignment",
+      "expected_event": "lyd.410",
+      "expected_saved_state": "S_new,N_begin,phase1; delegate in each non-dormant positive-total Rite; accepting nomination contributes no vote/player consent/signature or native office",
+      "future_execution": null
+    },
+    {
+      "key": "AFTER_NEW_SEAL",
+      "action": "seal once; preserve all native event scopes and independent save immediately after UI observation",
+      "expected_event": "lyd.411 to every captured elector; lyd.412 to every captured human; lyd.430 to actor",
+      "expected_saved_state": "S_new,N_old+2,phase2; all owners/serials=current; real NPC may already have resolved a fresh ballot before save, retain that actual vote rather than requiring -1",
+      "future_execution": null
+    },
+    {
+      "key": "AFTER_NEW_NATURAL_VOTE",
+      "action": "preserve actual autonomous NPC response, player ballot and separate human consent receipts; independent checkpoint after each material response",
+      "expected_event": "lyd.411/412, possible lyd.413 only after each school quorum",
+      "expected_saved_state": "fresh current S/N; vote actual0 or1 with exact counter reconstruction, each school 3*yes>=2*total, separate human consent, representative signature; no force/replay of old NPC event",
+      "future_execution": null
+    }
+  ],
+  "current_reported_context_not_re_read": {
+    "NPC_id": 65865,
+    "old_ballot": "NO",
+    "B2a_checks": [
+      353,
+      87
+    ],
+    "provenance": "ROOT message only; this task did not reopen actual save bodies or certify these counts"
+  },
+  "future_execution": null,
+  "future_native_or_business_results": null,
+  "source_mutation": false,
+  "game_SDK_or_lease_action": false,
+  "forced_NPC_choice": false,
+  "business_effects_verified": false,
+  "full_product_acceptance_credit": false
+}

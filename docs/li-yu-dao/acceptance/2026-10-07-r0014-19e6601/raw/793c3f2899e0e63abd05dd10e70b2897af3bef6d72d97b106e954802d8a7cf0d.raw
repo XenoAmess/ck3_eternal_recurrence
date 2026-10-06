@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r14-normal-exit-close-candidate-20261007-002\guarded_r14_helper_close.py", line 378, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r14-normal-exit-close-candidate-20261007-002\guarded_r14_helper_close.py", line 352, in main
+    game = game_exit(args, values)
+  File "C:\workspace\ck3_lyd_runtime_20261004\r14-normal-exit-close-candidate-20261007-002\guarded_r14_helper_close.py", line 162, in game_exit
+    need(response['status'] == 'MCP_RESULT_RECORDED' and response.get('is_error') is False
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         and response['sdk_result'] == sdk_ref['path'].split('/')[-1]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         and response['sdk_result_sha256'] == sdk_ref['sha256'], 'Actual dispatch did not record this SDK result')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r14-normal-exit-close-candidate-20261007-002\guarded_r14_helper_close.py", line 50, in need
+    raise ValueError(message)
+ValueError: Actual dispatch did not record this SDK result

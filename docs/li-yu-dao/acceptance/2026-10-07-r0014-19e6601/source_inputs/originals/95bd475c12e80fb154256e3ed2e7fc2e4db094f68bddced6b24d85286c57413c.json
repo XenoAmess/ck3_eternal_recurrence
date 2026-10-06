@@ -1,0 +1,169 @@
+{
+  "schema": "lyd.reader3.incremental-integration-manifest.v1",
+  "root_only_integration": true,
+  "apply_after": "r14-reader-numeric-afterclose-review-20261006-001 six-target manifest; reader exact before SHA6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb",
+  "candidate_root": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved",
+  "targets": [
+    {
+      "action": "MODIFY",
+      "target": "tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+      "before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+        "bytes": 41081,
+        "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+        "bytes": 51455,
+        "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+      }
+    },
+    {
+      "action": "MODIFY",
+      "target": "tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+      "before": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+        "bytes": 18651,
+        "sha256": "243e5c51b3892362e05c657fe27fe732f7c7da63908f3c3995cfeb4ccf44dab5"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+        "bytes": 18612,
+        "sha256": "12c0dbcb59519f854b7e08267d3de73330fbeedd548eeec52fdfd87e44d5fa9f"
+      }
+    },
+    {
+      "action": "MODIFY",
+      "target": "tools/lyd_i3b_checkpoint_readback/README.md",
+      "before": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/README.md",
+        "bytes": 7507,
+        "sha256": "6bed6090b8ed24c729469519261ef96d3899128ff1d30740539652c116f8ec48"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/README.md",
+        "bytes": 7890,
+        "sha256": "f6c149b2423708c0cd164e61b1d25c17d942b23af864bdacc6e55318f854ed54"
+      }
+    },
+    {
+      "action": "ADD",
+      "target": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/saved_faith_semantics_12003.json",
+      "before": null,
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/reader/dependencies/saved_faith_semantics_12003.json",
+        "bytes": 2877,
+        "sha256": "dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90"
+      }
+    },
+    {
+      "action": "ADD",
+      "target": "tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_head_field_map.py",
+      "before": null,
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_head_field_map.py",
+        "bytes": 5472,
+        "sha256": "437a832f8db287f141afce2a650d4ffbed151618a87cb8bd0d3281047e9e454f"
+      }
+    },
+    {
+      "action": "ADD",
+      "target": "tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_effective_doctrine_v2.py",
+      "before": null,
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/test_saved_faith_effective_doctrine_v2.py",
+        "bytes": 7619,
+        "sha256": "f6889bd408142c3acfb4df350a3dac8788b55c7591761e638cc7a370ec24136d"
+      }
+    },
+    {
+      "action": "ADD",
+      "target": "tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-saved-Faith-head-selected-AST.json",
+      "before": null,
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-saved-Faith-head-selected-AST.json",
+        "bytes": 953177,
+        "sha256": "882b78e3099a614d24f4f75cbcb11eed2af543565a56537c7b875b85bcf306a2"
+      }
+    },
+    {
+      "action": "ADD",
+      "target": "tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-v2-Faith-semantics-request.json",
+      "before": null,
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-R14-B5-v2-Faith-semantics-request.json",
+        "bytes": 153317,
+        "sha256": "837ee4ab05b932d20fafaee13f7d58eef966e6967847383df3753dcad1592db2"
+      }
+    },
+    {
+      "action": "ADD",
+      "target": "tools/lyd_i3b_checkpoint_readback/SAVED-FAITH-SEMANTICS-V2.md",
+      "before": null,
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/candidate-approved/tools/lyd_i3b_checkpoint_readback/SAVED-FAITH-SEMANTICS-V2.md",
+        "bytes": 3090,
+        "sha256": "02d8553a0d84e889273f0f8c4a72fa4909c66b263b75b38f9c47d53e0a736f2f"
+      }
+    }
+  ],
+  "target_count": 9,
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/MAIN-READER3-AFTERNUMERIC.incremental.patch",
+    "bytes": 1186740,
+    "sha256": "9b418fd062f37cf08e0b61f5c0f804c85d431dd1f69dd23b746d72d91ddd383d"
+  },
+  "tests": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-saved-faith-head-effective-doctrine-integration-20261007-003/ALL-READER62.actual.json",
+    "bytes": 6674,
+    "sha256": "36996a477a6a42770c76218875f179b6ecf8c4c9daa8a80d21008da0c22ab98e"
+  },
+  "changed_existing_AST": [
+    "validate_request",
+    "observe_text"
+  ],
+  "new_functions": [
+    "derive_saved_faith_head_title_holder",
+    "effective_saved_faith_head_doctrine",
+    "expected_saved_faith_factory_projection",
+    "saved_faith_religious_title_reference",
+    "saved_faith_semantics_contract"
+  ],
+  "unchanged_existing_AST": [
+    "ReadbackError",
+    "require",
+    "unique_json",
+    "digest",
+    "ast_sha",
+    "valid_id",
+    "scalar_id",
+    "native_link_id",
+    "var_ref",
+    "number",
+    "list_refs",
+    "title_type_binding",
+    "title_list_refs",
+    "section",
+    "records",
+    "title_database_records",
+    "exact_root_block",
+    "graph",
+    "saved_character_is_alive",
+    "raw_character",
+    "title_row",
+    "path_value",
+    "qualify_native_title",
+    "add_check",
+    "replace_no_head",
+    "doctrine_present",
+    "predicate_rows",
+    "read_checkpoint",
+    "main"
+  ],
+  "all_frozen_dependency_source_bytes_retained": true,
+  "old_frozen_R14_RED_and_contracts_modified": false,
+  "political_protection_waived": false,
+  "native_predicate_observed": null,
+  "future_source_head": null,
+  "future_actual_acceptance_credit": null
+}

@@ -1,0 +1,242 @@
+{
+  "schema": "lyd.r14.round2-cancel-immutable-package-index.v1",
+  "status": "ACTUAL_ROUND2_CANCELLED_CLEANUP_AND_PROTECTION_OBSERVED",
+  "utc": "2026-10-06T16:40:45.718487+00:00",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/ACTUAL-CANCEL-CLEANUP.mechanical-fixture.json",
+      "bytes": 171751,
+      "sha256": "b1400499ffa2a516ae0b928b7ebadc8df16a26f9f6e17a4908bb389a73cae414"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/AUTHOR-CLI.json",
+      "bytes": 1702,
+      "sha256": "c05f738d09dc197b4f21fba8ce85e16af59ef4b70d25be250f5eca94479007dd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/AUTHOR.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/AUTHOR.stdout.txt",
+      "bytes": 240,
+      "sha256": "985cba6daa63b3a6b92c18ed0a870d4bb15a5af5608e3bf57bb75afcc0f4caa7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/CANCEL-ACTION-NATIVE.original.json",
+      "bytes": 1806513,
+      "sha256": "becf51860d4d645bb5d7ec3a534a84fb9b34bf837f6acf89e02a4acacc0c66b0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/CANCEL-ACTION-PRESERVATION.json",
+      "bytes": 1397,
+      "sha256": "3b63d9450b4c2ca1b805fbb3dbdb432218cefa91d5991f5fdce02cba58349e30"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/CANCEL-ACTION-SDK-WRAPPER.original.json",
+      "bytes": 3806917,
+      "sha256": "23abb39064a250612171097ba64a3ddfd71ad6f2edcf83534ab9d970019f1633"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/CANCEL-CHECKER.source-reuse.json",
+      "bytes": 2022,
+      "sha256": "c9c0149d1b81c842f32e9e215be243dec9f58dc192b5370d6f1713713de1398b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/CANCEL-CLEANUP.actual.json",
+      "bytes": 70300,
+      "sha256": "a0bd0945ab5d3638a06210d87dbd11418673b149af76be9d16b6b6d29b519bf4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/CANCELLED-WINDOW.source-proof.json",
+      "bytes": 1502,
+      "sha256": "01851ea663efd6b9fd7e9b4518e3ee0de613666792f0731b202a6d8ecd42c9b3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/cancelled_cleanup_checks.py",
+      "bytes": 3152,
+      "sha256": "fdc1da1855cf22b5c64b7bdb7940080eab582ef468e4c741384019eae7d53f29"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/COMPACT.actual.json",
+      "bytes": 1517,
+      "sha256": "41be1d40ed1763a425940c4f45e385bdc237ada864e592790c5f7cc244f1ba3a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/G2-NATIVE.original.json",
+      "bytes": 29025,
+      "sha256": "5ee61c029f22c73d6e5fe12454b6222d32ed5a17c852115e057b20b18f0f40cc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/G2-SDK-WRAPPER.original.json",
+      "bytes": 61869,
+      "sha256": "3636fdcc24ab4d7c34e79f1d74a046ea1ad4672cd3aa06c6a1f1ecdaefba0109"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/G3-NATIVE.original.json",
+      "bytes": 4125,
+      "sha256": "2a8aaf40330479eb0cba3af29479d2a49ff3d69dea402be4fc9c84c3f2aaaf42"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/G3-SDK-WRAPPER.original.json",
+      "bytes": 9031,
+      "sha256": "ea0a22b961c77ee0ac52292a67364ca0309e8c2e5da9c838e6e253058ed0a779"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/INPUT.actual.cancel-baseline-path.json",
+      "bytes": 2395,
+      "sha256": "92e1781ca2706f71e4a39d52e1e2f0566a197c14b25d8fc5136ddbc11c6382b7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/inspect_root_preservation_inputs.py",
+      "bytes": 655,
+      "sha256": "d8166fafdb221ab7370646ef3685dcc46a68c9ae4c9e71474a62a8f0f6cda9b0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/inspect_root_preservation_inputs_002.py",
+      "bytes": 742,
+      "sha256": "e1b980ca82538ae2689db2331fe28217dae854911623706b9e11b730bbe4cf1b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/inspect_root_preservation_inputs_003.py",
+      "bytes": 300,
+      "sha256": "33aef1871d1edc0872f1fea496586e7f12957e416b912946e971cfe83f9bc42e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/NATIVE-CHECKPOINT.original.json",
+      "bytes": 1817460,
+      "sha256": "2a7fc735d34c448b69648dfa7444f6751de7dab71693bbfd0207c2d7ff9e31b1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/prepare_actual_root_copy_and_run_author.py",
+      "bytes": 7241,
+      "sha256": "050dc88f6e30ba5fc5bba93e4cde37123e638e1e832fbbbb0fd2c39d6894df30"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/prepare_existing_cancel_checker.py",
+      "bytes": 2065,
+      "sha256": "a37d620b701d772beb4e826d1a728c278cc9c98ed737e101239b8caf73f30b88"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/PRESERVATION.json",
+      "bytes": 2468,
+      "sha256": "0fc493b744b45671e14bf6673e25879ef94c729063ea87c004ac7445d4200eab"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/qualify_round2_cancelled_cleanup_actual.py",
+      "bytes": 5916,
+      "sha256": "d462e80b7d4d880f04c95cb360612f3fd577ddcd7b19253224d771757a026fd5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/readback-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 1768295,
+      "sha256": "17636caf1797031413a4a6220bc565442dd9b1d4a8e1b99144298b93d6b3a040"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/readback-001/CONVERSION-REQUEST.actual-or-pending.json",
+      "bytes": 10225,
+      "sha256": "9354bbb3db97a487097555c3187f4af3faa69557cfb9450f3570c0dc315c9cdc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/readback-001/INPUT.exact.json",
+      "bytes": 2395,
+      "sha256": "92e1781ca2706f71e4a39d52e1e2f0566a197c14b25d8fc5136ddbc11c6382b7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/readback-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "bytes": 884844,
+      "sha256": "87a57ef1907f07cfac09b9d0112bcd7dca70cbfa90f5ce6abeb26738153198d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/readback-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 1914379,
+      "sha256": "a1bf09334bdbe84ff71451fb049a98398487bb71c9c7f900ac048690f11f657c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/readback-001/PROVENANCE.actual-or-pending.json",
+      "bytes": 10170,
+      "sha256": "80687272b28d267ff39ecbf53181371b951ce053de38596420e84511a4fd8833"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/readback-001/RESULT.json",
+      "bytes": 933359,
+      "sha256": "2a41112508a5eabd3336d403a26e3c6ae920bc39f459a18ffba9ccd463e1c4f5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/readback-001/STATE.json",
+      "bytes": 1335770,
+      "sha256": "e843b9a87b305b9d13e47fd719af241956780883a12c2688812ff8009b8cf397"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/readback-001/TYPED-PROTECTION.json",
+      "bytes": 980752,
+      "sha256": "a8329e80e1fafbe27bb9dd3eca6e935e94b430c0476e83553173c00ca742089a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/ROOT-PRESERVATION.original.json",
+      "bytes": 1769209,
+      "sha256": "11954314d6a8539ae0f18a6b42dceb72dfdb1bcbb43f69f83e3bd44a96a0b355"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/ROOT-RESULT.original.json",
+      "bytes": 890287,
+      "sha256": "a9ca2cd2e94c01dcca248da2fec6b29098059badd31bac808aa2a8ee34edf232"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/SDK-WRAPPER.original.json",
+      "bytes": 3829175,
+      "sha256": "46097f13a76da8832f6ad340fea703a567f1c849d1be0391145db04015c5d1f3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/seal_round2_cancel_actual.py",
+      "bytes": 3810,
+      "sha256": "5aa4c57fcf26b2fceda298c55a93912546ea733e7b87d7c2635a5cefe88ce39a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/snapshot_after.original.json",
+      "bytes": 837437,
+      "sha256": "504f69cdf68133e0aec8b5180505a1f2194bfadec0db1884e1a44c97cd4cd5ed"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/snapshot_before.original.json",
+      "bytes": 836148,
+      "sha256": "3e7d0bbf5429c6fe09e9deb1e9341891ee1477a470462cbd7caeca7452a1ba5b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round2-cancel-preservation-20261007-001/WINDOWS.with-round2-cancel.source-derived.json",
+      "bytes": 8766,
+      "sha256": "b9cda8944f93b70b49925186ad3499d4fb450114277865f630c64c6bb84881b2"
+    }
+  ],
+  "external_root_preserved_checkpoint": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-formal-guarded-steps-20261007-001/163340034514/content-f4c245080299c00c0ad323e928d1d96acb4190930a8e436673964b84c360f089.ck3",
+    "bytes": 91671418,
+    "sha256": "f4c245080299c00c0ad323e928d1d96acb4190930a8e436673964b84c360f089"
+  },
+  "root_copy_body_SHA_verified_once_by_actual_author": true,
+  "child_live_autosave_reads": 0,
+  "additional_body_reads_for_seal": 0,
+  "actual_cleanup393_match": true,
+  "actual_protection87_match": true,
+  "same_checker_prior10focused_reused_no_rerun": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round1-cancel-preservation-20261007-001/FOCUSED-CANCEL.json",
+    "bytes": 1069,
+    "sha256": "d5b9311c6d828a8226c621785ad2b0e4dcd5ded114f39efc2ff082784fd7bad9"
+  },
+  "source_reader": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+    "bytes": 41081,
+    "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+  },
+  "source_author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/author_actual_checkpoint.py",
+    "bytes": 31038,
+    "sha256": "8efcb4b1b048ea2b4819fecd48be8a9e934babc2dbe73461f91e622e8b66ca05"
+  },
+  "native_HoR_credit": null,
+  "formal_credit": null,
+  "next_round_actuals": null,
+  "game_calls": 0,
+  "SDK_calls": 0
+}

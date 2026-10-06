@@ -1,0 +1,22 @@
+{
+  "status": "ACTUAL_R14_CLOSED_BUSINESS_RED_ORIGINAL_REFS_LINKS_AND_CURRENT_APPEND_HASHES_VERIFIED",
+  "raw_refs": 275,
+  "raw_CAS_files": 230,
+  "portable_links_verified": 51,
+  "full_run_closed": true,
+  "business_GREEN": false,
+  "actual_source_HEAD": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "current_append_base_HEAD": "1a09b47d352e0a93243e9f12420ec6948dac2e8c",
+  "repository_readonly_end": {
+    "HEAD": "1a09b47d352e0a93243e9f12420ec6948dac2e8c",
+    "status_porcelain_branch": "## master...origin/master [behind 6]\n M mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt\n M mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt\n M mod_li_yu_dao/tools/gen_institution.py\n M mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in\n M mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt\n M mod_li_yu_dao/tools/validate_static.py\n M tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py\n?? docs/li-yu-dao/C3-FACTORY-SAMEFAITH-LAW-CANDIDATE.md\n?? docs/li-yu-dao/i3b-event-bind-preview.md\n?? mod_li_yu_dao/tools/fixtures/\n?? mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py\n?? mod_li_yu_dao/tools/test_i3b_event_bind_present.py\n?? tools/lyd_i3b_checkpoint_readback/SAVED-NUMERIC-VALUES.md\n?? tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-present-numeric-zero.json\n?? tools/lyd_i3b_checkpoint_readback/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json\n?? tools/lyd_i3b_checkpoint_readback/tests/test_actual_signed64_value.py\n?? tools/lyd_i3b_checkpoint_readback/tests/test_present_numeric_zero.py",
+    "observed_at_utc": "2026-10-06T18:06:53.798054+00:00"
+  },
+  "save_body_reads": 0,
+  "game_calls": 0,
+  "SDK_calls": 0,
+  "new_tests": 0,
+  "new_builds": 0,
+  "helper_CAS_mutations": 0,
+  "no_old_failures_reclassified_GREEN": true
+}

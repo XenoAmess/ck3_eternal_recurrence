@@ -1,0 +1,1056 @@
+{
+  "schema": "lyd.r14.actual-B3-B4-preserved-AST-deltas.v1",
+  "STATE_false_names": [
+    "faiths_107_complete_tenet_status_projection",
+    "faiths_107_native_temporal_doctrine",
+    "political_2230_full_AST_protected",
+    "political_2231_full_AST_protected",
+    "political_2235_full_AST_protected",
+    "political_2262_full_AST_protected",
+    "political_2264_full_AST_protected",
+    "faith_and_receipt_actual_title_agree",
+    "actual_faith_religious_head_actor"
+  ],
+  "TYPED_false_names": [
+    "political_2230_full_AST",
+    "political_2231_full_AST",
+    "political_2235_full_AST",
+    "political_2262_full_AST",
+    "political_2264_full_AST",
+    "actor_complete_protected_landed_projection",
+    "faiths_107_complete_tenet_status_projection"
+  ],
+  "Faith_heads_before": {
+    "head_of_rite": null,
+    "religious_head": "4294967295",
+    "religious_head_title": null
+  },
+  "Faith_heads_after": {
+    "head_of_rite": null,
+    "religious_head": "18373",
+    "religious_head_title": null
+  },
+  "Faith_direct_doctrines_before": [
+    {
+      "key": "doctrine",
+      "value": "sinitic_hostility_doctrine"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_concubines"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_divorce_allowed"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_bastardry_legitimization"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_homosexuality_shunned"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_deviancy_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_adultery_men_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_adultery_women_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_kinslaying_any_dynasty_member_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_witchcraft_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_gender_male_dominated"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_consanguinity_dynastic"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_pluralism_pluralistic"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_theocracy_lay_clergy"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_no_head"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_clerical_function_taxation"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_clerical_gender_male_only"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_clerical_marriage_allowed"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_clerical_succession_temporal_appointment"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_pilgrimage_local_rites"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_family_rites"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_no_anointment"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_polytheist"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_scriptural"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_monasticism_absent"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_sacraments_absent"
+    },
+    {
+      "key": "doctrine",
+      "value": "special_doctrine_is_sinitic_faith"
+    },
+    {
+      "key": "doctrine",
+      "value": "special_doctrine_immaterial_harmony"
+    }
+  ],
+  "Faith_direct_doctrines_after": [
+    {
+      "key": "doctrine",
+      "value": "sinitic_hostility_doctrine"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_concubines"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_divorce_allowed"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_bastardry_legitimization"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_homosexuality_shunned"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_deviancy_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_adultery_men_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_adultery_women_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_kinslaying_any_dynasty_member_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_witchcraft_crime"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_gender_male_dominated"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_consanguinity_dynastic"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_pluralism_pluralistic"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_theocracy_lay_clergy"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_no_head"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_clerical_function_taxation"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_clerical_gender_male_only"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_clerical_marriage_allowed"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_clerical_succession_temporal_appointment"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_pilgrimage_local_rites"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_family_rites"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_no_anointment"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_polytheist"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_scriptural"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_monasticism_absent"
+    },
+    {
+      "key": "doctrine",
+      "value": "doctrine_sacraments_absent"
+    },
+    {
+      "key": "doctrine",
+      "value": "special_doctrine_is_sinitic_faith"
+    },
+    {
+      "key": "doctrine",
+      "value": "special_doctrine_immaterial_harmony"
+    }
+  ],
+  "Rite_heads_before": [
+    {
+      "id": 169,
+      "heads": {
+        "head_of_rite": "31254",
+        "religious_head": null,
+        "religious_head_title": null
+      }
+    }
+  ],
+  "Rite_heads_after": [
+    {
+      "id": 169,
+      "heads": {
+        "head_of_rite": "31254",
+        "religious_head": null,
+        "religious_head_title": null
+      }
+    }
+  ],
+  "political_full_AST_deltas": {
+    "2230": {
+      "before_AST": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+      "after_AST": "c3989692ff88f71cd665ab03bc74e9858bf7994cb12fd5abe8dcadfd733d8a92",
+      "holder_before": 31254,
+      "holder_after": 31254,
+      "deltas": [
+        {
+          "path": "/6/value/5/value",
+          "before": "37244",
+          "after": "31692"
+        },
+        {
+          "path": "/6/value/6/value",
+          "before": "38098",
+          "after": "34973"
+        },
+        {
+          "path": "/6/value/7/value",
+          "before": "36445",
+          "after": "40259"
+        },
+        {
+          "path": "/6/value/8/value",
+          "before": "36663",
+          "after": "35598"
+        },
+        {
+          "path": "/6/value/9/value",
+          "before": "36873",
+          "after": "36638"
+        },
+        {
+          "path": "/6/value/10/value",
+          "before": "31692",
+          "after": "32536"
+        },
+        {
+          "path": "/6/value/11/value",
+          "before": "34973",
+          "after": "33234"
+        },
+        {
+          "path": "/6/value/12/value",
+          "before": "40259",
+          "after": "37702"
+        },
+        {
+          "path": "/6/value/13/value",
+          "before": "35598",
+          "after": "33542"
+        },
+        {
+          "path": "/6/value/14/value",
+          "before": "36638",
+          "after": "34232"
+        },
+        {
+          "path": "/6/value/15/value",
+          "before": "32536",
+          "after": "31538"
+        },
+        {
+          "path": "/6/value/16/value",
+          "before": "38561",
+          "after": "35899"
+        },
+        {
+          "path": "/6/value/17/value",
+          "before": "39045",
+          "after": "40507"
+        },
+        {
+          "path": "/6/value/18/value",
+          "before": "39171",
+          "after": "40843"
+        },
+        {
+          "path": "/6/value/19/value",
+          "before": "39352",
+          "after": "41028"
+        }
+      ]
+    },
+    "2231": {
+      "before_AST": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+      "after_AST": "d4a8ba910fec430cb9d1f9a7cb769f697dc98ec9d007f42cdae1d6c17301cb39",
+      "holder_before": 31254,
+      "holder_after": 31254,
+      "deltas": [
+        {
+          "path": "/8/value/5/value",
+          "before": "37244",
+          "after": "31692"
+        },
+        {
+          "path": "/8/value/6/value",
+          "before": "38098",
+          "after": "34973"
+        },
+        {
+          "path": "/8/value/7/value",
+          "before": "36445",
+          "after": "40259"
+        },
+        {
+          "path": "/8/value/8/value",
+          "before": "36663",
+          "after": "35598"
+        },
+        {
+          "path": "/8/value/9/value",
+          "before": "36873",
+          "after": "36638"
+        },
+        {
+          "path": "/8/value/10/value",
+          "before": "31692",
+          "after": "32536"
+        },
+        {
+          "path": "/8/value/11/value",
+          "before": "34973",
+          "after": "33234"
+        },
+        {
+          "path": "/8/value/12/value",
+          "before": "40259",
+          "after": "37702"
+        },
+        {
+          "path": "/8/value/13/value",
+          "before": "35598",
+          "after": "33542"
+        },
+        {
+          "path": "/8/value/14/value",
+          "before": "36638",
+          "after": "34232"
+        },
+        {
+          "path": "/8/value/15/value",
+          "before": "32536",
+          "after": "31538"
+        },
+        {
+          "path": "/8/value/16/value",
+          "before": "38561",
+          "after": "35899"
+        },
+        {
+          "path": "/8/value/17/value",
+          "before": "39045",
+          "after": "40507"
+        },
+        {
+          "path": "/8/value/18/value",
+          "before": "39171",
+          "after": "40843"
+        },
+        {
+          "path": "/8/value/19/value",
+          "before": "39352",
+          "after": "41028"
+        }
+      ]
+    },
+    "2235": {
+      "before_AST": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+      "after_AST": "996c2580e48f9c8cf9332777d377f704a1d6a9a9cd00f7aee6157a27a43ceab8",
+      "holder_before": 31254,
+      "holder_after": 31254,
+      "deltas": [
+        {
+          "path": "/6/value/5/value",
+          "before": "37244",
+          "after": "31692"
+        },
+        {
+          "path": "/6/value/6/value",
+          "before": "38098",
+          "after": "34973"
+        },
+        {
+          "path": "/6/value/7/value",
+          "before": "36445",
+          "after": "40259"
+        },
+        {
+          "path": "/6/value/8/value",
+          "before": "36663",
+          "after": "35598"
+        },
+        {
+          "path": "/6/value/9/value",
+          "before": "36873",
+          "after": "36638"
+        },
+        {
+          "path": "/6/value/10/value",
+          "before": "31692",
+          "after": "32536"
+        },
+        {
+          "path": "/6/value/11/value",
+          "before": "34973",
+          "after": "33234"
+        },
+        {
+          "path": "/6/value/12/value",
+          "before": "40259",
+          "after": "37702"
+        },
+        {
+          "path": "/6/value/13/value",
+          "before": "35598",
+          "after": "33542"
+        },
+        {
+          "path": "/6/value/14/value",
+          "before": "36638",
+          "after": "34232"
+        },
+        {
+          "path": "/6/value/15/value",
+          "before": "32536",
+          "after": "31538"
+        },
+        {
+          "path": "/6/value/16/value",
+          "before": "38561",
+          "after": "35899"
+        },
+        {
+          "path": "/6/value/17/value",
+          "before": "39045",
+          "after": "40507"
+        },
+        {
+          "path": "/6/value/18/value",
+          "before": "39171",
+          "after": "40843"
+        },
+        {
+          "path": "/6/value/19/value",
+          "before": "39352",
+          "after": "41028"
+        }
+      ]
+    },
+    "2262": {
+      "before_AST": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+      "after_AST": "2289c2d2a50f509ea0a94ae7bee5c7bd8396e62587056f953733e1f73f4ec9a9",
+      "holder_before": 31254,
+      "holder_after": 31254,
+      "deltas": [
+        {
+          "path": "/7/value/5/value",
+          "before": "37244",
+          "after": "31692"
+        },
+        {
+          "path": "/7/value/6/value",
+          "before": "38098",
+          "after": "34973"
+        },
+        {
+          "path": "/7/value/7/value",
+          "before": "36445",
+          "after": "40259"
+        },
+        {
+          "path": "/7/value/8/value",
+          "before": "36663",
+          "after": "35598"
+        },
+        {
+          "path": "/7/value/9/value",
+          "before": "36873",
+          "after": "36638"
+        },
+        {
+          "path": "/7/value/10/value",
+          "before": "31692",
+          "after": "32536"
+        },
+        {
+          "path": "/7/value/11/value",
+          "before": "34973",
+          "after": "33234"
+        },
+        {
+          "path": "/7/value/12/value",
+          "before": "40259",
+          "after": "37702"
+        },
+        {
+          "path": "/7/value/13/value",
+          "before": "35598",
+          "after": "33542"
+        },
+        {
+          "path": "/7/value/14/value",
+          "before": "36638",
+          "after": "34232"
+        },
+        {
+          "path": "/7/value/15/value",
+          "before": "32536",
+          "after": "31538"
+        },
+        {
+          "path": "/7/value/16/value",
+          "before": "38561",
+          "after": "35899"
+        },
+        {
+          "path": "/7/value/17/value",
+          "before": "39045",
+          "after": "40507"
+        },
+        {
+          "path": "/7/value/18/value",
+          "before": "39171",
+          "after": "40843"
+        },
+        {
+          "path": "/7/value/19/value",
+          "before": "39352",
+          "after": "41028"
+        }
+      ]
+    },
+    "2264": {
+      "before_AST": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
+      "after_AST": "1f0b9df68aa23d329e2740cac9fa62599ed801957f509d2f8ef6fa3fbb73f813",
+      "holder_before": 31254,
+      "holder_after": 31254,
+      "deltas": [
+        {
+          "path": "/6/value/5/value",
+          "before": "37244",
+          "after": "31692"
+        },
+        {
+          "path": "/6/value/6/value",
+          "before": "38098",
+          "after": "34973"
+        },
+        {
+          "path": "/6/value/7/value",
+          "before": "36445",
+          "after": "40259"
+        },
+        {
+          "path": "/6/value/8/value",
+          "before": "36663",
+          "after": "35598"
+        },
+        {
+          "path": "/6/value/9/value",
+          "before": "36873",
+          "after": "36638"
+        },
+        {
+          "path": "/6/value/10/value",
+          "before": "31692",
+          "after": "32536"
+        },
+        {
+          "path": "/6/value/11/value",
+          "before": "34973",
+          "after": "33234"
+        },
+        {
+          "path": "/6/value/12/value",
+          "before": "40259",
+          "after": "37702"
+        },
+        {
+          "path": "/6/value/13/value",
+          "before": "35598",
+          "after": "33542"
+        },
+        {
+          "path": "/6/value/14/value",
+          "before": "36638",
+          "after": "34232"
+        },
+        {
+          "path": "/6/value/15/value",
+          "before": "32536",
+          "after": "31538"
+        },
+        {
+          "path": "/6/value/16/value",
+          "before": "38561",
+          "after": "35899"
+        },
+        {
+          "path": "/6/value/17/value",
+          "before": "39045",
+          "after": "40507"
+        },
+        {
+          "path": "/6/value/18/value",
+          "before": "39171",
+          "after": "40843"
+        },
+        {
+          "path": "/6/value/19/value",
+          "before": "39352",
+          "after": "41028"
+        }
+      ]
+    }
+  },
+  "actor_protected_landed_delta": [
+    {
+      "path": "/3/value",
+      "before": [
+        {
+          "key": null,
+          "value": "crown_authority_0"
+        },
+        {
+          "key": null,
+          "value": "confederate_partition_succession_law"
+        },
+        {
+          "key": null,
+          "value": "male_preference_law"
+        },
+        {
+          "key": null,
+          "value": "top_liege_redirected_to_border_wars_law"
+        }
+      ],
+      "after": [
+        {
+          "key": null,
+          "value": "crown_authority_0"
+        },
+        {
+          "key": null,
+          "value": "confederate_partition_succession_law"
+        },
+        {
+          "key": null,
+          "value": "male_preference_law"
+        },
+        {
+          "key": null,
+          "value": "same_faith_succession_law"
+        },
+        {
+          "key": null,
+          "value": "top_liege_redirected_to_border_wars_law"
+        }
+      ]
+    },
+    {
+      "path": "/11/value",
+      "before": [
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        },
+        {
+          "key": null,
+          "value": "39527"
+        },
+        {
+          "key": null,
+          "value": "33234"
+        },
+        {
+          "key": null,
+          "value": "37702"
+        },
+        {
+          "key": null,
+          "value": "33542"
+        },
+        {
+          "key": null,
+          "value": "34232"
+        },
+        {
+          "key": null,
+          "value": "32236"
+        },
+        {
+          "key": null,
+          "value": "38560"
+        },
+        {
+          "key": null,
+          "value": "38902"
+        },
+        {
+          "key": null,
+          "value": "31538"
+        },
+        {
+          "key": null,
+          "value": "35899"
+        },
+        {
+          "key": null,
+          "value": "40507"
+        },
+        {
+          "key": null,
+          "value": "40843"
+        },
+        {
+          "key": null,
+          "value": "41028"
+        },
+        {
+          "key": null,
+          "value": "36329"
+        },
+        {
+          "key": null,
+          "value": "36847"
+        },
+        {
+          "key": null,
+          "value": "41495"
+        },
+        {
+          "key": null,
+          "value": "37064"
+        },
+        {
+          "key": null,
+          "value": "33028"
+        },
+        {
+          "key": null,
+          "value": "38782"
+        },
+        {
+          "key": null,
+          "value": "39032"
+        },
+        {
+          "key": null,
+          "value": "39309"
+        },
+        {
+          "key": null,
+          "value": "39932"
+        },
+        {
+          "key": null,
+          "value": "40694"
+        },
+        {
+          "key": null,
+          "value": "41235"
+        },
+        {
+          "key": null,
+          "value": "41288"
+        }
+      ],
+      "after": [
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "33234"
+        },
+        {
+          "key": null,
+          "value": "37702"
+        },
+        {
+          "key": null,
+          "value": "33542"
+        },
+        {
+          "key": null,
+          "value": "34232"
+        },
+        {
+          "key": null,
+          "value": "31538"
+        },
+        {
+          "key": null,
+          "value": "35899"
+        },
+        {
+          "key": null,
+          "value": "40507"
+        },
+        {
+          "key": null,
+          "value": "40843"
+        },
+        {
+          "key": null,
+          "value": "41028"
+        },
+        {
+          "key": null,
+          "value": "36329"
+        },
+        {
+          "key": null,
+          "value": "36847"
+        },
+        {
+          "key": null,
+          "value": "41495"
+        },
+        {
+          "key": null,
+          "value": "37064"
+        },
+        {
+          "key": null,
+          "value": "40694"
+        },
+        {
+          "key": null,
+          "value": "41235"
+        },
+        {
+          "key": null,
+          "value": "41288"
+        }
+      ]
+    }
+  ],
+  "prior_B3_STATE": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B3-signed-precommit-preservation-20261007-001/readback-001/STATE.native-qualified.json",
+    "bytes": 2640120,
+    "sha256": "007d43d4185d8844dae21a2ec8876ed35ae780476a3428012398bb3d056e3682"
+  },
+  "actual_B4_STATE": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/STATE.native-qualified.json",
+    "bytes": 621929,
+    "sha256": "8d9e322777d4fd72fb8de7a4823a34171b1b0bc80a8723b7f0e084d42c5eae3a"
+  },
+  "actual_B4_TYPED": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-live-round3-B4-success-postcommit-preservation-20261007-001/readback-001/TYPED-PROTECTION.json",
+    "bytes": 1004259,
+    "sha256": "0146e048c34b1072460ff6de1849f04ff22e6ceb3d5ee2ade26a06d9ded919e5"
+  },
+  "original_reader_contract_unchanged": true,
+  "raw_save_reads": 0,
+  "fullpost_pass": null
+}

@@ -1,0 +1,177 @@
+{
+  "schema": "lyd.r14.strict-numeric-source003-index.v1",
+  "utc": "2026-10-06T15:44:29.995819+00:00",
+  "source_only_packet": true,
+  "executing_reader": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+    "bytes": 41081,
+    "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+  },
+  "author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/author_actual_checkpoint.py",
+    "bytes": 31038,
+    "sha256": "8efcb4b1b048ea2b4819fecd48be8a9e934babc2dbe73461f91e622e8b66ca05"
+  },
+  "focused": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/FOCUSED-ZERO.json",
+    "bytes": 1058,
+    "sha256": "8f387d0b9d830dd2b5946914c639a44cd2cac9a3cf847ed4494ff36034abc26d"
+  },
+  "focused_actual_tests": 14,
+  "focused_passed": true,
+  "root_afterclose_delta_author": "r14-reader-numeric-afterclose-review-20261006-001 (agent i4_resume_matrix)",
+  "main_applied_by_this_agent": false,
+  "local_delta_attempt": "prepare_reader_delta_manifest.py stopped before outputs at nonexistent target path; patch/manifest not generated; root delegated exact afterclose delta to i4_resume_matrix",
+  "raw_numeric_payload_authority": "raw variables type/identity/entries/tick and old derived number retained; canonical reader number() exclusively interprets value signed64 fixedpoint; entity IDs unaffected",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/author_actual_checkpoint.py",
+      "bytes": 31038,
+      "sha256": "8efcb4b1b048ea2b4819fecd48be8a9e934babc2dbe73461f91e622e8b66ca05"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/FOCUSED-ZERO.json",
+      "bytes": 1058,
+      "sha256": "8f387d0b9d830dd2b5946914c639a44cd2cac9a3cf847ed4494ff36034abc26d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/FOCUSED-ZERO.stderr.txt",
+      "bytes": 2596,
+      "sha256": "c405291381cea0f4ceb718b8849a1523b66803ef66fcec9eba0bcdb2648b66ec"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/FOCUSED-ZERO.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/freeze_source_author.py",
+      "bytes": 845,
+      "sha256": "582abcf5d3a3867511e2a7c6f930f5f19efdd1298833fd007e723e95c1ce1249"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/INPUT.pending.template.json",
+      "bytes": 796,
+      "sha256": "1162f078653dc6a90a2e8184f175f1523b0a9282f4be65af072ece663e5956db"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/prepare_r14_author.py",
+      "bytes": 8389,
+      "sha256": "03dfcedfca085de0ea8e12f7454bb55fa0b0e7ad92be7a5e0571dd1ef0ff952d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/prepare_reader_delta_manifest.py",
+      "bytes": 2951,
+      "sha256": "153c4585aa824e8e58eacd9cbd81fbd6db07a8e358914f593fa5f79ea93408ba"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/prepare_serialized_zero_successor.py",
+      "bytes": 3014,
+      "sha256": "8f148f7d6cc2af13c4c94ec12cb348799948e1531b4e5e31264ac3b26784323e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/prepare_signed64_successor.py",
+      "bytes": 3283,
+      "sha256": "31cfa1d4700dc531c9501200e87af02557f475c03b6185d61acabaf3e14fee4c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/qualification/r14_clean_native_gate.py",
+      "bytes": 14098,
+      "sha256": "b80db2379f6870bf23395b3c151c395c891b9778f6caea811b02dc9cb1247f51"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/qualification/r14_metadata_common.py",
+      "bytes": 4540,
+      "sha256": "c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/checkpoint_transition_v2.py",
+      "bytes": 7522,
+      "sha256": "1114a145b2c600c070d2e5326233d6c50bdd7c5e84acded3dc1e2fc44eef5fa3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/dependencies/bounded_save_parser.py",
+      "bytes": 1998,
+      "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/dependencies/confucian_dto_primitives.py",
+      "bytes": 18056,
+      "sha256": "4f63059ad9c7842cc88502366cafb5e2d3701671d40d648e47f40b6c54be1b39"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/dependencies/frozen_business_contract.json",
+      "bytes": 8755,
+      "sha256": "a95b8f65cf46b731c4556ffb12bbce38d47de61ede8222c383f85209c9730643"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/dependencies/frozen_sdk_g2_g3_metadata.json",
+      "bytes": 3642,
+      "sha256": "422f55005412f68b24ded177e63ba616a35a2c74a2982d0559eb704327e6803a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/dependencies/save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/i3b_checkpoint_reader.py",
+      "bytes": 41081,
+      "sha256": "6fadb96d25093746632dbaf450d810a203a5213d06730c17e95eea5fd68757cb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/sdk_artifact_lineage.py",
+      "bytes": 5110,
+      "sha256": "aa44e614a5704a59164667ecd380dc3ce9f6041a9227f661a9382d1eb5b5c3f7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/sdk_checkpoint_qualification.py",
+      "bytes": 19238,
+      "sha256": "2d2cb9fe80bab3462eca38f28162a1a0d6f6cde7d8051c8e36f3dbb587ea1c94"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/reader/sdk_checkpoint_transition_qualification_v2.py",
+      "bytes": 20749,
+      "sha256": "ef9de0613a569ddd913eb996e44c614744bbb29911a7a6541a28661bb2946f7e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/README.md",
+      "bytes": 4079,
+      "sha256": "d15314f2f8c5b23d40fec050d2d4ae227a4d1dd008e01849ec1f0046d76109b4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/run_focused_zero_and_actual_B1.py",
+      "bytes": 2395,
+      "sha256": "bbc4c112036e3794f3851796503b4ba80987b7ec7e474b689aa025c07ca89388"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/seal_source_and_actual_packages.py",
+      "bytes": 2890,
+      "sha256": "738ea2540134f39a1a7b432a0532eb5e1c8be9c93a14522663511844b47934ec"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/tests/fixtures/ACTUAL-B1-present-numeric-zero.json",
+      "bytes": 1975,
+      "sha256": "493c768cfded50c7659658bbe4d501526517b86cb681759377721217f4e584f0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/tests/fixtures/ACTUAL-B1-uint64-signed-vote.json",
+      "bytes": 1632,
+      "sha256": "dc99a7a28bda84332f967a793187a18c8ae535011f756223a67f1ab179e17b7a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/tests/test_actual_signed64_value.py",
+      "bytes": 2079,
+      "sha256": "a60a758f1c9905b379501b4f04cbd255726a725dd09a22fb746066a50a11255d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-actual-checkpoint-reader-author-20261006-003/tests/test_present_numeric_zero.py",
+      "bytes": 3499,
+      "sha256": "d3f8abbf3d4158bba6fa9eb5a79ffbc0f33daa7004c60532f8c3412f8babc267"
+    }
+  ],
+  "future_B3_B5_actuals": null,
+  "formal_acceptance_credit": null,
+  "game_calls": 0,
+  "SDK_calls": 0
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r14-170857552796",
+  "operation": "call_tool",
+  "name": "ck3_query_profile_confucian_assembly_predicates_v1",
+  "arguments": {
+    "expected_revision": 44
+  }
+}

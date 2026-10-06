@@ -1,0 +1,190 @@
+{
+  "schema": "lyd.r14.defender-broker-scope-readonly.v1",
+  "observed_at_utc": "2026-10-06T15:36:23.268206+00:00",
+  "installed_fixed_paths_actual": {
+    "root": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker",
+      "lexists": false,
+      "stat_success": false,
+      "error_type": "FileNotFoundError",
+      "winerror": 2,
+      "errno": 2,
+      "error": "[WinError 2] 系统找不到指定的文件。: 'C:\\\\Program Files\\\\XAR CK3 Project EXE Broker'"
+    },
+    "policy": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+      "lexists": false,
+      "stat_success": false,
+      "error_type": "FileNotFoundError",
+      "winerror": 3,
+      "errno": 2,
+      "error": "[WinError 3] 系统找不到指定的路径。: 'C:\\\\Program Files\\\\XAR CK3 Project EXE Broker\\\\policy.json'"
+    },
+    "seal": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime-seal.json",
+      "lexists": false,
+      "stat_success": false,
+      "error_type": "FileNotFoundError",
+      "winerror": 3,
+      "errno": 2,
+      "error": "[WinError 3] 系统找不到指定的路径。: 'C:\\\\Program Files\\\\XAR CK3 Project EXE Broker\\\\runtime-seal.json'"
+    },
+    "installation": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\installation-manifest.json",
+      "lexists": false,
+      "stat_success": false,
+      "error_type": "FileNotFoundError",
+      "winerror": 3,
+      "errno": 2,
+      "error": "[WinError 3] 系统找不到指定的路径。: 'C:\\\\Program Files\\\\XAR CK3 Project EXE Broker\\\\installation-manifest.json'"
+    }
+  },
+  "fixed_task_readonly_actual": {
+    "folder": "\\XAR CK3 Project EXE Broker",
+    "name": "RegisterDeclaredProjectExecutables",
+    "read_only_methods": [
+      "Schedule.Service.Connect",
+      "GetFolder",
+      "GetTask",
+      "Definition getters"
+    ],
+    "Run_called": false,
+    "Register_called": false,
+    "exists": null,
+    "error_stage": "GetFolder",
+    "error_type": "com_error",
+    "error": "(-2147352567, '发生意外。', (0, None, None, None, 0, -2147024894), None)",
+    "raw_exception_args": [
+      -2147352567,
+      "发生意外。",
+      [
+        0,
+        null,
+        null,
+        null,
+        0,
+        -2147024894
+      ],
+      null
+    ]
+  },
+  "actual_current_admin_token": true,
+  "actual_current_sid": "S-1-5-21-2904061591-114296069-2707787319-500",
+  "git_local_opt_in_actual": true,
+  "actual_build_manifest": {
+    "path": "C:\\lyd14-native-clean-20261006-004\\defender-exe-exclusions\\20261006T135354Z-f2d9a211\\manifest.json",
+    "bytes": 5305,
+    "sha256": "4f83c1179245c5f6818ad645fe43348b84847bfa3ff7065ca655e0ca5b9138e2"
+  },
+  "actual_failed_admin_receipt": {
+    "path": "C:\\lyd14-native-clean-20261006-004\\defender-exe-exclusions\\20261006T135354Z-f2d9a211\\receipt.json",
+    "bytes": 3525,
+    "sha256": "f5e55d64acd6a602ec885d47942d6317a228e6d4ebcccd48009c1223114f48d8"
+  },
+  "actual_provenance_and_exe_bytes_recollected_equal_original": true,
+  "source_dir": "C:\\lr14s1\\ck3_autonomous_player\\native_bridge",
+  "build_dir": "C:\\lyd14-native-clean-20261006-004",
+  "external_candidate": "R14 exact clean export 19e660105e05395caa6cc95e76c299312ee89d51",
+  "files": [
+    {
+      "path": "C:\\lyd14-native-clean-20261006-004\\xar_ck3_bridge_injector.exe",
+      "size": 39936,
+      "sha256": "205a8800205757abff68c253572db2b1960d94fa6069fc693c70bf6f0ee4a872",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lyd14-native-clean-20261006-004\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "size": 128512,
+      "sha256": "47b77cdfef727af348fbeb7eb832d18e1d3051d01e9a60963edec21ed4eb987c",
+      "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+      "target_id": "xar_ck3_main_thread_query_mailbox_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lyd14-native-clean-20261006-004\\xar_confucian_assembly_predicates_v1_test.exe",
+      "size": 119808,
+      "sha256": "84080156841ff7e2824f80fbe4cfee17c9fabd6e5f075b6730b92b89e433c0b4",
+      "target": "xar_confucian_assembly_predicates_v1_test",
+      "target_id": "xar_confucian_assembly_predicates_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lyd14-native-clean-20261006-004\\xar_confucian_challenger_graph_v1_test.exe",
+      "size": 171520,
+      "sha256": "af67be2931d2f851c4ad87d292d39156ea85f6f18d5e8faa4be189b537096b89",
+      "target": "xar_confucian_challenger_graph_v1_test",
+      "target_id": "xar_confucian_challenger_graph_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lyd14-native-clean-20261006-004\\xar_confucian_religious_title_readback_v1_test.exe",
+      "size": 109568,
+      "sha256": "e230e7d42c02dbeeb3a39d624e23535eeb1539a65cc5cbea8d02a60f9b1de650",
+      "target": "xar_confucian_religious_title_readback_v1_test",
+      "target_id": "xar_confucian_religious_title_readback_v1_test::@6890427a1f51a3e7e1df"
+    }
+  ],
+  "installed_policy_scope_binding": null,
+  "ordinary_existing_broker_request_possible": false,
+  "ordinary_route_reason": "Fixed installed policy is absent on this machine. dispatch_manifest returns None before policy/seal/task checks or request publication when POLICY_PATH is absent. Historical documented installation is not the current installation.",
+  "actual004_helper_route": "Administrative token took direct DefenderWmi.Add path; ordinary broker discovery is only under not-admin branch. No broker dispatch was attempted in the actual004 receipt.",
+  "admin_failure_source": {
+    "error_stage": "Add-invocation",
+    "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+    "calls": [
+      {
+        "path": "C:\\lyd14-native-clean-20261006-004\\xar_ck3_bridge_injector.exe",
+        "method": "Add",
+        "return_value": null,
+        "return_value_available": false,
+        "call_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+        "call_error_type": "com_error"
+      }
+    ],
+    "partial_mutation": false,
+    "missing_requested_paths": [
+      "C:\\lyd14-native-clean-20261006-004\\xar_ck3_bridge_injector.exe",
+      "C:\\lyd14-native-clean-20261006-004\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "C:\\lyd14-native-clean-20261006-004\\xar_confucian_assembly_predicates_v1_test.exe",
+      "C:\\lyd14-native-clean-20261006-004\\xar_confucian_challenger_graph_v1_test.exe",
+      "C:\\lyd14-native-clean-20261006-004\\xar_confucian_religious_title_readback_v1_test.exe"
+    ]
+  },
+  "available_exact_manual_entrypoint": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\register_project_exe_exclusions.py",
+    "--manifest",
+    "C:\\lyd14-native-clean-20261006-004\\defender-exe-exclusions\\20261006T135354Z-f2d9a211\\manifest.json",
+    "--receipt",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r14-defender-exact-admin-manual-20261006-001\\receipt.json"
+  ],
+  "manual_route_status": "SOURCE_READY_ONLY_NOT_EXECUTED; existing administrative WMI provider failed. An actual new verified receipt is required before claiming registration; elevation alone is not shown to fix this admin=true failure.",
+  "manual_scope_binding": "Exact existing five EXECUTABLE target rows from actual CMake file-api-v2, source/export19e, Release build004, immutable current EXE hashes; no directory or extension exclusions.",
+  "source_refs": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\register_project_exe_exclusions.py",
+      "bytes": 26813,
+      "sha256": "a750bb69c738f930050aa1f939fdaa70805d415a7de5ab48a2e6bb08884645e8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\project_exe_exclusion_broker_client.py",
+      "bytes": 31474,
+      "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\project_exe_broker\\worker_core.py",
+      "bytes": 37219,
+      "sha256": "4453eb8b1bb8ebf1008a7463ac2f68b120ce1bc6c201daf3826a81f09dda7c23"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\project-exe-defender-broker.md",
+      "bytes": 8106,
+      "sha256": "a59a7e0588b529ddb0f465c719ecccc5700b2378c3c8d989ac16064d5d8c61eb"
+    }
+  ],
+  "client_cli": "project_exe_exclusion_broker_client.py has library functions and no __main__ CLI; --help produced no output. register_project_exe_exclusions.py --help confirms --manifest/--receipt.",
+  "new_settings_registration_or_service_installation_attempted": false,
+  "broker_Run_Register_or_inbox_publication_called": false,
+  "game_SDK_or_network_called": false,
+  "source_or_main_modified": false,
+  "settings_verified": false
+}
