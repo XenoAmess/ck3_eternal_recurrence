@@ -5,7 +5,9 @@ Exact CK3 1.20.0.3 / Steam25652598 / EXE SHA
 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`
 is reused. The source-first plan is frozen in
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/pre-date-tomorrow-context-preparation/`.
-This package adds no observer, mutator call, policy, test, build or live action.
+The original source-closure package added no observer, mutator call, policy,
+test, build or live action. The subsequent implementation candidate is recorded
+below; its first checks remain pending Root integration.
 
 The held outer`2A99DC0` first invokes`2A9A360(primary,tomorrow-date)` at
 `2A99E91`, **before** loading its original primary+50/+5C Army occurrence
@@ -152,3 +154,90 @@ Source ledger, raw-input schema and Oct6/W41 fields are in the external packet's
 New frozen EXE/code/metadata capture0, closed-body recapture0, tests/builds0,
 game/process/Steam/UI/SDK/pipe/userdata operations0. The exclusive C sparse
 checkout changes only this topic; Root owns adoption, shared reports and push.
+## 2026-10-06 same-query tomorrow operand and minimum implementation contract
+
+The held outer `army-pre-stage-entry.asm.txt` (the already recorded 1438-byte
+receipt, with no new capture/hash) closes the caller operand. At `2A99DE3` it
+loads the `5C68C50` GameState pointer; `2A99DF1` copies its QWORD at `+8` to the
+local date. `2A99DFC` computes `LEA EAX,[RDX+18h]`, and `2A99DFF` replaces the
+local low DWORD. `2A99E86` passes that local date pointer to `2A9A360`.
+The later calendar-field writes do not change this low DWORD. Therefore the
+actual comparison operand is `int32(uint32(GameState+8 low32)+24U)`, with native
+32-bit wrap, rather than a date reconstructed from exported year/month/day.
+
+The existing `ArmySupplyTimingSnapshot.current_date_raw` reads this exact
+`GameState+8` native value on the paused strength query. The new observer must
+reuse that same-query field when it is present (including a partial timing row
+whose unrelated bucket scan failed). If no timing field was collected, it can
+read the same native `GameState+8` through the existing read-memory helper.
+The observer publishes the native raw clock, the signed tomorrow low DWORD,
+and their source together. A clock read failure remains independently partial;
+it cannot prevent the source-count `<=0`, valid-Combat, or date-count `<=0`
+branches from being decided without any date comparison.
+
+The implementation family is `current_pre_date_dated_append_inputs_v1`.
+Its read-only collector reuses the existing Army/Combat full-generation
+resolver and `monthly_first_removal_cleanup_inputs_v1`'s already captured
+ordered `c8` and `158` lists where present; only the corresponding signed raw
+counts are additionally read. A supplied partial reused list stays partial.
+The source order and duplicate original request IDs survive every conversion.
+Initial `158` contents have an independent readiness flag and never gate the
+ordered append-request calculation.
+
+For each source occurrence, the selected Combat's actual magic/full ID are
+read first. Valid `Comb` skips all Army date-count/pointer/entry reads. Otherwise
+the signed Army `5C` count is read; a nonpositive count skips the date array.
+Positive counts demand the native `Army+50` pointer array in order and stop at
+the first readable date DWORD `<= tomorrow_low` (signed), without reading its
+tail. No append decision is guessed past an unread required entry.
+
+The pure value publishes the complete append-request stream or its proven
+continuous prefix, independent later decisions, and a complete resulting
+logical `158` list only when both all decisions and initial `158` are complete.
+It preserves original requests on fallback and repeated requests. It makes
+zero native calls/writes and models no allocator, physical growth or wider
+date-entry lifecycle. `50/5C`, `68/74`, and pending `130` remain preserved by
+this prefix alone. This does not replay the remaining Character/Unit prefix,
+prove an actual next callback, or make a full daily-assault forecast ready.
+
+```mermaid
+flowchart TD
+  CLOCK["same-query native GameState+8 / existing current_date_raw"] --> ADD["low DWORD +24U, native wrap → signed tomorrow"]
+  C8["reused C8 IDs + signed D4"] --> EACH["each original occurrence, retaining duplicates"]
+  EACH --> COMBAT["existing Army/Combat full-ID/fallback resolver"]
+  COMBAT --> VALID{"magic Comb AND fullID != FFFFFFFF?"}
+  VALID -- yes --> SKIP["skip, no date reads"]
+  VALID -- no --> COUNT{"Army signed 5C >0?"}
+  COUNT -- no --> SKIP
+  COUNT -- yes --> DATE["ordered Army50 pointer-entry DWORD0 scan"]
+  ADD --> DATE
+  DATE --> DUE{"first date <= signed tomorrow?"}
+  DUE -- yes --> APPEND["logical append original C8 request, stop date scan"]
+  DUE -- all later --> SKIP
+  DATE -. required read unavailable .-> PARTIAL["partial decision; preserve proven prefix"]
+  APPEND --> REQUESTS["ordered append requests"]
+  INITIAL["independent complete reused initial158"] --> RESULT["logical initial158 + requests"]
+  REQUESTS --> RESULT
+  RESULT -. not replayed .-> FUTURE["remaining Character/Unit prefix and actual next callback unknown"]
+```
+
+The owned implementation candidate contains a DTO/serializer, header-only
+collector, strict transport, pure value, a new production Strength/native-wire
+fixture, and one new nonempty complete-service compound. Proposed shared hooks
+and CMake target are external only in
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/pre-date-dated-append/`;
+Root must merge them into coherent current source before the **first** new
+checks. The compound uses distinct C8 dated IDs and current primary50 roster
+IDs. Its nonempty pending/current admission/current placement results remain
+independent current entrances; it does not label current admission as a replay
+after pending writes or after the remaining unknown Character/Unit prefix.
+
+The new native target is `xar_bridge_pre_date_dated_append_12003_test`.
+The new Python method is
+`PreDateDatedAppendServiceTests.test_nonempty_dated_append_same_query_current_pending_admission_and_placement`.
+The fixture also exercises partial initial158, unread required dates, and a
+missing clock with independently valid Combat/nonpositive-count skips. It emits
+small production Strength rows for the same new compound to consume.
+Python syntax and source diff checks are the only checks performed by this
+lane. Native build/CTest and complete-service execution are still pending;
+this candidate has no fixture-live, production-live or full-callback claim.
