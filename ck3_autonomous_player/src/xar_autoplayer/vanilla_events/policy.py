@@ -1155,7 +1155,7 @@ def recommend_registered_vanilla_event_option_v1(
         )
 
     raw_contract = knowledge.get("contract")
-    if build == "1.20.0.3" and event_key == "faction_demand.1001":
+    if build in {"1.20.0.3", "1.20.0.4"} and event_key == "faction_demand.1001":
         from .faction_demand1001_context import recognize_faction_demand1001_projection_v1
 
         recognition = recognize_faction_demand1001_projection_v1(event_context,

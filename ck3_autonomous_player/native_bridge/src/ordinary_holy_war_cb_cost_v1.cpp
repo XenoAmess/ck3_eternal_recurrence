@@ -26,10 +26,14 @@ class Scope {
   bool constructed() const noexcept { return constructed_; }
   void *get() noexcept { return bytes_.data(); }
  private:
+  // Native scope remains 0x168 bytes; explicitly round its owned allocation
+  // to 0x170 and account for the x64 bookkeeping tail without implicit padding.
+  alignas(16) std::array<std::byte, (kOrdinaryHolyWarScopeSizeV1 + 15) & ~std::size_t{15}> bytes_{};
   const OrdinaryHolyWarCbCostBindingsV1 &bindings_;
-  alignas(16) std::array<std::byte, kOrdinaryHolyWarScopeSizeV1> bytes_{};
   bool constructed_ = false;
+  std::array<std::byte, 7> reserved_{};
 };
+static_assert(sizeof(Scope) == 0x180);
 void Quote(std::ostream &out, std::string_view value) {
   constexpr char hex[] = "0123456789abcdef";
   out << '"';

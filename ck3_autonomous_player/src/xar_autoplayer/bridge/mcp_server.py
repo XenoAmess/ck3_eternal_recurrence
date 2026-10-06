@@ -77,6 +77,7 @@ from .succession_transition_contract import (
 )
 from .session_driver import DevelopmentSessionDriver
 from .service import GameplayBridgeService
+from .army_strengths_mcp_result import build_army_strengths_mcp_result
 from .activity_feast_guest_target_private_transport import (
     query_activity_feast_guest_target_private_v1,
 )
@@ -1385,7 +1386,7 @@ def create_server(
     """Build the MCP server lazily so baseline vision installs need no SDK."""
     try:
         from mcp.server import MCPServer
-        from mcp.types import ToolAnnotations
+        from mcp.types import CallToolResult, ToolAnnotations
     except ImportError as error:
         raise RuntimeError(
             "MCP mode requires the optional dependency: pip install 'mcp==2.0.0'"
@@ -2350,10 +2351,13 @@ def create_server(
         expected_h2743_frame: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Execute one semantic gameplay step through the selected backend."""
-        return service.execute_step(
+        payload = service.execute_step(
             step, expected_revision=expected_revision,
             expected_h2743_frame=expected_h2743_frame,
         )
+        if step == "query-army-strengths-v1":
+            return build_army_strengths_mcp_result(payload)
+        return payload
 
     @server.tool()
     def ck3_save_checkpoint(
@@ -2579,24 +2583,30 @@ def create_server(
             expected_revision=expected_revision,
         )
 
-    @server.tool()
     def ck3_query_army_strengths(
         army_ids: list[PublicCUnitId],
         expected_revision: int | None = None,
         ordered_refill_entry_mode: Literal["observed_prepared", "fixed_chunk0_prepare"] = "observed_prepared",
         ordered_besieging_entry_mode: Literal["observed_prepared", "fixed_chunk0_prepare"] = "observed_prepared",
-    ) -> dict[str, object]:
+    ) -> Annotated[CallToolResult, dict[str, object]]:
         """Read soldiers and AI base power; never interpret them as win odds.
 
         Choose the observed or conditional preparation entry for scoped refill.
         The separate B entry uses the actual refreshed target physical union.
         """
-        return service.query_army_strengths(
+        payload = service.query_army_strengths(
             army_ids,
             expected_revision=expected_revision,
             ordered_refill_entry_mode=ordered_refill_entry_mode,
             ordered_besieging_entry_mode=ordered_besieging_entry_mode,
         )
+        return build_army_strengths_mcp_result(payload)
+
+    # SDK resolves future annotations against module globals; use the lazy SDK type.
+    ck3_query_army_strengths.__annotations__["return"] = Annotated[
+        CallToolResult, dict[str, object]
+    ]
+    server.tool()(ck3_query_army_strengths)
 
     @server.tool(annotations=read_only_tool)
     def ck3_query_projected_contact_scope_v1(

@@ -41,7 +41,7 @@ def recognize_faction_demand1001_projection_v1(
     named_leader = _identity(scopes.get("faction_leader"), "character", "character_id")
     actor_valid = isinstance(played_character_id, int) and not isinstance(played_character_id, bool) and played_character_id > 0
     checks = {
-        "exact_build": event_context_build(dict(event_context)) == "1.20.0.3",
+        "exact_build": event_context_build(dict(event_context)) in {"1.20.0.3", "1.20.0.4"},
         "event_definition": event_context.get("status") == "available" and event_context.get("event_definition_key") == EVENT_KEY,
         "player_root_target": actor_valid and root == target == played_character_id,
         "leader_roles": leader is not None and leader > 0 and leader == named_leader and leader != root,
@@ -78,10 +78,11 @@ def build_faction_demand1001_decision_context_v1(
     This builder remains read-only; action readiness is independent of authorization.
     No option is selected or submitted, including when county losses are ready.
     """
+    build = event_context_build(dict(event_context))
     context: dict[str, object] = {
         "schema": "xar.ck3.faction-demand1001-decision-context/v1", "status": "blocked",
-        "event_definition_key": EVENT_KEY, "ck3_build": "1.20.0.3",
-        "ck3_exe_sha256": SUPPORTED_CK3_EXE_SHA256["1.20.0.3"],
+        "event_definition_key": EVENT_KEY, "ck3_build": build,
+        "ck3_exe_sha256": SUPPORTED_CK3_EXE_SHA256.get(build),
         "source_sha256": dict(SOURCE_HASHES),
         "binding": {"actor_character_id": played_character_id,
             "event_instance_id": expected_event_instance_id, "date_raw": expected_date_raw,
@@ -102,8 +103,8 @@ def build_faction_demand1001_decision_context_v1(
         factions = normalize_player_faction_alerts_v1(dict(faction_alerts),
             expected_date_raw=expected_date_raw,
             expected_snapshot_revision=expected_faction_snapshot_revision,
-            expected_game_version="1.20.0.3",
-            expected_executable_sha256=SUPPORTED_CK3_EXE_SHA256["1.20.0.3"])
+            expected_game_version=build,
+            expected_executable_sha256=SUPPORTED_CK3_EXE_SHA256.get(build))
     except ValueError as error:
         context.update(unavailable_reason="input_frame_contract_invalid", input_error=str(error))
         return context

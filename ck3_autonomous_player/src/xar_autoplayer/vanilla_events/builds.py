@@ -2,19 +2,20 @@
 
 from typing import Final
 
-CURRENT_CK3_BUILD: Final = "1.20.0.3"
+CURRENT_CK3_BUILD: Final = "1.20.0.4"
 CURRENT_CK3_EXE_SHA256: Final = (
-    "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+    "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
 )
 SUPPORTED_CK3_EXE_SHA256: Final = {
     "1.19.0.6": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "1.20.0.2": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+    "1.20.0.3": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
     CURRENT_CK3_BUILD: CURRENT_CK3_EXE_SHA256,
 }
-MIGRATED_CK3_BUILDS: Final = frozenset({"1.20.0.2", "1.20.0.3"})
+MIGRATED_CK3_BUILDS: Final = frozenset({"1.20.0.2", "1.20.0.3", "1.20.0.4"})
 NONWAR_MIGRATION_DEFERRED_EVENT_KEYS: Final = frozenset({
-    # Keep the legacy name: source-absent fervor has no current definition;
-    # the war event is outside this nonwar package. Religion is authorized.
+    # Historical .2/.3 generation exclusions: fervor is source-absent and the
+    # war source review was deferred. This is not an authorization restriction.
     "fervor.1002", "great_holy_war.0011",
 })
 

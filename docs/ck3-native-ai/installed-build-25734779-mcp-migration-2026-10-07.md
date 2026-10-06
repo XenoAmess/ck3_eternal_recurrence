@@ -39,3 +39,10 @@ Parallel domains cover core native profile/bootstrap and SDK/Operator, Army/rule
 Next: use the shared actual PE delta and confirmed 1.20.0.4 version to close concrete relocation; implement the smallest supported build/profile/schema changes; compile and run only required new migration checks; restore the preserved ordinary campaign in a fresh managed run and verify paused native observations through the registered MCP. The existing giant Army text/structured duplication has a separate actual-entry performance fix and one new SDK consumer case; measured results will be recorded separately.
 
 Current readiness is **research / updated install frozen / MCP port in progress**. There is no new-build fixture-live or production-live claim yet. The preserved 5997 campaign days are historical runtime evidence, not new-build qualification.
+
+
+## Source adoption at 2026-10-06T18:22:00.751717+00:00
+
+Event sources and offline MCP consumers are migrated to .4 at adopted f49c56fe:193 authored rows reused under unchanged depot manifest, current .3 overrides retained, and new .4 provenance/digest generated. Its one new production compound passed; see [event migration](vanilla-event-source-migration-12004.md). Active law Python profile transport is adopted42f0b2ea; new native qualification remains pending. See [active-law migration](realm-law-active-query-12004-migration.md). Root ran no old cases.
+
+Steam was directly observed offline in fresh restored window008; no new game has launched. The official native-session lifecycle keeps the process/pipe alive without complete Snapshot readiness, so the core-only first observation can use the existing owned route. Full Snapshot and domain migration still continue. These source changes do not confer new-build production-live qualification.

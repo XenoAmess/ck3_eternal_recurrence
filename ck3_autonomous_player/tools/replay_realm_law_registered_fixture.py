@@ -180,11 +180,12 @@ async def replay(args: argparse.Namespace) -> dict[str, object]:
 
         if args.validator_negatives:
             source = next((bundle for bundle in bundles
-                           if bundle["packets"]["hello.json"].get("expected_ck3_version") == "1.20.0.3"
+                           if bundle["packets"]["hello.json"].get("expected_ck3_version")
+                           in {"1.20.0.3", "1.20.0.4"}
                            and any(row.get("succession_profile_status") == "available"
                                    for row in bundle["packets"]["response.json"]["result"]
                                    ["realm_law_final_terms"]["groups"][1]["candidates"])), None)
-            require(source is not None, "validator negatives need one .3 native available profile")
+            require(source is not None, "validator negatives need one .3/.4 native available profile")
             base_response = source["packets"]["response.json"]
             row_index = next(index for index, row in enumerate(
                 base_response["result"]["realm_law_final_terms"]["groups"][1]["candidates"]

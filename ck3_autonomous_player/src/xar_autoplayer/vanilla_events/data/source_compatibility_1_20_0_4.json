@@ -1,0 +1,30 @@
+{
+  "schema": "xar.ck3.vanilla-event-same-depot-source-reuse/v1",
+  "ck3_build": "1.20.0.4",
+  "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "steam_build_id": 25734779,
+  "previous_build": "1.20.0.3",
+  "previous_steam_build_id": 25652598,
+  "previous_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "previous_dataset_sha256": "698F66B83C6D45FAD4D5292E3AF2E6DB3721C92F736ADB9396E177BF8878D880",
+  "data_depot": {
+    "depot_id": "1158311",
+    "manifest": "5078208590259867811",
+    "size_bytes": 19091661807,
+    "previous_manifest": "5078208590259867811",
+    "same_manifest": true
+  },
+  "evidence": {
+    "method": "existing frozen installed Steam metadata",
+    "new_build_freeze": "artifacts/migrations/2026-10-07/installed-build/BUILD-FREEZE.json",
+    "new_installed_manifest": "artifacts/migrations/2026-10-07/installed-build/appmanifest_1158310.acf",
+    "previous_build_identity": "artifacts/migrations/2026-10-02/intake-build-identity.json",
+    "previous_installed_manifest": "artifacts/migrations/2026-10-02/installed-build/appmanifest_1158310.acf",
+    "installed_state_flags": 4,
+    "update_result": 0,
+    "target_build_id": 0
+  },
+  "fresh_source_scan": false,
+  "runtime_call_chain_revalidated": false,
+  "new_live_evidence": false
+}

@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import unittest
 
-from xar_autoplayer.vanilla_events.builds import CURRENT_CK3_EXE_SHA256
+from xar_autoplayer.vanilla_events.builds import SUPPORTED_CK3_EXE_SHA256
 from xar_autoplayer.vanilla_events.faction_demand1001_context import build_faction_demand1001_decision_context_v1
 from xar_autoplayer.vanilla_events.policy import recommend_registered_vanilla_event_option_v1
 from xar_autoplayer.vanilla_events.registry import query_vanilla_event_knowledge_v1
@@ -89,7 +89,7 @@ def _frames() -> tuple[dict[str, object], dict[str, object]]:
             "alert_ready": True, "exact_ultimatum_timing_ready": False},
         "component_unavailable_reasons": {"targeting_rows": None, "county_exposure": None},
         "unavailable_reason": None,
-        "provenance": {"game_version": "1.20.0.3", "executable_sha256": CURRENT_CK3_EXE_SHA256,
+        "provenance": {"game_version": "1.20.0.3", "executable_sha256": SUPPORTED_CK3_EXE_SHA256["1.20.0.3"],
             "backend_id": "ck3-1.20.0.3-native-player-faction-alerts-v1"}}
     return event, alerts
 
