@@ -14,6 +14,8 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept;
 std::unique_ptr<GameAdapter> CreateCk3_12004Adapter(
     std::string_view executable_sha256) noexcept;
 bool IsCk3_12004Descriptor(const AdapterDescriptor &descriptor) noexcept;
+const ck3_12002::DeclarationsBindings *BorrowOrdinaryHolyWarDeclarations12004(
+    const GameAdapter &adapter) noexcept;
 std::string Render12004BuildIdentity(
     std::string serialized, const AdapterDescriptor &descriptor);
 } // namespace xar::game

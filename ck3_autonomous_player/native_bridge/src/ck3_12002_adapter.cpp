@@ -119,6 +119,10 @@ public:
   }
   bool enabled() const noexcept override { return bindings_.core.enabled; }
 
+  const ck3_12002::DeclarationsBindings *BorrowDeclarations12004() const noexcept {
+    return IsCk3_12004Descriptor(descriptor()) ? &bindings_.declarations : nullptr;
+  }
+
   bool read_snapshot(Snapshot &output) const noexcept override {
     output = {};
     // The .4 foundation has its own partial-core publisher. Its full snapshot
@@ -636,6 +640,12 @@ bool ReadCk3_12002TimelineCoreSnapshot(
   output = {};
   const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
   return native != nullptr && native->ReadTimelineCoreSnapshot(output);
+}
+
+const ck3_12002::DeclarationsBindings *BorrowOrdinaryHolyWarDeclarations12004(
+    const GameAdapter &adapter) noexcept {
+  const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
+  return native != nullptr ? native->BorrowDeclarations12004() : nullptr;
 }
 
 PauseSubmitResult SubmitCk3_12002PauseMapObserved(
