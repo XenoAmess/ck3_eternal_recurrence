@@ -9125,6 +9125,21 @@ endif()
 include(cmake/current_army_flag21_inputs_12003.cmake)
 include(cmake/current_fleet_supply_tick_inputs_12003.cmake)
 include(cmake/army_strength_result_write_diagnostic_v1.cmake)
+
+# One explicitly built real-transport fixture at the historical Army body size.
+# This target never starts CK3 or accesses the production game pipe.
+if(WIN32)
+  add_executable(xar_bridge_army_large_frame_capacity_v1_fixture EXCLUDE_FROM_ALL
+    tests/army_large_frame_capacity_v1_fixture.cpp src/protocol.cpp)
+  target_include_directories(xar_bridge_army_large_frame_capacity_v1_fixture PRIVATE include)
+  target_compile_features(xar_bridge_army_large_frame_capacity_v1_fixture PRIVATE cxx_std_20)
+  target_compile_definitions(xar_bridge_army_large_frame_capacity_v1_fixture PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_bridge_army_large_frame_capacity_v1_fixture PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+endif()
 include(cmake/current_army_flag31_inputs_12003.cmake)
 include(cmake/current_finalizer_manager_inputs_12003.cmake)
 
