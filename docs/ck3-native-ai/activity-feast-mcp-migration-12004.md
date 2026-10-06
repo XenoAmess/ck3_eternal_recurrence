@@ -113,3 +113,17 @@ Until Root's first formal build and fixtures, this package is a source-backed
 implementation candidate. No actual .4 MCP or live action qualification is
 claimed. Start acknowledgement remains pending until independent hosted
 readback; terminal identity does not itself prove an opinion/resource gain.
+
+Root's first new native fixture on October 7 returned RED in the planner/start
+group (exit 1, 0.1523465 seconds), with `actual4 planner/start fixture failed`.
+The finite Activity switch omitted the already closed commit mapping
+`11B8D90 -> 11B8D70`; the production Start ABI guard consequently attempted a
+read at the module base, before capture or commit. The existing 329-byte paired
+proof is `planner-native/mapped-functions/planner_feast_commit-DETAIL.json`.
+The source fix restores that one mapping and adds an independent literal
+entry assertion to the existing planner/start fixture. No guard, frame,
+reserve, guest-route, repeated-capture or independent postcondition is relaxed.
+This correction has not been built or executed in the child; Root's affected
+native fixture retry and actual .4 MCP qualification remain pending. The first
+RED artifact is retained at
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/joint-domain-first01/activity_new/`.

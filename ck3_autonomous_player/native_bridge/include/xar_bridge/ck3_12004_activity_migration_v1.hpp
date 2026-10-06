@@ -57,6 +57,7 @@ inline std::uintptr_t Activity12004RvaV1(
   case 0x11B88E8: return 0x11B88C8;
   case 0x11B8CD0: return 0x11B8CB0;
   case 0x11B8D53: return 0x11B8D33;
+  case 0x11B8D90: return 0x11B8D70;
   case 0x11B95D0: return 0x11B95B0;
   case 0x11BA6D0: return 0x11BA6B0;
   case 0x11D3404: return 0x11D33E4;

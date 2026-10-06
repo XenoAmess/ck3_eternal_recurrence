@@ -5,6 +5,7 @@
 #include <windows.h>
 
 #include <array>
+#include <cstdio>
 #include <cstring>
 
 namespace {
@@ -76,6 +77,13 @@ bool Commit(void *opaque, std::uintptr_t base,
 // readers in one target. No native callback or game process is invoked here.
 bool RunActivityPlannerStart12004Fixture() {
   using namespace xar;
+  if (bridge::Activity12004RvaV1(kActualSha, ck3_12002::kFeastCommitRva) !=
+          kMappedCommitRva ||
+      bridge::Activity12004RvaV1(kActualSha, ck3_12002::kFeastFinalCanStartRva) !=
+          kMappedCanStartRva) {
+    std::fprintf(stderr, "Activity planner/start actual4 fixture: mapped commit/CanStart entry\n");
+    return false;
+  }
   Fixture fixture{};
   fixture.snapshot.date_raw = 53238096;
   fixture.snapshot.played_character_id = 29829;
