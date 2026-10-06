@@ -1157,6 +1157,9 @@ list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
   src/ck3_12003_adapter.cpp
+    src/ck3_12004_adapter.cpp
+    src/ck3_12004_abi_profile.cpp
+    src/ck3_12004_core_frame_v1.cpp
   src/ck3_12003_commander.cpp
   src/ck3_12003_commander_target_roll.cpp
   src/ck3_12003_current_commander_martial.cpp

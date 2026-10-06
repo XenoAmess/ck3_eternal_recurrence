@@ -1,5 +1,5 @@
 #include "xar_bridge/protocol.hpp"
-#include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 
 #include <windows.h>
 
@@ -258,11 +258,11 @@ int wmain(int argc, wchar_t **argv) {
         Has(frame.payload, "\"protocol_version\":1") &&
         Has(frame.payload, "\"bridge.heartbeat\"") &&
         Has(frame.payload, std::string("\"expected_ck3_version\":\"") +
-            xar::ck3_12003::kGameVersion + "\"") &&
+            xar::ck3_12004::kGameVersion + "\"") &&
         Has(frame.payload, std::string("\"expected_ck3_sha256\":\"") +
-            xar::ck3_12003::kExecutableSha256 + "\"") &&
+            xar::ck3_12004::kExecutableSha256 + "\"") &&
         Has(frame.payload, std::string("\"game_adapter_id\":\"") +
-            xar::ck3_12003::kAdapterId + "\"") &&
+            xar::ck3_12004::kAdapterId + "\"") &&
         Has(frame.payload,
             "\"game_adapter_status\":\"unsupported_build\"") &&
         Has(frame.payload, "\"ck3_build_match\":false") &&

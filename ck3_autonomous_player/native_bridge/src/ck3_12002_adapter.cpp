@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12003_army_reserve.hpp"
 #include "xar_bridge/ck3_12003_war_occupation.hpp"
 #include "xar_bridge/ck3_12003_title_holder.hpp"
@@ -120,8 +121,11 @@ public:
 
   bool read_snapshot(Snapshot &output) const noexcept override {
     output = {};
+    // The .4 foundation has its own partial-core publisher. Its full snapshot
+    // families are migrated separately before this complete contract is used.
+    if (IsCk3_12004Descriptor(descriptor())) return false;
     ck3_12002::CoreSnapshotPrefix prefix{};
-    if (!ck3_12002::ReadCoreSnapshot(bindings_.core, prefix)) return false;
+    if (!bindings_.read_core_snapshot(bindings_.core, prefix)) return false;
     Snapshot observed{};
     observed.date_raw = prefix.clock.date_raw;
     observed.speed = prefix.clock.speed;
@@ -208,7 +212,7 @@ public:
   bool ReadTimelineCoreSnapshot(Snapshot &output) const noexcept {
     output = {};
     ck3_12002::CoreSnapshotPrefix prefix{};
-    if (!ck3_12002::ReadCoreSnapshot(bindings_.core, prefix)) return false;
+    if (!bindings_.read_core_snapshot(bindings_.core, prefix)) return false;
     output.date_raw = prefix.clock.date_raw;
     output.speed = prefix.clock.speed;
     output.paused = prefix.clock.paused;
@@ -485,7 +489,7 @@ public:
 private:
   bool MatchesCoreSnapshot(const Snapshot &observed) const noexcept {
     ck3_12002::CoreSnapshotPrefix current{};
-    return ck3_12002::ReadCoreSnapshot(bindings_.core, current) &&
+    return bindings_.read_core_snapshot(bindings_.core, current) &&
            current.clock.date_raw == observed.date_raw &&
            current.clock.speed == observed.speed &&
            current.clock.paused == observed.paused &&
@@ -678,6 +682,12 @@ NativeMaaRegularPersonalCreateSubmissionV1 SubmitNativeMaaRegularPersonalCreate(
 std::unique_ptr<GameAdapter> CreateCk3_12002AdapterFromBindings(
     Ck3_12002AdapterBindings bindings) noexcept {
   return std::make_unique<Ck3_12002Adapter>(std::move(bindings));
+}
+
+std::unique_ptr<GameAdapter> CreateCrozierAdapterFromBindings(
+    Ck3_12002AdapterBindings bindings,
+    const AdapterDescriptor &descriptor) noexcept {
+  return std::make_unique<Ck3_12002Adapter>(std::move(bindings), descriptor);
 }
 
 std::unique_ptr<GameAdapter> CreateCk3_12003AdapterFromBindings(

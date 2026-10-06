@@ -46,6 +46,11 @@ from .application_main_pump_readiness import (
 )
 from .session_queue import SESSION_QUEUE_PROTOCOL_VERSION
 from .version_identity import require_exact_native_build
+from .core_frame_contract import (
+    CORE_FRAME_V1_STEP,
+    normalize_core_frame_v1,
+    require_core_frame_hello_v1,
+)
 from .event_contract import (
     choose_event_option_number,
     event_option_step,
@@ -2600,6 +2605,43 @@ class NativeHeadlessGameplayDriver:
                 if pending is not None else None
             )
         return result
+
+    def query_core_frame_v1(self) -> dict[str, object]:
+        """Read the app-main core prefix without needing a complete Snapshot."""
+        transport_error = self._transport_error()
+        if transport_error is not None:
+            raise BridgeUnavailableError(transport_error)
+        diagnostics = self.state.diagnostics()
+        if diagnostics.get("connected") is not True:
+            raise BridgeUnavailableError("core-frame native DLL is not connected")
+        try:
+            require_core_frame_hello_v1(diagnostics.get("hello"))
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        with self._driver_state_lock:
+            self._request_sequence += 1
+            request_id = f"core-frame-{self._request_sequence}-{uuid.uuid4().hex[:12]}"
+        self.endpoint.send({
+            "type": "execute_step",
+            "protocol_version": PROTOCOL_VERSION,
+            "request_id": request_id,
+            "step": CORE_FRAME_V1_STEP,
+            # This standalone readonly command does not bind a full Snapshot.
+            "expected_revision": 0,
+        })
+        frame = self.state.wait_for_command_result(request_id, self.command_timeout_seconds)
+        if frame is None:
+            raise BridgeUnavailableError("native core-frame command_result timed out")
+        if frame.get("ok") is not True:
+            native_error = frame.get("error")
+            raise _NativeCommandRejectedError(
+                native_error if isinstance(native_error, str) else "unknown error",
+                native_request_id=request_id,
+            )
+        try:
+            return normalize_core_frame_v1(frame.get("result"))
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
 
     def take_internal_semantic_snapshot(self) -> dict[str, object]:
         """Read a runner-internal semantic frame without transcript evidence."""

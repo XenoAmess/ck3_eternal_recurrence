@@ -9,6 +9,8 @@
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_core_frame_v1.hpp"
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
 #endif
@@ -10931,6 +10933,10 @@ public:
   }
 
   void MaybeInstallFrontend() noexcept {
+    if (game_ != nullptr && xar::game::IsCk3_12004Descriptor(game_->descriptor())) {
+      InstallCoreFrame12004();
+      return;
+    }
     if (observer_ != nullptr) {
       InstallNewAdapter();
       return;
@@ -11214,6 +11220,16 @@ public:
   }
 
  private:
+  void InstallCoreFrame12004() noexcept {
+    if (installed_ || attempted_ || game_ == nullptr || !game_->enabled() ||
+        !game_->supports(xar::ck3_12004::kCoreFrameCapabilityV1)) return;
+    attempted_ = true;
+    auto environment = xar::ck3_12004::BindCoreFrameMailboxEnvironmentV1(
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+        game_->descriptor().executable_sha256);
+    installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
+        g_main_thread_query_mailbox_v1, environment);
+  }
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
   void MaybeConfigureCouncilPrivateRoute() noexcept {
     if (!installed_ || council_private_route_configured_) return;
@@ -13086,6 +13102,47 @@ std::string RunWarOccupationTargetsQueryV1(
   return response;
 }
 
+std::string RunCoreFrameQuery12004(const xar::game::GameAdapter &game,
+    std::string_view request_id, std::string_view payload) {
+  constexpr std::string_view step = xar::ck3_12004::kCoreFrameStepV1;
+  std::uint64_t expected_revision = 0;
+  if (!xar::bridge::JsonUnsignedField(payload, "expected_revision", expected_revision) ||
+      expected_revision != 0) {
+    return CommandResultFrame(request_id, step, false,
+        "core-frame query requires standalone expected_revision zero");
+  }
+  if (!xar::game::IsCk3_12004Descriptor(game.descriptor()) || !game.supports_step(step)) {
+    return CommandResultFrame(request_id, step, false,
+        "exact core-frame query is unavailable");
+  }
+  xar::ck3_12004::CoreFrameMailboxContextV1 query{};
+  query.game = &game;
+  xar::ck3_11906::MainThreadQueryTicketV1 ticket{};
+  const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, &xar::ck3_12004::ExecuteCoreFrameMailboxV1,
+      &query, ticket);
+  if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    query.observation.unavailable_reason = "application_main_not_ready";
+    return xar::ck3_12004::SerializeCoreFrameCommandResultV1(request_id, query.observation);
+  }
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, ticket, 8'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running) {
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, ticket, 2'000);
+  }
+  if (wait != xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+    query.observation = {};
+    query.observation.unavailable_reason = "application_main_executor_unavailable";
+  }
+  if (xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1, ticket) !=
+      xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    query.observation = {};
+    query.observation.unavailable_reason = "application_main_result_not_reclaimable";
+  }
+  return xar::ck3_12004::SerializeCoreFrameCommandResultV1(request_id, query.observation);
+}
+
 void RunConnectedSession(
     HANDLE pipe, const xar::game::GameAdapter &game, WorkerState &state,
     WarEntryApplicationMainMailboxWorkerLifetime &mailbox_lifetime) noexcept {
@@ -13536,6 +13593,11 @@ void RunConnectedSession(
           early_step_dispatched = true;
         }
 #endif
+        if (!early_step_dispatched && step == xar::ck3_12004::kCoreFrameStepV1) {
+          connected = write_frame(pipe, RunCoreFrameQuery12004(
+              game, request_id, incoming.payload));
+          early_step_dispatched = true;
+        }
         if (!early_step_dispatched &&
             step == xar::ck3_12003::mercenary::kPlayerMercenaryContextStep12003) {
           connected = write_frame(pipe, RunPlayerMercenaryContextQuery12003(

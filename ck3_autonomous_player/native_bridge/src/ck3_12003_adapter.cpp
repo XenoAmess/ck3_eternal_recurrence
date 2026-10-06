@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_daily_supply_dispatch_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_month_first_refill_call_inputs.hpp"
@@ -411,6 +412,8 @@ std::unique_ptr<GameAdapter> CreateCk3_12003Adapter(
 
 std::string RenderCrozierBuildIdentity(
     std::string serialized, const AdapterDescriptor &descriptor) {
+  if (IsCk3_12004Descriptor(descriptor))
+    return Render12004BuildIdentity(std::move(serialized), descriptor);
   if (IsCk3_12003Descriptor(descriptor)) {
     serialized = ck3_12002::RenderQueryBuildIdentity(std::move(serialized));
     // Includes typed DTO version fields, backend IDs, and versioned evidence
