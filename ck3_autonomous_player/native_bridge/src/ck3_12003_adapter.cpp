@@ -156,6 +156,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.current_daily_assault_loss_inputs_enabled = true;
     result.armies.current_daily_assault_table_bindings =
         ck3_12003::BindCurrentDailyAssaultTable12003(image_base, executable_sha256);
+    result.armies.current_daily_assault_roster_admission_bindings =
+        ck3_12003::BindCurrentDailyAssaultRosterAdmission12003(image_base, executable_sha256);
     result.armies.regiment_composition_enabled = true;
     auto &monthly = result.armies.monthly_loss_budget_bindings;
     monthly.enabled = true;

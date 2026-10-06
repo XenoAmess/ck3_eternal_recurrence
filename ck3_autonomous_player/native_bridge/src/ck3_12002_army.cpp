@@ -1184,12 +1184,21 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
     current_daily_assault_loss = ck3_12003::ReadCurrentDailyAssaultLossInputs12003(
         bindings, *current_daily_assault_table);
   }
+  std::optional<game::ArmyCurrentDailyAssaultRosterAdmissionV1> current_daily_assault_roster_admission;
   for (const auto &entry : scope) {
     diagnostic.army_id.store(entry.army_id);
     diagnostic.reader.store("scope_row");
     auto row = Strength(bindings, entry);
+    if (!current_daily_assault_roster_admission &&
+        bindings.current_daily_assault_roster_admission_bindings.enabled) {
+      diagnostic.reader.store("current_daily_assault_roster_admission_readonly");
+      current_daily_assault_roster_admission = ck3_12003::ReadCurrentDailyAssaultRosterAdmission12003(
+          bindings.current_daily_assault_roster_admission_bindings,
+          row.monthly_daily_queue_inputs_v1 ? &*row.monthly_daily_queue_inputs_v1 : nullptr);
+    }
     row.current_daily_assault_table_v1 = current_daily_assault_table;
     row.current_daily_assault_loss_inputs_v1 = current_daily_assault_loss;
+    row.current_daily_assault_roster_admission_v1 = current_daily_assault_roster_admission;
     partial = partial || !row.available;
     output.push_back(std::move(row));
   }

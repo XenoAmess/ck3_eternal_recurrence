@@ -194,3 +194,89 @@ tests, builds and old wire replays are0.
 Packet: `Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/daily-assault-roster-admission/`.
 Root owns shared reports, publication, native registration, build and first
 wire qualification.
+
+## Current readonly producer and first service qualification
+
+The new optional `current_daily_assault_roster_admission_v1` is now implemented
+in the same ArmyStrength query. `ReadCurrentDailyAssaultRosterAdmission12003`
+uses raw memory reads only; it never invokes24E8560,2A92320,2A99B40 or a table
+mutator. The full original50/5C roster remains independent of the requested
+Army subset. Every native index, raw full DWORD, invalid/fallback selection and
+duplicate is retained. Actual gate operands, ordered pair-map probes, War
+selection, Siege44C, removal membership and pending130 probes are exposed.
+Army append is independent of the later ArRg append readiness. A partial
+pending read preserves the verified Army append and a null ArRg result, rather
+than an empty substitute.
+
+The whole raw68/74 removal queue is independently captured once. The new query
+samples it after the first existing `Strength` row and reuses a complete,
+count-matched `monthly_daily_queue_inputs_v1.manager_army_id_list_2a5a8` where
+available. Signed stored IDs become their original full u32 values in order;
+the new collector performs no second raw element or resolver loop on this
+route. It always reads the actual count74. Count0 demands no unused data68.
+Pointer metadata remains independent of an already observed complete raw list.
+Existing monthly-queue consistency samples and Army14 predicates are unchanged
+and are not new admission predicates. An unread independent queue does not
+block an early false gate or a zero roster.
+
+```mermaid
+flowchart TD
+    S[First actual scoped Strength row] --> Q[Reuse existing complete raw68 list if count74 matches]
+    S --> R[Observe full original50/5C roster once]
+    Q --> O[Independent complete or partial removal queue]
+    R --> A[Original-order current standalone admission]
+    O -->|only reached membership demand| A
+    A --> P[Strict raw-source-derived decisions and verified prefix]
+    P --> C[Real query_army_strengths service projection]
+    C --> F[Typed ordered nonempty placement requests]
+    F --> E[Explicit supplied pre-placement stage]
+    E --> B[Existing conditional table placement]
+    A -. earlier2A92320 mutation and dispatcher not replayed .-> X[Whole pre-date stream incomplete]
+```
+
+Production Python entry points are
+`normalize_current_daily_assault_roster_admission_v1`,
+`project_current_daily_assault_roster_admission_12003` and
+`daily_assault_roster_admission_requests_12003`. The last defaults to a complete
+current conditional stream; `prefix_only=True` explicitly selects the verified
+continuous prefix. Independent later rows and verified Army-only facts remain
+visible. The service exposes per-requested-Army
+`current_daily_assault_roster_admission_inputs_v1` without changing strength,
+forecast or full-monthly readiness. The new native family's complete reason is
+the empty string; unavailable/partial reasons are concrete strings. Existing
+families keep their previous nullable convention.
+
+One new complete production-service compound first passed at2026-10-06
+16:02:34 CST / W41:1 passed in0.65s,1.0515274s outer. It observes original raw
+roster `[11,11,13,FE00000E,15]`, derives four nonempty/empty-list requests with
+repeated Army and ArRg occurrences and actual fallback resolution, then feeds
+the existing placement model with an explicit held fixture pre-placement
+stage. Projected physical groups are slots `[0,1,2,4,7]`, Siege IDs
+`[5,13,4,1,2]`. It also checks optional fallback-War metadata, independent
+queue-pointer metadata, partial pending/continuous prefix, reached membership
+before an unread tail, raw occurrence failures, legal zero and older-producer
+absence. No current table is relabeled as tomorrow's initial state.
+
+The initial service attempt is preserved as `service-first01/RECEIPT.json`:
+harness RED from a test reading `request.native_index` instead of the stable
+`request.source_provenance.original_roster_native_index`. Only three assertion
+paths changed; production logic did not change. The first completed result is
+`service-repair01/RECEIPT.json` with its complete output. No passed old test,
+native fixture or wire was replayed.
+
+Native fixture source contains nine new scenes, including actual production
+hook reuse of the old signed raw queue. Register
+`xar_bridge_daily_assault_roster_admission_12003_test` from
+`src/ck3_12003_daily_assault_roster_admission_test.cpp`, linking the actual
+`xar_ck3_12002_runtime`. It emits complete production `AppendArmyStrengthV1`
+bytes after `ReadArmyStrengthsForScope`; Root owns its first native compile,
+CTest and immutable-service consumer. Recipe and frozen expected fields are in
+`native-fixture/ROOT-EXECUTION-RECIPE.md` and `EXPECTATIONS.json`.
+
+Readiness is static-ready for this selected current conditional admission and
+source-shaped complete-service path. Native qualification and live observation
+are pending. Ended/requested-sentinel War predicates, Province73C sentinel
+title-derived controller inputs, earlier per-Army pending mutations, the date
+transition and full daily assault remain explicit separate dependencies.
+New implementation source reads add0 EXE bytes. Native builds/CTest/compiled
+wire consumption/local game operations/old test runs are0.
