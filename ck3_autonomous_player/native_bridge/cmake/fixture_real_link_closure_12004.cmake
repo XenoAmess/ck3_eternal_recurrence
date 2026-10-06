@@ -19,16 +19,35 @@ function(xar_ck3_12004_fixture_use_real_bridge target)
   # source duplicates before adding the already compiled Bridge objects.
   get_target_property(fixture_source_dir ${target} SOURCE_DIR)
   get_target_property(fixture_sources ${target} SOURCES)
+  set(fixture_transport_sources)
+  if(target STREQUAL "xar_ck3_12004_faction_adopted_whole_test")
+    # These two TUs must call the fixture's aliased mailbox transport.
+    foreach(source IN ITEMS
+        src/ck3_12004_faction_mailbox.cpp
+        src/ck3_12004_faction_gift_router.cpp)
+      get_filename_component(absolute_source "${source}" ABSOLUTE
+        BASE_DIR "${bridge_source_dir}")
+      list(APPEND fixture_transport_sources "${absolute_source}")
+    endforeach()
+  endif()
   set(remaining_fixture_sources)
   foreach(source IN LISTS fixture_sources)
     get_filename_component(absolute_source "${source}" ABSOLUTE
       BASE_DIR "${fixture_source_dir}")
-    if(NOT absolute_source IN_LIST bridge_absolute_sources)
+    if(NOT absolute_source IN_LIST bridge_absolute_sources OR
+        absolute_source IN_LIST fixture_transport_sources)
       list(APPEND remaining_fixture_sources "${source}")
     endif()
   endforeach()
   set_property(TARGET ${target} PROPERTY SOURCES "${remaining_fixture_sources}")
-  target_sources(${target} PRIVATE $<TARGET_OBJECTS:xar_ck3_bridge>)
+  if(fixture_transport_sources)
+    # Keep the production closure while replacing only these two handler
+    # objects with the direct TUs compiled under the fixture's three aliases.
+    target_sources(${target} PRIVATE
+      "$<FILTER:$<TARGET_OBJECTS:xar_ck3_bridge>,EXCLUDE,(^|[/\\\\])ck3_12004_faction_(mailbox|gift_router)[.]cpp[.](obj|o)$>")
+  else()
+    target_sources(${target} PRIVATE $<TARGET_OBJECTS:xar_ck3_bridge>)
+  endif()
   target_compile_definitions(${target} PRIVATE
     $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>)
   target_link_libraries(${target} PRIVATE
