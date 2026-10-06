@@ -297,7 +297,8 @@ std::int64_t *FinalThreshold(const void *faith, std::int64_t *out) {
 }
 const void *OwnedTenets(const void *actor) { Callback(actor == world->character.data()); return world->extension.data() + 0x88; }
 bool ParameterMember(const void *set, const std::int32_t *token) {
-  Callback(set == world->tenet.data() + 0x740 && token != nullptr);
+  Callback((set == world->tenet_database.data() + 0xF20 ||
+      set == world->tenet.data() + 0x740) && token != nullptr);
   const auto *items = Load<const std::int32_t *>(set);
   const auto count = Load<std::int32_t>(set, 0xC);
   return std::find(items, items + count, *token) != items + count;
