@@ -1,5 +1,7 @@
 # CK3 1.19.0.6 原生 AI 战斗增援、到达与加入既有战斗
 
+2026-10-06 的 exact .3 当前准入施工另见[增援到达与当前既有战斗准入](battle-reinforcement-arrival-admission-12003.md)：已实际接入现有只读查询，7FIRST 与 sole real Service consumer 尚未运行，future_binding=false。本文旧版本和各历史资格按原截止保留。
+
 ## 2026-09-27：劣势方三军原版夹具已构造，接战仍待回读
 
 [live-confirmed, fixture only] 为避免此前三军夹具在优势方不求援的条件限制，从原版 day-zero 存档（SHA-256 `A9C5D1C4B7646A956894BCBF22EAA2150DCE9381531734F8FD944D93310B541C`）重新宣战、征召、集结。原生 `life-advance` 后在 raw `53144520` 直接观察 CUnit `18` 已静止、未接战，保存不可变的拆军前检查点（SHA-256 `91CEE43C055AA7C1412E5D5CD26CFEDE75E9459B4783E8C8BE8257908BEDD592`）。连续两次原生 `split-army-half-18` 获得同属 Character `29829` 的 CUnit `18、32、33`；三次原生 `ck3_move_army` 均接受 Province `2638`，同日三军路线终点均为 `2638`，保存路线检查点（SHA-256 `77BE86B0FDE44D348807B201B9809A29F8099A4FF005A9C12D632045B4AB0DE9`）。原始请求、响应、源档、桥版本和清理报告位于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-losing-side-split-attempt-058/`。这是**夹具制备成功**，尚不证明三军已在同一 CombatID 接战，更不证明 AI 自然求援、指派或重新入场。

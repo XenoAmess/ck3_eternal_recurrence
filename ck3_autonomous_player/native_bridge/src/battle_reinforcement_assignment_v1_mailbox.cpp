@@ -1,5 +1,6 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
+#include "xar_bridge/battle_reinforcement_arrival_admission_12003_serializer.hpp"
 
 #include <windows.h>
 
@@ -461,6 +462,13 @@ bool AppendContactProjection(
   }
   output += ",\"contact_if_now_selected_combat_id\":";
   AppendNullableInt32(output, contact.contact_if_now_selected_combat_id);
+  if (contact.arrival_admission) {
+    const auto admission = game::SerializeBattleReinforcementArrivalAdmission12003(
+        *contact.arrival_admission);
+    if (admission.empty()) return false;
+    output += ",\"arrival_admission\":";
+    output += admission;
+  }
   output.push_back('}');
   return true;
 }
@@ -557,6 +565,12 @@ bool ExecuteBattleReinforcementAssignmentMailboxQueryV1(
     }
     query->result.snapshot_revision = query->expected_snapshot_revision;
     query->result.observed_date_raw = stamp.date_raw;
+    if (query->result.contact_projection &&
+        query->result.contact_projection->arrival_admission) {
+      auto &admission = *query->result.contact_projection->arrival_admission;
+      admission.snapshot_revision = query->expected_snapshot_revision;
+      admission.observed_date_raw = stamp.date_raw;
+    }
     query->result.selected_public_cunit_id =
         query->request.selected_public_cunit_id;
     query->completion =

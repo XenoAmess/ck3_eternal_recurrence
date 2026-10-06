@@ -4627,6 +4627,29 @@ if(BUILD_TESTING)
     COMMAND xar_ck3_battle_reinforcement_assignment_v1_mailbox_test
   )
 
+  add_executable(xar_ck3_reinforcement_arrival_first_12003
+    src/battle_reinforcement_assignment_v1_mailbox.cpp
+    src/battle_reinforcement_arrival_first_12003.cpp
+  )
+  target_include_directories(xar_ck3_reinforcement_arrival_first_12003 PRIVATE include src)
+  target_compile_features(xar_ck3_reinforcement_arrival_first_12003 PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_reinforcement_arrival_first_12003 PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_reinforcement_arrival_first_12003 PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  set(XAR_CK3_REINFORCEMENT_ARRIVAL_FIRST_OUTPUT_DIR
+    "${CMAKE_CURRENT_BINARY_DIR}/reinforcement-arrival-first-12003"
+    CACHE PATH "Fresh output directory for the seven reinforcement arrival FIRST wires")
+  add_test(
+    NAME xar_ck3_native_bridge_reinforcement_arrival_first_12003
+    COMMAND xar_ck3_reinforcement_arrival_first_12003
+      "${XAR_CK3_REINFORCEMENT_ARRIVAL_FIRST_OUTPUT_DIR}"
+  )
+  set_tests_properties(xar_ck3_native_bridge_reinforcement_arrival_first_12003
+    PROPERTIES TIMEOUT 30 LABELS "reinforcement-arrival-first-12003")
+
   add_executable(xar_ck3_battle_terminal_transition_v1_mailbox_test
     src/battle_terminal_journal_v1.cpp
     src/battle_terminal_transition_v1_mailbox.cpp

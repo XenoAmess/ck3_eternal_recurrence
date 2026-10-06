@@ -1,5 +1,9 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-06：增援到达与当前既有战斗准入已接线，FIRST 待运行
+
+[增援到达准入](battle-reinforcement-arrival-admission-12003.md)将 current admission、current side、实际 roster/backlink 接入现有 reinforcement 查询，并提供七新 whole-wire 场景与 sole real Service consumer。source integrated / research；编译、Ct、consumer 均 NOTRUN，foreign 仅 observation、future_binding=false。[Oct6/W41 fields](battle-reinforcement-arrival-admission-12003-fields.json)供 Root 报告与下一 joint FIRST 消费。h9593 仅复用 Root 无 active combat、两 stationary armies 摘要，本包零新 game/query。
+
 
 ## 2026-10-06：本机仅后台，两项真实故障修复首次资格
 

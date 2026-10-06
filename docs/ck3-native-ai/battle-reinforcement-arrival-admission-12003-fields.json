@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-06",
+  "iso_week": "2026-W41",
+  "owner": "battle_reinforcement_inputs",
+  "research_source_baseline": "df87fd85",
+  "integration_baseline": "be06a134b9a5472275e08ea452a8e3542b192fb8",
+  "exact_build": {
+    "version": "1.20.0.3",
+    "steam_build": 25652598,
+    "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "provenance": "Existing reviewed contract; no new EXE/native body read or hash"
+  },
+  "completed": [
+    "Integrated the source-closed readonly current arrival DTO/mirror/serializer into existing ReinforcementSample, contact DTO and same-query revision/date stamp.",
+    "Integrated strict optional arrival_admission normalization and immutable lifecycle/current conditional native ETA assessment; driver/service/MCP/action authorization unchanged.",
+    "Integrated seven owned synthetic whole-wire cases, production serialization seam, registered native target/Ct and sole real driver/Service consumer."
+  ],
+  "readiness": {
+    "state": "research / source integrated",
+    "shared_hooks_integrated": true,
+    "compiled": false,
+    "first_native_whole_wires_executed": false,
+    "first_real_service_compound_executed": false,
+    "static_ready": false,
+    "fixture_live": false,
+    "production_live_primitive": false,
+    "production_live_loop": false,
+    "aligned_assignment_eta_to_same_combat_join_live": false,
+    "future_reinforcement_forecast_ready": false,
+    "future_binding": false,
+    "complete": false
+  },
+  "first_qualification": {
+    "status": "NOTRUN",
+    "native_target": "xar_ck3_reinforcement_arrival_first_12003",
+    "ctest_name": "xar_ck3_native_bridge_reinforcement_arrival_first_12003",
+    "configure_output_path_key": "XAR_CK3_REINFORCEMENT_ARRIVAL_FIRST_OUTPUT_DIR",
+    "default_output_directory": "<native-build>/reinforcement-arrival-first-12003",
+    "native_cases": 7,
+    "python_methods": 1,
+    "consumer_interpreter": "Root sole existing verified Python",
+    "consumer_argv": [
+      "-B", "-X", "utf8",
+      "ck3_autonomous_player/tests/unit/test_battle_reinforcement_arrival_first.py",
+      "BattleReinforcementArrivalFirstTests.test_native_whole_wires_through_real_service_and_immutable_assessment",
+      "-v"
+    ],
+    "consumer_env": {"XAR_REINFORCEMENT_ARRIVAL_FIRST_WIRE_DIR": "<fresh-native-output-directory>"},
+    "optional_filter_env": "XAR_REINFORCEMENT_ARRIVAL_FIRST_CASE_FILTER",
+    "whole_seven_case_filter": "unset",
+    "actual_service_path": "NativeHeadlessGameplayDriver -> GameplayBridgeService -> immutable derived assessment",
+    "synthetic_inputs": ["owned native memory", "route/ETA", "assignment membership", "clock/revision", "protocol hello"],
+    "real_production_components": ["new current admission reader", "integrated old/nested serializers", "strict contract", "native driver", "Service", "immutable derived assessment"],
+    "old_tests_rerun": 0
+  },
+  "current_live_baseline": {
+    "artifact": "h9593 Root summary only",
+    "paused": true,
+    "active_combat": false,
+    "armies": "two stationary armies",
+    "raw_cache_opened": false,
+    "new_current_query_requested": false,
+    "new_live_credit": false
+  },
+  "boundaries": [
+    "Foreign subject is observation only; action authorization unchanged.",
+    "Native help and ordinary committed route provenance stay separate.",
+    "Current actual roster is never augmented by an incoming candidate.",
+    "Current admission plus existing ETA is conditional; no future persistence or actual join claim.",
+    "Existing subject_not_ai_managed unavailable DTO remains unchanged; no general foreign non-AI query promised."
+  ],
+  "red_and_remaining": [
+    "No new runtime RED; the first compile/native/consumer execution is pending Root joint FIRST.",
+    "Historical assigned stationary helper native-target-null consumer RED is retained and not fixed by this synthetic consistent-slot case.",
+    "Current h9593 has no active combat candidate; next actual paused candidate and independent arrival roster/backlink evidence remain required."
+  ],
+  "next": ["Root cherry-picks the isolated source commit", "Root joint 64-job first build and new Ct", "Root sole seven-wire real Service compound", "Next actual campaign candidate paused observation and independent join outcome"],
+  "operations": {"imports": 0, "tests": 0, "builds": 0, "game_days": 0, "game_queries": 0, "game_sdk_process_steam_pipe": 0, "new_exe_or_native_body_reads": 0, "new_hashes": 0, "pushes": 0},
+  "central_reports": "Root sole owner; these fields are the merge input",
+  "topic": "battle-reinforcement-arrival-admission-12003.md",
+  "final_commit_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/battle-reinforcement/ROOT-COMMIT-DELIVERY.json"
+}

@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_battle.hpp"
+#include "xar_bridge/battle_reinforcement_arrival_admission_12003_reader.hpp"
 #include "xar_bridge/ck3_12003_current_stored_context.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
@@ -1000,6 +1001,24 @@ bool ReinforcementSample(const BattleBindings &b, const game::Snapshot &scope,
         projection.current_target_compatible_combat_ids_in_stored_order.clear();
     }
   }
+  std::int32_t arrival_target = -1;
+  std::string_view arrival_provenance = "none";
+  if (assignment.active_combat_id) {
+    arrival_target = route.current_province_id;
+    arrival_provenance = "current_active_combat";
+  } else if (assignment.assignment_target_province_id) {
+    arrival_target = *assignment.assignment_target_province_id;
+    arrival_provenance = "native_help_override";
+  } else if (!route.route_province_ids.empty()) {
+    arrival_target = route.route_province_ids.back();
+    arrival_provenance = "committed_route_final";
+  }
+  game::BattleReinforcementArrivalAdmission12003Snapshot admission;
+  ReadBattleReinforcementArrivalAdmission12003(
+      b.route_bindings, scope, req.selected_public_cunit_id,
+      arrival_target, arrival_provenance, admission);
+  projection.arrival_admission = std::move(admission);
+
   out.coordinator_id = coordinator_id;
   out.signal = std::move(signal);
   out.assignment = std::move(assignment);

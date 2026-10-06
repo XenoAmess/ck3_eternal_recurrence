@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xar_bridge/battle_reinforcement_arrival_admission_12003.hpp"
 #include "xar_bridge/battle_context_source_inputs_v1.hpp"
 #include "xar_bridge/battle_current_finalizer_manager_inputs_v1.hpp"
 #include "xar_bridge/battle_current_own_nested_modifier_dto.hpp"
@@ -3788,6 +3789,7 @@ struct BattleReinforcementContactProjectionSnapshot {
   std::vector<std::int32_t>
       current_target_compatible_combat_ids_in_stored_order;
   std::optional<std::int32_t> contact_if_now_selected_combat_id;
+  std::optional<BattleReinforcementArrivalAdmission12003Snapshot> arrival_admission;
 
   friend bool operator==(
       const BattleReinforcementContactProjectionSnapshot &,

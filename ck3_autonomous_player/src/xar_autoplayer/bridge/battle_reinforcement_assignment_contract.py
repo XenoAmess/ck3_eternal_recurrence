@@ -7,6 +7,9 @@ from .public_unit_contract import (
     public_cunit_ids as _public_cunit_ids,
     canonical_public_cunit_decimal as _canonical_public_cunit_decimal,
 )
+from .battle_reinforcement_arrival_admission_contract import (
+    normalize_battle_reinforcement_arrival_admission_v1,
+)
 
 from typing import Final
 
@@ -544,11 +547,16 @@ def normalize_battle_reinforcement_assignment_v1(
     ):
         raise ValueError("selected subunit row disagrees with top-level state")
 
-    contact = _dict(
-        frame.get("contact_projection"),
-        "battle_reinforcement_assignment.contact_projection",
+    contact_value = frame.get("contact_projection")
+    if not isinstance(contact_value, dict) or set(contact_value) not in (
         _CONTACT_FIELDS,
-    )
+        _CONTACT_FIELDS | {"arrival_admission"},
+    ):
+        raise ValueError(
+            "battle_reinforcement_assignment.contact_projection must contain "
+            "the v1 fields with an optional arrival_admission group"
+        )
+    contact = contact_value
     contact_status = contact.get("status")
     if contact_status not in {"available", "unavailable", "not_applicable"}:
         raise ValueError("contact projection status is invalid")
@@ -581,6 +589,25 @@ def normalize_battle_reinforcement_assignment_v1(
     elif selected_combat_id != (combat_ids[-1] if combat_ids else None):
         raise ValueError("contact selection must be the final stored candidate")
 
+    arrival_fields = {}
+    if "arrival_admission" in contact:
+        arrival_fields["arrival_admission"] = (
+            normalize_battle_reinforcement_arrival_admission_v1(
+                contact["arrival_admission"],
+                expected_selected_public_cunit_id=selected_id,
+                expected_observed_date_raw=observed_date_raw,
+                expected_snapshot_revision=revision,
+                selected_native_carmy_id=selected_native_id,
+                assignment=assignment,
+                route={
+                    **route,
+                    "route_province_ids": route_ids,
+                    "arrival_date_raws": arrivals,
+                    "assignment_eta_date_raw": eta,
+                },
+            )
+        )
+
     return {
         **frame,
         "selected_native_carmy_id": selected_native_id,
@@ -604,5 +631,6 @@ def normalize_battle_reinforcement_assignment_v1(
             **contact,
             "current_target_compatible_combat_ids_in_stored_order": combat_ids,
             "contact_if_now_selected_combat_id": selected_combat_id,
+            **arrival_fields,
         },
     }
