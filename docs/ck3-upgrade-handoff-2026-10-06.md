@@ -19,7 +19,7 @@
 
 低优先级功能已登记到[产品任务清单](product-technical-roadmap.md)：白绮和主版创建廷臣时，选择信仰之外增加具体礼仪选择；**全部mod的1.20翻新维护完成后才做**，不扩入当前发布门槛。
 
-本项目禁止PowerShell，Windows命令用cmd.exe或Python；只用fetch/rebase/普通push，禁止merge/force-push。所有过程资产永久保留，原日志、聊天历史、存档、失败场和构建输入不能作为垃圾删除。
+本项目的 Windows 命令仅用 cmd.exe 或 Python；只用fetch/rebase/普通push，禁止merge/force-push。所有过程资产永久保留，原日志、聊天历史、存档、失败场和构建输入不能作为垃圾删除。
 
 ## 已完成发布
 
