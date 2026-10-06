@@ -163,17 +163,18 @@ def main() -> int:
             check(len(endpoint.requests) == 1, "one existing request per producer sample")
             if step.startswith("query-"):
                 check(registered[tool].annotations.read_only_hint, "query remains readonly")
-                check(actual["schema"] == native["schema"], "new schema retained without retagging")
-                check(require_exact_native_build(actual["game_version"], actual["executable_sha256"]) == CK3_12004,
+                actual_query = actual[domain] if step == "query-player-mercenary-context-v1" else actual
+                check(actual_query["schema"] == native["schema"], "new schema retained without retagging")
+                check(require_exact_native_build(actual_query["game_version"], actual_query["executable_sha256"]) == CK3_12004,
                       "query preserves exact .4 identity")
                 for key, value in native.items():
                     if key == "rows" and step == "query-player-mercenary-context-v1":
-                        check(len(actual[key]) == len(value), "all native mercenary rows retained")
-                        for copied, source in zip(actual[key], value):
+                        check(len(actual_query[key]) == len(value), "all native mercenary rows retained")
+                        for copied, source in zip(actual_query[key], value):
                             check({name: copied[name] for name in source} == source,
                                   "mercenary row retains every native field alongside existing readiness")
                     else:
-                        check(actual[key] == value, "whole native query field retained: " + key)
+                        check(actual_query[key] == value, "whole native query field retained: " + key)
             else:
                 validators[step].validate(result)
                 check({key: actual[key] for key in result} == result, "entire native typed ACK retained")
