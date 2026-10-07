@@ -53,7 +53,9 @@ action plan.
 flowchart TD
   A[Current native collection full ID and selected13 offer] --> B[Actual Driver query history and current public/native frame]
   B --> C[Formal Service plan_turn]
-  C --> D{Existing accepted positive ransom opportunity}
+  C --> Q{Required save, urgent action or opening focus}
+  Q -->|yes| R[Keep existing required action]
+  Q -->|no| D{Existing accepted positive ransom opportunity}
   D -->|yes| E[Keep existing ransom route]
   D -->|no| F{Observed release accepted and current CanSend}
   F -->|false or refused| G[Keep unchanged baseline plan]
@@ -71,9 +73,27 @@ flowchart TD
 The minimum ordering uses current accepted selected terms and keeps the
 existing ransom choice and urgent/due actions ahead of a release opportunity.
 It can consume a real Driver query receipt before an idle advance or generic
-campaign-root/declarable discovery. It introduces no new MCP tool, private
+campaign-root, declarable-war or marriage-choice discovery. These three exact
+read-only discovery steps do not represent a current marriage or war action.
+It introduces no new MCP tool, private
 permission switch or native schema. Pending identity belongs to the actual
 formal execution record; it is not an outcome or material score.
+
+An initial ordinary succession expectation may otherwise query generic
+campaign-root data before formal arbitration. The source defers this initial
+root enrichment only when the current accepted release is already observed.
+Required save/opening focus, existing succession reconciliation, a changed
+played character and urgent events remain authoritative. If final arbitration
+keeps another action, the ordinary root enrichment resumes in the same call.
+Following a submitted release it resumes on the next turn.
+
+The current-query requirement means this entry consumes the most recent
+selected offer; it does not enumerate or optimize all thirteen option
+combinations. The retained release receipt does not yet automatically resolve
+the formal pending ledger. A fresh full-ID custody and relationship observation
+and its receipt resolver remain the next integration after a real submission.
+No queue ACK, event disappearance or absent prisoner collection alone is used
+as a named-opinion outcome.
 
 ## Qualification boundary
 
@@ -84,13 +104,51 @@ All-off and gain_hook queue successfully; native-false and refused offers do
 not queue; a changed copied mask reaches native rejection. Those cases are
 fixture-owned memory and callbacks and do not qualify a paused game release.
 
-This new packet adds one unique production Service compound consuming those
-original whole packets. It must exercise planning and the actual typed
+This new packet adds one unique production Service compound consuming the
+original all-off, gain_hook and changed-copy whole packets. The two existing
+native-false/refused registered results are reused without repeating their
+execution. The new compound must exercise planning and the actual typed
 execution route, retaining native/public frame, selected mask and on-send
 costs. It keeps all successful submissions pending and material_result=false.
 Native execution, old tests and the old retained-material GREEN are not
-replayed. Its actual verdict and logs are recorded in the external packet;
-before that execution, the formal integration remains authored NOTRUN.
+replayed. The compound completed with exit0 and GREEN at source
+`4d1d38fa` on 2026-10-07 20:21 Asia/Shanghai. Its actual verdict is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/g2-m6-institutions/release-formal-service-12004/first05/CONSUMER-FIRST.json`;
+the companion `consumer-first.log` and `run.log` retain the executed recipe.
+All-off and gain_hook selected the formal release step and retained pending
+ACKs. Changed-copy terms selected the same formal step, reached the original
+native rejected reply and retained an unresolved, nonmaterial receipt.
+
+The ordinary lifecycle binding comes from the actual H9638 bootstrap argv
+and its existing prepared environment manifest, using the six-field conversion
+already implemented by the production MCP constructor. The manifest is not
+rehashed. The original release-only native frames have empty command history,
+so the Service fixture explicitly prepares a synthetic saved-baseline caller
+state through the existing persisted Driver format. This fixture state is not
+a native checkpoint, actual H9638 history or a game recovery result. Production
+save priority is unchanged, and the native packets are not rewritten.
+
+The earlier attempts remain preserved as harness RED in `first01` through
+`first04`. The concrete findings were initial generic root enrichment, an
+unconfigured legacy one-life caller, the original empty checkpoint history and
+the exact marriage-choice discovery opportunity. The final source preserves
+required saving and ordinary lifecycle semantics, while allowing the current
+accepted release before those three specified discovery steps. The two reused
+negative cases are not new Service executions.
+
+This is offline fixture qualification of the formal consumer. No fresh
+independent native after-frame, real captive, native saved baseline or custody
+change is established. There were no new native executions, SDK calls, pipe
+connections, builds, CK3 actions or game process operations in this compound.
+
+For a future natural captive, use the existing ordinary configuration and
+`--private-prisoner-ransom-action` permission already shared by the release
+submit path. Query `ck3_query_player_prisoner_collection_private_v1` for the
+selected ordinal and actual option keys, then call existing `ck3_plan_turn`
+and `ck3_auto_turn` while the query's played actor/date/native frame remains
+current. Keep the selected full ID after submission and use the existing
+retained-material query on a genuinely fresh frame. An unchanged or missing
+result remains pending; it is not material freedom or opinion credit.
 
 A future genuine combat/siege capture in Robert's ordinary campaign triggers
 the complete current query/offer/baseline/release/fresh-custody/retained-material
