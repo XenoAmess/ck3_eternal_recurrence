@@ -1,0 +1,83 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "status": "settings_failed",
+  "method": "WMI MSFT_MpPreference.Add ExclusionPath only",
+  "namespace": "root\\Microsoft\\Windows\\Defender",
+  "before": [],
+  "after": [],
+  "calls": [
+    {
+      "path": "C:\\lr16b6\\xar_ck3_12002_event_window_context_test.exe",
+      "method": "Add",
+      "return_value": null,
+      "return_value_available": false,
+      "call_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+      "call_error_type": "com_error"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\lr16b6\\xar_ck3_12002_event_window_context_test.exe",
+      "size": 8551936,
+      "sha256": "3f7ca2abc1af7c6e77001656ed65805f047d1ead053ee25cabc0a4ce2986f1ac",
+      "target": "xar_ck3_12002_event_window_context_test",
+      "target_id": "xar_ck3_12002_event_window_context_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_ck3_bridge_injector.exe",
+      "size": 39936,
+      "sha256": "e2c16c0ac16a92a383c4412745fa1dbcc9a873e0d377bb356be40179f2eac177",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "size": 129024,
+      "sha256": "50f626de50dca4823ea67cb409df125d3d397d3acbf4fb3e59bb6fe2f4962ca9",
+      "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+      "target_id": "xar_ck3_main_thread_query_mailbox_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_confucian_assembly_predicates_v1_test.exe",
+      "size": 119808,
+      "sha256": "8c325c377291f3a209089454100de7f5cb7ab72beffa5791d3bb6007b32da3a0",
+      "target": "xar_confucian_assembly_predicates_v1_test",
+      "target_id": "xar_confucian_assembly_predicates_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_confucian_challenger_graph_v1_test.exe",
+      "size": 177664,
+      "sha256": "07a80b9083300c4296df80ca18352bf14a1002a4a06379fe1cb637f170567646",
+      "target": "xar_confucian_challenger_graph_v1_test",
+      "target_id": "xar_confucian_challenger_graph_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_confucian_religious_title_readback_v1_test.exe",
+      "size": 114688,
+      "sha256": "8ae18321fb28d08783b40beec99de3f723fc4930a0b088752f442b0565bd3fe4",
+      "target": "xar_confucian_religious_title_readback_v1_test",
+      "target_id": "xar_confucian_religious_title_readback_v1_test::@6890427a1f51a3e7e1df"
+    }
+  ],
+  "settings_success_is_runtime_trust": false,
+  "exclusion_types_written": [
+    "ExclusionPath exact files"
+  ],
+  "manifest_sha256": "32579eebea2c39dbdcbeac4409c63b02fce479f1b29ad936f63eef69bbb641ce",
+  "admin_token": true,
+  "readback_visibility": "same administrative token and WMI client for before/after",
+  "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+  "error_type": "com_error",
+  "error_stage": "Add-invocation",
+  "verified_requested_paths": [],
+  "missing_requested_paths": [
+    "C:\\lr16b6\\xar_ck3_12002_event_window_context_test.exe",
+    "C:\\lr16b6\\xar_ck3_bridge_injector.exe",
+    "C:\\lr16b6\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+    "C:\\lr16b6\\xar_confucian_assembly_predicates_v1_test.exe",
+    "C:\\lr16b6\\xar_confucian_challenger_graph_v1_test.exe",
+    "C:\\lr16b6\\xar_confucian_religious_title_readback_v1_test.exe"
+  ],
+  "observed_prior_settings_preserved": true,
+  "partial_mutation": false
+}

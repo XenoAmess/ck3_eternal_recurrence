@@ -1,0 +1,139 @@
+{
+  "status": "ORIGINAL_CLIENT_AND_KEEPER_HANDLES_CAPTURED_ALIVE_BEFORE_CLOSE",
+  "holder_pid": 17076,
+  "holder_create_time": 1791329961.7546897,
+  "holder_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-004/retain_helper_handles.py",
+    "bytes": 9762,
+    "sha256": "ddbafd447a2a65b913b7f7f3fe313a59df1ffb07ab52d66f6346bae05259445b"
+  },
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-runtime-and-passive-holder-inputs-20261007-001/HOLDER-REQUEST.actual.json",
+    "bytes": 5065,
+    "sha256": "21b110fa3d0857b646fa6b58924a85ff3a217781d718b9b028edf489acec7e03"
+  },
+  "results": [
+    {
+      "pid": 1368,
+      "create_time": 1791329483.15128,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-actual-diagnostic-consumer-source-20261007-001\\persistent_native_mcp_queue_28.py",
+        "serve",
+        "--profile",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/native-profile-with-exit-inventory.json",
+        "--queue",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/queue-001",
+        "--output",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001",
+        "--binding",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\mcp-binding-001\\ROOT-BINDING.json",
+        "--binding-sha256",
+        "3fe03de9817ed5f182909592f36fe74e55a95ff274a6a9f95a5295df8af3e99a"
+      ],
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-runtime-and-passive-holder-inputs-20261007-001/CLIENT-LIVE-IDENTITY.psutil.actual.json",
+        "bytes": 1432,
+        "sha256": "46332b506e1ae8f093605a230be18f58a094a8e1698b4c63131cb9d6e01435ed"
+      },
+      "role": "client",
+      "handle_value": 500,
+      "handle_local_to_holder_pid": 17076,
+      "handle_access": 1052672,
+      "process_creation_filetime_100ns": 134358030831512800,
+      "handle_retained_before_close": true,
+      "initial_wait_result": 258,
+      "initial_exit_code": 259,
+      "captured_at_utc": "2026-10-06T23:39:21.872231+00:00"
+    },
+    {
+      "pid": 5780,
+      "create_time": 1791328558.4882605,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-004/screen_lease_entry_r0016.py",
+        "--expected-head",
+        "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+        "--task-id",
+        "ck3-lyd-r16-political-cold-20261007-001",
+        "--bus-cli-sha256",
+        "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee",
+        "--output",
+        "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0016",
+        "--expected-sequence",
+        "3479"
+      ],
+      "keeper_output": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0016",
+      "READY.json": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0016/READY.json",
+        "bytes": 750,
+        "sha256": "a74775669aad279cd9cf4aac5acfb91dde6b50650edfa2ddd730db97fb7ac595"
+      },
+      "role": "keeper",
+      "handle_value": 504,
+      "handle_local_to_holder_pid": 17076,
+      "handle_access": 1052672,
+      "process_creation_filetime_100ns": 134358021584882606,
+      "handle_retained_before_close": true,
+      "initial_wait_result": 258,
+      "initial_exit_code": 259,
+      "captured_at_utc": "2026-10-06T23:39:21.872817+00:00"
+    }
+  ],
+  "client_session_id": "56ceb473d6c148819c8a046167c4d926",
+  "native_session_id": "3f4fc4cafba44dc88b85f99ba4ac1caa",
+  "source_revision": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+  "epoch_id": "r16-root-political-cold-20261007-001",
+  "screen_task": "ck3-lyd-r16-political-cold-20261007-001",
+  "game_original_handle_owner": {
+    "component": "existing SDK NativeProfileService in actual Client-owned native MCP server",
+    "native_session_id": "3f4fc4cafba44dc88b85f99ba4ac1caa",
+    "client_session_id": "56ceb473d6c148819c8a046167c4d926",
+    "server_process": {
+      "pid": 14972,
+      "create_time": 1791329487.666042,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\lr16s6\\tools\\ck3_native_profile_mcp.py",
+        "--profile",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\native-profile-with-exit-inventory.json",
+        "--confucian-challenger-tools",
+        "--grant-title-picker-tools"
+      ]
+    },
+    "server_source": {
+      "path": "C:/lr16s6/tools/ck3_native_profile_mcp.py",
+      "bytes": 77955,
+      "sha256": "b2022b3afbe6c82d3455bdea10b2e4a4560492f32b00c0f87d29fda524253882"
+    },
+    "original_attach_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/native-evidence/3f4fc4cafba44dc88b85f99ba4ac1caa/0001-attach.json",
+      "bytes": 19910,
+      "sha256": "9060e79726fe816507e5cc560e4e99d62d5c947e6424440c29f83023cd8137f9"
+    },
+    "actual_game_identity": {
+      "pid": 16416,
+      "process_create_time": 1791328744.0605772
+    },
+    "actual_connection_generation": 1,
+    "game_handle_value": null,
+    "retained_game_handle_capture_in_attach_receipt": null,
+    "authority": "Actual attached SDK session/process identity only; original attach receipt has no exported HANDLE value/capture field. Passive helper observer opens no game HANDLE."
+  },
+  "game_handle_opened": false,
+  "close_requested": false,
+  "stop_requested": false,
+  "SDK_calls": 0,
+  "game_calls": 0
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "lyd.r16.grant-trigger-cv-actual-source-readback.v1",
+  "failed_source_head": "d1848d736274c8572f74295f876b673d6078feff",
+  "root_committed_fix_head": "5759c1ca1760f0bbb5fd3a91b034590249d5beea",
+  "target": "ck3_autonomous_player/native_bridge/src/ordinary_character_interaction_v1.cpp",
+  "before_git_blob_bytes": 19801,
+  "before_git_blob_sha256": "4fac01c8bf934b77b3c4595af612dc2818bb55263f176cd68585415908446f13",
+  "after": {
+    "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ordinary_character_interaction_v1.cpp",
+    "bytes": 19789,
+    "sha256": "0226d4daf083d6b9fddf412d3d5495d781a21700ef07398a6c01f76924fcc0ee"
+  },
+  "actual_fix_exactly_expected_one_expression": true,
+  "typedef": {
+    "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_context.hpp",
+    "bytes": 5532,
+    "sha256": "473131c2e2d0d5ecbbe283f4e2efb6da6d3e86fcd2b38ae5500e73b0500f6095"
+  },
+  "typedef_line": 71,
+  "actual_failed_frozen_source": {
+    "path": "C:/lr16s3/ck3_autonomous_player/native_bridge/src/ordinary_character_interaction_v1.cpp",
+    "bytes": 19801,
+    "sha256": "4fac01c8bf934b77b3c4595af612dc2818bb55263f176cd68585415908446f13"
+  },
+  "current_dot3_native_call_proof": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-interaction-open-static-20261007-002/handler-context-router-code.asm.txt",
+    "bytes": 20675,
+    "sha256": "329acde57448e27bb3ef5fc1613d5577c93409b476a6edf3e600f4d947ce435f"
+  },
+  "proof_lines": [
+    9,
+    10,
+    11,
+    12
+  ],
+  "main_status_clean": true,
+  "no_compiler_or_test_executed": true,
+  "future_native_compilation": null,
+  "future_runtime": null
+}

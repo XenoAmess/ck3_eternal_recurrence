@@ -1,0 +1,68 @@
+{
+  "schema": "lyd.r16.numeric-real-link-supplement.actual.v1",
+  "supplement_only": true,
+  "build_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+    "--source-dir",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-event-numeric-link-experiment-20261007-001\\project-001",
+    "--build-dir",
+    "C:\\lyd16-numeric-link-supplement-20261007-001",
+    "--configuration",
+    "Release",
+    "--jobs",
+    "2",
+    "--target",
+    "xar_ck3_12002_event_window_context_test",
+    "--defender-external-candidate",
+    "R16 supplemental numeric real production-object link closure; no game or clean qualification",
+    "--configure",
+    "--build"
+  ],
+  "build_outer_exit_code": 1,
+  "elapsed_seconds": 14.058846600004472,
+  "exe": {
+    "path": "C:/lyd16-numeric-link-supplement-20261007-001/xar_ck3_12002_event_window_context_test.exe",
+    "bytes": 8551424,
+    "sha256": "8b14a7115aa9bd3a63ae49e5cd9dd8c602b1dd1f5f4ffbc6110d0ee9df30b894"
+  },
+  "numeric_argv": [
+    "C:\\lyd16-numeric-link-supplement-20261007-001\\xar_ck3_12002_event_window_context_test.exe",
+    "--numeric-value-scope"
+  ],
+  "numeric_exit_code": 0,
+  "numeric_stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/NUMERIC.actual.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "numeric_stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/NUMERIC.actual.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "actual_native_producer": {
+    "path": "C:/lyd16-numeric-link-supplement-20261007-001/native-msvc-result.json",
+    "bytes": 1810,
+    "sha256": "55a28ff98b94dced9a4e93b059b74be50d3412422699fb4487dafffea756ec78"
+  },
+  "build_stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/BUILD.actual.stdout",
+    "bytes": 3936,
+    "sha256": "af76b64660eac5b66dab0732892dbe2077475d19a54a17c28a179681e82b31f2"
+  },
+  "build_stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/BUILD.actual.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "original_inputs_before_after_unchanged": true,
+  "future_clean_build_qualification": null,
+  "game_dll_runtime_credit": null,
+  "game_calls": 0,
+  "sdk_calls": 0,
+  "main_writes": 0
+}

@@ -1,0 +1,93 @@
+{
+  "schema": "lyd.r16.numeric-verified-real-link-closure-source-candidate.v1",
+  "base_head": "fd411c3122bdfb4706322052c3639589422963ca",
+  "targets": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "before": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+        "bytes": 418154,
+        "sha256": "331466f8379b183af7be5767efbf26a3609ff5f65d885260d5582363686ddd31"
+      },
+      "frozen_failed_export": {
+        "path": "C:/lr16s5/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+        "bytes": 418154,
+        "sha256": "331466f8379b183af7be5767efbf26a3609ff5f65d885260d5582363686ddd31"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/candidate/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+        "bytes": 417675,
+        "sha256": "6992cc8e5d56dfba412a038b6478c02ea79efa8875c091eaf20fb2583c66af8b"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/fixture_real_link_closure_12004.cmake",
+      "before": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/cmake/fixture_real_link_closure_12004.cmake",
+        "bytes": 3145,
+        "sha256": "79d4438153ed9e471b0a7d5d7934b9777ccd89b84ae173b03858ac19c0ab7185"
+      },
+      "frozen_failed_export": {
+        "path": "C:/lr16s5/ck3_autonomous_player/native_bridge/cmake/fixture_real_link_closure_12004.cmake",
+        "bytes": 3145,
+        "sha256": "79d4438153ed9e471b0a7d5d7934b9777ccd89b84ae173b03858ac19c0ab7185"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/candidate/ck3_autonomous_player/native_bridge/cmake/fixture_real_link_closure_12004.cmake",
+        "bytes": 3259,
+        "sha256": "5a8e1411d3b932b7335957a1038bd7c61ee57ff61904dd1197d8b95182c1ca67"
+      }
+    }
+  ],
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/VERIFIED-REAL-LINK-CLOSURE.incremental.patch",
+    "bytes": 1768,
+    "sha256": "8e04fd6fa86f44c5d3790123be000b08cd6584ba5e8f18fca149a3b36d5628f0"
+  },
+  "git_apply_check_exit_code": 0,
+  "root_apply_argv": [
+    "git",
+    "apply",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-event-numeric-link-experiment-20261007-001\\VERIFIED-REAL-LINK-CLOSURE.incremental.patch"
+  ],
+  "existing_helper": "xar_ck3_12004_fixture_use_real_bridge",
+  "semantic_change": "Remove failed partial three-source closure; route only numeric target through existing complete production Bridge object helper. Preserve original fixture TU and CTest/numeric argv.",
+  "supplemental_experiment_inputs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INPUTS.json",
+    "bytes": 52932,
+    "sha256": "951ba36e83b9f9fc40500e6dc27c32560afd55ea539a10934dee99466024f9e1"
+  },
+  "supplemental_experiment_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/RESULT.actual.json",
+    "bytes": 2653,
+    "sha256": "bc2fcc73546dd467b26509b8983d289b30af67ce01686c4d202a1d2b6c977712"
+  },
+  "actual_supplemental_build_succeeded": true,
+  "actual_numeric_argv": [
+    "C:\\lyd16-numeric-link-supplement-20261007-001\\xar_ck3_12002_event_window_context_test.exe",
+    "--numeric-value-scope"
+  ],
+  "actual_numeric_exit_code": 0,
+  "original_outer_exit_code": 1,
+  "Defender_status": "settings_failed",
+  "Defender_refs": {
+    "manifest": {
+      "path": "C:/lyd16-numeric-link-supplement-20261007-001/defender-exe-exclusions/20261006T224048Z-f1d09253/manifest.json",
+      "bytes": 1958,
+      "sha256": "1c18cd7703245e9262755e31910d1eedacaa350e382e7e86799d0a9cafc0d603"
+    },
+    "receipt": {
+      "path": "C:/lyd16-numeric-link-supplement-20261007-001/defender-exe-exclusions/20261006T224048Z-f1d09253/receipt.json",
+      "bytes": 1776,
+      "sha256": "80f8359fb9259f9f8a5d9e15c6f190f6d4bddfcd84cc04a5f2b995113477441f"
+    }
+  },
+  "prior_partial_candidate_retained": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001",
+  "future_clean_head": null,
+  "future_clean_export": null,
+  "future_canonical_7_5_qualification": null,
+  "future_game_or_DLL_runtime_credit": null,
+  "game_calls": 0,
+  "sdk_calls": 0,
+  "main_writes": 0
+}

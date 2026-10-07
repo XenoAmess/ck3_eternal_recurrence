@@ -1,0 +1,15 @@
+{
+  "RESULT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/RESULT.json",
+    "bytes": 7133,
+    "sha256": "12b575b1f4eda40a9cc7d269002a83f9e20f0b22f835381fd993fe150e556574"
+  },
+  "INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-sdk-metadata-20261007-002/INDEX.json",
+    "bytes": 4728,
+    "sha256": "92cc973e58deb3440f09e734a1a02bad174c14106bf732bba6d10b1f3b452c18"
+  },
+  "head": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+  "tool_count": 28,
+  "runtime_acceptance": "NOT_RUN"
+}

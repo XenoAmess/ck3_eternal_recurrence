@@ -1,0 +1,117 @@
+{
+  "schema": "lyd.r16.numeric-real-link-supplement-index.v1",
+  "artifacts": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/ACTUAL-THIRD-FAILURE-READBACK.json",
+      "bytes": 25899,
+      "sha256": "59c7a8fe4c1e6ecaf64c0f373221bd13b666ad361b00d52b314366ba1c89d440"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/BUILD-ARGV.json",
+      "bytes": 728,
+      "sha256": "9df29af1813e74e1f3cc8946b262f5c3ae10dedf45b24d7018e3989dd27dfe34"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/BUILD.actual.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/BUILD.actual.stdout",
+      "bytes": 3936,
+      "sha256": "af76b64660eac5b66dab0732892dbe2077475d19a54a17c28a179681e82b31f2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/candidate/ck3_autonomous_player/native_bridge/cmake/fixture_real_link_closure_12004.cmake",
+      "bytes": 3259,
+      "sha256": "5a8e1411d3b932b7335957a1038bd7c61ee57ff61904dd1197d8b95182c1ca67"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/candidate/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 417675,
+      "sha256": "6992cc8e5d56dfba412a038b6478c02ea79efa8875c091eaf20fb2583c66af8b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/DEFENDER.actual-readback.json",
+      "bytes": 952,
+      "sha256": "19d9c557c6868c21654c1344dc5128aa185e25b6cf32477909a64dac2cd0b1ec"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/git-apply-check.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/git-apply-check.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INPUTS.json",
+      "bytes": 52932,
+      "sha256": "951ba36e83b9f9fc40500e6dc27c32560afd55ea539a10934dee99466024f9e1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INTEGRATION-MANIFEST.json",
+      "bytes": 4447,
+      "sha256": "795b9023c9f5a4f7c8883fe5074a457b13448416c7c329af37542aed1bcf6005"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/NUMERIC.actual.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/NUMERIC.actual.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/prepare_experiment.py",
+      "bytes": 4494,
+      "sha256": "67988ae788169e32684b81ed1744cdab92fe5f58d3abcf02b5a03bca34fd1d78"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/project-001/CMakeLists.txt",
+      "bytes": 22926,
+      "sha256": "9488519f282f6191681c1a25c61888cb7a9108fdbe2782545261fbff8672bbba"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/read_actual_inputs.py",
+      "bytes": 1811,
+      "sha256": "b74358fa3c1079fa1ebddc9b1a376a034ea52eb6c0a376b8a54e6012bb52142d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/read_environment.py",
+      "bytes": 1689,
+      "sha256": "16605c54c210430c8720765bc17875c38807b31e049477614b6fbc05d7da0e23"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/REPORT.zh.md",
+      "bytes": 1776,
+      "sha256": "4662977d34bf77506fa86e2d869750a33cea89c91a64d5071089dd80690c46ed"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/RESULT.actual.json",
+      "bytes": 2653,
+      "sha256": "bc2fcc73546dd467b26509b8983d289b30af67ce01686c4d202a1d2b6c977712"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/run_experiment.py",
+      "bytes": 2616,
+      "sha256": "dfc38dc7abcdd72456d8a2b1d6b77f994fde8e88234d7dc15fb00da3c52587ab"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/seal_verified_candidate.py",
+      "bytes": 7777,
+      "sha256": "5cf58767ee39c40eafac04a468b300d9a32632bf57efce35db6089010e5d8543"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/VERIFIED-REAL-LINK-CLOSURE.incremental.patch",
+      "bytes": 1768,
+      "sha256": "8e04fd6fa86f44c5d3790123be000b08cd6584ba5e8f18fca149a3b36d5628f0"
+    }
+  ],
+  "future_clean_qualification": null,
+  "future_runtime": null
+}

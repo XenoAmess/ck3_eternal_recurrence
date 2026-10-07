@@ -1,0 +1,73 @@
+{
+  "schema": "lyd.r16.diagnostic-final10-request-source-successor.v2",
+  "prior_source_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/SOURCE-ONLY-MANIFEST.json",
+    "bytes": 4749,
+    "sha256": "0d082b587c8b02e1e6cca741d4b9edeece376c57b23bff3f5ce545d04b4cc77b"
+  },
+  "prior_source_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/INDEX.json",
+    "bytes": 6067,
+    "sha256": "cacfb2921118256108c3395928d063075e8c0f2fa86cb0fc14aaa3e6c505fb8a"
+  },
+  "prepared_profile_successor": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/PREPARED-FINAL10-PROFILE-SUCCESSOR.actual.json",
+    "bytes": 2733,
+    "sha256": "dbf165e7c9dd21595f5d6f61a1a4526b0f675a5c24e16f82e001d25d7b65465e"
+  },
+  "framework002": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/AUTHOR-FRAMEWORK.actual-source.pending-checkpoint.002.json",
+    "bytes": 2313,
+    "sha256": "5a7010f35a82b97e0fb8adbb8744ecfe716d10bbf5388550c83e0dea2df5681e"
+  },
+  "frozen002": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/FROZEN-REFERENCES.actual.002.json",
+    "bytes": 4979,
+    "sha256": "05aa9fe7a8d1972591fc4bb729ba725dd077275e568f170b0fbeb502f9fee8af"
+  },
+  "materializer_v2": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/materialize_checkpoint_request_v2.py",
+    "bytes": 6657,
+    "sha256": "cc8423e0c601793970f2e2c1b3ea4a17c0b490a453545e3313bf24af2075fddf"
+  },
+  "compare_v5": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/compare_political_heirs_v5.py",
+    "bytes": 5969,
+    "sha256": "333dbcab59374fae5538c2996cb35c7eafc4a72f07b5d92af9e933cdc3c48293"
+  },
+  "actual_materializer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/ACTUAL-MATERIALIZER-002.json",
+    "bytes": 4840,
+    "sha256": "717b6b95c1ddffd6ad6b7f8b9c0b6f1b52e3f1dfbecfc0548d6d8b188bdc8f36"
+  },
+  "actual_INPUT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/AUTHOR-INPUT.actual.json",
+    "bytes": 2995,
+    "sha256": "0ea14db50fb6b010e8ec549397f8e8d620695295f64dafc3b07cd38df684331e"
+  },
+  "actual_ARGV": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/AUTHOR-ARGV.actual.json",
+    "bytes": 550,
+    "sha256": "b64bca72d6751a15429b992c5c1788431aca5b6873c0e53e6f6826755a14a53f"
+  },
+  "actual_binding": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/REQUEST-BINDING.actual.json",
+    "bytes": 32696,
+    "sha256": "158944efcb1c204ea32a5be0cae1109dc35f8aff4b38b299d3d3a86efea79571"
+  },
+  "original9_mismatch_RED": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/ACTUAL-MATERIALIZER-001.json",
+    "bytes": 4838,
+    "sha256": "c946980d4a9a74a4e1fb6b366b4beb2a7d25cf2660a92d7923039e1ecfe12110"
+  },
+  "changed_scope": "Use actual PREPARED final10 profile descriptor instead of original9 in new framework, frozen refs/materializer v2/compare v5; all existing registry/windows/source/reader/DTO/native qualification untouched",
+  "new_body_or_library_reads": 0,
+  "SDK_game_calls": 0,
+  "main_writes": 0,
+  "unchanged_tests_or_help_repeated": false,
+  "author_executed_by_this_agent": false,
+  "future_author_RESULT": null,
+  "future_three_way_comparison": null,
+  "actual_pass": null,
+  "formal_acceptance": null
+}

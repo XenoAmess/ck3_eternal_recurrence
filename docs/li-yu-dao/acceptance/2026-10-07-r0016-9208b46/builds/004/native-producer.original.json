@@ -1,0 +1,37 @@
+{
+  "schema": "xar.native.msvc-build.v1",
+  "source_dir": "C:\\lr16s6\\ck3_autonomous_player\\native_bridge",
+  "build_dir": "C:\\lr16b6",
+  "configuration": "Release",
+  "jobs": 64,
+  "targets": [
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector",
+    "xar_confucian_assembly_predicates_v1_test",
+    "xar_confucian_religious_title_readback_v1_test",
+    "xar_confucian_challenger_graph_v1_test",
+    "xar_ck3_main_thread_query_mailbox_v1_test",
+    "xar_ck3_12002_event_window_context_test"
+  ],
+  "tools": {
+    "vcvars64": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+    "cmake": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "ninja": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "cl": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe"
+  },
+  "local_ck3_contacted": false,
+  "temporary_dir": "C:\\lr16b6\\.msvc-temp",
+  "python_cache": "C:\\lr16b6\\.python-cache",
+  "configured": true,
+  "built": true,
+  "dependency_prefix_mode": "direct-2052-cp936",
+  "status": "built_defender_registration_failed",
+  "build_succeeded": true,
+  "defender_exclusions": {
+    "status": "settings_failed",
+    "manifest": "C:\\lr16b6\\defender-exe-exclusions\\20261006T230217Z-aab09956\\manifest.json",
+    "receipt": "C:\\lr16b6\\defender-exe-exclusions\\20261006T230217Z-aab09956\\receipt.json",
+    "receipt_sha256": "a2fb19dd477828fa858101f576fd4cb5719e5241f76c620ae6550495c40b8afc",
+    "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)"
+  }
+}

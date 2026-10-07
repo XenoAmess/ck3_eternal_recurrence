@@ -1,0 +1,145 @@
+{
+  "schema": "lyd.r16.permanent-canonical004-native-complete-draft-index.v6",
+  "prior_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/INDEX.json",
+    "bytes": 6545,
+    "sha256": "e23df675f0b74121e97fdab2106dd191d2a6428c61c02f32015acfa79afbb8dc"
+  },
+  "artifacts": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/APPEND-MANIFEST.draft.json",
+      "bytes": 3085,
+      "sha256": "9e7ed149b193577a9246193a84227b1c9326b74e22538461b69cecd52f516e76"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/CANONICAL004.PRODUCTS-TESTS.original-ref-extract.json",
+      "bytes": 9562,
+      "sha256": "8aaa9fd11c48bd6a9f0a276348593d2e144968135fea2fcfaf76446db68da9ae"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/DAILY-2026-10-07.append.draft.md",
+      "bytes": 8481,
+      "sha256": "3df7317b3e73b9f6c4e627dee3cc0db5c8656a621d9d2dcf419fdaef25989723"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.build.stderr.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.build.stdout.raw",
+      "bytes": 68596,
+      "sha256": "440fc85d55ad182b7d8b4041968708f0a0968d5535aa90631f49876d7d398fa0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.Defender-manifest.original.json",
+      "bytes": 5825,
+      "sha256": "422fff0f0ffa4dd1643a7a972c5af63c4b5b1c79925e9a2d5b07b83d6927a069"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.Defender-receipt.original.json",
+      "bytes": 3673,
+      "sha256": "a2fb19dd477828fa858101f576fd4cb5719e5241f76c620ae6550495c40b8afc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.native-producer.original.json",
+      "bytes": 1836,
+      "sha256": "9212eb8beb80ba09720263b6b7bfc7f4ac3ce5a150c8fd88ba8f0e7d73ba3c63"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.RESULT.original.json",
+      "bytes": 1005579,
+      "sha256": "5ad7a2a676ab1aa2d23f58e0576f259ea0d54184401c84e07d7a6d703f47a386"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/metadata.request-author.RESULT.original.json",
+      "bytes": 2280,
+      "sha256": "0ee77ba1325587f6cb3589b337ba4ca3588e9243cc54b26014d7c172f2e4f4d2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/metadata.REQUEST.original.json",
+      "bytes": 1887,
+      "sha256": "39a6ba3905196f1e8a92393495a4ce74fa62a5ce9ce1992d3d6efff2045868d3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_ck3_12002_event_window_context_test.stderr.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_ck3_12002_event_window_context_test.stdout.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_ck3_main_thread_query_mailbox_v1_test.stderr.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_ck3_main_thread_query_mailbox_v1_test.stdout.raw",
+      "bytes": 153,
+      "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_assembly_predicates_v1_test.stderr.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_assembly_predicates_v1_test.stdout.raw",
+      "bytes": 69,
+      "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_challenger_graph_v1_test.stderr.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_challenger_graph_v1_test.stdout.raw",
+      "bytes": 71,
+      "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_religious_title_readback_v1_test.stderr.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_religious_title_readback_v1_test.stdout.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/RAW-REFS.canonical004-completion-addendum.json",
+      "bytes": 12095,
+      "sha256": "f24cdf05ab806b751493d7a4835106f3c22ca8249a4ed3bbfbda02646db87173"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/REPORT.actual-canonical004-native-complete.runtime-null.draft.json",
+      "bytes": 78882,
+      "sha256": "783292dffadd7ca615876c1e6626444d669bea4bca1a7be568aa46d61ff457b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/REPORT.permanent.zh.draft.md",
+      "bytes": 11063,
+      "sha256": "70ce4cd7d1b4518b7f1e35a03a66e18dc2daae0adfa3f6404a984d85ecf774ea"
+    }
+  ],
+  "whole_product_status": "NOT_GREEN",
+  "actual_canonical004_compilation": true,
+  "actual_canonical004_focused_tests": true,
+  "canonical004_product_count": 7,
+  "canonical004_focused_test_count": 5,
+  "original_outer_exit_code": 1,
+  "Defender_registration_succeeded": false,
+  "metadata28": null,
+  "native_clean_qualification": null,
+  "actual_pass": null,
+  "main_writes": 0,
+  "compiler_test_runs": 0,
+  "SDK_game_calls": 0,
+  "checkpoint_body_reads": 0,
+  "product_binary_reads": 0
+}

@@ -1,0 +1,13 @@
+{
+  "prior_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/seal_actual_002.py",
+    "bytes": 4882,
+    "sha256": "587b6f9d924dd6d53989280a5685180240d16f8afc712a2285d55e19f79def0c"
+  },
+  "error": "KeyError: public_revision",
+  "actual_binding_has_revision": true,
+  "correction": "Only seal assertion reads existing literal revision key; no original SDK/binding/request modified",
+  "actual_request_or_author_changed": false,
+  "body_reads": 0,
+  "SDK_game_calls": 0
+}

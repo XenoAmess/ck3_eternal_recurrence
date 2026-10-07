@@ -1,0 +1,9 @@
+{
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-preparation-20261007-001/REQUEST.json",
+    "bytes": 1028071,
+    "sha256": "2f9f172a17adea4468e7bd44312f243858908d994141dbf67978a04ab69ca732"
+  },
+  "explicit_ROOT_execute": true,
+  "automatic_retry": false
+}

@@ -57,7 +57,9 @@ endfunction()
 
 # Literal failed targets from strict04; no previously GREEN fixture is replayed
 # or altered. The native producer argv and CTest declarations stay unchanged.
+# The current-.3 event fixture shares this same real adapter closure.
 foreach(target IN ITEMS
+    xar_ck3_12002_event_window_context_test
     xar_ck3_12004_religion_bindings_mailbox_test
     xar_ck3_12004_religion_costs_eligibility_mailbox_test
     xar_ck3_12004_religion_draft_bindings_mailbox_test

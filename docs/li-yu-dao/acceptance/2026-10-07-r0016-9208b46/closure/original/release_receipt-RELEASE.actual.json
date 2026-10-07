@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412"
+    },
+    "last_sequence": 3489,
+    "next_step": "",
+    "pid": 7740,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R16 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen",
+    "task_id": "ck3-lyd-r16-political-cold-20261007-001",
+    "updated_at_utc": "2026-10-06T23:42:46.813148+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 3489,
+    "event_id": "e68bd5b139df4cd4858e58a39932c5d3",
+    "timestamp_utc": "2026-10-06T23:42:46.813915+00:00",
+    "kind": "completed",
+    "task_id": "ck3-lyd-r16-political-cold-20261007-001",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R16 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412"
+    }
+  }
+}

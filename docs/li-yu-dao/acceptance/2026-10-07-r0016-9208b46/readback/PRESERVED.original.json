@@ -1,0 +1,18 @@
+{
+  "status": "ACTUAL_PAUSED_SAME_DATE_DIAGNOSTIC_CHECKPOINT_PRESERVED",
+  "preserved_checkpoint": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-checkpoint-001/content-56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc.ck3",
+    "bytes": 91676559,
+    "sha256": "56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc"
+  },
+  "checkpoint_sdk_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0007-r16-007-save.sdk-result.json",
+    "bytes": 64429,
+    "sha256": "276ac941f328738aa4257d4a5b4bd9752a425ce8804cdc2c2c669299c6649b69"
+  },
+  "date_raw": 53144712,
+  "paused": true,
+  "revision": 3,
+  "save_body_parsed": false,
+  "formal_acceptance": null
+}

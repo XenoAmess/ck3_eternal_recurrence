@@ -1,0 +1,32 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/AUTHOR-ARGV.actual.json",
+    "bytes": 550,
+    "sha256": "b64bca72d6751a15429b992c5c1788431aca5b6873c0e53e6f6826755a14a53f"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\next-cold-checkpoint-author-grant-numeric-sourceonly-20261007-001\\source-004\\author_actual_checkpoint.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-diagnostic-checkpoint-author-inputs-20261007-001\\AUTHOR-INPUT.actual.json",
+    "--read-checkpoint",
+    "--convert"
+  ],
+  "started_at_utc": "2026-10-06T23:37:43.375844+00:00",
+  "finished_at_utc": "2026-10-06T23:38:11.689777+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-execution-20261007-001/stdout",
+    "bytes": 220,
+    "sha256": "53d9e13c8ae6c8649af447feda8c456e267cda56aebeee6fb105402fa56d741f"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-execution-20261007-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

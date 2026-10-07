@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\c3-next-cold-grant-numeric-canonical-sourceonly-20261007-002\source\metadata\capture_r14_metadata_root_only.py", line 190, in <module>
+    if __name__ == '__main__': main()
+                               ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\c3-next-cold-grant-numeric-canonical-sourceonly-20261007-002\source\metadata\capture_r14_metadata_root_only.py", line 188, in main
+    print(json.dumps(execute(jread(read_ref(request_ref)), request_ref, args.create), ensure_ascii=False, indent=2))
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\c3-next-cold-grant-numeric-canonical-sourceonly-20261007-002\source\metadata\capture_r14_metadata_root_only.py", line 127, in execute
+    actual = asyncio.run(capture(profile,request['grant_title_picker_opt_in']))
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 196, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 119, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 726, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\c3-next-cold-grant-numeric-canonical-sourceonly-20261007-002\source\metadata\capture_r14_metadata_root_only.py", line 101, in capture
+    checked_tools(rows, label)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\c3-next-cold-grant-numeric-canonical-sourceonly-20261007-002\source\metadata\capture_r14_metadata_root_only.py", line 80, in checked_tools
+    elif row['name'] in GRANT_TOOLS:check_grant_tool(row)
+                                    ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\c3-next-cold-grant-numeric-canonical-sourceonly-20261007-002\source\metadata\grant_metadata_semantics.py", line 32, in check_grant_tool
+    need(all(hints.get(key) is value for key,value in expected.items()),'Stock grant annotations differ')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\c3-next-cold-grant-numeric-canonical-sourceonly-20261007-002\source\metadata\r14_metadata_semantics.py", line 10, in need
+    if not ok: raise ValueError(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Stock grant annotations differ

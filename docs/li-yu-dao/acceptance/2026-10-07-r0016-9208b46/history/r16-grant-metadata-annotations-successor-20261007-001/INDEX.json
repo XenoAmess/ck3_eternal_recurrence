@@ -1,0 +1,122 @@
+{
+  "schema": "lyd.r16.grant-metadata-hints-successor-index.v1",
+  "artifacts": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-HINTS-AND-FROZEN-AST.json",
+      "bytes": 9342,
+      "sha256": "e7e47d796d71df0ef2677618fbbe3f80008adbae442366cdee9d2b10e4d4c648"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/ACTUAL-OFFICIAL-GRANT28-METADATA.json",
+      "bytes": 29956,
+      "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/author_r14_metadata_request.py.help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/author_r14_metadata_request.py.help.stdout",
+      "bytes": 1750,
+      "sha256": "15c22e1bde0735eca9c093b2c2e89ba932f5478bcee22de9f6f91274961059a9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/capture_r14_metadata_root_only.py.help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/capture_r14_metadata_root_only.py.help.stdout",
+      "bytes": 797,
+      "sha256": "f5a6b953ee50670150755ec8f11de9c3ed91c86cc9a969c695b7c713ff19c3da"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/FOCUSED-ANNOTATIONS.actual.json",
+      "bytes": 1777,
+      "sha256": "9c48c0b84729c7461f312d99c7f118417c67bc5d1214ce99125c977723dbf76a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/INTEGRATION-MANIFEST.json",
+      "bytes": 12642,
+      "sha256": "21e7cfa5ad3f45318382f0dc87332c686afb78c7e1279ea23e1a73d8a0c59167"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/prepare_successor.py",
+      "bytes": 8295,
+      "sha256": "e579dbc8cede528f82a9c042d2589fe782f3f1c157356c499550d2b48489a431"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/probe_official_metadata.py",
+      "bytes": 2839,
+      "sha256": "40acdf56483817508aed6078e54ed62eb837304f0b25c288c101698eb4c8453f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/read_actual_sources.py",
+      "bytes": 1253,
+      "sha256": "2b648efcfeb47e3502bed41c2e38fa9867f45a2705b408457e468b4abbcd8522"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/REPORT.zh.md",
+      "bytes": 1548,
+      "sha256": "386ce54d2ddfe7ddfed12357927837da54398e72983bd459330b7b450e78a7d0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/author_r14_metadata_request.py",
+      "bytes": 4296,
+      "sha256": "76f533e2e8a89e191fd8663949a3b2305391f8eeaf75e669fe716c66b2fffe82"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/BASELINE.inherited.json",
+      "bytes": 738,
+      "sha256": "ea235b531c0d12eb9a4cbecd00f982717255529db3cfe21b9b6e0dcea9ed18f1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/capture_r14_metadata_root_only.py",
+      "bytes": 13924,
+      "sha256": "f25aa5d6e392c9cf580435288edf7bfc56eb8fa80093a3dff7835bd2c122791b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/grant_metadata_semantics.py",
+      "bytes": 7322,
+      "sha256": "f603ce5395a2a6ca857bce925438e45ad93c51b9da5ca2b4d1224572f894d46b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/r13_clean_native_gate.py",
+      "bytes": 12912,
+      "sha256": "c499b59b5edecca8a61a1e3b4d39e08d1b86685dce4a234fefc20506ad041b9f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/r13_metadata_common.py",
+      "bytes": 4540,
+      "sha256": "c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/r14_clean_native_gate.py",
+      "bytes": 15644,
+      "sha256": "d3850e5f951a02c5fe2608e78dea8324bd025a00dbee0e60358854cf66d3225e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/r14_metadata_common.py",
+      "bytes": 4540,
+      "sha256": "c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/r14_metadata_semantics.py",
+      "bytes": 7480,
+      "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/root_build_reviewed_clean.py",
+      "bytes": 25309,
+      "sha256": "0b1291d6147ea69945b1627c2790f370e93da7996b0a38616e16640f4804801b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-metadata-annotations-successor-20261007-001/source/metadata/source_preparation_support.py",
+      "bytes": 9013,
+      "sha256": "de1aad4e6fd5497acdf0c975e2faccd1cb67cafcd5d77f6d305df0a5375defdf"
+    }
+  ],
+  "future_ROOT_capture": null,
+  "runtime_credit": null
+}

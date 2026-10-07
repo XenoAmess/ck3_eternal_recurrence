@@ -1,0 +1,51 @@
+{
+  "schema": "lyd.root.postrelease-process-absence.v1",
+  "observed_at_utc": "2026-10-06T23:45:10.288196+00:00",
+  "original_identities": [
+    {
+      "role": "game",
+      "pid": 16416,
+      "create_time": 1791328744.0605772,
+      "observed_create_time": null,
+      "same_original_identity_alive": false,
+      "status": "NO_CURRENT_PID"
+    },
+    {
+      "role": "client",
+      "pid": 1368,
+      "create_time": 1791329483.15128,
+      "observed_create_time": null,
+      "same_original_identity_alive": false,
+      "status": "NO_CURRENT_PID"
+    },
+    {
+      "role": "keeper",
+      "pid": 5780,
+      "create_time": 1791328558.4882605,
+      "observed_create_time": null,
+      "same_original_identity_alive": false,
+      "status": "NO_CURRENT_PID"
+    },
+    {
+      "role": "holder",
+      "pid": 17076,
+      "create_time": 1791329961.7546897,
+      "observed_create_time": null,
+      "same_original_identity_alive": false,
+      "status": "NO_CURRENT_PID"
+    },
+    {
+      "role": "server",
+      "pid": 14972,
+      "create_time": 1791329487.666042,
+      "observed_create_time": null,
+      "same_original_identity_alive": false,
+      "status": "NO_CURRENT_PID"
+    }
+  ],
+  "same_original_identities_absent": true,
+  "no_current_managed_game_or_native_services": true,
+  "remaining_managed_game_or_native_services": [],
+  "errors": [],
+  "process_reopened_for_exit_code": false
+}

@@ -1,0 +1,98 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001\\materialize_checkpoint_request_v2.py",
+    "--checkpoint-receipt",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0007-r16-007-save.native-01.json",
+    "--checkpoint-receipt-sha256",
+    "c74284e17ddfb1a79bb8b729591b42f9c9015cb011873330efd27eb610809158",
+    "--checkpoint-sdk",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0007-r16-007-save.sdk-result.json",
+    "--checkpoint-sdk-sha256",
+    "276ac941f328738aa4257d4a5b4bd9752a425ce8804cdc2c2c669299c6649b69",
+    "--G2-receipt",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0008-r16-008-G2-after-save.native-01.json",
+    "--G2-receipt-sha256",
+    "883ff8e7a140a7163b55b4a7cb99bfbc5ded045542711041da697ddac12a0e88",
+    "--G2-sdk",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0008-r16-008-G2-after-save.sdk-result.json",
+    "--G2-sdk-sha256",
+    "d6a500c9c880e70c5901ec9e0070f994b2a47b99e5c63a5f042859fe2d2d3cd2",
+    "--G3-receipt",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0009-r16-009-G3-after-save.native-01.json",
+    "--G3-receipt-sha256",
+    "3ad062abad0e9a726f962c6dd10d719f377905fc2d55b1873014ef787955530b",
+    "--G3-sdk",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0009-r16-009-G3-after-save.sdk-result.json",
+    "--G3-sdk-sha256",
+    "691b534e2209815b8f31177386d7cd4e0a5b0da5b35879f8edbe7fe3e2d03e52",
+    "--preserved-checkpoint",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-checkpoint-001/content-56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc.ck3",
+    "--author-output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\cold-diagnostic-readback-001",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-diagnostic-checkpoint-author-inputs-20261007-001"
+  ],
+  "exit_code": 0,
+  "original_JSON_refs": {
+    "checkpoint": {
+      "SDK": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0007-r16-007-save.sdk-result.json",
+        "bytes": 64429,
+        "sha256": "276ac941f328738aa4257d4a5b4bd9752a425ce8804cdc2c2c669299c6649b69"
+      },
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0007-r16-007-save.native-01.json",
+        "bytes": 30479,
+        "sha256": "c74284e17ddfb1a79bb8b729591b42f9c9015cb011873330efd27eb610809158"
+      }
+    },
+    "G2": {
+      "SDK": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0008-r16-008-G2-after-save.sdk-result.json",
+        "bytes": 61859,
+        "sha256": "d6a500c9c880e70c5901ec9e0070f994b2a47b99e5c63a5f042859fe2d2d3cd2"
+      },
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0008-r16-008-G2-after-save.native-01.json",
+        "bytes": 29020,
+        "sha256": "883ff8e7a140a7163b55b4a7cb99bfbc5ded045542711041da697ddac12a0e88"
+      }
+    },
+    "G3": {
+      "SDK": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0009-r16-009-G3-after-save.sdk-result.json",
+        "bytes": 9213,
+        "sha256": "691b534e2209815b8f31177386d7cd4e0a5b0da5b35879f8edbe7fe3e2d03e52"
+      },
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/mcp-client-001/0009-r16-009-G3-after-save.native-01.json",
+        "bytes": 4209,
+        "sha256": "3ad062abad0e9a726f962c6dd10d719f377905fc2d55b1873014ef787955530b"
+      }
+    }
+  },
+  "preservation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-016/cold-diagnostic-checkpoint-001/PRESERVED.actual.json",
+    "bytes": 778,
+    "sha256": "6d6ed8d6a088a49f63f79589d39d24cb4a77094548b499dca81c35fe4c553c93"
+  },
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/actual-materializer-002.stdout",
+    "bytes": 800,
+    "sha256": "db79db44fe5ddfeae70d924ac77b78e5b7cc36c53469aeaa65e54b44a375beee"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/actual-materializer-002.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "checkpoint_body_reads": 0,
+  "author_executed": false,
+  "SDK_game_calls": 0,
+  "main_writes": 0,
+  "formal_acceptance": null
+}

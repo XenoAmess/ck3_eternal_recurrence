@@ -1,0 +1,1690 @@
+{
+  "schema": "lyd.r16.failed-native-build-cvfix-permanent-report-draft.v1",
+  "created_utc": "2026-10-06T22:19:11.373410+00:00",
+  "status": "EXTERNAL_PERMANENT_REPORT_DRAFT_NOT_IN_MAIN",
+  "whole_product_status": "NOT_GREEN",
+  "failed_build": {
+    "RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/RESULT.json",
+      "bytes": 997891,
+      "sha256": "2862922f15675377b6295b70cfccf0b052f6acb3a8606a86d430567f445e5d9f"
+    },
+    "source_HEAD": "d1848d736274c8572f74295f876b673d6078feff",
+    "native_tree": "6d864da423d213558c0e88859c719d43d8097955",
+    "clean_export": "C:/lr16s3",
+    "build_dir": "C:\\lr16b3",
+    "actual_compilation_pass": false,
+    "actual_focused_tests_pass": false,
+    "original_outer_exit_code": 1,
+    "canonical_producer": {
+      "path": "C:/lr16b3/native-msvc-result.json",
+      "bytes": 1857,
+      "sha256": "aa80f892915992105650dc7d6edc8db466fbed8fd96f05492508db7e5c7d1a85"
+    },
+    "raw_CMakeCache": {
+      "path": "C:/lr16b3/CMakeCache.txt",
+      "bytes": 38218,
+      "sha256": "3192c61cc52d17b20ac33a2e7cf2971805e7d95ab66ff5c0f63b06e86ede54f9"
+    },
+    "configured": true,
+    "build_succeeded": false,
+    "linked_products": {},
+    "runtime_library": null,
+    "focused_tests_executed": [],
+    "game_calls": 0,
+    "native_pipe_calls": 0,
+    "source_before_after_unchanged": true,
+    "actual_private_ON_count": 12,
+    "exact_private_flags": true,
+    "C2664": {
+      "original_readback": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-C2664-READBACK.json",
+        "bytes": 3079,
+        "sha256": "e5983886e5099592faeea7896565eba867aecfa36ed7dfb9430acd78b123398f"
+      },
+      "exact_cp936_excerpt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/C2664.actual-cp936-excerpt.json",
+        "bytes": 7359,
+        "sha256": "94e4efd3b2056063ec3b11ce9522bff376c11a8e6c9dc3adf31d1d043468906f"
+      },
+      "template_error_line": 32,
+      "call_instance_line": 314,
+      "expected_signature": "bool (*)(void *, const void *)",
+      "cause": "first argument const void* cannot bind to existing void* first parameter"
+    }
+  },
+  "bounded_cv_fix": {
+    "source_HEAD": "5759c1ca1760f0bbb5fd3a91b034590249d5beea",
+    "source_readback": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-FIX-READBACK.json",
+      "bytes": 1709,
+      "sha256": "9fd23afccf9d11904d062ab17c2c11fc1146af9953daa63109df58ed29bdce86"
+    },
+    "actual_source_target": "ck3_autonomous_player/native_bridge/src/ordinary_character_interaction_v1.cpp",
+    "failed_frozen_source": {
+      "path": "C:/lr16s3/ck3_autonomous_player/native_bridge/src/ordinary_character_interaction_v1.cpp",
+      "bytes": 19801,
+      "sha256": "4fac01c8bf934b77b3c4595af612dc2818bb55263f176cd68585415908446f13"
+    },
+    "fixed_frozen_source": {
+      "path": "C:/lr16s4/ck3_autonomous_player/native_bridge/src/ordinary_character_interaction_v1.cpp",
+      "bytes": 19789,
+      "sha256": "0226d4daf083d6b9fddf412d3d5495d781a21700ef07398a6c01f76924fcc0ee"
+    },
+    "changed_source_lines": [
+      315
+    ],
+    "one_expression_only": true,
+    "shared_typedef_changed": false,
+    "trigger_TRUE_requirement_changed": false,
+    "native_trigger_executed_here": false,
+    "fresh_export_REPORT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-head-export-20261007-004/REPORT.json",
+      "bytes": 23168,
+      "sha256": "d84314584ee086f3f78d7989b91d0d7d019ab13adac29dd1e7bfcd4d3c1bf6c9"
+    },
+    "fresh_export_root": "C:/lr16s4",
+    "fresh_native_tree": "497a50ae706274733b89b9374bc39a33b8f603c6",
+    "production_bytes_equal_reviewed": true,
+    "new_compilation_credit": null
+  },
+  "second_failed_build": {
+    "RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/RESULT.json",
+      "bytes": 998733,
+      "sha256": "7aebde9110d357a8d36caa9c75b9b5288e976543ba121a804ba785de061b42bc"
+    },
+    "source_HEAD": "5759c1ca1760f0bbb5fd3a91b034590249d5beea",
+    "source_export": "C:/lr16s4",
+    "native_tree": "497a50ae706274733b89b9374bc39a33b8f603c6",
+    "build_dir": "C:\\lr16b4",
+    "actual_compilation_pass": false,
+    "actual_focused_tests_pass": false,
+    "original_outer_exit_code": 1,
+    "canonical_producer": {
+      "path": "C:/lr16b4/native-msvc-result.json",
+      "bytes": 1866,
+      "sha256": "78adb764521c9f721d29c092c29966b92726a0253840d235635e7eb63663f7fb"
+    },
+    "partial_products_original": {
+      "xar_ck3_bridge_injector": {
+        "path": "C:/lr16b4/xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "df011e6015a78f8539b4c50488e78a56d96be35eb0f67d8d7fc6c82bbffde90c"
+      },
+      "xar_confucian_assembly_predicates_v1_test": {
+        "path": "C:/lr16b4/xar_confucian_assembly_predicates_v1_test.exe",
+        "bytes": 119808,
+        "sha256": "0d847e365929ca5b8832a9ee21349dbd485dde60563615b65ab740d5fab4b410"
+      },
+      "xar_confucian_religious_title_readback_v1_test": {
+        "path": "C:/lr16b4/xar_confucian_religious_title_readback_v1_test.exe",
+        "bytes": 114688,
+        "sha256": "59ca64d65a30685a307d86c8bb5a92160ff21dcc52fd96df72d550ce9f789122"
+      }
+    },
+    "partial_product_count": 3,
+    "bridge_DLL_present_in_RESULT": false,
+    "new_runtime_library_original_ref_not_reopened": {
+      "path": "C:/lr16b4/xar_ck3_12002_runtime.lib",
+      "bytes": 85853100,
+      "sha256": "fbce63e8b7ca3f46160144e294c4045f543f11d116eeaf17437f1ff9206172b8"
+    },
+    "actual_focused_tests": [],
+    "exact_private_flags": true,
+    "private_ON_count": 12,
+    "game_calls": 0,
+    "native_pipe_calls": 0,
+    "LNK2019_LNK1120_original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/LNK2019.actual-cp936-LF-excerpt.json",
+      "bytes": 3580,
+      "sha256": "bbc361aeb9a9eecd3bf23ebab88cc38029136740eab386dde273a3bc7e61c157"
+    },
+    "CMake_target_remediation_review": "ROOT assigned c3 source review; no applied/compiled candidate claim authored here",
+    "future_third_HEAD": null,
+    "LNK2019_physical_line_numbers": [
+      524,
+      525,
+      526
+    ]
+  },
+  "future_third_build_context_only": {
+    "HEAD": "fd411c3122bdfb4706322052c3639589422963ca",
+    "export": null,
+    "build_RESULT": null,
+    "DLL": null,
+    "expected_output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-root-clean-native-build-20261007-003",
+    "partial_output_read": false,
+    "observed_actual_RESULT": null,
+    "all_credit": {
+      "compile_RESULT": null,
+      "actual_compilation_pass": null,
+      "actual_focused_tests_pass": null,
+      "native_clean_qualification": null,
+      "actual_metadata28": null,
+      "DLL": null,
+      "profile": null,
+      "game_PID": null,
+      "session": null,
+      "actual_native_numeric_scopes": null,
+      "cold_diagnostic_pass": null,
+      "factory_remediation_verified": null,
+      "whole_product_PASS": null
+    },
+    "HEAD_credit": "actual committed source only; no native result",
+    "historical_pending_only_superseded_by_actual_third_failure": true
+  },
+  "R15_original_business_RED": {
+    "preserved": true,
+    "source_research_report": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-political-heir-remediation-sourceonly-20261007-001/REPORT.source-only.json",
+      "bytes": 3700,
+      "sha256": "627c88e57588ac828df09105381a11faa7d003fd6dfce7aa0c80b61f2f3a7475"
+    },
+    "B4": {
+      "artifact": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B4-readback-001/STATE.json",
+        "bytes": 628599,
+        "sha256": "559e3ede1ef347462cf24134eaae3a5da5e4e0a79d2b12ef2bfd928258886520"
+      },
+      "stage": "success_postcommit",
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": null,
+        "result_code": 1
+      },
+      "checkpoint_sha256": "3b22322b498572b845394d19f25c5bd16013b736baf186bec7b0d5e7891c5256",
+      "checks": {
+        "total": 48,
+        "matches": 43,
+        "failed_names": [
+          "political_2230_full_AST_protected",
+          "political_2231_full_AST_protected",
+          "political_2235_full_AST_protected",
+          "political_2262_full_AST_protected",
+          "political_2264_full_AST_protected"
+        ]
+      },
+      "assessment": "OBSERVED_CONTRACT_MISMATCH",
+      "actual_pass": null,
+      "formal_mandate_credit": null
+    },
+    "B5": {
+      "artifact": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B5-readback-001/STATE.json",
+        "bytes": 628599,
+        "sha256": "a58f0980a0b8c7e699f98ac00c64a1001c6bbbcc3f16a52796687249e7b3accf"
+      },
+      "stage": "success_postcommit",
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": null,
+        "result_code": 1
+      },
+      "checkpoint_sha256": "6b96471c080679860b5c110cd1cab95a11928d3f64793fd776f5151c3f659371",
+      "checks": {
+        "total": 48,
+        "matches": 43,
+        "failed_names": [
+          "political_2230_full_AST_protected",
+          "political_2231_full_AST_protected",
+          "political_2235_full_AST_protected",
+          "political_2262_full_AST_protected",
+          "political_2264_full_AST_protected"
+        ]
+      },
+      "assessment": "OBSERVED_CONTRACT_MISMATCH",
+      "actual_pass": null,
+      "formal_mandate_credit": null
+    },
+    "B5_typed_false_checks": [
+      "political_2230_full_AST",
+      "political_2231_full_AST",
+      "political_2235_full_AST",
+      "political_2262_full_AST",
+      "political_2264_full_AST",
+      "actor_complete_protected_landed_projection"
+    ],
+    "cache_cause": null,
+    "factory_remediation_qualified": null
+  },
+  "future_cold_diagnostic": {
+    "plan": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-political-heir-remediation-sourceonly-20261007-001/FUTURE-COLD-DIAGNOSTIC.plan.json",
+      "bytes": 7925,
+      "sha256": "86dc999d8b3613aa655122bbad1bfa913c3b3bf9f1fc99d26bdfcb9b8364a4a4"
+    },
+    "prepared_source_refs": {
+      "SOURCE-LINEAGE.json": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-003/SOURCE-LINEAGE.json",
+        "bytes": 5551,
+        "sha256": "36874cd7d5d9af71692162398125e49eef4e531559b9e9add0d8cafb5a5a4e33"
+      },
+      "BASELINE-RED-B5.actual-input.json": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-003/BASELINE-RED-B5.actual-input.json",
+        "bytes": 2215,
+        "sha256": "d0fe32c4f6a7e4cf2cb1db0fcb77b9ac771482c2381b52cce76a303678277baa"
+      },
+      "FUTURE-INPUTS.pending.json": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-003/FUTURE-INPUTS.pending.json",
+        "bytes": 1520,
+        "sha256": "897e964248f24faa5c37d0d709a039e70e6b99b25e84e31350de301d5859c7b6"
+      },
+      "DEPENDENCIES.json": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-003/DEPENDENCIES.json",
+        "bytes": 2597,
+        "sha256": "3f83f2711bb25efbaf62fd998765eb7c16620cbd3313bf20730cde2256bfa453"
+      },
+      "diagnostic_baseline_adapter.py": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-003/diagnostic_baseline_adapter.py",
+        "bytes": 4397,
+        "sha256": "c3068528432bcc7c16ca63aff9b5461cd113a40040274f2eb9a987190f0053b2"
+      },
+      "compare_political_heirs.py": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-003/compare_political_heirs.py",
+        "bytes": 4383,
+        "sha256": "00dc19c17d211066b73d05e07f3e081c2a71e2ebb84f221a85b1bba643fb4b51"
+      }
+    },
+    "actual_declared_baseline_small_JSON": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-003/BASELINE-RED-B5.actual-input.json",
+      "bytes": 2215,
+      "sha256": "d0fe32c4f6a7e4cf2cb1db0fcb77b9ac771482c2381b52cce76a303678277baa"
+    },
+    "historical_B5_save_descriptor_no_body_read": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-015/formal-r3-B5-save-001/content-6b96471c080679860b5c110cd1cab95a11928d3f64793fd776f5151c3f659371.ck3",
+      "bytes": 91676566,
+      "sha256": "6b96471c080679860b5c110cd1cab95a11928d3f64793fd776f5151c3f659371"
+    },
+    "first_branch": "Reload exact failed R15 B5 and compare native G2/G3 plus saved political heirs, with no formal/factory effects",
+    "second_branch": "Independent original0240 reload after genuine first-run closure, same approved source/native and no factory effects",
+    "ordering_candidate": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-factory-head-before-holder-candidate-20261007-002/INDEX.json",
+      "bytes": 2147,
+      "sha256": "c27a166ea7f1013bcfac0df87be5ccad6875b339225fa92b5001c8425918a92b"
+    },
+    "ordering_candidate_selected": false,
+    "ordering_candidate_runtime_credit": null,
+    "new_runtime_observation": null,
+    "diagnostic_result": null,
+    "historical_R15_not_reclassified": true
+  },
+  "open_kaishek_preflight": {
+    "status": "N/A",
+    "exact_game_executable_reference_from_actual_ROOT_request": {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+      "bytes": 101039736,
+      "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+    },
+    "actual_ROOT_request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-preparation-20261007-001/REQUEST.json",
+      "bytes": 1028071,
+      "sha256": "2f9f172a17adea4468e7bd44312f243858908d994141dbf67978a04ab69ca732"
+    },
+    "scope": [
+      "native C++ cv qualifier/typecheck with MSVC",
+      "native host-memory ABI and CK3 .3 trigger/router",
+      "fresh process save loading and political heir cache recalculation"
+    ],
+    "reason": "The DSL interpreter cannot model MSVC C++ type checking, host native memory or CK3 engine lifecycle/heir cache recalculation. Source/AST checks and compiler/engine receipts remain distinct.",
+    "source_refs": [
+      {
+        "path": "C:/lr16s3/ck3_autonomous_player/native_bridge/src/ordinary_character_interaction_v1.cpp",
+        "bytes": 19801,
+        "sha256": "4fac01c8bf934b77b3c4595af612dc2818bb55263f176cd68585415908446f13"
+      },
+      {
+        "path": "C:/lr16s4/ck3_autonomous_player/native_bridge/src/ordinary_character_interaction_v1.cpp",
+        "bytes": 19789,
+        "sha256": "0226d4daf083d6b9fddf412d3d5495d781a21700ef07398a6c01f76924fcc0ee"
+      },
+      {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_context.hpp",
+        "bytes": 5532,
+        "sha256": "473131c2e2d0d5ecbbe283f4e2efb6da6d3e86fcd2b38ae5500e73b0500f6095"
+      },
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-interaction-open-static-20261007-002/handler-context-router-code.asm.txt",
+        "bytes": 20675,
+        "sha256": "329acde57448e27bb3ef5fc1613d5577c93409b476a6edf3e600f4d947ce435f"
+      },
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-003/diagnostic_baseline_adapter.py",
+        "bytes": 4397,
+        "sha256": "c3068528432bcc7c16ca63aff9b5461cd113a40040274f2eb9a987190f0053b2"
+      }
+    ],
+    "open_kaishek_invoked": false,
+    "source_or_native_runtime_PASS_granted": null
+  },
+  "raw_preservation": {
+    "RESULT.failed.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/RESULT.json",
+        "bytes": 997891,
+        "sha256": "2862922f15675377b6295b70cfccf0b052f6acb3a8606a86d430567f445e5d9f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/RESULT.failed.original.json",
+        "bytes": 997891,
+        "sha256": "2862922f15675377b6295b70cfccf0b052f6acb3a8606a86d430567f445e5d9f"
+      }
+    },
+    "build.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/build.stdout",
+        "bytes": 37189,
+        "sha256": "8512ddbf8ccb1dcd70b6a51ed1588c2052d27598b0a1e14e89815191c691e8cc"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/build.stdout.raw",
+        "bytes": 37189,
+        "sha256": "8512ddbf8ccb1dcd70b6a51ed1588c2052d27598b0a1e14e89815191c691e8cc"
+      }
+    },
+    "build.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/build.stderr",
+        "bytes": 506,
+        "sha256": "c7dde9ed3b72ff0b47633950e88c007f3db36933255e0717788244b5abebd0bf"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/build.stderr.raw",
+        "bytes": 506,
+        "sha256": "c7dde9ed3b72ff0b47633950e88c007f3db36933255e0717788244b5abebd0bf"
+      }
+    },
+    "CVFIX.INDEX.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-trigger-cv-fix-sourceonly-20261007-001/INDEX.json",
+        "bytes": 1417,
+        "sha256": "b63b55637c78bd945701ff7cba8420e466bdfa4c146cf870d652c53993446a07"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/CVFIX.INDEX.original.json",
+        "bytes": 1417,
+        "sha256": "b63b55637c78bd945701ff7cba8420e466bdfa4c146cf870d652c53993446a07"
+      }
+    },
+    "C2664.READBACK.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-C2664-READBACK.json",
+        "bytes": 3079,
+        "sha256": "e5983886e5099592faeea7896565eba867aecfa36ed7dfb9430acd78b123398f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/C2664.READBACK.original.json",
+        "bytes": 3079,
+        "sha256": "e5983886e5099592faeea7896565eba867aecfa36ed7dfb9430acd78b123398f"
+      }
+    },
+    "CVFIX.READBACK.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-grant-trigger-cv-fix-sourceonly-20261007-001/ACTUAL-FIX-READBACK.json",
+        "bytes": 1709,
+        "sha256": "9fd23afccf9d11904d062ab17c2c11fc1146af9953daa63109df58ed29bdce86"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/CVFIX.READBACK.original.json",
+        "bytes": 1709,
+        "sha256": "9fd23afccf9d11904d062ab17c2c11fc1146af9953daa63109df58ed29bdce86"
+      }
+    },
+    "canonical-producer.failed.original.json": {
+      "original": {
+        "path": "C:/lr16b3/native-msvc-result.json",
+        "bytes": 1857,
+        "sha256": "aa80f892915992105650dc7d6edc8db466fbed8fd96f05492508db7e5c7d1a85"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/canonical-producer.failed.original.json",
+        "bytes": 1857,
+        "sha256": "aa80f892915992105650dc7d6edc8db466fbed8fd96f05492508db7e5c7d1a85"
+      }
+    },
+    "ROOT-INVOCATION.failed.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-001/ROOT-INVOCATION.json",
+        "bytes": 300,
+        "sha256": "d2610f42d73aaf60cd7f9e56294186cf5f831854cf22a07db18d5e42581918f7"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/ROOT-INVOCATION.failed.original.json",
+        "bytes": 300,
+        "sha256": "d2610f42d73aaf60cd7f9e56294186cf5f831854cf22a07db18d5e42581918f7"
+      }
+    },
+    "SOURCE-EXPORT004.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-head-export-20261007-004/REPORT.json",
+        "bytes": 23168,
+        "sha256": "d84314584ee086f3f78d7989b91d0d7d019ab13adac29dd1e7bfcd4d3c1bf6c9"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/SOURCE-EXPORT004.original.json",
+        "bytes": 23168,
+        "sha256": "d84314584ee086f3f78d7989b91d0d7d019ab13adac29dd1e7bfcd4d3c1bf6c9"
+      }
+    },
+    "RESULT.second-link-failed.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/RESULT.json",
+        "bytes": 998733,
+        "sha256": "7aebde9110d357a8d36caa9c75b9b5288e976543ba121a804ba785de061b42bc"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/RESULT.second-link-failed.original.json",
+        "bytes": 998733,
+        "sha256": "7aebde9110d357a8d36caa9c75b9b5288e976543ba121a804ba785de061b42bc"
+      }
+    },
+    "build.second.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/build.stdout",
+        "bytes": 71139,
+        "sha256": "16f81b56f9601a2daa5624a5b428e71bcf92625c16b04cf511dd7e5374c39b90"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/build.second.stdout.raw",
+        "bytes": 71139,
+        "sha256": "16f81b56f9601a2daa5624a5b428e71bcf92625c16b04cf511dd7e5374c39b90"
+      }
+    },
+    "build.second.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/build.stderr",
+        "bytes": 515,
+        "sha256": "f2b9e7be7ce1dadfe28b4fe519758ebd973d07a460298f277f97da746ab4daa8"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/build.second.stderr.raw",
+        "bytes": 515,
+        "sha256": "f2b9e7be7ce1dadfe28b4fe519758ebd973d07a460298f277f97da746ab4daa8"
+      }
+    },
+    "canonical-producer.second-link-failed.original.json": {
+      "original": {
+        "path": "C:/lr16b4/native-msvc-result.json",
+        "bytes": 1866,
+        "sha256": "78adb764521c9f721d29c092c29966b92726a0253840d235635e7eb63663f7fb"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/raw/canonical-producer.second-link-failed.original.json",
+        "bytes": 1866,
+        "sha256": "78adb764521c9f721d29c092c29966b92726a0253840d235635e7eb63663f7fb"
+      }
+    }
+  },
+  "daily_append_topology": {
+    "target": "docs/autonomous-agent-progress/daily/2026-10-07.md",
+    "actual_base": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/autonomous-agent-progress/daily/2026-10-07.md",
+      "bytes": 31413,
+      "sha256": "8aadb27fd0af7df0c00897fa8a4e7e9d898a2f4dd08d3acf85a333cb59f2927b"
+    },
+    "operation": "append ROOT-reviewed bounded R16 failure/fix/diagnostic paragraph only; existing text and older evidence unchanged",
+    "draft": "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-build-cvfix-daily-draft-20261008-001\\draft-002\\DAILY-2026-10-07.append.draft.md",
+    "applied_to_main": false
+  },
+  "work_boundary": {
+    "main_writes": 0,
+    "game_SDK_bus_native_calls": 0,
+    "checkpoint_body_reads": 0,
+    "compiler_or_tests_run": 0,
+    "second_completed_RESULT_read_only": true,
+    "future_third_partial_read": false,
+    "link_fix_source_bytes_read_only": true,
+    "third_completed_RESULT_read_only": true,
+    "partial_product_binaries_read": false,
+    "raw_log_bytes_read": 90977,
+    "new_tests_compiler_runs": 0,
+    "supplemental_existing_RESULT_read_only": true,
+    "actual_canonical_submission_REQUEST_read_only": true,
+    "completed_export006_read_only": true,
+    "main_two_source_files_readonly": true,
+    "canonical004_completed_RESULT_read_only": true,
+    "product_binaries_DLL_EXE_objects_runtime_library_reads": 0,
+    "metadata_partial_CHECK_RESULT_read": false
+  },
+  "actual_pass": null,
+  "formal_mandate_credit": null,
+  "prior_draft": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-002/REPORT.actual-failure-source-fix.future-null.draft.json",
+    "bytes": 23713,
+    "sha256": "6ba687d77f1518776ec4f0aafce84b54b8db06f4347946cb5a34e9b2e075a8be"
+  },
+  "target_only_link_source_fix": {
+    "source_HEAD_reported_committed_clean_by_ROOT": "fd411c3122bdfb4706322052c3639589422963ca",
+    "actual_current_CMake": {
+      "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 418154,
+      "sha256": "331466f8379b183af7be5767efbf26a3609ff5f65d885260d5582363686ddd31"
+    },
+    "approved_source_only_INDEX": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/INDEX.json",
+      "bytes": 2691,
+      "sha256": "2fd0e8256591de814bb87abec2e5309b7618f8b6bd6417acfdcfd799fe8e49ce"
+    },
+    "approved_source_only_manifest": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/INTEGRATION-MANIFEST.json",
+      "bytes": 3610,
+      "sha256": "66f95f448f9439e69487ef6b31b1a45f512afbeae1111997721f9077a462c3aa"
+    },
+    "exact_1110_byte_patch": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/EVENT-NUMERIC-LINK-CLOSURE.incremental.patch",
+      "bytes": 1110,
+      "sha256": "76fbb1ffe89a04fc451396ac31ebc0ff490bdf6e1ed3095f823978d29e3635ae"
+    },
+    "actual_file_equals_exact_approved_candidate": true,
+    "target_scope": "Only fixture_name == ck3_12002_event_window_context_test in existing generated fixture loop",
+    "three_existing_production_sources": [
+      {
+        "symbol": "xar::ck3_11906::ProjectPlayerFactionAlertsSourceSampleV1",
+        "definition": {
+          "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/player_faction_alerts_v1.cpp",
+          "bytes": 15991,
+          "sha256": "7ddff2d65ddb2a273a2b9458216d39330f61d51f69358b17c294327110b95183"
+        },
+        "line": 231
+      },
+      {
+        "symbol": "xar::ck3_11906::SerializePlayerFactionAlertsWithProvenanceV1",
+        "definition": {
+          "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/player_faction_alerts_v1_serializer.cpp",
+          "bytes": 27352,
+          "sha256": "7b33bed910248c4ce5439766137bacfec4dd77d7ea0c46f7325b2adf0d725372"
+        },
+        "line": 566
+      },
+      {
+        "symbol": "xar::game::GameAdapter::supports_snapshot",
+        "definition": {
+          "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+          "bytes": 34533,
+          "sha256": "baef1ea76740f0816d6edcef68caf49e5450cf4c7a9905c6c6438427f2b94afc"
+        },
+        "line": 321
+      }
+    ],
+    "target_only_msvc_options": {
+      "compile": [
+        "/Gy"
+      ],
+      "link": [
+        "/OPT:REF"
+      ]
+    },
+    "no_business_mod_files_changed_by_this_candidate": true,
+    "game_runtime70_zip": {
+      "ROOT_reported_unchanged": true,
+      "no_zip_or_mod_body_rebuild_here": true
+    },
+    "source_only_git_apply_check_from_original_manifest": 0,
+    "ROOT_reported_applied_diff_check_exit_code": 0,
+    "compiler_or_tests_executed_here": false,
+    "link_pass": false,
+    "fresh_source_export005": {
+      "destination": "C:/lr16s5",
+      "REPORT": null,
+      "status": "ROOT_REPORTED_IN_FLIGHT; partial not read"
+    },
+    "fresh_build003": {
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-003/RESULT.json",
+        "bytes": 999201,
+        "sha256": "2f700317442a15daa71902a69eb5538591c33c90eb814dc52ec2eb03cdc7000f"
+      },
+      "build_dir": "C:\\lr16b5",
+      "compilation": false,
+      "focused_tests": false,
+      "qualification": null,
+      "metadata": null,
+      "game_PID": null,
+      "runtime_PASS": null,
+      "completed_failed_LINK": true
+    }
+  },
+  "created_utc_addendum": "2026-10-06T22:38:52.771207+00:00",
+  "prior_draft003": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-003/REPORT.actual-failures-source-fixes.future-build-null.draft.json",
+    "bytes": 27825,
+    "sha256": "c79bac277d30ebe53b2815077a17606febf4b2e9bbb47b683ce2c609dc0d0c55"
+  },
+  "third_failed_build": {
+    "RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-003/RESULT.json",
+      "bytes": 999201,
+      "sha256": "2f700317442a15daa71902a69eb5538591c33c90eb814dc52ec2eb03cdc7000f"
+    },
+    "source_HEAD": "fd411c3122bdfb4706322052c3639589422963ca",
+    "source_export": "C:/lr16s5",
+    "native_tree": "ab7912d6e1f292956466d6fb481a3c4a774a4ec5",
+    "build_dir": "C:\\lr16b5",
+    "actual_compilation_pass": false,
+    "actual_focused_tests_pass": false,
+    "original_outer_exit_code": 1,
+    "canonical_producer": {
+      "path": "C:/lr16b5/native-msvc-result.json",
+      "bytes": 1866,
+      "sha256": "7c1e0dc7ae83b5cf5831f0e62b1c5f173b45c0c2e7081e601c18a4b0365b2471"
+    },
+    "source_before_after_unchanged": true,
+    "private_ON_count": 12,
+    "exact_private_flags": true,
+    "partial_products_original_refs": {
+      "xar_ck3_bridge_injector": {
+        "path": "C:/lr16b5/xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "1cb7db88ec3c01f9b4c4faa4ff07d515ed6ed03d04996ba9f9d50443a059f4c2"
+      },
+      "xar_confucian_assembly_predicates_v1_test": {
+        "path": "C:/lr16b5/xar_confucian_assembly_predicates_v1_test.exe",
+        "bytes": 119808,
+        "sha256": "985820b593d599f2db1af5783719f898789c6352433397355064ed04907e0be2"
+      },
+      "xar_confucian_religious_title_readback_v1_test": {
+        "path": "C:/lr16b5/xar_confucian_religious_title_readback_v1_test.exe",
+        "bytes": 114688,
+        "sha256": "b36db1f6e135262ee5a7f2bf408783d0685885304e7dd4840b1f41586ae8fe0d"
+      },
+      "xar_confucian_challenger_graph_v1_test": {
+        "path": "C:/lr16b5/xar_confucian_challenger_graph_v1_test.exe",
+        "bytes": 177664,
+        "sha256": "fe5038aa06194d99bab592be3290a2df73a97e112aa9ebaa835e3dccc8e8b425"
+      },
+      "xar_ck3_main_thread_query_mailbox_v1_test": {
+        "path": "C:/lr16b5/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+        "bytes": 129024,
+        "sha256": "a341b2c1943e7bc66c9211cd9a6cee66a38acd856743647bcb63969f770aa84b"
+      }
+    },
+    "partial_product_count": 5,
+    "bridge_DLL_present_in_RESULT": false,
+    "new_runtime_library_original_ref_not_opened": {
+      "path": "C:/lr16b5/xar_ck3_12002_runtime.lib",
+      "bytes": 85853100,
+      "sha256": "93b6c37e76cb30199fa0b68ee47c97f7ccda5357c3419572f57138836a7b0993"
+    },
+    "actual_focused_tests": [],
+    "game_calls": 0,
+    "native_pipe_calls": 0,
+    "third_link_excerpts": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-004/THIRD-LINK-FAILURE.actual-LF-excerpt.json",
+      "bytes": 24542,
+      "sha256": "76878557ec4631b66cfe9265c58ed804dfbaf3c0c45ae9b6fa4150ac49642aee"
+    },
+    "undefined_reference_error_count": 36,
+    "fatal_error_count": 1,
+    "target_only_Gy_OPTREF_link_PASS": false,
+    "ROOT_authorized_external_link_experiment": {
+      "scope": "supplemental numeric-test target link using existing frozen actual runtime.lib and unmodified sources before another canonical build",
+      "main_game_or_DLL_qualification_authorized_here": false,
+      "experiment_executed_here": false,
+      "actual_experiment_result": null,
+      "actual_source_change_selected": null,
+      "future_canonical_HEAD": null,
+      "future_canonical_export": null,
+      "future_canonical_build_RESULT": null,
+      "historical_pending_context_superseded_by_draft005_actual_supplement": true
+    }
+  },
+  "future_next_canonical_build": {
+    "HEAD": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+    "export": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-head-export-20261007-006/REPORT.json",
+      "bytes": 23168,
+      "sha256": "a280ff49d3336e8bf96ab614c630bc51e2a4583135debcacdc27fe7c1a3b5f04"
+    },
+    "REQUEST": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-preparation-20261007-004/REQUEST.json",
+      "bytes": 1028071,
+      "sha256": "cab38c62438262002526e67d6edf7c181fc55fc9eccaea1d548279b89b1fcb99"
+    },
+    "original_exec_session_ROOT_report": 22784,
+    "build_RESULT": null,
+    "actual_compilation_pass": null,
+    "actual_focused_tests_pass": null,
+    "DLL": null,
+    "native_clean_qualification": null,
+    "metadata28": null,
+    "profile": null,
+    "PID": null,
+    "session": null,
+    "runtime_PASS": null,
+    "actual_submission_only": true,
+    "no_extra_audit_or_testing_here": true,
+    "historical_pending_only_superseded_by_actual_completed_fourth_build": true
+  },
+  "third_raw_preservation": {
+    "RESULT.third-link-failed.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-003/RESULT.json",
+        "bytes": 999201,
+        "sha256": "2f700317442a15daa71902a69eb5538591c33c90eb814dc52ec2eb03cdc7000f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-004/raw/RESULT.third-link-failed.original.json",
+        "bytes": 999201,
+        "sha256": "2f700317442a15daa71902a69eb5538591c33c90eb814dc52ec2eb03cdc7000f"
+      }
+    },
+    "build.third.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-003/build.stdout",
+        "bytes": 90977,
+        "sha256": "5c1182ca41ffa45975ae41e1e0576831152bb00db7db6fe99944bd523bee5cca"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-004/raw/build.third.stdout.raw",
+        "bytes": 90977,
+        "sha256": "5c1182ca41ffa45975ae41e1e0576831152bb00db7db6fe99944bd523bee5cca"
+      }
+    },
+    "build.third.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-003/build.stderr",
+        "bytes": 515,
+        "sha256": "55bba7e87c518dd467041c1dcdf094c1f1c91aa8151d84adfeb4859221c89f0e"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-004/raw/build.third.stderr.raw",
+        "bytes": 515,
+        "sha256": "55bba7e87c518dd467041c1dcdf094c1f1c91aa8151d84adfeb4859221c89f0e"
+      }
+    },
+    "canonical-producer.third-link-failed.original.json": {
+      "original": {
+        "path": "C:/lr16b5/native-msvc-result.json",
+        "bytes": 1866,
+        "sha256": "7c1e0dc7ae83b5cf5831f0e62b1c5f173b45c0c2e7081e601c18a4b0365b2471"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-004/raw/canonical-producer.third-link-failed.original.json",
+        "bytes": 1866,
+        "sha256": "7c1e0dc7ae83b5cf5831f0e62b1c5f173b45c0c2e7081e601c18a4b0365b2471"
+      }
+    }
+  },
+  "created_utc_addendum005": "2026-10-06T22:49:43.257574+00:00",
+  "prior_draft004": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-004/REPORT.actual-three-failures.future-canonical-null.draft.json",
+    "bytes": 34765,
+    "sha256": "403d6059255b5f27addb25d6918b4c62ab2dd53ed4d542c76bdaa4bb15d1d330"
+  },
+  "supplemental_existing_link_numeric_actual": {
+    "RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/RESULT.actual.json",
+      "bytes": 2653,
+      "sha256": "bc2fcc73546dd467b26509b8983d289b30af67ce01686c4d202a1d2b6c977712"
+    },
+    "INDEX": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INDEX.json",
+      "bytes": 5568,
+      "sha256": "dfba762df3eeb5c583dc9f231ebbadfaa49e345abcc8afdd772070538a476554"
+    },
+    "assertions_compile_readback": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/ASSERTIONS-COMPILE.actual.json",
+      "bytes": 4438,
+      "sha256": "4f8a5e09b7826e91b1cbb304fa4b28a79c015fe15bac79be3d080bd6dada9fab"
+    },
+    "native_producer": {
+      "path": "C:/lyd16-numeric-link-supplement-20261007-001/native-msvc-result.json",
+      "bytes": 1810,
+      "sha256": "55a28ff98b94dced9a4e93b059b74be50d3412422699fb4487dafffea756ec78"
+    },
+    "inputs": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INPUTS.json",
+      "bytes": 52932,
+      "sha256": "951ba36e83b9f9fc40500e6dc27c32560afd55ea539a10934dee99466024f9e1"
+    },
+    "actual_supplemental_compilation_link_succeeded": true,
+    "actual_numeric_argv": [
+      "C:\\lyd16-numeric-link-supplement-20261007-001\\xar_ck3_12002_event_window_context_test.exe",
+      "--numeric-value-scope"
+    ],
+    "actual_numeric_exit_code": 0,
+    "assertions_enabled_for_fixture": true,
+    "MSVC_compile_FLAGS": "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /UNDEBUG /W4 /permissive- /EHsc /Gy",
+    "UNDEBUG_after_DNDEBUG": true,
+    "fixture_original_ref": {
+      "path": "C:/lr16s5/ck3_autonomous_player/native_bridge/src/ck3_12002_event_window_context_test.cpp",
+      "bytes": 53950,
+      "sha256": "c1a2dab847e44a980e4e2867bc2bf8f64d52cc9de3c99921a2a49fdf14ca0b89"
+    },
+    "exe_original_ref_not_opened": {
+      "path": "C:/lyd16-numeric-link-supplement-20261007-001/xar_ck3_12002_event_window_context_test.exe",
+      "bytes": 8551424,
+      "sha256": "8b14a7115aa9bd3a63ae49e5cd9dd8c602b1dd1f5f4ffbc6110d0ee9df30b894"
+    },
+    "frozen_source": "C:/lr16s5",
+    "frozen_source_HEAD": "fd411c3122bdfb4706322052c3639589422963ca",
+    "old_build": "C:/lr16b5",
+    "existing_runtime_library_original_ref_not_opened": {
+      "path": "C:/lr16b5/xar_ck3_12002_runtime.lib",
+      "bytes": 85853100,
+      "sha256": "93b6c37e76cb30199fa0b68ee47c97f7ccda5357c3419572f57138836a7b0993"
+    },
+    "existing_protocol_library_original_ref_not_opened": {
+      "path": "C:/lr16b5/xar_bridge_protocol.lib",
+      "bytes": 119138,
+      "sha256": "bf89d33ca83d8e490e69aad5751757d73f04237ad87398e6296590e404e9df56"
+    },
+    "existing_bridge_object_count": 224,
+    "objects_not_opened": true,
+    "original_inputs_before_after_unchanged": true,
+    "original_build_outer_exit_code": 1,
+    "actual_Defender_status": "settings_failed",
+    "actual_Defender_registration_succeeded": false,
+    "Defender_readback": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/DEFENDER.actual-readback.json",
+      "bytes": 952,
+      "sha256": "19d9c557c6868c21654c1344dc5128aa185e25b6cf32477909a64dac2cd0b1ec"
+    },
+    "Defender_original_refs": {
+      "manifest": {
+        "path": "C:/lyd16-numeric-link-supplement-20261007-001/defender-exe-exclusions/20261006T224048Z-f1d09253/manifest.json",
+        "bytes": 1958,
+        "sha256": "1c18cd7703245e9262755e31910d1eedacaa350e382e7e86799d0a9cafc0d603"
+      },
+      "receipt": {
+        "path": "C:/lyd16-numeric-link-supplement-20261007-001/defender-exe-exclusions/20261006T224048Z-f1d09253/receipt.json",
+        "bytes": 1776,
+        "sha256": "80f8359fb9259f9f8a5d9e15c6f190f6d4bddfcd84cc04a5f2b995113477441f"
+      }
+    },
+    "clean_new_DLL_qualification": null,
+    "canonical_7_targets_5_tests_qualification": null,
+    "game_or_runtime_acceptance": null,
+    "compiler_or_tests_run_by_report_author": 0
+  },
+  "reviewed_full_bridge_closure_source_fix": {
+    "source_HEAD": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+    "source_HEAD_basis": "actual export006 and actual canonical REQUEST source binding; ROOT reports commit clean",
+    "INTEGRATION_MANIFEST": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INTEGRATION-MANIFEST.json",
+      "bytes": 4447,
+      "sha256": "795b9023c9f5a4f7c8883fe5074a457b13448416c7c329af37542aed1bcf6005"
+    },
+    "patch": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/VERIFIED-REAL-LINK-CLOSURE.incremental.patch",
+      "bytes": 1768,
+      "sha256": "8e04fd6fa86f44c5d3790123be000b08cd6584ba5e8f18fca149a3b36d5628f0"
+    },
+    "existing_helper": "xar_ck3_12004_fixture_use_real_bridge",
+    "semantic_change": "Remove failed partial three-source closure; route only numeric target through existing complete production Bridge object helper. Preserve original fixture TU and CTest/numeric argv.",
+    "scope": "remove failed partial eleven-line numeric target closure and add numeric test to existing full Bridge closure list",
+    "actual_target_readbacks": [
+      {
+        "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+        "candidate_after": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/candidate/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+          "bytes": 417675,
+          "sha256": "6992cc8e5d56dfba412a038b6478c02ea79efa8875c091eaf20fb2583c66af8b"
+        },
+        "actual_main_readonly": {
+          "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+          "bytes": 417675,
+          "sha256": "6992cc8e5d56dfba412a038b6478c02ea79efa8875c091eaf20fb2583c66af8b"
+        },
+        "actual_export006_readonly": {
+          "path": "C:/lr16s6/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+          "bytes": 417675,
+          "sha256": "6992cc8e5d56dfba412a038b6478c02ea79efa8875c091eaf20fb2583c66af8b"
+        },
+        "exact_after_match": true
+      },
+      {
+        "target": "ck3_autonomous_player/native_bridge/cmake/fixture_real_link_closure_12004.cmake",
+        "candidate_after": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/candidate/ck3_autonomous_player/native_bridge/cmake/fixture_real_link_closure_12004.cmake",
+          "bytes": 3259,
+          "sha256": "5a8e1411d3b932b7335957a1038bd7c61ee57ff61904dd1197d8b95182c1ca67"
+        },
+        "actual_main_readonly": {
+          "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/cmake/fixture_real_link_closure_12004.cmake",
+          "bytes": 3259,
+          "sha256": "5a8e1411d3b932b7335957a1038bd7c61ee57ff61904dd1197d8b95182c1ca67"
+        },
+        "actual_export006_readonly": {
+          "path": "C:/lr16s6/ck3_autonomous_player/native_bridge/cmake/fixture_real_link_closure_12004.cmake",
+          "bytes": 3259,
+          "sha256": "5a8e1411d3b932b7335957a1038bd7c61ee57ff61904dd1197d8b95182c1ca67"
+        },
+        "exact_after_match": true
+      }
+    ],
+    "changed_target_count": 2,
+    "main_writes_by_report_author": 0,
+    "canonical_compile_or_link_PASS": null
+  },
+  "actual_fourth_canonical_submission": {
+    "status": "ACTUALLY_SUBMITTED_NOT_COMPLETED",
+    "original_exec_session_ROOT_report": 22784,
+    "submission_basis": "ROOT active execution message; immutable actual REQUEST plus completed export006",
+    "REQUEST": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-preparation-20261007-004/REQUEST.json",
+      "bytes": 1028071,
+      "sha256": "cab38c62438262002526e67d6edf7c181fc55fc9eccaea1d548279b89b1fcb99"
+    },
+    "actual_export006": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-head-export-20261007-006/REPORT.json",
+      "bytes": 23168,
+      "sha256": "a280ff49d3336e8bf96ab614c630bc51e2a4583135debcacdc27fe7c1a3b5f04"
+    },
+    "source_HEAD": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+    "native_tree": "e6c31f6ed89b90cd99a7b63dd376cee7f7c0099e",
+    "source_export": "C:/lr16s6",
+    "build_directory": "C:/lr16b6",
+    "output": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004",
+    "declared_target_count": 7,
+    "declared_focused_test_count": 5,
+    "focused_test_argv": {
+      "xar_confucian_assembly_predicates_v1_test": [
+        "C:\\lr16b6\\xar_confucian_assembly_predicates_v1_test.exe"
+      ],
+      "xar_confucian_religious_title_readback_v1_test": [
+        "C:\\lr16b6\\xar_confucian_religious_title_readback_v1_test.exe"
+      ],
+      "xar_confucian_challenger_graph_v1_test": [
+        "C:\\lr16b6\\xar_confucian_challenger_graph_v1_test.exe",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-root-clean-native-build-20261007-004\\actual-graph-native-fixtures"
+      ],
+      "xar_ck3_main_thread_query_mailbox_v1_test": [
+        "C:\\lr16b6\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+        "--confucian-registration-only",
+        "C:\\lr16s6\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp"
+      ],
+      "xar_ck3_12002_event_window_context_test": [
+        "C:\\lr16b6\\xar_ck3_12002_event_window_context_test.exe",
+        "--numeric-value-scope"
+      ]
+    },
+    "RESULT": null,
+    "actual_compilation_pass": null,
+    "actual_focused_tests_pass": null,
+    "DLL": null,
+    "native_clean_qualification": null,
+    "metadata28": null,
+    "profile": null,
+    "PID": null,
+    "session": null,
+    "runtime_PASS": null,
+    "future_RESULT_not_read": true,
+    "historical_submission_pending_superseded_by_draft006_completed_RESULT": true
+  },
+  "supplemental_raw_preservation": {
+    "supplement.INDEX.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INDEX.json",
+        "bytes": 5568,
+        "sha256": "dfba762df3eeb5c583dc9f231ebbadfaa49e345abcc8afdd772070538a476554"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.INDEX.original.json",
+        "bytes": 5568,
+        "sha256": "dfba762df3eeb5c583dc9f231ebbadfaa49e345abcc8afdd772070538a476554"
+      }
+    },
+    "supplement.assertions-index.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INDEX.assertions-append.json",
+        "bytes": 764,
+        "sha256": "3c13a9c874fc64822515b21f52145ea9bcd35420ee96356cb2ad61b4d8c6f1ad"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.assertions-index.original.json",
+        "bytes": 764,
+        "sha256": "3c13a9c874fc64822515b21f52145ea9bcd35420ee96356cb2ad61b4d8c6f1ad"
+      }
+    },
+    "supplement.RESULT.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/RESULT.actual.json",
+        "bytes": 2653,
+        "sha256": "bc2fcc73546dd467b26509b8983d289b30af67ce01686c4d202a1d2b6c977712"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.RESULT.original.json",
+        "bytes": 2653,
+        "sha256": "bc2fcc73546dd467b26509b8983d289b30af67ce01686c4d202a1d2b6c977712"
+      }
+    },
+    "supplement.ASSERTIONS.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/ASSERTIONS-COMPILE.actual.json",
+        "bytes": 4438,
+        "sha256": "4f8a5e09b7826e91b1cbb304fa4b28a79c015fe15bac79be3d080bd6dada9fab"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.ASSERTIONS.original.json",
+        "bytes": 4438,
+        "sha256": "4f8a5e09b7826e91b1cbb304fa4b28a79c015fe15bac79be3d080bd6dada9fab"
+      }
+    },
+    "supplement.INPUTS.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INPUTS.json",
+        "bytes": 52932,
+        "sha256": "951ba36e83b9f9fc40500e6dc27c32560afd55ea539a10934dee99466024f9e1"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.INPUTS.original.json",
+        "bytes": 52932,
+        "sha256": "951ba36e83b9f9fc40500e6dc27c32560afd55ea539a10934dee99466024f9e1"
+      }
+    },
+    "sourcefix.INTEGRATION-MANIFEST.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/INTEGRATION-MANIFEST.json",
+        "bytes": 4447,
+        "sha256": "795b9023c9f5a4f7c8883fe5074a457b13448416c7c329af37542aed1bcf6005"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/sourcefix.INTEGRATION-MANIFEST.original.json",
+        "bytes": 4447,
+        "sha256": "795b9023c9f5a4f7c8883fe5074a457b13448416c7c329af37542aed1bcf6005"
+      }
+    },
+    "sourcefix.incremental.original.patch": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/VERIFIED-REAL-LINK-CLOSURE.incremental.patch",
+        "bytes": 1768,
+        "sha256": "8e04fd6fa86f44c5d3790123be000b08cd6584ba5e8f18fca149a3b36d5628f0"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/sourcefix.incremental.original.patch",
+        "bytes": 1768,
+        "sha256": "8e04fd6fa86f44c5d3790123be000b08cd6584ba5e8f18fca149a3b36d5628f0"
+      }
+    },
+    "supplement.native-producer.original.json": {
+      "original": {
+        "path": "C:/lyd16-numeric-link-supplement-20261007-001/native-msvc-result.json",
+        "bytes": 1810,
+        "sha256": "55a28ff98b94dced9a4e93b059b74be50d3412422699fb4487dafffea756ec78"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.native-producer.original.json",
+        "bytes": 1810,
+        "sha256": "55a28ff98b94dced9a4e93b059b74be50d3412422699fb4487dafffea756ec78"
+      }
+    },
+    "supplement.DEFENDER.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/DEFENDER.actual-readback.json",
+        "bytes": 952,
+        "sha256": "19d9c557c6868c21654c1344dc5128aa185e25b6cf32477909a64dac2cd0b1ec"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.DEFENDER.original.json",
+        "bytes": 952,
+        "sha256": "19d9c557c6868c21654c1344dc5128aa185e25b6cf32477909a64dac2cd0b1ec"
+      }
+    },
+    "supplement.build.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/BUILD.actual.stdout",
+        "bytes": 3936,
+        "sha256": "af76b64660eac5b66dab0732892dbe2077475d19a54a17c28a179681e82b31f2"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.build.stdout.raw",
+        "bytes": 3936,
+        "sha256": "af76b64660eac5b66dab0732892dbe2077475d19a54a17c28a179681e82b31f2"
+      }
+    },
+    "supplement.build.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/BUILD.actual.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.build.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "supplement.numeric.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/NUMERIC.actual.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.numeric.stdout.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "supplement.numeric.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-experiment-20261007-001/NUMERIC.actual.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.numeric.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "formal004.export006.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-head-export-20261007-006/REPORT.json",
+        "bytes": 23168,
+        "sha256": "a280ff49d3336e8bf96ab614c630bc51e2a4583135debcacdc27fe7c1a3b5f04"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/formal004.export006.original.json",
+        "bytes": 23168,
+        "sha256": "a280ff49d3336e8bf96ab614c630bc51e2a4583135debcacdc27fe7c1a3b5f04"
+      }
+    },
+    "formal004.REQUEST.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-preparation-20261007-004/REQUEST.json",
+        "bytes": 1028071,
+        "sha256": "cab38c62438262002526e67d6edf7c181fc55fc9eccaea1d548279b89b1fcb99"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/formal004.REQUEST.original.json",
+        "bytes": 1028071,
+        "sha256": "cab38c62438262002526e67d6edf7c181fc55fc9eccaea1d548279b89b1fcb99"
+      }
+    },
+    "supplement.defender-manifest.original.json": {
+      "original": {
+        "path": "C:/lyd16-numeric-link-supplement-20261007-001/defender-exe-exclusions/20261006T224048Z-f1d09253/manifest.json",
+        "bytes": 1958,
+        "sha256": "1c18cd7703245e9262755e31910d1eedacaa350e382e7e86799d0a9cafc0d603"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.defender-manifest.original.json",
+        "bytes": 1958,
+        "sha256": "1c18cd7703245e9262755e31910d1eedacaa350e382e7e86799d0a9cafc0d603"
+      }
+    },
+    "supplement.defender-receipt.original.json": {
+      "original": {
+        "path": "C:/lyd16-numeric-link-supplement-20261007-001/defender-exe-exclusions/20261006T224048Z-f1d09253/receipt.json",
+        "bytes": 1776,
+        "sha256": "80f8359fb9259f9f8a5d9e15c6f190f6d4bddfcd84cc04a5f2b995113477441f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/raw/supplement.defender-receipt.original.json",
+        "bytes": 1776,
+        "sha256": "80f8359fb9259f9f8a5d9e15c6f190f6d4bddfcd84cc04a5f2b995113477441f"
+      }
+    }
+  },
+  "daily_append_topology_addendum005": {
+    "P0": "physical political-title cold diagnosis waits actual canonical7/5 qualification",
+    "P1": "C3 source ready plus external grant/numeric supplemental test evidence; no runtime credit",
+    "I4": "minimal helper/consumer routes already ready",
+    "companion_master_sync_push": "after actual managed close/source freeze; no synchronization performed by this report author",
+    "documentation": "bounded evidence append active",
+    "extra_agents_audits_retests": 0
+  },
+  "created_utc_addendum006": "2026-10-06T23:05:59.655824+00:00",
+  "prior_draft005": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-005/REPORT.actual-three-failures.supplemental-success.fourth-submitted.draft.json",
+    "bytes": 56516,
+    "sha256": "3d917a2632f103d126a30eec1c383b7889021690c8b6c3e027cba7b161437e2c"
+  },
+  "actual_fourth_canonical_completed": {
+    "RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/RESULT.json",
+      "bytes": 1005579,
+      "sha256": "5ad7a2a676ab1aa2d23f58e0576f259ea0d54184401c84e07d7a6d703f47a386"
+    },
+    "original_exec_session_ROOT_report": 22784,
+    "original_outer_exit_code": 1,
+    "status": "COMPILATION_AND_FOCUSED_TRUE_DEFENDER_REGISTRATION_FAILED",
+    "source_HEAD": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+    "source_export": "C:/lr16s6",
+    "build_directory": "C:/lr16b6",
+    "canonical_producer": {
+      "path": "C:/lr16b6/native-msvc-result.json",
+      "bytes": 1836,
+      "sha256": "9212eb8beb80ba09720263b6b7bfc7f4ac3ce5a150c8fd88ba8f0e7d73ba3c63"
+    },
+    "actual_compilation_pass": true,
+    "actual_focused_tests_pass": true,
+    "product_count": 7,
+    "focused_test_count": 5,
+    "product_test_extract": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/CANONICAL004.PRODUCTS-TESTS.original-ref-extract.json",
+      "bytes": 9562,
+      "sha256": "8aaa9fd11c48bd6a9f0a276348593d2e144968135fea2fcfaf76446db68da9ae"
+    },
+    "products_original_refs": {
+      "xar_ck3_bridge": {
+        "path": "C:/lr16b6/xar_ck3_bridge.dll",
+        "bytes": 8508928,
+        "sha256": "8031784333cdf29c921f69610302608f680d727ca0bbb4e4af99a7de60b4b83a"
+      },
+      "xar_ck3_bridge_injector": {
+        "path": "C:/lr16b6/xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "e2c16c0ac16a92a383c4412745fa1dbcc9a873e0d377bb356be40179f2eac177"
+      },
+      "xar_confucian_assembly_predicates_v1_test": {
+        "path": "C:/lr16b6/xar_confucian_assembly_predicates_v1_test.exe",
+        "bytes": 119808,
+        "sha256": "8c325c377291f3a209089454100de7f5cb7ab72beffa5791d3bb6007b32da3a0"
+      },
+      "xar_confucian_religious_title_readback_v1_test": {
+        "path": "C:/lr16b6/xar_confucian_religious_title_readback_v1_test.exe",
+        "bytes": 114688,
+        "sha256": "8ae18321fb28d08783b40beec99de3f723fc4930a0b088752f442b0565bd3fe4"
+      },
+      "xar_confucian_challenger_graph_v1_test": {
+        "path": "C:/lr16b6/xar_confucian_challenger_graph_v1_test.exe",
+        "bytes": 177664,
+        "sha256": "07a80b9083300c4296df80ca18352bf14a1002a4a06379fe1cb637f170567646"
+      },
+      "xar_ck3_main_thread_query_mailbox_v1_test": {
+        "path": "C:/lr16b6/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+        "bytes": 129024,
+        "sha256": "50f626de50dca4823ea67cb409df125d3d397d3acbf4fb3e59bb6fe2f4962ca9"
+      },
+      "xar_ck3_12002_event_window_context_test": {
+        "path": "C:/lr16b6/xar_ck3_12002_event_window_context_test.exe",
+        "bytes": 8551936,
+        "sha256": "3f7ca2abc1af7c6e77001656ed65805f047d1ead053ee25cabc0a4ce2986f1ac"
+      }
+    },
+    "actual_focused_tests_original_rows": [
+      {
+        "target": "xar_confucian_assembly_predicates_v1_test",
+        "argv": [
+          "C:\\lr16b6\\xar_confucian_assembly_predicates_v1_test.exe"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr16b6/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "8c325c377291f3a209089454100de7f5cb7ab72beffa5791d3bb6007b32da3a0"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_assembly_predicates_v1_test.stdout",
+          "bytes": 69,
+          "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_assembly_predicates_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "target": "xar_confucian_religious_title_readback_v1_test",
+        "argv": [
+          "C:\\lr16b6\\xar_confucian_religious_title_readback_v1_test.exe"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr16b6/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 114688,
+          "sha256": "8ae18321fb28d08783b40beec99de3f723fc4930a0b088752f442b0565bd3fe4"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_religious_title_readback_v1_test.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_religious_title_readback_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "target": "xar_confucian_challenger_graph_v1_test",
+        "argv": [
+          "C:\\lr16b6\\xar_confucian_challenger_graph_v1_test.exe",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-root-clean-native-build-20261007-004\\actual-graph-native-fixtures"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr16b6/xar_confucian_challenger_graph_v1_test.exe",
+          "bytes": 177664,
+          "sha256": "07a80b9083300c4296df80ca18352bf14a1002a4a06379fe1cb637f170567646"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_challenger_graph_v1_test.stdout",
+          "bytes": 71,
+          "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_challenger_graph_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+        "argv": [
+          "C:\\lr16b6\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+          "--confucian-registration-only",
+          "C:\\lr16s6\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr16b6/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+          "bytes": 129024,
+          "sha256": "50f626de50dca4823ea67cb409df125d3d397d3acbf4fb3e59bb6fe2f4962ca9"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+          "bytes": 153,
+          "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "target": "xar_ck3_12002_event_window_context_test",
+        "argv": [
+          "C:\\lr16b6\\xar_ck3_12002_event_window_context_test.exe",
+          "--numeric-value-scope"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr16b6/xar_ck3_12002_event_window_context_test.exe",
+          "bytes": 8551936,
+          "sha256": "3f7ca2abc1af7c6e77001656ed65805f047d1ead053ee25cabc0a4ce2986f1ac"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_12002_event_window_context_test.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_12002_event_window_context_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "new_runtime_library_original_ref_not_opened": {
+      "path": "C:/lr16b6/xar_ck3_12002_runtime.lib",
+      "bytes": 85853100,
+      "sha256": "607508482b34e2b4578906333284e32213ef43cb492deb078f5e77fe7960c5bb"
+    },
+    "source_before_after_unchanged": true,
+    "old_objects_or_DLL_reused": false,
+    "exact_private_flags": true,
+    "private_ON_count": 12,
+    "Defender_status": "settings_failed",
+    "Defender_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+    "Defender_registration_succeeded": false,
+    "Defender_receipt_sha256": "a2fb19dd477828fa858101f576fd4cb5719e5241f76c620ae6550495c40b8afc",
+    "native_clean_qualification": null,
+    "metadata28": null,
+    "profile": null,
+    "PID": null,
+    "session": null,
+    "runtime_PASS": null,
+    "game_calls": 0,
+    "native_pipe_calls": 0,
+    "main_writes": 0
+  },
+  "actual_metadata_request_and_pending_CHECK": {
+    "request_author_original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-request-20261007-001/RESULT.json",
+      "bytes": 2280,
+      "sha256": "0ee77ba1325587f6cb3589b337ba4ca3588e9243cc54b26014d7c172f2e4f4d2"
+    },
+    "request_author_status": "ACTUAL_REFERENCES_WRITTEN_CAPTURE_NOT_EXECUTED",
+    "request_author_exit_code_ROOT_report": 0,
+    "actual_request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-request-20261007-001/REQUEST.actual.json",
+      "bytes": 1887,
+      "sha256": "39a6ba3905196f1e8a92393495a4ce74fa62a5ce9ce1992d3d6efff2045868d3"
+    },
+    "original_CHECK_exec_session_ROOT_report": 1288,
+    "CHECK_status": "ROOT reports submitted/running; completion not read by report writer",
+    "CHECK_RESULT": null,
+    "actual_metadata28_capture": null,
+    "native_clean_qualification": null,
+    "SDK_Client_started_by_request_author": false,
+    "game_calls": 0
+  },
+  "future_runtime_and_metadata": {
+    "metadata28": null,
+    "native_clean_qualification": null,
+    "profile": null,
+    "PID": null,
+    "session": null,
+    "actual_native_numeric_scope_observation": null,
+    "physical_political_heir_cold_diagnostic_pass": null,
+    "C3_grant_runtime_pass": null,
+    "I4_runtime_pass": null,
+    "whole_product_PASS": null
+  },
+  "canonical004_raw_preservation": {
+    "canonical004.RESULT.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/RESULT.json",
+        "bytes": 1005579,
+        "sha256": "5ad7a2a676ab1aa2d23f58e0576f259ea0d54184401c84e07d7a6d703f47a386"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.RESULT.original.json",
+        "bytes": 1005579,
+        "sha256": "5ad7a2a676ab1aa2d23f58e0576f259ea0d54184401c84e07d7a6d703f47a386"
+      }
+    },
+    "canonical004.native-producer.original.json": {
+      "original": {
+        "path": "C:/lr16b6/native-msvc-result.json",
+        "bytes": 1836,
+        "sha256": "9212eb8beb80ba09720263b6b7bfc7f4ac3ce5a150c8fd88ba8f0e7d73ba3c63"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.native-producer.original.json",
+        "bytes": 1836,
+        "sha256": "9212eb8beb80ba09720263b6b7bfc7f4ac3ce5a150c8fd88ba8f0e7d73ba3c63"
+      }
+    },
+    "canonical004.build.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/build.stdout",
+        "bytes": 68596,
+        "sha256": "440fc85d55ad182b7d8b4041968708f0a0968d5535aa90631f49876d7d398fa0"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.build.stdout.raw",
+        "bytes": 68596,
+        "sha256": "440fc85d55ad182b7d8b4041968708f0a0968d5535aa90631f49876d7d398fa0"
+      }
+    },
+    "canonical004.build.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/build.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.build.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "metadata.REQUEST.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-request-20261007-001/REQUEST.actual.json",
+        "bytes": 1887,
+        "sha256": "39a6ba3905196f1e8a92393495a4ce74fa62a5ce9ce1992d3d6efff2045868d3"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/metadata.REQUEST.original.json",
+        "bytes": 1887,
+        "sha256": "39a6ba3905196f1e8a92393495a4ce74fa62a5ce9ce1992d3d6efff2045868d3"
+      }
+    },
+    "metadata.request-author.RESULT.original.json": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-metadata-request-20261007-001/RESULT.json",
+        "bytes": 2280,
+        "sha256": "0ee77ba1325587f6cb3589b337ba4ca3588e9243cc54b26014d7c172f2e4f4d2"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/metadata.request-author.RESULT.original.json",
+        "bytes": 2280,
+        "sha256": "0ee77ba1325587f6cb3589b337ba4ca3588e9243cc54b26014d7c172f2e4f4d2"
+      }
+    },
+    "canonical004.Defender-manifest.original.json": {
+      "original": {
+        "path": "C:/lr16b6/defender-exe-exclusions/20261006T230217Z-aab09956/manifest.json",
+        "bytes": 5825,
+        "sha256": "422fff0f0ffa4dd1643a7a972c5af63c4b5b1c79925e9a2d5b07b83d6927a069"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.Defender-manifest.original.json",
+        "bytes": 5825,
+        "sha256": "422fff0f0ffa4dd1643a7a972c5af63c4b5b1c79925e9a2d5b07b83d6927a069"
+      }
+    },
+    "canonical004.Defender-receipt.original.json": {
+      "original": {
+        "path": "C:/lr16b6/defender-exe-exclusions/20261006T230217Z-aab09956/receipt.json",
+        "bytes": 3673,
+        "sha256": "a2fb19dd477828fa858101f576fd4cb5719e5241f76c620ae6550495c40b8afc"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/canonical004.Defender-receipt.original.json",
+        "bytes": 3673,
+        "sha256": "a2fb19dd477828fa858101f576fd4cb5719e5241f76c620ae6550495c40b8afc"
+      }
+    },
+    "xar_confucian_assembly_predicates_v1_test.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_assembly_predicates_v1_test.stdout",
+        "bytes": 69,
+        "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_assembly_predicates_v1_test.stdout.raw",
+        "bytes": 69,
+        "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+      }
+    },
+    "xar_confucian_assembly_predicates_v1_test.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_assembly_predicates_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_assembly_predicates_v1_test.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "xar_confucian_religious_title_readback_v1_test.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_religious_title_readback_v1_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_religious_title_readback_v1_test.stdout.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "xar_confucian_religious_title_readback_v1_test.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_religious_title_readback_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_religious_title_readback_v1_test.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "xar_confucian_challenger_graph_v1_test.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_challenger_graph_v1_test.stdout",
+        "bytes": 71,
+        "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_challenger_graph_v1_test.stdout.raw",
+        "bytes": 71,
+        "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+      }
+    },
+    "xar_confucian_challenger_graph_v1_test.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_confucian_challenger_graph_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_confucian_challenger_graph_v1_test.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "xar_ck3_main_thread_query_mailbox_v1_test.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+        "bytes": 153,
+        "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_ck3_main_thread_query_mailbox_v1_test.stdout.raw",
+        "bytes": 153,
+        "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd"
+      }
+    },
+    "xar_ck3_main_thread_query_mailbox_v1_test.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_ck3_main_thread_query_mailbox_v1_test.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "xar_ck3_12002_event_window_context_test.stdout.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_12002_event_window_context_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_ck3_12002_event_window_context_test.stdout.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "xar_ck3_12002_event_window_context_test.stderr.raw": {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-004/xar_ck3_12002_event_window_context_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-build-cvfix-daily-draft-20261008-001/draft-006/raw/xar_ck3_12002_event_window_context_test.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  }
+}

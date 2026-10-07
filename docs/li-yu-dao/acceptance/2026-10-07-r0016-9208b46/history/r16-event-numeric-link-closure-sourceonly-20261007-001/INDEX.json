@@ -1,0 +1,57 @@
+{
+  "schema": "lyd.r16.event-numeric-link-closure-sourceonly-index.v1",
+  "artifacts": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/ACTUAL-LINK-FAILURE-READBACK.json",
+      "bytes": 5898,
+      "sha256": "2358167e81577856fb174e99cdc77a099970a4fdd7e67db740b11d6681c6769d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/candidate/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 418154,
+      "sha256": "331466f8379b183af7be5767efbf26a3609ff5f65d885260d5582363686ddd31"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/EVENT-NUMERIC-LINK-CLOSURE.incremental.patch",
+      "bytes": 1110,
+      "sha256": "76fbb1ffe89a04fc451396ac31ebc0ff490bdf6e1ed3095f823978d29e3635ae"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/git-apply-check.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/git-apply-check.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/INTEGRATION-MANIFEST.json",
+      "bytes": 3610,
+      "sha256": "66f95f448f9439e69487ef6b31b1a45f512afbeae1111997721f9077a462c3aa"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/prepare_candidate.py",
+      "bytes": 7390,
+      "sha256": "67c1d81fc5b71f3f240ef26a713a085d8a25138bc78ec3cb07c27d6815cc9fd2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/read_inputs.py",
+      "bytes": 1530,
+      "sha256": "e13a585dd7ff1b7880fef8deb2f229101ada6074fb1e9f50b5fc9ecf79ee52cd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/read_target.py",
+      "bytes": 848,
+      "sha256": "5380c64783ef8f16eb6465f2decd890b85df935458bdd2268a096f464a0a9c67"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/REPORT.zh.md",
+      "bytes": 1366,
+      "sha256": "998427ae1bfdbc4092865bc3e4b6535df3880b2f8626b61c262a157deebbbec9"
+    }
+  ],
+  "future_compilation": null,
+  "future_runtime": null
+}

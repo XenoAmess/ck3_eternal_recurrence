@@ -1,0 +1,26 @@
+{
+  "schema": "lyd.root.factory-ordering-source-checks.v1",
+  "files": [
+    {
+      "path": "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "bytes": 2939,
+      "sha256": "b0596b58d30e6313cc290ed0c29c6b02cace7739657956423081e1c74ab3687a"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 2939,
+      "sha256": "b0596b58d30e6313cc290ed0c29c6b02cace7739657956423081e1c74ab3687a"
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 3022,
+      "sha256": "383e121e41bc730d90c478fffe39679b9cd0d5ccf0db95cd4945a15443530141"
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py",
+      "bytes": 11069,
+      "sha256": "5d2563432ee3c779f0580db30f7a4fcfa557e6e807fdf601af41c2532c368455"
+    }
+  ],
+  "runtime_pass": null
+}

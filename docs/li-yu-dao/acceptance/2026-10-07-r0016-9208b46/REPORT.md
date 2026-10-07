@@ -1,0 +1,13 @@
+R16 已完成失败 B5 的冷读回诊断并正常关闭，整体仍为 **NOT_GREEN**。本轮没有推进时间或执行正式事件、决议、grant；C3/I4 为 **NOT_RUN**，正式 I3b 资格和 whole-mod PASS 保持 NULL。
+
+实际 clean HEAD `9208b46c95b9dc13ab70bd2d11a0c146dd1fd412`，export006 `C:/lr16s6`，canonical build004 `C:/lr16b6` 编译通过、7 产物与 5 项 focused exit=0；outer exit=1 的 Defender `settings_failed`/WMI `-2147217407` 原失败仍保留。前三次构建失败依次为 C2664、3 个 LNK2019、36 个未解析符号；一次 const-cast 修正、失败的局部 target 闭包与最终完整 Bridge 闭包修复均按原件归档，没有用第四次通过覆盖历史。构建产物和 runtime.lib 只存原 descriptor，不复制或重读 binary。
+
+metadata001 首次 CHECK0/CREATE1 因 helper 错把 Prepare/Select 的 destructiveHint=None 当 True 而失败；官方冻结 SDK probe 的实际四 DTO 与 7 个拒绝用例支持仅此 leaf 修正，metadata002 才实际成功为 28 tools，business_callbacks=0。reader、DTO、saved Faith、G2/G3 与 native gate 原源码保持不变。最初请求按 original9 profile `f74…` 冻结后被实际 SDK profile 检查拒绝；PREPARED 原件证明 final10 profile `38d54bd94502de17874ca2b5269955fa495a0598793ff5ae06ce25b781ac2dfb` 仅新增 normal_exit_source_inventory，fresh002 请求准确绑定此 profile，旧拒绝及 seal 字段名机械失败保留。
+
+ROOT 单次 author exit0，save_body_reads=1、strict_formal_reader_executed=false；新 checkpoint SHA `56a3571a52ba44474acf0c6d5e22c9ffea75d02cd72e67fa1c8cf08e65eef5dc`，public3/native2/native:2，date53144712、paused、actor31254、PID16416/generation1 与保存后 G2/G3 原件精确绑定。G2 `BOUND_COMPLETE_NATIVE_OBSERVATION`、G3 `BOUND_NATIVE_TITLE_FIELDS_OBSERVATION` 只记录冻结 static ABI 实际字段 join。STATE 原 assessment 为 INCOMPLETE_NATIVE_QUALIFICATION；baseline 容器标签不表示业务回到提案前，不据此重写历史 code1/既有 T，也不赋予正式事件/reference/scalar mandate 资格。
+
+三方比较只读 retained JSON、save_body_reads=0：七个新冷读回政治完整 AST 全等于保存的 R15 B5。2230、2231、2235、2262、2264 的 heir 尾仍不同于 original0240；2232、2263 与两个锚均相同。冷重载没有恢复五个字段，物理政治保护 RED 持续，cache 因果或 factory 修复尚未证明。原 TYPED 79/87 匹配、8 false 完整保留：五项政治 AST，加 actor complete landed projection、actor all-held-title set except new religious T、Rite169 tenet projection。后三项保留 baseline 容器对失败 B5 宗教/T 变化的原比较，不缩减保护合同；原新宗教 T 的观察不能代替整体保护通过。
+
+正常关闭的原 game HANDLE token、initial WAIT_TIMEOUT258→wait0/exit0、Client close、keeper STOP/FINAL、被动 holder FINAL、原 helper HANDLE/exec 结果均保全；holder原exec71370、keeper9352 的退出原件及 ROOT 报告的 client58869 结果分列。CAS task done/resources=[]，after-list 无 screen owner，2026-10-06T23:45:10.288196Z（本地10月7日）的原 PID+ctime 进程检查无当前受管 game/native services。原关闭 verifier 及已执行 VERIFIED 收据归档，本报告没有重跑它。
+
+原数据在 [RAW-REFS](RAW-REFS.original-and-exact-copies.json)、[REPORT.actual](REPORT.actual.json)、[INDEX](INDEX.json)；构建、metadata、readback、comparison、closure 原件按目录保存。所有 ck3 原存档、DLL/EXE/lib/obj 与旧 execution tree 保持外置原路径的不可变引用，未扫描或清理。open_kaishek 对此 MSVC/native host-memory/CK3 .3 runtime 与冷 heir 诊断为 N/A，exact EXE94b553…02a6 和源证据引用保留。head-before-holder 排序候选未选用。后续应独立验证政治副作用修复，再在新受管冷 run 验 C3/I4；当前记录不授予这些能力完成。

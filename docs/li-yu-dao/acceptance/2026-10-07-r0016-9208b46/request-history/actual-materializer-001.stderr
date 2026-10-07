@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001\materialize_checkpoint_request.py", line 71, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001\materialize_checkpoint_request.py", line 47, in main
+    need(cp['schema']=='ck3.native-profile-receipt.v1' and cp['profile_sha256']==profile_sha,'Fresh R16 profile checkpoint required')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001\materialize_checkpoint_request.py", line 9, in need
+    if not ok:raise ValueError(msg)
+              ^^^^^^^^^^^^^^^^^^^^^
+ValueError: Fresh R16 profile checkpoint required

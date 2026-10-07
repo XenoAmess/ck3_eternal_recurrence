@@ -1,0 +1,60 @@
+{
+  "schema": "lyd.r16.diagnostic-checkpoint-request-materialized-index.v2",
+  "prior_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/INDEX.json",
+    "bytes": 6067,
+    "sha256": "cacfb2921118256108c3395928d063075e8c0f2fa86cb0fc14aaa3e6c505fb8a"
+  },
+  "manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/SOURCE-ONLY-MANIFEST.actual002.json",
+    "bytes": 3891,
+    "sha256": "0cfad28dd42bf9b7a1adab9cd7ed90451f074174c93430cfeacebbcd91cfa897"
+  },
+  "actual_materializer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/ACTUAL-MATERIALIZER-002.json",
+    "bytes": 4840,
+    "sha256": "717b6b95c1ddffd6ad6b7f8b9c0b6f1b52e3f1dfbecfc0548d6d8b188bdc8f36"
+  },
+  "prepared_successor": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/PREPARED-FINAL10-PROFILE-SUCCESSOR.actual.json",
+    "bytes": 2733,
+    "sha256": "dbf165e7c9dd21595f5d6f61a1a4526b0f675a5c24e16f82e001d25d7b65465e"
+  },
+  "INPUT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/AUTHOR-INPUT.actual.json",
+    "bytes": 2995,
+    "sha256": "0ea14db50fb6b010e8ec549397f8e8d620695295f64dafc3b07cd38df684331e"
+  },
+  "ARGV": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/AUTHOR-ARGV.actual.json",
+    "bytes": 550,
+    "sha256": "b64bca72d6751a15429b992c5c1788431aca5b6873c0e53e6f6826755a14a53f"
+  },
+  "REQUEST_binding": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-inputs-20261007-001/REQUEST-BINDING.actual.json",
+    "bytes": 32696,
+    "sha256": "158944efcb1c204ea32a5be0cae1109dc35f8aff4b38b299d3d3a86efea79571"
+  },
+  "compare_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/compare_political_heirs_v5.py",
+    "bytes": 5969,
+    "sha256": "333dbcab59374fae5538c2996cb35c7eafc4a72f07b5d92af9e933cdc3c48293"
+  },
+  "README": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/README.actual002.txt",
+    "bytes": 1122,
+    "sha256": "115065d108c22ed92f9486c1dda16aa70de49ab4102b1b03ad6b9cfc08b09a91"
+  },
+  "source_writer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-diagnostic-checkpoint-author-request-sourceonly-20261007-001/seal_actual_003.py",
+    "bytes": 1141,
+    "sha256": "21944ce376c482e0901fa2e4e501b9e334370fe4ff7f319f78a874784062df43"
+  },
+  "future_author_RESULT": null,
+  "future_three_way_comparison": null,
+  "checkpoint_body_reads": 0,
+  "SDK_game_calls": 0,
+  "main_writes": 0,
+  "actual_pass": null,
+  "formal_acceptance": null
+}

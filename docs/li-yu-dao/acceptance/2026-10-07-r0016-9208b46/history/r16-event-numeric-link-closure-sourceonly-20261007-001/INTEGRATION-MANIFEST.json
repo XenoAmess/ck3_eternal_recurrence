@@ -1,0 +1,92 @@
+{
+  "schema": "lyd.r16.event-numeric-link-closure-sourceonly-candidate.v1",
+  "base_head": "5759c1ca1760f0bbb5fd3a91b034590249d5beea",
+  "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+  "before": {
+    "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+    "bytes": 417675,
+    "sha256": "6992cc8e5d56dfba412a038b6478c02ea79efa8875c091eaf20fb2583c66af8b"
+  },
+  "after": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/candidate/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+    "bytes": 418154,
+    "sha256": "331466f8379b183af7be5767efbf26a3609ff5f65d885260d5582363686ddd31"
+  },
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-event-numeric-link-closure-sourceonly-20261007-001/EVENT-NUMERIC-LINK-CLOSURE.incremental.patch",
+    "bytes": 1110,
+    "sha256": "76fbb1ffe89a04fc451396ac31ebc0ff490bdf6e1ed3095f823978d29e3635ae"
+  },
+  "target_scope": "Only fixture_name == ck3_12002_event_window_context_test in existing generated fixture loop",
+  "target_only_sources": [
+    {
+      "symbol": "xar::ck3_11906::ProjectPlayerFactionAlertsSourceSampleV1",
+      "definition": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/player_faction_alerts_v1.cpp",
+        "bytes": 15991,
+        "sha256": "7ddff2d65ddb2a273a2b9458216d39330f61d51f69358b17c294327110b95183"
+      },
+      "line": 231
+    },
+    {
+      "symbol": "xar::ck3_11906::SerializePlayerFactionAlertsWithProvenanceV1",
+      "definition": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/player_faction_alerts_v1_serializer.cpp",
+        "bytes": 27352,
+        "sha256": "7b33bed910248c4ce5439766137bacfec4dd77d7ea0c46f7325b2adf0d725372"
+      },
+      "line": 566
+    },
+    {
+      "symbol": "xar::game::GameAdapter::supports_snapshot",
+      "definition": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+        "bytes": 34533,
+        "sha256": "baef1ea76740f0816d6edcef68caf49e5450cf4c7a9905c6c6438427f2b94afc"
+      },
+      "line": 321
+    }
+  ],
+  "target_only_msvc_options": {
+    "compile": [
+      "/Gy"
+    ],
+    "link": [
+      "/OPT:REF"
+    ]
+  },
+  "existing_packaging_example": {
+    "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/cmake/ck3_12004_core_frame_real_link_closure.cmake",
+    "bytes": 1296,
+    "sha256": "6df549077eb0023ddbd2d8924ec018fa50b82aee7cc148faf1d80412b0f025ea"
+  },
+  "existing_packaging_example_lines": [
+    21,
+    22,
+    23,
+    24
+  ],
+  "actual_failed_log": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/build.stdout",
+    "bytes": 71139,
+    "sha256": "16f81b56f9601a2daa5624a5b428e71bcf92625c16b04cf511dd7e5374c39b90"
+  },
+  "actual_failed_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-root-clean-native-build-20261007-002/RESULT.json",
+    "bytes": 998733,
+    "sha256": "7aebde9110d357a8d36caa9c75b9b5288e976543ba121a804ba785de061b42bc"
+  },
+  "git_apply_check_exit_code": 0,
+  "root_apply_argv": [
+    "git",
+    "apply",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r16-event-numeric-link-closure-sourceonly-20261007-001\\EVENT-NUMERIC-LINK-CLOSURE.incremental.patch"
+  ],
+  "native_build_executed": false,
+  "test_execution": false,
+  "future_head": null,
+  "future_source_export": null,
+  "future_compilation": null,
+  "future_focused_tests": null,
+  "future_runtime": null
+}

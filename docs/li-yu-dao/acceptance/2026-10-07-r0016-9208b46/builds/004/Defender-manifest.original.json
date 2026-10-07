@@ -1,0 +1,113 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "repo": "C:\\workspace\\ck3_eternal_recurrence",
+  "source_dir": "C:\\lr16s6\\ck3_autonomous_player\\native_bridge",
+  "build_dir": "C:\\lr16b6",
+  "configuration": "Release",
+  "requested_targets": [
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector",
+    "xar_confucian_assembly_predicates_v1_test",
+    "xar_confucian_religious_title_readback_v1_test",
+    "xar_confucian_challenger_graph_v1_test",
+    "xar_ck3_main_thread_query_mailbox_v1_test",
+    "xar_ck3_12002_event_window_context_test"
+  ],
+  "external_candidate": "Post-R14 exact clean export 9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+  "cmake_index": {
+    "path": "C:\\lr16b6\\.cmake\\api\\v1\\reply\\index-2026-10-06T22-46-03-0171.json",
+    "sha256": "3dc1e9bef26058591d2ce9e6d531def2f2f109ac580bdd2b936711a54c800c54"
+  },
+  "cmake_codemodel": {
+    "path": "C:\\lr16b6\\.cmake\\api\\v1\\reply\\codemodel-v2-5f9ce9ae557db58f0ea4.json",
+    "sha256": "02d7907ade9988edd87025dc9bf4a6ffc87b63e5eff52b6f920c6a46c4e89fe3"
+  },
+  "target_provenance": [
+    {
+      "path": "C:\\lr16b6\\.cmake\\api\\v1\\reply\\target-xar_ck3_12002_event_window_context_test-Release-d9501eab955f7c702c4c.json",
+      "sha256": "d796801b8253180c64e96f0dba9d879539e151598d663194c5ff6dc708557285",
+      "target": "xar_ck3_12002_event_window_context_test",
+      "target_id": "xar_ck3_12002_event_window_context_test::@6890427a1f51a3e7e1df",
+      "source": "C:\\lr16s6\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\lr16b6\\.cmake\\api\\v1\\reply\\target-xar_ck3_main_thread_query_mailbox_v1_test-Release-4af1c460ac7f88b65910.json",
+      "sha256": "f1b9c2f0b84d77a06a0ad5b944322d00901900512f68945bd3dea97c8cf1d75d",
+      "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+      "target_id": "xar_ck3_main_thread_query_mailbox_v1_test::@6890427a1f51a3e7e1df",
+      "source": "C:\\lr16s6\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\lr16b6\\.cmake\\api\\v1\\reply\\target-xar_confucian_challenger_graph_v1_test-Release-05292628e5d33b43ca24.json",
+      "sha256": "5837bdd74bcedd44741b7772f9ff6d5c6886edea548be5ff53c475524077461e",
+      "target": "xar_confucian_challenger_graph_v1_test",
+      "target_id": "xar_confucian_challenger_graph_v1_test::@6890427a1f51a3e7e1df",
+      "source": "C:\\lr16s6\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\lr16b6\\.cmake\\api\\v1\\reply\\target-xar_confucian_religious_title_readback_v1_test-Release-3fcd8bfbd10c2da5d84d.json",
+      "sha256": "792fab9a26f5d25c9811d23423823661e698b33ced8e07e385c683433b450e03",
+      "target": "xar_confucian_religious_title_readback_v1_test",
+      "target_id": "xar_confucian_religious_title_readback_v1_test::@6890427a1f51a3e7e1df",
+      "source": "C:\\lr16s6\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\lr16b6\\.cmake\\api\\v1\\reply\\target-xar_confucian_assembly_predicates_v1_test-Release-cdf40870e4dd5246f8c9.json",
+      "sha256": "05b88381df35f90c0634f3cf39067d8fe0ecabf7fa91abc6c3bae18a7ff3e1b0",
+      "target": "xar_confucian_assembly_predicates_v1_test",
+      "target_id": "xar_confucian_assembly_predicates_v1_test::@6890427a1f51a3e7e1df",
+      "source": "C:\\lr16s6\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\lr16b6\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-ba57a4b4be0d482583f5.json",
+      "sha256": "2b5f35a1cf345a6331f4efdbffaf2c66ee26015d72a66b44949271f45c6f9fb2",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df",
+      "source": "C:\\lr16s6\\ck3_autonomous_player\\native_bridge"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\lr16b6\\xar_ck3_12002_event_window_context_test.exe",
+      "size": 8551936,
+      "sha256": "3f7ca2abc1af7c6e77001656ed65805f047d1ead053ee25cabc0a4ce2986f1ac",
+      "target": "xar_ck3_12002_event_window_context_test",
+      "target_id": "xar_ck3_12002_event_window_context_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_ck3_bridge_injector.exe",
+      "size": 39936,
+      "sha256": "e2c16c0ac16a92a383c4412745fa1dbcc9a873e0d377bb356be40179f2eac177",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "size": 129024,
+      "sha256": "50f626de50dca4823ea67cb409df125d3d397d3acbf4fb3e59bb6fe2f4962ca9",
+      "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+      "target_id": "xar_ck3_main_thread_query_mailbox_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_confucian_assembly_predicates_v1_test.exe",
+      "size": 119808,
+      "sha256": "8c325c377291f3a209089454100de7f5cb7ab72beffa5791d3bb6007b32da3a0",
+      "target": "xar_confucian_assembly_predicates_v1_test",
+      "target_id": "xar_confucian_assembly_predicates_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_confucian_challenger_graph_v1_test.exe",
+      "size": 177664,
+      "sha256": "07a80b9083300c4296df80ca18352bf14a1002a4a06379fe1cb637f170567646",
+      "target": "xar_confucian_challenger_graph_v1_test",
+      "target_id": "xar_confucian_challenger_graph_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\lr16b6\\xar_confucian_religious_title_readback_v1_test.exe",
+      "size": 114688,
+      "sha256": "8ae18321fb28d08783b40beec99de3f723fc4930a0b088752f442b0565bd3fe4",
+      "target": "xar_confucian_religious_title_readback_v1_test",
+      "target_id": "xar_confucian_religious_title_readback_v1_test::@6890427a1f51a3e7e1df"
+    }
+  ]
+}

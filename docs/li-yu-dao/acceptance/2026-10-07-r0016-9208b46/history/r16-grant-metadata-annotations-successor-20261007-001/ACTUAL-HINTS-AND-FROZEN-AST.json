@@ -1,0 +1,294 @@
+{
+  "schema": "lyd.r16.grant-annotations.actual-proof.v1",
+  "frozen_profile": {
+    "path": "C:/lr16s6/tools/ck3_native_profile_mcp.py",
+    "bytes": 77955,
+    "sha256": "b2022b3afbe6c82d3455bdea10b2e4a4560492f32b00c0f87d29fda524253882"
+  },
+  "official_Client_list_tools": true,
+  "tool_count": 28,
+  "factory_opt_in": {
+    "player_control_tools": false,
+    "confucian_readonly_tools": false,
+    "confucian_challenger_tools": true,
+    "grant_title_picker_tools": true
+  },
+  "grant_tools": [
+    {
+      "name": "ck3_query_profile_grant_title_picker_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "recipient_id": {
+            "maximum": 4294967294,
+            "minimum": 1,
+            "title": "Recipient Id",
+            "type": "integer"
+          },
+          "title_full_ids": {
+            "items": {
+              "exclusiveMaximum": 4294967295,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 64,
+            "title": "Title Full Ids",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "recipient_id",
+          "title_full_ids",
+          "expected_revision"
+        ],
+        "title": "ck3_query_profile_grant_title_picker_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_profile_grant_title_picker_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_prepare_profile_grant_title_picker_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "recipient_id": {
+            "maximum": 4294967294,
+            "minimum": 1,
+            "title": "Recipient Id",
+            "type": "integer"
+          },
+          "title_full_ids": {
+            "items": {
+              "exclusiveMaximum": 4294967295,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 64,
+            "title": "Title Full Ids",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "recipient_id",
+          "title_full_ids",
+          "expected_revision"
+        ],
+        "title": "ck3_prepare_profile_grant_title_picker_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_prepare_profile_grant_title_picker_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": null,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_select_profile_grant_title_picker_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "recipient_id": {
+            "maximum": 4294967294,
+            "minimum": 1,
+            "title": "Recipient Id",
+            "type": "integer"
+          },
+          "title_full_id": {
+            "exclusiveMaximum": 4294967295,
+            "minimum": 0,
+            "title": "Title Full Id",
+            "type": "integer"
+          },
+          "desired_selected": {
+            "title": "Desired Selected",
+            "type": "boolean"
+          },
+          "expected_selected_title_full_ids": {
+            "items": {
+              "exclusiveMaximum": 4294967295,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 64,
+            "title": "Expected Selected Title Full Ids",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "recipient_id",
+          "title_full_id",
+          "desired_selected",
+          "expected_selected_title_full_ids",
+          "expected_revision"
+        ],
+        "title": "ck3_select_profile_grant_title_picker_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_select_profile_grant_title_picker_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": null,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "_meta": null
+    },
+    {
+      "name": "ck3_send_profile_grant_title_picker_v1",
+      "title": null,
+      "description": "",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "recipient_id": {
+            "maximum": 4294967294,
+            "minimum": 1,
+            "title": "Recipient Id",
+            "type": "integer"
+          },
+          "expected_selected_title_full_ids": {
+            "items": {
+              "exclusiveMaximum": 4294967295,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Expected Selected Title Full Ids",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "recipient_id",
+          "expected_selected_title_full_ids",
+          "expected_revision"
+        ],
+        "title": "ck3_send_profile_grant_title_picker_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_send_profile_grant_title_picker_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "_meta": null
+    }
+  ],
+  "source_declarations": {
+    "ck3_query_profile_grant_title_picker_v1": {
+      "line": 1091,
+      "annotations_call_AST": "Call(func=Name(id='ToolAnnotations', ctx=Load()), keywords=[keyword(arg='readOnlyHint', value=Constant(value=True)), keyword(arg='destructiveHint', value=Constant(value=False)), keyword(arg='idempotentHint', value=Constant(value=True)), keyword(arg='openWorldHint', value=Constant(value=False))])",
+      "explicit_hints": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "ck3_prepare_profile_grant_title_picker_v1": {
+      "line": 1095,
+      "annotations_call_AST": "Call(func=Name(id='ToolAnnotations', ctx=Load()), keywords=[keyword(arg='readOnlyHint', value=Constant(value=False)), keyword(arg='idempotentHint', value=Constant(value=False)), keyword(arg='openWorldHint', value=Constant(value=False))])",
+      "explicit_hints": {
+        "readOnlyHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    "ck3_select_profile_grant_title_picker_v1": {
+      "line": 1099,
+      "annotations_call_AST": "Call(func=Name(id='ToolAnnotations', ctx=Load()), keywords=[keyword(arg='readOnlyHint', value=Constant(value=False)), keyword(arg='idempotentHint', value=Constant(value=False)), keyword(arg='openWorldHint', value=Constant(value=False))])",
+      "explicit_hints": {
+        "readOnlyHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    "ck3_send_profile_grant_title_picker_v1": {
+      "line": 1108,
+      "annotations_call_AST": "Call(func=Name(id='ToolAnnotations', ctx=Load()), keywords=[keyword(arg='readOnlyHint', value=Constant(value=False)), keyword(arg='destructiveHint', value=Constant(value=True)), keyword(arg='idempotentHint', value=Constant(value=False)), keyword(arg='openWorldHint', value=Constant(value=False))])",
+      "explicit_hints": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    }
+  },
+  "business_callbacks": 0,
+  "game_calls": 0,
+  "native_pipe_calls": 0
+}

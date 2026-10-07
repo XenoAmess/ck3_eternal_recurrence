@@ -1,0 +1,26 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/release-repro.argv.json",
+    "bytes": 183,
+    "sha256": "c3de14227efcf0f9b87c0f4a44f0b09efda363f3b6b9b7d0fafd11eb21c507b0"
+  },
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\build_release.py",
+    "--check"
+  ],
+  "started_at_utc": "2026-10-06T23:52:42.904730+00:00",
+  "finished_at_utc": "2026-10-06T23:52:43.476345+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/release-repro-actual/stdout",
+    "bytes": 273,
+    "sha256": "5cc0bdec1fcddcfc9cb4e49078ab2665c76adc4cb8506871632f48babcf17f0c"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-factory-ordering-source-checks-20261007-001/release-repro-actual/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

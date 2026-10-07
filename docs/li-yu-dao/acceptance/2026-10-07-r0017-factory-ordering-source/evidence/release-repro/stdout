@@ -1,0 +1,8 @@
+{
+  "result": "GREEN",
+  "layer": "L0-packaging",
+  "live": "NOT_RUN",
+  "file_count": 70,
+  "manifest_sha256": "786b2e7079406386658bbb805eaa7651f6ce8dc8c0f8dc27f3bd45532936b083",
+  "zip_sha256": "d20100b462e2fe4520a29154ef06b0c5554540f8988a322f3b66e97bd11734d1"
+}

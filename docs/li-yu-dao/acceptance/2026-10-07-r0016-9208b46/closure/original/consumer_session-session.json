@@ -1,0 +1,23 @@
+{
+  "schema": "ck3.lyd.persistent-mcp-session.v1",
+  "client_session_id": "56ceb473d6c148819c8a046167c4d926",
+  "profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\native-profile-with-exit-inventory.json",
+  "profile_sha256": "38d54bd94502de17874ca2b5269955fa495a0598793ff5ae06ce25b781ac2dfb",
+  "server": "C:\\lr16s6\\tools\\ck3_native_profile_mcp.py",
+  "server_sha256": "b2022b3afbe6c82d3455bdea10b2e4a4560492f32b00c0f87d29fda524253882",
+  "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "queue": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\queue-001",
+  "started_at_utc": "2026-10-06T23:31:27.646272+00:00",
+  "cache": null,
+  "automatic_attach": false,
+  "automatic_retry": false,
+  "binding_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-016\\mcp-binding-001\\ROOT-BINDING.json",
+  "binding_sha256": "3fe03de9817ed5f182909592f36fe74e55a95ff274a6a9f95a5295df8af3e99a",
+  "epoch_id": "r16-root-political-cold-20261007-001",
+  "source_revision": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412",
+  "target": {
+    "pid": 16416,
+    "process_create_time": 1791328744.0605772
+  },
+  "live_inventory_verified": false
+}
