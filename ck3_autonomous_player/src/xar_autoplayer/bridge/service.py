@@ -125,6 +125,7 @@ from .army_commander_candidates import (
     normalize_army_commander_candidates_v1,
     query_army_commander_candidates_v1_step,
 )
+from ..commander_quality_formal_proposal_v1 import propose_commander_quality_v1
 from .army_commander_assignment import (
     ASSIGN_ARMY_COMMANDER_V1_CAPABILITY,
     assign_army_commander_v1_step,
@@ -4404,6 +4405,10 @@ class GameplayBridgeService:
         return {
             **result,
             "army_commander_candidates": normalized,
+            "commander_quality_proposal": propose_commander_quality_v1(
+                normalized, snapshot=snapshot,
+                query_sequence=result["query_sequence"],
+            ),
             "queried_snapshot_id": snapshot.get("snapshot_id"),
             "queried_revision": revision,
             "queried_native_revision": native_revision,
