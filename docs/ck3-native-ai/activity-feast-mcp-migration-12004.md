@@ -139,3 +139,61 @@ later terminal assertions remain unchanged. The retained failure is
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/joint-domain-first02/activity_new/`.
 No child build, execution or new native proof collection was performed;
 Root's affected native retry and actual MCP qualification remain pending.
+
+R0054's actual production read on the original paused Robert 29829 campaign
+now qualifies the hosted-post read as a `production-live primitive`: the
+actual `.4` response reports date `53288256`, native revision 2, queried
+public revision 3, no hosted Activities, Gold `83556691`, Piety `43106250`,
+prestige `305510310` and stress zero. Treasury, barter and Reveler XP remain
+unavailable; this read does not qualify planning or an Activity action. Reuse
+`upstream-build-migration/managed-full-h9613-entry02/operator/gameplay-responses/supplement-02-activity-hosted-state.json`;
+do not repeat this passed read.
+
+The following guest-source read returned the actual native RED
+`exact_activity_feast_guest_candidate_build_unavailable`. Its retained
+response is `supplement-03-activity-guest-candidate-source.json` in the same
+directory. That error is produced before planner lookup when the required
+passive-cost observer is not installed, so it does not prove planner absence.
+The existing enabled private route, current SHA and modern build predicate
+already admit actual `.4`; its startup descriptor branch instead returns
+after journal installation without installing the existing Activity passive
+cost and rule-provenance observers. Their frame callback also lacks the
+explicit CoreBindings4 reader branch. The unchanged strict04/strict05
+configuration enables cost passive, guest candidate and rule provenance.
+
+The minimal central correction is to bind CoreBindings4, use its explicitly
+qualified frame reader, and call both existing observer installers before
+that actual `.4` startup return under their current flags. This does not need
+an Activity leaf or profile change. The cost installer already selects and
+verifies actual `.4` refresh `11BA6B0`, return `11B5B3F` and planner/type vptrs
+`45325D8`/`48BFE60`. The rule installer already selects refresh `2BBD190`,
+effect `3765860` and caller returns `11B8311`/`2BBD30A`, including their exact
+prologue and call-site checks. Reuse the held `guest-cost-native` function-map
+and `SOURCE-QUALIFICATION.json` proofs; no new EXE read is required. The exact
+shared-hook recipe and proof paths are external at
+`upstream-build-migration/actual-live-review/ACTIVITY-PASSIVE-CORE4-SHARED-HOOK.md`.
+
+The central owner integrated this correction in
+`f328c059b8cd54a4a73bcd80c2738df0a5bc734f`. It was initially recorded as
+`source-fix NOT RUN`; the first Root-owned actual retry now returns a valid
+`activity-feast-guest-candidate-private-read-v1` response with
+`status=planner_unavailable`. Its retained body is
+`upstream-build-migration/managed-full-h9613-binding04/live-failed01/retry-failed-feast-guest-candidate.json.body.json`.
+It preserves actual `.4` identity, Robert 29829, paused date `53288256`,
+native revision 2, public revision 3 and post `native:2`. Root's accepted full
+snapshot is the new third snapshot; the two earlier startup snapshots and the
+previous guest build-unavailable RED remain retained.
+
+This actual read qualifies a `production-live primitive` returning the typed
+planner availability boundary. `normal_refresh_sequence`, `source_fingerprint`,
+`native_filtered_pre_invitation` and `candidate` are all null, so candidate
+eligibility, costs, native filtering source and candidate-ready are not
+qualified. The source status combines an unobserved diagnostic, absent
+planner, non-Stage-5 planner, detached or hidden widget and a non-Feast type;
+the response does not distinguish those branches. Its `planning_stage=5` is
+the requested stage, not an observed planner stage. No additional source
+fault follows from this response on the existing campaign without an opened
+Feast. Root's retry used the G110-r4 runtime (reported source prefix `9cb`, DLL
+prefix `4c39596`, PID 161728); the child performed no build, test, SDK query or
+game action. Hosted and fixtures were not replayed. No Activity action,
+campaign date or G2 progress credit is added.
