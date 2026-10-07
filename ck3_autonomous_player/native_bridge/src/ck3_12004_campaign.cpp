@@ -1252,8 +1252,12 @@ constexpr std::size_t kStorageObjectOffset = 0x08;
 constexpr std::size_t kLandedTitleIdentityOffset = 0x10;
 constexpr std::size_t kLandedTitleTemplateOffset = 0x48;
 constexpr std::size_t kLandedTitleTierOffset = 0x64;
-// Existing noble-family subtype operands, retained pending the finite
-// actual4 source-use proof ledger. No preferred-capital substitution.
+// Actual4 named trigger evaluators resolve full-generation CTitle before
+// reading these subtype bytes; source closure 2ff7dfcb7e1868c1.
+constexpr std::size_t kLandedTitleLandlessTypeOffset = 0x30;
+constexpr std::size_t kLandedTitleNobleFamilyOffset = 0x32;
+constexpr std::size_t kLandedTitleChildrenCountOffset = 0x11C;
+constexpr std::size_t kLandedTitleTemplateKeyOffset = 0x18;
 constexpr std::size_t kLandedTitleSuccessionDataOffset = 0x150;
 constexpr std::size_t kLandedTitleSuccessionCapacityOffset = 0x158;
 constexpr std::size_t kLandedTitleSuccessionCountOffset = 0x15C;
@@ -1320,6 +1324,42 @@ bool ReadValue(const CampaignRootAccessV1 &access, const void *base,
   const void *address = nullptr;
   return CheckedAddress(base, offset, address) &&
          ReadBytes(access, address, &output, sizeof(output));
+}
+
+bool ReadNativeCountyTitleKey(const CampaignRootAccessV1 &access,
+                              const void *title_template,
+                              std::string &output) noexcept {
+  output.clear();
+  const void *native_string = nullptr;
+  if (!CheckedAddress(title_template, kLandedTitleTemplateKeyOffset,
+                      native_string)) return false;
+  if (access.read_string != nullptr) {
+    return access.read_string(access.context, native_string, output) &&
+           game::IsCanonicalCountyTitleKeyV1(output);
+  }
+  // The same guarded MSVC string decoding used by the exact title-map reader.
+  std::uint64_t size = 0;
+  std::uint64_t capacity = 0;
+  if (!ReadValue(access, native_string, 0x10, size) ||
+      !ReadValue(access, native_string, 0x18, capacity) || size == 0 ||
+      size > capacity || size > 1024) return false;
+  const void *bytes = native_string;
+  if (capacity > 15 &&
+      (!ReadValue(access, native_string, 0, bytes) || bytes == nullptr)) {
+    return false;
+  }
+  try {
+    output.resize(static_cast<std::size_t>(size));
+  } catch (...) {
+    output.clear();
+    return false;
+  }
+  if (!ReadBytes(access, bytes, output.data(), output.size()) ||
+      !game::IsCanonicalCountyTitleKeyV1(output)) {
+    output.clear();
+    return false;
+  }
+  return true;
 }
 
 template <typename Value>
@@ -1611,9 +1651,37 @@ bool ReadHeldTitlePartition(
         capital_province_id = province_id;
       } else {
         if (province_id != 0) return fail_with_capital_type_tag("county_capital_id_nonpositive");
-        // Actual4 CTitle+30/+32 source-use proof is not yet held.
-        // Geographic counties above already retain their complete partition.
-        return fail("actual4_county_no_province_subtype_source_unavailable");
+        // Stock noble-family counties have no barony children and legitimately
+        // return the Null Province.  Every condition is an actual native read;
+        // ordinary Null, unknown tags and malformed titles still fail closed.
+        if (!observe_capital_type_tag() || detail.capital_type_tag != 0x4E756C6CU)
+          return fail("county_capital_id_nonpositive");
+        std::uint8_t landless_type = 0;
+        detail.landless_type_read_attempted = true;
+        if (!ReadValue(access, title, kLandedTitleLandlessTypeOffset, landless_type))
+          return fail("county_landless_type_read");
+        detail.landless_type_observed = true;
+        detail.landless_type_value = landless_type;
+        if (landless_type != 1) return fail("county_capital_id_nonpositive");
+        std::uint8_t noble_family = 0;
+        detail.noble_family_read_attempted = true;
+        if (!ReadValue(access, title, kLandedTitleNobleFamilyOffset, noble_family))
+          return fail("county_noble_family_read");
+        detail.noble_family_observed = true;
+        detail.noble_family_value = noble_family;
+        if (noble_family != 1) return fail("county_capital_id_nonpositive");
+        std::int32_t children_count = -1;
+        detail.children_count_read_attempted = true;
+        if (!ReadValue(access, title, kLandedTitleChildrenCountOffset, children_count))
+          return fail("county_children_count_read");
+        detail.children_count_observed = true;
+        detail.children_count = children_count;
+        if (children_count != 0) return fail("county_capital_id_nonpositive");
+        detail.title_key_read_attempted = true;
+        if (!ReadNativeCountyTitleKey(access, title_template, native_title_key))
+          return fail("county_no_province_title_key_read");
+        detail.title_key_observed = true;
+        landless_noble_family_no_province = true;
       }
     }
     try {
