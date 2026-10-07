@@ -1,5 +1,15 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-07：exact-one-day必须走native sentinel，保存成功不替代步长验收
+
+实证：R63真实route advance在 **05:23:00–05:23:47 UTC** 要求exact一日，却由raw **53288256→53288424**（每游戏日24 raw，实际＋7天）并返回error；没有rerun。独立020确认已paused/map-ready/Robert alive，Army218104048到达2618；正常021 **H9635** 保存materialized。这两项恢复证据支持记真实新增7个saved days，不能把exact-one-day标GREEN或据此加M4 loop。[Root recovery checkpoint](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9613-title12/operator/ROOT-ACTUAL-H9635-RECOVERY-CHECKPOINT.json)使用stat与已有SDK SHA，不需要重复读取save正文或重hash。
+
+已确认的生产路径缺陷是 `_execute_life_advance` exactOneDay只poll speed/resume/read/pause、没有Arm已有native sentinel；同时actual4AdapterDescriptor漏三个existing Sentinel caps，installer/handler存在也没有闭合advertisement。这是本轮观察到的真实故障，不是新理论门禁。最小修复由Life/native owner补真正Arm路径与原capability声明；**源码/编译成功仍不能代替真实exact一日后独立paused snapshot的date＋24验证**。本次fix与live资格尚未通过，保留error及overshoot结果，不重跑未修路径。
+
+Root明确entry14实际已包含actual4 sentinel installer，不能把descriptor漏三个caps写成native hook缺失。Python source38的Arm/date-only-terminal和next-frame native-paused修复已authored、尚未qualified；避免将源码存在误记为exact-day恢复通过。
+
+当前normal G2与用户另授权的Byzantium真实867测试共用CK3独占runtime，第二runtime已被实际锁拒绝。实机串行为**normal保存H9635→关闭owned runtime→side isolated867→normal从H9635恢复**；后台源码工作可独立并行。Root确认side原三payload/descriptor/dlc_load安装及隔离userdir准备；867游戏/截图仍未执行，安装/测试/截图各自分列资格，不据授权或启动声明冒充实测。这段知识仅复用Root已封运行证据，不追加测试、SDK、EXE或save/Driver读取。
+
 
 ### 2026-10-06 late update: actual Army query recovered
 
