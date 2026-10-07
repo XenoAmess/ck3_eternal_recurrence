@@ -222,8 +222,12 @@ flowchart TD
   K -->|0 / valid ordinary slot| S[2467F90 definition into holding10 + slot*10; slotflag0]
   K --> O[Other category slots remain separate]
   S --> R[2467F9A calls246CA40 with actual holding receiver]
-  R --> H[Root-held27B prologue: RDX=holdingF0 + 28]
-  H -. Sequential continuation246CA5B not captured .-> V[Specific building modifier application unknown]
+  R --> H[Root-held 27B prologue: RDX=holdingF0 + 28]
+  H --> B[Root-held 420B body: hierarchy IDs / conditional list]
+  B --> Q[Prov85C -> CoDa3E0 / receiver+90 -> call2864950]
+  Q --> D[holdingF0+28 / EDX3 -> call28662F0]
+  B -. false branch body remains beyond246CBFF .-> V[Complete callback semantics unknown]
+  D -. callee body not captured / no718 writer .-> V
   R --> F[Building-valid completion followups246CE30 and246D0B0]
   O --> C[Common2468B80]
   F --> C
@@ -283,16 +287,41 @@ Only this generated detail was reviewed here; no further executable bytes,
 PE metadata, symbols or hashes were read by this lane. The corresponding
 existing runtime-table rows identify the immediately adjacent continuation:
 old `[246CA7B,246CC1F)` and actual `[246CA5B,246CBFF)`, each 420 bytes. A
-separate **unexecuted** proposal limits the next source read to these two
-contiguous intervals, 840 fresh bytes total. Its purpose is to follow the
-observed holding+F0/+28 receiver into actual body operations. It does not
-preassert completed-building traversal, modifier application, Province+718
-recalculation or holder NET. All downstream callee bodies remain outside
-that proposal.
+separate proposal limited the next source read to these two contiguous
+intervals, 840 fresh bytes total. Root explicitly approved and centrally
+executed it once at 06:18:50–06:18:51 UTC on October 7. Both 420-byte spans
+decode completely and normalize equal. The actual body reaches:
+
+- 246CA71→2A3E020 with the prior holding+F0/+28 input and an indirect global
+  receiver, then 246CA79→2467540 and 246CA84→2BAA6F0. The latter return is
+  consumed as the branch boolean; their semantic identities remain unknown.
+- The owner-like object+738 ID, two hierarchy+108 IDs, then a +110/count11C
+  four-byte ID list. On the true branch, each resolved ID is passed to
+  230F8E0; the result is checked for `Prov` tag at+85C, then +848 supplies
+  an object checked for `CoDa` tag at+3E0. Actual 246CBC2 calls2864950 with
+  that object's+90 receiver. No callee body was captured.
+- Actual 246CBEE calls28662F0 with RCX=`holdingF0+28`, EDX=3 and then jumps
+  to 246CCDC. These source operands are concrete; the numeric mode and
+  operation semantics are not renamed as an income recalculation.
+
+The false branch enters 246CBF8 and the captured interval ends after its
+first instruction at246CBFF. The corresponding held rows at the known
+common jump target are old `[246CCFC,246CD5B)` and actual
+`[246CCDC,246CD3B)`. A new **unexecuted** 632-byte proposal reads only the
+contiguous remaining tails, old `[246CC1F,246CD5B)` and actual
+`[246CBFF,246CD3B)`, each316 bytes. It follows the observed sequential
+continuation and common target to close the two branches/return, without
+expanding any downstream callee. Current source does not contain a
+Province+718 write or a holder true-NET contribution formula.
 
 ## Source-only adapter for the current shared Root hooks
 
-The reviewable adapter is
+The two small source-ready utilities now live in the existing
+`construction_economic_outcome_v1.py`:
+`prepare_construction_cash_fields_v1` and
+`completed_construction_cash_fields_v1`. They reuse the already GREEN f81
+projection/b28 classifier and copy the observed packets. No new arithmetic,
+query or action is added. The reviewable integration aliases are in
 `Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/economy-yield/ROOT-SHARED-HOOK-ADAPTER.py`.
 It calls the existing f81 projection and b28 classifier, with no independent
 arithmetic, query or action. Root can use an existing normalized current-cash
@@ -307,7 +336,7 @@ between the authoritative quote and native send. Root's source coupling is:
   version/SHA are the quote's paused actor/date and exact build, and its
   observed treasury matches `candidate.gold_before_raw`. These observations
   retain their own query/revision metadata; do not invent a shared revision.
-- Add `prepare_construction_cash_fields(...)` output to the durable pending
+- Add `prepare_construction_cash_fields_v1(...)` output to the durable pending
   payload at `domain_construction_private_transport_v1.py`'s pending creation
   (`pre_date_raw`, `actor_character_id`, native quote and action ID already
   exist there). Its `pre_cash_v2` comes directly from the f81 projection's
@@ -318,7 +347,7 @@ between the authoritative quote and native send. Root's source coupling is:
   merge the original pending/applied dictionary and preserve `start_receipt`;
   preserve these two fields through the same path.
 - After the independent native completed-slot receipt, use the current
-  normalized cash-v2 observation to call `completed_construction_cash_fields`
+  normalized cash-v2 observation to call `completed_construction_cash_fields_v1`
   and persist its enriched `receipt` through the existing ledger writer.
   The formal consumer's existing outcome hook then consumes the attached
   pre/post packets. A start ACK, active row, zero remaining work or current

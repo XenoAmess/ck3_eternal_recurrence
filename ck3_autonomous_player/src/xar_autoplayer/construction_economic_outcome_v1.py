@@ -7,7 +7,9 @@ aggregate changes across time, without assigning them to one building.
 from __future__ import annotations
 
 from collections.abc import Mapping
+from copy import deepcopy
 
+from .bridge.construction_monthly_budget_v1 import project_construction_monthly_budget_v1
 from .bridge.version_identity import require_exact_native_build
 from .bridge.war_cash_private_transport_v1 import _monthly_flow
 
@@ -220,4 +222,44 @@ def construction_economic_outcome_v1(
             "m5_realized_value_ready": False,
         },
         "formal_action_ready": False,
+    }
+
+
+def prepare_construction_cash_fields_v1(
+    candidate: Mapping[str, object], normalized_cash_v2: dict[str, object], *,
+    reserve_gold_raw: int, existing_commitment_gold_raw: int, horizon_months: int,
+) -> dict[str, object]:
+    """Reuse one observed cash packet for the native quote's budget and baseline.
+
+    The Root hook supplies the actual same paused actor/date/build/treasury
+    quote. Persist these fields on pending and the first fresh material receipt.
+    This utility neither reads nor selects an action.
+    """
+    budget = project_construction_monthly_budget_v1(
+        normalized_cash_v2,
+        construction_gold_cost_raw=candidate["stock_gold_cost_raw"],
+        reserve_gold_raw=reserve_gold_raw,
+        existing_commitment_gold_raw=existing_commitment_gold_raw,
+        horizon_months=horizon_months,
+    )
+    return {
+        "pre_cash_v2": deepcopy(budget["source_cash_resources"]),
+        "construction_monthly_budget": budget,
+    }
+
+
+def completed_construction_cash_fields_v1(
+    completed_receipt: Mapping[str, object], normalized_cash_v2: Mapping[str, object], *,
+    exact_ck3_build: str,
+) -> dict[str, object]:
+    """Attach the observed post packet and consume the same material receipt.
+
+    The existing classifier determines actual completion and interval readiness;
+    attaching a packet does not qualify an active construction or start ACK.
+    """
+    receipt = {**completed_receipt, "post_cash_v2": deepcopy(normalized_cash_v2)}
+    return {
+        "receipt": receipt,
+        "construction_economic_outcome": construction_economic_outcome_v1(
+            receipt, exact_ck3_build=exact_ck3_build),
     }
