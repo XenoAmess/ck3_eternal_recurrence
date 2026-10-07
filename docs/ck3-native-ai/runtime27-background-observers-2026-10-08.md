@@ -1,6 +1,24 @@
 # Runtime27 background observers — 2026-10-08
 
-## Subsequent source adoptions and M7 helper at01:22:31 CST
+## Runtime29 actual partial qualification at02:32:56 CST
+
+Root29's actual build is **GREEN55 production CPPs/4 fixture CPPs/1 new generator**. Native FIRSTs:army_admission **GREEN0.2350591s**,commander_trigger **GREEN0.1383922s**,land_stock **RED0.2452136s** with `whole LAND callback ABI/count/order changed`. Preserve the failed attempt;LAND owner performs the minimal repair and the other two native results are not replayed. Consumers for the two GREEN modules are running first,with no result precredited. Overall29 qualification remains incomplete.
+
+User permission for Root-only minimized Game remains,but **29 must not be loaded before its actual build/three native/three MCP qualifications pass**. O8-5 restore/paused-new-query/G2 remains pending. Completed27/28 and the three independent pure/Service consumer milestones can publish without waiting for29. H9658/saved6006/G2 5/8/NW2 2/4/natural0/M4false/newdays0 unchanged.
+
+## Authorization change recorded at02:28:16 CST
+
+Root relayed the user's new permission to resume local CK3 after finishing their own play,while continuing high-parallel G2 research. Recorded **2026-10-08T02:28:16+08:00**;earlier prohibitions remain historical,not the opening plan rewritten. **Root alone controls Game,minimized without taking focus; other agents do not touch local Game.** Oct8 O8-5 now requires actual29 build/three native/three MCP qualifications before restoring originalRobert H9658/saved6006/all10 and querying new paused inputs for the shortest useful G2/OODA. Source29 prep is GREEN,build RUNNING/FIRST NOT_RUN. No restore/live/day/screenshot/natural credit is assigned yet. Runtime27/28 completed offline evidence and unchanged G2 counters remain.
+
+## Historical Runtime28 successor qualification at02:11:21 CST
+
+Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z**. Source28 stock/unit now have actual canonical and both native/Service FIRSTs GREEN in [Runtime28 background supply/movement](runtime28-background-supply-movement-2026-10-08.md). Compiled g116-r28c **d586b4f65568dade868f56100c876d3c6870ffbd** remains distinct from published **e203d499a8f26b083ffbda45028d62f0fd7e9af7** and later unpushed source. Runtime27 five-native/five-Service GREEN is retained without replay; previous pending28 statements remain their dated cutoff. Nothing is deployed/live-qualified.
+
+Independent new results: [Sway lifecycle GREEN5.2946096s](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/sway-lifecycle-first01/RESULT.json),d617→Root09df1a53; [first-heir quality GREEN14.8450885s](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/first-heir-quality-first01/RESULT.json),830→Roota6671e13,eight scenes/35 rows,original checks/fallbacks retained. Neither adds native replay,birth,natural succession or live credit. M7 pure-function GREEN2.461592s is reused,doc606→55f9 adopted,calendar/retry unclosed.
+
+Source29 LAND34→73814f1e,AL0b→1dd9de8c,trigger896→5801ba7d plusRoot35668hooks are adopted. Root subsequently confirmedg117-r29 pin **18edd5613c8cbc580c6745bf3abbe396ed9c9f9e**,scopedG2 cohort excluding other owners' claims qualification. Source preparation is actually RUNNING,build/FIRST NOT_RUN;role seed reuses27 source372's qualified path with one new serializer generator. This work does not delay publication or repeat27/28. AgentGame/SDK/process/UI0,H9658/saved6006/G2 5/8/NW2 2/4/natural0/M4false/newdays0 unchanged;latest CK3 prohibition remains.
+
+## Historical source adoptions and M7 helper at01:22:31 CST
 
 Recorded **2026-10-08T01:22:31+08:00 / 2026-10-07T17:22:31Z**. Root adopted source28 next-stock→budget **88b as09ad7543** and Unit ADD168 **e551 as11d01da2**. Both new targets remain **build/FIRST NOT_RUN**; source adoption is not Runtime28 qualification or a future-stock/live outcome. M7 source **a495 is adopted ase4e43511**. Candidate **2331e2a1b11d67a3bbe9b05f9108ed8245be9cd7** has a Root [pure-function compound FIRST GREEN/2.461592 seconds](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/m7-clock-units-factory-continuation02/root-first02-import-path-fix/RESULT.json). Initial first01 collection failed with missing PYTHONPATH before any case executed; that RED remains. Only the helper environment changed for one necessary retry. It performed no Native, Service or Game work. Root is proceeding with2331 adoption; no unreported final adoption pin is inferred.
 
@@ -51,7 +69,7 @@ The [M4 window file-only sole compound](Z:/ck3_mod_rewrite_process_assets/g2-bac
 - **Source28 candidates,updated01:22:** next-stock→budget **88b→Root09ad7543** and Unit ADD168 **e551→Root11d01da2** are adopted, but both targets remain build/FIRST NOT_RUN. Their source projections and expected values are not actual future stock/budget outcomes.
 - **M7 source owner,updated01:22:** **a495→e4e43511** is adopted;2331's selected source and pure helper have the actual qualification above. Calendar/retry and a complete timing-observer contract remain unclosed. Existing raw observer/native/Service GREEN outputs are reused separately; the pure helper adds none of those execution credits.
 
-## Current campaign and authorization boundary
+## Historical00:57 campaign boundary; authorization superseded at02:28
 
 The latest user instruction still prohibits local CK3 and live SDK operations. There is no R75, new deployment, game action or new saved day. Root's latest client action was SDK64153's normal exit0; it did not close or control Game. The last qualified frame/checkpoint remains original Robert29829 **H9658/date53288472/saved6006/all10**, while **G2 5/8, NW2 2/4, natural0 and M4false** remain unchanged. Do not query or infer the user's current Game state.
 

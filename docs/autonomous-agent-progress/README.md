@@ -1,6 +1,18 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 01:22:31 CST：source28已采用待测，M7纯helper GREEN
+### 2026-10-08 02:32:56 CST：29 build GREEN，native2GREEN／LAND1RED待修
+
+Root29实际55prod4fixture1generator build GREEN；army_admission／commander_trigger native GREEN，land_stock whole ABI/count/order断言RED保留、最小修复中，另两native不重跑、consumer结果pending。29三native／三MCP整体合格前不得加载；新授权允许Root唯一Game且保持最小化不抢焦点，O8-5恢复G2尚待qualified。28及三独立consumer已完成里程碑可先发布；H9658/saved6006/G2 5/8/NW2 2/4/natural0/M4false/newday0不变，见[Oct8日报](daily/2026-10-08.md)／[真实早会](meetings/daily/2026-10-08.md)。
+
+### 2026-10-08 02:28:16 CST授权记录：用户允许继续CK3，Root29资格后恢复G2
+
+用户“我玩完了”新授权已由Root转达，原禁令保留历史，**当前Game可由Root唯一使用，必须最小化不抢焦点，其他agent禁止触碰**。[Oct8早会](meetings/daily/2026-10-08.md)追加O8-5：29真实build/三native/三MCP合格后恢复原RobertH9658/saved6006/all10、paused新查询→最短G2/OODA。29 prep GREEN，build RUNNING／FIRST NOT_RUN，28资格保持；不预记restore/live/day/screens/继承，G2 5/8/NW2 2/4/natural0/M4false不变。高并发后台研究继续，当前publication e203、新增报告push待Root。
+
+### 历史2026-10-08 02:11:21 CST：Runtime28两native／两Service实际GREEN
+
+[Runtime28专题](../ck3-native-ai/runtime28-background-supply-movement-2026-10-08.md)新增canonical713／49prod2fixture／460commandrows、stock/unit两native及两Service实际GREEN，原build RED保留；source d586与published e203分列，未deploy/live。Sway lifecycle／first-heir quality新offline FIRST分别GREEN5.2946096/14.8450885s，无birth/natural信用；M7原purehelper复用、calendar/retry未闭。Source29已采用但build/FIRST NOT_RUN，不等29发布；保留产品并行记录不撤CK3禁令，agentGame/SDK/process/UI0。H9658/saved6006/G2 5/8/NW2 2/4/natural0/M4false不变，见[Oct8日报](daily/2026-10-08.md)／[W41](weekly/2026-W41.md)，本批push待Root。
+
+### 历史2026-10-08 01:22:31 CST：source28已采用待测，M7纯helper GREEN
 
 Runtime27五native／五Service离线GREEN保持；source28 Stock88b→Root09ad7543、Unit e551→11d01da2已采用但两targets build/FIRST NOT_RUN。M7a495→e4e43511已采用，2331候选Root纯函数compound GREEN2.461592s，first01缺PYTHONPATH collection RED保留，只helperenv重试，无Native／Service／Game；calendar/retry仍false。见[Runtime27后续索引](../ck3-native-ai/runtime27-background-observers-2026-10-08.md)／[Oct8日报](daily/2026-10-08.md)／[W41](weekly/2026-W41.md)。CK3/SDK禁令及H9658/saved6006/G2 5/8/NW2 2/4/natural0/M4false不变，push pending Root。
 
