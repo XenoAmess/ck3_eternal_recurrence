@@ -13512,7 +13512,8 @@ std::string RunTitleHolderQueryV1(
     std::string_view payload) {
   std::int32_t title_id = -1;
   std::uint64_t expected_revision = 0;
-  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+  if ((!xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
+       !xar::game::IsCk3_12004Descriptor(game.descriptor())) ||
       !xar::game::ParseTitleHolderStepV1(step, title_id) ||
       !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
           payload, expected_revision)) {
@@ -13546,9 +13547,11 @@ std::string RunTitleHolderQueryV1(
     observation.title_id = title_id;
     observation.unavailable_reason = "typed_mailbox_read_unavailable";
   }
-  const auto result = xar::game::SerializeTitleHolderV1(
-      observation, read_result, ++state.title_holder_query_sequence,
-      expected_revision, step);
+  const auto result = xar::game::Render12004BuildIdentity(
+      xar::game::SerializeTitleHolderV1(
+          observation, read_result, ++state.title_holder_query_sequence,
+          expected_revision, step),
+      game.descriptor());
   std::string response =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(response, request_id);
@@ -14339,7 +14342,8 @@ void RunConnectedSession(
                           kArmyCommanderCandidatesStepPrefix) ||
                       step.starts_with(xar::ck3_12003::
                           kArmyCommanderAssignmentStepPrefix) ||
-                      step.starts_with(xar::game::kWarOccupationTargetsV1StepPrefix)))) &&
+                      step.starts_with(xar::game::kWarOccupationTargetsV1StepPrefix) ||
+                      step.starts_with(xar::game::kTitleHolderV1StepPrefix)))) &&
                     (step.starts_with(xar::ck3_12003::
                                          kArmyCommanderAssignmentStepPrefix) ||
                     step.starts_with(xar::ck3_12003::

@@ -255,6 +255,14 @@ std::string Render12004BuildIdentity(
     std::string serialized, const AdapterDescriptor &descriptor) {
   if (!IsCk3_12004Descriptor(descriptor)) return serialized;
   serialized = ck3_12002::RenderQueryBuildIdentity(std::move(serialized));
+  // The shared event-window serializer retains its historical .2 locator.
+  // The independently mapped .4 factory uses 0x44BC418 (SOURCE-CLOSURE.json).
+  if (serialized.find("\"schema\":\"current-event-window-context-v1\"") !=
+      std::string::npos) {
+    ReplaceIdentityToken(serialized,
+        "\"idler_vtable_rva\":\"0x44BC408\"",
+        "\"idler_vtable_rva\":\"0x44BC418\"");
+  }
   for (const auto old_version : {"1.20.0.2", "1.20.0.3"}) {
     for (const auto key : {"game_version", "exact_ck3_build", "exact_build",
                            "version", "build_version", "build"}) {
@@ -280,6 +288,14 @@ std::string Render12004BuildIdentity(
   // Its production normalizer and shared serializer retain the canonical name.
   ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12004_owned_regiments_v1\"",
       "\"schema\":\"ck3_12003_owned_regiments_v1\"");
+  // Knight semantic contracts retain their canonical schema across builds.
+  // The actual V2 consumer rejected a rewritten effectiveness schema in R0060.
+  ReplaceIdentityToken(serialized,
+      "\"schema\":\"ck3_12004_knight_effectiveness_context_v1\"",
+      "\"schema\":\"ck3_12003_knight_effectiveness_context_v1\"");
+  ReplaceIdentityToken(serialized,
+      "\"schema\":\"ck3_12004_knight_current_model_association_v1\"",
+      "\"schema\":\"ck3_12003_knight_current_model_association_v1\"");
   for (const auto old_hash : {std::string_view(ck3_12002::kExecutableSha256),
                             std::string_view(ck3_12003::kExecutableSha256)}) {
     ReplaceIdentityToken(serialized, std::string("\"") + std::string(old_hash) + "\"",
