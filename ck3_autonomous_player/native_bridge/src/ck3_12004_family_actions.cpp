@@ -26,18 +26,27 @@ bool PendingComponentInitialized(const void *component) noexcept {
 }
 } // namespace
 
+ck3_12002::ContextBindings BindArrangeMarriageImage(
+    std::uintptr_t base, std::string_view sha,
+    const ck3_12002::CommandBindings &actual_commands) noexcept {
+  auto bindings = BindFamilyContextImage(base, sha);
+  if (!bindings.enabled) return bindings;
+  bindings.commands = actual_commands;
+  bindings.construct_send_command =
+      reinterpret_cast<ck3_12002::MarriageConstructSendInteractionCommand>(
+          base + kConstructSendCommandRva);
+  bindings.send_primary_vtable = base + kSendPrimaryVtableRva;
+  bindings.send_secondary_vtable = base + kSendSecondaryVtableRva;
+  return bindings;
+}
+
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 ck3_12002::FamilyBindings BindFamilyActionImage(
     std::uintptr_t base, std::string_view sha,
     const ck3_12002::CommandBindings &actual_commands) noexcept {
   auto bindings = BindFamilyImage(base, sha);
   if (!bindings.enabled) return bindings;
-  bindings.context.commands = actual_commands;
-  bindings.context.construct_send_command =
-      reinterpret_cast<ck3_12002::MarriageConstructSendInteractionCommand>(
-          base + kConstructSendCommandRva);
-  bindings.context.send_primary_vtable = base + kSendPrimaryVtableRva;
-  bindings.context.send_secondary_vtable = base + kSendSecondaryVtableRva;
+  bindings.context = BindArrangeMarriageImage(base, sha, actual_commands);
   return bindings;
 }
 #endif

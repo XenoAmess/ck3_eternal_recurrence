@@ -2,18 +2,22 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12004_commands.hpp"
+#include "xar_bridge/ck3_12004_events.hpp"
 #include "xar_bridge/ck3_12004_combat.hpp"
 #include "xar_bridge/ck3_12004_military.hpp"
 #include "xar_bridge/ck3_12004_diplomacy.hpp"
 #include "xar_bridge/ck3_12004_war_declarations.hpp"
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12004_family_relationships.hpp"
+#include "xar_bridge/ck3_12004_family_actions.hpp"
 #include "xar_bridge/ck3_12004_province.hpp"
 #include "xar_bridge/ck3_12004_snapshot_foundation.hpp"
 #include "xar_bridge/ck3_12004_world.hpp"
 #include "xar_bridge/ck3_12004_army.hpp"
+#include "xar_bridge/ck3_12004_routes.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
+#include "xar_bridge/frontend_gui_route_v1.hpp"
 
 #include <windows.h>
 #include <array>
@@ -43,6 +47,28 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.war-objective-siege-progress", "game.state.war-objective-assault",
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
+      "game.command.query-title-holder-v1-N",
+      "game.command.select-event-option-N",
+      "game.command.accept-pending-character-interaction",
+      "game.command.reject-pending-character-interaction",
+      "game.command.acknowledge-pending-character-interaction",
+      ck3_11906::kIngameUiNavigationV1Capability,
+      ck3_11906::kIngameUiWindowQueryV1Capability,
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1) && \
+    defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+      ck3_11906::kFrontendGuiRouteV1Capability,
+      ck3_11906::kFrontendGuiTreeInspectionV1Capability,
+      ck3_11906::kGuiWindowTreeInspectionV1Capability,
+      ck3_11906::kFrontendGuiOpenNewGameV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+      ck3_11906::kFrontendBookmarkModelProbeV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+      ck3_11906::kFrontendGuiSelectSupported1066CharacterV1Capability,
+      ck3_11906::kFrontendGuiStartSelectedBookmarkV1Capability,
+#endif
+      "game.command.query-route-contact-horizon-v1-N",
       ck3_12003::kArmyCommanderCandidatesCapability,
       ck3_12003::kArmyCommanderCandidatesForTargetCapability,
       ck3_12003::kArmyCommanderAssignmentCapability,
@@ -72,6 +98,8 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.command.query-declarable-wars",
       "game.command.declare-war-N",
       "game.command.enforce-demands-N",
+      "game.command.query-arrange-marriage-choices",
+      "game.command.arrange-marriage-N",
       "game.command.query-war-occupation-targets-v1-N",
       "game.command.query-war-termination-options-N",
       "game.command.query-war-termination-terms-v1-N",
@@ -98,6 +126,13 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
   if (!bindings.core.enabled) return bindings;
   bindings.commands = ck3_12004::BindCommandImage12004(
       image_base, executable_sha256);
+  bindings.events = ck3_12004::BindEventsImage(image_base, executable_sha256);
+  bindings.marriage = ck3_12004::BindArrangeMarriageImage(
+      image_base, executable_sha256, bindings.commands);
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  bindings.family = ck3_12004::BindFamilyImage(
+      image_base, executable_sha256);
+#endif
   bindings.combat = ck3_12004::BindCombatImage12004(
       image_base, executable_sha256);
   bindings.military = ck3_12004::BindMilitaryImage12004(
@@ -110,6 +145,8 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
   // The concrete adapter repairs this borrow after moving the bundle.
   bindings.military.submit_context = nullptr;
   bindings.armies = ck3_12004::BindArmyImage12004(image_base, executable_sha256);
+  bindings.movement_routes = ck3_12004::BindRouteImage12004(
+      image_base, executable_sha256);
   bindings.owned_regiments.persistent_regiment_storage_slot =
       bindings.armies.persistent_regiment_storage_slot;
   bindings.owned_regiments.read_type = ck3_12002::ReadOwnedRegimentTypeV1;
@@ -226,6 +263,10 @@ std::string Render12004BuildIdentity(
   }
   ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12002_", "\"schema\":\"ck3_12004_");
   ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12003_", "\"schema\":\"ck3_12004_");
+  // This nested Army semantic contract is independent of executable identity.
+  // Its production normalizer and shared serializer retain the canonical name.
+  ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12004_owned_regiments_v1\"",
+      "\"schema\":\"ck3_12003_owned_regiments_v1\"");
   for (const auto old_hash : {std::string_view(ck3_12002::kExecutableSha256),
                             std::string_view(ck3_12003::kExecutableSha256)}) {
     ReplaceIdentityToken(serialized, std::string("\"") + std::string(old_hash) + "\"",
