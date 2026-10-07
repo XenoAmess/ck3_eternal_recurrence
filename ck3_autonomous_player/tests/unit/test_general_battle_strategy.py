@@ -142,7 +142,7 @@ def test_observed_inbound_route_does_not_block_contact_free_first_waypoint():
             "preview-move-army-11-to-40", "move-army-11-to-40",
             query_route_contact_horizon_step(11, 40, (21, 22)),
         })
-    model.assert_called_once()
+    model.assert_not_called()
     assert result["phase"] == "native_war_general_battle_short_move"
     assert result["selected_step"] == "move-army-11-to-40"
 
@@ -199,7 +199,7 @@ def test_stale_native_revision_cannot_reuse_a_cached_battle_estimate():
         model.assert_not_called()
 
 
-def test_long_route_uses_forecast_only_to_advance_one_contact_free_waypoint():
+def test_long_route_advances_one_contact_free_waypoint_before_forecast():
     frame = _frame()
     frame["combat_simulation_inputs_v3_attacker_entry_province_id"] = 40
 
@@ -230,7 +230,7 @@ def test_long_route_uses_forecast_only_to_advance_one_contact_free_waypoint():
         )
         _CHECK.assertEqual(result["phase"], "native_war_general_battle_short_move")
         _CHECK.assertEqual(result["selected_step"], "move-army-11-to-40")
-        _CHECK.assertIs(result["general_battle_forecast_used_for_decision"], True)
+        _CHECK.assertIs(result["general_battle_forecast_used_for_decision"], False)
 
 
 def test_long_route_with_origin_prefix_uses_first_travel_waypoint():

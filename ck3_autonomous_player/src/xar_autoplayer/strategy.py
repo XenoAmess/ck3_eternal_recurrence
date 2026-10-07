@@ -16498,6 +16498,65 @@ def _general_battle_forecast_ingress(
             "another encounter can occur before the simulated target battle",
             route_preview=preview, route_contact_horizon=contact,
         )
+    # A proved noncontact waypoint has value before any forecast of the
+    # distant endpoint. Its own exact preview and same-frame H1 authorize
+    # only this hop; the existing contact branch evaluates the battle later.
+    if len(remaining_route) != 1:
+        if contact.get("one_day_contact_free") is not True:
+            return bounded(
+                "native_war_general_battle_short_route_blocked", None,
+                "the first travel day has another possible contact",
+                route_preview=preview, route_contact_horizon=contact,
+            )
+        first_hop = remaining_route[0]
+        first_preview_step = preview_move_army_step(army_id, first_hop)
+        first_preview = _fresh_move_route_preview(
+            commands, army_id=army_id, origin_province_id=origin,
+            target_province_id=first_hop, date_raw=_native_int(snapshot.get("date_raw")),
+        )
+        if first_preview is None:
+            return bounded(
+                "native_war_general_battle_short_preview",
+                first_preview_step if first_preview_step in action_steps else None,
+                "prove an exact first waypoint before a distant predicted contact",
+                route_preview=preview, route_contact_horizon=contact,
+            )
+        first_route = first_preview.get("route_province_ids")
+        if isinstance(first_route, list) and first_route and first_route[0] == origin:
+            first_route = first_route[1:]
+        if first_preview.get("status") != "available" or first_route != [first_hop]:
+            return bounded("native_war_general_battle_short_preview_blocked", None,
+                           "the first waypoint does not have an exact one-hop route",
+                           route_preview=first_preview, route_contact_horizon=contact)
+        first_contact_step = query_route_contact_horizon_step(army_id, first_hop, hostile_ids)
+        first_contact = _fresh_route_contact_horizon(
+            commands, snapshot, army_id=army_id, origin_province_id=origin,
+            target_province_id=first_hop, hostile_army_ids=hostile_ids,
+            route_province_ids=[first_hop],
+        )
+        if first_contact is None:
+            return bounded(
+                "native_war_general_battle_short_contact_query",
+                first_contact_step if first_contact_step in action_steps else None,
+                "prove the first waypoint has no near-term hostile contact",
+                route_preview=first_preview, route_contact_horizon=contact,
+            )
+        first_move_step = move_army_step(army_id, first_hop)
+        if not (
+            first_contact.get("one_day_contact_free") is True
+            and first_contact.get("conflicts") == []
+            and first_move_step in action_steps
+        ):
+            return bounded("native_war_general_battle_short_contact_blocked", None,
+                           "the first waypoint is not proved contact-free",
+                           route_preview=first_preview, route_contact_horizon=first_contact)
+        return bounded(
+            "native_war_general_battle_short_move", first_move_step,
+            "move one proved contact-free waypoint and refresh the battle estimate next turn",
+            route_preview=first_preview, route_contact_horizon=first_contact,
+            general_battle_forecast_used_for_decision=False,
+            future_contact_authorized=False,
+        )
     use_v3 = QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY in bridge_capabilities
     query_capability = (
         QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY if use_v3
@@ -16595,61 +16654,6 @@ def _general_battle_forecast_ingress(
             battle_forecast=forecast, contact_admission=admission,
             observed_unmodeled_inbound_enemy_army_ids=inbound_unmodeled,
             inbound_arrival_before_battle_resolution_proven=False,
-        )
-    if len(remaining_route) != 1:
-        if contact.get("one_day_contact_free") is not True:
-            return bounded(
-                "native_war_general_battle_short_route_blocked", None,
-                "the first travel day has another possible contact",
-                battle_forecast=forecast, contact_admission=admission,
-            )
-        first_hop = remaining_route[0]
-        first_preview_step = preview_move_army_step(army_id, first_hop)
-        first_preview = _fresh_move_route_preview(
-            commands, army_id=army_id, origin_province_id=origin,
-            target_province_id=first_hop, date_raw=_native_int(snapshot.get("date_raw")),
-        )
-        if first_preview is None:
-            return bounded(
-                "native_war_general_battle_short_preview",
-                first_preview_step if first_preview_step in action_steps else None,
-                "prove an exact first waypoint before a distant predicted contact",
-                battle_forecast=forecast, contact_admission=admission,
-            )
-        first_route = first_preview.get("route_province_ids")
-        if isinstance(first_route, list) and first_route and first_route[0] == origin:
-            first_route = first_route[1:]
-        if first_preview.get("status") != "available" or first_route != [first_hop]:
-            return bounded("native_war_general_battle_short_preview_blocked", None,
-                           "the first waypoint does not have an exact one-hop route",
-                           battle_forecast=forecast, contact_admission=admission)
-        first_contact_step = query_route_contact_horizon_step(army_id, first_hop, hostile_ids)
-        first_contact = _fresh_route_contact_horizon(
-            commands, snapshot, army_id=army_id, origin_province_id=origin,
-            target_province_id=first_hop, hostile_army_ids=hostile_ids,
-            route_province_ids=[first_hop],
-        )
-        if first_contact is None:
-            return bounded(
-                "native_war_general_battle_short_contact_query",
-                first_contact_step if first_contact_step in action_steps else None,
-                "prove the first waypoint has no near-term hostile contact",
-                battle_forecast=forecast, contact_admission=admission,
-            )
-        first_move_step = move_army_step(army_id, first_hop)
-        if not (
-            first_contact.get("one_day_contact_free") is True
-            and first_contact.get("conflicts") == []
-            and first_move_step in action_steps
-        ):
-            return bounded("native_war_general_battle_short_contact_blocked", None,
-                           "the first waypoint is not proved contact-free",
-                           battle_forecast=forecast, contact_admission=admission)
-        return bounded(
-            "native_war_general_battle_short_move", first_move_step,
-            "move one proved contact-free waypoint and refresh the battle estimate next turn",
-            battle_forecast=forecast, contact_admission=admission,
-            general_battle_forecast_used_for_decision=True,
         )
     subject_route = contact.get("subject_route")
     arrivals = subject_route.get("arrival_date_raws") if isinstance(subject_route, dict) else None
