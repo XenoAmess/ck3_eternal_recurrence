@@ -8372,6 +8372,7 @@ def _choose_one_life_turn_core(
                     event_context,
                     played_character_id=played_character_id,
                     snapshot_option_count=active_event.get("option_count"),
+                    played_character=played_character,
                 )
             )
             if registry_decision.get("status") == "recommended":
@@ -8398,6 +8399,14 @@ def _choose_one_life_turn_core(
                             snapshot.get("revision")
                             if isinstance(snapshot, dict)
                             else None
+                        ),
+                        native_revision=(
+                            snapshot.get("native_revision")
+                            if isinstance(snapshot, dict) else None
+                        ),
+                        date_raw=(
+                            snapshot.get("date_raw")
+                            if isinstance(snapshot, dict) else None
                         ),
                     )
                 )

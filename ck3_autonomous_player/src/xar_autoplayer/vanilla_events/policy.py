@@ -1138,6 +1138,7 @@ def recommend_registered_vanilla_event_option_v1(
     played_character_id: object,
     snapshot_option_count: object,
     ck3_build: str | None = None,
+    played_character: object = None,
 ) -> dict[str, object]:
     """Return one direct registry choice or a typed non-action result."""
 
@@ -1518,7 +1519,25 @@ def recommend_registered_vanilla_event_option_v1(
     assert selected_native is not None
     assert selected_number is not None
     assert selected_rendered is not None
-    if notice_review is not None:
+    poet_comparison = None
+    if build == "1.20.0.4" and event_key == "trait_specific.9001":
+        from .poet_long_term_context import (
+            compare_poet_long_term_choices_v1,
+            poet_selected_effect_profile_v1,
+        )
+
+        poet_comparison = compare_poet_long_term_choices_v1(
+            event_context, knowledge, played_character=played_character,
+        )
+    if poet_comparison is not None:
+        selected_native = poet_comparison["selected_native_option_index"]
+        selected_number = poet_comparison["selected_option_number"]
+        selected_rendered = poet_comparison["selected_rendered_index"]
+        selected = poet_comparison["selected_option"]
+        choice_effect_profile = poet_selected_effect_profile_v1(
+            knowledge, poet_comparison,
+        )
+    elif notice_review is not None:
         choice_effect_profile = _effectless_notice_choice_effect_profile(
             notice_review, selected_native
         )
@@ -1530,10 +1549,11 @@ def recommend_registered_vanilla_event_option_v1(
         choice_effect_profile = _selected_choice_effect_profile(
             knowledge, selected_native
         )
-    choice_effect_profile = _current_selected_stress_observable_profile(
-        knowledge, selected, selected_native, choice_effect_profile
-    )
-    return respond(
+    if poet_comparison is None:
+        choice_effect_profile = _current_selected_stress_observable_profile(
+            knowledge, selected, selected_native, choice_effect_profile
+        )
+    result = respond(
         status="recommended",
         event_key=event_key,
         reason=None,
@@ -1543,10 +1563,15 @@ def recommend_registered_vanilla_event_option_v1(
         rendered_index=selected_rendered,
         option_variant_index=option_variant_index,
         choice_effect_profile=choice_effect_profile,
-        campaign_utility_profile=_selected_campaign_utility_profile(
-            knowledge, selected_native
+        campaign_utility_profile=(
+            poet_comparison["campaign_utility_profile"]
+            if poet_comparison is not None
+            else _selected_campaign_utility_profile(knowledge, selected_native)
         ),
     )
+    if poet_comparison is not None:
+        result["poet_long_term_decision_context"] = poet_comparison["decision_context"]
+    return result
 
 
 __all__ = [

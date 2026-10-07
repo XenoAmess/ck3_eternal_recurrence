@@ -78,6 +78,9 @@ def _base(decision: Mapping[str, object]) -> dict[str, object] | None:
     event_key = decision.get("event_definition_key")
     native_index = _integer(decision.get("selected_native_option_index"))
     supported = _SUPPORTED_CHOICES.get((event_key, native_index))
+    if (event_key == "trait_specific.9001" and native_index == 2
+            and decision.get("ck3_build") == "1.20.0.4"):
+        supported = ("played_character.stress_points", "strictly_decreasing")
     if event_key == "feast.7002" and native_index == 0 and decision.get("ck3_build") == "1.20.0.3":
         supported = ("played_character_prestige.raw", "strictly_increasing")
     if event_key == "feast_default.6231" and native_index == 0 and decision.get("ck3_build") == "1.20.0.3":
@@ -121,11 +124,24 @@ def plan_registered_event_material_postcondition_v1(
     played_character_prestige: object = None,
     snapshot_id: object,
     revision: object,
+    native_revision: object = None,
+    date_raw: object = None,
 ) -> dict[str, object] | None:
     """Bind a supported event outcome to its same-frame player observation."""
 
     if not isinstance(decision, Mapping) or decision.get("status") != "recommended":
         return None
+    if (decision.get("event_definition_key") == "trait_specific.9001"
+            and decision.get("ck3_build") == "1.20.0.4"
+            and decision.get("selected_native_option_index") in (0, 1)):
+        from ..bridge.player_event_trait_membership_contract import (
+            plan_poet_trait_material_postcondition_v1,
+        )
+
+        return plan_poet_trait_material_postcondition_v1(
+            decision, played_character, snapshot_id=snapshot_id, revision=revision,
+            native_revision=native_revision, date_raw=date_raw,
+        )
     response = _base(decision)
     if response is None:
         return None
@@ -186,6 +202,13 @@ def evaluate_registered_event_material_postcondition_v1(
     """Evaluate a supported choice without inventing an unavailable delta."""
 
     expected = expectation if isinstance(expectation, Mapping) else {}
+    if (expected.get("event_definition_key") == "trait_specific.9001"
+            and expected.get("expected_relation") == "false_to_true"):
+        from ..bridge.player_event_trait_membership_contract import (
+            evaluate_poet_trait_material_postcondition_v1,
+        )
+
+        return evaluate_poet_trait_material_postcondition_v1(expected, event_selection)
     response = {
         key: expected.get(key)
         for key in (
@@ -271,8 +294,11 @@ def evaluate_registered_event_material_postcondition_v1(
         ending_revision = _integer(selection.get("ending_revision"))
         binding_matches = bool(
             binding_matches
-            and before.get("scale") == 100_000
-            and after.get("scale") == 100_000
+            and (
+                expected.get("metric") == "played_character.stress_points"
+                or (before.get("scale") == 100_000
+                    and after.get("scale") == 100_000)
+            )
             and isinstance(selection.get("ending_snapshot_id"), str)
             and selection["ending_snapshot_id"]
             != selection.get("starting_snapshot_id")
@@ -345,7 +371,10 @@ def evaluate_registered_event_material_postcondition_v1(
         relation_satisfied = delta < 0
         status = "verified_change" if delta < 0 else "failed"
         failure_reason = (
-            "prestige_not_decreased"
+            "stress_not_decreased"
+            if delta >= 0
+            and expected.get("metric") == "played_character.stress_points"
+            else "prestige_not_decreased"
             if delta >= 0
             and expected.get("metric") == "played_character_prestige.raw"
             else "gold_not_decreased"
