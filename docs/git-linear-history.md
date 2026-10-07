@@ -20,3 +20,11 @@ Root于07:15:55 UTC实际启用[master-rebase-only-no-merge-commits规则2463444
 ## 本机实际安装
 
 2026-10-07。安装器已作为 `tools/install_git_linear_history_hooks.py` 保存在仓库，默认只显示计划。Root使用本次已验证的Python执行 `--repo C:/workspace/ck3_eternal_recurrence --execute`，实际写入三个hooks并读回repo-local `core.hooksPath`。原active hooks不存在，没有覆盖其他hook；[实际安装读回](C:/workspace/ck3-upgrade-20261007/resume-root-02/linear-guard-local-hooks-actual-install-readback-01.json)保留路径与事实。配置和hooks属于本机，不自动外推到其他clone；其他机器由同一安装器显式登记。
+
+## 2026-10-07：实际普通push与首次exact CI闭合
+
+Root已采用guard/CI/文档，并将原安装器按相同字节保存为`tools/install_git_linear_history_hooks.py`；本机三个hook实际安装及core.hooksPath读回见上节。原提交`9d562…`经过正常fetch/rebase成为 **`fd282d12f95f1abd6c85919229702783fd55ddf4`**，随后普通push exit0，master clean。该次pre-push实际输出 `no new merge commits (14f07ade00e9ad359da3aa6af3642592ede3f48d..fd282d12f95f1abd6c85919229702783fd55ddf4)`；没有force或历史改写。其唯一parent为`14f07ade00e9ad359da3aa6af3642592ede3f48d`，由本机exact `git rev-list --parents -n 1`独立读回。
+
+同一exact SHA的新 [Linear history run37586770229](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37586770229)，event=push、attempt1，07:20:58 UTC创建、07:21:33 UTC终态 **completed/success**。实际唯一job/check名 **No new merge commits**，job112678600804，07:21:00→07:21:33 UTC completed/success；`Check actual introduced commits`步骤success。[actual job](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37586770229/job/112678600804)。本观察只查该exact workflow一次终态及同run job详情；未重跑，也未查询旧checks或其他CI结果。
+
+正常push只有原CLA/signed规则的已有admin-bypass提示；新master线性ruleset24634448保持无bypass，未发生其违规。实际服务器设置、sandbox拒绝证据和本次正常single-parent push分别记账，没有制造merge/test push。[本次薄证据](C:/workspace/ck3-upgrade-20261007/linear-history-exact-ci-observer-write-diagnostic-01/LINEAR-GUARD-ACTUAL-PUSH-CI-READY-01.json)保存exact parent与GitHub原始响应pins。此追加仅记录已发生的push/CI，不授其他workflow、游戏或产品验收信用。
