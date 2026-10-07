@@ -13,6 +13,10 @@ from hashlib import sha256
 import json
 from typing import Any, Mapping
 
+from .battle_v2_constructor_advantage import (
+    V2_CONSTRUCTOR_ADVANTAGE_SOURCE,
+    read_v2_constructor_advantage,
+)
 from .combat_core import CombatExperiment
 from .combat_input import CombatInputError, FrozenCombatSimulationInput, freeze_combat_simulation_input
 from .research_envelope import ResearchEnvelopeAssumptions, run_research_envelope_experiment
@@ -204,6 +208,15 @@ def forecast_fixed_contact(
     try:
         frozen = freeze_combat_simulation_input(base, capture=dict(capture))
         native_advantage = _native_precontact_advantage(payload, frozen)
+        advantage_source = (
+            "same_frame_v3_native_zero_roll_frozen_future"
+            if native_advantage is not None else None
+        )
+        if native_advantage is None and payload.get("schema_version") == 2:
+            constructor_advantage = read_v2_constructor_advantage(payload, frozen)
+            if constructor_advantage is not None:
+                native_advantage = constructor_advantage[:5]
+                advantage_source = constructor_advantage[5]
         if native_advantage is not None:
             leader_ids = native_advantage[:2]
             native_raw, selected_ids, native_model_sha256 = native_advantage[2:]
@@ -241,9 +254,13 @@ def forecast_fixed_contact(
         "horizon_days": horizon_days,
         "advantage_input": {
             "source": (
-                "same_frame_v3_native_zero_roll_frozen_future"
-                if native_raw is not None else "generic_commander_and_stock_static_approximation"
+                advantage_source if native_raw is not None
+                else "generic_commander_and_stock_static_approximation"
             ),
+            **({
+                "scope": "hypothetical_constructor_context",
+                "complete_encounter_advantage_ready": False,
+            } if advantage_source == V2_CONSTRUCTOR_ADVANTAGE_SOURCE else {}),
             "zero_roll_raw": native_raw,
             "model_sha256": native_model_sha256,
             "fallback_reason": (
