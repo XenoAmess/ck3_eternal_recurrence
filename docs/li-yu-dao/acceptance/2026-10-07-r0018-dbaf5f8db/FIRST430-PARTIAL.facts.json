@@ -1,0 +1,124 @@
+{
+  "status": "PARTIAL_NOT_GREEN",
+  "cutoff_evidence_utc": "2026-10-07T02:25:53.045489+00:00",
+  "runtime_frozen_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+  "documentation_fix_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+  "profile_sha256": "0189ab2c8ec4135b8b007d4a8254cb859ae970e5fe852de75015ca9846e3c404",
+  "session_id": "9cdca47579f54d3191efdecdb7400374",
+  "pid": 5920,
+  "connection_generation": 1,
+  "actor": 31254,
+  "query_event_definition": "lyd.430",
+  "query_event_instance_id": 101,
+  "first430_native_status": "native_gameplay_postcondition_verified",
+  "event_selection": {
+    "status": "event_instance_advanced",
+    "postcondition_verified": true,
+    "old_event_instance_id": 101,
+    "new_event_instance_id": null,
+    "selected_option_number": 3,
+    "selected_native_option_index": 2,
+    "starting_snapshot_id": "native:3",
+    "starting_revision": 4,
+    "ending_snapshot_id": "native:4",
+    "ending_revision": 5,
+    "episode_run_id": null,
+    "connection_generation": 1,
+    "bridge_pid": 5920,
+    "starting_played_character_stress": {
+      "status": "available",
+      "character_id": 31254,
+      "stress_points": 0,
+      "unavailable_reason": null
+    },
+    "ending_played_character_stress": {
+      "status": "available",
+      "character_id": 31254,
+      "stress_points": 0,
+      "unavailable_reason": null
+    },
+    "starting_played_character_gold": {
+      "status": "available",
+      "character_id": 31254,
+      "gold_raw": 104300000,
+      "scale": 100000,
+      "unavailable_reason": null
+    },
+    "ending_played_character_gold": {
+      "status": "available",
+      "character_id": 31254,
+      "gold_raw": 104300000,
+      "scale": 100000,
+      "unavailable_reason": null
+    },
+    "starting_played_character_prestige": {
+      "status": "available",
+      "character_id": 31254,
+      "prestige_raw": 220000000,
+      "scale": 100000,
+      "unavailable_reason": null
+    },
+    "ending_played_character_prestige": {
+      "status": "available",
+      "character_id": 31254,
+      "prestige_raw": 220000000,
+      "scale": 100000,
+      "unavailable_reason": null
+    }
+  },
+  "wallet_before": {
+    "played_character_gold": {
+      "raw": 104300000,
+      "scale": 100000
+    },
+    "played_character_prestige": {
+      "raw": 220000000,
+      "scale": 100000
+    },
+    "played_character_piety": {
+      "raw": 315000000,
+      "scale": 100000
+    }
+  },
+  "wallet_after": {
+    "played_character_gold": {
+      "raw": 104300000,
+      "scale": 100000
+    },
+    "played_character_prestige": {
+      "raw": 220000000,
+      "scale": 100000
+    },
+    "played_character_piety": {
+      "raw": 315000000,
+      "scale": 100000
+    }
+  },
+  "SDK13_isError": false,
+  "baseline_author_game_calls": 0,
+  "baseline_author_original_save_body_reads": 1,
+  "baseline_typed_check_count": 87,
+  "baseline_protection_checks_match": true,
+  "political_title_count": 7,
+  "political_complete_AST_matches": true,
+  "first_preflight_original_status": "RED",
+  "first_preflight_original_error": "R14 identity path changed",
+  "first_profile_request_original_status": "RED",
+  "first_profile_request_original_error": "ROOT must already have actual game HWND foreground before freezing",
+  "normal_exit": "UNVALIDATED at this cutoff",
+  "formal_acceptance": null,
+  "new_T_credit": null,
+  "C3_credit": null,
+  "I4_credit": null,
+  "whole_business_status": "NOT_GREEN",
+  "this_archive_operation": {
+    "save_body_reads": 0,
+    "binary_reads": 0,
+    "SDK_calls": 0,
+    "game_calls": 0,
+    "process_mutations": 0,
+    "main_mutations": 0,
+    "retests": 0,
+    "CI_polls": 0
+  }
+}
