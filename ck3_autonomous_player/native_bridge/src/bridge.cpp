@@ -35,6 +35,7 @@
 #endif
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/title_holder_v1_serializer.hpp"
+#include "xar_bridge/player_claims_v1_serializer.hpp"
 #include "xar_bridge/army_strength_v1_serializer.hpp"
 #include "xar_bridge/projected_contact_scope_v1_serializer.hpp"
 #include "xar_bridge/contextual_advantage_v1.hpp"
@@ -12016,6 +12017,7 @@ struct WorkerState {
   std::uint64_t war_termination_query_sequence = 0;
   std::uint64_t war_occupation_targets_query_sequence = 0;
   std::uint64_t title_holder_query_sequence = 0;
+  std::uint64_t player_claims_query_sequence = 0;
   std::uint64_t war_prisoner_release_pairs_query_sequence = 0;
   std::uint64_t outbound_war_white_peace_status_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
@@ -13576,6 +13578,69 @@ std::string RunPlayerHolyOrderHire12003(
       snapshot.date_raw);
 }
 
+std::string RunPlayerClaimsQueryV1(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step,
+    std::string_view payload) {
+  std::vector<std::int32_t> title_ids;
+  std::uint64_t expected_revision = 0;
+  if (!xar::game::IsCk3_12004Descriptor(game.descriptor()) ||
+      !xar::game::ParsePlayerClaimsStepV1(step, title_ids) ||
+      !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
+          payload, expected_revision)) {
+    return CommandResultFrame(request_id, step, false,
+        "player-claims query identity or revision is malformed");
+  }
+  xar::game::Snapshot admission{};
+  if (expected_revision != state.state_revision || state.state_revision == 0 ||
+      !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, admission) ||
+      admission != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  if (!admission.paused || !admission.map_ready ||
+      !admission.has_played_character || !admission.played_character_alive) {
+    return CommandResultFrame(request_id, step, false,
+        "player-claims query requires a ready paused living player");
+  }
+  xar::game::PlayerClaimsV1 observation{};
+  const auto read_result = xar::game::ReadPlayerClaimsV1(
+      game, title_ids, observation);
+  xar::game::Snapshot completion{};
+  if (!xar::game::ReadSnapshot(game, completion) || completion != admission) {
+    return CommandResultFrame(request_id, step, false,
+        "player-claims completion snapshot changed");
+  }
+  if (read_result == xar::game::ReadPlayerClaimsV1Result::unavailable &&
+      observation.unavailable_reason == "not_read") {
+    observation.date_raw = admission.date_raw;
+    observation.actor_character_id = admission.played_character_id;
+    observation.title_ids = title_ids;
+    observation.unavailable_reason = "typed_mailbox_read_unavailable";
+  }
+  if (read_result == xar::game::ReadPlayerClaimsV1Result::available &&
+      (observation.date_raw != admission.date_raw ||
+       observation.actor_character_id != admission.played_character_id ||
+       observation.title_ids != title_ids)) {
+    return CommandResultFrame(request_id, step, false, "player-claims source frame changed");
+  }
+  if (read_result == xar::game::ReadPlayerClaimsV1Result::unavailable) {
+    observation.date_raw = admission.date_raw;
+    observation.actor_character_id = admission.played_character_id;
+    observation.title_ids = title_ids;
+  }
+  const auto result = xar::game::SerializePlayerClaimsV1(
+      observation, read_result, ++state.player_claims_query_sequence,
+      expected_revision, step);
+  std::string response =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(response, request_id);
+  response += ",\"ok\":true,\"result\":";
+  response += result;
+  response += '}';
+  return response;
+}
+
 std::string RunTitleHolderQueryV1(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step,
@@ -14406,6 +14471,10 @@ void RunConnectedSession(
           connected = write_frame(pipe, RunCurrentActorStressAdjustmentQueryV1(
               game, state, request_id, incoming.payload));
 #endif
+        } else if (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+                   step.starts_with(xar::game::kPlayerClaimsV1StepPrefix)) {
+          connected = write_frame(pipe, RunPlayerClaimsQueryV1(
+              game, state, request_id, step, incoming.payload));
         } else if ((xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
                     (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
                      (step.starts_with(xar::ck3_12003::

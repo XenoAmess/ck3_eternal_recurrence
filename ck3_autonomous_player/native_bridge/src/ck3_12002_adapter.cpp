@@ -463,6 +463,12 @@ public:
     return ck3_12002::ReadCombatSimulationInputsV3(bindings_.phase, scope,
                                                   request, output);
   }
+  ReadPlayerClaimsV1Result read_player_claims_v1(
+      const std::vector<std::int32_t> &ids, PlayerClaimsV1 &output) const noexcept override {
+    output = {};
+    if (!IsCk3_12004Descriptor(*descriptor_)) return ReadPlayerClaimsV1Result::unavailable;
+    return ck3_12004::ReadPlayerClaimsV1(bindings_.player_claims12004, ids, output);
+  }
   ReadTitleHolderV1Result read_title_holder_v1(
       std::int32_t title_id, TitleHolderV1 &output) const noexcept override {
     output = {};

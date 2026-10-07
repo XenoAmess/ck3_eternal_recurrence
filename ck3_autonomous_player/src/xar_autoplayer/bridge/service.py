@@ -430,6 +430,15 @@ from .war_occupation_targets_contract import (
     query_war_occupation_targets_v1_step,
     war_occupation_query_scope,
 )
+from .player_claims_contract import (
+    QUERY_PLAYER_CLAIMS_V1_CAPABILITY,
+    QUERY_PLAYER_CLAIMS_V1_STEP_PREFIX,
+    normalize_player_claims_v1,
+    parse_query_player_claims_v1_step,
+    player_claims_query_actor,
+    player_claims_title_ids,
+    query_player_claims_v1_step,
+)
 from .title_holder_contract import (
     QUERY_TITLE_HOLDER_V1_CAPABILITY,
     normalize_title_holder_v1,
@@ -4109,6 +4118,66 @@ class GameplayBridgeService:
                 step, expected_revision=expected_revision
             ),
             "war_id": war_id,
+        }
+
+    def query_player_claims_v1(
+        self, title_ids: list[int], *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read current-player native claim rows for ordered TitleIDs after or before a war."""
+        title_ids = player_claims_title_ids(title_ids)
+        step = query_player_claims_v1_step(title_ids)
+        if type(expected_revision) is not int or expected_revision < 0:
+            raise ValueError("expected_revision must be a non-negative integer")
+        snapshot = self.snapshot()
+        try:
+            actor_id = player_claims_query_actor(snapshot)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = snapshot.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("player claims query lacks a public revision")
+        if expected_revision != revision:
+            raise PreSubmissionRevisionMismatchError(
+                f"player claims revision mismatch: expected {expected_revision}, current {revision}"
+            )
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not isinstance(capabilities, list) or QUERY_PLAYER_CLAIMS_V1_CAPABILITY not in capabilities:
+            raise UnsupportedStepError("selected backend cannot query a native player claims")
+        result = self.execute_step(step, expected_revision=revision)
+        if (
+            not isinstance(result, dict)
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("read_only") is not True
+            or type(result.get("snapshot_revision")) is not int
+            or result["snapshot_revision"] != snapshot.get("native_revision")
+            or type(result.get("date_raw")) is not int
+            or result["date_raw"] != snapshot.get("date_raw")
+            or result.get("status") not in {"available", "unavailable"}
+            or type(result.get("query_sequence")) is not int
+            or not 1 <= result["query_sequence"] <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError("player claims query returned a malformed envelope")
+        try:
+            value = normalize_player_claims_v1(
+                result.get("player_claims"),
+                expected_title_ids=title_ids,
+                expected_actor_character_id=actor_id,
+                expected_snapshot_revision=snapshot.get("native_revision"),
+                expected_date_raw=snapshot.get("date_raw"),
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native player claims query is malformed: {error}") from error
+        if (result["status"] == "available") != value["available"]:
+            raise BridgeUnavailableError("player claims query status disagrees with availability")
+        return {
+            **result,
+            "title_ids": title_ids,
+            "player_claims": value,
+            "read_only": True,
+            "queried_snapshot_id": snapshot.get("snapshot_id"),
+            "queried_revision": revision,
+            "queried_native_revision": snapshot.get("native_revision"),
         }
 
     def query_title_holder_v1(

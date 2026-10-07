@@ -59,47 +59,7 @@ bool ReadCasusBelliKey(const void *type, std::string &output) noexcept {
   return true;
 }
 
-bool ReadClaimRow(const ClaimTermsBindings &bindings, void *claimant,
-                  void *title, std::int32_t title_id,
-                  game::WarClaimSnapshot &output) noexcept {
-  output = {};
-  ClaimTermsStorage storage{};
-  void *const claim = storage.bytes.data();
-  void *const returned = bindings.read_character_claim(claim, claimant, title);
-  const auto present = Load<std::uint8_t>(claim, kClaimTermsPresentOffset);
-  if (returned != claim || present > 1) {
-    return false;
-  }
-  output.title_id = title_id;
-  output.present = present != 0;
-  if (!output.present) {
-    output.state = "absent";
-    return true;
-  }
-  auto **const vtable = Load<void **>(claim, 0);
-  if (reinterpret_cast<std::uintptr_t>(vtable) !=
-          bindings.character_claim_vtable ||
-      vtable == nullptr || vtable[0] == nullptr) {
-    return false;
-  }
-  const auto strong = Load<std::uint8_t>(claim, kClaimTermsStrongOffset);
-  const auto implicit = Load<std::uint8_t>(claim, kClaimTermsImplicitOffset);
-  const bool valid = strong <= 1 && implicit <= 1 &&
-                     Load<std::int32_t>(claim, kClaimTermsTitleIdOffset) == title_id;
-  if (valid) {
-    output.strong = strong != 0;
-    output.implicit = implicit != 0;
-    output.state = output.strong
-                       ? (output.implicit ? "strong_implicit" : "strong_explicit")
-                       : (output.implicit ? "weak_implicit" : "weak_explicit");
-  }
-  // Native scalar destructor frees its object only when delete_flags & 1.
-  // This is our stack temporary; it is destroyed with zero and never freed.
-  using DestroyClaim = void *(*)(void *, std::int32_t);
-  reinterpret_cast<DestroyClaim>(vtable[0])(
-      claim, kClaimTermsDestructorDeleteFlags);
-  return valid;
-}
+
 } // namespace
 
 ClaimTermsBindings BindClaimTermsImage(std::uintptr_t image_base,
@@ -201,7 +161,8 @@ game::ReadWarTerminationTermsResult ReadWarTerminationTerms(
   output.claims.reserve(titles.size());
   for (std::size_t index = 0; index < titles.size(); ++index) {
     game::WarClaimSnapshot row{};
-    if (!ReadClaimRow(bindings, claimant, titles[index],
+    if (!ReadCharacterClaimRowV1(bindings.read_character_claim,
+                                 bindings.character_claim_vtable, claimant, titles[index],
                       output.target_title_ids[index], row)) {
       output = {};
       return Result::unavailable;

@@ -62,6 +62,15 @@ from .public_unit_contract import (
     public_cunit_id,
 )
 
+from .player_claims_contract import (
+    QUERY_PLAYER_CLAIMS_V1_CAPABILITY,
+    QUERY_PLAYER_CLAIMS_V1_STEP_PREFIX,
+    normalize_player_claims_v1,
+    parse_query_player_claims_v1_step,
+    player_claims_query_actor,
+    player_claims_title_ids,
+    query_player_claims_v1_step,
+)
 from .title_holder_contract import (
     QUERY_TITLE_HOLDER_V1_CAPABILITY,
     QUERY_TITLE_HOLDER_V1_STEP_PREFIX,
@@ -4788,6 +4797,7 @@ def is_native_war_step(step: object) -> bool:
         or parse_query_war_prisoner_release_pairs_v1_step(step) is not None
         or parse_query_outbound_war_white_peace_status_step(step) is not None
         or parse_query_war_termination_terms_step(step) is not None
+        or parse_query_player_claims_v1_step(step) is not None
         or parse_query_title_holder_v1_step(step) is not None
         or parse_surrender_war_step(step) is not None
         or parse_offer_white_peace_step(step) is not None

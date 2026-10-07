@@ -56,6 +56,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
       "game.command.query-title-holder-v1-N",
+      kPlayerClaimsV1Capability,
       "game.command.query-pending-character-interaction-context-v1",
       "game.command.query-current-event-window-context-v1",
 #if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
@@ -216,6 +217,8 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
       image_base, executable_sha256, bindings.core, bindings.commands);
   bindings.declarations = ck3_12004::BindDeclarationsImage12004(
       image_base, executable_sha256, bindings.commands);
+  bindings.player_claims12004 = ck3_12004::BindPlayerClaimsImageV1(
+      image_base, executable_sha256, bindings.core, bindings.provinces);
   bindings.terms = ck3_12004::BindClaimTermsImage(
       image_base, executable_sha256, bindings.core, bindings.world,
       bindings.provinces);

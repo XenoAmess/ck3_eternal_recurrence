@@ -8,6 +8,7 @@
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12002_battle.hpp"
 #include "xar_bridge/ck3_12002_claim_terms.hpp"
+#include "xar_bridge/ck3_12004_player_claims_v1.hpp"
 #include "xar_bridge/ck3_12002_combat.hpp"
 #include "xar_bridge/ck3_12002_context.hpp"
 #include "xar_bridge/ck3_12002_declarations.hpp"
@@ -69,6 +70,7 @@ struct Ck3_12002AdapterBindings {
   ck3_12004::PhaseEventCalendarBindings12004 phase_event_calendar12004;
   ck3_12004::PhaseEventRoleCompatibilityBindings12004
       phase_event_role_compatibility12004;
+  ck3_12004::PlayerClaimsBindingsV1 player_claims12004;
 };
 
 // Same row publisher called by the current Army query and focused fixtures.

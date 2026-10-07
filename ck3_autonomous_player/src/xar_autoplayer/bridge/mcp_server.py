@@ -3916,6 +3916,16 @@ def create_server(
         )
 
     @server.tool(annotations=read_only_tool)
+    def ck3_query_player_claims_v1(
+        title_ids: list[Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]],
+        expected_revision: Annotated[int, Field(strict=True, ge=0)],
+    ) -> dict[str, object]:
+        """Read current-player claims for ordered full TitleIDs without requiring CWar."""
+        return service.query_player_claims_v1(
+            title_ids, expected_revision=expected_revision,
+        )
+
+    @server.tool(annotations=read_only_tool)
     def ck3_query_title_holder_v1(
         title_id: int,
         expected_revision: int,

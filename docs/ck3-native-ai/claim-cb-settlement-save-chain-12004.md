@@ -149,3 +149,85 @@ Root options and claim-disposition credit stay production-live primitive.
 There is no new settlement action, postwar observation, saved continuation,
 G2 increment or completed migration acceptance in this package. New builds,
 tests, production imports, SDK/game/process operations and EXE hashes: **0**.
+
+## 2026-10-08: independent current-player claim rows source candidate
+
+An external candidate based on `33cd47bf6eb3baaa146225b4f66be64e4610885c`
+implements `ck3_query_player_claims_v1(title_ids=[2132], expected_revision=R)`
+and `query-player-claims-v1-2132` for exact CK3 1.20.0.4/build25734779.
+The request takes 1..4096 unique ordered full non-negative int32 TitleIDs;
+ID0 is legal. It takes no WarID or claimant argument. The actor is the current
+living played character in the paused ready map; after succession this query
+observes the new player, never a former claimant. A settlement consumer must
+therefore bind the observed actor to its retained pre-action actor.
+
+The candidate extracts the existing finite optional claim decoder into
+`character_claim_row_v1.hpp`. Getter `0x2B9ECB0`, vtable `0x44F17E8`, optional
+0x20 layout, full TitleID check and present-only stack destruction with
+delete_flags0 retain the existing actual4 source qualification. New bindings
+contain only Core/Province/getter/vtable; no CWar or World resolver is used.
+The new owning-thread reader resolves full player/title IDs, reads requested
+rows twice, and requires equal row contents, unchanged pointers and matching
+before/after actual4 Core frames. Existing owner mailbox and full snapshot
+admission/completion remain the execution boundary.
+
+`xar.ck3.player-claims.v1` publishes only actual claim presence/state and
+strong/implicit flags in request order. Legal absent optional rows carry
+state=absent and null flags; unavailable reads carry null claims plus a
+reason. Native serializer uses the exact4 identity directly. Python driver
+and service validate exact build, current actor, ordered full IDs, nested and
+outer date/native revision, read_only and envelope fields; driver rechecks
+its paused owner frame. No CB disposition, truce, material settlement preview
+or counter-policy change is included.
+
+Readiness is **source candidate, native unbuilt, not live qualified**.
+Eight new contract/AST-extracted production consumer tests passed; after a
+source review fixed new outer-envelope checks, only two changed-method tests
+(12 rejection cells and two successful calls) were run. These use in-memory
+post-termination snapshots with no active CWar and do not import or connect
+the runtime bridge. No native compilation, old-suite replay, EXE read,
+game/pipe/SDK/desktop action or G2 milestone was performed.
+
+Root may later build the new TUs and affected adapter/owner/bridge consumers,
+run a focused native optional/full-ID/two-frame fixture, and qualify one actual
+paused pre/post-termination player-claim observation on ordinary Robert29829.
+Those steps uniquely validate this newly introduced route; the prior Source6
+DLLs cannot expose it. Existing frozen Source6 and live product acceptance stay
+unchanged. Actual removal/strengthening, save persistence and subsequent
+planner continuation remain unproven until their own observed results exist.
+
+### Candidate relocated onto current parallel source, 2026-10-08
+
+The same claims source candidate is now rebased externally onto fixed
+`55bf586496b30f0f5794684172304cd959d699e3`; this is source hunk relocation,
+not a Git merge or a change to master/frozen Source6. Current supply service
+and contract additions and phase-event-role bindings are preserved. The only
+native relocation appends the claims binding after the existing phase-role
+field. Reversing just claims additions in a proof copy restores all 23 touched
+files to current-base bytes; 6425 unrelated base files are unchanged.
+
+Independent Python review found and closed two new-interface issues: revision
+now uses `Annotated[int, Field(strict=True, ge=0)]` at the registered MCP
+boundary, and the dynamic claims capability/template/prefix is excluded from
+automatic planner action literals. Actual `MCPServer.call_tool` rejected
+string3/float3/boolTrue with zero service calls; integer3 preserved ordered
+full IDs [2132,0,2147483647]. The actual action enumerator no longer emits
+`query-player-claims-v1-IDS` or an unrequested concrete query token. Those
+checks were local Python definition/registration calls without a native
+driver instance, endpoint, pipe or game. Prior 8+2 checks are reused through
+identical new claim contract/consumer-method bytes and AST; no old suite was
+replayed. This candidate supports native-headless; configured hybrid fallback
+has no new claims route and remains unsupported for it.
+
+Readiness remains source-only, native unbuilt and not live qualified. No new
+native temporary/owner execution, post-termination claim effect, saved
+continuation or G2 milestone has been observed.
+
+Root subsequently reviewed and applied the exact current55 claims hunks on
+`b0b1e6a4178b024e96559e01e5c87f6e6f84af93` on 2026-10-08. The intervening
+commit changed only RMTM production and progress documentation. Patch check,
+application and whitespace check returned zero; the active Source6 runtime
+remains frozen. [The source packet](C:/workspace/ck3-upgrade-20261007/g2-posttermination-player-claims-source-candidate-02/G2-PLAYER-CLAIMS-RELOCATED-SOURCE-FINAL-02.json)
+and [independent Python review](C:/workspace/ck3-upgrade-20261007/g2-player-claims-python-review-01/INDEPENDENT-PYTHON-SOURCE-REVIEW-FINAL-02.md)
+retain the focused source verification. This adopts source only; compilation,
+native fixture and actual paused observations are still pending.

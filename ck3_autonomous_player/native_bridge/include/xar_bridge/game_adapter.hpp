@@ -2,6 +2,7 @@
 
 #include "xar_bridge/combat_v3.hpp"
 #include "xar_bridge/title_holder_v1.hpp"
+#include "xar_bridge/player_claims_v1.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
 #include "xar_bridge/h2743_preaction_existing_truce_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
@@ -146,6 +147,11 @@ public:
   read_combat_simulation_inputs_v3(
       const CombatSimulationInputsRequest &request,
       CombatSimulationInputsV3Snapshot &output) const noexcept = 0;
+  virtual ReadPlayerClaimsV1Result read_player_claims_v1(
+      const std::vector<std::int32_t> &, PlayerClaimsV1 &output) const noexcept {
+    output = {};
+    return ReadPlayerClaimsV1Result::unavailable;
+  }
   virtual ReadTitleHolderV1Result read_title_holder_v1(
       std::int32_t, TitleHolderV1 &output) const noexcept {
     output = {};
@@ -384,6 +390,11 @@ inline ReadCombatSimulationInputsV3Result ReadCombatSimulationInputsV3(
     const GameAdapter &game, const CombatSimulationInputsRequest &request,
     CombatSimulationInputsV3Snapshot &output) noexcept {
   return game.read_combat_simulation_inputs_v3(request, output);
+}
+inline ReadPlayerClaimsV1Result ReadPlayerClaimsV1(
+    const GameAdapter &game, const std::vector<std::int32_t> &ids,
+    PlayerClaimsV1 &output) noexcept {
+  return game.read_player_claims_v1(ids, output);
 }
 inline ReadTitleHolderV1Result ReadTitleHolderV1(
     const GameAdapter &game, std::int32_t title_id,

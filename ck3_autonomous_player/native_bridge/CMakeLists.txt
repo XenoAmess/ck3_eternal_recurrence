@@ -1166,6 +1166,7 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_current_commander_martial.cpp
   src/ck3_12003_war_occupation.cpp
   src/ck3_12003_title_holder.cpp
+  src/ck3_12004_player_claims_v1.cpp
   src/ck3_12003_commander_mailbox.cpp
   src/ck3_12002_prewar_muster.cpp
   src/ck3_12003_default_raise_mailbox.cpp
@@ -1593,6 +1594,7 @@ add_library(xar_ck3_bridge SHARED
   src/war_entry_assessments_v1_serializer.cpp
   src/war_occupation_targets_v1_serializer.cpp
   src/title_holder_v1_serializer.cpp
+  src/player_claims_v1_serializer.cpp
   src/projected_contact_scope_v1_serializer.cpp
   src/war_entry_assessments_v1_mailbox.cpp
   src/zhongguo_case_snapshot_v1.cpp
