@@ -460,14 +460,36 @@ transfer between these contexts and the already held Province+718 getter
 remains the specific missing source relationship. No new ABI yield field or
 per-building benefit is published from these unresolved operands.
 
-The minimum proposed next capture stays within this same reached function:
-actual `[286657A,286669E)` / old `[286659A,28666BE)`, 292 bytes each.
-The existing adjacent runtime rows bound a 256-byte continuation and the
-36-byte common interval already reached by the two paired forward branches.
-`PROVINCE-CONTEXT-MODE3-CONTINUATION-PROPOSED-MANIFEST.json` and its sibling
-`...-PROPOSED-ARGV.json` provide the exact existing Root-central helper,
-584-byte/two-read cap and output directory. This is a proposed source plan,
-not execution or a preasserted return closure; no callee is included.
+Root explicitly authorized and centrally captured the same-function
+continuation once at 08:18:07–08:18:08 UTC: actual `[286657A,286669E)` /
+old `[286659A,28666BE)`, 292 bytes each / 584 bytes in two reads, exit0 and
+one `complete_instruction_span_normalized_equal` row. Existing adjacent
+runtime rows bounded a 256-byte continuation and the 36-byte common interval
+already reached by the paired forward branches. The retained artifact is
+`province-context-mode3-continuation-root-first01/FAMILY-MAP.json` and its
+owned DETAIL. No downstream callee body was included.
+
+The owner+7D8/count7E4 four-byte ID loop now closes. Each ID resolves to an
+object through one global registry (fallback object retained), whose field+20
+must equal field+128 on the owner+738-resolved Land object (its own registry
+fallback is retained). Only a match traverses that first object's pointer
+list+60/count6C, stride8. Actual2866620–2866633 passes each entry+1AF8 into
+`2438830(P+8, input,100000)`. It then advances the outer ID pointer by4 and
+loops. These operands do not yet establish the entries as individual
+buildings or the source block as gold income.
+
+The common actual286667A–286669E exit restores the saved mode into EDX,
+explicitly writes byte `P+5D8=0`, restores nonvolatile registers and stack,
+then tail-jumps at2866699 to2479F50 (old2479F70). RCX is the owner from
+`P+5D0`, loaded either before the empty-list branch or after loop completion;
+EDX is the saved mode3 supplied by the completed-slot callback. Thus the
+same function is held through its concrete stack-restored tail exit:
+actual `[28662F0,286669E)` / old `[2866310,28666BE)`, 942 bytes per image,
+1884 paired bytes across two approved central captures. It does not end in
+a RET, and the tail target body remains unexpanded. This closes the mode
+transfer and the one direct context-byte mutation, without changing the
+unproved Province+718/holder-NET relationship. The concrete remaining source
+edge is now `2479F50(owner,3)`; no blind follow-up capture is authorized here.
 
 ```mermaid
 flowchart TD
@@ -480,8 +502,14 @@ flowchart TD
   P --> I[Owner +848 / +388 ID / resolved +F8 list count104]
   I --> C
   P --> A[P+238 / 1698AB0 and2866DF0 / P+8 passed separately]
-  A --> T[Owner +7D8 list count7E4 / captured setup ends286657A]
-  T -. list body / mode handling / return unknown .-> U[Same function continuation]
+  A --> T[Owner +7D8 list count7E4 / stride4 ID resolution]
+  T --> J[Resolved field20 equals Land field128]
+  J --> K[Matched object +60 list count6C / entry+1AF8]
+  K --> C
+  T --> X[Common exit / P+5D8 byte0 / saved mode restored]
+  K --> X
+  X --> U[Restore stack / tail-JMP2479F50 / owner RCX and mode3 EDX]
+  U -. tail target body / effective transfer unknown .-> V[Province+718 aggregate getter]
   C -. unexpanded combiner and transfer unknown .-> V[Province+718 aggregate getter]
   V -. scale / holder transfer / individual contribution unknown .-> N[Building-attributed player NET]
 ```
@@ -499,7 +527,7 @@ flowchart LR
   R[Existing independent native material receipt / original pre packet] --> O
   B --> F[Current reserve floor / burn / maximum additional one-off spend]
   O --> D[Observed gross / expense / trueNET / stock difference]
-  M[Held28662F0 first650B / context inputs and destinations] -. Province718 transfer / holder contribution unknown .-> A[Per-building attributed income remains open]
+  M[Held28662F0 through tail exit / owner mode3 transfer] -. Province718 transfer / holder contribution unknown .-> A[Per-building attributed income remains open]
 ```
 
 `query_construction_cash_outcome_private_v1` is a small leaf in the same
@@ -525,6 +553,29 @@ Source is ready for Root integration; this new query leaf is **NOTRUN** in
 this lane and does not inherit a live-sample claim from the retained 15
 GREEN controlled cases. Its financial inputs and arithmetic reuse those
 qualified consumers instead of retesting them.
+
+The reviewable `ROOT-SAME-CASH-REGISTRATION.patch` is now external under the
+same economy-yield directory, with exactly two shared-file hunks for Root:
+`bridge/native_driver.py` and `bridge/mcp_server.py`. The driver reads
+`read_construction_ledger(self.state_dir)["applied"]` when durable state is
+configured, then sends that actual material receipt into the leaf. With no
+applied receipt it supplies an empty interval input, while the independent
+current-cash scenarios remain available. The MCP tool takes only current
+revision and explicit reserve/commitment/horizon inputs; it does not accept
+a caller-authored receipt. Registration sits under the existing
+`allow_private_war_cash_query` condition and uses the existing read-only
+annotation. It neither writes the ledger nor reissues a construction query.
+The original `pre_cash_v2` remains absent until the production start path
+has actually saved it; registration cannot invent that baseline. Root still
+owns applying these two hunks and the pre-submit receipt-field preservation
+described above.
+
+There is no new native ABI, opcode, DLL export, CMake source or compile input.
+Root integration needs leaf commit1b49, the already adopted f81/b28/43c8
+modules and these two Python registration hunks. Existing `.4` v2 native
+cash reader/serializer inputs remain unchanged. The source patch is
+**NOTRUN/unapplied** in this lane; retained15 arithmetic/classifier cases do
+not qualify a fresh full-wire MCP observation or the new ledger connection.
 
 Root's supplied current baseline is source14f/runtime19,
 G2H9638/date53288448/saved6005. That is coordination context supplied by
