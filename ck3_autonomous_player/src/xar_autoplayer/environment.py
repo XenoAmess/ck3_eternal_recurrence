@@ -30,7 +30,8 @@ TOOLS_DIR = REPO_ROOT / "tools"
 if str(TOOLS_DIR) not in sys.path:
     sys.path.insert(0, str(TOOLS_DIR))
 
-import build_release  # noqa: E402
+# Profile/build operations import release tooling when needed.
+# Detached process helpers do not require the Workshop registry.
 
 
 STEAM_APP_ID = "1158310"
@@ -454,6 +455,8 @@ def parse_descriptor_target(path: Path) -> Path:
 
 
 def _git_revision() -> str:
+    import build_release
+
     revision = build_release.git_sha()
     if not revision or not re.fullmatch(r"[0-9a-f]{40}", revision):
         raise AgentError("a full Git revision is required for an auditable runtime")
@@ -503,6 +506,8 @@ def _git_lines(*arguments: str) -> list[str]:
 
 
 def mod_source_fingerprint() -> dict[str, object]:
+    import build_release
+
     source = build_release.DEFAULT_SOURCE.resolve()
     projected = [
         {
@@ -539,6 +544,8 @@ def verify_projection_manifest(
     target: Path, manifest_path: Path, expected_revision: str
 ) -> dict[str, object]:
     """Verify a development production projection without inventing a release tag."""
+    import build_release
+
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     version = build_release.descriptor_version(target)
     expected_identity = {
@@ -735,6 +742,8 @@ def _prepare_profile_locked(
     spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str = "fullscreen"
 ) -> dict[str, object]:
     """Create or refresh the profile without touching persistent tutorial state."""
+    import build_release
+
     ensure_state_path_safe(spec.state_dir)
     display = display_contract(display_mode)
     identity = launcher_identity(spec.game_dir)
@@ -1304,6 +1313,8 @@ def ck3_processes() -> list[str]:
 
 def doctor(spec: EnvironmentSpec, require_prepared: bool = False) -> dict[str, object]:
     """Run the visible-desktop/OCR preflight for the calibrated UI build."""
+    import build_release
+
     ensure_state_path_safe(spec.state_dir)
     identity = launcher_identity(spec.game_dir)
     errors: list[str] = []
