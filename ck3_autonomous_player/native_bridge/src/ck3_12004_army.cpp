@@ -139,24 +139,6 @@ void PopulateClosedCurrentInputs(std::uintptr_t base, ArmyBindings &out) noexcep
   removal.lookup = table;
 }
 
-void AppendCurrentUnitNewDateSchedule(
-    const ArmyBindings &bindings,
-    std::vector<game::ArmyStrengthSnapshot> &rows) {
-  if (!bindings.current_unit_new_date_schedule_bindings.enabled || rows.empty()) {
-    return;
-  }
-  const auto inventory = CaptureCurrentUnitNewDateSchedule12004(
-      bindings.current_unit_new_date_schedule_bindings, bindings);
-  for (auto &row : rows) {
-    std::optional<std::uint32_t> carmy_id;
-    if (row.native_carmy_id_observable) {
-      carmy_id = static_cast<std::uint32_t>(row.native_carmy_id);
-    }
-    row.current_unit_new_date_schedule_inputs_v1 =
-        BuildCurrentUnitNewDateScheduleInputs12004(
-            inventory, static_cast<std::uint32_t>(row.army_id), carmy_id);
-  }
-}
 } // namespace
 
 ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
@@ -219,16 +201,12 @@ bool ReadArmiesForCharacters12004(const ArmyBindings &bindings,
 game::ReadArmyStrengthsResult ReadArmyStrengthsForScope12004(
     const ArmyBindings &bindings, std::span<const ArmyStrengthScope> scope,
     std::vector<game::ArmyStrengthSnapshot> &out) noexcept {
-  const auto result = ck3_12002::ReadArmyStrengthsForScope(bindings, scope, out);
-  AppendCurrentUnitNewDateSchedule(bindings, out);
-  return result;
+  return ck3_12002::ReadArmyStrengthsForScope(bindings, scope, out);
 }
 game::ReadArmyStrengthsResult ReadArmyStrengths12004(
     const ArmyBindings &bindings, const game::Snapshot &world,
     std::vector<game::ArmyStrengthSnapshot> &out) noexcept {
-  const auto result = ck3_12002::ReadArmyStrengths(bindings, world, out);
-  AppendCurrentUnitNewDateSchedule(bindings, out);
-  return result;
+  return ck3_12002::ReadArmyStrengths(bindings, world, out);
 }
 game::ArmyProvinceSupplySnapshot ReadArmyProvinceSupplyForPreview12004(
     const ArmyBindings &bindings, const ck3_12002::MilitaryWorldAccess &access,

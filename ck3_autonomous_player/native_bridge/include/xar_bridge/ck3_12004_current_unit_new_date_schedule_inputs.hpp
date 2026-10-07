@@ -31,7 +31,8 @@ template <class T> inline T Load(const void *object, std::size_t offset) noexcep
 }
 } // namespace unit_new_date_schedule_detail
 
-// Captured once by the actual4 whole wrapper. Slot18 is read and compared,
+// Captured once by the common Strength collector with an enabled exact4 binding.
+// Slot18 is read and compared,
 // never invoked. The owned vector preserves the initial count and raw order.
 inline CurrentUnitNewDateScheduleInventory12004 CaptureCurrentUnitNewDateSchedule12004(
     const CurrentUnitNewDateScheduleBindings12004 &binding,

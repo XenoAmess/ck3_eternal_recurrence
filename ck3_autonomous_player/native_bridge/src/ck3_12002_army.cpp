@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12003_current_daily_supply_dispatch_inputs.hpp"
 #include "xar_bridge/ck3_12004_future_daily_supply_schedule.hpp"
 #include "xar_bridge/ck3_12004_source_derived_next_daily_supply_frame.hpp"
+#include "xar_bridge/ck3_12004_current_unit_new_date_schedule_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_detachment_callback_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_detachment_store_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_character_detachment_inputs.hpp"
@@ -1412,6 +1413,21 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
     row.current_assault_removal_reference_inputs_v1 = current_assault_removal_references;
     partial = partial || !row.available;
     output.push_back(std::move(row));
+  }
+  // The production Crozier adapter and the .4 scoped wrapper share this
+  // collector. Only the exact .4 factory enables the current Unit observer.
+  if (bindings.current_unit_new_date_schedule_bindings.enabled && !output.empty()) {
+    const auto inventory = ck3_12004::CaptureCurrentUnitNewDateSchedule12004(
+        bindings.current_unit_new_date_schedule_bindings, bindings);
+    for (auto &row : output) {
+      std::optional<std::uint32_t> carmy_id;
+      if (row.native_carmy_id_observable) {
+        carmy_id = static_cast<std::uint32_t>(row.native_carmy_id);
+      }
+      row.current_unit_new_date_schedule_inputs_v1 =
+          ck3_12004::BuildCurrentUnitNewDateScheduleInputs12004(
+              inventory, static_cast<std::uint32_t>(row.army_id), carmy_id);
+    }
   }
   return partial ? game::ReadArmyStrengthsResult::partial
                  : game::ReadArmyStrengthsResult::available;

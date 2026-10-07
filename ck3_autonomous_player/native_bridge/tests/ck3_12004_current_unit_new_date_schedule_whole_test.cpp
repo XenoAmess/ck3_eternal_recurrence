@@ -1,5 +1,6 @@
 // SOURCE_PREPARED/NOTRUN. Root owns first build and execution.
-// Every scene enters the actual4 whole reader and production row serializer.
+// Every scene enters the actual4 wrapper, common production Strength collector,
+// and production row serializer. The full adapter snapshot path is not exercised.
 #include "xar_bridge/ck3_12004_army.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_current_unit_new_date_schedule_inputs.hpp"
@@ -264,7 +265,7 @@ std::string SerializeWhole(const game::ArmyStrengthSnapshot &row,
 std::string Context(const Fixture &f, std::string_view scene, std::size_t sequence) {
   std::string out = "{\"schema\":\"xar.current-unit-new-date-schedule25-native-context.v1\",\"scene\":";
   AppendString(out, scene);
-  out += ",\"producer\":\"ReadArmyStrengthsForScope12004 -> AppendArmyStrengthV1 -> Render12004BuildIdentity\","
+  out += ",\"producer\":\"ReadArmyStrengthsForScope12004 -> production ReadArmyStrengthsForScope -> AppendArmyStrengthV1 -> Render12004BuildIdentity\","
          "\"query_sequence\":" + std::to_string(sequence) + ",\"actual4_identity\":{\"backend_id\":";
   AppendString(out, current::kAdapterId);
   out += ",\"game_version\":";
