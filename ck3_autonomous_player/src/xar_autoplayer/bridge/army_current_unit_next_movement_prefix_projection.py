@@ -18,7 +18,9 @@ def project_current_unit_next_movement_prefix_v1(
 
     The unexpanded handler between the old entry prefix and this slice may
     alter a route. This value explicitly assumes the observed route, receiver,
-    post-entry state and rate inputs hold at the movement gate. It observes
+    post-entry state and rate inputs hold at the movement gate. A required
+    current Army admission result also assumes its receiver and operands hold
+    there; bypass branches do not require that result. It observes
     neither a future callback nor route consumption/arrival.
     """
     # Reuse closed current DTOs after normal production row normalization.
@@ -42,6 +44,7 @@ def project_current_unit_next_movement_prefix_v1(
     weight = movement.get("accumulated_movement_weight_raw")
     cached = movement.get("cached_edge_speed_raw")
     current_edge = movement.get("current_edge_movement_rate_raw")
+    admission = movement.get("native_army_movement_admission")
     reference = None if resolution is None else resolution["raw_reference"]
     count = None if entry is None else entry["unit_route_count_i32"]
     state = prefix["conditional_unit_170_raw_after_next_new_date_entry_prefix"]
@@ -54,25 +57,37 @@ def project_current_unit_next_movement_prefix_v1(
     rate = None
     rate_source = None
     rate_demanded = False
+    admission_required = None
     if scheduled is None:
         reason = "current_unit_new_date_schedule_inputs_unavailable"
     elif weight is None:
         reason = "current_unit_accumulated_movement_weight_unavailable"
     elif not scheduled:
         gate, add_selected, rate_source, output = "not_scheduled", False, "not_demanded", weight
+        admission_required = False
     elif entry is None or not entry["ready"]:
         reason = "current_unit_new_date_callback_entry_inputs_absent" if entry is None else entry["unavailable_reason"]
     elif count == 0:
         # Conditional no ADD at this gate; the earlier empty-route handler is not simulated.
         gate, add_selected, rate_source, output = "route_zero", False, "not_demanded", weight
+        admission_required = False
     else:
         if reference == -1:
-            gate, add_selected = "direct_raw_unit178_absent", True
+            gate, add_selected, admission_required = "direct_raw_unit178_absent", True, False
         elif state == 1:
-            gate, add_selected = "direct_raw_unit170_1", True
-        else:
+            gate, add_selected, admission_required = "direct_raw_unit170_1", True, False
+        elif reference is None or state is None:
             gate = "native_army_predicate_unresolved"
             reason = "unit_new_date_native_army_movement_admission_predicate_unavailable"
+        else:
+            admission_required = True
+            if admission is True:
+                gate, add_selected = "native_army_predicate_true", True
+            elif admission is False:
+                gate, add_selected, rate_source, output = "native_army_predicate_false", False, "not_demanded", weight
+            else:
+                gate = "native_army_predicate_unresolved"
+                reason = "unit_new_date_native_army_movement_admission_predicate_unavailable"
         if add_selected:
             if cached is None:
                 reason = "current_unit_cached_edge_speed_unavailable"
@@ -103,6 +118,9 @@ def project_current_unit_next_movement_prefix_v1(
         "accumulated_movement_weight_raw": weight,
         "cached_edge_speed_raw": cached,
         "current_edge_movement_rate_raw": current_edge,
+        "native_army_movement_admission": admission,
+        "native_army_admission_required_by_conditional_prefix": admission_required,
+        "native_army_admission_condition": "same_resolved_carmy_and_admission_operands_held_at_movement_gate_when_required",
         "movement_gate": gate,
         "movement_add_selected": add_selected,
         "current_edge_rate_demanded_by_conditional_prefix": rate_demanded,

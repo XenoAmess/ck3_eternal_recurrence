@@ -176,6 +176,10 @@ ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
       BindCurrentUnitNewDateCallbackEntryInputs12004(image_base, executable_sha256);
   result.get_unit_current_edge_movement_rate =
       BindRouteImage12004(image_base, executable_sha256).read_unit_current_edge_speed;
+  // Actual complete readonly AL leaf [24E91E0,24E924F), CArmy receiver.
+  result.read_native_army_movement_admission =
+      reinterpret_cast<decltype(result.read_native_army_movement_admission)>(
+          image_base + 0x24E91E0);
   result.current_detachment_callback_bindings =
       BindCurrentDetachmentCallbackInputs12004(image_base, executable_sha256);
   result.current_detachment_store_bindings =

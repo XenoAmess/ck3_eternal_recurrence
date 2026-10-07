@@ -198,7 +198,7 @@ void Route(void *game_data, void *unit, game::ArmySnapshot &row) {
 }
 
 game::ArmyMovementProgressSnapshot MovementProgress(
-    const ArmyBindings &bindings, void *unit) {
+    const ArmyBindings &bindings, void *unit, void *army) {
   game::ArmyMovementProgressSnapshot result{};
   result.accumulated_movement_weight_raw = Load<std::int64_t>(unit, 0x168);
   result.cached_edge_speed_raw = Load<std::int64_t>(unit, 0x190);
@@ -220,6 +220,10 @@ game::ArmyMovementProgressSnapshot MovementProgress(
     result.unavailable_reason = "current_route_unavailable";
     return result;
   }
+
+  if (bindings.read_native_army_movement_admission != nullptr)
+    result.native_army_movement_admission =
+        bindings.read_native_army_movement_admission(army);
 
   // Actual .4 NewDate ADD prefix selects this readonly rate only when190<=0.
   // The complete current route and already-qualified callback are reused;
@@ -923,7 +927,7 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       }
     }
     if (bindings.current_movement_progress_enabled)
-      result.current_movement_progress = MovementProgress(bindings, unit);
+      result.current_movement_progress = MovementProgress(bindings, unit, army);
     if (bindings.get_army_gathering_days_left != nullptr &&
         bindings.get_unit_state != nullptr) {
       const auto state = bindings.get_unit_state(unit);

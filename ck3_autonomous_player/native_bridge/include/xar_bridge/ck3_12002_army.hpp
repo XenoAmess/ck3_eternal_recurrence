@@ -225,6 +225,7 @@ struct ArmyBindings {
   // Reuse the exact .4 current-edge getter from RouteBindings without
   // installing or executing a committed-route timeline.
   std::int64_t *(*get_unit_current_edge_movement_rate)(void *, std::int64_t *) = nullptr;
+  bool (*read_native_army_movement_admission)(void *) = nullptr;
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

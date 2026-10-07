@@ -254,6 +254,7 @@ struct ArmyMovementProgressSnapshot {
   std::string unavailable_reason;
   std::optional<ArmyCommittedRouteTimelineSnapshot> committed_route_timeline;
   std::optional<std::int64_t> current_edge_movement_rate_raw;
+  std::optional<bool> native_army_movement_admission;
 
   friend bool operator==(const ArmyMovementProgressSnapshot &,
                          const ArmyMovementProgressSnapshot &) = default;

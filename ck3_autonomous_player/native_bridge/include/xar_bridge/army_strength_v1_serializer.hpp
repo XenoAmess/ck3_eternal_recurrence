@@ -1019,6 +1019,10 @@ inline void AppendArmyStrengthV1(
     result += ",\"current_edge_movement_rate_raw\":";
     result += movement.current_edge_movement_rate_raw.has_value()
                   ? number(*movement.current_edge_movement_rate_raw) : "null";
+    result += ",\"native_army_movement_admission\":";
+    result += movement.native_army_movement_admission.has_value()
+                  ? (*movement.native_army_movement_admission ? "true" : "false")
+                  : "null";
     const auto append_fixed = [&](const std::optional<std::int64_t> &raw) {
       if (raw.has_value()) {
         result += "{\"raw\":";

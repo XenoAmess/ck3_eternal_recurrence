@@ -2240,7 +2240,7 @@ def _normalize_current_movement_progress(
         "first_route_edge_remaining_duration", "unavailable_reason",
     }
     if (not isinstance(value, dict) or not required <= value.keys()
-            or set(value) - required - {"committed_route_timeline", "current_edge_movement_rate_raw"}):
+            or set(value) - required - {"committed_route_timeline", "current_edge_movement_rate_raw", "native_army_movement_admission"}):
         raise ValueError(f"native {name} schema is malformed")
     if value["status"] not in {"available", "not_applicable", "partial", "unavailable"}:
         raise ValueError(f"native {name}.status is malformed")
@@ -2262,6 +2262,11 @@ def _normalize_current_movement_progress(
         ):
             raise ValueError(f"native {name}.{field} must be signed int64 or null")
         normalized[field] = raw
+    if "native_army_movement_admission" in value:
+        admission = value["native_army_movement_admission"]
+        if admission is not None and type(admission) is not bool:
+            raise ValueError(f"native {name}.native_army_movement_admission must be bool or null")
+        normalized["native_army_movement_admission"] = admission
     for field in ("normalized_edge_progress", "first_route_edge_remaining_duration"):
         amount = value[field]
         normalized[field] = (
