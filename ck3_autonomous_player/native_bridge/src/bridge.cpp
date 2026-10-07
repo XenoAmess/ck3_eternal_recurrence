@@ -91,6 +91,9 @@
 #include "xar_bridge/ck3_12002_world.hpp"
 #include "xar_bridge/ck3_12002_title_map.hpp"
 #include "xar_bridge/ck3_12004_title_map.hpp"
+#include "xar_bridge/ck3_12004_pending_context.hpp"
+#include "xar_bridge/ck3_12004_world.hpp"
+#include "xar_bridge/ck3_12004_event_window_context.hpp"
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12004_campaign.hpp"
@@ -8220,8 +8223,10 @@ std::string LoadedFeatureManifestResultFrame(
 std::string PendingCharacterInteractionContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::PendingCharacterInteractionContextV1 &context,
-    bool crozier = false) {
-  const auto payload = crozier
+    bool crozier = false, bool actual4 = false) {
+  const auto payload = actual4
+      ? xar::ck3_12004::SerializePendingCharacterInteractionContext12004(context)
+      : crozier
       ? xar::ck3_12002::SerializePendingCharacterInteractionContextV1(context)
       : xar::ck3_11906::SerializePendingCharacterInteractionContextV1(context);
   if (payload.empty()) {
@@ -10658,6 +10663,12 @@ bool ResolvePendingWar12002(void *opaque, std::int32_t id, void *&output) noexce
     return false;
   }
   auto *query = static_cast<TypedQuery12002 *>(envelope->typed_context);
+  if (xar::game::IsCk3_12004Descriptor(envelope->game->descriptor())) {
+    const auto bindings = xar::ck3_12004::BindWorldImage12004(
+        query->image_base, envelope->game->descriptor().executable_sha256);
+    output = xar::ck3_12004::ResolveWar12004(bindings, id);
+    return output != nullptr;
+  }
   const auto bindings = xar::ck3_12002::BindWorldImage(
       query->image_base, xar::game::ReviewedCrozierAbiSha256(envelope->game->descriptor()));
   output = xar::ck3_12002::ResolveWar(bindings, id);
@@ -10872,14 +10883,23 @@ bool ExecuteTypedQuery12002(
       access.invoke_common_war_relation = &xar::ck3_12002::InvokePendingCharacterInteractionCommonWarRelationDirectV1;
       access.invoke_target_type_registry = &xar::ck3_12002::InvokePendingCharacterInteractionTargetTypeRegistryDirectV1;
       access.invoke_script_identifier_name = &xar::ck3_12002::InvokePendingCharacterInteractionScriptIdentifierNameDirectV1;
-      xar::ck3_12002::ReadPendingCharacterInteractionContextV1(
-          xar::ck3_12002::BindPendingCharacterInteractionNativeEnvironmentV1(query.image_base, true),
-          access, query.pending_request, query.pending);
+      if (actual4) {
+        xar::ck3_12004::ReadPendingCharacterInteractionContext12004(
+            xar::ck3_12004::BindPendingCharacterInteractionNativeEnvironment12004(
+                query.image_base, sha),
+            access, query.pending_request, query.pending);
+      } else {
+        xar::ck3_12002::ReadPendingCharacterInteractionContextV1(
+            xar::ck3_12002::BindPendingCharacterInteractionNativeEnvironmentV1(query.image_base, true),
+            access, query.pending_request, query.pending);
+      }
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::event_window) {
+      const auto bindings = actual4
+          ? xar::ck3_12004::BindEventWindowImage12004(query.image_base, sha)
+          : xar::ck3_12002::BindEventWindowImage(query.image_base, sha);
       xar::ck3_12002::ReadEventWindowContextV1(
-          xar::ck3_12002::BindEventWindowImage(
-              query.image_base, envelope->game->descriptor().executable_sha256),
+          bindings,
           envelope->expected_snapshot_revision, query.event_instance_id, query.event);
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::title_map) {
@@ -10890,8 +10910,8 @@ bool ExecuteTypedQuery12002(
         access.title.capture_frame = &CaptureTypedFrame12002<xar::game::TitleMapNavigationFrameV1>;
         access.title.is_owning_thread = &xar::ck3_12002::IsQueryOwningThread;
         xar::ck3_12004::AdvanceTitleMapNavigationCommandV1(
-            xar::ck3_12004::BindTitleMapNavigationNativeEnvironmentV1(query.image_base, sha),
-            xar::ck3_12004::BindTitleMapNavigationCameraEnvironmentV1(query.image_base, sha),
+            xar::ck3_12004::BindTitleMapNavigationNativeEnvironmentV1(query.image_base, actual4),
+            xar::ck3_12004::BindTitleMapNavigationCameraEnvironmentV1(query.image_base, actual4),
             access, query.title_command);
       } else {
         xar::ck3_12002::TitleMapNavigationCameraAccessV1 access{};
@@ -11594,6 +11614,10 @@ public:
         &ExecuteTypedQuery12002<QueryKind12002::actual_contact>;
     environment.permitted_executor_octodenary =
         &ExecuteTypedQuery12002<QueryKind12002::combat_v3>;
+    environment.permitted_executor_novemdenary =
+        &ExecuteTypedQuery12002<QueryKind12002::pending_interaction>;
+    environment.permitted_executor_vigintary =
+        &ExecuteTypedQuery12002<QueryKind12002::event_window>;
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
     nonwar.steward_develop_county = &xar::ck3_11906::
@@ -12450,6 +12474,8 @@ bool IsBattleWarTypedQuery12004(const xar::game::GameAdapter &game,
          kind == QueryKind12002::title_map ||
          kind == QueryKind12002::actual_contact ||
          kind == QueryKind12002::combat_v3 ||
+         kind == QueryKind12002::pending_interaction ||
+         kind == QueryKind12002::event_window ||
          kind == QueryKind12002::battle_control ||
          kind == QueryKind12002::battle_transition ||
          kind == QueryKind12002::battle_reinforcement ||
@@ -12794,11 +12820,13 @@ std::string RunTypedQuery12002(
     break;
   case QueryKind12002::pending_interaction:
     response = PendingCharacterInteractionContextResultFrame(request_id,
-        ++state.pending_character_interaction_context_query_sequence, query.pending, true); break;
+        ++state.pending_character_interaction_context_query_sequence, query.pending, true,
+        xar::game::IsCk3_12004Descriptor(game.descriptor())); break;
   case QueryKind12002::event_window:
     response = EventWindowContextResultFrame(request_id,
         ++state.event_window_context_query_sequence, query.event, true,
-        game.descriptor().executable_sha256 == xar::ck3_12003::kExecutableSha256); break;
+        xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+        xar::game::IsCk3_12004Descriptor(game.descriptor())); break;
   case QueryKind12002::title_map: {
     const auto status = query.title_command.status;
     if (status != xar::game::TitleMapNavigationCommandStatusV1::centered &&

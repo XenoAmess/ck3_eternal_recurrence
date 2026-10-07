@@ -50,6 +50,8 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
       "game.command.query-title-holder-v1-N",
+      "game.command.query-pending-character-interaction-context-v1",
+      "game.command.query-current-event-window-context-v1",
       "game.command.center-map-on-landed-title-v1",
       ck3_11906::kStewardDevelopCountyCandidatesV1Capability,
       "game.command.select-event-option-N",
