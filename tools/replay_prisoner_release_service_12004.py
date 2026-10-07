@@ -79,11 +79,16 @@ def main() -> int:
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--native-wire-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--succession-lifecycle-binding-json", type=Path, required=True,
+                        help="Existing frozen ordinary campaign configuration; not a native frame.")
     args = parser.parse_args()
     sys.path.insert(0, str(args.source_root / "ck3_autonomous_player/src"))
     from xar_autoplayer.bridge.driver import BridgeUnavailableError
     from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
     from xar_autoplayer.bridge.service import GameplayBridgeService
+    from xar_autoplayer.bridge.succession_transition_contract import (
+        ORDINARY_CAMPAIGN_SUCCESSION, normalize_succession_lifecycle_binding_v1,
+    )
     from xar_autoplayer.prisoner_release_formal_consumer import (
         SUBMIT_STEP, read_release_ledger,
     )
@@ -168,6 +173,16 @@ def main() -> int:
     lines = ["One offline production Service compound; original native whole packets."]
     exit_code = 1
     try:
+        binding_bytes = args.succession_lifecycle_binding_json.read_bytes()
+        lifecycle_binding = normalize_succession_lifecycle_binding_v1(json.loads(binding_bytes))
+        require(lifecycle_binding["lifecycle"] == ORDINARY_CAMPAIGN_SUCCESSION,
+                "this Service compound requires explicit ordinary campaign configuration")
+        report["configured_succession_lifecycle"] = {
+            "path": str(args.succession_lifecycle_binding_json),
+            "sha256": hashlib.sha256(binding_bytes).hexdigest(),
+            "binding": lifecycle_binding,
+            "scope": "offline_fixture_configuration_not_native_game_rule_observation",
+        }
         existing_path = (
             args.native_wire_dir.parent / "registered-toolsvenv-02" / "CONSUMER-FIRST.json"
         )
@@ -225,12 +240,16 @@ def main() -> int:
                 command_timeout_seconds=0.1,
                 allow_private_prisoner_collection_query=True,
                 allow_private_prisoner_ransom_action=True,
+                succession_lifecycle_binding=lifecycle_binding,
             )
             try:
                 endpoint.publish(packet["hello"])
                 endpoint.publish(packet["before_snapshot"])
                 before = driver.take_snapshot()
                 entry["before_snapshot"] = before
+                require(before["succession_lifecycle"]["lifecycle"] == ORDINARY_CAMPAIGN_SUCCESSION
+                        and isinstance(before.get("campaign_goal"), dict),
+                        case + ": actual Driver did not use the configured ordinary campaign scope")
                 query_arguments = {"expected_revision": before["revision"], "ransom_ordinal": 0}
                 if case != "all_off_pending":
                     query_arguments["release_option_keys"] = ["gain_hook"]
