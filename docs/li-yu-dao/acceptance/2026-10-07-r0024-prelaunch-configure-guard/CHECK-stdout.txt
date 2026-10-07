@@ -1,0 +1,41 @@
+{"command": ["C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe", "-S", "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge", "-B", "C:\\lr24cf1", "-G", "Ninja", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_MAKE_PROGRAM=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe", "-DCMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe", "-DCMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe", "-DBUILD_TESTING:BOOL=ON", "-DXAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1:BOOL=OFF", "-DXAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1:BOOL=OFF", "-DXAR_CK3_EXECUTABLE_PATH:FILEPATH=C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe", "-DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1:BOOL=ON", "-DXAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1:BOOL=ON", "-DXAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1:BOOL=ON", "-DXAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1:BOOL=ON", "-DXAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1:BOOL=ON"], "log": "C:\\lr24cf1\\msvc-configure.log"}
+-- The CXX compiler identification is MSVC 19.51.36260.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe (found version "3.13.15") found components: Interpreter
+-- Configuring done (5.2s)
+-- Generating done (3.5s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_C_COMPILER
+
+
+-- Build files have been written to: C:/lr24cf1
+{
+  "schema": "xar.native.msvc-build.v1",
+  "source_dir": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge",
+  "build_dir": "C:\\lr24cf1",
+  "configuration": "Release",
+  "jobs": 64,
+  "targets": [
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector"
+  ],
+  "tools": {
+    "vcvars64": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+    "cmake": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "ninja": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "cl": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe"
+  },
+  "local_ck3_contacted": false,
+  "temporary_dir": "C:\\lr24cf1\\.msvc-temp",
+  "python_cache": "C:\\lr24cf1\\.python-cache",
+  "configured": true,
+  "built": false,
+  "dependency_prefix_mode": "direct-2052-cp936",
+  "status": "configured"
+}

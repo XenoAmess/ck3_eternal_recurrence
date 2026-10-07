@@ -1,0 +1,12 @@
+-- The CXX compiler identification is MSVC 19.51.36260.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe (found version "3.13.15") found components: Interpreter
+CMake Error at tests/crown_authority_cooldown_whole_fixture_12004/CMakeLists.txt:27 (message):
+  Use the existing adopted private realm-law build option
+
+
+-- Configuring incomplete, errors occurred!

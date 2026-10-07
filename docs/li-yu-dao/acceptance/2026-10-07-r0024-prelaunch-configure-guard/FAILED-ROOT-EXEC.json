@@ -1,0 +1,36 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-build-preparation-20261007-001/ROOT-ARGV.json",
+    "bytes": 512,
+    "sha256": "4cd8bfe8fe67207c71f8b64341a35dedff158f0fa832321d6c9f5056b6c314b1"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-I",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-file-only-runtime-source-20261007-003\\canonical\\root_build_reviewed_clean.py",
+    "--execute",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r24-root-build-preparation-20261007-001\\REQUEST.json",
+    "--request-sha256",
+    "bf6ec8da3738e645b0d82da1fb9440bb7e3bda9d62a87d503517258a0a40ae6a"
+  ],
+  "child_environment_overrides": {
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "started_at_utc": "2026-10-07T15:45:05.650091+00:00",
+  "finished_at_utc": "2026-10-07T15:45:24.948737+00:00",
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-build-original-exec-20261007-001/stdout",
+    "bytes": 302,
+    "sha256": "605ce1a17356e489e6e8178cae2a4c7f6d54744310d9fb7b388771fa048e3ffa"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-build-original-exec-20261007-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

@@ -1,0 +1,74 @@
+{
+  "copied_at_utc": "2026-10-07T15:53:54.868691+00:00",
+  "files": [
+    {
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r24-native-build-20261007-001/RESULT.json",
+      "archived": "FAILED-NATIVE-RESULT.json",
+      "bytes": 1034038,
+      "sha256": "7a82527a5147500ebdf7ff4a5cd689e28a73641f147d63b8b7dbb7b3866aeb83"
+    },
+    {
+      "original": "C:/lr24b1/native-msvc-result.json",
+      "archived": "FAILED-PRODUCER-RESULT.json",
+      "bytes": 11508,
+      "sha256": "5a730bfb986a886455593301f315f7759ade76e05b6a94201353d59607952498"
+    },
+    {
+      "original": "C:/lr24b1/msvc-configure.log",
+      "archived": "FAILED-CONFIGURE.log",
+      "bytes": 704,
+      "sha256": "480dc59a0abc8a514e9b372a80e5e06fd73d1f62dda78cdbb6e94f27a3363b79"
+    },
+    {
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-build-original-exec-20261007-001/RESULT.actual.json",
+      "archived": "FAILED-ROOT-EXEC.json",
+      "bytes": 1413,
+      "sha256": "99d28d74968246fc03739624d9b6d140a8b206b4fd1084c9f2a69a4475049504"
+    },
+    {
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-cmake-guard-check-ARGV.actual.json",
+      "archived": "CHECK-ARGV.json",
+      "bytes": 1936,
+      "sha256": "147d3ab389e31be89a26cc4bac88b2868a59b16a35044f768b1af15180bb8cd3"
+    },
+    {
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-cmake-guard-check-original-exec-20261007-001/RESULT.actual.json",
+      "archived": "CHECK-ROOT-EXEC.json",
+      "bytes": 2747,
+      "sha256": "2483e79655ceeda71bf303fcb5fe42d089762ad6d5974c65a7779433a81c9ecd"
+    },
+    {
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-cmake-guard-check-original-exec-20261007-001/stdout",
+      "archived": "CHECK-stdout.txt",
+      "bytes": 3633,
+      "sha256": "cfae6b6e1ef5972b9d5078d1e5ca7b2253bf7bfb44b9cbf8d4824281d81c5735"
+    },
+    {
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-cmake-guard-check-original-exec-20261007-001/stderr",
+      "archived": "CHECK-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "C:/lr24cf1/msvc-configure.log",
+      "archived": "CHECK-CONFIGURE.log",
+      "bytes": 706,
+      "sha256": "180e0a633f88eda310ed6a0817dcf37bf0269c66db1dc7df6d76b4873825cb7f"
+    },
+    {
+      "original": "C:/lr24cf1/native-msvc-result.json",
+      "archived": "CHECK-PRODUCER-RESULT.json",
+      "bytes": 1096,
+      "sha256": "63bf85c72ba8a8b78a5c0b3b2e76d9c10b716ef34122af67f90328a02df4dd6d"
+    },
+    {
+      "original": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-publish-configure-evidence-20261007-001.py",
+      "archived": "SOURCE.py",
+      "bytes": 4234,
+      "sha256": "a6ae04d6333bba4506014747347544252df7a95755a9f7302a078982500409e1"
+    }
+  ],
+  "CK3_launches": 0,
+  "save_body_reads": 0,
+  "native_compilation_credit": false
+}

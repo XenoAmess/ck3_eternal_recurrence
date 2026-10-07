@@ -9374,6 +9374,6 @@ if(TARGET xar_ck3_12002_runtime)
   target_sources(xar_ck3_12002_runtime PRIVATE
     src/crown_authority_cooldown_observer_12004.cpp)
 endif()
-if(BUILD_TESTING AND WIN32)
+if(BUILD_TESTING AND WIN32 AND XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
   add_subdirectory(tests/crown_authority_cooldown_whole_fixture_12004)
 endif()
