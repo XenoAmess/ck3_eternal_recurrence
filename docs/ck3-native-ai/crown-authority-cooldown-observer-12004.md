@@ -35,6 +35,7 @@ flowchart TD
   I --> SW[Actual caller2D567AE passes returned R9D to scalar writer3728400]
   CT[Actual constructor2D5CF00 / complete126 bytes] --> DF[Duration+78 multiplier0 / scalar and range minus1 / null expressions]
   CT --> VT[Actual LEA installs object vtable487A038]
+  VT --> OT[Actual RTTI owner CAddCharacterFlagEffect]
   VT -.-> PS[Named parse or compile method slot / registration caller not held]
   PS -.-> J
   DF --> I
@@ -47,6 +48,8 @@ flowchart TD
 The new observer answers **when to inspect final terms again**. It neither grants action permission nor substitutes cooldown state for `FinalCanEnact`. Native final permission can be true through an override while a cooldown row remains present. Consequently `final_can_enact:true` cannot be converted into `remaining_raw:0`.
 
 ## Reused actual source and the finite missing source
+
+The [background clock-unit source increment](crown-authority-cooldown-clock-units-source-12004.md) preserves the completed actual `CAddCharacterFlagEffect` RTTI and named `add_character_flag` registration. Its Oct8 continuation follows the actual manager/factory consumer before selecting a parser slot. Root reports the runtime25 six whole-query scenes and sole registered Service consumer GREEN; historical AUTHORED_NOTRUN passages below describe earlier stages. Calendar cadence, units and positive retry conversion remain separate source dependencies, with no new CK3 contact or repeated qualification here.
 
 The actual4 shared identifier and Character-context bindings already exist in `ck3_12004_family_break_penalty.cpp` and `ck3_12004_epidemic.cpp`: table3F8A7E0, lookup3F8A660, name3F8A6D0, scope-context370EAF0. The player context must come from the existing exact4 Character/full-ID selection, not an old binder or a new character.
 
