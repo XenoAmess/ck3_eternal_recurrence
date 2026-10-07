@@ -1,9 +1,11 @@
 # One new whole producer for the actual loaded candidate fertility floor.
 if(BUILD_TESTING AND WIN32)
   add_executable(xar_ck3_12004_first_heir_fertility_floor_test EXCLUDE_FROM_ALL
-    src/ck3_12004_first_heir_fertility_floor_test.cpp)
+    src/ck3_12004_first_heir_fertility_floor_test.cpp
+    $<TARGET_OBJECTS:xar_ck3_bridge>)
   target_link_libraries(xar_ck3_12004_first_heir_fertility_floor_test PRIVATE
-    xar_ck3_12002_runtime xar_bridge_protocol)
+    xar_ck3_12002_runtime xar_bridge_protocol bcrypt
+    $<TARGET_PROPERTY:xar_ck3_bridge,LINK_LIBRARIES>)
   target_include_directories(xar_ck3_12004_first_heir_fertility_floor_test PRIVATE include)
   target_compile_features(xar_ck3_12004_first_heir_fertility_floor_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_12004_first_heir_fertility_floor_test PRIVATE
