@@ -55,8 +55,8 @@ def frame_binding(snapshot):
  need(type(snapshot)is dict and snapshot.get('paused')is True and snapshot.get('map_ready')is True,'not a paused native checkpoint frame')
  actor=snapshot.get('played_character');diag=snapshot.get('diagnostics');hello=diag.get('hello')if type(diag)is dict else None
  need(type(actor)is dict and actor.get('alive')is True and type(hello)is dict and diag.get('connected')is True,'actual alive actor/connected HELLO required')
- need(hello.get('ck3_build_match')is True and hello.get('game_adapter_id')=='ck3-1.20.0.3-msvc-x64','exact current native adapter')
- need(hello.get('expected_ck3_version')=='1.20.0.3' and type(hello.get('expected_ck3_sha256'))is str and hello['expected_ck3_sha256'].upper()==sdk.CK3_12003.executable_sha256,'actual HELLO exact version/image differs')
+ try:sdk.snapshot_build_identity(snapshot)
+ except ValueError as e:raise QualificationError('actual HELLO exact version/image/adapter differs: '+str(e))from e
  need(snapshot.get('one_life_terminal_reason')is None,'terminal frame')
  positive(snapshot.get('revision'),'public revision');positive(snapshot.get('native_revision'),'native revision')
  need(type(snapshot.get('snapshot_id'))is str and snapshot['snapshot_id'],'missing snapshot identity')
@@ -104,6 +104,8 @@ def convert(provenance,checkpoint,state,g2_receipt,g3_receipt,*,immutable_busine
  need(checkpoint.get('status')=='native_gameplay_postcondition_verified' and checkpoint.get('uses_ocr')is False and checkpoint.get('uses_desktop_input')is False,'checkpoint SDK postcondition missing')
  before,after=checkpoint.get('snapshot_before'),checkpoint.get('snapshot_after')
  binding=frame_binding(before);later=frame_binding(after)
+ build=sdk.snapshot_build_identity(before)
+ need(build==sdk.snapshot_build_identity(after),'checkpoint exact build changed')
  need(binding==later,'checkpoint crossed native/public snapshot frame; independent new binding required')
  for k in ('played_character','active_event','pending_character_interaction','speed','local_player_id','episode_character_id'):
   need(before.get(k)==after.get(k),'checkpoint frame state changed '+k)
@@ -122,6 +124,7 @@ def convert(provenance,checkpoint,state,g2_receipt,g3_receipt,*,immutable_busine
   except (ValueError,TypeError,AttributeError,KeyError)as e:raise QualificationError('malformed/bound '+operation+': '+str(e))from e
   nested='confucian_assembly_predicates'if operation=='assembly_predicates'else'confucian_religious_title'
   dto=public['native_result'][nested]
+  need(sdk.exact_build_identity(dto['game_version'],dto['executable_sha256'])==build,'native query exact build differs from checkpoint')
   need(receipt.get('status')=='native_confucian_readonly_'+public['native_result']['status'],'SDK outer operation availability differs')
   need(dto['capture_epoch']==provenance['capture_epochs'][operation],'stale '+operation+' capture epoch')
   outputs.append((public,dto))

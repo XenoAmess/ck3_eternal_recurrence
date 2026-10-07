@@ -60,8 +60,8 @@ def frame_binding(snapshot):
  need(type(snapshot)is dict and snapshot.get('paused')is True and snapshot.get('map_ready')is True,'not a paused native checkpoint frame')
  actor=snapshot.get('played_character');diag=snapshot.get('diagnostics');hello=diag.get('hello')if type(diag)is dict else None
  need(type(actor)is dict and actor.get('alive')is True and type(hello)is dict and diag.get('connected')is True,'actual alive actor/connected HELLO required')
- need(hello.get('ck3_build_match')is True and hello.get('game_adapter_id')=='ck3-1.20.0.3-msvc-x64','exact current native adapter')
- need(hello.get('expected_ck3_version')=='1.20.0.3' and type(hello.get('expected_ck3_sha256'))is str and hello['expected_ck3_sha256'].upper()==sdk.CK3_12003.executable_sha256,'actual HELLO exact version/image differs')
+ try:sdk.snapshot_build_identity(snapshot)
+ except ValueError as e:raise QualificationError('actual HELLO exact version/image/adapter differs: '+str(e))from e
  need(snapshot.get('one_life_terminal_reason')is None,'terminal frame')
  positive(snapshot.get('revision'),'public revision');positive(snapshot.get('native_revision'),'native revision')
  need(type(snapshot.get('snapshot_id'))is str and snapshot['snapshot_id'],'missing snapshot identity')
@@ -117,6 +117,8 @@ def convert(provenance,checkpoint,state,g2_receipt,g3_receipt,*,immutable_busine
  for r in (checkpoint,g2_receipt,g3_receipt):outer_identity(r,provenance)
  need(checkpoint.get('status')=='native_gameplay_postcondition_verified' and checkpoint.get('uses_ocr')is False and checkpoint.get('uses_desktop_input')is False,'checkpoint SDK postcondition missing')
  binding,checkpoint_transition=transition.bind_checkpoint_transition(checkpoint,provenance)
+ build=sdk.snapshot_build_identity(checkpoint['snapshot_before'])
+ need(build==sdk.snapshot_build_identity(checkpoint['snapshot_after']),'checkpoint exact build changed')
  need(binding['game_pid']==provenance['game_pid'] and binding['connection_generation']==provenance['connection_generation'],'checkpoint PID/connection differs')
  cp=checkpoint.get('result',{}).get('checkpoint')
  need(type(cp)is dict and cp.get('status')=='saved' and type(cp.get('path'))is str and cp['path'] and type(cp.get('size'))is int and cp['size']>0 and valid_sha(cp.get('sha256')) and cp.get('date_raw')==binding['date_raw'],'exact materialized checkpoint descriptor missing')
@@ -132,6 +134,7 @@ def convert(provenance,checkpoint,state,g2_receipt,g3_receipt,*,immutable_busine
   except (ValueError,TypeError,AttributeError,KeyError)as e:raise QualificationError('malformed/bound '+operation+': '+str(e))from e
   nested='confucian_assembly_predicates'if operation=='assembly_predicates'else'confucian_religious_title'
   dto=public['native_result'][nested]
+  need(sdk.exact_build_identity(dto['game_version'],dto['executable_sha256'])==build,'native query exact build differs from checkpoint')
   need(receipt.get('status')=='native_confucian_readonly_'+public['native_result']['status'],'SDK outer operation availability differs')
   need(dto['capture_epoch']==provenance['capture_epochs'][operation],'stale '+operation+' capture epoch')
   outputs.append((public,dto))
