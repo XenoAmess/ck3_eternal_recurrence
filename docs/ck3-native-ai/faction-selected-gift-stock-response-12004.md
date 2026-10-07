@@ -1,12 +1,15 @@
 # CK3 1.20.0.4: selected faction gift consumes the native dangerous rule
 
-Source research draft, 2026-10-07 / 2026-W41. This draft reads immutable Git
-source `05e7ef5b08be07afd9cd747d5d60965c3c2aee5b` from `Z:/gb0`; it makes no
-source-tree edit, test, executable read, fresh hash, SDK call, process query,
-window operation or CK3 action. Implementation and new consumer qualification
-belong to the parent work package. The current local CK3 prohibition remains
-effective. No new game date, saved day, G2 milestone or live qualification is
-claimed.
+Completed background package, 2026-10-07 / 2026-W41. Research first read immutable
+source `05e7ef5b08be07afd9cd747d5d60965c3c2aee5b`. The minimum Python consumer now
+joins the chosen gift to its current native stock-danger row and gives that
+response precedence in the existing peaceful building/gift comparison. No new
+native capability, MCP tool, gameplay action, flag or production gate is added.
+The new sole Service compound is **GREEN / offline fixture** at source
+`79b9225a011a9131b76737759520dc151d25e806`, 2026-10-07 19:40:12 Asia/Shanghai.
+The current local CK3 prohibition remains effective: no executable read, fresh
+hash, SDK call, process query, window operation, game date, saved day, G2
+milestone or production-live qualification is claimed.
 
 ## Native input evidence before policy
 
@@ -113,7 +116,7 @@ sets `prefer_income` in peaceful building/diplomacy comparison. Its first key at
 line801 prefers an eligible positive authored-income building without consuming
 any faction danger. `faction_gift_proposal` at line321 carries only source
 faction/opinion evidence. This is the concrete functional input gap for the
-parent's minimum Python change.
+minimum Python change below.
 
 The existing public normalizer
 `ck3_autonomous_player/src/xar_autoplayer/bridge/player_faction_alerts_contract.py:796`
@@ -164,9 +167,56 @@ The adopted .4 faction package already records native twelve-whole and actual
 registered/Service synthetic fixture qualification at
 `docs/ck3-native-ai/ck3-1.20.0.4-faction-adopted-native.md:3`:
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/faction-consumer-only-fix11/registered-root-consumer-only-logs/RESULT.json`.
-Reuse it without replay. The proposed source/formal priority itself remains
-SOURCE / NOTRUN until its new minimum compound consumer runs. This worker
-creates no tests or qualification credit.
+Reuse it without replay. The new formal priority is qualified by only the new
+compound below; this does not rerun that twelve-scene producer or old consumer.
+
+## Actual new formal qualification
+
+`faction_threat_response_inputs_v1.py` reuses a same-frame history alert when
+present, otherwise calls the existing read-only step once for a selected gift.
+It binds the chosen full FactionID/recipient to the current player/frame and
+copies the complete native row, including dynamic threshold, signed growth,
+months and member identity. Only that row's stock-danger boolean and absence of
+war control priority. The source hook is in
+`m5_peacetime_proposal_sources_v1.py`; `faction_gift_proposal` retains the row in
+evidence and the existing observed selector consumes it. Missing observations
+leave the independent legal opportunities intact. Gift routing still recaptures
+the existing quote and uses its ordinary submit/pending/receipt path.
+
+One new method,
+`FactionStockResponseFormalFirst12004.test_existing_native_stock_threat_changes_real_formal_faction_response`,
+passed four legs in **2.2968583 s** external elapsed / **2.028 s** unittest elapsed
+(the log is authoritative for the internal duration):
+
+| Leg | Data qualification | Actual real-production selection |
+|---|---|---|
+| Original positive gift | Exact original `.4` alert and gift-preview whole bodies, no replacement native field; synthetic paused/root/checkpoint and no-building fixture | Existing typed gift submit selected, stock row retained; no submit sent |
+| Dangerous gift versus income | Original native alert whole unchanged; gift treasury changed to 40,000,000 as explicitly controlled input and a synthetic positive-income building quote | Legal funded dangerous gift precedes income building |
+| Watch gift versus income | Explicitly controlled consistent watch row, including growth/months zero; controlled treasury/building | Existing positive-income building preference retained |
+| Unavailable alert versus income | Original unavailable alert whole unchanged; controlled treasury/building | Existing income building proceeds without a new threat gate |
+
+The real `NativeHeadlessGameplayDriver` public observer and private gift query,
+real peacetime source, proposal collector, dispatcher and
+`GameplayBridgeService.plan_turn` execute. Only the ordinary baseline selection
+and building quote are synthetic callbacks. No planned typed submit is sent.
+Native original bodies are copied unchanged into the receipt directory; changed
+funding/watch packets are separately labelled controlled inputs. Native fixture
+values are not actual game facts or a production construction quote.
+
+Canonical receipt:
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/faction-response/formal-first-attempt04/compound/FIRST-COMPOUND-RECEIPT.json`;
+launch/logs: `formal-first-attempt04/LAUNCH-RESULT.json`, `stdout.log`, `stderr.log`.
+The three earlier harness RED attempts remain intact: attempt01 had the wrong
+fixture round-ID format; attempt02 omitted the ordinary life-advance capability;
+attempt03 had a synthetic snapshot ID outside the existing `native:<revision>`
+format. The fixes only correct those fixture inputs and retain failed-plan
+diagnostics. Production predicates and original native bodies were unchanged.
+
+Native producer runs, old tests, game/process/SDK operations and game-day advances
+are all **0**. G2 remains **5/8**, NW **2/4**, M4 false, natural succession 0.
+This is a qualified formal response selector; applied mitigation, faction member
+departure, threat resolution and the common two-year M4 outcome remain live work
+after the user reauthorizes CK3.
 
 The next useful follow-on, if the current natural frame shows the bounded
 selector picking a watch row while an actionable dangerous character faction

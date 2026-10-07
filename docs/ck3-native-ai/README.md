@@ -293,6 +293,7 @@ root 已取得当前 Steam 离线的新鲜像素证据（07:20 UTC）与无 CK3 
 
 - [Council candidates](ck3-1.20.0.2-council-candidates.md)、[gates](ck3-1.20.0.2-council-gates.md)、[assignment](ck3-1.20.0.2-council-assignment.md)
 - [Faction alerts](ck3-1.20.0.2-faction-alerts.md)、[gift](ck3-1.20.0.2-faction-gift.md)
+- [offline fixture-qualified formal response] [Current selected gift consumes stock faction danger](faction-selected-gift-stock-response-12004.md)：已有 `.4` 原生危险行接入真实 M5 source/dispatcher/Service；危险赠礼在和平建设比较中优先，watch/unavailable 沿用旧规则。新唯一 compound 四分支 GREEN；无新实机操作、实际赠礼或 M4 完成信用。
 - [Sway state](ck3-1.20.0.2-sway-state.md)、[private Sway/law transport](ck3-1.20.0.2-private-sway-law-transport.md)
 - [Law action mailbox](ck3-1.20.0.2-realm-law-action-mailbox.md)
 - [Feast terminal values](ck3-1.20.0.2-feast-outcome-values.md)、[durable lifecycle](ck3-1.20.0.2-feast-durable-lifecycle.md)
