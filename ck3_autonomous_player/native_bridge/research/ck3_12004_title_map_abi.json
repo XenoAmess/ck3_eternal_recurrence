@@ -1,0 +1,70 @@
+{
+  "schema": "xar.ck3_12004.title-map-abi.v1",
+  "game_version": "1.20.0.4",
+  "steam_build_id": "25734779",
+  "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "source_base": "c8f19a6a067ef8dd56926b8bc11d14b164045974",
+  "status": "research; actual4 finite native inputs closed and source authored; compiled FIRST and paused live NOT_RUN",
+  "capability": "game.command.center-map-on-landed-title-v1",
+  "mcp_alias": "ck3_center_map_on_landed_title_v1",
+  "semantic_step": "center-map-on-landed-title-v1",
+  "scope": "Existing explicit typed presentation only; generic execute-step rejection unchanged",
+  "software_reuse": "Adopted .3 reviewed .2 title lookup, camera progression, strict settled and serializer algorithms; independent actual4 namespace/profile, no old-SHA substitution",
+  "new_profile": {
+    "kTitleMapGameStateSlotRva": "0x5C68C50",
+    "kTitleMapLandedTitleStorageSlotRva": "0x5D1DAF8",
+    "kTitleMapLandedTitleFallbackSlotRva": "0x5D1DAE0",
+    "kTitleMapResolveLandedTitleByKeyRva": "0xA847A0",
+    "kTitleMapResolveTitleProvinceRva": "0x230F8E0",
+    "kTitleMapIngameIdlerRootSlotRva": "0x5C6A520",
+    "kTitleMapRuntimeDynamicCastRva": "0x4260E74",
+    "kTitleMapIdlerBaseTypeDescriptorRva": "0x5514438",
+    "kTitleMapIngameIdlerTypeDescriptorRva": "0x5514460",
+    "kTitleMapHandlerVtableRva": "0x44BA8A0",
+    "kTitleMapCameraVtableRva": "0x44BA698",
+    "kTitleMapComputeBoundsRva": "0x2311020",
+    "kTitleMapQueryHandlerModeRva": "0xAF2530",
+    "kTitleMapCenterCameraOnTitleRva": "0xAF3FB0",
+    "kTitleMapCanonicalizeCameraStateRva": "0x3846140",
+    "kTitleMapBucketCountRva": "0x5438C2C",
+    "kTitleMapBucketThresholdsSlotRva": "0x5438C20",
+    "kTitleMapHorizontalOffsetsSlotRva": "0x5438C38",
+    "kTitleMapZoomIndexesSlotRva": "0x5438C50",
+    "kTitleMapDegreesToRadiansRva": "0x49F61B0",
+    "kTitleMapHandlerCameraOffset": "0x670",
+    "kTitleMapCameraCurrentStateOffset": "0x710",
+    "kTitleMapCameraTargetStateOffset": "0x728",
+    "kTitleMapCameraZoomIndexOffset": "0x744",
+    "kTitleMapCameraTransientXOffset": "0x75C",
+    "kTitleMapCameraTransientZOffset": "0x760",
+    "kTitleMapCameraTargetWriteBlockedOffset": "0x777",
+    "kTitleMapCameraZoomTableOffset": "0x7B0",
+    "kTitleMapCameraZoomCountOffset": "0x7BC",
+    "kTitleMapCameraParam4TableOffset": "0x7C8",
+    "kTitleMapCameraParam4EnabledOffset": "0x7D4"
+  },
+  "finite_maps": [
+    "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\title-map-war-retention-review\\title-map\\map01\\FAMILY-MAP.json",
+    "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\title-map-war-retention-review\\title-map\\map02\\FAMILY-MAP.json"
+  ],
+  "reused_actual4_profiles": {
+    "title_province": "research/ck3_12004_prisoner_domain_abi.json: title_template_tier_consumer (0x230F900 -> 0x230F8E0)",
+    "idler_cast_rtti_handler": "docs/ck3-native-ai/generic-gui-default-path-migration-12004.md; COMMON-GUI-SOURCE-READY.json and Death/Faith exact role receipts",
+    "core_and_provinces": "Independent actual4 core/world sources and prisoner title-province receipt; no old image admission"
+  },
+  "source_capture_cost": {
+    "bounded_old_and_new_executable_bytes": 3040,
+    "bounded_read_calls": 16,
+    "whole_executable_reads": 0,
+    "hashes": 0,
+    "PE_reparse": 0,
+    "raw_pdata_reads": 0
+  },
+  "qualification": {
+    "compiled_first": "NOT_RUN",
+    "registered_first": "NOT_RUN",
+    "paused_live": "NOT_RUN",
+    "game_or_camera_command_sent": false
+  },
+  "root_only_integration": "Include header; add three .4 TUs; advertise existing exact token; admit title_map in actual4 typed matcher; select actual4 factories and serializer; register existing typed executor in free slot13 thirdenary"
+}
