@@ -62,3 +62,55 @@ registry were not called and are not newly missing migration ports.
 Root's necessary incremental build retains the existing528 headers and objects.
 Only this religion CPP and the separately owned central Bridge CPP need to be
 recompiled; the diagnostic candidate preserves the old public context ABI.
+
+## Actual R0055 stage and minimum cost-getter repair
+
+The new `managed-full-h9613-binding04/live-failed01/retry-failed-player-religion.json`
+was emitted by Root's minimized, paused Robert29829 run on the same original
+date53288256, public revision3/native2. Its compiled source is
+`9cb425ee432417551e8563824269daaa7c53fd9b`. The new diagnostic is:
+
+```text
+stage=mystical_communion_decision_terms;wait=1;reclaim=0;entered=1;completed=0;frame_stable=0;mailbox_failure_flags=512
+```
+
+The existing mailbox enums resolve wait1 to `executor_failed`, reclaim0 to
+`reclaimed`, and flag512 to `executor_exception`. Its independently retained
+diagnostic heartbeat records code3221225477 (`0xC0000005`), image`game`,
+RVA21432006 (`0x14706C6`). Enter succeeded, and the earlier base context and
+three preceding addon calls returned. Completion and Finish-frame comparison
+were not reached; their false fields do not establish a frame-drift failure.
+An earlier reader returning does not prove its domain was available.
+
+The already frozen complete84-byte named leaf proof is
+`C:/codex-ck3-background/packets/religion-addons-12004-migration-20261007/context-hostility-conversion/named-leaf05/leaf_14706D0-DETAIL.json`.
+It maps old entry`14706D0` to actual4 entry`14706B0`, with complete decoded
+span`[14706B0,1470704)`, equal normalized instructions and closed local flow.
+This is actual function-body evidence, not an assumed address delta.
+The actual getter initializes `RAX=definition+1488`, `R8=definition` and
+`RDX=definition+1DE8`, then scans embedded records. Its faulting instruction
+at entry+16h (`14706C6`) is `cmp dword ptr [rax+C0],0`.
+
+The production actual4 `DecisionBindings` template erroneously retained
+`14706D0`, entering this actual function at+20h and skipping its initialization.
+The minimum repair changes that single bound RVA to source-proven`14706B0`.
+Mystical communion, confession and vow-of-poverty reuse this same existing
+template/getter. No schema, DTO/header, cost values, legal predicates, frame
+comparison, callback order, mailbox ownership or OFF setting changes.
+
+```mermaid
+flowchart TD
+    A[Successful actual Enter] --> B[Base and earlier addon calls return]
+    B --> C[Mystical decision definition and root scope]
+    C --> X[Old literal14706D0 enters actual getter at20h]
+    X --> F[Observed AV at14706C6 / executor failed]
+    C --> R[Repair actual entry14706B0 from cached84B proof]
+    R --> Q[Existing cost evaluation and final predicates]
+    Q -. Root failed-path retry pending .-> D[Actual full Religion body]
+```
+
+This repair is **source implemented / NOTRUN**. It removes a concrete wrong
+native entrance; successful current Religion/base/addon observation still
+requires Root's incremental compile and one failed-query retry. Both original
+actual failures and the staged diagnostic response remain preserved. This work
+reads no new EXE code/metadata and executes no build, test, SDK or game query.
