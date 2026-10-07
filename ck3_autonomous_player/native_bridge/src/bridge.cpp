@@ -10542,6 +10542,7 @@ struct TypedQuery12002 {
   xar::ck3_12002::PendingCharacterInteractionContextRequestV1 pending_request{};
   std::int32_t event_instance_id = -1;
   xar::game::TitleMapNavigationCommandV1 title_command{};
+  std::string_view title_failure_stage{};
   std::uint64_t title_dispatch_ticket = 0;
   xar::game::RouteContactHorizonSnapshot route{};
   xar::game::ActualContactScopeSnapshot actual{};
@@ -10907,6 +10908,7 @@ bool ExecuteTypedQuery12002(
       if (actual4) {
         xar::ck3_12004::TitleMapNavigationCameraAccessV1 access{};
         access.title.context = envelope;
+        access.title.failure_stage = &query.title_failure_stage;
         access.title.capture_frame = &CaptureTypedFrame12002<xar::game::TitleMapNavigationFrameV1>;
         access.title.is_owning_thread = &xar::ck3_12002::IsQueryOwningThread;
         xar::ck3_12004::AdvanceTitleMapNavigationCommandV1(
@@ -12627,6 +12629,33 @@ std::string RunTypedQuery12002(
   if (!ParseTypedQuery12002(step, payload, query)) {
     return CommandResultFrame(request_id, step, false, "typed query request is malformed");
   }
+  const auto title_failure_frame = [&](std::string_view stage,
+                                        std::string_view error) {
+    auto response = CommandResultFrame(request_id, step, false, error);
+    if (query.kind != QueryKind12002::title_map ||
+        !xar::game::IsCk3_12004Descriptor(game.descriptor())) return response;
+    response.pop_back();
+    response += ",\"typed_query_failure_v1\":{\"query_type\":\"title_map\",\"stage\":";
+    AppendJsonString(response, stage);
+    response += ",\"request_native_revision\":" + std::to_string(query.title_command.request.expected_snapshot_revision);
+    response += ",\"envelope_native_revision\":" + std::to_string(query.envelope.expected_snapshot_revision);
+    response += ",\"worker_native_revision\":" + std::to_string(state.state_revision);
+    response += ",\"binding_native_revision\":" + std::to_string(query.title_command.binding.snapshot_revision);
+    response += ",\"initialized\":";
+    response += query.title_command.initialized ? "true" : "false";
+    response += ",\"dispatched\":";
+    response += query.title_command.dispatched ? "true" : "false";
+    response += ",\"dispatch_ticket_sequence\":" + std::to_string(query.title_dispatch_ticket);
+    response += ",\"status_raw\":" + std::to_string(static_cast<std::uint32_t>(query.title_command.status));
+    if (stage == "preflight_native_snapshot_changed" && state.previous_snapshot.has_value()) {
+      response += ",\"changed_snapshot_fields\":" +
+          xar::ck3_11906::TitleMapNavigationSnapshotDiffNamesV1(
+              xar::ck3_11906::TitleMapNavigationSnapshotDiffMaskV1(
+                  *state.previous_snapshot, query.envelope.expected_snapshot));
+    }
+    response += "}}";
+    return response;
+  };
   if (query.kind == QueryKind12002::loaded_features &&
       xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     query.envelope.snapshot_comparison =
@@ -12644,11 +12673,19 @@ std::string RunTypedQuery12002(
     return CommandResultFrame(request_id, step, false,
                               "projected contact requires the exact 1.20.0.3 or 1.20.0.4 adapter");
   }
-  if (query.envelope.expected_snapshot_revision != state.state_revision ||
-      state.state_revision == 0 || !state.previous_snapshot.has_value() ||
-      !xar::game::ReadSnapshot(game, query.envelope.expected_snapshot) ||
-      query.envelope.expected_snapshot != *state.previous_snapshot) {
-    return CommandResultFrame(request_id, step, false, "state_changed");
+  const bool revision_matches = query.envelope.expected_snapshot_revision == state.state_revision;
+  const bool worker_ready = state.state_revision != 0;
+  const bool previous_present = state.previous_snapshot.has_value();
+  const bool observed_read = revision_matches && worker_ready && previous_present &&
+      xar::game::ReadSnapshot(game, query.envelope.expected_snapshot);
+  const bool observed_equal = observed_read && query.envelope.expected_snapshot == *state.previous_snapshot;
+  if (!observed_equal) {
+    const auto stage = !revision_matches ? "preflight_revision_changed"
+        : !worker_ready ? "preflight_worker_revision_zero"
+        : !previous_present ? "preflight_previous_snapshot_missing"
+        : !observed_read ? "preflight_native_snapshot_read_failed"
+        : "preflight_native_snapshot_changed";
+    return title_failure_frame(stage, "state_changed");
   }
   const auto &snapshot = query.envelope.expected_snapshot;
   if (!snapshot.paused) {
@@ -12831,7 +12868,8 @@ std::string RunTypedQuery12002(
     const auto status = query.title_command.status;
     if (status != xar::game::TitleMapNavigationCommandStatusV1::centered &&
         status != xar::game::TitleMapNavigationCommandStatusV1::already_centered) {
-      return CommandResultFrame(request_id, step, false,
+      return title_failure_frame(query.title_failure_stage.empty()
+          ? "title_status_without_stage" : query.title_failure_stage,
           xar::ck3_12002::TitleMapNavigationCommandRejectionCodeV1(status));
     }
     const auto title_payload = xar::game::IsCk3_12004Descriptor(game.descriptor())
