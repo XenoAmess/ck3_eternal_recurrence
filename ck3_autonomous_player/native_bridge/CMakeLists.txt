@@ -9361,3 +9361,11 @@ include(cmake/source_derived_next_daily_supply_frame_whole_12004.cmake)
 include(cmake/first_heir_fertility_floor_12004.cmake)
 include(cmake/source_derived_next_full_cdate64_whole_12004.cmake)
 include(cmake/phase_calendar_whole_fixture.cmake)
+
+if(TARGET xar_ck3_12002_runtime)
+  target_sources(xar_ck3_12002_runtime PRIVATE
+    src/crown_authority_cooldown_observer_12004.cpp)
+endif()
+if(BUILD_TESTING AND WIN32)
+  add_subdirectory(tests/crown_authority_cooldown_whole_fixture_12004)
+endif()

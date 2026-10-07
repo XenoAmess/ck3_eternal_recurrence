@@ -68,13 +68,83 @@ def _valid_succession_profile(row: Mapping[str, object]) -> bool:
     )
 
 
+COOLDOWN_FIELD = "crown_authority_cooldown"
+COOLDOWN_KEYS = {
+    "read_available", "present", "timed", "expiry_raw", "current_clock_raw",
+    "remaining_raw", "retry_date_raw", "expiry_type", "remaining_unit",
+}
+COOLDOWN_EXPIRY_TYPE = "signed32_scalar_clock_counter"
+COOLDOWN_REMAINING_UNIT = "scalar_clock_step_calendar_unqualified"
+
+
+def _signed_integer(value: object, bits: int) -> bool:
+    return type(value) is int and -(1 << (bits - 1)) <= value < (1 << (bits - 1))
+
+
+def normalize_crown_authority_cooldown_raw_v1(
+    value: object, *, date_raw: int,
+) -> dict[str, object]:
+    """Validate and retain actual raw timing without inventing calendar units."""
+    if not isinstance(value, dict) or set(value) != COOLDOWN_KEYS:
+        raise ValueError("crown cooldown raw object keys differ")
+    if (type(value["read_available"]) is not bool
+            or value["expiry_type"] != COOLDOWN_EXPIRY_TYPE
+            or value["remaining_unit"] != COOLDOWN_REMAINING_UNIT):
+        raise ValueError("crown cooldown raw type or unit differs")
+    nullable = ("present", "timed", "expiry_raw", "current_clock_raw",
+                "remaining_raw", "retry_date_raw")
+    if value["read_available"] is False:
+        if any(value[key] is not None for key in nullable):
+            raise ValueError("unavailable crown cooldown must retain null inputs")
+        return dict(value)
+    if (type(value["present"]) is not bool or type(value["timed"]) is not bool
+            or not _signed_integer(value["current_clock_raw"], 32)
+            or not _signed_integer(value["remaining_raw"], 32)):
+        raise ValueError("available crown cooldown requires native bool/int32 inputs")
+    if value["present"] is False:
+        if (value["timed"] is not False or value["expiry_raw"] is not None
+                or value["remaining_raw"] != -1
+                or not _signed_integer(value["retry_date_raw"], 64)
+                or value["retry_date_raw"] != date_raw):
+            raise ValueError("absent crown cooldown native result differs")
+        return dict(value)
+    expiry = value["expiry_raw"]
+    if not _signed_integer(expiry, 32) or value["timed"] != (expiry >= 0):
+        raise ValueError("present crown cooldown native expiry classification differs")
+    if value["retry_date_raw"] is not None:
+        raise ValueError("present raw cooldown has no qualified calendar retry date")
+    if value["timed"] is False:
+        if value["remaining_raw"] != -1:
+            raise ValueError("untimed crown cooldown native sentinel differs")
+    else:
+        native_remaining = (expiry - value["current_clock_raw"]) & 0xFFFFFFFF
+        if native_remaining >= 0x80000000:
+            native_remaining -= 0x100000000
+        if value["remaining_raw"] != native_remaining:
+            raise ValueError("timed crown cooldown native signed32 remaining differs")
+    return dict(value)
+
+
 def _valid_payload(value: object, *, revision: int, date_raw: int,
                    actor_id: int, exact_ck3_build: str) -> bool:
-    if not isinstance(value, dict) or set(value) != {
+    if not isinstance(value, dict):
+        return False
+    payload_keys = {
         "schema", "snapshot_revision", "date_raw", "actor_character_id",
         "cost_scale", "cost_slots", "groups",
-    }:
+    }
+    has_cooldown = COOLDOWN_FIELD in value
+    if set(value) != (payload_keys | {COOLDOWN_FIELD} if has_cooldown else payload_keys):
         return False
+    if has_cooldown:
+        if exact_ck3_build != "1.20.0.4":
+            return False
+        try:
+            normalize_crown_authority_cooldown_raw_v1(
+                value[COOLDOWN_FIELD], date_raw=date_raw,
+            )
+        except ValueError:
+            return False
     if (value["schema"] != SCHEMA or value["snapshot_revision"] != revision
             or value["date_raw"] != date_raw
             or value["actor_character_id"] != actor_id

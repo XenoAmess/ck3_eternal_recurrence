@@ -75,6 +75,15 @@ namespace {
 }
 }
 
+#if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
+std::string SerializeRealmLawReadbackCommandResult12002(
+    std::string_view request_id, std::string_view native_readback,
+    std::uint64_t revision) {
+  return ReadOnlyFrame(request_id, kRealmLawPausedPrivateQueryStep12002,
+      "realm_law_final_terms", native_readback, revision);
+}
+#endif
+
 void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
   out.council = &ExecuteCouncilMailbox12002;
@@ -910,7 +919,7 @@ bool HandleNonwarPrivate12002(
       std::string dto;
       if (!ReadRealmLawOnApplicationMain12002(native, mailbox, published,
                                             revision, dto, failure)) return false;
-      serialized = ReadOnlyFrame(request_id, step, "realm_law_final_terms", dto, revision);
+      serialized = SerializeRealmLawReadbackCommandResult12002(request_id, dto, revision);
       return true;
     }
 #endif

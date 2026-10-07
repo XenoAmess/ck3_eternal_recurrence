@@ -49,6 +49,15 @@ void AppendString(std::string &out, std::string_view value) {
   }
   out += '"';
 }
+void AppendOptionalBool(std::string &out, const std::optional<bool> &value) {
+  if (!value.has_value()) out += "null";
+  else out += *value ? "true" : "false";
+}
+template <typename T>
+void AppendOptionalNumber(std::string &out, const std::optional<T> &value) {
+  if (value.has_value()) out += std::to_string(*value);
+  else out += "null";
+}
 std::string_view Key(const private_law::RealmLawActiveKey &key) noexcept {
   return {key.bytes.data(), key.size};
 }
@@ -69,7 +78,8 @@ bool CaptureRealmLawReadback12002(
     std::uintptr_t module_base, const RealmLawReadbackFrame12002 &frame,
     const private_law::RealmLawFinalTerms12002Operations &operations,
     RealmLawReadback12002 &output,
-    std::string_view actual_executable_sha256) noexcept {
+    std::string_view actual_executable_sha256,
+    const ck3_12004::crown_cooldown::Bindings *cooldown_bindings_override) noexcept {
   try {
     output = {};
     output.frame = frame;
@@ -92,6 +102,17 @@ bool CaptureRealmLawReadback12002(
         output.failure += private_law::RealmLawCandidateCollectionFailureName(output.collection.failure);
       }
       return false;
+    }
+    output.crown_authority_cooldown_observed =
+        actual_executable_sha256 == ck3_12004::kExecutableSha256;
+    if (output.crown_authority_cooldown_observed) {
+      const auto bindings = cooldown_bindings_override != nullptr
+          ? *cooldown_bindings_override
+          : ck3_12004::crown_cooldown::BindImage(module_base,
+                actual_executable_sha256);
+      (void)ck3_12004::crown_cooldown::Read(bindings,
+          frame.actor_character_id, frame.date_raw,
+          output.crown_authority_cooldown);
     }
     output.available = true;
     return true;
@@ -138,6 +159,21 @@ std::string SerializeRealmLawReadback12002(const RealmLawReadback12002 &readback
     }
     out += "]}";
   }
-  return out + "]}";
+  out += "]";
+  if (readback.crown_authority_cooldown_observed) {
+    const auto &value = readback.crown_authority_cooldown;
+    out += ",\"crown_authority_cooldown\":{\"read_available\":";
+    out += value.read_available ? "true" : "false";
+    out += ",\"present\":"; AppendOptionalBool(out, value.present);
+    out += ",\"timed\":"; AppendOptionalBool(out, value.timed);
+    out += ",\"expiry_raw\":"; AppendOptionalNumber(out, value.expiry_raw);
+    out += ",\"current_clock_raw\":"; AppendOptionalNumber(out, value.current_clock_raw);
+    out += ",\"remaining_raw\":"; AppendOptionalNumber(out, value.remaining_raw);
+    out += ",\"retry_date_raw\":"; AppendOptionalNumber(out, value.retry_date_raw);
+    out += ",\"expiry_type\":"; AppendString(out, value.expiry_type);
+    out += ",\"remaining_unit\":"; AppendString(out, value.remaining_unit);
+    out += "}";
+  }
+  return out + "}";
 }
 } // namespace xar::ck3_12002

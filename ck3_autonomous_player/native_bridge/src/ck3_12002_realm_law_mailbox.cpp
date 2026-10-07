@@ -9,13 +9,6 @@
 
 namespace xar::ck3_12002 {
 namespace {
-struct Query {
-  QueryMailboxEnvelope envelope{};
-  CoreBindings bindings{};
-  std::uintptr_t module_base = 0;
-  std::string_view actual_executable_sha256{};
-  RealmLawReadback12002 readback{};
-};
 bool ReadMemory(void *, std::uintptr_t address, void *output, std::size_t size) noexcept {
   SIZE_T read = 0;
   return address != 0 && output != nullptr && ReadProcessMemory(
@@ -29,29 +22,35 @@ bool ExecuteRealmLawPausedPrivateQuery12002(
   auto *envelope = static_cast<QueryMailboxEnvelope *>(opaque);
   if (envelope == nullptr || envelope->typed_context == nullptr ||
       !EnterQueryMailbox(*envelope, stamp, &ExecuteRealmLawPausedPrivateQuery12002)) return true;
-  auto &query = *static_cast<Query *>(envelope->typed_context);
+  auto &query = *static_cast<RealmLawReadbackQuery12002 *>(envelope->typed_context);
   private_law::RealmLawActiveCollectionAccess access{};
   const bool actual_12004 =
       query.actual_executable_sha256 == ck3_12004::kExecutableSha256;
-  access.admitted_executable_sha256 = actual_12004
-      ? ck3_12004::kExecutableSha256
-      : private_law::kRealmLawActiveCollectionExeSha25612002;
-  access.played_character_address = reinterpret_cast<std::uintptr_t>(
-      actual_12004
-          ? ck3_12004::ResolveCoreCharacter(
-                query.bindings, envelope->expected_snapshot.played_character_id)
-          : ResolveCoreCharacter(
-                query.bindings, envelope->expected_snapshot.played_character_id));
-  access.read_memory = &ReadMemory;
+  if (query.collection_access_override != nullptr) {
+    access = *query.collection_access_override;
+  } else {
+    access.admitted_executable_sha256 = actual_12004
+        ? ck3_12004::kExecutableSha256
+        : private_law::kRealmLawActiveCollectionExeSha25612002;
+    access.played_character_address = reinterpret_cast<std::uintptr_t>(
+        actual_12004
+            ? ck3_12004::ResolveCoreCharacter(
+                  query.bindings, envelope->expected_snapshot.played_character_id)
+            : ResolveCoreCharacter(
+                  query.bindings, envelope->expected_snapshot.played_character_id));
+    access.read_memory = &ReadMemory;
+  }
   const RealmLawReadbackFrame12002 frame{envelope->expected_snapshot_revision,
       envelope->expected_snapshot.date_raw, envelope->expected_snapshot.played_character_id};
   (void)CaptureRealmLawReadback12002(access, query.module_base, frame,
-      actual_12004
+      query.final_operations_override != nullptr
+          ? *query.final_operations_override
+          : actual_12004
           ? ck3_12004::private_law::BindRealmLawFinalTermsImage12004(
                 query.module_base, query.actual_executable_sha256)
           : private_law::BindRealmLawFinalTermsImage12002(query.module_base,
                 private_law::kRealmLawFinalTermsExecutableSha256), query.readback,
-      query.actual_executable_sha256);
+      query.actual_executable_sha256, query.cooldown_bindings_override);
   (void)FinishQueryMailbox(*envelope);
   return true;
 }
@@ -72,7 +71,7 @@ bool ReadRealmLawOnApplicationMain12002(
     failure = "native_law_paused_actor_unavailable"; return false;
   }
   try {
-    Query query{};
+    RealmLawReadbackQuery12002 query{};
     query.actual_executable_sha256 = adapter.descriptor().executable_sha256;
     query.envelope.game = &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
