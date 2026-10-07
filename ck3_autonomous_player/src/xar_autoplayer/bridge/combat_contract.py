@@ -29,6 +29,10 @@ from .phase_event_calendar_contract import (
     PHASE_EVENT_CALENDAR_LEAF,
     normalize_phase_event_calendar_observation_v1,
 )
+from .phase_event_role_compatibility_contract import (
+    PHASE_EVENT_ROLE_COMPATIBILITY_LEAF,
+    normalize_phase_event_role_compatibility_v1,
+)
 
 
 QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY = (
@@ -472,7 +476,8 @@ def normalize_combat_simulation_inputs(
     must keep ``input_observation_ready`` false.  This function never changes
     the separate Monte Carlo gate.
     """
-    optional_keys = ({"contextual_advantage", PHASE_EVENT_CALENDAR_LEAF} & set(value)
+    optional_keys = ({"contextual_advantage", PHASE_EVENT_CALENDAR_LEAF,
+                      PHASE_EVENT_ROLE_COMPATIBILITY_LEAF} & set(value)
                      if isinstance(value, dict) else set())
     root = _exact_object(
         value,
@@ -614,6 +619,10 @@ def normalize_combat_simulation_inputs(
     if PHASE_EVENT_CALENDAR_LEAF in root:
         normalized[PHASE_EVENT_CALENDAR_LEAF] = normalize_phase_event_calendar_observation_v1(
             root[PHASE_EVENT_CALENDAR_LEAF], armies=normalized_armies,
+        )
+    if PHASE_EVENT_ROLE_COMPATIBILITY_LEAF in root:
+        normalized[PHASE_EVENT_ROLE_COMPATIBILITY_LEAF] = normalize_phase_event_role_compatibility_v1(
+            root[PHASE_EVENT_ROLE_COMPATIBILITY_LEAF], armies=normalized_armies,
         )
     # Return detached canonical values so a transport fixture cannot mutate a
     # query cache after validation.
