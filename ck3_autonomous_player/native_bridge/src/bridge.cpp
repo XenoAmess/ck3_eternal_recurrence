@@ -10793,6 +10793,13 @@ bool ExecuteTypedQuery12002(
             bindings, snapshot, query.reinforcement_request, query.reinforcement);
         query.typed_result = true;
         query.reinforcement.snapshot_revision = envelope->expected_snapshot_revision;
+        if (query.reinforcement.contact_projection &&
+            query.reinforcement.contact_projection->arrival_admission) {
+          auto &admission =
+              *query.reinforcement.contact_projection->arrival_admission;
+          admission.snapshot_revision = envelope->expected_snapshot_revision;
+          admission.observed_date_raw = snapshot.date_raw;
+        }
       } else {
         xar::ck3_12002::ReadBattleTerminalTransitionV1(
             bindings, snapshot, query.terminal_request, query.terminal);
