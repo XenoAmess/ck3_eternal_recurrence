@@ -1,6 +1,8 @@
-"""Exact .3 native rule-window observation and stock-method ACK contracts."""
+"""Exact .3/.4 native rule-window observation and stock-method ACK contracts."""
 from collections.abc import Mapping
 import re
+
+from xar_autoplayer.bridge.version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 QUERY_FRONTEND_GAME_RULES_WINDOW_V1_STEP = "query-frontend-game-rules-window-v1"
 QUERY_FRONTEND_GAME_RULES_WINDOW_V1_CAPABILITY = "game.command." + QUERY_FRONTEND_GAME_RULES_WINDOW_V1_STEP
@@ -23,8 +25,11 @@ def _common(raw: object, schema: str, source: str, read_only: bool) -> dict[str,
     if not isinstance(raw, Mapping):
         raise ValueError("native game rules projection must be an object")
     result = dict(raw)
+    build = require_exact_native_build(result.get("game_version"), result.get("executable_sha256"))
+    if build not in (CK3_12003, CK3_12004):
+        raise ValueError("native frontend game rules build is not admitted")
     for key, expected in {"schema": schema, "schema_version": 1,
-            "game_version": "1.20.0.3", "executable_sha256": EXE_SHA256,
+            "game_version": build.game_version, "executable_sha256": build.executable_sha256,
             "source": source, "read_only": read_only, "backend_id": "native-headless",
             "uses_ocr": False, "uses_mouse": False, "uses_keyboard": False,
             "applied_settings_proven": False}.items():

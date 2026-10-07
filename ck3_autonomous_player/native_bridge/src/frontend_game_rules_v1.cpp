@@ -1,4 +1,5 @@
 #include "xar_bridge/frontend_game_rules_v1.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 
 #include <windows.h>
 
@@ -11,17 +12,58 @@
 namespace xar::ck3_11906 {
 namespace {
 
-// Exact 1.20.0.3 94B55397... evidence: AccessGameRules 0xA98990,
-// AccessNamedGameRule 0x21DB470, GuiGameRule.GetSetting 0x21DE790,
-// model population 0x21DBF60, setting ctor 0x36658D0, rule ctor 0x3666120.
+// The .3 profile retains its original source proof. The .4 profile is from
+// finite named bodies/RIP operands and COL/type-name chains in local build
+// 25734779 (finite-code-source-map-01, finite-rtti-source-map-02 and field proof).
+// Entity layouts are equal by complete named body comparison, not RVA delta.
 constexpr std::uintptr_t kImageSize = 0x61C5000;
-constexpr std::uintptr_t kApplicationVtable = 0x449BDA8;
-constexpr std::uintptr_t kRulesVtable = 0x46B79B0;
-constexpr std::uintptr_t kRulesType = 0x59929F8;
-constexpr std::uintptr_t kRuleVtable = 0x491BE58;
-constexpr std::uintptr_t kRuleType = 0x560C140;
-constexpr std::uintptr_t kSettingVtable = 0x491C3D8;
-constexpr std::uintptr_t kSettingType = 0x55C96F8;
+struct RulesAbiProfile {
+  std::uintptr_t application_vtable, rules_vtable, rules_type;
+  std::uintptr_t rule_vtable, rule_type, setting_vtable, setting_type;
+  std::uintptr_t instance_vtable, instance_type, holder_vtable, holder_type;
+  std::uintptr_t getter, holder_slot, host_slot, game_state_slot;
+  std::uintptr_t next, apply, hide;
+};
+constexpr RulesAbiProfile kRules12003{
+    0x449BDA8, 0x46B79B0, 0x59929F8,
+    0x491BE58, 0x560C140, 0x491C3D8, 0x55C96F8,
+    0x491BFF8, 0x5B964B0, 0x46BF988, 0x59A4770,
+    0x27F82F0, 0x5CB3D78, 0x5CC14D0, 0x5C68C50,
+    0x21DD6F0, 0x21DBD20, 0xBE9CF0};
+constexpr RulesAbiProfile kRules12004{
+    0x449BDB8, 0x46B79F8, 0x59929C8,
+    0x491BE68, 0x560C140, 0x491C3E8, 0x55C96F8,
+    0x491C008, 0x5B96480, 0x46BF998, 0x59A4740,
+    0x27F82D0, 0x5CB3D78, 0x5CC14D0, 0x5C68C50,
+    0x21DD6D0, 0x21DBD00, 0xBE9CF0};
+
+const RulesAbiProfile *RulesProfile(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment) noexcept {
+  if (!environment.exact_build_admitted) return nullptr;
+  if (environment.gui_abi_revision == GuiAbiRevisionV1::crozier12003)
+    return &kRules12003;
+  if (environment.gui_abi_revision == GuiAbiRevisionV1::crozier12004 &&
+      environment.executable_sha256 == ck3_12004::kExecutableSha256)
+    return &kRules12004;
+  return nullptr;
+}
+
+const char *UnverifiedEnvironmentReason(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment) noexcept {
+  return environment.gui_abi_revision == GuiAbiRevisionV1::crozier12004
+      ? "exact_12004_game_rules_environment_unverified"
+      : "exact_12003_game_rules_environment_unverified";
+}
+
+std::string RulesBuildFields(GuiAbiRevisionV1 revision) {
+  const bool actual4 = revision == GuiAbiRevisionV1::crozier12004;
+  return std::string("\"game_version\":\"") +
+      (actual4 ? "1.20.0.4" : "1.20.0.3") +
+      "\",\"executable_sha256\":\"" +
+      (actual4 ? ck3_12004::kExecutableSha256 :
+       "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") + "\",";
+}
+
 constexpr std::uint32_t kDatabaseObjectMarker = 0x4744624F;
 constexpr std::uint32_t kMaximumRules = 4096;
 constexpr std::size_t kMaximumKeyBytes = 96;
@@ -116,13 +158,14 @@ bool ReadPass(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
               const ZhongguoScoreboardAccessV1 &access, const void *root,
               NativePass &pass, std::string &reason) {
   const auto module = environment.module_base;
+  const auto &profile = *RulesProfile(environment);
   const void *application_vtable = nullptr;
   if (!ReadAt(access, environment.gui_global_slot, 0, pass.application) ||
       !ReadAt(access, pass.application, 0, application_vtable) ||
       reinterpret_cast<std::uintptr_t>(application_vtable) !=
-          module + kApplicationVtable ||
+          module + profile.application_vtable ||
       !ReadAt(access, pass.application, 0xA38, pass.owner) ||
-      !IsTypedObject(access, module, pass.owner, kRulesVtable, kRulesType)) {
+      !IsTypedObject(access, module, pass.owner, profile.rules_vtable, profile.rules_type)) {
     reason = "current_game_rules_owner_unverified";
     return false;
   }
@@ -146,8 +189,8 @@ bool ReadPass(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     FrontendGameRuleSelectionV1 value;
     if (!ReadAt(access, pass.records, static_cast<std::size_t>(index) * 16,
                 pair) ||
-        !IsTypedObject(access, module, pair[0], kRuleVtable, kRuleType) ||
-        !IsTypedObject(access, module, pair[1], kSettingVtable, kSettingType) ||
+        !IsTypedObject(access, module, pair[0], profile.rule_vtable, profile.rule_type) ||
+        !IsTypedObject(access, module, pair[1], profile.setting_vtable, profile.setting_type) ||
         !ReadAt(access, pair[0], 0x38, rule_marker) ||
         !ReadAt(access, pair[1], 0x38, setting_marker) ||
         rule_marker != kDatabaseObjectMarker ||
@@ -189,21 +232,19 @@ struct ControlPass {
 
 bool ExactEnvironment(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
                       const void *root) noexcept {
-  return environment.exact_build_admitted && environment.module_base != 0 &&
-         environment.gui_abi_revision == GuiAbiRevisionV1::crozier12003 &&
-         reinterpret_cast<std::uintptr_t>(environment.gui_global_slot) ==
-             environment.module_base + kCrozierGuiGlobalSlotRva && root;
+  return FrontendGameRulesEnvironmentAdmittedV1(environment) && root;
 }
 
 bool ReadControlPass(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
                      const ZhongguoScoreboardAccessV1 &access, const void *root,
                      ControlPass &pass, std::string &reason) {
   const auto module = environment.module_base;
+  const auto &profile = *RulesProfile(environment);
   if (!ReadPass(environment, access, root, pass.model, reason)) return false;
   if (!ReadAt(access, root, kZhongguoWidgetHiddenFlagsOffset, pass.root_flags) ||
-      !ReadBytes(access, reinterpret_cast<const void *>(module + 0x5CC14D0),
+      !ReadBytes(access, reinterpret_cast<const void *>(module + profile.host_slot),
                  &pass.host_flags, sizeof(pass.host_flags)) ||
-      !ReadBytes(access, reinterpret_cast<const void *>(module + 0x5C68C50),
+      !ReadBytes(access, reinterpret_cast<const void *>(module + profile.game_state_slot),
                  &pass.game_state, sizeof(pass.game_state)) ||
       (pass.game_state && !ReadAt(access, pass.game_state, 0xC3,
                                  pass.started_flag))) {
@@ -217,7 +258,7 @@ bool ReadStableControl(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
                        const ZhongguoScoreboardAccessV1 &access, const void *root,
                        ControlPass &pass, std::string &reason) {
   if (!ExactEnvironment(environment, root)) {
-    reason = "exact_12003_game_rules_environment_unverified"; return false;
+    reason = UnverifiedEnvironmentReason(environment); return false;
   }
   ControlPass before{};
   if (!ReadControlPass(environment, access, root, before, reason) ||
@@ -253,6 +294,7 @@ struct ChoicePass {
 bool ReadChoices(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
                  const ZhongguoScoreboardAccessV1 &access, const void *rule,
                  ChoicePass &choices, std::string &reason) {
+  const auto &profile = *RulesProfile(environment);
   if (!ReadAt(access, rule, 0x40, choices.data) ||
       !ReadAt(access, rule, 0x48, choices.capacity) ||
       !ReadAt(access, rule, 0x4C, choices.count) ||
@@ -266,7 +308,7 @@ bool ReadChoices(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     std::string key;
     if (!ReadAt(access, choices.data, static_cast<std::size_t>(index) * 8, setting) ||
         !IsTypedObject(access, environment.module_base, setting,
-                       kSettingVtable, kSettingType) ||
+                       profile.setting_vtable, profile.setting_type) ||
         !ReadAt(access, setting, 0x38, marker) || marker != kDatabaseObjectMarker ||
         !ReadAt(access, setting, 0x40, parent) || parent != rule ||
         !ReadKey(access, setting, key)) {
@@ -366,17 +408,18 @@ bool CallsAdmitted(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
 
 // Leaf SEH wrappers contain no C++ objects requiring unwinding. Stock bound
 // callbacks invoke exactly these methods with their real record/controller.
-bool CallStockRuleMethod(std::uintptr_t module, StockRuleCall kind,
+bool CallStockRuleMethod(std::uintptr_t module, const RulesAbiProfile &profile,
+                         StockRuleCall kind,
                          void *target) noexcept {
 #if defined(_MSC_VER)
   __try {
-    const auto rva = kind == StockRuleCall::next ? 0x21DD6F0u :
-                     kind == StockRuleCall::apply ? 0x21DBD20u : 0xBE9CF0u;
+    const auto rva = kind == StockRuleCall::next ? profile.next :
+                     kind == StockRuleCall::apply ? profile.apply : profile.hide;
     const auto method = reinterpret_cast<void (__fastcall *)(void *)>(module+rva);
     method(target); return true;
   } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
 #else
-  (void)module; (void)kind; (void)target; return false;
+  (void)module; (void)profile; (void)kind; (void)target; return false;
 #endif
 }
 
@@ -388,7 +431,7 @@ bool InvokeRuleMethod(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
                     kind == StockRuleCall::apply ? calls.apply : calls.hide;
     return fn && fn(calls.context, const_cast<void *>(target));
   }
-  return CallStockRuleMethod(environment.module_base, kind,
+  return CallStockRuleMethod(environment.module_base, *RulesProfile(environment), kind,
                              const_cast<void *>(target));
 }
 
@@ -411,22 +454,23 @@ bool ReadAppliedPass(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
                      const ZhongguoScoreboardAccessV1 &access,
                      AppliedPass &pass, std::string &reason) {
   const auto module = environment.module_base;
+  const auto &profile = *RulesProfile(environment);
   const void *application_vtable = nullptr;
   if (!ReadAt(access, environment.gui_global_slot, 0, pass.application) ||
       !ReadAt(access, pass.application, 0, application_vtable) ||
-      reinterpret_cast<std::uintptr_t>(application_vtable) != module+kApplicationVtable ||
-      !ReadBytes(access, reinterpret_cast<const void *>(module+0x5CB3D78),
+      reinterpret_cast<std::uintptr_t>(application_vtable) != module+profile.application_vtable ||
+      !ReadBytes(access, reinterpret_cast<const void *>(module+profile.holder_slot),
                  &pass.holder, sizeof(pass.holder)) ||
-      !IsTypedObject(access, module, pass.holder, 0x46BF988, 0x59A4770) ||
+      !IsTypedObject(access, module, pass.holder, profile.holder_vtable, profile.holder_type) ||
       !ReadAt(access, pass.holder, 8, pass.getter) ||
-      reinterpret_cast<std::uintptr_t>(pass.getter) != module+0x27F82F0 ||
-      !ReadBytes(access, reinterpret_cast<const void *>(module+0x5C68C50),
+      reinterpret_cast<std::uintptr_t>(pass.getter) != module+profile.getter ||
+      !ReadBytes(access, reinterpret_cast<const void *>(module+profile.game_state_slot),
                  &pass.game_state, sizeof(pass.game_state))) {
     reason = "applied_game_rules_selection_service_unverified"; return false;
   }
   if (!(pass.game_state ? ReadAt(access, pass.game_state, 0xF0, pass.instance)
                         : ReadAt(access, pass.application, 0x268, pass.instance)) ||
-      !IsTypedObject(access, module, pass.instance, 0x491BFF8, 0x5B964B0)) {
+      !IsTypedObject(access, module, pass.instance, profile.instance_vtable, profile.instance_type)) {
     reason = "applied_game_rule_instance_unverified"; return false;
   }
   if (!ReadAt(access, pass.instance, 8, pass.data) ||
@@ -441,10 +485,10 @@ bool ReadAppliedPass(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     std::uint32_t setting_marker = 0, rule_marker = 0;
     FrontendGameRuleSelectionV1 value;
     if (!ReadAt(access, pass.data, static_cast<std::size_t>(i)*8, setting) ||
-        !IsTypedObject(access, module, setting, kSettingVtable, kSettingType) ||
+        !IsTypedObject(access, module, setting, profile.setting_vtable, profile.setting_type) ||
         !ReadAt(access, setting, 0x38, setting_marker) || setting_marker != kDatabaseObjectMarker ||
         !ReadAt(access, setting, 0x40, rule) ||
-        !IsTypedObject(access, module, rule, kRuleVtable, kRuleType) ||
+        !IsTypedObject(access, module, rule, profile.rule_vtable, profile.rule_type) ||
         !ReadAt(access, rule, 0x38, rule_marker) || rule_marker != kDatabaseObjectMarker ||
         !ReadKey(access, rule, value.rule_key) ||
         !ReadKey(access, setting, value.selected_setting_key)) {
@@ -464,7 +508,14 @@ bool ReadAppliedPass(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
   return true;
 }
 
-} // namespace
+ } // namespace
+
+bool FrontendGameRulesEnvironmentAdmittedV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment) noexcept {
+  return RulesProfile(environment) && environment.module_base != 0 &&
+      reinterpret_cast<std::uintptr_t>(environment.gui_global_slot) ==
+          environment.module_base + kCrozierGuiGlobalSlotRva;
+}
 
 bool ProbeFrontendGameRulesV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
@@ -472,12 +523,8 @@ bool ProbeFrontendGameRulesV1(
     FrontendGameRulesObservationV1 &output) noexcept {
   output = {};
   try {
-    if (!environment.exact_build_admitted || environment.module_base == 0 ||
-        environment.gui_abi_revision != GuiAbiRevisionV1::crozier12003 ||
-        reinterpret_cast<std::uintptr_t>(environment.gui_global_slot) !=
-            environment.module_base + kCrozierGuiGlobalSlotRva ||
-        !game_rules_root) {
-      output.unavailable_reason = "exact_12003_game_rules_environment_unverified";
+    if (!FrontendGameRulesEnvironmentAdmittedV1(environment) || !game_rules_root) {
+      output.unavailable_reason = UnverifiedEnvironmentReason(environment);
       return true;
     }
     NativePass before{}, after{};
@@ -504,15 +551,14 @@ bool ProbeFrontendGameRulesV1(
 }
 
 std::string SerializeFrontendGameRulesV1(
-    const FrontendGameRulesObservationV1 &observation) {
+    const FrontendGameRulesObservationV1 &observation, GuiAbiRevisionV1 revision) {
   // All strings originate from checked script-key bytes or fixed provider
   // reasons; no addresses or caller strings cross the public result boundary.
   std::string result = "{\"schema\":\"frontend_game_rule_selections_v1\","
       "\"schema_version\":1,\"read_only\":true,\"uses_ocr\":false,"
       "\"uses_mouse\":false,\"uses_keyboard\":false,"
       "\"applied_settings_proven\":false,"
-      "\"game_version\":\"1.20.0.3\",\"executable_sha256\":"
-      "\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\","
+       + RulesBuildFields(revision) +
       "\"source\":\"CJominiGameRulesGui.current_selections\",\"ready\":";
   result += observation.ready ? "true" : "false";
   result += ",\"unavailable_reason\":\"";
@@ -671,11 +717,10 @@ bool ApplyAndHideFrontendGameRulesV1(
   }
 }
 
-std::string SerializeFrontendGameRulesControlV1(const FrontendGameRulesControlV1 &o) {
+std::string SerializeFrontendGameRulesControlV1(const FrontendGameRulesControlV1 &o, GuiAbiRevisionV1 revision) {
   std::string s = "{\"schema\":\"frontend_game_rules_window_v1\",\"schema_version\":1,"
       "\"read_only\":true,\"uses_ocr\":false,\"uses_mouse\":false,\"uses_keyboard\":false,"
-      "\"applied_settings_proven\":false,\"game_version\":\"1.20.0.3\","
-      "\"executable_sha256\":\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\","
+      "\"applied_settings_proven\":false," + RulesBuildFields(revision) +
       "\"source\":\"CJominiGameRulesGui.owner_root_and_stock_predicates\",\"ready\":";
   s += o.ready ? "true" : "false";
   s += ",\"unavailable_reason\":\"" + o.unavailable_reason + "\"";
@@ -689,12 +734,12 @@ std::string SerializeFrontendGameRulesControlV1(const FrontendGameRulesControlV1
 }
 
 std::string SerializeFrontendGameRulesMutationV1(
-    FrontendGameRulesMutationKindV1 kind, const FrontendGameRulesMutationV1 &r) {
+    FrontendGameRulesMutationKindV1 kind, const FrontendGameRulesMutationV1 &r,
+    GuiAbiRevisionV1 revision) {
   std::string s = "{\"schema\":\"frontend_game_rules_mutation_v1\",\"schema_version\":1,"
       "\"read_only\":false,\"uses_ocr\":false,\"uses_mouse\":false,\"uses_keyboard\":false,"
       "\"applied_settings_proven\":false,\"window_closed_proven\":false,"
-      "\"game_version\":\"1.20.0.3\","
-      "\"executable_sha256\":\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\","
+       + RulesBuildFields(revision) +
       "\"source\":\"CJominiGameRulesGui.stock_methods\",\"action\":\"";
   s += kind == FrontendGameRulesMutationKindV1::select ? "select" :
        kind == FrontendGameRulesMutationKindV1::apply_and_hide ? "apply_and_hide" : "hide";
@@ -714,11 +759,8 @@ bool ProbeFrontendAppliedGameRulesV1(
     FrontendAppliedGameRulesV1 &output) noexcept {
   output = {};
   try {
-    if (!environment.exact_build_admitted || !environment.module_base ||
-        environment.gui_abi_revision != GuiAbiRevisionV1::crozier12003 ||
-        reinterpret_cast<std::uintptr_t>(environment.gui_global_slot) !=
-            environment.module_base + kCrozierGuiGlobalSlotRva) {
-      output.unavailable_reason = "exact_12003_game_rules_environment_unverified";
+    if (!FrontendGameRulesEnvironmentAdmittedV1(environment)) {
+      output.unavailable_reason = UnverifiedEnvironmentReason(environment);
       return true;
     }
     AppliedPass before{}, after{};
@@ -739,11 +781,10 @@ bool ProbeFrontendAppliedGameRulesV1(
   }
 }
 
-std::string SerializeFrontendAppliedGameRulesV1(const FrontendAppliedGameRulesV1 &o) {
+std::string SerializeFrontendAppliedGameRulesV1(const FrontendAppliedGameRulesV1 &o, GuiAbiRevisionV1 revision) {
   std::string s = "{\"schema\":\"frontend_applied_game_rules_v1\",\"schema_version\":1,"
       "\"read_only\":true,\"uses_ocr\":false,\"uses_mouse\":false,\"uses_keyboard\":false,"
-      "\"game_version\":\"1.20.0.3\","
-      "\"executable_sha256\":\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\","
+       + RulesBuildFields(revision) +
       "\"source\":\"CGameRuleInstance.selected_settings\",\"ready\":";
   s += o.ready ? "true" : "false";
   s += ",\"applied_settings_proven\":"; s += o.ready ? "true" : "false";

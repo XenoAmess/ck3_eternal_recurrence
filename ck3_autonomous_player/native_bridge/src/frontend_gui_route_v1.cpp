@@ -123,7 +123,7 @@ bool InspectActiveRouteTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   ZhongguoScoreboardAccessV1 access{};
 #if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
   if (query.result.route == FrontendGuiRouteV1::bookmarks &&
-      query.environment.gui_abi_revision == GuiAbiRevisionV1::crozier12003) {
+      FrontendGameRulesEnvironmentAdmittedV1(query.environment)) {
     void *root = nullptr;
     void *widget = nullptr;
     if (!ResolveNamedGuiWidgetV1(query.environment, access, "game_rules",
@@ -228,7 +228,7 @@ bool DispatchRulesMutation(FrontendGuiRouteMailboxContextV1 &query) noexcept {
 
 bool InspectGameRules(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   auto &result = query.result.game_rules;
-  if (query.environment.gui_abi_revision != GuiAbiRevisionV1::crozier12003) {
+  if (!FrontendGameRulesEnvironmentAdmittedV1(query.environment)) {
     result.unavailable_reason = "exact_12003_game_rules_environment_unverified";
     return true;
   }
@@ -971,7 +971,7 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   }
 #if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
   if (query->operation == FrontendGuiRouteOperationV1::open_game_rules) {
-    if (query->environment.gui_abi_revision != GuiAbiRevisionV1::crozier12003)
+    if (!FrontendGameRulesEnvironmentAdmittedV1(query->environment))
       return false;
     return DispatchFixedNamedWidget(*query, FrontendGuiRouteV1::bookmarks,
                                     "frontend_bookmarks", "game_rules_button");

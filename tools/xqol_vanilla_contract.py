@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 GAME = ROOT / "Crusader Kings III" / "game"
-CONTRACT_PATH = Path(__file__).with_name("xqol_vanilla_1_20_0_2.json")
+CONTRACT_PATH = Path(__file__).with_name("xqol_vanilla_1_20_0_4.json")
 CONTRACT = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
 
 

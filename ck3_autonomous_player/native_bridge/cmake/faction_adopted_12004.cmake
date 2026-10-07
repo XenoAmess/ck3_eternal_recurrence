@@ -1,8 +1,7 @@
 # SOURCE / NOTRUN. Entry includes after the existing runtime and bridge targets.
-if(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1 OR
-   XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
-  target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_12004_faction_alerts.cpp)
-endif()
+# The default event-window binder reaches this read-only environment binder
+# even when the independent private faction query and gift route stay OFF.
+target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_12004_faction_alerts.cpp)
 if(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
   target_sources(xar_ck3_bridge PRIVATE src/ck3_12004_faction_mailbox.cpp)
 endif()

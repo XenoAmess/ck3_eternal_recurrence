@@ -344,6 +344,7 @@ bool HandlePlayerPrisonerRansom12004(const game::GameAdapter &adapter,
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
   const bool is_submit = step == "submit-player-prisoner-ransom-private-v1";
 #else
+  static_cast<void>(step);
   const bool is_submit = false;
 #endif
   if (!is_submit) return false;

@@ -1,0 +1,453 @@
+{
+  "schema": "lyd.local-update.original-byte-inventory.v1",
+  "source_root": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001",
+  "archive": {
+    "path": "docs/li-yu-dao/acceptance/2026-10-07-local-update-build25734779/raw-evidence.zip",
+    "bytes": 3281275,
+    "sha256": "1dbab2f2b4fb93a43bb15073580572717a0b21c320155d215a368367c5e8895c",
+    "original_source_count": 47,
+    "unique_payload_count": 38
+  },
+  "files": [
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/appmanifest_1158310.acf",
+        "bytes": 4239,
+        "sha256": "cae2d24d0f7c77a177c26e72931c24393847f5023d697196ca6bfc81a5e9e576"
+      },
+      "archive_entry": "originals/by-sha256/cae2d24d0f7c77a177c26e72931c24393847f5023d697196ca6bfc81a5e9e576/appmanifest_1158310.acf",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/HEAD.actual.json",
+        "bytes": 654,
+        "sha256": "c5164b43d7ca2078fe46bc5bc4470a8f7efe8d1307d512cd1fd978572ec5994b"
+      },
+      "archive_entry": "originals/by-sha256/c5164b43d7ca2078fe46bc5bc4470a8f7efe8d1307d512cd1fd978572ec5994b/HEAD.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/HEAD.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_entry": "originals/by-sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/HEAD.stderr",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/HEAD.stdout",
+        "bytes": 41,
+        "sha256": "832be735cc19be9a80bf36824be6275bf1dd74091403cec70db3b10572a0f3b6"
+      },
+      "archive_entry": "originals/by-sha256/832be735cc19be9a80bf36824be6275bf1dd74091403cec70db3b10572a0f3b6/HEAD.stdout",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/OFFLINE-VISUAL-REVIEW.actual.json",
+        "bytes": 898,
+        "sha256": "958e975b6d843a02dd2a6035668e7bf5ba72deb77fb0d86f96b1a01308b7ad94"
+      },
+      "archive_entry": "originals/by-sha256/958e975b6d843a02dd2a6035668e7bf5ba72deb77fb0d86f96b1a01308b7ad94/OFFLINE-VISUAL-REVIEW.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/RELEASE-SCREEN.actual.json",
+        "bytes": 1190,
+        "sha256": "577f5b25d5c20a859693a41cd4c0e82ae3d66e129d193b357732da9cd380eea2"
+      },
+      "archive_entry": "originals/by-sha256/577f5b25d5c20a859693a41cd4c0e82ae3d66e129d193b357732da9cd380eea2/RELEASE-SCREEN.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/RELEASE-SCREEN.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_entry": "originals/by-sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/HEAD.stderr",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/RELEASE-SCREEN.stdout",
+        "bytes": 1293,
+        "sha256": "694cdb24a05f47c4163dbf504c3321367b99400e1986f98707c6fb24168160e6"
+      },
+      "archive_entry": "originals/by-sha256/694cdb24a05f47c4163dbf504c3321367b99400e1986f98707c6fb24168160e6/RELEASE-SCREEN.stdout",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/REMOTE.actual.json",
+        "bytes": 686,
+        "sha256": "f31589b934743408778133655b2766e781caad31d8baab197da841d51ed8d7be"
+      },
+      "archive_entry": "originals/by-sha256/f31589b934743408778133655b2766e781caad31d8baab197da841d51ed8d7be/REMOTE.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/REMOTE.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_entry": "originals/by-sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/HEAD.stderr",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/REMOTE.stdout",
+        "bytes": 59,
+        "sha256": "0226d8529a2f6b52746f09d921c9359a42a5a2c8a4022da6cd95799e062ed025"
+      },
+      "archive_entry": "originals/by-sha256/0226d8529a2f6b52746f09d921c9359a42a5a2c8a4022da6cd95799e062ed025/REMOTE.stdout",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/STATUS.actual.json",
+        "bytes": 664,
+        "sha256": "06ffc2f308a3c23f2598e4cdf66cb0e8791116a595ad1ca8f4dba146c7702db2"
+      },
+      "archive_entry": "originals/by-sha256/06ffc2f308a3c23f2598e4cdf66cb0e8791116a595ad1ca8f4dba146c7702db2/STATUS.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/STATUS.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_entry": "originals/by-sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/HEAD.stderr",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/STATUS.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_entry": "originals/by-sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/HEAD.stderr",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/UPDATE-AND-GIT.actual.json",
+        "bytes": 1644,
+        "sha256": "ecbc916718b24757e4c529733b85c7eeecd1aa3ccfe0a66742da0a93f8968678"
+      },
+      "archive_entry": "originals/by-sha256/ecbc916718b24757e4c529733b85c7eeecd1aa3ccfe0a66742da0a93f8968678/UPDATE-AND-GIT.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-before-update/BEFORE.actual.json",
+        "bytes": 937,
+        "sha256": "15086d27d462f7c60c72e80ef6acf46d3ffbc6336f1dfc924d69179e7059e00e"
+      },
+      "archive_entry": "originals/by-sha256/15086d27d462f7c60c72e80ef6acf46d3ffbc6336f1dfc924d69179e7059e00e/BEFORE.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-before-update/appmanifest_1158310.acf",
+        "bytes": 4222,
+        "sha256": "0ee01f30d0abae88da34e6404789a188ee22c3a170f2ddec52e4d65af4d53e74"
+      },
+      "archive_entry": "originals/by-sha256/0ee01f30d0abae88da34e6404789a188ee22c3a170f2ddec52e4d65af4d53e74/appmanifest_1158310.acf",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/REGISTER.argv.json",
+        "bytes": 616,
+        "sha256": "7a1578cc51d9893ca936a1884e4ecc4e69b884a25804d244be32c6c57544cc3e"
+      },
+      "archive_entry": "originals/by-sha256/7a1578cc51d9893ca936a1884e4ecc4e69b884a25804d244be32c6c57544cc3e/REGISTER.argv.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/REGISTER-002.argv.json",
+        "bytes": 636,
+        "sha256": "1eb8415702351a2c005ebe881275c15303f527b72d3900bf08802b6ed99af5f5"
+      },
+      "archive_entry": "originals/by-sha256/1eb8415702351a2c005ebe881275c15303f527b72d3900bf08802b6ed99af5f5/REGISTER-002.argv.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/finish_update.py",
+        "bytes": 4216,
+        "sha256": "9178459b14c3659af55481d41e52eb25ee5fbb4ed477ac29755b58825ca34288"
+      },
+      "archive_entry": "originals/by-sha256/9178459b14c3659af55481d41e52eb25ee5fbb4ed477ac29755b58825ca34288/finish_update.py",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/offline-menu-click-002.png",
+        "bytes": 1625200,
+        "sha256": "55dcf1fff987c140f669d911e0047910e62de33589717b94fa87030b393fe366"
+      },
+      "archive_entry": "originals/by-sha256/55dcf1fff987c140f669d911e0047910e62de33589717b94fa87030b393fe366/offline-menu-click-002.png",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/register-original-exec/RESULT.actual.json",
+        "bytes": 1535,
+        "sha256": "f29cf7b39e89a8568c8ce87dbcb10945aaf8e625f872c6ec093ebadf986932a0"
+      },
+      "archive_entry": "originals/by-sha256/f29cf7b39e89a8568c8ce87dbcb10945aaf8e625f872c6ec093ebadf986932a0/RESULT.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/register-original-exec/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_entry": "originals/by-sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/HEAD.stderr",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/register-original-exec/stdout",
+        "bytes": 171,
+        "sha256": "f2af5c90ef00c7e811a3873bf48f3098eba716104bb732376e15db873588c8c3"
+      },
+      "archive_entry": "originals/by-sha256/f2af5c90ef00c7e811a3873bf48f3098eba716104bb732376e15db873588c8c3/stdout",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/register002-original-exec/RESULT.actual.json",
+        "bytes": 1546,
+        "sha256": "f5cf924c5230dd55dcf435e1c61274fad59b27b6f85de8f76fa405b4ad416a8c"
+      },
+      "archive_entry": "originals/by-sha256/f5cf924c5230dd55dcf435e1c61274fad59b27b6f85de8f76fa405b4ad416a8c/RESULT.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/register002-original-exec/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_entry": "originals/by-sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/HEAD.stderr",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/register002-original-exec/stdout",
+        "bytes": 1419,
+        "sha256": "0f69fb8470060ac348e6213d2f1ff5adb20880021d177797e358dbe42b921a41"
+      },
+      "archive_entry": "originals/by-sha256/0f69fb8470060ac348e6213d2f1ff5adb20880021d177797e358dbe42b921a41/stdout",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/pre-update-steam-frame/events.jsonl",
+        "bytes": 685,
+        "sha256": "59204782689f5eca48d5af631ddcb889beb693c2a48ae2db19e26fb00d86446c"
+      },
+      "archive_entry": "originals/by-sha256/59204782689f5eca48d5af631ddcb889beb693c2a48ae2db19e26fb00d86446c/events.jsonl",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/pre-update-steam-frame/recovery.json",
+        "bytes": 992,
+        "sha256": "6fdf23b7fb2ebec884a76cdcf585885137355f6322b5424d59cc83c8feffe59f"
+      },
+      "archive_entry": "originals/by-sha256/6fdf23b7fb2ebec884a76cdcf585885137355f6322b5424d59cc83c8feffe59f/recovery.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/pre-update-steam-frame-002/events.jsonl",
+        "bytes": 1939,
+        "sha256": "8bc3e756baed78ebbd8d61de26137d9d5077a387156cd4d75a8aecff3b84a0a3"
+      },
+      "archive_entry": "originals/by-sha256/8bc3e756baed78ebbd8d61de26137d9d5077a387156cd4d75a8aecff3b84a0a3/events.jsonl",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/pre-update-steam-frame-002/recovery.json",
+        "bytes": 1493,
+        "sha256": "b7743fc5654bc03ee4e12f72db9ede1f173fe6f0c18e72658e908f5c5ee26649"
+      },
+      "archive_entry": "originals/by-sha256/b7743fc5654bc03ee4e12f72db9ede1f173fe6f0c18e72658e908f5c5ee26649/recovery.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/final-offline-frame-001/events.jsonl",
+        "bytes": 1943,
+        "sha256": "0ab7fd21c5abd74e5d554b9519a176c8e0c1ade79d2fe3061c7b81cb17a4968b"
+      },
+      "archive_entry": "originals/by-sha256/0ab7fd21c5abd74e5d554b9519a176c8e0c1ade79d2fe3061c7b81cb17a4968b/events.jsonl",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/final-offline-frame-001/recovery.json",
+        "bytes": 1489,
+        "sha256": "4b2289cf8df5e0918f86690382904f85768c1e582f86653a9563e9945201190d"
+      },
+      "archive_entry": "originals/by-sha256/4b2289cf8df5e0918f86690382904f85768c1e582f86653a9563e9945201190d/recovery.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/steam-menu-invoke-001/RESULT.actual.json",
+        "bytes": 240,
+        "sha256": "def7d071119666608fca49030a4e8364e33bf0e67bdd35e1eef06984db352be5"
+      },
+      "archive_entry": "originals/by-sha256/def7d071119666608fca49030a4e8364e33bf0e67bdd35e1eef06984db352be5/RESULT.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/offline-menu-invoke-001/RESULT.actual.json",
+        "bytes": 241,
+        "sha256": "bd456d2375302e85b4a88d5c07c3c9f9b249c98a51cc969c90ce3496b08684b0"
+      },
+      "archive_entry": "originals/by-sha256/bd456d2375302e85b4a88d5c07c3c9f9b249c98a51cc969c90ce3496b08684b0/RESULT.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/offline-menu-invoke-002/RESULT.actual.json",
+        "bytes": 240,
+        "sha256": "33123aaa1e798d735bcaa558c3ca7472dd44baab6ae01cee7da79ea1996c2db6"
+      },
+      "archive_entry": "originals/by-sha256/33123aaa1e798d735bcaa558c3ca7472dd44baab6ae01cee7da79ea1996c2db6/RESULT.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/focused-menu-002/RESULT.actual.json",
+        "bytes": 11479,
+        "sha256": "a0da2072c73a473bf2d3819dbb33508f68d110ff452a4f818fb81bf83174c4ef"
+      },
+      "archive_entry": "originals/by-sha256/a0da2072c73a473bf2d3819dbb33508f68d110ff452a4f818fb81bf83174c4ef/RESULT.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/go-offline-invoke-001/RESULT.actual.json",
+        "bytes": 264,
+        "sha256": "3e8045987335ac410c330c715ab55c18c562b86d9f6a4fb366628ccd0901ebaa"
+      },
+      "archive_entry": "originals/by-sha256/3e8045987335ac410c330c715ab55c18c562b86d9f6a4fb366628ccd0901ebaa/RESULT.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-observation-001/appmanifest_1158310.acf",
+        "bytes": 4239,
+        "sha256": "cae2d24d0f7c77a177c26e72931c24393847f5023d697196ca6bfc81a5e9e576"
+      },
+      "archive_entry": "originals/by-sha256/cae2d24d0f7c77a177c26e72931c24393847f5023d697196ca6bfc81a5e9e576/appmanifest_1158310.acf",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-observation-001/STATE.actual.json",
+        "bytes": 6717,
+        "sha256": "4d8c5ee370f6aea25376934ae32fdfe3c4b9ef0e379fb7b9f8e8970a4531de13"
+      },
+      "archive_entry": "originals/by-sha256/4d8c5ee370f6aea25376934ae32fdfe3c4b9ef0e379fb7b9f8e8970a4531de13/STATE.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-observation-002/appmanifest_1158310.acf",
+        "bytes": 4239,
+        "sha256": "cae2d24d0f7c77a177c26e72931c24393847f5023d697196ca6bfc81a5e9e576"
+      },
+      "archive_entry": "originals/by-sha256/cae2d24d0f7c77a177c26e72931c24393847f5023d697196ca6bfc81a5e9e576/appmanifest_1158310.acf",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-observation-002/STATE.actual.json",
+        "bytes": 6717,
+        "sha256": "e600503f96e06b0cbd3bdca372bdda21e987af5d9b19b82d89b66ec3504815b0"
+      },
+      "archive_entry": "originals/by-sha256/e600503f96e06b0cbd3bdca372bdda21e987af5d9b19b82d89b66ec3504815b0/STATE.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-observation-003/appmanifest_1158310.acf",
+        "bytes": 4239,
+        "sha256": "cae2d24d0f7c77a177c26e72931c24393847f5023d697196ca6bfc81a5e9e576"
+      },
+      "archive_entry": "originals/by-sha256/cae2d24d0f7c77a177c26e72931c24393847f5023d697196ca6bfc81a5e9e576/appmanifest_1158310.acf",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-observation-003/STATE.actual.json",
+        "bytes": 6719,
+        "sha256": "5bfb67f442f6d9549d74fd6d619b9c48132d4404431c311e7f68ba0ab9bdc6bd"
+      },
+      "archive_entry": "originals/by-sha256/5bfb67f442f6d9549d74fd6d619b9c48132d4404431c311e7f68ba0ab9bdc6bd/STATE.actual.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/pre-update-steam-frame-002/probe-1/steam-frame-freshness.json",
+        "bytes": 1266,
+        "sha256": "87b953a605ba7e393af34d057b270b5121def9bb13e5cce03b4245ef16c85364"
+      },
+      "archive_entry": "originals/by-sha256/87b953a605ba7e393af34d057b270b5121def9bb13e5cce03b4245ef16c85364/steam-frame-freshness.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/final-offline-frame-001/probe-1/steam-frame-freshness.json",
+        "bytes": 1260,
+        "sha256": "ffdf14aa85a0ba1bad0ae005b4eafe55aa88b9912a983ecae3f1d433a51128c6"
+      },
+      "archive_entry": "originals/by-sha256/ffdf14aa85a0ba1bad0ae005b4eafe55aa88b9912a983ecae3f1d433a51128c6/steam-frame-freshness.json",
+      "original_bytes_sha256_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/final-offline-frame-001/probe-1/steam-moved.png",
+        "bytes": 1625943,
+        "sha256": "bca221a38a546861ed0153d0ab6f58d38865c9a020303a0873e010fc8d4b37f4"
+      },
+      "archive_entry": "originals/by-sha256/bca221a38a546861ed0153d0ab6f58d38865c9a020303a0873e010fc8d4b37f4/steam-moved.png",
+      "original_bytes_sha256_preserved": true
+    }
+  ],
+  "excluded_binary_and_save_bodies": true,
+  "before_binary_descriptor": {
+    "installed_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "preserved_path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-before-update/ck3.exe",
+    "bytes": 101039736,
+    "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "new_binary_descriptor": {
+    "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "missing_original_files": {
+    "finish_update_direct_tool_result": null,
+    "mouse002_mapping_JSON": null
+  },
+  "notes": "actual screenshot receipt PNG preserved; ROOT conversation facts projected distinctly, no invented wrapper/mapping file; old stdout/recovery errors retained"
+}
