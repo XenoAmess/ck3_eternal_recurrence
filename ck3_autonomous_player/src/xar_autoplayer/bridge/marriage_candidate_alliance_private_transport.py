@@ -24,11 +24,20 @@ from .version_identity import CK3_11906
 STEP = "query-first-heir-candidate-alliance-projection-v1-private"
 SCHEMA = "xar.ck3.first-heir-candidate-alliance-projection.v1"
 _NATIVE_FERTILITY_FIELDS = ("heir_native_fertility", "candidate_native_fertility")
+_NATIVE_SCORER_AGE_RAW_BITS = {
+    "heir_native_scorer_age_override_raw": 16,
+    "candidate_native_scorer_age_override_raw": 16,
+    "native_candidate_scorer_age_upper_raw": 32,
+}
 _GENERIC_COST_FIELDS = (
     "gold_raw", "prestige_raw", "piety_raw", "renown_raw",
     "influence_raw", "herd_raw", "treasury_raw",
     "treasury_or_gold_raw", "merit_raw", "barter_goods_raw",
 )
+
+
+def _native_scorer_signed32(value: int) -> int:
+    return (value + 2**31) % 2**32 - 2**31
 
 
 def query_first_heir_candidate_alliance_projection_private_v1(
@@ -169,6 +178,28 @@ def query_first_heir_candidate_alliance_projection_private_v1(
             "source": "derived_signed_native_fertility_floor_comparison",
             "ready": False, "passes": None,
         }
+        for field, bits in _NATIVE_SCORER_AGE_RAW_BITS.items():
+            raw = row.get(field)
+            if raw is not None and (
+                type(raw) is not int or not -2**(bits - 1) <= raw < 2**(bits - 1)
+            ):
+                raise BridgeUnavailableError("marriage native scorer age input malformed")
+        for role in ("heir", "candidate"):
+            row[f"{role}_native_scorer_effective_age_v1"] = {
+                "source": "derived_native_scorer_effective_age",
+                "ready": False, "effective_raw": None,
+            }
+        age_branch = {
+            "source": "derived_native_scorer_age_branch",
+            "ready": False, "passes": None, "selector_zero_bypass": None,
+            "first_comparison": {"ready": False, "passes": None},
+            "second_comparison": {
+                "ready": False, "passes": None,
+                "subject_adult_deficit_raw": None,
+                "adjusted_candidate_age_raw": None,
+            },
+        }
+        row["candidate_native_scorer_age_branch_v1"] = age_branch
         pairs = row.get("possible_alliance_pairs")
         if not isinstance(pairs, list) or len(pairs) > 3:
             raise BridgeUnavailableError("marriage projection pair bounds malformed")
@@ -303,6 +334,43 @@ def query_first_heir_candidate_alliance_projection_private_v1(
             heir_sex_selector != observed_heir_sex_selector):
             raise BridgeUnavailableError("heir sex selector changed between candidates")
         observed_heir_sex_selector = heir_sex_selector
+        # This observes the isolated producer age branch, not its total score.
+        # Each optional override independently qualifies its effective age.
+        for role in ("heir", "candidate"):
+            override = row.get(f"{role}_native_scorer_age_override_raw")
+            if override is not None:
+                row[f"{role}_native_scorer_effective_age_v1"].update({
+                    "ready": True,
+                    "effective_raw": (override if override >= 0 else
+                                      row[f"{role}_adult_measure_raw"]),
+                })
+        age_branch["selector_zero_bypass"] = candidate_sex_selector == 0
+        if candidate_sex_selector == 0:
+            age_branch.update({"ready": True, "passes": True})
+        else:
+            candidate_age = row["candidate_native_scorer_effective_age_v1"]
+            heir_age = row["heir_native_scorer_effective_age_v1"]
+            upper = row.get("native_candidate_scorer_age_upper_raw")
+            if candidate_age["ready"] and upper is not None:
+                first_passes = candidate_age["effective_raw"] <= upper
+                age_branch["first_comparison"].update({
+                    "ready": True, "passes": first_passes,
+                })
+                if not first_passes:
+                    age_branch.update({"ready": True, "passes": False})
+                elif heir_age["ready"]:
+                    subject_age = heir_age["effective_raw"]
+                    deficit = (_native_scorer_signed32(heir_threshold - subject_age)
+                               if subject_age < heir_threshold else 0)
+                    adjusted = _native_scorer_signed32(
+                        candidate_age["effective_raw"] - deficit)
+                    second_passes = adjusted <= upper
+                    age_branch["second_comparison"].update({
+                        "ready": True, "passes": second_passes,
+                        "subject_adult_deficit_raw": deficit,
+                        "adjusted_candidate_age_raw": adjusted,
+                    })
+                    age_branch.update({"ready": True, "passes": second_passes})
         effective_matrilineal = (
             bool(heir_sex_selector) if heir_sex_selector == candidate_sex_selector
             else row["matrilineal_option_selected"]

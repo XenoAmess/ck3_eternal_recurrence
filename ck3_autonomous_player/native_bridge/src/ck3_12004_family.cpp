@@ -122,6 +122,8 @@ ck3_12002::family_value::Bindings BindFamilyValuesImage(
           base + kFamilyFertilityGateRva);
   bindings.candidate_fertility_floor = reinterpret_cast<const std::int64_t *>(
       base + kFamilyCandidateFertilityFloorRva);
+  bindings.candidate_scorer_age_upper = reinterpret_cast<const std::int32_t *>(
+      base + kFamilyCandidateScorerAgeUpperRva);
   return bindings;
 }
 

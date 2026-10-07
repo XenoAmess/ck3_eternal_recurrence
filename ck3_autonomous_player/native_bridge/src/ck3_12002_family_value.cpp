@@ -74,7 +74,9 @@ bool ReadCharacterLineage(const Bindings &bindings, const void *character,
 
 bool ReadCharacterValue(const Bindings &bindings, std::int32_t id,
                         CharacterValue &output, bool read_fertility,
-                        std::string_view *reason) noexcept {
+                        std::string_view *reason,
+                        OptionalMemoryRead optional_memory_read,
+                        void *optional_memory_context) noexcept {
   output = {};
   if (reason != nullptr) *reason = {};
   if (!bindings.enabled || !bindings.core.enabled)
@@ -86,6 +88,14 @@ bool ReadCharacterValue(const Bindings &bindings, std::int32_t id,
   CharacterValue result{};
   result.character_id = id;
   result.age_raw = Load<std::int16_t>(character, kCharacterAgeOffset);
+  if (optional_memory_read != nullptr) {
+    std::int16_t raw = 0;
+    if (optional_memory_read(optional_memory_context,
+                            reinterpret_cast<std::uintptr_t>(character) +
+                                kCharacterScorerAgeOverrideOffset,
+                            &raw, sizeof(raw)))
+      result.scorer_age_override_raw = raw;
+  }
   result.sex_selector_raw = Load<std::uint8_t>(character,
                                               kCharacterSexSelectorOffset);
   if (result.sex_selector_raw > 1)

@@ -137,6 +137,237 @@ class _Driver:
 
 
 class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
+    def test_optional_native_scorer_age_branch_reaches_real_service_diagnostic(self) -> None:
+        """Consume ten new compiled rich wires through the real family planner.
+
+        Root supplies XAR_FIRST_HEIR_SCORER_AGE_NATIVE_WIRE_DIR. The only
+        modified input is an old-absent compatibility copy of override.json.
+        Legality scaffolding copies each actual native row; Service, ranking
+        and the rich transport are production code. No proposal is submitted.
+        """
+        import json
+        import os
+        import tempfile
+
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+        from xar_autoplayer.bridge.version_identity import CK3_12004
+
+        wire_dir = os.environ.get("XAR_FIRST_HEIR_SCORER_AGE_NATIVE_WIRE_DIR")
+        output_path = os.environ.get("XAR_FIRST_HEIR_SCORER_AGE_SERVICE_OUTPUT")
+        self.assertIsNotNone(wire_dir, "new compiled native whole-wire directory required")
+        raw_fields = (
+            "heir_native_scorer_age_override_raw",
+            "candidate_native_scorer_age_override_raw",
+            "native_candidate_scorer_age_upper_raw",
+        )
+        # Each vector fixes the expected native branch, including the two
+        # signed32 wraps. It does not call a replacement age/score kernel.
+        specifications = [
+            ("override", 16, [40, 45, 46, 0, 32767], 45,
+             16, [40, 45, 46, 0, 32767],
+             [True, True, False, True, False],
+             [True, True, False, True, False],
+             [True, True, None, True, None],
+             [0, 0, None, 0, None], [40, 45, None, 0, None]),
+            ("fallback", -1, [-1, -2, -32768, -1, -1], 16,
+             16, [16] * 5, [True] * 5, [True] * 5, [True] * 5,
+             [0] * 5, [16] * 5),
+            ("selector0", None, [None] * 5, None,
+             None, [None] * 5, [True] * 5, [None] * 5, [None] * 5,
+             [None] * 5, [None] * 5),
+            ("firstfail", None, [46, 47, 48, 49, 50], 45,
+             None, [46, 47, 48, 49, 50], [False] * 5, [False] * 5,
+             [None] * 5, [None] * 5, [None] * 5),
+            ("subjectadjust", 10, [45, 44, 40, 16, 0], 45,
+             10, [45, 44, 40, 16, 0], [True] * 5, [True] * 5,
+             [True] * 5, [6] * 5, [39, 38, 34, 10, -6]),
+            ("uppermissing", 16, [16] * 5, None,
+             16, [16] * 5, [None] * 5, [None] * 5, [None] * 5,
+             [None] * 5, [None] * 5),
+            ("upperreadfailure", 16, [16] * 5, None,
+             16, [16] * 5, [None] * 5, [None] * 5, [None] * 5,
+             [None] * 5, [None] * 5),
+            ("heirunread", None, [16] * 5, 45,
+             None, [16] * 5, [None] * 5, [True] * 5, [None] * 5,
+             [None] * 5, [None] * 5),
+            ("candidateunread", 16, [None] * 5, 45,
+             16, [None] * 5, [None] * 5, [None] * 5, [None] * 5,
+             [None] * 5, [None] * 5),
+            ("subjectwrap", -1, [16] * 5, 45,
+             -32768, [16] * 5, [False] * 5, [True] * 5, [False] * 5,
+             [-2147450881] * 5, [2147450897] * 5),
+        ]
+        cases = []
+        for specification in specifications:
+            name = specification[0]
+            reply = json.loads((Path(wire_dir) / f"{name}.json")
+                               .read_text(encoding="utf-8"))
+            self.assertEqual(reply["result"]["status"], "available")
+            self.assertEqual(len(reply["result"]["rows"]), 5)
+            for row in reply["result"]["rows"]:
+                self.assertEqual(row["status"], "available")
+                self.assertTrue(all(field in row for field in raw_fields))
+            cases.append((specification, reply))
+        old_absent = deepcopy(cases[0][1])
+        for row in old_absent["result"]["rows"]:
+            for field in raw_fields:
+                del row[field]
+        cases.append((("oldabsent", None, [None] * 5, None,
+                       None, [None] * 5, [None] * 5, [None] * 5,
+                       [None] * 5, [None] * 5, [None] * 5), old_absent))
+
+        class ServiceDriver(_Driver):
+            allow_private_family_marriage_formal_trial = True
+
+            def __init__(self, reply, frame, legality, state_dir):
+                super().__init__(reply, [deepcopy(frame), deepcopy(frame)])
+                self.legality = legality
+                self.state_dir = state_dir
+                self.consumed_projection = None
+
+            def query_observed_first_heir_marriage_legality_v1(
+                self, *, expected_native_revision,
+            ):
+                if expected_native_revision != self.legality["native_revision"]:
+                    raise AssertionError("Service changed the native fixture frame")
+                return self.legality
+
+            def query_first_heir_candidate_alliance_projection_private_v1(
+                self, *, legality, candidate_character_ids,
+            ):
+                self.consumed_projection = (
+                    query_first_heir_candidate_alliance_projection_private_v1(
+                        self, legality=legality,
+                        candidate_character_ids=candidate_character_ids))
+                return self.consumed_projection
+
+        outputs = []
+        selected_candidates = []
+        for specification, native_reply in cases:
+            (name, heir_override, candidate_overrides, upper,
+             heir_effective, candidate_effectives, passes, first_passes,
+             second_passes, deficits, adjusted_ages) = specification
+            with self.subTest(case=name), tempfile.TemporaryDirectory() as temporary:
+                reply = deepcopy(native_reply)
+                result = reply["result"]
+                native_rows = result["rows"]
+                frame = _frame()
+                frame.update({
+                    "native_revision": result["native_revision"],
+                    "active_event": None,
+                    "pending_character_interaction": None, "active_wars": [],
+                    "episode_run_id": "scorer-age-offline-compound",
+                    "played_character": {
+                        "character_id": native_rows[0]["actor_character_id"],
+                        "alive": True,
+                    },
+                    "diagnostics": {"hello": {
+                        "expected_ck3_version": CK3_12004.game_version,
+                        "expected_ck3_sha256": CK3_12004.executable_sha256,
+                    }},
+                })
+                legality = {
+                    "schema": "xar.ck3.observed-first-heir-marriage-legality.v1",
+                    "status": "available", "native_revision": frame["native_revision"],
+                    "query_sequence": result["legality_query_sequence"],
+                    "observed_first_heir_character_id": native_rows[0]["heir_character_id"],
+                    "exact_ck3_build": CK3_12004.game_version,
+                    "exe_sha256": CK3_12004.executable_sha256,
+                    "native_legal_candidates": [{
+                        "candidate_character_id": row["candidate_character_id"],
+                        "played_character_id": row["actor_character_id"],
+                        "subject_character_id": row["heir_character_id"],
+                        "recipient_matchmaker_character_id": row["recipient_character_id"],
+                        "heir_adult_measure_raw": row["heir_adult_measure_raw"],
+                        "candidate_adult_measure_raw": row["candidate_adult_measure_raw"],
+                        "played_dynasty_id": row["played_dynasty_id"],
+                        "heir_dynasty_id": row["heir_dynasty_id"],
+                        "candidate_dynasty_id": row["candidate_dynasty_id"],
+                        "realm_backed_actor_recipient": True,
+                        "complete_can_send": row["complete_can_send"],
+                        "recipient_answer_allows_send":
+                            row["recipient_answer_status_raw"] in (0, 1),
+                        "recipient_answer_status_raw": row["recipient_answer_status_raw"],
+                        "recipient_ai_accept_raw": row["recipient_ai_accept_raw"],
+                        **({"final_legality_sampled": row["final_legality_sampled"]}
+                           if "final_legality_sampled" in row else {}),
+                    } for row in native_rows],
+                }
+                driver = ServiceDriver(reply, frame, legality, Path(temporary))
+                planned = GameplayBridgeService(driver)._plan_private_family_opportunity_v1(
+                    {"plan": {"selected_step": "life-advance"}}, frame)
+                plan = planned["plan"]
+                diagnostic = plan["family_marriage_private_diagnostic"]
+                self.assertEqual(diagnostic["exact_ck3_build"], CK3_12004.game_version)
+                self.assertEqual(len(diagnostic["rows"]), 5)
+                selected_candidates.append(plan["family_marriage_choice"]["candidate_character_id"])
+                for index, observed in enumerate(diagnostic["rows"]):
+                    original = native_rows[index]
+                    transported = driver.consumed_projection["rows"][index]
+                    self.assertEqual(observed[raw_fields[0]], heir_override)
+                    self.assertEqual(observed[raw_fields[1]], candidate_overrides[index])
+                    self.assertEqual(observed[raw_fields[2]], upper)
+                    for field in raw_fields:
+                        self.assertEqual(observed[field], original.get(field))
+                        self.assertEqual(field in transported, field in original)
+                    for role, effective in (("heir", heir_effective),
+                                            ("candidate", candidate_effectives[index])):
+                        value = observed[f"{role}_native_scorer_effective_age_v1"]
+                        self.assertEqual(value["source"], "derived_native_scorer_effective_age")
+                        self.assertIs(value["ready"], effective is not None)
+                        self.assertEqual(value["effective_raw"], effective)
+                        self.assertEqual(value, transported[f"{role}_native_scorer_effective_age_v1"])
+                    branch = observed["candidate_native_scorer_age_branch_v1"]
+                    self.assertEqual(branch["source"], "derived_native_scorer_age_branch")
+                    self.assertIs(branch["ready"], passes[index] is not None)
+                    self.assertIs(branch["passes"], passes[index])
+                    self.assertIs(branch["selector_zero_bypass"], name == "selector0")
+                    self.assertEqual(branch, transported["candidate_native_scorer_age_branch_v1"])
+                    for key, expected in (("first_comparison", first_passes[index]),
+                                          ("second_comparison", second_passes[index])):
+                        self.assertIs(branch[key]["ready"], expected is not None)
+                        self.assertIs(branch[key]["passes"], expected)
+                    self.assertEqual(branch["second_comparison"]["subject_adult_deficit_raw"],
+                                     deficits[index])
+                    self.assertEqual(branch["second_comparison"]["adjusted_candidate_age_raw"],
+                                     adjusted_ages[index])
+                    for field in ("heir_native_fertility", "candidate_native_fertility",
+                                  "native_candidate_fertility_floor_raw",
+                                  "heir_adult_measure_raw", "candidate_adult_measure_raw",
+                                  "heir_adult_threshold_raw", "candidate_adult_threshold_raw",
+                                  "heir_is_adult", "candidate_is_adult",
+                                  "predicted_outcome_if_accepted", "matrilineal_option_selected",
+                                  "effective_matrilineal_if_accepted",
+                                  "recipient_ai_accept_raw", "recipient_answer_status_raw",
+                                  "complete_can_send"):
+                        self.assertEqual(observed[field], original.get(field))
+                    self.assertEqual(observed["rejection_reasons"], [])
+                    if name == "subjectwrap":
+                        self.assertEqual(original["heir_adult_measure_raw"], -32768)
+                        self.assertEqual(original["candidate_adult_measure_raw"], -32768)
+                        self.assertEqual(original["heir_adult_threshold_raw"], 2147483647)
+                        self.assertEqual(original["predicted_outcome_if_accepted"], "betrothal")
+                request = driver.endpoint.request
+                self.assertEqual([request[f"candidate_id_{index}"] for index in range(5)],
+                                 [row["candidate_character_id"] for row in native_rows])
+                outputs.append({
+                    "case": name,
+                    "family_marriage_choice": deepcopy(plan["family_marriage_choice"]),
+                    "family_marriage_private_diagnostic": deepcopy(diagnostic),
+                })
+        # Fail/partial branch diagnostics do not become candidate-selection gates.
+        self.assertEqual(len(set(selected_candidates)), 1)
+        if output_path:
+            destination = Path(output_path)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(json.dumps({
+                "schema": "xar.ck3.first-heir-scorer-age-service-compound.v1",
+                "source_mode": "compiled_native_whole_wire",
+                "native_wire_directory": wire_dir,
+                "production_live": False, "material_result": False,
+                "cases": outputs,
+            }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
     def test_optional_native_fertility_floor_reaches_real_service_diagnostic(self) -> None:
         """Consume four native wires when supplied; otherwise authored shapes.
 

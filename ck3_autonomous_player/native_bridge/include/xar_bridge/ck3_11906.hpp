@@ -1423,6 +1423,9 @@ struct MarriageCandidateAlliancePrivateReadV1 {
   std::uint8_t recipient_answer_status_raw = 3;
   // Optional loaded producer-floor raw; one value shared by the rich frame.
   std::optional<std::int64_t> native_candidate_fertility_floor_raw{};
+  std::optional<std::int16_t> heir_native_scorer_age_override_raw{};
+  std::optional<std::int16_t> candidate_native_scorer_age_override_raw{};
+  std::optional<std::int32_t> native_candidate_scorer_age_upper_raw{};
 };
 
 // Recreates and finalizes one exact five-role context on application-main.

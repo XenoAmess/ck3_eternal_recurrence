@@ -4,6 +4,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string_view>
 
 namespace xar::ck3_12002::family_value {
@@ -13,6 +14,7 @@ inline constexpr std::uintptr_t kHouseFallbackSlotRva = 0x5D1DAE8;
 inline constexpr std::uintptr_t kDynastyStoreSlotRva = 0x5D1DE78;
 inline constexpr std::uintptr_t kDynastyFallbackSlotRva = 0x5D1DE28;
 inline constexpr std::size_t kCharacterAgeOffset = 0x68;
+inline constexpr std::size_t kCharacterScorerAgeOverrideOffset = 0x6C;
 inline constexpr std::size_t kCharacterSexSelectorOffset = 0x1A1;
 inline constexpr std::size_t kCharacterHouseOffset = 0x158;
 inline constexpr std::size_t kHouseDynastyOffset = 0x2C;
@@ -23,6 +25,8 @@ inline constexpr std::size_t kFertilityExtensionOffset = 0x1B0;
 inline constexpr std::size_t kFertilityRawOffset = 0x2E0;
 
 using FertilityGate = bool (*)(void *character);
+using OptionalMemoryRead = bool (*)(void *context, std::uintptr_t address,
+                                   void *output, std::size_t size) noexcept;
 
 struct Lineage {
   std::int32_t house_id = -1;
@@ -49,6 +53,7 @@ struct CharacterValue {
   Lineage lineage{};
   std::int32_t employer_character_id = -1;
   FertilityRead fertility{};
+  std::optional<std::int16_t> scorer_age_override_raw{};
   friend bool operator==(const CharacterValue &, const CharacterValue &) = default;
 };
 
@@ -62,6 +67,7 @@ struct Bindings {
   FertilityGate fertility_gate = nullptr;
   // Optional actual4 loaded producer-floor operand; older binders leave null.
   const std::int64_t *candidate_fertility_floor = nullptr;
+  const std::int32_t *candidate_scorer_age_upper = nullptr;
 };
 
 // Address calculation only. Neither function discovers or attaches to a game.
@@ -75,6 +81,8 @@ bool ReadCharacterLineage(const Bindings &, const void *character,
                           std::string_view *reason = nullptr) noexcept;
 bool ReadCharacterValue(const Bindings &, std::int32_t character_id,
                         CharacterValue &output, bool read_fertility = true,
-                        std::string_view *reason = nullptr) noexcept;
+                        std::string_view *reason = nullptr,
+                        OptionalMemoryRead optional_memory_read = nullptr,
+                        void *optional_memory_context = nullptr) noexcept;
 
 } // namespace xar::ck3_12002::family_value

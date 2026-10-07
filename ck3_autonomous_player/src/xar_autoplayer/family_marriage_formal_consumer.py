@@ -33,6 +33,10 @@ _SELECTED_VALUE_FIELDS = (
     "heir_native_fertility", "candidate_native_fertility",
     "native_candidate_fertility_floor_raw",
     "candidate_native_fertility_floor_comparison_v1",
+    "heir_native_scorer_age_override_raw", "candidate_native_scorer_age_override_raw",
+    "native_candidate_scorer_age_upper_raw",
+    "heir_native_scorer_effective_age_v1", "candidate_native_scorer_effective_age_v1",
+    "candidate_native_scorer_age_branch_v1",
 )
 
 
@@ -304,6 +308,10 @@ def _private_five_candidate_diagnostic(
               "heir_native_fertility", "candidate_native_fertility",
               "native_candidate_fertility_floor_raw",
               "candidate_native_fertility_floor_comparison_v1",
+              "heir_native_scorer_age_override_raw", "candidate_native_scorer_age_override_raw",
+              "native_candidate_scorer_age_upper_raw",
+              "heir_native_scorer_effective_age_v1", "candidate_native_scorer_effective_age_v1",
+              "candidate_native_scorer_age_branch_v1",
               "generic_costs",
               "heir_betrothed_character_id", "heir_primary_spouse_character_id",
               "played_house_id", "played_dynasty_id", "heir_house_id",

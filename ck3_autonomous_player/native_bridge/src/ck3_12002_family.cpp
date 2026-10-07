@@ -382,8 +382,10 @@ ck3_11906::MarriageCandidateAlliancePrivateReadV1 ReadMarriageCandidateAllianceP
       observed.candidate_character_id == before.played_character_id) return out;
   family_value::CharacterValue played{}, subject{}, candidate{};
   if (!family_value::ReadCharacterValue(b.values, observed.played_character_id, played, false) ||
-      !family_value::ReadCharacterValue(b.values, observed.subject_character_id, subject, read_fertility) ||
-      !family_value::ReadCharacterValue(b.values, observed.candidate_character_id, candidate, read_fertility)) {
+      !family_value::ReadCharacterValue(b.values, observed.subject_character_id, subject, read_fertility,
+          nullptr, projection.read_memory, projection.memory_context) ||
+      !family_value::ReadCharacterValue(b.values, observed.candidate_character_id, candidate, read_fertility,
+          nullptr, projection.read_memory, projection.memory_context)) {
     out.failure = RichFailure::lineage_unavailable; return out;
   }
   if (!ReadRaw(b, observed.subject_character_id, out.heir_relationship) ||
@@ -447,16 +449,32 @@ ck3_11906::MarriageCandidateAlliancePrivateReadV1 ReadMarriageCandidateAllianceP
     out.failure = RichFailure::projection_unavailable; return out;
   }
   family_value::CharacterValue played_after{}, subject_after{}, candidate_after{};
+  const auto same_legacy_value = [](family_value::CharacterValue first,
+                                    family_value::CharacterValue second) {
+    first.scorer_age_override_raw.reset();
+    second.scorer_age_override_raw.reset();
+    return first == second;
+  };
   Relationship subject_relation{}, candidate_relation{};
   if (!Frame(b, after) || !SameFrame(before, after) ||
       !family_value::ReadCharacterValue(b.values, observed.played_character_id, played_after, false) ||
-      !family_value::ReadCharacterValue(b.values, observed.subject_character_id, subject_after, read_fertility) ||
-      !family_value::ReadCharacterValue(b.values, observed.candidate_character_id, candidate_after, read_fertility) ||
-      played_after != played || subject_after != subject || candidate_after != candidate ||
+      !family_value::ReadCharacterValue(b.values, observed.subject_character_id, subject_after, read_fertility,
+          nullptr, projection.read_memory, projection.memory_context) ||
+      !family_value::ReadCharacterValue(b.values, observed.candidate_character_id, candidate_after, read_fertility,
+          nullptr, projection.read_memory, projection.memory_context) ||
+      !same_legacy_value(played_after, played) ||
+      !same_legacy_value(subject_after, subject) ||
+      !same_legacy_value(candidate_after, candidate) ||
       !ReadRaw(b, observed.subject_character_id, subject_relation) || subject_relation != out.heir_relationship ||
       !ReadRaw(b, observed.candidate_character_id, candidate_relation) || candidate_relation != out.candidate_relationship) {
     out.failure = RichFailure::frame_changed; out.projection = {}; return out;
   }
+  out.heir_native_scorer_age_override_raw =
+      subject.scorer_age_override_raw == subject_after.scorer_age_override_raw
+          ? subject.scorer_age_override_raw : std::nullopt;
+  out.candidate_native_scorer_age_override_raw =
+      candidate.scorer_age_override_raw == candidate_after.scorer_age_override_raw
+          ? candidate.scorer_age_override_raw : std::nullopt;
   out.failure = RichFailure::none;
   return out;
 }

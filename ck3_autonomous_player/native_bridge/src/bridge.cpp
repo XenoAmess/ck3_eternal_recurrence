@@ -52,6 +52,7 @@
 #include "xar_bridge/ck3_12002_family.hpp"
 #include "xar_bridge/ck3_12002_family_projection.hpp"
 #include "xar_bridge/ck3_12002_family_fertility_floor.hpp"
+#include "xar_bridge/ck3_12002_family_scorer_age.hpp"
 #include "xar_bridge/ck3_12002_family_subject.hpp"
 #include "xar_bridge/ck3_12002_family_outbound.hpp"
 #include "xar_bridge/ck3_12004_family.hpp"
@@ -9904,11 +9905,16 @@ bool ExecuteMarriageCandidateAllianceMailboxQueryV1(
         ? xar::ck3_12002::family_value::ReadCandidateFertilityFloorRawV1(
               query.family12002.values, query.projection12002)
         : std::optional<std::int64_t>{};
+    const auto scorer_age_upper = query.read_fertility
+        ? xar::ck3_12002::family_value::ReadCandidateScorerAgeUpperRawV1(
+              query.family12002.values, query.projection12002)
+        : std::optional<std::int32_t>{};
     for (std::size_t index = 0; index < query.row_count; ++index) {
       query.reads[index] = xar::ck3_12002::ReadMarriageCandidateAlliancePrivateV1(
           query.family12002, query.observed[index], query.projection12002,
           query.request_matrilineal_option, query.read_fertility);
       query.reads[index].native_candidate_fertility_floor_raw = fertility_floor;
+      query.reads[index].native_candidate_scorer_age_upper_raw = scorer_age_upper;
     }
     xar::game::Snapshot after{};
     query.frame_observed = xar::game::ReadSnapshot(*query.adapter12002, after) && after == before;

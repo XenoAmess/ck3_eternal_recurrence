@@ -245,6 +245,18 @@ std::string SerializeFamilyAllianceFrameV1(std::string_view request_id,
       result += available && read.native_candidate_fertility_floor_raw.has_value()
                     ? SignedNumber(*read.native_candidate_fertility_floor_raw)
                     : "null";
+      result += ",\"heir_native_scorer_age_override_raw\":";
+      result += available && read.heir_native_scorer_age_override_raw.has_value()
+                    ? SignedNumber(*read.heir_native_scorer_age_override_raw)
+                    : "null";
+      result += ",\"candidate_native_scorer_age_override_raw\":";
+      result += available && read.candidate_native_scorer_age_override_raw.has_value()
+                    ? SignedNumber(*read.candidate_native_scorer_age_override_raw)
+                    : "null";
+      result += ",\"native_candidate_scorer_age_upper_raw\":";
+      result += available && read.native_candidate_scorer_age_upper_raw.has_value()
+                    ? SignedNumber(*read.native_candidate_scorer_age_upper_raw)
+                    : "null";
     }
     result += ",\"grand_wedding_option_selected\":";
     result += available ? (read.grand_wedding_option_selected ? "true" : "false")
