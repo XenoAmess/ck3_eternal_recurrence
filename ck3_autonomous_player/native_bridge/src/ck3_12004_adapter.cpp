@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_tactical_daily_sentinel.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12004_commands.hpp"
@@ -83,6 +84,9 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.command.query-player-mercenary-context-v1",
       "game.command.hire-mercenary-v1", "game.command.hire-holy-order-v1",
       "game.command.query-loaded-feature-manifest-v1",
+      ck3_11906::kTacticalDailySentinelCapabilityV1,
+      ck3_11906::kTacticalDailySentinelStatusCapabilityV1,
+      ck3_11906::kTacticalDailySentinelCancelCapabilityV1,
       "game.command.query-campaign-root-context-v1",
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
       "game.command.query-player-faction-alerts-v1",
