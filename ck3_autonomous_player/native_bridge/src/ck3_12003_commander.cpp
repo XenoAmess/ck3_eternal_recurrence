@@ -226,6 +226,11 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
       output.current_total_martial = ReadCurrentCommanderTotalMartial(
           -1, nullptr, bindings.get_current_total_skill);
     }
+    if (bindings.current_native_ai_base_quality_observer_enabled) {
+      output.current_native_ai_base_quality =
+          ck3_12004::ReadCurrentCommanderNativeBaseQuality(
+              -1, nullptr, bindings.get_native_ai_base_quality);
+    }
   } else {
     void *current = ResolveCharacter(bindings.character_storage_slot,
                                      output.current_commander_character_id);
@@ -237,6 +242,12 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
             output.current_commander_character_id, current,
             bindings.get_current_total_skill);
       }
+      if (bindings.current_native_ai_base_quality_observer_enabled) {
+        output.current_native_ai_base_quality =
+            ck3_12004::ReadCurrentCommanderNativeBaseQuality(
+                output.current_commander_character_id, current,
+                bindings.get_native_ai_base_quality);
+      }
     } else {
       output.current_commander_unavailable_reason =
           "current_commander_identity_unavailable";
@@ -245,6 +256,12 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
         martial.source_character_id = output.current_commander_character_id;
         martial.unavailable_reason = output.current_commander_unavailable_reason;
         output.current_total_martial = martial;
+      }
+      if (bindings.current_native_ai_base_quality_observer_enabled) {
+        output.current_native_ai_base_quality =
+            ck3_12004::ReadCurrentCommanderNativeBaseQuality(
+                output.current_commander_character_id, nullptr,
+                bindings.get_native_ai_base_quality);
       }
     }
   }
@@ -325,6 +342,12 @@ CommanderCandidatesReadResult ReadArmyCommanderCandidates(
       output.current_total_martial->status = "unavailable";
       output.current_total_martial->value.reset();
       output.current_total_martial->unavailable_reason = "army_identity_changed";
+    }
+    if (output.current_native_ai_base_quality) {
+      output.current_native_ai_base_quality->status = "unavailable";
+      output.current_native_ai_base_quality->value.reset();
+      output.current_native_ai_base_quality->unavailable_reason =
+          "army_identity_changed";
     }
     output.unavailable_reason = "army_identity_changed";
     return CommanderCandidatesReadResult::unavailable;

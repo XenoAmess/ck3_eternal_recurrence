@@ -226,6 +226,7 @@ ck3_12003::CommanderBindings BindCommanderImage12004(
   result.read_unit_current_edge_movement_rate = ImageAddress12004<decltype(result.read_unit_current_edge_movement_rate)>(image_base, kCommanderCurrentEdgeMovementRateRva12004);
   result.get_current_total_skill = ImageAddress12004<decltype(result.get_current_total_skill)>(image_base, 0x28B1690);
   result.current_total_martial_observer_enabled = true;
+  result.current_native_ai_base_quality_observer_enabled = true;
   result.enabled = true;
   return result;
 }

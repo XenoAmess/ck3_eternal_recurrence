@@ -12,6 +12,9 @@ from .army_commander_target_rolls import (
     normalize_candidate_target_roll_bounds,
 )
 from .army_commander_current_martial import normalize_current_commander_total_martial
+from .army_commander_current_base_quality import (
+    normalize_current_commander_native_ai_base_quality,
+)
 
 
 QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY = (
@@ -143,6 +146,13 @@ def normalize_army_commander_candidates_v1(
     if "current_total_martial" in current:
         copied_current["current_total_martial"] = normalize_current_commander_total_martial(
             current["current_total_martial"], expected_current_commander=current
+        )
+    if "current_native_ai_base_quality" in current:
+        copied_current["current_native_ai_base_quality"] = (
+            normalize_current_commander_native_ai_base_quality(
+                current["current_native_ai_base_quality"],
+                expected_current_commander=current,
+            )
         )
     if type(value.get("candidate_collection_complete")) is not bool:
         raise ValueError("native candidate collection completion must be boolean")

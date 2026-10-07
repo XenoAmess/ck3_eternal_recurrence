@@ -9,6 +9,7 @@
 #include "xar_bridge/ck3_12003_commander_target_roll_serializer.hpp"
 #include "xar_bridge/ck3_12003_commander_target_roll.hpp"
 #include "xar_bridge/ck3_12003_current_commander_martial_serializer.hpp"
+#include "xar_bridge/ck3_12004_current_commander_base_quality.hpp"
 #include "xar_bridge/public_unit_id.hpp"
 
 namespace xar::ck3_12003 {
@@ -201,6 +202,11 @@ std::string SerializeArmyCommanderCandidates(
            ? ",\"current_total_martial\":" +
                  SerializeCurrentCommanderTotalMartial(
                      *observation.current_total_martial)
+           : std::string{}) +
+      (observation.current_native_ai_base_quality
+           ? ",\"current_native_ai_base_quality\":" +
+                 ck3_12004::SerializeCurrentCommanderNativeBaseQuality(
+                     *observation.current_native_ai_base_quality)
            : std::string{}) +
       "},\"current_movement_speed\":" +
       SerializeCurrentMovementSpeed(observation.current_movement_speed,

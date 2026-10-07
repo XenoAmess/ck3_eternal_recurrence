@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12003_commander_target_roll_dto.hpp"
 #include "xar_bridge/ck3_12003_current_commander_martial_dto.hpp"
+#include "xar_bridge/ck3_12004_current_commander_base_quality.hpp"
 #include "xar_bridge/game_contract.hpp"
 
 #include <cstdint>
@@ -83,6 +84,8 @@ struct ArmyCommanderCandidatesSnapshot {
   std::string_view unavailable_reason = "query_not_read";
   std::optional<std::int32_t> target_province_id;
   std::optional<CurrentCommanderTotalMartialSnapshot> current_total_martial;
+  std::optional<ck3_12004::CurrentCommanderNativeBaseQualitySnapshot>
+      current_native_ai_base_quality;
 };
 
 enum class CommanderCandidatesReadResult { unavailable, available, partial };
@@ -106,6 +109,8 @@ struct CommanderBindings {
   // Old-prefix fixtures retain omission; the exact production binder enables it.
   bool current_total_martial_observer_enabled = false;
   std::int32_t (*get_current_total_skill)(void *, std::int32_t) = nullptr;
+  // Exact .4 enables the independently assigned current-role observer.
+  bool current_native_ai_base_quality_observer_enabled = false;
 };
 
 CommanderBindings BindCommanderImage(
