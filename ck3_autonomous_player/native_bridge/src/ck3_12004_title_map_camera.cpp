@@ -876,6 +876,9 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
     const bool target_is_raw =
         SameExpectedPrefix(before.target, plan.raw_expected);
     if (!target_is_raw && !target_is_canonical) {
+      // Retain this already-read failure frame for the real R62 diagnosis.
+      // The prior evidence was the successful immediate-dispatch readback.
+      PublishEvidence(plan, before, command.camera, false);
       RecordFailureStage(access, "post_dispatch_target_prefix_changed");
       command.status = Status::state_changed;
       return command.status;

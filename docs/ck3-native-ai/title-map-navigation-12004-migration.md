@@ -124,3 +124,39 @@ All three `.4` title-map TUs consume the updated header. Root must rebuild all
 three after integrating this header change. No build, test, EXE read, SDK or
 game action was performed for this diagnosis. Cause and the next actual
 diagnostic attempt remain pending; the R61 failure is retained.
+
+## R62 locates the later-pump target mismatch
+
+Root integrated and compiled the stage diagnostic in source `0a46e114`, G110r12
+entry13. The owned R62 normal scene produced 14/14 fresh full query results,
+with native2/public3/date53288256 and the same paused actor binding. The single
+registered title-map recheck at
+`managed-full-h9613-title11/operator/gameplay-responses/010-title-center-stage.json`
+returned `post_dispatch_target_prefix_changed`, request/envelope/worker/binding
+all native2, initialized/dispatched true, ticket1 and status11. The presentation
+result remains RED.
+
+This stage follows the successful immediate native dispatch verification:
+all six immediate target floats matched `plan.raw_expected`, zoom index and
+frame matched, before `dispatched` became true. On the later pump, title,
+handler/camera identity and the rebuilt frozen plan still passed. The mismatch
+is specifically `SameExpectedPrefix`, which compares **X, Y, Z and zoom**
+(four floats), not just position. Source alone cannot establish which of those
+values changed, and the old failure result retained the immediate readback
+instead of the already-read failing frame. No offset/profile change or relaxed
+completion predicate is justified.
+
+At this one failing branch, `PublishEvidence(plan, before, command.camera,
+false)` now retains the already-read failing current/target arrays and the
+current plan in the existing command evidence. Root appends cached
+`raw_expected_target`, `canonical_expected_target`, observed current/target
+six-float arrays, planned expected XYZ/zoom/index and bounds to the existing
+small failure diagnostic. This adds no read, command, ABI field or permissive
+rule. `command.camera.zoom_index` is the **planned** index written by
+`PublishEvidence`; it must not be labelled the failing frame's observed index.
+Observed zoom values are the current/target arrays' fourth entries.
+
+This source increment touches only the camera TU and this topic; central
+diagnostic serialization remains Root-owned. Native-update cause and numeric
+live observation remain pending. No EXE read, SDK, test, build or game action
+was performed by this owner.
