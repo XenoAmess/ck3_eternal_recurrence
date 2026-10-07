@@ -1,0 +1,221 @@
+{
+  "schema": "lyd.r19.exact-head-ci-original-inventory.v1",
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "archived_at_utc": "2026-10-07T03:51:26.571060+00:00",
+  "target_runs": [
+    {
+      "id": 37566880803,
+      "name": "Official Runner CI",
+      "head_sha": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "head_branch": "master",
+      "event": "push",
+      "path": ".github/workflows/static-ci.yml",
+      "run_number": 8763,
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37566880803",
+      "created_at": "2026-10-07T03:28:09Z",
+      "updated_at": "2026-10-07T03:36:46Z",
+      "run_started_at": "2026-10-07T03:28:09Z"
+    }
+  ],
+  "Li_Yu_Dao": {
+    "classification": "NOT_TRIGGERED_PATH_FILTER",
+    "changed_path_match": false,
+    "absent_is_GREEN": false
+  },
+  "archive": {
+    "path": "CI.original-evidence.zip",
+    "bytes": 38627,
+    "sha256": "4862985fc18a993e816f38f5295ab42927aae2187adb5eca7fa07b0707787eaa",
+    "members": 22
+  },
+  "entries": [
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/INPUTS.json",
+      "member": "INPUTS.json",
+      "bytes": 571,
+      "sha256": "e271442ec18738a101b21897f863a1e400bbe9627a15f0c7d55bf5cdd60b4d47",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/INDEX.final.json",
+      "member": "INDEX.final.json",
+      "bytes": 1333,
+      "sha256": "2792f14ba0eff94fc0b7567a4ca09e8d678199733eaff79f34a422b030a80190",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/REPORT.actual.json",
+      "member": "REPORT.actual.json",
+      "bytes": 30748,
+      "sha256": "706c1a862fbd55a875e32bcfa38f053f8edcbff17754b6134c72af00a46f4120",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/REPORT.actual.md",
+      "member": "REPORT.actual.md",
+      "bytes": 874,
+      "sha256": "7c4c862d80006765ddb74ee438ef00ae60cf5eba171f31a4ccb2f3b39d07aacb",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/TRANSPORT-SUCCESSOR.json",
+      "member": "TRANSPORT-SUCCESSOR.json",
+      "bytes": 542,
+      "sha256": "43d953db9b97b756ec1ce446df4de21c4537193b58c4caf65a2cb95edc21f5a3",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/identity/COMMIT.identity.json",
+      "member": "identity/COMMIT.identity.json",
+      "bytes": 1285,
+      "sha256": "c9074c89c12943a151579492bed4e6386a736057dbfd5f7428c117f9930c32ef",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/identity/commit.stdout",
+      "member": "identity/commit.stdout",
+      "bytes": 79783,
+      "sha256": "93800a61e438e6d5f574ea4822f35cb09cac2b3b12596042c49f1011f55dfc9c",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/identity/commit.stderr",
+      "member": "identity/commit.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/identity/commit.receipt.json",
+      "member": "identity/commit.receipt.json",
+      "bytes": 854,
+      "sha256": "cb0b22519803165c514cf9e58ae731fdd36b534a48196301cf7c10c9f8f5f5bb",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/identity/workflow-local-li-yu-dao-static.yml",
+      "member": "identity/workflow-local-li-yu-dao-static.yml",
+      "bytes": 2050,
+      "sha256": "ea15a2dc333a5502efc9d66a079c52bee2f4782f4b1c86b23209802f6cb67290",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/identity/workflow-local-static-ci.yml",
+      "member": "identity/workflow-local-static-ci.yml",
+      "bytes": 25145,
+      "sha256": "7ba30f151840839430c74d0d5264864852351eaaafb3fea8b80541f5c1f90012",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-004/actions-runs.receipt.json",
+      "member": "snapshot-004/actions-runs.receipt.json",
+      "bytes": 899,
+      "sha256": "93d27136feec884cf041fe86e3e165fe88dbd87d3fc4ab561a87ee1ba3201731",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-004/actions-runs.stderr",
+      "member": "snapshot-004/actions-runs.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-004/actions-runs.stdout",
+      "member": "snapshot-004/actions-runs.stdout",
+      "bytes": 13279,
+      "sha256": "3d1daa2458326de1c5480869bf615a5f149c84d30b2ffef42ae8610a326eb65b",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-004/jobs-37566880803.receipt.json",
+      "member": "snapshot-004/jobs-37566880803.receipt.json",
+      "bytes": 874,
+      "sha256": "906f2be68214313a1eff05b1a6c9c02f087a1bd19df4eeed8f467a9a47dba642",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-004/jobs-37566880803.stderr",
+      "member": "snapshot-004/jobs-37566880803.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-004/jobs-37566880803.stdout",
+      "member": "snapshot-004/jobs-37566880803.stdout",
+      "bytes": 16002,
+      "sha256": "62d1965d83a120ab89bced4efbe802c33ce59f9567a2d8d37a290d976e520d85",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-004/SUMMARY.json",
+      "member": "snapshot-004/SUMMARY.json",
+      "bytes": 30748,
+      "sha256": "706c1a862fbd55a875e32bcfa38f053f8edcbff17754b6134c72af00a46f4120",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual exact-head CI final/identity evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-003/actions-runs.FAILED.transport.json",
+      "member": "snapshot-003/actions-runs.FAILED.transport.json",
+      "bytes": 897,
+      "sha256": "7f077d6aa156dc8ab5c64b3d5f091413dc5acb8f6257422e22b5c6b6f16e6f43",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "read transport timeout only; not a CI result"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-003/actions-runs.receipt.json",
+      "member": "snapshot-003/actions-runs.receipt.json",
+      "bytes": 897,
+      "sha256": "7f077d6aa156dc8ab5c64b3d5f091413dc5acb8f6257422e22b5c6b6f16e6f43",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "read transport timeout only; not a CI result"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-003/actions-runs.stderr",
+      "member": "snapshot-003/actions-runs.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "read transport timeout only; not a CI result"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-003/actions-runs.stdout",
+      "member": "snapshot-003/actions-runs.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "read transport timeout only; not a CI result"
+    }
+  ],
+  "source_attempt": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001",
+  "full_success_logs_downloaded": false,
+  "reruns": 0,
+  "dispatches": 0,
+  "main_writes": 0,
+  "SDK_game_bus_native": 0,
+  "tests": 0,
+  "commit_push": 0
+}

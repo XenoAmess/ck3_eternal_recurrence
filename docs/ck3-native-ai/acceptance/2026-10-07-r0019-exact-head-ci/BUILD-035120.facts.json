@@ -1,0 +1,213 @@
+{
+  "schema": "lyd.r19.actual-native-build-addendum-selected-facts.v1",
+  "head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "runtime_cutoff_utc": "2026-10-07T03:51:20.223905+00:00",
+  "whole_mod": "NOT_GREEN",
+  "source_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/RESULT.json",
+    "bytes": 1007154,
+    "sha256": "d22dce6903eb6fb9548c2b906bdb7f543f504f132c2f59b803836ed9db546b5b"
+  },
+  "original_execution": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-native-original-exec-20261007-001/RESULT.actual.json",
+    "bytes": 1336,
+    "sha256": "ccf02336508afeaea1f10fef93ab2d8a0c8c44e804503bc96acfc00068bf130f"
+  },
+  "original_fields": {
+    "source_revision": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+    "source_kind": "EXACT_CLEAN_HEAD_EXPORT",
+    "source_before_after_unchanged": true,
+    "actual_compilation_pass": true,
+    "actual_focused_tests_pass": true,
+    "original_outer_exit_code": 1,
+    "canonical_producer": {
+      "path": "C:/lr19b1/native-msvc-result.json",
+      "bytes": 1836,
+      "sha256": "f20132a8a1ae0d5f75523da713a29fad0d53bf2ed10200922bc61dcc21fa80e3"
+    },
+    "targets": {
+      "xar_ck3_bridge": {
+        "path": "C:/lr19b1/xar_ck3_bridge.dll",
+        "bytes": 8603648,
+        "sha256": "53bcad3a353adf96b1a5e7e76605dec84c8dcff3753897eeca5c02c1593371bd"
+      },
+      "xar_ck3_bridge_injector": {
+        "path": "C:/lr19b1/xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "d11faa5ef4851bf0cae3f11985bc92a5738660ed90db42b7d998e724389b3e07"
+      },
+      "xar_confucian_assembly_predicates_v1_test": {
+        "path": "C:/lr19b1/xar_confucian_assembly_predicates_v1_test.exe",
+        "bytes": 119808,
+        "sha256": "702d7dbcb11869a9177184f6df4314f3d1067c743ce08244f40eb38ce736f3a4"
+      },
+      "xar_confucian_religious_title_readback_v1_test": {
+        "path": "C:/lr19b1/xar_confucian_religious_title_readback_v1_test.exe",
+        "bytes": 114688,
+        "sha256": "4fa56f335c6abdf7ea92cb5ba927415bb8fdfa86fb7aebda18081de6fa6675b3"
+      },
+      "xar_confucian_challenger_graph_v1_test": {
+        "path": "C:/lr19b1/xar_confucian_challenger_graph_v1_test.exe",
+        "bytes": 177664,
+        "sha256": "43c9604577e295a9701f2ceedad5397b868e65d9f6c5ce09c1b6518edc7136d9"
+      },
+      "xar_ck3_main_thread_query_mailbox_v1_test": {
+        "path": "C:/lr19b1/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+        "bytes": 129024,
+        "sha256": "c6a6ac701ca5091d4c9ee09a7b90e78f4c907de7953c075649a0ffdecfeb0208"
+      },
+      "xar_ck3_12002_event_window_context_test": {
+        "path": "C:/lr19b1/xar_ck3_12002_event_window_context_test.exe",
+        "bytes": 8646656,
+        "sha256": "2226576d3bc3c19bb1916b3cdf8a4a0c06cc08a0aa79d9d8e3e44cfd1acc7161"
+      }
+    },
+    "new_runtime_library": {
+      "path": "C:/lr19b1/xar_ck3_12002_runtime.lib",
+      "bytes": 87140032,
+      "sha256": "2c47c0f55809c266792a423d8240cf346f24abc213465ecc2f87c54cd0e909c1"
+    },
+    "actual_focused_tests": [
+      {
+        "target": "xar_confucian_assembly_predicates_v1_test",
+        "argv": [
+          "C:\\lr19b1\\xar_confucian_assembly_predicates_v1_test.exe"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr19b1/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "702d7dbcb11869a9177184f6df4314f3d1067c743ce08244f40eb38ce736f3a4"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_assembly_predicates_v1_test.stdout",
+          "bytes": 69,
+          "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_assembly_predicates_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "target": "xar_confucian_religious_title_readback_v1_test",
+        "argv": [
+          "C:\\lr19b1\\xar_confucian_religious_title_readback_v1_test.exe"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr19b1/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 114688,
+          "sha256": "4fa56f335c6abdf7ea92cb5ba927415bb8fdfa86fb7aebda18081de6fa6675b3"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_religious_title_readback_v1_test.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_religious_title_readback_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "target": "xar_confucian_challenger_graph_v1_test",
+        "argv": [
+          "C:\\lr19b1\\xar_confucian_challenger_graph_v1_test.exe",
+          "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-root-clean-native-build-20261007-001\\actual-graph-native-fixtures"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr19b1/xar_confucian_challenger_graph_v1_test.exe",
+          "bytes": 177664,
+          "sha256": "43c9604577e295a9701f2ceedad5397b868e65d9f6c5ce09c1b6518edc7136d9"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_challenger_graph_v1_test.stdout",
+          "bytes": 71,
+          "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_challenger_graph_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+        "argv": [
+          "C:\\lr19b1\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+          "--confucian-registration-only",
+          "C:\\lr19s1\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr19b1/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+          "bytes": 129024,
+          "sha256": "c6a6ac701ca5091d4c9ee09a7b90e78f4c907de7953c075649a0ffdecfeb0208"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+          "bytes": 153,
+          "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "target": "xar_ck3_12002_event_window_context_test",
+        "argv": [
+          "C:\\lr19b1\\xar_ck3_12002_event_window_context_test.exe",
+          "--numeric-value-scope"
+        ],
+        "exit_code": 0,
+        "executable": {
+          "path": "C:/lr19b1/xar_ck3_12002_event_window_context_test.exe",
+          "bytes": 8646656,
+          "sha256": "2226576d3bc3c19bb1916b3cdf8a4a0c06cc08a0aa79d9d8e3e44cfd1acc7161"
+        },
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_ck3_12002_event_window_context_test.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_ck3_12002_event_window_context_test.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "Defender": {
+      "status": "settings_failed",
+      "manifest": "C:\\lr19b1\\defender-exe-exclusions\\20261007T035100Z-1cd7514f\\manifest.json",
+      "receipt": "C:\\lr19b1\\defender-exe-exclusions\\20261007T035100Z-1cd7514f\\receipt.json",
+      "receipt_sha256": "c14227aa31ff23b1542a085dc160ed77c75b96ec077ceea3e145385cc521965a",
+      "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)"
+    },
+    "Defender_refs": {
+      "receipt": {
+        "path": "C:/lr19b1/defender-exe-exclusions/20261007T035100Z-1cd7514f/receipt.json",
+        "bytes": 3673,
+        "sha256": "c14227aa31ff23b1542a085dc160ed77c75b96ec077ceea3e145385cc521965a"
+      },
+      "manifest": {
+        "path": "C:/lr19b1/defender-exe-exclusions/20261007T035100Z-1cd7514f/manifest.json",
+        "bytes": 5825,
+        "sha256": "3bb8ba1784beb34371d8f06a5a59fb1cb6cd5beff415e4bafa0e683183f88462"
+      }
+    },
+    "runtime_acceptance": "NOT_RUN",
+    "automatic_retry": false,
+    "old_objects_or_DLL_reused": false
+  },
+  "formal_acceptance": null,
+  "new_T": null,
+  "C3": null,
+  "I4": null
+}

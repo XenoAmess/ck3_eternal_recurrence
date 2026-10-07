@@ -1,0 +1,43 @@
+{
+  "schema": "lyd.r19.exact-head-ci-final-receipt.v1",
+  "head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "official": {
+    "id": 37566880803,
+    "name": "Official Runner CI",
+    "head_sha": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+    "head_branch": "master",
+    "event": "push",
+    "path": ".github/workflows/static-ci.yml",
+    "run_number": 8763,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37566880803",
+    "created_at": "2026-10-07T03:28:09Z",
+    "updated_at": "2026-10-07T03:36:46Z",
+    "run_started_at": "2026-10-07T03:28:09Z"
+  },
+  "jobs": [
+    {
+      "id": 112616515679,
+      "name": "static",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37566880803/job/112616515679",
+      "started_at": "2026-10-07T03:28:12Z",
+      "completed_at": "2026-10-07T03:36:45Z"
+    }
+  ],
+  "Li_Yu_Dao": {
+    "classification": "NOT_TRIGGERED_PATH_FILTER",
+    "changed_path_match": false,
+    "absent_is_GREEN": false
+  },
+  "observed_at_utc": "2026-10-07T03:50:25.202615+00:00",
+  "credit": "CI only; native build and CK3 live credit require separate actual evidence",
+  "source_summary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-exact-ci-20261007-001/snapshot-004/SUMMARY.json",
+    "bytes": 30748,
+    "sha256": "706c1a862fbd55a875e32bcfa38f053f8edcbff17754b6134c72af00a46f4120"
+  }
+}
