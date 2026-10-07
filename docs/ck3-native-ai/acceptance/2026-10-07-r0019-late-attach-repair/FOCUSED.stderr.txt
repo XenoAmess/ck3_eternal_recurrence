@@ -1,0 +1,7 @@
+test_explicit_late_attach_verifies_original_driver_without_reinjection (test_ck3_native_profile_mcp.NativeProfileTests.test_explicit_late_attach_verifies_original_driver_without_reinjection) ... ok
+test_explicit_late_attach_unknown_or_different_clock_stays_red (test_ck3_native_profile_mcp.NativeProfileTests.test_explicit_late_attach_unknown_or_different_clock_stays_red) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.506s
+
+OK

@@ -1,0 +1,14 @@
+{
+  "actual_tool_chunk_id": "c051e0",
+  "actual_exit_code": 1,
+  "failure": "test fixture list bracket omitted; SyntaxError before running tests",
+  "live_callback_executed": false,
+  "actual_tool_transcript_preserved_in_conversation": true,
+  "subsequent_attempt_002": "fixture used positional keyword-only backend; exact stdout/stderr retained",
+  "corrections": "fixture bracket and backend keyword only; production candidate bytes unchanged",
+  "successful_focused_attempt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\focused-attempt-003\\RESULT.actual.json",
+    "bytes": 1014,
+    "sha256": "27957c54a275bfc80a0ee502e3b842fba3271c627dd902723328132a84e23f9c"
+  }
+}

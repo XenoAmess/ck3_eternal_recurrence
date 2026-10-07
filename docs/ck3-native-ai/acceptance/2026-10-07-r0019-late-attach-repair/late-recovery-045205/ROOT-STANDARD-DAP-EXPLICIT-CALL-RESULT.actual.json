@@ -1,0 +1,27 @@
+{
+  "utc": "2026-10-07T04:52:00.196892+00:00",
+  "expression": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-debugpy-recovery-20261007-001/CLIENT-DAP-expression.txt",
+    "bytes": 460,
+    "sha256": "57a7943e9a83ecb16014b9d30069cb93a94c0ff406c38c320b45caa86143fe77"
+  },
+  "evaluation": {
+    "seq": 19,
+    "type": "response",
+    "request_seq": 7,
+    "success": true,
+    "command": "evaluate",
+    "body": {
+      "result": "",
+      "variablesReference": 0,
+      "presentationHint": {}
+    }
+  },
+  "error": null,
+  "paused_thread": 1,
+  "continued": true,
+  "disconnected_without_termination": true,
+  "debuggee_terminate_requested": false,
+  "game_calls": 0,
+  "SDK_calls": 0
+}

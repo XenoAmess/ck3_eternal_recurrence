@@ -1,0 +1,215 @@
+{
+  "schema": "lyd.r19.late-attach-repair-publication.v1",
+  "cutoff_utc": "2026-10-07T04:48:31.258910+00:00",
+  "base_source_HEAD": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "status": "PRODUCTION_CANDIDATE_VERIFIED_AND_OVERLAY_LOADED",
+  "live_late_attach_verified": null,
+  "formal_acceptance": null,
+  "whole_mod": "NOT_GREEN",
+  "files": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\INDEX.json",
+        "bytes": 8484,
+        "sha256": "c1d8d8f745fdedb2f2d944b30518f5cc63b0d1c124a93c00113acd6418f6cbf3"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/CANDIDATE-INDEX.json",
+        "bytes": 8484,
+        "sha256": "c1d8d8f745fdedb2f2d944b30518f5cc63b0d1c124a93c00113acd6418f6cbf3"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\PATCH.diff",
+        "bytes": 13284,
+        "sha256": "f2e4d90611f7351ffee1875ab76bd49a28fc9fea93a5fcca740dae233f982b28"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/CANDIDATE-PATCH.diff",
+        "bytes": 13284,
+        "sha256": "f2e4d90611f7351ffee1875ab76bd49a28fc9fea93a5fcca740dae233f982b28"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\late_attach_candidate.py",
+        "bytes": 8380,
+        "sha256": "7abbe35ac90dd5cc9af35d95198eee2400a4dbabd8a5d1d0c310ad93dfcb7364"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/late_attach_candidate.py",
+        "bytes": 8380,
+        "sha256": "7abbe35ac90dd5cc9af35d95198eee2400a4dbabd8a5d1d0c310ad93dfcb7364"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\SOURCE-OVERLAY-PROVENANCE.actual.json",
+        "bytes": 3310,
+        "sha256": "82d8be2ba7a02af8c86691230794657fcb090459f1e3a797417ee2bdb063c5fc"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/SOURCE-CANDIDATE-PROVENANCE.actual.json",
+        "bytes": 3310,
+        "sha256": "82d8be2ba7a02af8c86691230794657fcb090459f1e3a797417ee2bdb063c5fc"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\CANDIDATE-CHECK.actual.json",
+        "bytes": 744,
+        "sha256": "5f859281125e1c76da6a455039345f3db4ad1e517b237536cb2ecc29a729d7a8"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/CLASS-REPLACEMENT-OFFLINE-CHECK.actual.json",
+        "bytes": 744,
+        "sha256": "5f859281125e1c76da6a455039345f3db4ad1e517b237536cb2ecc29a729d7a8"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\focused-attempt-003\\RESULT.actual.json",
+        "bytes": 1014,
+        "sha256": "27957c54a275bfc80a0ee502e3b842fba3271c627dd902723328132a84e23f9c"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/FOCUSED.actual.json",
+        "bytes": 1014,
+        "sha256": "27957c54a275bfc80a0ee502e3b842fba3271c627dd902723328132a84e23f9c"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\focused-attempt-003\\stderr.raw",
+        "bytes": 485,
+        "sha256": "e77bff5fcaedddea98491970399cf3b048af2ad59802e684966fca23ca82bf40"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/FOCUSED.stderr.txt",
+        "bytes": 485,
+        "sha256": "e77bff5fcaedddea98491970399cf3b048af2ad59802e684966fca23ca82bf40"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\service-regression-001\\RESULT.actual.json",
+        "bytes": 946,
+        "sha256": "59977bdb29c77e0f65163e221df79e2a71dbc6c0e231ca80a789de02f92a9c38"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/SERVICE-TESTS.actual.json",
+        "bytes": 946,
+        "sha256": "59977bdb29c77e0f65163e221df79e2a71dbc6c0e231ca80a789de02f92a9c38"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\service-regression-001\\stderr.raw",
+        "bytes": 2191,
+        "sha256": "859ff75cee36d2c4f7462553c0527029b7321b186593df09c59b0d01995a7de7"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/SERVICE-TESTS.stderr.txt",
+        "bytes": 2191,
+        "sha256": "859ff75cee36d2c4f7462553c0527029b7321b186593df09c59b0d01995a7de7"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\focused-attempt-002\\RESULT.actual.json",
+        "bytes": 1014,
+        "sha256": "d0d54f5a60ff5b5af41bd13db5f9ae71c986ac871238132b8980d078ea02ef53"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/PRESERVED-TEST-HARNESS-FAILURE.actual.json",
+        "bytes": 1014,
+        "sha256": "d0d54f5a60ff5b5af41bd13db5f9ae71c986ac871238132b8980d078ea02ef53"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\focused-attempt-002\\stderr.raw",
+        "bytes": 6480,
+        "sha256": "2f3bf24d3f6249280ae763061269bf73417043ae9e1326c7524d29aaf150c628"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/PRESERVED-TEST-HARNESS-FAILURE.stderr.txt",
+        "bytes": 6480,
+        "sha256": "2f3bf24d3f6249280ae763061269bf73417043ae9e1326c7524d29aaf150c628"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\INITIAL-TEST-HARNESS-FAILURE-NOTE.actual.json",
+        "bytes": 731,
+        "sha256": "710cb7c0e57ade6da17f625cc713ace51b779dc50ab6fd8ee617f703b308fc4b"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/INITIAL-TEST-HARNESS-FAILURE-NOTE.actual.json",
+        "bytes": 731,
+        "sha256": "710cb7c0e57ade6da17f625cc713ace51b779dc50ab6fd8ee617f703b308fc4b"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-debugpy-recovery-20261007-001\\PYTHON-SOURCE-OVERLAY.actual.json",
+        "bytes": 2497,
+        "sha256": "fa1ddcbfc97ce969ee27aeaaee6f53d2ddf52de2763c6d5cfa3a138a76582732"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/PYTHON-SOURCE-OVERLAY.actual.json",
+        "bytes": 2497,
+        "sha256": "fa1ddcbfc97ce969ee27aeaaee6f53d2ddf52de2763c6d5cfa3a138a76582732"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\ROOT-SDK-04-late-attach\\RESULT.actual.json",
+        "bytes": 4535,
+        "sha256": "22a4ca81f20a0022cc8042d1c0d07a0af1a6db19eb791cfbd16b1d229035a671"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/QUEUE-04-RESULT.actual.json",
+        "bytes": 4535,
+        "sha256": "22a4ca81f20a0022cc8042d1c0d07a0af1a6db19eb791cfbd16b1d229035a671"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-client-001\\0004-r19-root-late-attach-001.response.json",
+        "bytes": 570,
+        "sha256": "ccfd38cfb35c1b65585bbd8046af41fb9a57283e68e935141d3599f7b66152bc"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/QUEUE-04-RESPONSE.actual.json",
+        "bytes": 570,
+        "sha256": "ccfd38cfb35c1b65585bbd8046af41fb9a57283e68e935141d3599f7b66152bc"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-client-001\\0002-r19-root-attach-001.native-01.json",
+        "bytes": 2167,
+        "sha256": "75d41e2683b991f2f167267401559e5a45a37937c357c51f5b7aacd8864d33a7"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/INITIAL-ATTACH-RED.native.json",
+        "bytes": 2167,
+        "sha256": "75d41e2683b991f2f167267401559e5a45a37937c357c51f5b7aacd8864d33a7"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-client-001\\0003-r19-root-current-snapshot-001.native-01.json",
+        "bytes": 17922,
+        "sha256": "141e6b2c8dec62da1f884002f7a0327228378a5dd802006c8861689c02d48ef0"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/SAME-CONNECTION-SNAPSHOT.native.json",
+        "bytes": 17922,
+        "sha256": "141e6b2c8dec62da1f884002f7a0327228378a5dd802006c8861689c02d48ef0"
+      }
+    }
+  ]
+}

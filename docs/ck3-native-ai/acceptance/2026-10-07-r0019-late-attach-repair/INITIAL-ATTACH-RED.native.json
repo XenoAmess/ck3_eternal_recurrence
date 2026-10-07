@@ -1,0 +1,50 @@
+{
+  "schema": "ck3.native-profile-receipt.v1",
+  "session_id": "172caf27cc8b44549ea94ed2f306cfe0",
+  "profile_sha256": "6e3f44854f9ead490fd2d3642bb042e5a110320e5e8007c3db4908d55d1a8869",
+  "pipe_name": "\\\\.\\pipe\\xar_profile_172caf27cc8b44549ea94ed2f306cfe0",
+  "recorded_at_utc": "2026-10-07T04:25:42.488464+00:00",
+  "status": "RED",
+  "reason": "BridgeUnavailableError: native game state is not available yet; CK3 may still be loading or may not have entered a map",
+  "injector": {
+    "schema": "xar.ck3.contained-injector-job.v1",
+    "status": "EXIT",
+    "argv": [
+      "C:/lr19b1/xar_ck3_bridge_injector.exe",
+      "--pipe",
+      "\\\\.\\pipe\\xar_profile_172caf27cc8b44549ea94ed2f306cfe0",
+      "19980",
+      "C:/lr19b1/xar_ck3_bridge.dll"
+    ],
+    "pid": 14764,
+    "creation_utc": "2026-10-07T04:25:31.453000+00:00",
+    "pinned_executable": "C:\\lr19b1\\xar_ck3_bridge_injector.exe",
+    "executable_sha256": "D11FAA5EF4851BF0CAE3F11985BC92A5738660ED90DB42B7D998E724389B3E07",
+    "job_limit_flags": 8200,
+    "pre_resume_job_pids": [
+      14764
+    ],
+    "job_active_final": 0,
+    "job_pids_final": [],
+    "resume_previous_count": 1,
+    "returncode": 0,
+    "injector_root_reaped": true,
+    "complete_process_tree_proven": true,
+    "stdout_sha256": "BA5666E3935EE8989B78FB59B32BE40A5417665BBE4AB1EFE79A7D421685944A",
+    "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "stdout_bytes": 81,
+    "stderr_bytes": 0,
+    "stdout_retained_sha256": "BA5666E3935EE8989B78FB59B32BE40A5417665BBE4AB1EFE79A7D421685944A",
+    "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "stdout_retained_bytes": 81,
+    "stderr_retained_bytes": 0,
+    "stdout_complete": true,
+    "stderr_complete": true,
+    "output_limit_bytes": 8388608,
+    "stdout_overflow": false,
+    "stdout_reader_error": null,
+    "stderr_overflow": false,
+    "stderr_reader_error": null
+  },
+  "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\native-evidence\\172caf27cc8b44549ea94ed2f306cfe0\\0001-attach.json"
+}

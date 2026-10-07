@@ -1,0 +1,11 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 4,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-queue-001\\r19-root-late-attach-001.request.json",
+  "request_sha256": "0242f09b14d0d60a9b3487f9e40a7c143c36d56e9e0d0847dc43dbd9f0a61409",
+  "started_at_utc": "2026-10-07T04:48:31.115336+00:00",
+  "request_id": "r19-root-late-attach-001",
+  "status": "ERROR_NO_RETRY",
+  "reason": "RuntimeError: attach was already requested in this client session; no replay",
+  "finished_at_utc": "2026-10-07T04:48:31.116211+00:00"
+}

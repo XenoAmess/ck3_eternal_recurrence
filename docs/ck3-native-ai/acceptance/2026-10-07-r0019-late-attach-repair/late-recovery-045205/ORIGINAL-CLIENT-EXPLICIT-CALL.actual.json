@@ -1,0 +1,69 @@
+{
+  "schema": "lyd.root.explicit-sdk-late-verification.v1",
+  "request_id": "direct-r19-root-late-verify-001",
+  "name": "ck3_attach_profile_bridge_v1",
+  "arguments": {},
+  "started_at_utc": "2026-10-07T04:52:00.187972+00:00",
+  "client_session_id": "5b11bc8186974854aa695cf2704e8866",
+  "native_session_id": "172caf27cc8b44549ea94ed2f306cfe0",
+  "client_process": {
+    "pid": 17364,
+    "create_time": 1791346987.1258173,
+    "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "cmdline": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-actual-consumer-source-20261007-001\\persistent_native_mcp_queue_28.py",
+      "serve",
+      "--profile",
+      "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/native-profile-with-exit-inventory.json",
+      "--queue",
+      "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-queue-001",
+      "--output",
+      "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001",
+      "--binding",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-binding-001\\ROOT-BINDING.json",
+      "--binding-sha256",
+      "150b624a2a87d3496dc91cad81a22e8c91f79da56c700f6d133c1f1527bae7a4"
+    ],
+    "ppid": 11856
+  },
+  "client_object_id": 3190431960768,
+  "loop_object_id": 3190383782480,
+  "service_source_overlay": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-debugpy-recovery-20261007-001/PYTHON-SOURCE-OVERLAY.actual.json",
+    "bytes": 2497,
+    "sha256": "fa1ddcbfc97ce969ee27aeaaee6f53d2ddf52de2763c6d5cfa3a138a76582732"
+  },
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-debugpy-recovery-20261007-001/explicit_late_verify_in_original_client.py",
+    "bytes": 4294,
+    "sha256": "ac2979456f4a64469bc8c600049b841db712c3828a7bf375bc949808581b8e6e"
+  },
+  "route": "ORIGINAL_CLIENT_OFFICIAL_SDK_EXPLICIT_CALL_AFTER_QUEUE_HARNESS_REFUSAL",
+  "queue_attach_requested_before": true,
+  "queue_attach_requested_reset": false,
+  "new_transport": false,
+  "new_client": false,
+  "new_server": false,
+  "reconnected": false,
+  "reinjected": false,
+  "status": "OFFICIAL_SDK_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/direct-r19-root-late-verify-001.sdk-result.json",
+    "bytes": 51943,
+    "sha256": "c07515af6048e742e5c6a0218c58dfc57eab00292377e0179203fb2edf9ec9ec"
+  },
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\native-evidence\\172caf27cc8b44549ea94ed2f306cfe0\\0003-attach-late-verification.json",
+      "copy": "direct-r19-root-late-verify-001.native-01.json",
+      "sha256": "86f5c118a24a6a3200a91086ed7a0739ee2b8bf30471ae50e293ff08ca947605"
+    }
+  ],
+  "queue_attach_requested_after": true,
+  "finished_at_utc": "2026-10-07T04:52:05.249012+00:00"
+}

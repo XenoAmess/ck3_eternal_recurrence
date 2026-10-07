@@ -1,0 +1,18 @@
+{
+  "native_session_id": "172caf27cc8b44549ea94ed2f306cfe0",
+  "client_session_id": "5b11bc8186974854aa695cf2704e8866",
+  "profile_sha256": "6e3f44854f9ead490fd2d3642bb042e5a110320e5e8007c3db4908d55d1a8869",
+  "attach_native": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/direct-r19-root-late-verify-001.native-01.json",
+    "bytes": 24459,
+    "sha256": "86f5c118a24a6a3200a91086ed7a0739ee2b8bf30471ae50e293ff08ca947605"
+  },
+  "attach_sdk": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/direct-r19-root-late-verify-001.sdk-result.json",
+    "bytes": 51943,
+    "sha256": "c07515af6048e742e5c6a0218c58dfc57eab00292377e0179203fb2edf9ec9ec"
+  },
+  "date_raw": 53144712,
+  "revision": 2,
+  "native_revision": 1
+}

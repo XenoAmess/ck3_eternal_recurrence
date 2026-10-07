@@ -1,0 +1,64 @@
+{
+  "schema": "lyd.root.python-source-overlay.v1",
+  "utc": "2026-10-07T04:48:14.982560+00:00",
+  "operation": "STANDARD_DEBUGPY_DAP_EXPLICIT_CLASS_REPLACEMENT",
+  "server_identity": {
+    "pid": 10744,
+    "create_time": 1791346995.7113132,
+    "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "cmdline": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\lr19s1\\tools\\ck3_native_profile_mcp.py",
+      "--profile",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\native-profile-with-exit-inventory.json",
+      "--confucian-challenger-tools",
+      "--grant-title-picker-tools"
+    ],
+    "ppid": 17364
+  },
+  "base_source_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "base_server_source": {
+    "path": "C:/lr19s1/tools/ck3_native_profile_mcp.py",
+    "bytes": 77955,
+    "sha256": "b2022b3afbe6c82d3455bdea10b2e4a4560492f32b00c0f87d29fda524253882"
+  },
+  "candidate_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-late-attach-production-repair-20261007-001/late_attach_candidate.py",
+    "bytes": 8380,
+    "sha256": "7abbe35ac90dd5cc9af35d95198eee2400a4dbabd8a5d1d0c310ad93dfcb7364"
+  },
+  "native_session_id": "172caf27cc8b44549ea94ed2f306cfe0",
+  "pipe_name": "\\\\.\\pipe\\xar_profile_172caf27cc8b44549ea94ed2f306cfe0",
+  "connection_generation": 1,
+  "original_attach_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/native-evidence/172caf27cc8b44549ea94ed2f306cfe0/0001-attach.json",
+    "bytes": 2167,
+    "sha256": "75d41e2683b991f2f167267401559e5a45a37937c357c51f5b7aacd8864d33a7"
+  },
+  "objects_before": {
+    "service": 2322787024976,
+    "driver": 2321464075536,
+    "state": 2321484181056,
+    "endpoint": 2321489673728,
+    "lock": 2322750195264,
+    "attach_result": 2321489559872
+  },
+  "objects_after": {
+    "service": 2322787024976,
+    "driver": 2321464075536,
+    "state": 2321484181056,
+    "endpoint": 2321489673728,
+    "lock": 2322750195264,
+    "attach_result": 2321489559872
+  },
+  "old_class": "__main__.NativeProfileService",
+  "new_class": "r19_explicit_retained_attach_overlay.NativeProfileServiceLateAttachCandidate",
+  "attach_result_status_after_replacement": "RED",
+  "SDK_calls": 0,
+  "native_calls": 0,
+  "reinjected": false,
+  "reconnected": false,
+  "game_business_acceptance": false
+}

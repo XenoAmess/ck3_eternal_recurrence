@@ -1,0 +1,73 @@
+{
+  "schema": "lyd.r19.explicit-late-attach-source-overlay-candidate.v1",
+  "worktree": "C:\\lci18w1",
+  "worktree_HEAD": "2bcd5e4e34a958ffbb2166b4dbf067fc3de158e0",
+  "production_code_base_HEAD": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "export_source_root": "C:/lr19s1",
+  "compiled_native_changed": false,
+  "original_failed_attach": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-client-001\\0002-r19-root-attach-001.native-01.json",
+    "bytes": 2167,
+    "sha256": "75d41e2683b991f2f167267401559e5a45a37937c357c51f5b7aacd8864d33a7"
+  },
+  "original_same_connection_readonly_snapshot": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-client-001\\0003-r19-root-current-snapshot-001.native-01.json",
+    "bytes": 17922,
+    "sha256": "141e6b2c8dec62da1f884002f7a0327228378a5dd802006c8861689c02d48ef0"
+  },
+  "preimages": [
+    {
+      "path": "C:\\lci18w1\\tools\\ck3_native_profile_mcp.py",
+      "relative": "tools/ck3_native_profile_mcp.py",
+      "bytes": 77955,
+      "sha256": "b2022b3afbe6c82d3455bdea10b2e4a4560492f32b00c0f87d29fda524253882",
+      "frozen465_exact": true
+    },
+    {
+      "path": "C:\\lci18w1\\tools\\test_ck3_native_profile_mcp.py",
+      "relative": "tools/test_ck3_native_profile_mcp.py",
+      "bytes": 24367,
+      "sha256": "7804781fd7b9e56cb1dcaf90cf197c26d4ad2b3eb4fe2fd2d21f08cc4c8ef925",
+      "frozen465_exact": true
+    }
+  ],
+  "candidate_production_sources": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\source\\tools\\ck3_native_profile_mcp.py",
+      "bytes": 85300,
+      "sha256": "e650e9339762cf04b348cec417c9f8b2efcc2c19c97139e05f7dc1398b543ee8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\source\\tools\\test_ck3_native_profile_mcp.py",
+      "bytes": 28680,
+      "sha256": "95b683ce6a772cc4aa43861f5239e6a8c5601a443a73ef7b07b007e8d79b533e"
+    }
+  ],
+  "candidate_mixin": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\late_attach_candidate.py",
+    "bytes": 8380,
+    "sha256": "7abbe35ac90dd5cc9af35d95198eee2400a4dbabd8a5d1d0c310ad93dfcb7364"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\PATCH.diff",
+    "bytes": 13284,
+    "sha256": "f2e4d90611f7351ffee1875ab76bd49a28fc9fea93a5fcca740dae233f982b28"
+  },
+  "production_AST_only_changes": [
+    "hashlib import",
+    "three retained-verification methods",
+    "attach cached-result explicit dispatch"
+  ],
+  "all_other_production_AST_exact": true,
+  "tool_factory_AST_exact": true,
+  "main_or_export_written": false,
+  "SDK_or_debugger_executed_by_author": false,
+  "live_overlay_applied_by_author": false,
+  "modern_overlay_PROVENANCE_separate_from_frozen465": true,
+  "future_live_late_attach_receipt": null,
+  "resume_after_a_server_restart": "not changed; this candidate only repairs the original retained service connection",
+  "test_harness_failures_preserved": [
+    "initial syntax-error tool transcript (c051e0)",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\focused-attempt-002\\RESULT.actual.json"
+  ]
+}

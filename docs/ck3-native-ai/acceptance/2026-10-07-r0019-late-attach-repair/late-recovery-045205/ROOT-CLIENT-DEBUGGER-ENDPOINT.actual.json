@@ -1,0 +1,28 @@
+{
+  "client": {
+    "pid": 17364,
+    "create_time": 1791346987.1258173,
+    "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "cmdline": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-actual-consumer-source-20261007-001\\persistent_native_mcp_queue_28.py",
+      "serve",
+      "--profile",
+      "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/native-profile-with-exit-inventory.json",
+      "--queue",
+      "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-queue-001",
+      "--output",
+      "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001",
+      "--binding",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-binding-001\\ROOT-BINDING.json",
+      "--binding-sha256",
+      "150b624a2a87d3496dc91cad81a22e8c91f79da56c700f6d133c1f1527bae7a4"
+    ],
+    "ppid": 11856
+  },
+  "port": 62791,
+  "host": "127.0.0.1"
+}

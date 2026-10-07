@@ -1,0 +1,16 @@
+test_attach_starts_server_first_binds_pipe_and_returns_native_readback (test_ck3_native_profile_mcp.NativeProfileTests.test_attach_starts_server_first_binds_pipe_and_returns_native_readback) ... ok
+test_closed_profile_rejects_caller_style_identity_and_arbitrary_artifact (test_ck3_native_profile_mcp.NativeProfileTests.test_closed_profile_rejects_caller_style_identity_and_arbitrary_artifact) ... ok
+test_explicit_late_attach_unknown_or_different_clock_stays_red (test_ck3_native_profile_mcp.NativeProfileTests.test_explicit_late_attach_unknown_or_different_clock_stays_red) ... ok
+test_explicit_late_attach_verifies_original_driver_without_reinjection (test_ck3_native_profile_mcp.NativeProfileTests.test_explicit_late_attach_verifies_original_driver_without_reinjection) ... ok
+test_injector_ack_without_containment_proof_is_red_and_not_replayed (test_ck3_native_profile_mcp.NativeProfileTests.test_injector_ack_without_containment_proof_is_red_and_not_replayed) ... ok
+test_native_wrong_pid_build_or_unavailable_clock_cannot_verify_attach (test_ck3_native_profile_mcp.NativeProfileTests.test_native_wrong_pid_build_or_unavailable_clock_cannot_verify_attach) ... ok
+test_new_crash_artifact_blocks_attach_and_a_racing_native_read (test_ck3_native_profile_mcp.NativeProfileTests.test_new_crash_artifact_blocks_attach_and_a_racing_native_read) ... ok
+test_new_server_cannot_replay_attach_into_the_claimed_run (test_ck3_native_profile_mcp.NativeProfileTests.test_new_server_cannot_replay_attach_into_the_claimed_run) ... ok
+test_running_clock_rejects_attach_before_endpoint_or_injector (test_ck3_native_profile_mcp.NativeProfileTests.test_running_clock_rejects_attach_before_endpoint_or_injector) ... ok
+test_stale_process_offline_and_lease_guards_send_zero_injector_commands (test_ck3_native_profile_mcp.NativeProfileTests.test_stale_process_offline_and_lease_guards_send_zero_injector_commands) ... ok
+test_userdir_and_artifact_changes_are_denied_before_attach (test_ck3_native_profile_mcp.NativeProfileTests.test_userdir_and_artifact_changes_are_denied_before_attach) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.137s
+
+OK

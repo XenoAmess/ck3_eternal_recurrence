@@ -1,0 +1,107 @@
+{
+  "status": "EXPLICIT_REQUEST_RED_PRESERVED",
+  "request_id": "r19-root-late-attach-001",
+  "inputs": {
+    "spec": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/ROOT-SPEC-04-late-attach.json",
+      "bytes": 136,
+      "sha256": "5a19b3b9916207ac60b3da5fc765379bb636296eff93a29dce2902a2374e0ff6"
+    },
+    "consumer_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-actual-consumer-source-20261007-001/INDEX.json",
+      "bytes": 4799,
+      "sha256": "ee9983b294b7387c27166bbfcce44a77c3d231bd5bcd16cce1612c9220807abb"
+    },
+    "request_author": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-formal-original0240-source-20261007-001/author_formal_request.py",
+      "bytes": 3069,
+      "sha256": "e95d125ea1cead38bfef7386c76438630118f5dd400cb331e740ba3feea10d45"
+    },
+    "queue_helper": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-actual-consumer-source-20261007-001/persistent_native_mcp_queue_28.py",
+      "bytes": 15201,
+      "sha256": "56e53b3b3be226b5f22538d0bebc19ff5b7b3a7427fbc263d383cbbee8e4b25d"
+    },
+    "binding": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-binding-001/ROOT-BINDING.json",
+      "bytes": 2897,
+      "sha256": "150b624a2a87d3496dc91cad81a22e8c91f79da56c700f6d133c1f1527bae7a4"
+    },
+    "profile": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/native-profile-with-exit-inventory.json",
+      "bytes": 1104,
+      "sha256": "6e3f44854f9ead490fd2d3642bb042e5a110320e5e8007c3db4908d55d1a8869"
+    },
+    "guard": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/ROOT-PROFILE-REQUEST-001/native-profile-fresh-001/guard-profile.json",
+      "bytes": 2012,
+      "sha256": "6b56599a38d798adc7baed8f8106dc9e976eb21b44347c19c9887424370282b0"
+    },
+    "normal_exit_source_inventory": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/userdir/normal-exit-source-inventory-v1.json",
+      "sha256": "0206daeed9bf17269e5643536edc6369f8968f83d3b72dc17f5fb14607c50bf4"
+    },
+    "Client_session": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/session.json",
+      "bytes": 1242,
+      "sha256": "561c82eb3fbb2d6a047a1e5c39dee54dca00ee72037fad9000f92a4bd3149c54"
+    },
+    "Client_ready": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/ready.json",
+      "bytes": 1365,
+      "sha256": "647d4522cd5385c19ca0a38c896d15f9827c3b6ca9d5a4234b380dc132865f45"
+    },
+    "original_native_attach": null
+  },
+  "calls": [
+    {
+      "stage": "author",
+      "actual_exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/ROOT-SDK-04-late-attach/author.stdout",
+        "bytes": 694,
+        "sha256": "f43dfe21ad8014d24c302dfd472e7ed8ae5e6af92ee4161e1bd1d78adf582b2e"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/ROOT-SDK-04-late-attach/author.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "stage": "enqueue",
+      "actual_exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/ROOT-SDK-04-late-attach/enqueue.stdout",
+        "bytes": 287,
+        "sha256": "3ec4112d9ec3eb26c439368780a6c061a809fd2ef227716fcd8aad686cab116d"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/ROOT-SDK-04-late-attach/enqueue.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/ROOT-SDK-04-late-attach/REQUEST.actual.json",
+    "bytes": 174,
+    "sha256": "0242f09b14d0d60a9b3487f9e40a7c143c36d56e9e0d0847dc43dbd9f0a61409"
+  },
+  "response": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/0004-r19-root-late-attach-001.response.json",
+    "bytes": 570,
+    "sha256": "ccfd38cfb35c1b65585bbd8046af41fb9a57283e68e935141d3599f7b66152bc"
+  },
+  "response_status": "ERROR_NO_RETRY",
+  "sdk_result": null,
+  "sdk_isError": null,
+  "official_native_copies": [],
+  "automatic_retry": false,
+  "automatic_attach": false,
+  "automatic_reconnect": false,
+  "enqueued_once": true,
+  "formal_acceptance": null,
+  "new_T": null,
+  "finished_at_utc": "2026-10-07T04:48:31.258910+00:00"
+}
