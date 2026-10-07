@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "work_package": "m7_crown_authority_actual_cooldown_timing_12004",
-  "status": "FINITE_ROOT_SCALAR_TIMING_SOURCE_PROPOSAL_NOTRUN",
-  "source_base": "14f07ade00e9ad359da3aa6af3642592ede3f48d",
+  "status": "ACTUAL_SCALAR_REMAINING_AND_CLOCK_SOURCE_CLOSED_CALENDAR_ATTACHMENT_PENDING",
+  "source_base": "28f19693cc79afe9ab8de94ee17b64dcc6204306",
   "target": {
     "product_version": "1.20.0.4",
     "steam_build_id": "25734779",
@@ -38,12 +38,17 @@
   },
   "cache_first_source_request": {
     "executor": "Root central native mapper",
-    "current_phase": "FINITE_ROOT_ONLY_PAIRED_SOURCE_WINDOW_PROPOSAL",
+    "current_phase": "EXACT_RUNTIME_CHARACTER_SCOPE_REGISTRATION_REFERENCER_REQUIRED",
     "runnable_capture_rows": [],
     "new_native_bytes_authorized_by_this_file": 0,
-    "root_only_proposed_manifest": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/ROOT-FINITE-SCALAR-TIMING-MANIFEST.json",
-    "root_only_proposed_manifest_rows": 3,
-    "root_only_proposed_physical_cost_before_cache": {"old3_bytes": 381, "actual4_bytes": 381, "total_bytes": 762, "exact_reads": 6},
+    "root_only_proposed_manifest": null,
+    "root_only_proposed_manifest_rows": 0,
+    "root_only_proposed_physical_cost_before_cache": {
+      "old3_bytes": 0,
+      "actual4_bytes": 0,
+      "total_bytes": 0,
+      "exact_reads": 0
+    },
     "cached_current_attachment_metadata": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/CACHED-CANDIDATE-ATTACHMENTS.json",
     "direct_remaining_getter": {
       "name": "GetVarTimeRemaining",
@@ -52,7 +57,10 @@
       "scalar_key": "crown_authority_cooldown",
       "registered_callback_rva_held": null,
       "clock_return_units_proved": false,
-      "local_helper_proposal_is_this_named_getter_address": false
+      "local_helper_proposal_is_this_named_getter_address": false,
+      "complete_scalar_primitive_actual_rva": "0x3727530",
+      "complete_scalar_primitive_abi": "int32_t(const void*, int32_t)",
+      "primitive_is_registered_callback_identity_proof": false
     },
     "source_reference_provenance": {
       "version": "1.20.0.2",
@@ -75,8 +83,18 @@
       "variable_identifier_lookup_rva": "0x3F8A660",
       "variable_identifier_name_rva": "0x3F8A6D0",
       "scalar_layout_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/marriage-family/actual4-break-penalty/context-map-no-pdata/FAMILY-MAP.json",
-      "actual_member_sites": ["0x37274A0", "0x37274A4", "0x37274A8", "0x37274B4"],
-      "proven_roles": ["context rows+0x10", "context count+0x1C", "row stride0x20", "row identifier DWORD+0x08"],
+      "actual_member_sites": [
+        "0x37274A0",
+        "0x37274A4",
+        "0x37274A8",
+        "0x37274B4"
+      ],
+      "proven_roles": [
+        "context rows+0x10",
+        "context count+0x1C",
+        "row stride0x20",
+        "row identifier DWORD+0x08"
+      ],
       "existing_owner_actual_capture_bytes": 15,
       "this_worker_capture_bytes": 0
     },
@@ -89,14 +107,10 @@
       "monitor_member_locator": "ReadSignature row+0x0C expiration_raw",
       "actual4_offset_or_unit_proof": false
     },
-    "required_source_roles": [
-      {"id": "scalar_set_variable_caller", "need": "Concrete actual set_variable execution selects this Character scalar context and calls the timed scalar setter; do not substitute a flag caller.", "max_new_actual_bytes": 64, "max_exact_reads": 1},
-      {"id": "scalar_timed_writer", "need": "Consumed native expiry/type widths, duration-to-clock arithmetic and permanent sentinel writes.", "max_new_actual_bytes": 256, "max_exact_reads": 2},
-      {"id": "scalar_expiry_update", "need": "Actual scalar current clock, expiry comparison/removal and any normalization relationship used by the returned remaining value.", "max_new_actual_bytes": 256, "max_exact_reads": 1},
-      {"id": "scalar_native_clock_cadence", "need": "Named native updater caller and its calendar cadence/daily ordering sufficient to derive the real retry date from the current paused frame.", "max_new_actual_bytes": 128, "max_exact_reads": 1},
-      {"id": "scalar_value_type", "need": "Consumed raw scalar type role if not already held; an unrelated same-offset type is insufficient.", "max_new_actual_bytes": 64, "max_exact_reads": 1}
-    ],
-    "follow_up_manifest_physical_ceiling": {"actual_bytes": 768, "exact_reads": 6},
+    "follow_up_manifest_physical_ceiling": {
+      "actual_bytes": 768,
+      "exact_reads": 6
+    },
     "before_any_follow_up_capture": [
       "Locate concrete source sites in existing named cache/central inventory.",
       "Reuse all held operand bytes and shared exact4 bindings.",
@@ -104,28 +118,135 @@
       "Verify the actual old3 source bytes against the explicitly separate .2 source reference before transferring any timed-row meaning.",
       "Submit any further unit/date-conversion window from actual returned source locations to Root; this file does not authorize native capture."
     ],
-    "excluded_research": ["full image/EXE scan or hash", "shared identifier/context/collection recapture", "FlagSet-to-scalar timing inference", "20-year inferred current expiry", "new character/seed/game", "government policy expansion"]
+    "excluded_research": [
+      "full image/EXE scan or hash",
+      "shared identifier/context/collection recapture",
+      "FlagSet-to-scalar timing inference",
+      "20-year inferred current expiry",
+      "new character/seed/game",
+      "government policy expansion"
+    ],
+    "previous_required_source_roles": [
+      {
+        "id": "scalar_set_variable_caller",
+        "need": "Concrete actual set_variable execution selects this Character scalar context and calls the timed scalar setter; do not substitute a flag caller.",
+        "max_new_actual_bytes": 64,
+        "max_exact_reads": 1
+      },
+      {
+        "id": "scalar_timed_writer",
+        "need": "Consumed native expiry/type widths, duration-to-clock arithmetic and permanent sentinel writes.",
+        "max_new_actual_bytes": 256,
+        "max_exact_reads": 2
+      },
+      {
+        "id": "scalar_expiry_update",
+        "need": "Actual scalar current clock, expiry comparison/removal and any normalization relationship used by the returned remaining value.",
+        "max_new_actual_bytes": 256,
+        "max_exact_reads": 1
+      },
+      {
+        "id": "scalar_native_clock_cadence",
+        "need": "Named native updater caller and its calendar cadence/daily ordering sufficient to derive the real retry date from the current paused frame.",
+        "max_new_actual_bytes": 128,
+        "max_exact_reads": 1
+      },
+      {
+        "id": "scalar_value_type",
+        "need": "Consumed raw scalar type role if not already held; an unrelated same-offset type is insufficient.",
+        "max_new_actual_bytes": 64,
+        "max_exact_reads": 1
+      }
+    ],
+    "required_source_roles": [
+      {
+        "id": "character_scalar_calendar_attachment",
+        "need": "Actual kind4 callback+30 LEA/STORE or named registration producer using source-closed runtime registry54F2AF0; then actual Character day caller or renderer converter scale.",
+        "source_entry": "Held exact RIP/caller references to54F2AF0/3795A60; first retain true registration source producer bytes and emitted callback target, excluding singleton init and destructor.",
+        "callback_rva_or_producer_not_guessed": true,
+        "runnable_extraction_rows": []
+      }
+    ],
+    "next_cached_reference_recipe": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\ROOT-CACHED-CHARACTER-REGISTRATION-REFS-RECIPE.json"
   },
   "same_query_value_contract": {
-    "status_values": ["available", "read_failed"],
-    "fields": ["status", "present", "timed", "scalar_type_raw", "expiry_raw", "current_clock_raw", "remaining_raw", "expiry_type", "remaining_unit", "retry_date_raw"],
-    "timing_storage_widths_and_sentinel": "TO_BE_FILLED_FROM_ACTUAL_SCALAR_SOURCE_BEFORE_BINDER_IMPLEMENTATION",
-    "expiry_type_and_unit": "EXACT_ENUM_SELECTED_FROM_ACTUAL_SCALAR_SOURCE_BEFORE_PUBLICATION",
-    "absent": {"status": "available", "present": false, "timed": false, "scalar_type_raw": null, "expiry_raw": null, "current_clock_raw": null, "remaining_raw": 0, "expiry_type": null, "remaining_unit": null, "retry_date_raw": "same captured frame date_raw"},
+    "status_values": [
+      "available",
+      "read_failed"
+    ],
+    "fields": [
+      "status",
+      "present",
+      "timed",
+      "scalar_type_raw",
+      "expiry_raw",
+      "current_clock_raw",
+      "remaining_raw",
+      "expiry_type",
+      "remaining_unit",
+      "retry_date_raw"
+    ],
+    "timing_storage_widths_and_sentinel": {
+      "expiry": "signed32 row+0x0C",
+      "clock": "signed32 full scalar context+0x28",
+      "remaining": "signed32 native DWORD subtraction",
+      "untimed_classification": "present row expiry_raw<=-1",
+      "absent_or_untimed_native_return": -1
+    },
+    "expiry_type_and_unit": {
+      "expiry_type": "scalar_context_counter_signed32",
+      "remaining_unit": "PENDING_ACTUAL_CHARACTER_CALENDAR_SOURCE",
+      "retry_date_raw": "No positive retry date until the actual cadence or date conversion is source closed."
+    },
+    "absent": {
+      "status": "available",
+      "present": false,
+      "timed": false,
+      "scalar_type_raw": null,
+      "expiry_raw": null,
+      "current_clock_raw": null,
+      "remaining_raw": -1,
+      "expiry_type": null,
+      "remaining_unit": null,
+      "retry_date_raw": "same captured frame date_raw",
+      "raw_native_result_is_not_synthetic_zero": true
+    },
     "timed": "Publish actual typed expiry/clock, signed native remaining including zero or negatives, proved unit and usable retry_date_raw; never erase a present row because remaining is zero.",
     "untimed": "Publish presence, actual native sentinel and typed raw data, timed=false; no invented finite deadline.",
     "read_failed": "Nullable timing values are read failure; never convert them to absence or remaining zero.",
     "schedule_requery_does_not_grant_action_permission": true,
-    "presence_only_satisfies_work_package": false
+    "presence_only_satisfies_work_package": false,
+    "scalar_type_raw_is_required_for_scheduling": false,
+    "raw_scalar_value_default_datum_is_consumed_by_scheduling": false,
+    "timed_remaining_minus_one": "present=true, timed=true and expiry_raw>=0; preserve -1 as a computed negative, do not collapse it into absent/permanent."
   },
   "root_hook_recipe": [
-    {"file": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_realm_law.hpp", "change": "Add owned typed cooldown result to existing RealmLawReadback12002 once actual timing source is closed."},
-    {"file": "ck3_autonomous_player/native_bridge/src/ck3_12002_realm_law.cpp", "change": "Invoke the exact4 observer within existing current Character/frame capture and serialize one top-level cooldown object."},
-    {"file": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_law_paused_private_transport.py", "change": "Extend the strict top-level key set and normalize the actual typed timing object; preserve zero/null and same-frame identity."},
-    {"file": "existing registered realm-law MCP consumer", "change": "Retain that object and schedule a fresh terms query at its observed retry date through the existing plan; fresh FinalCanEnact remains action permission."}
+    {
+      "file": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_realm_law.hpp",
+      "change": "Add owned typed cooldown result to existing RealmLawReadback12002 once actual timing source is closed."
+    },
+    {
+      "file": "ck3_autonomous_player/native_bridge/src/ck3_12002_realm_law.cpp",
+      "change": "Invoke the exact4 observer within existing current Character/frame capture and serialize one top-level cooldown object."
+    },
+    {
+      "file": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_law_paused_private_transport.py",
+      "change": "Extend the strict top-level key set and normalize the actual typed timing object; preserve zero/null and same-frame identity."
+    },
+    {
+      "file": "existing registered realm-law MCP consumer",
+      "change": "Retain that object and schedule a fresh terms query at its observed retry date through the existing plan; fresh FinalCanEnact remains action permission."
+    }
   ],
   "new_first_recipe_notrun": {
-    "whole_producer_cases": ["absent", "positive timed", "timed zero", "timed negative", "native untimed sentinel", "read failure"],
+    "whole_producer_cases": [
+      "absent with native remaining-1",
+      "positive timed",
+      "timed zero",
+      "timed negative including native remaining-1",
+      "existing expiry<=-1 untimed sentinel",
+      "read failure"
+    ],
     "producer": "Root new exact4 capture-to-real serializer whole fixture",
     "consumer": "Root sole registered MCP law consumer on those new whole-producer wires",
     "production_acceptance": "Root current genuine Robert29829 paused same-query result with usable retry timing; no replayed R54/R61 or new seed",
@@ -141,7 +262,212 @@
     "production_live_primitive": false,
     "production_live_loop": false,
     "complete": false,
-    "remaining": "Named scalar timeout/type/clock/cadence source -> finite central capture if cache misses -> real exact4 bound observer -> same-MCP FIRST -> current paused timing and scheduled retry."
+    "remaining": "CALL-derived Character scope registry/provider attachment -> exact Character calendar cadence or native date converter -> real readonly same-MCP observer and new whole/registered FIRST. Presence-only and raw remaining with no usable positive retry date are unfinished.",
+    "actual_scalar_storage_and_remaining_source_closed": true,
+    "actual_scalar_updater_receiver_source_closed": true,
+    "actual_calendar_unit_source_closed": false,
+    "actual_scope_registry_initialization_source_closed": true
   },
-  "worker_execution_counts": {"tests": 0, "imports": 0, "builds": 0, "sdk": 0, "game_queries": 0, "save_reads": 0, "exe_reads": 0, "hashes": 0, "new_capabilities": 0, "old_qualified_suite_reruns": 0}
+  "worker_execution_counts": {
+    "tests": 0,
+    "imports": 0,
+    "builds": 0,
+    "sdk": 0,
+    "game_queries": 0,
+    "save_reads": 0,
+    "exe_reads": 0,
+    "hashes": 0,
+    "new_capabilities": 0,
+    "old_qualified_suite_reruns": 0
+  },
+  "initial_source_base": "14f07ade00e9ad359da3aa6af3642592ede3f48d",
+  "actual_source_results": {
+    "first01": {
+      "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\scalar-timing-first01\\FAMILY-MAP.json",
+      "root_physical_bytes": 762,
+      "root_exact_reads": 6,
+      "aggregate_scalar192_status": "partial decode in unrelated last helper only; complete value68 and remaining66 retained",
+      "scalar192_partition_bytes": [
+        68,
+        12,
+        66,
+        14,
+        32
+      ],
+      "partial_tail_decoded_bytes": 29,
+      "partial_tail_truncated_suffix": "48 63 49",
+      "value_helper_actual4": {
+        "begin": "0x37274E0",
+        "end_exclusive": "0x3727524",
+        "bytes": 68,
+        "returns_present_row_payload_offset": "0x10",
+        "absent_fallback_rip_target": "0x4448648",
+        "fallback_contents_read": false
+      },
+      "remaining_helper": {
+        "old3_begin": "0x3727550",
+        "actual4_begin": "0x3727530",
+        "actual4_end_exclusive": "0x3727572",
+        "bytes": 66,
+        "instruction_count": 23,
+        "complete_body": true,
+        "paired_raw_bytes_equal": true,
+        "abi": "int32_t(const void* full_scalar_context, int32_t variable_token)",
+        "receiver_register": "RCX",
+        "token_register": "EDX",
+        "result_register": "EAX",
+        "scalar_row_expiry_read_actual_site": "0x3727560",
+        "scalar_row_expiry_offset": "0x0C",
+        "scalar_row_expiry_type": "signed32",
+        "full_context_clock_subtract_actual_site": "0x3727568",
+        "full_context_clock_offset": "0x28",
+        "full_context_clock_type": "signed32",
+        "missing_row_or_signed_expiry_le_minus_one_native_result": -1,
+        "timed_expression": "native32(expiry_raw - current_clock_raw)",
+        "computed_negative_or_zero_is_preserved": true,
+        "timed_remaining_minus_one_does_not_mean_missing_or_untimed": true,
+        "registered_GetVarTimeRemaining_callback_identity_closed": false,
+        "scalar_attachment_source": "Complete helper scans the existing actual scalar context rows/count/stride/key, independently of historical FlagSet labels.",
+        "calendar_unit_closed": false
+      },
+      "writer": {
+        "actual_span": "[0x3728439,0x37284EF)",
+        "bytes": 182,
+        "complete_normalized_equal": true,
+        "inner_clock_offset": "0x20",
+        "positive_duration_register": "R9D",
+        "nonpositive_duration_writes": -1,
+        "row_expiry_store_actual_site": "0x37284E6",
+        "row_expiry_offset": "0x0C"
+      },
+      "row_vtable": {
+        "actual_rip_site": "0x3728420",
+        "actual_rip_bytes": "48 8D 05 09 4E D6 00",
+        "actual_target": "0x448D230",
+        "nominal_type_name_closed": false,
+        "calendar_unit_witness": false
+      }
+    },
+    "prefix02": {
+      "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\scalar-clock-prefix02\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\scalar-clock-prefix02\\scalar_context_clock_update_prefix-DETAIL.json",
+      "root_physical_bytes": 192,
+      "root_exact_reads": 2,
+      "old3_span": "[0x3727600,0x3727660)",
+      "actual4_span": "[0x37275E0,0x3727640)",
+      "complete_instruction_span_normalized_equal": true,
+      "whole_function_qualification": false,
+      "clock_increment_condition": "scalar rows nonempty and last expiry>=0; one increment per eligible invocation",
+      "full_to_inner_receiver_relation_source_closed": true,
+      "actual_normalizer_target": "0x887360",
+      "normalizer_body_captured_or_called": false,
+      "consumed_instruction_pairs": [
+        {
+          "role": "preserve full context receiver",
+          "offset": 12,
+          "old_rva": "0x372760c",
+          "actual_rva": "0x37275ec",
+          "old_bytes": "4c8bf9",
+          "actual_bytes": "4c8bf9",
+          "old_assembly": "mov r15, rcx",
+          "actual_assembly": "mov r15, rcx"
+        },
+        {
+          "role": "scalar row base",
+          "offset": 38,
+          "old_rva": "0x3727626",
+          "actual_rva": "0x3727606",
+          "old_bytes": "4c8b4110",
+          "actual_bytes": "4c8b4110",
+          "old_assembly": "mov r8, qword ptr [rcx + 0x10]",
+          "actual_assembly": "mov r8, qword ptr [rcx + 0x10]"
+        },
+        {
+          "role": "scalar clock increment",
+          "offset": 54,
+          "old_rva": "0x3727636",
+          "actual_rva": "0x3727616",
+          "old_bytes": "ff4128",
+          "actual_bytes": "ff4128",
+          "old_assembly": "inc dword ptr [rcx + 0x28]",
+          "actual_assembly": "inc dword ptr [rcx + 0x28]"
+        },
+        {
+          "role": "scalar clock read",
+          "offset": 60,
+          "old_rva": "0x372763c",
+          "actual_rva": "0x372761c",
+          "old_bytes": "8b4928",
+          "actual_bytes": "8b4928",
+          "old_assembly": "mov ecx, dword ptr [rcx + 0x28]",
+          "actual_assembly": "mov ecx, dword ptr [rcx + 0x28]"
+        },
+        {
+          "role": "scalar last expiry compare",
+          "offset": 67,
+          "old_rva": "0x3727643",
+          "actual_rva": "0x3727623",
+          "old_bytes": "423b4c00ec",
+          "actual_bytes": "423b4c00ec",
+          "old_assembly": "cmp ecx, dword ptr [rax + r8 - 0x14]",
+          "actual_assembly": "cmp ecx, dword ptr [rax + r8 - 0x14]"
+        },
+        {
+          "role": "select inner collection from full context+8",
+          "offset": 74,
+          "old_rva": "0x372764a",
+          "actual_rva": "0x372762a",
+          "old_bytes": "498d4f08",
+          "actual_bytes": "498d4f08",
+          "old_assembly": "lea rcx, [r15 + 8]",
+          "actual_assembly": "lea rcx, [r15 + 8]"
+        },
+        {
+          "role": "native normalizer CALL",
+          "offset": 78,
+          "old_rva": "0x372764e",
+          "actual_rva": "0x372762e",
+          "old_bytes": "e80dfd15fd",
+          "actual_bytes": "e82dfd15fd",
+          "old_assembly": "call 0x887360",
+          "actual_assembly": "call 0x887360"
+        }
+      ],
+      "character_daily_cadence_closed": false
+    },
+    "calendar_gap": {
+      "old3_daily_inline_updater_call": "0x22A102B -> 0x3727600",
+      "old3_inline_receiver": "GameData+0xC8",
+      "inline_receiver_is_Character": false,
+      "old3_daily_asm": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-calendar-admission-v57/pause-source/evidence/daily-date-stage-22a0d80-primary.asm.txt",
+      "actual4_date_D_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/army-supply-next-tick-12004/actual4-selected-writer-root-first01/ROOT-SELECTED-WRITER-RECEIPT.json",
+      "existing_date24_proof_is_Character_scalar_cadence_proof": false,
+      "named_renderer_lookup": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\scalar-clock-prefix02\\renderer-entry-lookup\\ROOT-RENDERER-ENTRY-LOOKUP.json",
+      "next_concrete_entrance": "Runtime registry54F2AF0 genuine Character-kind4 registration producer writing callback+30; exact cached-ref recipe records the source fields required before any new finite byte row."
+    },
+    "root_total_physical_bytes": 954,
+    "root_total_exact_reads": 8,
+    "worker_native_reads": 0,
+    "registry03": {
+      "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-scope-registry03\\FAMILY-MAP.json",
+      "old3_span": "[0x3795A80,0x3795B2B)",
+      "actual4_span": "[0x3795A60,0x3795B0B)",
+      "bytes_per_build": 171,
+      "complete_normalized_equal": true,
+      "root_fresh_physical_bytes": 0,
+      "root_fresh_reads": 0,
+      "paired_shared_cache_bytes_reused": 342,
+      "actual_registry_static_object": "0x54F2AF0",
+      "registry_rows_runtime_initialized": true,
+      "data_and_count_init_zero_actual_sites": [
+        "0x3795AD1",
+        "0x3795ADF"
+      ],
+      "allocator_virtual_call_actual_site": "0x3795AE6",
+      "allocator_virtual_slot": "0x20",
+      "exit_destructor_actual_target": "0x43A1E10",
+      "writes_Character_kind4_callback": false,
+      "static_image_empty_registry_or_adjacent_data_is_callback_proof": false
+    }
+  }
 }
