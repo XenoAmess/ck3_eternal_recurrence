@@ -67,6 +67,10 @@ struct EventWindowBindings {
   EventGetRegistry get_script_identifier_table = nullptr;
   EventLookupIdentifier lookup_script_identifier_id = nullptr;
   EventResolveIdentifierName resolve_script_identifier_name = nullptr;
+  // Actual .4 supplies its independent Core/Events observation algorithms.
+  // Historical factories leave this null and retain their original readers.
+  bool (*read_observation_prefix)(const EventWindowBindings &,
+                                  game::Snapshot &) noexcept = nullptr;
 };
 
 EventWindowBindings BindEventWindowImage(std::uintptr_t image_base,

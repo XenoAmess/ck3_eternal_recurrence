@@ -118,6 +118,9 @@ T LoadAt(const void *base, std::size_t offset) noexcept {
 bool ReadObservationPrefix(const EventWindowBindings &bindings,
                            game::Snapshot &output) noexcept {
   output = {};
+  if (bindings.read_observation_prefix != nullptr) {
+    return bindings.read_observation_prefix(bindings, output);
+  }
   CoreSnapshotPrefix core{};
   if (!ReadCoreSnapshot(bindings.events.core, core) ||
       !ReadEventsSnapshot(bindings.events, output)) {
