@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from typing import Final
 
-from .version_identity import CK3_11906, CK3_12002, CK3_12003, require_exact_native_build
+from .version_identity import (
+    CK3_11906, CK3_12002, CK3_12003, CK3_12004, require_exact_native_build,
+)
 
 
 QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY: Final = (
@@ -231,6 +233,25 @@ _PROVENANCE_BY_BUILD: Final = {
 _PROVENANCE_BY_BUILD[CK3_12003.game_version] = {
     **_PROVENANCE_BY_BUILD[CK3_12002.game_version],
     "backend_id": CK3_12003.backend_id("pending-character-interaction-context-v1"),
+}
+_PROVENANCE_BY_BUILD[CK3_12004.game_version] = {
+    "backend_id": CK3_12004.backend_id("pending-character-interaction-context-v1"),
+    "pending_storage_slot_rva": "0x5D1EC80",
+    "character_storage_slot_rva": "0x5C67568",
+    "expiration_days_rva": "0x5C68CFC",
+    "local_routing_predicate_rva": "0x136D190",
+    "reply_validator_rva": "0x2968470",
+    "auto_accept_trigger_evaluator_rva": "0x372DF10",
+    "cost_evaluator_rva": "0x310CEC0",
+    "common_war_relation_rva": "0x28BC250",
+    "target_type_registry_getter_rva": "0x3795A60",
+    "target_type_registry_rva": "0x54F2AF0",
+    "script_identifier_name_rva": "0x3F4F8E0",
+    "reply_primary_vtable_rva": "0x448BC28",
+    "reply_secondary_vtable_rva": "0x448BBF8",
+    "war_victory_special_vtable_rva": "0x46C3AB0",
+    "war_white_peace_special_vtable_rva": "0x46C3B20",
+    "war_defeat_special_vtable_rva": "0x46C3B90",
 }
 
 _SPECIAL_WAR_UNAVAILABLE_REASONS: Final = {

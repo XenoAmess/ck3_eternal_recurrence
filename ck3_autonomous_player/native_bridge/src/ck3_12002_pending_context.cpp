@@ -1,6 +1,7 @@
 ﻿#include "xar_bridge/ck3_12002_pending_context.hpp"
 
 #include <windows.h>
+#include "xar_bridge/ck3_12004_pending_context.hpp"
 #include "xar_bridge/ck3_12002_gift_opinion.hpp"
 #include "xar_bridge/ck3_12002_prisoner_abi.hpp"
 #include "xar_bridge/ck3_11906.hpp"
@@ -293,6 +294,9 @@ bool EnvironmentIsExact(const PendingCharacterInteractionNativeEnvironmentV1
   }
   if (environment.module_base == 0) {
     return false;
+  }
+  if (ck3_12004::MatchesPendingCharacterInteractionEnvironment12004(environment)) {
+    return true;
   }
   const auto base = environment.module_base;
   return reinterpret_cast<std::uintptr_t>(environment.pending_storage_slot) ==
