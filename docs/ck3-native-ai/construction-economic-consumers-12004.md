@@ -173,3 +173,92 @@ and no NW-ECON/G2-M4 completion. `open_kaishek` preverification is
 not-applicable to this Python projection: it adds no Paradox script or native
 finite-runtime semantics; the pending focused Python tests cover the actual
 arithmetic and receipt classifications.
+
+## 2026-10-07 first checks and bounded completion source
+
+Root's first focused check of source `f81bb50c5622d09bacf99eb2b093f5e44fc5ceee`
+passed all 14 tests once (`economy-RESULT.json`, pytest exit 0), without game or
+SDK calls. This qualifies those Python semantics, not a registered-tool query,
+actual `.4` cash value, or building yield. The original 14 need no repeat solely
+because of this append.
+
+Root then authorized a finite completion-source extension. The sole mapper
+read 1432 new bytes in 4 reads: each image's 708-byte completion tail and 8-byte
+return probe. Both pairs decoded completely with equal normalized instruction
+spans and concrete member operands. The already held 94-byte progress prefix,
+Province+718 getter, definitions and modifier ledger were reused. There was
+no callee capture, xref scan, whole EXE read/hash, game, build or test.
+
+Evidence is under
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/economy-yield/`:
+`COMPLETION-TAIL-APPROVED-MANIFEST.json`,
+`completion-tail-first01/FAMILY-MAP.json` and its two detail records. The tail
+is actual `.3` `[2467D7E,2468042)` and `.4` `[2467D5E,2468022)`; those starts
+are explicit completion branch targets in the previously captured prefixes.
+The 8-byte probes observe actual successful returns, `.3` RET 2468049 and
+`.4` RET 2468029. No global RVA shift is used as source proof.
+
+For the ordinary category 0 branch, actual `.4` uses definition+6FFE8,
+requires slot in `[0,count1C)`, computes `holding+10 + slot*10`, writes the
+definition at 2467F90 and clears the slot byte+8 at 2467F93. The call immediately
+after this write is 2467F9A→**246CA40**, with RCX=the holding construction state;
+the actual `.3` counterpart is 246CA60. Other categories write their separate
+slots, so the ordinary built-slot meaning must not be extended to all
+category values. Building-valid followups receive the same definition,
+holding+F0 and initiator+D8 at 246CE30 and 246D0B0. The paths then converge at
+2467FDD→**2468B80** (`.3` 2468BA0), clear active definition+68 at 246801A and
+return. These are actual reached source edges, not executed callbacks.
+
+The immediately post-slot 246CA40 is now the precise smallest next candidate
+for effective effect/recalculation source. Its body and semantic identity
+remain unobserved. The common 2468B80 is separate; neither has been relabeled
+as an income getter or equated by name with historical 1.19 recalculation.
+Only a separately approved finite one-callee plan may capture either body.
+
+```mermaid
+flowchart TD
+  P[Reused actual4 progress prefix2467D00: work80<=0 or forceflag1] --> T[New actual4 completion tail2467D5E]
+  T --> K{Definition6FFE8 category}
+  K -->|0 / valid ordinary slot| S[2467F90 definition into holding10 + slot*10; slotflag0]
+  K --> O[Other category slots remain separate]
+  S --> R[2467F9A calls246CA40 with actual holding receiver]
+  R -. body not captured / effective contribution unknown .-> V[Specific building modifier application]
+  R --> F[Building-valid completion followups246CE30 and246D0B0]
+  O --> C[Common2468B80]
+  F --> C
+  C --> X[Active definition68 cleared; observed RET2468029]
+  V -. Province718 writer / holder tax transfer not closed .-> I[Building-attributed actual player NET]
+```
+
+## Existing consumer: actual before/post financial observation
+
+The same `construction_economic_outcome_v1` now accepts optional existing
+`pre_cash_v2` and `post_cash_v2` observations. It classifies an actual completed
+construction alongside gross-income, complete-expense and true-NET monthly
+rate changes, and the actual personal-gold stock difference. These are
+deliberately two dates; the output preserves both source frames and actual
+elapsed game hours rather than pretending they were one paused frame.
+
+The pre packet must come from the receipt's actual pre-submit date; the post
+packet must be at or after its independently observed completion. Both use
+the same actual actor and exact `.3` or `.4` v2 identity. The native cash
+reader/normalizer already supplies all these fields, so no native source or
+new query is required. Missing baseline cannot be repaired through a current
+reading. The current formal hook can consume packets already attached to
+the receipt; supplying them never triggers a second read here.
+
+An optional cash residual adds back only the construction debit proved by the
+original verified start receipt's before/after treasury and action ID. Without
+that independent debit proof, the raw stock difference remains observed but
+the residual stays unavailable. The residual is not construction payback:
+other real transactions during the interval remain unallocated. Positive NET
+change with unchanged gross can reflect reduced expenses, and neither a
+positive NET change nor positive residual proves a building-exclusive gain.
+`building_attribution_ready`, `net_benefit_ready` and realized M5 value remain
+false. This is the smallest useful actual-financial classifier while the
+specific modifier/holder-tax source remains open.
+
+The sole new semantic test uses unchanged gross, changed complete expenses,
+an independently proved one-time debit, and interval cash movement. It is
+**NOTRUN** in this lane; Root runs only that new case. It does not replay the
+already GREEN 14 or claim a real completed Robert sample.

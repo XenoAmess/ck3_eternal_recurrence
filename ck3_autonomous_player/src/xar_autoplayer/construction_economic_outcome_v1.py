@@ -8,9 +8,14 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
+from .bridge.version_identity import require_exact_native_build
+from .bridge.war_cash_private_transport_v1 import _monthly_flow
+
 
 def construction_economic_outcome_v1(
     receipt: Mapping[str, object], *, exact_ck3_build: str,
+    pre_cash_v2: Mapping[str, object] | None = None,
+    post_cash_v2: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Classify a durable receipt; do not read the game or schedule an action."""
     candidate = receipt.get("candidate")
@@ -81,6 +86,100 @@ def construction_economic_outcome_v1(
     else:
         next_observation = None
 
+    pre_cash = pre_cash_v2 if pre_cash_v2 is not None else receipt.get("pre_cash_v2")
+    post_cash = post_cash_v2 if post_cash_v2 is not None else receipt.get("post_cash_v2")
+    cash_change: dict[str, object] = {
+        "status": "unavailable", "unavailable_reason": "construction_not_completed",
+        "source_frames": None, "elapsed_game_hours": None,
+        "monthly_rate_changes": {}, "personal_gold_change": None,
+        "verified_construction_gold_debit_raw": None,
+        "personal_gold_residual_after_verified_debit_raw": None,
+        "unallocated_other_transactions": True,
+        "building_attribution_ready": False, "actual_roi_ready": False,
+        "future_war_cost_upper_ready": False,
+    }
+    if completed:
+        if not isinstance(pre_cash, Mapping):
+            cash_change["unavailable_reason"] = "pre_submit_cash_v2_unavailable"
+        elif not isinstance(post_cash, Mapping):
+            cash_change["unavailable_reason"] = "post_completion_cash_v2_unavailable"
+        else:
+            for cash in (pre_cash, post_cash):
+                if cash.get("monthly_income_semantics") is None:
+                    raise ValueError("construction cash change requires v2 NET semantics")
+                _monthly_flow(cash)
+                build = require_exact_native_build(
+                    cash.get("game_version"), cash.get("executable_sha256"))
+                if build.game_version != exact_ck3_build:
+                    raise ValueError("construction cash interval crossed its exact build")
+            before_date, after_date = pre_cash.get("date_raw"), post_cash.get("date_raw")
+            actor = receipt.get("actor_character_id")
+            bound = (
+                gross_semantics_ready and type(actor) is int
+                and pre_cash.get("played_character_id") == actor
+                and post_cash.get("played_character_id") == actor
+                and pre_cash["readiness"].get("same_frame_ready") is True
+                and post_cash["readiness"].get("same_frame_ready") is True
+                and type(before_date) is int and type(after_date) is int
+                and before_date == receipt.get("pre_date_raw")
+                and type(completion_date) is int and after_date >= completion_date
+                and after_date >= before_date
+            )
+            if not bound:
+                cash_change["unavailable_reason"] = "cash_interval_actor_or_dates_not_bound"
+            else:
+                cash_change["source_frames"] = [
+                    {key: cash.get(key) for key in (
+                        "game_version", "executable_sha256", "played_character_id",
+                        "snapshot_revision", "date_raw", "queried_snapshot_id",
+                        "queried_revision", "queried_native_revision",
+                    )} for cash in (pre_cash, post_cash)
+                ]
+                cash_change["elapsed_game_hours"] = after_date - before_date
+                observed = 0
+                for key, flag in (
+                    ("player_monthly_gross_income", "monthly_gross_income_ready"),
+                    ("player_monthly_total_expenses", "monthly_total_expenses_ready"),
+                    ("player_monthly_net_income", "monthly_net_income_ready"),
+                    ("current_treasury", "current_treasury_ready"),
+                ):
+                    before, after = pre_cash.get(key), post_cash.get(key)
+                    ready = (
+                        isinstance(before, Mapping) and isinstance(after, Mapping)
+                        and type(before.get("raw")) is int and type(after.get("raw")) is int
+                        and before.get("scale") == after.get("scale") == 100_000
+                        and pre_cash["readiness"].get(flag) is True
+                        and post_cash["readiness"].get(flag) is True
+                    )
+                    change = {
+                        "ready": ready, "scale": 100_000,
+                        "before_raw": before["raw"] if ready else None,
+                        "after_raw": after["raw"] if ready else None,
+                        "delta_raw": after["raw"] - before["raw"] if ready else None,
+                    }
+                    if key == "current_treasury":
+                        cash_change["personal_gold_change"] = change
+                    else:
+                        cash_change["monthly_rate_changes"][key] = change
+                    observed += int(ready)
+                cash_change["status"] = "observed" if observed else "unavailable"
+                cash_change["unavailable_reason"] = None if observed else "cash_interval_values_unavailable"
+                start = receipt.get("start_receipt")
+                cost, gold_before = candidate.get("stock_gold_cost_raw"), candidate.get("gold_before_raw")
+                debit_verified = (
+                    isinstance(start, Mapping) and start.get("status") == "applied"
+                    and start.get("postcondition_verified") is True
+                    and isinstance(receipt.get("action_request_id"), str)
+                    and start.get("action_request_id") == receipt["action_request_id"]
+                    and type(cost) is int and cost > 0 and type(gold_before) is int
+                    and start.get("post_player_gold_raw") == gold_before - cost
+                )
+                if debit_verified:
+                    cash_change["verified_construction_gold_debit_raw"] = cost
+                    wallet = cash_change["personal_gold_change"]
+                    if wallet["ready"]:
+                        cash_change["personal_gold_residual_after_verified_debit_raw"] = wallet["delta_raw"] + cost
+
     return {
         "schema": "xar.ck3.construction-economic-outcome.v1",
         "phase": phase,
@@ -108,10 +207,14 @@ def construction_economic_outcome_v1(
             "delta_raw": province_post - province_pre if province_ready else None,
         },
         "next_observation_kind": next_observation,
+        "observed_cash_change": cash_change,
         "readiness": {
             "material_completed": completed,
             "player_gross_aggregate_change_ready": gross_ready,
             "province_aggregate_change_ready": province_ready,
+            "player_net_monthly_change_ready": (
+                cash_change["monthly_rate_changes"].get(
+                    "player_monthly_net_income", {}).get("ready") is True),
             "building_attribution_ready": False,
             "net_benefit_ready": False,
             "m5_realized_value_ready": False,
