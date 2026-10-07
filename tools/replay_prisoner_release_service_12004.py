@@ -297,6 +297,9 @@ def main() -> int:
                         "plan": getattr(failure, "plan", None),
                         "traceback": traceback.format_exc(),
                         "traceback_plan_context": traceback_plan_context(failure),
+                        "prisoner_release_arbitration": getattr(
+                            failure, "prisoner_release_arbitration", None,
+                        ),
                     }
                 after = driver.take_snapshot()
                 entry["after_snapshot"] = after
@@ -352,7 +355,10 @@ def main() -> int:
     except Exception as failure:
         report["error"] = {"type": type(failure).__name__, "message": str(failure),
                            "traceback": traceback.format_exc(),
-                           "traceback_plan_context": traceback_plan_context(failure)}
+                           "traceback_plan_context": traceback_plan_context(failure),
+                           "prisoner_release_arbitration": getattr(
+                               failure, "prisoner_release_arbitration", None,
+                           )}
         lines.append(f"RED: {type(failure).__name__}: {failure}")
         lines.append("Actual plan context: " + json.dumps(report["error"]["traceback_plan_context"]))
         lines.append(report["error"]["traceback"])
