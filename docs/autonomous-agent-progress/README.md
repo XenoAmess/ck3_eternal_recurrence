@@ -1,5 +1,17 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-08 01:22:31 CST：source28已采用待测，M7纯helper GREEN
+
+Runtime27五native／五Service离线GREEN保持；source28 Stock88b→Root09ad7543、Unit e551→11d01da2已采用但两targets build/FIRST NOT_RUN。M7a495→e4e43511已采用，2331候选Root纯函数compound GREEN2.461592s，first01缺PYTHONPATH collection RED保留，只helperenv重试，无Native／Service／Game；calendar/retry仍false。见[Runtime27后续索引](../ck3-native-ai/runtime27-background-observers-2026-10-08.md)／[Oct8日报](daily/2026-10-08.md)／[W41](weekly/2026-W41.md)。CK3/SDK禁令及H9658/saved6006/G2 5/8/NW2 2/4/natural0/M4false不变，push pending Root。
+
+### 2026-10-08 01:06:06 CST：Runtime27最终五native＋五Service离线GREEN
+
+[Runtime27专题](../ck3-native-ai/runtime27-background-observers-2026-10-08.md)已补lineage／descendants两必要Service-only retry GREEN8.4177462/8.8044681s；原失败定位为fixture生活方式前置opt-in，生产Native／Policy及关系断言未改，五native／另三Service不重跑。Servicef3e→Root5dac与native372／published22ed分列，push pending。O8-1 offline五项完成；CK3／SDK仍禁止，未Game加载／无R75或新day，Source28／M7不借27资格。H9658/saved6006、G2 5/8、NW2 2/4、natural0/M4false不变；原RED保留，日报／周报继续rolling。
+
+### 历史2026-10-08 00:57:49 CST：五native／三Service GREEN，两consumer当时待修
+
+[Runtime27专题索引](../ck3-native-ai/runtime27-background-observers-2026-10-08.md)记录canonical build/binary GREEN、五native及commander_side／fleet／unit三Service GREEN；lineage／descendants的关系断言RED待owner定位，不预判harness／production，仅修两consumer、不重跑五Native／三Service。M4file-only唯一compound GREEN不授完整M4／Game信用。Source372已commit未push，published仍22ed0b3e；未Game加载，CK3／SDK禁令保持，无R75／新day。**H9658/saved6006、G2 5/8、NW2 2/4、natural0/M4false**不变。见[Oct8滚动日报](daily/2026-10-08.md)与[W41](weekly/2026-W41.md)；Oct7已收口保留。
+
 ### 2026-10-08 00:29:59 CST：Oct7已补录收口，Oct8后台主线启动
 
 [Oct7日报](daily/2026-10-07.md)按23:59:59截止，00:29:00实际补录收口；[Oct8早会](meetings/daily/2026-10-08.md)于00:29:59真实补录，紧接建立[Oct8滚动日报](daily/2026-10-08.md)，[W41周报](weekly/2026-W41.md)继续rolling。开场H9658/date53288472/saved6006、G2 5/8/NW2 2/4/natural0/M4false不变；26b四native／三Service GREEN是前日offline基线，native0d22与published22ed0b3e分列。今天P0后台Runtime27五新观测FIRST、P1 M4file-only、P2 M7units/source。用户禁本机CK3保持，SDK已正常exit0但Game未被关闭或控制；未R75／未部署26／新day0，后继授权可真实调整。无交接／度假或午夜倒填计划，本批publication待Root。
