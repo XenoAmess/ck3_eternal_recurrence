@@ -111,3 +111,31 @@ execution. Nothing labels the synthetic input as a native .4 observation.
   supplied; full transfer/event/AI-ranking fidelity remains explicitly unknown.
 - Next: Root runs the one selected-version production consumer case, then
   uses a fresh real scene if applicable; Root merges report fields and pushes.
+
+## Root FIRST failure and minimum assertion correction
+
+Root adopted `243ba6d3` as `89e2ed5341fdc1a2f80627a2346c1fa3065220a7`.
+Two initial collection attempts lacked their Python import paths and ran zero
+assertions. The corrected runner reached the production model and failed at
+the test's final missing-domain assertion: it incorrectly expected native
+input domain `phase_event_rng_and_effects` inside the model's fidelity list.
+The original [RED receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-round34-20261007/siege-consumer-first-root.json)
+is preserved (exit1, 5.349524021148682 seconds, live credit0).
+
+Finite source semantics close the distinction. `combat_input` freezes the
+query's completeness list as `native_missing_required_domains`.
+`general_battle_forecast` separately publishes
+`CombatMonteCarloSummary.missing_required_domains`; `research_envelope`
+supplies `RESEARCH_ENVELOPE_MANIFEST`, and
+`combat_core.TransitionFidelityManifest.missing_required_domains` derives
+`loaded_phase_event_effect_transition` and
+`exact_build_original_trace_fixture` from the current disabled phase-effects
+and absent original trace fixture. These names describe the model's quality
+boundary, not a renamed native query domain or a failed input collector.
+
+The correction changes only the test: assert the native phase-event gap in
+the unchanged base completeness, and the loaded phase-effect gap in the
+model list. Production query/cache/consumer, constructor total, model,
+admission and readiness are unchanged. One corrected compound run remains
+Root-owned; prior collection attempts, the actual assertion RED and old
+37-check results are not rerun or erased. This package adds no live credit.

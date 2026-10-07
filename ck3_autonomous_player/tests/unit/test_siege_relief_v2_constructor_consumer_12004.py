@@ -151,7 +151,11 @@ class SiegeReliefV2ConstructorConsumer12004Test(TestCase):
         self.assertFalse(forecast["advantage_input"]["complete_encounter_advantage_ready"])
         self.assertFalse(base["completeness"]["monte_carlo_ready"])
         self.assertFalse(forecast["calibrated_win_probability_available"])
-        self.assertIn("phase_event_rng_and_effects", forecast["unmodeled_domains"])
+        # Native input coverage and this bounded model's fidelity use separate
+        # domain vocabularies; the consumer keeps both incomplete boundaries.
+        self.assertIn("phase_event_rng_and_effects",
+                      base["completeness"]["missing_required_domains"])
+        self.assertIn("loaded_phase_event_effect_transition", forecast["unmodeled_domains"])
         if forecast["status"] == "provisional_admissible":
             self.assertEqual(result["phase"], "native_war_provisional_defense_contact_move")
             self.assertEqual(result["selected_step"], f"move-army-{attacker_id}-to-{target}")
