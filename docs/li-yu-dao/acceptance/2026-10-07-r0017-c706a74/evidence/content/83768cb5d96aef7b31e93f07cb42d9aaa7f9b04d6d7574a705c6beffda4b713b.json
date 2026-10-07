@@ -1,0 +1,42 @@
+{
+  "schema": "lyd.r17.actual-checkpoint-author-request.grant-numeric.v1",
+  "expected_source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "native_clean_qualification": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-sdk-metadata-20261007-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+    "bytes": 980692,
+    "sha256": "71e6eab48fffbccfffda2d6a79f5a661508c38c67944425eff7a3f6ba3a69bd3"
+  },
+  "profile": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-profile-with-exit-inventory.json",
+  "source_export_report": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-head-export-20261007-001/REPORT.json",
+  "compiled_result": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-clean-native-build-20261007-001/RESULT.json",
+  "metadata_result": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-sdk-metadata-20261007-001/RESULT.json",
+  "original_baseline": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r13-formal-route23-20261006-001/inputs/i3b-0240-native-preparation-20261006-001/BASELINE-0240.json",
+  "reader_request_template": "C:/lr17s1/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-REQUEST.template.json",
+  "windows": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FIVE-SOURCE-WINDOWS.expected.json",
+  "sdk_metadata_variant": "grant28",
+  "sdk_metadata_artifact": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-sdk-metadata-20261007-001/ACTUAL-grant28-profile-all-tools.json",
+    "bytes": 29956,
+    "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+  },
+  "sdk_codec_artifact": {
+    "path": "C:/lr17s1/ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+    "bytes": 23750,
+    "sha256": "9b9e87e1c6981f6b74382d291ad1f9c33c10f1f1e0002e1bfd704ec11e800681"
+  },
+  "business_migration_registry": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/business-registry/BUSINESS-MIGRATION-REGISTRY.actual.json",
+    "bytes": 3058,
+    "sha256": "d5c70d0f8ce7547a074cdfcf180283b298a1c0ec702dee1962d6d2d33ce50f6d"
+  },
+  "checkpoint_receipt": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence/42abe9df32d34dd1840c23cb5246623d/0005-checkpoint.json",
+  "preserved_checkpoint": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/checkpoints/baseline-original0240/checkpoint.ck3",
+    "bytes": 91669783,
+    "sha256": "1a6679cb9432ba54bc81532aabea0be3e1e089dff418250634f5302e68b89211"
+  },
+  "G2_receipt": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence/42abe9df32d34dd1840c23cb5246623d/0006-confucian-readonly-assembly_predicates.json",
+  "G3_receipt": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence/42abe9df32d34dd1840c23cb5246623d/0007-confucian-readonly-religious_title.json",
+  "window": "baseline",
+  "output": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001"
+}

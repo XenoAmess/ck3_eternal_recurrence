@@ -1,0 +1,69 @@
+{
+  "status": "SOURCE_ONLY_R17_EXECUTOR002_ACTUAL_ATTACH_HOST_LEAF_FIX",
+  "parent": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-001/INDEX.json",
+    "bytes": 4878,
+    "sha256": "58d0280d536d558d3ad86f25b464cdb22f560f24c7b47cfbebb02d94dd7fd07e"
+  },
+  "executor": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/execute_request.py",
+    "bytes": 13044,
+    "sha256": "10501a7c2ffdfe446c83a196309634e1e2fcd028874625a917400d95855240cc"
+  },
+  "actual_source_producer": {
+    "path": "C:/lr17s1/tools/ck3_native_profile_mcp.py",
+    "bytes": 77955,
+    "sha256": "b2022b3afbe6c82d3455bdea10b2e4a4560492f32b00c0f87d29fda524253882"
+  },
+  "actual_attach_native": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0002-r17-003-attach.native-01.json",
+    "bytes": 22722,
+    "sha256": "98efefeab10f2ba182013a05f251990a26aa27f99f634e527ca650e4d2728d6d"
+  },
+  "source_checks": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/SOURCE-CHECKS.actual.json",
+    "bytes": 1108,
+    "sha256": "5eeddb59aa5410a13ef7c03c02e934e61415c412f7c2a0674629f4bef642feb0"
+  },
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/execute_request.py",
+      "bytes": 13044,
+      "sha256": "10501a7c2ffdfe446c83a196309634e1e2fcd028874625a917400d95855240cc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/EXECUTOR001-ACTUAL-LEAF-FAILURE.json",
+      "bytes": 1122,
+      "sha256": "7e637477b7c7a507c13af69073227fdac373df025ea9b9c4679895198daf53a5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/FOCUSED-ACTUAL-ATTACH-LEAF.json",
+      "bytes": 6343,
+      "sha256": "8f9907aaddade11aa1872aad506643c1ba56fb39e30fe35cd649ca29017c0d28"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/freeze_executor.py",
+      "bytes": 5518,
+      "sha256": "e44ead3110e903736b9a4f1f4c032738eb9ce90d8ebf6e5e835c7d4d18347182"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/help.stdout",
+      "bytes": 2242,
+      "sha256": "a383cb9f6f39b72feacca4d4ffd343382bf58afe01c6d7c51c1957b7223dd3f4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/SOURCE-CHECKS.actual.json",
+      "bytes": 1108,
+      "sha256": "5eeddb59aa5410a13ef7c03c02e934e61415c412f7c2a0674629f4bef642feb0"
+    }
+  ],
+  "runtime_called": false,
+  "reattach": false,
+  "restart": false,
+  "formal_acceptance": null
+}

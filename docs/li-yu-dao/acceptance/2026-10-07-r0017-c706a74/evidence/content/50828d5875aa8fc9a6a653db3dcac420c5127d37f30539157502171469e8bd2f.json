@@ -1,0 +1,166 @@
+{
+  "schema": "lyd.r17.root-profile-bound-preparation.v1",
+  "status": "PREPARED_FILES_AND_ROOT_LIVE_PROFILE_ONLY",
+  "utc": "2026-10-07T00:28:53.072385+00:00",
+  "source_revision": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "cold_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/COLD-MATERIALIZED.json",
+    "bytes": 2747,
+    "sha256": "4c3192c8db5065a688035d1c4344ff83fe0a185529e30dbdc9c6b2549c2cbd7f"
+  },
+  "guard_review": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\ROOT-LIVE-GUARD-REVIEW.actual.json",
+    "bytes": 1349,
+    "sha256": "486729b0e51dc5385a450be908ba815a59d39b15e863fdc0ee09794bb01e23e7"
+  },
+  "root_actual_live_binding": {
+    "schema": "lyd.r17.root-live-guard-review.v1",
+    "status": "ROOT_REVIEWED_ACTUAL_LIVE_BINDING",
+    "source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+    "root_screen_task": "ck3-lyd-r17-original0240-formal-20261007-001",
+    "process_id": 14608,
+    "process_create_time": 1791332614.2963333,
+    "window_hwnd": 19531310,
+    "profile": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\root-profile-request-001\\native-profile-fresh-001\\native-profile.json",
+      "bytes": 884,
+      "sha256": "37943bdc3ce13c87cc2b22a10104073c7da0d2ab19d6c277b4a0e11840e014e9"
+    },
+    "fresh_steam_offline_review": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-steam-offline-fresh-frame-20261007-001\\steam-frame-freshness.json",
+      "bytes": 1194,
+      "sha256": "e73d9a721cdfb75d301ffca713ba4dce719239860160949af9f2d6d72dae0a55"
+    },
+    "fresh_sole_owner_receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\root-profile-request-001\\fresh-screen-owner-list.json",
+      "bytes": 103829,
+      "sha256": "cab0a6a66e21f933ecd3a89b5a43e6f45799b1d8bf99d944f38e89f861bee8dc"
+    },
+    "launch_receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\launch.json",
+      "bytes": 2346,
+      "sha256": "ea7e8b9f52e90de30d43454c5a7913dd315d6de678ebfc13a93fb259e19e4245"
+    }
+  },
+  "guard": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\root-profile-request-001\\native-profile-fresh-001\\guard-profile.json",
+    "bytes": 2022,
+    "sha256": "4b16205ddbeeedb8d57f6fbf1f8b5a731e3811131d9e9f0729da528242223847"
+  },
+  "original_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\root-profile-request-001\\native-profile-fresh-001\\native-profile.json",
+    "bytes": 884,
+    "sha256": "37943bdc3ce13c87cc2b22a10104073c7da0d2ab19d6c277b4a0e11840e014e9"
+  },
+  "profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\root-profile-request-001\\native-profile-fresh-001\\native-profile.json",
+    "bytes": 884,
+    "sha256": "37943bdc3ce13c87cc2b22a10104073c7da0d2ab19d6c277b4a0e11840e014e9"
+  },
+  "normal_exit_source_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/userdir/normal-exit-source-inventory-v1.json",
+    "sha256": "ce70e275043a759965866d062b8a030e684f809f240c6e5014a77fc1612be1a2"
+  },
+  "source_inventory_sha256": "ce70e275043a759965866d062b8a030e684f809f240c6e5014a77fc1612be1a2",
+  "inventory_verification": {
+    "source_inventory_sha256": "ce70e275043a759965866d062b8a030e684f809f240c6e5014a77fc1612be1a2",
+    "profile_binding_sha256": "91ad34b44918c95814d9f71f66db1a35fcf2d1cf1fadde6419937f41aa1538d6",
+    "profile_projection_bytes": "{\"dll\":{\"path\":\"C:/lr17b1/xar_ck3_bridge.dll\",\"sha256\":\"4ef939b3399f47fe6666eb6eb8900bf338baae1446fd0ab6468989d7ca3befaf\"},\"evidence_directory\":\"C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence\",\"game_version\":\"1.20.0.3\",\"guard_profile\":\"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-017\\\\root-profile-request-001\\\\native-profile-fresh-001\\\\guard-profile.json\",\"guard_profile_sha256\":\"4b16205ddbeeedb8d57f6fbf1f8b5a731e3811131d9e9f0729da528242223847\",\"injector\":{\"path\":\"C:/lr17b1/xar_ck3_bridge_injector.exe\",\"sha256\":\"6c9003a3ff3777a1b5260e6792a1ed255a2fef98c44c67e9a6bd50579d06fb7a\"},\"schema_version\":1,\"state_directory\":\"C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-state\",\"userdir\":\"C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/userdir\"}",
+    "userdir": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\userdir",
+    "settings_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\userdir\\pdx_settings.txt",
+    "enabled_mod_count": 5,
+    "stock_gui_count": 6,
+    "static_sources_verified": true
+  },
+  "native_runtime": "NOT_INVOKED_BY_HELPER",
+  "settings_since_cold": {
+    "before": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/userdir/pdx_settings.txt",
+      "bytes": 7135,
+      "sha256": "2c784b081521c8c8e2129c5304734bbb7fd184f70cba78fb03e42907330e3a90"
+    },
+    "actual": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/userdir/pdx_settings.txt",
+      "bytes": 7135,
+      "sha256": "2c784b081521c8c8e2129c5304734bbb7fd184f70cba78fb03e42907330e3a90"
+    },
+    "bytes_changed": false
+  },
+  "loaded_baseline_business_readback": "PENDING_ROOT_NATIVE_AND_SAVE_READBACK",
+  "source_readback": {
+    "actual": {
+      "head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+      "tree": "0e53a53cd88dfb2989572c598524d5be0c199f08",
+      "product_tree": "9dfa00e6a271e9b2e51343f2d7d00801b71eff7f",
+      "native_tree": "6794302f96c60637eb85ac096d83e7ed64f5b6a4",
+      "status": ""
+    },
+    "commands": [
+      {
+        "argv": [
+          "git",
+          "-C",
+          "C:\\workspace\\ck3_eternal_recurrence",
+          "rev-parse",
+          "HEAD"
+        ],
+        "returncode": 0,
+        "stdout": "c706a74f9d00dd842b7edce8901fb3417344fd9c\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "C:\\workspace\\ck3_eternal_recurrence",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "returncode": 0,
+        "stdout": "0e53a53cd88dfb2989572c598524d5be0c199f08\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "C:\\workspace\\ck3_eternal_recurrence",
+          "rev-parse",
+          "HEAD:mod_li_yu_dao"
+        ],
+        "returncode": 0,
+        "stdout": "9dfa00e6a271e9b2e51343f2d7d00801b71eff7f\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "C:\\workspace\\ck3_eternal_recurrence",
+          "rev-parse",
+          "HEAD:ck3_autonomous_player/native_bridge"
+        ],
+        "returncode": 0,
+        "stdout": "6794302f96c60637eb85ac096d83e7ed64f5b6a4\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "-C",
+          "C:\\workspace\\ck3_eternal_recurrence",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    ]
+  },
+  "game_launched_by_helper": false,
+  "consumer_created": false,
+  "native_attached": false,
+  "normal_exit_behavior": "NOT_TESTED_BY_HELPER"
+}

@@ -1,0 +1,247 @@
+static	Test public CUnit zero and decision history contracts without CK3	﻿2026-10-06T23:58:01.1029090Z ##[group]Run python -m pip install mcp==2.0.0 pytest==9.1.1
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1029635Z ^[[36;1mpython -m pip install mcp==2.0.0 pytest==9.1.1^[[0m
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1030016Z ^[[36;1mif not "%errorlevel%"=="0" exit /b %errorlevel%^[[0m
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1031340Z ^[[36;1mpython -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py^[[0m
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1032644Z ^[[36;1mif not "%errorlevel%"=="0" exit /b %errorlevel%^[[0m
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1033944Z ^[[36;1mpython -O -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py^[[0m
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1035289Z ^[[36;1mif not "%errorlevel%"=="0" exit /b %errorlevel%^[[0m
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1035853Z ^[[36;1mpython -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"^[[0m
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1036458Z ^[[36;1mif not "%errorlevel%"=="0" exit /b %errorlevel%^[[0m
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1068076Z shell: C:\Windows\system32\cmd.EXE /D /E:ON /V:OFF /S /C "CALL "{0}""
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1068439Z env:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1068614Z   GIT_CONFIG_COUNT: 1
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1068833Z   GIT_CONFIG_KEY_0: core.longpaths
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1069092Z   GIT_CONFIG_VALUE_0: true
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1069308Z   TEMP: D:\a\_temp
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1069492Z   TMP: D:\a\_temp
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1069868Z   PIP_CACHE_DIR: D:\a\_temp\pip-cache
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1070189Z   PYTHONPYCACHEPREFIX: D:\a\_temp\python-bytecode
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1070492Z   XDG_CACHE_HOME: D:\a\_temp\cache
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1070821Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.13.15\x64
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1071274Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.13.15\x64/lib/pkgconfig
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1071729Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\x64
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1072126Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\x64
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1072517Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.15\x64
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1073633Z   PYTHONPATH: D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence;D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\src;D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit;D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1074695Z   PYTHONDONTWRITEBYTECODE: 1
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1075027Z   XAR_HISTORY_GROWTH_TEST_ARTIFACTS: D:\a\_temp\decision-history-growth
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:01.1075373Z ##[endgroup]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.5953807Z Collecting mcp==2.0.0
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.7921667Z   Downloading mcp-2.0.0-py3-none-any.whl.metadata (7.7 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.8539619Z Collecting pytest==9.1.1
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.8581865Z   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.8844462Z Collecting anyio>=4.9 (from mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.8887343Z   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9043554Z Collecting httpx2>=2.5.0 (from mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9089854Z   Downloading httpx2-2.13.1-py3-none-any.whl.metadata (9.8 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9164545Z Requirement already satisfied: jsonschema>=4.20.0 in D:\a\_temp\g2-static-venv\Lib\site-packages (from mcp==2.0.0) (4.26.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9250703Z Collecting mcp-types==2.0.0 (from mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9295051Z   Downloading mcp_types-2.0.0-py3-none-any.whl.metadata (1.9 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9525431Z Collecting opentelemetry-api>=1.28.0 (from mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9562245Z   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9616063Z Requirement already satisfied: pydantic>=2.12.0 in D:\a\_temp\g2-static-venv\Lib\site-packages (from mcp==2.0.0) (2.13.5)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9757470Z Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9796898Z   Downloading pyjwt-2.15.1-py3-none-any.whl.metadata (3.5 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9950055Z Collecting python-multipart>=0.0.9 (from mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:02.9990406Z   Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.0073983Z Requirement already satisfied: pywin32>=311 in D:\a\_temp\g2-static-venv\Lib\site-packages (from mcp==2.0.0) (312)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.0212404Z Collecting sse-starlette>=3.0.0 (from mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.0253647Z   Downloading sse_starlette-3.5.0-py3-none-any.whl.metadata (15 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.0554720Z Collecting starlette>=0.27 (from mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.0595504Z   Downloading starlette-1.7.0-py3-none-any.whl.metadata (6.6 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.0656630Z Requirement already satisfied: typing-extensions>=4.13.0 in D:\a\_temp\g2-static-venv\Lib\site-packages (from mcp==2.0.0) (4.16.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.0661641Z Requirement already satisfied: typing-inspection>=0.4.1 in D:\a\_temp\g2-static-venv\Lib\site-packages (from mcp==2.0.0) (0.4.4)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.0875539Z Collecting uvicorn>=0.31.1 (from mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.0920506Z   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1093560Z Collecting colorama>=0.4 (from pytest==9.1.1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1135518Z   Downloading colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1327480Z Collecting iniconfig>=1.0.1 (from pytest==9.1.1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1370600Z   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1531657Z Collecting packaging>=22 (from pytest==9.1.1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1549736Z   Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1663168Z Collecting pluggy<2,>=1.5 (from pytest==9.1.1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1707479Z   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1902754Z Collecting pygments>=2.7.2 (from pytest==9.1.1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.1948399Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2015115Z Requirement already satisfied: idna>=2.8 in D:\a\_temp\g2-static-venv\Lib\site-packages (from anyio>=4.9->mcp==2.0.0) (3.20)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2115121Z Collecting httpcore2==2.13.1 (from httpx2>=2.5.0->mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2153075Z   Downloading httpcore2-2.13.1-py3-none-any.whl.metadata (26 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2332591Z Collecting truststore>=0.10 (from httpx2>=2.5.0->mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2378342Z   Downloading truststore-0.10.4-py3-none-any.whl.metadata (4.4 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2505583Z Collecting h11>=0.16 (from httpcore2==2.13.1->httpx2>=2.5.0->mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2548743Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2632239Z Requirement already satisfied: attrs>=22.2.0 in D:\a\_temp\g2-static-venv\Lib\site-packages (from jsonschema>=4.20.0->mcp==2.0.0) (26.1.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2637087Z Requirement already satisfied: jsonschema-specifications>=2023.03.6 in D:\a\_temp\g2-static-venv\Lib\site-packages (from jsonschema>=4.20.0->mcp==2.0.0) (2025.9.1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2642323Z Requirement already satisfied: referencing>=0.28.4 in D:\a\_temp\g2-static-venv\Lib\site-packages (from jsonschema>=4.20.0->mcp==2.0.0) (0.37.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2647049Z Requirement already satisfied: rpds-py>=0.25.0 in D:\a\_temp\g2-static-venv\Lib\site-packages (from jsonschema>=4.20.0->mcp==2.0.0) (2026.9.1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2699413Z Requirement already satisfied: annotated-types>=0.6.0 in D:\a\_temp\g2-static-venv\Lib\site-packages (from pydantic>=2.12.0->mcp==2.0.0) (0.8.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.2704427Z Requirement already satisfied: pydantic-core==2.46.5 in D:\a\_temp\g2-static-venv\Lib\site-packages (from pydantic>=2.12.0->mcp==2.0.0) (2.46.5)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.4525236Z Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.4584813Z   Downloading cryptography-50.0.2-cp311-abi3-win_amd64.whl.metadata (4.4 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.5636124Z Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.5680242Z   Downloading cffi-2.1.1-cp313-cp313-win_amd64.whl.metadata (2.6 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.5815961Z Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.5996241Z   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.6282853Z Collecting click>=7.0 (from uvicorn>=0.31.1->mcp==2.0.0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.6322019Z   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.6431490Z Downloading mcp-2.0.0-py3-none-any.whl (349 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.6588487Z Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.6699857Z Downloading mcp_types-2.0.0-py3-none-any.whl (69 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.6770832Z Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.6837443Z Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.6909175Z Downloading colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.6972065Z Downloading httpx2-2.13.1-py3-none-any.whl (95 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7117819Z Downloading httpcore2-2.13.1-py3-none-any.whl (83 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7193071Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7254307Z Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7321782Z Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7363789Z Using cached packaging-26.3-py3-none-any.whl (129 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7414435Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7591780Z    ---------------------------------------- 1.3/1.3 MB 69.9 MB/s  0:00:00
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7628601Z Downloading pyjwt-2.15.1-py3-none-any.whl (33 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7693684Z Downloading cryptography-50.0.2-cp311-abi3-win_amd64.whl (3.8 MB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.7989405Z    ---------------------------------------- 3.8/3.8 MB 132.8 MB/s  0:00:00
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.8031995Z Downloading cffi-2.1.1-cp313-cp313-win_amd64.whl (185 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.8108274Z Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.8172029Z Downloading sse_starlette-3.5.0-py3-none-any.whl (17 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.8237110Z Downloading starlette-1.7.0-py3-none-any.whl (78 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.8299622Z Downloading truststore-0.10.4-py3-none-any.whl (18 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.8362305Z Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.8438257Z Downloading click-8.5.0-py3-none-any.whl (125 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:03.8507383Z Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:04.0459950Z Installing collected packages: truststore, python-multipart, pyjwt, pygments, pycparser, pluggy, packaging, opentelemetry-api, iniconfig, h11, colorama, click, anyio, uvicorn, starlette, pytest, httpcore2, cffi, sse-starlette, mcp-types, httpx2, cryptography, mcp
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:07.2835140Z 
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:07.2890321Z Successfully installed anyio-4.15.1 cffi-2.1.1 click-8.5.0 colorama-0.4.6 cryptography-50.0.2 h11-0.16.0 httpcore2-2.13.1 httpx2-2.13.1 iniconfig-2.3.1 mcp-2.0.0 mcp-types-2.0.0 opentelemetry-api-1.45.1 packaging-26.3 pluggy-1.6.0 pycparser-3.0 pygments-2.21.0 pyjwt-2.15.1 pytest-9.1.1 python-multipart-0.0.32 sse-starlette-3.5.0 starlette-1.7.0 truststore-0.10.4 uvicorn-0.54.0
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5387641Z ..............................                                                   [100%]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5388147Z ================================== FAILURES ===================================
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5389747Z _ PublicCUnitMcpTests.test_all_public_unit_facades_preserve_zero_and_reject_coercion (tool='ck3_query_army_strengths', name='army_ids', value=0) _
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5390842Z 
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5391434Z self = <test_public_cunit_mcp_contract.PublicCUnitMcpTests testMethod=test_all_public_unit_facades_preserve_zero_and_reject_coercion>
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5392144Z 
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5392433Z     async def test_all_public_unit_facades_preserve_zero_and_reject_coercion(self):
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5392974Z         from mcp import Client
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5393264Z     
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5393467Z         cases = [
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5393828Z             ("ck3_move_army", "army_id", False, {"target_province_id": 2635}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5394330Z             ("ck3_disband_army", "army_id", False, {}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5394772Z             ("ck3_query_army_strengths", "army_ids", True, {}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5395400Z             ("ck3_query_actual_contact_scope", "subject_army_id", False, {"target_province_id": 2635}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5396230Z             ("ck3_query_battle_control_snapshot_v1", "subject_army_id", False, {"expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5397219Z             ("ck3_query_battle_terminal_transition_v1", "subject_public_cunit_id", False, {"prior_combat_id": 1, "expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5398291Z             ("ck3_query_battle_reinforcement_assignment_v1", "selected_public_cunit_id", False, {"expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5399137Z             ("ck3_select_army_ui_v1", "subject_army_id", False, {"expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5400041Z             ("ck3_preview_active_combat_retreat_v1", "selected_public_cunit_id", False, {"target_province_id": 2635, "expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5400909Z             ("ck3_order_active_combat_retreat_v1", "selected_public_cunit_id", False, {
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5401551Z                 "expected_revision": 4, "expected_combat_id": 1, "expected_side_index": 0,
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5402102Z                 "expected_scope": "player", "target_province_id": 2635, "candidate_token": "offline-token",
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5402538Z             }),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5402838Z             ("ck3_query_current_battle_knight_v1", "subject_public_cunit_id", False, {
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5403309Z                 "character_id": 1, "regiment_id": 1, "expected_played_character_id": 1,
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5403787Z                 "expected_war_id": 1, "expected_native_carmy_id": 1, "expected_combat_id": 1,
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5404610Z                 "expected_province_id": 1, "expected_date_raw": 53146848,
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5405133Z                 "expected_revision": 4, "expected_native_revision": 3, "expected_snapshot_id": "offline:3",
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5405556Z             }),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5405786Z         ]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5406143Z         for tool_name in ("ck3_query_combat_simulation_inputs", "ck3_query_combat_simulation_inputs_v3"):
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5406795Z             for name, other in (("attacker_army_ids", "defender_army_ids"), ("defender_army_ids", "attacker_army_ids")):
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5407304Z                 cases.append((tool_name, name, True, {
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5407708Z                     "target_province_id": 2635, "attacker_entry_province_id": 2634, other: [18],
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5408077Z                 }))
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5408378Z         methods = {tool_name.removeprefix("ck3_") for tool_name, _, _, _ in cases}
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5408755Z         with ExitStack() as stack:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5408981Z             mocks = {
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5409452Z                 name: stack.enter_context(patch.object(GameplayBridgeService, name, return_value={"validation_test": True}))
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5409991Z                 for name in methods
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5410223Z             }
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5410443Z             server = create_server(NoGameplayDriver())
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5410746Z             async with Client(server) as client:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5411229Z                 tools = {tool.name: tool for tool in (await client.list_tools()).tools}
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5411639Z                 for tool_name, name, is_list, base in cases:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5411975Z                     method = mocks[tool_name.removeprefix("ck3_")]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5412353Z                     schema = tools[tool_name].input_schema["properties"][name]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5412681Z                     if is_list:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5412917Z                         schema = schema["items"]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5413253Z                     schema, nullable = self._public_unit_integer_schema(schema)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5413645Z                     self.assertEqual(nullable, (tool_name, name) == (
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5414075Z                         "ck3_query_battle_terminal_transition_v1", "subject_public_cunit_id",
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5414445Z                     ))
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5414668Z                     self.assertEqual(schema["minimum"], 0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5414994Z                     self.assertEqual(schema["maximum"], 2**31-1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5415376Z                     valid_values = (0, 2**31-1, None) if nullable else (0, 2**31-1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5428693Z                     for value in valid_values:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5429273Z                         argument = [value] if is_list else value
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5429908Z                         with self.subTest(tool=tool_name, name=name, value=value):
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5430397Z                             before = method.call_count
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5430808Z                             result = await client.call_tool(tool_name, {**base, name: argument})
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5431228Z >                           self.assertFalse(result.is_error)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5431755Z E                           AssertionError: True is not false
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5431963Z 
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5432201Z ck3_autonomous_player\tests\unit\test_public_cunit_mcp_contract.py:92: AssertionError
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5433028Z _ PublicCUnitMcpTests.test_all_public_unit_facades_preserve_zero_and_reject_coercion (tool='ck3_query_army_strengths', name='army_ids', value=2147483647) _
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5433593Z 
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5433999Z self = <test_public_cunit_mcp_contract.PublicCUnitMcpTests testMethod=test_all_public_unit_facades_preserve_zero_and_reject_coercion>
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5434512Z 
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5434721Z     async def test_all_public_unit_facades_preserve_zero_and_reject_coercion(self):
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5435172Z         from mcp import Client
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5435393Z     
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5435550Z         cases = [
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5435835Z             ("ck3_move_army", "army_id", False, {"target_province_id": 2635}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5436225Z             ("ck3_disband_army", "army_id", False, {}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5436545Z             ("ck3_query_army_strengths", "army_ids", True, {}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5437014Z             ("ck3_query_actual_contact_scope", "subject_army_id", False, {"target_province_id": 2635}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5437630Z             ("ck3_query_battle_control_snapshot_v1", "subject_army_id", False, {"expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5438347Z             ("ck3_query_battle_terminal_transition_v1", "subject_public_cunit_id", False, {"prior_combat_id": 1, "expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5439125Z             ("ck3_query_battle_reinforcement_assignment_v1", "selected_public_cunit_id", False, {"expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5439731Z             ("ck3_select_army_ui_v1", "subject_army_id", False, {"expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5440395Z             ("ck3_preview_active_combat_retreat_v1", "selected_public_cunit_id", False, {"target_province_id": 2635, "expected_revision": 4}),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5441057Z             ("ck3_order_active_combat_retreat_v1", "selected_public_cunit_id", False, {
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5441546Z                 "expected_revision": 4, "expected_combat_id": 1, "expected_side_index": 0,
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5442956Z                 "expected_scope": "player", "target_province_id": 2635, "candidate_token": "offline-token",
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5443396Z             }),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5443704Z             ("ck3_query_current_battle_knight_v1", "subject_public_cunit_id", False, {
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5444183Z                 "character_id": 1, "regiment_id": 1, "expected_played_character_id": 1,
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5445090Z                 "expected_war_id": 1, "expected_native_carmy_id": 1, "expected_combat_id": 1,
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5445573Z                 "expected_province_id": 1, "expected_date_raw": 53146848,
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5446085Z                 "expected_revision": 4, "expected_native_revision": 3, "expected_snapshot_id": "offline:3",
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5446516Z             }),
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5446693Z         ]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5447057Z         for tool_name in ("ck3_query_combat_simulation_inputs", "ck3_query_combat_simulation_inputs_v3"):
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5447712Z             for name, other in (("attacker_army_ids", "defender_army_ids"), ("defender_army_ids", "attacker_army_ids")):
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5448210Z                 cases.append((tool_name, name, True, {
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5448631Z                     "target_province_id": 2635, "attacker_entry_province_id": 2634, other: [18],
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5448995Z                 }))
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5449291Z         methods = {tool_name.removeprefix("ck3_") for tool_name, _, _, _ in cases}
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5449666Z         with ExitStack() as stack:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5449901Z             mocks = {
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5450359Z                 name: stack.enter_context(patch.object(GameplayBridgeService, name, return_value={"validation_test": True}))
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5451004Z                 for name in methods
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5451218Z             }
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5451433Z             server = create_server(NoGameplayDriver())
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5451731Z             async with Client(server) as client:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5452093Z                 tools = {tool.name: tool for tool in (await client.list_tools()).tools}
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5452483Z                 for tool_name, name, is_list, base in cases:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5452817Z                     method = mocks[tool_name.removeprefix("ck3_")]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5453189Z                     schema = tools[tool_name].input_schema["properties"][name]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5453510Z                     if is_list:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5453733Z                         schema = schema["items"]
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5454069Z                     schema, nullable = self._public_unit_integer_schema(schema)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5454459Z                     self.assertEqual(nullable, (tool_name, name) == (
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5454885Z                         "ck3_query_battle_terminal_transition_v1", "subject_public_cunit_id",
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5455246Z                     ))
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.5455480Z                     self.assertEqual(schema["minimum"], 0)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6480211Z                     self.assertEqual(schema["maximum"], 2**31-1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6480996Z                     valid_values = (0, 2**31-1, None) if nullable else (0, 2**31-1)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6481635Z                     for value in valid_values:
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6482138Z                         argument = [value] if is_list else value
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6482781Z                         with self.subTest(tool=tool_name, name=name, value=value):
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6483403Z                             before = method.call_count
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6484080Z                             result = await client.call_tool(tool_name, {**base, name: argument})
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6484820Z >                           self.assertFalse(result.is_error)
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6485423Z E                           AssertionError: True is not false
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6485780Z 
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6486608Z ck3_autonomous_player\tests\unit\test_public_cunit_mcp_contract.py:92: AssertionError
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6487434Z =========================== short test summary info ===========================
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6489357Z SUBFAILED(tool='ck3_query_army_strengths', name='army_ids', value=0) ck3_autonomous_player\tests\unit\test_public_cunit_mcp_contract.py::PublicCUnitMcpTests::test_all_public_unit_facades_preserve_zero_and_reject_coercion - AssertionError: True is not false
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6492489Z SUBFAILED(tool='ck3_query_army_strengths', name='army_ids', value=2147483647) ck3_autonomous_player\tests\unit\test_public_cunit_mcp_contract.py::PublicCUnitMcpTests::test_all_public_unit_facades_preserve_zero_and_reject_coercion - AssertionError: True is not false
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.6494623Z 2 failed, 30 passed, 350 subtests passed in 4.65s
+static	Test public CUnit zero and decision history contracts without CK3	2026-10-06T23:58:12.8459490Z ##[error]Process completed with exit code 1.

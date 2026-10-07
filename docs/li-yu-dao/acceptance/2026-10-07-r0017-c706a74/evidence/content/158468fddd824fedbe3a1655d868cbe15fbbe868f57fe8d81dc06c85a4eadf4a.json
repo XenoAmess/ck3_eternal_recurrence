@@ -1,0 +1,56 @@
+{
+  "status": "PURE_CONTRACT_VALIDATED_NO_RUNTIME_I4",
+  "source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "candidate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source004/author_i4_arguments.py",
+    "bytes": 13273,
+    "sha256": "075e05f135678797ace5fd4b42dd9e3486dd8b1b0c301c48f48b4de2d7b47f5e"
+  },
+  "combined_patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-to-FINAL004.patch",
+    "bytes": 1704,
+    "sha256": "b246252b5637bc22f899492f09ecfb2fdcafcdbea863715f33e41d048d2aa183"
+  },
+  "actual_interface_refs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/ACTUAL-SOURCE-INTERFACE-REFS.json",
+    "bytes": 2788,
+    "sha256": "8c546bf5c69306403b3f314ad7f658f23ad768fe7505c4d48b7a5864b992e6fb"
+  },
+  "first_SOURCE002_failure": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-FIRST-CHECK.actual.json",
+    "bytes": 2539,
+    "sha256": "32c2a8fec63a894a7c5e3b8e198366df6b78accb4ebea2b4c85a0bde4e984f53"
+  },
+  "SOURCE003_failed26": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/RESULT.fixture.json",
+    "bytes": 86093,
+    "sha256": "fb3fe54d2ae11b5e60a669290d7144389b5a91a2c17348608b6f83794dd805ea"
+  },
+  "final_SOURCE004_pass28": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/RESULT.fixture.json",
+    "bytes": 91755,
+    "sha256": "13e19a6eb7806ec1face610398fb0b5a6ae2a0bd84ee9f45a4fb4ac09a2680ac"
+  },
+  "historical_test_source_addendum": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/TEST-SOURCE-HISTORICAL-REF-ADDENDUM.json",
+    "bytes": 1199,
+    "sha256": "3fee68aa82a804d5f7b2ecdd07f41719e0aa69ed283c2c95591bb488507a2476"
+  },
+  "entry": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/REPORT.zh.md",
+    "bytes": 2979,
+    "sha256": "0b8a05b14a8751c30fdee8a115f470a2fa7475b596010b156b16650af83fd1f8"
+  },
+  "future_input_template": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/ROOT-INPUTS.pending.json",
+    "bytes": 1682,
+    "sha256": "91f62e0f917cd4ecf920fba7923bd8f5112c8521f11c274c5420d0cd477774f6"
+  },
+  "runtime_game_SDK_native_calls": 0,
+  "actual_run_writes": 0,
+  "main_writes": 0,
+  "save_body_reads": 0,
+  "actual_I4_query": null,
+  "futureT": null,
+  "formal_credit": null
+}

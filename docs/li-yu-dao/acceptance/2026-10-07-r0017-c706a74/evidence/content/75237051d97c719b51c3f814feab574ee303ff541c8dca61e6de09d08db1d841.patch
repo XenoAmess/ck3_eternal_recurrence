@@ -1,0 +1,258 @@
+--- a/ck3_autonomous_player/native_bridge/src/bridge.cpp
++++ b/ck3_autonomous_player/native_bridge/src/bridge.cpp
+@@ -22724,7 +22724,6 @@
+               }
+             }
+           }
+-          }
+         } else if (
+             step == xar::ck3_11906::
+                         kZhongguoAiOwnedCaseSnapshotV1Step) {
+@@ -22854,6 +22853,7 @@
+           }
+         } else {
+           native_step_dispatched = false;
++        }
+         }
+         if (!native_step_dispatched) {
+           native_step_dispatched = true;
+--- /dev/null
++++ b/ck3_autonomous_player/tests/unit/test_native_bridge_dispatch_topology.py
+@@ -0,0 +1,237 @@
++"""Source control-flow regression for the segmented native command dispatcher.
++
++This exercises the production C++ braces under CMake-declared private flags.
++It requires neither a compiler nor a game/SDK process. Optional environment
++inputs let an isolated checkout use a reviewed source tree and actual cache.
++"""
++from __future__ import annotations
++
++import os
++from pathlib import Path
++import re
++import unittest
++
++
++NATIVE_ROOT = Path(os.environ.get(
++    "XAR_NATIVE_DISPATCH_TEST_NATIVE_ROOT",
++    str(Path(__file__).resolve().parents[2] / "native_bridge"),
++)).resolve()
++
++
++def private_flag_registry(root: Path) -> tuple[set[str], set[Path]]:
++    pending = [root / "CMakeLists.txt"]
++    sources: set[Path] = set()
++    names: set[str] = set()
++    while pending:
++        path = pending.pop().resolve()
++        if path in sources:
++            continue
++        if not path.is_relative_to(root) or not path.is_file():
++            raise AssertionError(f"Missing local CMake source: {path}")
++        text = re.sub(r"(?m)^\s*#.*$", "", path.read_text(encoding="utf-8-sig"))
++        sources.add(path)
++        names.update(re.findall(
++            r"\b(?:option|cmake_dependent_option)\s*\(\s*(XAR_CK3_ENABLE_[A-Z0-9_]+)\b", text,
++        ))
++        for match in re.finditer(r'(?m)^\s*include\s*\(\s*(?:"([^"]+)"|([^\s)]+))', text):
++            value = (match[1] or match[2]).replace("${CMAKE_CURRENT_SOURCE_DIR}", str(root))
++            value = value.replace("${CMAKE_CURRENT_LIST_DIR}", str(path.parent))
++            if "${" in value:
++                raise AssertionError(f"Unresolved local CMake include: {value}")
++            candidate = Path(value)
++            if not candidate.is_absolute():
++                candidate = root / candidate
++            if candidate.is_file():
++                pending.append(candidate)
++            elif value.lower().endswith(".cmake"):
++                raise AssertionError(f"Missing declared local CMake include: {value}")
++    if not names:
++        raise AssertionError("Empty private option registry")
++    return names, sources
++
++
++def active_cpp(text: str, enabled: set[str]) -> str:
++    macros = {name: 1 for name in enabled}
++    macros.update(_WIN32=1, _WIN64=1, _MSC_VER=1)
++    header = NATIVE_ROOT / "include/xar_bridge/h2743_stock_private_query_v1.hpp"
++    if not re.search(r"#\s*define\s+XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1\s+0\b", header.read_text(encoding="utf-8")):
++        raise AssertionError("Included H2743 macro default changed")
++    macros.setdefault("XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1", 0)
++    lines = text.splitlines()
++    result = [""] * len(lines)
++    stack: list[dict[str, bool]] = []
++
++    def evaluate(expression: str) -> bool:
++        expression = re.sub(r"defined\s*\(\s*(\w+)\s*\)", lambda m: str(int(m[1] in macros)), expression)
++        expression = re.sub(r"defined\s+(\w+)", lambda m: str(int(m[1] in macros)), expression)
++        expression = re.sub(r"\b[A-Za-z_]\w*\b", lambda m: str(macros.get(m[0], 0)), expression)
++        expression = expression.replace("&&", " and ").replace("||", " or ")
++        expression = re.sub(r"!(?!=)", " not ", expression)
++        if re.search(r"[^\s\d()andort!=<>+*\-/]", expression):
++            raise AssertionError(f"Unsupported preprocessor expression: {expression}")
++        return bool(eval(expression, {"__builtins__": {}}, {}))
++
++    index = 0
++    while index < len(lines):
++        parent = all(item["active"] for item in stack)
++        start = index
++        line = lines[index]
++        while line.rstrip().endswith("\\"):
++            index += 1
++            line = line.rstrip()[:-1] + " " + lines[index].lstrip()
++        directive = re.match(r"\s*#\s*(if|ifdef|ifndef|elif|else|endif|define|undef)\b(.*)", line)
++        if directive:
++            kind, expression = directive.groups()
++            if kind in {"if", "ifdef", "ifndef"}:
++                answer = evaluate(expression) if kind == "if" else ((expression.strip() in macros) == (kind == "ifdef"))
++                stack.append({"active": parent and answer, "seen": answer, "parent": parent})
++            elif kind == "elif":
++                item = stack[-1]
++                answer = evaluate(expression)
++                item["active"] = item["parent"] and not item["seen"] and answer
++                item["seen"] |= answer
++            elif kind == "else":
++                item = stack[-1]
++                item["active"] = item["parent"] and not item["seen"]
++                item["seen"] = True
++            elif kind == "endif":
++                stack.pop()
++            elif parent:
++                fields = expression.strip().split(None, 1)
++                if fields and re.fullmatch(r"\w+", fields[0]):
++                    if kind == "undef":
++                        macros.pop(fields[0], None)
++                    elif len(fields) == 1:
++                        macros[fields[0]] = 1
++                    elif re.fullmatch(r"\d+", fields[1]):
++                        macros[fields[0]] = int(fields[1])
++        elif parent:
++            result[start:index + 1] = lines[start:index + 1]
++        index += 1
++    if stack:
++        raise AssertionError("Unclosed preprocessor condition")
++    return "\n".join(result)
++
++
++def cpp_blocks(text: str) -> tuple[str, dict[int, int | None], dict[int, int]]:
++    def mask(match: re.Match[str]) -> str:
++        return "".join("\n" if char == "\n" else " " for char in match[0])
++
++    # Character literals have one character/escape; digit separators are not
++    # quotes. Keep offsets so source identifiers and brace ownership align.
++    masked = re.sub(r'//[^\n]*|/\*[\s\S]*?\*/|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\\n])\'', mask, text)
++    stack: list[int] = []
++    parent: dict[int, int | None] = {}
++    closing: dict[int, int] = {}
++    for offset, char in enumerate(masked):
++        if char == "{":
++            parent[offset] = stack[-1] if stack else None
++            stack.append(offset)
++        elif char == "}":
++            if not stack:
++                raise AssertionError("Unmatched C++ closing brace")
++            closing[stack.pop()] = offset
++    if stack:
++        raise AssertionError("Unclosed C++ brace")
++    return masked, parent, closing
++
++
++def segmented_flow(text: str, enabled: set[str]) -> tuple[list[tuple[bool, bool]], bool]:
++    masked, parent, closing = cpp_blocks(active_cpp(text, enabled))
++
++    def one(pattern: str) -> int:
++        found = list(re.finditer(pattern, masked))
++        if len(found) != 1:
++            raise AssertionError(f"Expected one production route anchor: {pattern}")
++        return found[0].end() - 1
++
++    def block_at(offset: int) -> int:
++        return max(start for start, end in closing.items() if start < offset < end)
++
++    guards = [match.end() - 1 for match in re.finditer(r"\bif\s*\(\s*!\s*native_step_dispatched\s*\)\s*{", masked)]
++    campaign = one(r"\bif\s*\(\s*step\s*==\s*xar::ck3_11906::kCampaignRootContextV1Step\s*\)\s*{")
++    first = parent[campaign]
++    if first not in guards:
++        raise AssertionError("Campaign query is outside its unhandled-step segment")
++    tail = one(r"\bexecute_native_step_tail\s*\(\s*\)\s*;")
++    tail_guard = max(guard for guard in guards if guard < tail < closing[guard])
++    selected = [guard for guard in guards if first <= guard <= tail_guard]
++    assignments = [match.start() for match in re.finditer(r"\bnative_step_dispatched\s*=\s*false\s*;", masked)]
++    segments = []
++    for index, guard in enumerate(selected):
++        next_guard = selected[index + 1] if index + 1 < len(selected) else closing[guard]
++        child = min(start for start in parent if parent[start] == guard)
++        if not re.search(r"\bnative_step_dispatched\s*=\s*true\s*;", masked[guard + 1:child]):
++            raise AssertionError("Segment does not mark a matched handler as handled")
++        inside = [offset for offset in assignments if guard < offset < closing[guard] and parent[block_at(offset)] == guard]
++        outside = [offset for offset in assignments if closing[guard] < offset < next_guard and parent[block_at(offset)] == parent[guard]]
++        if len(inside) + len(outside) > 1:
++            raise AssertionError("Ambiguous segment fallback reset")
++        segments.append((bool(inside), bool(outside)))
++    normal_flag = "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1"
++    if normal_flag in enabled:
++        normal = one(r"\bif\s*\(\s*step\s*==\s*xar::ck3_12003::kNormalExitMapV1Step\s*\)\s*{")
++        if closing[normal] >= first:
++            raise AssertionError("Normal exit no longer precedes generic query segments")
++    return segments, normal_flag in enabled
++
++
++def tail_reached(segments: list[tuple[bool, bool]], already_handled: bool) -> bool:
++    # Both exact scenario steps are nonmatches for the intervening query and
++    # battle handlers. Interpret only the projected guard/fallback ownership.
++    handled = already_handled
++    # The final segment invokes the tail inside its unmatched branch after it
++    # sets the handled marker. Reachability depends on entry to that segment.
++    for inside, outside in segments[:-1]:
++        if not handled:
++            handled = True
++            if inside:
++                handled = False
++        elif outside:
++            handled = False
++    return not handled
++
++
++class NativeBridgeDispatchTopologyTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls) -> None:
++        names, _ = private_flag_registry(NATIVE_ROOT)
++        cls.source = (NATIVE_ROOT / "src/bridge.cpp").read_text(encoding="utf-8")
++        normal = "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1"
++        if normal not in names:
++            raise AssertionError("Normal-exit private option is undeclared")
++        cls.configurations = {"private_off": set(), "normal_exit_only": {normal}, "all_declared_on": names}
++        cache = os.environ.get("XAR_NATIVE_DISPATCH_TEST_CMAKE_CACHE")
++        if cache:
++            flags = {}
++            for line in Path(cache).read_text(encoding="utf-8-sig").splitlines():
++                match = re.fullmatch(r"(XAR_CK3_ENABLE_[A-Z0-9_]+):BOOL=(ON|OFF)", line)
++                if match:
++                    if match[1] in flags:
++                        raise AssertionError("Duplicate actual private cache option")
++                    flags[match[1]] = match[2]
++                elif re.match(r"XAR_CK3_ENABLE_[A-Z0-9_]+:", line):
++                    raise AssertionError("Private cache option must be BOOL ON/OFF")
++            if set(flags) != names:
++                raise AssertionError("Actual cache has unknown/missing declared private options")
++            cls.configurations["actual_cache"] = {name for name, value in flags.items() if value == "ON"}
++
++    def test_unmatched_event_option_reaches_legacy_tail(self) -> None:
++        for name, enabled in self.configurations.items():
++            with self.subTest(flags=name):
++                segments, _ = segmented_flow(self.source, enabled)
++                self.assertTrue(tail_reached(segments, already_handled=False), "select-event-option-3 was swallowed without a response")
++
++    def test_handled_normal_exit_has_one_response_site(self) -> None:
++        for name, enabled in self.configurations.items():
++            if "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1" not in enabled:
++                continue
++            with self.subTest(flags=name):
++                segments, normal_enabled = segmented_flow(self.source, enabled)
++                self.assertTrue(normal_enabled)
++                response_sites = 1 + int(tail_reached(segments, already_handled=True))
++                self.assertEqual(response_sites, 1, "a handled normal exit reaches a second unsupported reply")
++
++
++if __name__ == "__main__":
++    unittest.main()

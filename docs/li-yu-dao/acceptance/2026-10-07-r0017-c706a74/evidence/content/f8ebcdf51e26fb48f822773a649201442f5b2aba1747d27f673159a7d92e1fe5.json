@@ -1,0 +1,44 @@
+{
+  "common_argv": [
+    "--consumer-source",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/fixture-mirror/consumer",
+    "--consumer-index-sha256",
+    "2603021805fc2bf71e2dc097994ef6c2fd31276a4ccc8ac326eeb5a7aa775668",
+    "--request-author",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/author_formal_request.py",
+    "--request-author-sha256",
+    "989f222e3913b75191540c12aa9460bb98991370129ecd93f8f88999fd2d4558",
+    "--prepared",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/fixture-mirror/run/PREPARED.json",
+    "--prepared-sha256",
+    "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f",
+    "--session-id",
+    "42abe9df32d34dd1840c23cb5246623d",
+    "--snapshot-sdk",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0003-r17-005-snapshot.sdk-result.json",
+    "--snapshot-sdk-sha256",
+    "961f5bc20dfab761652de86a0efe7106b59ac381e7a3191400bd267046106ef4"
+  ],
+  "original_snapshot_SDK": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0003-r17-005-snapshot.sdk-result.json",
+    "bytes": 38107,
+    "sha256": "961f5bc20dfab761652de86a0efe7106b59ac381e7a3191400bd267046106ef4"
+  },
+  "synthetic_mirror_consumer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/fixture-mirror/consumer/INDEX.json",
+    "bytes": 4864,
+    "sha256": "2603021805fc2bf71e2dc097994ef6c2fd31276a4ccc8ac326eeb5a7aa775668"
+  },
+  "synthetic_mirror_PREPARED": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/fixture-mirror/run/PREPARED.json",
+    "bytes": 7187,
+    "sha256": "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f"
+  },
+  "mirror_run": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/fixture-mirror/run",
+  "actual_interface_refs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/ACTUAL-SOURCE-INTERFACE-REFS.json",
+    "bytes": 2788,
+    "sha256": "8c546bf5c69306403b3f314ad7f658f23ad768fe7505c4d48b7a5864b992e6fb"
+  },
+  "fixture_runtime_credit": null
+}

@@ -1,0 +1,5 @@
+{
+  "action": "prepare_confirmation",
+  "expected_revision": 4,
+  "expected_exit_context_signature": "f7185581c92ddd36d0c9e80bc5af576f8381cbf679b1be54758b40ba9d1256e3"
+}

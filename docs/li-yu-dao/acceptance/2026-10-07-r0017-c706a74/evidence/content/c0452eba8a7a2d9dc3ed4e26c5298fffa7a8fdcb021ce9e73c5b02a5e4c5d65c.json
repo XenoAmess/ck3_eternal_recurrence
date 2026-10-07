@@ -1,0 +1,71 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/persistent_native_mcp_queue_28.py",
+    "enqueue",
+    "--queue",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\queue-001",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\root-request-executions\\016-formal-begin-confirm\\REQUEST.actual.json"
+  ],
+  "cwd": "C:/workspace/ck3_eternal_recurrence",
+  "source_inputs": {
+    "spec": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-specs/016-formal-begin-confirm.json",
+      "bytes": 271,
+      "sha256": "d733f803f82dfe1d75a0e610a85675ff5b39faa9751636ef2385beadf38188e7"
+    },
+    "consumer_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/INDEX.json",
+      "bytes": 4799,
+      "sha256": "6a6aab2ddfff1fdef3baa430d685182397a640941d847ad1c5391be98a51a527"
+    },
+    "request_author": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/author_formal_request.py",
+      "bytes": 3069,
+      "sha256": "989f222e3913b75191540c12aa9460bb98991370129ecd93f8f88999fd2d4558"
+    },
+    "queue_helper": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/persistent_native_mcp_queue_28.py",
+      "bytes": 15201,
+      "sha256": "56e53b3b3be226b5f22538d0bebc19ff5b7b3a7427fbc263d383cbbee8e4b25d"
+    },
+    "binding": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/ROOT-BINDING.json/ROOT-BINDING.json",
+      "bytes": 2900,
+      "sha256": "47a89acb59b7a7a7301f13b08765bede49fad33ddbd5d7203fa703fb02045920"
+    },
+    "profile": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-profile-with-exit-inventory.json",
+      "bytes": 1104,
+      "sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6"
+    },
+    "guard": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-profile-request-001/native-profile-fresh-001/guard-profile.json",
+      "bytes": 2022,
+      "sha256": "4b16205ddbeeedb8d57f6fbf1f8b5a731e3811131d9e9f0729da528242223847"
+    },
+    "normal_exit_source_inventory": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/userdir/normal-exit-source-inventory-v1.json",
+      "sha256": "ce70e275043a759965866d062b8a030e684f809f240c6e5014a77fc1612be1a2"
+    },
+    "Client_session": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/session.json",
+      "bytes": 1247,
+      "sha256": "fc65f8c218d722c6b12a29d25c3398cd1695f7c9d70cf41b0d55b4138f0965bd"
+    },
+    "Client_ready": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/ready.json",
+      "bytes": 1370,
+      "sha256": "abec4a9dffc50a84cf970c7eb012b41bbacd81fcd010ee23d4bbf3472efd3ff2"
+    },
+    "original_native_attach": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0002-r17-003-attach.native-01.json",
+      "bytes": 22722,
+      "sha256": "98efefeab10f2ba182013a05f251990a26aa27f99f634e527ca650e4d2728d6d"
+    }
+  }
+}

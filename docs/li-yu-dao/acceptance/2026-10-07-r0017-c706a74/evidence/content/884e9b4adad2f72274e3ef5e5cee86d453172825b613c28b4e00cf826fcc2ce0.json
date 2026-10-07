@@ -1,0 +1,62 @@
+{
+  "name": "wrong-source-key",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r17-argument-author-actual-contract-validation-20261007-003\\source004\\author_i4_arguments.py",
+    "--consumer-source",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/consumer",
+    "--consumer-index-sha256",
+    "fa405c34864571a35fbae711e7ba5609a0c8cafdcfa2d42bc8f869e1a4b48fdf",
+    "--request-author",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/author_formal_request.py",
+    "--request-author-sha256",
+    "989f222e3913b75191540c12aa9460bb98991370129ecd93f8f88999fd2d4558",
+    "--prepared",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/PREPARED.json",
+    "--prepared-sha256",
+    "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f",
+    "--session-id",
+    "42abe9df32d34dd1840c23cb5246623d",
+    "--snapshot-sdk",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-source-key/SYNTHETIC-snapshot-sdk.json",
+    "--snapshot-sdk-sha256",
+    "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170",
+    "--mode",
+    "select-event",
+    "--query-sdk",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-source-key/SYNTHETIC-query-sdk.json",
+    "--query-sdk-sha256",
+    "d01b2fc5479ad6119fec775cf17c59889dda86a05e57f363b77b247e15277e66",
+    "--event-definition",
+    "lyd.106",
+    "--source-option-key",
+    "lyd_practice_jingshi_b",
+    "--native-index",
+    "8",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/wrong-source-key"
+  ],
+  "expected_accept": false,
+  "actual_exit": 1,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-source-key/stdout.original",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-source-key/stderr.original",
+    "bytes": 1093,
+    "sha256": "8f3113d07278cdeb8152bca952c7987bb7d78ce5e1ed1e561685e4a3b98f4f9c"
+  },
+  "output_exists": false,
+  "fixture_is_synthetic_I4_not_actualquery": true,
+  "original_actual28_profile_session_refs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/ACTUAL-SOURCE-INTERFACE-REFS.json",
+    "bytes": 2788,
+    "sha256": "8c546bf5c69306403b3f314ad7f658f23ad768fe7505c4d48b7a5864b992e6fb"
+  },
+  "runtime_or_formal_credit": null
+}

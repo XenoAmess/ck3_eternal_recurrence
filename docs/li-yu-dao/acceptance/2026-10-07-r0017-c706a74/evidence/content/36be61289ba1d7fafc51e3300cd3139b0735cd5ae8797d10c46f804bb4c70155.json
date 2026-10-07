@@ -1,0 +1,673 @@
+{
+  "schema": "lyd.r17.external-formal-checkpoint-author-integration.sourceonly.v2",
+  "status": "READY_EXTERNAL_SOURCE_ONLY",
+  "source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "main_writes": 0,
+  "SDK_game_calls": 0,
+  "checkpoint_body_reads": 0,
+  "native_product_binary_reads": 0,
+  "scope": "Explicit original receipts plus already parsed checkpoint/native joined JSON. Old legacy UNKNOWN/actual_pass unchanged. Source008 post requires original87 plus declared FaithAST delta, never lowers political protection.",
+  "executing_author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/author_actual_checkpoint.py",
+    "bytes": 43633,
+    "sha256": "bdb22a6ea0d690925c8dbee2f706ac6322e75ce7687dffe81adaa107929fe14a"
+  },
+  "formal_leaf": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/formal_native_qualification.py",
+    "bytes": 34930,
+    "sha256": "27dadb293bed249f81ec9ee4fff5b631320d0e772969f54324610b049eaea7ae"
+  },
+  "runtime_sources": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/author_actual_checkpoint.py",
+      "bytes": 43633,
+      "sha256": "bdb22a6ea0d690925c8dbee2f706ac6322e75ce7687dffe81adaa107929fe14a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/author_business_registry.py",
+      "bytes": 3076,
+      "sha256": "15d4b6114c7503e06cea9922a294abb8d53d9fae0e7d01942cfcce2d5ea90dcf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/CHECKPOINT-TRANSITION-CONTRACT.v2.json",
+      "bytes": 5117,
+      "sha256": "81e19ff2ee75c4b499129f33edf1efdb4558c8bc2be8781b7e8538b29464133d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/consumer_native_build_adapter.py",
+      "bytes": 1663,
+      "sha256": "ce6d307bc518e3f2de089fa914e37239c2756d7bda38009d489390eb31b1ff39"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/grant_metadata_semantics.py",
+      "bytes": 7322,
+      "sha256": "f603ce5395a2a6ca857bce925438e45ad93c51b9da5ca2b4d1224572f894d46b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/next_cold_qualification.py",
+      "bytes": 11113,
+      "sha256": "19f154bc6d863ac2132301511f78a380a344558e48fbcf7fa5d746642155ff04"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/r14_clean_native_gate.py",
+      "bytes": 14098,
+      "sha256": "b80db2379f6870bf23395b3c151c395c891b9778f6caea811b02dc9cb1247f51"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/r14_metadata_common.py",
+      "bytes": 4540,
+      "sha256": "c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/r14_metadata_semantics.py",
+      "bytes": 7480,
+      "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/actual_reader_lineage_v2.py",
+      "bytes": 2082,
+      "sha256": "7866e8284b937adc642a135502e5b09826cf61c96c170cd031352ba6f9ddd93e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/business_contract_migration_v2.py",
+      "bytes": 11980,
+      "sha256": "ce2204f5e0a7d52da0a6fa9999158b4124611c86a36febfdc43ccfb860dad724"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/checkpoint_transition_v2.py",
+      "bytes": 7522,
+      "sha256": "1114a145b2c600c070d2e5326233d6c50bdd7c5e84acded3dc1e2fc44eef5fa3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/bounded_save_parser.py",
+      "bytes": 1998,
+      "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/business_clausewitz_parser.py",
+      "bytes": 15976,
+      "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/business_migration_policy_v2.json",
+      "bytes": 6690,
+      "sha256": "ec3161fb115baa73832adfed7208fdb8eb0e7a54f872207f6f81ee8f907b33d3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/confucian_dto_primitives.py",
+      "bytes": 18056,
+      "sha256": "4f63059ad9c7842cc88502366cafb5e2d3701671d40d648e47f40b6c54be1b39"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/final_business_policy_registration.json",
+      "bytes": 850,
+      "sha256": "4d626a67e7db67c57538d7fa2b6fd3abe9309f7997e0356226a24e6e94e63720"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/frozen_business_contract.json",
+      "bytes": 8755,
+      "sha256": "a95b8f65cf46b731c4556ffb12bbce38d47de61ede8222c383f85209c9730643"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/frozen_sdk_g2_g3_metadata.json",
+      "bytes": 3642,
+      "sha256": "422f55005412f68b24ded177e63ba616a35a2c74a2982d0559eb704327e6803a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/migration_originals/lyd_c3_head_factory.policy005.txt",
+      "bytes": 2984,
+      "sha256": "6ad85b8f73a48077befa78b68b51c7930177d93b537904c905b6c9a704ad1d66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/migration_originals/lyd_c3_head_factory.txt",
+      "bytes": 1993,
+      "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/migration_originals/lyd_i3b_setup_effects.txt",
+      "bytes": 6448,
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/prior_policy005/business_contract_migration_v2.py",
+      "bytes": 9917,
+      "sha256": "f7aa7a3a9a8ce7040ef740dd81532e439f49701f40fdab56f976d425f9cb2c25"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/prior_policy005/business_migration_policy_v2.json",
+      "bytes": 4517,
+      "sha256": "e0900b603ba818f6160545c07c54cf310c26ef7af5bb9d2f0080b5b385790113"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/prior_policy005/final_business_policy_registration.json",
+      "bytes": 825,
+      "sha256": "9943abd7b8bdce64af7b10767c9e95df8ef4f1b4b8739df5322c612e1279f75f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/saved_faith_semantics_12003.json",
+      "bytes": 2877,
+      "sha256": "dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/i3b_checkpoint_reader.py",
+      "bytes": 51455,
+      "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/sdk_artifact_lineage.py",
+      "bytes": 5501,
+      "sha256": "ddeec774705dc5b2b9ed87c7e22370faac6134664a4c79f81073d291559b7669"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/sdk_checkpoint_qualification.py",
+      "bytes": 19238,
+      "sha256": "2d2cb9fe80bab3462eca38f28162a1a0d6f6cde7d8051c8e36f3dbb587ea1c94"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/sdk_checkpoint_transition_qualification_v2.py",
+      "bytes": 20749,
+      "sha256": "ef9de0613a569ddd913eb996e44c614744bbb29911a7a6541a28661bb2946f7e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/sdk_checkpoint_transition_qualification_v3.py",
+      "bytes": 21640,
+      "sha256": "f3923df30d6847e3daa7d554a1854f5e10b8e8b4823bc8c2904b9aea89ada0c6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/bind_existing_join_request.py",
+      "bytes": 1641,
+      "sha256": "0fdb6e2289de4ae4a65b7196dae526c9819d708adaee6521b2076d71bba82ec8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/derive_saved_title_reference_v3.py",
+      "bytes": 15075,
+      "sha256": "002d932a33eaf154ab7d8e9eed36e5c72affc8f9446a62a6aaa770c8a3efc3c0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/formal_native_qualification.py",
+      "bytes": 34930,
+      "sha256": "27dadb293bed249f81ec9ee4fff5b631320d0e772969f54324610b049eaea7ae"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/native_numeric_query_hook.py",
+      "bytes": 6354,
+      "sha256": "584531286ecbc1edf66042f55be40edad9b30d4cbb96466ba988e0d522346bb9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/optional_numeric_scopes.py",
+      "bytes": 2760,
+      "sha256": "0e2a2f7356ea000e3feb224f6cbe32a199458ef8aae12499a4940afa294b4e1e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/title_reference_hook.py",
+      "bytes": 5435,
+      "sha256": "ef04ad9b2a9407ca0843c294a521b1ab1c6d8fea58d00690b510827091cc7aa9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/UNBOUND-PROVENANCE.v2.template.json",
+      "bytes": 779,
+      "sha256": "95724264debb66a193e8c3871fc5b629c0569230c79af855ad5fbae2fec9ab9e"
+    }
+  ],
+  "new_helpers": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/materialize_checkpoint_request_v4.py",
+      "bytes": 13736,
+      "sha256": "cc59fa692102f124cc1bb893c8e79998df66fab5628719573e981fc4a9fadfa5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/qualify_retained_formal_v3.py",
+      "bytes": 5603,
+      "sha256": "44a26936ac5e1ff07c966056753fe4b27c492a4a404dd1d99ca96954d605fbf8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/construct_original0240_control.py",
+      "bytes": 3530,
+      "sha256": "eb9eff76921487d5f25e9a14de94dde1a5da0e36cf77bbcb934e961a243e405d"
+    }
+  ],
+  "unchanged_source005_dependencies": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/author_business_registry.py",
+      "bytes": 3076,
+      "sha256": "15d4b6114c7503e06cea9922a294abb8d53d9fae0e7d01942cfcce2d5ea90dcf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/CHECKPOINT-TRANSITION-CONTRACT.v2.json",
+      "bytes": 5117,
+      "sha256": "81e19ff2ee75c4b499129f33edf1efdb4558c8bc2be8781b7e8538b29464133d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/consumer_native_build_adapter.py",
+      "bytes": 1663,
+      "sha256": "ce6d307bc518e3f2de089fa914e37239c2756d7bda38009d489390eb31b1ff39"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/grant_metadata_semantics.py",
+      "bytes": 7322,
+      "sha256": "f603ce5395a2a6ca857bce925438e45ad93c51b9da5ca2b4d1224572f894d46b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/next_cold_qualification.py",
+      "bytes": 11113,
+      "sha256": "19f154bc6d863ac2132301511f78a380a344558e48fbcf7fa5d746642155ff04"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/r14_clean_native_gate.py",
+      "bytes": 14098,
+      "sha256": "b80db2379f6870bf23395b3c151c395c891b9778f6caea811b02dc9cb1247f51"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/r14_metadata_common.py",
+      "bytes": 4540,
+      "sha256": "c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/qualification/r14_metadata_semantics.py",
+      "bytes": 7480,
+      "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/actual_reader_lineage_v2.py",
+      "bytes": 2082,
+      "sha256": "7866e8284b937adc642a135502e5b09826cf61c96c170cd031352ba6f9ddd93e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/business_contract_migration_v2.py",
+      "bytes": 11980,
+      "sha256": "ce2204f5e0a7d52da0a6fa9999158b4124611c86a36febfdc43ccfb860dad724"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/checkpoint_transition_v2.py",
+      "bytes": 7522,
+      "sha256": "1114a145b2c600c070d2e5326233d6c50bdd7c5e84acded3dc1e2fc44eef5fa3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/bounded_save_parser.py",
+      "bytes": 1998,
+      "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/business_clausewitz_parser.py",
+      "bytes": 15976,
+      "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/business_migration_policy_v2.json",
+      "bytes": 6690,
+      "sha256": "ec3161fb115baa73832adfed7208fdb8eb0e7a54f872207f6f81ee8f907b33d3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/confucian_dto_primitives.py",
+      "bytes": 18056,
+      "sha256": "4f63059ad9c7842cc88502366cafb5e2d3701671d40d648e47f40b6c54be1b39"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/final_business_policy_registration.json",
+      "bytes": 850,
+      "sha256": "4d626a67e7db67c57538d7fa2b6fd3abe9309f7997e0356226a24e6e94e63720"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/frozen_business_contract.json",
+      "bytes": 8755,
+      "sha256": "a95b8f65cf46b731c4556ffb12bbce38d47de61ede8222c383f85209c9730643"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/frozen_sdk_g2_g3_metadata.json",
+      "bytes": 3642,
+      "sha256": "422f55005412f68b24ded177e63ba616a35a2c74a2982d0559eb704327e6803a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/migration_originals/lyd_c3_head_factory.policy005.txt",
+      "bytes": 2984,
+      "sha256": "6ad85b8f73a48077befa78b68b51c7930177d93b537904c905b6c9a704ad1d66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/migration_originals/lyd_c3_head_factory.txt",
+      "bytes": 1993,
+      "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/migration_originals/lyd_i3b_setup_effects.txt",
+      "bytes": 6448,
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/prior_policy005/business_contract_migration_v2.py",
+      "bytes": 9917,
+      "sha256": "f7aa7a3a9a8ce7040ef740dd81532e439f49701f40fdab56f976d425f9cb2c25"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/prior_policy005/business_migration_policy_v2.json",
+      "bytes": 4517,
+      "sha256": "e0900b603ba818f6160545c07c54cf310c26ef7af5bb9d2f0080b5b385790113"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/prior_policy005/final_business_policy_registration.json",
+      "bytes": 825,
+      "sha256": "9943abd7b8bdce64af7b10767c9e95df8ef4f1b4b8739df5322c612e1279f75f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/dependencies/saved_faith_semantics_12003.json",
+      "bytes": 2877,
+      "sha256": "dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/i3b_checkpoint_reader.py",
+      "bytes": 51455,
+      "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/sdk_artifact_lineage.py",
+      "bytes": 5501,
+      "sha256": "ddeec774705dc5b2b9ed87c7e22370faac6134664a4c79f81073d291559b7669"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/sdk_checkpoint_qualification.py",
+      "bytes": 19238,
+      "sha256": "2d2cb9fe80bab3462eca38f28162a1a0d6f6cde7d8051c8e36f3dbb587ea1c94"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/sdk_checkpoint_transition_qualification_v2.py",
+      "bytes": 20749,
+      "sha256": "ef9de0613a569ddd913eb996e44c614744bbb29911a7a6541a28661bb2946f7e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/reader/sdk_checkpoint_transition_qualification_v3.py",
+      "bytes": 21640,
+      "sha256": "f3923df30d6847e3daa7d554a1854f5e10b8e8b4823bc8c2904b9aea89ada0c6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/bind_existing_join_request.py",
+      "bytes": 1641,
+      "sha256": "0fdb6e2289de4ae4a65b7196dae526c9819d708adaee6521b2076d71bba82ec8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/derive_saved_title_reference_v3.py",
+      "bytes": 15075,
+      "sha256": "002d932a33eaf154ab7d8e9eed36e5c72affc8f9446a62a6aaa770c8a3efc3c0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/native_numeric_query_hook.py",
+      "bytes": 6354,
+      "sha256": "584531286ecbc1edf66042f55be40edad9b30d4cbb96466ba988e0d522346bb9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/optional_numeric_scopes.py",
+      "bytes": 2760,
+      "sha256": "0e2a2f7356ea000e3feb224f6cbe32a199458ef8aae12499a4940afa294b4e1e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/title_reference/title_reference_hook.py",
+      "bytes": 5435,
+      "sha256": "ef04ad9b2a9407ca0843c294a521b1ab1c6d8fea58d00690b510827091cc7aa9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/UNBOUND-PROVENANCE.v2.template.json",
+      "bytes": 779,
+      "sha256": "95724264debb66a193e8c3871fc5b629c0569230c79af855ad5fbae2fec9ab9e"
+    }
+  ],
+  "frozen_baseline_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/BASELINE-INTEGRATION-MANIFEST.source-only.json",
+    "bytes": 3986,
+    "sha256": "856738b3c4748a93a1c8753c4ed07bb794ac332cc9d3bb81c6f99471a229465b"
+  },
+  "baseline_artifacts_verified_unchanged": true,
+  "source_windows": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FIVE-SOURCE-WINDOWS.expected.json",
+    "bytes": 10360,
+    "sha256": "1c8ef638365f09fb6544749402551944924e44b4442585dbb66b85e78b527bbb"
+  },
+  "actual_business_registry": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/business-registry/BUSINESS-MIGRATION-REGISTRY.actual.json",
+    "bytes": 3058,
+    "sha256": "d5c70d0f8ce7547a074cdfcf180283b298a1c0ec702dee1962d6d2d33ce50f6d"
+  },
+  "framework": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/AUTHOR-FRAMEWORK.pending-runtime.json",
+    "bytes": 1527,
+    "sha256": "6445e3871fc49903005f44c9a6f2ff33a16fdf0e2f019d856fcd110c3e3912db"
+  },
+  "pending_runtime_inputs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/ACTUAL-INPUTS.pending.template.json",
+    "bytes": 526,
+    "sha256": "a184c919c13e3602193c9a4d71b0bd9a5469e4890a11ff6ae5333c79964a6896"
+  },
+  "explicit_formal_registry_templates": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-B3-REGISTRY.pending.template.json",
+      "bytes": 310,
+      "sha256": "054143dd118798d6033a7fa0ce6c81e637267ddad931982037f93773f93205d2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/B4-factory-result-REGISTRY.pending.template.json",
+      "bytes": 234,
+      "sha256": "7831cf5a0a532e5052785ab7f2972783fb686ddf97ac6fb2da0c6e57e3aba0d5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/B5-final-protection-REGISTRY.pending.template.json",
+      "bytes": 236,
+      "sha256": "b2b6c3c6b214a110ef58659b1eeca223ff1c2ff732e064bcdc210809c1e50dad"
+    }
+  ],
+  "request_schema": "lyd.r17.actual-checkpoint-author-request.formal-registry.v2",
+  "baseline_request_schema_retained": "lyd.r17.actual-checkpoint-author-request.grant-numeric.v1",
+  "independent_output_schema": "lyd.r17.independent-native-formal-qualification.v1",
+  "help_receipts": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-SOURCE008-HELP.actual.json",
+    "bytes": 4807,
+    "sha256": "b87885f578004095e5d39d8bfe7bdc25e322b1d723762a572dc8beaa9d2108d2"
+  },
+  "focused_checks": [
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/ORDERING-FOCUSED.actual.json",
+        "bytes": 873,
+        "sha256": "6a1a7ddbabbbd5b13883807128ebfddde1539587418b916a123b411ac95312d3"
+      },
+      "facts": {
+        "status": "SOURCE_ONLY_FOCUSED_PASS",
+        "tests_run": 9,
+        "failures": 0,
+        "errors": 0,
+        "actual_source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+        "political_contract_relaxed": false,
+        "reader": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/reader/i3b_checkpoint_reader.py",
+          "bytes": 51455,
+          "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+        },
+        "semantics": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/reader/dependencies/saved_faith_semantics_12003.json",
+          "bytes": 2877,
+          "sha256": "dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90"
+        },
+        "checkpoint_body_reads": 0,
+        "SDK_game_calls": 0,
+        "binary_reads": 0,
+        "runtime_acceptance": null
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/MATERIALIZER-FOCUSED.actual.json",
+        "bytes": 225,
+        "sha256": "3086c76d441a5775257cd53103342436d7f3fef66a67bfbe1493a2e48149a8a4"
+      },
+      "facts": {
+        "status": "SOURCE_ONLY_FOCUSED_PASS",
+        "tests_run": 6,
+        "failures": 0,
+        "errors": 0,
+        "future_RUNTIME_evidence": null,
+        "actual_pass": null,
+        "body_reads": 0,
+        "binary_reads": 0,
+        "SDK_game_calls": 0
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-LEAF-FOCUSED.actual.json",
+        "bytes": 510,
+        "sha256": "6ab8ac30c01d16dd3178a485db13abc36e1d3c7cb8fd17135367f3b8345734ce"
+      },
+      "facts": {
+        "schema": "lyd.r17.formal-leaf-focused-source.v1",
+        "status": "SOURCE_ONLY_FOCUSED_PASS",
+        "tests_run": 19,
+        "failures": 0,
+        "errors": 0,
+        "source_fixture_scope": "Only numeric positive leaf injects explicitly synthetic in-memory payloads; original R15 receipts unmodified and scalar UNKNOWN retained. No R17 native claim.",
+        "future_RUNTIME_actuals": null,
+        "formal_runtime_credit": null,
+        "checkpoint_body_reads": 0,
+        "binary_reads": 0,
+        "SDK_game_calls": 0,
+        "main_writes": 0
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-REGISTRY-WORKFLOW-FOCUSED.actual.json",
+        "bytes": 572,
+        "sha256": "62499980c5fe778d456e0990953668e3ff325a6fed7a91f6d674a8c418ee9a77"
+      },
+      "facts": {
+        "schema": "lyd.r17.formal-registry-synthetic-workflow-focused.v1",
+        "status": "SOURCE_ONLY_FOCUSED_PASS",
+        "tests_run": 8,
+        "failures": 0,
+        "errors": 0,
+        "explicit_fixture_mode": "Synthetic in-memory only. Original R15 shapes are copied; synthetic numeric payloads and runtime source HEAD are injected, query-pair file authentication is mocked. Never a native receipt or actual R17 result.",
+        "actual_R17_qualification": null,
+        "runtime_credit": null,
+        "checkpoint_body_reads": 0,
+        "binary_reads": 0,
+        "SDK_game_calls": 0,
+        "main_writes": 0
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-POST008-FOCUSED.attempt003.actual.json",
+        "bytes": 650,
+        "sha256": "94bf01356d36001ec3a111bf4e66d609e8d8f2a45d55ef6730ffb5c9b0255039"
+      },
+      "facts": {
+        "schema": "lyd.r17.formal-post-successor007-synthetic-focused.v1",
+        "status": "SOURCE_ONLY_FOCUSED_PASS",
+        "tests_run": 15,
+        "failures": 0,
+        "errors": 0,
+        "fixture_mode": "Explicit copied R15 JSON shapes, synthetic numeric payload/HEAD/check matches, mocked file authentication and certificate replay for postbranch only. Original RED political protections never edited. Bare certificate rejection separately checked. No original evidence or actual R17 PASS produced.",
+        "actual_R17_qualification": null,
+        "runtime_credit": null,
+        "checkpoint_body_reads": 0,
+        "binary_reads": 0,
+        "SDK_game_calls": 0,
+        "main_writes": 0
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-CERTIFICATE008-FOCUSED.actual.json",
+        "bytes": 553,
+        "sha256": "264737e33c9aef54a5ad26798fa40a706178bc1e916a5aa03553a9bcdace27b5"
+      },
+      "facts": {
+        "schema": "lyd.r17.synthetic-certificate-replay-focused.v1",
+        "status": "SOURCE_ONLY_FOCUSED_PASS",
+        "tests_run": 4,
+        "failures": 0,
+        "errors": 0,
+        "fixture_mode": "Only synthetic in-memory R15-shape copies written to clearly synthetic compact JSON. Original query authentication mocked; certificate replay/descriptor SHA/bound fields real. No native originals modified.",
+        "actual_R17_qualification": null,
+        "runtime_credit": null,
+        "checkpoint_body_reads": 0,
+        "binary_reads": 0,
+        "SDK_game_calls": 0,
+        "main_writes": 0
+      }
+    }
+  ],
+  "prior_RED_test_receipts": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-POST007-FOCUSED.actual.json",
+      "bytes": 639,
+      "sha256": "033668c9500eb4cc0ae0c220d3a02beb75b77f05631f59f547e3bf6213097482"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-POST007-FOCUSED.attempt002.actual.json",
+      "bytes": 639,
+      "sha256": "25a118d412b311041e000ceb814887b5ec944acd72bbbb019c1ff9ad7f945f0e"
+    }
+  ],
+  "lineage": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-SOURCE006-LINEAGE.actual.json",
+      "bytes": 27231,
+      "sha256": "e6e70be8c153fb20eef5e9a185fd9adb38f903d6067ba0b969694901130961d8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-SOURCE007-LINEAGE.actual.json",
+      "bytes": 22354,
+      "sha256": "d196c4bce25b146a4b81b5d66435ee07b1615eecbfb680ff6c86f2ced90329af"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-SOURCE008-LINEAGE.actual.json",
+      "bytes": 887,
+      "sha256": "a1fc01dc3bce4c4c375fdf507dc56e7aeb4b5c15d3030c186dec7a248d916dd1"
+    }
+  ],
+  "test_sources": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/test_formal_native_leaf.py",
+      "bytes": 6799,
+      "sha256": "e2a6c2d56f66056759217be8b551843872b081143c43c740a517738a1c82d1e9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/test_formal_registry_fixture.py",
+      "bytes": 6178,
+      "sha256": "8a10498fa69c92ff50471ff3a95aadf929249304f8508f2ef65fdcc1ce85cf5a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/test_formal_post_successor008_attempt003.py",
+      "bytes": 8015,
+      "sha256": "ffb6f58fc3d108ec69c02a401bd14c1975a5f98e32738b23c697e6ef1274a9b0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/test_retained_certificate008.py",
+      "bytes": 3563,
+      "sha256": "23b4d98c79235ace714e01e14afea702922ecaf1905849ebffa7f1edab26a774"
+    }
+  ],
+  "README": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-README.source008.md",
+    "bytes": 5205,
+    "sha256": "36ac8849cb5dca2a03d9f9f972219c83a9106381f46d717090a01444afa93759"
+  },
+  "actual_baseline_control": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/ORIGINAL0240-CONTROL.actual.json",
+    "bytes": 1250,
+    "sha256": "50c658a78fe00b408dcb585e7944b86fc9a5b13f73c20e87cefa889e53021d2f"
+  },
+  "future_current_round_native_query": null,
+  "future_signed_precommit_qualification": null,
+  "future_result_Title": null,
+  "future_postcommit_qualification": null,
+  "whole_product_pass": null,
+  "formal_acceptance": null,
+  "native_runtime_acceptance": null
+}

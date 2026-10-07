@@ -1,0 +1,83 @@
+{
+  "schema": "lyd.root.actual-postrelease-process-absence.v1",
+  "observed_at_utc": "2026-10-07T01:06:28.238381+00:00",
+  "observation_started_at_utc": "2026-10-07T01:06:28.197128+00:00",
+  "source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "root_screen_task": "ck3-lyd-r17-original0240-formal-20261007-001",
+  "release_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-screen-release-20261007-001/RELEASE.actual.json",
+    "bytes": 1311,
+    "sha256": "98ef6ab47ccd68d502f891407a94aff8dd0a6bd7cc01d5f12ae2242ae0e868b2"
+  },
+  "after_list": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-screen-release-20261007-001/BUS-AFTER-RELEASE.parsed.json",
+    "bytes": 102966,
+    "sha256": "0cf746a0912cade4586e067f61d887f56c3d5e7ff7930bc1e27ea2b96f6e0242"
+  },
+  "runtime_identity_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-helper-identity-holder-inputs-20261007-001/RUNTIME.actual.json",
+    "bytes": 3951,
+    "sha256": "16a4ab8c15b9ff4be82b53d1394856cc0c2f8c139165f23f333d02d387ed540e"
+  },
+  "same_original_identities_absent": true,
+  "no_current_managed_game_or_native_services": true,
+  "remaining_managed_game_or_native_services": [],
+  "original_identities": [
+    {
+      "role": "game",
+      "pid": 14608,
+      "create_time": 1791332614.2963333,
+      "pid_currently_present": false,
+      "current_create_time": null,
+      "same_original_identity_alive": false,
+      "observation": "READ_ONLY_PSUTIL_CURRENT_PROCESS_ENUMERATION_NOT_HANDLE_EXIT_PROOF"
+    },
+    {
+      "role": "client",
+      "pid": 13408,
+      "create_time": 1791333031.5885065,
+      "pid_currently_present": false,
+      "current_create_time": null,
+      "same_original_identity_alive": false,
+      "observation": "READ_ONLY_PSUTIL_CURRENT_PROCESS_ENUMERATION_NOT_HANDLE_EXIT_PROOF"
+    },
+    {
+      "role": "server",
+      "pid": 19556,
+      "create_time": 1791333037.3576496,
+      "pid_currently_present": false,
+      "current_create_time": null,
+      "same_original_identity_alive": false,
+      "observation": "READ_ONLY_PSUTIL_CURRENT_PROCESS_ENUMERATION_NOT_HANDLE_EXIT_PROOF"
+    },
+    {
+      "role": "keeper",
+      "pid": 20436,
+      "create_time": 1791332451.9545596,
+      "pid_currently_present": false,
+      "current_create_time": null,
+      "same_original_identity_alive": false,
+      "observation": "READ_ONLY_PSUTIL_CURRENT_PROCESS_ENUMERATION_NOT_HANDLE_EXIT_PROOF"
+    },
+    {
+      "role": "holder",
+      "pid": 14208,
+      "create_time": 1791333766.1629004,
+      "pid_currently_present": false,
+      "current_create_time": null,
+      "same_original_identity_alive": false,
+      "observation": "READ_ONLY_PSUTIL_CURRENT_PROCESS_ENUMERATION_NOT_HANDLE_EXIT_PROOF"
+    }
+  ],
+  "ck3_exe_live_count": 0,
+  "unresolved_python_processes": [],
+  "enumerated_process_count": 195,
+  "enumeration_errors": [],
+  "reopened_original_process": false,
+  "original_HANDLE_exit0_credit": false,
+  "SDK_calls": 0,
+  "game_actions": 0,
+  "process_signals": 0,
+  "bus_calls": 0,
+  "main_writes": 0
+}

@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "--paginate",
+    "--slurp",
+    "repos/XenoAmess/ck3_eternal_recurrence/commits/c706a74f9d00dd842b7edce8901fb3417344fd9c"
+  ],
+  "method": "GET",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit.stdout",
+    "bytes": 1613078,
+    "sha256": "4d1a40ac5890c531dda0488b64a09138f309bc670b677fb6df72227714f3c20a"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "finished_at_utc": "2026-10-07T00:28:32.506044+00:00"
+}

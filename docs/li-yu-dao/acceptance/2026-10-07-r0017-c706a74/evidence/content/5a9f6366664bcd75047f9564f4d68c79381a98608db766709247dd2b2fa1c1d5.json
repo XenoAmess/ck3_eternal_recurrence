@@ -1,0 +1,1758 @@
+{
+  "schema": "lyd.external-source-only-contract-validation-index.v1",
+  "status": "FROZEN_28_PURE_FIXTURES_NO_RUNTIME",
+  "candidate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source004/author_i4_arguments.py",
+    "bytes": 13273,
+    "sha256": "075e05f135678797ace5fd4b42dd9e3486dd8b1b0c301c48f48b4de2d7b47f5e"
+  },
+  "entry": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/REPORT.zh.md",
+    "bytes": 2979,
+    "sha256": "0b8a05b14a8751c30fdee8a115f470a2fa7475b596010b156b16650af83fd1f8"
+  },
+  "delivery": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/DELIVERY.json",
+    "bytes": 2804,
+    "sha256": "158468fddd824fedbe3a1655d868cbe15fbbe868f57fe8d81dc06c85a4eadf4a"
+  },
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/ACTUAL-SOURCE-INTERFACE-REFS.json",
+      "bytes": 2788,
+      "sha256": "8c546bf5c69306403b3f314ad7f658f23ad768fe7505c4d48b7a5864b992e6fb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/author_instance_successor.py",
+      "bytes": 1632,
+      "sha256": "083d4212c767b6d3e97be460be6a14160a12ad864057f42ee73a38ff34dd3378"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/author_path_successor.py",
+      "bytes": 1742,
+      "sha256": "6227a0676829a90667df828dad24981742c361d61ef9794e817edcffd244cb0a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/DELIVERY.json",
+      "bytes": 2804,
+      "sha256": "158468fddd824fedbe3a1655d868cbe15fbbe868f57fe8d81dc06c85a4eadf4a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/finalize_validation.py",
+      "bytes": 8202,
+      "sha256": "12c0ac922a35065d2687d54127b5ad2e5b2f7a58e8937b355733f0578f1648ea"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/fixture-mirror/run/PREPARED.json",
+      "bytes": 7187,
+      "sha256": "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/FIXTURE-MIRROR.json",
+      "bytes": 2372,
+      "sha256": "f8ebcdf51e26fb48f822773a649201442f5b2aba1747d27f673159a7d92e1fe5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/inspect_actual_refs.py",
+      "bytes": 918,
+      "sha256": "12c501b5f4443c7d1e41ff2177bddaff10c4e2b68e9f2d5edb767861d65a6481"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/inspect_session.py",
+      "bytes": 477,
+      "sha256": "e948f64e3e7b3490f3c7a6aa2bbe7955ea7c044acc49cb8d8529f8edb5a4feca"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/prepare_actual_fixture_and_first_check.py",
+      "bytes": 4666,
+      "sha256": "ce8fd52d6b63e36424a95d366a6f41f39f9c5dc114789aeaa3e4b7e06827b6fe"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/preserved_test_sources/test_actual_interface.source003.original.py",
+      "bytes": 11998,
+      "sha256": "b75968b1cac09d31ae8b739cd351510fddc85f778afb1a665609fbc987912964"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/preserved_test_sources/test_actual_interface.source004.original.py",
+      "bytes": 13087,
+      "sha256": "5714288d85d4dd3cd18d9f46d7c5fdef6a8aab270ee1a369e298fa356894eb11"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/REPORT.zh.md",
+      "bytes": 2979,
+      "sha256": "0b8a05b14a8751c30fdee8a115f470a2fa7475b596010b156b16650af83fd1f8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/ROOT-INPUTS.pending.json",
+      "bytes": 1682,
+      "sha256": "91f62e0f917cd4ecf920fba7923bd8f5112c8521f11c274c5420d0cd477774f6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-FIRST-CHECK.actual.json",
+      "bytes": 2539,
+      "sha256": "32c2a8fec63a894a7c5e3b8e198366df6b78accb4ebea2b4c85a0bde4e984f53"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-first.stderr",
+      "bytes": 1211,
+      "sha256": "e83a98d9beab437f3a6bd63c096a0fef5de33fc37f2fceb1b9ce805ec1bf34f6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-first.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-HELP-AST.actual.json",
+      "bytes": 1108,
+      "sha256": "c8c24709fc60479e4ac7da164f40fa37bc0dd8fbf135844529573ede5f1adad7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-help.stdout",
+      "bytes": 2353,
+      "sha256": "bf11ab8a9ae732231528a14230002afb0d28cbf481f25643b2fd9a19cdca08b5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-to-FINAL004.patch",
+      "bytes": 1704,
+      "sha256": "b246252b5637bc22f899492f09ecfb2fdcafcdbea863715f33e41d048d2aa183"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-to-SOURCE003.patch",
+      "bytes": 882,
+      "sha256": "743fa3c0ef468e21d054bc31f724f996527c9ed733a6685617cffa9f23bdab20"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source003/author_i4_arguments.py",
+      "bytes": 13110,
+      "sha256": "826232adaf97fb10ef368dfba1f8059e516f5ae445598ba58f9a677f9c2b7515"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source003/SOURCE-BINDING.actual.json",
+      "bytes": 12325,
+      "sha256": "e4176a3ae1f7d569ab685ff56d51d607ddffcaf1922d23157a4040e4d02463b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source003/SOURCE-CONTRACTS.json",
+      "bytes": 42960,
+      "sha256": "6e111c40ca67a6ea63817189bdb5e987019e27d6501bc2e23bc70b6f3f4cfe21"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE003-DELTA.json",
+      "bytes": 1024,
+      "sha256": "380c4e40be18d36ea05e08be2de29564c793806ad01b48d41e66eca691e5b135"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE003-to-SOURCE004.patch",
+      "bytes": 896,
+      "sha256": "e04ff0a4d07991c3fc2abe199e52c4ce01d7827bda51b9502fe95586595033de"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source004/author_i4_arguments.py",
+      "bytes": 13273,
+      "sha256": "075e05f135678797ace5fd4b42dd9e3486dd8b1b0c301c48f48b4de2d7b47f5e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source004/SOURCE-BINDING.actual.json",
+      "bytes": 12325,
+      "sha256": "e4176a3ae1f7d569ab685ff56d51d607ddffcaf1922d23157a4040e4d02463b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source004/SOURCE-CONTRACTS.json",
+      "bytes": 42960,
+      "sha256": "6e111c40ca67a6ea63817189bdb5e987019e27d6501bc2e23bc70b6f3f4cfe21"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE004-DELTA.json",
+      "bytes": 1329,
+      "sha256": "34096a78200251eb0d39775cbadc51e06c01b6d4483064bc441e9b0c8704d776"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/actual-interface-open/INVOCATION.fixture.json",
+      "bytes": 2780,
+      "sha256": "92adb67ee6e63215bc01577aa69863f75510ab8780c2c0ec28198a25e034e9bc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/actual-interface-open/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/actual-interface-open/stdout.original",
+      "bytes": 614,
+      "sha256": "8e80eba2f84a00fcd35f7939a0b459b43a9a5f26783244ddaa2ae7c6e1c036ee"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/actual-interface-open/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/bootstrap-query/INVOCATION.fixture.json",
+      "bytes": 2818,
+      "sha256": "895a2e95426580fe973dd19b6d543671f9b24031ebbd0daf59b2ff6c1271e1a4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/bootstrap-query/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/bootstrap-query/stdout.original",
+      "bytes": 602,
+      "sha256": "97ece7ce063151827bfd6b1b051fc6d4c3e19220afc175e09039509f2846e1d7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/bootstrap-query/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/cancel/INVOCATION.fixture.json",
+      "bytes": 3156,
+      "sha256": "0783b2a2be87579409803c8032bd364eade88aca66ceeff9dfe9f656075a12fb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/cancel/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/cancel/stdout.original",
+      "bytes": 583,
+      "sha256": "afacb8c03a07a38ce987f28f5acccefc867bd6631bf430c1438886a0910b7c87"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/cancel/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "d01b2fc5479ad6119fec775cf17c59889dda86a05e57f363b77b247e15277e66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/cancel/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-confirm/INVOCATION.fixture.json",
+      "bytes": 3268,
+      "sha256": "91dcb60a25afb2035c0559f2fda1215a042d3522bd2edc355c08fda6e9079805"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-confirm/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-confirm/stdout.original",
+      "bytes": 605,
+      "sha256": "b818686a44680a9e23807a8834ae286405c68affe219420fac80fe4351ef5b51"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-confirm/SYNTHETIC-query-sdk.json",
+      "bytes": 1529,
+      "sha256": "f23429e66c272cbbfdaaa36b86d57f9f8604a503e02694bf38a44f459c83fec3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-confirm/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-select/INVOCATION.fixture.json",
+      "bytes": 3132,
+      "sha256": "067e7cd85a8a818759b4f22d87009c6981e63a8f6cef1938315fd5bc048ce486"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-select/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-select/stdout.original",
+      "bytes": 602,
+      "sha256": "9c57efd610d4e06b11071e3e3328ca35b542d5cdca30abade1147bc0fbd9399b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-select/SYNTHETIC-query-sdk.json",
+      "bytes": 1529,
+      "sha256": "f23429e66c272cbbfdaaa36b86d57f9f8604a503e02694bf38a44f459c83fec3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/decision-select/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/disabled/INVOCATION.fixture.json",
+      "bytes": 3068,
+      "sha256": "89f59c23523d1193f4c63b50a5570dc55fa97da1abdb928447873484294a4ee8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/disabled/stderr.original",
+      "bytes": 1052,
+      "sha256": "a4139e474867c38e4e4e4f79a695098ca58f1d87f85e9a43a81a01e932fb0cf9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/disabled/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/disabled/SYNTHETIC-query-sdk.json",
+      "bytes": 1537,
+      "sha256": "6ff957976fd4f94730c42e83774799697536f04e43ef3329c42f2864d56892f7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/disabled/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/duplicate-index/INVOCATION.fixture.json",
+      "bytes": 3110,
+      "sha256": "22f93e6ad9776a7bddf3c3939d876a507421ff9ea2fbe8f77912d0c068de5a7e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/duplicate-index/stderr.original",
+      "bytes": 1052,
+      "sha256": "a4139e474867c38e4e4e4f79a695098ca58f1d87f85e9a43a81a01e932fb0cf9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/duplicate-index/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/duplicate-index/SYNTHETIC-query-sdk.json",
+      "bytes": 1719,
+      "sha256": "5309ef19ce6ac48efbf4d3a0022353f248f615714a4c79292ce4f54e96552f34"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/duplicate-index/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/hidden/INVOCATION.fixture.json",
+      "bytes": 3056,
+      "sha256": "f569c59e292c9466481b3666e64e3c42654533cc9c51c69634b37d2e5b1e624f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/hidden/stderr.original",
+      "bytes": 1052,
+      "sha256": "a4139e474867c38e4e4e4f79a695098ca58f1d87f85e9a43a81a01e932fb0cf9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/hidden/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/hidden/SYNTHETIC-query-sdk.json",
+      "bytes": 1537,
+      "sha256": "56eb6b9599576b152efee92d971597d23678b03d33788b3c7db7a7e6f77488e0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/hidden/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/missing-query/INVOCATION.fixture.json",
+      "bytes": 2809,
+      "sha256": "297dd6140b9323d686d158a397b9708e6bedd31ffdf103532c7bc7b388b23402"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/missing-query/stderr.original",
+      "bytes": 1003,
+      "sha256": "a9a26e2e317d36a29ae0ced24139bd3c411809786ff16838258372ed863ecb78"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/missing-query/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/missing-query/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/old-pid/INVOCATION.fixture.json",
+      "bytes": 2986,
+      "sha256": "947d77ef1a6683e4037bfff31451720b7de18d96cce6c5d7b8c255bc319954ab"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/old-pid/stderr.original",
+      "bytes": 1206,
+      "sha256": "694a3a869e13ac96d2317b0df63123c18f1f413b0f000213dae1fe392d5d7097"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/old-pid/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/old-pid/SYNTHETIC-query-sdk.json",
+      "bytes": 1529,
+      "sha256": "a7d0c790c8882f0f2011a92e2b0785b95a3238c99940f5cea2ae7aa82325b92b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/old-pid/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/paid-index8/INVOCATION.fixture.json",
+      "bytes": 3196,
+      "sha256": "a5605435b205eed943b9022ba9b188c7fef8d35ead54829f4267e856d8dad217"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/paid-index8/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/paid-index8/stdout.original",
+      "bytes": 593,
+      "sha256": "8ded77adf21e167b97cefa3a8ca59a5390d09c85d99e2941511d24f9bafb0fc4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/paid-index8/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "d01b2fc5479ad6119fec775cf17c59889dda86a05e57f363b77b247e15277e66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/paid-index8/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/running-pause/INVOCATION.fixture.json",
+      "bytes": 2799,
+      "sha256": "a189e6739bdcbfd3228a85c23078011938c2f1e32505f4618c108ca67fa74027"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/running-pause/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/running-pause/stdout.original",
+      "bytes": 597,
+      "sha256": "d0f1c100fb3d968bb9083fdec02bdf5072fcb8b8e41944c081691a18ff685363"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/running-pause/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33069,
+      "sha256": "159a84820ce511f4e1f12052c163dedae9a8fffa2eab2bcc4ade571f44cfed5e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/school-lastpage/INVOCATION.fixture.json",
+      "bytes": 3216,
+      "sha256": "972d409126396c055973844e1e57c8bd39dfac2f1964934b4a0faa9e850597f2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/school-lastpage/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/school-lastpage/stdout.original",
+      "bytes": 602,
+      "sha256": "f3bb6df88cca412d864a2613095292fe99342140099bac91e450bf4092d56b51"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/school-lastpage/SYNTHETIC-query-sdk.json",
+      "bytes": 1533,
+      "sha256": "80b63423d1e63fc12d6e08d49ad3002900c513313a8d59e7a3098c80e1532c20"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/school-lastpage/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-date/INVOCATION.fixture.json",
+      "bytes": 3080,
+      "sha256": "cf09eeaf2ef79ef37197d5837f6afd6089a3f156bb91a777d1439c1763058751"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-date/stderr.original",
+      "bytes": 1213,
+      "sha256": "273137bf1e65aebc6eb70baf65b853956d3eb5a048143a859a15eb88ba302731"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-date/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-date/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "cdbe9b0e70625c9c9f96b8713056926deeb2bebbaa14fbc04b1bcdc906fafeca"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-date/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-query/INVOCATION.fixture.json",
+      "bytes": 3086,
+      "sha256": "3755519c603f492822d9cf069dc7f6821459f7ca3fad61d162d65c1bccfab463"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-query/stderr.original",
+      "bytes": 1213,
+      "sha256": "273137bf1e65aebc6eb70baf65b853956d3eb5a048143a859a15eb88ba302731"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-query/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-query/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "adfac7ed6216a5df0f840e307ff12dd3a47c492a35bb342419871998fad523b7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/stale-query/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/structured-mismatch/INVOCATION.fixture.json",
+      "bytes": 2714,
+      "sha256": "9c311a25acf4f6e32f3c9d63d83b971d6032c75286b6abf915cec69fd4c16dd7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/structured-mismatch/stderr.original",
+      "bytes": 1329,
+      "sha256": "93a47c84991475a2dbcde6eea0d1798cee854ba4888013daa4f9c11df2bcb023"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/structured-mismatch/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/structured-mismatch/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33049,
+      "sha256": "cb28afa4bbba612e39b99e7a60a41d337ad0a7aad70446f8106427b35811d86e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/unpaused-select/INVOCATION.fixture.json",
+      "bytes": 3110,
+      "sha256": "7e807ff82b00560846255713475478d932ba2178a6a0157bff3907083549a041"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/unpaused-select/stderr.original",
+      "bytes": 1161,
+      "sha256": "163bda27b6d3356a958a54459fa0b0ed1d1525095867e5c5a8ff586b576ebdf6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/unpaused-select/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/unpaused-select/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "d01b2fc5479ad6119fec775cf17c59889dda86a05e57f363b77b247e15277e66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/unpaused-select/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33119,
+      "sha256": "dc02290d7a72bf2bdc9dcf49299ea1cadf4c629b2a7e764ed76f188c1536816f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-client-session/INVOCATION.fixture.json",
+      "bytes": 2719,
+      "sha256": "ad7a12a828da4c2e4bb8c380936fd60d296a2482dd959aaf8d501b4d8f9447be"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-client-session/stderr.original",
+      "bytes": 1054,
+      "sha256": "2623d7a18da63d8a8ba2352332b8680fb7fe3db1142cb283512f0d167cd930c2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-client-session/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-client-session/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-decision-actor/INVOCATION.fixture.json",
+      "bytes": 3064,
+      "sha256": "10866fd05692c6aa18081c5656abbb0a04296847a5f719392acb6ad4dcc3a85d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-decision-actor/stderr.original",
+      "bytes": 1125,
+      "sha256": "359853c1ec861691899bc285670237c5b31c78ce4d797e58ec4f4849add22931"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-decision-actor/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-decision-actor/SYNTHETIC-query-sdk.json",
+      "bytes": 1529,
+      "sha256": "d549a34dd0fbda2587d4168992baacb47c03d61f4cb110563cd2828d738a8a34"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-decision-actor/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-definition/INVOCATION.fixture.json",
+      "bytes": 3116,
+      "sha256": "d69e200742474f8fb439457e58fa3cd827a745d51e8bd6a0c6f02a1bd150d7f3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-definition/stderr.original",
+      "bytes": 1019,
+      "sha256": "4d0340fd8b1dd6e8b9cb98ad7a6f79b4a2ee8efef9f09179a74182c76ca07cbe"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-definition/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-definition/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "4a67bf1ba043b76e7f1230af0be9d10fcd601896521faf417dd1a52f2b75d2e0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-definition/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-detail-key/INVOCATION.fixture.json",
+      "bytes": 3082,
+      "sha256": "6725ff669414bbf4a0ccbfd9056101a8924479cf4acd83a82011f9d9964a890e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-detail-key/stderr.original",
+      "bytes": 1297,
+      "sha256": "539067038baba0cd729083467de1ffab10ab9a5e8604499d92bcc1415206d8e9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-detail-key/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-detail-key/SYNTHETIC-query-sdk.json",
+      "bytes": 1545,
+      "sha256": "2b76a8bd661d5bc69af8cbe8a4f8c13288f13a0df227c4fe9bddb6042355242d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-detail-key/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-frame/INVOCATION.fixture.json",
+      "bytes": 2674,
+      "sha256": "b5325f6b19c8eb4375ba63e0d4728f7b9766c925312ad9f377020abb3c7a5e2c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-frame/stderr.original",
+      "bytes": 1065,
+      "sha256": "687eba33bdac04d30c5346eb82ad788c061be6995aa094e1b3e39803e50385cb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-frame/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-frame/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "63eab1faeeea8edb85522262a76b4bc89eb8e2c222f26d613eb213b84394b84b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-instance/INVOCATION.fixture.json",
+      "bytes": 3215,
+      "sha256": "f4452e63da41cefd7e1ec91b029586b5967eb637fd7320ae7d1bd54e91874098"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-instance/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-instance/stdout.original",
+      "bytes": 600,
+      "sha256": "062cc370b633b9e92cac8e0953f0a26aab1ab9f04a1a506326f55f7d4ade77ed"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-instance/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "730194929f634733f49e98d52a07283f75582cc18e00d98e1d49ffb4ef4863ee"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-instance/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-profile/INVOCATION.fixture.json",
+      "bytes": 2684,
+      "sha256": "688f27217b4285d9b47d9726f311d8e54da3322e37b4dde87c277e8794e97cde"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-profile/stderr.original",
+      "bytes": 1054,
+      "sha256": "2623d7a18da63d8a8ba2352332b8680fb7fe3db1142cb283512f0d167cd930c2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-profile/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-profile/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "4506fdc887433acc63336480a7ac1bb91ec68b4d93d0ee6814de20c23fe915e7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-root/INVOCATION.fixture.json",
+      "bytes": 3079,
+      "sha256": "9ad4574ecb169277ea64b85f51147689264bbc845274d1850be417de07a17929"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-root/stderr.original",
+      "bytes": 948,
+      "sha256": "e0bfd7a31eb7da53705cc848ef252467e7f61ebeeb9d8c823d73e39958cd5497"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-root/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-root/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "1bf74d11a52c88f339737987e2c2e037735577ad0153a511e4a1994c3d5b0757"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-root/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-source-key/INVOCATION.fixture.json",
+      "bytes": 3118,
+      "sha256": "f40bc49fa41702bb2017c31bb818689683431b96e992d147e1cb5384958890a5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-source-key/stderr.original",
+      "bytes": 1093,
+      "sha256": "cdbde926839dbe3842e8f73d01692e74f65ff173fa79f14e19e35a049f2a07cd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-source-key/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-source-key/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "d01b2fc5479ad6119fec775cf17c59889dda86a05e57f363b77b247e15277e66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-source-key/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/help.stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/help.stdout.original",
+      "bytes": 2353,
+      "sha256": "bf11ab8a9ae732231528a14230002afb0d28cbf481f25643b2fd9a19cdca08b5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/actual-interface-open/ARGUMENTS.actual.json",
+      "bytes": 29,
+      "sha256": "88032a3e157bb90f50fc6135345b3c84317511c3391928e7a9c43eb63173029a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/actual-interface-open/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1011,
+      "sha256": "cec47c907bd347a3cf5d5aa25abe580414c9caaa55c0391a3e6d3ca6f15ca4bf"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/actual-interface-open/RESULT.source-only.json",
+      "bytes": 2130,
+      "sha256": "cb3816b907e91db46924c0872b7c408cab6b756ba00d6fb8e84cb186df82372a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/bootstrap-query/ARGUMENTS.actual.json",
+      "bytes": 57,
+      "sha256": "69814123f6d0a1f466772df65c4c26df67e5dcf6582e4a09c56b4670b60ec150"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/bootstrap-query/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1003,
+      "sha256": "5806f3d9a0202b7f605cf27533a3439c2c3e358403de26fa67f7418783dd7dfa"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/bootstrap-query/RESULT.source-only.json",
+      "bytes": 2122,
+      "sha256": "4913bf3e02a852b4f01f15a198c866fc74f710d2790539d3cf3347adbf153e5a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/cancel/ARGUMENTS.actual.json",
+      "bytes": 79,
+      "sha256": "1d39b6bbd18a9c55afd818112f1567017e123afb2fd9880f888dbee428a1a8b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/cancel/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 986,
+      "sha256": "f1c97f0aded75f2ce0919d3bc0cade93220d5717a8792ff43e10ad4675138da4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/cancel/RESULT.source-only.json",
+      "bytes": 2384,
+      "sha256": "a6ed5f46a978fb32a0487de5d17c15913f0f4d5979b253248596d79d036f0aa2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/decision-confirm/ARGUMENTS.actual.json",
+      "bytes": 153,
+      "sha256": "03a469e039a69b7c9574492e86d662c308d22073199ac969a26c0a07a431ac01"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/decision-confirm/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1011,
+      "sha256": "ceedc3df29950e457d29810471e6eb7522f034155e4a2b9d36beb00e40cc7c26"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/decision-confirm/RESULT.source-only.json",
+      "bytes": 2415,
+      "sha256": "36fcd574bee04f4564a9f77b21ffa7b9cbca0b43d4bac7b13555f6c6390ebc6b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/decision-select/ARGUMENTS.actual.json",
+      "bytes": 69,
+      "sha256": "eb9866ef1feb6d4e809d5776b3d6e17efbc791e13aa30a70adee8b1832090508"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/decision-select/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1005,
+      "sha256": "1a778b42ab8465649f422f2726a9b67189acc7938c0e56f5e16b3c0ff5532014"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/decision-select/RESULT.source-only.json",
+      "bytes": 2407,
+      "sha256": "e8b765ad95c0d19e73f25cd62bbb7d5f7c87aa21dd9cbb2f08c8c5baa8cc315c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/paid-index8/ARGUMENTS.actual.json",
+      "bytes": 79,
+      "sha256": "1d39b6bbd18a9c55afd818112f1567017e123afb2fd9880f888dbee428a1a8b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/paid-index8/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 996,
+      "sha256": "46567094dd16d7dc7335ead4f09ad6470ea4452e3896ae971520bc94145d89cd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/paid-index8/RESULT.source-only.json",
+      "bytes": 2409,
+      "sha256": "b889f9de979f168d50910fb7238fc647ff1f8eb78510a21c3c575d07a1ecf788"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/PREPARED.json",
+      "bytes": 7187,
+      "sha256": "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/running-pause/ARGUMENTS.actual.json",
+      "bytes": 50,
+      "sha256": "e12488a235d55884b32346aff765e91865198de687b0f96563fa64d6ffa4f8ae"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/running-pause/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 995,
+      "sha256": "0fb2f03b89f57ecf6ed52cf6fe480a8ce9cbbcae211b629a124284f17f1221b1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/running-pause/RESULT.source-only.json",
+      "bytes": 2114,
+      "sha256": "497462cc8fce7f2e55f5b99a9cd4106cb785e6f97944b5d7665cafcf6eb2d7d1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/school-lastpage/ARGUMENTS.actual.json",
+      "bytes": 79,
+      "sha256": "1d39b6bbd18a9c55afd818112f1567017e123afb2fd9880f888dbee428a1a8b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/school-lastpage/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1004,
+      "sha256": "94cabe5effbed6b66871737d772c8bc8d6b46731a154384bce1a97297b776cef"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/school-lastpage/RESULT.source-only.json",
+      "bytes": 2418,
+      "sha256": "eefb32691cde0e5d187baf3c5a977430bc658b17cc931d5524c843e58b711629"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/wrong-instance/ARGUMENTS.actual.json",
+      "bytes": 79,
+      "sha256": "b175fc4a49b55499b255fdea3f7696dacc61f129b78f5daf810c8d329ec48b48"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/wrong-instance/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1002,
+      "sha256": "161596dec7245f2d8727ea1d8668afed7598abfc4f433b8bae3713462a1b976d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/wrong-instance/RESULT.source-only.json",
+      "bytes": 2418,
+      "sha256": "ab5c8d3edd104009273221f8e10339a1b47c568321bd1f38526f9a3d9a2f8c21"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/RESULT.fixture.json",
+      "bytes": 86093,
+      "sha256": "fb3fe54d2ae11b5e60a669290d7144389b5a91a2c17348608b6f83794dd805ea"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/unittest.stderr.original",
+      "bytes": 3146,
+      "sha256": "b813de79909fd8a13fca56efe70de5580ec381d5705c413b16e108066a9facee"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/final9-mutant/PREPARED.json",
+      "bytes": 7222,
+      "sha256": "50828d5875aa8fc9a6a653db3dcac420c5127d37f30539157502171469e8bd2f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/actual-interface-open/INVOCATION.fixture.json",
+      "bytes": 2780,
+      "sha256": "c9bc0252e98b7a51c1fbe8956735919c96a4f03cf622013a5b73b3a38d2690a0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/actual-interface-open/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/actual-interface-open/stdout.original",
+      "bytes": 614,
+      "sha256": "45a968948c967f077a50e409c51c77f4d50389a3beca9ca056359d43362cb19d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/actual-interface-open/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bad-final9/INVOCATION.fixture.json",
+      "bytes": 2671,
+      "sha256": "ea47b9304802f30022e51b48207365f0a8edc2ccc3f1b739727b206b1a6f51ca"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bad-final9/stderr.original",
+      "bytes": 885,
+      "sha256": "3dc54d1c5bb4a96b9096d9c8f729ab6a70f67c0740dfb5d976b4253c4547f955"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bad-final9/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bad-final9/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bad-metadata-hash/INVOCATION.fixture.json",
+      "bytes": 2704,
+      "sha256": "6af7bbead286ee0185356f0480e49bc2928044119a782a04e15fca17248b97f1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bad-metadata-hash/stderr.original",
+      "bytes": 1464,
+      "sha256": "170557f2d71a1a8dd4b09863fc24214614acc826e4fa014ce7da033797571b18"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bad-metadata-hash/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bad-metadata-hash/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bootstrap-query/INVOCATION.fixture.json",
+      "bytes": 2818,
+      "sha256": "8f31536f9c6438731258ef0506695982851e2716d3a56c5a3d4b4541d23f8675"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bootstrap-query/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bootstrap-query/stdout.original",
+      "bytes": 602,
+      "sha256": "201c30c91004612211eb58993178fd676a3cef2131fe81a3f01f8b30d461c6b6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/bootstrap-query/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/cancel/INVOCATION.fixture.json",
+      "bytes": 3156,
+      "sha256": "3396b2003747f46ef612abc7f11b104f7802b5825424d5811845ef46bb0ec06e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/cancel/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/cancel/stdout.original",
+      "bytes": 583,
+      "sha256": "b0aad26fb1fa48d3b2b1ef4695d6006f8151ec8876b23e8b6f59c7870e331a19"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/cancel/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "d01b2fc5479ad6119fec775cf17c59889dda86a05e57f363b77b247e15277e66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/cancel/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-confirm/INVOCATION.fixture.json",
+      "bytes": 3268,
+      "sha256": "3728239edb5cb87cc17b36898febb9b22fdc1866c9b033fce76ab51bb72989b6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-confirm/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-confirm/stdout.original",
+      "bytes": 605,
+      "sha256": "14277f709db13c2a68fb516f2bfacfc917ab694168a761cf38d5072dd2469ac3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-confirm/SYNTHETIC-query-sdk.json",
+      "bytes": 1529,
+      "sha256": "f23429e66c272cbbfdaaa36b86d57f9f8604a503e02694bf38a44f459c83fec3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-confirm/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-select/INVOCATION.fixture.json",
+      "bytes": 3132,
+      "sha256": "7f7f301d6bb01a67292190add3f0b87a0552f11a5861603ba5cec3c33069cb80"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-select/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-select/stdout.original",
+      "bytes": 602,
+      "sha256": "ace2eec8d7a6ab3684cda58625d6c2ab30cb8e68e623d8804534fd56097d59eb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-select/SYNTHETIC-query-sdk.json",
+      "bytes": 1529,
+      "sha256": "f23429e66c272cbbfdaaa36b86d57f9f8604a503e02694bf38a44f459c83fec3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/decision-select/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/disabled/INVOCATION.fixture.json",
+      "bytes": 3068,
+      "sha256": "aeea5466c5886947b23241bf220de931d80a297757a8bd87fd3a43738564e112"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/disabled/stderr.original",
+      "bytes": 1052,
+      "sha256": "e57a15b6565e9e9186684332968cb4ee11f99e1b7eed62717a531c4d961cafc4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/disabled/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/disabled/SYNTHETIC-query-sdk.json",
+      "bytes": 1537,
+      "sha256": "6ff957976fd4f94730c42e83774799697536f04e43ef3329c42f2864d56892f7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/disabled/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/duplicate-index/INVOCATION.fixture.json",
+      "bytes": 3110,
+      "sha256": "3348e22a95f45a1191e8e28386959ee4f1ceb42657845bd361ef014187eb4452"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/duplicate-index/stderr.original",
+      "bytes": 1052,
+      "sha256": "e57a15b6565e9e9186684332968cb4ee11f99e1b7eed62717a531c4d961cafc4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/duplicate-index/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/duplicate-index/SYNTHETIC-query-sdk.json",
+      "bytes": 1719,
+      "sha256": "5309ef19ce6ac48efbf4d3a0022353f248f615714a4c79292ce4f54e96552f34"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/duplicate-index/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/hidden/INVOCATION.fixture.json",
+      "bytes": 3056,
+      "sha256": "f78d9db1075e82e5f9e7dd23ab67153ae0b6aeb7789ffefcc8240872df6d2ab9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/hidden/stderr.original",
+      "bytes": 1052,
+      "sha256": "e57a15b6565e9e9186684332968cb4ee11f99e1b7eed62717a531c4d961cafc4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/hidden/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/hidden/SYNTHETIC-query-sdk.json",
+      "bytes": 1537,
+      "sha256": "56eb6b9599576b152efee92d971597d23678b03d33788b3c7db7a7e6f77488e0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/hidden/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/missing-query/INVOCATION.fixture.json",
+      "bytes": 2809,
+      "sha256": "c7c6f122c1acb624cfc4007aa11e2e6794764ff45c0e022a5a52d43be1eb6d17"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/missing-query/stderr.original",
+      "bytes": 1003,
+      "sha256": "396358037466fa7d16b0f721221ada072acf8628a7a60af63efa74c9053cbb88"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/missing-query/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/missing-query/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/old-pid/INVOCATION.fixture.json",
+      "bytes": 2986,
+      "sha256": "e43d4e37684337ccbb77bb8f8f6dbf7c3f55d20f21a0e6072283f5183a1d02f7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/old-pid/stderr.original",
+      "bytes": 1206,
+      "sha256": "9e321898e9e859ca718c5e4ba3d03f44f770981a0f8202792d02c7898cf3d9f7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/old-pid/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/old-pid/SYNTHETIC-query-sdk.json",
+      "bytes": 1529,
+      "sha256": "a7d0c790c8882f0f2011a92e2b0785b95a3238c99940f5cea2ae7aa82325b92b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/old-pid/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/paid-index8/INVOCATION.fixture.json",
+      "bytes": 3196,
+      "sha256": "0c4227e969c0f2127ead7651f2800673da55f43ff3d59645cf2940e529c6a078"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/paid-index8/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/paid-index8/stdout.original",
+      "bytes": 593,
+      "sha256": "9d38b81939cb76e45e54e2b19343aa90fe33425b15868823229c6e6010a1ce81"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/paid-index8/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "d01b2fc5479ad6119fec775cf17c59889dda86a05e57f363b77b247e15277e66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/paid-index8/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/running-pause/INVOCATION.fixture.json",
+      "bytes": 2799,
+      "sha256": "5586a77799a5d2e30468fcde01652b217f23ecf06926e26c77bbc5af9c8d9fe2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/running-pause/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/running-pause/stdout.original",
+      "bytes": 597,
+      "sha256": "ac1730ac1a61f519f7056eca0a7f9804c93f673941160a6c42407df8b49ee5a5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/running-pause/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33069,
+      "sha256": "159a84820ce511f4e1f12052c163dedae9a8fffa2eab2bcc4ade571f44cfed5e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/school-lastpage/INVOCATION.fixture.json",
+      "bytes": 3216,
+      "sha256": "7c9952f71d6ae600eba132ef05702f4aa446948bc21db8398218ec42bcdab7fc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/school-lastpage/stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/school-lastpage/stdout.original",
+      "bytes": 602,
+      "sha256": "ebdaa0835227057084f9646cac1f99c6ea88c7c607a87558c5b8a45b106d6f46"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/school-lastpage/SYNTHETIC-query-sdk.json",
+      "bytes": 1533,
+      "sha256": "80b63423d1e63fc12d6e08d49ad3002900c513313a8d59e7a3098c80e1532c20"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/school-lastpage/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-date/INVOCATION.fixture.json",
+      "bytes": 3080,
+      "sha256": "0590edd5cd33d67f1aee7ddd34ae862ef196927ee10703c03f547124e26ddb4f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-date/stderr.original",
+      "bytes": 1213,
+      "sha256": "e16321047d60ab0a4519953c294f0e70182f9cc59b46a150f2a82ba27831c6bb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-date/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-date/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "cdbe9b0e70625c9c9f96b8713056926deeb2bebbaa14fbc04b1bcdc906fafeca"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-date/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-query/INVOCATION.fixture.json",
+      "bytes": 3086,
+      "sha256": "4ba08e9dc4d1b2a3dcf4da3faee3f52d6a075a519cc98d3c86b1a2c729417ea1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-query/stderr.original",
+      "bytes": 1213,
+      "sha256": "e16321047d60ab0a4519953c294f0e70182f9cc59b46a150f2a82ba27831c6bb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-query/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-query/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "adfac7ed6216a5df0f840e307ff12dd3a47c492a35bb342419871998fad523b7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/stale-query/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/structured-mismatch/INVOCATION.fixture.json",
+      "bytes": 2714,
+      "sha256": "43fb074d21c17da294e1fa11f5f8641080a97f8b7ffc20fb6a59168f1ffce754"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/structured-mismatch/stderr.original",
+      "bytes": 1329,
+      "sha256": "9e56513dfdbfc8bf07f5084805023e5f0c927ddcfb3ff53565d3a1ee57989900"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/structured-mismatch/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/structured-mismatch/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33049,
+      "sha256": "cb28afa4bbba612e39b99e7a60a41d337ad0a7aad70446f8106427b35811d86e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/unpaused-select/INVOCATION.fixture.json",
+      "bytes": 3110,
+      "sha256": "bac5a430b29dcb0d3d39aa0fd1cf2b176ae5c9ac2249fd9b217765eaa26c73ae"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/unpaused-select/stderr.original",
+      "bytes": 1161,
+      "sha256": "855446b9ebb979b18a379f9e3929d440a011f0e9b75a7e3d954ae330f5d079e8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/unpaused-select/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/unpaused-select/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "d01b2fc5479ad6119fec775cf17c59889dda86a05e57f363b77b247e15277e66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/unpaused-select/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33119,
+      "sha256": "dc02290d7a72bf2bdc9dcf49299ea1cadf4c629b2a7e764ed76f188c1536816f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-client-session/INVOCATION.fixture.json",
+      "bytes": 2719,
+      "sha256": "a4499e7dc8e50f0a09504fb87af8ebdb62b07ccc5e2e88525d1c34a25d4592a7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-client-session/stderr.original",
+      "bytes": 1054,
+      "sha256": "71af199242d093e6e2fafeb1411a97742e9bd3134e4104bf29a1abfef3d148a7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-client-session/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-client-session/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-decision-actor/INVOCATION.fixture.json",
+      "bytes": 3064,
+      "sha256": "eacadb54b5fabcc9774b0037a9049d60dc6ea4d09c223e23c3a47a12b2d06e53"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-decision-actor/stderr.original",
+      "bytes": 1125,
+      "sha256": "20ec745a12caa1c627e56e26dff5e6e7848c65e4110a2dee2b33624ca66a2d25"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-decision-actor/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-decision-actor/SYNTHETIC-query-sdk.json",
+      "bytes": 1529,
+      "sha256": "d549a34dd0fbda2587d4168992baacb47c03d61f4cb110563cd2828d738a8a34"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-decision-actor/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-definition/INVOCATION.fixture.json",
+      "bytes": 3116,
+      "sha256": "0848cb0a96a565a4430701a579ba4c1f25dbc116bc889004cc311b274b8de051"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-definition/stderr.original",
+      "bytes": 1019,
+      "sha256": "c9d57cf4870f0fdf6811a62ed0ee1460a7c1d2c759799e131a0b693f64db6bcc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-definition/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-definition/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "4a67bf1ba043b76e7f1230af0be9d10fcd601896521faf417dd1a52f2b75d2e0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-definition/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-detail-key/INVOCATION.fixture.json",
+      "bytes": 3082,
+      "sha256": "5bc3696bb20d07bed8be68cf782154c72ee071a3b77236bdfbc73e7613be8cc6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-detail-key/stderr.original",
+      "bytes": 1297,
+      "sha256": "6f43394ca513c5e70845733076030f0fc2073655099d617518c9e337be928778"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-detail-key/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-detail-key/SYNTHETIC-query-sdk.json",
+      "bytes": 1545,
+      "sha256": "2b76a8bd661d5bc69af8cbe8a4f8c13288f13a0df227c4fe9bddb6042355242d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-detail-key/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "8d7b9eb32369fbe4f9caf76ca2dbb18b69202fe7013b1e138150c670b98eade3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-frame/INVOCATION.fixture.json",
+      "bytes": 2674,
+      "sha256": "7b9cb611b53711d40113d5f6644a5098325cb9c9607f72cea71f5ef2a467939d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-frame/stderr.original",
+      "bytes": 1065,
+      "sha256": "0921e195c6a5fd6443176bce57252518eb3c0d47aaf3680546e7c09a8d841a93"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-frame/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-frame/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "63eab1faeeea8edb85522262a76b4bc89eb8e2c222f26d613eb213b84394b84b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-instance/INVOCATION.fixture.json",
+      "bytes": 3104,
+      "sha256": "51cafc7a9410d2d67256e5d13f20dc63584da79d6c8f8f98842f026498559507"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-instance/stderr.original",
+      "bytes": 1088,
+      "sha256": "0dfe723cb55f3606ce41a3e590782af4ba582e3774f6503c37cdf9e772e68f46"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-instance/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-instance/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "730194929f634733f49e98d52a07283f75582cc18e00d98e1d49ffb4ef4863ee"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-instance/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-profile/INVOCATION.fixture.json",
+      "bytes": 2684,
+      "sha256": "2e517b561cd3469339c5b88b82e7dc3e0a18127329fb99e10eee3ec446b62104"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-profile/stderr.original",
+      "bytes": 1054,
+      "sha256": "71af199242d093e6e2fafeb1411a97742e9bd3134e4104bf29a1abfef3d148a7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-profile/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-profile/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33067,
+      "sha256": "4506fdc887433acc63336480a7ac1bb91ec68b4d93d0ee6814de20c23fe915e7"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-root/INVOCATION.fixture.json",
+      "bytes": 3079,
+      "sha256": "d90824250478e0b43359fef2fe0a2a2e10be8d6200a91d89b76225c73afa4a36"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-root/stderr.original",
+      "bytes": 948,
+      "sha256": "3815012c95801ee3a2ad35f071688d168cef256f08a2b738c3ebca9b7007da1e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-root/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-root/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "1bf74d11a52c88f339737987e2c2e037735577ad0153a511e4a1994c3d5b0757"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-root/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-source-key/INVOCATION.fixture.json",
+      "bytes": 3118,
+      "sha256": "884e9b4adad2f72274e3ef5e5cee86d453172825b613c28b4e00cf826fcc2ce0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-source-key/stderr.original",
+      "bytes": 1093,
+      "sha256": "8f3113d07278cdeb8152bca952c7987bb7d78ce5e1ed1e561685e4a3b98f4f9c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-source-key/stdout.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-source-key/SYNTHETIC-query-sdk.json",
+      "bytes": 1535,
+      "sha256": "d01b2fc5479ad6119fec775cf17c59889dda86a05e57f363b77b247e15277e66"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/fixtures/wrong-source-key/SYNTHETIC-snapshot-sdk.json",
+      "bytes": 33117,
+      "sha256": "3c7a90630403e22d3960c5ab6995c90aff136b813fc614da75f3eca490f63170"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/help.stderr.original",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/help.stdout.original",
+      "bytes": 2353,
+      "sha256": "bf11ab8a9ae732231528a14230002afb0d28cbf481f25643b2fd9a19cdca08b5"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/actual-interface-open/ARGUMENTS.actual.json",
+      "bytes": 29,
+      "sha256": "88032a3e157bb90f50fc6135345b3c84317511c3391928e7a9c43eb63173029a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/actual-interface-open/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1011,
+      "sha256": "c59fd698a0820cfc70eadf9f905cd2547dbead60f58a1271c2d53183e2ed3673"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/actual-interface-open/RESULT.source-only.json",
+      "bytes": 2130,
+      "sha256": "2d6674a60b5936f2de8920403dfac541d53a02620b7980acc61ab41fb464dea0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/bootstrap-query/ARGUMENTS.actual.json",
+      "bytes": 57,
+      "sha256": "69814123f6d0a1f466772df65c4c26df67e5dcf6582e4a09c56b4670b60ec150"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/bootstrap-query/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1003,
+      "sha256": "3f17bfc4c660baa760fe0d5f122c44ca75e3b663b57d9b455277ae951d2edc85"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/bootstrap-query/RESULT.source-only.json",
+      "bytes": 2122,
+      "sha256": "dc36947317568ddff9fcddbc736c35310576d1024c9f8b47b26957935118be1c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/cancel/ARGUMENTS.actual.json",
+      "bytes": 79,
+      "sha256": "1d39b6bbd18a9c55afd818112f1567017e123afb2fd9880f888dbee428a1a8b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/cancel/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 986,
+      "sha256": "30faf398355e48ec33dfb239ad19a161b1c4eb9ebeae2485586ef9bceb68cfc4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/cancel/RESULT.source-only.json",
+      "bytes": 2384,
+      "sha256": "8bb53959f0311d7f1c6ff9cbf93ad4653a0bfa0a173907b9d0d9b2132b1b725d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/decision-confirm/ARGUMENTS.actual.json",
+      "bytes": 153,
+      "sha256": "03a469e039a69b7c9574492e86d662c308d22073199ac969a26c0a07a431ac01"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/decision-confirm/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1011,
+      "sha256": "8bc4f3993618ce0e6c833b127e3507178940208a2fa0502d955d0c62f6d49e49"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/decision-confirm/RESULT.source-only.json",
+      "bytes": 2415,
+      "sha256": "aa1947abaa654e8c7e3910652721d513a735e3601dae666938029c3923746a59"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/decision-select/ARGUMENTS.actual.json",
+      "bytes": 69,
+      "sha256": "eb9866ef1feb6d4e809d5776b3d6e17efbc791e13aa30a70adee8b1832090508"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/decision-select/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1005,
+      "sha256": "79c23bd84f7a320a1d49ff33522bcaf6ce32d46f54688357e67120975adfa46c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/decision-select/RESULT.source-only.json",
+      "bytes": 2407,
+      "sha256": "d271229b996e06ba8404bbd4907fe1b05c6ae2d3779ae74ac7986299ffb99499"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/paid-index8/ARGUMENTS.actual.json",
+      "bytes": 79,
+      "sha256": "1d39b6bbd18a9c55afd818112f1567017e123afb2fd9880f888dbee428a1a8b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/paid-index8/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 996,
+      "sha256": "d5b772c98a28eb311754dc1be710667112e9d3d2205717939756b902b172dbf6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/paid-index8/RESULT.source-only.json",
+      "bytes": 2409,
+      "sha256": "c842ff43aa7466cca9360d9272c78a259aae62144f7650a13b6b1c6c709144f0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/PREPARED.json",
+      "bytes": 7187,
+      "sha256": "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/running-pause/ARGUMENTS.actual.json",
+      "bytes": 50,
+      "sha256": "e12488a235d55884b32346aff765e91865198de687b0f96563fa64d6ffa4f8ae"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/running-pause/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 995,
+      "sha256": "e5a8b63432f609de75b048605d3d71ce6630ac1d74a8ee24721db7caff749413"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/running-pause/RESULT.source-only.json",
+      "bytes": 2114,
+      "sha256": "7e5b463c5fbaa8673e29732d56dab1c187fcc01cfda7352b5fc4e70aa950824b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/school-lastpage/ARGUMENTS.actual.json",
+      "bytes": 79,
+      "sha256": "1d39b6bbd18a9c55afd818112f1567017e123afb2fd9880f888dbee428a1a8b2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/school-lastpage/AUTHOR-REQUEST-ARGV.json",
+      "bytes": 1004,
+      "sha256": "ee4b55fba5303cfda11d653e31d0862c67c572b5c611c192f744d8d07054b449"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/mirror/run/school-lastpage/RESULT.source-only.json",
+      "bytes": 2418,
+      "sha256": "66ee0fb20767081e9ba98e7751b2fc3d69c487e452cdb4bb00ef675dd7f13966"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/RESULT.fixture.json",
+      "bytes": 91755,
+      "sha256": "13e19a6eb7806ec1face610398fb0b5a6ae2a0bd84ee9f45a4fb4ac09a2680ac"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source004/unittest.stderr.original",
+      "bytes": 2293,
+      "sha256": "b38f7d30dac2cc9617ea66bfeaaf95b861afc7f43537efe2049e1382e4af2143"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/TEST-SOURCE-HISTORICAL-REF-ADDENDUM.json",
+      "bytes": 1199,
+      "sha256": "3fee68aa82a804d5f7b2ecdd07f41719e0aa69ed283c2c95591bb488507a2476"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/test_actual_interface.py",
+      "bytes": 13087,
+      "sha256": "5714288d85d4dd3cd18d9f46d7c5fdef6a8aab270ee1a369e298fa356894eb11"
+    }
+  ],
+  "originals_retained": true,
+  "formal_credit": null
+}

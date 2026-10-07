@@ -1,0 +1,28 @@
+{
+  "schema": "lyd.r17.original0240-baseline-control.v1",
+  "author_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/INPUT.exact.json",
+    "bytes": 2973,
+    "sha256": "83768cb5d96aef7b31e93f07cb42d9aaa7f9b04d6d7574a705c6beffda4b713b"
+  },
+  "author_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/RESULT.json",
+    "bytes": 1040145,
+    "sha256": "7f5054124f50326f8a465c10b1bd3ffecb79cec760f5b3b8d71a469049f7e2d3"
+  },
+  "state": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/STATE.json",
+    "bytes": 1317829,
+    "sha256": "6a63cbd0ab5de458874a641fa3a0e79d2baa6c06fed6fe9d3689358e09701177"
+  },
+  "typed_protection": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/TYPED-PROTECTION.json",
+    "bytes": 966756,
+    "sha256": "589bd95c3b6ed58a731291b206a8ae9ea17b5c4df3b0f9faa4a4aea7ce6043c4"
+  },
+  "qualified_native": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/native-qualification/QUALIFIED-NATIVE.json",
+    "bytes": 93422,
+    "sha256": "5a565aca0fea37f50d3caa6b925100a075241b98542e02274a3eb625f84a4e56"
+  }
+}

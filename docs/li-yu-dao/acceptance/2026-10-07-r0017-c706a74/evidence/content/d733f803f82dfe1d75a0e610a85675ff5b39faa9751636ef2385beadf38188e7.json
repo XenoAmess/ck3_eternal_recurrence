@@ -1,0 +1,1 @@
+{"request_id":"r17-016-formal-begin-confirm","operation":"call_tool","name":"ck3_confirm_profile_decision_outcome_v1","arguments":{"decision_key":"lyd_i3b_begin_decision","expected_outcome":"event_window","expected_revision":3,"expected_event_definition_key":"lyd.430"}}

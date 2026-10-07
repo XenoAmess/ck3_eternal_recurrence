@@ -1,0 +1,20 @@
+{
+  "before": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-argument-author-r17-source-review-fix-20261007-002/author_i4_arguments.py",
+    "bytes": 12978,
+    "sha256": "f8cfc06b16e15393d7f3abb9f4f559b8546990cac95b2f6e437f455d1eef7d0b"
+  },
+  "after": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source003/author_i4_arguments.py",
+    "bytes": 13110,
+    "sha256": "826232adaf97fb10ef368dfba1f8059e516f5ae445598ba58f9a677f9c2b7515"
+  },
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-to-SOURCE003.patch",
+    "bytes": 882,
+    "sha256": "743fa3c0ef468e21d054bc31f724f996527c9ed733a6685617cffa9f23bdab20"
+  },
+  "reason": "Actual PREPARED guard descriptor uses Windows backslash path, ref normalizes slash spelling. Compare resolved same path+exact raw bytes/SHA. Original descriptor stays unchanged.",
+  "game_SDK_calls": 0,
+  "formal_credit": null
+}

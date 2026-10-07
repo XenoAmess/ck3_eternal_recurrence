@@ -1,0 +1,11 @@
+--- SOURCE002/author_i4_arguments.py
++++ SOURCE003/author_i4_arguments.py
+@@ -14,7 +14,7 @@
+     r=ref(path);need(r['sha256']==digest,'Actual bytes differ: '+r['path']);return json.loads(Path(path).read_bytes()),r
+ def exact_descriptor(row):
+     need(type(row) is dict and set(row)=={'path','bytes','sha256'},'Actual exact ref3 required')
+-    need(ref(row['path'])==row,'Actual descriptor differs');return json.loads(Path(row['path']).read_bytes())
++    actual=ref(row['path']);need(Path(actual['path']).resolve()==Path(row['path']).resolve() and actual['bytes']==row['bytes'] and actual['sha256']==row['sha256'],'Actual descriptor differs');return json.loads(Path(row['path']).read_bytes())
+ def original_sdk(path,digest):
+     wrapper,r=read(path,digest);need(not wrapper.get('isError'),'SDK error is not an action input');candidates=[]
+     for x in wrapper.get('content',[]):

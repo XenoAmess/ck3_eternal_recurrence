@@ -1,0 +1,55 @@
+{
+  "status": "ONE_ARGUMENT_FILE_AUTHORED_NOT_ENQUEUED",
+  "source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "prepared": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/PREPARED.json",
+    "bytes": 7187,
+    "sha256": "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f"
+  },
+  "consumer_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/consumer/INDEX.json",
+    "bytes": 4872,
+    "sha256": "827c5ec60d3aadfaf7ce02a7f94b8fa246a5cab6f4201f6682dc4ef3dd138c6d"
+  },
+  "snapshot_SDK": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/running-pause/SYNTHETIC-snapshot-sdk.json",
+    "bytes": 33069,
+    "sha256": "159a84820ce511f4e1f12052c163dedae9a8fffa2eab2bcc4ade571f44cfed5e"
+  },
+  "fresh_query_SDK": null,
+  "actual_frame": {
+    "actor": 31254,
+    "date_raw": 53144712,
+    "public_revision": 2,
+    "native_revision": 1,
+    "snapshot_id": "native:1",
+    "wallet": {
+      "gold": {
+        "raw": 104300000,
+        "scale": 100000
+      },
+      "piety": {
+        "raw": 315000000,
+        "scale": 100000
+      },
+      "prestige": {
+        "raw": 220000000,
+        "scale": 100000
+      }
+    }
+  },
+  "tool": "ck3_set_profile_simulation_v1",
+  "arguments": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/running-pause/ARGUMENTS.actual.json",
+    "bytes": 50,
+    "sha256": "e12488a235d55884b32346aff765e91865198de687b0f96563fa64d6ffa4f8ae"
+  },
+  "ROOT_reviewed_source_option_key": null,
+  "ROOT_reviewed_native_index": null,
+  "source_key_to_index_association": "Explicit ROOT review; native options do not publish localization/source keys, so no automatic ordinal inference.",
+  "future_enqueued": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "save_body_reads": 0,
+  "formal_credit": null
+}

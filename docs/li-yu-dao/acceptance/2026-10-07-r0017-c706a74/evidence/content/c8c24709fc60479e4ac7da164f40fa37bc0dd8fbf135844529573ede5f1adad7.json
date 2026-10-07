@@ -1,0 +1,28 @@
+{
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-argument-author-r17-source-review-fix-20261007-002/author_i4_arguments.py",
+    "bytes": 12978,
+    "sha256": "f8cfc06b16e15393d7f3abb9f4f559b8546990cac95b2f6e437f455d1eef7d0b"
+  },
+  "AST_parse": true,
+  "help_argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-argument-author-r17-source-review-fix-20261007-002\\author_i4_arguments.py",
+    "--help"
+  ],
+  "help_exit": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-help.stdout",
+    "bytes": 2353,
+    "sha256": "bf11ab8a9ae732231528a14230002afb0d28cbf481f25643b2fd9a19cdca08b5"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-help.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "game_SDK_calls": 0
+}

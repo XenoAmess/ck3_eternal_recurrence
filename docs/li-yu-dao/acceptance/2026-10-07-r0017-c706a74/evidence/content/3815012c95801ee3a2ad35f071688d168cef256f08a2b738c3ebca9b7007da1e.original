@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\source004\author_i4_arguments.py", line 145, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\source004\author_i4_arguments.py", line 121, in main
+    need(c['root_scope']['typed_identity']['character_id']==actor,'Actual event root differs')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\source004\author_i4_arguments.py", line 10, in need
+    if not ok:raise ValueError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Actual event root differs

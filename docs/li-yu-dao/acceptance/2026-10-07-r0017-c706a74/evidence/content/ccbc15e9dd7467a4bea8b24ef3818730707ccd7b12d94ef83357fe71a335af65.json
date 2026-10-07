@@ -1,0 +1,698 @@
+{
+  "status": "EXACT_HEAD_GITHUB_CI_READONLY_CAPTURE",
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "commit": {
+    "sha": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+    "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/commit/c706a74f9d00dd842b7edce8901fb3417344fd9c",
+    "message": "Preserve R16 cold political failure and test head-before-holder candidate",
+    "committer_date": "2026-10-06T23:54:38Z"
+  },
+  "observed_at_utc": "2026-10-07T00:28:33.974411+00:00",
+  "workflow_runs": [
+    {
+      "id": 37549135181,
+      "name": "Li Yu Dao static checks",
+      "workflow_id": 374176865,
+      "path": ".github/workflows/li-yu-dao-static.yml",
+      "event": "push",
+      "head_branch": "master",
+      "head_sha": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+      "run_number": 15,
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-06T23:54:49Z",
+      "updated_at": "2026-10-06T23:55:29Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135181"
+    },
+    {
+      "id": 37549135155,
+      "name": "Official Runner CI",
+      "workflow_id": 336785267,
+      "path": ".github/workflows/static-ci.yml",
+      "event": "push",
+      "head_branch": "master",
+      "head_sha": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+      "run_number": 8752,
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-06T23:54:49Z",
+      "updated_at": "2026-10-06T23:58:17Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135155"
+    }
+  ],
+  "check_runs": [
+    {
+      "id": 112560171914,
+      "name": "static",
+      "head_sha": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-06T23:54:51Z",
+      "completed_at": "2026-10-06T23:55:28Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135181/job/112560171914",
+      "details_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135181/job/112560171914",
+      "app": "github-actions",
+      "output_title": null,
+      "output_summary": null
+    },
+    {
+      "id": 112560171892,
+      "name": "static",
+      "head_sha": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-06T23:54:51Z",
+      "completed_at": "2026-10-06T23:58:17Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135155/job/112560171892",
+      "details_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135155/job/112560171892",
+      "app": "github-actions",
+      "output_title": null,
+      "output_summary": null
+    }
+  ],
+  "commit_status_contexts": [],
+  "commit_status_combined_states_reported_by_API": [
+    "pending"
+  ],
+  "jobs": [
+    {
+      "run_id": 37549135181,
+      "id": 112560171914,
+      "name": "static",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-06T23:54:51Z",
+      "completed_at": "2026-10-06T23:55:28Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135181/job/112560171914",
+      "head_sha": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Check generated content and runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Check product and builder",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "number": 6,
+          "name": "Preserve static report",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 12,
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": 37549135155,
+      "id": 112560171892,
+      "name": "static",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-06T23:54:51Z",
+      "completed_at": "2026-10-06T23:58:17Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135155/job/112560171892",
+      "head_sha": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Require non-C task workspace and temp",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-python@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Install task packages outside C",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Install static dependencies",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Install released promo toolchain",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Compile Python tools",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Test CoA runtime-registry claim boundary",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Test native research planning and evidence rendering",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Test protected project EXE broker source without privileged actions",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Test offline vanilla event research tools",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Test native verifier evidence scope without CK3",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Test isolated native army route producer without CK3",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Test strict army route read-status contract",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Test public CUnit zero and decision history contracts without CK3",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "number": 17,
+          "name": "Preserve decision history growth evidence",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Test CLA checker",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 19,
+          "name": "Test succession GUI projection contract",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 20,
+          "name": "Test native courtier metadata compatibility",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 21,
+          "name": "Test release manifest verification",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 22,
+          "name": "Test Vivhite release tooling",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 23,
+          "name": "Test independent Vivhite native contracts",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 24,
+          "name": "Test Ox Here release tooling",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 25,
+          "name": "Test Mandala Purge release tooling",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 26,
+          "name": "Test Tributary Expansion Directives release tooling",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 27,
+          "name": "Test Celestial Commerce and Corruption release tooling",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 28,
+          "name": "Test Auto Upgrade Buildings release tooling",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 29,
+          "name": "Test and validate Superman Qiang without CK3",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 30,
+          "name": "Test machine- and mod-scoped CK3 live-run IDs",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 31,
+          "name": "Test Reclaim the Motherland release tooling",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 32,
+          "name": "Test ZhongGuo 361 release tooling",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 33,
+          "name": "Test ZhongGuo 361 generators and acceptance contracts",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 34,
+          "name": "Test ZhongGuo 361 release localization",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 35,
+          "name": "Verify ZhongGuo 361 generated and static content",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 36,
+          "name": "Verify ZhongGuo 361 release localization audit",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 37,
+          "name": "Verify ZhongGuo 361 thumbnail and Workshop media",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 38,
+          "name": "Test and validate ZhongGuo 361 promo project",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 39,
+          "name": "Test MiniMax localization caller",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 40,
+          "name": "Test Workshop public readback verifier",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 41,
+          "name": "Test disposable fixture engine identities",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 42,
+          "name": "Test full-agent showcase builder",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 43,
+          "name": "Enforce Python-only Windows automation",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 44,
+          "name": "Validate generated and static content",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 45,
+          "name": "Validate Vivhite standalone content",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 46,
+          "name": "Validate Mandala Purge standalone content",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 47,
+          "name": "Validate Tributary Expansion Directives standalone content",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 48,
+          "name": "Validate Celestial Commerce and Corruption standalone content",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 49,
+          "name": "Validate Auto Upgrade Buildings standalone content",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 50,
+          "name": "Validate Reclaim the Motherland standalone content",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 51,
+          "name": "Run scoring reference vectors",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 52,
+          "name": "Verify reproducible release",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 53,
+          "name": "Verify reproducible Vivhite release",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 54,
+          "name": "Verify reproducible Ox Here release",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 55,
+          "name": "Verify reproducible Mandala Purge release",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 56,
+          "name": "Verify reproducible Tributary Expansion Directives release",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 57,
+          "name": "Verify reproducible Celestial Commerce and Corruption release",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 58,
+          "name": "Verify reproducible Auto Upgrade Buildings release",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 59,
+          "name": "Verify reproducible Reclaim the Motherland release",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 60,
+          "name": "Verify reproducible ZhongGuo 361 release",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 61,
+          "name": "Build manual release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 62,
+          "name": "Build manual Vivhite release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 63,
+          "name": "Build manual Ox Here release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 64,
+          "name": "Build manual Mandala Purge release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 65,
+          "name": "Build manual Tributary Expansion Directives release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 66,
+          "name": "Build manual Celestial Commerce and Corruption release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 67,
+          "name": "Build manual Auto Upgrade Buildings release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 68,
+          "name": "Build manual Reclaim the Motherland release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 69,
+          "name": "Build manual ZhongGuo 361 release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 70,
+          "name": "Build tagged release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 71,
+          "name": "Build tagged Vivhite release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 72,
+          "name": "Build tagged Ox Here release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 73,
+          "name": "Build tagged Mandala Purge release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 74,
+          "name": "Build tagged Tributary Expansion Directives release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 75,
+          "name": "Build tagged Celestial Commerce and Corruption release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 76,
+          "name": "Build tagged Auto Upgrade Buildings release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 77,
+          "name": "Build tagged Reclaim the Motherland release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 78,
+          "name": "Build tagged ZhongGuo 361 release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 79,
+          "name": "Upload release candidate",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 157,
+          "name": "Post Run actions/setup-python@v6",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 158,
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 159,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "workflow_failures": [
+    {
+      "id": 37549135181,
+      "name": "Li Yu Dao static checks",
+      "workflow_id": 374176865,
+      "path": ".github/workflows/li-yu-dao-static.yml",
+      "event": "push",
+      "head_branch": "master",
+      "head_sha": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+      "run_number": 15,
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-06T23:54:49Z",
+      "updated_at": "2026-10-06T23:55:29Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135181"
+    },
+    {
+      "id": 37549135155,
+      "name": "Official Runner CI",
+      "workflow_id": 336785267,
+      "path": ".github/workflows/static-ci.yml",
+      "event": "push",
+      "head_branch": "master",
+      "head_sha": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+      "run_number": 8752,
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-06T23:54:49Z",
+      "updated_at": "2026-10-06T23:58:17Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135155"
+    }
+  ],
+  "workflow_still_running": [],
+  "read_gaps": {},
+  "all_returned_workflows_completed_success": false,
+  "CLA_rule_bypass_is_CI_success": false,
+  "push_rule_bypass_observation": "Not queried or inferred from push success; check/status API facts are preserved separately.",
+  "game_business_green_credit": false,
+  "main_writes": 0,
+  "fetches": 0,
+  "permission_escalations": 0,
+  "SDK_game_UI_bus_build_actions": 0
+}

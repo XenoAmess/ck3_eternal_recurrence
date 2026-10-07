@@ -1,0 +1,55 @@
+{
+  "schema": "lyd.r17.root-launch-profile-helper.v1",
+  "utc": "2026-10-07T00:23:30.175577+00:00",
+  "mode": "launch",
+  "source_revision": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "game_create_attempted": true,
+  "game_started": true,
+  "native_injected": false,
+  "bus_mutation": false,
+  "input_sent": false,
+  "prelaunch_evidence": {
+    "prelaunch_check": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-launch-002/prelaunch-check.json",
+      "bytes": 1137745,
+      "sha256": "6ae2a52b8a570050996957ba06ffa14eb0f25f44d3d433abf27aa5c72e5987b7"
+    },
+    "process_readback": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-launch-002/process-readback.json",
+      "bytes": 8508,
+      "sha256": "187d4a5318a46ebec74702fb59b5016f9ca46877dc2255ba6ad5db3398dbb674"
+    },
+    "offline_review": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-steam-offline-fresh-frame-20261007-001/ROOT-offline-review.actual.json",
+      "bytes": 489,
+      "sha256": "0f8f99e9ae15faa8b6e95da181a7674c8cc2f5bf32ff6b452819f3b90850bb7a"
+    },
+    "offline_frame": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-steam-offline-fresh-frame-20261007-001/steam-frame-freshness.json",
+      "bytes": 1194,
+      "sha256": "e73d9a721cdfb75d301ffca713ba4dce719239860160949af9f2d6d72dae0a55"
+    },
+    "offline_image": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-steam-offline-fresh-frame-20261007-001/steam-moved.png",
+      "bytes": 328236,
+      "sha256": "14213eea639d3ff06990df915c43200d676701107c8939a3bd20c9b0f9ccb7e2"
+    },
+    "launch_attempt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/launch-attempt.json",
+      "bytes": 2142,
+      "sha256": "f41e3873df79457b758e5be577bddf8a258f1b9157d3f30b251e4c22c6e0822c"
+    }
+  },
+  "pid": 14608,
+  "status": "GAME_CREATED_REQUIRES_NATIVE_LOAD_READBACK",
+  "process_create_time": 1791332614.2963333,
+  "argv": [
+    "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "-debug_mode",
+    "-gdpr-compliant",
+    "-userdir=C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/userdir",
+    "-loadsave=lyd_r17_i3b_0240"
+  ],
+  "live_run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0017",
+  "execution_id": "96fb4ffb-7664-4327-a9f8-29186563f9de"
+}

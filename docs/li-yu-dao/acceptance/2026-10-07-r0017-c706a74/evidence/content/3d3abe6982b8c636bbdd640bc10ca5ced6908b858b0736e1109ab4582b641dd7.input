@@ -1,0 +1,11 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r17-024-normal-exit-continue",
+  "operation": "call_tool",
+  "name": "ck3_request_normal_exit_v1",
+  "arguments": {
+    "action": "continue_preparation",
+    "expected_revision": 4,
+    "expected_exit_context_signature": "521f58ef4c881b67124b59f0a3e135661931c007b9c902677a7a38ea2300b044"
+  }
+}

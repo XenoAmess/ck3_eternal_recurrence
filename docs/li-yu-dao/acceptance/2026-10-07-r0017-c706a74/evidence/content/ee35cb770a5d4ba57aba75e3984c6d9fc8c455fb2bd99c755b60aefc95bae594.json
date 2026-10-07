@@ -1,0 +1,14 @@
+{
+ "schema":"lyd.original-exec-process-completion.v1",
+ "tool_session_id":45013,
+ "expected_pid":14208,
+ "expected_create_time":1791333766.1629004,
+ "raw_tool_result":{
+  "chunk_id":"be6e0f",
+  "wall_time_seconds":0.0000257,
+  "exit_code":0,
+  "original_token_count":59,
+  "output":"{\"result\": {\"path\": \"C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-holder-execution-002/RESULT.actual.json\", \"bytes\": 1434, \"sha256\": \"4f09996fdd934b1e5092ecacca3ae808233e8e1613686aaf4148774f1cc06274\"}, \"exit_code\": 0}\r\n"
+ },
+ "reopened_process":false
+}

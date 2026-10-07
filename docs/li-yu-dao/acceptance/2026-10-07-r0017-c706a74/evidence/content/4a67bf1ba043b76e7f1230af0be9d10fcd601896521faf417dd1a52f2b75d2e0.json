@@ -1,0 +1,37 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"schema\": \"ck3.native-profile-receipt.v1\", \"session_id\": \"42abe9df32d34dd1840c23cb5246623d\", \"profile_sha256\": \"80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6\", \"status\": \"native_event_query_verified\", \"result\": {\"queried_revision\": 2, \"queried_native_revision\": 1, \"queried_snapshot_id\": \"native:1\", \"date_raw\": 53144712, \"current_event_window_context\": {\"event_definition_key\": \"lyd.135\", \"current_event_instance_id\": 901, \"root_scope\": {\"typed_identity\": {\"character_id\": 31254}}, \"options\": [{\"native_option_index\": 8, \"shown\": true, \"enabled\": true}]}}}"
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "42abe9df32d34dd1840c23cb5246623d",
+    "profile_sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6",
+    "status": "native_event_query_verified",
+    "result": {
+      "queried_revision": 2,
+      "queried_native_revision": 1,
+      "queried_snapshot_id": "native:1",
+      "date_raw": 53144712,
+      "current_event_window_context": {
+        "event_definition_key": "lyd.135",
+        "current_event_instance_id": 901,
+        "root_scope": {
+          "typed_identity": {
+            "character_id": 31254
+          }
+        },
+        "options": [
+          {
+            "native_option_index": 8,
+            "shown": true,
+            "enabled": true
+          }
+        ]
+      }
+    }
+  },
+  "isError": false
+}

@@ -1,0 +1,55 @@
+{
+  "status": "ACTUAL_TERMINAL_REPLY_RED_SAME_BRACE_DEFECT_SOURCE_FIX_ONLY",
+  "original_candidate_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/INDEX.json",
+    "bytes": 3931,
+    "sha256": "b75dfb951f3869d9281bf849a5fe32b829cae2574699549dee9935e6accdb64b"
+  },
+  "source_model": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/NORMAL-EXIT-FALLTHROUGH-MODEL.actual.json",
+    "bytes": 2955,
+    "sha256": "305e42db9c85e7567152c8e2087ff6ac05ddbc4d1fe65febe3115aacce92ff6c"
+  },
+  "actual_receipts": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0024-r17-026-normal-exit-confirm-desktop.native-01.json",
+      "bytes": 190159,
+      "sha256": "1d1d27800224c5ae19d6f68d35c29b48cf3334349bf70524814c7619e2deff24"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0024-r17-026-normal-exit-confirm-desktop.sdk-result.json",
+      "bytes": 401307,
+      "sha256": "b29149bc55fe21ccc964c43643dfebd4244d6a2f05458f5ed3ee5e13fe069488"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0025-r17-027-normal-exit-observe.native-01.json",
+      "bytes": 3121,
+      "sha256": "99b840c43c4163229835f4597eb3943cb1419ca1c32d895fff21d59281c91e3d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0025-r17-027-normal-exit-observe.sdk-result.json",
+      "bytes": 6923,
+      "sha256": "52058e9e0490252e6cd9ee43bb64b38492840d4a12c2f4c1d9b001944abe5894"
+    }
+  ],
+  "actual_qualified_native_normal_exit": false,
+  "actual_native_normal_exit_observation": null,
+  "actual_game_original_handle_exit0": true,
+  "actual_autosave_verified": false,
+  "extra_production_patch": null,
+  "response_overwrite_source": {
+    "path": "C:/lr17s1/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "bytes": 1398740,
+    "sha256": "3e22dcbb911533b1ef06c54626c933cad353130f5fc7327873db33cd0be48aeb"
+  },
+  "response_overwrite_line": 1026,
+  "response_wait_pop_line": 1213,
+  "actual_raw_pipe_two_frame_log": null,
+  "cause": "Premature outer segment3 closure resets an already handled command to unhandled, allowing a second unsupported tail response. The same request-ID map may overwrite the earlier response before the waiter consumes it.",
+  "closure_scope": "Game exit0 observed, but Client/keeper/CAS closure is not inferred here. Original qualified/native null states remain unchanged.",
+  "native_builds": 0,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "bus_calls": 0,
+  "main_writes": 0
+}

@@ -1,0 +1,3036 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "tasks": [
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 23,
+        "head": "8791b389f47c9de30a7ed4d06d4d81ead3dcd28e"
+      },
+      "last_sequence": 44,
+      "next_step": "CK3_isolated_acceptance",
+      "pid": 1868,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "Expired-legacy-screen-lease-released-business-unresolved",
+      "task_id": "aub-4-0-2-20260928",
+      "updated_at_utc": "2026-10-01T07:07:55.645035+00:00",
+      "age_seconds": 496596,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1055,
+        "head": "6dad42fa9b1633c74dc946a213e2e00c60c696e0"
+      },
+      "last_sequence": 306,
+      "next_step": "",
+      "pid": 7108,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "New-building-165-reference-chains-reviewed-no-live-tests",
+      "task_id": "building-title-source-readonly-audit-20261002",
+      "updated_at_utc": "2026-10-01T20:40:30.177480+00:00",
+      "age_seconds": 447842,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "4297166aa40057c75ef25f869d0c86462013c6f4"
+      },
+      "last_sequence": 2524,
+      "next_step": "Optional-rollout-ready-for-review",
+      "pid": 19540,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Two-phase-option-checked-and-pushed-4297166aa",
+      "task_id": "ck3-confucian-iteration-option-20261004",
+      "updated_at_utc": "2026-10-03T18:21:38.550176+00:00",
+      "age_seconds": 283373,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "aa527b66c0bdd4ae274fe52c5cc7889620ce7dd2"
+      },
+      "last_sequence": 2516,
+      "next_step": "",
+      "pid": 18332,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Confucian-plan-reviewed-committed-and-pushed-aa527b66c",
+      "task_id": "ck3-confucian-mod-plan-20261003",
+      "updated_at_utc": "2026-10-03T14:42:19.587971+00:00",
+      "age_seconds": 296532,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "ddd3edb49dbdcb81970c3247dd1a86cc32ba35c4"
+      },
+      "last_sequence": 2520,
+      "next_step": "Design-list-ready-for-review",
+      "pid": 2416,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Confucian-36-rites-and-36-tenets-design-docs-verified-and-pushed-ddd3edb49",
+      "task_id": "ck3-confucian-religion-plan-20261003",
+      "updated_at_utc": "2026-10-03T17:23:58.922294+00:00",
+      "age_seconds": 286833,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "5b73fddcc0dc6eeb530f7136114fef903b1942e2"
+      },
+      "last_sequence": 2527,
+      "next_step": "M0-cycle-and-contested-head-prototypes",
+      "pid": 13472,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Repeatable-reunion-schism-design-pushed-5b73fddcc",
+      "task_id": "ck3-confucian-repeatable-reunion-design-20261004",
+      "updated_at_utc": "2026-10-03T18:58:52.765358+00:00",
+      "age_seconds": 281139,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "dfb288e453117e900f3e70d51077486bb6109525"
+      },
+      "last_sequence": 2522,
+      "next_step": "Schedule-ready-M0-is-next-development-step",
+      "pid": 7760,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Conditional-implementation-milestones-checked-and-pushed-dfb288e45",
+      "task_id": "ck3-confucian-schedule-20261004",
+      "updated_at_utc": "2026-10-03T18:07:33.425434+00:00",
+      "age_seconds": 284218,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 2,
+        "head": "6e11ba8dd0e9a99b91a16b309f5623f36ea465c7"
+      },
+      "last_sequence": 2515,
+      "next_step": "",
+      "pid": 12884,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Comparison-and-terminology-commits-confirmed-in-origin-master",
+      "task_id": "ck3-faith-compare-20261003",
+      "updated_at_utc": "2026-10-03T14:41:00.348208+00:00",
+      "age_seconds": 296612,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "0349ffc5a35a0b582db7dbadf6c1358896ece012"
+      },
+      "last_sequence": 3308,
+      "next_step": "No automatic continuation; resume only after user requests, following docs handover",
+      "pid": 12444,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "User requested vacation stop; handover and verified work committed and pushed; mod acceptance incomplete",
+      "task_id": "ck3-li-yu-dao-implementation-20261004",
+      "updated_at_utc": "2026-10-06T10:34:39.408582+00:00",
+      "age_seconds": 52192,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e0378edac081c2413b56f942bd322e81cea5c8a7"
+      },
+      "last_sequence": 2534,
+      "next_step": "Fresh-offline-and-load",
+      "pid": 17152,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "Expired-preflight-lease-no-map-actions",
+      "task_id": "ck3-lyd-live-001-20261004",
+      "updated_at_utc": "2026-10-03T23:14:49.912525+00:00",
+      "age_seconds": 265782,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e0378edac081c2413b56f942bd322e81cea5c8a7"
+      },
+      "last_sequence": 2546,
+      "next_step": "",
+      "pid": 14180,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Expired-preflight-lease-no-map-actions",
+      "task_id": "ck3-lyd-live-002-20261004",
+      "updated_at_utc": "2026-10-03T23:52:04.191655+00:00",
+      "age_seconds": 263548,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7fd082eab7626239ecb88702d0ebae71f938b259"
+      },
+      "last_sequence": 2627,
+      "next_step": "",
+      "pid": 19352,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0002-three-native-cycles-PASS-formal-entry-RED-checkpoints-preserved-normal-save-exit",
+      "task_id": "ck3-lyd-live-003-20261004",
+      "updated_at_utc": "2026-10-04T03:40:30.053141+00:00",
+      "age_seconds": 249842,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "588492d3dbf473226664220b722a04b66ae54bae"
+      },
+      "last_sequence": 2676,
+      "next_step": "",
+      "pid": 19820,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0003-normal-saved-exit-functional-pass-UI-localization-RED",
+      "task_id": "ck3-lyd-live-004-20261004",
+      "updated_at_utc": "2026-10-04T07:09:54.636332+00:00",
+      "age_seconds": 237277,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "01b4dda39505929c1245de699e67862f4130a02e"
+      },
+      "last_sequence": 2687,
+      "next_step": "",
+      "pid": 16412,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0004-native-loading-RED-normal-window-exit-no-campaign",
+      "task_id": "ck3-lyd-live-005-20261004",
+      "updated_at_utc": "2026-10-04T09:33:27.663201+00:00",
+      "age_seconds": 228664,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "18b1944d1784d3e4ec57189c016335ef135b9b34"
+      },
+      "last_sequence": 2699,
+      "next_step": "",
+      "pid": 19808,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0005-loading-RED-crash-observed-no-campaign-reporter-closed",
+      "task_id": "ck3-lyd-live-006-20261004",
+      "updated_at_utc": "2026-10-04T11:31:23.772100+00:00",
+      "age_seconds": 221588,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e"
+      },
+      "last_sequence": 2809,
+      "next_step": "Fresh-offline-and-load",
+      "pid": 19308,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R0006-expired-own-screen-claim-released-unresolved",
+      "task_id": "ck3-lyd-live-007-20261004",
+      "updated_at_utc": "2026-10-04T18:55:33.111775+00:00",
+      "age_seconds": 194939,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "3d3305e75cf642a7a82bef5f9aee03dc76b3c10e"
+      },
+      "last_sequence": 2814,
+      "next_step": "",
+      "pid": 7056,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0006-normal-game-exit-evidence-preserved",
+      "task_id": "ck3-lyd-r0006-exit-20261005",
+      "updated_at_utc": "2026-10-04T19:07:37.972352+00:00",
+      "age_seconds": 194214,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "3bd0ed926fef86f2660f2ed80c231dd9682ee877"
+      },
+      "last_sequence": 2921,
+      "next_step": "",
+      "pid": 17744,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "LYD-R7-preserved-MCP-closed-official-exit-observed",
+      "task_id": "ck3-lyd-r0007-20261005",
+      "updated_at_utc": "2026-10-05T01:41:49.154890+00:00",
+      "age_seconds": 170563,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b09983782670e0646e5c911bb4a385d30750ab01"
+      },
+      "last_sequence": 2944,
+      "next_step": "",
+      "pid": 18716,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "LYD-formal-R0008-closed-not-green",
+      "task_id": "ck3-lyd-r0008-20261005",
+      "updated_at_utc": "2026-10-05T04:42:25.151607+00:00",
+      "age_seconds": 159727,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "54457b371e947edb86903c2ebd578034f02695db"
+      },
+      "last_sequence": 2981,
+      "next_step": "Fresh-offline-final-DLL-and-isolated-campaign",
+      "pid": 14604,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "LYD R0009 saved JOIN and DETACH; native terminal original HANDLE exit0; SDK and C2 failures retained; client and keeper stopped.",
+      "task_id": "ck3-lyd-r0009-20261005",
+      "updated_at_utc": "2026-10-05T07:37:01.639315+00:00",
+      "age_seconds": 149250,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d"
+      },
+      "last_sequence": 3161,
+      "next_step": "",
+      "pid": 9880,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "LYD-R0010-normal-exit-observed-Client-closed",
+      "task_id": "ck3-lyd-r0010-20261005",
+      "updated_at_utc": "2026-10-05T18:08:38.459166+00:00",
+      "age_seconds": 111353,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "632f0a57a07aa6299052004589ed6f7632e7d8f7"
+      },
+      "last_sequence": 3164,
+      "next_step": "Fresh offline evidence and actual cold continuation",
+      "pid": 1904,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R11-prelaunch-lease-expired-no-game-started",
+      "task_id": "ck3-lyd-r0011-20261006",
+      "updated_at_utc": "2026-10-05T23:08:25.354243+00:00",
+      "age_seconds": 93367,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "632f0a57a07aa6299052004589ed6f7632e7d8f7"
+      },
+      "last_sequence": 3284,
+      "next_step": "",
+      "pid": 5624,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "LYD R0011b verified original HANDLE exit0; Client and keeper ended; release screen",
+      "task_id": "ck3-lyd-r0011b-20261006",
+      "updated_at_utc": "2026-10-06T07:40:15.202066+00:00",
+      "age_seconds": 62657,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "632f0a57a07aa6299052004589ed6f7632e7d8f7"
+      },
+      "last_sequence": 3303,
+      "next_step": "",
+      "pid": 4844,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "LYD R0012 final JOIN cold reload58 passed; original HANDLE exit0; Client and keeper ended",
+      "task_id": "ck3-lyd-r0012-20261006",
+      "updated_at_utc": "2026-10-06T08:47:58.215647+00:00",
+      "age_seconds": 58594,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "768fd56e6f078c8fc6b1cc669cad71fb2594e3a2"
+      },
+      "last_sequence": 3323,
+      "next_step": "fresh-offline-and-0240-cold-load",
+      "pid": 14224,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "Keeper-poll-failed-no-game-started-lease-released",
+      "task_id": "ck3-lyd-r13-preflight-20261006-002",
+      "updated_at_utc": "2026-10-06T11:41:04.344475+00:00",
+      "age_seconds": 48208,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "768fd56e6f078c8fc6b1cc669cad71fb2594e3a2"
+      },
+      "last_sequence": 3348,
+      "next_step": "",
+      "pid": 11684,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R13-closed-exit0-Confucian-mailbox-RED-preserved-source-fix-next",
+      "task_id": "ck3-lyd-r13-preflight-20261006-003",
+      "updated_at_utc": "2026-10-06T12:54:20.177957+00:00",
+      "age_seconds": 43812,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "6be9e727b105bc72e623d92328d61bb74e0d43d6"
+      },
+      "last_sequence": 3313,
+      "next_step": "fresh-offline-build-and-cold-session",
+      "pid": 14564,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "Expired-preflight-released-no-game-started",
+      "task_id": "ck3-lyd-r13-preflight-20261006",
+      "updated_at_utc": "2026-10-06T11:09:10.956133+00:00",
+      "age_seconds": 50121,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "0349ffc5a35a0b582db7dbadf6c1358896ece012"
+      },
+      "last_sequence": 3307,
+      "next_step": "No automatic continuation; resume only after user requests, following docs handover",
+      "pid": 3032,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "User requested vacation stop; handover and verified work committed and pushed; mod acceptance incomplete",
+      "task_id": "ck3-lyd-r13-source-20261006",
+      "updated_at_utc": "2026-10-06T10:34:38.975265+00:00",
+      "age_seconds": 52193,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51"
+      },
+      "last_sequence": 3429,
+      "next_step": "",
+      "pid": 13300,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R14 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen",
+      "task_id": "ck3-lyd-r14-preflight-20261006-001",
+      "updated_at_utc": "2026-10-06T17:29:21.892497+00:00",
+      "age_seconds": 27310,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "fea6a2f9f7233f2e3bab6cdd1329b55aa09ca17c"
+      },
+      "last_sequence": 3478,
+      "next_step": "",
+      "pid": 10072,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R15_original_handles_exit0_business_RED_preserved",
+      "task_id": "ck3-lyd-r15-formal-20261007-001",
+      "updated_at_utc": "2026-10-06T21:23:57.722195+00:00",
+      "age_seconds": 13234,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9208b46c95b9dc13ab70bd2d11a0c146dd1fd412"
+      },
+      "last_sequence": 3489,
+      "next_step": "",
+      "pid": 7740,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R16 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen",
+      "task_id": "ck3-lyd-r16-political-cold-20261007-001",
+      "updated_at_utc": "2026-10-06T23:42:46.813148+00:00",
+      "age_seconds": 4905,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "c706a74f9d00dd842b7edce8901fb3417344fd9c"
+      },
+      "last_sequence": 3506,
+      "next_step": "",
+      "pid": 19976,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R17 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen",
+      "task_id": "ck3-lyd-r17-original0240-formal-20261007-001",
+      "updated_at_utc": "2026-10-07T01:04:32.245134+00:00",
+      "age_seconds": 0,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "19e660105e05395caa6cc95e76c299312ee89d51"
+      },
+      "last_sequence": 3373,
+      "next_step": "list24-attach-once-G2-G3-G4",
+      "pid": 19952,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "LYD-R14-live-profile-bound-SDK24-preparation",
+      "task_id": "ck3-lyd-resume-20261006-root",
+      "updated_at_utc": "2026-10-06T14:45:01.233561+00:00",
+      "age_seconds": 37171,
+      "stale": true
+    },
+    {
+      "git": null,
+      "last_sequence": 2530,
+      "next_step": "",
+      "pid": 8204,
+      "repo": "C:\\workspace\\ck3_lyd_runtime_20261004",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Fresh-offline-frame-reviewed-no-CK3-launch",
+      "task_id": "ck3-lyd-screen-preflight-20261004",
+      "updated_at_utc": "2026-10-03T19:15:07.374195+00:00",
+      "age_seconds": 280164,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2259,
+      "next_step": "",
+      "pid": 5136,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Isolated product process stopped; exact runtime evidence preserved",
+      "task_id": "ck3-maintained-cht-live-20261003-r0002",
+      "updated_at_utc": "2026-10-03T00:02:38.058768+00:00",
+      "age_seconds": 349314,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2273,
+      "next_step": "",
+      "pid": 19948,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Isolated product process stopped; exact runtime evidence preserved",
+      "task_id": "ck3-maintained-cht-live-20261003-r0003",
+      "updated_at_utc": "2026-10-03T00:23:54.291118+00:00",
+      "age_seconds": 348038,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2301,
+      "next_step": "",
+      "pid": 9692,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Isolated product process stopped; exact runtime evidence preserved",
+      "task_id": "ck3-maintained-cht-live-20261003-r0004",
+      "updated_at_utc": "2026-10-03T01:32:09.092341+00:00",
+      "age_seconds": 343943,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2475,
+      "next_step": "",
+      "pid": 13056,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Isolated product process stopped; exact runtime evidence preserved",
+      "task_id": "ck3-maintained-cht-live-20261003-r0005",
+      "updated_at_utc": "2026-10-03T10:24:31.965549+00:00",
+      "age_seconds": 312000,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2339,
+      "next_step": "",
+      "pid": 15944,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Isolated product process stopped; exact runtime evidence preserved",
+      "task_id": "ck3-maintained-djc-live-20261003-r0001",
+      "updated_at_utc": "2026-10-03T03:06:48.370087+00:00",
+      "age_seconds": 338263,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2366,
+      "next_step": "",
+      "pid": 2384,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Isolated product process stopped; exact runtime evidence preserved",
+      "task_id": "ck3-maintained-djc-live-20261003-r0002",
+      "updated_at_utc": "2026-10-03T04:25:33.932023+00:00",
+      "age_seconds": 333538,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2447,
+      "next_step": "",
+      "pid": 17652,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Isolated product process stopped; exact runtime evidence preserved",
+      "task_id": "ck3-maintained-djc-live-20261003-r0003",
+      "updated_at_utc": "2026-10-03T09:23:59.466579+00:00",
+      "age_seconds": 315632,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "6e9674d81973590872a7d8fb820fb94960c8b47b"
+      },
+      "last_sequence": 187,
+      "next_step": "Root-existing-client-R8-live-campaign",
+      "pid": 11512,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Native-campaign-policy-15-tests-PASS-pushed",
+      "task_id": "ck3-native-campaign-policy-20261002",
+      "updated_at_utc": "2026-10-01T16:33:03.784504+00:00",
+      "age_seconds": 462688,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2241,
+      "next_step": "",
+      "pid": 15412,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Isolated product process stopped; exact runtime evidence preserved",
+      "task_id": "ck3-two-mods-holding-live-20261003-r0001",
+      "updated_at_utc": "2026-10-02T23:32:44.398952+00:00",
+      "age_seconds": 351107,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231"
+      },
+      "last_sequence": 2478,
+      "next_step": "",
+      "pid": 18840,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "Publication desktop work stopped; new offline UI directly reviewed; no CK3 or launcher",
+      "task_id": "ck3-two-mods-publication-20261003-r0001",
+      "updated_at_utc": "2026-10-03T11:02:35.849323+00:00",
+      "age_seconds": 309716,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231"
+      },
+      "last_sequence": 2498,
+      "next_step": "",
+      "pid": 17696,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Native publication work ended; new offline PNG directly reviewed; no CK3/launcher",
+      "task_id": "ck3-two-mods-publication-20261003-r0002",
+      "updated_at_utc": "2026-10-03T11:38:37.204735+00:00",
+      "age_seconds": 307555,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231"
+      },
+      "last_sequence": 2504,
+      "next_step": "",
+      "pid": 18800,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Native publication work ended; new offline PNG directly reviewed; no CK3/launcher",
+      "task_id": "ck3-two-mods-publication-20261003-r0003",
+      "updated_at_utc": "2026-10-03T11:50:51.785830+00:00",
+      "age_seconds": 306820,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 23094,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2207,
+      "next_step": "",
+      "pid": 14084,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Retire incomplete-checkout admission; preserve rejected keeper receipt",
+      "task_id": "ck3-two-mods-source-screen-20261003",
+      "updated_at_utc": "2026-10-02T22:54:06.445601+00:00",
+      "age_seconds": 353425,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "f30579bf6405e183192c96ea6b9bc35dddd11eec"
+      },
+      "last_sequence": 2234,
+      "next_step": "",
+      "pid": 19880,
+      "repo": "C:\\tm-screen",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Source download and fresh offline review complete; keeper stopped; switching to isolated product live lease",
+      "task_id": "ck3-two-mods-source-screen-v2-20261003",
+      "updated_at_utc": "2026-10-02T23:32:34.672009+00:00",
+      "age_seconds": 351117,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "c7a31c716a1ace7750cd01d41577048cd7a6ed67"
+      },
+      "last_sequence": 2506,
+      "next_step": "",
+      "pid": 16700,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Both new 1.0.0 Workshop releases complete: Chinese acceptance, full public notes, media, fresh caches, offline restoration and master changelogs delivered",
+      "task_id": "ck3-two-third-party-mods-20261003",
+      "updated_at_utc": "2026-10-03T12:19:09.115471+00:00",
+      "age_seconds": 305123,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "a37737ddcd3d9db876aef161ebc68b723e3b3a19"
+      },
+      "last_sequence": 543,
+      "next_step": "",
+      "pid": 10548,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Shared knowledge principle and actual optional-null regression documentation committed and pushed; live campaign unchanged",
+      "task_id": "cross-mod-knowledge-20261002",
+      "updated_at_utc": "2026-10-02T01:07:15.152639+00:00",
+      "age_seconds": 431837,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b4a9b32c4eb8e13c2d8850cdd6335e21a386590c"
+      },
+      "last_sequence": 308,
+      "next_step": "",
+      "pid": 18196,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "User stopped long run after 17.7 years; saved and exited normally; report committed and pushed in b4a9b32",
+      "task_id": "damengsan-core-playable-20261001",
+      "updated_at_utc": "2026-10-01T20:49:56.772325+00:00",
+      "age_seconds": 447275,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9c41fb5b1dee7ebff12253380d4f04d8eab8aa64"
+      },
+      "last_sequence": 62,
+      "next_step": "Fresh-offline-frame-and-first-launch",
+      "pid": 8280,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R1-crash-evidence-preserved-lease-expired",
+      "task_id": "damengsan-core-screen-20261001",
+      "updated_at_utc": "2026-10-01T08:28:04.040811+00:00",
+      "age_seconds": 491788,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 17,
+        "head": "1ca161a1adec13af02cf0dbc9d4a42b21e874193"
+      },
+      "last_sequence": 70,
+      "next_step": "Capture-offline-frame-and-launch",
+      "pid": 16236,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R2-crash-preserved-session-closed",
+      "task_id": "damengsan-core-screen-r2-20261001",
+      "updated_at_utc": "2026-10-01T09:07:54.317518+00:00",
+      "age_seconds": 489398,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "00157c47c244fe838c677bbb08d4b6ee61537a50"
+      },
+      "last_sequence": 76,
+      "next_step": "",
+      "pid": 16096,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Core-R3-worldgen-invalid-rite-and-map-overlay-RED-preserved",
+      "task_id": "damengsan-core-screen-r3-20261001",
+      "updated_at_utc": "2026-10-01T09:36:36.305093+00:00",
+      "age_seconds": 487676,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e322f3c8b20f1d84aee5ac96461ad10ea5668d21"
+      },
+      "last_sequence": 79,
+      "next_step": "",
+      "pid": 1388,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "No-screen-owner-was-acquired",
+      "task_id": "damengsan-core-screen-r4-20261001",
+      "updated_at_utc": "2026-10-01T09:56:43.735055+00:00",
+      "age_seconds": 486468,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1,
+        "head": "e322f3c8b20f1d84aee5ac96461ad10ea5668d21"
+      },
+      "last_sequence": 82,
+      "next_step": "",
+      "pid": 7608,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Core-R4-world-generation-access-violation-RED-preserved",
+      "task_id": "damengsan-core-screen-r4-v2-20261001",
+      "updated_at_utc": "2026-10-01T10:12:35.945107+00:00",
+      "age_seconds": 485516,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b9cb56abab6c52185fbcf07664183d05531f274e"
+      },
+      "last_sequence": 88,
+      "next_step": "Offline-preflight-and-real-play",
+      "pid": 10172,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R5-playable-evidence-preserved-expired-lease-released-for-reload",
+      "task_id": "damengsan-core-screen-r5-20261001",
+      "updated_at_utc": "2026-10-01T11:54:35.546470+00:00",
+      "age_seconds": 479396,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "74852c37b5dc01564da7bc3f665e7769f92a6f1e"
+      },
+      "last_sequence": 92,
+      "next_step": "Validate-saved-campaign",
+      "pid": 16428,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R5-same-process-reload-and-graceful-exit-verified",
+      "task_id": "damengsan-core-screen-r5-reload-20261001",
+      "updated_at_utc": "2026-10-01T12:22:38.168098+00:00",
+      "age_seconds": 477714,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1,
+        "head": "74852c37b5dc01564da7bc3f665e7769f92a6f1e"
+      },
+      "last_sequence": 96,
+      "next_step": "Offline-cold-restart-from-verified-save",
+      "pid": 12584,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R6-startup-observation-wait-old-lease-retired",
+      "task_id": "damengsan-core-screen-r6-20261001",
+      "updated_at_utc": "2026-10-01T12:55:29.898807+00:00",
+      "age_seconds": 475742,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7e630745101afd995b4d9cee4c80e27e80181584"
+      },
+      "last_sequence": 100,
+      "next_step": "Cold-load-and-native-clock-readback",
+      "pid": 12168,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R6-cold-load-HUD-verified-expired-lease-retired",
+      "task_id": "damengsan-core-screen-r6-v2-20261001",
+      "updated_at_utc": "2026-10-01T13:21:47.117937+00:00",
+      "age_seconds": 474165,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7e630745101afd995b4d9cee4c80e27e80181584"
+      },
+      "last_sequence": 114,
+      "next_step": "",
+      "pid": 5320,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R6-native-crash-preserved-no-bridge-attach",
+      "task_id": "damengsan-core-screen-r6-v3-20261001",
+      "updated_at_utc": "2026-10-01T13:57:20.996151+00:00",
+      "age_seconds": 472031,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "2db7df941c46cd2e027c500bffcdc0afe13a5e13"
+      },
+      "last_sequence": 140,
+      "next_step": "",
+      "pid": 6892,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R7-cold-load-verified-client-ended-game-closed",
+      "task_id": "damengsan-core-screen-r7-20261001",
+      "updated_at_utc": "2026-10-01T15:19:05.956199+00:00",
+      "age_seconds": 467126,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "6dad42fa9b1633c74dc946a213e2e00c60c696e0"
+      },
+      "last_sequence": 298,
+      "next_step": "Offline-preflight-and-cold-load",
+      "pid": 2744,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R8-user-stopped-game-exited-report-written",
+      "task_id": "damengsan-core-screen-r8-20261001",
+      "updated_at_utc": "2026-10-01T20:05:09.710221+00:00",
+      "age_seconds": 449962,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "eabce6d5ae67268c66ca475011924d36407aaaa8"
+      },
+      "last_sequence": 56,
+      "next_step": "",
+      "pid": 5908,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Seven-original-roots-updated-verified-private-push-eabce6d-Steam-offline-worktree-clean",
+      "task_id": "damengsan-main-refresh-20261001",
+      "updated_at_utc": "2026-10-01T07:48:47.844789+00:00",
+      "age_seconds": 494144,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1e2a6984cf2b69d365f2beeda84a0fdc5a83cbec"
+      },
+      "last_sequence": 15,
+      "next_step": "",
+      "pid": 9488,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "promo_completed_120s_private_review_commit_1e2a698",
+      "task_id": "damengsan-promo-production-20260928",
+      "updated_at_utc": "2026-09-28T07:42:29.177835+00:00",
+      "age_seconds": 753723,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1e2a6984cf2b69d365f2beeda84a0fdc5a83cbec"
+      },
+      "last_sequence": 45,
+      "next_step": "",
+      "pid": 12380,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "Expired-legacy-screen-lease-released-business-unresolved",
+      "task_id": "damengsan-promo-remake-20260928",
+      "updated_at_utc": "2026-10-01T07:07:55.673730+00:00",
+      "age_seconds": 496596,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1e2a6984cf2b69d365f2beeda84a0fdc5a83cbec"
+      },
+      "last_sequence": 17,
+      "next_step": "",
+      "pid": 11108,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "private_draft_release_uploaded_sha256_verified_no_git_blob",
+      "task_id": "damengsan-promo-remote-delivery-20260928",
+      "updated_at_utc": "2026-09-28T08:42:22.232422+00:00",
+      "age_seconds": 750130,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e3c179a47eb902e24a6357171e928ba827bcbdde"
+      },
+      "last_sequence": 11,
+      "next_step": "choose_cut_then_capture_and_compose",
+      "pid": 12560,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "three_director_variants_and_xar_promo_authoring_ready",
+      "task_id": "damengsan-promo-variants-20260928",
+      "updated_at_utc": "2026-09-28T03:15:51.148112+00:00",
+      "age_seconds": 769721,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1414,
+        "head": "768b003bdac625d13b8288eca37c518de81415fe"
+      },
+      "last_sequence": 55,
+      "next_step": "",
+      "pid": 7572,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Steam-offline-restored-and-readback-verified",
+      "task_id": "damengsan-refresh-offline-screen-20261001",
+      "updated_at_utc": "2026-10-01T07:47:15.903943+00:00",
+      "age_seconds": 494236,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1a484f2488bbc1917bc514ba70ba3b87e086be82"
+      },
+      "last_sequence": 9,
+      "next_step": "resolve_upstream_map_and_gui_before_filming",
+      "pid": 412,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "seven_mod_refresh_merged_director_script_delivered_live_acceptance_red",
+      "task_id": "damengsan-seven-refresh-20260928",
+      "updated_at_utc": "2026-09-28T02:55:47.272562+00:00",
+      "age_seconds": 770925,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "d538e0038219e2208809f5976e33cb96417fa4bc"
+      },
+      "last_sequence": 799,
+      "next_step": "",
+      "pid": 18056,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "User stopped testing at 49 years; normal exit/offline verified; reports and handoff pushed; century and cold load unfinished",
+      "task_id": "damengsan-three-mod-century-20261002",
+      "updated_at_utc": "2026-10-02T05:03:11.522289+00:00",
+      "age_seconds": 417680,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b4a9b32c4eb8e13c2d8850cdd6335e21a386590c"
+      },
+      "last_sequence": 307,
+      "next_step": "",
+      "pid": 3320,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Pushed b4a9b32: three requested mod updates, core patch migration, CK3 update, main master sync; Steam offline",
+      "task_id": "damengsan-three-mod-update-20261002",
+      "updated_at_utc": "2026-10-01T20:49:56.448804+00:00",
+      "age_seconds": 447275,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "e4a8edce53ac0773df1d8681131597193c7b0cdc"
+      },
+      "last_sequence": 314,
+      "next_step": "",
+      "pid": 11848,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R1 startup RED preserved; no native attachment or game inputs",
+      "task_id": "damengsan-three-screen-r1-20261002",
+      "updated_at_utc": "2026-10-01T21:12:07.279983+00:00",
+      "age_seconds": 445945,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1,
+        "head": "6f85bbc8c8b64bec4304062a09c7be7d640faa7c"
+      },
+      "last_sequence": 372,
+      "next_step": "",
+      "pid": 17624,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R2 entered game; no campaign baseline; normal exit confirmed, no crash package",
+      "task_id": "damengsan-three-screen-r2-20261002",
+      "updated_at_utc": "2026-10-01T22:12:22.794064+00:00",
+      "age_seconds": 442329,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "0c90dbfcf2aba22f44cde86e7d4a91aa5c1dd5cb"
+      },
+      "last_sequence": 385,
+      "next_step": "",
+      "pid": 1360,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R3 startup RED; zero years; no game inputs or native attachment",
+      "task_id": "damengsan-three-screen-r3-20261002",
+      "updated_at_utc": "2026-10-01T22:36:23.329924+00:00",
+      "age_seconds": 440889,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 2,
+        "head": "539861973ad6fa50c2266758922c30b8df374258"
+      },
+      "last_sequence": 458,
+      "next_step": "",
+      "pid": 18372,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R4 needs native null saved scope and bounded history broadcast fixes; restart R5 clock",
+      "task_id": "damengsan-three-screen-r4-20261002",
+      "updated_at_utc": "2026-10-01T23:49:42.604608+00:00",
+      "age_seconds": 436489,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "3e6a5f5d3d01a563e1ccca43a01bf8c98b5510be"
+      },
+      "last_sequence": 796,
+      "next_step": "",
+      "pid": 15116,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R5 source and native fixes qualified; run evidence retained",
+      "task_id": "damengsan-three-screen-r5-20261002",
+      "updated_at_utc": "2026-10-02T04:51:50.880210+00:00",
+      "age_seconds": 418361,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1032,
+        "head": "6dad42fa9b1633c74dc946a213e2e00c60c696e0"
+      },
+      "last_sequence": 304,
+      "next_step": "",
+      "pid": 13764,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Steam-offline-menu-and-installation-readback-verified",
+      "task_id": "damengsan-update-final-readback-20261002",
+      "updated_at_utc": "2026-10-01T20:24:02.941981+00:00",
+      "age_seconds": 448829,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 18,
+        "head": "3f023e5ff00f87f8df3a8adde1a72400c36851ec"
+      },
+      "last_sequence": 2465,
+      "next_step": "Root commit/CI/tag/publish andpublicChangeNotes/cache/changelog closure",
+      "pid": 11872,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "CN9case72 composed semantics complete; exactprocess0 andscreenCAS2447released; productdocs andsource-only registry frozen forrootpublication",
+      "task_id": "de-jure-conquest-20261003",
+      "updated_at_utc": "2026-10-03T10:00:55.293300+00:00",
+      "age_seconds": 313417,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 5,
+        "head": "2ee6c06df2c43b8e65bed1c50a11008ba60f533f"
+      },
+      "last_sequence": 2225,
+      "next_step": "",
+      "pid": 12488,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "holding_bounded_source_L0_fixture_publication_drafts_delivered",
+      "task_id": "holding-types-maintenance-20261003",
+      "updated_at_utc": "2026-10-02T23:15:53.411931+00:00",
+      "age_seconds": 352118,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 17,
+        "head": "768fd56e6f078c8fc6b1cc669cad71fb2594e3a2"
+      },
+      "last_sequence": 3324,
+      "next_step": "",
+      "pid": 7288,
+      "repo": "C:\\lc3s1",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "C3 native graph and explicit24 source focused tests delivered; integrated DLL/live remain pending",
+      "task_id": "lyd-c3-native24-resume-20261006-001",
+      "updated_at_utc": "2026-10-06T11:47:42.198630+00:00",
+      "age_seconds": 47810,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 19,
+        "head": "768fd56e6f078c8fc6b1cc669cad71fb2594e3a2"
+      },
+      "last_sequence": 3347,
+      "next_step": "owner_clean_full_rebuild_and_cold_live24",
+      "pid": 14208,
+      "repo": "C:\\lc3s1",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "combined_C3_and_mailbox_registration_patch_sealed_focused37_pass",
+      "task_id": "lyd-confucian-mailbox-submit-debug-20261006-001",
+      "updated_at_utc": "2026-10-06T12:50:34.479745+00:00",
+      "age_seconds": 44037,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 20,
+        "head": "768fd56e6f078c8fc6b1cc669cad71fb2594e3a2"
+      },
+      "last_sequence": 3353,
+      "next_step": "owner_apply_sixfile_delta_then_final_HEAD_export_build004_with_cachefix005",
+      "pid": 16776,
+      "repo": "C:\\lc3s1",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "frozen_DTO12_restored_graph_entrypoints_separated_focused27_pass",
+      "task_id": "lyd-confucian-pure-dto12-graph-wrapper-separation-20261006-001",
+      "updated_at_utc": "2026-10-06T13:26:52.378854+00:00",
+      "age_seconds": 41859,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 20,
+        "head": "768fd56e6f078c8fc6b1cc669cad71fb2594e3a2"
+      },
+      "last_sequence": 3351,
+      "next_step": "root_apply_test_delta_and_future_HEAD_export_prepare",
+      "pid": 9456,
+      "repo": "C:\\lc3s1",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "repo_regression37_and_three_negative_cases_pass_build004_template_sealed",
+      "task_id": "lyd-confucian-repo-regression-and-build004-20261006-001",
+      "updated_at_utc": "2026-10-06T13:14:45.440337+00:00",
+      "age_seconds": 42586,
+      "stale": false
+    },
+    {
+      "git": null,
+      "last_sequence": 3018,
+      "next_step": "ROOT integrates after frozen runtime closes; native source author continues callback gaps",
+      "pid": 15808,
+      "repo": "C:\\lsp2",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "External source inventory successor sealed; actual runtime still NOT_RUN",
+      "task_id": "lyd-player-control-identity-inventory-20261005-002",
+      "updated_at_utc": "2026-10-05T11:25:32.969665+00:00",
+      "age_seconds": 135539,
+      "stale": false
+    },
+    {
+      "git": null,
+      "last_sequence": 2987,
+      "next_step": "ROOT applies targeted hunks after R10 source freeze release; native provider research continues in separate task",
+      "pid": 10396,
+      "repo": "C:\\lsp1",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "External Python player-control candidate sealed; source tests pass, native capability runtime NOT_RUN",
+      "task_id": "lyd-player-control-python-20261005-001",
+      "updated_at_utc": "2026-10-05T10:08:47.031726+00:00",
+      "age_seconds": 140145,
+      "stale": false
+    },
+    {
+      "git": null,
+      "last_sequence": 3044,
+      "next_step": "ROOT later builds actual managed inventory/profile; native004 remains independent",
+      "pid": 12864,
+      "repo": "C:\\lsp2",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Exact frozen003 three-source binding sealed; zero Python source delta and runtime credit",
+      "task_id": "lyd-player-control-python-inventory-binding-20261005-003",
+      "updated_at_utc": "2026-10-05T12:31:21.418182+00:00",
+      "age_seconds": 131590,
+      "stale": false
+    },
+    {
+      "git": null,
+      "last_sequence": 3114,
+      "next_step": "ROOT integrates narrow hunks after R10/current Client closes and performs actual cold managed acceptance",
+      "pid": 14548,
+      "repo": "C:\\lsp4",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Python partial readonly23 gate and compiled20 source binding sealed; native/runtime NOT_RUN",
+      "task_id": "lyd-player-control-python-readonly-20261005-004",
+      "updated_at_utc": "2026-10-05T15:48:06.968262+00:00",
+      "age_seconds": 119785,
+      "stale": false
+    },
+    {
+      "git": null,
+      "last_sequence": 3036,
+      "next_step": "Native 003 author freezes independently; root owns runtime integration",
+      "pid": 14360,
+      "repo": "C:\\lsp2",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Actual 2MiB payload and 16384 response row bounds reported; source-only static budget",
+      "task_id": "lyd-player-control-python-source-limits-20261005-003",
+      "updated_at_utc": "2026-10-05T12:13:48.854983+00:00",
+      "age_seconds": 132643,
+      "stale": false
+    },
+    {
+      "git": null,
+      "last_sequence": 3356,
+      "next_step": "owner_cold_live_readonly_validation",
+      "pid": 11024,
+      "repo": "C:\\lr14s1",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "actual_clean004_sixproducts_newlib_flags11_fourfocused_verified_no_live_credit",
+      "task_id": "lyd-r14-actual-build004-readonly-monitor-20261006-001",
+      "updated_at_utc": "2026-10-06T13:59:39.397589+00:00",
+      "age_seconds": 39892,
+      "stale": false
+    },
+    {
+      "git": null,
+      "last_sequence": 3405,
+      "next_step": "owner_formal_cancel_checkpoint_readback",
+      "pid": 3760,
+      "repo": "C:\\lr14s1",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "exact19_formal_cancel_reproposal_rules_15sources_sha_lines_preserved_future_null",
+      "task_id": "lyd-r14-cancel-reproposal-source-readonly-20261007-001",
+      "updated_at_utc": "2026-10-06T16:16:42.409821+00:00",
+      "age_seconds": 31669,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d"
+      },
+      "last_sequence": 2997,
+      "next_step": "Verify actual PauseMenu/Lobby/current-player and AI getter source, publish matched candidate inventory",
+      "pid": 11296,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "Follow-up 002 exact PE source provider research, external files only; no runtime or R10 mutations",
+      "task_id": "lyd-switch-character-native-20261005",
+      "updated_at_utc": "2026-10-05T10:26:53.440542+00:00",
+      "age_seconds": 139058,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "43b262eb42246b530c96625eca129e270103c7ef"
+      },
+      "last_sequence": 53,
+      "next_step": "Save-and-close-CK3",
+      "pid": 15940,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "Expired-screen-lease-released-after-idle-Steam-attestation",
+      "task_id": "machine-ck3-update-screen-20261001",
+      "updated_at_utc": "2026-10-01T07:45:52.976736+00:00",
+      "age_seconds": 494319,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "43b262eb42246b530c96625eca129e270103c7ef"
+      },
+      "last_sequence": 42,
+      "next_step": "Inspect-running-game-and-update-channel",
+      "pid": 18292,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "origin/master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "Update-project-and-Steam-CK3",
+      "task_id": "machine-project-ck3-update-20261001",
+      "updated_at_utc": "2026-10-01T07:02:51.003405+00:00",
+      "age_seconds": 496901,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "4475a600b54e0558c2caf66f3392cc361520df07"
+      },
+      "last_sequence": 317,
+      "next_step": "",
+      "pid": 19092,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Patch3-clock-consumer-and-local-ordinary-artifacts-qualified-and-pushed-4475a600",
+      "task_id": "main-12003-campaign-qualification-20261002",
+      "updated_at_utc": "2026-10-01T21:27:02.433273+00:00",
+      "age_seconds": 445049,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "67184ba9dda67ff53af7d83fb691b7ee7b178552"
+      },
+      "last_sequence": 798,
+      "next_step": "",
+      "pid": 16816,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Pushed canonical user-stop/save preservation docs 67184ba9d; diffcheck PASS; no tool/native/live changes",
+      "task_id": "main-campaign-user-stop-docs-20261002",
+      "updated_at_utc": "2026-10-02T04:57:49.881581+00:00",
+      "age_seconds": 418002,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "ff99a1bbab7a47040f57e73c5f84a0229c9b06ec"
+      },
+      "last_sequence": 786,
+      "next_step": "",
+      "pid": 6484,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "User stopped testing; read-only cold handoff saved; no live or tracked changes",
+      "task_id": "main-century-cold-reload-contract-20261002",
+      "updated_at_utc": "2026-10-02T04:41:18.319533+00:00",
+      "age_seconds": 418994,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1,
+        "head": "4c0c48625279134019d9ace65527a54fe62f628a"
+      },
+      "last_sequence": 118,
+      "next_step": "",
+      "pid": 5908,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Native-clock-bootstrap-and-native-campaign-tools-pushed",
+      "task_id": "main-core-native-bootstrap-20261001",
+      "updated_at_utc": "2026-10-01T14:31:12.606150+00:00",
+      "age_seconds": 469999,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 1,
+        "head": "752b426333b367ef09690959361b424ac6a5b7c8"
+      },
+      "last_sequence": 115,
+      "next_step": "",
+      "pid": 15552,
+      "repo": "C:\\cb120",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "C3-production-linked-full-build-RED-preserved",
+      "task_id": "main-core-native-build-c3-20261001",
+      "updated_at_utc": "2026-10-01T14:12:54.973802+00:00",
+      "age_seconds": 471097,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 1,
+        "head": "710cdef6544ae9161246f223e28a4835cbe936f9"
+      },
+      "last_sequence": 132,
+      "next_step": "Consumer-R7-live-acceptance",
+      "pid": 1764,
+      "repo": "C:\\cb121",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "C4-full-build-RED-ordinary-seven-fixtures-PASS",
+      "task_id": "main-core-native-build-c4-20261001",
+      "updated_at_utc": "2026-10-01T15:05:31.274501+00:00",
+      "age_seconds": 467941,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "87653abb1efb154579dc65216159b50ad0ba757b"
+      },
+      "last_sequence": 553,
+      "next_step": "R5-specific causes and gameplay acceptance remain suite; frozen tools/native epoch unchanged",
+      "pid": 9208,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "docs-engine-log-query:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Existing generic diagnostics docs enriched with capped-log interpretation and frozen receipt example; docs-only commit87653abb1 pushed clean",
+      "task_id": "main-engine-log-cap-knowledge-20261002",
+      "updated_at_utc": "2026-10-02T01:15:32.007857+00:00",
+      "age_seconds": 431340,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "ff99a1bbab7a47040f57e73c5f84a0229c9b06ec"
+      },
+      "last_sequence": 726,
+      "next_step": "Root continues same-process campaign; exact first refusal cause remains unisolated",
+      "pid": 4944,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-event-layout-docs:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Pushed ff99a1bba frozen n2 option budget and merged layout refusal docs; diffcheck PASS; tools/artifact/live unchanged",
+      "task_id": "main-event-layout-budget-review-20261002",
+      "updated_at_utc": "2026-10-02T03:45:49.790207+00:00",
+      "age_seconds": 422322,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "6651bc77dd116cedeb3b50bd95b90b49890966bf"
+      },
+      "last_sequence": 675,
+      "next_step": "Root chooses existing reviewed normal UI if needed; future arbitrary family subject qualification belongs upstream new epoch",
+      "pid": 2868,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-ordinary-marriage-review:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Frozen n2 basic marriage player-only ABI/context fixtures confirmed; unplayed-heir routes OFF; ignored evidence only no live or source changes",
+      "task_id": "main-n2-ordinary-marriage-review-20261002",
+      "updated_at_utc": "2026-10-02T03:01:40.420770+00:00",
+      "age_seconds": 424971,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 1,
+        "head": "6e014eb6c6838e5005bba4e5c30640a8934cfb24"
+      },
+      "last_sequence": 176,
+      "next_step": "R8-remains-frozen-ignore-report-as-rules",
+      "pid": 15160,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Pure-checkpoint-report-fix-fortysix-tests-PASS-pushed",
+      "task_id": "main-native-campaign-checkpoint-metadata-20261001",
+      "updated_at_utc": "2026-10-01T16:13:41.760347+00:00",
+      "age_seconds": 463850,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "d385a90b3cf57b99daff65ca5e8d9cb65e37b74d"
+      },
+      "last_sequence": 265,
+      "next_step": "Root-R8-policy08-real-readback",
+      "pid": 4468,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Qualified-controller-and-optional-policy-provider-pushed-48-PASS",
+      "task_id": "main-native-clock-pause-20261002",
+      "updated_at_utc": "2026-10-01T18:52:42.826633+00:00",
+      "age_seconds": 454309,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "74a6212d730b8d7c177566c9236747f0da410986"
+      },
+      "last_sequence": 283,
+      "next_step": "",
+      "pid": 7268,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R8-real-RED-fixed-SPACE-scan-code-driver",
+      "task_id": "main-native-clock-pause-scan-20261002",
+      "updated_at_utc": "2026-10-01T19:22:19.378989+00:00",
+      "age_seconds": 452532,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "67f8c101cd4604a54f969a13bf89f6b6147d1a25"
+      },
+      "last_sequence": 152,
+      "next_step": "R8-exclusive-live-readback",
+      "pid": 3524,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Current-frame-native-pause-forty-tests-PASS-pushed",
+      "task_id": "main-native-current-pause-20261001",
+      "updated_at_utc": "2026-10-01T15:40:40.334819+00:00",
+      "age_seconds": 465832,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "ce353cc1d612069082db3b021b2d99a8cefd06da"
+      },
+      "last_sequence": 220,
+      "next_step": "Root-existing-semantic-action-and-policy03",
+      "pid": 6120,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Frozen-C4-saved-token-fail-closed-boundaries-reviewed",
+      "task_id": "main-native-event-scope-audit-20261002",
+      "updated_at_utc": "2026-10-01T17:30:29.175876+00:00",
+      "age_seconds": 459243,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "872f81419c057995bbf64db807f69de1f4c9012e"
+      },
+      "last_sequence": 144,
+      "next_step": "Consumer-running-pause-contract-review",
+      "pid": 5408,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Seven-pure-helper-fixtures-PASS-full-RED-preserved",
+      "task_id": "main-native-fixture-link-repair-20261001",
+      "updated_at_utc": "2026-10-01T15:28:47.248378+00:00",
+      "age_seconds": 466545,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "ce353cc1d612069082db3b021b2d99a8cefd06da"
+      },
+      "last_sequence": 229,
+      "next_step": "Root-preserve-RED-and-controlled-pause-recovery",
+      "pid": 17984,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Frozen-C4-no-pending-presence-pause-veto",
+      "task_id": "main-native-pause-mail-audit-20261002",
+      "updated_at_utc": "2026-10-01T17:45:22.203196+00:00",
+      "age_seconds": 458350,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "ce353cc1d612069082db3b021b2d99a8cefd06da"
+      },
+      "last_sequence": 212,
+      "next_step": "Root-policy02-consumption",
+      "pid": 14208,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Pending-mail-policy-pushed-21-tests-PASS",
+      "task_id": "main-native-policy-mail-20261002",
+      "updated_at_utc": "2026-10-01T17:18:39.093834+00:00",
+      "age_seconds": 459953,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "afded1699c8de579f2a9da7772ccce57ccb5d014"
+      },
+      "last_sequence": 170,
+      "next_step": "Future-consumer-live-qualification",
+      "pid": 12188,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Native-postcondition-read-wait-fortyfour-tests-PASS-pushed",
+      "task_id": "main-native-profile-postcondition-wait-20261001",
+      "updated_at_utc": "2026-10-01T16:07:04.891235+00:00",
+      "age_seconds": 464247,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "0700e17546d27d76fa1e37085d3d69db642c4988"
+      },
+      "last_sequence": 593,
+      "next_step": "Root normal old endpoint close then same-profile new-generation resume/query; no injector or game restart",
+      "pid": 12516,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-profile-pending-interaction:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Pushed 0700e1754 same-PID profile resume and typed pending query/reply; 32 profile and 25 existing driver tests pass; live result pending root",
+      "task_id": "main-pending-interaction-capability-review-20261002",
+      "updated_at_utc": "2026-10-02T01:50:58.955449+00:00",
+      "age_seconds": 429213,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "ff99a1bbab7a47040f57e73c5f84a0229c9b06ec"
+      },
+      "last_sequence": 754,
+      "next_step": "Root continues same-process campaign; no settings/source/tool modification justified",
+      "pid": 11952,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-periodic-pause-review:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Frozen n2/settings review: persisted YEARLY; message autopause/tutorial candidates; exact cause unlocated; ignored receipt only",
+      "task_id": "main-periodic-pause-readonly-20261002",
+      "updated_at_utc": "2026-10-02T04:12:51.558771+00:00",
+      "age_seconds": 420700,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "16e04cd6ec20d77528f69c690e02bb274fe7de89"
+      },
+      "last_sequence": 610,
+      "next_step": "Root same-process century campaign and independent project war/obligation evidence; no generic changes required",
+      "pid": 13784,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-profile-resume-docs:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Docs-only live same-process resume/query/reply and partial readiness regression pushed 16e04cd6e; consumer0700 unchanged",
+      "task_id": "main-profile-resume-live-docs-20261002",
+      "updated_at_utc": "2026-10-02T02:05:20.615152+00:00",
+      "age_seconds": 428351,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "7912f5d4c222fd485111b30927d6e9b15ab5c128"
+      },
+      "last_sequence": 72,
+      "next_step": "",
+      "pid": 10488,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Steam-UI-host-client-repair-pushed-eleven-tests-green",
+      "task_id": "main-semantic-gui-actions-20261001",
+      "updated_at_utc": "2026-10-01T09:08:41.491275+00:00",
+      "age_seconds": 489350,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "17160cd462b2d3b8d451b0054d49aa437a5ca0ee"
+      },
+      "last_sequence": 61,
+      "next_step": "",
+      "pid": 14088,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Steam-SDL-frame-fix-pushed-17160cd46-tests-17-and-MCP-4-green",
+      "task_id": "main-steam-sdl-fix-20261001",
+      "updated_at_utc": "2026-10-01T08:11:22.856716+00:00",
+      "age_seconds": 492789,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "cff9e01d08e951eca24b5b3683597441beb6fe82"
+      },
+      "last_sequence": 707,
+      "next_step": "Root continues same-process normal campaign; source-specific inheritance and marriage evidence stays suite",
+      "pid": 6804,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-succession-caller-docs:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Pushed cff9e01d docs-only succession progress and caller report preservation; diffcheck PASS consumer/artifacts unchanged",
+      "task_id": "main-succession-readback-caller-docs-20261002",
+      "updated_at_utc": "2026-10-02T03:31:32.402083+00:00",
+      "age_seconds": 423179,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "74a6212d730b8d7c177566c9236747f0da410986"
+      },
+      "last_sequence": 291,
+      "next_step": "",
+      "pid": 7112,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Main-up-to-date-clean-74a6212-and-update-MCP-contract-reviewed",
+      "task_id": "main-sync-update-contract-20261002",
+      "updated_at_utc": "2026-10-01T19:36:06.458259+00:00",
+      "age_seconds": 451705,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "5c05c7dcb90eb8ba66bce4f9a4357f19c0ef4b68"
+      },
+      "last_sequence": 504,
+      "next_step": "Root pins n2 native epoch and pushed Python consumer for sole R5 first attach and actual query/select validation",
+      "pid": 9588,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-event-window:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Exact patch3 nullable named character scope package qualified and pushed 5c05c7dcb; native9 Python32 and actual wire GREEN; no live operations",
+      "task_id": "main-three-campaign-policy-readonly-20261002",
+      "updated_at_utc": "2026-10-02T00:30:36.095957+00:00",
+      "age_seconds": 434036,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "5d04484eb61bbec276c1ade75d5c054169a3decd"
+      },
+      "last_sequence": 297,
+      "next_step": "",
+      "pid": 15720,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Unicode-context-seven-mock-tests-PASS-pushed-5d04484",
+      "task_id": "main-unicode-clipboard-context-20261002",
+      "updated_at_utc": "2026-10-01T19:59:03.796126+00:00",
+      "age_seconds": 450328,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "6651bc77dd116cedeb3b50bd95b90b49890966bf"
+      },
+      "last_sequence": 649,
+      "next_step": "Root same-process normal century campaign; causal engine refusal unlocated; no generic automatic-click policy",
+      "pid": 17836,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-modal-recovery-docs:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Canonical modal recovery docs pushed addb53b plus explicit nonisolated causality6651bc; docs-only diffcheck PASS consumer unchanged",
+      "task_id": "main-war-modal-recovery-docs-20261002",
+      "updated_at_utc": "2026-10-02T02:38:33.268010+00:00",
+      "age_seconds": 426359,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "16e04cd6ec20d77528f69c690e02bb274fe7de89"
+      },
+      "last_sequence": 634,
+      "next_step": "Root single reviewed semantic modal dismissal and independent native readback; preserve RED; no tool/native changes",
+      "pid": 3168,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-war-result-review:released"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Read-only n2 review: no exact patch3 war-result read/ack; legacy death-only query gated OFF; merged native timeline rejection documented",
+      "task_id": "main-war-result-capability-review-20261002",
+      "updated_at_utc": "2026-10-02T02:27:31.018612+00:00",
+      "age_seconds": 427021,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "ab096d82c6a2b4732df85ea5c515fe2a7c91c1b8"
+      },
+      "last_sequence": 802,
+      "next_step": "Fresh offline evidence",
+      "pid": 19868,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R0001 native GUI parse RED retained; owned CK3 closed; replace expired lease",
+      "task_id": "mts-acceptance-20261002-01",
+      "updated_at_utc": "2026-10-02T07:09:45.516107+00:00",
+      "age_seconds": 410086,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "1bb758afb15c4d291fa2ad8f8aa2a1c0ad980514"
+      },
+      "last_sequence": 862,
+      "next_step": "Fresh offline evidence then exact launch",
+      "pid": 12440,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R0002 timed out before creation; partial evidence preserved; owned process ended",
+      "task_id": "mts-acceptance-20261002-02",
+      "updated_at_utc": "2026-10-02T07:50:28.960252+00:00",
+      "age_seconds": 407643,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "539d00f5a80f6a83370966d2ec0b714d3a93f5df"
+      },
+      "last_sequence": 1147,
+      "next_step": "",
+      "pid": 964,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0003 native mirror RED retained; UI autosave succeeded and owned CK3 exited",
+      "task_id": "mts-acceptance-20261002-03",
+      "updated_at_utc": "2026-10-02T10:22:17.337662+00:00",
+      "age_seconds": 398535,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "bfbc86958d7622a55435e522d1c0574c2d7d27d6"
+      },
+      "last_sequence": 1291,
+      "next_step": "Native readback and creation grid boundary",
+      "pid": 15064,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R0004 hundredth-slot crash preserved; native process ended",
+      "task_id": "mts-acceptance-20261002-04",
+      "updated_at_utc": "2026-10-02T11:50:46.304413+00:00",
+      "age_seconds": 393226,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "43765b0ffa53ea84e398e02e64086915be387624"
+      },
+      "last_sequence": 1293,
+      "next_step": "Dump native GUI data types and inspect bindings",
+      "pid": 16268,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "Expired prelaunch lease retired; no CK3 started",
+      "task_id": "mts-acceptance-20261002-05",
+      "updated_at_utc": "2026-10-02T12:02:14.103828+00:00",
+      "age_seconds": 392538,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "43765b0ffa53ea84e398e02e64086915be387624"
+      },
+      "last_sequence": 1328,
+      "next_step": "",
+      "pid": 15056,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0005 data type dump preserved; native Exit to Desktop exit0",
+      "task_id": "mts-acceptance-20261002-05b",
+      "updated_at_utc": "2026-10-02T12:25:47.940189+00:00",
+      "age_seconds": 391124,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "eb27c6ba47e44b298382e4fd4c337b9d2e505311"
+      },
+      "last_sequence": 1405,
+      "next_step": "",
+      "pid": 13340,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0006 native two-tenet creation and save passed; cold reload pending",
+      "task_id": "mts-acceptance-20261002-06",
+      "updated_at_utc": "2026-10-02T13:06:54.618734+00:00",
+      "age_seconds": 388657,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "847ef2e60ec2008499f44efc9b5d05d0f676e3e1"
+      },
+      "last_sequence": 1631,
+      "next_step": "Fresh Steam offline proof then native cold load",
+      "pid": 700,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R0007 cold two-tenet reload and tenth tradition native establishment PASS; process exit0",
+      "task_id": "mts-acceptance-20261002-07",
+      "updated_at_utc": "2026-10-02T15:35:03.513660+00:00",
+      "age_seconds": 379768,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "3177fd72e888ff7c12bcee7d2036443154c4cff6"
+      },
+      "last_sequence": 1824,
+      "next_step": "",
+      "pid": 20172,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0008 selector PASS load RED preserved normal exit0",
+      "task_id": "mts-acceptance-20261003-08",
+      "updated_at_utc": "2026-10-02T17:45:09.654134+00:00",
+      "age_seconds": 371962,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "fef6740d9beabc33cbed190c4f3b6728cf9e3259"
+      },
+      "last_sequence": 1868,
+      "next_step": "",
+      "pid": 1236,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0009 native blank create save PASS final source zero log exit0",
+      "task_id": "mts-acceptance-20261003-09",
+      "updated_at_utc": "2026-10-02T18:14:17.399764+00:00",
+      "age_seconds": 370214,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "a90b16ca9957cb6ebe5607744519c1cb37ea8d07"
+      },
+      "last_sequence": 1919,
+      "next_step": "",
+      "pid": 15580,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0010 Chinese cold reload PASS native scene errors separated process exit0",
+      "task_id": "mts-acceptance-20261003-10",
+      "updated_at_utc": "2026-10-02T18:48:27.673317+00:00",
+      "age_seconds": 368164,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 3,
+        "head": "63d6b7d898dce9205ad092e7612a59abb54404ae"
+      },
+      "last_sequence": 2215,
+      "next_step": "",
+      "pid": 1636,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Existing localization guide enriched with installation-based locale discovery and certification boundary; docs-only pushed 63d6b7d898dce9205ad092e7612a59abb54404ae",
+      "task_id": "mts-framework-locale-method-20261003",
+      "updated_at_utc": "2026-10-02T22:58:39.056028+00:00",
+      "age_seconds": 353153,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 5,
+        "head": "2ee6c06df2c43b8e65bed1c50a11008ba60f533f"
+      },
+      "last_sequence": 2217,
+      "next_step": "",
+      "pid": 13840,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Existing generic tools inventoried; sparse creation/native save identity guide and toolchain index pushed2ee6c06d; localization discovery guide pushed63d6b7d; docs-only checks PASS",
+      "task_id": "mts-framework-toolchain-review-20261003",
+      "updated_at_utc": "2026-10-02T23:03:02.671583+00:00",
+      "age_seconds": 352889,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9189003a2bf556f24a4b70851c4c18ec8f471419"
+      },
+      "last_sequence": 2062,
+      "next_step": "",
+      "pid": 5700,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Nine actual CK3 locales format-certified; 46-file deterministic build PASS; master 9189003 pushed; no live game started",
+      "task_id": "mts-localization-20261003",
+      "updated_at_utc": "2026-10-02T20:31:29.377414+00:00",
+      "age_seconds": 361982,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "a405d508661fc46d77a04c0fd123b078b0a9ad88"
+      },
+      "last_sequence": 1920,
+      "next_step": "",
+      "pid": 16492,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "CK3 1.20.0.3 migration delivered a405d508; representative native acceptance PASS; scene log boundary recorded; no Workshop publish",
+      "task_id": "mts-migration-20261002",
+      "updated_at_utc": "2026-10-02T19:04:22.694790+00:00",
+      "age_seconds": 367209,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 3,
+        "head": "7a6cbc86763ae863426107fa69fc409528eff764"
+      },
+      "last_sequence": 2182,
+      "next_step": "Root completes Workshop publication; native cold-load authority remains root",
+      "pid": 15380,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R13 offline save inspection and report committed and pushed f5751e07870578b4105fbc0035cfc7e054870638; actual actor rite153 four core, hidden100 plus vanilla28, piety78925; source hashes preserved; index released",
+      "task_id": "mts-r12-save-offline-20261003",
+      "updated_at_utc": "2026-10-02T21:45:20.950252+00:00",
+      "age_seconds": 357551,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 2,
+        "head": "da4b579659ebb4de397672b833369e95fdbd03c6"
+      },
+      "last_sequence": 2194,
+      "next_step": "",
+      "pid": 1276,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Fresh live Steam UI explicitly offline; seven orphan reporters canceled with unchanged crash files; no CK3; Workshop checks PASS",
+      "task_id": "mts-steam-offline-close-20261003",
+      "updated_at_utc": "2026-10-02T22:29:33.304710+00:00",
+      "age_seconds": 354899,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 2,
+        "head": "d4bddbfe204051c918dc7578a0507635d778ac79"
+      },
+      "last_sequence": 2052,
+      "next_step": "Root native compatible-third-tenet and sparse-slot create/debit/save acceptance",
+      "pid": 9008,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Absent resolves to vanilla monasticism doctrine conflicting with Anachoresis; no GUI bypass; docs correction pushed",
+      "task_id": "mts-tenet-validation-readonly-20261003",
+      "updated_at_utc": "2026-10-02T20:26:56.785526+00:00",
+      "age_seconds": 362255,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 9,
+        "head": "5be332f4bf9c4da6652b3977cbc973919861e513"
+      },
+      "last_sequence": 2178,
+      "next_step": "",
+      "pid": 15128,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0013 Simplified Chinese independent cold load of native R0012 binary PASS; four-tenet UI piety78925; native text resave exit0 errorlog0 CK3 inventory empty",
+      "task_id": "mts-workshop-cn-cold-four-20261003",
+      "updated_at_utc": "2026-10-02T21:34:16.111930+00:00",
+      "age_seconds": 358216,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 6,
+        "head": "9189003a2bf556f24a4b70851c4c18ec8f471419"
+      },
+      "last_sequence": 2151,
+      "next_step": "",
+      "pid": 4448,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0012 Simplified Chinese sparse 4-tenet creation paid 5775 and normal exit 0; CK3 inventory empty; save parsing underway",
+      "task_id": "mts-workshop-cn-release-20261003",
+      "updated_at_utc": "2026-10-02T21:22:11.708006+00:00",
+      "age_seconds": 358940,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 3,
+        "head": "bee4a5d2ee6175ff463fd2ff5a2ad93ac4855397"
+      },
+      "last_sequence": 1933,
+      "next_step": "",
+      "pid": 17280,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Workshop bilingual BBCode and full v10 Change Notes audited, frozen and pushed bee4a5d2ee6175ff463fd2ff5a2ad93ac4855397",
+      "task_id": "mts-workshop-copy-20261003",
+      "updated_at_utc": "2026-10-02T19:28:35.018909+00:00",
+      "age_seconds": 365757,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 3,
+        "head": "7a6cbc86763ae863426107fa69fc409528eff764"
+      },
+      "last_sequence": 2183,
+      "next_step": "",
+      "pid": 16452,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Final frozen Workshop copy and three pinned source images audited PASS, committed and pushed 7a6cbc86763ae863426107fa69fc409528eff764",
+      "task_id": "mts-workshop-copy-final-20261003",
+      "updated_at_utc": "2026-10-02T21:45:29.341957+00:00",
+      "age_seconds": 357543,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9189003a2bf556f24a4b70851c4c18ec8f471419"
+      },
+      "last_sequence": 2065,
+      "next_step": "",
+      "pid": 7624,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R11 native media archived; exact Absent doctrine conflict diagnosed; next live run Simplified Chinese",
+      "task_id": "mts-workshop-media-20261003",
+      "updated_at_utc": "2026-10-02T20:32:26.657108+00:00",
+      "age_seconds": 361925,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "fcc29d14da759493a547f6419af87ca286212906"
+      },
+      "last_sequence": 2181,
+      "next_step": "",
+      "pid": 7832,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Native download MCP static-ready; 35 tests PASS; fcc29d14d pushed; no DLL load/live Steam changes",
+      "task_id": "mts-workshop-native-download-20261003",
+      "updated_at_utc": "2026-10-02T21:41:45.059817+00:00",
+      "age_seconds": 357767,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "90f2a7a596653d57da3910885a4ef22c99c1d95c"
+      },
+      "last_sequence": 2188,
+      "next_step": "",
+      "pid": 14968,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "First independent native preview/download acceptance contracts and reports pushed90f2a7a59; read-only offline route lookup complete; no screen/Steam actions",
+      "task_id": "mts-workshop-native-first-live-20261003",
+      "updated_at_utc": "2026-10-02T22:22:10.414536+00:00",
+      "age_seconds": 355341,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "26c9943e1e60cf377d25ed6b30327986b4c35ffa"
+      },
+      "last_sequence": 1965,
+      "next_step": "",
+      "pid": 14712,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Native preview support pushed; 21 focused tests green; root owns first live verification",
+      "task_id": "mts-workshop-native-media-20261003",
+      "updated_at_utc": "2026-10-02T19:43:58.666401+00:00",
+      "age_seconds": 364833,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "5a2c0a8b77aaa98efcbd71973c9133d6a0f62167"
+      },
+      "last_sequence": 2198,
+      "next_step": "",
+      "pid": 5320,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Normal exit/orphan Cancel/restart/offline first-live experience documented; native release boundary closed; framework5a2c0a8b7 pushed; docs-only",
+      "task_id": "mts-workshop-offline-doc-close-20261003",
+      "updated_at_utc": "2026-10-02T22:32:43.518044+00:00",
+      "age_seconds": 354708,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b10d50faac3c8462354cfa235ea62d72265ee54d"
+      },
+      "last_sequence": 2199,
+      "next_step": "",
+      "pid": 19996,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Permanent verified Workshop v10 report, exact manifest and prior-public-version changelog delivered b10d50faac3c8462354cfa235ea62d72265ee54d",
+      "task_id": "mts-workshop-publication-docs-20261003",
+      "updated_at_utc": "2026-10-02T22:35:39.527715+00:00",
+      "age_seconds": 354532,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "b10d50faac3c8462354cfa235ea62d72265ee54d"
+      },
+      "last_sequence": 2200,
+      "next_step": "",
+      "pid": 14624,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "V10 existing Workshop3182367229 published; exact full public text/media and fresh46filecache PASS; Steam offline restored; permanent changelog pushed b10d50f; all9locales format-certified and CN-onlylive rules delivered",
+      "task_id": "mts-workshop-release-20261003",
+      "updated_at_utc": "2026-10-02T22:36:26.603909+00:00",
+      "age_seconds": 354485,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 2,
+        "head": "a405d508661fc46d77a04c0fd123b078b0a9ad88"
+      },
+      "last_sequence": 1927,
+      "next_step": "Root publication proceeds with plan and independent readbacks",
+      "pid": 12652,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Native route audit complete; real MCP publish available; additional preview gap documented",
+      "task_id": "mts-workshop-route-read-20261003",
+      "updated_at_utc": "2026-10-02T19:26:33.129796+00:00",
+      "age_seconds": 365879,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 4,
+        "head": "da4b579659ebb4de397672b833369e95fdbd03c6"
+      },
+      "last_sequence": 2196,
+      "next_step": "",
+      "pid": 2380,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Published item3182367229 and exact all public/cache checks PASS; offline restored in mts-steam-offline-close-20261003",
+      "task_id": "mts-workshop-submit-20261003",
+      "updated_at_utc": "2026-10-02T22:31:28.213054+00:00",
+      "age_seconds": 354784,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 6,
+        "head": "9189003a2bf556f24a4b70851c4c18ec8f471419"
+      },
+      "last_sequence": 2155,
+      "next_step": "",
+      "pid": 17724,
+      "repo": "C:\\workspace\\ck3_mod_more_tenant_slots",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Probe/publish/receipt/public-text and full-cache verification contracts delivered; native download wrapper gap identified",
+      "task_id": "mts-workshop-verify-route-20261003",
+      "updated_at_utc": "2026-10-02T21:23:39.806371+00:00",
+      "age_seconds": 358852,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 115,
+        "head": "23e5b36748e6a24393ca03e7219110b0edfc70c1"
+      },
+      "last_sequence": 27,
+      "next_step": "Await-review",
+      "pid": 10288,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Jin-Wenhou-film-delivered",
+      "task_id": "promo-jichou-20260929",
+      "updated_at_utc": "2026-09-29T22:33:12.492755+00:00",
+      "age_seconds": 613879,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 115,
+        "head": "9d0ce88837dce48c5ce54d3a490231ec4974c576"
+      },
+      "last_sequence": 38,
+      "next_step": "user_review_of_private_draft",
+      "pid": 9624,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "r6_delivered_verified_and_archived",
+      "task_id": "promo-jichou-smooth-20260930",
+      "updated_at_utc": "2026-09-30T09:18:49.077805+00:00",
+      "age_seconds": 575143,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 115,
+        "head": "40bbfd8647afe611e4c4e063f916eaf581e4183c"
+      },
+      "last_sequence": 40,
+      "next_step": "colleague_reads_docs_before_next_revision",
+      "pid": 16104,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "video_handoff_docs_committed_and_pushed",
+      "task_id": "promo-video-handoff-20260930",
+      "updated_at_utc": "2026-09-30T11:47:31.490436+00:00",
+      "age_seconds": 566220,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "5d04484eb61bbec276c1ade75d5c054169a3decd"
+      },
+      "last_sequence": 301,
+      "next_step": "",
+      "pid": 1392,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Local-crash-reporters-proved-readonly-restart-contract-reviewed",
+      "task_id": "steam-app-running-readonly-audit-20261002",
+      "updated_at_utc": "2026-10-01T20:15:26.050852+00:00",
+      "age_seconds": 449346,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "768b003bdac625d13b8288eca37c518de81415fe"
+      },
+      "last_sequence": 47,
+      "next_step": "use_original_five_mods_for_video",
+      "pid": 15184,
+      "repo": "C:\\workspace\\ck3_damengsan_suite",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "original_upstream_committed_pushed_worktree_clean",
+      "task_id": "suite-pending-review-20261001",
+      "updated_at_utc": "2026-10-01T07:18:34.453810+00:00",
+      "age_seconds": 495957,
+      "stale": false
+    }
+  ]
+}

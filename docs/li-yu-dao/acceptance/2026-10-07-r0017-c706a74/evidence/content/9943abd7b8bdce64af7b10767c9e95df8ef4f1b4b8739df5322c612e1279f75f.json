@@ -1,0 +1,16 @@
+{
+  "schema": "lyd.final-business-migration-policy-registration.v2",
+  "approved_policy_sha256": "e0900b603ba818f6160545c07c54cf310c26ef7af5bb9d2f0080b5b385790113",
+  "approved_policy_file": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-final-positive-factory-business-policy-20261007-005/reader/dependencies/business_migration_policy_v2.json",
+    "bytes": 4517,
+    "sha256": "e0900b603ba818f6160545c07c54cf310c26ef7af5bb9d2f0080b5b385790113"
+  },
+  "ROOT_final_factory_review": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-factory-positive-sentinel-review-20261007-001/candidate-004/THREE-TOKEN-AND-AST-PROOF.actual.json",
+    "bytes": 2672,
+    "sha256": "455a32e109641b39c60ad950f5d207862dfae88f7538d15e47bb58a6508d988e"
+  },
+  "actual_new_source_HEAD": null,
+  "actual_acceptance_credit": null
+}

@@ -1,0 +1,30 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"schema\": \"ck3.native-profile-receipt.v1\", \"session_id\": \"42abe9df32d34dd1840c23cb5246623d\", \"profile_sha256\": \"80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6\", \"status\": \"native_decision_query_observed\", \"result\": {\"game_pid\": 14608, \"native_revision\": 1, \"connection_generation\": 1, \"date_raw\": 53144712, \"played_character_id\": 31254, \"available\": true, \"matching_row_count\": 1, \"row_context_reference_key\": 31254, \"detail_root_visible\": true, \"detail_definition_matches_target\": true, \"detail_actor_binding_verified\": true, \"detail_actor_reference_key\": 31254, \"detail_decision_key\": \"lyd_change_school_decision\"}}"
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "42abe9df32d34dd1840c23cb5246623d",
+    "profile_sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6",
+    "status": "native_decision_query_observed",
+    "result": {
+      "game_pid": 14608,
+      "native_revision": 1,
+      "connection_generation": 1,
+      "date_raw": 53144712,
+      "played_character_id": 31254,
+      "available": true,
+      "matching_row_count": 1,
+      "row_context_reference_key": 31254,
+      "detail_root_visible": true,
+      "detail_definition_matches_target": true,
+      "detail_actor_binding_verified": true,
+      "detail_actor_reference_key": 31254,
+      "detail_decision_key": "lyd_change_school_decision"
+    }
+  },
+  "isError": false
+}

@@ -1,0 +1,18 @@
+--- a/ck3_autonomous_player/native_bridge/src/bridge.cpp
++++ b/ck3_autonomous_player/native_bridge/src/bridge.cpp
+@@ -22724,7 +22724,6 @@
+               }
+             }
+           }
+-          }
+         } else if (
+             step == xar::ck3_11906::
+                         kZhongguoAiOwnedCaseSnapshotV1Step) {
+@@ -22854,6 +22853,7 @@
+           }
+         } else {
+           native_step_dispatched = false;
++        }
+         }
+         if (!native_step_dispatched) {
+           native_step_dispatched = true;

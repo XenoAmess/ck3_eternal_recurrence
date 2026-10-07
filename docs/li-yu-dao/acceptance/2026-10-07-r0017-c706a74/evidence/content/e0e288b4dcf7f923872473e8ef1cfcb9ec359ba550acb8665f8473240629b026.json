@@ -1,0 +1,561 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"schema\": \"ck3.native-profile-receipt.v1\",\n  \"session_id\": \"42abe9df32d34dd1840c23cb5246623d\",\n  \"profile_sha256\": \"80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6\",\n  \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_profile_42abe9df32d34dd1840c23cb5246623d\",\n  \"recorded_at_utc\": \"2026-10-07T00:48:50.439716+00:00\",\n  \"status\": \"native_event_query_verified\",\n  \"result\": {\n    \"step\": \"query-current-event-window-context-v1\",\n    \"accepted\": true,\n    \"status\": \"available\",\n    \"query_sequence\": 2,\n    \"snapshot_revision\": 3,\n    \"current_event_window_context\": {\n      \"schema\": \"current-event-window-context-v1\",\n      \"schema_version\": 1,\n      \"status\": \"available\",\n      \"snapshot_revision\": 3,\n      \"date_raw\": 53144712,\n      \"current_event_instance_id\": 101,\n      \"window_match_count\": 1,\n      \"unavailable_reason\": null,\n      \"event_definition_key\": \"lyd.430\",\n      \"calculated_event_id\": 2270430,\n      \"runtime_stats_ordinal\": 2429,\n      \"root_scope\": {\n        \"status\": \"available\",\n        \"raw_type_index\": 4,\n        \"type_key\": \"character\",\n        \"subtype\": 0,\n        \"typed_identity\": {\n          \"status\": \"available\",\n          \"kind\": \"character\",\n          \"character_id\": 31254\n        }\n      },\n      \"saved_scopes\": [\n        {\n          \"name\": \"puppeteer\",\n          \"name_identifier\": 228,\n          \"scope\": {\n            \"status\": \"available\",\n            \"raw_type_index\": 4,\n            \"type_key\": \"character\",\n            \"subtype\": 0,\n            \"typed_identity\": {\n              \"status\": \"unavailable\",\n              \"reason\": \"character_scope_is_null\"\n            }\n          }\n        },\n        {\n          \"name\": \"lyd_i3b_actor\",\n          \"name_identifier\": 15631,\n          \"scope\": {\n            \"status\": \"available\",\n            \"raw_type_index\": 4,\n            \"type_key\": \"character\",\n            \"subtype\": 0,\n            \"typed_identity\": {\n              \"status\": \"available\",\n              \"kind\": \"character\",\n              \"character_id\": 31254\n            }\n          }\n        },\n        {\n          \"name\": \"lyd_i3b_title\",\n          \"name_identifier\": 47279,\n          \"scope\": {\n            \"status\": \"available\",\n            \"raw_type_index\": 5,\n            \"type_key\": \"landed_title\",\n            \"subtype\": 0,\n            \"typed_identity\": {\n              \"status\": \"available\",\n              \"kind\": \"landed_title\",\n              \"title_id\": 2264\n            }\n          }\n        },\n        {\n          \"name\": \"lyd_i3b_rite\",\n          \"name_identifier\": 47284,\n          \"scope\": {\n            \"status\": \"available\",\n            \"raw_type_index\": 42,\n            \"type_key\": \"rite\",\n            \"subtype\": 0,\n            \"typed_identity\": {\n              \"status\": \"unavailable\",\n              \"reason\": \"generic_scope_payload_identity_not_closed\"\n            }\n          }\n        },\n        {\n          \"name\": \"lyd_i3b_member\",\n          \"name_identifier\": 47301,\n          \"scope\": {\n            \"status\": \"available\",\n            \"raw_type_index\": 4,\n            \"type_key\": \"character\",\n            \"subtype\": 0,\n            \"typed_identity\": {\n              \"status\": \"available\",\n              \"kind\": \"character\",\n              \"character_id\": 65865\n            }\n          }\n        },\n        {\n          \"name\": \"lyd_i3b_event_serial\",\n          \"name_identifier\": 15742,\n          \"scope\": {\n            \"status\": \"available\",\n            \"raw_type_index\": 1,\n            \"type_key\": \"value\",\n            \"subtype\": 0,\n            \"typed_identity\": {\n              \"status\": \"unavailable\",\n              \"reason\": \"generic_scope_payload_identity_not_closed\"\n            },\n            \"numeric_value\": {\n              \"raw_fixed_point\": \"100000\",\n              \"scale\": 100000,\n              \"decimal_value\": \"1\",\n              \"integer_value\": \"1\"\n            }\n          }\n        },\n        {\n          \"name\": \"lyd_i3b_event_nonce\",\n          \"name_identifier\": 43567,\n          \"scope\": {\n            \"status\": \"available\",\n            \"raw_type_index\": 1,\n            \"type_key\": \"value\",\n            \"subtype\": 0,\n            \"typed_identity\": {\n              \"status\": \"unavailable\",\n              \"reason\": \"generic_scope_payload_identity_not_closed\"\n            },\n            \"numeric_value\": {\n              \"raw_fixed_point\": \"100000\",\n              \"scale\": 100000,\n              \"decimal_value\": \"1\",\n              \"integer_value\": \"1\"\n            }\n          }\n        },\n        {\n          \"name\": \"lyd_i3b_event_phase\",\n          \"name_identifier\": 43568,\n          \"scope\": {\n            \"status\": \"available\",\n            \"raw_type_index\": 1,\n            \"type_key\": \"value\",\n            \"subtype\": 0,\n            \"typed_identity\": {\n              \"status\": \"unavailable\",\n              \"reason\": \"generic_scope_payload_identity_not_closed\"\n            },\n            \"numeric_value\": {\n              \"raw_fixed_point\": \"100000\",\n              \"scale\": 100000,\n              \"decimal_value\": \"1\",\n              \"integer_value\": \"1\"\n            }\n          }\n        }\n      ],\n      \"options\": [\n        {\n          \"rendered_index\": 0,\n          \"native_option_index\": 1,\n          \"shown\": true,\n          \"enabled\": true,\n          \"fallback\": false,\n          \"cancel\": false,\n          \"resolved_name\": \"本轮制度实施条件尚未齐备\",\n          \"unavailable_reason\": \"\",\n          \"effect_indicators\": {\n            \"status\": \"available\",\n            \"coverage\": \"played-character-event-icon-indicators-1.20.0.3-v1\",\n            \"complete_effect_set\": false,\n            \"rows\": []\n          },\n          \"effect_preview\": {\n            \"status\": \"unavailable\",\n            \"reason\": \"indicator_subset_has_no_completeness_signal\"\n          },\n          \"resource_deltas\": {\n            \"status\": \"unavailable\"\n          },\n          \"relationship_deltas\": {\n            \"status\": \"unavailable\"\n          }\n        },\n        {\n          \"rendered_index\": 1,\n          \"native_option_index\": 2,\n          \"shown\": true,\n          \"enabled\": true,\n          \"fallback\": false,\n          \"cancel\": false,\n          \"resolved_name\": \"待诸方答复\",\n          \"unavailable_reason\": \"\",\n          \"effect_indicators\": {\n            \"status\": \"available\",\n            \"coverage\": \"played-character-event-icon-indicators-1.20.0.3-v1\",\n            \"complete_effect_set\": false,\n            \"rows\": []\n          },\n          \"effect_preview\": {\n            \"status\": \"unavailable\",\n            \"reason\": \"indicator_subset_has_no_completeness_signal\"\n          },\n          \"resource_deltas\": {\n            \"status\": \"unavailable\"\n          },\n          \"relationship_deltas\": {\n            \"status\": \"unavailable\"\n          }\n        },\n        {\n          \"rendered_index\": 2,\n          \"native_option_index\": 3,\n          \"shown\": true,\n          \"enabled\": true,\n          \"fallback\": false,\n          \"cancel\": false,\n          \"resolved_name\": \"撤回本轮\",\n          \"unavailable_reason\": \"\",\n          \"effect_indicators\": {\n            \"status\": \"available\",\n            \"coverage\": \"played-character-event-icon-indicators-1.20.0.3-v1\",\n            \"complete_effect_set\": false,\n            \"rows\": []\n          },\n          \"effect_preview\": {\n            \"status\": \"unavailable\",\n            \"reason\": \"indicator_subset_has_no_completeness_signal\"\n          },\n          \"resource_deltas\": {\n            \"status\": \"unavailable\"\n          },\n          \"relationship_deltas\": {\n            \"status\": \"unavailable\"\n          }\n        }\n      ],\n      \"readiness\": {\n        \"event_definition_identity_ready\": true,\n        \"root_scope_ready\": true,\n        \"saved_scopes_ready\": true,\n        \"option_presentation_ready\": true,\n        \"effect_indicators_ready\": true,\n        \"effect_preview_ready\": false,\n        \"semantic_decision_ready\": false\n      },\n      \"provenance\": {\n        \"root\": \"module+0x5C6A520->+0x10\",\n        \"idler_vtable_rva\": \"0x44BC408\",\n        \"manager_offset\": \"+0x28\",\n        \"backend_id\": \"ck3-1.20.0.3-native-event-window-v1\"\n      }\n    },\n    \"backend_id\": \"native-headless\",\n    \"schema\": \"current-event-window-context-v1\",\n    \"schema_version\": 1,\n    \"date_raw\": 53144712,\n    \"current_event_instance_id\": 101,\n    \"window_match_count\": 1,\n    \"unavailable_reason\": null,\n    \"event_definition_key\": \"lyd.430\",\n    \"calculated_event_id\": 2270430,\n    \"runtime_stats_ordinal\": 2429,\n    \"root_scope\": {\n      \"status\": \"available\",\n      \"raw_type_index\": 4,\n      \"type_key\": \"character\",\n      \"subtype\": 0,\n      \"typed_identity\": {\n        \"status\": \"available\",\n        \"kind\": \"character\",\n        \"character_id\": 31254\n      }\n    },\n    \"saved_scopes\": [\n      {\n        \"name\": \"puppeteer\",\n        \"name_identifier\": 228,\n        \"scope\": {\n          \"status\": \"available\",\n          \"raw_type_index\": 4,\n          \"type_key\": \"character\",\n          \"subtype\": 0,\n          \"typed_identity\": {\n            \"status\": \"unavailable\",\n            \"reason\": \"character_scope_is_null\"\n          }\n        }\n      },\n      {\n        \"name\": \"lyd_i3b_actor\",\n        \"name_identifier\": 15631,\n        \"scope\": {\n          \"status\": \"available\",\n          \"raw_type_index\": 4,\n          \"type_key\": \"character\",\n          \"subtype\": 0,\n          \"typed_identity\": {\n            \"status\": \"available\",\n            \"kind\": \"character\",\n            \"character_id\": 31254\n          }\n        }\n      },\n      {\n        \"name\": \"lyd_i3b_title\",\n        \"name_identifier\": 47279,\n        \"scope\": {\n          \"status\": \"available\",\n          \"raw_type_index\": 5,\n          \"type_key\": \"landed_title\",\n          \"subtype\": 0,\n          \"typed_identity\": {\n            \"status\": \"available\",\n            \"kind\": \"landed_title\",\n            \"title_id\": 2264\n          }\n        }\n      },\n      {\n        \"name\": \"lyd_i3b_rite\",\n        \"name_identifier\": 47284,\n        \"scope\": {\n          \"status\": \"available\",\n          \"raw_type_index\": 42,\n          \"type_key\": \"rite\",\n          \"subtype\": 0,\n          \"typed_identity\": {\n            \"status\": \"unavailable\",\n            \"reason\": \"generic_scope_payload_identity_not_closed\"\n          }\n        }\n      },\n      {\n        \"name\": \"lyd_i3b_member\",\n        \"name_identifier\": 47301,\n        \"scope\": {\n          \"status\": \"available\",\n          \"raw_type_index\": 4,\n          \"type_key\": \"character\",\n          \"subtype\": 0,\n          \"typed_identity\": {\n            \"status\": \"available\",\n            \"kind\": \"character\",\n            \"character_id\": 65865\n          }\n        }\n      },\n      {\n        \"name\": \"lyd_i3b_event_serial\",\n        \"name_identifier\": 15742,\n        \"scope\": {\n          \"status\": \"available\",\n          \"raw_type_index\": 1,\n          \"type_key\": \"value\",\n          \"subtype\": 0,\n          \"typed_identity\": {\n            \"status\": \"unavailable\",\n            \"reason\": \"generic_scope_payload_identity_not_closed\"\n          },\n          \"numeric_value\": {\n            \"raw_fixed_point\": \"100000\",\n            \"scale\": 100000,\n            \"decimal_value\": \"1\",\n            \"integer_value\": \"1\"\n          }\n        }\n      },\n      {\n        \"name\": \"lyd_i3b_event_nonce\",\n        \"name_identifier\": 43567,\n        \"scope\": {\n          \"status\": \"available\",\n          \"raw_type_index\": 1,\n          \"type_key\": \"value\",\n          \"subtype\": 0,\n          \"typed_identity\": {\n            \"status\": \"unavailable\",\n            \"reason\": \"generic_scope_payload_identity_not_closed\"\n          },\n          \"numeric_value\": {\n            \"raw_fixed_point\": \"100000\",\n            \"scale\": 100000,\n            \"decimal_value\": \"1\",\n            \"integer_value\": \"1\"\n          }\n        }\n      },\n      {\n        \"name\": \"lyd_i3b_event_phase\",\n        \"name_identifier\": 43568,\n        \"scope\": {\n          \"status\": \"available\",\n          \"raw_type_index\": 1,\n          \"type_key\": \"value\",\n          \"subtype\": 0,\n          \"typed_identity\": {\n            \"status\": \"unavailable\",\n            \"reason\": \"generic_scope_payload_identity_not_closed\"\n          },\n          \"numeric_value\": {\n            \"raw_fixed_point\": \"100000\",\n            \"scale\": 100000,\n            \"decimal_value\": \"1\",\n            \"integer_value\": \"1\"\n          }\n        }\n      }\n    ],\n    \"options\": [\n      {\n        \"rendered_index\": 0,\n        \"native_option_index\": 1,\n        \"shown\": true,\n        \"enabled\": true,\n        \"fallback\": false,\n        \"cancel\": false,\n        \"resolved_name\": \"本轮制度实施条件尚未齐备\",\n        \"unavailable_reason\": \"\",\n        \"effect_indicators\": {\n          \"status\": \"available\",\n          \"coverage\": \"played-character-event-icon-indicators-1.20.0.3-v1\",\n          \"complete_effect_set\": false,\n          \"rows\": []\n        },\n        \"effect_preview\": {\n          \"status\": \"unavailable\",\n          \"reason\": \"indicator_subset_has_no_completeness_signal\"\n        },\n        \"resource_deltas\": {\n          \"status\": \"unavailable\"\n        },\n        \"relationship_deltas\": {\n          \"status\": \"unavailable\"\n        }\n      },\n      {\n        \"rendered_index\": 1,\n        \"native_option_index\": 2,\n        \"shown\": true,\n        \"enabled\": true,\n        \"fallback\": false,\n        \"cancel\": false,\n        \"resolved_name\": \"待诸方答复\",\n        \"unavailable_reason\": \"\",\n        \"effect_indicators\": {\n          \"status\": \"available\",\n          \"coverage\": \"played-character-event-icon-indicators-1.20.0.3-v1\",\n          \"complete_effect_set\": false,\n          \"rows\": []\n        },\n        \"effect_preview\": {\n          \"status\": \"unavailable\",\n          \"reason\": \"indicator_subset_has_no_completeness_signal\"\n        },\n        \"resource_deltas\": {\n          \"status\": \"unavailable\"\n        },\n        \"relationship_deltas\": {\n          \"status\": \"unavailable\"\n        }\n      },\n      {\n        \"rendered_index\": 2,\n        \"native_option_index\": 3,\n        \"shown\": true,\n        \"enabled\": true,\n        \"fallback\": false,\n        \"cancel\": false,\n        \"resolved_name\": \"撤回本轮\",\n        \"unavailable_reason\": \"\",\n        \"effect_indicators\": {\n          \"status\": \"available\",\n          \"coverage\": \"played-character-event-icon-indicators-1.20.0.3-v1\",\n          \"complete_effect_set\": false,\n          \"rows\": []\n        },\n        \"effect_preview\": {\n          \"status\": \"unavailable\",\n          \"reason\": \"indicator_subset_has_no_completeness_signal\"\n        },\n        \"resource_deltas\": {\n          \"status\": \"unavailable\"\n        },\n        \"relationship_deltas\": {\n          \"status\": \"unavailable\"\n        }\n      }\n    ],\n    \"readiness\": {\n      \"event_definition_identity_ready\": true,\n      \"root_scope_ready\": true,\n      \"saved_scopes_ready\": true,\n      \"option_presentation_ready\": true,\n      \"effect_indicators_ready\": true,\n      \"effect_preview_ready\": false,\n      \"semantic_decision_ready\": false\n    },\n    \"provenance\": {\n      \"root\": \"module+0x5C6A520->+0x10\",\n      \"idler_vtable_rva\": \"0x44BC408\",\n      \"manager_offset\": \"+0x28\",\n      \"backend_id\": \"ck3-1.20.0.3-native-event-window-v1\"\n    },\n    \"current_event_window_context_ready\": true,\n    \"current_event_effect_indicators_ready\": true,\n    \"queried_snapshot_id\": \"native:3\",\n    \"queried_revision\": 4,\n    \"queried_native_revision\": 3,\n    \"scope\": \"exact-current-event-window\",\n    \"source\": {\n      \"snapshot_id\": \"native:3\",\n      \"revision\": 4,\n      \"native_revision\": 3,\n      \"date_raw\": 53144712,\n      \"paused\": true,\n      \"backend_id\": \"native-headless\"\n    },\n    \"binding\": {\n      \"snapshot_id\": \"native:3\",\n      \"revision\": 4,\n      \"native_revision\": 3,\n      \"date_raw\": 53144712,\n      \"expected_revision\": 4,\n      \"event_instance_id\": 101\n    }\n  },\n  \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-017\\\\native-evidence\\\\42abe9df32d34dd1840c23cb5246623d\\\\0014-event-query.json\"\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "42abe9df32d34dd1840c23cb5246623d",
+    "profile_sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_42abe9df32d34dd1840c23cb5246623d",
+    "recorded_at_utc": "2026-10-07T00:48:50.439716+00:00",
+    "status": "native_event_query_verified",
+    "result": {
+      "step": "query-current-event-window-context-v1",
+      "accepted": true,
+      "status": "available",
+      "query_sequence": 2,
+      "snapshot_revision": 3,
+      "current_event_window_context": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 3,
+        "date_raw": 53144712,
+        "current_event_instance_id": 101,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "lyd.430",
+        "calculated_event_id": 2270430,
+        "runtime_stats_ordinal": 2429,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "puppeteer",
+            "name_identifier": 228,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "character_scope_is_null"
+              }
+            }
+          },
+          {
+            "name": "lyd_i3b_actor",
+            "name_identifier": 15631,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 31254
+              }
+            }
+          },
+          {
+            "name": "lyd_i3b_title",
+            "name_identifier": 47279,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 5,
+              "type_key": "landed_title",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "landed_title",
+                "title_id": 2264
+              }
+            }
+          },
+          {
+            "name": "lyd_i3b_rite",
+            "name_identifier": 47284,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 42,
+              "type_key": "rite",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "lyd_i3b_member",
+            "name_identifier": 47301,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 65865
+              }
+            }
+          },
+          {
+            "name": "lyd_i3b_event_serial",
+            "name_identifier": 15742,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 1,
+              "type_key": "value",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              },
+              "numeric_value": {
+                "raw_fixed_point": "100000",
+                "scale": 100000,
+                "decimal_value": "1",
+                "integer_value": "1"
+              }
+            }
+          },
+          {
+            "name": "lyd_i3b_event_nonce",
+            "name_identifier": 43567,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 1,
+              "type_key": "value",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              },
+              "numeric_value": {
+                "raw_fixed_point": "100000",
+                "scale": 100000,
+                "decimal_value": "1",
+                "integer_value": "1"
+              }
+            }
+          },
+          {
+            "name": "lyd_i3b_event_phase",
+            "name_identifier": 43568,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 1,
+              "type_key": "value",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              },
+              "numeric_value": {
+                "raw_fixed_point": "100000",
+                "scale": 100000,
+                "decimal_value": "1",
+                "integer_value": "1"
+              }
+            }
+          }
+        ],
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "本轮制度实施条件尚未齐备",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "待诸方答复",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 3,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "撤回本轮",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC408",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+        }
+      },
+      "backend_id": "native-headless",
+      "schema": "current-event-window-context-v1",
+      "schema_version": 1,
+      "date_raw": 53144712,
+      "current_event_instance_id": 101,
+      "window_match_count": 1,
+      "unavailable_reason": null,
+      "event_definition_key": "lyd.430",
+      "calculated_event_id": 2270430,
+      "runtime_stats_ordinal": 2429,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "saved_scopes": [
+        {
+          "name": "puppeteer",
+          "name_identifier": 228,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "character_scope_is_null"
+            }
+          }
+        },
+        {
+          "name": "lyd_i3b_actor",
+          "name_identifier": 15631,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          }
+        },
+        {
+          "name": "lyd_i3b_title",
+          "name_identifier": 47279,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 5,
+            "type_key": "landed_title",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "landed_title",
+              "title_id": 2264
+            }
+          }
+        },
+        {
+          "name": "lyd_i3b_rite",
+          "name_identifier": 47284,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 42,
+            "type_key": "rite",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "lyd_i3b_member",
+          "name_identifier": 47301,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 65865
+            }
+          }
+        },
+        {
+          "name": "lyd_i3b_event_serial",
+          "name_identifier": 15742,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 1,
+            "type_key": "value",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            },
+            "numeric_value": {
+              "raw_fixed_point": "100000",
+              "scale": 100000,
+              "decimal_value": "1",
+              "integer_value": "1"
+            }
+          }
+        },
+        {
+          "name": "lyd_i3b_event_nonce",
+          "name_identifier": 43567,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 1,
+            "type_key": "value",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            },
+            "numeric_value": {
+              "raw_fixed_point": "100000",
+              "scale": 100000,
+              "decimal_value": "1",
+              "integer_value": "1"
+            }
+          }
+        },
+        {
+          "name": "lyd_i3b_event_phase",
+          "name_identifier": 43568,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 1,
+            "type_key": "value",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            },
+            "numeric_value": {
+              "raw_fixed_point": "100000",
+              "scale": 100000,
+              "decimal_value": "1",
+              "integer_value": "1"
+            }
+          }
+        }
+      ],
+      "options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "本轮制度实施条件尚未齐备",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "待诸方答复",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 3,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "撤回本轮",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "readiness": {
+        "event_definition_identity_ready": true,
+        "root_scope_ready": true,
+        "saved_scopes_ready": true,
+        "option_presentation_ready": true,
+        "effect_indicators_ready": true,
+        "effect_preview_ready": false,
+        "semantic_decision_ready": false
+      },
+      "provenance": {
+        "root": "module+0x5C6A520->+0x10",
+        "idler_vtable_rva": "0x44BC408",
+        "manager_offset": "+0x28",
+        "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+      },
+      "current_event_window_context_ready": true,
+      "current_event_effect_indicators_ready": true,
+      "queried_snapshot_id": "native:3",
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "scope": "exact-current-event-window",
+      "source": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53144712,
+        "paused": true,
+        "backend_id": "native-headless"
+      },
+      "binding": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53144712,
+        "expected_revision": 4,
+        "event_instance_id": 101
+      }
+    },
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-evidence\\42abe9df32d34dd1840c23cb5246623d\\0014-event-query.json"
+  },
+  "isError": false,
+  "resultType": "complete"
+}

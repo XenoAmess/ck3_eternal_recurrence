@@ -1,0 +1,105 @@
+{
+  "schema": "lyd.frozen-sdk-g2-g3-metadata-reference.v1",
+  "readonly23_source_artifact_sha256": "4c97e3866eb9e14c98834ab192eb851ccde9585c0bdcb04f5fd01d7c01538da4",
+  "readonly23_tool_names": [
+    "ck3_query_native_profile_v1",
+    "ck3_attach_profile_bridge_v1",
+    "ck3_resume_profile_bridge_v1",
+    "ck3_take_profile_native_snapshot_v1",
+    "ck3_query_profile_character_interaction_ordinary_v1",
+    "ck3_initiate_profile_character_interaction_ordinary_v1",
+    "ck3_observe_profile_normal_exit_v1",
+    "ck3_query_normal_exit_context_v1",
+    "ck3_request_normal_exit_v1",
+    "ck3_query_profile_current_actor_stress_adjustment_v1",
+    "ck3_query_profile_event_window_v1",
+    "ck3_query_profile_pending_interaction_v1",
+    "ck3_reply_profile_pending_interaction_v1",
+    "ck3_set_profile_simulation_v1",
+    "ck3_pause_profile_simulation_v1",
+    "ck3_select_profile_event_option_v1",
+    "ck3_save_profile_checkpoint_v1",
+    "ck3_query_profile_decision_item_v1",
+    "ck3_open_profile_decisions_v1",
+    "ck3_select_profile_decision_item_v1",
+    "ck3_confirm_profile_decision_outcome_v1",
+    "ck3_query_profile_confucian_assembly_predicates_v1",
+    "ck3_query_profile_confucian_religious_title_v1"
+  ],
+  "G2_G3_tools": {
+    "ck3_query_profile_confucian_assembly_predicates_v1": {
+      "name": "ck3_query_profile_confucian_assembly_predicates_v1",
+      "title": null,
+      "description": "Read the current Faith's complete native rosters/predicates; unknown values remain null.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_revision"
+        ],
+        "title": "ck3_query_profile_confucian_assembly_predicates_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_profile_confucian_assembly_predicates_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": null
+    },
+    "ck3_query_profile_confucian_religious_title_v1": {
+      "name": "ck3_query_profile_confucian_religious_title_v1",
+      "title": null,
+      "description": "Read actual Faith-bound head-title graph/properties/laws; script ownership remains unknown.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "exclusiveMaximum": 18446744073709551616,
+            "exclusiveMinimum": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_revision"
+        ],
+        "title": "ck3_query_profile_confucian_religious_title_v1Arguments"
+      },
+      "execution": null,
+      "outputSchema": {
+        "additionalProperties": true,
+        "title": "ck3_query_profile_confucian_religious_title_v1DictOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": null
+    }
+  },
+  "reference_only": true,
+  "actual_acceptance_credit": null
+}

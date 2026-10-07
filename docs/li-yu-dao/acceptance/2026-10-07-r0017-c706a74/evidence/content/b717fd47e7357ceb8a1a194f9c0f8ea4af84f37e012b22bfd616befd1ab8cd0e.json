@@ -1,0 +1,33 @@
+{
+  "manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/MANIFEST.json",
+    "bytes": 6949,
+    "sha256": "3f0a3d594e1c20999012a321e86d31d0c7ca3d489cc9e7e2d3469f53dfe78cea"
+  },
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/candidate.patch",
+    "bytes": 2943,
+    "sha256": "e6fc151d364398bea37dd62204f8565f44956d539886524d95b7864924b7650a"
+  },
+  "review": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/REVIEW.md",
+    "bytes": 1893,
+    "sha256": "2bc749d74bff20c1a497d0c4badddd58ac6a96337441e18a41afdbf93219b542"
+  },
+  "before_export_inputs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/INPUTS.json",
+    "bytes": 1519,
+    "sha256": "a22737c552b6c028aaf5b10891d8ef671eeab7a1537bb12da105e011ed1916a8"
+  },
+  "source_context": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/SOURCE-CONTEXT.actual.json",
+    "bytes": 12667,
+    "sha256": "fc1d34559456db0129ec72eaa929d881dcadf565feb0694d7771d5ef29dbb983"
+  },
+  "source_author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/author_r17_ci_two_failure_candidate_20261007_002.py",
+    "bytes": 9052,
+    "sha256": "d030c4a738d66660966f31a0969aa84d82f1a6f42584e54176b17eb8292bac79"
+  },
+  "main_applied": false
+}

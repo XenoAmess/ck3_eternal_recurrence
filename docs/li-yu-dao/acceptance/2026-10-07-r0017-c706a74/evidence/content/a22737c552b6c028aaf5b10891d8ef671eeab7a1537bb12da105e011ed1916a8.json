@@ -1,0 +1,36 @@
+{
+  "base_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "seed_original_export": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/INPUTS.json",
+    "bytes": 1148,
+    "sha256": "708efaff2a64ccbf630005816d8d0bb7993a14f1643693d91b0e25f7825a5b80"
+  },
+  "failed_original_candidate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/FAILED-VALIDATION.actual.json",
+    "bytes": 2247,
+    "sha256": "187dffbe29b277e272327c18d4d536a71cae9d72767824a4f31a564048bef8fd"
+  },
+  "additional_archive_argv": [
+    "git",
+    "archive",
+    "--format=tar",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-ci-two-failures-candidate-20261007-002\\registry-source.tar",
+    "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+    "--",
+    "ck3_workshop_mcp/src"
+  ],
+  "additional_archive_exit_code": 0,
+  "additional_registry_archive": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/registry-source.tar",
+    "bytes": 204800,
+    "sha256": "a5c8ea181d60fe00f952a5e9fc02b0ce3a31309c10c7d8793b4dcb3a8177c57d"
+  },
+  "exact_registry": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before/ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+    "bytes": 3226,
+    "sha256": "47ff303baf94867db406ec9dab52037b83551b8c39a8dff0a0bdceafed7c2d90"
+  },
+  "main_writes": 0,
+  "fetches": 0
+}

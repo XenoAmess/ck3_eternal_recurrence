@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "--paginate",
+    "--slurp",
+    "repos/XenoAmess/ck3_eternal_recurrence/actions/runs/37549135181/jobs?per_page=100"
+  ],
+  "method": "GET",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135181.stdout",
+    "bytes": 2463,
+    "sha256": "ff74dc33ac37b174a9fe30d7943fc6652c417cf797785a3256174c7734149b77"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135181.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "finished_at_utc": "2026-10-07T00:28:33.807720+00:00"
+}

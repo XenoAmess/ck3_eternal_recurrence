@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 12,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\queue-001\\r17-014-formal-begin-select.request.json",
+  "request_sha256": "18d854e8055e2a2f877fd6000d757c6ccd4a87f1cdd9fdb26f86cd11023f0c99",
+  "started_at_utc": "2026-10-07T00:48:07.843429+00:00",
+  "request_id": "r17-014-formal-begin-select",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0012-r17-014-formal-begin-select.sdk-result.json",
+  "sdk_result_sha256": "1ad9d5bb64f05b7fbd4316bd6bea8b57dc20ab9326b04c456b60e5ea00243b32",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-evidence\\42abe9df32d34dd1840c23cb5246623d\\0011-decision-select.json",
+      "copy": "0012-r17-014-formal-begin-select.native-01.json",
+      "sha256": "95a709eb929d5371b87578910cebcebecc77a6b4d2a5c4f229fe4548d9513e79"
+    }
+  ],
+  "finished_at_utc": "2026-10-07T00:48:10.434190+00:00"
+}

@@ -1,0 +1,203 @@
+{
+  "status": "SOURCE_ONLY_R17_FORMAL_ORIGINAL0240_GRANT28_NO_RUNTIME",
+  "parent_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-political-heir-diagnostic-source-20261007-004/INDEX.json",
+    "bytes": 9765,
+    "sha256": "444731461b23bf861e25d3132d675e22a6e1e33f6c106708735cdae83a1383f7"
+  },
+  "metadata_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-metadata-r16-boundary-sourceonly-20261007-001/INDEX.json",
+    "bytes": 5355,
+    "sha256": "0e792ae208b04b71274ba06278665126753cd465f1ec1e6297fe8ac66753b599"
+  },
+  "genuine_previous_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3082,
+    "sha256": "b09f54dcac006d9dd355b567a42dc8bc811b0b0be2f6fcd5db85b5a72326a1b2"
+  },
+  "previous_boundary_verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r16-actual-closed-boundary-20261007-001/verify_previous_boundary.py",
+    "bytes": 12623,
+    "sha256": "cb1b47c78fe99212ee0a082e3e7cec85aa51aea7c345f17ef75e6a2109289e77"
+  },
+  "baseline_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/BASELINE-ORIGINAL0240.actual-input.json",
+    "bytes": 2689,
+    "sha256": "25bd5256433a8a990b1dfbc68678101faeb2259a966ca1dac9436d78074850c6"
+  },
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/author_formal_request.py",
+      "bytes": 3069,
+      "sha256": "989f222e3913b75191540c12aa9460bb98991370129ecd93f8f88999fd2d4558"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/author_formal_root_inputs.py",
+      "bytes": 6166,
+      "sha256": "033244ce54455c694c07e8008c5184a8b4f723ff84cdfcba8e6444c586d8cf5e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/BASELINE-ORIGINAL0240.actual-input.json",
+      "bytes": 2689,
+      "sha256": "25bd5256433a8a990b1dfbc68678101faeb2259a966ca1dac9436d78074850c6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/consumer_binding.py",
+      "bytes": 24155,
+      "sha256": "c308fe3e05ae7821f12d6e13d99c381cf9e33796ebd731e8bc83e72113d5b458"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/consumer_metadata_semantics.py",
+      "bytes": 7480,
+      "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/consumer_native_build_adapter.py",
+      "bytes": 1504,
+      "sha256": "c6552257c407e06e4cb91084e7ff76c916fcb0e3ad2ea0b5bc3ab9ee1ca2ee19"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/grant_metadata_semantics.py",
+      "bytes": 7322,
+      "sha256": "f603ce5395a2a6ca857bce925438e45ad93c51b9da5ca2b4d1224572f894d46b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/persistent_native_mcp_queue_28.py",
+      "bytes": 15201,
+      "sha256": "56e53b3b3be226b5f22538d0bebc19ff5b7b3a7427fbc263d383cbbee8e4b25d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/prepare_fresh_native_profile.py",
+      "bytes": 11224,
+      "sha256": "70ba1ebc837ac708f2ffd3ee9c8f8ccfe259fc2425383caee0111e4c638f6245"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/prepare_mcp_binding.py",
+      "bytes": 2242,
+      "sha256": "0994472bdf02fb07450cd86d76a3f18546113a688e7bb420787415d19b8f4814"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/r14_metadata_common.py",
+      "bytes": 4540,
+      "sha256": "c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/r14_metadata_semantics.py",
+      "bytes": 7480,
+      "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/root_compact_dispatch.py",
+      "bytes": 1497,
+      "sha256": "d7549c16b61a351ba594d615dd0b601c11cf28c3d35a36d7859352208986ca33"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/root_queue_ops.py",
+      "bytes": 5400,
+      "sha256": "ae9fc2e15e6d285a497fef2ee0c4a6ad1dd8103bcf83ab1b14c0b57c2c58cc7f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/consumer-template/runtime_bindings.py",
+      "bytes": 4794,
+      "sha256": "cb79d23140ffcb8b6a587ffec0833b3c64557cc88389e07f14f5cb343b3df33b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/DEPENDENCIES.json",
+      "bytes": 2597,
+      "sha256": "3f83f2711bb25efbaf62fd998765eb7c16620cbd3313bf20730cde2256bfa453"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/FUTURE-INPUTS.pending.json",
+      "bytes": 658,
+      "sha256": "fce19fcc4559cbf6b4fbe7202a495588bc1d11e351a0ce6f1174c26b3bb17d35"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/offline_launch_lifecycle.py",
+      "bytes": 5837,
+      "sha256": "d1f7d14b6aae9aee3d6320197a0b12c0d65481c81faf87635e2a56007962e87f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/original0240_baseline_adapter.py",
+      "bytes": 2563,
+      "sha256": "132c9c71d8c615ab974d11298c491e5d68016934ca812c8c3f4acb95588e6a0d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/postlaunch_appmanifest.py",
+      "bytes": 2835,
+      "sha256": "c194e9f935a983e83981ee840ff20196ba963633e24479979c9ab7eab3ffa044"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/prepare_formal_consumer.py",
+      "bytes": 5800,
+      "sha256": "450957496aa92f49fb89cde5f1bcf79c81bb514316a486e40cb058c9e153b019"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/prepare_next_formal_cold.py",
+      "bytes": 28500,
+      "sha256": "771f33ee87af6fa27585cc559061f82c1e5fa3515c7cd3050cdae9e3b4560d3f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/prepare_screen_registration.py",
+      "bytes": 3933,
+      "sha256": "18772d62668dff92fe8fe19362bd4bcfd312eca6c44e83f3bb1d66f4d7bcf479"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/preserve_postlaunch_appmanifest.py",
+      "bytes": 3328,
+      "sha256": "0b56b025770e219abc1c1d67c8117b9ff3ae926b8fde3bbcf646e4ea4e8fb51c"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/retain_helper_handles.py",
+      "bytes": 9762,
+      "sha256": "7501f77d1e47562edb8bd55ed46bf72cd5df3a3a23721837f288ad78b4da1b46"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/root_next_formal_launch_profile.py",
+      "bytes": 29169,
+      "sha256": "b00ef2a47cb8ca6d9b4a902c926ccfb450ac2b68883504d1b49813c3bd1b6f6a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/run_cold_preparation.py",
+      "bytes": 4128,
+      "sha256": "d6bff535fbca2146924b0c7133299424f11c3cb56c9182e9df7956d7d594b0ab"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/screen_lease_entry_r0017.py",
+      "bytes": 8679,
+      "sha256": "b6f838325f3698ec1330ad19b318525ddb9aa58dca4cdedd4111124530a2fe8d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/write_launch_argv.py",
+      "bytes": 4826,
+      "sha256": "8bb4eb3452d6b19f26115c3c83a474e6962070c00589646b9939dd46ed51bde6"
+    }
+  ],
+  "strict_private_enabled_count": 12,
+  "tool_counts": [
+    21,
+    23,
+    24,
+    28
+  ],
+  "mount_counts": [
+    70,
+    7,
+    8,
+    31,
+    6
+  ],
+  "diagnostic_dispatch_only": false,
+  "actual_new_head": null,
+  "runtime_created": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "bus_calls": 0,
+  "process_lookups": 0,
+  "main_writes": 0,
+  "source_successor_of": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-001/INDEX.json",
+    "bytes": 8980,
+    "sha256": "cdd46656157a3ab7cb0ae21a2e34d8c051c3358133efaa4969e97445addd52df"
+  },
+  "delta": "Formal request author admits the existing optional expected_event_definition_key under the actual closed SDK inputSchema; required keys and unknown-key rejection retained."
+}

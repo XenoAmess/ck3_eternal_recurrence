@@ -1,0 +1,212 @@
+{
+  "command": "release-screen",
+  "authorized_by": "explicit root --execute-root-authorized",
+  "candidate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/guarded_helper_close.py",
+    "bytes": 26774,
+    "sha256": "2250d30bc5df4e7ed29434afdd002da1fe7525b225e266695f1ae87ef29f9be0"
+  },
+  "game": {
+    "typed_normal_exit_observed": false,
+    "terminal_native_ack_observed": false,
+    "normal_exit_callback_verified": false,
+    "closure_credit": "ORIGINAL_PROCESS_HANDLE_EXIT0_ONLY",
+    "game_sdk": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0025-r17-027-normal-exit-observe.sdk-result.json",
+      "bytes": 6923,
+      "sha256": "52058e9e0490252e6cd9ee43bb64b38492840d4a12c2f4c1d9b001944abe5894"
+    },
+    "game_native": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0025-r17-027-normal-exit-observe.native-01.json",
+      "bytes": 3121,
+      "sha256": "99b840c43c4163229835f4597eb3943cb1419ca1c32d895fff21d59281c91e3d"
+    },
+    "original_game_native": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence/42abe9df32d34dd1840c23cb5246623d/0024-normal-exit-observe.json",
+      "bytes": 3121,
+      "sha256": "99b840c43c4163229835f4597eb3943cb1419ca1c32d895fff21d59281c91e3d"
+    },
+    "game_dispatch": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0025-r17-027-normal-exit-observe.response.json",
+      "bytes": 1313,
+      "sha256": "2c614c866f75336920cd37df658d7f203067419eb8dfb5b6590452e5b0b3f540"
+    },
+    "game_request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/queue-001/r17-027-normal-exit-observe.request.json",
+      "bytes": 183,
+      "sha256": "dfca2b05f6cef08572ba183896ec7a4001b58afd0ca9919d89a1b67452210aee"
+    },
+    "game_result_schema": "ck3-normal-exit-process-observation-result-v1",
+    "game_original_pid": 14608,
+    "game_original_creation_filetime_100ns": 134358062142963333,
+    "game_original_create_time": 1791332614.2963333,
+    "autosave_verified": false,
+    "dispatch_is_error_original": null,
+    "SDK_isError_original": false
+  },
+  "pins": {
+    "capture": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/CAPTURED.actual.json",
+      "bytes": 6054,
+      "sha256": "97fb74b5379953a1e8200f022a413cc93245ee629669311bba31fe81073a5b40"
+    },
+    "session": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/session.json",
+      "bytes": 1247,
+      "sha256": "fc65f8c218d722c6b12a29d25c3398cd1695f7c9d70cf41b0d55b4138f0965bd"
+    },
+    "keeper_ready": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0017/READY.json",
+      "bytes": 755,
+      "sha256": "b7497e81d22e7be5e52f9d8a66c55146ad7d78b035d90471d90d333e4bfff974"
+    },
+    "runtime_bindings": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-helper-identity-holder-inputs-20261007-001/RUNTIME.actual.json",
+      "bytes": 3951,
+      "sha256": "16a4ab8c15b9ff4be82b53d1394856cc0c2f8c139165f23f333d02d387ed540e"
+    },
+    "profile": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-profile-with-exit-inventory.json",
+      "bytes": 1104,
+      "sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6"
+    }
+  },
+  "phase": {
+    "consumer_closed": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/session-closed.json",
+      "bytes": 1379,
+      "sha256": "e59a9692c4b6af7e060b1858d0a3191c5ffe83810624e3de6bc77eac3625b1df"
+    },
+    "consumer_close_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0026-r17-028-client-close.response.json",
+      "bytes": 474,
+      "sha256": "ae453cd83ac15271eb4c9dea83c6d18899b5b7420a67cd590b9fced0288a2217"
+    },
+    "consumer_close_request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/queue-001/r17-028-client-close.request.json",
+      "bytes": 105,
+      "sha256": "3f618ea7158846f17704160274f8a664a9627bb72ea2902eb59f35969587cf00"
+    },
+    "client_original_handle_exit": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/EXIT-client.actual.json",
+      "bytes": 1784,
+      "sha256": "b9749d83f23994673fe87aabb53d6eb64b3e7c7eed6c99015cb49074422a9099"
+    },
+    "keeper_original_handle_exit": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/EXIT-keeper.actual.json",
+      "bytes": 1650,
+      "sha256": "b0e7a0521cefd7b9ef2728c8a94c31806746a748b0be1f166f853f027494c1cb"
+    },
+    "retained_holder_final": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/FINAL.actual.json",
+      "bytes": 4300,
+      "sha256": "d55a3c5f2ad7809023e3d11ebb7c70bc464f295bb2be81da0f3616c6ac8443ac"
+    },
+    "keeper_final": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0017/FINAL.json",
+      "bytes": 406,
+      "sha256": "a2f41b6d0aea2440912384ce5e80303db5e3cd2139148395ed8f5bb38ac84d5f"
+    },
+    "keeper_last_sequence": 3505,
+    "helpers_closed_value": {
+      "results": [
+        {
+          "pid": 13408,
+          "create_time": 1791333031.5885065,
+          "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "cmdline": [
+            "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-actual-consumer-source-20261007-001\\persistent_native_mcp_queue_28.py",
+            "serve",
+            "--profile",
+            "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-profile-with-exit-inventory.json",
+            "--queue",
+            "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/queue-001",
+            "--output",
+            "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001",
+            "--binding",
+            "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\ROOT-BINDING.json\\ROOT-BINDING.json",
+            "--binding-sha256",
+            "47a89acb59b7a7a7301f13b08765bede49fad33ddbd5d7203fa703fb02045920"
+          ],
+          "source": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-helper-identity-holder-inputs-20261007-001/CLIENT-LIVE-IDENTITY.psutil.actual.json",
+            "bytes": 958,
+            "sha256": "63c5b915025cf93fe153420dee1ee4555ffe46336d55017ea08acf2ff03cac23"
+          },
+          "role": "client",
+          "handle_value": 508,
+          "handle_local_to_holder_pid": 14208,
+          "handle_access": 1052672,
+          "process_creation_filetime_100ns": 134358066315885065,
+          "handle_retained_before_close": true,
+          "initial_wait_result": 258,
+          "initial_exit_code": 259,
+          "captured_at_utc": "2026-10-07T00:42:46.314207+00:00",
+          "wait_result": 0,
+          "exit_code": 0,
+          "observed_at_utc": "2026-10-07T01:02:11.850841+00:00",
+          "observation": "ORIGINAL_RETAINED_HANDLE",
+          "close_requested_by_observer": false,
+          "SDK_calls": 0,
+          "game_calls": 0,
+          "status": "ORIGINAL_PROCESS_EXIT_OBSERVED"
+        },
+        {
+          "pid": 20436,
+          "create_time": 1791332451.9545596,
+          "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "cmdline": [
+            "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-formal-original0240-source-20261007-002\\screen_lease_entry_r0017.py",
+            "--expected-head",
+            "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+            "--task-id",
+            "ck3-lyd-r17-original0240-formal-20261007-001",
+            "--bus-cli-sha256",
+            "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee",
+            "--output",
+            "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0017",
+            "--expected-sequence",
+            "3490"
+          ],
+          "keeper_output": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0017",
+          "READY.json": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0017/READY.json",
+            "bytes": 755,
+            "sha256": "b7497e81d22e7be5e52f9d8a66c55146ad7d78b035d90471d90d333e4bfff974"
+          },
+          "role": "keeper",
+          "handle_value": 512,
+          "handle_local_to_holder_pid": 14208,
+          "handle_access": 1052672,
+          "process_creation_filetime_100ns": 134358060519545597,
+          "handle_retained_before_close": true,
+          "initial_wait_result": 258,
+          "initial_exit_code": 259,
+          "captured_at_utc": "2026-10-07T00:42:46.314989+00:00",
+          "wait_result": 0,
+          "exit_code": 0,
+          "observed_at_utc": "2026-10-07T01:04:21.305046+00:00",
+          "observation": "ORIGINAL_RETAINED_HANDLE",
+          "close_requested_by_observer": false,
+          "SDK_calls": 0,
+          "game_calls": 0,
+          "status": "ORIGINAL_PROCESS_EXIT_OBSERVED",
+          "source": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0017/READY.json",
+            "bytes": 755,
+            "sha256": "b7497e81d22e7be5e52f9d8a66c55146ad7d78b035d90471d90d333e4bfff974"
+          }
+        }
+      ]
+    }
+  },
+  "started_at_utc": "2026-10-07T01:04:31.971510+00:00"
+}

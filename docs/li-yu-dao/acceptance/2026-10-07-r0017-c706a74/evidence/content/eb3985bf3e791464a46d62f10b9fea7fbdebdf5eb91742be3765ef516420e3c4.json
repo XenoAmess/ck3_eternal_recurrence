@@ -1,0 +1,4410 @@
+{
+  "schema": "lyd.i3b.checkpoint-reader-request.v1",
+  "mode": "future_actual",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "stage": "signed_precommit",
+  "identity": {
+    "actor_id": null,
+    "faith_id": null,
+    "main_rite_id": null,
+    "pid": null,
+    "session_id": null,
+    "revision": null,
+    "checkpoint_id": null
+  },
+  "save": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "expected": {
+    "serial": null,
+    "nonce": null,
+    "phase": null
+  },
+  "native_predicates": null,
+  "native_reference_binding": null,
+  "native_title_binding": null,
+  "baseline": {
+    "actual_faith_rite_ids": [
+      169
+    ],
+    "political_title_ids": [
+      2230,
+      2231,
+      2232,
+      2235,
+      2262,
+      2263,
+      2264
+    ],
+    "political_titles": {
+      "2230": {
+        "AST_sha256": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+        "holder": 31254
+      },
+      "2231": {
+        "AST_sha256": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+        "holder": 31254
+      },
+      "2232": {
+        "AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+        "holder": 31254
+      },
+      "2235": {
+        "AST_sha256": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+        "holder": 31254
+      },
+      "2262": {
+        "AST_sha256": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+        "holder": 31254
+      },
+      "2263": {
+        "AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+        "holder": 31254
+      },
+      "2264": {
+        "AST_sha256": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
+        "holder": 31254
+      }
+    },
+    "graphs": {
+      "faiths": {
+        "32": {
+          "AST_sha256": "ab286ab7a3dd484a2358371c2ea60d755d974478a64afdaf6aa9bec32451fd32",
+          "tenet_doctrine_rows": [
+            {
+              "key": "doctrine",
+              "value": "sinitic_hostility_doctrine"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_concubines"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_divorce_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_bastardry_legitimization"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_homosexuality_shunned"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_deviancy_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_men_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_women_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_kinslaying_any_dynasty_member_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_witchcraft_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_gender_male_dominated"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_consanguinity_dynastic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pluralism_pluralistic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_theocracy_lay_clergy"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_head"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_function_taxation"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_gender_male_only"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_marriage_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_succession_temporal_appointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pilgrimage_local_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_family_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_anointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_polytheist"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_scriptural"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_monasticism_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_sacraments_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_is_sinitic_faith"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_immaterial_harmony"
+            }
+          ]
+        },
+        "104": {
+          "AST_sha256": "cf29012b182710bdc05d0c4aa43039c2e5ff9ca6d05661596e01dc03f122ae20",
+          "tenet_doctrine_rows": [
+            {
+              "key": "tenets",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sincerity_solitude"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ritual_music"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ancestral_reverence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_names_duties"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_humaneness_righteousness"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_remonstrance"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sage_transmission"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_extend_sprouts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_deliberate_cultivation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_qi"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_portent_reflection"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_qi_kinship"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_investigate_principle"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_attention"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_original_heart"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_innate_knowing"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_textual_ritual"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_classical_synthesis"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_annals_judgment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_constant_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restore_nature"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ordinary_life"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_six_arts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_philological_way"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_moral_achievement"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restrain_violence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_subtle_intentions"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_responsive_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_images_numbers"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_profound_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting_support"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ongoing_generation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_quiet_self_attainment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_recognition_everywhere"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_sage_transmission"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_textual_ritual"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_classical_synthesis"
+            },
+            {
+              "key": "doctrine",
+              "value": "sinitic_hostility_doctrine"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_concubines"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_divorce_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_bastardry_legitimization"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_homosexuality_shunned"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_deviancy_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_men_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_women_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_kinslaying_any_dynasty_member_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_witchcraft_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_gender_male_dominated"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_consanguinity_dynastic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pluralism_pluralistic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_theocracy_lay_clergy"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_head"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_function_taxation"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_gender_male_only"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_marriage_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_succession_temporal_appointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pilgrimage_local_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_family_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_anointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_polytheist"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_scriptural"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_monasticism_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_sacraments_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_is_sinitic_faith"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_immaterial_harmony"
+            }
+          ]
+        },
+        "106": {
+          "AST_sha256": "d661f44faaba71e788865d6659ae35e35d60417ba93390d0afac000b31cd4e02",
+          "tenet_doctrine_rows": [
+            {
+              "key": "tenets",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sincerity_solitude"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ritual_music"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ancestral_reverence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_names_duties"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_humaneness_righteousness"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_remonstrance"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sage_transmission"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_extend_sprouts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_deliberate_cultivation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_qi"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_portent_reflection"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_qi_kinship"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_investigate_principle"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_attention"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_original_heart"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_innate_knowing"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_textual_ritual"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_classical_synthesis"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_annals_judgment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_constant_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restore_nature"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ordinary_life"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_six_arts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_philological_way"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_moral_achievement"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restrain_violence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_subtle_intentions"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_responsive_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_images_numbers"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_profound_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting_support"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ongoing_generation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_quiet_self_attainment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_recognition_everywhere"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_ancestral_reverence"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_investigate_principle"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_reverent_attention"
+            },
+            {
+              "key": "doctrine",
+              "value": "sinitic_hostility_doctrine"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_concubines"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_divorce_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_bastardry_legitimization"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_homosexuality_shunned"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_deviancy_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_men_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_women_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_kinslaying_any_dynasty_member_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_witchcraft_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_gender_male_dominated"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_consanguinity_dynastic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pluralism_pluralistic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_theocracy_lay_clergy"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_head"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_function_taxation"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_gender_male_only"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_marriage_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_succession_temporal_appointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pilgrimage_local_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_family_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_anointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_polytheist"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_scriptural"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_monasticism_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_sacraments_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_is_sinitic_faith"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_immaterial_harmony"
+            }
+          ]
+        },
+        "107": {
+          "AST_sha256": "958a07c9b65ede861b4c735d0a588412e87a92042d72bbc299ca9682852acd4f",
+          "tenet_doctrine_rows": [
+            {
+              "key": "tenets",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sincerity_solitude"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ritual_music"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ancestral_reverence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_names_duties"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_humaneness_righteousness"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_remonstrance"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sage_transmission"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_extend_sprouts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_deliberate_cultivation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_qi"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_portent_reflection"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_qi_kinship"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_investigate_principle"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_attention"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_original_heart"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_innate_knowing"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_textual_ritual"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_classical_synthesis"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_annals_judgment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_constant_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restore_nature"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ordinary_life"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_six_arts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_philological_way"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_moral_achievement"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restrain_violence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_subtle_intentions"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_responsive_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_images_numbers"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_profound_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting_support"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ongoing_generation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_quiet_self_attainment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_recognition_everywhere"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_ancestral_reverence"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_investigate_principle"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_reverent_attention"
+            },
+            {
+              "key": "doctrine",
+              "value": "sinitic_hostility_doctrine"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_concubines"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_divorce_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_bastardry_legitimization"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_homosexuality_shunned"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_deviancy_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_men_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_women_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_kinslaying_any_dynasty_member_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_witchcraft_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_gender_male_dominated"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_consanguinity_dynastic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pluralism_pluralistic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_theocracy_lay_clergy"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_head"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_function_taxation"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_gender_male_only"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_marriage_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_succession_temporal_appointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pilgrimage_local_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_family_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_anointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_polytheist"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_scriptural"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_monasticism_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_sacraments_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_is_sinitic_faith"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_immaterial_harmony"
+            }
+          ]
+        }
+      },
+      "rites": {
+        "150": {
+          "AST_sha256": "b4ec3a3d14373db011fd985fe550002423fbbd3c02ec9a78def717f45908a26f",
+          "tenet_doctrine_rows": [
+            {
+              "key": "tenets",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sincerity_solitude"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ritual_music"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ancestral_reverence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_names_duties"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_humaneness_righteousness"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_remonstrance"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sage_transmission"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_extend_sprouts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_deliberate_cultivation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_qi"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_portent_reflection"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_qi_kinship"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_investigate_principle"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_attention"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_original_heart"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_innate_knowing"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_textual_ritual"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_classical_synthesis"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_annals_judgment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_constant_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restore_nature"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ordinary_life"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_six_arts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_philological_way"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_moral_achievement"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restrain_violence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_subtle_intentions"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_responsive_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_images_numbers"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_profound_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting_support"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ongoing_generation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_quiet_self_attainment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_recognition_everywhere"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_ritual_music"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_humaneness_righteousness"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_sage_transmission"
+            },
+            {
+              "key": "doctrine",
+              "value": "sinitic_hostility_doctrine"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_concubines"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_divorce_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_bastardry_legitimization"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_homosexuality_shunned"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_deviancy_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_men_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_women_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_kinslaying_any_dynasty_member_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_witchcraft_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_gender_male_dominated"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_consanguinity_dynastic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pluralism_pluralistic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_theocracy_lay_clergy"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_head"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_function_taxation"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_gender_male_only"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_marriage_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_succession_temporal_appointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pilgrimage_local_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_family_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_anointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_polytheist"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_scriptural"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_monasticism_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_sacraments_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_is_sinitic_faith"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_immaterial_harmony"
+            }
+          ]
+        },
+        "159": {
+          "AST_sha256": "666eede6c0d953eb69ad3934d3b6069d9384cf7676156051c8629350baeffb0e",
+          "tenet_doctrine_rows": [
+            {
+              "key": "tenets",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sincerity_solitude"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ritual_music"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ancestral_reverence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_names_duties"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_humaneness_righteousness"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_remonstrance"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sage_transmission"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_extend_sprouts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_deliberate_cultivation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_qi"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_portent_reflection"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_qi_kinship"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_investigate_principle"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_attention"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_original_heart"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_innate_knowing"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_textual_ritual"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_classical_synthesis"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_annals_judgment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_constant_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restore_nature"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ordinary_life"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_six_arts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_philological_way"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_moral_achievement"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restrain_violence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_subtle_intentions"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_responsive_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_images_numbers"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_profound_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting_support"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ongoing_generation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_quiet_self_attainment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_recognition_everywhere"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_sage_transmission"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_textual_ritual"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_classical_synthesis"
+            },
+            {
+              "key": "doctrine",
+              "value": "sinitic_hostility_doctrine"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_concubines"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_divorce_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_bastardry_legitimization"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_homosexuality_shunned"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_deviancy_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_men_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_women_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_kinslaying_any_dynasty_member_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_witchcraft_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_gender_male_dominated"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_consanguinity_dynastic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pluralism_pluralistic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_theocracy_lay_clergy"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_head"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_function_taxation"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_gender_male_only"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_marriage_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_succession_temporal_appointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pilgrimage_local_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_family_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_anointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_polytheist"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_scriptural"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_monasticism_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_sacraments_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_is_sinitic_faith"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_immaterial_harmony"
+            }
+          ]
+        },
+        "169": {
+          "AST_sha256": "19b3a5f1ea1a7dd194ca6f56376d779d78567f931330f3ad1fb79f4d74cf3ed9",
+          "tenet_doctrine_rows": [
+            {
+              "key": "tenets",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sincerity_solitude"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ritual_music"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ancestral_reverence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_names_duties"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_humaneness_righteousness"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_remonstrance"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sage_transmission"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_extend_sprouts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_deliberate_cultivation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_qi"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_portent_reflection"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_qi_kinship"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_investigate_principle"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_attention"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_original_heart"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_innate_knowing"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_textual_ritual"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_classical_synthesis"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_annals_judgment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_constant_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restore_nature"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ordinary_life"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_six_arts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_philological_way"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_moral_achievement"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restrain_violence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_subtle_intentions"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_responsive_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_images_numbers"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_profound_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting_support"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ongoing_generation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_quiet_self_attainment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_recognition_everywhere"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_ancestral_reverence"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_investigate_principle"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_reverent_attention"
+            },
+            {
+              "key": "doctrine",
+              "value": "sinitic_hostility_doctrine"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_concubines"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_divorce_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_bastardry_legitimization"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_homosexuality_shunned"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_deviancy_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_men_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_women_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_kinslaying_any_dynasty_member_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_witchcraft_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_gender_male_dominated"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_consanguinity_dynastic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pluralism_pluralistic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_theocracy_lay_clergy"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_head"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_function_taxation"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_gender_male_only"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_marriage_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_succession_temporal_appointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pilgrimage_local_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_family_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_anointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_polytheist"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_scriptural"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_monasticism_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_sacraments_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_is_sinitic_faith"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_immaterial_harmony"
+            }
+          ]
+        },
+        "187": {
+          "AST_sha256": "a34d98434bc9edae3e53eca4b9ec7d380f520682db44fd7d877a60d85c0fdf44",
+          "tenet_doctrine_rows": [
+            {
+              "key": "tenets",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sincerity_solitude"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ritual_music"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ancestral_reverence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_names_duties"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_humaneness_righteousness"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_remonstrance"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_sage_transmission"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_extend_sprouts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_deliberate_cultivation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_righteous_qi"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_portent_reflection"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_qi_kinship"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_investigate_principle"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_reverent_attention"
+                    },
+                    {
+                      "key": "status",
+                      "value": "core"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_original_heart"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_innate_knowing"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_textual_ritual"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_classical_synthesis"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_annals_judgment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_constant_heaven"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restore_nature"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ordinary_life"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_six_arts"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_philological_way"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_moral_achievement"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_restrain_violence"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_subtle_intentions"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_responsive_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_images_numbers"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_profound_interpretation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_knowing_acting_support"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_ongoing_generation"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_quiet_self_attainment"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                },
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "tenet",
+                      "value": "lyd_tenet_recognition_everywhere"
+                    },
+                    {
+                      "key": "status",
+                      "value": "permitted"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_ancestral_reverence"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_investigate_principle"
+            },
+            {
+              "key": "tenet",
+              "value": "lyd_tenet_reverent_attention"
+            },
+            {
+              "key": "doctrine",
+              "value": "sinitic_hostility_doctrine"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_concubines"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_divorce_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_bastardry_legitimization"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_homosexuality_shunned"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_deviancy_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_men_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_adultery_women_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_kinslaying_any_dynasty_member_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_witchcraft_crime"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_gender_male_dominated"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_consanguinity_dynastic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pluralism_pluralistic"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_theocracy_lay_clergy"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_head"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_function_taxation"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_gender_male_only"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_marriage_allowed"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_clerical_succession_temporal_appointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_pilgrimage_local_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_family_rites"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_no_anointment"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_polytheist"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_scriptural"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_monasticism_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "doctrine_sacraments_absent"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_is_sinitic_faith"
+            },
+            {
+              "key": "doctrine",
+              "value": "special_doctrine_immaterial_harmony"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "output": null
+}

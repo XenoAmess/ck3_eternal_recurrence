@@ -1,0 +1,25 @@
+{
+  "before": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source003/author_i4_arguments.py",
+    "bytes": 13110,
+    "sha256": "826232adaf97fb10ef368dfba1f8059e516f5ae445598ba58f9a677f9c2b7515"
+  },
+  "after": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source004/author_i4_arguments.py",
+    "bytes": 13273,
+    "sha256": "075e05f135678797ace5fd4b42dd9e3486dd8b1b0c301c48f48b4de2d7b47f5e"
+  },
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE003-to-SOURCE004.patch",
+    "bytes": 896,
+    "sha256": "e04ff0a4d07991c3fc2abe199e52c4ce01d7827bda51b9502fe95586595033de"
+  },
+  "reason": "Synthetic contract test17 exposed query context instance different from fresh snapshot active event; require exact same instance before selection. No source ordinals inferred.",
+  "preserved_failed_suite": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/RESULT.fixture.json",
+    "bytes": 86093,
+    "sha256": "fb3fe54d2ae11b5e60a669290d7144389b5a91a2c17348608b6f83794dd805ea"
+  },
+  "game_SDK_calls": 0,
+  "formal_credit": null
+}

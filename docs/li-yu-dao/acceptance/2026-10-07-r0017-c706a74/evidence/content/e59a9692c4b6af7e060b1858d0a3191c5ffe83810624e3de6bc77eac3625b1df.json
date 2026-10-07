@@ -1,0 +1,32 @@
+{
+  "closed_at_utc": "2026-10-07T01:02:11.699015+00:00",
+  "claimed_requests": [
+    "r17-002-list.request.json",
+    "r17-003-attach.request.json",
+    "r17-005-snapshot.request.json",
+    "r17-006-baseline-g2.request.json",
+    "r17-007-baseline-g3.request.json",
+    "r17-008-baseline-save.request.json",
+    "r17-009-baseline-after-g2.request.json",
+    "r17-010-baseline-after-g3.request.json",
+    "r17-011-formal-begin-query.request.json",
+    "r17-012-formal-open-decisions.request.json",
+    "r17-013-formal-begin-query-open.request.json",
+    "r17-014-formal-begin-select.request.json",
+    "r17-015-formal-begin-detail-query.request.json",
+    "r17-016-formal-begin-confirm.request.json",
+    "r17-017-first430-reference-query.request.json",
+    "r17-018-first430-wait.request.json",
+    "r17-019-after-wait-timeout-snapshot.request.json",
+    "r17-020-before-normal-exit-snapshot.request.json",
+    "r17-021-normal-exit-query.request.json",
+    "r17-022-normal-exit-prepare.request.json",
+    "r17-023-normal-exit-after-opening-query.request.json",
+    "r17-024-normal-exit-continue.request.json",
+    "r17-025-normal-exit-confirmation-query.request.json",
+    "r17-026-normal-exit-confirm-desktop.request.json",
+    "r17-027-normal-exit-observe.request.json",
+    "r17-028-client-close.request.json"
+  ],
+  "attach_requested": true
+}

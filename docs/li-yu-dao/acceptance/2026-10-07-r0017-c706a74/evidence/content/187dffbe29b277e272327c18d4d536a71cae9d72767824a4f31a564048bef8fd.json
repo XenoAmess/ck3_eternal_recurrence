@@ -1,0 +1,53 @@
+{
+  "status": "FAILED_CANDIDATE_PRESERVED_NO_MAIN_APPLY",
+  "checks": [
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-ci-two-failures-candidate-20261007-001\\candidate.patch"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/before",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/git-apply-check.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/git-apply-check.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "no_actual_game_or_native_transport": true
+    },
+    {
+      "argv": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-ci-two-failures-candidate-20261007-001\\verify_changed_packaging_imports.py"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/after",
+      "exit_code": 1,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/affected-packaging-import-and-fixture-checks.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/affected-packaging-import-and-fixture-checks.stderr",
+        "bytes": 2017,
+        "sha256": "d130af242e2e979da44e9c180a8e81f8bf4655fe4685d7401ee8d5f8b872d6ef"
+      },
+      "no_actual_game_or_native_transport": true
+    }
+  ],
+  "candidate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/candidate.patch",
+    "bytes": 2011,
+    "sha256": "1da4903462eca82a90eb10b0309c538724578500941bc35b22432b17e46961ca"
+  }
+}

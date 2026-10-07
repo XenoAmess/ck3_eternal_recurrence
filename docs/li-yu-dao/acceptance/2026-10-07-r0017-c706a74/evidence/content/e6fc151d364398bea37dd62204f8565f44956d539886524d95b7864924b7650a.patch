@@ -1,0 +1,52 @@
+diff --git a/mod_li_yu_dao/tools/build_release.py b/mod_li_yu_dao/tools/build_release.py
+--- a/mod_li_yu_dao/tools/build_release.py
++++ b/mod_li_yu_dao/tools/build_release.py
+@@ -19,7 +19,7 @@
+ 
+ SOURCE = Path(__file__).resolve().parents[1]
+ ROOT = SOURCE.parent
+-sys.path.insert(0, str(ROOT / "tools"))
++sys.path.append(str(ROOT / "tools"))
+ from workshop_compatibility_tags import render_release_file_bytes
+ PRODUCT_ID = "mod_li_yu_dao"
+ REQUIRED_RUNTIME_FILES = frozenset({
+diff --git a/mod_li_yu_dao/tools/validate_static.py b/mod_li_yu_dao/tools/validate_static.py
+--- a/mod_li_yu_dao/tools/validate_static.py
++++ b/mod_li_yu_dao/tools/validate_static.py
+@@ -15,7 +15,7 @@
+ 
+ from build_release import ROOT, SOURCE, collect_runtime_files, sha256
+ 
+-sys.path.insert(0, str(ROOT / "tools"))
++sys.path.append(str(ROOT / "tools"))
+ from extract_auto_upgrade_buildings import Block, ExtractionError, parse_clausewitz
+ 
+ LOC_ROW = re.compile(r'^\s+([A-Za-z0-9_.-]+):[0-9]+\s+"((?:[^"\\]|\\.)*)"\s*(?:#.*)?$')
+diff --git a/mod_li_yu_dao/tools/test_build_release.py b/mod_li_yu_dao/tools/test_build_release.py
+--- a/mod_li_yu_dao/tools/test_build_release.py
++++ b/mod_li_yu_dao/tools/test_build_release.py
+@@ -19,7 +19,7 @@
+ 
+ def fixture(source: Path) -> None:
+     scripts = {
+-        "descriptor.mod": 'version="0.1.0"\nname="Li Yu Dao test"\nsupported_version="1.20.*"\n',
++        "descriptor.mod": 'version="0.1.0"\nname="Li Yu Dao test"\nsupported_version="1.20.*"\ntags={}\n',
+         "common/religion/faith_types/lyd_faiths.txt": "lyd_faith = { faith_details = { religion = confucianism_religion } main_rite = lyd_rite }\n",
+         "common/religion/rite_types/lyd_rites.txt": "lyd_rite = { name = lyd_rite desc = lyd_rite_desc faith = lyd_faith tenets = { lyd_tenet lyd_tenet_second lyd_tenet_third } }\n",
+         "common/religion/tenet_types/lyd_tenets.txt": "lyd_tenet = { }\nlyd_tenet_second = { }\nlyd_tenet_third = { }\n",
+diff --git a/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py b/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py
+--- a/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py
++++ b/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py
+@@ -66,7 +66,11 @@
+         methods = {tool_name.removeprefix("ck3_") for tool_name, _, _, _ in cases}
+         with ExitStack() as stack:
+             mocks = {
+-                name: stack.enter_context(patch.object(GameplayBridgeService, name, return_value={"validation_test": True}))
++                name: stack.enter_context(patch.object(
++                    GameplayBridgeService, name,
++                    return_value=({"validation_test": True, "army_strengths": []}
++                                  if name == "query_army_strengths" else {"validation_test": True}),
++                ))
+                 for name in methods
+             }
+             server = create_server(NoGameplayDriver())

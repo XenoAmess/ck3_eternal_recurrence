@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-argument-author-r17-source-review-fix-20261007-002\author_i4_arguments.py", line 144, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-argument-author-r17-source-review-fix-20261007-002\author_i4_arguments.py", line 75, in main
+    profile=exact_descriptor(prepared['profile']);guard=exact_descriptor(prepared['guard'])
+                                                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-argument-author-r17-source-review-fix-20261007-002\author_i4_arguments.py", line 17, in exact_descriptor
+    need(ref(row['path'])==row,'Actual descriptor differs');return json.loads(Path(row['path']).read_bytes())
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-argument-author-r17-source-review-fix-20261007-002\author_i4_arguments.py", line 10, in need
+    if not ok:raise ValueError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Actual descriptor differs

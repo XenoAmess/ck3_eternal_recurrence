@@ -1,0 +1,41 @@
+{
+  "interpreter": "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/source004/author_i4_arguments.py",
+    "bytes": 13273,
+    "sha256": "075e05f135678797ace5fd4b42dd9e3486dd8b1b0c301c48f48b4de2d7b47f5e"
+  },
+  "source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "actual_fixed_source_refs": {
+    "consumer_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/INDEX.json",
+      "bytes": 4799,
+      "sha256": "6a6aab2ddfff1fdef3baa430d685182397a640941d847ad1c5391be98a51a527"
+    },
+    "profile": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-profile-with-exit-inventory.json",
+      "bytes": 1104,
+      "sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6"
+    },
+    "request_author": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/author_formal_request.py",
+      "bytes": 3069,
+      "sha256": "989f222e3913b75191540c12aa9460bb98991370129ecd93f8f88999fd2d4558"
+    }
+  },
+  "future_step_inputs": {
+    "actual_current_session_id": null,
+    "fresh_snapshot_SDK": null,
+    "fresh_snapshot_SDK_sha256": null,
+    "fresh_query_SDK": null,
+    "fresh_query_SDK_sha256": null,
+    "event_definition": null,
+    "source_option_key_ROOT_reviewed": null,
+    "native_index": null,
+    "output": null
+  },
+  "root_baseline_native_session_historical_only": "42abe9df32d34dd1840c23cb5246623d",
+  "actual_I4_query": null,
+  "futureT": null,
+  "enqueued": false
+}

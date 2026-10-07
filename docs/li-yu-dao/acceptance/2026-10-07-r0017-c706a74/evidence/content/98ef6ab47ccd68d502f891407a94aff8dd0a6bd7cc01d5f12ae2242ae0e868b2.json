@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "c706a74f9d00dd842b7edce8901fb3417344fd9c"
+    },
+    "last_sequence": 3506,
+    "next_step": "",
+    "pid": 19976,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R17 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen",
+    "task_id": "ck3-lyd-r17-original0240-formal-20261007-001",
+    "updated_at_utc": "2026-10-07T01:04:32.245134+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 3506,
+    "event_id": "9676e782aeb04fa699ebd0641d7d669d",
+    "timestamp_utc": "2026-10-07T01:04:32.245953+00:00",
+    "kind": "completed",
+    "task_id": "ck3-lyd-r17-original0240-formal-20261007-001",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R17 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen",
+    "next_step": "",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "c706a74f9d00dd842b7edce8901fb3417344fd9c"
+    }
+  }
+}

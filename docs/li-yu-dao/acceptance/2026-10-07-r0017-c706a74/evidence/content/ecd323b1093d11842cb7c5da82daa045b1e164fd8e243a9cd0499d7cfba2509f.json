@@ -1,0 +1,25 @@
+{
+  "inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/INVENTORY.actual.json",
+    "bytes": 100408,
+    "sha256": "1c4b176103e475394ac66634182c365cc659ca3c7e8d47fad9d3b64915d7be67"
+  },
+  "future_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/FUTURE-BOUNDARY.pending.json",
+    "bytes": 521,
+    "sha256": "c9ae31d9c53e6e9fe47ea8673a56f4d153b1153c7d5861ff28fb1d55a9a38383"
+  },
+  "note": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/ROOT-NOTE.md",
+    "bytes": 1836,
+    "sha256": "c2db331097c9c460070a392bc537c2432be5f2cca2d4432ed1bee785b1415acc"
+  },
+  "archive_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/author_r17_preclose_immutable_inventory_20261007_001.py",
+    "bytes": 13583,
+    "sha256": "db7e2eeae73e38faa5d97170098f4e0f4ff41d7767363f418df7f2144af637a5"
+  },
+  "file_count": 135,
+  "source_HEAD": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "boundary_or_product_credit": null
+}

@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "gh",
+    "run",
+    "view",
+    "37549135155",
+    "--repo",
+    "XenoAmess/ck3_eternal_recurrence",
+    "--log-failed"
+  ],
+  "read_only": true,
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/run-37549135155.stdout",
+    "bytes": 43365,
+    "sha256": "6b8eb30fcb4c0148c6a852efdd3206c319f0a31fd881ac5999edb85a7a597a35"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/run-37549135155.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

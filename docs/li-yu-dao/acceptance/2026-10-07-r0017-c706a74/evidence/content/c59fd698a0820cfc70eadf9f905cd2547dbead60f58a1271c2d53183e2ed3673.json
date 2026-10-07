@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-formal-original0240-source-20261007-002\\author_formal_request.py",
+    "--consumer-source",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r17-argument-author-actual-contract-validation-20261007-003\\suite-source004\\mirror\\consumer",
+    "--consumer-index-sha256",
+    "fa405c34864571a35fbae711e7ba5609a0c8cafdcfa2d42bc8f869e1a4b48fdf",
+    "--tool",
+    "ck3_open_profile_decisions_v1",
+    "--arguments",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r17-argument-author-actual-contract-validation-20261007-003\\suite-source004\\mirror\\run\\actual-interface-open\\ARGUMENTS.actual.json",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r17-argument-author-actual-contract-validation-20261007-003\\suite-source004\\mirror\\run\\actual-interface-open\\REQUEST.actual.json"
+  ],
+  "executed": false
+}

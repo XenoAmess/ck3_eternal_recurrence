@@ -1,0 +1,38 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-initial-argv-20261007-001/keeper.argv.json",
+    "bytes": 592,
+    "sha256": "455ba8d5d93b983a28093198801c7f4bea10360b1fb5f1f8c6501ab6524f93ea"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-formal-original0240-source-20261007-002\\screen_lease_entry_r0017.py",
+    "--expected-head",
+    "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+    "--task-id",
+    "ck3-lyd-r17-original0240-formal-20261007-001",
+    "--bus-cli-sha256",
+    "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0017",
+    "--expected-sequence",
+    "3490"
+  ],
+  "started_at_utc": "2026-10-07T00:20:51.953716+00:00",
+  "finished_at_utc": "2026-10-07T01:04:21.251223+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-keeper-execution-20261007-001/stdout",
+    "bytes": 5110,
+    "sha256": "f1d67051face23987cd167041b174f9f99c643802171c8c76163b3a5a3258bd4"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-keeper-execution-20261007-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

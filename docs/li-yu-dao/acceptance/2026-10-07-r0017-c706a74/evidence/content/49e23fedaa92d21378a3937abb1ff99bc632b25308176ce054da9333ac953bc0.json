@@ -1,0 +1,22 @@
+{
+  "guarded_close_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/guarded_helper_close.py",
+    "bytes": 26774,
+    "sha256": "2250d30bc5df4e7ed29434afdd002da1fe7525b225e266695f1ae87ef29f9be0"
+  },
+  "launch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/launch.json",
+    "bytes": 2346,
+    "sha256": "ea7e8b9f52e90de30d43454c5a7913dd315d6de678ebfc13a93fb259e19e4245"
+  },
+  "consumer_session": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/session.json",
+    "bytes": 1247,
+    "sha256": "fc65f8c218d722c6b12a29d25c3398cd1695f7c9d70cf41b0d55b4138f0965bd"
+  },
+  "original_capture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/CAPTURED.actual.json",
+    "bytes": 6054,
+    "sha256": "97fb74b5379953a1e8200f022a413cc93245ee629669311bba31fe81073a5b40"
+  }
+}

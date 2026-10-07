@@ -1,0 +1,174 @@
+{
+  "schema": "lyd.i3b.r17.root-five-window-source-derived.v3",
+  "source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "windows": [
+    {
+      "label": "B1-phase1",
+      "save_step": "04-phase1-save",
+      "reader_stage": "proposal",
+      "phase": 1,
+      "expected": {
+        "actor_fields": {
+          "lyd_i3b_active": 1,
+          "lyd_i3b_phase": 1,
+          "lyd_i3b_faith": "Faith107",
+          "lyd_i3b_main": "Rite169",
+          "lyd_i3b_authority_mode": 1,
+          "lyd_i3b_required_native_hor": "Character31254"
+        },
+        "serial_nonce": "S=S0+1,N=N0+1; absent input initializes0. Preserve actual typedS/N.",
+        "rites": "All actual faith107 rites: owner31254,serialS,counties frozen,members_total/total exact,yes0,signed0,dormant iff county0 AND livingmember0; delegate absent. Owner TTL366; active TTL365.",
+        "members": "All actual living Faith107 members: typedowner31254,serialS,typedrite,was_elector based alive/adult/notimprisoned/notincapable/learning>=15; was_player based actualis_ai; vote=-1/player_yes0.",
+        "titles": "Exact current seven political Title IDs plus captured actual held_title list; HoF absent,HoR169=31254."
+      },
+      "executed": false,
+      "actual_session": null,
+      "actual_public_revision": null,
+      "actual_native_revision": null,
+      "actual_G2_epoch": null,
+      "actual_G3_epoch": null,
+      "actual_checkpoint": null,
+      "actual_pass": null
+    },
+    {
+      "label": "B2-representatives",
+      "save_step": "07-representatives-save",
+      "reader_stage": "proposal",
+      "phase": 1,
+      "expected": {
+        "actor_fields": {
+          "lyd_i3b_active": 1,
+          "lyd_i3b_phase": 1,
+          "lyd_i3b_authority_mode": 1
+        },
+        "serial_nonce": "SameS/N asB1. B2 in the inherited60-route is BEFORE seal; phase2/nonce+1 belongs to followingseal/B3.",
+        "rites": "Every nondormant rite has accepted410 typeddelegate/currentqualifiedelector and total>0; dormant rites need no delegate. Nomination acceptance is not411vote,412consent,or413signature.",
+        "members": "B1 roster and vote=-1/player_yes0 remain unless independently evidenced events actually ran.",
+        "titles": "No doctrine/head/title changes; nativeHoR31254 unchanged."
+      },
+      "executed": false,
+      "actual_session": null,
+      "actual_public_revision": null,
+      "actual_native_revision": null,
+      "actual_G2_epoch": null,
+      "actual_G3_epoch": null,
+      "actual_checkpoint": null,
+      "actual_pass": null
+    },
+    {
+      "label": "B3-signed-precommit",
+      "save_step": "15-precommit-signed-save",
+      "reader_stage": "signed_precommit",
+      "phase": 2,
+      "expected": {
+        "actor_fields": {
+          "lyd_i3b_active": 1,
+          "lyd_i3b_phase": 2,
+          "lyd_i3b_authority_mode": 1
+        },
+        "serial_nonce": "SameS, nonceN+1 afterseal; every actual event context equalsS/N/phase2.",
+        "rites": "For every nondormantRite: total>0,3*yes-2*total>=0,signed1,currentqualifieddelegate. Actual411 votes and413 signatures must be backed by native/source+save.",
+        "members": "Every actualcapturedlivinghuman was_player1 has player_yes1 from its own412; actor411vote does not replace412consent. NPC votes/signatures use naturalAI.",
+        "titles": "Faith107 still headless,HoR16931254,all seven politicalholders unchanged; full authorization stamps saved beforecommitclose erases them."
+      },
+      "executed": false,
+      "actual_session": null,
+      "actual_public_revision": null,
+      "actual_native_revision": null,
+      "actual_G2_epoch": null,
+      "actual_G3_epoch": null,
+      "actual_checkpoint": null,
+      "actual_pass": null
+    },
+    {
+      "label": "B4-factory-result",
+      "save_step": "B4-preserve-result-before-ACK-save",
+      "reader_stage": "success_postcommit OR partial_postcommit chosen by actual result",
+      "phase": null,
+      "expected": {
+        "success_receipt": {
+          "lyd_i3b_result_code": 1,
+          "lyd_i3b_result_authority_mode": 1,
+          "lyd_i3b_result_native_hor": "Character31254",
+          "lyd_i3b_result_serial": "actualS",
+          "lyd_i3b_result_nonce": "actualN+1",
+          "lyd_i3b_result_head_title": "actualTitleT"
+        },
+        "graph": "Saved Faith107 religious_head is actual Title full ID T; derive holder31254 only through exact saved Title AST/native G3 full-ID join. Direct Faith doctrine/tenet rows remain exactly baseline; derived effective same-group head doctrine uses actual Faith.main_rite169 -> actual Rite169 parentFaith107 -> source-bound head-group temporal membership. Every captured Rite has temporal head doctrine; complete other doctrines/tenets remain unchanged. Native effective predicate observation remains NULL.",
+        "new_title": "TypedresultTitleT/nativeG3fullID/savedTitleID agree; holder31254,lyd_c2_owned_head_title1,lyd_c2_owner_faith Faith107,duchy,tiernative.",
+        "native_properties": {
+          "destroy_if_invalid_heir": true,
+          "no_automatic_claims": true,
+          "definitive_form": true,
+          "always_follows_primary_heir": true
+        },
+        "native_law": "complete lawarray includes temporal_head_of_faith_succession_law. Savedserializationpaths remainNULL until actuallyqualified.",
+        "failure": "Codes2identity/3factory/4rites/5political/6fallback/7HoR remain actualpartial failure. No rollback,refund,or automaticretry.",
+        "Faith_full_AST": "Only source-declared changes: head sentinel4294967295 -> actual T, and absent lyd_c3_recognized_leader -> one unticked typed char actor31254 row. All other Faith entries and existing variables remain exact; wrong type/value/duplicate/preexisting different baseline rejects.",
+        "political_factory_guard": "Final factory snapshots prior same_faith_succession_law with positive1/2, removes only newly added law for prior-absent1; all original political Title ASTs and complete actor protected landed projection remain mandatory.",
+        "direct_effective_semantics": "saved_faith_semantics_12003.json versioned model; raw direct heads/doctrines/AST preserved and effective-derived column separately labeled. No native predicate credit."
+      },
+      "executed": false,
+      "actual_session": null,
+      "actual_public_revision": null,
+      "actual_native_revision": null,
+      "actual_G2_epoch": null,
+      "actual_G3_epoch": null,
+      "actual_checkpoint": null,
+      "actual_pass": null
+    },
+    {
+      "label": "B5-final-protection",
+      "save_step": "19-final-save",
+      "reader_stage": "success_postcommit OR partial_postcommit chosen by actual result",
+      "phase": null,
+      "expected": {
+        "cleanup": "active/phase/authoritymode/requirednativeHoR removed; exactownedrite/memberstamps removed; capturedlists cleared; serial/nonce and resultreceipts survive.",
+        "wallet": "Samepauseddate immediateprecommit/postcommit gold/piety/prestige deltas0; timeadvance separatelyaccounted. XP/stress/CD/C2history/reset unchanged.",
+        "political": "2230,2231,2232,2235,2262,2263,2264 fullTitleASTs/holders31254,primary/capital/realm/government,allNPCpoliticalidentity unchanged; onlyauthorizednewreligiousT may enterheldset.",
+        "unrelated": "Faith32/Rite150,Faith104/main159,Faith106/main187 completegraph/tenets unchanged.",
+        "head": "Actual Faith107 raw religious_head Title T, saved/native full-ID/holder31254/owned marker/ownerFaith/law/four properties retained; raw direct Faith doctrines unchanged and derived effective head doctrine temporal separately source-bound. HoR16931254 remains a source requirement requiring actual observations; ACK alone proves no graph or protection fact."
+      },
+      "executed": false,
+      "actual_session": null,
+      "actual_public_revision": null,
+      "actual_native_revision": null,
+      "actual_G2_epoch": null,
+      "actual_G3_epoch": null,
+      "actual_checkpoint": null,
+      "actual_pass": null
+    }
+  ],
+  "same_checkpoint_binding": "Actual snapshot_after. G2/G3 public/native normalizers must match its exact snapshot/public/native/date/actor/PID/generation; reader revision is snapshot_after.native_revision. Exactly one positive native and public increment; snapshot IDs must be native:<their actual native_revision>. PID, session, profile, pipe, connection generation, actor, raw date, pause and every other observed business snapshot field unchanged. G2/G3 capture_epoch values are independent and must be read from original receipt bytes.",
+  "checkpoint_transition_contract": {
+    "path": "C:/lr17s1/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-TRANSITION-CONTRACT.v2.json",
+    "bytes": 5117,
+    "sha256": "81e19ff2ee75c4b499129f33edf1efdb4558c8bc2be8781b7e8538b29464133d"
+  },
+  "source_binding_proof": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/SOURCE-WINDOW-BINDING.actual.json",
+    "bytes": 2436,
+    "sha256": "8b978946a5d7490bd2fe4f55aa38ac14a409817a88f583d6d3948ac6b23478d1"
+  },
+  "business_migration_registry": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/business-registry/BUSINESS-MIGRATION-REGISTRY.actual.json",
+    "bytes": 3058,
+    "sha256": "d5c70d0f8ce7547a074cdfcf180283b298a1c0ec702dee1962d6d2d33ce50f6d"
+  },
+  "executing_reader_artifact": {
+    "path": "C:/lr17s1/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+    "bytes": 51455,
+    "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+  },
+  "saved_faith_semantics_artifact": {
+    "path": "C:/lr17s1/tools/lyd_i3b_checkpoint_readback/reader/dependencies/saved_faith_semantics_12003.json",
+    "bytes": 2877,
+    "sha256": "dfdf5a12ea0159db8b4a6d644e61baf3e73538b32007844208ad9c1485afad90"
+  },
+  "original_baseline_observations": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r13-formal-route23-20261006-001/inputs/i3b-0240-native-preparation-20261006-001/BASELINE-0240.json",
+    "bytes": 426067,
+    "sha256": "e08d6f60d54085594297d227dc0213343fd86e372ff4c6cea558e847f5064323"
+  },
+  "future_actual_state": "R17 original0240 baseline control precedes formal actions. Exact five source expectations retained; only reviewed factory ordering changed. All future runtime fields remain NULL."
+}
