@@ -56,6 +56,9 @@ inline constexpr std::string_view kFrontendGuiOpenNewGameV1Capability =
     "game.command.activate-frontend-new-game-v1";
 inline constexpr std::string_view kFrontendGuiOpenNewGameV1Step =
     "activate-frontend-new-game-v1";
+// Fixed private recovery from the source lobby Back button; no public capability.
+inline constexpr std::string_view kFrontendGuiLobbyBackPrivateV1Step =
+    "activate-frontend-lobby-back-v1";
 inline constexpr std::string_view kFrontendGuiPickAnyCharacterV1Capability =
     "game.command.activate-frontend-pick-any-character-v1";
 inline constexpr std::string_view kFrontendGuiPickAnyCharacterV1Step =
@@ -248,6 +251,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   normal_exit_map = 38, // Fixed map-only normal-exit provider; no new mailbox slot.
   player_control_readonly = 39, // Fixed source-bound partial query; mutations unavailable.
   grant_title_picker = 40,
+  lobby_back = 41,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {

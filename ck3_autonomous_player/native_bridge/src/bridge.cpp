@@ -14737,6 +14737,7 @@ void RunConnectedSession(
           }
           connected = write_frame(pipe, response);
         } else if (!game.supports_step(step)
+                   && step != xar::ck3_11906::kFrontendGuiLobbyBackPrivateV1Step
 #if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
                    && step != xar::ck3_12003::kPlayerControlV1Step
 #endif
@@ -17710,6 +17711,7 @@ void RunConnectedSession(
               step == xar::ck3_11906::
                           kFrontendCoatOfArmsPatternGridInspectionV1Step ||
               step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step ||
+              step == xar::ck3_11906::kFrontendGuiLobbyBackPrivateV1Step ||
               step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step ||
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
               step == xar::ck3_11906::
@@ -17801,6 +17803,10 @@ void RunConnectedSession(
                          xar::ck3_11906::kFrontendGuiOpenNewGameV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::open_new_game;
+              } else if (step ==
+                         xar::ck3_11906::kFrontendGuiLobbyBackPrivateV1Step) {
+                query.operation =
+                    xar::ck3_11906::FrontendGuiRouteOperationV1::lobby_back;
               } else if (step == xar::ck3_11906::
                                      kFrontendGuiPickAnyCharacterV1Step) {
                 query.operation = xar::ck3_11906::

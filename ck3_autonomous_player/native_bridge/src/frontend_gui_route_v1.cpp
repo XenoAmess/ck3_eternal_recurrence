@@ -428,6 +428,39 @@ bool DispatchOpenNewGame(FrontendGuiRouteMailboxContextV1 &query) noexcept {
                                   "new_game_button");
 }
 
+bool DispatchLobbyBack12004(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.environment.gui_abi_revision != GuiAbiRevisionV1::crozier12004 ||
+      query.result.route != FrontendGuiRouteV1::lobby) {
+    return false;
+  }
+  // R67's actual lobby tree fixes this unnamed Back receiver. Vanilla's
+  // multiplayer_lobby.gui lobby_view_back_onclick binds it to ReturnToMenu.
+  constexpr std::array<std::uint32_t, 5> kLobbyBackPath{{1, 1, 1, 0, 0}};
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *target = nullptr;
+  if (!ResolveFixedGuiChildPathV1(
+          query.environment, access, "lobbyview", kLobbyBackPath.data(),
+          kLobbyBackPath.size(), root, target) ||
+      target == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
+                              enabled) ||
+      !runtime_name.empty() || !visible || !enabled) {
+    return false;
+  }
+  query.result.target_resolved = true;
+  query.result.dispatch_invoked = DispatchFixedGuiWidgetNativeV1(
+      &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
+      target, vtable, query.result.native_handled);
+  return query.result.dispatch_invoked;
+}
+
 bool DispatchPickAnyCharacter(
     FrontendGuiRouteMailboxContextV1 &query) noexcept {
   return DispatchFixedNamedWidget(query, FrontendGuiRouteV1::bookmarks,
@@ -961,6 +994,9 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   }
   if (!ResolveRoute(*query, query->result)) return false;
   if (query->operation == FrontendGuiRouteOperationV1::query) return true;
+  if (query->operation == FrontendGuiRouteOperationV1::lobby_back) {
+    return DispatchLobbyBack12004(*query);
+  }
   if (query->operation ==
       FrontendGuiRouteOperationV1::select_supported_1066_character) {
     return DispatchSelectSupported1066Character(*query);
