@@ -1,5 +1,11 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-07 R72：用户自行游玩时只关闭 owned 测试进程，保留首次 snapshot RED
+
+用户17:xx要求agent本机 CK3/live SDK OFF后，Root只完成已持有owned测试的关闭：[proof](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9638-joint20restore01/operator/ROOT-USER-PLAYING-OWNED-CLOSURE.json) 09:45:00.703783 UTC为OWNED_TEST_GAME_CLOSED/PID135372，cleanup_proven/treegone true、jobactive0/watchdog absent，SDK5370 exit0、intentionalCK3exit1；未关闭用户游戏，禁令后无新query/launch。不要将测试进程exit1改称正常exit0，也不以全进程核验触碰用户游玩。
+
+R72首次[fullsnapshot](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9638-joint20restore01/operator/ROOT-FULL-ORIGINAL-PAUSED-SNAPSHOT.json) 09:42:20 UTC在1query后RED：dateH9638true而episode/mapready/originalRobert/minimizedfalse。NativeSessionReady/all10/rebind/preflight不是恢复帧GREEN，原因保持未归定，action/day/save0。Runtime20构建与later freeze20 source-only编译1/10RED/9GREEN分别保留，不靠新G2失败反向改既有208迁移。后台源码/FIRST可继续，local live保持OFF，H9638/saved6005基线不变。本记录只消费Root字段，不追加运行或大body审计；下方新永久发布缓存验收规则原样保留。
+
 ## 2026-10-07 当前发布后缓存验收范围
 
 按项目所有者的新永久指令，全部 mod 的发布后缓存验收仅核对 **Steam 实际下载文件与正式构建一致，以及 CK3 实际加载这份缓存**。完整规则见 [Workshop 缓存验收](workshop-cache-acceptance.md)。实际启动加载日志可以证明目标缓存已加载时即可收尾；不要求新游戏、地图、native 业务查询、功能/事件/按钮/数值复测或业务 fixture。发布前源码功能验收继续按对应产品合同执行。下方历史缓存业务矩阵和旧门槛只保留当时事实，不能继续作为新发布的缓存验收要求。
