@@ -44,7 +44,7 @@ def main() -> int:
             raise AssertionError(message)
 
     class Endpoint:
-        pipe_name = r"\unused-offline-prisoner-release-action-12004"
+        pipe_name = r"\\.\pipe\unused-offline-prisoner-release-action-12004"
 
         def __init__(self, packet):
             self.packet = packet
