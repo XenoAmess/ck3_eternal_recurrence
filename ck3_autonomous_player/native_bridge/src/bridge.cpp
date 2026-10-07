@@ -12653,6 +12653,41 @@ std::string RunTypedQuery12002(
               xar::ck3_11906::TitleMapNavigationSnapshotDiffMaskV1(
                   *state.previous_snapshot, query.envelope.expected_snapshot));
     }
+    if (stage == "post_dispatch_target_prefix_changed") {
+      const auto append_floats = [&](std::string_view key, const auto &values) {
+        response += ',';
+        AppendJsonString(response, key);
+        response += ":[";
+        bool first = true;
+        for (float value : values) {
+          if (!first) response += ',';
+          first = false;
+          char number[64]{};
+          const auto formatted = std::to_chars(number, number + sizeof(number), value,
+              std::chars_format::general, std::numeric_limits<float>::max_digits10);
+          response.append(number, formatted.ptr);
+          if (formatted.ptr - number == 2 && number[0] == '-' && number[1] == '0') response += ".0";
+        }
+        response += ']';
+      };
+      const auto &camera = query.title_command.camera;
+      append_floats("raw_expected_target", query.title_command.raw_expected_target);
+      append_floats("canonical_expected_target", query.title_command.canonical_expected_target);
+      append_floats("observed_current_state", camera.current_state);
+      append_floats("observed_target_state", camera.target_state);
+      append_floats("expected_position_xyz", camera.expected_position_xyz);
+      append_floats("planned_zoom_value", std::array<float, 1>{camera.expected_zoom_value});
+      response += ",\"planned_zoom_index\":" + std::to_string(camera.zoom_index);
+      response += ",\"bounds_extent\":[";
+      for (std::size_t i = 0; i < camera.bounds_extent.size(); ++i) {
+        if (i != 0) response += ',';
+        response += std::to_string(camera.bounds_extent[i]);
+      }
+      response += "] ,\"map_x_adjustment\":" + std::to_string(camera.map_x_adjustment);
+      response += ",\"target_write_blocked\":" + std::to_string(camera.target_write_blocked);
+      response += ",\"settled\":";
+      response += camera.settled ? "true" : "false";
+    }
     response += "}}";
     return response;
   };
