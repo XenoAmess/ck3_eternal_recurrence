@@ -93,11 +93,11 @@ remain false/null until their own source and real paused evidence exist.
 
 ## Status and next handoff
 
-This package now closes the independent current-callback source dependency and
-provides an authored Python/service candidate. FIRST qualification remains
-NOTRUN. Root owns shared integration, coherent formal qualification and the live
-query. Child direct EXE reads, tests, builds,
-SDK/game/process/UI operations and new game-day credit are all0.
+This package closes the independent current-callback source dependency and
+provides a `static-ready` Python/service result after the sole new eight-scene
+compound passed once. Root owns shared integration and the live query. Child
+direct EXE reads, native tests/builds, SDK/game/process/UI operations and new
+game-day credit are all0.
 
 Root G2 reference is H9638 / Robert29829 / raw date53288448 / saved day6005.
 It is provenance supplied by the coordinator, not a new child capture. SideR68
@@ -177,3 +177,40 @@ Source-first plan and frozen eight scene expectations:
 `CURRENT-CALLBACK-NUMERIC-IMPLEMENTATION-PLAN.json`. One new compound exercises
 the real Army service/normalizer path; FIRST is authored NOTRUN pending Root's
 coherent source instruction. Existing monthly/four-pass/old tests are not run.
+
+## FIRST actual combined-Service qualification
+
+Root adopted the three source commits and froze the complete Service at
+**0212161948cc584f6e45caa72c8a03dad9494799**, immutable
+`C:/codex-ck3-background/migration4-entry-live-fix/g110-r19`. Explicitly authorized
+FIRST ran only
+`CurrentCallbackSupplyRiskService12004Tests.test_current_stock_crossing_and_branch_specific_supply_budget`
+using the full project venv, `-B -X utf8`, assertions enabled. It completed
+**GREEN / exit0** at2026-10-07T09:28:46.980501Z: process4.1519185 s,
+unittest's single method0.026 s, eight new genuine Army-Service/normalizer query
+outputs. No old test, native target, producer replay or game operation ran.
+
+| New scene | Conditional stock / supply budget | Independent result |
+| --- | --- | --- |
+| Runtime threshold crossing | 650000 / 2 | Observed750000 stock, base0/current budget0; loaded7 threshold produces positive base2500 after one ADD. Original repeated bucket positions1,3 remain observations; budget stays2. |
+| Exact threshold | 700000 / 0 | Zero component is ready with eligible-current family absent. |
+| Combat rejection | 750000 / 0 | Known rejection remains ready with rate/table/count operands absent. |
+| Fleet suppression | 650000 / 0 | Suppression remains ready with component tables/count absent. |
+| Missing eligible current | 650000 / null | Poststock remains available; only positive-budget count is missing. |
+| Negative sum | 0 / 2 | Source lower0 result remains ready with capacity absent. |
+| Missing rate | null / null | Observed current stock-state remains available; missing rate is explicit. |
+| Empty observed bucket | 650000 / 2 | Actual current selection is false; the independently named one-entry hypothetical value remains available. |
+
+The source candidate is884cec01ec209690b0223d2ff66b1c0ef012e8a5; all numerical
+qualification uses the actual combined Root Service freeze above. First wrapper
+parser RED and actual Root source capture remain separate historical evidence.
+No new native schema/reader was needed, so this test does not claim a newly
+compiled binary or actual paused callback execution. Actual callback/loss,
+poststage, earlier-stage reconstruction, future-date/D selection and full
+daily/monthly transition remainfalse/null; live/day credit remains0.
+
+Actual argv, times and complete query values are preserved under
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/attrition-supply/current-callback-service-first-r19/`.
+`CURRENT-CALLBACK-FIRST-QUALIFICATION.json` records source/output pins and the
+source-defined independent readiness. `CURRENT-CALLBACK-QUALIFIED-OCT7-W41-FIELDS.json`
+is the coordinator's report-field handoff; shared reports remain Root-owned.
