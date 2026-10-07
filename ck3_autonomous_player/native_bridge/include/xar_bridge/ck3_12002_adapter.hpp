@@ -23,6 +23,7 @@
 #include "xar_bridge/ck3_12002_phase.hpp"
 #include "xar_bridge/ck3_12004_phase_event_calendar.hpp"
 #include "xar_bridge/ck3_12004_phase_event_role_compatibility.hpp"
+#include "xar_bridge/ck3_12004_phase_event_commander_side_identity.hpp"
 #include "xar_bridge/ck3_12002_settlement.hpp"
 
 #include <memory>
@@ -71,6 +72,8 @@ struct Ck3_12002AdapterBindings {
   ck3_12004::PhaseEventRoleCompatibilityBindings12004
       phase_event_role_compatibility12004;
   ck3_12004::PlayerClaimsBindingsV1 player_claims12004;
+  ck3_12004::PhaseCommanderSideIdentityBindings12004
+      phase_commander_side_identity12004;
 };
 
 // Same row publisher called by the current Army query and focused fixtures.

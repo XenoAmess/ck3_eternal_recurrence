@@ -205,6 +205,10 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
   // The concrete adapter repairs this borrow after moving the bundle.
   bindings.military.submit_context = nullptr;
   bindings.armies = ck3_12004::BindArmyImage12004(image_base, executable_sha256);
+  bindings.phase_commander_side_identity12004 =
+      ck3_12004::BindPhaseCommanderSideIdentity12004(
+          bindings.armies.current_army_combat_roles_phase_bindings,
+          executable_sha256);
   bindings.movement_routes = ck3_12004::BindRouteImage12004(
       image_base, executable_sha256);
   bindings.owned_regiments.persistent_regiment_storage_slot =

@@ -451,6 +451,8 @@ public:
           bindings_.phase_event_calendar12004, output);
       ck3_12004::AttachPhaseEventRoleInputs12004(
           bindings_.phase_event_role_compatibility12004, output);
+      ck3_12004::AttachPhaseCommanderSideIdentity12004(
+          bindings_.phase_commander_side_identity12004, output);
     }
     return result;
   }
