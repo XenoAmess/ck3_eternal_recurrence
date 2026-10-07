@@ -188,3 +188,7 @@ TED R7/a99原13项各1、FAIL0，真实GUI Surrender及defender保留县已亲�
 ### 2026-10-08续办：RMTM R8法条失败与最小生产候选
 
 RMTM R8/a100 D3原FAIL1已缩窄为law FALSE/current_heir TRUE（primary18371/heir37989/root34422/date53144400/paused），Root原图宋领地“仅男性 / 长子继承”；[实际薄包](C:/workspace/ck3-upgrade-20261007/rmtm-r0008-law-fail-readonly-resource-01/RMTM-R0008-LAW-FALSE-HEIR-TRUE-NORMAL0-BOUND-01.json)证明正常GUI/retained OS0/native0/job0/thread cleanup、keeper64291实际0/last5797→CAS5798 done，业务FAIL保留。生产finalize/set_primary后唯一8行缺法guard幂等补single_heir已由Root应用，早期grant/resolve保留、engine清法UNKNOWN、候选未实机，原36合同/14days不改；[当前适配专题](reclaim-the-motherland-ck3-1.20.0.3-readiness-2026-10-05.md)接续。QOL R25/a101新graph18已启动、未判；G2外置新API源码8+2测试已有，native未build/live未资格；批次仍6/10（60%），全部及未来产品缓存永久两项规则与发布前源码业务验收保持，不写未来发布成功。
+
+### 2026-10-08续办：R9仍FAIL，TED R8仅bootstrap
+
+RMTM R9/op14/a102 D3实测仍law FALSE/current_heir TRUE/original FAIL1，未到D4，8行候选未解决；正常GUI/retained OS0/native0/shutdown0/job0→0、native及host线程/cleanup与keeper5253实际0成立，last5831→[CAS5832 done/resources=[]](C:/workspace/ck3-upgrade-20261006/resume-root-01/a102-screen-release-01.json)于16:54:45.706 UTC完成，不授业务PASS。error338505 B的新product L334为tooltip null-title，不据此归因实际运行，薄闭场包待资源线程交付，原场/raw不改。[TED R8/a103](C:/workspace/ck3-upgrade-20261007/live/4-8e1c2f1861--tributary-expansion-directives--R0008/launch.json)已于16:58:00.141 UTC launch/host19748，本次已提供截止为bootstrap、无业务结论；QOL selection20 graph19仅READY未alloc。G2源码96498已push、native未build/live未资格。正式仍6/10（60%），缓存永久简化与发布前源码业务要求保持；后继只消费原合法场与最小实证阻点，不重放旧失败或增加缓存业务。
