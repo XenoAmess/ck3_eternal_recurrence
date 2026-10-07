@@ -37,6 +37,7 @@ from .army_current_candidate_detachment_mapper_builder import build_current_cand
 from .army_current_detachment_data_builder import build_same_input_current_detachment_data_prefix
 from .army_source_derived_next_daily_supply_frame_projection import project_native_next_daily_supply_schedule_v1
 from .army_next_updater_write_projection import project_source_derived_next_updater_writes_v1
+from .army_next_fleet_supply_budget_projection import project_source_derived_next_fleet_supply_budget_v1
 from .army_current_callback_supply_risk_projection import project_current_callback_supply_risk_v1
 from .army_current_detachment_callback_projection import project_current_detachment_callback_inputs_v1
 from .army_current_detachment_store_projection import project_current_detachment_store_inputs_v1
@@ -4833,6 +4834,9 @@ class GameplayBridgeService:
                 for row in selected_rows],
             "source_derived_next_updater_writes_v1": [
                 {"army_id": row["army_id"], "projection": project_source_derived_next_updater_writes_v1(row)}
+                for row in selected_rows],
+            "source_derived_next_fleet_supply_budget_v1": [
+                {"army_id": row["army_id"], "projection": project_source_derived_next_fleet_supply_budget_v1(row)}
                 for row in selected_rows],
             "current_callback_supply_risk_v1": [
                 {"army_id": row["army_id"], "projection": project_current_callback_supply_risk_v1(row)}
