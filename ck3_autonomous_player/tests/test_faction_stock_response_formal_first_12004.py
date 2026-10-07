@@ -110,7 +110,7 @@ class FactionStockResponseFormalFirst12004(unittest.TestCase):
                     command_timeout_seconds=1.0, episode_projection="native_campaign",
                     allow_private_m5_joint_collector=True,
                     allow_private_faction_gift_formal_trial=True,
-                    private_faction_round_id="OFFLINE-FIRST")
+                    private_faction_round_id="R1")
                 try:
                     endpoint.publish({"type": "hello", "protocol_version": 1,
                         "bridge_version": "0.1.0", "pid": 1200401,
