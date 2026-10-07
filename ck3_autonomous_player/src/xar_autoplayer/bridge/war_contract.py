@@ -2240,7 +2240,7 @@ def _normalize_current_movement_progress(
         "first_route_edge_remaining_duration", "unavailable_reason",
     }
     if (not isinstance(value, dict) or not required <= value.keys()
-            or set(value) - required - {"committed_route_timeline"}):
+            or set(value) - required - {"committed_route_timeline", "current_edge_movement_rate_raw"}):
         raise ValueError(f"native {name} schema is malformed")
     if value["status"] not in {"available", "not_applicable", "partial", "unavailable"}:
         raise ValueError(f"native {name}.status is malformed")
@@ -2253,7 +2253,9 @@ def _normalize_current_movement_progress(
     normalized["unit_state_raw"] = _optional_signed_int32(
         value["unit_state_raw"], f"{name}.unit_state_raw"
     )
-    for field in ("accumulated_movement_weight_raw", "cached_edge_speed_raw"):
+    for field in ("accumulated_movement_weight_raw", "cached_edge_speed_raw", "current_edge_movement_rate_raw"):
+        if field not in value:
+            continue
         raw = value[field]
         if raw is not None and (
             type(raw) is not int or not -(2**63) <= raw <= 2**63 - 1

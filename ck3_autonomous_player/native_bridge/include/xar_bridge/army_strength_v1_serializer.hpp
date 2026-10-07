@@ -1016,6 +1016,9 @@ inline void AppendArmyStrengthV1(
     result += ",\"cached_edge_speed_raw\":";
     result += movement.cached_edge_speed_raw.has_value()
                   ? number(*movement.cached_edge_speed_raw) : "null";
+    result += ",\"current_edge_movement_rate_raw\":";
+    result += movement.current_edge_movement_rate_raw.has_value()
+                  ? number(*movement.current_edge_movement_rate_raw) : "null";
     const auto append_fixed = [&](const std::optional<std::int64_t> &raw) {
       if (raw.has_value()) {
         result += "{\"raw\":";

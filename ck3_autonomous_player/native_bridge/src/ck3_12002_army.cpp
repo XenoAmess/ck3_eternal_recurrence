@@ -221,6 +221,17 @@ game::ArmyMovementProgressSnapshot MovementProgress(
     return result;
   }
 
+  // Actual .4 NewDate ADD prefix selects this readonly rate only when190<=0.
+  // The complete current route and already-qualified callback are reused;
+  // this observes an input and never invokes the Unit NewDate writer.
+  const auto edge_rate = bindings.committed_route_bindings.read_unit_current_edge_speed;
+  if (bindings.current_unit_new_date_callback_entry_bindings.enabled &&
+      *result.cached_edge_speed_raw <= 0 && edge_rate != nullptr) {
+    std::int64_t raw = 0;
+    if (edge_rate(unit, &raw) == &raw)
+      result.current_edge_movement_rate_raw = raw;
+  }
+
   constexpr std::int64_t unavailable = 0xFFFF'FFFFLL;
   if (bindings.get_unit_normalized_edge_progress != nullptr) {
     std::int64_t raw = 0;
