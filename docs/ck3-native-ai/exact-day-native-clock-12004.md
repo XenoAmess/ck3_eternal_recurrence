@@ -46,8 +46,10 @@ The single new test is [test_exact_day_native_clock_paused_next_frame.py](../../
 
 Source and test are **AUTHORED_NOTRUN** in this package. Root runs this one new regression FIRST, without repeating the forecast7 tests or unrelated suites:
 
-```powershell
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' -B -X utf8 -m pytest -q -p no:cacheprovider tests/unit/test_exact_day_native_clock_paused_next_frame.py
+From `ck3_autonomous_player/`, use the selected Python interpreter and the existing standard-library test interface:
+
+```cmd
+python -B -X utf8 -m unittest discover -s tests/unit -p test_exact_day_native_clock_paused_next_frame.py -v
 ```
 
 After Root adopts the Python and native admission patches and keeps the failed +7 state/save, an actual ordinary-campaign one-day attempt from the then-current paused frame must show its own start→start+24 paused result and native deadline receipt. The known saved raw53288424 would target53288448, but the request must derive its starting date/revision from the then-current Root frame. The existing route proof must also be fresh; Unit218104048 already arrived2618, so the failed old moving-route literal/proof cannot be replayed.
