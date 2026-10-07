@@ -3,7 +3,15 @@
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 
+#include <cstddef>
+
 namespace xar::ck3_12004 {
+
+// Actual4 GetLegitimacy registration5680C7 -> thunk28D2C30 proves these
+// QWORD member reads at28D2C41/28D2C4D; they are not inherited-image aliases.
+inline constexpr std::size_t kCampaignRootCharacterLegitimacyDataOffset12004 =
+    0x1C8;
+inline constexpr std::size_t kCampaignRootLegitimacyBalanceOffset12004 = 0x28;
 
 // Shared software contracts; all native bindings are constructed for actual4.
 using CampaignRootNativeEnvironmentV1 = ck3_12002::CampaignRootNativeEnvironmentV1;

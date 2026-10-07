@@ -1201,10 +1201,25 @@ bool ReadMetricsProjection(
     failure = "player_targeting_factions_unavailable";
     return false;
   }
-  // Character1C8/data28 source is not yet admitted for this actual image.
-  // Keep the optional diagnostic precise and do not read those raw offsets.
-  output.legitimacy.unavailable_reason =
-      "actual4_legitimacy_field_source_unavailable";
+  // Actual4 GetLegitimacy's registered thunk proves both QWORD members.
+  // Material absence stays optional and retains the existing wire contract.
+  void *legitimacy_data = nullptr;
+  std::int64_t legitimacy_raw = 0;
+  if (!MetricsRead(access, character,
+                   kCampaignRootCharacterLegitimacyDataOffset12004,
+                   legitimacy_data)) {
+    output.legitimacy.unavailable_reason = "data_pointer_unreadable";
+  } else if (legitimacy_data == nullptr) {
+    output.legitimacy.unavailable_reason = "data_absent";
+  } else if (!MetricsRead(access, legitimacy_data,
+                          kCampaignRootLegitimacyBalanceOffset12004,
+                          legitimacy_raw)) {
+    output.legitimacy.unavailable_reason = "balance_unreadable";
+  } else if (legitimacy_raw < 0) {
+    output.legitimacy.unavailable_reason = "balance_invalid";
+  } else {
+    output.legitimacy.value = game::FixedPointValue{legitimacy_raw, 100'000};
+  }
   return true;
 }
 
