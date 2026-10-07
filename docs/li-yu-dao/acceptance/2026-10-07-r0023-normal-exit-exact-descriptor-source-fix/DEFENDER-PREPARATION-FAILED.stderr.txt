@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r23-normal-exit-exact-descriptor-source-fix-20261007-001\prepare_defender.py", line 11, in <module>
+    manifest=helper.collect_command_manifest(root,root/'ck3_autonomous_player/native_bridge',package/'focused-002',compile_record['argv'],[executable],return_code=compile_record['exit_code'])
+  File "C:\lr23nw1\tools\register_project_exe_exclusions.py", line 172, in collect_command_manifest
+    declared = option_paths(compiler_argv, "/fe" if tool == "cl.exe" else "/out:")
+  File "C:\lr23nw1\tools\register_project_exe_exclusions.py", line 169, in option_paths
+    raise ValueError("MSVC output operand must be an explicit absolute file path")
+ValueError: MSVC output operand must be an explicit absolute file path

@@ -1,4 +1,6 @@
 #include "xar_bridge/normal_exit_map_source_v1.hpp"
+#include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ingame_private_gui_profile_v1.hpp"
 #include <windows.h>
 #include <shellapi.h>
 #include <bcrypt.h>
@@ -236,7 +238,29 @@ bool NormalExitMapSha256V1(std::string_view bytes,std::string &digest) noexcept 
   return okay;
 }
 
-bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,bool &stock_verified,std::string &reason) noexcept {
+bool NormalExitMapSourceExecutableAdmittedV1(
+    const game::AdapterDescriptor &descriptor,
+    std::string_view inventory_executable_sha256) noexcept {
+  const auto revision = descriptor.adapter_id == ck3_12003::kAdapterId
+      ? ck3_11906::GuiAbiRevisionV1::crozier12003
+      : descriptor.adapter_id == ck3_12004::kAdapterId
+          ? ck3_11906::GuiAbiRevisionV1::crozier12004
+          : ck3_11906::GuiAbiRevisionV1::legacy11906;
+  if (!ck3_11906::IngamePrivateGuiIdentityAdmittedV1(descriptor.game_version,
+          descriptor.executable_sha256, revision) || !Hex(inventory_executable_sha256))
+    return false;
+  for (std::size_t i = 0; i < inventory_executable_sha256.size(); ++i) {
+    const auto expected = descriptor.executable_sha256[i];
+    const auto lowercase = expected >= 'A' && expected <= 'F'
+        ? static_cast<char>(expected + ('a' - 'A')) : expected;
+    if (inventory_executable_sha256[i] != lowercase) return false;
+  }
+  return true;
+}
+
+bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,
+    const game::AdapterDescriptor &descriptor,
+    bool &stock_verified,std::string &reason) noexcept {
   stock_verified=false;
   try {
     const auto reject=[&](const char *why) { reason=why; return false; };
@@ -273,8 +297,8 @@ bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,bool &stock_veri
     if(length==0 || length>=image.size()) return reject("actual_executable_path_unreadable");
     const fs::path image_path(image.data());
     const auto *declared_image=Field(*executable,"path",Node::string), *image_hash=Field(*executable,"sha256",Node::string);
-    constexpr std::string_view executable_sha="94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6";
-    if(!declared_image || !image_hash || !SamePath(Path(*declared_image),image_path) || image_hash->text!=executable_sha)
+    if(!declared_image || !image_hash || !SamePath(Path(*declared_image),image_path) ||
+        !NormalExitMapSourceExecutableAdmittedV1(descriptor,image_hash->text))
       return reject("source_inventory_executable_binding_changed");
     std::string dlc_bytes;
     if(!FileRecord(*settings,userdir/L"pdx_settings.txt") || !FileRecord(*dlc,userdir/L"dlc_load.json",&dlc_bytes))

@@ -1,0 +1,171 @@
+diff --git a/ck3_autonomous_player/native_bridge/include/xar_bridge/normal_exit_map_source_v1.hpp b/ck3_autonomous_player/native_bridge/include/xar_bridge/normal_exit_map_source_v1.hpp
+index b013d0a10..8625c467e 100644
+--- a/ck3_autonomous_player/native_bridge/include/xar_bridge/normal_exit_map_source_v1.hpp
++++ b/ck3_autonomous_player/native_bridge/include/xar_bridge/normal_exit_map_source_v1.hpp
+@@ -18,8 +18,13 @@ struct NormalExitMapLaunchArgumentsV1 {
+ bool ParseNormalExitMapLaunchArgumentsV1(std::span<const std::wstring_view> arguments,
+     NormalExitMapLaunchArgumentsV1 &output) noexcept;
+ bool NormalExitMapSha256V1(std::string_view bytes, std::string &digest) noexcept;
++// Pure exact descriptor/inventory digest join; no process or file operations.
++bool NormalExitMapSourceExecutableAdmittedV1(
++    const game::AdapterDescriptor &descriptor,
++    std::string_view inventory_executable_sha256) noexcept;
+ // Reads only the fixed manifest below the actual launch -userdir. No protocol
+ // path, arbitrary function/address, or caller-supplied verified flag is accepted.
+ bool VerifyNormalExitMapSourcesV1(std::string_view inventory_sha256,
++    const game::AdapterDescriptor &descriptor,
+     bool &stock_verified, std::string &reason) noexcept;
+ } // namespace xar::ck3_12003
+diff --git a/ck3_autonomous_player/native_bridge/src/normal_exit_map_source_v1.cpp b/ck3_autonomous_player/native_bridge/src/normal_exit_map_source_v1.cpp
+index 26e64798b..86f3c6cae 100644
+--- a/ck3_autonomous_player/native_bridge/src/normal_exit_map_source_v1.cpp
++++ b/ck3_autonomous_player/native_bridge/src/normal_exit_map_source_v1.cpp
+@@ -1,4 +1,6 @@
+ #include "xar_bridge/normal_exit_map_source_v1.hpp"
++#include "xar_bridge/ck3_12003.hpp"
++#include "xar_bridge/ingame_private_gui_profile_v1.hpp"
+ #include <windows.h>
+ #include <shellapi.h>
+ #include <bcrypt.h>
+@@ -236,7 +238,29 @@ bool NormalExitMapSha256V1(std::string_view bytes,std::string &digest) noexcept
+   return okay;
+ }
+ 
+-bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,bool &stock_verified,std::string &reason) noexcept {
++bool NormalExitMapSourceExecutableAdmittedV1(
++    const game::AdapterDescriptor &descriptor,
++    std::string_view inventory_executable_sha256) noexcept {
++  const auto revision = descriptor.adapter_id == ck3_12003::kAdapterId
++      ? ck3_11906::GuiAbiRevisionV1::crozier12003
++      : descriptor.adapter_id == ck3_12004::kAdapterId
++          ? ck3_11906::GuiAbiRevisionV1::crozier12004
++          : ck3_11906::GuiAbiRevisionV1::legacy11906;
++  if (!ck3_11906::IngamePrivateGuiIdentityAdmittedV1(descriptor.game_version,
++          descriptor.executable_sha256, revision) || !Hex(inventory_executable_sha256))
++    return false;
++  for (std::size_t i = 0; i < inventory_executable_sha256.size(); ++i) {
++    const auto expected = descriptor.executable_sha256[i];
++    const auto lowercase = expected >= 'A' && expected <= 'F'
++        ? static_cast<char>(expected + ('a' - 'A')) : expected;
++    if (inventory_executable_sha256[i] != lowercase) return false;
++  }
++  return true;
++}
++
++bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,
++    const game::AdapterDescriptor &descriptor,
++    bool &stock_verified,std::string &reason) noexcept {
+   stock_verified=false;
+   try {
+     const auto reject=[&](const char *why) { reason=why; return false; };
+@@ -273,8 +297,8 @@ bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,bool &stock_veri
+     if(length==0 || length>=image.size()) return reject("actual_executable_path_unreadable");
+     const fs::path image_path(image.data());
+     const auto *declared_image=Field(*executable,"path",Node::string), *image_hash=Field(*executable,"sha256",Node::string);
+-    constexpr std::string_view executable_sha="94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6";
+-    if(!declared_image || !image_hash || !SamePath(Path(*declared_image),image_path) || image_hash->text!=executable_sha)
++    if(!declared_image || !image_hash || !SamePath(Path(*declared_image),image_path) ||
++        !NormalExitMapSourceExecutableAdmittedV1(descriptor,image_hash->text))
+       return reject("source_inventory_executable_binding_changed");
+     std::string dlc_bytes;
+     if(!FileRecord(*settings,userdir/L"pdx_settings.txt") || !FileRecord(*dlc,userdir/L"dlc_load.json",&dlc_bytes))
+diff --git a/ck3_autonomous_player/native_bridge/src/normal_exit_map_v1.cpp b/ck3_autonomous_player/native_bridge/src/normal_exit_map_v1.cpp
+index 65bac24bc..c38bdb1f3 100644
+--- a/ck3_autonomous_player/native_bridge/src/normal_exit_map_v1.cpp
++++ b/ck3_autonomous_player/native_bridge/src/normal_exit_map_v1.cpp
+@@ -110,7 +110,7 @@ bool Current(NormalExitMapContextV1 &ctx,const MainThreadQueryMailboxV1 &mailbox
+     ZhongguoScoreboardActionDispatchEnvironmentV1 &dispatch,Census &census) {
+   game::Snapshot snapshot{}; bool stock=false; std::string reason;
+   return Owner(ctx,mailbox,stamp) && Process(ctx.request) && Frame(ctx,stamp,snapshot) && Pins(env,dispatch) &&
+-      VerifyNormalExitMapSourcesV1(ctx.request.source_inventory_sha256,stock,reason) && stock && ReadCensus(env,dispatch,census);
++      VerifyNormalExitMapSourcesV1(ctx.request.source_inventory_sha256,ctx.game->descriptor(),stock,reason) && stock && ReadCensus(env,dispatch,census);
+ }
+ bool Signature(NormalExitMapContextV1 &ctx,const MainThreadExecutionStampV1 &stamp,const Census &census) {
+   auto &session=*ctx.session;
+@@ -205,7 +205,7 @@ bool ExecuteNormalExitMapV1(NormalExitMapContextV1 &ctx,MainThreadQueryMailboxV1
+         session.process_creation_filetime_100ns!=ctx.request.expected_process_creation_filetime_100ns)
+       return reject("persistent_claim_process_binding_changed");
+     if(!Pins(env,dispatch)) return reject("exact_gui_code_pins_changed"); out.source_abi_pins_verified=true;
+-    if(!VerifyNormalExitMapSourcesV1(ctx.request.source_inventory_sha256,out.stock_files_verified,out.reason)) return true;
++    if(!VerifyNormalExitMapSourcesV1(ctx.request.source_inventory_sha256,descriptor,out.stock_files_verified,out.reason)) return true;
+     out.loaded_source_binding_verified=true;
+     game::Snapshot before{};
+     if(!Frame(ctx,stamp,before)) return reject("fresh_alive_paused_map_frame_changed"); out.frame_verified=true;
+diff --git a/ck3_autonomous_player/native_bridge/tests/normal_exit_map_contract_test.cpp b/ck3_autonomous_player/native_bridge/tests/normal_exit_map_contract_test.cpp
+index 1b5f993ae..90d492e5d 100644
+--- a/ck3_autonomous_player/native_bridge/tests/normal_exit_map_contract_test.cpp
++++ b/ck3_autonomous_player/native_bridge/tests/normal_exit_map_contract_test.cpp
+@@ -1,5 +1,6 @@
+ #include "xar_bridge/normal_exit_map_v1.hpp"
+ #include "xar_bridge/normal_exit_map_source_v1.hpp"
++#include "xar_bridge/ck3_12003.hpp"
+ #include <fstream>
+ #include <iostream>
+ #include <iterator>
+@@ -23,8 +24,9 @@ int main(int argc,char **argv) {
+     if(!session.claimed[1].compare_exchange_strong(first,true) || session.claimed[2].load()) return 5;
+     std::string digest,reason; bool stock=true;
+     if(!NormalExitMapSha256V1("abc",digest) || digest!="ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad") return 6;
+-    if(VerifyNormalExitMapSourcesV1("",stock,reason) || stock || reason!="source_inventory_reference_missing") return 7;
+-    if(VerifyNormalExitMapSourcesV1(std::string(64,'a'),stock,reason) || stock || reason!="actual_launch_userdir_contract_unsupported") return 8;
++    const xar::game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"",{}};
++    if(VerifyNormalExitMapSourcesV1("",descriptor,stock,reason) || stock || reason!="source_inventory_reference_missing") return 7;
++    if(VerifyNormalExitMapSourcesV1(std::string(64,'a'),descriptor,stock,reason) || stock || reason!="actual_launch_userdir_contract_unsupported") return 8;
+     std::cout<<"{\"self_test\":true,\"facts_never_forged\":true,\"claims_survive_query\":true,\"stock_source_missing_rejected\":true}\n";
+     return 0;
+   }
+diff --git a/ck3_autonomous_player/native_bridge/tests/normal_exit_map_launch_arguments_v1_test.cpp b/ck3_autonomous_player/native_bridge/tests/normal_exit_map_launch_arguments_v1_test.cpp
+index 3e2ac40d3..02fff913c 100644
+--- a/ck3_autonomous_player/native_bridge/tests/normal_exit_map_launch_arguments_v1_test.cpp
++++ b/ck3_autonomous_player/native_bridge/tests/normal_exit_map_launch_arguments_v1_test.cpp
+@@ -1,4 +1,6 @@
+ #include "xar_bridge/normal_exit_map_source_v1.hpp"
++#include "xar_bridge/ck3_12003.hpp"
++#include "xar_bridge/ck3_12004.hpp"
+ #include <windows.h>
+ #include <shellapi.h>
+ #include <array>
+@@ -21,7 +23,34 @@ static void Check(std::vector<std::wstring_view> args,bool accept,const char *na
+   if(!actual) Require(output.userdir==std::filesystem::path(L"C:/sentinel") && output.load_save_key==L"unchanged","rejected_output_unchanged");
+   ++checked;
+ }
+-int main() {
++static unsigned CheckExecutableIdentity() {
++  using xar::ck3_12003::NormalExitMapSourceExecutableAdmittedV1;
++  const xar::game::AdapterDescriptor three{xar::ck3_12003::kAdapterId,
++      xar::ck3_12003::kGameVersion,xar::ck3_12003::kExecutableSha256,"",{}};
++  const xar::game::AdapterDescriptor four{xar::ck3_12004::kAdapterId,
++      xar::ck3_12004::kGameVersion,xar::ck3_12004::kExecutableSha256,"",{}};
++  constexpr std::string_view sha3="94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6";
++  constexpr std::string_view sha4="98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518";
++  Require(NormalExitMapSourceExecutableAdmittedV1(three,sha3),"exact3_inventory_digest");
++  Require(NormalExitMapSourceExecutableAdmittedV1(four,sha4),"exact4_inventory_digest");
++  Require(!NormalExitMapSourceExecutableAdmittedV1(three,sha4),"exact3_current4_inventory_rejected");
++  Require(!NormalExitMapSourceExecutableAdmittedV1(four,sha3),"exact4_previous3_inventory_rejected");
++  auto unknown=four;unknown.game_version="1.20.0.5";
++  Require(!NormalExitMapSourceExecutableAdmittedV1(unknown,sha4),"unknown_version_rejected");
++  auto mixed=four;mixed.adapter_id=three.adapter_id;
++  Require(!NormalExitMapSourceExecutableAdmittedV1(mixed,sha4),"mixed_adapter_rejected");
++  mixed=four;mixed.executable_sha256=three.executable_sha256;
++  Require(!NormalExitMapSourceExecutableAdmittedV1(mixed,sha3),"mixed_executable_rejected");
++  return 7;
++}
++int main(int command_argc,char **command_argv) {
++  const auto identity_cases=CheckExecutableIdentity();
++  if(command_argc==2 && std::string_view(command_argv[1])=="--executable-identity-only") {
++    std::cout<<"{\"status\":\"PASS\",\"executable_identity_cases\":"<<identity_cases<<
++        ",\"game_process_or_file_operations\":0}\n";
++    return 0;
++  }
++  if(command_argc!=1) return 2;
+   const std::array<std::wstring_view,5> actual_r8{{
+   L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+   L"-debug_mode",
+@@ -81,6 +110,6 @@ int main() {
+   Check({exe,dir,L"-skip-save"},false,"unknown_save_policy_flag");
+   Check({exe,dir,L"-loadsave=one",L"-debug_mode",L"-gdpr-compliant",L"-unknown"},false,"too_many_arguments");
+   std::cout << "{\"status\":\"PASS\",\"cases\":" << checked <<
+-      ",\"actual_r8_argv_and_windows_decoder\":true,\"output_unchanged_on_reject\":true,\"game_calls\":0}\n";
++      ",\"actual_r8_argv_and_windows_decoder\":true,\"output_unchanged_on_reject\":true,\"executable_identity_cases\":"<<identity_cases<<",\"game_calls\":0}\n";
+   return 0;
+ }

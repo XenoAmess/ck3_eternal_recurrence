@@ -110,7 +110,7 @@ bool Current(NormalExitMapContextV1 &ctx,const MainThreadQueryMailboxV1 &mailbox
     ZhongguoScoreboardActionDispatchEnvironmentV1 &dispatch,Census &census) {
   game::Snapshot snapshot{}; bool stock=false; std::string reason;
   return Owner(ctx,mailbox,stamp) && Process(ctx.request) && Frame(ctx,stamp,snapshot) && Pins(env,dispatch) &&
-      VerifyNormalExitMapSourcesV1(ctx.request.source_inventory_sha256,stock,reason) && stock && ReadCensus(env,dispatch,census);
+      VerifyNormalExitMapSourcesV1(ctx.request.source_inventory_sha256,ctx.game->descriptor(),stock,reason) && stock && ReadCensus(env,dispatch,census);
 }
 bool Signature(NormalExitMapContextV1 &ctx,const MainThreadExecutionStampV1 &stamp,const Census &census) {
   auto &session=*ctx.session;
@@ -205,7 +205,7 @@ bool ExecuteNormalExitMapV1(NormalExitMapContextV1 &ctx,MainThreadQueryMailboxV1
         session.process_creation_filetime_100ns!=ctx.request.expected_process_creation_filetime_100ns)
       return reject("persistent_claim_process_binding_changed");
     if(!Pins(env,dispatch)) return reject("exact_gui_code_pins_changed"); out.source_abi_pins_verified=true;
-    if(!VerifyNormalExitMapSourcesV1(ctx.request.source_inventory_sha256,out.stock_files_verified,out.reason)) return true;
+    if(!VerifyNormalExitMapSourcesV1(ctx.request.source_inventory_sha256,descriptor,out.stock_files_verified,out.reason)) return true;
     out.loaded_source_binding_verified=true;
     game::Snapshot before{};
     if(!Frame(ctx,stamp,before)) return reject("fresh_alive_paused_map_frame_changed"); out.frame_verified=true;

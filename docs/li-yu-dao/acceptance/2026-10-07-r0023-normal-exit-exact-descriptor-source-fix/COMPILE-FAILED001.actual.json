@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+    "/nologo",
+    "/std:c++20",
+    "/EHsc",
+    "/utf-8",
+    "/W4",
+    "/WX",
+    "/O2",
+    "/MD",
+    "/DWIN32_LEAN_AND_MEAN",
+    "/DNOMINMAX",
+    "/IC:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\include",
+    "C:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_source_v1.cpp",
+    "C:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\tests\\normal_exit_map_launch_arguments_v1_test.cpp",
+    "/Fe:C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-001\\normal_exit_source_executable_identity_fixture.exe",
+    "/Fo:C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-001\\objects\\",
+    "/link",
+    "/INCREMENTAL:NO",
+    "bcrypt.lib",
+    "shell32.lib"
+  ],
+  "cwd": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-001",
+  "started_at_utc": "2026-10-07T14:16:36.912765+00:00",
+  "ended_at_utc": "2026-10-07T14:16:56.969853+00:00",
+  "exit_code": 2,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-001\\compile.stdout.raw",
+    "bytes": 3082,
+    "sha256": "e62b1932efebc466813e9fb51dec6f890c68c0403be5333178cc8aac06e36451"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-001\\compile.stderr.raw",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

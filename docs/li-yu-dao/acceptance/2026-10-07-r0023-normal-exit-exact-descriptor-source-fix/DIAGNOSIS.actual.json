@@ -1,0 +1,62 @@
+{
+  "schema": "lyd.r23.normal-exit-inventory-executable-mismatch-diagnosis.v1",
+  "status": "SOURCE_PROVEN_NATIVE_SINGLE_BUILD_LITERAL_REJECTS_CORRECT_ACTUAL4_INVENTORY",
+  "recorded_at_utc": "2026-10-07T14:07:50.370105+00:00",
+  "input_refs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-023\\mcp-client-002\\0004-r23-007-normal-exit-readonly.native-01.json",
+      "bytes": 36164,
+      "sha256": "f21082b36c1d8d4f1170ca2f8ea089967b60f81eb7224a1554fc1b03f46aac2e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-023\\userdir\\normal-exit-source-inventory-v1.json",
+      "bytes": 23870,
+      "sha256": "96d32b731b7e6bf92aa0cbc04307eb92b3eed4c4347034ac8fa9c8e8f1fc7a97"
+    },
+    {
+      "path": "C:\\lr23s1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_source_v1.cpp",
+      "bytes": 19228,
+      "sha256": "7e6ad9dac329838fca84f1b81790f6a5737d4a44475edf61cbdff68868267c2d"
+    },
+    {
+      "path": "C:\\lr23s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_source_inventory_v1.py",
+      "bytes": 9114,
+      "sha256": "3ef26629e78cde28bb0affcc9f807a0a16b3db4ac41d8c1fa7f198f44727ada2"
+    },
+    {
+      "path": "C:\\lr23s1\\tools\\build_normal_exit_source_inventory_v1.py",
+      "bytes": 4621,
+      "sha256": "4c9cd8f950fc0b961816ab99a55fa020931e0bb27f5fb4979ba844d917e8a260"
+    }
+  ],
+  "actual_inventory_source_executable": {
+    "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "native_verifier_expected_executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "actual_reason": "source_inventory_executable_binding_changed",
+  "source_abi_pins_verified": true,
+  "stock_files_verified": false,
+  "native_dispatch_invoked": false,
+  "Python_builder_and_verifier_bind_actual_file_and_guard": true,
+  "honest_Python_only_metadata_hot_repair_available": false,
+  "next_minimal_source_route": "Bind native source verifier expected executable identity to the already exact admitted .3/.4 ctx.game.descriptor while preserving inventory reference SHA, actual image path, stock and mod checks. Requires fresh native binary and later qualified cold; not executed.",
+  "main_export_inventory_native_or_process_mutated": false,
+  "SDK_game_OS_queries_or_saved_body_reads": false,
+  "typed_exit_or_business_credit": null,
+  "source_fragment": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-inventory-executable-diagnosis-20261007-001\\ACTUAL-NATIVE-EXE-GATE.source.txt",
+    "bytes": 742,
+    "sha256": "fba2bc9024bf56533f0c4e521fd4acf70e3b443d1086e68a5ad59c4c14e144d9"
+  },
+  "preserved_native": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-inventory-executable-diagnosis-20261007-001\\native.original.actual.json",
+    "bytes": 36164,
+    "sha256": "f21082b36c1d8d4f1170ca2f8ea089967b60f81eb7224a1554fc1b03f46aac2e"
+  },
+  "preserved_inventory": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-inventory-executable-diagnosis-20261007-001\\inventory.original.actual.json",
+    "bytes": 23870,
+    "sha256": "96d32b731b7e6bf92aa0cbc04307eb92b3eed4c4347034ac8fa9c8e8f1fc7a97"
+  }
+}

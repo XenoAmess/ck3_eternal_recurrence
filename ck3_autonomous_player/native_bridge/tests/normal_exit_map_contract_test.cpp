@@ -1,5 +1,6 @@
 #include "xar_bridge/normal_exit_map_v1.hpp"
 #include "xar_bridge/normal_exit_map_source_v1.hpp"
+#include "xar_bridge/ck3_12003.hpp"
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -23,8 +24,9 @@ int main(int argc,char **argv) {
     if(!session.claimed[1].compare_exchange_strong(first,true) || session.claimed[2].load()) return 5;
     std::string digest,reason; bool stock=true;
     if(!NormalExitMapSha256V1("abc",digest) || digest!="ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad") return 6;
-    if(VerifyNormalExitMapSourcesV1("",stock,reason) || stock || reason!="source_inventory_reference_missing") return 7;
-    if(VerifyNormalExitMapSourcesV1(std::string(64,'a'),stock,reason) || stock || reason!="actual_launch_userdir_contract_unsupported") return 8;
+    const xar::game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"",{}};
+    if(VerifyNormalExitMapSourcesV1("",descriptor,stock,reason) || stock || reason!="source_inventory_reference_missing") return 7;
+    if(VerifyNormalExitMapSourcesV1(std::string(64,'a'),descriptor,stock,reason) || stock || reason!="actual_launch_userdir_contract_unsupported") return 8;
     std::cout<<"{\"self_test\":true,\"facts_never_forged\":true,\"claims_survive_query\":true,\"stock_source_missing_rejected\":true}\n";
     return 0;
   }

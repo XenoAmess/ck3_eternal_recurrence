@@ -1,0 +1,299 @@
+{
+  "schema": "lyd.r23.normal-exit-exact-descriptor-source-archive.v1",
+  "status": "LOCAL_SOURCE_AND_FOCUSED_FIXTURE_READY_NOT_PUBLISHED_OR_RUNTIME_QUALIFIED",
+  "base_head": "e728ba6067ea7b8e2438b71d46f54718071c9ca5",
+  "source_rows": [
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/normal_exit_map_source_v1.hpp",
+      "actual_source": {
+        "path": "C:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\normal_exit_map_source_v1.hpp",
+        "bytes": 1402,
+        "sha256": "e1003333c56a49a58bffb9e4907db0ea1932bcb8dadd5a33386e0fe28e7f41aa"
+      },
+      "original_committed": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\preimage-source\\include\\xar_bridge\\normal_exit_map_source_v1.hpp",
+        "bytes": 1123,
+        "sha256": "e013ff47fed282d44726f560b79b6ac36e211e483cbef219c24c0d67193aaa2b"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\source\\include\\xar_bridge\\normal_exit_map_source_v1.hpp",
+        "bytes": 1402,
+        "sha256": "e1003333c56a49a58bffb9e4907db0ea1932bcb8dadd5a33386e0fe28e7f41aa"
+      }
+    },
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/src/normal_exit_map_source_v1.cpp",
+      "actual_source": {
+        "path": "C:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_source_v1.cpp",
+        "bytes": 20272,
+        "sha256": "17f6b5af2adf386db9c03dfb156880a4cea2233981bb901cc1578903d3f36583"
+      },
+      "original_committed": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\preimage-source\\src\\normal_exit_map_source_v1.cpp",
+        "bytes": 19228,
+        "sha256": "7e6ad9dac329838fca84f1b81790f6a5737d4a44475edf61cbdff68868267c2d"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\source\\src\\normal_exit_map_source_v1.cpp",
+        "bytes": 20272,
+        "sha256": "17f6b5af2adf386db9c03dfb156880a4cea2233981bb901cc1578903d3f36583"
+      }
+    },
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/src/normal_exit_map_v1.cpp",
+      "actual_source": {
+        "path": "C:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_v1.cpp",
+        "bytes": 18305,
+        "sha256": "154a8ef294692398aa19f2940912ab45ca0b1ec38524e65b2fa37f449024cd42"
+      },
+      "original_committed": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\preimage-source\\src\\normal_exit_map_v1.cpp",
+        "bytes": 18271,
+        "sha256": "fa2c5d6d8a4ac45163952fd8cd56864a5ca50d7cd223d0648087f837bb9e9bb7"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\source\\src\\normal_exit_map_v1.cpp",
+        "bytes": 18305,
+        "sha256": "154a8ef294692398aa19f2940912ab45ca0b1ec38524e65b2fa37f449024cd42"
+      }
+    },
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/tests/normal_exit_map_contract_test.cpp",
+      "actual_source": {
+        "path": "C:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\tests\\normal_exit_map_contract_test.cpp",
+        "bytes": 4160,
+        "sha256": "3442e5770893dfebd559381b24d1ef6e9d52b2aa3558c2d026e6be0f93608db5"
+      },
+      "original_committed": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\preimage-source\\tests\\normal_exit_map_contract_test.cpp",
+        "bytes": 4002,
+        "sha256": "190fcf081d700de5b8fdbdb10bd1c4cd942b5a645d17ebcdd8cee059640d0b28"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\source\\tests\\normal_exit_map_contract_test.cpp",
+        "bytes": 4160,
+        "sha256": "3442e5770893dfebd559381b24d1ef6e9d52b2aa3558c2d026e6be0f93608db5"
+      }
+    },
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/tests/normal_exit_map_launch_arguments_v1_test.cpp",
+      "actual_source": {
+        "path": "C:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\tests\\normal_exit_map_launch_arguments_v1_test.cpp",
+        "bytes": 6903,
+        "sha256": "2b101423d2fd8cd69370f8aeb8829aec2bd0f01527fbc27abed0fef1075e2419"
+      },
+      "original_committed": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\preimage-source\\tests\\normal_exit_map_launch_arguments_v1_test.cpp",
+        "bytes": 4958,
+        "sha256": "d8d271e7736e996cb7696212e7c218f0f82e16ab1b71ef944180f9f70fa302a0"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\source\\tests\\normal_exit_map_launch_arguments_v1_test.cpp",
+        "bytes": 6903,
+        "sha256": "2b101423d2fd8cd69370f8aeb8829aec2bd0f01527fbc27abed0fef1075e2419"
+      }
+    }
+  ],
+  "raw_files": [
+    {
+      "archive_path": "PATCH.diff",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\PATCH.diff",
+        "bytes": 11518,
+        "sha256": "ba750c1db3f09b1b68276883f23fdfbdb081e4b4739892d5ac676f938dd4e94c"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\PATCH.diff",
+        "bytes": 11518,
+        "sha256": "ba750c1db3f09b1b68276883f23fdfbdb081e4b4739892d5ac676f938dd4e94c"
+      }
+    },
+    {
+      "archive_path": "SOURCE-ONLY-CHECKS.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\SOURCE-ONLY-CHECKS.actual.json",
+        "bytes": 502,
+        "sha256": "054486ff13ee99628ec64aeab1464227008be89c2cfc871abed261f72959a60e"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\SOURCE-ONLY-CHECKS.actual.json",
+        "bytes": 502,
+        "sha256": "054486ff13ee99628ec64aeab1464227008be89c2cfc871abed261f72959a60e"
+      }
+    },
+    {
+      "archive_path": "DIAGNOSIS.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-inventory-executable-diagnosis-20261007-001\\RESULT.actual.json",
+        "bytes": 3384,
+        "sha256": "3dc88738fb0bea643618ee6c3982d778fa42a9f1ef932984197bad5a979f4d49"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\DIAGNOSIS.actual.json",
+        "bytes": 3384,
+        "sha256": "3dc88738fb0bea643618ee6c3982d778fa42a9f1ef932984197bad5a979f4d49"
+      }
+    },
+    {
+      "archive_path": "ORIGINAL-NATIVE.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-inventory-executable-diagnosis-20261007-001\\native.original.actual.json",
+        "bytes": 36164,
+        "sha256": "f21082b36c1d8d4f1170ca2f8ea089967b60f81eb7224a1554fc1b03f46aac2e"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\ORIGINAL-NATIVE.actual.json",
+        "bytes": 36164,
+        "sha256": "f21082b36c1d8d4f1170ca2f8ea089967b60f81eb7224a1554fc1b03f46aac2e"
+      }
+    },
+    {
+      "archive_path": "ORIGINAL-INVENTORY.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-inventory-executable-diagnosis-20261007-001\\inventory.original.actual.json",
+        "bytes": 23870,
+        "sha256": "96d32b731b7e6bf92aa0cbc04307eb92b3eed4c4347034ac8fa9c8e8f1fc7a97"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\ORIGINAL-INVENTORY.actual.json",
+        "bytes": 23870,
+        "sha256": "96d32b731b7e6bf92aa0cbc04307eb92b3eed4c4347034ac8fa9c8e8f1fc7a97"
+      }
+    },
+    {
+      "archive_path": "FOCUSED-NATIVE.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-002\\RESULT.actual.json",
+        "bytes": 4746,
+        "sha256": "fe701ccc56a7b36ea26a00bc71aef933daa1df7fd4c4fc3b32c4cfaf004a3c59"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\FOCUSED-NATIVE.actual.json",
+        "bytes": 4746,
+        "sha256": "fe701ccc56a7b36ea26a00bc71aef933daa1df7fd4c4fc3b32c4cfaf004a3c59"
+      }
+    },
+    {
+      "archive_path": "COMPILE.stdout.txt",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-002\\compile.stdout.raw",
+        "bytes": 94,
+        "sha256": "1cd274051df8e8f7830f979c55b77b47c3a253a5f4bacafe5eab5e04ed1e2357"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\COMPILE.stdout.txt",
+        "bytes": 94,
+        "sha256": "1cd274051df8e8f7830f979c55b77b47c3a253a5f4bacafe5eab5e04ed1e2357"
+      }
+    },
+    {
+      "archive_path": "COMPILE.stderr.txt",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-002\\compile.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\COMPILE.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "FOCUSED.stdout.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-002\\fixture.stdout.raw",
+        "bytes": 85,
+        "sha256": "83a27136a565400e1bca30c13e34aa03b210b5d5ad0e6568b9ed0dd58811e407"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\FOCUSED.stdout.json",
+        "bytes": 85,
+        "sha256": "83a27136a565400e1bca30c13e34aa03b210b5d5ad0e6568b9ed0dd58811e407"
+      }
+    },
+    {
+      "archive_path": "FOCUSED.stderr.txt",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-002\\fixture.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\FOCUSED.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "COMPILE-FAILED001.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-001\\compile.RESULT.actual.json",
+        "bytes": 1759,
+        "sha256": "a18ed909c0f0319bd25035a2de4b73999a5decc22ed1ae863c9e295eea35cadc"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\COMPILE-FAILED001.actual.json",
+        "bytes": 1759,
+        "sha256": "a18ed909c0f0319bd25035a2de4b73999a5decc22ed1ae863c9e295eea35cadc"
+      }
+    },
+    {
+      "archive_path": "COMPILE-FAILED001.stdout.txt",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-001\\compile.stdout.raw",
+        "bytes": 3082,
+        "sha256": "e62b1932efebc466813e9fb51dec6f890c68c0403be5333178cc8aac06e36451"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\COMPILE-FAILED001.stdout.txt",
+        "bytes": 3082,
+        "sha256": "e62b1932efebc466813e9fb51dec6f890c68c0403be5333178cc8aac06e36451"
+      }
+    },
+    {
+      "archive_path": "COMPILE-FAILED001.stderr.txt",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-001\\compile.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\COMPILE-FAILED001.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "DEFENDER-PREPARATION-FAILED.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\defender-001\\RESULT.actual.json",
+        "bytes": 1942,
+        "sha256": "8767d29d3a185b373b1dfa218abcfb848f23b4d3d4f6c06f3531f503a6db10f7"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\DEFENDER-PREPARATION-FAILED.actual.json",
+        "bytes": 1942,
+        "sha256": "8767d29d3a185b373b1dfa218abcfb848f23b4d3d4f6c06f3531f503a6db10f7"
+      }
+    },
+    {
+      "archive_path": "DEFENDER-PREPARATION-FAILED.stderr.txt",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\defender-001\\failure.stderr.raw",
+        "bytes": 806,
+        "sha256": "dcf73c6dd244bdc0618b4547ca69dd374fd9c85cc095eabedeb146fb1bb15fc5"
+      },
+      "archive_ref": {
+        "path": "C:\\lr23nw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0023-normal-exit-exact-descriptor-source-fix\\DEFENDER-PREPARATION-FAILED.stderr.txt",
+        "bytes": 806,
+        "sha256": "dcf73c6dd244bdc0618b4547ca69dd374fd9c85cc095eabedeb146fb1bb15fc5"
+      }
+    }
+  ],
+  "first_compile_failure_preserved": true,
+  "fixture_pass_cases": 7,
+  "Defender_registration_verified": false,
+  "SDK_game_process_inventory_or_main_mutated": false,
+  "typed_exit_or_business_credit": null
+}

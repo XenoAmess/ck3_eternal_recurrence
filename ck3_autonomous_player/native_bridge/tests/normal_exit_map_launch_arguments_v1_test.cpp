@@ -1,4 +1,6 @@
 #include "xar_bridge/normal_exit_map_source_v1.hpp"
+#include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 #include <windows.h>
 #include <shellapi.h>
 #include <array>
@@ -21,7 +23,34 @@ static void Check(std::vector<std::wstring_view> args,bool accept,const char *na
   if(!actual) Require(output.userdir==std::filesystem::path(L"C:/sentinel") && output.load_save_key==L"unchanged","rejected_output_unchanged");
   ++checked;
 }
-int main() {
+static unsigned CheckExecutableIdentity() {
+  using xar::ck3_12003::NormalExitMapSourceExecutableAdmittedV1;
+  const xar::game::AdapterDescriptor three{xar::ck3_12003::kAdapterId,
+      xar::ck3_12003::kGameVersion,xar::ck3_12003::kExecutableSha256,"",{}};
+  const xar::game::AdapterDescriptor four{xar::ck3_12004::kAdapterId,
+      xar::ck3_12004::kGameVersion,xar::ck3_12004::kExecutableSha256,"",{}};
+  constexpr std::string_view sha3="94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6";
+  constexpr std::string_view sha4="98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518";
+  Require(NormalExitMapSourceExecutableAdmittedV1(three,sha3),"exact3_inventory_digest");
+  Require(NormalExitMapSourceExecutableAdmittedV1(four,sha4),"exact4_inventory_digest");
+  Require(!NormalExitMapSourceExecutableAdmittedV1(three,sha4),"exact3_current4_inventory_rejected");
+  Require(!NormalExitMapSourceExecutableAdmittedV1(four,sha3),"exact4_previous3_inventory_rejected");
+  auto unknown=four;unknown.game_version="1.20.0.5";
+  Require(!NormalExitMapSourceExecutableAdmittedV1(unknown,sha4),"unknown_version_rejected");
+  auto mixed=four;mixed.adapter_id=three.adapter_id;
+  Require(!NormalExitMapSourceExecutableAdmittedV1(mixed,sha4),"mixed_adapter_rejected");
+  mixed=four;mixed.executable_sha256=three.executable_sha256;
+  Require(!NormalExitMapSourceExecutableAdmittedV1(mixed,sha3),"mixed_executable_rejected");
+  return 7;
+}
+int main(int command_argc,char **command_argv) {
+  const auto identity_cases=CheckExecutableIdentity();
+  if(command_argc==2 && std::string_view(command_argv[1])=="--executable-identity-only") {
+    std::cout<<"{\"status\":\"PASS\",\"executable_identity_cases\":"<<identity_cases<<
+        ",\"game_process_or_file_operations\":0}\n";
+    return 0;
+  }
+  if(command_argc!=1) return 2;
   const std::array<std::wstring_view,5> actual_r8{{
   L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
   L"-debug_mode",
@@ -81,6 +110,6 @@ int main() {
   Check({exe,dir,L"-skip-save"},false,"unknown_save_policy_flag");
   Check({exe,dir,L"-loadsave=one",L"-debug_mode",L"-gdpr-compliant",L"-unknown"},false,"too_many_arguments");
   std::cout << "{\"status\":\"PASS\",\"cases\":" << checked <<
-      ",\"actual_r8_argv_and_windows_decoder\":true,\"output_unchanged_on_reject\":true,\"game_calls\":0}\n";
+      ",\"actual_r8_argv_and_windows_decoder\":true,\"output_unchanged_on_reject\":true,\"executable_identity_cases\":"<<identity_cases<<",\"game_calls\":0}\n";
   return 0;
 }

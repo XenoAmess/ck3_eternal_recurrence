@@ -1,0 +1,20 @@
+normal_exit_map_source_v1.cpp
+normal_exit_map_launch_arguments_v1_test.cpp
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(66): error C2082: 形参“argc”的重定义
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(67): error C2082: 形参“argv”的重定义
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(71): error C2679: 二元“=”: 没有找到接受“char *”类型的右操作数的运算符(或没有可接受的转换)
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\__msvc_string_view.hpp(1515): note: 可能是“std::basic_string_view<wchar_t,std::char_traits<wchar_t>> &std::basic_string_view<wchar_t,std::char_traits<wchar_t>>::operator =(const std::basic_string_view<wchar_t,std::char_traits<wchar_t>> &) noexcept”
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(71): note: “std::basic_string_view<wchar_t,std::char_traits<wchar_t>> &std::basic_string_view<wchar_t,std::char_traits<wchar_t>>::operator =(const std::basic_string_view<wchar_t,std::char_traits<wchar_t>> &) noexcept”: 无法将参数 2 从“char *”转换为“const std::basic_string_view<wchar_t,std::char_traits<wchar_t>> &”
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(71): note: 原因如下: 无法从“char *”转换为“const std::basic_string_view<wchar_t,std::char_traits<wchar_t>>”
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(71): note: “std::basic_string_view<wchar_t,std::char_traits<wchar_t>>::basic_string_view”: 没有重载函数可以转换所有参数类型
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\__msvc_string_view.hpp(1517): note: 可能是“std::basic_string_view<wchar_t,std::char_traits<wchar_t>>::basic_string_view(const wchar_t *const ) noexcept”
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(71): note: “std::basic_string_view<wchar_t,std::char_traits<wchar_t>>::basic_string_view(const wchar_t *const ) noexcept”: 无法将参数 1 从“char *”转换为“const wchar_t *const ”
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(71): note: 指向的类型不相关; 转换需要 reinterpret_cast、C 样式强制转换或带圆括号的函数样式强制转换
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\__msvc_string_view.hpp(1535): note: 或    “std::basic_string_view<wchar_t,std::char_traits<wchar_t>>::basic_string_view(_Iter,_Sent) noexcept(<expr>)”
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(71): note: 尝试匹配参数列表“(char *)”时
+C:\lr23nw1\ck3_autonomous_player\native_bridge\tests\normal_exit_map_launch_arguments_v1_test.cpp(71): note: 尝试匹配参数列表“(_Ty, char *)”时
+        with
+        [
+            _Ty=std::wstring_view
+        ]
+正在生成代码...

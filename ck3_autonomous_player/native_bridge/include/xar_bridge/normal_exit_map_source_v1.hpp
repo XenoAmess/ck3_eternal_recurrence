@@ -18,8 +18,13 @@ struct NormalExitMapLaunchArgumentsV1 {
 bool ParseNormalExitMapLaunchArgumentsV1(std::span<const std::wstring_view> arguments,
     NormalExitMapLaunchArgumentsV1 &output) noexcept;
 bool NormalExitMapSha256V1(std::string_view bytes, std::string &digest) noexcept;
+// Pure exact descriptor/inventory digest join; no process or file operations.
+bool NormalExitMapSourceExecutableAdmittedV1(
+    const game::AdapterDescriptor &descriptor,
+    std::string_view inventory_executable_sha256) noexcept;
 // Reads only the fixed manifest below the actual launch -userdir. No protocol
 // path, arbitrary function/address, or caller-supplied verified flag is accepted.
 bool VerifyNormalExitMapSourcesV1(std::string_view inventory_sha256,
+    const game::AdapterDescriptor &descriptor,
     bool &stock_verified, std::string &reason) noexcept;
 } // namespace xar::ck3_12003

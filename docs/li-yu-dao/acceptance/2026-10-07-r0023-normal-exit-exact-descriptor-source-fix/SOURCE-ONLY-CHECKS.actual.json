@@ -1,0 +1,10 @@
+{
+  "schema": "lyd.r23.normal-exit-descriptor-surgical-source-checks.v1",
+  "base_head": "e728ba6067ea7b8e2438b71d46f54718071c9ca5",
+  "actual_image_path_gate_preserved": true,
+  "all_following_settings_dlc_mod_stock_checks_exact_source_equal": true,
+  "both_runtime_calls_bind_current_game_descriptor": true,
+  "identity_join_uses_existing_exact_GUI_version_SHA_guard_and_adapter_branch": true,
+  "schema_GUI_pins_actions_claims_or_inventory_edited": false,
+  "seven_new_focused_cases": 7
+}

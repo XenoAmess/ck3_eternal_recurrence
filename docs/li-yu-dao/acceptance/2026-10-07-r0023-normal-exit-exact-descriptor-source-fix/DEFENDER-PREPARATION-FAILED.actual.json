@@ -1,0 +1,41 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "status": "settings_failed",
+  "stage": "actual-successful-command-manifest-construction",
+  "method": "not-called; existing helper rejected actual declared MSVC /Fe: output operand",
+  "error_type": "ValueError",
+  "error": "MSVC output operand must be an explicit absolute file path",
+  "actual_compiler_argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+    "/nologo",
+    "/std:c++20",
+    "/EHsc",
+    "/utf-8",
+    "/W4",
+    "/WX",
+    "/O2",
+    "/MD",
+    "/DWIN32_LEAN_AND_MEAN",
+    "/DNOMINMAX",
+    "/IC:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\include",
+    "C:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_source_v1.cpp",
+    "C:\\lr23nw1\\ck3_autonomous_player\\native_bridge\\tests\\normal_exit_map_launch_arguments_v1_test.cpp",
+    "/Fe:C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-002\\normal_exit_source_executable_identity_fixture.exe",
+    "/Fo:C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-002\\objects\\",
+    "/link",
+    "/INCREMENTAL:NO",
+    "bcrypt.lib",
+    "shell32.lib"
+  ],
+  "compiler_exit_code": 0,
+  "exact_executable": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r23-normal-exit-exact-descriptor-source-fix-20261007-001\\focused-002\\normal_exit_source_executable_identity_fixture.exe",
+    "size": 46592,
+    "sha256": "f81b39b62bf55a3e7bd66e3e876c8905000bc4167d6498419efb2f3d65fcdb89"
+  },
+  "WMI_or_broker_called": false,
+  "settings_success_claimed": false,
+  "source_helper_sha256": "a750bb69c738f930050aa1f939fdaa70805d415a7de5ab48a2e6bb08884645e8",
+  "started_at_utc": "2026-10-07T14:20:03.144817+00:00",
+  "ended_at_utc": "2026-10-07T14:20:03.153642+00:00"
+}
