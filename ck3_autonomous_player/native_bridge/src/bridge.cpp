@@ -17954,13 +17954,13 @@ void RunConnectedSession(
                     response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
                     response += request_id;
                     response += "\",\"ok\":true,\"result\":";
-                    response += xar::ck3_11906::SerializeFrontendGameRulesV1(query.result.game_rules);
+                    response += xar::ck3_11906::SerializeFrontendGameRulesV1(query.result.game_rules, query.environment.gui_abi_revision);
                     response += '}';
                   } else if (query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::query_applied_game_rules) {
                     response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
                     response += request_id;
                     response += "\",\"ok\":true,\"result\":";
-                    response += xar::ck3_11906::SerializeFrontendAppliedGameRulesV1(query.result.applied_game_rules);
+                    response += xar::ck3_11906::SerializeFrontendAppliedGameRulesV1(query.result.applied_game_rules, query.environment.gui_abi_revision);
                     response += '}';
                   } else if (query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::query_game_rules_control ||
                              query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::select_game_rule ||
@@ -17970,14 +17970,14 @@ void RunConnectedSession(
                     response += request_id;
                     response += "\",\"ok\":true,\"result\":";
                     if (query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::query_game_rules_control)
-                      response += xar::ck3_11906::SerializeFrontendGameRulesControlV1(query.result.game_rules_control);
+                      response += xar::ck3_11906::SerializeFrontendGameRulesControlV1(query.result.game_rules_control, query.environment.gui_abi_revision);
                     else {
                       const auto kind = query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::select_game_rule
                           ? xar::ck3_11906::FrontendGameRulesMutationKindV1::select
                           : query.operation == xar::ck3_11906::FrontendGuiRouteOperationV1::apply_and_hide_game_rules
                           ? xar::ck3_11906::FrontendGameRulesMutationKindV1::apply_and_hide
                           : xar::ck3_11906::FrontendGameRulesMutationKindV1::hide;
-                      response += xar::ck3_11906::SerializeFrontendGameRulesMutationV1(kind, query.result.game_rules_mutation);
+                      response += xar::ck3_11906::SerializeFrontendGameRulesMutationV1(kind, query.result.game_rules_mutation, query.environment.gui_abi_revision);
                     }
                     response += '}';
 #endif

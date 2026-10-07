@@ -1,6 +1,8 @@
-"""Exact .3 rules selected in the actual CGameRuleInstance, never GUI guesses."""
+"""Exact .3/.4 rules selected in the actual CGameRuleInstance, never GUI guesses."""
 from __future__ import annotations
 import re
+
+from xar_autoplayer.bridge.version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 QUERY_FRONTEND_APPLIED_GAME_RULES_V1_STEP = 'query-frontend-applied-game-rules-v1'
 QUERY_FRONTEND_APPLIED_GAME_RULES_V1_CAPABILITY = 'game.command.' + QUERY_FRONTEND_APPLIED_GAME_RULES_V1_STEP
@@ -11,8 +13,11 @@ _KEY=re.compile(r'[A-Za-z0-9_]{1,96}\Z',re.ASCII)
 def normalize_frontend_applied_game_rules_v1(value: object) -> dict[str, object]:
     if not isinstance(value,dict):
         raise ValueError('applied game rule observation must be an object')
+    build = require_exact_native_build(value.get("game_version"), value.get("executable_sha256"))
+    if build not in (CK3_12003, CK3_12004):
+        raise ValueError("native frontend game rules build is not admitted")
     for key,wanted in {'schema':'frontend_applied_game_rules_v1','schema_version':1,
-            'game_version':'1.20.0.3','executable_sha256':EXE_SHA256,
+            'game_version':build.game_version,'executable_sha256':build.executable_sha256,
             'source':'CGameRuleInstance.selected_settings','backend_id':'native-headless',
             'read_only':True,'uses_ocr':False,'uses_mouse':False,'uses_keyboard':False}.items():
         if type(value.get(key)) is not type(wanted) or value[key]!=wanted:

@@ -104,6 +104,15 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       ck3_11906::kFrontendGuiSelectSupported1066CharacterV1Capability,
       ck3_11906::kFrontendGuiStartSelectedBookmarkV1Capability,
 #endif
+#if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
+      ck3_11906::kFrontendGameRulesV1Capability,
+      ck3_11906::kFrontendOpenGameRulesV1Capability,
+      ck3_11906::kFrontendGameRulesControlV1Capability,
+      ck3_11906::kFrontendSelectGameRuleV1Capability,
+      ck3_11906::kFrontendApplyGameRulesV1Capability,
+      ck3_11906::kFrontendHideGameRulesV1Capability,
+      ck3_11906::kFrontendAppliedGameRulesV1Capability,
+#endif
       "game.command.query-route-contact-horizon-v1-N",
       "game.command.query-actual-contact-scope-v1-N",
       "game.command.query-projected-contact-scope-v1-N",

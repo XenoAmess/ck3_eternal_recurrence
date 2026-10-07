@@ -413,7 +413,7 @@ class PreparedProfileTests(unittest.TestCase):
                 "xar_autoplayer.environment.launcher_identity",
                 return_value=identity,
             ), mock.patch(
-                "xar_autoplayer.environment.build_release.release_source_errors",
+                "build_release.release_source_errors",
                 return_value=[],
             ), mock.patch(
                 "pyautogui.size", return_value=(2560, 1440)

@@ -1,0 +1,79 @@
+{
+  "schema": "lyd.r20.exact-build-checkpoint-reader-source-index.v1",
+  "base_HEAD": "2f5bb0759dbf792865f30c1ec9fba7eee1bce4dc",
+  "status": "SOURCE_AND_INERT_54_TESTS_VERIFIED",
+  "worktree": "C:\\lci20reader1",
+  "source_files": [
+    {
+      "relative": "tools/lyd_i3b_checkpoint_readback/reader/sdk_checkpoint_qualification.py",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\reader\\sdk_checkpoint_qualification.py",
+      "bytes": 19308,
+      "sha256": "e60d1ab940cdd4285afdcb91bd327be6a80c3a2997b6e8b51099e41bea76c2f4"
+    },
+    {
+      "relative": "tools/lyd_i3b_checkpoint_readback/reader/sdk_checkpoint_transition_qualification_v2.py",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\reader\\sdk_checkpoint_transition_qualification_v2.py",
+      "bytes": 20865,
+      "sha256": "208efb59ddfd61db780245ce8368737d99c2f0d69086eb471982606903482997"
+    },
+    {
+      "relative": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\confucian_dto_primitives.py",
+      "bytes": 19316,
+      "sha256": "4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee"
+    },
+    {
+      "relative": "tools/lyd_i3b_checkpoint_readback/reader/sdk_artifact_lineage.py",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\reader\\sdk_artifact_lineage.py",
+      "bytes": 5110,
+      "sha256": "b5451484b6c931dda0301988010526a0afc5d04b943b63e1f1cc2710ffcb81ed"
+    },
+    {
+      "relative": "tools/lyd_i3b_checkpoint_readback/tests/fixtures/inert_sdk_codec.py",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\tests\\fixtures\\inert_sdk_codec.py",
+      "bytes": 19316,
+      "sha256": "4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee"
+    },
+    {
+      "relative": "tools/lyd_i3b_checkpoint_readback/tests/test_sdk_exact_build_pairs.py",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\tests\\test_sdk_exact_build_pairs.py",
+      "bytes": 6159,
+      "sha256": "ca2fd991b59f0b2e97dbcc8b30dc774e902ced3c9b260788f4a2840acb4955c9"
+    }
+  ],
+  "current_codec_source": {
+    "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\confucian_dto_primitives.py",
+    "bytes": 19316,
+    "sha256": "4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee"
+  },
+  "codec_fixture_source": {
+    "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\tests\\fixtures\\inert_sdk_codec.py",
+    "bytes": 19316,
+    "sha256": "4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee"
+  },
+  "current_trusted_primitives_sha256": "4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee",
+  "required_actual_codec_DTO_AST_count": 12,
+  "unchanged_frame_binding_field_count": 7,
+  "tests": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\focused-001\\RESULT.actual.json",
+    "bytes": 754,
+    "sha256": "30459a5114e801666dc1029cc141e8dab8f3ce4e543edbf5f651d0a3f6d6ac17"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\PATCH.diff",
+    "bytes": 17720,
+    "sha256": "2776f59058b2c86909090dfd487c5982448953c9586020df5816d30eeed161b9"
+  },
+  "actual4_title_static_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-native-adapter-review-sourceonly-20261007-001\\titles\\a03\\FINITE-ACTUAL4-MAP.json",
+    "bytes": 119527,
+    "sha256": "5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d"
+  },
+  "schema_names_unchanged": true,
+  "old_history_requalified": false,
+  "SDK_calls": 0,
+  "save_body_reads": 0,
+  "runtime_acceptance": null,
+  "future_final_build_HEAD": null,
+  "future_actual_metadata": null
+}

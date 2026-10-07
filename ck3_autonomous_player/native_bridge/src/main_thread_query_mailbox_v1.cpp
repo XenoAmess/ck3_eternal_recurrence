@@ -1,4 +1,5 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/frontend_gui_route_v1.hpp"
 
 #include <intrin.h>
 
@@ -1901,7 +1902,23 @@ bool ObserveMainThreadPumpAndDrainV1(
   mailbox.executor_succeeded = succeeded;
   mailbox.executed_requests.fetch_add(1, std::memory_order_acq_rel);
   mailbox.completed_sequence.store(sequence, std::memory_order_release);
-  if (!after_ready || !SameExecutionBoundary(before, after)) {
+  // The actual .4 route query observes the frontend without requiring stable
+  // world state. Its owner proof already permits absent/changing game and Jomini.
+  // Production frontend contexts have the typed shape below; offline mailbox
+  // fixtures may supply a synthetic frontend executor with a different context.
+  const auto *frontend_context =
+      frontend_request_queued && !mailbox.offline_fixture
+          ? static_cast<const FrontendGuiRouteMailboxContextV1 *>(context)
+          : nullptr;
+  const bool actual4_route_query = frontend_context != nullptr &&
+      frontend_context->operation == FrontendGuiRouteOperationV1::query &&
+      frontend_context->environment.gui_abi_revision ==
+          GuiAbiRevisionV1::crozier12004;
+  const bool same_boundary = actual4_route_query
+      ? before.pump_epoch == after.pump_epoch &&
+            SameOwnerVerifiedPumpIdentity(before, after)
+      : SameExecutionBoundary(before, after);
+  if (!after_ready || !same_boundary) {
     ResetConsecutivePausedPumpProof(mailbox);
     ResetConsecutiveOwnerPumpProof(mailbox);
     AddFailure(mailbox, main_thread_query_failure_post_execution_drift);

@@ -1,5 +1,17 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-07 R66：真实exact＋24、独立暂停与保存闭合，编译候选仍分列
+
+R66 sourcebc27b6a6/runtime16从H9635恢复后，[actual native day RESULT](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/post-migration-g2-h9635-one-native-day01/ROOT-ONE-NATIVE-DAY-RESULT.json)记录 **GREEN_ONE_SAVED_NATIVE_DAY**，**53288424→53288448＋24**，同Robert episode的独立paused/map-ready后态与正常H9638保存。可授exact-day **production-live primitive**，不可删除旧＋7 RED或改写receipt的M4 creditfalse；保存天＋1为6005，10流copy/SDK retained独立列出。只需复用小结果metadata，无重复游戏、snapshot/save/Driver读取或hash。
+
+后续source750b/frontend候选的entry17因双production owner歧义在编译前RED，owner18保留两owner、最小5TUs后entry18真实buildexit0/parent16，原RED保留。candidate编译不等于frontend/mod效果或截图实测；M6 retained-observer源码采用也不等于native/Public FIRST或自然prisoner行动成功。本条只沉淀Root已执行结果，无新测试/源码/运行。
+
+## 2026-10-07 R65：FIRST零pump与FINAL执行后漂移要分开保留
+
+一次state02诊断的FIRST `initialboundary-notready/pump0`和FINAL **installedtrue/failure1024=`post_execution_drift`/pump8983/owner_verified7015/executed126/applicationtrue/stamptrue/date53144352/pausedtrue**是不同阶段。FINAL frontend unavailable不能写成未安装/未执行；两阶段均保留，执行计数也不能冒充NewGame/trait/screenshot完成。本次SDL-unobserved解释已被排除，后续只查实际exact4 ResolveRoute/Finder绑定，不扩大无关诊断，不判mod RED。
+
+Root real-test-state-02 cleanup **game exit1/job0/treegone/0CK3**如实记录；这不是game正常exit0。R65诊断日期和泵数不用于原Robert saved-day或G2里程碑信用。本文仅复用Root实际字段，未重跑心跳/游戏或添加测试；原H9635保存与live exact＋24待验状态仍独立。
+
 ## 2026-10-07补记：输入失败、consumer/build与live资格分别记账
 
 Clock修复的Python production unique FIRST **1/1 GREEN**，entry16 native adapter **单CPP编译GREEN**，sourcebc27b6a6/DLL `b4fee188608766ce60c657418eec70794f4b97fa58d922c7202b7772166c814d`；仍需真实独立paused snapshot的date **＋24**，不加live exact-one-day信用。entry15的输入source SHA笔误在编译前失败，不能写成native CPP编译失败；保留原input/harness RED后，entry16按冻结metadata重建成功即可，不重复展开已闭结论。

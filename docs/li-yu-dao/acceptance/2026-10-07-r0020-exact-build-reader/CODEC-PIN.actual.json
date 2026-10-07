@@ -1,0 +1,7 @@
+{
+  "new_trusted_primitives_sha256": "4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee",
+  "actual_12_AST_fixture": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\tests\\fixtures\\inert_sdk_codec.py",
+  "source": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\confucian_dto_primitives.py",
+  "sdk_lineage_updated_pin_only": true,
+  "old_history_changed": false
+}

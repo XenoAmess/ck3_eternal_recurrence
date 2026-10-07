@@ -1,0 +1,216 @@
+{
+  "schema": "lyd.local-ck3-update-resume.archival-facts.v1",
+  "source_observation_utc": "2026-10-07T06:14:29.783269+00:00",
+  "source_release_completed_utc": "2026-10-07T06:14:30.041552+00:00",
+  "documentation_base_HEAD": "ca13dff195c7fbab08fd71b48ae6197de5448b0f",
+  "source_update_result": {
+    "observed_at_utc": "2026-10-07T06:14:29.783269+00:00",
+    "installed_steam_build": "25734779",
+    "new_exe": {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+      "bytes": 101040248,
+      "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    },
+    "manifest": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/appmanifest_1158310.acf",
+      "bytes": 4239,
+      "sha256": "cae2d24d0f7c77a177c26e72931c24393847f5023d697196ca6bfc81a5e9e576"
+    },
+    "before_preserved": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-before-update/BEFORE.actual.json",
+      "bytes": 937,
+      "sha256": "15086d27d462f7c60c72e80ef6acf46d3ffbc6336f1dfc924d69179e7059e00e"
+    },
+    "public_patch_version": "1.20.0.4",
+    "public_patch_version_basis": "exact EXE and build match checked-in 1.20.0.4 adapter; public game runtime display not yet observed",
+    "pe_file_version_caveat": "BEFORE game_file_version 1.0.0.0 is generic PE FileVersion, not CK3 public patch",
+    "main_head": "cee18726fe159d4f4629b37e04e4bad0349b3859",
+    "remote_master": "ca13dff195c7fbab08fd71b48ae6197de5448b0f",
+    "worktree_clean": true,
+    "steam_offline_review": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/FINAL-001/OFFLINE-VISUAL-REVIEW.actual.json",
+      "bytes": 898,
+      "sha256": "958e975b6d843a02dd2a6035668e7bf5ba72deb77fb0d86f96b1a01308b7ad94"
+    },
+    "ck3_process_count": 0,
+    "original_goal_status": "NOT_GREEN",
+    "new_version_native_acceptance": null
+  },
+  "before": {
+    "observed_at_utc": "2026-10-07T06:01:10.750929+00:00",
+    "game_file_version": "1.0.0.0",
+    "installed_build_id": "25652598",
+    "originals": [
+      {
+        "installed_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+        "preserved_path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-before-update/ck3.exe",
+        "bytes": 101039736,
+        "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+      },
+      {
+        "installed_path": "C:/Program Files (x86)/Steam/steamapps/appmanifest_1158310.acf",
+        "preserved_path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-before-update/appmanifest_1158310.acf",
+        "bytes": 4222,
+        "sha256": "0ee01f30d0abae88da34e6404789a188ee22c3a170f2ddec52e4d65af4d53e74"
+      }
+    ],
+    "Steam_mode_changed": false,
+    "game_launched": false
+  },
+  "manifest_fields": {
+    "buildid": "25734779",
+    "StateFlags": "4",
+    "UpdateResult": "0",
+    "BytesToDownload": "5362624",
+    "BytesDownloaded": "5362624",
+    "BytesToStage": "101041657",
+    "BytesStaged": "101041657",
+    "TargetBuildID": "25734779"
+  },
+  "steam_offline_visual_review": {
+    "observed_at_utc": "2026-10-07T06:14:29.775519+00:00",
+    "reviewer": "ROOT",
+    "method": "view_image(original), direct visual review",
+    "image": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/final-offline-frame-001/probe-1/steam-moved.png",
+      "bytes": 1625943,
+      "sha256": "bca221a38a546861ed0153d0ab6f58d38865c9a020303a0873e010fc8d4b37f4"
+    },
+    "steam_offline_text": "离线模式",
+    "desktop_clock_observed": "14:11 2026/10/7",
+    "steam_window_observed_shifted_right": true,
+    "freshness_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/final-offline-frame-001/probe-1/steam-frame-freshness.json",
+      "bytes": 1260,
+      "sha256": "ffdf14aa85a0ba1bad0ae005b4eafe55aa88b9912a983ecae3f1d433a51128c6"
+    },
+    "offline_confirmed": true,
+    "image_dimensions": [
+      1920,
+      1080
+    ]
+  },
+  "release": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "465595b67efa8f72dfc97bc0de218302c75e3bfd"
+      },
+      "last_sequence": 3575,
+      "next_step": "",
+      "pid": 816,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "CK3 build25734779已安装，Steam新鲜图已离线，主树已快进更新，继续原任务",
+      "task_id": "ck3-local-update-20261007-001",
+      "updated_at_utc": "2026-10-07T06:14:30.023076+00:00"
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 3575,
+      "event_id": "3ce858c4a137401894380b0bbb1fb3b3",
+      "timestamp_utc": "2026-10-07T06:14:30.024273+00:00",
+      "kind": "completed",
+      "task_id": "ck3-local-update-20261007-001",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "CK3 build25734779已安装，Steam新鲜图已离线，主树已快进更新，继续原任务",
+      "next_step": "",
+      "resources": [],
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "465595b67efa8f72dfc97bc0de218302c75e3bfd"
+      }
+    }
+  },
+  "release_task_registered_git_context": "465595b67efa8f72dfc97bc0de218302c75e3bfd retained in task; separate final actual main HEAD is cee18726",
+  "process_history": {
+    "lowercase_SHA_register_prewrite_rejected": true,
+    "actual_owner_conflict_proved": false,
+    "old_default_D_bus_recovery_failed": true,
+    "old_HWND_invokes_business_postcondition": false,
+    "mouse001_parameter_rejection_before_input": "ROOT original tool conversation; no recreated external result",
+    "mouse002": {
+      "source_live_dimensions": [
+        1920,
+        1080
+      ],
+      "preview_rect": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "observed_point": [
+        134,
+        59
+      ],
+      "screen_point": [
+        134,
+        59
+      ],
+      "tool_exit_code_from_ROOT_conversation": 0,
+      "wall_time_seconds_from_ROOT_conversation": 0.8159528,
+      "tool_chunk_from_ROOT_conversation": "5c07ad",
+      "external_mapping_JSON": null,
+      "actual_receipt_PNG": "C:\\workspace\\ck3_lyd_runtime_20261004\\ck3-local-update-20261007-001\\offline-menu-click-002.png",
+      "business_offline_postcondition_verified": false
+    },
+    "new_semantic_popup_hwnd": 16581844,
+    "new_steam_hwnd": 24511660,
+    "final_offline_proof": "fresh displacement/pixels + originalPNG ROOT direct review; semantic invocation alone retains business_postcondition false"
+  },
+  "finish_update_direct_tool": {
+    "exit_code_from_ROOT_conversation": 0,
+    "wall_time_seconds_from_ROOT_conversation": 2.5784866,
+    "chunk_from_ROOT_conversation": "a013d6",
+    "external_original_tool_result_file": null,
+    "reconstructed_wrapper": false
+  },
+  "public_game_runtime_version_display_observed": false,
+  "new_R20_run": null,
+  "new_version_runtime_GREEN": null,
+  "formal_new_T_C3_I4_credit": null,
+  "whole_mod_status": "NOT_GREEN",
+  "prior_R19_closed_report": "docs/li-yu-dao/acceptance/2026-10-07-r0019-465595b-closed-055142/CLOSED-AND-UPGRADE-HANDOFF-20261007-055142.md",
+  "work_estimate": {
+    "prior_75_percent_means": "work amount estimate, not pass rate",
+    "tentative_schedule": "10/7 evening I3B/cold; 10/8 C3; 10/9 I4",
+    "conditions": "new1.20.0.4 identity/bind qualification plus actual formal natural NPC approval; reassess after actual qualification"
+  },
+  "excluded_binary_original_refs": [
+    {
+      "installed_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+      "preserved_path": "C:/workspace/ck3_lyd_runtime_20261004/ck3-local-update-20261007-001/installed-before-update/ck3.exe",
+      "bytes": 101039736,
+      "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+      "bytes": 101040248,
+      "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    }
+  ],
+  "archive": {
+    "path": "docs/li-yu-dao/acceptance/2026-10-07-local-update-build25734779/raw-evidence.zip",
+    "bytes": 3281275,
+    "sha256": "1dbab2f2b4fb93a43bb15073580572717a0b21c320155d215a368367c5e8895c",
+    "original_source_count": 47,
+    "unique_payload_count": 38
+  },
+  "documentation_author_actions": {
+    "main_worktree_writes": 0,
+    "SDK_CK3_screen_bus_process_calls": 0,
+    "binary_or_save_body_reads_or_copies": 0,
+    "CI_or_tests_or_builds_rerun": 0
+  }
+}

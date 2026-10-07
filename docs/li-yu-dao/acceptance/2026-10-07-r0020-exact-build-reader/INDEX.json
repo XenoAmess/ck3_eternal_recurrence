@@ -1,0 +1,78 @@
+{
+  "schema": "lyd.r20.reader-build-compatibility-publication.v1",
+  "status": "SOURCE_AND_INERT_TESTS_ONLY",
+  "runtime_acceptance": null,
+  "whole_mod": "NOT_GREEN",
+  "files": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\INDEX.json",
+        "bytes": 4393,
+        "sha256": "ab113c977209d6c36ccce891fbc51adf11f34d3b5c3ff9ba002c507137b68a92"
+      },
+      "archived_relative": "docs/li-yu-dao/acceptance/2026-10-07-r0020-exact-build-reader/SOURCE-INDEX.json",
+      "bytes": 4393,
+      "sha256": "ab113c977209d6c36ccce891fbc51adf11f34d3b5c3ff9ba002c507137b68a92"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\PATCH.diff",
+        "bytes": 17720,
+        "sha256": "2776f59058b2c86909090dfd487c5982448953c9586020df5816d30eeed161b9"
+      },
+      "archived_relative": "docs/li-yu-dao/acceptance/2026-10-07-r0020-exact-build-reader/PATCH.diff",
+      "bytes": 17720,
+      "sha256": "2776f59058b2c86909090dfd487c5982448953c9586020df5816d30eeed161b9"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\PREIMAGE.actual.json",
+        "bytes": 1186,
+        "sha256": "1cef7f03bde699c41a156dd2afa0e3c30c62bb0ab0f5a11793538c2607a3df13"
+      },
+      "archived_relative": "docs/li-yu-dao/acceptance/2026-10-07-r0020-exact-build-reader/PREIMAGE.actual.json",
+      "bytes": 1186,
+      "sha256": "1cef7f03bde699c41a156dd2afa0e3c30c62bb0ab0f5a11793538c2607a3df13"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\CODEC-PIN.actual.json",
+        "bytes": 422,
+        "sha256": "04a2d74c010cdfc30cd7804134af4c15b6451ac3bc68762ecf778fc7cb717941"
+      },
+      "archived_relative": "docs/li-yu-dao/acceptance/2026-10-07-r0020-exact-build-reader/CODEC-PIN.actual.json",
+      "bytes": 422,
+      "sha256": "04a2d74c010cdfc30cd7804134af4c15b6451ac3bc68762ecf778fc7cb717941"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\focused-001\\RESULT.actual.json",
+        "bytes": 754,
+        "sha256": "30459a5114e801666dc1029cc141e8dab8f3ce4e543edbf5f651d0a3f6d6ac17"
+      },
+      "archived_relative": "docs/li-yu-dao/acceptance/2026-10-07-r0020-exact-build-reader/TESTS.actual.json",
+      "bytes": 754,
+      "sha256": "30459a5114e801666dc1029cc141e8dab8f3ce4e543edbf5f651d0a3f6d6ac17"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-exact-build-compatibility-20261007-001\\focused-001\\stderr.raw",
+        "bytes": 8312,
+        "sha256": "c30be7d2af31e68606cd38978a077f40abbf9c1db3f4e475856e6dfc78acc4f7"
+      },
+      "archived_relative": "docs/li-yu-dao/acceptance/2026-10-07-r0020-exact-build-reader/TESTS.stderr.txt",
+      "bytes": 8312,
+      "sha256": "c30be7d2af31e68606cd38978a077f40abbf9c1db3f4e475856e6dfc78acc4f7"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-native-adapter-review-sourceonly-20261007-001\\titles\\a03\\FINITE-ACTUAL4-MAP.json",
+        "bytes": 119527,
+        "sha256": "5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d"
+      },
+      "archived_relative": "docs/li-yu-dao/acceptance/2026-10-07-r0020-exact-build-reader/ACTUAL4-TITLE-MAP.original.json",
+      "bytes": 119527,
+      "sha256": "5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d"
+    }
+  ]
+}

@@ -2,6 +2,24 @@
 from copy import deepcopy
 from types import SimpleNamespace
 CK3_12003=SimpleNamespace(executable_sha256="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6")
+CK3_12004=SimpleNamespace(executable_sha256="98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")
+SUPPORTED_BUILDS={'1.20.0.3':CK3_12003,'1.20.0.4':CK3_12004}
+TITLE_12004_STATIC_INDEX_SHA='5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d'
+
+
+def exact_build_identity(version,image):
+    if (type(version)is not str or version not in SUPPORTED_BUILDS
+            or type(image)is not str or image.upper()!=SUPPORTED_BUILDS[version].executable_sha256):
+        raise ValueError('native exact version/image pair differs')
+    return version,SUPPORTED_BUILDS[version].executable_sha256
+
+
+def snapshot_build_identity(snapshot):
+    hello=snapshot['diagnostics']['hello']
+    identity=exact_build_identity(hello.get('expected_ck3_version'),hello.get('expected_ck3_sha256'))
+    if hello.get('ck3_build_match')is not True or hello.get('game_adapter_id')!='ck3-'+identity[0]+'-msvc-x64':
+        raise ValueError('native exact version/image/adapter tuple differs')
+    return identity
 
 OPERATIONS = {
     'assembly_predicates': ('query-confucian-assembly-predicates-v1',
@@ -56,9 +74,8 @@ def reason(value, required, label):
 
 
 def _common_payload(value, schema, binding):
-    if (value.get('schema')!=schema or value.get('game_version')!='1.20.0.3'
-            or type(value.get('executable_sha256'))is not str
-            or value['executable_sha256'].upper()!=CK3_12003.executable_sha256):
+    exact_build_identity(value.get('game_version'),value.get('executable_sha256'))
+    if value.get('schema')!=schema:
         raise ValueError('native payload exact build/schema differs')
     for name,wanted in (('date_raw',binding['date_raw']),
                         ('played_character_id',binding['played_character_id'])):
@@ -222,6 +239,9 @@ def normalize_title(value,binding):
         'title_laws_index_sha256':'9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60',
         'head_getters_index_sha256':'d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973',
         'faith_reference_identity_offset':8,'title_full_id_offset':16,'faith_typed_fallback_slot_rva':'0x5D1E2E0','runtime_acceptance':None}
+    if value['game_version']=='1.20.0.4':
+        for name in ('title_properties_index_sha256','title_laws_index_sha256','head_getters_index_sha256'):
+            expected[name]=TITLE_12004_STATIC_INDEX_SHA
     if any(type(qualification[name])is not type(wanted)or qualification[name]!=wanted for name,wanted in expected.items()):
         raise ValueError('native exact-current static qualification differs')
     return deepcopy(value)
@@ -231,13 +251,15 @@ def project_native_query(raw,binding,operation):
     if operation not in OPERATIONS:raise ValueError('unsupported Confucian read operation')
     step,domain,backend,nested,schema=OPERATIONS[operation]
     exact(raw,ENVELOPE_KEYS|{nested},'native Confucian readonly envelope')
+    build=exact_build_identity(raw['game_version'],raw['executable_sha256'])
+    backend=backend.replace('ck3-1.20.0.3-','ck3-'+build[0]+'-',1)
     expected={'step':step,'accepted':True,'private_build':True,'read_only':True,'advertised':False,
-        'game_version':'1.20.0.3','domain_key':domain,'backend_id':backend,
+        'game_version':build[0],'domain_key':domain,'backend_id':backend,
         'snapshot_revision':binding['native_revision'],'date_raw':binding['date_raw']}
     if any(type(raw[name])is not type(wanted)or raw[name]!=wanted for name,wanted in expected.items()):
         raise ValueError('native Confucian envelope differs from actual operation/frame')
-    if type(raw['executable_sha256'])is not str or raw['executable_sha256'].upper()!=CK3_12003.executable_sha256:
-        raise ValueError('native Confucian envelope image differs')
+    if exact_build_identity(raw[nested].get('game_version'),raw[nested].get('executable_sha256'))!=build:
+        raise ValueError('native Confucian envelope/payload exact build differs')
     value=(normalize_assembly if operation=='assembly_predicates'else normalize_title)(raw[nested],binding)
     if raw['status']!=('observed'if value['available']else'unavailable'):
         raise ValueError('native Confucian envelope availability differs')
@@ -255,7 +277,3 @@ def normalize_public_query(raw,binding,operation):
     if any(type(raw[name])is not type(wanted)or raw[name]!=wanted for name,wanted in projected.items()):
         raise ValueError('public Confucian read binding or credit changed')
     return deepcopy(raw)
-
-
-def independent_graph_wrapper():
-    return None

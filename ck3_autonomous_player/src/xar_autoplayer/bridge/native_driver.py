@@ -2820,13 +2820,21 @@ class NativeHeadlessGameplayDriver:
     def query_player_prisoner_collection_private_v1(
         self, *, expected_revision: int, ransom_ordinal: int = 0,
         release_option_keys: list[str] | None = None,
+        release_material_target_character_id: int | None = None,
     ) -> dict[str, object]:
         """Unadvertised, paused current-player prisoner ID collection readback."""
         from .player_prisoner_collection_private_transport import (
             query_player_prisoner_collection_private_v1,
         )
 
-        if release_option_keys is None:
+        if release_material_target_character_id is not None:
+            result = query_player_prisoner_collection_private_v1(
+                self, expected_revision=expected_revision, ransom_ordinal=ransom_ordinal,
+                release_option_keys=release_option_keys,
+                release_material_target_character_id=release_material_target_character_id,
+                timeout_seconds=self.command_timeout_seconds,
+            )
+        elif release_option_keys is None:
             result = query_player_prisoner_collection_private_v1(
                 self,
                 expected_revision=expected_revision,

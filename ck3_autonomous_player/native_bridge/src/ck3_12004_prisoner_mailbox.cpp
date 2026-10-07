@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_prisoner_ransom_action.hpp"
 #include "xar_bridge/ck3_12004_prisoner_war_retention.hpp"
+#include "xar_bridge/ck3_12004_prisoner_collection_result.hpp"
 #include "xar_bridge/ck3_12002_prisoner_mailbox.hpp"
 #include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -26,6 +27,9 @@ struct CollectionQuery {
   bridge::PlayerPrisonerCollectionSnapshotV1 collection{};
   std::array<PlayerPrisonerRansomQuoteV1,
       bridge::kPlayerPrisonerMaximumRowsV1> quotes{};
+  std::uint32_t material_target = 0;
+  PrisonerReleaseMaterialOpinionBindings12004 material_bindings{};
+  PrisonerReleaseMaterialOpinion12004 material{};
   bool war_retention = false;
   std::int32_t war_id = -1;
   ck3_12002::PrisonerWarRetentionBindings war_bindings{};
@@ -181,6 +185,12 @@ bool ExecutePlayerPrisonerCollection12004(void *opaque,
           prisoner, query.release_previews[query.ordinal]);
     }
   }
+  if (query.material_target != 0) {
+    bridge::PlayerPrisonerFrameV1 frame{};
+    if (CapturePrisonerFrame(envelope, frame))
+      (void)ReadPrisonerReleaseMaterialOpinion12004(query.material_bindings,
+          access, frame, query.material_target, query.material);
+  }
   (void)ck3_12002::FinishQueryMailbox(*envelope);
   return true;
 }
@@ -256,12 +266,24 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
     failure = "negotiated release preview is not admitted for 1.20.0.4";
     return true;
   }
+  std::uint64_t material_target = 0;
+  if (bridge::JsonUnsignedField(payload, "release_material_target_character_id", material_target)) {
+    if (material_target == 0 || material_target >= UINT32_MAX ||
+        material_target == static_cast<std::uint32_t>(published_core.played_character_id)) {
+      failure = "release material target must be a distinct full character ID";
+      return true;
+    }
+  }
   CollectionQuery query{};
   query.module = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   query.bindings = BindPrisonerRansomImage12004(query.module,
       adapter.descriptor().executable_sha256);
   query.release_bindings = BindPrisonerReleasePreview12004(query.module,
       adapter.descriptor().executable_sha256);
+  query.material_target = static_cast<std::uint32_t>(material_target);
+  if (query.material_target != 0)
+    query.material_bindings = BindPrisonerReleaseMaterialOpinionImage12004(
+        query.module, adapter.descriptor().executable_sha256);
   query.ordinal = ordinal;
   query.envelope.game = &adapter;
   query.envelope.mailbox = &mailbox;
@@ -271,9 +293,11 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
   query.envelope.snapshot_comparison = ck3_12002::QuerySnapshotComparison12002::core_frame;
   if (!RunMailbox(mailbox, query.envelope,
       &ExecutePlayerPrisonerCollection12004, failure)) return true;
-  const auto value = SerializePlayerPrisonerCollectionPrivateV1(query.collection,
-      revision, query.quotes, query.completed, &query.release_previews);
-  if (value.empty()) { failure = "prisoner collection serialization unavailable"; return true; }
+  serialized = SerializePrisonerCollectionCommandResult12004(request_id, step,
+      state.query_sequence + 1, query.envelope.execution_stamp.pump_epoch, revision,
+      query.collection, query.quotes, query.completed, &query.release_previews,
+      query.material_target != 0 ? &query.material : nullptr);
+  if (serialized.empty()) { failure = "prisoner collection serialization unavailable"; return true; }
   ++state.query_sequence;
   state.current_quote.reset();
   state.quote_revision = state.quote_query_sequence = 0;
@@ -283,15 +307,6 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
     state.quote_revision = revision;
     state.quote_query_sequence = state.query_sequence;
   }
-  serialized = ResultPrefix(request_id, step) + ",\"status\":\"" +
-      (query.collection.available ? "available" : "unavailable") +
-      "\",\"query_sequence\":" + std::to_string(state.query_sequence) +
-      ",\"observation_revision\":" +
-      std::to_string(query.envelope.execution_stamp.pump_epoch) +
-      ",\"snapshot_revision\":" + std::to_string(revision) +
-      ",\"player_prisoner_collection\":" + value +
-      ",\"private_build\":true,\"read_only\":true,\"advertised\":false,"
-      "\"backend_id\":\"native-headless\"}}";
   return true;
 }
 
@@ -329,6 +344,7 @@ bool HandlePlayerPrisonerRansom12004(const game::GameAdapter &adapter,
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
   const bool is_submit = step == "submit-player-prisoner-ransom-private-v1";
 #else
+  static_cast<void>(step);
   const bool is_submit = false;
 #endif
   if (!is_submit) return false;

@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "test_sdk_exact_build_pairs",
+    "test_sdk_checkpoint_seam",
+    "test_checkpoint_transition_v2",
+    "-v"
+  ],
+  "cwd": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\tests",
+  "started_at_utc": "2026-10-07T06:43:27.832259+00:00",
+  "completed_at_utc": "2026-10-07T06:43:28.725754+00:00",
+  "exit_code": 0,
+  "inert_fixtures_only": true,
+  "checkpoint_body_reads": 0,
+  "SDK_game_or_process_calls": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "c30be7d2af31e68606cd38978a077f40abbf9c1db3f4e475856e6dfc78acc4f7"
+}
