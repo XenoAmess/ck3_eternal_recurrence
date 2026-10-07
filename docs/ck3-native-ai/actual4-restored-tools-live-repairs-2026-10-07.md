@@ -1,5 +1,11 @@
 # Actual 1.20.0.4 restored-tool live repairs — 2026-10-07
 
+## Latest concrete repair results: entry16 build qualified, exact-day live unqualified
+
+The Clock Python production unique FIRST is **1/1 GREEN**. Entry16 compiled **one native adapter CPP GREEN** from source **`bc27b6a60e7fdeb2b4caabf30ad3bd2ae8c6289b`**, DLL SHA **`b4fee188608766ce60c657418eec70794f4b97fa58d922c7202b7772166c814d`**. Entry15's source-SHA input typo failed before compilation and is preserved as input/harness RED; entry16 regenerated the input from frozen metadata and succeeded. **Live exact+24 remains pending**; no new day or corrected one-day loop is credited from a consumer or compiler result.
+
+The Byzantium R64 runtime actually enabled and mounted the mod, but its first frontend executor was unavailable; NewGame, trait and screenshot control did not occur, so this is not a mod failure. Bookmark/LoadSave/InGame log sources remain unknown. Tracked cleanup is game exit1, owned job exit0, tree gone and0 CK3. R65's one necessary cached-heartbeat diagnosis is not a frontend fix or an867 campaign qualification. The normal H9635 checkpoint and demonstrated overshoot remain the recovery baseline; this documentation update adds no shared-source or runtime work.
+
 ## Latest demonstrated defect: exact-one-day overshoot after the finite migration qualifier
 
 The first real R63 route advance ran **05:23:00–05:23:47 UTC** and returned an exact-one-day error: **53288256→53288424**, seven days instead of one. It was not retried. Independent paused/map-ready response020 confirms Robert alive and own Army218104048 arrived2618 with no remaining route, regular/not in combat; War100663329 is active. Normal save021 recovered **H9635 /104742350B /SHA `2e67b0deaa2ed38487dfe02fd95e6f4d2fde8525dddf4c593ca39e18f9a74357`** in the original ordinary episode, XAR off, unchanged seed. [Root's recovery seal](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9613-title12/operator/ROOT-ACTUAL-H9635-RECOVERY-CHECKPOINT.json) reuses SDK SHA and stat, without reading the save body. Credit is the actual **+7 saved days→6004 /resume2851**, not an exact-day GREEN; natural0,G2 5/8,NW2 2/4 remain unchanged.

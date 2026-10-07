@@ -1,5 +1,11 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-07补记：输入失败、consumer/build与live资格分别记账
+
+Clock修复的Python production unique FIRST **1/1 GREEN**，entry16 native adapter **单CPP编译GREEN**，sourcebc27b6a6/DLL `b4fee188608766ce60c657418eec70794f4b97fa58d922c7202b7772166c814d`；仍需真实独立paused snapshot的date **＋24**，不加live exact-one-day信用。entry15的输入source SHA笔误在编译前失败，不能写成native CPP编译失败；保留原input/harness RED后，entry16按冻结metadata重建成功即可，不重复展开已闭结论。
+
+Byzantium R64的enabled/mounted证明安装加载，首次frontend executor unavailable则只证明控制链尚不可用；未控制NewGame/trait/screenshot，不判mod RED，也不把来源未知的Bookmark/LoadSave/InGame日志当867成功。实际回收game exit1/job0/treegone/0 CK3如实保留。R65一次cached heartbeat仅用于该具体故障诊断，不冒充frontend修复。此补记完全复用Root新结果，无额外运行、截图、源码或body检查。
+
 ## 2026-10-07：exact-one-day必须走native sentinel，保存成功不替代步长验收
 
 实证：R63真实route advance在 **05:23:00–05:23:47 UTC** 要求exact一日，却由raw **53288256→53288424**（每游戏日24 raw，实际＋7天）并返回error；没有rerun。独立020确认已paused/map-ready/Robert alive，Army218104048到达2618；正常021 **H9635** 保存materialized。这两项恢复证据支持记真实新增7个saved days，不能把exact-one-day标GREEN或据此加M4 loop。[Root recovery checkpoint](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9613-title12/operator/ROOT-ACTUAL-H9635-RECOVERY-CHECKPOINT.json)使用stat与已有SDK SHA，不需要重复读取save正文或重hash。

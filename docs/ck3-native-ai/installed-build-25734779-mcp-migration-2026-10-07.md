@@ -1,5 +1,11 @@
 # Installed Steam build 25734779: MCP migration
 
+## Latest repair qualification: Python FIRST GREEN, entry16 build GREEN; live exact day pending
+
+Root confirms the unique Clock Python production **FIRST1/1 GREEN**. Entry16 compiled the native adapter's **one CPP GREEN**, source **`bc27b6a60e7fdeb2b4caabf30ad3bd2ae8c6289b`**, DLL SHA-256 **`b4fee188608766ce60c657418eec70794f4b97fa58d922c7202b7772166c814d`**. Entry15's input-source SHA typo failed before compilation and remains retained; entry16 rebuilt that input from frozen metadata and compiled successfully, without another broad check. These are consumer/build qualifications, **not live exact+24 success**. The saved H9635 seven-day result and exact-one-day RED below remain unchanged; current runtime qualification is still pending, **6004/36524 /resume2851 /natural0 /G2 5/8 /NW2 2/4**.
+
+R64 actually enabled and mounted the Byzantium mod. Its first frontend executor was unavailable, so Root did not control NewGame, traits or the screenshot; **this is not a mod RED**. Bookmark/LoadSave/InGame log sources are unknown and cannot be used to infer a completed867 campaign test. Tracked cleanup records **game exit1 /owned job exit0 /tree gone /0 CK3**. R65 is doing one necessary cached-heartbeat diagnosis, **not a frontend fix or game-test qualification**. Next is that bounded diagnosis and actual exact-day qualification before granting the corresponding live credit. This update changes only this owner's five documentation files frombc27b6a6, with no shared-source change or new test/build/game/SDK/body read; independent English commit awaits Root adoption/push.
+
 ## Latest actual regression: exact-one-day route advanced seven days; H9635 recovered
 
 Root's first real post-migration R63 route advance ran **05:23:00–05:23:47 UTC** and returned an **exact-one-day error**: raw date **53288256→53288424**, delta168 or **7 actual game days**. It was not rerun. The independent response020 is paused/map-ready, native/public frame revisions12/13, Robert alive; own Army218104048 has **ARRIVED at2618**, an empty route, regular state and no current combat. War100663329 remains active. These actual arrival and survival observations do not turn the failed one-day operation into a GREEN exact-day loop or an M4 milestone.
