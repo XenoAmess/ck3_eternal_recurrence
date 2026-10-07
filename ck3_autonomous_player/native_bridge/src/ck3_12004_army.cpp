@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_army_support.hpp"
 #include "xar_bridge/ck3_12004_future_daily_supply_schedule.hpp"
 #include "xar_bridge/ck3_12004_source_derived_next_daily_supply_frame.hpp"
+#include "xar_bridge/ck3_12004_current_unit_new_date_schedule_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_detachment_callback_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_detachment_store_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_character_detachment_inputs.hpp"
@@ -137,6 +138,25 @@ void PopulateClosedCurrentInputs(std::uintptr_t base, ArmyBindings &out) noexcep
   removal.enabled = true;
   removal.lookup = table;
 }
+
+void AppendCurrentUnitNewDateSchedule(
+    const ArmyBindings &bindings,
+    std::vector<game::ArmyStrengthSnapshot> &rows) {
+  if (!bindings.current_unit_new_date_schedule_bindings.enabled || rows.empty()) {
+    return;
+  }
+  const auto inventory = CaptureCurrentUnitNewDateSchedule12004(
+      bindings.current_unit_new_date_schedule_bindings, bindings);
+  for (auto &row : rows) {
+    std::optional<std::uint32_t> carmy_id;
+    if (row.native_carmy_id_observable) {
+      carmy_id = static_cast<std::uint32_t>(row.native_carmy_id);
+    }
+    row.current_unit_new_date_schedule_inputs_v1 =
+        BuildCurrentUnitNewDateScheduleInputs12004(
+            inventory, static_cast<std::uint32_t>(row.army_id), carmy_id);
+  }
+}
 } // namespace
 
 ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
@@ -166,6 +186,8 @@ ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
       BindFutureDailySupplySchedule12004(image_base, executable_sha256);
   result.source_derived_next_daily_supply_frame_bindings =
       BindSourceDerivedNextDailySupplyFrame12004(image_base, executable_sha256);
+  result.current_unit_new_date_schedule_bindings =
+      BindCurrentUnitNewDateSchedule12004(image_base, executable_sha256);
   result.current_detachment_callback_bindings =
       BindCurrentDetachmentCallbackInputs12004(image_base, executable_sha256);
   result.current_detachment_store_bindings =
@@ -197,12 +219,16 @@ bool ReadArmiesForCharacters12004(const ArmyBindings &bindings,
 game::ReadArmyStrengthsResult ReadArmyStrengthsForScope12004(
     const ArmyBindings &bindings, std::span<const ArmyStrengthScope> scope,
     std::vector<game::ArmyStrengthSnapshot> &out) noexcept {
-  return ck3_12002::ReadArmyStrengthsForScope(bindings, scope, out);
+  const auto result = ck3_12002::ReadArmyStrengthsForScope(bindings, scope, out);
+  AppendCurrentUnitNewDateSchedule(bindings, out);
+  return result;
 }
 game::ReadArmyStrengthsResult ReadArmyStrengths12004(
     const ArmyBindings &bindings, const game::Snapshot &world,
     std::vector<game::ArmyStrengthSnapshot> &out) noexcept {
-  return ck3_12002::ReadArmyStrengths(bindings, world, out);
+  const auto result = ck3_12002::ReadArmyStrengths(bindings, world, out);
+  AppendCurrentUnitNewDateSchedule(bindings, out);
+  return result;
 }
 game::ArmyProvinceSupplySnapshot ReadArmyProvinceSupplyForPreview12004(
     const ArmyBindings &bindings, const ck3_12002::MilitaryWorldAccess &access,

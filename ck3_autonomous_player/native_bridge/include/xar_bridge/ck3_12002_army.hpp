@@ -218,6 +218,8 @@ struct ArmyBindings {
   ck3_12004::CurrentCharacterDetachmentBindings12004 current_character_detachment_bindings{};
   ck3_12004::SourceDerivedNextDailySupplyFrameBindings12004
       source_derived_next_daily_supply_frame_bindings{};
+  ck3_12004::CurrentUnitNewDateScheduleBindings12004
+      current_unit_new_date_schedule_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(
