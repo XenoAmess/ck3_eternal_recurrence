@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12003_captured_target_land_supply_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_daily_supply_dispatch_inputs.hpp"
 #include "xar_bridge/ck3_12004_future_daily_supply_schedule.hpp"
+#include "xar_bridge/ck3_12004_source_derived_next_daily_supply_frame.hpp"
 #include "xar_bridge/ck3_12004_current_detachment_callback_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_detachment_store_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_character_detachment_inputs.hpp"
@@ -901,6 +902,12 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       result.future_daily_supply_schedule_inputs_v1 =
           ck3_12004::ReadFutureDailySupplyScheduleInputs12004(
               bindings.future_daily_supply_schedule_bindings, bindings, army, unit);
+      if (bindings.source_derived_next_daily_supply_frame_bindings.enabled) {
+        result.source_derived_next_daily_supply_frame_inputs_v1 =
+            ck3_12004::BuildSourceDerivedNextDailySupplyFrameInputs12004(
+                bindings.source_derived_next_daily_supply_frame_bindings,
+                *result.future_daily_supply_schedule_inputs_v1);
+      }
     }
     if (bindings.current_movement_progress_enabled)
       result.current_movement_progress = MovementProgress(bindings, unit);

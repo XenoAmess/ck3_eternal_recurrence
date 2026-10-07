@@ -41,6 +41,7 @@ from .army_current_combat_roles_phase_inputs_contract import normalize_current_a
 from .army_current_candidate_detachment_mapper_contract import normalize_current_candidate_detachment_mapper_inputs_v1
 from .army_current_detachment_data_contract import normalize_current_detachment_data_inputs_v1
 from .army_future_daily_supply_schedule_contract import normalize_future_daily_supply_schedule_inputs_v1
+from .army_source_derived_next_daily_supply_frame_contract import normalize_source_derived_next_daily_supply_frame_inputs_v1
 from .army_current_detachment_callback_inputs_contract import normalize_current_detachment_callback_inputs_v1
 from .army_current_detachment_store_inputs_contract import normalize_current_detachment_store_inputs_v1
 from .army_current_character_detachment_inputs_contract import normalize_current_character_detachment_inputs_v1
@@ -328,6 +329,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {
 }
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_pre_date_character_prefix_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_condition30_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"source_derived_next_daily_supply_frame_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag20_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_disembark_penalty_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag21_inputs_v1"}
@@ -1961,6 +1963,10 @@ def _normalize_army_strength_row(
     if "future_daily_supply_schedule_inputs_v1" in value:
         result["future_daily_supply_schedule_inputs_v1"] = normalize_future_daily_supply_schedule_inputs_v1(
             value["future_daily_supply_schedule_inputs_v1"],
+            expected_army_id=result["army_id"], expected_carmy_id=result.get("native_carmy_id"))
+    if "source_derived_next_daily_supply_frame_inputs_v1" in value:
+        result["source_derived_next_daily_supply_frame_inputs_v1"] = normalize_source_derived_next_daily_supply_frame_inputs_v1(
+            value["source_derived_next_daily_supply_frame_inputs_v1"],
             expected_army_id=result["army_id"], expected_carmy_id=result.get("native_carmy_id"))
     if "current_month_first_refill_call_inputs_v1" in value:
         result["current_month_first_refill_call_inputs_v1"] = normalize_current_month_first_refill_call_inputs_v1(

@@ -35,7 +35,7 @@ from ..simulation.army_current_flag31_inputs_12003 import project_current_army_f
 from ..simulation.army_current_combat_roles_phase_inputs_12003 import project_current_army_combat_roles_phase_inputs_12003
 from .army_current_candidate_detachment_mapper_builder import build_current_candidate_detachment_mapper_preview
 from .army_current_detachment_data_builder import build_same_input_current_detachment_data_prefix
-from .army_future_daily_supply_schedule_projection import project_future_daily_supply_schedule_v1
+from .army_source_derived_next_daily_supply_frame_projection import project_native_next_daily_supply_schedule_v1
 from .army_current_callback_supply_risk_projection import project_current_callback_supply_risk_v1
 from .army_current_detachment_callback_projection import project_current_detachment_callback_inputs_v1
 from .army_current_detachment_store_projection import project_current_detachment_store_inputs_v1
@@ -4659,7 +4659,7 @@ class GameplayBridgeService:
                 {"army_id": row["army_id"], "projection": build_same_input_current_detachment_data_prefix(row)}
                 for row in selected_rows],
             "same_input_conditional_future_daily_supply_schedule_v1": [
-                {"army_id": row["army_id"], "projection": project_future_daily_supply_schedule_v1(row)}
+                {"army_id": row["army_id"], "projection": project_native_next_daily_supply_schedule_v1(row)}
                 for row in selected_rows],
             "current_callback_supply_risk_v1": [
                 {"army_id": row["army_id"], "projection": project_current_callback_supply_risk_v1(row)}

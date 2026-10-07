@@ -216,6 +216,8 @@ struct ArmyBindings {
   ck3_12004::CurrentDetachmentCallbackBindings12004 current_detachment_callback_bindings{};
   ck3_12004::CurrentDetachmentStoreBindings12004 current_detachment_store_bindings{};
   ck3_12004::CurrentCharacterDetachmentBindings12004 current_character_detachment_bindings{};
+  ck3_12004::SourceDerivedNextDailySupplyFrameBindings12004
+      source_derived_next_daily_supply_frame_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

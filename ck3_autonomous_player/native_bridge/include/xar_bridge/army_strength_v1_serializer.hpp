@@ -10,6 +10,7 @@
 #include "xar_bridge/army_captured_target_land_supply_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_current_daily_supply_dispatch_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_future_daily_supply_schedule_serializer_v1.hpp"
+#include "xar_bridge/army_source_derived_next_daily_supply_frame_serializer_v1.hpp"
 #include "xar_bridge/army_current_detachment_callback_inputs_serializer_v1.hpp"
 #include "xar_bridge/army_current_detachment_store_inputs_serializer_v1.hpp"
 #include "xar_bridge/army_current_character_detachment_inputs_serializer_v1.hpp"
@@ -653,6 +654,12 @@ inline void AppendArmyStrengthV1(
     result += ",\"future_daily_supply_schedule_inputs_v1\":";
     AppendArmyFutureDailySupplyScheduleInputsV1(
         result, *strength.future_daily_supply_schedule_inputs_v1, number, append_json_string);
+  }
+  if (strength.source_derived_next_daily_supply_frame_inputs_v1) {
+    result += ",\"source_derived_next_daily_supply_frame_inputs_v1\":";
+    AppendArmySourceDerivedNextDailySupplyFrameInputsV1(
+        result, *strength.source_derived_next_daily_supply_frame_inputs_v1,
+        number, append_json_string);
   }
   if (strength.current_detachment_callback_inputs_v1) {
     result += ",\"current_detachment_callback_inputs_v1\":";
