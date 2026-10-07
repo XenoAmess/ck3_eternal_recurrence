@@ -1,0 +1,105 @@
+# Current callback supply risk — 1.20.0.4 source and query seam
+
+Source plan sealed on 2026-10-07 at 15:51:49 Asia/Shanghai. This package uses CK3
+1.20.0.4 / Steam25734779 / frozen EXE
+`98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`.
+It reuses cached source and existing Army query inputs. No EXE bytes, game, SDK,
+build, test or prior fixture wire are read or executed by this package.
+
+The immediate decision value is whether a successful supply callback would move
+the captured Army into a positive supply-loss state. A standing zero attrition
+value cannot answer that question. Calendar prediction and actual casualty
+attribution remain separate; the known normal one-day action is unaffected.
+
+## Actual current build source
+
+The support migration ledger closes these whole local bodies and their direct
+operands. Its complete normalized-span equality and local control-topology
+equality are reused, rather than assuming a fixed RVA shift.
+
+| Actual entrance | Held source | Relevant production behavior |
+| --- | --- | --- |
+| `2A9A570` | `support_2A9A590-DETAIL.json`, 1539 B | Selects `uint32(GameState+9C)%30`; walks the actual pointer bucket in stored order, including repeats. `2A9AB46` calls **24E3410** with the actual Army pointer and address of GameState+8. |
+| `24E4CF0` | `support_24E4D10-DETAIL.json`, 463 B | Sets Army byte22=1 before admission. Rejects Unit170==3, combat, gathering, Army5C!=0, or signed wrapped `(passedDate.low32-Army190)/24 <= loadedGrace`. On success stores the full passed date at188, obtains actual current-Province rate24E5180, adds it once to stock180, and clamps the signed result to0/current capacity2C53BF0. There is no division of the rate by30. |
+| `24E2E30` / `24E32C0` | Adopted support getter closures | Current final attrition fraction and current supply-only integer budget are observations at the captured stock. They do not by themselves provide a post-updater stock budget. |
+| `24E3410` | Direct call proven; own body **NOTHELD** | Necessary callback-to-updater and post-updater budget ordering must be mapped before publishing this new exact4 conditional callback value. |
+
+The first two cache files are under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/commander-supply/support-first01/`.
+The authoritative closure is
+`ck3_autonomous_player/native_bridge/research/ck3_1_20_0_4_army_support.json`.
+The dates owner independently confirms24E3410 is not in its held source package.
+
+```mermaid
+flowchart TD
+  Q[Same paused Army query: current stock/rate/capacity/grace and loaded tables] --> U[24E4CF0 source-defined current callback admission]
+  D[2A9A570 actual stored D modulo30] --> P[Observed pointer bucket: preserve every occurrence]
+  P --> C[24E3410 actual call at2A9AB46]
+  C -. own exact4 body NOTHELD .-> O[Verify updater then supply budget read order]
+  U --> S[One signed Q64 rate ADD; lower0 and current-capacity clamp]
+  S --> B[Loaded stock state plus actual commander/fleet component and eligible current]
+  O -. source prerequisite .-> B
+  B --> V[Conditional current-callback stock crossing and integer supply budget]
+  N[Current date/day and all30 bucket observations] --> F[Separately supplied prospective date and stored D]
+  F -. future stored D writer NOTHELD .-> T[Actual next-day callback selection]
+  R[Detachment2632D90/2632DD0 after-reset boundary] -. no supplied future supply frame .-> V
+```
+
+## Reuse and the smallest required closure
+
+`future_daily_supply_schedule_inputs_v1` already observes all30 phases and subject
+pointer occurrence positions. Its owner retains that producer, calendar/date
+work, current detachment callback/store and Character families. AfterReset refers
+to the2632D90→2632DD0 detachment normal-return semantic; it is not a supply reset
+action, stored-day writer or supply callback witness. No new reset is authorized
+or proposed. No repeat of the203 B Character mapping is needed here.
+
+The old complete logical caller is24E3430..24E3A5C, 1580 B. Its exact cached
+prologue9 B, middle1412 B and tail159 B are already sealed. The actual4 direct
+caller is24E3410, proven by the migrated dispatcher. Only this named caller needs
+a Root-central source selection: actual verified pdata/unwind first, then the
+selected body if its exact extent agrees with the held logical role. No sibling,
+allocator, date-helper or Character capture is requested. The machine-readable
+central request records the exact target and all cached locators.
+
+## Existing query operands and intended independent leaf
+
+| Required value | Existing current query landing point | Consumer role |
+| --- | --- | --- |
+| Stock, actual capacity, actual rate | `current_supply_raw`, `current_supply_capacity_raw`, `current_supply_change_monthly_raw` | One current-entry conditional ADD/clamp; current Province and captured context premise retained. |
+| Raw Unit170, combat, gathering, Army5C | `monthly_loss_budget_inputs_v1` | Source updater admission, including known rejection without requiring unused rate. |
+| Actual date and grace anchor/loaded grace | `army_update_clock_v1` | Signed low32 elapsed/24 strict-greater admission. Full passed date already exists for any conditional188 output. |
+| Runtime state thresholds/fractions and commander component | `monthly_loss_budget_inputs_v1` | Select actual loaded stock state; do not substitute the historical hardcoded60/10/0 scenario. |
+| Fleet date suppression/current numeric context | `monthly_loss_budget_inputs_v1`, `current_fleet_supply_tick_inputs_v1` | Retain captured-current fleet result. A separately supplied future date needs actual recomputation, not copying its old boolean. |
+| Supply-eligible current soldiers and current supply budget | `loss_application_inputs_v1` | Independent integer budget at derived stock and current budget comparison; no final physical casualty claim. |
+| Actual phase membership/count | Existing current dispatch and all30 schedule families | Current selected bucket occurrence count is observed. No fabricated future D+1. |
+| Byte22 and last actual supply-update date | Existing monthly caller and clock families | Raw current witness only; a byte value is not an execution count or proof of causal loss. |
+
+After the named caller source is mapped, the smallest implementation is one owned
+pure Army-row leaf `current_callback_supply_risk_v1`, appended by Root to the
+existing query. It consumes the operands above and exposes captured stock/state,
+source-defined conditional admission, post-one-callback stock/state, the resulting
+supply-only integer budget and independent missing inputs. This avoids a second
+native census. It can reuse the existing budget arithmetic once the actual4
+ordering/component proof is attached. It must keep its current-entry premise
+explicit and must not relabel the existing `.3`-lineage full sequence as a newly
+qualified actual4 execution.
+
+Stock and a known rejected callback remain independently useful. Unavailable
+prospective stored D or detachment after-reset state must not erase the current
+observations. Future callback selection, later context changes, actual loss,
+actual post-stage strength, full daily/monthly transitions and live qualification
+remain false/null until their own source and real paused evidence exist.
+
+## Status and next handoff
+
+This source-only package is `research`: the actual4 updater/dispatcher and existing
+observation landing points are closed;24E3410 ownbody is the precise remaining
+source dependency. Root owns its finite central capture, shared service hook,
+formal qualification and live query. Child direct EXE reads, tests, builds,
+SDK/game/process/UI operations and new game-day credit are all0.
+
+Root G2 reference is H9638 / Robert29829 / raw date53288448 / saved day6005.
+It is provenance supplied by the coordinator, not a new child capture. SideR68
+contributes0 G2 credit. External packet:
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/attrition-supply/`.
