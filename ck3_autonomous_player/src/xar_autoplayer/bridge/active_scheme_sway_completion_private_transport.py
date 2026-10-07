@@ -9,7 +9,7 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, CK3_12003, require_exact_native_build
+from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_build
 
 
 STEP = "query-sway-completion-v1-private"
@@ -56,7 +56,7 @@ def normalize_active_scheme_sway_completion_v1(
             or value["schema"] != SCHEMA):
         raise ValueError("native sway completion schema is malformed")
     build = require_exact_native_build(value["build_version"], value["executable_sha256"])
-    if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot)
+    if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot)
             or value["adapter_id"] != f"ck3-{build.game_version}-msvc-x64"
             or type(value["schema_version"]) is not int or value["schema_version"] != 1):
         raise ValueError("native sway completion belongs to another build/schema")
