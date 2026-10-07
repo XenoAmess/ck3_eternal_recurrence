@@ -35,6 +35,86 @@ std::string_view CurrentFirstHeirRelationshipFailureKeyV1(
   }
   return "unknown";
 }
+
+template <typename T>
+void AppendOptionalNumber(std::string &json, const std::optional<T> &value) {
+  json += value.has_value() ? std::to_string(*value) : "null";
+}
+
+void AppendOptionalBoolean(std::string &json, const std::optional<bool> &value) {
+  json += value.has_value() ? (*value ? "true" : "false") : "null";
+}
+
+void AppendDescendantLineage(
+    std::string &json, const CurrentFirstHeirDescendantLineageV1 &lineage) {
+  json += "{\"status\":";
+  AppendJsonString(json, lineage.available ? "available" : "unavailable");
+  json += ",\"unavailable_reason\":";
+  if (lineage.available) json += "null";
+  else AppendJsonString(json, lineage.unavailable_reason);
+  json += ",\"house_id_raw\":";
+  json += lineage.available ? std::to_string(lineage.house_id_raw) : "null";
+  json += ",\"dynasty_id_raw\":";
+  json += lineage.available ? std::to_string(lineage.dynasty_id_raw) : "null";
+  json += '}';
+}
+
+std::string CurrentFirstHeirDescendantsJsonV1(
+    const CurrentFirstHeirDescendantsReadV1 &read,
+    std::uint64_t native_revision) {
+  using Status = CurrentFirstHeirDescendantsStatusV1;
+  std::string json = "{\"status\":";
+  AppendJsonString(json, read.status == Status::available ? "available" :
+      read.status == Status::partial ? "partial" : "unavailable");
+  json += ",\"unavailable_reason\":";
+  if (read.status == Status::available) json += "null";
+  else AppendJsonString(json, read.unavailable_reason);
+  json += ",\"native_revision\":" + std::to_string(native_revision);
+  json += ",\"played_character_id\":";
+  json += read.played_character_id > 0
+      ? std::to_string(read.played_character_id) : "null";
+  json += ",\"heir_character_id\":";
+  json += read.heir_character_id > 0
+      ? std::to_string(read.heir_character_id) : "null";
+  json += ",\"date_raw\":";
+  AppendOptionalNumber(json, read.date_raw);
+  json += ",\"family_present\":";
+  AppendOptionalBoolean(json, read.family_present);
+  json += ",\"native_child_count_raw\":";
+  AppendOptionalNumber(json, read.native_child_count_raw);
+  json += ",\"data_pointer_present\":";
+  AppendOptionalBoolean(json, read.data_pointer_present);
+  json += ",\"roster_complete\":";
+  json += read.roster_complete ? "true" : "false";
+  json += ",\"played_lineage\":";
+  AppendDescendantLineage(json, read.played_lineage);
+  json += ",\"heir_lineage\":";
+  AppendDescendantLineage(json, read.heir_lineage);
+  json += ",\"rows\":[";
+  for (std::size_t index = 0; index < read.rows.size(); ++index) {
+    if (index != 0) json += ',';
+    const auto &row = read.rows[index];
+    json += "{\"occurrence_index\":" + std::to_string(row.occurrence_index);
+    json += ",\"raw_character_id\":" + std::to_string(row.raw_character_id);
+    json += ",\"generation_valid\":";
+    json += row.generation_valid ? "true" : "false";
+    json += ",\"alive\":";
+    AppendOptionalBoolean(json, row.alive);
+    json += ",\"parent_family_present\":";
+    AppendOptionalBoolean(json, row.parent_family_present);
+    json += ",\"parent_0_character_id_raw\":";
+    AppendOptionalNumber(json, row.parent_0_character_id_raw);
+    json += ",\"parent_4_character_id_raw\":";
+    AppendOptionalNumber(json, row.parent_4_character_id_raw);
+    json += ",\"child_of_heir\":";
+    AppendOptionalBoolean(json, row.child_of_heir);
+    json += ",\"lineage\":";
+    AppendDescendantLineage(json, row.lineage);
+    json += '}';
+  }
+  json += "]}";
+  return json;
+}
 } // namespace
 
 bool ValidateCurrentFirstHeirRawRelationshipV1(
@@ -240,6 +320,10 @@ std::string CurrentFirstHeirRelationshipResultJsonV1(
   }
   result += ",\"betrothal_actionability\":";
   result += CurrentFirstHeirBetrothalActionabilityJsonV1(read.betrothal_actionability);
+  if (read.descendants.has_value()) {
+    result += ",\"current_first_heir_descendants_v1\":";
+    result += CurrentFirstHeirDescendantsJsonV1(*read.descendants, native_revision);
+  }
   result += "}}";
   return result;
 }

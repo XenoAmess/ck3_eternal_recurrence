@@ -71,6 +71,8 @@ def build_current_betrothal_fulfillment_proposal(
         # The selected parent's current House/Dynasty is prospective input,
         # independent of the still-unpriced actual child result below.
         "native_child_house_preview": deepcopy(value.get("native_child_house_preview")),
+        "current_first_heir_descendants_v1": deepcopy(relation.get("current_first_heir_descendants_v1")),
+        "current_first_heir_descendants_summary_v1": deepcopy(relation.get("current_first_heir_descendants_summary_v1")),
         "effective_matrilineal_if_accepted": value.get("effective_matrilineal_if_accepted"),
         "recipient_ai_accept_raw": value.get("recipient_ai_accept_raw"),
         "recipient_answer_status_raw": value.get("recipient_answer_status_raw"),

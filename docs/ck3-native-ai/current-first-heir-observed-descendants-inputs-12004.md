@@ -83,7 +83,9 @@ Proposed observation fields:
 - Per occurrence actual selected identity, full-generation result, death data /
   alive, both raw parent IDs and actual child-of-this-heir result.
 - For an actual resolved child, current full House/Dynasty from the existing
-  lineage reader. Legal no-House/no-Dynasty remains null; lawful0 is retained.
+  lineage reader. The raw observed contract retains legal no-House/no-Dynasty
+  `-1` and lawful0; unavailable reads use null. The earlier proposed nullable
+  no-House wording is superseded by this explicit raw lineage contract.
 
 Call `ReadCharacterLineage` directly for the observed resolved child. The
 general `ReadCharacterValue` rejects dead characters, so it cannot supply the
@@ -133,9 +135,68 @@ current child position is not a substitute for native succession-law outcome.
 This package proposes no replacement of those contracts and grants no birth,
 succession, game day, live loop or G2 counter credit.
 
-Implementation status: **research / source-closed input plan**. It authors no
-observer, fixture or model, and executes zero imports, tests, builds, runtime
-queries, SDK/game/process/UI operations or EXE reads/hashes. The immediate
-next step is Root's approval of the bounded same-query observer after the
-already frozen lineage candidate, using the held actual4 collection/parent
-witnesses above. Shared reports and qualification remain Root-owned.
+The source-plan commit `217428600d629e3e3d68b883298faf0e62483146` was
+**research / source-closed input plan**. Its implementation was subsequently
+authorized by Root. The historical plan executed no imports, tests, builds,
+runtime queries, SDK/game/process/UI operations or EXE reads/hashes.
+
+## Authored same-query observer and FIRST recipe
+
+The actual4 current relationship query now samples
+`ReadCurrentFirstHeirDescendantsV1` inside its existing application-thread
+callback, using the selected public primary-first-heir identity and the same
+qualified Family/Core/House/Dynasty bindings. A tail mailbox flag is enabled
+only for that actual4 owning query. The fulfillment action does not opt in to
+this extra observation. The enclosing full snapshot still binds the callback
+to the public actor/heir revision; the leaf preserves frame/header stability
+and records its current date.
+
+The new header-only collector emits optional
+`current_first_heir_descendants_v1` in the production whole relationship
+serializer. It retains every raw u32 occurrence, native index, generation
+selection, liveness, actual parent IDs and lineage. A null child Family is a
+known false child-of relationship. A missing heir Family, negative signed
+count or positive count with null data is an independent partial. A known
+zero count is a complete empty roster. Unresolved occurrences remain in the
+complete raw roster and carry unknown relation/lineage values.
+
+Python preserves the native leaf and adds a separately named derived
+`current_first_heir_descendants_summary_v1`. It counts known direct/living
+occurrences, provides explicitly distinct-ID summary lists, and compares
+current child's Dynasty separately with the actual heir and played actor.
+Legal reference Dynasty `-1` means that comparison is not applicable. Missing
+lineage and unresolved rows retain partial summary completeness while known
+living-child existence remains useful. The current fulfillment choice and
+resource proposal carry both observations as evidence; action terms, ranking,
+force-House behavior and the original unpriced result stay unchanged.
+
+The new native target is
+`xar_ck3_12004_first_heir_descendants_test`, linked to the existing
+`xar_ck3_12002_runtime` and `xar_bridge_protocol`. It requires the existing
+`XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1` definition and
+active assertions (`/UNDEBUG` or `-UNDEBUG`). No new production translation
+unit is needed. Root owns registration, formal compilation and FIRST.
+
+Six new whole frames are authored: `complete-roster`, `known-empty`,
+`data-missing`, `family-missing`, `lineage-missing`, and `no-betrothal`.
+The complete roster has18 occurrences including dead, invalid, mismatched
+generation, foreign-parent and repeated IDs; its last actual living child is
+at index17. The observed heir Dynasty is200 and played Dynasty400. Known direct
+occurrences are15, living direct occurrences14; living matches are13 for the
+heir Dynasty and1 for the played Dynasty. Distinct direct IDs are3 and living
+IDs2. These are sealed expectations, not executed results.
+
+The single registered-MCP/Service compound is
+`CurrentFirstHeirDescendantsRegisteredServiceTests.`
+`test_complete_descendants_reach_registered_query_and_service_as_readonly_evidence`
+in `test_current_first_heir_descendants_registered_service.py`. It consumes
+the six emitted whole frames and one explicit legacy-absent copy. It uses the
+real registered relationship query and `ck3_plan_turn` consumer, keeping actual
+empty/partial/non-betrothal routing intact. It has not run in this candidate.
+
+Candidate status: **AUTHORED_NOTRUN / source-closed implementation**, with
+native6 and sole Service7 FIRST reserved for Root's immutable source tree.
+There is no new birth, natural succession, paused live query, game day or G2
+counter credit. Actual descendants will be observations of current records;
+the selected-parent preview remains prospective. Shared reports and final
+qualification remain Root-owned.

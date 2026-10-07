@@ -10,6 +10,11 @@ from __future__ import annotations
 import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .current_first_heir_descendants_v1 import (
+    LEAF as DESCENDANTS_LEAF, SUMMARY as DESCENDANTS_SUMMARY,
+    summarize_current_first_heir_descendants_v1,
+    validate_current_first_heir_descendants_v1,
+)
 from .marriage_matchmaking_private_transport import _require_same_paused_frame
 from .nonwar_private_build import private_native_provenance
 
@@ -274,6 +279,12 @@ def query_current_first_heir_relationship_private_v1(
         "root_query_sequence": root["query_sequence"],
         "heir_character_id": heir_id,
     }
+    if DESCENDANTS_LEAF in result:
+        descendants = validate_current_first_heir_descendants_v1(
+            result[DESCENDANTS_LEAF], actor=played_id, heir=heir_id,
+            native_revision=expected_native_revision, date_raw=before["date_raw"])
+        base[DESCENDANTS_LEAF] = descendants
+        base[DESCENDANTS_SUMMARY] = summarize_current_first_heir_descendants_v1(descendants)
     if result.get("status") == "unavailable":
         reason = result.get("unavailable_reason")
         if (not isinstance(reason, str) or not reason

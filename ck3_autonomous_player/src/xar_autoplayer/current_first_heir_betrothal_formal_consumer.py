@@ -97,6 +97,8 @@ def evaluate_current_betrothal_fulfillment(
         "generic_costs": deepcopy(costs),
         "matrilineal_option_selected": value.get("matrilineal_option_selected"),
         "native_child_house_preview": deepcopy(value.get("native_child_house_preview")),
+        "current_first_heir_descendants_v1": deepcopy(relationship.get("current_first_heir_descendants_v1")),
+        "current_first_heir_descendants_summary_v1": deepcopy(relationship.get("current_first_heir_descendants_summary_v1")),
         "effective_matrilineal_if_accepted": value.get("effective_matrilineal_if_accepted"),
         "predicted_outcome_if_accepted": value.get("predicted_outcome_if_accepted"),
         "resource_proposal": build_current_betrothal_fulfillment_proposal(

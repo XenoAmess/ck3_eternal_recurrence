@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/current_first_heir_descendants_v1.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
 #if defined(XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1)
 #include "xar_bridge/h2743_preaction_existing_truce_v1.hpp"
@@ -1346,6 +1347,7 @@ struct CurrentFirstHeirRelationshipReadV1 {
   std::int32_t heir_character_id = -1;
   MarriageHeirRelationshipV1 relationship{};
   CurrentFirstHeirBetrothalActionabilityReadV1 betrothal_actionability{};
+  std::optional<CurrentFirstHeirDescendantsReadV1> descendants{};
 };
 
 // Independent current relation read for the same-revision public first heir.

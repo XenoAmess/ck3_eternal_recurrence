@@ -111,6 +111,7 @@
 #include "xar_bridge/h2743_stock_private_query_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
+#include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "active_scheme_sway_private_transport_v1.hpp"
@@ -9503,6 +9504,7 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   xar::bridge::MarriageNativeOutcomeClassifierEnvironmentV1 outcome_environment{};
   bool frame_observed = false;
   xar::ck3_12002::family_obligations_lineage::Bindings lineage12002{};
+  bool observe_descendants12004 = false;
 };
 
 bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
@@ -9548,6 +9550,10 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
       query.read.betrothal_actionability =
           xar::ck3_12002::ReadCurrentFirstHeirBetrothalActionabilityV1(
               query.family12002, query.read, &query.lineage12002);
+      if (query.observe_descendants12004) {
+        query.read.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
+            query.family12002, query.heir_character_id);
+      }
     }
     xar::game::Snapshot after{};
     query.frame_observed = xar::game::ReadSnapshot(*query.adapter12002, after) &&
@@ -18876,6 +18882,7 @@ void RunConnectedSession(
                   query.family12002 = xar::ck3_12004::BindFamilyImage(base, game.descriptor().executable_sha256);
                   query.lineage12002 = xar::ck3_12004::BindFamilyLineageImage(
                       base, game.descriptor().executable_sha256);
+                  query.observe_descendants12004 = true;
                   query.adapter12002 = xar::game::CreateCk3_12004AdapterFromBindings(
                       xar::game::BindCk3_12004AdapterImage(base, game.descriptor().executable_sha256));
                 } else if (xar::game::IsReviewedCrozierAdapter(game)) {
