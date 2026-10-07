@@ -19,6 +19,10 @@
 #include "xar_bridge/army_current_fleet_supply_tick_inputs_v1.hpp"
 #include "xar_bridge/army_captured_target_land_supply_inputs_v1.hpp"
 #include "xar_bridge/army_current_daily_supply_dispatch_inputs_v1.hpp"
+#include "xar_bridge/army_future_daily_supply_schedule_v1.hpp"
+#include "xar_bridge/army_current_detachment_callback_inputs_v1.hpp"
+#include "xar_bridge/army_current_detachment_store_inputs_v1.hpp"
+#include "xar_bridge/army_current_character_detachment_inputs_v1.hpp"
 #include "xar_bridge/army_current_month_first_refill_call_inputs_v1.hpp"
 #include "xar_bridge/ck3_12003_fixed_chunk0_preparation.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1.hpp"
@@ -846,6 +850,10 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentFlag31InputsV1> current_army_flag31_inputs_v1;
   std::optional<ArmyCurrentCandidateDetachmentMapperInputsV1> current_candidate_detachment_mapper_inputs_v1;
   std::optional<ArmyCurrentDetachmentDataInputsV1> current_detachment_data_inputs_v1;
+  std::optional<ArmyFutureDailySupplyScheduleInputsV1> future_daily_supply_schedule_inputs_v1;
+  std::optional<ArmyCurrentDetachmentCallbackInputsV1> current_detachment_callback_inputs_v1;
+  std::optional<ArmyCurrentDetachmentStoreInputsV1> current_detachment_store_inputs_v1;
+  std::optional<ArmyCurrentCharacterDetachmentInputsV1> current_character_detachment_inputs_v1;
   std::optional<ArmyCurrentPreDateCharacterPrefixInputsV1> current_pre_date_character_prefix_inputs_v1;
   std::optional<ArmyCurrentSelectedTitleHolderOwnerRelationV1>
       current_selected_title_holder_owner_relation_v1;

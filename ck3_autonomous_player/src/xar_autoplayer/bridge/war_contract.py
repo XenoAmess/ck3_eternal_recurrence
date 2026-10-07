@@ -40,6 +40,10 @@ from .army_current_flag31_inputs_contract import normalize_current_army_flag31_i
 from .army_current_combat_roles_phase_inputs_contract import normalize_current_army_combat_roles_phase_inputs_v1
 from .army_current_candidate_detachment_mapper_contract import normalize_current_candidate_detachment_mapper_inputs_v1
 from .army_current_detachment_data_contract import normalize_current_detachment_data_inputs_v1
+from .army_future_daily_supply_schedule_contract import normalize_future_daily_supply_schedule_inputs_v1
+from .army_current_detachment_callback_inputs_contract import normalize_current_detachment_callback_inputs_v1
+from .army_current_detachment_store_inputs_contract import normalize_current_detachment_store_inputs_v1
+from .army_current_character_detachment_inputs_contract import normalize_current_character_detachment_inputs_v1
 from .army_pre_date_pending_update_contract import normalize_current_pre_date_pending_update_inputs_v1
 from .army_ordered_besieging_refill_contract import normalize_ordered_besieging_refill_inputs_v1
 from .army_daily_assault_loss_inputs_contract import normalize_current_daily_assault_loss_inputs_v1
@@ -318,6 +322,10 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"ordered_besieging_fixed_chunk0_preparation_i
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_assault_removal_reference_inputs_v1", "current_pre_date_pending_update_inputs_v1", "current_pre_date_dated_append_inputs_v1", "current_post_admission_refresh_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_candidate_detachment_mapper_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_detachment_data_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {
+    "future_daily_supply_schedule_inputs_v1", "current_detachment_callback_inputs_v1",
+    "current_detachment_store_inputs_v1", "current_character_detachment_inputs_v1",
+}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_pre_date_character_prefix_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_condition30_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag20_inputs_v1"}
@@ -1950,6 +1958,10 @@ def _normalize_army_strength_row(
         result["current_daily_supply_dispatch_inputs_v1"] = normalize_current_daily_supply_dispatch_inputs_v1(
             value["current_daily_supply_dispatch_inputs_v1"],
             expected_army_id=result["army_id"], expected_carmy_id=result.get("native_carmy_id"))
+    if "future_daily_supply_schedule_inputs_v1" in value:
+        result["future_daily_supply_schedule_inputs_v1"] = normalize_future_daily_supply_schedule_inputs_v1(
+            value["future_daily_supply_schedule_inputs_v1"],
+            expected_army_id=result["army_id"], expected_carmy_id=result.get("native_carmy_id"))
     if "current_month_first_refill_call_inputs_v1" in value:
         result["current_month_first_refill_call_inputs_v1"] = normalize_current_month_first_refill_call_inputs_v1(
             value["current_month_first_refill_call_inputs_v1"])
@@ -1968,6 +1980,15 @@ def _normalize_army_strength_row(
     if "current_detachment_data_inputs_v1" in value:
         result["current_detachment_data_inputs_v1"] = normalize_current_detachment_data_inputs_v1(
             value["current_detachment_data_inputs_v1"])
+    if "current_detachment_callback_inputs_v1" in value:
+        result["current_detachment_callback_inputs_v1"] = normalize_current_detachment_callback_inputs_v1(
+            value["current_detachment_callback_inputs_v1"])
+    if "current_detachment_store_inputs_v1" in value:
+        result["current_detachment_store_inputs_v1"] = normalize_current_detachment_store_inputs_v1(
+            value["current_detachment_store_inputs_v1"])
+    if "current_character_detachment_inputs_v1" in value:
+        result["current_character_detachment_inputs_v1"] = normalize_current_character_detachment_inputs_v1(
+            value["current_character_detachment_inputs_v1"])
     if "current_army_condition30_inputs_v1" in value:
         result["current_army_condition30_inputs_v1"] = normalize_current_army_condition30_inputs_v1(
             value["current_army_condition30_inputs_v1"])

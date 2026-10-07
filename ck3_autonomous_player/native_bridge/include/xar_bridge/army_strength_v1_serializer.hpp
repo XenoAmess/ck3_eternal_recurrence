@@ -9,6 +9,10 @@
 #include "xar_bridge/army_current_fleet_supply_tick_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_captured_target_land_supply_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_current_daily_supply_dispatch_inputs_v1_serializer.hpp"
+#include "xar_bridge/army_future_daily_supply_schedule_serializer_v1.hpp"
+#include "xar_bridge/army_current_detachment_callback_inputs_serializer_v1.hpp"
+#include "xar_bridge/army_current_detachment_store_inputs_serializer_v1.hpp"
+#include "xar_bridge/army_current_character_detachment_inputs_serializer_v1.hpp"
 #include "xar_bridge/army_current_month_first_refill_call_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_fixed_chunk0_preparation_v1_serializer.hpp"
@@ -644,6 +648,26 @@ inline void AppendArmyStrengthV1(
     result += ",\"current_detachment_data_inputs_v1\":";
     AppendArmyCurrentDetachmentDataInputsV1(result, *strength.current_detachment_data_inputs_v1,
         number, append_json_string);
+  }
+  if (strength.future_daily_supply_schedule_inputs_v1) {
+    result += ",\"future_daily_supply_schedule_inputs_v1\":";
+    AppendArmyFutureDailySupplyScheduleInputsV1(
+        result, *strength.future_daily_supply_schedule_inputs_v1, number, append_json_string);
+  }
+  if (strength.current_detachment_callback_inputs_v1) {
+    result += ",\"current_detachment_callback_inputs_v1\":";
+    AppendArmyCurrentDetachmentCallbackInputsV1(
+        result, *strength.current_detachment_callback_inputs_v1, number, append_json_string);
+  }
+  if (strength.current_detachment_store_inputs_v1) {
+    result += ",\"current_detachment_store_inputs_v1\":";
+    AppendArmyCurrentDetachmentStoreInputsV1(
+        result, *strength.current_detachment_store_inputs_v1, number, append_json_string);
+  }
+  if (strength.current_character_detachment_inputs_v1) {
+    result += ",\"current_character_detachment_inputs_v1\":";
+    AppendArmyCurrentCharacterDetachmentInputsV1(
+        result, *strength.current_character_detachment_inputs_v1, number, append_json_string);
   }
   if (strength.current_army_condition30_inputs_v1) {
     result += ",\"current_army_condition30_inputs_v1\":";

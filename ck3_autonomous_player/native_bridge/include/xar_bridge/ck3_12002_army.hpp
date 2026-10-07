@@ -212,6 +212,10 @@ struct ArmyBindings {
   ck3_12003::CurrentDailySupplyDispatchBindings12003 current_daily_supply_dispatch_bindings{};
   ck3_12003::CurrentMonthFirstRefillCallBindings12003 current_month_first_refill_call_bindings{};
   ck3_12003::CurrentArmyCombatRolesPhaseBindings12003 current_army_combat_roles_phase_bindings{};
+  ck3_12004::FutureDailySupplyScheduleBindings12004 future_daily_supply_schedule_bindings{};
+  ck3_12004::CurrentDetachmentCallbackBindings12004 current_detachment_callback_bindings{};
+  ck3_12004::CurrentDetachmentStoreBindings12004 current_detachment_store_bindings{};
+  ck3_12004::CurrentCharacterDetachmentBindings12004 current_character_detachment_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

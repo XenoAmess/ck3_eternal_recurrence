@@ -35,6 +35,10 @@ from ..simulation.army_current_flag31_inputs_12003 import project_current_army_f
 from ..simulation.army_current_combat_roles_phase_inputs_12003 import project_current_army_combat_roles_phase_inputs_12003
 from .army_current_candidate_detachment_mapper_builder import build_current_candidate_detachment_mapper_preview
 from .army_current_detachment_data_builder import build_same_input_current_detachment_data_prefix
+from .army_future_daily_supply_schedule_projection import project_future_daily_supply_schedule_v1
+from .army_current_detachment_callback_projection import project_current_detachment_callback_inputs_v1
+from .army_current_detachment_store_projection import project_current_detachment_store_inputs_v1
+from .army_current_character_detachment_projection import project_current_character_detachment_inputs_v1
 from ..simulation.army_pre_date_pending_update_12003 import project_current_pre_date_pending_update_v1
 from .army_ordered_refill_besieging_assault_projection import project_ordered_refill_besieging_assaults_v1
 from .army_daily_assault_loss_projection import project_current_daily_assault_loss_v1
@@ -4652,6 +4656,21 @@ class GameplayBridgeService:
                 for row in selected_rows],
             "same_input_current_detachment_data_prefix_v1": [
                 {"army_id": row["army_id"], "projection": build_same_input_current_detachment_data_prefix(row)}
+                for row in selected_rows],
+            "same_input_conditional_future_daily_supply_schedule_v1": [
+                {"army_id": row["army_id"], "projection": project_future_daily_supply_schedule_v1(row)}
+                for row in selected_rows],
+            "conditional_current_detachment_callback_v1": [
+                {"army_id": row["army_id"], "projection": project_current_detachment_callback_inputs_v1(
+                    row.get("current_detachment_callback_inputs_v1"))}
+                for row in selected_rows],
+            "current_detachment_store_admission_v1": [
+                {"army_id": row["army_id"], "projection": project_current_detachment_store_inputs_v1(
+                    row.get("current_detachment_store_inputs_v1"))}
+                for row in selected_rows],
+            "current_character_detachment_suffix_v1": [
+                {"army_id": row["army_id"], "projection": project_current_character_detachment_inputs_v1(
+                    row.get("current_character_detachment_inputs_v1"))}
                 for row in selected_rows],
             "current_army_condition30_inputs_v1": [
                 {"army_id": row["army_id"], "projection": project_current_army_condition30_inputs_12003(

@@ -3,6 +3,10 @@
 #include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
 #include "xar_bridge/ck3_12003_captured_target_land_supply_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_daily_supply_dispatch_inputs.hpp"
+#include "xar_bridge/ck3_12004_future_daily_supply_schedule.hpp"
+#include "xar_bridge/ck3_12004_current_detachment_callback_inputs.hpp"
+#include "xar_bridge/ck3_12004_current_detachment_store_inputs.hpp"
+#include "xar_bridge/ck3_12004_current_character_detachment_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_month_first_refill_call_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_province_besieging_contributors.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
@@ -892,6 +896,12 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
               bindings.current_daily_supply_dispatch_bindings, bindings, army, unit,
               result.army_update_clock_v1 ? &*result.army_update_clock_v1 : nullptr);
     }
+    if (bindings.future_daily_supply_schedule_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("future_daily_supply_schedule_inputs_readonly");
+      result.future_daily_supply_schedule_inputs_v1 =
+          ck3_12004::ReadFutureDailySupplyScheduleInputs12004(
+              bindings.future_daily_supply_schedule_bindings, bindings, army, unit);
+    }
     if (bindings.current_movement_progress_enabled)
       result.current_movement_progress = MovementProgress(bindings, unit);
     if (bindings.get_army_gathering_days_left != nullptr &&
@@ -1249,6 +1259,9 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
   std::optional<game::ArmyCurrentAssaultRemovalReferenceInputsV1> current_assault_removal_references;
   std::optional<game::ArmyCurrentCandidateDetachmentMapperInputsV1> current_candidate_detachment_mapper;
   std::optional<game::ArmyCurrentDetachmentDataInputsV1> current_detachment_data;
+  std::optional<game::ArmyCurrentDetachmentCallbackInputsV1> current_detachment_callback;
+  std::optional<game::ArmyCurrentDetachmentStoreInputsV1> current_detachment_store;
+  std::optional<game::ArmyCurrentCharacterDetachmentInputsV1> current_character_detachment;
   for (const auto &entry : scope) {
     diagnostic.army_id.store(entry.army_id);
     diagnostic.reader.store("scope_row");
@@ -1365,6 +1378,30 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
           row.monthly_caller_effect_inputs_v1 ? &*row.monthly_caller_effect_inputs_v1 : nullptr);
     }
     row.current_detachment_data_inputs_v1 = current_detachment_data;
+    if (!current_detachment_callback && bindings.current_detachment_callback_bindings.enabled) {
+      diagnostic.reader.store("current_detachment_callback_inputs_readonly");
+      current_detachment_callback = ck3_12004::ReadCurrentDetachmentCallbackInputs12004(
+          bindings.current_detachment_callback_bindings,
+          bindings.current_detachment_data_bindings,
+          current_detachment_data ? &*current_detachment_data : nullptr);
+    }
+    row.current_detachment_callback_inputs_v1 = current_detachment_callback;
+    if (!current_detachment_store && bindings.current_detachment_store_bindings.enabled) {
+      diagnostic.reader.store("current_detachment_store_inputs_readonly");
+      current_detachment_store = ck3_12004::ReadCurrentDetachmentStoreInputs12004(
+          bindings.current_detachment_store_bindings,
+          bindings.current_detachment_data_bindings,
+          current_detachment_data ? &*current_detachment_data : nullptr);
+    }
+    row.current_detachment_store_inputs_v1 = current_detachment_store;
+    if (!current_character_detachment && bindings.current_character_detachment_bindings.enabled) {
+      diagnostic.reader.store("current_character_detachment_inputs_readonly");
+      current_character_detachment = ck3_12004::ReadCurrentCharacterDetachmentInputs12004(
+          bindings.current_character_detachment_bindings,
+          bindings.current_detachment_data_bindings,
+          current_detachment_data ? &*current_detachment_data : nullptr);
+    }
+    row.current_character_detachment_inputs_v1 = current_character_detachment;
     row.current_assault_removal_reference_inputs_v1 = current_assault_removal_references;
     partial = partial || !row.available;
     output.push_back(std::move(row));
