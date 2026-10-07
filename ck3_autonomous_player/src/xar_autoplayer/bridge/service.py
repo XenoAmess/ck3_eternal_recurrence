@@ -529,6 +529,11 @@ from ..prisoner_ransom_formal_consumer import (
     submit_ransom_private,
     read_ransom_receipt_private,
 )
+from ..prisoner_release_formal_consumer import (
+    SUBMIT_STEP as PRISONER_RELEASE_SUBMIT_STEP,
+    plan_release_formal,
+    submit_release_formal,
+)
 from .domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
     submit_construction_private, query_construction_receipt,
@@ -1596,7 +1601,7 @@ class GameplayBridgeService:
             planned.pop("_private_faction_history_v1", None)
             planned.pop("_private_construction_snapshot_v1", None)
             planned.pop("_private_construction_history_v1", None)
-            return observe_m5_wartime(planned)
+            return plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot)
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
         planned.pop("_private_lifestyle_war_frame_v1", None)
@@ -1670,7 +1675,7 @@ class GameplayBridgeService:
         planned = observe_m5_wartime(planned)
         if getattr(self.driver, "allow_private_prisoner_ransom_action", False) is True:
             planned = plan_ransom_private(self.driver, planned, snapshot)
-        return planned
+        return plan_release_formal(self.driver, planned, snapshot)
 
     def _plan_private_family_opportunity_v1(
         self, planned: dict[str, object], snapshot: dict[str, object], *,
@@ -2914,6 +2919,8 @@ class GameplayBridgeService:
                     self.driver, resolved=resolved)
             elif selected_step == PRIVATE_PRISONER_RANSOM_SUBMIT_STEP:
                 result = submit_ransom_private(self.driver, plan=plan)
+            elif selected_step == PRISONER_RELEASE_SUBMIT_STEP:
+                result = submit_release_formal(self.driver, plan=plan)
             elif selected_step == PRIVATE_PRISONER_RANSOM_RECEIPT_STEP:
                 pending = plan.get("prisoner_ransom_pending")
                 if not isinstance(pending, dict):

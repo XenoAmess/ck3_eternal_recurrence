@@ -123,6 +123,10 @@ from .prisoner_ransom_formal_consumer import (
     RECEIPT_STEP as PRIVATE_PRISONER_RANSOM_RECEIPT_STEP,
     read_ransom_ledger,
 )
+from .prisoner_release_formal_consumer import (
+    SUBMIT_STEP as PRISONER_RELEASE_SUBMIT_STEP,
+    read_release_ledger,
+)
 from .sway_formal_consumer import (
     LEDGER_FILE as PRIVATE_SWAY_LEDGER_FILE,
     consume_sway_private_once,
@@ -2879,9 +2883,10 @@ def native_auto_run(
                 current_attempt["after"] = _public_binding(after)
                 eligible_since_checkpoint = 0
                 dirty_gameplay_since_checkpoint = False
-            if step == PRIVATE_PRISONER_RANSOM_SUBMIT_STEP:
+            if step in {PRIVATE_PRISONER_RANSOM_SUBMIT_STEP, PRISONER_RELEASE_SUBMIT_STEP}:
+                disposition = "release" if step == PRISONER_RELEASE_SUBMIT_STEP else "ransom"
                 if terminal_pending or modal_decision_pending:
-                    raise AgentError("pending prisoner ransom cannot be checkpointed on a decision frame")
+                    raise AgentError(f"pending prisoner {disposition} cannot be checkpointed on a decision frame")
                 checkpoint, checkpoint_snapshot = _materialize_checkpoint(
                     service, driver, spec.profile_dir / "save games",
                     session_done=session_done, session_state=session_state,
@@ -2890,7 +2895,9 @@ def native_auto_run(
                     poll_interval_seconds=poll_seconds,
                     on_checkpoint_submit=mark_checkpoint_submit_started,
                 )
-                pending = read_ransom_ledger(driver.state_dir)["pending"]
+                pending = (read_release_ledger(driver.state_dir)["pending"]
+                           if step == PRISONER_RELEASE_SUBMIT_STEP else
+                           read_ransom_ledger(driver.state_dir)["pending"])
                 played = checkpoint_snapshot.get("played_character")
                 if (not isinstance(pending, dict)
                         or pending != outcome.get("result")
@@ -2899,12 +2906,12 @@ def native_auto_run(
                         or pending.get("pre_date_raw") != checkpoint_snapshot.get("date_raw")
                         or not isinstance(played, dict)
                         or pending.get("player_character_id") != played.get("character_id")):
-                    raise AgentError("ransom ACK lacks a paired pending checkpoint")
+                    raise AgentError(f"{disposition} ACK lacks a paired pending checkpoint")
                 counts["checkpoint"] += 1
                 checkpoints.append({"turn_index": turn_index,
-                                    "phase": "prisoner_ransom_submitted_pending",
+                                    "phase": f"prisoner_{disposition}_submitted_pending",
                                     "pending_action": copy.deepcopy(pending), **checkpoint})
-                evidence.append("prisoner_ransom_pending_checkpoint_saved")
+                evidence.append(f"prisoner_{disposition}_pending_checkpoint_saved")
                 after_snapshot = checkpoint_snapshot
                 after = _compact_binding(driver.capabilities(), checkpoint_snapshot)
                 current_attempt["after"] = _public_binding(after)
@@ -3209,6 +3216,7 @@ def native_auto_run(
                 and step != PRIVATE_CHILD_MATRILINEAL_SUBMIT_STEP
                 and step != PRIVATE_CHILD_DEFAULT_SUBMIT_STEP
                 and step != PRIVATE_PRISONER_RANSOM_SUBMIT_STEP
+                and step != PRISONER_RELEASE_SUBMIT_STEP
                 and step != PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP
             ):
                 visible_gameplay_turns += 1
