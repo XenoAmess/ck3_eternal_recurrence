@@ -22724,7 +22724,6 @@ void RunConnectedSession(
               }
             }
           }
-          }
         } else if (
             step == xar::ck3_11906::
                         kZhongguoAiOwnedCaseSnapshotV1Step) {
@@ -22854,6 +22853,7 @@ void RunConnectedSession(
           }
         } else {
           native_step_dispatched = false;
+        }
         }
         if (!native_step_dispatched) {
           native_step_dispatched = true;

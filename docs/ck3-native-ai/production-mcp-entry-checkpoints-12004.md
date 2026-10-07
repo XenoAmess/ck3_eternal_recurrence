@@ -125,3 +125,62 @@ are source-only and await Root's single fresh failed query/diagnostic; they do
 not establish a repaired or live-ready gift query.
 
 Follow-up receipt: `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/actual4-entry-checkpoints/faction-followup/ROOT-DELIVERY.json`.
+
+## R0055 binding04: actual dispatcher fallthrough
+
+Root's failed-only retry uses immutable source
+`9cb425ee432417551e8563824269daaa7c53fd9b` and G110-r4. The paused full snapshot
+is available for Robert 29829 at raw date 53288256, native revision 2 and public
+revision 3. The three new diagnostics retain their exact parsed step and
+request UUID, `adapter_id=ck3-1.20.0.4-msvc-x64`,
+`dispatch_route=long_dispatch`, `stage=dispatch_returned_without_reply`,
+`handler_entered=false`, and empty reply UUID/type. Mailbox published, completed,
+started and executed counts remain zero. These actual checkpoints place the
+failure before each target handler and submission.
+
+| Actual parsed step | Retained request UUID |
+| --- | --- |
+| `query-current-timeline-blocker-context-v1` | `timeline-blocker-00f57c4a167446deabaf21ce738a0741` |
+| `query-war-termination-options-100663329` | `step-2-4ba7999795cb` |
+| `query-war-termination-terms-v1-100663329` | `step-3-3dd8170a28ab` |
+
+The active source's third guarded segment starts at old line 20143. Its
+`if (!native_step_dispatched)` is incorrectly closed by old line 22728,
+immediately before the AI-owned snapshot `else if`. That `else if` therefore
+belongs to the segment guard rather than the step chain. A request not handled
+by the segment enters the guard, leaves `native_step_dispatched=true`, and
+skips the following Timeline and war segments without replying. The previous
+two segments have intact unmatched resets; the original enabled compile flags
+and target handlers are retained.
+
+The minimal correction relocates one closing brace: the AI-owned snapshot
+branch joins the same step chain, its existing final unmatched branch resets
+`native_step_dispatched=false`, and the guard closes before the following
+segment. Matched handlers retain the original handled state and response. No
+provider, parser, callback, flag, capability, or submission condition changes.
+
+```mermaid
+flowchart TD
+  P[Actual parsed execute_step / actual4 descriptor] --> S[Earlier segments]
+  S --> G[Third guard: request still unhandled]
+  G --> C[Existing step chain including AI-owned snapshot]
+  C -->|matched| R[Existing handler and reply]
+  C -->|unmatched| U[Existing reset: dispatched=false]
+  U --> N[Next bounded segment]
+  N --> T[Timeline handler]
+  N --> W[War options or terms handler]
+  T -. fresh Root query pending .-> V[Actual handler / submission / reply qualification]
+  W -. fresh Root query pending .-> V
+```
+
+The new Gift retry separately returns `status=selected`,
+`reason=one_budgeted_native_legal_faction_member`, with actual paused actor
+29829, faction 50331692, recipient 33435, legal preview cost 15000000 and opinion
+delta 37. `gift_submission_enabled=false` remains query-only; there is no gift
+action credit and no additional Gift provider change.
+
+This brace correction is **source-fixed, not run**. Child builds, tests,
+production imports, EXE reads, hashes, SDK and game operations are all zero.
+Root owns the one bridge-TU compile and fresh actual failed-query qualification.
+The actual RED retries and first parsed evidence are retained at
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/actual4-entry-checkpoints/binding04-first-review/`.
