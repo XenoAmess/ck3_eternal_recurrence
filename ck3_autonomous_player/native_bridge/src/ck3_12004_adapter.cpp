@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12004_commands.hpp"
+#include "xar_bridge/ck3_12004_events.hpp"
 #include "xar_bridge/ck3_12004_combat.hpp"
 #include "xar_bridge/ck3_12004_military.hpp"
 #include "xar_bridge/ck3_12004_diplomacy.hpp"
@@ -47,6 +48,10 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
       "game.command.query-title-holder-v1-N",
+      "game.command.select-event-option-N",
+      "game.command.accept-pending-character-interaction",
+      "game.command.reject-pending-character-interaction",
+      "game.command.acknowledge-pending-character-interaction",
       ck3_11906::kIngameUiNavigationV1Capability,
       ck3_11906::kIngameUiWindowQueryV1Capability,
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1) && \
@@ -121,6 +126,7 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
   if (!bindings.core.enabled) return bindings;
   bindings.commands = ck3_12004::BindCommandImage12004(
       image_base, executable_sha256);
+  bindings.events = ck3_12004::BindEventsImage(image_base, executable_sha256);
   bindings.marriage = ck3_12004::BindArrangeMarriageImage(
       image_base, executable_sha256, bindings.commands);
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)

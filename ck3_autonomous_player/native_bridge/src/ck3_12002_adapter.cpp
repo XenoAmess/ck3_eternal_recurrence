@@ -4,6 +4,7 @@
 #include <windows.h>
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_events.hpp"
 #include "xar_bridge/ck3_12004_army_support.hpp"
 #include "xar_bridge/ck3_12004_war.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
@@ -256,18 +257,24 @@ public:
   }
   SelectEventOptionResult submit_select_event_option(
       std::int32_t option_index) const noexcept override {
-    return ck3_12002::SubmitSelectEventOption(bindings_.events, option_index);
+    return IsCk3_12004Descriptor(*descriptor_)
+        ? ck3_12004::SubmitSelectEventOption(bindings_.events, option_index)
+        : ck3_12002::SubmitSelectEventOption(bindings_.events, option_index);
   }
   SaveCheckpointResult submit_save_checkpoint() const noexcept override {
     return ck3_12002::SubmitSaveCheckpoint(bindings_.commands, bindings_.core);
   }
   ReplyPendingInteractionResult submit_reply_to_pending_interaction(
       PendingInteractionReply reply) const noexcept override {
-    return ck3_12002::SubmitReplyToPendingInteraction(bindings_.events, reply);
+    return IsCk3_12004Descriptor(*descriptor_)
+        ? ck3_12004::SubmitReplyToPendingInteraction(bindings_.events, reply)
+        : ck3_12002::SubmitReplyToPendingInteraction(bindings_.events, reply);
   }
   AcknowledgePendingInteractionResult submit_acknowledge_pending_interaction(
       std::int32_t id) const noexcept override {
-    return ck3_12002::SubmitAcknowledgePendingInteraction(bindings_.events, id);
+    return IsCk3_12004Descriptor(*descriptor_)
+        ? ck3_12004::SubmitAcknowledgePendingInteraction(bindings_.events, id)
+        : ck3_12002::SubmitAcknowledgePendingInteraction(bindings_.events, id);
   }
   ck3_12002::PrewarDefaultMusterStatusV1 ReadPlayerDefaultRaise(
       ck3_12002::PlayerDefaultRaiseObservationV1 &output) const noexcept {
