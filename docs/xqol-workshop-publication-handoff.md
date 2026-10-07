@@ -63,4 +63,6 @@
 
 ## 后续更新规则
 
-更新此 item 时继续使用 `3798133925`，但 canonical `remote_file_id` 只能存在于用户目录外层 `.mod`；不得预存到仓库或正式 staging 的内层 `descriptor.mod`。每次更新仍须完成 staging、上传、fresh-cache 核验、实机验收和相对上一公开版本的 changelog。
+2026-10-07 用户永久指令适用于全部后续 mod：发布后缓存验收只核对真实 Steam 下载的已发布缓存与正式构建文件精确一致，并确认 CK3 成功启动且实际启用、挂载/加载目标产品的缓存路径；实际初始化日志可以证明加载，随后正常 GUI 退出。不要求新游戏、角色选择、地图或原生业务查询，不重复业务、fixture、事件、选项、特质、冷却或候选测试。发布前源码验收不变；上文 1.1.0 的缓存业务测试及中间 RED 保留为历史，不构成后续缓存重复测试要求。完整规则见 [Workshop 缓存验收永久规则](workshop-cache-acceptance.md)。
+
+更新此 item 时继续使用 `3798133925`，但 canonical `remote_file_id` 只能存在于用户目录外层 `.mod`；不得预存到仓库或正式 staging 的内层 `descriptor.mod`。每次更新仍须完成正式 staging、发布前源码验收、上传、上述缓存文件核对与实际加载，以及相对上一公开版本的永久 changelog。

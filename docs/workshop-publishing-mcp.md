@@ -6,6 +6,8 @@
 
 > 2026-09-13 实施补记：原生 update 已由 1.19.0 文案修正和 2.0.0 正式更新两次真实验证。另有一个必须保留的边界：只改变 `SubmitItemUpdate` 的 `pchChangeNote` 时，Steam 可返回 `EResult=1` 却不创建或替换公开 Change Notes；描述 metadata 更新也不替换既有条目。现有条目最终通过登录态 owner page 直接编辑，并以匿名公开 HTML 精确读回。后续发布必须单独核对 Change Notes 正文，不能从 Submit 回执或主描述更新推断成功。完整事实见 [2.0.0 changelog](release-changelogs/auto-upgrade-buildings/2.0.0.md)。
 
+2026-10-07 用户永久指令适用于全部后续 mod：发布后缓存验收只证明真实 Steam 下载的已发布缓存与正式构建文件精确一致，以及 CK3 成功启动并实际启用、挂载/加载目标产品的缓存路径。实际初始化日志可证明加载，随后正常 GUI 退出；不要求新游戏、角色选择、地图或原生业务查询，不重复 fixture、事件、选项、特质、冷却、候选或其他业务测试。发布前源码验收不变，旧发布与失败记录保留。完整规则见 [Workshop 缓存验收永久规则](workshop-cache-acceptance.md)。
+
 ## 1. 结论
 
 Paradox Launcher 上传 Steam Workshop Mod 的真实路径不是 HTTP API，而是：
@@ -274,7 +276,7 @@ print(result)
 
 7. 克隆返回的 serialized mod，只覆盖已冻结发布计划中的字段，然后发出 `@IPC_MODS_UPLOAD/UPLOAD_MOD`。首次发布保持 `remoteSteamId` 为空；更新必须精确等于目标 Workshop ID。
 
-8. 轮询队列中的 progress/success/error，并保存 Launcher 发布日志、请求摘要、staging manifest SHA、目标 ID 和最终回读结果。调用成功后按仓库流程进行订阅缓存复核、重建无内层 ID 的 staging、写入 changelog，最后立即恢复 Steam 离线模式。
+8. 轮询队列中的 progress/success/error，并保存 Launcher 发布日志、请求摘要、staging manifest SHA、目标 ID 和最终回读结果。调用成功后按 [缓存验收永久规则](workshop-cache-acceptance.md) 核对真实下载缓存的正式文件并确认 CK3 实际加载，重建无内层 ID 的 staging、写入 changelog，最后立即恢复 Steam 离线模式。
 
 若步骤 2 证明 Steam 没有把 `--inspect` 送入 Launcher，当前版本可用于本次发布的最短替代是 Windows UI Automation 按可访问性控件驱动现有上传表单；它仍不需要 OCR，但不是 Launcher 内部协议。不要把未经实测的 CDP 参数转发写成已完成能力。
 
@@ -292,6 +294,8 @@ observe_publish(operation_id)     # 只读：progress/success/error/log evidence
 verify_public_item(operation_id)  # 只读：Workshop 元数据及新鲜订阅缓存复核
 restore_offline(operation_id)     # 写：恢复 Steam 离线状态并复核
 ```
+
+上述只读 `verify_public_item` 不启动 CK3；实际缓存加载证据由授权执行者按 [缓存验收永久规则](workshop-cache-acceptance.md) 单独取得。
 
 建议状态机：
 
@@ -318,7 +322,7 @@ DISCOVERED
 - canonical `remote_file_id` 只保留在用户目录外层 `.mod`。上传前 staging 内层 `descriptor.mod` 必须无该字段；Launcher 会在上传过程中临时注入，上传结束后必须重建 staging 恢复无 ID 正式树。
 - Greenworks 0.29.0 的 JS callback 只暴露创建出的 item ID 和数值结果，没有暴露 `bUserNeedsToAcceptWorkshopLegalAgreement` / EULA status。`steam_api64.dll` 虽含 `GetWorkshopEULAStatus` 和 `ShowWorkshopEULA`，Launcher JS surface 没接出这两项。因此 MCP 不得宣称已自动确认或接受法律协议；需要时由用户在 Steam 页面人工处理。
 - `SubmitItemUpdate` 发出后没有可靠取消。超时应记录为 unknown，并先回读，不能自动再次 CreateItem。
-- 上传成功、公开页回读、全新订阅缓存复核、release changelog 入库、Steam 恢复离线缺一不可；前面的 success IPC 只证明 Launcher 调用成功。
+- 上传成功、公开页回读、[真实下载缓存文件核对与 CK3 实际加载](workshop-cache-acceptance.md)、release changelog 入库、Steam 恢复离线缺一不可；前面的 success IPC 只证明 Launcher 调用成功。
 
 ### 7.1 Change Notes 事故复盘与强制门禁
 
@@ -342,7 +346,7 @@ Change Notes；成功更新 Workshop 主描述同样不会连带修改既有 Cha
    已经替换。原生 submit 无效时，使用 owner page 编辑该条目，再重复匿名回读；不要为了改文案无意义地重传未变化的 mod 内容。
 6. **失败就保持未完成。** 公开正文缺失、被截断、仍是旧摘要、目标 entry 不明或无法匿名回读时，release 状态保持 RED/未完成，
    不能用仓库文档、截图、登录态页面或 API 回执替代。
-7. **证据与收尾。** 将精确回读结果写入该版本永久 changelog/发布证据；随后完成订阅缓存复核、提交推送和 Steam 离线恢复。
+7. **证据与收尾。** 将精确回读结果写入该版本永久 changelog/发布证据；随后按 [缓存验收永久规则](workshop-cache-acceptance.md) 完成缓存文件核对与实际加载、提交推送和 Steam 离线恢复。
 
 本次事故的永久事实与哈希见 [Auto Upgrade Buildings 2.0.0 changelog](release-changelogs/auto-upgrade-buildings/2.0.0.md)。
 

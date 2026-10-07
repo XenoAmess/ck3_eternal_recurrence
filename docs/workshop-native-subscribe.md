@@ -31,6 +31,8 @@ Business `complete` requires the exact callback item ID, `EResult=1`, and a subs
 
 Subscription completion does not establish installation or file contents: `installation_verified` and `content_verified` remain false. Continue with the independent [native download](workshop-native-download.md), first preserving any automatically created exact cache, proving the expected cache path absent, then validating the newly downloaded tree against the frozen release manifest. Public metadata, media and full Change Notes are independent gates.
 
+Under the user's permanent **2026-10-07** policy for all future mods, published-cache acceptance only requires exact formal-file agreement and successful CK3 startup that actually enables and mounts/loads the target product from the real Steam-downloaded published-cache path. Actual initialization logs can prove the load; then quit normally through the GUI. No new game, character selection, map or native business query is required. Do not repeat gameplay/fixture/event/option/trait/cooldown/candidate tests for cache acceptance. Pre-publication source acceptance and historical results remain unchanged. Subscription and download callbacks do not establish CK3 loading; follow the [permanent Workshop cache acceptance policy](workshop-cache-acceptance.md).
+
 ## Static validation
 
 The focused suite covers Win64 ABI, exact callback and state, unknown result without retry, foreign item, explicit failure, invalid API call, successful callback without Subscribed state, argument validation, missing exports before DLL load, and official MCP forwarding of a partial business result. Existing publication, preview and download tests remain applicable.

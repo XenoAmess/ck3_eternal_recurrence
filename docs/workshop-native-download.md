@@ -82,8 +82,20 @@ the recorded evidence before a new operation.
 Download completion does not prove release file contents. Validate the returned
 directory against the frozen manifest with `ck3_workshop_mcp.validation._validate_manifest_tree`:
 exact inventory, file sizes and SHA-256, with explicit product/item/version/count
-checks supplied by the publishing caller. Public description, notes, media and
-Steam offline restoration remain separate publication gates.
+checks supplied by the publishing caller.
+
+The user's permanent policy of **2026-10-07**, applying to all future mods, limits
+published-cache acceptance to this exact formal-file match and a successful CK3
+startup that actually enables and mounts/loads the target product from the real
+Steam-downloaded published-cache path. Actual initialization logs can prove that
+load; then quit normally through the GUI. No new game, character selection, map
+or native business query is required. Do not repeat gameplay, fixture, event,
+option, trait, cooldown or candidate tests for cache acceptance.
+Pre-publication source acceptance is unchanged.
+The download tool does not start CK3 or prove this load. See the
+[permanent Workshop cache acceptance policy](workshop-cache-acceptance.md).
+Public description, notes, media and Steam offline restoration remain separate
+publication requirements; historical download results below remain unchanged.
 
 ## Source and validation boundary (2026-10-03)
 

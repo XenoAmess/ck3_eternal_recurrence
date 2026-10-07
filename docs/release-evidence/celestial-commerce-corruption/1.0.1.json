@@ -1,7 +1,7 @@
 {
   "schema": "ck3.workshop-release-evidence.v1",
-  "status": "PUBLISHED_CACHE_ACCEPTANCE_PENDING",
-  "release_complete": false,
+  "status": "RELEASE_COMPLETE",
+  "release_complete": true,
   "product": "mod_celestial_commerce_corruption",
   "version": "1.0.1",
   "workshop_item_id": "3804807463",
@@ -172,12 +172,253 @@
     "normal_GUI_OS0_is_separate_actual_evidence": true,
     "source_12003_does_not_prove_cache_12004": true
   },
-  "pending_completion": [
-    "CK3 1.20.0.4 actual fresh-cache representative business and independent normal GUI OS0",
-    "Root adoption and actual master commit/push of the permanent publication record; no future hash filled"
-  ],
+  "pending_completion": [],
   "existing_limits_and_old_failed_attempts_preserved": true,
   "observed_master_snapshot_for_old_DRAFT": "38b0a9860f5c07269458fbcfcd5f8a09dfacb8d0",
   "prepared_external_at_utc": "2026-10-07T05:41:54.299782+00:00",
-  "this_documentation_package_new_HTTP_SDK_game_desktop_calls": 0
+  "this_documentation_package_new_HTTP_SDK_game_desktop_calls": 0,
+  "completion_status_history": [
+    {
+      "status": "PUBLISHED_CACHE_ACCEPTANCE_PENDING",
+      "release_complete": false,
+      "pending_completion": [
+        "CK3 1.20.0.4 actual fresh-cache representative business and independent normal GUI OS0",
+        "Root adoption and actual master commit/push of the permanent publication record; no future hash filled"
+      ],
+      "canonical_record_before": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/release-evidence/celestial-commerce-corruption/1.0.1.json",
+        "bytes": 8818,
+        "sha256": "9f31342614b9f0bc3810a4328e32cecb6404e52647212aa9727e3407c9d6a71d"
+      },
+      "new_policy_supersedes_cached_representative_business_requirement": "2026-10-07-user-cache-load-and-file-match"
+    }
+  ],
+  "cache_acceptance_policy": {
+    "id": "2026-10-07-user-cache-load-and-file-match",
+    "effective_date": "2026-10-07",
+    "canonical_document": "docs/workshop-cache-acceptance.md",
+    "authority": "Explicit user directive relayed by Root; Root adopts the permanent record.",
+    "user_quote": "我要求你简化“缓存实机验收”步骤。 让 CK3 加载 Steam 实际下载到本机的已发布模组，确认玩家下载到的文件与正式构建一致就行了，不要再次检查在游戏中运行。后续对于这些mod的发布全部改成这个规定，你更新到对应的docs里。",
+    "user_quote_provenance": "项目所有者在当前任务中于2026-10-07给出的原始中文指令，由Root直接读取并采用。",
+    "required": [
+      "Actual Steam downloaded files exactly match the formal release build.",
+      "CK3 actually loads those cache files."
+    ],
+    "repeat_cached_in_game_behavior_required": false,
+    "prepublication_source_business_acceptance_unchanged": true,
+    "historical_requirement_superseded": "superseded by user2026-10-07 policy"
+  },
+  "cache_acceptance": {
+    "status": "PASS_ACTUAL_CACHE_FILE_MATCH_AND_CK3_LOAD",
+    "policy_id": "2026-10-07-user-cache-load-and-file-match",
+    "run_id": "4-8e1c2f1861--celestial-commerce-corruption--R0014",
+    "root_acceptance_facts": {
+      "path": "C:/workspace/ck3-upgrade-20261007/ccc-cache-policy-closeout-agent-01/delegated-root-facts-01.json",
+      "bytes": 1354,
+      "sha256": "31869bd4e1defcd215bdf474b394c2099fb0ff24254f714fb5f3dcd4cc0d4a5d"
+    },
+    "root_review_authority": "Root directly reviewed the actual original images; this renderer does not review GUI truth.",
+    "cache_file_match": {
+      "status": "PASS",
+      "file_count": 22,
+      "cache_path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3804807463",
+      "actual_Steam_download": {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\native-download-result-01.json",
+        "bytes": 2767,
+        "sha256": "f3e99a0d2f1c099d68680acdce332174d8d75dc851803ff86eb65d5479953882"
+      },
+      "strict22_original_publication_receipt": {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\fresh-cache-strict22-verify-01.json",
+        "bytes": 738,
+        "sha256": "f5b126ef850556a56959c6a8533d417cbaf8feb5e00ffded8d702baa9fadbe32"
+      },
+      "formal_manifest": {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\formal\\mod_celestial_commerce_corruption-v1.0.1.manifest.json",
+        "bytes": 4142,
+        "sha256": "6dec9c27409248c4a8c7d8516e2205adff666f3981e3be1c5830fe78bd348fde"
+      },
+      "R0014_profile_preparation": {
+        "path": "C:/workspace/ck3-upgrade-20261007/live/4-8e1c2f1861--celestial-commerce-corruption--R0014/cache-file-inputs-receipt.json",
+        "bytes": 3834,
+        "sha256": "2f2afe540016ec3ee940ed33ac0850566693f439cf50c56a7dbb3ad74f200a3f"
+      },
+      "new_download_or_verify_run": false
+    },
+    "actual_CK3_load": {
+      "status": "PASS",
+      "runtime_version": "1.20.0.4",
+      "build_id": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "pid": 23456,
+      "create_time": 1791360602.2334366,
+      "connection_generation": 1,
+      "frozen_argv": {
+        "path": "C:/workspace/ck3-upgrade-20261007/live/4-8e1c2f1861--celestial-commerce-corruption--R0014/frozen-argv.json",
+        "bytes": 5248313,
+        "sha256": "f75252bc8856d286a9be8681be49cfa014cc92afacb759a8a7c0efc19c2242b7"
+      },
+      "actual_launch": {
+        "path": "C:/workspace/ck3-upgrade-20261007/live/4-8e1c2f1861--celestial-commerce-corruption--R0014/launch.json",
+        "bytes": 2233,
+        "sha256": "d05468aba1fece7271a7f1587bc6d76a2f033088fb424166b0cb8de124c1da8e"
+      },
+      "product_mount": {
+        "descriptor": "C:\\workspace\\ck3-upgrade-20261007\\live\\4-8e1c2f1861--celestial-commerce-corruption--R0014\\state\\profile\\mod\\product.mod",
+        "mount": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3804807463",
+        "file_count": 22
+      },
+      "product_descriptor": {
+        "path": "C:/workspace/ck3-upgrade-20261007/live/4-8e1c2f1861--celestial-commerce-corruption--R0014/state/profile/mod/product.mod",
+        "bytes": 290,
+        "sha256": "d42b82f08c393b6d420d9c31dcf8352d6b2fee53390c3de516bd21f715d88240"
+      },
+      "product_descriptor_text": "version=\"1.0.1\"\ntags={\n\t\"Gameplay\"\n\t\"Balance\"\n\t\"Decisions\"\n\t\"Events\"\n\t\"1.20 'Crozier'\"\n}\nname=\"天朝制允许经商&贪腐框架（XenoAmess维护版）\"\npicture=\"thumbnail.png\"\nsupported_version=\"1.20.0.3\"\npath=\"C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3804807463\"\n",
+      "dlc_load": {
+        "path": "C:/workspace/ck3-upgrade-20261007/live/4-8e1c2f1861--celestial-commerce-corruption--R0014/state/profile/dlc_load.json",
+        "bytes": 96,
+        "sha256": "6465381bd34cc52e1203389a53e192ed96e93d3fde4b558c84ac3cabbc04a624"
+      },
+      "enabled_mods": [
+        "mod/product.mod",
+        "mod/fixture.mod"
+      ],
+      "initial_actual_source_observation": {
+        "path": "C:/workspace/ck3-upgrade-20261007/local12004-runtime-build-01/r0014-source06-held-title-live-evidence-01/R0014-SOURCE06-INITIAL-CAMPAIGN-ROOT-ACTUAL-SOURCE-OBSERVED-01.json",
+        "bytes": 8356,
+        "sha256": "bf3006781d1a234e34a134f3a77e3201d1e9adb821a744044257414c2c706243"
+      },
+      "query_sequence": 1,
+      "initial_observation_index": 125,
+      "root_ready": true,
+      "same_frame_ready": true,
+      "scope": "Cache files mounted by this actual profile and CK3 loaded the campaign; no new cache business PASS claim."
+    },
+    "normal_GUI_exit_and_cleanup": {
+      "root_accepted": true,
+      "same_pid_retained_handle": true,
+      "os_exit_code": 0,
+      "native_exit_code": 0,
+      "managed_thread_finished": true,
+      "cleanup_ok": true,
+      "independent_OS_proof": {
+        "path": "C:/workspace/ck3-upgrade-20261007/ccc-cache-business-a87-prepare-01/continuous-route-02/actual-gui/independent-normal-GUI-OS-exit.json",
+        "bytes": 463,
+        "sha256": "a7901a98d8850124c05e9786bc1c6c6a2e9af41dd9670a41441047f1ea8f4dc5"
+      },
+      "native0_cleanup_proof": {
+        "path": "C:/workspace/ck3-upgrade-20261007/ccc-cache-business-a87-prepare-01/continuous-route-02/actual-gui/actual-native0-cleanup-proof.json",
+        "bytes": 1806,
+        "sha256": "7a84184614d689d0af9732c9c50d57a401769566d5d948057de60a44500a8b06"
+      },
+      "actual_GUI_Quit_action": {
+        "path": "C:\\workspace\\ck3-upgrade-20261007\\ccc-cache-business-a87-prepare-01\\continuous-route-02\\actual-gui\\normal-quit-to-desktop-once.match.action-result.json",
+        "bytes": 532,
+        "sha256": "f770c1d01559246057a3f95ddeb505b42f2ae0bb6aa3e40266b992769d957067"
+      },
+      "actual_route_result_preserved": {
+        "path": "C:/workspace/ck3-upgrade-20261007/ccc-cache-business-a87-prepare-01/continuous-route-02/actual-gui/route-result.json",
+        "bytes": 812,
+        "sha256": "91a1349605ca3f72d52a8071c93dea86a75b83816bc81893faff9d9e81d4b2d0"
+      },
+      "keeper_report": {
+        "path": "C:/workspace/ck3-upgrade-20261007/ccc-cache-business-a87-prepare-01/screen-keeper-01/report.json",
+        "bytes": 294,
+        "sha256": "3f24ad03bbed80aafce0563e07b3134cf2c5e61d5c843a27355282280094b9ff"
+      },
+      "keeper_session": 95673,
+      "keeper_actual_exit_code": 0,
+      "keeper_thread_exited": true,
+      "keeper_last_sequence": 5356,
+      "CAS_released_sequence": 5358,
+      "CAS_state": "done",
+      "resources": [],
+      "CAS_release_provenance": "Actual CAS5358 release receipt adopted byRoot; keeper session95673 actualexit0 was observed through the original execution session.",
+      "actual_CAS_release": {
+        "path": "C:/workspace/ck3-upgrade-20261006/resume-root-01/a87-screen-release-01.json",
+        "bytes": 1265,
+        "sha256": "a7ff71367abdc485b5091aaf5ec7f7dd928c4e5d755dfac1f520cea95016d050"
+      },
+      "root_independent_OS_proof": {
+        "path": "C:/workspace/ck3-upgrade-20261007/resume-root-02/a87-exact-os-exit-01.json",
+        "bytes": 288,
+        "sha256": "b60f60b81f8bcfa278f5bb4bfb78ca157de27ba0eacb28ea47b9fb29b5d0317f"
+      }
+    },
+    "Steam_offline": {
+      "root_direct_original_review": true,
+      "steam_offline_confirmed": true,
+      "review": {
+        "path": "C:/workspace/ck3-upgrade-20261007/live/4-8e1c2f1861--celestial-commerce-corruption--R0014/offline-visual-review.json",
+        "bytes": 966,
+        "sha256": "a843b255fdfc4feb899afd042a851f48126639d2e38dadbbaf96fa8aa9b9e879"
+      },
+      "recovery02": {
+        "path": "C:/workspace/ck3-upgrade-20261007/ccc-cache-business-a87-prepare-01/offline-recovery-02/recovery.json",
+        "bytes": 1476,
+        "sha256": "cb8632b371436bf4059a1badca72343ad4ece721125163b27176a4468734faa3"
+      },
+      "challenge02": {
+        "path": "C:/workspace/ck3-upgrade-20261007/ccc-cache-business-a87-prepare-01/steam-challenge-02/report.json",
+        "bytes": 1329,
+        "sha256": "89f15ab41a98bb8f80c9ac90a6ae2d2174701120bd4c9701622c1120b4cbcbbf"
+      },
+      "original_frame": {
+        "index": 2,
+        "nonce": "fdac2e1e7d6c",
+        "requested_utc": "2026-10-07T08:08:55.324758+00:00",
+        "captured_utc": "2026-10-07T08:08:56.129921+00:00",
+        "path": "C:\\workspace\\ck3-upgrade-20261007\\ccc-cache-business-a87-prepare-01\\steam-challenge-02\\challenge-2.png",
+        "bytes": 100502,
+        "sha256": "865491d1fe61a6746ec88c218ea1a7a19a8ee01b01c6da403353611f96d7e854",
+        "image_size": [
+          1920,
+          1080
+        ],
+        "desktop_size": [
+          1920,
+          1080
+        ]
+      },
+      "nonce": "fdac2e1e7d6c",
+      "reviewed_at_utc": "2026-10-07T08:09:50.909493+00:00",
+      "scope": "Current transient pixels and same-frame Steam offline badge directly reviewed; no whole desktop freshness claim.",
+      "background_clock_stale_preserved": true,
+      "no_Steam_mode_change_requested_in_this_attempt": true
+    },
+    "optional_nonrequired_navigation_failure": {
+      "status": "FAILED_PRESERVED_NOT_REQUIRED_BY_CURRENT_CACHE_POLICY",
+      "stage": "open-production-row",
+      "correlation": 0.8440985679626465,
+      "threshold": 0.92,
+      "action_attempted": false,
+      "Confirm_performed": false,
+      "match_receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261007/ccc-cache-business-a87-prepare-01/continuous-route-02/actual-gui/open-production-row.match.json",
+        "bytes": 1141,
+        "sha256": "680195e2b2bb36423cd467898208d89e43e342c480d09de1158b8b7087f0a3fa"
+      },
+      "original_PNG": {
+        "path": "C:\\workspace\\ck3-upgrade-20261007\\ccc-cache-business-a87-prepare-01\\continuous-route-02\\actual-gui\\open-production-row-before.png",
+        "bytes": 3114488,
+        "sha256": "9a785cf32e6c8575635bf9e08a99fff94e3a230463005d2db2df6d438787c0e8"
+      },
+      "business_error": {
+        "path": "C:/workspace/ck3-upgrade-20261007/ccc-cache-business-a87-prepare-01/continuous-route-02/actual-gui/business-error-preserved-before-normal-quit.json",
+        "bytes": 279,
+        "sha256": "84675027965ef1f9717bc77300c89e350ef5f52eb4098d23e4f7710c2440e1b2"
+      },
+      "representative_business_accepted": false,
+      "failure_rewritten_or_replayed": false
+    },
+    "historical_Pending_business_field": {
+      "field": "build_and_cache.fresh_cache_representative_business_and_normal_GUI_exit",
+      "value_preserved": "PENDING",
+      "disposition": "superseded by user2026-10-07 policy"
+    },
+    "prepared_external_at_utc": "2026-10-07T08:38:05.809318+00:00",
+    "new_HTTP_SDK_download_build_game_desktop_tests_Git_actions": 0,
+    "root_adopted_at_utc": "2026-10-07T08:45:33.301329+00:00",
+    "root_accepts_actual_cache_file_match_and_CK3_load": true
+  },
+  "final_record_custody": "External completion candidate becomes current only after Root review, adoption and actual master ordinary commit/push. No future commit hash or push success is fabricated."
 }

@@ -71,8 +71,10 @@ Steam 已在发布和下载后恢复 Offline Mode：`WantsOfflineMode=1`，conne
 
 ## 后续更新规则
 
+2026-10-07 用户永久指令适用于全部后续 mod：缓存验收只核对真实 Steam 下载的已发布缓存与正式构建文件精确一致，并确认 CK3 成功启动且实际启用、挂载/加载目标产品的缓存路径；实际初始化日志可以证明加载，随后正常 GUI 退出。不要求新游戏、角色选择、地图或原生业务查询，不重复业务、fixture、事件、选项、特质、冷却或候选测试。发布前源码验收不变；上文 0.2.0 的 MCP-first L3 与旧失败记录保留为历史。完整规则见 [Workshop 缓存验收永久规则](workshop-cache-acceptance.md)。
+
 1. 修改源码后先做与风险相称的 L0/L1，并从新 tag 生成唯一正式 staging。
 2. 只能上传 staging；内层 descriptor 不得预置 `remote_file_id`。
 3. 更新同一 Workshop item `3798404599`；必须独立精确回读公开 Change Notes，不能只信 submit 回执。
-4. 上传后从全新订阅缓存做 manifest 核对和 MCP-first L3，并再次重建无 ID 的正式 staging。
+4. 上传后按上述永久规则核对真实下载缓存的正式 manifest，并确认 CK3 实际加载该缓存；不重复 MCP-first L3 业务验收。再次重建无 ID 的正式 staging。
 5. 页面素材必须来自真实 GREEN run；中国地图镜头继续以原生 MCP 定位 `b_kaifeng`。

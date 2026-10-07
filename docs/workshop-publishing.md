@@ -4,6 +4,8 @@
 （`%LOCALAPPDATA%\Paradox Interactive\launcher-v2\logs\launcher-YYYY-MM-DD.log`），远端结论另以 Steam API、
 公开 HTML 和从空路径下载的 Workshop cache 逐项验证。
 
+2026-10-07 用户永久指令适用于全部后续 mod：发布后缓存验收只核对 Steam 实际下载的已发布缓存与正式构建的文件精确一致，并确认 CK3 成功启动且实际启用、挂载/加载目标产品的真实缓存路径。实际初始化日志可以提供加载证据；不要求新游戏、选择角色、进入地图或查询原生业务，取得加载证据后正常 GUI 退出。不重复业务场景、fixture、事件、选项、特质、冷却或候选测试。发布前源码验收不变；本文旧发布与失败记录保留为历史。完整规则见 [Workshop 缓存验收永久规则](workshop-cache-acceptance.md)。
+
 ## 物料清单
 
 | 项 | 位置 | 要求 |
@@ -69,7 +71,7 @@ Legal Agreement 而保持隐藏。因此首次发布在上传器提供选择时�
 7. 工坊网页：描述用 BBCode（`[h1]`/`[list]`，**不渲染 markdown**——别直接贴 README）；按发布计划请求隐藏或公开，
    上传后立即回读实际状态，不推断默认可见性。
 8. Steam 刷新缓存后运行 `py tools/build_release.py --verify <workshop-cache> --manifest <versioned-manifest> --workshop-cache`。该模式只规范化启动器对内层 descriptor 的 LF/CRLF 与末尾换行重写，以及其强制注入的唯一
-   `remote_file_id="<manifest workshop_item_id>"` 行；规范化后的 descriptor 及其余 84 个文件仍要求大小/SHA-256 完全一致，任何字段、顺序、ID、其他 mismatch 或 extra 继续判 RED。通过后再发布 GitHub draft 与工坊可见性。
+   `remote_file_id="<manifest workshop_item_id>"` 行；规范化后的 descriptor 及其余 84 个文件仍要求大小/SHA-256 完全一致，任何字段、顺序、ID、其他 mismatch 或 extra 继续判 RED。随后按 [缓存验收永久规则](workshop-cache-acceptance.md) 确认 CK3 实际启用、挂载/加载这份真实 Steam 下载缓存，正常 GUI 退出；不重复发布前业务测试。完成后再发布 GitHub draft 与工坊可见性。
 
 ### 4. 成功上传会把 `remote_file_id` 注入远端 descriptor
 
@@ -138,7 +140,7 @@ Steam 实际内容；它作为旁置追溯物料与 ZIP 一起发布。
 构建器从同一开发树生成 production-only 投影：明确排除 selftest effect、死亡探针事件/on_action/effect 与
 trait bridge GUI，并剥离混合文件中的 `XAR_ACCEPTANCE_ONLY` 区域；`XAR_RELEASE_ONLY` 注释行在 staging
 中展开为生产逻辑。构建会扫描所有运行文本，任何 selftest/test flag/marker 或 marker 注释残留都直接 RED。
-生产 smoke 场景也会先生成此投影，再 `/MIR` 到工坊缓存实机运行，因此不是只做文本检查。
+历史生产 smoke 场景曾先生成此投影，再 `/MIR` 到工坊缓存实机运行。该历史方法不作为 2026-10-07 起的真实 Steam 下载缓存验收证据；后续缓存验收遵循 [永久规则](workshop-cache-acceptance.md)。
 
 ## Vivhite 独立版首次上传
 

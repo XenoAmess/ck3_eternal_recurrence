@@ -1,5 +1,9 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-07 当前发布后缓存验收范围
+
+按项目所有者的新永久指令，全部 mod 的发布后缓存验收仅核对 **Steam 实际下载文件与正式构建一致，以及 CK3 实际加载这份缓存**。完整规则见 [Workshop 缓存验收](workshop-cache-acceptance.md)。实际启动加载日志可以证明目标缓存已加载时即可收尾；不要求新游戏、地图、native 业务查询、功能/事件/按钮/数值复测或业务 fixture。发布前源码功能验收继续按对应产品合同执行。下方历史缓存业务矩阵和旧门槛只保留当时事实，不能继续作为新发布的缓存验收要求。
+
 ## 2026-10-07：standalone native/Public FIRST与game live query分别授信
 
 本次[M6 retained-release-material FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/g2-m6-institutions/retained-release-material-native-public-first01/ROOT-STANDALONE-FIRST.json)只编译unique main1TU、链接冻结qualified runtime18/source750b，再跑4生产whole-wire与5registeredcompoundcases，四stage全exit0。receipt明确未配置/重建runtime/重复旧tests/替换provider/contact game-or-pipe/提交动作，production-livefalse；授native/Public fixture FIRST，不授自然prisoner行动或M6 live。
