@@ -723,6 +723,7 @@ class GameplayBridgeService:
         self,
         snapshot: dict[str, object],
         available_steps: set[str],
+        *, deferred_release_root: list[bool] | None = None,
     ) -> dict[str, object]:
         """Freeze or reconcile the private same-campaign succession ledger."""
 
@@ -799,6 +800,22 @@ class GameplayBridgeService:
             binding.get(key) != value
             for key, value in current_binding.items()
         ):
+            # Initial expectation enrichment is a generic root read. A current
+            # accepted captive offer can reach ordinary action arbitration
+            # first; actual successor reconciliation above remains mandatory.
+            played = snapshot.get("played_character")
+            if (deferred_release_root is not None and not isinstance(binding, dict)
+                    and isinstance(played, dict) and played.get("alive") is True
+                    and getattr(self.driver,
+                                "require_initial_lifestyle_focus_before_date_advance", False)
+                    is not True):
+                root_plan = {"snapshot_id": snapshot["snapshot_id"], "revision": revision,
+                             "plan": {"selected_step": QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+                                      "phase": "initial_succession_expectation_root_query"}}
+                release = plan_release_formal(self.driver, root_plan, snapshot)
+                if release["plan"].get("selected_step") == PRISONER_RELEASE_SUBMIT_STEP:
+                    deferred_release_root.append(True)
+                    return snapshot
             root_query_retry = None
             query_history_index = None
             history_view = getattr(self.driver, "_with_internal_planning_view", None)
@@ -1028,9 +1045,23 @@ class GameplayBridgeService:
         )
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
+        deferred_release_root: list[bool] = []
         snapshot = self._prepare_succession_transition_v1(
-            snapshot, available_steps
+            snapshot, available_steps, deferred_release_root=deferred_release_root,
         )
+        def finish_release_root_arbitration(planned: dict[str, object]) -> dict[str, object]:
+            plan = planned.get("plan")
+            if (deferred_release_root and not (
+                    isinstance(plan, dict)
+                    and plan.get("selected_step") == PRISONER_RELEASE_SUBMIT_STEP)):
+                # Another action won ordinary arbitration. Restore the normal
+                # initial expectation read, then plan its resulting frame.
+                self._prepare_succession_transition_v1(snapshot, available_steps)
+                return self.plan_turn()
+            if deferred_release_root and isinstance(plan, dict):
+                return {**planned, "plan": {**plan,
+                    "prisoner_release_initial_expectation_root_deferred": True}}
+            return planned
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
         bridge_capabilities = (
@@ -1287,9 +1318,18 @@ class GameplayBridgeService:
             # The runner consumes the opening focus proof on its own root
             # query turn. A family proposal or joint choice cannot replace
             # that selected step while retaining the unconsumed proof.
-            return self._plan_initial_lifestyle_focus_first_v1(
-                planned, available_steps
-            )
+            return finish_release_root_arbitration(
+                self._plan_initial_lifestyle_focus_first_v1(planned, available_steps))
+        baseline = planned.get("plan")
+        if (isinstance(baseline, dict)
+                and baseline.get("selected_step") in {
+                    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, "query-declarable-wars"}):
+            release = plan_release_formal(self.driver, planned, snapshot)
+            if release["plan"].get("selected_step") == PRISONER_RELEASE_SUBMIT_STEP:
+                for key in list(release):
+                    if key.startswith("_private_"):
+                        release.pop(key)
+                return finish_release_root_arbitration(release)
         from ..holy_order_siege_reinforcement_v1 import plan_holy_order_siege_reinforcement_v1
 
         planned = plan_holy_order_siege_reinforcement_v1(
@@ -1431,7 +1471,7 @@ class GameplayBridgeService:
             )
             family_plan = family.get("plan")
             if not isinstance(family_plan, dict):
-                return joint
+                return finish_release_root_arbitration(joint)
             if joint_plan.get("phase") == "m5_joint_query_only_red":
                 independent_fixed_pair = (
                     family_plan.get("current_betrothal_fulfillment") is True
@@ -1455,7 +1495,7 @@ class GameplayBridgeService:
                     "reason": joint_plan.get("reason", family_plan.get("reason")),
                 }
             family = {**family, "plan": family_plan}
-            return (
+            return finish_release_root_arbitration(
                 plan_child_default_private(self.driver, family, snapshot)
                 if getattr(self.driver,
                            "allow_private_guy_default_formal_trial",
@@ -1601,7 +1641,8 @@ class GameplayBridgeService:
             planned.pop("_private_faction_history_v1", None)
             planned.pop("_private_construction_snapshot_v1", None)
             planned.pop("_private_construction_history_v1", None)
-            return plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot)
+            return finish_release_root_arbitration(
+                plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot))
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
         planned.pop("_private_lifestyle_war_frame_v1", None)
@@ -1675,7 +1716,7 @@ class GameplayBridgeService:
         planned = observe_m5_wartime(planned)
         if getattr(self.driver, "allow_private_prisoner_ransom_action", False) is True:
             planned = plan_ransom_private(self.driver, planned, snapshot)
-        return plan_release_formal(self.driver, planned, snapshot)
+        return finish_release_root_arbitration(plan_release_formal(self.driver, planned, snapshot))
 
     def _plan_private_family_opportunity_v1(
         self, planned: dict[str, object], snapshot: dict[str, object], *,
