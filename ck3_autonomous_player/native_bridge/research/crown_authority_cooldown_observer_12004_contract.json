@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_package": "m7_crown_authority_actual_cooldown_timing_12004",
   "status": "AUTHORED_NOTRUN_RAW_SAME_MCP_WHOLE_CANDIDATE_CALENDAR_PENDING",
-  "source_base": "b10e1c946a9c20ccb764e1a3f56be7ea6a341f46",
+  "source_base": "a624c5c400d581e60530b6813420540d1c4b7d56",
   "target": {
     "product_version": "1.20.0.4",
     "steam_build_id": "25734779",
@@ -282,7 +282,7 @@
     "production_live_primitive": false,
     "production_live_loop": false,
     "complete": false,
-    "remaining": "Root batch25 adopts native/Python hooks and own leaf, compiles and runs sole six-case native/registered FIRST, then genuine same-context24h clock/expiry observation or named days/date source to finish usable positive retry.",
+    "remaining": "Root25 four-target batch and new raw whole/registered FIRST remain unqualified. Next direct entrance is actual same-MCP paused pre/post clock/expiry over ordinary24h; alternative native entrance uses true487A038 plus source-proved parser slot/registration before any new finite window. No current calendar unit or positive retry date is claimed.",
     "actual_scalar_storage_and_remaining_source_closed": true,
     "actual_scalar_updater_receiver_source_closed": true,
     "actual_calendar_unit_source_closed": false,
@@ -295,7 +295,9 @@
     "same_MCP_raw_hooks_authored": true,
     "whole_native_fixture_authored": true,
     "sole_registered_consumer_authored": true,
-    "native_and_consumer_FIRST_executed": false
+    "native_and_consumer_FIRST_executed": false,
+    "actual_duration_initializer_source_closed": true,
+    "actual_duration_days_years_parser_multiplier_source_closed": false
   },
   "worker_execution_counts": {
     "tests": 0,
@@ -304,10 +306,13 @@
     "sdk": 0,
     "game_queries": 0,
     "save_reads": 0,
-    "exe_reads": 0,
+    "exe_reads": 2,
     "hashes": 0,
     "new_capabilities": 0,
-    "old_qualified_suite_reruns": 0
+    "old_qualified_suite_reruns": 0,
+    "exe_file_bytes": 252,
+    "offline_exact_manifest_mapper_runs": 1,
+    "imports_scope": "Project/game/SDK imports0; existing offline finite mapper and capstone imported solely for delegated paired source capture."
   },
   "initial_source_base": "14f07ade00e9ad359da3aa6af3642592ede3f48d",
   "actual_source_results": {
@@ -474,11 +479,12 @@
       "named_renderer_lookup": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\scalar-clock-prefix02\\renderer-entry-lookup\\ROOT-RENDERER-ENTRY-LOOKUP.json",
       "next_concrete_entrance": "Root new same-MCP paused raw clock/expiry pre/post over genuine ordinary24h on the same Character+1B0 -> GameData+68 context; or named duration multiplier days/years producer / GetCurrentDateWithDiff source. No repeated98/186/182/331/113 capture.",
       "same_receiver_daily_cache_lookup": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-provider04\\char-cadence\\DAILY-SAME-CONTEXT-CACHE-LOOKUP.json",
-      "named_renderer_source_request": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-provider04\\renderer-units\\ROOT-NAMED-RENDERER-PRODUCER-REQUEST.json"
+      "named_renderer_source_request": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-provider04\\renderer-units\\ROOT-NAMED-RENDERER-PRODUCER-REQUEST.json",
+      "Root_same_MCP_observation_recipe": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\duration-initializer10-clergy-first01\\ROOT-SAME-MCP-CLOCK-UNIT-OBSERVATION-RECIPE.json"
     },
     "root_total_physical_bytes": 3133,
     "root_total_exact_reads": 20,
-    "worker_native_reads": 0,
+    "worker_native_reads": 2,
     "registry03": {
       "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-scope-registry03\\FAMILY-MAP.json",
       "old3_span": "[0x3795A80,0x3795B2B)",
@@ -658,6 +664,14 @@
         "ended_utc": "2026-10-07T12:14:56.644583+00:00",
         "new_partial_bytes": 372,
         "new_partial_reads": 2
+      },
+      {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\duration-initializer10-clergy-first01\\FAMILY-MAP.json",
+        "started_utc": "2026-10-07T13:41:43.061855+00:00",
+        "ended_utc": "2026-10-07T13:41:43.927807+00:00",
+        "new_partial_bytes": 252,
+        "new_partial_reads": 2,
+        "actual_execution_owner": "/root/religion_clergy_inputs, Root delegated"
       }
     ],
     "accessor06": {
@@ -777,7 +791,78 @@
         "generic_expression_callee_expanded": false,
         "historical2_raw_was_relabelled_as_old3": false
       }
-    }
+    },
+    "constructor10": {
+      "manifest": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\script-duration-source09\\next-units-entrance10\\ROOT-FINITE-DURATION-INITIALIZER10-MANIFEST.json",
+      "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\duration-initializer10-clergy-first01\\FAMILY-MAP.json",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\duration-initializer10-clergy-first01\\Character_timed_duration_constructor_initializer_source-DETAIL.json",
+      "actual_execution_owner": "/root/religion_clergy_inputs under Root explicit exact-manifest delegation",
+      "old_entry": "0x2d5cf20",
+      "actual_entry": "0x2d5cf00",
+      "bytes_per_build": 126,
+      "instructions_per_build": 30,
+      "status": "complete_instruction_span_normalized_equal",
+      "fresh_bytes": 252,
+      "fresh_reads": 2,
+      "cache_first": true,
+      "old2_reference_not_used_as_old3_raw": true,
+      "actual_operands": {
+        "allocation": {
+          "site": "0x2D5CF12",
+          "target": "0x4223B94",
+          "object_size": "0x98"
+        },
+        "base_initializer": {
+          "site": "0x2D5CF22",
+          "target": "0x3764150",
+          "receiver": "allocated whole object RCX=RAX",
+          "parser_role_assigned": false
+        },
+        "installed_vtable": {
+          "LEA_site": "0x2D5CF27",
+          "actual_target": "0x487A038",
+          "old_target": "0x487A028",
+          "store_site": "0x2D5CF2E",
+          "destination": "object+0"
+        },
+        "duration_multiplier_default": {
+          "site": "0x2D5CF4D",
+          "destination": "object+0x78 / duration+0",
+          "width": "DWORD",
+          "value": 0
+        },
+        "integer_and_range_defaults": {
+          "site": "0x2D5CF50",
+          "destination": "object+0x7C / duration+4 and+8",
+          "width": "QWORD",
+          "bits": "FFFFFFFFFFFFFFFF"
+        },
+        "optional_expression_default": {
+          "site": "0x2D5CF58",
+          "destination": "object+0x88 / duration+0x10",
+          "width": "QWORD",
+          "value": 0
+        },
+        "optional_range_expression_default": {
+          "site": "0x2D5CF5F",
+          "destination": "object+0x90 / duration+0x18",
+          "width": "QWORD",
+          "value": 0
+        },
+        "return": "2D5CF70 RAX=RBX;2D5CF7D RET"
+      },
+      "duration_parser_or_days_years_factor_in_span": false,
+      "base_initializer_allocator_vtable_callees_expanded": false,
+      "decoder_receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\script-duration-source09\\next-units-entrance10\\decoder-after-capture\\ROOT-ACTUAL-CONSTRUCTOR10-DECODE.json",
+      "observer_join_receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\script-duration-source09\\next-units-entrance10\\observer-join\\ROOT-OBSERVER-JOIN-DELIVERY.json",
+      "next_finite_anchor": "Actual installed vtable487A038; a held named parse/compile virtual-call slot or registration caller is required before selecting a pointer/callee window.",
+      "bounded_held_ABI_lookup": "No named duration parser/compile virtual slot or multiplier writer.888CFB parser-named operand is row-expiry deserialization, not duration parser."
+    },
+    "delegated_constructor10_physical_bytes": 252,
+    "delegated_constructor10_exact_reads": 2,
+    "cumulative_physical_bytes": 3385,
+    "cumulative_exact_reads": 22,
+    "worker_native_bytes": 252
   },
   "owned_candidate": {
     "header": "ck3_autonomous_player/native_bridge/include/xar_bridge/crown_authority_cooldown_observer_12004.hpp",
@@ -801,5 +886,6 @@
     "no_new_mcp_capability_action_gate_or_native_dispatch": true,
     "frame_date_raw_width": "signed64",
     "retry_date_raw_width": "signed64"
-  }
+  },
+  "source_only_increment10_tree": "C:\\codex-ck3-background\\g2-crown-units-entrance10-12004"
 }

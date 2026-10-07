@@ -33,6 +33,11 @@ flowchart TD
   D[Stock on_pass years20 parameter] -.-> J[Actual script duration compiler / typed integer conversion]
   J -.-> I[Actual duration374D350 scales duration+0 multiplier by integer value]
   I --> SW[Actual caller2D567AE passes returned R9D to scalar writer3728400]
+  CT[Actual constructor2D5CF00 / complete126 bytes] --> DF[Duration+78 multiplier0 / scalar and range minus1 / null expressions]
+  CT --> VT[Actual LEA installs object vtable487A038]
+  VT -.-> PS[Named parse or compile method slot / registration caller not held]
+  PS -.-> J
+  DF --> I
   SW --> S
   V --> T
   T --> W
@@ -161,6 +166,26 @@ The historical1.19 scalar `set_variable` execute3393530 is separately named by `
 
 Entry continues the independent same-pool/renderer locator route. Its cache-first fallback is exactly the three named NUL strings `GetVarTimeRemaining`20 bytes, `GetCurrentDateWithDiff`23 bytes and `set_variable`13 bytes. Existing global PE metadata locates `.rdata` at RVA43DA000/file43D8E00 and its existing file conversion; it does not contain a bound literal/RIP cache locator. That section address is not permission to read the whole17MB section. The positive executable source09 above supplies a smaller concrete producer now; a later named-literal match must lead to a real registration LEA/STORE before freezing a callback span. No open-ended scan or fabricated callback is introduced.
 
+## Actual duration initializer: delegated entrance10
+
+This source/docs increment is isolated at `C:/codex-ck3-background/g2-crown-units-entrance10-12004`, based on the raw whole-candidate commit `a624c5c400d581e60530b6813420540d1c4b7d56`. Root expressly delegated the frozen paired constructor manifest, with a maximum252 bytes/2 reads. The existing finite mapper checked held range caches first and captured only **old3 2D5CF20..2D5CF9E/current4 2D5CF00..2D5CF7E**,126 bytes each. Its [actual receipt](Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/native/duration-initializer10-clergy-first01/FAMILY-MAP.json) records a complete30-instruction span with normalized/ordered/local equality, **fresh252 bytes/2 reads**. No callee, vtable, PE scan, game/process or SDK access followed. Earlier historical `.2` bytes remain locator evidence and were not substituted for genuine old3 bytes.
+
+| Actual4 source | Actual operand and role | Qualification |
+|---|---|---|
+| 2D5CF12 CALL | 4223B94 with requested object size98 | Allocation edge; not expanded |
+| 2D5CF22 CALL | 3764150 receives the allocated whole object inRCX | Base-object initializer; no parser role assigned |
+| 2D5CF27 LEA / 2D5CF2E STORE | RIP target487A038 installed at object+0 | True vtable anchor; old3 actual target487A028 |
+| 2D5CF4D STORE | DWORD[object+78]=0 | Embedded duration+0 multiplier default |
+| 2D5CF50 STORE | QWORD[object+7C]=all ones | Duration+4 integer and+8 range DWORD defaults-1 |
+| 2D5CF58 / 2D5CF5F STORE | QWORD[object+88/+90]=0 | Duration+10 expression and+18 range-expression defaults |
+| 2D5CF70 / 2D5CF7D | RBX copied toRAX, thenRET | Allocated object returned; complete constructor boundary |
+
+The exact [decode receipt](Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/native/script-duration-source09/next-units-entrance10/decoder-after-capture/ROOT-ACTUAL-CONSTRUCTOR10-DECODE.json) and [observer join](Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/native/script-duration-source09/next-units-entrance10/observer-join/ROOT-OBSERVER-JOIN-DELIVERY.json) reuse only these held instructions. The source09 caller/evaluator already supplies the node+78 receiver and integer scaling; entrance10 now proves its initializer and emitted vtable. **No parser CALL or days/year multiplier store appears in this constructor.** The bounded named conversion-outcome ABI packet has no duration parse/compile virtual slot or provider multiplier writer. Its888CFB parser-named operand belongs to row-expiry deserialization and cannot fill this duration role. Following allocator4223B94 or pre-vtable base initializer3764150 would not select the missing days multiplier and is omitted.
+
+There are two concrete next construction routes. For native source, the true anchor is the installed487A038 vtable: reuse a held named effect parse/compile virtual-call slot or registration caller before selecting any pointer/callee window. The [next finite node](Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/native/script-duration-source09/next-units-entrance10/observer-join/NEXT-FINITE-OBSERVER-NODE.json) leaves only the unproved slot/target/extent unfilled; constructor defaults do not authorize an arbitrary vtable read. For direct ordinary-campaign qualification, Root batch25 publishes the already authored raw9 object through the existing law MCP, then obtains genuine paused pre/post same-Character clock/expiry observations during its authorized normal24-hour progression. This compares native scalar counter movement with an actual calendar interval without guessing a20-year constant. The [same-MCP observation recipe](Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/native/duration-initializer10-clergy-first01/ROOT-SAME-MCP-CLOCK-UNIT-OBSERVATION-RECIPE.json) is preparation only; no observation or calendar unit is claimed here.
+
+Source cost is now **3385 bytes/22 exact reads**: prior Root3133/20, plus this delegated lane252/2. Children reuse those captured instructions with zero new native bytes. Raw observer code, same-MCP hooks, whole producer and registered consumer remain uncompiled/unexecuted in this lane; Root25 owns their unified four-target batch. The constructor proof does not change raw9 type/unit, fill a positive retry date, add action permission or grant fixture/live readiness.
+
 ## Root FIRST and qualification boundary
 
 The raw reader and same-MCP candidate are ready for Root integration before calendar qualification. The [external native hooks](Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/raw-observer-first/native-hooks/ROOT-NATIVE-HOOK-RECIPE.json) project only the existing law header, Capture/serializer, mailbox and router. Runtime bindings remain the existing exact4 image path; nullable fixture access pointers allow the new whole fixture to use the actual named executor with synthetic memory and callbacks. The production route and fixture both use `SerializeRealmLawReadbackCommandResult12002(request_id, native_readback, revision)`, which delegates to the existing full command-result helper. Root explicitly adds the owned observer source to `xar_ck3_12002_runtime` and the owned fixture CMake leaf to the selected complete source tree. This worker did not edit shared hooks or main CMake.
@@ -175,10 +200,10 @@ Root owns the genuine paused pre/post observations in the **current** Robert2982
 
 ## Oct7/W41 fields
 
-- Completed source input: prior actual scalar/Character context proof is reused; source09 actual98-byte caller and186-byte evaluator fragment now close duration-to-scalar integer scaling, with no calendar-unit credit. Raw leaf retains signed64 frame/retry date width. Four external native hooks, one strict transport projection and a new native whole/sole registered consumer are AUTHORED_NOTRUN.
-- Doing: Root batch25 integration/build and only the new six-case whole/registered FIRST, then genuine same-context paused pre/post clock evidence or named native day conversion. Runtime24 recovery proceeds independently.
+- Completed source input: prior scalar/Character/source09 proof is reused; delegated entrance10 actual126-byte constructor closes multiplier/default stores and true vtable487A038, with no calendar-unit credit. Raw leaf64bit frame width, external same-MCP hooks and new native whole/sole registered consumer remain AUTHORED_NOTRUN.
+- Doing: Root25 unified four-target build/new FIRST, then genuine same-context paused pre/post clock evidence. The alternative native node is actual487A038 plus a source-proved parse slot or registration caller; no arbitrary slot selected.
 - Why: current law permission and presence cannot schedule a future lawful retry; actual timing lets the existing next-generation plan continue useful development while waiting.
 - Readiness: **research / construction prepared**. Cooldown timing observation, scheduled retry, new static-ready/fixture-live/production-live/loop credit are all unqualified. Presence-only is not completion.
-- Execution: tests/imports/build/SDK/game/save/EXE/hash/newcapability0; old qualified suites0; no Root report/shared bridge/CMake edits.
-- Source cost: prior Root source2565B/16reads plus source09 caller196B/2reads and evaluator fragment372B/2reads = **3133B/20reads**. Registry03, getter331 and consumer380 remain zero-cost proof reuse. Worker native reads0; no qualified test or live observation repeated. Capture timestamps remain in exact receipts and the source contract.
+- Execution: project/game imports, tests/build/SDK/game/process/save/hash/newcapability0; old qualified suites0; no Root report/shared bridge/CMake edits. The sole newly authorized offline EXE file operation is this constructor pair252B/2reads, through the frozen finite mapper. No further byte window ran.
+- Source cost: prior Root **3133B/20reads** plus delegated constructor10 **252B/2reads** = **3385B/22reads**. Registry03/getter331/consumer380 and both children reuse proofs without new bytes. No qualified test/live observation repeated; exact capture timestamps remain in the new receipt and source contract.
 - Next: Root compiles and executes the new target/consumer once, then observes genuine same Character context across normal24 hours. A source alternative is the actual duration multiplier's typed days/years producer or the named native date renderer, from held metadata and finite Root-only windows. Presence/raw fields alone are not closure; no extra gate, action permission or capability is added.
