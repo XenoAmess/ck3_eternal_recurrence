@@ -17252,7 +17252,7 @@ void RunConnectedSession(
               grant.connection_generation=connection_generation;grant.recipient_character_full_id=static_cast<std::uint32_t>(recipient);
               grant.title_full_id=static_cast<std::uint32_t>(title);grant.desired_selected=desired;
               const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256);
               const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
               std::string response;
@@ -17303,7 +17303,7 @@ void RunConnectedSession(
               exit.session = &g_normal_exit_map_session_v1;
               const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
               query.environment = xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base, true,
-                  LydPrivateGuiRevision(game.descriptor()));
+                  LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256);
               query.dispatch_environment = xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base, true,
                   LydPrivateGuiRevision(game.descriptor()));
               const auto submitted = xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
@@ -17372,7 +17372,7 @@ void RunConnectedSession(
               query.ingame_decisions.game=&game;query.ingame_decisions.expected_snapshot=current;
               query.ingame_decisions.native_revision=state_revision;query.ingame_decisions.connection_generation=connection_generation;
               const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256);
               query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
               const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
@@ -17517,7 +17517,7 @@ void RunConnectedSession(
               action.observation.native_revision=state_revision;action.observation.connection_generation=connection_generation;
               action.observation.requested_key=decision_key;
               const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256);
               query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
               const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
@@ -17569,7 +17569,7 @@ void RunConnectedSession(
               query.ingame_decision_item.native_revision=state_revision;query.ingame_decision_item.connection_generation=connection_generation;
               query.ingame_decision_item.requested_key=decision_key;
               const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256);
               const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
               std::string response;

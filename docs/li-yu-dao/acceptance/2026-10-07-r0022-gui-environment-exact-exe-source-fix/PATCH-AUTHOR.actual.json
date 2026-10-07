@@ -1,0 +1,20 @@
+{
+  "schema": "lyd.r22.native-gui-exact-exe-callsite-patch.v1",
+  "base_head": "a53fa836a70999f031a15bb5575175f9d2b54e6f",
+  "worktree": "C:\\lr21rw1",
+  "source_path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+  "old_bytes": 1459738,
+  "old_sha256": "ef9db9810c139c83fd94ac9b18d195393a357b776b7910c7c0245b7a529cd761",
+  "new_bytes": 1459923,
+  "new_sha256": "7b5de882a224ab5fa4f4d722389c840802f556cf4dcaf9bbfa60d6532b73aa72",
+  "native_callsite_count": 5,
+  "old_calls": [
+    "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()))",
+    "BindZhongguoScoreboardNativeEnvironmentV1(base, true,\n                  LydPrivateGuiRevision(game.descriptor()))",
+    "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()))",
+    "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()))",
+    "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()))"
+  ],
+  "dispatch_binder_3arg_unchanged": true,
+  "guard_or_ABI_offsets_changed": false
+}

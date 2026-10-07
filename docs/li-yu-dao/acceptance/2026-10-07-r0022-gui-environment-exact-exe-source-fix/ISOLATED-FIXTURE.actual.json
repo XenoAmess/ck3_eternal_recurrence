@@ -1,0 +1,130 @@
+{
+  "schema": "lyd.r22.isolated-production-gui-environment-callsite-fixture.v1",
+  "status": "OFFLINE_ADMISSION_FIXTURE_PASSED",
+  "source_refs": [
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1459923,
+      "sha256": "7b5de882a224ab5fa4f4d722389c840802f556cf4dcaf9bbfa60d6532b73aa72"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\bridge.before.actual.cpp",
+      "bytes": 1459738,
+      "sha256": "ef9db9810c139c83fd94ac9b18d195393a357b776b7910c7c0245b7a529cd761"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\zhongguo_scoreboard_state_v1.cpp",
+      "bytes": 94638,
+      "sha256": "75aec16ad1cc19e290a5bdf13d250d26cd78b5123ea9d2c51bc48528cb5d827a"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\game_adapter.hpp",
+      "bytes": 20652,
+      "sha256": "dd2bf1450624772e56b697ae2beaf03c0c5b17b36ce5b6fabd723ec797a80bcb"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_abi_profile.cpp",
+      "bytes": 1164,
+      "sha256": "9c6828f932d9fe7b4d1a112c3f43f580f4456b12e73cda7eb99aa2eeceed8856"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_abi_profile.cpp",
+      "bytes": 12698,
+      "sha256": "628d752540de8e4726ce0074f8f5c36e444158a9ed364c68f714ad48d886bcb8"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003.hpp",
+      "bytes": 1058,
+      "sha256": "ef7a8a1854e6c8c129fd66bf5397bdf453a1f0d46ff855b57ec3c5d70b1f1c6a"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004.hpp",
+      "bytes": 2922,
+      "sha256": "03f3487d485c75996a9f1bd022f2454cae04ea1f2293aa6d62441ed294e203e6"
+    }
+  ],
+  "binder_span_sha256": "410576853d3a9788035fe3e25bc8bf378f5ebaaf32203a9b12a48f86feebaf26",
+  "callsites": {
+    "original": [
+      "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()))",
+      "BindZhongguoScoreboardNativeEnvironmentV1(base, true,\n                  LydPrivateGuiRevision(game.descriptor()))",
+      "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()))",
+      "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()))",
+      "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()))"
+    ],
+    "fixed": [
+      "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256)",
+      "BindZhongguoScoreboardNativeEnvironmentV1(base, true,\n                  LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256)",
+      "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256)",
+      "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256)",
+      "BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256)"
+    ]
+  },
+  "result": {
+    "exact_callsite_checks": 25,
+    "empty_wrong_hash_false_admission_checks": 3,
+    "GUI_callbacks_executed": false
+  },
+  "records": [
+    {
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\fixture.cpp",
+        "/Fe:C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\lyd_gui_environment_identity_fixture.exe",
+        "/Fo:C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\fixture.obj",
+        "/link",
+        "/INCREMENTAL:NO"
+      ],
+      "started_at_utc": "2026-10-07T11:54:32.256244+00:00",
+      "ended_at_utc": "2026-10-07T11:54:34.626688+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\compile.stdout.raw",
+        "bytes": 13,
+        "sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\compile.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\lyd_gui_environment_identity_fixture.exe"
+      ],
+      "started_at_utc": "2026-10-07T11:54:34.627200+00:00",
+      "ended_at_utc": "2026-10-07T11:54:34.712240+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\fixture.stdout.raw",
+        "bytes": 105,
+        "sha256": "83eb753ed870c941e3a77af14f2faa97b2322e070a5fd6612c49fecacfc480f1"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\fixture.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "cpp": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\fixture.cpp",
+    "bytes": 9205,
+    "sha256": "5234292ddc1d58de47084bc4e3e6e11c6424ab7190aade1b13c92f3e0c863cda"
+  },
+  "executable": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\lyd_gui_environment_identity_fixture.exe",
+    "bytes": 15360,
+    "sha256": "473f4e1e8ff1b519bae805ee8b310521d7f2d5847880f2801deffc4d38b0015b"
+  },
+  "runtime_DLL_or_SDK_or_process_or_game_used": false,
+  "GUI_provider_runtime_credit": null
+}

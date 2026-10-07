@@ -1,0 +1,107 @@
+{
+  "schema": "lyd.r22.gui-environment-exact-executable-small-archive.v1",
+  "files": [
+    {
+      "archive_path": "SOURCE-INDEX.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\INDEX.json",
+        "bytes": 1987,
+        "sha256": "5bf0bdc809301f59cf9a2854f02ce477b9463cac653955b5f3e9d9df252b181e"
+      },
+      "bytes": 1987,
+      "sha256": "5bf0bdc809301f59cf9a2854f02ce477b9463cac653955b5f3e9d9df252b181e"
+    },
+    {
+      "archive_path": "PATCH.diff",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\PATCH.diff",
+        "bytes": 4986,
+        "sha256": "a829f9b048802fc2fdd516f47925c67f4655d714f08e1ed537561592a4e06f62"
+      },
+      "bytes": 4986,
+      "sha256": "a829f9b048802fc2fdd516f47925c67f4655d714f08e1ed537561592a4e06f62"
+    },
+    {
+      "archive_path": "PATCH-AUTHOR.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\PATCH-AUTHOR.actual.json",
+        "bytes": 1136,
+        "sha256": "3c211a0f74cf7cb4f07686e4c31e479fefa47a2698d01f80a206c637d9636d1f"
+      },
+      "bytes": 1136,
+      "sha256": "3c211a0f74cf7cb4f07686e4c31e479fefa47a2698d01f80a206c637d9636d1f"
+    },
+    {
+      "archive_path": "ISOLATED-FIXTURE.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\RESULT.actual.json",
+        "bytes": 6603,
+        "sha256": "99c9851d18cd0b4022042f0721ae58887f551c2030f2978fef77fdd31291d7df"
+      },
+      "bytes": 6603,
+      "sha256": "99c9851d18cd0b4022042f0721ae58887f551c2030f2978fef77fdd31291d7df"
+    },
+    {
+      "archive_path": "ISOLATED-FIXTURE.cpp",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\fixture.cpp",
+        "bytes": 9205,
+        "sha256": "5234292ddc1d58de47084bc4e3e6e11c6424ab7190aade1b13c92f3e0c863cda"
+      },
+      "bytes": 9205,
+      "sha256": "5234292ddc1d58de47084bc4e3e6e11c6424ab7190aade1b13c92f3e0c863cda"
+    },
+    {
+      "archive_path": "COMPILE.stdout.txt",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\compile.stdout.raw",
+        "bytes": 13,
+        "sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6"
+      },
+      "bytes": 13,
+      "sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6"
+    },
+    {
+      "archive_path": "COMPILE.stderr.txt",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\compile.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_path": "FIXTURE.stdout.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\fixture.stdout.raw",
+        "bytes": 105,
+        "sha256": "83eb753ed870c941e3a77af14f2faa97b2322e070a5fd6612c49fecacfc480f1"
+      },
+      "bytes": 105,
+      "sha256": "83eb753ed870c941e3a77af14f2faa97b2322e070a5fd6612c49fecacfc480f1"
+    },
+    {
+      "archive_path": "FIXTURE.stderr.txt",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\fixture.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_path": "ORIGINAL-R22-DECISION-READONLY.native.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\ORIGINAL-R22-DECISION-READONLY.native.json",
+        "bytes": 2079,
+        "sha256": "16c34f6408c750e74b623027b24547faf2cbb5356ebb67d895ae1beb2e840d5d"
+      },
+      "bytes": 2079,
+      "sha256": "16c34f6408c750e74b623027b24547faf2cbb5356ebb67d895ae1beb2e840d5d"
+    }
+  ],
+  "source_only_and_inert_fixture": true,
+  "runtime_or_GUI_provider_credit": null
+}

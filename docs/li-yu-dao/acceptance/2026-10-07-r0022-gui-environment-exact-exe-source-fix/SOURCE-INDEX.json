@@ -1,0 +1,43 @@
+{
+  "schema": "lyd.r22.gui-environment-exact-executable-source-index.v1",
+  "status": "SOURCE_AND_ISOLATED_ADMISSION_READY",
+  "base_head": "a53fa836a70999f031a15bb5575175f9d2b54e6f",
+  "native_callsite_count": 5,
+  "dispatch_binder_three_argument_interface_unchanged": true,
+  "source_refs": [
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1459923,
+      "sha256": "7b5de882a224ab5fa4f4d722389c840802f556cf4dcaf9bbfa60d6532b73aa72"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\tests\\run_lyd_gui_environment_identity_fixture.py",
+      "bytes": 7816,
+      "sha256": "f14f55e9e324f3f07be3ab75c486c515e9e26e0c62feebd5cd217f64a2f0dd9b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\PATCH-AUTHOR.actual.json",
+      "bytes": 1136,
+      "sha256": "3c211a0f74cf7cb4f07686e4c31e479fefa47a2698d01f80a206c637d9636d1f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\PATCH.diff",
+      "bytes": 4986,
+      "sha256": "a829f9b048802fc2fdd516f47925c67f4655d714f08e1ed537561592a4e06f62"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\isolated-001\\RESULT.actual.json",
+      "bytes": 6603,
+      "sha256": "99c9851d18cd0b4022042f0721ae58887f551c2030f2978fef77fdd31291d7df"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-gui-environment-exact-exe-binding-20261007-001\\ORIGINAL-R22-DECISION-READONLY.native.json",
+      "bytes": 2079,
+      "sha256": "16c34f6408c750e74b623027b24547faf2cbb5356ebb67d895ae1beb2e840d5d"
+    }
+  ],
+  "normal_exit_code_pin_failure_fixed": false,
+  "new_runtime_qualification": null,
+  "GUI_callback_or_formal_business_credit": null,
+  "Defender_exclusion_settings_attempted": false
+}
