@@ -1056,7 +1056,18 @@ class GameplayBridgeService:
                     and plan.get("selected_step") == PRISONER_RELEASE_SUBMIT_STEP)):
                 # Another action won ordinary arbitration. Restore the normal
                 # initial expectation read, then plan its resulting frame.
-                self._prepare_succession_transition_v1(snapshot, available_steps)
+                try:
+                    self._prepare_succession_transition_v1(snapshot, available_steps)
+                except Exception as error:
+                    error.prisoner_release_arbitration = {
+                        "plan": copy.deepcopy(plan),
+                        "snapshot": {key: copy.deepcopy(snapshot.get(key)) for key in (
+                            "snapshot_id", "revision", "native_revision", "date_raw",
+                            "played_character", "succession_lifecycle", "campaign_goal",
+                            "active_event", "pending_character_interaction", "active_wars")},
+                        "initial_expectation_root_deferred": True,
+                    }
+                    raise
                 return self.plan_turn()
             if deferred_release_root and isinstance(plan, dict):
                 return {**planned, "plan": {**plan,
