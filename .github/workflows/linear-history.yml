@@ -1,0 +1,23 @@
+name: Linear history
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  linear-history:
+    name: No new merge commits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check actual introduced commits
+        run: python3 tools/check_git_linear_history.py --event-file "$GITHUB_EVENT_PATH"
