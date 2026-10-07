@@ -1,0 +1,127 @@
+{
+  "schema": "xar.ck3.g2-m7-continuation-recipe/v1",
+  "status": "source_recipe_not_executed",
+  "source_head": "23c3c4bc7fdf261f46174d35db12732808523463",
+  "build": {
+    "ck3_version": "1.20.0.4",
+    "steam_build": "25734779",
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "current_entry": {
+    "character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0061",
+    "date_raw": 53288256,
+    "public_revision": 3,
+    "native_revision": 2,
+    "snapshot_id": "native:2",
+    "observed_scope": "paused_original_scene_only",
+    "checkpoint014": {
+      "status": "saved_owner_accepted",
+      "history_index": 9626,
+      "date_raw": 53288256,
+      "size": 104698239,
+      "sha256": "253823552760e5361d252f5f73861f7cde3e059343853ef7547c87e19828782e",
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "environment_sha256": "52f0a2f1d548c812a3a87ed262c6f994641925a764c2ec19e887754288436c34",
+      "receipt": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9613-finaltools10/operator/final-owner-fields/NORMAL-SAVE-FIELDS.json"
+    },
+    "existing_government_qualification": {
+      "run": "R0054",
+      "scope": "accepted_actual_paused_readonly_primitive_not_new_R0061_observation",
+      "government_key": "feudal_government",
+      "adapter_family": "core_landed",
+      "receipt": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9613-entry02/actual-live-review/government.json"
+    }
+  },
+  "living_same_ruler": [
+    {
+      "tool": "ck3_take_snapshot",
+      "arguments": {"include_native_command_history": false},
+      "reuse_existing_if_retained": true,
+      "retain_fields": ["snapshot_id", "revision", "native_revision", "date_raw", "played_character.character_id", "played_character.alive", "episode_character_id", "episode_run_id", "succession_lifecycle", "campaign_goal", "succession_expectation"]
+    },
+    {
+      "tool": "ck3_plan_turn",
+      "arguments": {},
+      "reuse_existing_if_retained": true,
+      "retain_fields": ["snapshot_id", "revision", "plan.selected_step", "plan.campaign_goal_plan_used", "plan.campaign_government_context_used"],
+      "executes_selected_step": false,
+      "normal_route_government_hook": "Future reuse seam only. No hook is adopted merely for metadata; an actual useful policy consumer must need it first. Absent context at this baseline is not an observed government verdict."
+    },
+    {
+      "tool": "ck3_query_government_runtime_adapter_private_v1",
+      "arguments_template": {"expected_revision": "LATEST_PUBLIC_REVISION"},
+      "condition": "Use only if a current-frame native government result is required and was not already retained by the plan or Root; existing explicit private query flag must be enabled.",
+      "retain_fields": ["government", "adapter", "readiness", "build", "player_character_id", "snapshot_revision", "date_raw"],
+      "changes_policy_or_government": false
+    },
+    {
+      "tool": "ck3_save_checkpoint",
+      "arguments_template": {"expected_revision": "LATEST_PUBLIC_REVISION"},
+      "condition": "Reuse scheduled Root SAVE014 or a later normal checkpoint; do not add a duplicate save solely for this recipe.",
+      "retain_fields": ["accepted", "checkpoint.status", "checkpoint.sha256", "checkpoint.date_raw", "checkpoint.history_index", "checkpoint.episode_character_id", "checkpoint.episode_run_id", "checkpoint.succession_lifecycle"]
+    },
+    {
+      "action": "Next already planned normal new-process restore of the actual paired checkpoint",
+      "owner": "existing managed Root controller or native-auto-run",
+      "compare": ["actual new game PID", "actual checkpoint SHA/date source", "episode identity", "goal_key", "campaign_id", "origin_character_id", "current_character_id", "progress"],
+      "next_consumer": "ck3_plan_turn on the restored actual ruler; retain campaign_goal_plan_used"
+    }
+  ],
+  "natural_succession": {
+    "trigger": "Actual paused played_character_changed in this ordinary campaign",
+    "preferred_owner": "Existing native-auto-run natural succession branch",
+    "equivalent_root_mcp_branch": [
+      {
+        "tool": "ck3_plan_turn",
+        "arguments": {},
+        "condition": "Reuse the natural transition plan if already retained; its existing same-frame reconciliation must select continue-as-reconciled-successor."
+      },
+      {
+        "tool": "ck3_auto_turn",
+        "arguments": {},
+        "condition": "Consume the normal matched successor continuation exactly once; if the existing runner already consumed it, use that actual result.",
+        "retain_fields": ["result.status", "result.predecessor_character_id", "result.successor_character_id", "result.source_episode_run_id", "result.episode_run_id", "result.reconciliation", "result.ck3_command_submitted", "result.process_restarted"]
+      },
+      {
+        "tool": "ck3_query_current_timeline_blocker_context_v1",
+        "arguments_template": {"expected_revision": "ACTUAL_SUCCESSOR_PUBLIC_REVISION"},
+        "retain_fields": ["current_timeline_blocker_context"]
+      },
+      {
+        "tool": "ck3_continue_death_succession_modal_v1",
+        "arguments_template": {"expected_revision": "ACTUAL_SUCCESSOR_PUBLIC_REVISION", "expected_played_character_id": "ACTUAL_SUCCESSOR_CHARACTER_ID", "expected_episode_run_id": "ACTUAL_SUCCESSOR_EPISODE_RUN_ID"},
+        "condition": "Only for the actual supported death_succession_modal result. Already-clear native predicates require no Close. The existing helper owns one submission, independent clearance and date proof; submitted/unconfirmed stays retained."
+      },
+      {
+        "tool": "ck3_save_checkpoint",
+        "arguments_template": {"expected_revision": "LATEST_SUCCESSOR_PUBLIC_REVISION"},
+        "condition": "Use the existing normal successor save after the timeline is clear. If a new player decision opened naturally, let its formal consumer run before saving."
+      },
+      {
+        "tool": "ck3_auto_turn",
+        "arguments": {},
+        "condition": "Continue the ordinary shared planner with fresh successor inputs; retain its same campaign goal consumption and material gameplay outcome."
+      },
+      {
+        "action": "Normal successor checkpoint and later actual new-PID cold continuation",
+        "owner": "existing managed Root controller or native-auto-run",
+        "compare": ["stable goal_key/campaign_id/origin_character_id", "actual successor current_character_id", "one matched progression increment", "same actual successor episode/checkpoint", "fresh current-government observation", "later normal goal-plan consumption"]
+      }
+    ],
+    "retained_existing_report": "native-auto-run natural_succession_transitions",
+    "fixed_successor_id": null,
+    "forced_death": false,
+    "seed_restart": false
+  },
+  "lane_credit": {
+    "new_game_days": 0,
+    "new_natural_successions": 0,
+    "new_government_families": 0,
+    "new_seed_qualifications": 0,
+    "m7_complete": false,
+    "tests_builds_game_sdk_steam_executed": false
+  }
+}
