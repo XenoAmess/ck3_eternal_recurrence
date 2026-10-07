@@ -434,6 +434,10 @@ class NativeProcessInspector:
                 ctypes.POINTER(ProcessEntry32W),
             ]
             kernel32.Process32NextW.restype = wintypes.BOOL
+            kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+            kernel32.OpenProcess.restype = wintypes.HANDLE
+            kernel32.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+            kernel32.WaitForSingleObject.restype = wintypes.DWORD
             kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
             snapshot = kernel32.CreateToolhelp32Snapshot(0x00000002, 0)
             if snapshot == wintypes.HANDLE(-1).value:
@@ -445,7 +449,18 @@ class NativeProcessInspector:
                 available = kernel32.Process32FirstW(snapshot, ctypes.byref(entry))
                 while available:
                     if str(entry.szExeFile).casefold() == expected.casefold():
-                        result.append(int(entry.th32ProcessID))
+                        pid = int(entry.th32ProcessID)
+                        # Toolhelp can retain an exited process. Only a
+                        # signaled handle overrides the recorded presence.
+                        handle = kernel32.OpenProcess(0x00100000, False, pid)
+                        exited = False
+                        if handle:
+                            try:
+                                exited = kernel32.WaitForSingleObject(handle, 0) == 0
+                            finally:
+                                kernel32.CloseHandle(handle)
+                        if not exited:
+                            result.append(pid)
                     available = kernel32.Process32NextW(snapshot, ctypes.byref(entry))
             finally:
                 kernel32.CloseHandle(snapshot)
