@@ -24,6 +24,10 @@ struct CollectionQuery {
   PrisonerReleasePreviewBindings12004 release_bindings{};
   std::array<PrisonerReleasePreview12004,
       bridge::kPlayerPrisonerMaximumRowsV1> release_previews{};
+  std::uint32_t requested_release_mask = 0;
+  PrisonerNegotiatedBindings12004 negotiated_bindings{};
+  std::array<PrisonerNegotiatedPreview12004,
+      bridge::kPlayerPrisonerMaximumRowsV1> negotiated_previews{};
   bridge::PlayerPrisonerCollectionSnapshotV1 collection{};
   std::array<PlayerPrisonerRansomQuoteV1,
       bridge::kPlayerPrisonerMaximumRowsV1> quotes{};
@@ -183,6 +187,10 @@ bool ExecutePlayerPrisonerCollection12004(void *opaque,
       (void)ReadPrisonerReleasePreview12004(query.release_bindings, release_access,
           static_cast<std::uint32_t>(query.collection.frame.played_character_id),
           prisoner, query.release_previews[query.ordinal]);
+      if (query.requested_release_mask != 0)
+        (void)ReadPrisonerNegotiatedCollectionRow12004(query.negotiated_bindings,
+            release_access, query.collection, query.ordinal,
+            query.requested_release_mask, query.negotiated_previews);
     }
   }
   if (query.material_target != 0) {
@@ -260,10 +268,9 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
         ",\"read_only\":true,\"backend_id\":\"native-headless\"}}";
     return true;
   }
-  std::uint64_t requested_mask = 0;
-  if (bridge::JsonUnsignedField(payload, "release_option_mask_bits", requested_mask) &&
-      requested_mask != 0) {
-    failure = "negotiated release preview is not admitted for 1.20.0.4";
+  std::uint32_t requested_mask = 0;
+  if (!ck3_12003::ParsePrisonerNegotiatedRequestMask12003(payload, requested_mask)) {
+    failure = "release options must be a nonempty subset of the current thirteen flags";
     return true;
   }
   std::uint64_t material_target = 0;
@@ -280,6 +287,10 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
       adapter.descriptor().executable_sha256);
   query.release_bindings = BindPrisonerReleasePreview12004(query.module,
       adapter.descriptor().executable_sha256);
+  query.requested_release_mask = requested_mask;
+  if (requested_mask != 0)
+    query.negotiated_bindings = BindPrisonerNegotiatedPreview12004(query.module,
+        adapter.descriptor().executable_sha256);
   query.material_target = static_cast<std::uint32_t>(material_target);
   if (query.material_target != 0)
     query.material_bindings = BindPrisonerReleaseMaterialOpinionImage12004(
@@ -296,7 +307,8 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
   serialized = SerializePrisonerCollectionCommandResult12004(request_id, step,
       state.query_sequence + 1, query.envelope.execution_stamp.pump_epoch, revision,
       query.collection, query.quotes, query.completed, &query.release_previews,
-      query.material_target != 0 ? &query.material : nullptr);
+      query.material_target != 0 ? &query.material : nullptr,
+      requested_mask != 0 ? &query.negotiated_previews : nullptr);
   if (serialized.empty()) { failure = "prisoner collection serialization unavailable"; return true; }
   ++state.query_sequence;
   state.current_quote.reset();

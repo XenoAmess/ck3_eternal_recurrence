@@ -5,6 +5,7 @@
 target_sources(xar_ck3_12002_runtime PRIVATE
   src/ck3_12004_interaction_context.cpp
   src/ck3_12004_prisoner_release_preview.cpp
+  src/ck3_12004_prisoner_negotiated_preview.cpp
   src/ck3_12004_prisoner_named.cpp
   src/ck3_12004_prisoner_ransom.cpp
   src/ck3_12004_prisoner_collection.cpp

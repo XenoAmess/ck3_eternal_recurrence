@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_prisoner_ransom.hpp"
 #include "xar_bridge/ck3_12004_prisoner_release_preview.hpp"
+#include "xar_bridge/ck3_12004_prisoner_negotiated_preview.hpp"
 #include "xar_bridge/player_prisoner_collection_query_v1_private.hpp"
 
 namespace xar::ck3_12004 {
@@ -27,5 +28,16 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
     bool quotes_complete,
     const std::array<PrisonerReleasePreview12004,
         bridge::kPlayerPrisonerMaximumRowsV1> *release_previews = nullptr);
+
+std::string SerializePlayerPrisonerCollectionPrivateV1(
+    const bridge::PlayerPrisonerCollectionSnapshotV1 &snapshot,
+    std::uint64_t snapshot_revision,
+    const std::array<PlayerPrisonerRansomQuoteV1,
+        bridge::kPlayerPrisonerMaximumRowsV1> &quotes,
+    bool quotes_complete,
+    const std::array<PrisonerReleasePreview12004,
+        bridge::kPlayerPrisonerMaximumRowsV1> *release_previews,
+    const std::array<PrisonerNegotiatedPreview12004,
+        bridge::kPlayerPrisonerMaximumRowsV1> *negotiated_previews);
 
 } // namespace xar::ck3_12004
