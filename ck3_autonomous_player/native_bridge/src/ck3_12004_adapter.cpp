@@ -226,6 +226,10 @@ std::string Render12004BuildIdentity(
   }
   ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12002_", "\"schema\":\"ck3_12004_");
   ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12003_", "\"schema\":\"ck3_12004_");
+  // This nested Army semantic contract is independent of executable identity.
+  // Its production normalizer and shared serializer retain the canonical name.
+  ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12004_owned_regiments_v1\"",
+      "\"schema\":\"ck3_12003_owned_regiments_v1\"");
   for (const auto old_hash : {std::string_view(ck3_12002::kExecutableSha256),
                             std::string_view(ck3_12003::kExecutableSha256)}) {
     ReplaceIdentityToken(serialized, std::string("\"") + std::string(old_hash) + "\"",
