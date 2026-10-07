@@ -39,6 +39,41 @@ def frame_binding(snapshot: dict[str, object]) -> dict[str, object]:
     )}
 
 
+def traceback_plan_context(failure: Exception) -> list[dict[str, object]]:
+    """Retain actual plan classifications from failure frames, without providers."""
+    result = []
+    trace = failure.__traceback__
+    while trace is not None and len(result) < 16:
+        frame = trace.tb_frame
+        local = frame.f_locals
+        entry = {"file": frame.f_code.co_filename, "function": frame.f_code.co_name,
+                 "line": trace.tb_lineno, "plans": {}}
+        for name in ("current", "planned", "plan"):
+            value = local.get(name)
+            if not isinstance(value, dict):
+                continue
+            plan = value.get("plan") if isinstance(value.get("plan"), dict) else value
+            classification = {}
+            for key in ("policy", "phase", "selected_step", "reason", "required_step",
+                        "required_observation", "prisoner_release_initial_expectation_root_deferred"):
+                observed = plan.get(key)
+                if observed is None or isinstance(observed, (bool, int, float, str)):
+                    classification[key] = observed[:1200] if isinstance(observed, str) else observed
+            entry["plans"][name] = classification
+        snapshot = local.get("snapshot")
+        if isinstance(snapshot, dict):
+            entry["snapshot"] = {
+                key: snapshot.get(key) for key in (
+                    "snapshot_id", "revision", "native_revision", "date_raw", "phase",
+                    "paused", "map_ready", "one_life_terminal_reason",
+                )
+            }
+        if entry["plans"] or "snapshot" in entry:
+            result.append(entry)
+        trace = trace.tb_next
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, required=True)
@@ -242,6 +277,7 @@ def main() -> int:
                         "selected_step": getattr(failure, "selected_step", None),
                         "plan": getattr(failure, "plan", None),
                         "traceback": traceback.format_exc(),
+                        "traceback_plan_context": traceback_plan_context(failure),
                     }
                 after = driver.take_snapshot()
                 entry["after_snapshot"] = after
@@ -296,8 +332,10 @@ def main() -> int:
         exit_code = 0
     except Exception as failure:
         report["error"] = {"type": type(failure).__name__, "message": str(failure),
-                           "traceback": traceback.format_exc()}
+                           "traceback": traceback.format_exc(),
+                           "traceback_plan_context": traceback_plan_context(failure)}
         lines.append(f"RED: {type(failure).__name__}: {failure}")
+        lines.append("Actual plan context: " + json.dumps(report["error"]["traceback_plan_context"]))
         lines.append(report["error"]["traceback"])
     finally:
         lines.append("Synthetic offline packets only; no live captive, custody change or material freedom credit.")
