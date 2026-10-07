@@ -222,6 +222,9 @@ struct ArmyBindings {
       current_unit_new_date_schedule_bindings{};
   ck3_12004::CurrentUnitNewDateCallbackEntryBindings12004
       current_unit_new_date_callback_entry_bindings{};
+  // Reuse the exact .4 current-edge getter from RouteBindings without
+  // installing or executing a committed-route timeline.
+  std::int64_t *(*get_unit_current_edge_movement_rate)(void *, std::int64_t *) = nullptr;
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

@@ -167,11 +167,11 @@ struct Fixture {
     // Existing production slot type is reused with one fixture-owned getter.
     // The full committed-route timeline remains disabled; no future route,
     // cost/duration or budget callback is installed or invoked.
-    bindings.committed_route_bindings.read_unit_current_edge_speed =
+    bindings.get_unit_current_edge_movement_rate =
         scene.edge_getter_bound ? CurrentEdgeSpeed : nullptr;
     Check(bindings.current_unit_new_date_schedule_bindings.enabled &&
         bindings.current_unit_new_date_callback_entry_bindings.enabled &&
-        !bindings.committed_route_bindings.enabled &&
+        (bindings.get_unit_current_edge_movement_rate != nullptr) == scene.edge_getter_bound &&
         !bindings.source_derived_next_daily_supply_frame_bindings.enabled,
         "exact4 raw bindings missing or unrelated timeline/calendar enabled");
     input.secondary_vtable[3] =

@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12004_army.hpp"
+#include "xar_bridge/ck3_12004_routes.hpp"
 #include "xar_bridge/ck3_12004_army_support.hpp"
 #include "xar_bridge/ck3_12004_future_daily_supply_schedule.hpp"
 #include "xar_bridge/ck3_12004_source_derived_next_daily_supply_frame.hpp"
@@ -173,6 +174,8 @@ ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
       BindCurrentUnitNewDateSchedule12004(image_base, executable_sha256);
   result.current_unit_new_date_callback_entry_bindings =
       BindCurrentUnitNewDateCallbackEntryInputs12004(image_base, executable_sha256);
+  result.get_unit_current_edge_movement_rate =
+      BindRouteImage12004(image_base, executable_sha256).read_unit_current_edge_speed;
   result.current_detachment_callback_bindings =
       BindCurrentDetachmentCallbackInputs12004(image_base, executable_sha256);
   result.current_detachment_store_bindings =
