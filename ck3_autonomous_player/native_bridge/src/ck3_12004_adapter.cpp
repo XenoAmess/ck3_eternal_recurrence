@@ -18,6 +18,7 @@
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
+#include "xar_bridge/steward_develop_county_candidates_v1.hpp"
 
 #include <windows.h>
 #include <array>
@@ -48,6 +49,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
       "game.command.query-title-holder-v1-N",
+      ck3_11906::kStewardDevelopCountyCandidatesV1Capability,
       "game.command.select-event-option-N",
       "game.command.accept-pending-character-interaction",
       "game.command.reject-pending-character-interaction",

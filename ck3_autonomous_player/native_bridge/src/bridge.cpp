@@ -170,6 +170,7 @@
 #include "player_construction_view_probe_v1_mailbox.hpp"
 #endif
 #include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
+#include "xar_bridge/ck3_12004_steward_develop_county.hpp"
 #include "xar_bridge/steward_develop_county_enumerator_observer_v1.hpp"
 #include "domain_construction_application_main_runtime_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
@@ -11569,6 +11570,8 @@ public:
         &ExecuteTypedQuery12002<QueryKind12002::route>;
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
+    nonwar.steward_develop_county = &xar::ck3_11906::
+        ExecuteStewardDevelopCountyCandidatesMailboxQueryV1;
     nonwar.warcash = &ExecuteWarCashCurrentResources12004;
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
     nonwar.alliance_projection = &ExecuteMarriageCandidateAllianceMailboxQueryV1;
@@ -20668,7 +20671,16 @@ void RunConnectedSession(
               xar::ck3_11906::
                   StewardDevelopCountyCandidatesMailboxContextV1 query{};
               query.mailbox = &g_main_thread_query_mailbox_v1;
-              if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+              if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+                const auto module_base = reinterpret_cast<std::uintptr_t>(
+                    GetModuleHandleW(nullptr));
+                query.material_profile = true;
+                query.material_environment =
+                    xar::ck3_12004::BindStewardDevelopCounty12004(
+                        module_base, game.descriptor().executable_sha256);
+                query.material_core_bindings = xar::ck3_12004::BindCoreImage(
+                    module_base, game.descriptor().executable_sha256);
+              } else if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
                 const auto module_base = reinterpret_cast<std::uintptr_t>(
                     GetModuleHandleW(nullptr));
                 query.material_profile = true;
@@ -20740,10 +20752,15 @@ void RunConnectedSession(
                                             StewardDevelopCountyCandidatesMailboxCompletionV1::
                                                 completed &&
                     completion_snapshot_stable) {
-                  response = StewardDevelopCountyCandidatesResultFrame(
-                      request_id,
-                      steward_develop_county_candidates_query_sequence + 1,
-                      query.result);
+                  response = xar::game::IsCk3_12004Descriptor(game.descriptor())
+                      ? xar::ck3_12004::SerializeStewardDevelopCountyQueryResult12004(
+                            query.material_environment, request_id,
+                            steward_develop_county_candidates_query_sequence + 1,
+                            query.result)
+                      : StewardDevelopCountyCandidatesResultFrame(
+                            request_id,
+                            steward_develop_county_candidates_query_sequence + 1,
+                            query.result);
                   if (!response.empty()) {
                     ++steward_develop_county_candidates_query_sequence;
                   }
