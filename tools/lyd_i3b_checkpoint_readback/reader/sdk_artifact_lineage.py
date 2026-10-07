@@ -17,6 +17,12 @@ PURE_DTO_FUNCTIONS = (
     'project_native_query', 'normalize_public_query',
 )
 GRAPH_TOOL_NAME = 'ck3_query_profile_confucian_challenger_graph_v1'
+GRANT_TOOL_NAMES = (
+    'ck3_query_profile_grant_title_picker_v1',
+    'ck3_prepare_profile_grant_title_picker_v1',
+    'ck3_select_profile_grant_title_picker_v1',
+    'ck3_send_profile_grant_title_picker_v1',
+)
 
 def need(ok, message):
     if not ok:
@@ -66,9 +72,9 @@ def verify_codec_artifact(descriptor, declared_sha256):
             'source_executed': False, 'actual_acceptance_credit': None}
 
 def verify_metadata_artifact(metadata, descriptor, declared_sha256):
-    """Keep actual factory 23/24 identity and exact frozen G2/G3 Tool schemas."""
+    """Keep actual factory 23/24/28 identity and exact frozen G2/G3 Tool schemas."""
     need(descriptor['sha256'] == declared_sha256, 'actual SDK metadata descriptor SHA differs')
-    need(type(metadata) is list and len(metadata) in (23, 24), 'actual SDK metadata must explicitly contain 23 or 24 tools')
+    need(type(metadata) is list and len(metadata) in (23, 24, 28), 'actual SDK metadata must explicitly contain 23, 24 or 28 tools')
     need(all(type(row) is dict and type(row.get('name')) is str for row in metadata), 'SDK Tool metadata rows')
     rows = {row['name']: row for row in metadata}
     need(len(rows) == len(metadata), 'duplicate SDK Tool metadata names')
@@ -78,7 +84,9 @@ def verify_metadata_artifact(metadata, descriptor, declared_sha256):
     reference = json.loads(reference_raw)
     names = set(reference['readonly23_tool_names'])
     wanted_names = names if len(metadata) == 23 else names | {GRAPH_TOOL_NAME}
-    need(set(rows) == wanted_names and len(wanted_names) == len(metadata), 'actual SDK metadata tool set differs from declared readonly23/24 factory')
+    if len(metadata) == 28:
+        wanted_names |= set(GRANT_TOOL_NAMES)
+    need(set(rows) == wanted_names and len(wanted_names) == len(metadata), 'actual SDK metadata tool set differs from declared readonly23/challenger24/grant28 factory')
     for name, row in reference['G2_G3_tools'].items():
         need(json.dumps(rows[name], sort_keys=True, separators=(',', ':'), allow_nan=False) == json.dumps(row, sort_keys=True, separators=(',', ':'), allow_nan=False), 'actual SDK G2/G3 Tool metadata differs: ' + name)
     return {'actual_artifact': dict(descriptor), 'actual_sha256': declared_sha256,

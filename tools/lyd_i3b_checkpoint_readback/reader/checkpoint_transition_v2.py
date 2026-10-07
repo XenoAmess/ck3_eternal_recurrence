@@ -34,6 +34,25 @@ def changed_paths(left, right, path=''):
         return result
     return [] if same_json(left, right) else [path]
 
+def checkpoint_played_character_business(snapshot, binding):
+    """Compare every business member; bind available query metadata to its own frame."""
+    actor = deepcopy(snapshot['played_character'])
+    membership = actor.get('event_trait_membership') if type(actor) is dict else None
+    if type(membership) is dict and membership.get('status') == 'available':
+        strict.exact(membership, {'schema', 'game_version', 'executable_sha256', 'status',
+            'snapshot_revision', 'date_raw', 'played_character_id', 'traits', 'unavailable_reason'},
+            'checkpoint available event trait membership')
+        strict.need(membership['schema'] == 'xar.ck3.player-event-trait-membership/v1',
+            'checkpoint event trait membership schema differs')
+        for key, expected in (('snapshot_revision', binding['native_revision']),
+                ('date_raw', binding['date_raw']), ('played_character_id', binding['played_character_id'])):
+            strict.need(type(membership[key]) is int and membership[key] == expected,
+                'checkpoint event trait membership frame differs ' + key)
+        # This private comparison copy alone replaces the already-bound frame revision.
+        # The receipt and returned original snapshots are never changed.
+        membership['snapshot_revision'] = None
+    return actor
+
 def bind_checkpoint_transition(receipt, provenance):
     """Bind queries to the actual post-save frame without rewriting either frame."""
     need = strict.need
@@ -49,7 +68,11 @@ def bind_checkpoint_transition(receipt, provenance):
     for frame in (prior, later):
         need(frame['snapshot_id'] == 'native:' + str(frame['native_revision']), 'checkpoint native snapshot identity differs')
     for key in sorted(set(before) - SNAPSHOT_BOOKKEEPING_KEYS):
-        need(same_json(before[key], after[key]), 'checkpoint business field changed ' + key)
+        left, right = before[key], after[key]
+        if key == 'played_character':
+            left = checkpoint_played_character_business(before, prior)
+            right = checkpoint_played_character_business(after, later)
+        need(same_json(left, right), 'checkpoint business field changed ' + key)
 
     diag_before, diag_after = before['diagnostics'], after['diagnostics']
     diagnostic_changes = changed_paths(diag_before, diag_after)
