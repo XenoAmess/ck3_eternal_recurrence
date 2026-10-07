@@ -7,6 +7,7 @@ from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import private_native_provenance
+from .prisoner_keeper_opinion_contract_12004 import normalize_prisoner_keeper_opinion_12004
 from .prisoner_release_material_opinion_contract_12004 import (
     normalize_prisoner_release_material_opinion_12004,
 )
@@ -134,6 +135,8 @@ def query_player_prisoner_collection_private_v1(
     expected_envelope_keys = _ENVELOPE_KEYS
     if release_material_target_character_id is not None:
         expected_envelope_keys = _ENVELOPE_KEYS | {"prisoner_release_material_opinion"}
+        if isinstance(envelope, dict) and "prisoner_keeper_opinion" in envelope:
+            expected_envelope_keys = expected_envelope_keys | {"prisoner_keeper_opinion"}
     if (
         not isinstance(envelope, dict) or set(envelope) != expected_envelope_keys
         or envelope.get("step") != step or envelope.get("accepted") is not True
@@ -413,6 +416,12 @@ def query_player_prisoner_collection_private_v1(
                 date_raw=date_raw, player_character_id=played["character_id"],
                 target_character_id=release_material_target_character_id,
             )
+            if "prisoner_keeper_opinion" in envelope:
+                envelope["prisoner_keeper_opinion"] = normalize_prisoner_keeper_opinion_12004(
+                    envelope["prisoner_keeper_opinion"], native_revision=native_revision,
+                    date_raw=date_raw, player_character_id=played["character_id"],
+                    target_character_id=release_material_target_character_id,
+                )
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
     if _binding(driver.take_snapshot()) != _binding(before):

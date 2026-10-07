@@ -35,6 +35,8 @@ struct CollectionQuery {
   std::uint32_t material_target = 0;
   PrisonerReleaseMaterialOpinionBindings12004 material_bindings{};
   PrisonerReleaseMaterialOpinion12004 material{};
+  KeeperOpinionBindings12004 keeper_bindings{};
+  KeeperOpinion12004 keeper{};
   bool war_retention = false;
   std::int32_t war_id = -1;
   ck3_12002::PrisonerWarRetentionBindings war_bindings{};
@@ -199,9 +201,12 @@ bool ExecutePlayerPrisonerCollection12004(void *opaque,
   }
   if (query.material_target != 0) {
     bridge::PlayerPrisonerFrameV1 frame{};
-    if (CapturePrisonerFrame(envelope, frame))
+    if (CapturePrisonerFrame(envelope, frame)) {
       (void)ReadPrisonerReleaseMaterialOpinion12004(query.material_bindings,
           access, frame, query.material_target, query.material);
+      (void)ReadKeeperOpinion12004(query.keeper_bindings,
+          access, frame, query.material_target, query.keeper);
+    }
   }
   (void)ck3_12002::FinishQueryMailbox(*envelope);
   return true;
@@ -296,9 +301,12 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
     query.negotiated_bindings = BindPrisonerNegotiatedPreview12004(query.module,
         adapter.descriptor().executable_sha256);
   query.material_target = static_cast<std::uint32_t>(material_target);
-  if (query.material_target != 0)
+  if (query.material_target != 0) {
     query.material_bindings = BindPrisonerReleaseMaterialOpinionImage12004(
         query.module, adapter.descriptor().executable_sha256);
+    query.keeper_bindings = BindKeeperOpinionImage12004(
+        query.module, adapter.descriptor().executable_sha256);
+  }
   query.ordinal = ordinal;
   query.envelope.game = &adapter;
   query.envelope.mailbox = &mailbox;
@@ -312,7 +320,8 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
       state.query_sequence + 1, query.envelope.execution_stamp.pump_epoch, revision,
       query.collection, query.quotes, query.completed, &query.release_previews,
       query.material_target != 0 ? &query.material : nullptr,
-      requested_mask != 0 ? &query.negotiated_previews : nullptr);
+      requested_mask != 0 ? &query.negotiated_previews : nullptr,
+      query.material_target != 0 ? &query.keeper : nullptr);
   if (serialized.empty()) { failure = "prisoner collection serialization unavailable"; return true; }
   ++state.query_sequence;
   state.current_quote.reset();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004_prisoner.hpp"
+#include "xar_bridge/ck3_12004_prisoner_keeper_opinion.hpp"
 #include "xar_bridge/ck3_12004_prisoner_release_material_opinion.hpp"
 
 namespace xar::ck3_12004 {
@@ -31,6 +32,7 @@ std::string SerializePrisonerCollectionCommandResult12004(
         bridge::kPlayerPrisonerMaximumRowsV1> *release_previews,
     const PrisonerReleaseMaterialOpinion12004 *material,
     const std::array<PrisonerNegotiatedPreview12004,
-        bridge::kPlayerPrisonerMaximumRowsV1> *negotiated_previews);
+        bridge::kPlayerPrisonerMaximumRowsV1> *negotiated_previews,
+    const KeeperOpinion12004 *keeper = nullptr);
 
 } // namespace xar::ck3_12004
