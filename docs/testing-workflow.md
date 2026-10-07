@@ -3,6 +3,17 @@
 ## 2026-10-07 当前发布后缓存验收范围
 
 按项目所有者的新永久指令，全部 mod 的发布后缓存验收仅核对 **Steam 实际下载文件与正式构建一致，以及 CK3 实际加载这份缓存**。完整规则见 [Workshop 缓存验收](workshop-cache-acceptance.md)。实际启动加载日志可以证明目标缓存已加载时即可收尾；不要求新游戏、地图、native 业务查询、功能/事件/按钮/数值复测或业务 fixture。发布前源码功能验收继续按对应产品合同执行。下方历史缓存业务矩阵和旧门槛只保留当时事实，不能继续作为新发布的缓存验收要求。
+
+## 2026-10-07 R71 与 Army FIRST：按真实对象、输入与输出范围验收
+
+[R71](Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/success-evidence-r71/ROOT-BYZANTIUM-867-REAL-TEST.json) 的普通867游戏、Basileios 英文 Conqueror tooltip screenshot12 与原 SUCCESS 日志使 original-mod 可见特质效果 GREEN。未修改 mod 脚本，未用 bridge/injector/MCP/console/test effect 强加结果；owned HWND 的 engine F11 截图保持最小化和前景不变。Normal launcher DB＋专用 active playset 登记成功，不冒充 launcher UI 验证；trait UI/SUCCESS 也不冒充独立 owned-story 数据读取。Root tracked-stop017 在17:22:55 CST实际 cleanup_proven/treegone true、jobactive0/watchdog absent/CK3 inventories empty；deliberate stop 的 CK3 exit1 不冒充正常 exit0，也不改写已验收特质结果。旧 frontend action RED保留。
+
+[Army FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/army-future-dates-12004/joint-army-poet/first-r18-attempt05/army/ROOT-FIRST-RESULT.json) 的 native＋registered consumer 实际 exit0，仅证明 actual4 synthetic-memory Read/Append fragments→whole MCP structured JSON。它没有调用 native CK3 function pointers，不是 whole native Strength、paused/live/future 帧实测；437对象重用、compile0/archive0/link GREEN也不扩此范围。Siege旧expectation RED与test-only修复后的compound GREEN均保留，cash stock不替代ROI。R71与offline FIRST均不加 H9638/saved6005 的G2日或loop信用。本条只复用两个小RESULT及Root字段，无新执行或body核验。
+
+[Poet FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/army-future-dates-12004/joint-army-poet/first-r18-attempt05/poet/POET-FIRST-SUMMARY.json) 实际 native1＋real consumer1 exit0，offline owned-memory trait→whole Snapshot→Driver；注册原生optionindex1/用户option2不改。Event关闭却无gain必须继续failed/materialfalse，独立 `journaller` false→true才verified_change/delta1；native revision51→53/public7→9是fixture绑定，非新游戏日。这个新增FIRST记录一次，不能换算自然event/Poet/live信用；报告仅读该5,324B小summary，未重复执行。
+
+[Attrition current-callback Service FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/attrition-supply/current-callback-service-first-r19/RESULT.json) 的8scene/8newquery经 inherited Army query/normalizer，freeze19/source02121619 exit0/4.152s。API 名含 callback 不等于执行原生回调：此刻只授 static-ready currentstock crossing/conditional one-supply budget，actualcallback/loss/poststage/future/fullmonthly/live 仍 false/null。记录Root已跑字段，不重读 SERVICE-OUTPUTS 或补跑native/live。
+
 ## 2026-10-07 R68/R69：query 成功、action 未确认与普通启动分别记账
 
 R67 runtime18/source750b 的 frontend query live acceptedtrue/failure0，并不能替代 R68 runtime19 的 Back 动作资格。[R68 attempt04](Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/real-test-state-04/artifacts/ROOT-BYZANTIUM-867-REAL-TEST.json) 实际 `SUBMITTED_UNVERIFIED`，停止后续动作、不重放，保留 RED；Root 另证 owned cleanup PROVEN/tree gone。runtime19 build GREEN、已安装/挂载 mod 都不能改称实际 867 或 mod 效果成功。R69 vanilla05 不加载 Bridge/native DLL/MCP、最小化普通启动，是新的 pending 实机尝试，尚无 867 结果。

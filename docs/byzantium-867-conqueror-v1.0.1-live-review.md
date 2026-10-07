@@ -1,16 +1,18 @@
 # Byzantium 867 - Conqueror v1.0.1：安装修复与实机验证
 
-日期：2026-10-07（Asia/Shanghai）。本稿只封存已经完成的源码核对、安装修复和证据边界，**实机结果、实际人物身份和截图尚待 Root 填入**。不把源代码、安装收据或 SUCCESS 字符串的预期行为写成已经通过的实机测试。
+日期：2026-10-07（Asia/Shanghai）。**R71 实机验证通过：正常867留里克开局，拜占庭当前持有者 Basileios 的角色界面显示 Conqueror 特质及英文 tooltip。** 原包脚本未改，未复现脚本授予缺陷；本机已确认的问题是未安装、未启用，修复为安装及启用补齐。原生 SUCCESS 日志与当前人物 UI 分别留证；owned story 尚未独立读取，不影响此次特质验证。
 
 ## 已确认原因及修复
 
-安装前，本机普通用户目录 `C:/Users/xenoa/Documents/Paradox Interactive/Crusader Kings III` 中，外层 `mod/byzantium_867_conqueror.mod` 与对应文件夹均不存在。该目录的 `launcher-v2_openbeta.sqlite` 以 SQLite `mode=ro` 核对：98个 mod 中目标条目为0，10个播放集中活动条目为0；`dlc_load.json:1` 的 `enabled_mods=[]`。这些是普通用户目录的加载前阻点，不是脚本授予失败的实证。
+安装前，本机普通用户目录 `C:/Users/xenoa/Documents/Paradox Interactive/Crusader Kings III` 中，外层 `mod/byzantium_867_conqueror.mod` 与对应文件夹均不存在。该目录的 `launcher-v2_openbeta.sqlite` 只读核对：98个 mod 中目标条目为0，10个播放集中活动条目为0；`dlc_load.json:1` 的 `enabled_mods=[]`。这些是普通用户目录的加载前阻点，不是脚本授予失败的实证。
 
-用户随后授权安装及867实测。13:27:50 已把 ZIP 中原样三个文件安装到该目录，并备份原 `dlc_load.json` 后只追加 `mod/byzantium_867_conqueror.mod`；其他字段和值保留。原 ZIP、三个 mod 文件内容以及其他 mod 都未修改。没有修改启动器数据库或播放集，不声称启动器已经重新扫描注册。
+用户随后授权安装及867实测。13:27:50 已把 ZIP 中原样三个文件安装到该目录，并备份原 `dlc_load.json` 后只追加 `mod/byzantium_867_conqueror.mod`；其他字段和值保留。原 ZIP、三个 mod 文件内容以及其他 mod 均未修改。这次初始安装没有修改启动器数据库；后续登记单独记录。没有制作所谓“修复版 ZIP”。
 
-隔离测试准备目录 `Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/real-test-userdir-01` 的外层 `.mod` 使用已安装源码的绝对路径，并只启用目标 mod。普通目录的外层 `.mod` 仍保留原包的相对路径。因此，Root 隔离实机的成功挂载、普通启用清单修复、普通启动器播放集注册是三个独立结论；不能相互代替。R67 最终实际采用的 userdir/state/source 由 Root 按真实 receipt 填入，不从最初准备目录推定。
+最终成功的 R71 使用 `real-test-userdir-07`、`real-test-state-07` 与冻结的 g110-r16 Python 源码。隔离测试外层 `.mod` 指向已安装源码的绝对路径，并只启用目标 mod；普通目录外层 `.mod` 保留原包相对路径。隔离实机挂载、普通启用清单修复、普通启动器数据库登记是三个独立结论。
 
-证据包根目录：`Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/`。初始状态见 `launcher-log-lane/result.json`；安装及原字节核对见 `installation-attempt-01/INSTALLATION-RESULT.json`，备份见 `installation-attempt-01/backups/dlc_load.json`。
+Root 在 2026-10-07 09:19:51 UTC 实际执行正常启动器登记 helper，exit0。SQLite 在线备份后，mod记录98→99、播放集10→11、成员关系43→44；新增专用 `Byzantium 867 - Conqueror` 播放集为 active1，目标 mod 为 enabled1，其他记录保留。**这证明数据库登记及激活完成，正常启动器 UI 尚未执行验证**；不得写成“Launcher verified”。
+
+证据包根目录：`Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/`。初始状态见 `launcher-log-lane/result.json`；安装及原字节核对见 `installation-attempt-01/INSTALLATION-RESULT.json`，备份见 `installation-attempt-01/backups/dlc_load.json`。数据库执行收据为 `normal-launcher-install-completion01/ROOT-NORMAL-LAUNCHER-REGISTRATION.json`，同目录保留 SQLite 备份。
 
 ## 1.20.0.4 原生脚本链
 
@@ -57,18 +59,28 @@ SUCCESS 直接证明 hook 的对应持有者通过了 `has_trait = conqueror`。
 
 如果 Root 的已有合法 observer/可见 UI 确实返回了目标持有者的故事集合，应记录该实际 observer 名、人物/故事类型/所有者与帧；未取得时，本报告明确写“未独立读取 owned story”。这不阻止按用户要求验证已显示的征服者特质及保存成功截图。
 
-## Root 实机结果（待真实收口）
+## R71 实机结果
 
-| 项目 | 当前本稿状态 |
+| 项目 | 实际结果与证据 |
 |---|---|
-| 实际测试进程、userdir、state/source、1.20.0.4身份 | 待 Root 填实际 receipt |
-| 实际新开局日期与玩家/拜占庭持有者身份 | 待 Root 填；不预设 CharacterID |
-| 目标 mod 实际挂载及 BYZ867 startup/SUCCESS 行 | 待 Root 填实际路径、行号和时点 |
-| 皇帝 `conqueror` 特质可见结果及截图 | 待 Root 填截图路径；目前没有声称截图成功 |
-| 实际 owned story 独立读取 | 未提供；若未取得则保留此边界 |
-| 游戏规则、解析错误与任何失败 attempt | 待 Root 填实际内容，失败 attempt 保留 |
-| 原 G2 与普通目录/播放集边界 | 安装线无进程操作；普通播放集数据库未改，隔离挂载单独记录 |
+| 实际运行身份 | R71 `b1a003e6-3d93-4822-b87b-f28077523795`，PID82140；userdir/state07；Python 源码冻结于 `C:/codex-ck3-background/migration4-entry-live-fix/g110-r16`，游戏1.20.0.4。 |
+| 普通开局输入 | 官方 `-skip -bookmark=bm_867_adventurers -play=d_novgorod`，独立 userdir；Bridge、注入器、MCP 均为0，没有用控制台或强制 effect 添加特质。 |
+| 玩家与日期 | Root 目视原截图2：留里克，正常867开局，暂停于867年1月2日。 |
+| 当前拜占庭持有者 | Root 目视原截图7：当前 `e_byzantium` 持有者为 Basileios；从当前头衔 UI 打开，没有从测试日志或固定人物 ID 推定。 |
+| 原脚本实际执行 | userdir07 `logs/debug.log:5995–5996`，日志时刻16:43:36：原 mod startup hook 与 `BYZ867 v1.0.1: SUCCESS - emperor has conqueror trait`。已安装原文件未改。 |
+| 特质实际可见 | Root 目视原截图12：同一位 Basileios 的角色界面及英文 Conqueror tooltip；绿色龙图标与原版 `conqueror.dds` 一致。 |
+| owned story | 未独立读取；不把日志或特质截图扩张为故事集合证明，不阻碍本次特质验证。 |
+| 普通启动器 | Root 已实际完成数据库登记及专用播放集激活；正常启动器 UI 验证仍为 NOT_RUN。 |
+| 正常回收 | Root 于17:22:55 CST完成 owned tracked-stop：cleanup_proven、进程树已消失、job活动计数0、watchdog不存在、无残留CK3。`ck3_exit_code=1` 是这次有意停止的实际结果，不写成游戏exit0。最终收据内嵌 `artifacts/ROOT-BYZANTIUM-VANILLA05-REAL-TEST.json` 的实际回收证据。 |
 
-已有 `tools/run_acceptance.py` 导航写死1066罗贝尔；其日志 helper 过滤 `XAR:`，不能直接验证 BYZ867；原启动 helper 也不能原样组合 debug/userdir 与保留另一 CK3 进程。Root 的独立测试 harness 及 `real-test-recipe-lane/ROOT-RECIPE.md` 已记录这些限制。实际截图、native/UI输入和 SDK 仅由 Root 执行，不通过控制台添加特质或故事来制造结果。
+最终证据索引为 [ROOT-BYZANTIUM-867-REAL-TEST.json](Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/success-evidence-r71/ROOT-BYZANTIUM-867-REAL-TEST.json)，记录实际回收及三张原截图副本的哈希。原截图复制为：
 
-本稿作者执行的游戏/SDK/测试/构建/EXE/大存档/Driver读取为0；只复用有限源数据并编写报告。最终是否通过须由 Root 按真实实机证据更新本节。
+- [normal-867-rurik.png](Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/success-evidence-r71/normal-867-rurik.png)：原截图2，正常留里克开局与867年1月2日。
+- [byzantium-current-holder.png](Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/success-evidence-r71/byzantium-current-holder.png)：原截图7，当前拜占庭持有者。
+- [basileios-conqueror-tooltip.png](Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/success-evidence-r71/basileios-conqueror-tooltip.png)：原截图12，同一皇帝与 Conqueror tooltip。
+
+R68 导航 RED 保留。R69/R70 的自动大厅及内部脚本测试没有归因为 mod 故障；无 debug 仍运行内部测试的反证也保留，调度原因尚未查明。R71 的角色、日期、持有者、特质结论来自独立当前 UI，不拿内部测试的历史变更当作当前世界状态。
+
+已有 `tools/run_acceptance.py` 导航写死1066罗贝尔；其日志 helper 过滤 `XAR:`，不能直接验证 BYZ867。Root 使用独立测试 harness 完成此次普通867开局和截图，不通过控制台添加特质或故事制造结果。
+
+本稿作者执行的游戏/SDK/测试/构建/EXE/大存档/Driver读取为0；只复用有限源数据及 Root 已实际审阅的证据编写报告。实机与正常数据库执行均由 Root 完成。本次结论为原 v1.0.1 的 Conqueror 特质实机 GREEN、安装修复完成；启动器 UI 与 owned story 的未验边界保持明确。
