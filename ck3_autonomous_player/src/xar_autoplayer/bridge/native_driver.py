@@ -3536,6 +3536,24 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_construction_cash_outcome_private_v1(
+        self, *, expected_revision: int, reserve_gold_raw: int,
+        existing_commitment_gold_raw: int, horizon_months: int,
+    ) -> dict[str, object]:
+        """Use the durable material receipt and one observed current-cash packet."""
+        from ..construction_economic_outcome_v1 import query_construction_cash_outcome_private_v1
+        from ..construction_formal_consumer import read_construction_ledger
+
+        ledger = read_construction_ledger(self.state_dir) if self.state_dir is not None else {}
+        receipt = ledger.get("applied")
+        return query_construction_cash_outcome_private_v1(
+            self, expected_revision=expected_revision,
+            material_receipt=receipt if isinstance(receipt, dict) else {},
+            reserve_gold_raw=reserve_gold_raw,
+            existing_commitment_gold_raw=existing_commitment_gold_raw,
+            horizon_months=horizon_months,
+        )
+
     def query_war_cash_termination_send_costs_private_v1(
         self, *, expected_revision: int, war_id: int, outcome: str,
     ) -> dict[str, object]:

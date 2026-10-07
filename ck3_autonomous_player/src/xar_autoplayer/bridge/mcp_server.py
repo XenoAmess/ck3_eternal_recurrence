@@ -1676,6 +1676,18 @@ def create_server(
             return driver.query_war_cash_current_resources_private_v1(expected_revision=expected_revision)
 
         @server.tool(annotations=read_only_tool)
+        def ck3_query_construction_cash_outcome_private_v1(
+            expected_revision: int, reserve_gold_raw: int,
+            existing_commitment_gold_raw: int, horizon_months: int,
+        ) -> dict[str, object]:
+            """Read current cash scenarios with the real durable construction receipt."""
+            return driver.query_construction_cash_outcome_private_v1(
+                expected_revision=expected_revision, reserve_gold_raw=reserve_gold_raw,
+                existing_commitment_gold_raw=existing_commitment_gold_raw,
+                horizon_months=horizon_months,
+            )
+
+        @server.tool(annotations=read_only_tool)
         def ck3_query_war_cash_termination_send_costs_private_v1(
             expected_revision: int, war_id: int, outcome: str,
         ) -> dict[str, object]:
