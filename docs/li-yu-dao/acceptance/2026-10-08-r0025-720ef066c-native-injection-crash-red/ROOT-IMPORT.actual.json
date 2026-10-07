@@ -1,0 +1,219 @@
+{
+  "schema": "lyd.root.crash-red-archive-import.v1",
+  "status": "PASS",
+  "delivery": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/IMPORT-MANIFEST.FINAL.json",
+    "bytes": 6828,
+    "sha256": "ce5547125948518c55fcff1348d75be82e99688b59c337d378285298fb28fbd0"
+  },
+  "copies": [
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/ARCHIVE-VALIDATION.actual.json",
+        "bytes": 1310,
+        "sha256": "f4de2e241104b4b6571fd19388280b0eabff295a873b5106e995b2903a8c5b01"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/ARCHIVE-VALIDATION.actual.json",
+        "bytes": 1310,
+        "sha256": "f4de2e241104b4b6571fd19388280b0eabff295a873b5106e995b2903a8c5b01"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/cause-supplement-002/ARCHIVE-VALIDATION.actual.json",
+        "bytes": 1358,
+        "sha256": "195e8b04b44cfee5db0107ae8364bdeb1cf1fb203437a5eec085df48728f2f36"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/cause-supplement-002/ARCHIVE-VALIDATION.actual.json",
+        "bytes": 1358,
+        "sha256": "195e8b04b44cfee5db0107ae8364bdeb1cf1fb203437a5eec085df48728f2f36"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/cause-supplement-002/raw-evidence.zip",
+        "bytes": 52347,
+        "sha256": "9dab4e0200246a16a69325396d8eef4d5867aa294dbc040ddae099dc35102ede"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/cause-supplement-002/raw-evidence.zip",
+        "bytes": 52347,
+        "sha256": "9dab4e0200246a16a69325396d8eef4d5867aa294dbc040ddae099dc35102ede"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/CAUSE-SUPPLEMENT.actual.json",
+        "bytes": 9946,
+        "sha256": "381b23a07e1d5671906263c2093a58ef813294aaa39181bab4a4033ff1c02def"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/CAUSE-SUPPLEMENT.actual.json",
+        "bytes": 9946,
+        "sha256": "381b23a07e1d5671906263c2093a58ef813294aaa39181bab4a4033ff1c02def"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/CAUSE-SUPPLEMENT.md",
+        "bytes": 3572,
+        "sha256": "124d2756f98358dfabdef4173e3aeb226ba372fd6a83119da6322d017617f980"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/CAUSE-SUPPLEMENT.md",
+        "bytes": 3572,
+        "sha256": "124d2756f98358dfabdef4173e3aeb226ba372fd6a83119da6322d017617f980"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/critical-anchors/closure_summary.json",
+        "bytes": 7229,
+        "sha256": "1b745781606ec836cfa040eb2691c3809600790b935abf2ab6b7c5a56fce890a"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/critical-anchors/closure_summary.json",
+        "bytes": 7229,
+        "sha256": "1b745781606ec836cfa040eb2691c3809600790b935abf2ab6b7c5a56fce890a"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/critical-anchors/crash_exception.txt",
+        "bytes": 60951,
+        "sha256": "f63797fe3cfe19f37ac808d8a9e5e4c5f468e52186195e1fbba41dab43923438"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/critical-anchors/crash_exception.txt",
+        "bytes": 60951,
+        "sha256": "f63797fe3cfe19f37ac808d8a9e5e4c5f468e52186195e1fbba41dab43923438"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/critical-anchors/exact_CI_INDEX.json",
+        "bytes": 7998,
+        "sha256": "891a8c1e36005830abbf6a4c5ce270122b8f85459d660ebc4f18404bf2dca745"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/critical-anchors/exact_CI_INDEX.json",
+        "bytes": 7998,
+        "sha256": "891a8c1e36005830abbf6a4c5ce270122b8f85459d660ebc4f18404bf2dca745"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/critical-anchors/failed_attach.json",
+        "bytes": 2161,
+        "sha256": "d9545cdcb3d59893b1608efe42b3f6ff13c7a5115ce429aca1b2cf1a48d441c3"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/critical-anchors/failed_attach.json",
+        "bytes": 2161,
+        "sha256": "d9545cdcb3d59893b1608efe42b3f6ff13c7a5115ce429aca1b2cf1a48d441c3"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/FACTS.actual.json",
+        "bytes": 23607,
+        "sha256": "ff5784dc41092e0a8da5b4833a59f7eb61106a9abbd832bc186adf4b37a22817"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/FACTS.actual.json",
+        "bytes": 23607,
+        "sha256": "ff5784dc41092e0a8da5b4833a59f7eb61106a9abbd832bc186adf4b37a22817"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/IMPORT-MANIFEST.FINAL.json",
+        "bytes": 6828,
+        "sha256": "ce5547125948518c55fcff1348d75be82e99688b59c337d378285298fb28fbd0"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/IMPORT-MANIFEST.FINAL.json",
+        "bytes": 6828,
+        "sha256": "ce5547125948518c55fcff1348d75be82e99688b59c337d378285298fb28fbd0"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/INDEX.json",
+        "bytes": 178074,
+        "sha256": "18d1df5cdacaff9e52d18a30750775e0e30245403452e7ab04764c0dc194ae8a"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/INDEX.json",
+        "bytes": 178074,
+        "sha256": "18d1df5cdacaff9e52d18a30750775e0e30245403452e7ab04764c0dc194ae8a"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/INDEX002.json",
+        "bytes": 21722,
+        "sha256": "84ed6f1ab6442dd787c5441b082b819dfc9e374aba7b72be2aae33171cce2785"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/INDEX002.json",
+        "bytes": 21722,
+        "sha256": "84ed6f1ab6442dd787c5441b082b819dfc9e374aba7b72be2aae33171cce2785"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/raw-evidence.zip",
+        "bytes": 3221950,
+        "sha256": "ff9158f9e4dae2cd0c13e12d45485f59b4bdeec819a0cd3552b536fdeb56b3a2"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/raw-evidence.zip",
+        "bytes": 3221950,
+        "sha256": "ff9158f9e4dae2cd0c13e12d45485f59b4bdeec819a0cd3552b536fdeb56b3a2"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/REPORT.md",
+        "bytes": 3690,
+        "sha256": "e29ba67286f53e9cc96e3738d3d726120f0646f7fd6ccbc87d26f8a6ce5eafb6"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/REPORT.md",
+        "bytes": 3690,
+        "sha256": "e29ba67286f53e9cc96e3738d3d726120f0646f7fd6ccbc87d26f8a6ce5eafb6"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/REPORT002.md",
+        "bytes": 3572,
+        "sha256": "124d2756f98358dfabdef4173e3aeb226ba372fd6a83119da6322d017617f980"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/REPORT002.md",
+        "bytes": 3572,
+        "sha256": "124d2756f98358dfabdef4173e3aeb226ba372fd6a83119da6322d017617f980"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/SOURCE-SELECTION.source-only.json",
+        "bytes": 68286,
+        "sha256": "065e309bf17164d810cc400eb9a7bacfa2a8b3315c4737344189f8eb93970fff"
+      },
+      "destination": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/SOURCE-SELECTION.source-only.json",
+        "bytes": 68286,
+        "sha256": "065e309bf17164d810cc400eb9a7bacfa2a8b3315c4737344189f8eb93970fff"
+      }
+    }
+  ],
+  "game_calls": 0,
+  "save_body_reads": 0,
+  "runtime_credit": null,
+  "whole_mod_green": false
+}

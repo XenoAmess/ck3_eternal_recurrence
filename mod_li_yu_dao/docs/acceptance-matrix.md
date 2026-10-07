@@ -4,6 +4,8 @@
 
 2026-10-08增量：[R0024](../../docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/REPORT.md)的410/412/411/413实际批准链与独立B3保存证书通过，一次factory创建新宗教Title；B4五个政治Title的heir及actor succession保护失败，整体仍NOT_GREEN。完整AST保护不放宽；新Title冷载、NPC在任授予与C3未执行。修后源码检查通过不替代这些实机门槛。以下早期轮次的NOT_RUN/RED属于当时事实，不覆盖本增量。
 
+随后[R0025](../../docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/REPORT.md)在首次native注入时栈溢出，未成功attach、无B0或新87项保护、无正式业务回调。实际DLL/COFF与崩溃帧证明army和route构造互相递归；最小直接leaf绑定修复及完整构造器focused已exit0，DLL/实机尚未复验。CAS3727及辅助进程原HANDLE exit0证明占用已闭环；game OS退出码、typed正常退出、autosave保持NULL。此轮不能替代R24六项保护复验，C3/I4仍待其前置通过。
+
 ## L0：无需游戏或桌面的检查
 
 使用已核验的解释器 `C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe`（3.13.15），无需项目 venv 或第三方 Python 包。以下命令从仓库根执行。

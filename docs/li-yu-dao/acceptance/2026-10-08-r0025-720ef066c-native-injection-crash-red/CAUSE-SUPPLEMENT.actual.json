@@ -1,0 +1,214 @@
+{
+  "schema": "lyd.r25.injection-crash-cause-and-focused-source-supplement.v1",
+  "source_head_loaded": "720ef066ce5513875ca694201f7f70694988d81b",
+  "old_first_packet_unchanged": {
+    "REPORT.md": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/REPORT.md",
+      "bytes": 3690,
+      "sha256": "e29ba67286f53e9cc96e3738d3d726120f0646f7fd6ccbc87d26f8a6ce5eafb6"
+    },
+    "INDEX.json": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/INDEX.json",
+      "bytes": 178074,
+      "sha256": "18d1df5cdacaff9e52d18a30750775e0e30245403452e7ab04764c0dc194ae8a"
+    },
+    "raw-evidence.zip": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/raw-evidence.zip",
+      "bytes": 3221950,
+      "sha256": "ff9158f9e4dae2cd0c13e12d45485f59b4bdeec819a0cd3552b536fdeb56b3a2"
+    },
+    "ARCHIVE-VALIDATION.actual.json": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/ARCHIVE-VALIDATION.actual.json",
+      "bytes": 1310,
+      "sha256": "f4de2e241104b4b6571fd19388280b0eabff295a873b5106e995b2903a8c5b01"
+    }
+  },
+  "actual_cause": {
+    "chain": "BindArmyImage12004 -> BindRouteImage12004 -> BindArmyImage12004",
+    "layer": "native binding bundle construction before successful worker pipe attach",
+    "Route_entry_RVA": "0x547840",
+    "Army_entry_RVA": "0x6c8030",
+    "Route_nonrelocated_bytes_match": 804,
+    "Army_nonrelocated_bytes_match": 4262,
+    "Route_call_to_Army": "0x54799d -> 0x6c8030; return0x5479a2",
+    "Army_call_to_Route": "0x6c8e6c -> 0x547840; return0x6c8e71",
+    "fault_RVA": "0x71d8d7",
+    "fault_layer": "__chkstk stack-probe touch during recurring constructor stack growth",
+    "coff_proof": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-first-attach-stackoverflow-source-review-20261008-001/COFF-BINDER-SYMBOLIZATION.actual.json",
+      "bytes": 11215,
+      "sha256": "eb33414161adac87d287a8be9a2313a2ad2f70814a4662f1e6df7507d105d910"
+    },
+    "frame_proof": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-first-attach-stackoverflow-source-review-20261008-001/FRAME-LOCATIONS.actual.json",
+      "bytes": 31283,
+      "sha256": "662bd22ea90d36c7f8373ec402f62d9d89204380233a6f34c2abb9c3fc2acc5c"
+    },
+    "nearest_export_Stop_is_actual_function": false,
+    "business_events_or_factory_operated": false
+  },
+  "minimal_source_repair": {
+    "change": "Bind Army current-edge movement rate directly to image_base + kCommanderCurrentEdgeMovementRateRva12004; preserve the same typed native leaf and eliminate Army-to-Route bundle construction",
+    "focused_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-army-route-binding-fix-20261008-001/RESULT.actual.json",
+      "bytes": 5226,
+      "sha256": "c3132008240f07e2219ddc9189a1288d37a990ce8b7ca7edccc3390bd1c45a1d"
+    },
+    "fixture_stdout": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-army-route-binding-fix-20261008-001/fixture.stdout",
+      "bytes": 77,
+      "sha256": "a443b0856036a063d270283673c70ca69ac7acc3166d085a3c22a313593fc5a0"
+    },
+    "source_base_head": "5d1b736f9279fd9f9e10d6623e2f1e3d1b01adb3",
+    "actual_fixture_exit_code": 0,
+    "build_compile_link_success": true,
+    "build_outer_exit_code": 1,
+    "build_outer_limit": "Defender SWbemObjectEx actual settings_failed after successful compile/link; original receipt retained.",
+    "checks": [
+      "both complete actual4 binders terminate and are enabled",
+      "route and army share storage binding",
+      "both current-edge speed callbacks retain the exact same named leaf",
+      "zero image rejected by both",
+      "wrong executable rejected by both"
+    ],
+    "final_CMake_supplement": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-army-route-binding-fix-20261008-001/FINAL-SOURCE-SUPPLEMENT.actual.json",
+      "bytes": 1594,
+      "sha256": "f60a5bcb11ddadfa1ba1afda01b6cc6b6d002f32e3cc1c25e5502920f0f88a7f"
+    },
+    "additional_fixture_runs": 0,
+    "runtime_DLL_built": false,
+    "runtime_PASS": null,
+    "new_cold_qualification": null
+  },
+  "actual_boundary_CREATE": {
+    "boundary": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-actual-crash-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 1961,
+      "sha256": "fe40ee8bbb1d0fd8f65d50ce32ee599ba1acec3be4c8c0f6c52bf1ccb2a80aeb"
+    },
+    "CHECK_original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-crash-boundary-check-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1462,
+      "sha256": "44fd3f9df54116edb0920833f0e1994816536ee4bab9c6040ee5eefe2c2af59f"
+    },
+    "CHECK_exit_code": 0,
+    "CREATE_original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-crash-boundary-create-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1575,
+      "sha256": "ca0b680134511e2af5f88d7db2899fb6b5a03714a589ce72554736960e597bce"
+    },
+    "CREATE_exit_code": 0,
+    "CREATE_finished_at_utc": "2026-10-07T20:14:37.477759+00:00",
+    "limits": {
+      "game_original_HANDLE_exit0_observed": false,
+      "game_exit_code": null,
+      "game_original_creation_filetime_100ns": null,
+      "typed_normal_exit_observed": null,
+      "normal_exit_typed_green": null,
+      "terminal_native_ack_observed": false,
+      "normal_exit_callback_verified": null,
+      "autosave_verified": null,
+      "closure_credit": "CRASH_ENDED_ORIGINAL_HELPERS_EXIT0_AND_OPERATIONAL_ABSENCE_ONLY",
+      "client_exit_code": 0,
+      "keeper_exit_code": 0,
+      "client_OS_exit0_observed": true,
+      "keeper_OS_exit0_observed": true,
+      "holder_original_exec_process_exit0_observed": true,
+      "all_original_helper_exec_exit0_observed": true,
+      "no_forced_termination": true,
+      "fresh_no_game_or_original_owned_helpers_absence_verified": true,
+      "screen_released_and_vacant": true,
+      "native_session_id": "4c8f002273cb4f238e1f0b11cbbb58fa",
+      "consumer_session_id": "9c4d85f77c824172b50fe00b14ef5017",
+      "business_GREEN": false,
+      "final_offline_review_is_postrelease": false,
+      "baseline87_protection_qualified": null,
+      "formal_mandate_credit": null,
+      "new_T": null,
+      "C3": null,
+      "I4": null
+    }
+  },
+  "whole_mod": "NOT_GREEN",
+  "current87": null,
+  "B0_SAVE": null,
+  "formal": null,
+  "newT": null,
+  "C3": null,
+  "I4": null,
+  "work_estimate_percent": 75,
+  "pass_rate_claim": false,
+  "external_reference_only": [
+    {
+      "path": "C:/lr25b1/xar_ck3_bridge.dll",
+      "bytes": 8945152,
+      "sha256": "204127587d7af8b93c066a32dae42d35762d0025a1377338f606cee50ba56a30",
+      "role": "actual failing DLL",
+      "original_supplied_reference_only": true,
+      "not_read_or_copied": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/userdir/crashes/ck3_20261008_034235/minidump.dmp",
+      "bytes": 141161135,
+      "sha256": "a1da7afdc87a057b0465daffb145e96b88ad2837e71111776454e47bcbfe0a5f",
+      "role": "actual crash minidump",
+      "original_supplied_reference_only": true,
+      "not_read_or_copied": true
+    },
+    {
+      "path": "C:/lr25fixb1/xar_ck3_12004_army_route_binding_test.exe",
+      "bytes": 39424,
+      "sha256": "e53ce3b9e622a3957c3bae023fcc95f0dc5302f5b53773b43028b3b40f4c78ad",
+      "role": "focused fixture executable",
+      "original_supplied_reference_only": true,
+      "not_read_or_copied": true
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_12002_runtime.lib",
+      "bytes": 98955534,
+      "sha256": "ee37a05cfa0fac3adeadf09dc8154a03919dc6d9ffb72479e092e1bbcddd4bdc",
+      "role": "actual unchanged R25 dependency library",
+      "original_supplied_reference_only": true,
+      "not_read_or_copied": true
+    },
+    {
+      "path": "C:/lr25b1/CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_army_support.cpp.obj",
+      "bytes": 29700,
+      "sha256": "fe9f1497143d9c1a66776d46023b3eb606882713f90563c6ebebd2df6dbe7019",
+      "role": "COFF object used by source author; not rereread",
+      "original_supplied_reference_only": true,
+      "not_read_or_copied": true
+    },
+    {
+      "path": "C:/lr25b1/CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_army.cpp.obj",
+      "bytes": 45665,
+      "sha256": "0585621422fa4d7e21cd16e77202cbf5c1c0d5d3d3964030e3bec78ccf1f436e",
+      "role": "COFF object used by source author; not rereread",
+      "original_supplied_reference_only": true,
+      "not_read_or_copied": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-army-route-binding-fix-20261008-001/source/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 423223,
+      "sha256": "ca77d522af5b0caeadc9f7d5a421bc60844b2b7c81e88078a040bf0d190daea4",
+      "role": "original focused CMake source; full text excluded from small supplement",
+      "original_supplied_reference_only": true,
+      "not_read_or_copied": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-army-route-binding-fix-20261008-001/CMakeLists.final-source.txt",
+      "bytes": 423243,
+      "sha256": "136b4a2d6ba3b426fa78191453c47016ecfee947214271d5e2c43a8bf6047381",
+      "role": "final target CMake source; full text stays external",
+      "original_supplied_reference_only": true,
+      "not_read_or_copied": true
+    }
+  ],
+  "archiver_actions": {
+    "MAIN_Git_bus_writes": 0,
+    "SDK_game_process_screen_calls": 0,
+    "CI_test_build_replay": 0,
+    "save_body_or_dump_binary_reads_copies": 0
+  }
+}

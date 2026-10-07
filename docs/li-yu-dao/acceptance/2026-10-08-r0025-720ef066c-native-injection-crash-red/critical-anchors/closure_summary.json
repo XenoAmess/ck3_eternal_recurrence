@@ -1,0 +1,167 @@
+{
+  "schema": "lyd.root.actual-crash-closed-summary.v1",
+  "status": "ACTUAL_CRASH_ENDED_RUNTIME_OWNED_HELPERS_CLOSED_AND_LEASE_RELEASED",
+  "source_head": "720ef066ce5513875ca694201f7f70694988d81b",
+  "run_directory": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025",
+  "attempt_id": "R0025",
+  "root_screen_task": "ck3-lyd-r25-runtime-20261008-001",
+  "closed_at_utc": "2026-10-07T20:00:53.178263+00:00",
+  "run_identity": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/live-run-id.json",
+    "bytes": 373,
+    "sha256": "56f4b884bbfefb98d370a3c5818676b4ef44b0b8982922eb7816445f59f962d1"
+  },
+  "launch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/launch.json",
+    "bytes": 2378,
+    "sha256": "e28c7fc7b3dbd64e9638c3997cb6ef7a52dd1c10feeb98ffc4a92d486b40ce2a"
+  },
+  "client_session": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/mcp-client-001/session.json",
+    "bytes": 1251,
+    "sha256": "84fb484d5a98c8f175df00c3a4fea6b84ef7abfaa720af32335b5539253b59ac"
+  },
+  "failed_attach_native": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/mcp-client-001/0002-r25-root-attach-001.native-01.json",
+    "bytes": 2161,
+    "sha256": "d9545cdcb3d59893b1608efe42b3f6ff13c7a5115ce429aca1b2cf1a48d441c3"
+  },
+  "failed_attach_sdk": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/mcp-client-001/0002-r25-root-attach-001.sdk-result.json",
+    "bytes": 4923,
+    "sha256": "ce954e9acd844b6648a1fe18b98d9195a7e99561d763b5c195756743ed70c471"
+  },
+  "crash_observation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/ROOT-CRASH-RETAINER-INPUTS-001/CRASH-CLOSE-OBSERVATION.actual.json",
+    "bytes": 4656,
+    "sha256": "dc109c50e17886489eb12919a7d50544418f436cc95fc460c8a9e33c8a4b99f2"
+  },
+  "crash_exception": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/userdir/crashes/ck3_20261008_034235/exception.txt",
+    "bytes": 60951,
+    "sha256": "f63797fe3cfe19f37ac808d8a9e5e4c5f468e52186195e1fbba41dab43923438"
+  },
+  "crash_meta": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/userdir/crashes/ck3_20261008_034235/meta.yml",
+    "bytes": 1878,
+    "sha256": "5c35872d4145e3cdb9a28360afd3cccd2672f09dd344b9d17f43cf53be7bc8f3"
+  },
+  "crash_dump": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/userdir/crashes/ck3_20261008_034235/minidump.dmp",
+    "bytes": 141161135,
+    "sha256": "a1da7afdc87a057b0465daffb145e96b88ad2837e71111776454e47bcbfe0a5f"
+  },
+  "helper_handle_capture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/ROOT-ORIGINAL-HELPER-HANDLES-001/CAPTURED.actual.json",
+    "bytes": 4485,
+    "sha256": "9ff9955f6e09580ffe77e434f4f5002211407109b14dc68e3fc9764d92065bfc"
+  },
+  "helper_exits": {
+    "client": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/ROOT-ORIGINAL-HELPER-HANDLES-001/EXIT-client.actual.json",
+      "bytes": 1787,
+      "sha256": "0a93d9a46438be72f8cbc371dea9edca87aba7b17e615f0093ec9cf6d59a2467"
+    },
+    "keeper": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/ROOT-ORIGINAL-HELPER-HANDLES-001/EXIT-keeper.actual.json",
+      "bytes": 1589,
+      "sha256": "c4a2a7e6bf0b30f03f56b2306613a66e0ce24f93da3aafe496d5f3fadec7f193"
+    }
+  },
+  "original_exec_results": {
+    "client": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-client-serve-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1730,
+      "sha256": "41e9fd245c9fb619598d0b9cff99650765c488557c3d23d668338c1f7f72afd5"
+    },
+    "keeper": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-keeper-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1532,
+      "sha256": "5bc366bc059b9c7650f6c87be1691e1748debc146626afd8d878dad28b317b6f"
+    },
+    "holder": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-helper-handles-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1576,
+      "sha256": "7caae8c0b9134b727047bae73ba6ed18cbf9e9f55f48db6c7443958a6669f592"
+    }
+  },
+  "keeper_final": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/root-screen-keeper-001/FINAL.json",
+    "bytes": 411,
+    "sha256": "b69e8946608a0017a86cf11b552f7d9ffe93480513e85025a2a0289305895c45"
+  },
+  "crash_reporter_cancel": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/ROOT-CRASH-REPORTER-CANCEL.actual.json",
+    "bytes": 471,
+    "sha256": "7c2d6a10b2da80f441163605d655e69c9a29e86c492be8794f3d0490ac84dbad"
+  },
+  "release_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-screen-release-original-exec-20261008-001/stdout",
+    "bytes": 1209,
+    "sha256": "9cde59b1ad2fc303f787cbf631b068d12b1050ad7b3d224353b9680e3a7cdcac"
+  },
+  "postrelease_task_list": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-postrelease-list-original-exec-20261008-001/stdout",
+    "bytes": 116849,
+    "sha256": "b98656ba01817a64f9dc7ad05789aa62fb9ffa6c6b79f7375503f5be546cd6c9"
+  },
+  "final_census": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-actual-crash-closed-summary-20261008-001/POST-RELEASE-CENSUS.actual.json",
+    "bytes": 356,
+    "sha256": "fdb031e8415f8a867182ca20ccdef7e4a72be51d5adbb4dcf0a65d2ce097305a"
+  },
+  "final_steam_offline_review": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/steam-offline-final-001/probe-1/ROOT-OFFLINE-REVIEW.actual.json",
+    "bytes": 870,
+    "sha256": "c00ba43dfffefb25e4ab042b7febcd4467c94d10d96f8eab551e86af99b1d57e"
+  },
+  "original_request_inventory": [
+    {
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/mcp-client-001/0001-r25-001-list.request.json",
+        "bytes": 102,
+        "sha256": "27e073de95d47cdf6cc881bbee18ca065034101401acd8baa6e8a3f88ca25b3f"
+      },
+      "operation": "list_tools",
+      "name": null
+    },
+    {
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/mcp-client-001/0002-r25-root-attach-001.request.json",
+        "bytes": 169,
+        "sha256": "c783823c8da1a954c92ed0c8331f8be3832243cddcc2f0dd3ca72f91f67733b0"
+      },
+      "operation": "call_tool",
+      "name": "ck3_attach_profile_bridge_v1"
+    },
+    {
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/mcp-client-001/0003-r25-004-close-crashed-client.request.json",
+        "bytes": 113,
+        "sha256": "b44681148486543ce2f12aa0694ba041205dc3998a8f930ad505f434c20e1ab2"
+      },
+      "operation": "close",
+      "name": null
+    }
+  ],
+  "facts": {
+    "game_original_HANDLE_exit0_observed": false,
+    "game_exit_code": null,
+    "typed_normal_exit_observed": null,
+    "autosave_verified": null,
+    "all_original_helper_exit0_observed": true,
+    "lease_released": true,
+    "operational_absence_observed": true,
+    "current_cold_87_protection": null,
+    "save_body_reads": 0,
+    "business_callbacks": 0,
+    "successful_attach": false,
+    "reinjected": false,
+    "reconnected": false,
+    "new_Title": null,
+    "new_Title_cold": null,
+    "C3": null,
+    "I4": null,
+    "whole_mod_GREEN": false
+  }
+}

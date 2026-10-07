@@ -9411,3 +9411,19 @@ if(BUILD_TESTING AND WIN32)
     COMMAND $<TARGET_FILE:xar_ck3_12004_player_claims_v1_test>
       "${CMAKE_CURRENT_BINARY_DIR}/wire/player_claims_v1-focused-first")
 endif()
+
+# Exercise both complete binders before injection can reach the worker pipe.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_army_route_binding_test
+    src/ck3_12004_army_route_binding_test.cpp)
+  target_link_libraries(xar_ck3_12004_army_route_binding_test PRIVATE
+    xar_ck3_12002_runtime xar_bridge_protocol)
+  target_compile_features(xar_ck3_12004_army_route_binding_test PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_army_route_binding_test PRIVATE
+      /W4 /WX /permissive- /EHsc /utf-8)
+  endif()
+  add_test(NAME xar_ck3_12004_army_route_binding_test
+    COMMAND $<TARGET_FILE:xar_ck3_12004_army_route_binding_test>)
+  set_tests_properties(xar_ck3_12004_army_route_binding_test PROPERTIES TIMEOUT 10)
+endif()

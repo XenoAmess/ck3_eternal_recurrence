@@ -1,0 +1,35 @@
+{
+  "schema": "r25.crash-red.archive-unpack-byte-validation.v1",
+  "source_head": "720ef066ce5513875ca694201f7f70694988d81b",
+  "all_original_files_verified": 397,
+  "unique_original_sets": 306,
+  "critical_four_anchors": {
+    "failed_attach": {
+      "bytes": 2161,
+      "sha256": "d9545cdcb3d59893b1608efe42b3f6ff13c7a5115ce429aca1b2cf1a48d441c3",
+      "original_copy_zip_match": true
+    },
+    "crash_exception": {
+      "bytes": 60951,
+      "sha256": "f63797fe3cfe19f37ac808d8a9e5e4c5f468e52186195e1fbba41dab43923438",
+      "original_copy_zip_match": true
+    },
+    "closure_summary": {
+      "bytes": 7229,
+      "sha256": "1b745781606ec836cfa040eb2691c3809600790b935abf2ab6b7c5a56fce890a",
+      "original_copy_zip_match": true
+    },
+    "exact_CI_INDEX": {
+      "bytes": 7998,
+      "sha256": "891a8c1e36005830abbf6a4c5ce270122b8f85459d660ebc4f18404bf2dca745",
+      "original_copy_zip_match": true
+    }
+  },
+  "zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-archive-doc-candidate-20261008-001/candidate/docs/li-yu-dao/acceptance/2026-10-08-r0025-720ef066c-native-injection-crash-red/raw-evidence.zip",
+    "bytes": 3221950,
+    "sha256": "ff9158f9e4dae2cd0c13e12d45485f59b4bdeec819a0cd3552b536fdeb56b3a2"
+  },
+  "checks_pass": true,
+  "SDK_game_test_build_actions": 0
+}

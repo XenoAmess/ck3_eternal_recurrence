@@ -1,0 +1,351 @@
+{
+  "schema": "lyd.r25.native-injection-crash-red.archival-facts.v1",
+  "status": "ACTUAL_R0025_INJECTION_STACK_OVERFLOW_RED_OPERATIONALLY_CLOSED",
+  "source_head": "720ef066ce5513875ca694201f7f70694988d81b",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0025",
+  "execution_id": "a18bad99-51be-48bc-9113-42318af64a13",
+  "game_pid": 19256,
+  "runtime_closed_at_utc": "2026-10-07T20:00:53.178263+00:00",
+  "compiled": {
+    "actual_compilation_pass": true,
+    "focused5_pass": true,
+    "source_unchanged": true,
+    "exact_private_flags": true,
+    "outer_exit_code": 1,
+    "Defender": {
+      "status": "settings_failed",
+      "manifest": "C:\\lr25b1\\defender-exe-exclusions\\20261007T190918Z-4eff1823\\manifest.json",
+      "receipt": "C:\\lr25b1\\defender-exe-exclusions\\20261007T190918Z-4eff1823\\receipt.json",
+      "receipt_sha256": "800203d625bf47f4f5fbdd752ee8e417d3877db3317e1679d3d9830464c10aee",
+      "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)"
+    },
+    "targets": {
+      "xar_ck3_bridge": {
+        "path": "C:/lr25b1/xar_ck3_bridge.dll",
+        "bytes": 8945152,
+        "sha256": "204127587d7af8b93c066a32dae42d35762d0025a1377338f606cee50ba56a30"
+      },
+      "xar_ck3_bridge_injector": {
+        "path": "C:/lr25b1/xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "52379870669098cafd6fdcc1ea88aeda52fb65032ef4df9f6d1b9000f12ac852"
+      },
+      "xar_confucian_assembly_predicates_v1_test": {
+        "path": "C:/lr25b1/xar_confucian_assembly_predicates_v1_test.exe",
+        "bytes": 120832,
+        "sha256": "83ca2e3343bdc3cc139ca0cdc7e0c9b42849107882aef712597db0fefcbacd0b"
+      },
+      "xar_confucian_religious_title_readback_v1_test": {
+        "path": "C:/lr25b1/xar_confucian_religious_title_readback_v1_test.exe",
+        "bytes": 129536,
+        "sha256": "2a31a036fd9bde79054b13609db1a32ecab79b9716ba30bb77c072fe2b2fa398"
+      },
+      "xar_confucian_challenger_graph_v1_test": {
+        "path": "C:/lr25b1/xar_confucian_challenger_graph_v1_test.exe",
+        "bytes": 193536,
+        "sha256": "3c1361f7dc6b6d7739920043282c493d5d25d242b0c340a4d283eccca58dcd30"
+      },
+      "xar_ck3_main_thread_query_mailbox_v1_test": {
+        "path": "C:/lr25b1/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+        "bytes": 130048,
+        "sha256": "413994b0510f7f7419c55afe3cecfc8838f89e39da169afa514ea0b016db40bd"
+      },
+      "xar_ck3_12002_event_window_context_test": {
+        "path": "C:/lr25b1/xar_ck3_12002_event_window_context_test.exe",
+        "bytes": 8988160,
+        "sha256": "c084e628beb2f496ca00cd7080ba41a283b8b5eaaca36880afe00f3608941635"
+      }
+    }
+  },
+  "metadata": {
+    "actual_status": "ACTUAL_OFFICIAL_CLIENT_METADATA_AND_FRESH_CODE_INVENTORY",
+    "default21": 21,
+    "readonly23": 23,
+    "challenger24": 24,
+    "grant28": 28,
+    "game_calls": 0
+  },
+  "attach": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "4c8f002273cb4f238e1f0b11cbbb58fa",
+    "profile_sha256": "6443a91bde426cbec837a43cfb7133f010d2f52a9274076472c3196aa73254c5",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_4c8f002273cb4f238e1f0b11cbbb58fa",
+    "recorded_at_utc": "2026-10-07T19:42:44.432494+00:00",
+    "status": "RED",
+    "reason": "BridgeUnavailableError: native DLL is not connected to \\\\.\\pipe\\xar_profile_4c8f002273cb4f238e1f0b11cbbb58fa",
+    "injector": {
+      "schema": "xar.ck3.contained-injector-job.v1",
+      "status": "EXIT",
+      "argv": [
+        "C:/lr25b1/xar_ck3_bridge_injector.exe",
+        "--pipe",
+        "\\\\.\\pipe\\xar_profile_4c8f002273cb4f238e1f0b11cbbb58fa",
+        "19256",
+        "C:/lr25b1/xar_ck3_bridge.dll"
+      ],
+      "pid": 19796,
+      "creation_utc": "2026-10-07T19:42:34.134000+00:00",
+      "pinned_executable": "C:\\lr25b1\\xar_ck3_bridge_injector.exe",
+      "executable_sha256": "52379870669098CAFD6FDCC1EA88AEDA52FB65032EF4DF9F6D1B9000F12AC852",
+      "job_limit_flags": 8200,
+      "pre_resume_job_pids": [
+        19796
+      ],
+      "job_active_final": 0,
+      "job_pids_final": [],
+      "resume_previous_count": 1,
+      "returncode": 0,
+      "injector_root_reaped": true,
+      "complete_process_tree_proven": true,
+      "stdout_sha256": "792E58028DBE2577DA0937368E36DE484D4AECAB35A8E11F425294B8DF6F14F2",
+      "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stdout_bytes": 81,
+      "stderr_bytes": 0,
+      "stdout_retained_sha256": "792E58028DBE2577DA0937368E36DE484D4AECAB35A8E11F425294B8DF6F14F2",
+      "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stdout_retained_bytes": 81,
+      "stderr_retained_bytes": 0,
+      "stdout_complete": true,
+      "stderr_complete": true,
+      "output_limit_bytes": 8388608,
+      "stdout_overflow": false,
+      "stdout_reader_error": null,
+      "stderr_overflow": false,
+      "stderr_reader_error": null
+    },
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-025\\native-evidence\\4c8f002273cb4f238e1f0b11cbbb58fa\\0001-attach.json"
+  },
+  "crash": {
+    "exception": "C00000FD (EXCEPTION_STACK_OVERFLOW)",
+    "directory_local_stamp": "20261008_034235",
+    "exception_txt_local_time": "2026-10-08 03:42:37",
+    "raw_exception_exported_symbol_names_are_not_root_cause": true,
+    "final_source_cause_proof": null,
+    "fix_verified": null
+  },
+  "closure": {
+    "game_original_HANDLE_exit0_observed": false,
+    "game_exit_code": null,
+    "typed_normal_exit_observed": null,
+    "autosave_verified": null,
+    "all_original_helper_exit0_observed": true,
+    "lease_released": true,
+    "operational_absence_observed": true,
+    "current_cold_87_protection": null,
+    "save_body_reads": 0,
+    "business_callbacks": 0,
+    "successful_attach": false,
+    "reinjected": false,
+    "reconnected": false,
+    "new_Title": null,
+    "new_Title_cold": null,
+    "C3": null,
+    "I4": null,
+    "whole_mod_GREEN": false
+  },
+  "critical_anchors": {
+    "failed_attach": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/mcp-client-001/0002-r25-root-attach-001.native-01.json",
+      "bytes": 2161,
+      "sha256": "d9545cdcb3d59893b1608efe42b3f6ff13c7a5115ce429aca1b2cf1a48d441c3"
+    },
+    "crash_exception": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/userdir/crashes/ck3_20261008_034235/exception.txt",
+      "bytes": 60951,
+      "sha256": "f63797fe3cfe19f37ac808d8a9e5e4c5f468e52186195e1fbba41dab43923438"
+    },
+    "closure_summary": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-actual-crash-closed-summary-20261008-001/CRASH-CLOSED-SUMMARY.actual.json",
+      "bytes": 7229,
+      "sha256": "1b745781606ec836cfa040eb2691c3809600790b935abf2ab6b7c5a56fce890a"
+    },
+    "exact_CI_INDEX": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-720ef066c-exact-official-ci-20261008-001/INDEX.json",
+      "bytes": 7998,
+      "sha256": "891a8c1e36005830abbf6a4c5ce270122b8f85459d660ebc4f18404bf2dca745"
+    }
+  },
+  "external_reference_only": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/userdir/crashes/ck3_20261008_034235/minidump.dmp",
+      "bytes": 141161135,
+      "sha256": "a1da7afdc87a057b0465daffb145e96b88ad2837e71111776454e47bcbfe0a5f",
+      "role": "closure summary exact dependency",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_bridge.dll",
+      "bytes": 8945152,
+      "sha256": "204127587d7af8b93c066a32dae42d35762d0025a1377338f606cee50ba56a30",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "52379870669098cafd6fdcc1ea88aeda52fb65032ef4df9f6d1b9000f12ac852",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_assembly_predicates_v1_test.exe",
+      "bytes": 120832,
+      "sha256": "83ca2e3343bdc3cc139ca0cdc7e0c9b42849107882aef712597db0fefcbacd0b",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_religious_title_readback_v1_test.exe",
+      "bytes": 129536,
+      "sha256": "2a31a036fd9bde79054b13609db1a32ecab79b9716ba30bb77c072fe2b2fa398",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_challenger_graph_v1_test.exe",
+      "bytes": 193536,
+      "sha256": "3c1361f7dc6b6d7739920043282c493d5d25d242b0c340a4d283eccca58dcd30",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "bytes": 130048,
+      "sha256": "413994b0510f7f7419c55afe3cecfc8838f89e39da169afa514ea0b016db40bd",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_12002_event_window_context_test.exe",
+      "bytes": 8988160,
+      "sha256": "c084e628beb2f496ca00cd7080ba41a283b8b5eaaca36880afe00f3608941635",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_12002_runtime.lib",
+      "bytes": 98955534,
+      "sha256": "ee37a05cfa0fac3adeadf09dc8154a03919dc6d9ffb72479e092e1bbcddd4bdc",
+      "role": "actual build new_runtime_library",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_assembly_predicates_v1_test.exe",
+      "bytes": 120832,
+      "sha256": "83ca2e3343bdc3cc139ca0cdc7e0c9b42849107882aef712597db0fefcbacd0b",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_religious_title_readback_v1_test.exe",
+      "bytes": 129536,
+      "sha256": "2a31a036fd9bde79054b13609db1a32ecab79b9716ba30bb77c072fe2b2fa398",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_challenger_graph_v1_test.exe",
+      "bytes": 193536,
+      "sha256": "3c1361f7dc6b6d7739920043282c493d5d25d242b0c340a4d283eccca58dcd30",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "bytes": 130048,
+      "sha256": "413994b0510f7f7419c55afe3cecfc8838f89e39da169afa514ea0b016db40bd",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_12002_event_window_context_test.exe",
+      "bytes": 8988160,
+      "sha256": "c084e628beb2f496ca00cd7080ba41a283b8b5eaaca36880afe00f3608941635",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    }
+  ],
+  "CI": {
+    "exact_head": "720ef066ce5513875ca694201f7f70694988d81b",
+    "Official_Runner_CI": "FAILURE",
+    "failed_step": {
+      "schema": "exact_head_failed_step_primary_source_facts.v1",
+      "exact_head": "720ef066ce5513875ca694201f7f70694988d81b",
+      "run_id": 37668162860,
+      "job_id": 112952663767,
+      "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37668162860/job/112952663767",
+      "failed_step": {
+        "name": "Test Reclaim the Motherland release tooling",
+        "status": "completed",
+        "conclusion": "failure",
+        "number": 31,
+        "started_at": "2026-10-07T18:41:06Z",
+        "completed_at": "2026-10-07T18:41:07Z"
+      },
+      "producer_log_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-720ef066c-exact-official-ci-20261008-001/failed-job-112952663767-002.stdout",
+        "bytes": 138152,
+        "sha256": "967e6574288aa8b6bfb4a152b61f9f4877b7f69255af367c13da4d3a8767b92e"
+      },
+      "producer_command": "python tools/test_reclaim_the_motherland_contract.py",
+      "failing_test": "TestReclaimTheMotherlandContract.test_phase_three_title_law_and_idempotent_save_migration",
+      "test_filename": "tools/test_reclaim_the_motherland_contract.py",
+      "test_line": 579,
+      "assertion": "self.assertEqual(text.count(\"add_title_law = single_heir_succession_law\"), 2)",
+      "actual_error": "AssertionError: 3 != 2",
+      "producer_summary": "Ran 20 tests in 0.146s; FAILED (failures=1, skipped=2); Process completed with exit code 1.",
+      "raw_failure_step_excerpt": "2026-10-07T18:41:06.7832713Z ##[group]Run python tools/test_reclaim_the_motherland_contract.py\r\n2026-10-07T18:41:06.7833573Z \u001b[36;1mpython tools/test_reclaim_the_motherland_contract.py\u001b[0m\r\n2026-10-07T18:41:06.7834272Z \u001b[36;1mif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\u001b[0m\r\n2026-10-07T18:41:06.7834965Z \u001b[36;1mpython tools/test_build_reclaim_the_motherland_release.py\u001b[0m\r\n2026-10-07T18:41:06.7835645Z \u001b[36;1mif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\u001b[0m\r\n2026-10-07T18:41:06.7882339Z shell: C:\\Windows\\system32\\cmd.EXE /D /E:ON /V:OFF /S /C \"CALL \"{0}\"\"\r\n2026-10-07T18:41:06.7882702Z env:\r\n2026-10-07T18:41:06.7882878Z   GIT_CONFIG_COUNT: 1\r\n2026-10-07T18:41:06.7883102Z   GIT_CONFIG_KEY_0: core.longpaths\r\n2026-10-07T18:41:06.7883358Z   GIT_CONFIG_VALUE_0: true\r\n2026-10-07T18:41:06.7883570Z   TEMP: D:\\a\\_temp\r\n2026-10-07T18:41:06.7883757Z   TMP: D:\\a\\_temp\r\n2026-10-07T18:41:06.7883968Z   PIP_CACHE_DIR: D:\\a\\_temp\\pip-cache\r\n2026-10-07T18:41:06.7884264Z   PYTHONPYCACHEPREFIX: D:\\a\\_temp\\python-bytecode\r\n2026-10-07T18:41:06.7885064Z   XDG_CACHE_HOME: D:\\a\\_temp\\cache\r\n2026-10-07T18:41:06.7885411Z   pythonLocation: C:\\hostedtoolcache\\windows\\Python\\3.13.15\\x64\r\n2026-10-07T18:41:06.7885863Z   PKG_CONFIG_PATH: C:\\hostedtoolcache\\windows\\Python\\3.13.15\\x64/lib/pkgconfig\r\n2026-10-07T18:41:06.7886324Z   Python_ROOT_DIR: C:\\hostedtoolcache\\windows\\Python\\3.13.15\\x64\r\n2026-10-07T18:41:06.7886730Z   Python2_ROOT_DIR: C:\\hostedtoolcache\\windows\\Python\\3.13.15\\x64\r\n2026-10-07T18:41:06.7887150Z   Python3_ROOT_DIR: C:\\hostedtoolcache\\windows\\Python\\3.13.15\\x64\r\n2026-10-07T18:41:06.7887471Z ##[endgroup]\r\n2026-10-07T18:41:06.9261115Z test_custom_shattering_marks_title_and_never_forces_step_down (__main__.TestReclaimTheMotherlandContract.test_custom_shattering_marks_title_and_never_forces_step_down) ... ok\r\n2026-10-07T18:41:06.9298629Z test_daily_localization_is_bom_utf8_and_key_symmetric (__main__.TestReclaimTheMotherlandContract.test_daily_localization_is_bom_utf8_and_key_symmetric) ... ok\r\n2026-10-07T18:41:06.9303121Z test_game_rule_has_exactly_the_two_approved_paths (__main__.TestReclaimTheMotherlandContract.test_game_rule_has_exactly_the_two_approved_paths) ... ok\r\n2026-10-07T18:41:06.9305635Z test_installed_vanilla_matches_pins_when_available (__main__.TestReclaimTheMotherlandContract.test_installed_vanilla_matches_pins_when_available) ... skipped 'CK3 files unavailable; committed source/body pins still apply'\r\n2026-10-07T18:41:06.9308354Z test_live_fixture_samples_only_county_or_higher_direct_vassals (__main__.TestReclaimTheMotherlandContract.test_live_fixture_samples_only_county_or_higher_direct_vassals) ... ok\r\n2026-10-07T18:41:06.9432384Z test_loyalists_are_frozen_from_direct_vassals_historical_movement (__main__.TestReclaimTheMotherlandContract.test_loyalists_are_frozen_from_direct_vassals_historical_movement) ... ok\r\n2026-10-07T18:41:06.9462451Z test_marker_trigger_is_shared_by_both_decisions (__main__.TestReclaimTheMotherlandContract.test_marker_trigger_is_shared_by_both_decisions) ... ok\r\n2026-10-07T18:41:06.9599585Z test_phase_four_generated_interaction_is_exact_narrow_projection (__main__.TestReclaimTheMotherlandContract.test_phase_four_generated_interaction_is_exact_narrow_projection) ... ok\r\n2026-10-07T18:41:06.9668469Z test_phase_four_recent_independence_duration_and_live_compression (__main__.TestReclaimTheMotherlandContract.test_phase_four_recent_independence_duration_and_live_compression) ... ok\r\n2026-10-07T18:41:06.9700609Z test_phase_four_recent_title_penalty_has_exact_owner_and_marker_guards (__main__.TestReclaimTheMotherlandContract.test_phase_four_recent_title_penalty_has_exact_owner_and_marker_guards) ... ok\r\n2026-10-07T18:41:06.9725830Z test_phase_four_twelve_identity_acceptance_vectors (__main__.TestReclaimTheMotherlandContract.test_phase_four_twelve_identity_acceptance_vectors) ... skipped 'exact vanilla source unavailable for native comparison vectors'\r\n2026-10-07T18:41:06.9797865Z test_phase_three_delays_exact_object_recovery_until_after_death (__main__.TestReclaimTheMotherlandContract.test_phase_three_delays_exact_object_recovery_until_after_death) ... ok\r\n2026-10-07T18:41:06.9892129Z test_phase_three_ministry_is_unique_and_only_defectors_leave_office (__main__.TestReclaimTheMotherlandContract.test_phase_three_ministry_is_unique_and_only_defectors_leave_office) ... ok\r\n2026-10-07T18:41:06.9972846Z test_phase_three_title_law_and_idempotent_save_migration (__main__.TestReclaimTheMotherlandContract.test_phase_three_title_law_and_idempotent_save_migration) ... FAIL\r\n2026-10-07T18:41:07.0071069Z test_phase_two_loyalty_resolution_is_one_shot_and_priority_ordered (__main__.TestReclaimTheMotherlandContract.test_phase_two_loyalty_resolution_is_one_shot_and_priority_ordered) ... ok\r\n2026-10-07T18:41:07.0136462Z test_reassignment_loop_excludes_the_preserved_old_emperor_realm (__main__.TestReclaimTheMotherlandContract.test_reassignment_loop_excludes_the_preserved_old_emperor_realm) ... ok\r\n2026-10-07T18:41:07.0145582Z test_restoration_effect_keeps_vanilla_effect_order_then_destroys_frozen_titles (__main__.TestReclaimTheMotherlandContract.test_restoration_effect_keeps_vanilla_effect_order_then_destroys_frozen_titles) ... ok\r\n2026-10-07T18:41:07.0156116Z test_restoration_uses_the_original_51_percent_expression (__main__.TestReclaimTheMotherlandContract.test_restoration_uses_the_original_51_percent_expression) ... ok\r\n2026-10-07T18:41:07.0290905Z test_shattering_dispatcher_routes_custom_and_vanilla_effects (__main__.TestReclaimTheMotherlandContract.test_shattering_dispatcher_routes_custom_and_vanilla_effects) ... ok\r\n2026-10-07T18:41:07.0437165Z test_vanilla_source_files_and_copied_effect_are_pinned (__main__.TestReclaimTheMotherlandContract.test_vanilla_source_files_and_copied_effect_are_pinned) ... ok\r\n2026-10-07T18:41:07.0438164Z \r\n2026-10-07T18:41:07.0438359Z ======================================================================\r\n2026-10-07T18:41:07.0439398Z FAIL: test_phase_three_title_law_and_idempotent_save_migration (__main__.TestReclaimTheMotherlandContract.test_phase_three_title_law_and_idempotent_save_migration)\r\n2026-10-07T18:41:07.0440557Z ----------------------------------------------------------------------\r\n2026-10-07T18:41:07.0440976Z Traceback (most recent call last):\r\n2026-10-07T18:41:07.0447246Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_reclaim_the_motherland_contract.py\", line 579, in test_phase_three_title_law_and_idempotent_save_migration\r\n2026-10-07T18:41:07.0449300Z     self.assertEqual(text.count(\"add_title_law = single_heir_succession_law\"), 2)\r\n2026-10-07T18:41:07.0449841Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n2026-10-07T18:41:07.0450226Z AssertionError: 3 != 2\r\n2026-10-07T18:41:07.0450387Z \r\n2026-10-07T18:41:07.0450542Z ----------------------------------------------------------------------\r\n2026-10-07T18:41:07.0450875Z Ran 20 tests in 0.146s\r\n2026-10-07T18:41:07.0451013Z \r\n2026-10-07T18:41:07.0451113Z FAILED (failures=1, skipped=2)\r\n2026-10-07T18:41:07.0611824Z ##[error]Process completed with exit code 1.\r\n",
+      "current_commit_changed_paths": [
+        "docs/autonomous-agent-progress/daily/2026-10-07.md",
+        "docs/autonomous-agent-progress/daily/2026-10-08.md",
+        "docs/autonomous-agent-progress/meetings/daily/2026-10-08.md",
+        "docs/autonomous-agent-progress/meetings/weekly/2026-W41.md",
+        "docs/li-yu-dao/2026-10-08-progress.md",
+        "docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/INDEX.json",
+        "docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/REPORT.md",
+        "docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/ROOT-IMPORT-CHECKS.json",
+        "docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/raw-evidence.zip",
+        "docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/typed-boundary-source/DEPENDENCIES.json",
+        "docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/typed-boundary-source/INDEX.json",
+        "docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/typed-boundary-source/author_closed_boundary.py",
+        "docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/typed-boundary-source/verify_previous_boundary.py",
+        "mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+        "mod_li_yu_dao/docs/acceptance-matrix.md",
+        "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+        "mod_li_yu_dao/tools/gen_institution.py",
+        "mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+        "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+        "mod_li_yu_dao/tools/test_c3_head_factory_law_protection.py"
+      ],
+      "current_commit_RMTM_changed_paths": [],
+      "classification": "Actual failure is the Reclaim the Motherland contract test. This commit has no RMTM changed path; Li Yu has an independent successful run. No source-introducer or deeper root-cause attribution investigated.",
+      "source_fix_or_test_rerun": false
+    },
+    "Linear_history": "SUCCESS",
+    "Li_Yu_Dao_static_checks": "SUCCESS",
+    "CI_rerun": false
+  },
+  "work_estimate_percent": 75,
+  "estimate_is_pass_rate": false,
+  "whole_mod": "NOT_GREEN",
+  "B0_save": null,
+  "current_87_protections": null,
+  "formal_approval": null,
+  "newT": null,
+  "C3": null,
+  "I4": null,
+  "game_OS_exit_code": null,
+  "typed_normal_exit": null,
+  "autosave_verified": null,
+  "archiver_actions": {
+    "MAIN_writes": 0,
+    "Git_actions": 0,
+    "bus_actions": 0,
+    "SDK_game_process_screen_actions": 0,
+    "CI_queries": 0,
+    "test_build_replay": 0,
+    "save_body_reads": 0,
+    "large_dump_or_binary_reads_copies": 0
+  },
+  "pending_cause_policy": "Append later actual COFF/source proof as a separate addendum; this immutable report does not claim final repair or runtime fix credit."
+}

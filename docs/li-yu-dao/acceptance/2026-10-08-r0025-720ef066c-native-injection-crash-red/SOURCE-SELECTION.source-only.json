@@ -1,0 +1,2598 @@
+{
+  "schema": "r25.relevant-original-source-selection.v1",
+  "source_head": "720ef066ce5513875ca694201f7f70694988d81b",
+  "package_inventory": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-001-list.ROOT-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1487,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-003-close-crashed-client.ROOT-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1535,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-720ef066c-exact-official-ci-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "api_read.py",
+          "bytes": 3119
+        },
+        {
+          "name": "ARCHIVE-CHECK.source-facts.json",
+          "bytes": 265
+        },
+        {
+          "name": "author_failure_facts.py",
+          "bytes": 2665
+        },
+        {
+          "name": "bootstrap.py",
+          "bytes": 1440
+        },
+        {
+          "name": "commit-001.actual.json",
+          "bytes": 1262
+        },
+        {
+          "name": "commit-001.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "commit-001.stdout",
+          "bytes": 92208
+        },
+        {
+          "name": "decode_workflow.py",
+          "bytes": 412
+        },
+        {
+          "name": "failed-job-112952663767-001.actual.json",
+          "bytes": 1208
+        },
+        {
+          "name": "failed-job-112952663767-001.stderr",
+          "bytes": 99
+        },
+        {
+          "name": "failed-job-112952663767-001.stdout",
+          "bytes": 0
+        },
+        {
+          "name": "failed-job-112952663767-002.actual.json",
+          "bytes": 1244
+        },
+        {
+          "name": "failed-job-112952663767-002.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "failed-job-112952663767-002.stdout",
+          "bytes": 138152
+        },
+        {
+          "name": "FAILED-STEP.source-facts.json",
+          "bytes": 10746
+        },
+        {
+          "name": "FINAL.actual.json",
+          "bytes": 23052
+        },
+        {
+          "name": "github_log_read.py",
+          "bytes": 1759
+        },
+        {
+          "name": "github_log_read_002.py",
+          "bytes": 427
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 7998
+        },
+        {
+          "name": "linear-jobs-final-001.actual.json",
+          "bytes": 1277
+        },
+        {
+          "name": "linear-jobs-final-001.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "linear-jobs-final-001.stdout",
+          "bytes": 1789
+        },
+        {
+          "name": "liyu-jobs-final-001.actual.json",
+          "bytes": 1273
+        },
+        {
+          "name": "liyu-jobs-final-001.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "liyu-jobs-final-001.stdout",
+          "bytes": 2461
+        },
+        {
+          "name": "liyu-workflow-001.actual.json",
+          "bytes": 1319
+        },
+        {
+          "name": "liyu-workflow-001.raw.yml",
+          "bytes": 2050
+        },
+        {
+          "name": "liyu-workflow-001.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "liyu-workflow-001.stdout",
+          "bytes": 4059
+        },
+        {
+          "name": "official-jobs-final-001.actual.json",
+          "bytes": 1282
+        },
+        {
+          "name": "official-jobs-final-001.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "official-jobs-final-001.stdout",
+          "bytes": 16000
+        },
+        {
+          "name": "raw-evidence.zip",
+          "bytes": 81036
+        },
+        {
+          "name": "read_failed_step.py",
+          "bytes": 349
+        },
+        {
+          "name": "REPORT.md",
+          "bytes": 3486
+        },
+        {
+          "name": "runs-001.actual.json",
+          "bytes": 1285
+        },
+        {
+          "name": "runs-001.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "runs-001.stdout",
+          "bytes": 40559
+        },
+        {
+          "name": "runs-002.actual.json",
+          "bytes": 1285
+        },
+        {
+          "name": "runs-002.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "runs-002.stdout",
+          "bytes": 40568
+        },
+        {
+          "name": "seal_final.py",
+          "bytes": 9277
+        },
+        {
+          "name": "verify_archive.py",
+          "bytes": 1003
+        }
+      ],
+      "selected_originals": 33
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-actual-crash-closed-summary-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "CRASH-CLOSED-SUMMARY.actual.json",
+          "bytes": 7229
+        },
+        {
+          "name": "POST-RELEASE-CENSUS.actual.json",
+          "bytes": 356
+        }
+      ],
+      "selected_originals": 2
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-actual-formal-consumer-source-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "consumer_binding.py",
+          "bytes": 24681
+        },
+        {
+          "name": "consumer_metadata_semantics.py",
+          "bytes": 7480
+        },
+        {
+          "name": "consumer_native_build_adapter.py",
+          "bytes": 1714
+        },
+        {
+          "name": "grant_metadata_semantics.py",
+          "bytes": 7322
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 4868
+        },
+        {
+          "name": "persistent_native_mcp_queue_28.py",
+          "bytes": 15201
+        },
+        {
+          "name": "prepare_fresh_native_profile.py",
+          "bytes": 11185
+        },
+        {
+          "name": "prepare_mcp_binding.py",
+          "bytes": 2242
+        },
+        {
+          "name": "r14_metadata_common.py",
+          "bytes": 4540
+        },
+        {
+          "name": "r14_metadata_semantics.py",
+          "bytes": 7480
+        },
+        {
+          "name": "root_compact_dispatch.py",
+          "bytes": 1497
+        },
+        {
+          "name": "root_queue_ops.py",
+          "bytes": 5400
+        },
+        {
+          "name": "runtime_bindings.py",
+          "bytes": 4794
+        }
+      ],
+      "selected_originals": 13
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-baseline-capture-specification-sourceonly-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "author_baseline_capture_specification_root_only.py",
+          "bytes": 11956
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 1761
+        }
+      ],
+      "selected_originals": 1
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-checkpoint-author-sourceonly-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "ACTUAL-CODEC12-SOURCE-LINEAGE.json",
+          "bytes": 1152
+        },
+        {
+          "name": "ACTUAL-EXPORT-READER-COPY-INVENTORY.json",
+          "bytes": 15155
+        },
+        {
+          "name": "AUTHOR-FRAMEWORK.pending-runtime.json",
+          "bytes": 1527
+        },
+        {
+          "name": "construct_original0240_control.py",
+          "bytes": 3530
+        },
+        {
+          "name": "FIVE-SOURCE-WINDOWS.expected.json",
+          "bytes": 10325
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 34791
+        },
+        {
+          "name": "materialize_baseline_checkpoint_request.py",
+          "bytes": 13270
+        },
+        {
+          "name": "materialize_checkpoint_request_v4.py",
+          "bytes": 13736
+        },
+        {
+          "name": "materialize_formal_checkpoint_request.py",
+          "bytes": 13736
+        },
+        {
+          "name": "qualify_retained_formal.py",
+          "bytes": 5487
+        },
+        {
+          "name": "R21-SOURCE-PROJECTION-CHECKS.json",
+          "bytes": 328
+        },
+        {
+          "name": "R22-SOURCE-CONTINUITY.actual.json",
+          "bytes": 1101
+        },
+        {
+          "name": "R25-SOURCE-CONTINUITY.actual.json",
+          "bytes": 2946
+        },
+        {
+          "name": "SOURCE-CONTINUITY.json",
+          "bytes": 1408
+        },
+        {
+          "name": "SOURCE-HELP-CHECKS.json",
+          "bytes": 2019
+        }
+      ],
+      "selected_originals": 1
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-cold-files-preparation-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "APP-MANIFEST.prelaunch-preserved.acf",
+          "bytes": 4239
+        },
+        {
+          "name": "ENABLED-SOURCE-INVENTORY.actual.json",
+          "bytes": 27365
+        },
+        {
+          "name": "MOUNT-MANIFEST.actual.json",
+          "bytes": 12270
+        },
+        {
+          "name": "REQUEST.actual.json",
+          "bytes": 1127139
+        },
+        {
+          "name": "RESULT.json",
+          "bytes": 3483
+        }
+      ],
+      "selected_originals": 5
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-cp-cap-source-delivery-20261008-001.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1925,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-red-boundary-root-inputs-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "INPUTS.actual.json",
+          "bytes": 4061
+        },
+        {
+          "name": "ROOT-CHECK.argv.json",
+          "bytes": 495
+        },
+        {
+          "name": "ROOT-CREATE.argv.json",
+          "bytes": 606
+        }
+      ],
+      "selected_originals": 0
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-red-predecessor-sourceonly-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "author_closed_boundary.py",
+          "bytes": 205
+        },
+        {
+          "name": "future_NULL_refused.stderr",
+          "bytes": 1366
+        },
+        {
+          "name": "future_NULL_refused.stdout",
+          "bytes": 0
+        },
+        {
+          "name": "help.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "help.stdout",
+          "bytes": 544
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 2069
+        },
+        {
+          "name": "INPUTS.pending.json",
+          "bytes": 900
+        },
+        {
+          "name": "KNOWN-SOURCE-FACTS.json",
+          "bytes": 1444
+        },
+        {
+          "name": "ROOT-ENTRY.txt",
+          "bytes": 3079
+        },
+        {
+          "name": "SOURCE-CHECKS.json",
+          "bytes": 1469
+        },
+        {
+          "name": "verify_previous_boundary.py",
+          "bytes": 20589
+        }
+      ],
+      "selected_originals": 1
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-crash-red-predecessor-sourceonly-20261008-002",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "author_closed_boundary.py",
+          "bytes": 205
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 2745
+        },
+        {
+          "name": "KNOWN-SOURCE-FACTS.json",
+          "bytes": 1444
+        },
+        {
+          "name": "ROOT-ENTRY.txt",
+          "bytes": 869
+        },
+        {
+          "name": "verify_previous_boundary.py",
+          "bytes": 24959
+        }
+      ],
+      "selected_originals": 0
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-file-only-preparation-source-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "author_r2_withdraw_capture_packet.py",
+          "bytes": 1734
+        },
+        {
+          "name": "CANONICAL-SOURCE-INDEX.json",
+          "bytes": 1185
+        },
+        {
+          "name": "check_cp_business_binding_once.py",
+          "bytes": 6321
+        },
+        {
+          "name": "check_cp_business_binding_source002.py",
+          "bytes": 417
+        },
+        {
+          "name": "check_reviewed_ast_once.py",
+          "bytes": 2324
+        },
+        {
+          "name": "emit_canonical_root_argv.py",
+          "bytes": 5487
+        },
+        {
+          "name": "emit_followup_root_inputs.py",
+          "bytes": 6468
+        },
+        {
+          "name": "FINAL-ROOT-HANDOFF.source-only.json",
+          "bytes": 3917
+        },
+        {
+          "name": "find_root_convenience_sources.py",
+          "bytes": 724
+        },
+        {
+          "name": "inspect_business_and_metadata_cli.py",
+          "bytes": 653
+        },
+        {
+          "name": "inspect_first_pipe_red_sources.py",
+          "bytes": 1361
+        },
+        {
+          "name": "inspect_previous_entrypoints.py",
+          "bytes": 1020
+        },
+        {
+          "name": "inspect_r2_capture_and_canonical_args.py",
+          "bytes": 777
+        },
+        {
+          "name": "inspect_r2_native_observation_shape.py",
+          "bytes": 1420
+        },
+        {
+          "name": "inspect_r2_sdk_equality.py",
+          "bytes": 713
+        },
+        {
+          "name": "inspect_withdraw_and_build_prototypes.py",
+          "bytes": 1192
+        },
+        {
+          "name": "locate_route_binder.py",
+          "bytes": 357
+        },
+        {
+          "name": "map_actual_coff_binders.py",
+          "bytes": 5278
+        },
+        {
+          "name": "original0240_baseline_adapter.py",
+          "bytes": 2735
+        },
+        {
+          "name": "prepare_builder_schema_successor.py",
+          "bytes": 3999
+        },
+        {
+          "name": "prepare_canonical_argv_source.py",
+          "bytes": 1498
+        },
+        {
+          "name": "prepare_cp_cap_constructor_source.py",
+          "bytes": 10492
+        },
+        {
+          "name": "prepare_cp_cap_constructor_source002.py",
+          "bytes": 602
+        },
+        {
+          "name": "prepare_metadata_source_successor.py",
+          "bytes": 3765
+        },
+        {
+          "name": "prepare_reviewed_export_successor.py",
+          "bytes": 7634
+        },
+        {
+          "name": "prepare_root_convenience_successors.py",
+          "bytes": 8120
+        },
+        {
+          "name": "prepare_runtime_generator_source.py",
+          "bytes": 6024
+        },
+        {
+          "name": "R2-CAPTURE-ADAPTER-CHECKS.actual.json",
+          "bytes": 382
+        },
+        {
+          "name": "R2-CAPTURE-ADAPTER-SOURCE-INDEX.json",
+          "bytes": 2116
+        },
+        {
+          "name": "read_army_route_cycle.py",
+          "bytes": 747
+        },
+        {
+          "name": "read_binding_test_tooling.py",
+          "bytes": 948
+        },
+        {
+          "name": "read_business_binding_seams.py",
+          "bytes": 1159
+        },
+        {
+          "name": "read_cold_product_check.py",
+          "bytes": 399
+        },
+        {
+          "name": "read_constructor_sources.py",
+          "bytes": 1031
+        },
+        {
+          "name": "read_cp_gate_consumers.py",
+          "bytes": 657
+        },
+        {
+          "name": "read_exact_pipe_lifecycle.py",
+          "bytes": 990
+        },
+        {
+          "name": "read_export_and_delta.py",
+          "bytes": 649
+        },
+        {
+          "name": "read_focused_compiler_environment.py",
+          "bytes": 706
+        },
+        {
+          "name": "read_frame_location_summary.py",
+          "bytes": 294
+        },
+        {
+          "name": "read_migration_and_metadata_pins.py",
+          "bytes": 893
+        },
+        {
+          "name": "read_recursion_source_candidates.py",
+          "bytes": 627
+        },
+        {
+          "name": "read_root_conveniences.py",
+          "bytes": 428
+        },
+        {
+          "name": "read_runtime_and_cp.py",
+          "bytes": 437
+        },
+        {
+          "name": "read_runtime_business_consumers.py",
+          "bytes": 599
+        },
+        {
+          "name": "read_schema_consumers.py",
+          "bytes": 773
+        },
+        {
+          "name": "read_specific_bindings.py",
+          "bytes": 655
+        },
+        {
+          "name": "read_termination_fixture_inputs.py",
+          "bytes": 1102
+        },
+        {
+          "name": "read_worker_connect_ranges.py",
+          "bytes": 580
+        },
+        {
+          "name": "repair_cp_constructor_source_seam002.py",
+          "bytes": 2441
+        },
+        {
+          "name": "review_crash_frame_locations.py",
+          "bytes": 6312
+        },
+        {
+          "name": "REVIEWED-BUSINESS-AST-CHECKS.actual.json",
+          "bytes": 1585
+        },
+        {
+          "name": "reviewed_business_ast_amendment.py",
+          "bytes": 4321
+        },
+        {
+          "name": "ROOT-R2-PACKET-ARGV.unexecuted.json",
+          "bytes": 721
+        },
+        {
+          "name": "seal_cp_constructor_source003.py",
+          "bytes": 4404
+        },
+        {
+          "name": "seal_final_handoff.py",
+          "bytes": 3178
+        },
+        {
+          "name": "seal_r2_capture_adapter.py",
+          "bytes": 3798
+        },
+        {
+          "name": "withdrawal_capture_only_baseline_adapter.py",
+          "bytes": 9843
+        },
+        {
+          "name": "withdrawal_resume_baseline_adapter.py",
+          "bytes": 9079
+        }
+      ],
+      "selected_originals": 9
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-file-only-runtime-source-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "INDEX.json",
+          "bytes": 12154
+        },
+        {
+          "name": "PROJECTION.actual.json",
+          "bytes": 14286
+        },
+        {
+          "name": "ROOT-POSTLAUNCH.pending.json",
+          "bytes": 2302
+        },
+        {
+          "name": "ROOT-STATIC-ARGV.json",
+          "bytes": 3703
+        },
+        {
+          "name": "WITHDRAWAL-ADAPTER-SOURCE.actual.json",
+          "bytes": 1620
+        }
+      ],
+      "selected_originals": 14
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-first-attach-stackoverflow-source-review-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "COFF-BINDER-SYMBOLIZATION.actual.json",
+          "bytes": 11215
+        },
+        {
+          "name": "FRAME-LOCATIONS.actual.json",
+          "bytes": 31283
+        }
+      ],
+      "selected_originals": 0
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-formal-capture-root-sourceonly-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "author_formal_capture_specification_root_only.py",
+          "bytes": 7416
+        },
+        {
+          "name": "capture_baseline_materializer_inputs_root_only.py",
+          "bytes": 7195
+        },
+        {
+          "name": "capture_formal_materializer_inputs_root_only.py",
+          "bytes": 9807
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 5458
+        },
+        {
+          "name": "SOURCE-HELP-CHECKS.json",
+          "bytes": 1098
+        }
+      ],
+      "selected_originals": 1
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-future-successful-b5-cold-sourceonly-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "author_successful_b5_cold.py",
+          "bytes": 20025
+        },
+        {
+          "name": "help.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "help.stdout",
+          "bytes": 604
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 1879
+        },
+        {
+          "name": "INPUTS.pending.json",
+          "bytes": 289
+        },
+        {
+          "name": "pending_NULL_refused.stderr",
+          "bytes": 1752
+        },
+        {
+          "name": "pending_NULL_refused.stdout",
+          "bytes": 0
+        },
+        {
+          "name": "ROOT-ENTRY.txt",
+          "bytes": 3956
+        },
+        {
+          "name": "SOURCE-CHECKS.json",
+          "bytes": 1521
+        },
+        {
+          "name": "SOURCE-PINS.json",
+          "bytes": 1374
+        }
+      ],
+      "selected_originals": 1
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-metadata-request-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "CHECK-ARGV.json",
+          "bytes": 843
+        },
+        {
+          "name": "CREATE-ARGV.json",
+          "bytes": 844
+        },
+        {
+          "name": "REQUEST.actual.json",
+          "bytes": 1869
+        },
+        {
+          "name": "RESULT.json",
+          "bytes": 2257
+        }
+      ],
+      "selected_originals": 0
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-metadata-sdk-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "ACTUAL-challenger24-profile-all-tools.json",
+          "bytes": 23777
+        },
+        {
+          "name": "ACTUAL-default21-profile-all-tools.json",
+          "bytes": 20312
+        },
+        {
+          "name": "ACTUAL-grant28-profile-all-tools.json",
+          "bytes": 29956
+        },
+        {
+          "name": "ACTUAL-IMPORTED-SOURCE-ORIGINS.json",
+          "bytes": 52348
+        },
+        {
+          "name": "ACTUAL-private23-profile-all-tools.json",
+          "bytes": 22399
+        },
+        {
+          "name": "CACHED-BASELINE-AND-CLOSED-BOUNDARY.json",
+          "bytes": 14602
+        },
+        {
+          "name": "challenger24.list-tools.sdk-result.json",
+          "bytes": 25876
+        },
+        {
+          "name": "default21.list-tools.sdk-result.json",
+          "bytes": 22169
+        },
+        {
+          "name": "grant28.list-tools.sdk-result.json",
+          "bytes": 32521
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 4599
+        },
+        {
+          "name": "NATIVE-CLEAN-QUALIFICATION.actual.json",
+          "bytes": 1020944
+        },
+        {
+          "name": "private23.list-tools.sdk-result.json",
+          "bytes": 24400
+        },
+        {
+          "name": "REFERENCE-challenger24-TOOLS.json",
+          "bytes": 23777
+        },
+        {
+          "name": "REFERENCE-default21-TOOLS.json",
+          "bytes": 20312
+        },
+        {
+          "name": "REFERENCE-grant28-TOOLS.json",
+          "bytes": 29956
+        },
+        {
+          "name": "REFERENCE-private23-TOOLS.json",
+          "bytes": 22399
+        },
+        {
+          "name": "REQUEST.actual.json",
+          "bytes": 1869
+        },
+        {
+          "name": "RESULT.json",
+          "bytes": 7044
+        },
+        {
+          "name": "SOURCE-INVENTORY.actual.json",
+          "bytes": 782802
+        },
+        {
+          "name": "SOURCE-TOOL-DECLARATIONS.actual.json",
+          "bytes": 2346
+        }
+      ],
+      "selected_originals": 20
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-native-build-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "build.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "build.stdout",
+          "bytes": 74279
+        },
+        {
+          "name": "FRESH-NO-CK3-BEFORE-TESTS.json",
+          "bytes": 107
+        },
+        {
+          "name": "FRESH-NO-CK3-BEFORE.json",
+          "bytes": 107
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 4348
+        },
+        {
+          "name": "RESULT.json",
+          "bytes": 1053007
+        },
+        {
+          "name": "ROOT-INVOCATION.json",
+          "bytes": 293
+        },
+        {
+          "name": "xar_ck3_12002_event_window_context_test.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "xar_ck3_12002_event_window_context_test.stdout",
+          "bytes": 0
+        },
+        {
+          "name": "xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+          "bytes": 153
+        },
+        {
+          "name": "xar_confucian_assembly_predicates_v1_test.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "xar_confucian_assembly_predicates_v1_test.stdout",
+          "bytes": 69
+        },
+        {
+          "name": "xar_confucian_challenger_graph_v1_test.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "xar_confucian_challenger_graph_v1_test.stdout",
+          "bytes": 71
+        },
+        {
+          "name": "xar_confucian_religious_title_readback_v1_test.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "xar_confucian_religious_title_readback_v1_test.stdout",
+          "bytes": 0
+        }
+      ],
+      "selected_originals": 17
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-reviewed-production-release-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "descriptor.mod",
+          "bytes": 156
+        }
+      ],
+      "selected_originals": 0
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-reviewed-production-release-20261008-001.manifest.json",
+      "kind": "source_script_or_input",
+      "bytes": 12940,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-actual-static-bindings-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 3013,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-allocate-live-id-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 735,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-allocate-live-id-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1178
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 373
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-appmanifest-delta-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 562,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-appmanifest-delta-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1535
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 397
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-attach-001.ROOT-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1508,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-attach-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2497
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1439
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-bind-argv-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 2985,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-bind-argv-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 3897
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 835
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-bind-check-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1819
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 610
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-bind-create-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1824
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 7351
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-ARGV-20261008-001.json",
+      "kind": "source_script_or_input",
+      "bytes": 2198,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-binding-author-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 2327,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-done-ARGV.002.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 501,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-done-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 525,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-done-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1483
+        },
+        {
+          "name": "stderr",
+          "bytes": 398
+        },
+        {
+          "name": "stdout",
+          "bytes": 0
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-done-original-exec-20261008-002",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1517
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1380
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-preparation-20261008-002",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "REQUEST.json",
+          "bytes": 1075651
+        },
+        {
+          "name": "ROOT-ARGV.json",
+          "bytes": 543
+        }
+      ],
+      "selected_originals": 0
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-preparation-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2075
+        },
+        {
+          "name": "stderr",
+          "bytes": 1195
+        },
+        {
+          "name": "stdout",
+          "bytes": 0
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-preparation-original-exec-20261008-002",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2164
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 722
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-register-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 647,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-build-register-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1626
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1472
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-cancel-owned-crash-reporter-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1856,
+      "archived": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-ci-notify-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 840,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-ci-notify-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1803
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 805
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-client-serve-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1730
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 825
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-close-client-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2545
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1846
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-cold-preparation-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2762
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 3569
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-cold_preparation-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1828,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-consumer-inputs-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 2041,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-consumer-inputs-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2129
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1961
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-consumer-source-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2527
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 723
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-consumer_source-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1597,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-conveniences-sourceonly-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "INDEX.json",
+          "bytes": 9562
+        },
+        {
+          "name": "r25-root-actual-formal-registry-author.py",
+          "bytes": 6157
+        },
+        {
+          "name": "r25-root-derived-arguments.py",
+          "bytes": 4945
+        },
+        {
+          "name": "r25-root-formal-window-brief.py",
+          "bytes": 1512
+        },
+        {
+          "name": "r25-root-normal-exit-arguments-author.py",
+          "bytes": 3464
+        },
+        {
+          "name": "r25-root-request-inputs.py",
+          "bytes": 2415
+        },
+        {
+          "name": "r25-root-successful-request-gate.py",
+          "bytes": 2100
+        }
+      ],
+      "selected_originals": 0
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-cp-cap-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1250,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-cp-cap-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2082
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1291
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-crash-close-operations-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 2879,
+      "archived": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-crash-closure-summary-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 5538,
+      "archived": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-crash-closure-summary-20261008-002.py",
+      "kind": "source_script_or_input",
+      "bytes": 498,
+      "archived": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-crash-closure-summary-20261008-003.py",
+      "kind": "source_script_or_input",
+      "bytes": 1407,
+      "archived": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-crash-helper-retainer-inputs-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 4194,
+      "archived": true
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-crash-reporter-observation-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1631,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-current-build-log-brief-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 396,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-desktop-focus-observation-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1236,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-draft-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 2755,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-export-ARGV-20261008-001.json",
+      "kind": "source_script_or_input",
+      "bytes": 1558,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-final-offline-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 510,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-final-offline-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1434
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1272
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-final-offline-review-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1166,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-focus-before-attach-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1506,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-freezer-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 405,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-freezer-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1311
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 3247
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-head-export-20261008-002",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "archive.stderr",
+          "bytes": 0
+        },
+        {
+          "name": "COLD-SOURCE-PRODUCTION.FRAGMENT.json",
+          "bytes": 1446
+        },
+        {
+          "name": "CURRENT-C-MACHINE-GAME-REFERENCE.json",
+          "bytes": 1126
+        },
+        {
+          "name": "INDEX.json",
+          "bytes": 16680
+        },
+        {
+          "name": "MOD-SOURCE-INVENTORY.json",
+          "bytes": 28984
+        },
+        {
+          "name": "NATIVE-SOURCE-INVENTORY.json",
+          "bytes": 772707
+        },
+        {
+          "name": "REPORT.json",
+          "bytes": 23277
+        },
+        {
+          "name": "SOURCE-CLEAN-READBACK.json",
+          "bytes": 1095196
+        },
+        {
+          "name": "SOURCE-INVENTORY.json",
+          "bytes": 1658231
+        },
+        {
+          "name": "SOURCE.tar",
+          "bytes": 142909440
+        },
+        {
+          "name": "TRACKED-FILES.json",
+          "bytes": 2574113
+        }
+      ],
+      "selected_originals": 1
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-head-export-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1629
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 257
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-head-export-original-exec-20261008-002",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1721
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 2263
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-helper-handles-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1576
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 519
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-keeper-argv-author-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 855,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-keeper-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 629,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-keeper-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1532
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 3909
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-launch-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 2738,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-launch-input-path-projection-20261008-002.py",
+      "kind": "source_script_or_input",
+      "bytes": 2023,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-launch-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 3312
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 2433
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-list-review-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 582,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-list28-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2469
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1137
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-live-draft-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 3665
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 599
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-live-identity-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 765,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-live-identity-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1736
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 248
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-live-identity-sourceonly-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "root_live_identity.py",
+          "bytes": 4322
+        },
+        {
+          "name": "SOURCE-PROOF.actual.json",
+          "bytes": 578
+        }
+      ],
+      "selected_originals": 1
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-live-workflow-argv-author-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 2702,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-live-workflow-argv-author-20261008-002.py",
+      "kind": "source_script_or_input",
+      "bytes": 344,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-loading-observation-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1573,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-metadata-author-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1393,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-metadata-author-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2491
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 2308
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-metadata-capture-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1763
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 553
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-native-build-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1458
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 300
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-offline-launch-argv-author-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 2440,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-offline-recover-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 513,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-offline-recover-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1443
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1281
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-original-client-close-argv-author-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1529,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-original-close-author-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 794,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-original-close-author-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1633
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 709
+        }
+      ],
+      "selected_originals": 0
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-original-close-enqueue-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 602,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-original-close-enqueue-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1444
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 295
+        }
+      ],
+      "selected_originals": 0
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-pipe-dll-readonly-observation-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1621,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-postlaunch-inputs-author-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 2296,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-postrelease-list-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1339
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 116849
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-preflight-ARGV.002.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 2490,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-preflight-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 2512,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-preflight-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 3356
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1333
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-preflight-original-exec-20261008-002",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 3337
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 680
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-production-ARGV-20261008-001.json",
+      "kind": "source_script_or_input",
+      "bytes": 838,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-production-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1238
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 601
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-profile-request-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 3272,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-profile-request-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 3873
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1373
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-r2-packet-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1566
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 285
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-resume-heartbeat-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1344
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1253
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-resume-heartbeat-original-exec-20261008-002",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1344
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1253
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-resume-heartbeat-original-exec-20261008-003",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1344
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1253
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-resume-heartbeat-original-exec-20261008-004",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1344
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1252
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-reviewed-build-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1720,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-reviewed-live-binding-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1893,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-reviewed-live-binding-20261008-002.py",
+      "kind": "source_script_or_input",
+      "bytes": 1170,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-runtime-source-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 530,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-runtime-source-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1494
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 473
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-runtime-source-request.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 2470,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-screen-argv-author-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1297,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-screen-list-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 409,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-screen-list-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1329
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 116239
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-screen-plan.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 2997,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-screen-register-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 721,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-screen-register-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1651
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1453
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-screen-release-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 485,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-screen-release-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 1454
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1209
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-shared-crash-notify-argv-author-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 1321,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-shared-crash-notify-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1368,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-shared-crash-notify-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2363
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 1333
+        }
+      ],
+      "selected_originals": 3
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-static-argv-author-20261008-001.py",
+      "kind": "source_script_or_input",
+      "bytes": 505,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-write-launch-argv-ARGV.actual.json",
+      "kind": "source_script_or_input",
+      "bytes": 1542,
+      "archived": false
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-root-write-launch-argv-original-exec-20261008-001",
+      "kind": "directory",
+      "direct_file_inventory": [
+        {
+          "name": "RESULT.actual.json",
+          "bytes": 2478
+        },
+        {
+          "name": "stderr",
+          "bytes": 0
+        },
+        {
+          "name": "stdout",
+          "bytes": 776
+        }
+      ],
+      "selected_originals": 3
+    }
+  ],
+  "selected_count": 397,
+  "selection": "Actual build/meta/cold/preflight/failed attach/crash/operational closure + exact CI originals. Nonexecuted source-only indices retain their status. No content tree/keeper recurring poll archive, binary/dump/save body copy, or future success credit.",
+  "excluded_external_refs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-025/userdir/crashes/ck3_20261008_034235/minidump.dmp",
+      "bytes": 141161135,
+      "sha256": "a1da7afdc87a057b0465daffb145e96b88ad2837e71111776454e47bcbfe0a5f",
+      "role": "closure summary exact dependency",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_bridge.dll",
+      "bytes": 8945152,
+      "sha256": "204127587d7af8b93c066a32dae42d35762d0025a1377338f606cee50ba56a30",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "52379870669098cafd6fdcc1ea88aeda52fb65032ef4df9f6d1b9000f12ac852",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_assembly_predicates_v1_test.exe",
+      "bytes": 120832,
+      "sha256": "83ca2e3343bdc3cc139ca0cdc7e0c9b42849107882aef712597db0fefcbacd0b",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_religious_title_readback_v1_test.exe",
+      "bytes": 129536,
+      "sha256": "2a31a036fd9bde79054b13609db1a32ecab79b9716ba30bb77c072fe2b2fa398",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_challenger_graph_v1_test.exe",
+      "bytes": 193536,
+      "sha256": "3c1361f7dc6b6d7739920043282c493d5d25d242b0c340a4d283eccca58dcd30",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "bytes": 130048,
+      "sha256": "413994b0510f7f7419c55afe3cecfc8838f89e39da169afa514ea0b016db40bd",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_12002_event_window_context_test.exe",
+      "bytes": 8988160,
+      "sha256": "c084e628beb2f496ca00cd7080ba41a283b8b5eaaca36880afe00f3608941635",
+      "role": "actual build targets",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_12002_runtime.lib",
+      "bytes": 98955534,
+      "sha256": "ee37a05cfa0fac3adeadf09dc8154a03919dc6d9ffb72479e092e1bbcddd4bdc",
+      "role": "actual build new_runtime_library",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_assembly_predicates_v1_test.exe",
+      "bytes": 120832,
+      "sha256": "83ca2e3343bdc3cc139ca0cdc7e0c9b42849107882aef712597db0fefcbacd0b",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_religious_title_readback_v1_test.exe",
+      "bytes": 129536,
+      "sha256": "2a31a036fd9bde79054b13609db1a32ecab79b9716ba30bb77c072fe2b2fa398",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_confucian_challenger_graph_v1_test.exe",
+      "bytes": 193536,
+      "sha256": "3c1361f7dc6b6d7739920043282c493d5d25d242b0c340a4d283eccca58dcd30",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "bytes": 130048,
+      "sha256": "413994b0510f7f7419c55afe3cecfc8838f89e39da169afa514ea0b016db40bd",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    },
+    {
+      "path": "C:/lr25b1/xar_ck3_12002_event_window_context_test.exe",
+      "bytes": 8988160,
+      "sha256": "c084e628beb2f496ca00cd7080ba41a283b8b5eaaca36880afe00f3608941635",
+      "role": "actual build actual_focused_tests",
+      "archive_policy": "EXTERNAL_REFERENCE_ONLY; original supplied pin; not read/copied"
+    }
+  ]
+}

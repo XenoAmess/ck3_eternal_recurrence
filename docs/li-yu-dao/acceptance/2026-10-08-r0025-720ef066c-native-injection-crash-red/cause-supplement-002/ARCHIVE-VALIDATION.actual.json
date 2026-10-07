@@ -1,0 +1,30 @@
+{
+  "schema": "r25.cause-supplement.original-unpack-byte-check.v1",
+  "checks_pass": true,
+  "all_original_files_verified": 37,
+  "unique_original_sets": 33,
+  "four_critical_supplement_anchors": {
+    "actual_COFF": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-first-attach-stackoverflow-source-review-20261008-001/COFF-BINDER-SYMBOLIZATION.actual.json",
+      "bytes": 11215,
+      "sha256": "eb33414161adac87d287a8be9a2313a2ad2f70814a4662f1e6df7507d105d910"
+    },
+    "actual_frame": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-first-attach-stackoverflow-source-review-20261008-001/FRAME-LOCATIONS.actual.json",
+      "bytes": 31283,
+      "sha256": "662bd22ea90d36c7f8373ec402f62d9d89204380233a6f34c2abb9c3fc2acc5c"
+    },
+    "actual_focused_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-army-route-binding-fix-20261008-001/RESULT.actual.json",
+      "bytes": 5226,
+      "sha256": "c3132008240f07e2219ddc9189a1288d37a990ce8b7ca7edccc3390bd1c45a1d"
+    },
+    "actual_boundary": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r25-actual-crash-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 1961,
+      "sha256": "fe40ee8bbb1d0fd8f65d50ce32ee599ba1acec3be4c8c0f6c52bf1ccb2a80aeb"
+    }
+  },
+  "old_first_packet_bytes_unchanged": true,
+  "test_or_build_replay": 0
+}

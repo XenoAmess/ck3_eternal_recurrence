@@ -1,0 +1,50 @@
+{
+  "schema": "ck3.native-profile-receipt.v1",
+  "session_id": "4c8f002273cb4f238e1f0b11cbbb58fa",
+  "profile_sha256": "6443a91bde426cbec837a43cfb7133f010d2f52a9274076472c3196aa73254c5",
+  "pipe_name": "\\\\.\\pipe\\xar_profile_4c8f002273cb4f238e1f0b11cbbb58fa",
+  "recorded_at_utc": "2026-10-07T19:42:44.432494+00:00",
+  "status": "RED",
+  "reason": "BridgeUnavailableError: native DLL is not connected to \\\\.\\pipe\\xar_profile_4c8f002273cb4f238e1f0b11cbbb58fa",
+  "injector": {
+    "schema": "xar.ck3.contained-injector-job.v1",
+    "status": "EXIT",
+    "argv": [
+      "C:/lr25b1/xar_ck3_bridge_injector.exe",
+      "--pipe",
+      "\\\\.\\pipe\\xar_profile_4c8f002273cb4f238e1f0b11cbbb58fa",
+      "19256",
+      "C:/lr25b1/xar_ck3_bridge.dll"
+    ],
+    "pid": 19796,
+    "creation_utc": "2026-10-07T19:42:34.134000+00:00",
+    "pinned_executable": "C:\\lr25b1\\xar_ck3_bridge_injector.exe",
+    "executable_sha256": "52379870669098CAFD6FDCC1EA88AEDA52FB65032EF4DF9F6D1B9000F12AC852",
+    "job_limit_flags": 8200,
+    "pre_resume_job_pids": [
+      19796
+    ],
+    "job_active_final": 0,
+    "job_pids_final": [],
+    "resume_previous_count": 1,
+    "returncode": 0,
+    "injector_root_reaped": true,
+    "complete_process_tree_proven": true,
+    "stdout_sha256": "792E58028DBE2577DA0937368E36DE484D4AECAB35A8E11F425294B8DF6F14F2",
+    "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "stdout_bytes": 81,
+    "stderr_bytes": 0,
+    "stdout_retained_sha256": "792E58028DBE2577DA0937368E36DE484D4AECAB35A8E11F425294B8DF6F14F2",
+    "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "stdout_retained_bytes": 81,
+    "stderr_retained_bytes": 0,
+    "stdout_complete": true,
+    "stderr_complete": true,
+    "output_limit_bytes": 8388608,
+    "stdout_overflow": false,
+    "stdout_reader_error": null,
+    "stderr_overflow": false,
+    "stderr_reader_error": null
+  },
+  "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-025\\native-evidence\\4c8f002273cb4f238e1f0b11cbbb58fa\\0001-attach.json"
+}

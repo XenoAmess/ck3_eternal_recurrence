@@ -174,8 +174,11 @@ ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
       BindCurrentUnitNewDateSchedule12004(image_base, executable_sha256);
   result.current_unit_new_date_callback_entry_bindings =
       BindCurrentUnitNewDateCallbackEntryInputs12004(image_base, executable_sha256);
+  // The route binder constructs ArmyBindings too. Bind this same typed leaf
+  // directly so constructing either bundle cannot recursively construct both.
   result.get_unit_current_edge_movement_rate =
-      BindRouteImage12004(image_base, executable_sha256).read_unit_current_edge_speed;
+      reinterpret_cast<decltype(result.get_unit_current_edge_movement_rate)>(
+          image_base + kCommanderCurrentEdgeMovementRateRva12004);
   // Actual complete readonly AL leaf [24E91E0,24E924F), CArmy receiver.
   result.read_native_army_movement_admission =
       reinterpret_cast<decltype(result.read_native_army_movement_admission)>(
