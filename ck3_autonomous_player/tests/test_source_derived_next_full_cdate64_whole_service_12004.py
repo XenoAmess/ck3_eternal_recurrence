@@ -294,7 +294,8 @@ class SourceDerivedNextFullCdate64WholeService12004Tests(unittest.IsolatedAsynci
                     observed_pass["before"] = deepcopy(before)
                     self.assertEqual(before["snapshot_id"], transport["snapshot_id"])
                     self.assertEqual(before["snapshot_id"], "native:1")
-                    self.assertEqual(before["revision"], 1)
+                    # Hello and the first semantic snapshot each advance public revision.
+                    self.assertEqual(before["revision"], 2)
                     self.assertEqual(before["native_revision"], transport["native_revision"])
                     self.assertEqual(before["date_raw"], transport["date_raw"])
                     kwargs = {"expected_revision": before["revision"]}
