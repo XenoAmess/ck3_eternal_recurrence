@@ -223,6 +223,7 @@ class SourceDerivedNextDailySupplyFrameWholeService12004Tests(unittest.TestCase)
                     "active_event": None, "pending_character_interaction": None,
                     "played_character": {"character_id": transport["actor_character_id"], "alive": True},
                     "player_armies": [{"army_id": row["army_id"], "controllable": True,
+                                       "owner_character_id": transport["actor_character_id"],
                                        "current_province_id": transport["current_province_id"]}],
                     "active_wars": [],
                 },
