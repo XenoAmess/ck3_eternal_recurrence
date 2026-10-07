@@ -13,17 +13,17 @@ bool ReadSample(const GiftOpinionBindings12004 &bindings,
                 std::uint32_t actor_id, std::uint32_t target_id,
                 Sample &sample) noexcept {
   sample = {};
-  sample.actor = ResolveCoreCharacter(bindings.core,
+  sample.actor = xar::ck3_12004::ResolveCoreCharacter(bindings.core,
       static_cast<std::int32_t>(actor_id));
-  sample.target = ResolveCoreCharacter(bindings.core,
+  sample.target = xar::ck3_12004::ResolveCoreCharacter(bindings.core,
       static_cast<std::int32_t>(target_id));
   if (!sample.actor || !sample.target) return false;
   // Stock release sender: puppet_or_actor opinion toward recipient. The
   // current player collection fixes actor to the played jailer, without a
   // puppet substitution. The reverse material opinion is a separate input.
   sample.opinion = bindings.read_opinion(sample.actor, sample.target);
-  return ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(actor_id)) ==
-      sample.actor && ResolveCoreCharacter(bindings.core,
+  return xar::ck3_12004::ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(actor_id)) ==
+      sample.actor && xar::ck3_12004::ResolveCoreCharacter(bindings.core,
       static_cast<std::int32_t>(target_id)) == sample.target;
 }
 
