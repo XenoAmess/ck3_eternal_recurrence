@@ -1,7 +1,7 @@
 """Root-only new release-action FIRST using the current qualified runtime.
 
-Compile one fixture main, link the actual Bridge/runtime/Protocol closure, run
-the sole native five-case compound and registered MCP compound once. No game,
+Compile one fixture main or reuse Root's already compiled fixture executable,
+then run the sole native five-case and registered MCP compound once. No game,
 pipe, configure, runtime rebuild, historical test replay or replacement provider.
 Source authoring does not execute this helper.
 """
@@ -23,6 +23,8 @@ def main() -> int:
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
+    parser.add_argument("--native-exe", type=Path,
+        help="Reuse the unique M6 fixture executable already compiled by Root's joined build")
     args = parser.parse_args()
     output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -49,34 +51,45 @@ def main() -> int:
         receipt = helpers.read_json(receipt_path)
         if receipt.get("dll_build_status") != "GREEN":
             raise ValueError("FIRST needs Root's completed qualified runtime receipt")
-        manifest_path = helpers.referenced_path(receipt["manifest"], receipt_path.parent)
-        manifest = helpers.read_json(manifest_path)
-        plan_path = helpers.referenced_path(manifest["new_compile_and_link_plan"], manifest_path.parent)
-        plan = helpers.read_json(plan_path)
-        compile_path = helpers.referenced_path(manifest["actual_compile_commands"], manifest_path.parent)
-        rows = helpers.read_json(compile_path)
-        preferred = "ck3_12004_prisoner_release_action.cpp"
-        row = next((item for item in rows if Path(item["file"]).name == preferred), rows[0])
-        source = native / "tests" / "ck3_12004_prisoner_release_action_whole_first.cpp"
-        obj = output / "prisoner-release-action-first.obj"
-        executable = output / "prisoner-release-action-first.exe"
-        arguments = helpers.fixture_compile_arguments(row, source, obj, output)
-        toolchain = manifest["toolchain"]
-        environment = helpers.compiler_environment(
-            helpers.referenced_path(toolchain["vcvars64"], manifest_path.parent), output,
-            plan.get("compiler_environment_added", {}))
-        report.update({"runtime_source_head": receipt.get("source_head"),
-            "manifest": str(manifest_path), "qualified_build_plan": str(plan_path),
-            "qualified_compile_commands": str(compile_path), "fixture_compiled_translation_units": 1})
-        helpers.execute("fixture-compile", arguments, Path(row["directory"]), environment, output, report)
-        qualified_rsp = helpers.referenced_path(plan["response_file"], plan_path.parent)
-        rsp = output / "fixture-link.rsp"
-        rsp.write_text(subprocess.list2cmdline([str(obj)]) + "\n" +
-            qualified_rsp.read_text(encoding="utf-8-sig"), encoding="utf-8", newline="\n")
-        report["qualified_bridge_runtime_protocol_response_file"] = str(qualified_rsp)
-        helpers.execute("fixture-link", [str(helpers.referenced_path(toolchain["link"], manifest_path.parent)),
-            "/nologo", "@" + str(rsp), "/out:" + str(executable), "/machine:x64", "/INCREMENTAL:NO"],
-            Path(plan["link_cwd"]), environment, output, report)
+        report["runtime_source_head"] = receipt.get("source_head")
+        if args.native_exe is not None:
+            executable = args.native_exe.resolve()
+            # Root's joined build already compiled/linked the unique fixture
+            # against its genuine qualified Bridge/runtime/Protocol closure.
+            # No compiler environment or second fixture build is needed here.
+            environment = None
+            report.update({"native_fixture_reused": True,
+                "native_fixture_executable": str(executable),
+                "fixture_compiled_translation_units": 0})
+        else:
+            manifest_path = helpers.referenced_path(receipt["manifest"], receipt_path.parent)
+            manifest = helpers.read_json(manifest_path)
+            plan_path = helpers.referenced_path(manifest["new_compile_and_link_plan"], manifest_path.parent)
+            plan = helpers.read_json(plan_path)
+            compile_path = helpers.referenced_path(manifest["actual_compile_commands"], manifest_path.parent)
+            rows = helpers.read_json(compile_path)
+            preferred = "ck3_12004_prisoner_release_action.cpp"
+            row = next((item for item in rows if Path(item["file"]).name == preferred), rows[0])
+            source = native / "tests" / "ck3_12004_prisoner_release_action_whole_first.cpp"
+            obj = output / "prisoner-release-action-first.obj"
+            executable = output / "prisoner-release-action-first.exe"
+            arguments = helpers.fixture_compile_arguments(row, source, obj, output)
+            toolchain = manifest["toolchain"]
+            environment = helpers.compiler_environment(
+                helpers.referenced_path(toolchain["vcvars64"], manifest_path.parent), output,
+                plan.get("compiler_environment_added", {}))
+            report.update({"native_fixture_reused": False,
+                "manifest": str(manifest_path), "qualified_build_plan": str(plan_path),
+                "qualified_compile_commands": str(compile_path), "fixture_compiled_translation_units": 1})
+            helpers.execute("fixture-compile", arguments, Path(row["directory"]), environment, output, report)
+            qualified_rsp = helpers.referenced_path(plan["response_file"], plan_path.parent)
+            rsp = output / "fixture-link.rsp"
+            rsp.write_text(subprocess.list2cmdline([str(obj)]) + "\n" +
+                qualified_rsp.read_text(encoding="utf-8-sig"), encoding="utf-8", newline="\n")
+            report["qualified_bridge_runtime_protocol_response_file"] = str(qualified_rsp)
+            helpers.execute("fixture-link", [str(helpers.referenced_path(toolchain["link"], manifest_path.parent)),
+                "/nologo", "@" + str(rsp), "/out:" + str(executable), "/machine:x64", "/INCREMENTAL:NO"],
+                Path(plan["link_cwd"]), environment, output, report)
         wires, consumed = output / "native", output / "registered"
         helpers.execute("native-first", [str(executable), str(wires)], output, environment, output, report)
         consumer = args.source_root.resolve() / "tools" / \
