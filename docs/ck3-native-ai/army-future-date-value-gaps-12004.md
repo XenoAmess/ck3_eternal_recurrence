@@ -82,6 +82,25 @@ clock, reconstruct later bucket mutation or claim callback eligibility, stock,
 strength or full tick execution. This removes an actual current observation
 gap for selecting the next useful supply boundary.
 
+A subsequent bounded cache-only lookup closes part of the prospective-frame
+source. The already held actual `2A99DA0` pre-date prefix copies the current
+full QWORD, adds`0x18` to its low DWORD, and computes local absolute-day/year/
+month/day roles before passing a prospective CDate64 to actual`2A9A340` at
+`2A99E71`. The local signed arithmetic uses
+`signed32(currentRaw+24-43800000)/24`; it is not proof that this local quotient
+is the dispatcher's separately stored `GameState+9C` D. The selected calendar
+table contents and complete next QWORD are not newly read or claimed here.
+The existing native clock only reads current `GameState+8` low32 and+9C; its
+Python contract only validates current fields.
+
+Root confirms the actual date-stage+9C writer/caller is **NOTHELD**. Its next
+construction entrance is a named actual writer assigning+9C and its matching
+date+8 RHS, followed by a separately approved finite block read once a real
+locator exists. Neither `2A9A340`'s prospective-date consumer role nor a guessed
+`D+1` substitutes for that writer. This source dependency is recorded in
+external `future-frame-source/VALUE-ENTRY.md` and `OCT7-W41-FIELDS.json`; it
+does not block normal one-day execution or change current Army readiness.
+
 Readiness is **research / authored source NOTRUN**, with no new static-ready, fixture-live,
 production-live or complete credit. Root owns builds, compiled wires, tests,
 SDK queries, Robert29829's original ordinary campaign and game execution.
