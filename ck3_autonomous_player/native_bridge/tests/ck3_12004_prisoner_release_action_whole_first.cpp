@@ -83,6 +83,12 @@ bool Capture(void *, bridge::PlayerPrisonerFrameV1 &) noexcept;
 bool ReadMemory(void *, std::uintptr_t, void *, std::size_t) noexcept;
 void *PrimaryTitle(void *);
 
+// The fixture's vtable arena intentionally requires pointer-aligned storage.
+// MSVC C4324 reports its expected padding; keep the production /WX unchanged.
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4324)
+#endif
 struct Scene {
   Case kind;
   // This small table arena retains actual module+RVA vptr identities. Function
@@ -210,6 +216,9 @@ struct Scene {
     return access;
   }
 };
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 bool Capture(void *opaque, bridge::PlayerPrisonerFrameV1 &out) noexcept {
   out = static_cast<Scene *>(opaque)->frame; return true;
