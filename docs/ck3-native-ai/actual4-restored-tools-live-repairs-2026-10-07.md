@@ -1,5 +1,11 @@
 # Actual 1.20.0.4 restored-tool live repairs — 2026-10-07
 
+## Latest R67 frontend query GREEN; M6 observer fixture FIRST GREEN
+
+Root's **R67/runtime18/source750b** frontend query now returns **accepted=true/failure0**, independently verified tree and lobby route, after the retained R65 post_execution_drift correction. This is one **production-live read-only query primitive**. No all-frontend-tools live claim,867 campaign, mod-effect, NewGame/trait or screenshot qualification is made; previous RED diagnostics are retained.
+
+The [retained-release-material standalone FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/g2-m6-institutions/retained-release-material-native-public-first01/ROOT-STANDALONE-FIRST.json) is GREEN once: unique main compile/link qualified18/4 whole-wire cases/5 registered compound cases, all4 stages exit0. Exactly1 fixture TU and runtime source **`750b8c51f2d3e477502bd9cddec52a47f7f6c7f6`**; no runtime rebuild, provider replacement, game/pipe contact, production-live or action submission. Native/Public fixture FIRST closes, natural-prisoner and M6 live credit do not. R66 bc27/runtime16's exact+24 and latestH9638/6005 remain separate verified normal progress, with unchanged G2 5/8,NW2 2/4,natural0 and M4false.
+
 ## Latest R66 exact-day verification: production-live primitive GREEN
 
 Root cold-restored the original H9635 on **bc27b6a6/runtime16**, with12 original full paused checks GREEN including minimized. The [actual one-native-day result](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/post-migration-g2-h9635-one-native-day01/ROOT-ONE-NATIVE-DAY-RESULT.json) is **GREEN_ONE_SAVED_NATIVE_DAY**, raw **53288424→53288448 (+24)**, independent paused/map-ready observation, and the latest normal checkpoint **H9638/104716851B/SHA `b17f8bdc861bf91217fe1622dcd94d10f9e63919547c2ba3c47ce08707b8d409`**. Credit is +1 saved day→6005 and resume2851+this1=2852 by ledger derivation, not an independent native counter or M4 loop. All10 streams copied, SDK retained; no launches/movement orders/extra hashes. The original +7 overshoot RED remains; natural0,G2 5/8,NW2 2/4 remain unchanged. H9635 is now the restore origin, not the latest checkpoint; Root is closing R66 normally, then sideR67/profile03entry18, with later original G2 restoration fromH9638.

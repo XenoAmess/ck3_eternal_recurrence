@@ -1,5 +1,11 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-07：standalone native/Public FIRST与game live query分别授信
+
+本次[M6 retained-release-material FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/g2-m6-institutions/retained-release-material-native-public-first01/ROOT-STANDALONE-FIRST.json)只编译unique main1TU、链接冻结qualified runtime18/source750b，再跑4生产whole-wire与5registeredcompoundcases，四stage全exit0。receipt明确未配置/重建runtime/重复旧tests/替换provider/contact game-or-pipe/提交动作，production-livefalse；授native/Public fixture FIRST，不授自然prisoner行动或M6 live。
+
+Root另有R67/runtime18/source750b frontend **query acceptedtrue/failure0**、独立tree和lobby route，可授该read-only production-live primitive，不能据此授所有frontend工具、NewGame/trait/screenshot或867 mod效果。旧R65 drift和R63 seven-day RED均保留；原R66 exact＋24/H9638正常保存也有自己的bc27/runtime16 freeze，不能用later Root源码反向改旧成功来源。这条知识只消费小FIRST metadata及Root已执行字段，不另跑任何检查。
+
 ## 2026-10-07 R66：真实exact＋24、独立暂停与保存闭合，编译候选仍分列
 
 R66 sourcebc27b6a6/runtime16从H9635恢复后，[actual native day RESULT](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/post-migration-g2-h9635-one-native-day01/ROOT-ONE-NATIVE-DAY-RESULT.json)记录 **GREEN_ONE_SAVED_NATIVE_DAY**，**53288424→53288448＋24**，同Robert episode的独立paused/map-ready后态与正常H9638保存。可授exact-day **production-live primitive**，不可删除旧＋7 RED或改写receipt的M4 creditfalse；保存天＋1为6005，10流copy/SDK retained独立列出。只需复用小结果metadata，无重复游戏、snapshot/save/Driver读取或hash。
