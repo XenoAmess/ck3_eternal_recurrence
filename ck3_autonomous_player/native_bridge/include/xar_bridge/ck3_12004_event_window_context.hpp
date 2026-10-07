@@ -18,6 +18,7 @@ inline constexpr std::uintptr_t kActivityEventHandlerPrimaryVtableRva12004V1 = 0
 inline constexpr std::uintptr_t kActivityEventWindowPrimaryVtableRva12004V1 = 0x4579020;
 inline constexpr std::uintptr_t kEventIndicatorSchemeTypeVtableRva12004V1 = 0x48B9F30;
 inline constexpr std::uintptr_t kEventIndicatorTraitDatabaseSlotRva12004V1 = 0x5C67528;
+inline constexpr std::uintptr_t kEventIndicatorLookupTraitDefinitionRva12004V1 = 0xC85E80;
 inline constexpr std::uintptr_t kEventIndicatorSchemeDatabaseSlotRva12004V1 = 0x5C67108;
 inline constexpr std::uintptr_t kEventIndicatorSchemeFallbackSlotRva12004V1 = 0x5D1E2A0;
 inline constexpr std::uintptr_t kEventIndicatorHashStableKeyRva12004V1 = 0x3F7E220;

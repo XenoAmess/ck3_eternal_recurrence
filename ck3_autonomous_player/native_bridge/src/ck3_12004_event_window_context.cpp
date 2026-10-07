@@ -68,6 +68,9 @@ EventWindowBindings BindEventWindowImage12004(
       image_base + kEventIndicatorSchemeTypeVtableRva12004V1;
   result.trait_database_slot = reinterpret_cast<void **>(
       image_base + kEventIndicatorTraitDatabaseSlotRva12004V1);
+  result.lookup_trait_definition =
+      reinterpret_cast<ck3_12002::EventLookupTraitDefinition>(
+          image_base + kEventIndicatorLookupTraitDefinitionRva12004V1);
   result.scheme_type_database_slot = reinterpret_cast<void **>(
       image_base + kEventIndicatorSchemeDatabaseSlotRva12004V1);
   result.scheme_type_fallback_slot = reinterpret_cast<void **>(
