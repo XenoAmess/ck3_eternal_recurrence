@@ -227,7 +227,7 @@ std::string CaptureScene(bool nonnull_extension) {
           "null DATA skips records and allocator while retaining signed before context");
   Check(!fixture.memory.WasRead(fixture.arrg0, 0x30) &&
         !fixture.memory.WasRead(fixture.arrg1, 0x30), "null DATA performs no allocator read");
-  Check(store.ready && store.requests.size() == 2 && store.active_count_3c_raw_u32 == 0,
+  Check(store.ready && store.requests.size() == 2 && store.active_count_3c_raw_u32 == 0U,
         "real store admission seed is ready with unsigned0 prefix context");
   for (const auto &request : store.requests)
     Check(request.ready && request.selected_pointer_present == true &&

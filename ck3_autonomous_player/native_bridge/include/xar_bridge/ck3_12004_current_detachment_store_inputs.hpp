@@ -146,7 +146,7 @@ inline game::ArmyCurrentDetachmentStoreInputsV1 ReadCurrentDetachmentStoreInputs
   bool complete = out.seed_selection_ready && out.seed_roster_ready &&
       out.store_48_raw_u8.has_value();
   for (const auto &seed : same_query_seed->incoming) {
-    if (seed.arrg_full_id_u32 && seed.arrg_identity) {
+    if (seed.arrg_full_id_u32 && !seed.arrg_identity.empty()) {
       const auto alias = std::find_if(out.requests.begin(), out.requests.end(),
           [&](const auto &request) {
             return request.requested_full_id_u32 == seed.arrg_full_id_u32 &&

@@ -158,7 +158,7 @@ struct EventMemory {
   }
   static std::int32_t EmptyUnitState(void *) { return 0; }
   static bool EmptyContainsParticipant(const void *, std::int32_t) { return false; }
-  static std::int32_t EmptyWarScore(void *) { return 0; }
+  static std::int32_t EmptyWarScore(const void *, void *) { return 0; }
   static void *GetTraitDatabase() { return g_memory->trait_database.data(); }
   static bool HasTrait(void *character, const void *definition) {
     auto &memory = *g_memory;
