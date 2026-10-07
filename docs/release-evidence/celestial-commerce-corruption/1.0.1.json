@@ -1,0 +1,183 @@
+{
+  "schema": "ck3.workshop-release-evidence.v1",
+  "status": "PUBLISHED_CACHE_ACCEPTANCE_PENDING",
+  "release_complete": false,
+  "product": "mod_celestial_commerce_corruption",
+  "version": "1.0.1",
+  "workshop_item_id": "3804807463",
+  "forbidden_upstream_target_id": "3596263413",
+  "release_tag": "celestial-commerce-corruption-v1.0.1",
+  "release_commit": "b6a9009d65a091fa109fa80564500e788ff3178b",
+  "previous_public_version": "1.0.0",
+  "previous_release_tag": "celestial-commerce-corruption-v1.0.0",
+  "previous_release_commit": "dc91dc1f0a1abd733d274382833a0ab9b3cdb51f",
+  "published_at_utc": "2026-10-06T18:19:01+00:00",
+  "published_time_source": "actual public metadata time_updated=1791310741; SDK timestamps recorded separately",
+  "sdk_submitted_at_utc": "2026-10-06T18:19:02.179394+00:00",
+  "sdk_receipt_updated_at_utc": "2026-10-06T18:19:02.179442+00:00",
+  "public_change_notes": {
+    "entry_id": "1791310741",
+    "characters": 1244,
+    "lines": 17,
+    "utf8_bytes": 1708,
+    "sha256": "2d74578e9feca3dac77e2efca4791c8cb90c469ad8145b6586d244e3302e0ae3",
+    "html_decoded_lf_full_body_exact": true,
+    "presentation_terminal_lf_removed": false,
+    "full_actual_body": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\anonymous-readback-01\\entry-01-1791310741.html-decoded-lf-full.txt",
+      "bytes": 1708,
+      "sha256": "2d74578e9feca3dac77e2efca4791c8cb90c469ad8145b6586d244e3302e0ae3"
+    },
+    "frozen_actual_entry": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-publish-readonly-products-write-diagnostic-01\\ACTUAL-PUBLIC-ENTRY-1791310741-FREEZE-01.json",
+      "bytes": 4209,
+      "sha256": "23a203ccd9243f69ffeb6e44472c6678da8fd05608c6f6e2f864e294afff4282"
+    },
+    "previous_entry_id": "1789875616",
+    "previous_entry_body_unchanged": true
+  },
+  "native_publish": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\native-publish-receipt.json",
+      "bytes": 676,
+      "sha256": "5c95bd1ceb5878dfab1f0e75f605914ebb9925249e6df862480df2e4b0d43d2c"
+    },
+    "operation_id": "ccc-1.0.1-actual-source-pass-01",
+    "steam_result": 1,
+    "scope": "content_and_metadata",
+    "payload_sha256": "45f657d58087e95737b7cd6d2590c8e62b7a64e467d4de741013acc91fee5d70"
+  },
+  "public_exact": {
+    "verification": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\anonymous-readback-01\\verification.json",
+      "bytes": 24001,
+      "sha256": "dc68b3b2d3a23be60f317f5a2bc5c9684a98db5f8b876fdfd6ca9809d0793d3d"
+    },
+    "observed_at_utc": "2026-10-06T18:25:39.481168+00:00",
+    "tags_sidebar_verification": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\anonymous-tags-sidebar-01.json",
+      "bytes": 6961,
+      "sha256": "b74fdbd14729f64aef78949e4d1ba76737b32a108d2f9947ef6abf1baf06f7f3"
+    },
+    "tags": [
+      "Gameplay",
+      "Balance",
+      "Decisions",
+      "Events",
+      "1.20 'Crozier'"
+    ],
+    "tags_exact": true,
+    "compatible_version_sidebar_label_and_filter_href_exact": true,
+    "additional_HTTP_calls_for_tags_verification": 0
+  },
+  "build_and_cache": {
+    "formal_manifest": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\formal\\mod_celestial_commerce_corruption-v1.0.1.manifest.json",
+      "bytes": 4142,
+      "sha256": "6dec9c27409248c4a8c7d8516e2205adff666f3981e3be1c5830fe78bd348fde"
+    },
+    "formal_zip": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\formal\\mod_celestial_commerce_corruption-v1.0.1.zip",
+      "bytes": 1158581,
+      "sha256": "8c3a51bd1d7ab0911d09cb6543df9f26c6de5a370414fe127e4817034d8d8c03"
+    },
+    "postupload_pristine": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-postupload-pristine-tag-builder-01\\POSTUPLOAD-PRISTINE-TAG-BUILD-RECEIPT-02.json",
+        "bytes": 29214,
+        "sha256": "d82bf0f0d18ced510f006238eaa4707bdb1a03a757add0a406717ad263f228be"
+      },
+      "staging": "C:\\workspace\\ck3-upgrade-20261006\\ccc-postupload-pristine-tag-builder-01\\output-02\\mod_celestial_commerce_corruption",
+      "file_count": 22,
+      "descriptor": {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-postupload-pristine-tag-builder-01\\output-02\\mod_celestial_commerce_corruption\\descriptor.mod",
+        "bytes": 208,
+        "sha256": "6fc4a83b81fdc5f8fa530be37599fb9f28c5846c643726272efa7e6f33c9772a",
+        "contains_remote_file_id": false,
+        "utf8_text": "version=\"1.0.1\"\ntags={\n\t\"Gameplay\"\n\t\"Balance\"\n\t\"Decisions\"\n\t\"Events\"\n\t\"1.20 'Crozier'\"\n}\nname=\"天朝制允许经商&贪腐框架（XenoAmess维护版）\"\npicture=\"thumbnail.png\"\nsupported_version=\"1.20.0.3\"\n"
+      },
+      "manifest": {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-postupload-pristine-tag-builder-01\\output-02\\mod_celestial_commerce_corruption-v1.0.1.manifest.json",
+        "bytes": 4142,
+        "sha256": "6dec9c27409248c4a8c7d8516e2205adff666f3981e3be1c5830fe78bd348fde"
+      },
+      "archive": {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-postupload-pristine-tag-builder-01\\output-02\\mod_celestial_commerce_corruption-v1.0.1.zip",
+        "bytes": 1158581,
+        "sha256": "8c3a51bd1d7ab0911d09cb6543df9f26c6de5a370414fe127e4817034d8d8c03"
+      },
+      "preserved_first_clean_preflight_RED": {
+        "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-postupload-pristine-tag-builder-01\\POSTUPLOAD-PRISTINE-TAG-BUILD-RECEIPT-01.json",
+        "bytes": 14861,
+        "sha256": "2f5f04f9d455fe7f1fa7b8e82e66c774790fe764be88f5635846699d190b3332"
+      },
+      "private_git_longpaths_fix_only": true,
+      "main_checkout_and_original_tag_unchanged": true
+    },
+    "fresh_cache_strict22": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\fresh-cache-strict22-verify-01.json",
+      "bytes": 738,
+      "sha256": "f5b126ef850556a56959c6a8533d417cbaf8feb5e00ffded8d702baa9fadbe32"
+    },
+    "fresh_cache_runtime_target": "CK3 1.20.0.4",
+    "fresh_cache_representative_business_and_normal_GUI_exit": "PENDING"
+  },
+  "fresh_download": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\native-download-result-01.json",
+      "bytes": 2767,
+      "sha256": "f3e99a0d2f1c099d68680acdce332174d8d75dc851803ff86eb65d5479953882"
+    },
+    "callback_result": 1,
+    "status": "complete",
+    "fresh_cache_requested": true,
+    "expected_cache_absent_before_start": true,
+    "install_info": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3804807463",
+      "size_on_disk": 2288191,
+      "timestamp": 1791310741
+    },
+    "state_flags": {
+      "download_pending": false,
+      "downloading": false,
+      "installed": true,
+      "legacy": false,
+      "needs_update": false,
+      "raw": 4,
+      "subscribed": false
+    },
+    "preserved_before_download": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-workshop-publish-1.0.1-01\\cache-before-force-download-receipt-01.json",
+      "bytes": 349,
+      "sha256": "07023cf88487da57e921e74cc354371e4e9ac6d0c2501350ad41ea10c07bb139"
+    },
+    "no_subscription_claim_when_actual_subscribed_false": true
+  },
+  "source_acceptance": {
+    "runtime_version": "1.20.0.3",
+    "run_id": "4-8e1c2f1861--celestial-commerce-corruption--R0011",
+    "root_review": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\resume-root-01\\a84-root-actual-business-and-normal-exit-review-01.json",
+      "bytes": 7732,
+      "sha256": "fd6f1e756bbca7c17d4d52f8548c8a5cbb5642406f19cb6a4bf161502ba65bfb"
+    },
+    "result": "PASS_BOUNDED_SOURCE_ONLY_NOT_WORKSHOP_RELEASE",
+    "core11_credit_reused_from_original_R0003": {
+      "path": "C:\\workspace\\ck3-upgrade-20261006\\ccc-foreground17-agent-01\\a76-actual-boundary-and-cleanup-thin-02.json",
+      "bytes": 14491,
+      "sha256": "7e20d15e2c20fd10f98c12296e7833fe8ad78ab6c71935acf6364a9be291060b"
+    },
+    "GUI25_outer_exit_code": 1,
+    "original_orchestration_error_preserved": true,
+    "normal_GUI_OS0_is_separate_actual_evidence": true,
+    "source_12003_does_not_prove_cache_12004": true
+  },
+  "pending_completion": [
+    "CK3 1.20.0.4 actual fresh-cache representative business and independent normal GUI OS0",
+    "Root adoption and actual master commit/push of the permanent publication record; no future hash filled"
+  ],
+  "existing_limits_and_old_failed_attempts_preserved": true,
+  "observed_master_snapshot_for_old_DRAFT": "38b0a9860f5c07269458fbcfcd5f8a09dfacb8d0",
+  "prepared_external_at_utc": "2026-10-07T05:41:54.299782+00:00",
+  "this_documentation_package_new_HTTP_SDK_game_desktop_calls": 0
+}

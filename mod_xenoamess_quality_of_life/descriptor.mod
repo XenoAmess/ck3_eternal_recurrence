@@ -5,4 +5,4 @@ tags={
 }
 name="XenoAmess的体验优化"
 picture="thumbnail.png"
-supported_version="1.20.0.3"
+supported_version="1.20.0.4"

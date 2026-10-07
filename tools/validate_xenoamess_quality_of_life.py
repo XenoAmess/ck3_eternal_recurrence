@@ -422,7 +422,7 @@ def check_assets_and_descriptor(errors: list[str]) -> None:
         'version="1.1.1"',
         'name="XenoAmess的体验优化"',
         'picture="thumbnail.png"',
-        'supported_version="1.20.0.3"',
+        'supported_version="1.20.0.4"',
     ):
         if descriptor.count(token) != 1:
             errors.append(f"descriptor token mismatch: {token}")

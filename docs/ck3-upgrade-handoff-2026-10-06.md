@@ -1,5 +1,26 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-07 续办增量（2026-10-07 13:58:13 Asia/Shanghai）
+
+当前用户要求先更新本机 CK3，再同步本机仓库，随后继续全部十产品迁移，保持有意义的高并发。**Step1 本机更新、Step2 仓库同步均已完成；当前正式发布闭环仍为 5/10。** 本段是接手入口；下方10月6日停办、旧版本与旧现场段落保留为当时历史。
+
+本机实际安装为 **CK3 1.20.0.4 / Steam build25734779**，EXE 101040248 B，SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。本机 manifest 的下载与 staging 剩余均为0，非零总计是已完成的累计值；[只读安装及队列分类](C:/workspace/ck3-upgrade-20261007/current-install-readonly-resource-01/CURRENT-LOCAL-INSTALL-QUEUE-CLASSIFICATION-02.json)保留边界。root 已一次查验[Steam官方当前 Update1.20.0.4 公告](https://store.steampowered.com/oldnews/?appgroupname=crusader+kings+iii&appids=1158310&enddate=1793516400&feed=steam_community_announcements&headlines=0)，正文将1.20.1列为active development，与本机实际安装吻合。06/08下载过渡原图保留为历史，不能单独证明当前公开客户端版本，也不能以08倒推当时已在线；在线fresh菜单在16。Step1依据官方公告、actual manifest/full installed/剩余0和最终离线亲审。最终 root 于05:47:43 UTC亲审[recovery19原图](C:/workspace/ck3-upgrade-20261007/resume-root-02/steam-final-offline-recovery-19/probe-1/steam-moved.png)为离线，[亲审回执](C:/workspace/ck3-upgrade-20261007/resume-root-02/root-steam-final-offline-review-01.json)已保存，期间未在线启动CK3。
+
+publisher keeper 已真实停止：最后sequence5238、actual session44334 exit0、thread_exited=true；[闭合回执](C:/workspace/ck3-upgrade-20261007/publisher-release-root-01/publisher-screen-closure-receipt-01.json)记录CAS5239/done/resources=[]与当时空进程盘点。root 已从`38b0a986`同步至新origin/master `7d412003f`，CCC永久事实增量随后rebase为`6281813f23b9dbd3e749f933de2bdb2e0dc5d1a4`并普通push成功。发布状态沿用已入库[CCC changelog](release-changelogs/celestial-commerce-corruption/1.0.1.md)及[release evidence](release-evidence/celestial-commerce-corruption/1.0.1.json)：**PUBLISHED_CACHE_ACCEPTANCE_PENDING**；不重发SDK/HTTP，不计6/10。
+
+### 当前续办入口与并发拓扑
+
+| lane / owner | 直接消费入口 | 剩余实际交付 |
+| --- | --- | --- |
+| 本机共享 .4 native / rules / Python host，各独立owner并行备料 | [本机构建冻结](C:/workspace/ck3-upgrade-20261007/local12004-runtime-build-01/source-snapshot-01.json)、[rules候选packet02](C:/workspace/ck3-upgrade-20261007/ccc-frontend-rules04-candidate-01/FRONTEND-RULES12004-SOURCE-CANDIDATE-PACKET-02.json)、[host产品选择addendum02](C:/workspace/ck3-upgrade-20261007/shared12004-python-host-01/ROOT-HOST33-PRODUCT-SELECTION-ADDENDUM-02.md) | 提交实际 .4 final source-index、DLL/injector及构建回执，绑定各caller；构建输入38b0冻结与当前仓库628提交分列，不以新HEAD重新解释旧输入。当前备料/静态结果不授 .4 实机信用。 |
+| CCC，root现场 | 已入库永久记录及上述 .4 host/rules入口 | 已发布缓存的本机 .4 实际业务与正常GUI/OS0验收尚未完成；.3 R0011的真实source业务/正常退出信用保持其版本范围。 |
+| QOL，独立caller备料owner | [same-live连续消费卡02](C:/workspace/ck3-upgrade-20261007/qol12004-continuous-prepare-01/ROOT-CONSUME-QOL-SAME-LIVE-02.md)及host产品选择addendum02 | 保留原defense/任命/百万分/宗教slider/自然pending/正常退出合同；使用QOL专属Source09 host33或PAM private host，不用generic H81替代。真实GUI缺项仍由root亲审当前原图，prepared不等于业务通过。 |
+| RMTM / TED，独立caller备料owner | [.4消费卡02](C:/workspace/ck3-upgrade-20261007/rmtm-ted12004-prepare-agent-01/ROOT-CONSUME-PENDING-01.md) | 四个新冷profile和连续caller已备料；最终shared binding及实际分配/实机仍待。接续原RMTM14日/core与50/51阈值、TED core Save/Load及UI Send，原预算不变。 |
+
+root 是本机 Steam、桌面、Start、实际游戏与屏幕CAS的唯一操作者；上述源码、host、产品caller与文档lane可同时准备，真实CK3场依旧顺序执行。最终绑定完成后消费已有连续入口，不临场重造平台或重跑无变化检查。QOL/RMTM/TED三产品正式metadata的`.4`增量由`remaining12004_metadata`施工，版本号保持既定值；各产品owner同步新cold profiles，完成后按实际pins绑定，当前只记准备。本机新 **.4 实机仍为 NONE/NOT_RUN**，旧f150 DLL、旧.3通过和静态测试不授新版本资格。远端 **Z机器 R63全原ON范围的实际信用原样保留**，以其owner的current-scope回执为准，不能记成本机实机。
+
+其余未闭环仍为CCC、QOL、RMTM、TED、361；达到原门槛的产品按既有授权逐个发布并恢复离线。361仍最后，廷臣具体礼仪在全部维护完成后处理。已完成五产品和Compatible Version专项100%保持原信用，所有旧RED、raw、冻结输入、DRAFT历史永久保留。
+
 用户于2026-10-06要求：“平稳结束手上每件任务，不要再开启新的任务，然后编写交接文档到docs，提交推送。”本执行者已停止新增场景、清理操作、源码施工和发布。本文是本机最新交接，优先于[10月2日交接](ck3-upgrade-handoff-2026-10-02.md)中的续跑安排。旧记录、失败attempt、原片和冻结输入继续保留。
 
 ## 接手摘要

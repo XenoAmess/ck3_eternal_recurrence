@@ -90,7 +90,7 @@ def validate() -> list[str]:
         'tags={\n\t"Gameplay"\n}\n'
         'name="Tributary Expansion Directives — 驱策朝贡国"\n'
         'picture="thumbnail.png"\n'
-        'supported_version="1.20.0.3"\n'
+        'supported_version="1.20.0.4"\n'
     )
     from workshop_compatibility_tags import render_workshop_descriptor_bytes
     expected_descriptor = render_workshop_descriptor_bytes(expected_descriptor.encode("utf-8")).decode("utf-8")

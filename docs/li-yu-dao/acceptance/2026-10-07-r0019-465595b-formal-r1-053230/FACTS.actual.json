@@ -1,0 +1,468 @@
+{
+  "schema": "lyd.r19.formal-r1-053230.archival-facts.v1",
+  "cutoff_utc": "2026-10-07T05:32:30Z",
+  "frozen_mod_native_export_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "documentation_base_HEAD": "38b0a9860f5c07269458fbcfcd5f8a09dfacb8d0",
+  "loaded_python_source": "465 base plus preserved late-attach overlay; prior permanent repair report reused",
+  "steps": [
+    {
+      "step": "begin-002",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "frame": {
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53144712,
+        "paused": true
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 101,
+        "option_count": 4,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 2,
+            "option_number": 3,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 3,
+            "option_number": 4,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      },
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/formal-r1-begin-002/RESULT.actual.json",
+        "bytes": 19990,
+        "sha256": "4287fd5668e807b96de3df3a05c1536dfb5c4be830ffd56027dd370f8aaea7b7"
+      }
+    },
+    {
+      "step": "close-first430-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "frame": {
+        "revision": 6,
+        "native_revision": 5,
+        "date_raw": 53144712,
+        "paused": true
+      },
+      "active_event": null,
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/formal-r1-close-first430-001/RESULT.actual.json",
+        "bytes": 10226,
+        "sha256": "9f211d6e78ee38ab178ec76b8c7261f90bc3d97f8ee1ea2979e155bdc921207f"
+      }
+    },
+    {
+      "step": "nominate-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "frame": {
+        "revision": 7,
+        "native_revision": 6,
+        "date_raw": 53144712,
+        "paused": true
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 102,
+        "option_count": 2,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      },
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/formal-r1-nominate-001/RESULT.actual.json",
+        "bytes": 20031,
+        "sha256": "4b958ea067c07fc959b96cfa49645a639855bed287d65fe05cbd2c5ec169840c"
+      }
+    },
+    {
+      "step": "player410-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "frame": {
+        "revision": 8,
+        "native_revision": 7,
+        "date_raw": 53144712,
+        "paused": true
+      },
+      "active_event": null,
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/formal-r1-player410-001/RESULT.actual.json",
+        "bytes": 10192,
+        "sha256": "f4f4f8e2e945e7739e08886e9fb288298b6644742e0e8964191e63847b094748"
+      }
+    },
+    {
+      "step": "seal-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "frame": {
+        "revision": 9,
+        "native_revision": 8,
+        "date_raw": 53144712,
+        "paused": true
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 105,
+        "option_count": 4,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 2,
+            "option_number": 3,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 3,
+            "option_number": 4,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      },
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/formal-r1-seal-001/RESULT.actual.json",
+        "bytes": 19980,
+        "sha256": "131b0eec0c5166107c147fdebd0b004ca926b62e501eab5126dc71d4b6433218"
+      }
+    },
+    {
+      "step": "close-seal430-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "frame": {
+        "revision": 11,
+        "native_revision": 10,
+        "date_raw": 53144712,
+        "paused": true
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 104,
+        "option_count": 2,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      },
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/formal-r1-close-seal430-001/RESULT.actual.json",
+        "bytes": 10220,
+        "sha256": "444dd189fc1cce8340307d94a3e56d5e982579a2372fce9099410d51e69a2df0"
+      }
+    },
+    {
+      "step": "human412-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "frame": {
+        "revision": 12,
+        "native_revision": 11,
+        "date_raw": 53144712,
+        "paused": true
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 103,
+        "option_count": 2,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      },
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/formal-r1-human412-001/RESULT.actual.json",
+        "bytes": 10185,
+        "sha256": "42d1b9895e55518a6a11aefe1e08e615cbc1548d6b6e507275e96683daaa05ce"
+      }
+    },
+    {
+      "step": "scholar411-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "frame": {
+        "revision": 13,
+        "native_revision": 12,
+        "date_raw": 53144712,
+        "paused": true
+      },
+      "active_event": null,
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/formal-r1-scholar411-001/RESULT.actual.json",
+        "bytes": 10199,
+        "sha256": "1290053c9a8c29e243cb880d31dd4df75dd9ef7045625d1a7f4fb95d211792d2"
+      }
+    },
+    {
+      "step": "review-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "frame": {
+        "revision": 14,
+        "native_revision": 13,
+        "date_raw": 53144712,
+        "paused": true
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 106,
+        "option_count": 4,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 2,
+            "option_number": 3,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 3,
+            "option_number": 4,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      },
+      "result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/formal-r1-review-001/RESULT.actual.json",
+        "bytes": 20006,
+        "sha256": "a9cecd18e7e8d736a4ea2bf85c62188b9c953251a35a2f6790ddba0f144dff18"
+      }
+    }
+  ],
+  "B1": {
+    "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+    "utc": "2026-10-07T05:15:33.863992+00:00",
+    "save_body_reads": 1,
+    "frame_binding": {
+      "revision": 5,
+      "native_revision": 4,
+      "date_raw": 53144712,
+      "game_pid": 19980,
+      "connection_generation": 1,
+      "played_character_id": 31254,
+      "snapshot_id": "native:4"
+    },
+    "round": {
+      "serial": 1,
+      "nonce": 1,
+      "phase": 1
+    },
+    "state_original_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+    "native_qualified_assessment": "OBSERVED_FIELDS_MATCH_NATIVE_AUTHENTICATION_PENDING",
+    "protection_count": 87,
+    "protection_true": 87,
+    "title": {
+      "qualification": "ACTUAL_NATIVE_BEFORE_FRAME_AND_SAVED_TYPED_FULL_ID_JOIN_OBSERVED",
+      "saved_title_full_id": 2264,
+      "saved_title_holder": 31254,
+      "raw_native_revision_rewritten": false,
+      "actual_pass": null,
+      "formal_mandate_credit": null
+    },
+    "numeric": {
+      "status": "ALL_THREE_NATIVE_VALUE_SCOPES_MATCH_ACTUAL_SAVED_ROUND",
+      "fields": {
+        "serial": {
+          "status": "ACTUAL_NATIVE_VALUE_SCOPE_SAVED_ROUND_MATCH",
+          "scope_name": "lyd_i3b_event_serial",
+          "native_value": {
+            "raw_fixed_point": "100000",
+            "scale": 100000,
+            "decimal_value": "1",
+            "integer_value": "1"
+          },
+          "observed_integer": 1,
+          "saved_round_value": 1,
+          "matches_saved_round": true
+        },
+        "nonce": {
+          "status": "ACTUAL_NATIVE_VALUE_SCOPE_SAVED_ROUND_MATCH",
+          "scope_name": "lyd_i3b_event_nonce",
+          "native_value": {
+            "raw_fixed_point": "100000",
+            "scale": 100000,
+            "decimal_value": "1",
+            "integer_value": "1"
+          },
+          "observed_integer": 1,
+          "saved_round_value": 1,
+          "matches_saved_round": true
+        },
+        "phase": {
+          "status": "ACTUAL_NATIVE_VALUE_SCOPE_SAVED_ROUND_MATCH",
+          "scope_name": "lyd_i3b_event_phase",
+          "native_value": {
+            "raw_fixed_point": "100000",
+            "scale": 100000,
+            "decimal_value": "1",
+            "integer_value": "1"
+          },
+          "observed_integer": 1,
+          "saved_round_value": 1,
+          "matches_saved_round": true
+        }
+      },
+      "before_frame": {
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53144712,
+        "game_pid": 19980,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:3"
+      },
+      "after_frame": {
+        "revision": 5,
+        "native_revision": 4,
+        "date_raw": 53144712,
+        "game_pid": 19980,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:4"
+      },
+      "formal_callback_flow_qualified": null
+    },
+    "actual_pass": null,
+    "formal_mandate_credit": null
+  },
+  "B2": {
+    "status": "RED_PRESERVED",
+    "utc": "2026-10-07T05:28:40.155742+00:00",
+    "save_body_reads": 1,
+    "error_type": "ReadbackError",
+    "error": "stage phase mismatch",
+    "frame_binding": {
+      "revision": 10,
+      "native_revision": 9,
+      "date_raw": 53144712,
+      "game_pid": 19980,
+      "connection_generation": 1,
+      "played_character_id": 31254,
+      "snapshot_id": "native:9"
+    },
+    "request_stage": "proposal",
+    "original_old_B2_preseal_captured": false,
+    "postseal_window_recovery_executed_at_cutoff": null,
+    "actual_pass": null,
+    "formal_mandate_credit": null
+  },
+  "prior_sources_reused": {
+    "source_export_report": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-head-export-20261007-001/REPORT.json",
+      "bytes": 23057,
+      "sha256": "46022befec74b62cdc47d9ed13f525340d88a4cfb72ab2b0cd5678d456440fcf"
+    },
+    "compiled_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/RESULT.json",
+      "bytes": 1007154,
+      "sha256": "d22dce6903eb6fb9548c2b906bdb7f543f504f132c2f59b803836ed9db546b5b"
+    },
+    "metadata_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-actual-sdk-metadata-20261007-001/RESULT.json",
+      "bytes": 7123,
+      "sha256": "b21e0efc80ea6cabfd6bedaa40475f04c16b030f9d1159aa29b15e676535b473"
+    },
+    "windows": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-checkpoint-author-sourceonly-20261007-002/FIVE-SOURCE-WINDOWS.expected.json",
+      "bytes": 10325,
+      "sha256": "30860fc1677b0a404877f698266c4ea0cc4618e59ab17bf79281a3a357c50ac0"
+    }
+  },
+  "npc_vote_inference": null,
+  "formal_approve_new_T_C3_I4_credit": null,
+  "normal_exit": "UNVALIDATED_AT_CUTOFF",
+  "whole_mod_status": "NOT_GREEN",
+  "archive": {
+    "path": "docs/li-yu-dao/acceptance/2026-10-07-r0019-465595b-formal-r1-053230/raw-evidence.zip",
+    "bytes": 3437968,
+    "sha256": "01a14c8106a6fc6192f7e16c6af1cb26b716a546960c21dc1fdc9350a76c3663",
+    "original_source_count": 196,
+    "unique_payload_count": 193
+  },
+  "documentation_actions": {
+    "save_body_reads": 0,
+    "main_writes": 0,
+    "sdk_game_process_bus_screen_actions": 0,
+    "ci_queries_tests_builds_rerun": 0
+  }
+}
