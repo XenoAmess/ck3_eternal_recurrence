@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-m",
+    "unittest",
+    "test_ck3_native_profile_mcp.NativeProfileTests",
+    "-v"
+  ],
+  "cwd": "C:\\lci18w1\\tools",
+  "started_at_utc": "2026-10-07T04:48:09.313210+00:00",
+  "completed_at_utc": "2026-10-07T04:48:11.969297+00:00",
+  "exit_code": 0,
+  "all_observations_simulated": true,
+  "live_SDK_or_debugger_executed": false,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\service-regression-001\\stdout.raw",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-late-attach-production-repair-20261007-001\\service-regression-001\\stderr.raw",
+    "bytes": 2191,
+    "sha256": "859ff75cee36d2c4f7462553c0527029b7321b186593df09c59b0d01995a7de7"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "all_observations_simulated": true,
+  "live_application_executed": false,
+  "same_method_AST": true,
+  "candidate_sha256": "7abbe35ac90dd5cc9af35d95198eee2400a4dbabd8a5d1d0c310ad93dfcb7364",
+  "replacement_cases": [
+    {
+      "unknown_clock": false,
+      "status": "attached_snapshot_verified",
+      "injector_calls": 1,
+      "driver_factory_calls": 1,
+      "original_receipt_unchanged": true,
+      "class_replacement_did_not_change_instance_dict": true
+    },
+    {
+      "unknown_clock": true,
+      "status": "RED",
+      "injector_calls": 1,
+      "driver_factory_calls": 1,
+      "original_receipt_unchanged": true,
+      "class_replacement_did_not_change_instance_dict": true
+    }
+  ],
+  "pass": true
+}

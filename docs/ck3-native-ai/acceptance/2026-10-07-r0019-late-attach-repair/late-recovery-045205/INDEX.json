@@ -1,0 +1,114 @@
+{
+  "schema": "lyd.r19.actual-late-attach-live-recovery-addendum.v1",
+  "cutoff_utc": "2026-10-07T04:52:05.224249+00:00",
+  "status": "ACTUAL_EXPLICIT_RETAINED_DRIVER_LATE_ATTACH_VERIFIED",
+  "base_native_source_HEAD": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "source_overlay_sha256": "7abbe35ac90dd5cc9af35d95198eee2400a4dbabd8a5d1d0c310ad93dfcb7364",
+  "native_session_id": "172caf27cc8b44549ea94ed2f306cfe0",
+  "Client_session_id": "5b11bc8186974854aa695cf2704e8866",
+  "original_game_PID": 19980,
+  "connection_generation": 1,
+  "date_raw": 53144712,
+  "paused": true,
+  "original_RED_unchanged": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\native-evidence\\172caf27cc8b44549ea94ed2f306cfe0\\0001-attach.json",
+    "bytes": 2167,
+    "sha256": "75d41e2683b991f2f167267401559e5a45a37937c357c51f5b7aacd8864d33a7"
+  },
+  "queue_once_flag_reset": false,
+  "reinjected": false,
+  "reconnected": false,
+  "SDK_error_field_in_root_response": null,
+  "formal_acceptance": null,
+  "baseline_SAVE": null,
+  "new_T": null,
+  "C3": null,
+  "I4": null,
+  "whole_mod": "NOT_GREEN",
+  "files": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-client-001\\direct-r19-root-late-verify-001.sdk-result.json",
+        "bytes": 51943,
+        "sha256": "c07515af6048e742e5c6a0218c58dfc57eab00292377e0179203fb2edf9ec9ec"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/late-recovery-045205/OFFICIAL-SDK-LATE-ATTACH.actual.json",
+        "bytes": 51943,
+        "sha256": "c07515af6048e742e5c6a0218c58dfc57eab00292377e0179203fb2edf9ec9ec"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-client-001\\direct-r19-root-late-verify-001.native-01.json",
+        "bytes": 24459,
+        "sha256": "86f5c118a24a6a3200a91086ed7a0739ee2b8bf30471ae50e293ff08ca947605"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/late-recovery-045205/ORIGINAL-NATIVE-LATE-ATTACH.actual.json",
+        "bytes": 24459,
+        "sha256": "86f5c118a24a6a3200a91086ed7a0739ee2b8bf30471ae50e293ff08ca947605"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\mcp-client-001\\direct-r19-root-late-verify-001.response.json",
+        "bytes": 3073,
+        "sha256": "43337dff3a375c2a67f453fd005841347c4901c2bbceb124a200056fe94826f2"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/late-recovery-045205/ORIGINAL-CLIENT-EXPLICIT-CALL.actual.json",
+        "bytes": 3073,
+        "sha256": "43337dff3a375c2a67f453fd005841347c4901c2bbceb124a200056fe94826f2"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\ROOT-ATTACHED-BINDING.actual.json",
+        "bytes": 790,
+        "sha256": "a70e27c99d46ff43843d718948b8bdecf6a4e7d0299d879297e0ab8c625671dc"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/late-recovery-045205/ROOT-ATTACHED-BINDING.actual.json",
+        "bytes": 790,
+        "sha256": "a70e27c99d46ff43843d718948b8bdecf6a4e7d0299d879297e0ab8c625671dc"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-debugpy-recovery-20261007-001\\CLIENT-DEBUGGER-ENDPOINT.actual.json",
+        "bytes": 1090,
+        "sha256": "ef277735e17bc80bb4faf6993ff258d87fab3ee8d914a71f9d730f2950e82360"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/late-recovery-045205/ROOT-CLIENT-DEBUGGER-ENDPOINT.actual.json",
+        "bytes": 1090,
+        "sha256": "ef277735e17bc80bb4faf6993ff258d87fab3ee8d914a71f9d730f2950e82360"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-debugpy-recovery-20261007-001\\client-dap-explicit-call-001\\RESULT.actual.json",
+        "bytes": 724,
+        "sha256": "e1d86ee84134d2661373935afcd2321c5991814387faec433c7c13fe4e0cc008"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/late-recovery-045205/ROOT-STANDARD-DAP-EXPLICIT-CALL-RESULT.actual.json",
+        "bytes": 724,
+        "sha256": "e1d86ee84134d2661373935afcd2321c5991814387faec433c7c13fe4e0cc008"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-debugpy-recovery-20261007-001\\explicit_late_verify_in_original_client.py",
+        "bytes": 4294,
+        "sha256": "ac2979456f4a64469bc8c600049b841db712c3828a7bf375bc949808581b8e6e"
+      },
+      "archived": {
+        "relative": "docs/ck3-native-ai/acceptance/2026-10-07-r0019-late-attach-repair/late-recovery-045205/ROOT-EXPLICIT-OFFICIAL-CLIENT-SOURCE.py",
+        "bytes": 4294,
+        "sha256": "ac2979456f4a64469bc8c600049b841db712c3828a7bf375bc949808581b8e6e"
+      }
+    }
+  ]
+}

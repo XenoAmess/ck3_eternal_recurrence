@@ -83,7 +83,76 @@ def service_fixture(root):
     return service, backend, driver, arguments, path
 
 
+def late_attach_fixture(root: Path):
+    from xar_autoplayer.bridge.native_driver import BridgeUnavailableError
+    _, path = fixture(root)
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["game_version"] = "1.20.0.3"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    profile = native.load_profile(path)
+    backend, driver = Backend(profile), Driver(profile)
+    arguments = []
+    def factory(pipe, **kwargs):
+        arguments.append((pipe, kwargs))
+        return driver
+    service = native.NativeProfileService(profile, backend=backend, driver_factory=factory)
+    backend.report["argv"] = [profile["injector"]["path"], "--pipe", service.pipe_name,
+                              str(profile["guard"]["target"]["pid"]), profile["dll"]["path"]]
+    driver.pipe_name = service.pipe_name
+    driver.endpoint = SimpleNamespace(pipe_name=service.pipe_name)
+    driver.snapshot["diagnostics"].update(pipe_name=service.pipe_name, connected=True, connection_generation=1)
+    driver.snapshot["diagnostics"]["hello"].update(
+        connection_generation=1, game_adapter_id="ck3-1.20.0.3-msvc-x64")
+    driver.state = SimpleNamespace(pipe_name=service.pipe_name,
+        diagnostics=lambda: copy.deepcopy(driver.snapshot["diagnostics"]))
+    with patch.object(driver, "take_snapshot", side_effect=BridgeUnavailableError(
+            "native game state is not available yet; CK3 may still be loading or may not have entered a map")), \
+            patch.object(native.time, "monotonic", side_effect=[0, 11]):
+        initial = service.attach()
+    return service, backend, driver, arguments, initial
+
+
 class NativeProfileTests(unittest.TestCase):
+    def test_explicit_late_attach_verifies_original_driver_without_reinjection(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            service, backend, driver, arguments, initial = late_attach_fixture(Path(temporary))
+            self.assertEqual(initial["status"], "RED")
+            original_path = Path(initial["receipt_path"])
+            original_raw = original_path.read_bytes()
+            claim_path = Path(service.profile["evidence_directory"]) / "attach-claim.json"
+            claim_raw = claim_path.read_bytes()
+            driver_id, endpoint_id, state_id = id(driver), id(driver.endpoint), id(driver.state)
+            result = service.attach()
+            self.assertEqual(result["status"], "attached_snapshot_verified")
+            self.assertEqual(result["original_attach_receipt"]["sha256"], native.hashlib.sha256(original_raw).hexdigest())
+            self.assertEqual(result["connection_generation"], 1)
+            self.assertFalse(result["reinjected"])
+            self.assertFalse(result["reconnected"])
+            self.assertEqual(original_path.read_bytes(), original_raw)
+            self.assertEqual(claim_path.read_bytes(), claim_raw)
+            self.assertNotEqual(result["receipt_path"], initial["receipt_path"])
+            self.assertIs(service.attach(), result)
+            self.assertEqual((id(service.driver), id(driver.endpoint), id(driver.state)),
+                             (driver_id, endpoint_id, state_id))
+            self.assertEqual(len(backend.injections), 1)
+            self.assertEqual(len(arguments), 1)
+
+    def test_explicit_late_attach_unknown_or_different_clock_stays_red(self):
+        for changes in ({"date_raw": None}, {"date_raw": 123457}, {"paused": False}, {"speed": None}):
+            with self.subTest(changes=changes), tempfile.TemporaryDirectory() as temporary:
+                service, backend, driver, arguments, initial = late_attach_fixture(Path(temporary))
+                original_path = Path(initial["receipt_path"])
+                original_raw = original_path.read_bytes()
+                backend.clock.update(changes)
+                result = service.attach()
+                self.assertEqual(result["status"], "RED")
+                self.assertIs(service._attach_result, initial)
+                self.assertEqual(original_path.read_bytes(), original_raw)
+                self.assertNotEqual(result["receipt_path"], initial["receipt_path"])
+                self.assertEqual(result["original_attach_receipt"]["sha256"], native.hashlib.sha256(original_raw).hexdigest())
+                self.assertEqual(len(backend.injections), 1)
+                self.assertEqual(len(arguments), 1)
+
     def test_attach_starts_server_first_binds_pipe_and_returns_native_readback(self):
         with tempfile.TemporaryDirectory() as temporary:
             service, backend, driver, arguments, _ = service_fixture(Path(temporary))

@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-m",
+    "unittest",
+    "test_ck3_native_profile_mcp.NativeProfileTests.test_explicit_late_attach_verifies_original_driver_without_reinjection",
+    "test_ck3_native_profile_mcp.NativeProfileTests.test_explicit_late_attach_unknown_or_different_clock_stays_red",
+    "-v"
+  ],
+  "cwd": "C:/lci18w1/tools",
+  "exit_code": 0,
+  "recorded_at_utc": "2026-10-07T04:45:13.259403+00:00",
+  "tests": [
+    "test_ck3_native_profile_mcp.NativeProfileTests.test_explicit_late_attach_verifies_original_driver_without_reinjection",
+    "test_ck3_native_profile_mcp.NativeProfileTests.test_explicit_late_attach_unknown_or_different_clock_stays_red"
+  ],
+  "all_observations_simulated": true,
+  "live_SDK_or_debugger_executed": false,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e77bff5fcaedddea98491970399cf3b048af2ad59802e684966fca23ca82bf40"
+}
