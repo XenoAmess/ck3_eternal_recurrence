@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12004_battle.hpp"
+#include "xar_bridge/ck3_12004_generic_gui.hpp"
 
 namespace xar::ck3_12004 {
 
@@ -39,6 +40,27 @@ BattleBindings BindBattleImage(
   bindings.ai_unit_stack_vtable = base + 0x45AA618;
   bindings.ai_subunit_stack_vtable = base + 0x45AB4C0;
   bindings.ai_war_coordinator_vtable = base + 0x45AB0C8;
+
+  // The existing nested admission reader uses this readonly subset. Callback
+  // and contact-field proofs are retained in arrival-readonly-migration.
+  auto &arrival = bindings.route_bindings;
+  arrival.enabled = bindings.enabled;
+  arrival.game_state_slot = bindings.game_state_slot;
+  arrival.jomini_state_slot = bindings.jomini_state_slot;
+  arrival.army_storage_slot = bindings.army_storage_slot;
+  arrival.army_internal_storage_slot = bindings.army_internal_storage_slot;
+  arrival.character_storage_slot = bindings.character_storage_slot;
+  arrival.combat_storage_slot = bindings.combat_storage_slot;
+  arrival.contact_game_mode_slot =
+      reinterpret_cast<void **>(base + kGuiGlobalSlotRva12004V1);
+  arrival.is_character_hostile =
+      reinterpret_cast<decltype(arrival.is_character_hostile)>(base + 0x2C09620);
+  arrival.is_army_empty_for_contact =
+      reinterpret_cast<decltype(arrival.is_army_empty_for_contact)>(
+          base + 0x24E83A0);
+  arrival.is_army_in_combat =
+      reinterpret_cast<decltype(arrival.is_army_in_combat)>(base + 0x24E8340);
+
   bindings.province_context = dependencies.province_context;
   bindings.resolve_province = dependencies.resolve_province;
 

@@ -34,7 +34,7 @@ template <typename T> T DecisionBindings(std::uintptr_t base) noexcept {
   b.root_destroy = At<decltype(b.root_destroy)>(base, 0x87E0E0);
   b.decision_shown = At<decltype(b.decision_shown)>(base, 0x31033E0);
   b.decision_can_take = At<decltype(b.decision_can_take)>(base, 0x31034F0);
-  b.decision_cost = At<decltype(b.decision_cost)>(base, 0x14706D0);
+  b.decision_cost = At<decltype(b.decision_cost)>(base, 0x14706B0);
   b.cost_evaluate = At<decltype(b.cost_evaluate)>(base, 0x310CE50);
   b.cost_affordable = At<decltype(b.cost_affordable)>(base, 0x310B390);
   b.reason_destroy = At<decltype(b.reason_destroy)>(base, 0x856050);
