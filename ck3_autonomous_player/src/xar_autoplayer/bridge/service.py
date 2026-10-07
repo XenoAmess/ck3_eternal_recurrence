@@ -126,11 +126,13 @@ from .army_commander_candidates import (
     query_army_commander_candidates_v1_step,
 )
 from ..commander_quality_formal_proposal_v1 import propose_commander_quality_v1
+from ..commander_quality_formal_consumer_v1 import plan_commander_quality_formal_v1
 from .army_commander_assignment import (
     ASSIGN_ARMY_COMMANDER_V1_CAPABILITY,
     assign_army_commander_v1_step,
     commander_assignment_readback_v1,
     normalize_army_commander_assignment_v1,
+    parse_assign_army_commander_v1_step,
 )
 from .battle_control_contract import (
     QUERY_BATTLE_CONTROL_SNAPSHOT_V1_CAPABILITY,
@@ -1287,6 +1289,10 @@ class GameplayBridgeService:
 
         planned = plan_holy_order_siege_reinforcement_v1(
             self.driver, planned=planned, snapshot=snapshot,
+            bridge_capabilities=bridge_capabilities,
+        )
+        planned = plan_commander_quality_formal_v1(
+            self, planned=planned, snapshot=snapshot,
             bridge_capabilities=bridge_capabilities,
         )
         m5_snapshot = planned.pop("_private_m5_snapshot_v1", None)
@@ -3392,6 +3398,11 @@ class GameplayBridgeService:
             if not callable(reader):
                 raise BridgeUnavailableError("H2743 native read-only reader unavailable")
             return reader(expected_h2743_frame, expected_revision=expected_revision)
+        commander_assignment = parse_assign_army_commander_v1_step(step)
+        if commander_assignment is not None:
+            return self.assign_army_commander_v1(
+                *commander_assignment, expected_revision=expected_revision,
+            )
         return self.driver.execute_step(step, expected_revision=expected_revision)
 
     def save_checkpoint(
@@ -4441,7 +4452,7 @@ class GameplayBridgeService:
         capabilities = self.capabilities().get("bridge_capabilities")
         if not isinstance(capabilities, list) or ASSIGN_ARMY_COMMANDER_V1_CAPABILITY not in capabilities:
             raise UnsupportedStepError("selected backend cannot assign a native army commander")
-        result = self.execute_step(step, expected_revision=expected_revision)
+        result = self.driver.execute_step(step, expected_revision=expected_revision)
         try:
             assignment = normalize_army_commander_assignment_v1(
                 result,
