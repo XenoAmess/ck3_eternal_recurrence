@@ -8,6 +8,7 @@
 #include "xar_bridge/ck3_12004_war_declarations.hpp"
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12004_family_relationships.hpp"
+#include "xar_bridge/ck3_12004_family_actions.hpp"
 #include "xar_bridge/ck3_12004_province.hpp"
 #include "xar_bridge/ck3_12004_snapshot_foundation.hpp"
 #include "xar_bridge/ck3_12004_world.hpp"
@@ -15,6 +16,7 @@
 #include "xar_bridge/ck3_12004_routes.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
+#include "xar_bridge/frontend_gui_route_v1.hpp"
 
 #include <windows.h>
 #include <array>
@@ -44,6 +46,23 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.war-objective-siege-progress", "game.state.war-objective-assault",
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
+      "game.command.query-title-holder-v1-N",
+      ck3_11906::kIngameUiNavigationV1Capability,
+      ck3_11906::kIngameUiWindowQueryV1Capability,
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1) && \
+    defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+      ck3_11906::kFrontendGuiRouteV1Capability,
+      ck3_11906::kFrontendGuiTreeInspectionV1Capability,
+      ck3_11906::kGuiWindowTreeInspectionV1Capability,
+      ck3_11906::kFrontendGuiOpenNewGameV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+      ck3_11906::kFrontendBookmarkModelProbeV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+      ck3_11906::kFrontendGuiSelectSupported1066CharacterV1Capability,
+      ck3_11906::kFrontendGuiStartSelectedBookmarkV1Capability,
+#endif
       "game.command.query-route-contact-horizon-v1-N",
       ck3_12003::kArmyCommanderCandidatesCapability,
       ck3_12003::kArmyCommanderCandidatesForTargetCapability,
@@ -74,6 +93,8 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.command.query-declarable-wars",
       "game.command.declare-war-N",
       "game.command.enforce-demands-N",
+      "game.command.query-arrange-marriage-choices",
+      "game.command.arrange-marriage-N",
       "game.command.query-war-occupation-targets-v1-N",
       "game.command.query-war-termination-options-N",
       "game.command.query-war-termination-terms-v1-N",
@@ -100,6 +121,12 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
   if (!bindings.core.enabled) return bindings;
   bindings.commands = ck3_12004::BindCommandImage12004(
       image_base, executable_sha256);
+  bindings.marriage = ck3_12004::BindArrangeMarriageImage(
+      image_base, executable_sha256, bindings.commands);
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  bindings.family = ck3_12004::BindFamilyImage(
+      image_base, executable_sha256);
+#endif
   bindings.combat = ck3_12004::BindCombatImage12004(
       image_base, executable_sha256);
   bindings.military = ck3_12004::BindMilitaryImage12004(

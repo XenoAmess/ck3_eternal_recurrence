@@ -10,6 +10,7 @@
 #include "xar_bridge/ck3_12003_army_reserve.hpp"
 #include "xar_bridge/ck3_12003_war_occupation.hpp"
 #include "xar_bridge/ck3_12003_title_holder.hpp"
+#include "xar_bridge/ck3_12004_title_holder.hpp"
 #include "xar_bridge/ck3_12002_war_cash_treasury.hpp"
 #include "xar_bridge/ck3_12002_actor_resources.hpp"
 
@@ -113,6 +114,8 @@ public:
       const auto image_base =
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
       reserve_bindings_ = ck3_12004::BindPlayerArmyReserveImage12004V1(
+          image_base, descriptor.executable_sha256);
+      title_holder_bindings_ = ck3_12004::BindTitleHolderImageV1(
           image_base, descriptor.executable_sha256);
       occupation_bindings_ = ck3_12004::BindWarOccupationTargets12004(
           image_base, descriptor.executable_sha256, bindings_.world,
@@ -452,7 +455,8 @@ public:
   ReadTitleHolderV1Result read_title_holder_v1(
       std::int32_t title_id, TitleHolderV1 &output) const noexcept override {
     output = {};
-    if (!IsCk3_12003Descriptor(*descriptor_))
+    if (!IsCk3_12003Descriptor(*descriptor_) &&
+        !IsCk3_12004Descriptor(*descriptor_))
       return ReadTitleHolderV1Result::unavailable;
     Snapshot scope{};
     if (!read_snapshot(scope))

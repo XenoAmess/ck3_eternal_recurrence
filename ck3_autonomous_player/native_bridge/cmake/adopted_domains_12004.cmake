@@ -6,6 +6,7 @@
 # The Snapshot foundation already registers family_relationships and Commander.
 # Owned domain leaves below register their own religion/holy-war/prisoner TUs.
 target_sources(xar_ck3_12002_runtime PRIVATE
+  src/ck3_12004_title_holder.cpp
   src/ck3_12004_campaign.cpp
   src/ck3_12004_hired_troop_shared_bindings.cpp
   src/ck3_12004_holy_order_bindings.cpp

@@ -81,6 +81,7 @@
 #include "xar_bridge/ck3_12004_battle_journal.hpp"
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
+#include "xar_bridge/ck3_12004_routes.hpp"
 #include "xar_bridge/ck3_12002_battle.hpp"
 #include "xar_bridge/ck3_12003_battle_current_state.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
@@ -10692,7 +10693,9 @@ bool ExecuteTypedQuery12002(
           environment, access, query.war_entry_request, query.war_entry) ==
           xar::game::ReadWarEntryAssessmentsV1Result::available;
     } else if constexpr (Kind == QueryKind12002::route) {
-      const auto bindings = xar::ck3_12002::BindRouteImage(query.image_base, sha);
+      const auto bindings = actual4
+          ? xar::ck3_12004::BindRouteImage12004(query.image_base, sha)
+          : xar::ck3_12002::BindRouteImage(query.image_base, sha);
       query.typed_result = xar::ck3_12002::ReadRouteContactHorizon(
           bindings, snapshot, query.route_request, query.route) ==
           xar::game::RouteContactHorizonStatus::available;
@@ -11562,6 +11565,8 @@ public:
         &ExecuteTypedQuery12002<QueryKind12002::battle_terminal>;
     environment.permitted_executor_undenary =
         &ExecuteTypedQuery12002<QueryKind12002::campaign>;
+    environment.permitted_executor_duodenary =
+        &ExecuteTypedQuery12002<QueryKind12002::route>;
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
     nonwar.warcash = &ExecuteWarCashCurrentResources12004;
@@ -12412,6 +12417,7 @@ bool IsBattleWarTypedQuery12004(const xar::game::GameAdapter &game,
   if (!xar::game::IsCk3_12004Descriptor(game.descriptor())) return false;
   const auto kind = TypedQueryKind12002(step);
   return kind == QueryKind12002::war_entry ||
+         kind == QueryKind12002::route ||
          kind == QueryKind12002::battle_control ||
          kind == QueryKind12002::battle_transition ||
          kind == QueryKind12002::battle_reinforcement ||
