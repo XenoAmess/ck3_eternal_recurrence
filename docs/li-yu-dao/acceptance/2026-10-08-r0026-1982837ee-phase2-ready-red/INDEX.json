@@ -1,0 +1,1130 @@
+{
+  "schema": "lyd.r26.original-byte-inventory.v1",
+  "source_head": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+  "candidate_target": "docs/li-yu-dao/acceptance/2026-10-08-r0026-1982837ee-phase2-ready-red",
+  "created_at_utc": "2026-10-07T22:39:33.903198+00:00",
+  "original_files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/identity.json",
+      "bytes": 2731,
+      "sha256": "f3c2e0638e576753fed40271e133caec0a0cbb54936b3c782c18813f53291576",
+      "role": "actual cold/live binding or initial control",
+      "zip_entry": "sha256/f3c2e0638e576753fed40271e133caec0a0cbb54936b3c782c18813f53291576.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/live-run-id.json",
+      "bytes": 374,
+      "sha256": "60483ed623532000a4612a749566b51cda0e35e7496e279c8d4de5a8435ca545",
+      "role": "actual cold/live binding or initial control",
+      "zip_entry": "sha256/60483ed623532000a4612a749566b51cda0e35e7496e279c8d4de5a8435ca545.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/launch.json",
+      "bytes": 2400,
+      "sha256": "056f09b9bdda91b0471a094eee465ba09ffc73afe08bb6fd1248a7ede2cacff7",
+      "role": "actual cold/live binding or initial control",
+      "zip_entry": "sha256/056f09b9bdda91b0471a094eee465ba09ffc73afe08bb6fd1248a7ede2cacff7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/PREPARED.json",
+      "bytes": 7185,
+      "sha256": "1aeceee8000e6841076e55bc26f12447bb41d22c4a16cdd8d5a8672ae4bdd544",
+      "role": "actual cold/live binding or initial control",
+      "zip_entry": "sha256/1aeceee8000e6841076e55bc26f12447bb41d22c4a16cdd8d5a8672ae4bdd544.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/native-profile-with-exit-inventory.json",
+      "bytes": 1104,
+      "sha256": "ecc49c3ec23e1c11656101e8c8b35e60f9a89a2d6c54593262fff834ae3c0a22",
+      "role": "actual cold/live binding or initial control",
+      "zip_entry": "sha256/ecc49c3ec23e1c11656101e8c8b35e60f9a89a2d6c54593262fff834ae3c0a22.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/ORIGINAL0240-CONTROL.actual.json",
+      "bytes": 1340,
+      "sha256": "4ae835727c1c5e238c5619a93a4b6cd8c9d9d499da2fef46b3f9d70e1ddee2a8",
+      "role": "actual cold/live binding or initial control",
+      "zip_entry": "sha256/4ae835727c1c5e238c5619a93a4b6cd8c9d9d499da2fef46b3f9d70e1ddee2a8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/session.json",
+      "bytes": 1244,
+      "sha256": "97211d8085d2f4913fd06e7a25ccc3f21d6d8dfa3953ab12afc9dae801479dc6",
+      "role": "original Client session readiness",
+      "zip_entry": "sha256/97211d8085d2f4913fd06e7a25ccc3f21d6d8dfa3953ab12afc9dae801479dc6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/ready.json",
+      "bytes": 1367,
+      "sha256": "7b9fcd757c440d2eb66c5bb83b7c1884d8094070f0531aac985e86004b3d61b1",
+      "role": "original Client session readiness",
+      "zip_entry": "sha256/7b9fcd757c440d2eb66c5bb83b7c1884d8094070f0531aac985e86004b3d61b1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/userdir/normal-exit-source-inventory-v1.json",
+      "bytes": 23870,
+      "sha256": "c1d8a9933410ea385d03b01a913975ca44691b68c484343382e07b8f9afafdf9",
+      "role": "actual source inventory, not future normal-exit credit",
+      "zip_entry": "sha256/c1d8a9933410ea385d03b01a913975ca44691b68c484343382e07b8f9afafdf9.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/ROOT-MCP-BINDING-001/ROOT-BINDING.json",
+      "bytes": 2854,
+      "sha256": "baa0f4466a81f22d7085cb446f1733d94df30f6d64474a1fe2389906d575a12e",
+      "role": "actual consumer binding",
+      "zip_entry": "sha256/baa0f4466a81f22d7085cb446f1733d94df30f6d64474a1fe2389906d575a12e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-metadata-sdk-20261008-001/RESULT.json",
+      "bytes": 7042,
+      "sha256": "f4ebaa14d30f6dee0560f6f21c6631ec4620fdc6e4c67a5b5737eb2973614d38",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/f4ebaa14d30f6dee0560f6f21c6631ec4620fdc6e4c67a5b5737eb2973614d38.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-metadata-sdk-20261008-001/INDEX.json",
+      "bytes": 4598,
+      "sha256": "267c8f1b39b8fe4fee9faccc4fa97b0b5adaf185785dbb8292c2d7af95cd3f72",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/267c8f1b39b8fe4fee9faccc4fa97b0b5adaf185785dbb8292c2d7af95cd3f72.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-metadata-sdk-20261008-001/ACTUAL-grant28-profile-all-tools.json",
+      "bytes": 29956,
+      "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-metadata-sdk-20261008-001/REQUEST.actual.json",
+      "bytes": 1869,
+      "sha256": "69c189b69c514e91bd9ebdb39d3910a69bbd05d273caa1cd1df21159f0ebfe1a",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/69c189b69c514e91bd9ebdb39d3910a69bbd05d273caa1cd1df21159f0ebfe1a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-native-build-20261008-001/RESULT.json",
+      "bytes": 1054627,
+      "sha256": "9196973f834aa96bad9d10943bf8b160294cea8aa272f353abe6d30a4f56b585",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/9196973f834aa96bad9d10943bf8b160294cea8aa272f353abe6d30a4f56b585.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-native-build-20261008-001/INDEX.json",
+      "bytes": 4837,
+      "sha256": "6a12a09a994155ce1223c8d4f6a074bbe47dc8f155e46d4c8ef836b62176ff53",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/6a12a09a994155ce1223c8d4f6a074bbe47dc8f155e46d4c8ef836b62176ff53.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-head-export-20261008-001/REPORT.json",
+      "bytes": 23277,
+      "sha256": "74801ae5ffaf35bbe0a67a8e9355a833f7685021de4d55df3a910a8e88b3e8f3",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/74801ae5ffaf35bbe0a67a8e9355a833f7685021de4d55df3a910a8e88b3e8f3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-head-export-20261008-001/INDEX.json",
+      "bytes": 16680,
+      "sha256": "35b5c2b5ce834f80e93464ebdff7df2527c4bb5b2ef8a146d6abe2b78a156dba",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/35b5c2b5ce834f80e93464ebdff7df2527c4bb5b2ef8a146d6abe2b78a156dba.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-checkpoint-author-sourceonly-20261008-003/INDEX.json",
+      "bytes": 17508,
+      "sha256": "37b0e4b151d7f1e4275baee9dfef8d34391225bd1591ed1f558b5005062f1553",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/37b0e4b151d7f1e4275baee9dfef8d34391225bd1591ed1f558b5005062f1553.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-checkpoint-author-sourceonly-20261008-003/SOURCE-PIN-AND-BEFORE-BODY-PROOF.json",
+      "bytes": 46836,
+      "sha256": "25c07d2a57801228505eda0c3b7463aa0a9269f9b065dee0c39b813b21bc30de",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/25c07d2a57801228505eda0c3b7463aa0a9269f9b065dee0c39b813b21bc30de.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-formal-capture-root-sourceonly-20261008-003/INDEX.json",
+      "bytes": 4484,
+      "sha256": "771a67faa776dea3f12be4d3fcc52a957ece542cb3dc0b2da0c369b0f13ed6d6",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/771a67faa776dea3f12be4d3fcc52a957ece542cb3dc0b2da0c369b0f13ed6d6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-formal-capture-root-sourceonly-20261008-003/SOURCE-DIFF-AND-ACTUAL-COMPACT-BASIS.json",
+      "bytes": 5032,
+      "sha256": "f0b964a0cbd43d045a72675e8799a8bdcabc18b7eb96f50a0217b99fdab0ce1c",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/f0b964a0cbd43d045a72675e8799a8bdcabc18b7eb96f50a0217b99fdab0ce1c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-file-only-runtime-source-20261008-002/INDEX.json",
+      "bytes": 14336,
+      "sha256": "77c86eccf68ccbf37d07f07954c7882a500b0e209de0c543df3e603b7817aed6",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/77c86eccf68ccbf37d07f07954c7882a500b0e209de0c543df3e603b7817aed6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-file-only-runtime-source-20261008-002/PROJECTION.actual.json",
+      "bytes": 15555,
+      "sha256": "5a9b4fcb31f3153fa46ca3c68302d25dd3662ad61310a18890cfd9a5c72b9633",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/5a9b4fcb31f3153fa46ca3c68302d25dd3662ad61310a18890cfd9a5c72b9633.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-phase2-not-conjunction-sourceonly-20261008-001/INDEX.json",
+      "bytes": 5958,
+      "sha256": "e768266ddd3740a9a6336849b8ed2ae53d225ef8e07f5357985d19f2fd36bb05",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/e768266ddd3740a9a6336849b8ed2ae53d225ef8e07f5357985d19f2fd36bb05.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-phase2-not-conjunction-sourceonly-20261008-001/REPORT.source-only.json",
+      "bytes": 17194,
+      "sha256": "ab767797d3947140fe8efe8a0b08c8d3363925b3c217c7e420468645af934a8f",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/ab767797d3947140fe8efe8a0b08c8d3363925b3c217c7e420468645af934a8f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-phase2-not-conjunction-sourceonly-20261008-001/PATCH.diff",
+      "bytes": 2651,
+      "sha256": "c0857bb866723dd89748058dd2870d8e7865fc228787ab0995fff37b4f996e37",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/c0857bb866723dd89748058dd2870d8e7865fc228787ab0995fff37b4f996e37.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-phase2-not-conjunction-sourceonly-20261008-001/CANDIDATE-MANIFEST.source-only.json",
+      "bytes": 2644,
+      "sha256": "2efba63a4b12f53fe02da58cd5d9f01bf69e75177117a65e406162aff1f719c1",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/2efba63a4b12f53fe02da58cd5d9f01bf69e75177117a65e406162aff1f719c1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-phase2-not-conjunction-sourceonly-20261008-001/finite-check-001/RESULT.actual.json",
+      "bytes": 5193,
+      "sha256": "8e47440f027b6d319355287fd0313f285fbc759dee6ff310eb525a4a42fbf6a7",
+      "role": "executed source/qualification binding or unexecuted candidate; status retained in raw source",
+      "zip_entry": "sha256/8e47440f027b6d319355287fd0313f285fbc759dee6ff310eb525a4a42fbf6a7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/baseline-withdrawal-resume-author-001/RESULT.json",
+      "bytes": 1073958,
+      "sha256": "ac6bcdf9f291c6151218644aef68a0ee29ad2692f6bbd0b86451f49be343df1f",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/ac6bcdf9f291c6151218644aef68a0ee29ad2692f6bbd0b86451f49be343df1f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/baseline-withdrawal-resume-author-001/INPUT.exact.json",
+      "bytes": 2965,
+      "sha256": "c522107f0aea3fa5ef2db0a93d93cea477d9a63eb8cba74ad54740d0a2d0c668",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/c522107f0aea3fa5ef2db0a93d93cea477d9a63eb8cba74ad54740d0a2d0c668.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/baseline-withdrawal-resume-author-input-001/AUTHOR-INPUT.actual.json",
+      "bytes": 2965,
+      "sha256": "c522107f0aea3fa5ef2db0a93d93cea477d9a63eb8cba74ad54740d0a2d0c668",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/c522107f0aea3fa5ef2db0a93d93cea477d9a63eb8cba74ad54740d0a2d0c668.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/baseline-withdrawal-resume-author-input-001/AUTHOR-ARGV.actual.json",
+      "bytes": 510,
+      "sha256": "6a139b2ec813c9faa33a1cdefa13d76f827b9f429e806a9989b74ffe03bef721",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/6a139b2ec813c9faa33a1cdefa13d76f827b9f429e806a9989b74ffe03bef721.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/baseline-withdrawal-resume-author-002/RESULT.json",
+      "bytes": 1084534,
+      "sha256": "ebe5cf781053c78352b028c17639a3ace344e4c26c0323338f66d44e2b57b729",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/ebe5cf781053c78352b028c17639a3ace344e4c26c0323338f66d44e2b57b729.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/baseline-withdrawal-resume-author-002/INPUT.exact.json",
+      "bytes": 2965,
+      "sha256": "6a0d789f507e0aeb2e3a5c24bb040be7ca8385c66133652469a942a32665cbf3",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/6a0d789f507e0aeb2e3a5c24bb040be7ca8385c66133652469a942a32665cbf3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/baseline-withdrawal-resume-author-002/STATE.json",
+      "bytes": 1335769,
+      "sha256": "72f184f054113e2165a1f6c3668aa524685ce703bfaefe76f397acb984e4a340",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/72f184f054113e2165a1f6c3668aa524685ce703bfaefe76f397acb984e4a340.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/baseline-withdrawal-resume-author-002/TYPED-PROTECTION.json",
+      "bytes": 980841,
+      "sha256": "705c60caadfd06400f4246fce9dbd71c9f6176361655f5f7cb82b682319ef32e",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/705c60caadfd06400f4246fce9dbd71c9f6176361655f5f7cb82b682319ef32e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/baseline-withdrawal-resume-author-002/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 96388,
+      "sha256": "896227e84354db439c9e458b86ae3ee2bd9634de8862027ea49ea0efb863b3d4",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/896227e84354db439c9e458b86ae3ee2bd9634de8862027ea49ea0efb863b3d4.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r3-pending-author-001/RESULT.json",
+      "bytes": 1085671,
+      "sha256": "0e9019b9b439454c1e0fba5e50eed131f258c3d94ee8c485dee8ccea999e7fe3",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/0e9019b9b439454c1e0fba5e50eed131f258c3d94ee8c485dee8ccea999e7fe3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r3-pending-author-001/INPUT.exact.json",
+      "bytes": 2949,
+      "sha256": "0d01813f4247b7ad95dd62866c0bbabdfbdae5be023d680a55e8db9ca8d5190a",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/0d01813f4247b7ad95dd62866c0bbabdfbdae5be023d680a55e8db9ca8d5190a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r3-pending-author-001/STATE.json",
+      "bytes": 2605635,
+      "sha256": "4ec02170df1f1b883b8d65c33f5e5a81da60d7c028f5ac02fd1efcc83d3eaf74",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/4ec02170df1f1b883b8d65c33f5e5a81da60d7c028f5ac02fd1efcc83d3eaf74.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r3-pending-author-001/TYPED-PROTECTION.json",
+      "bytes": 1156293,
+      "sha256": "d8942153ea2929503e8e322aac4bf3be0742cf61a26caf8cf910f700c9c021a0",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/d8942153ea2929503e8e322aac4bf3be0742cf61a26caf8cf910f700c9c021a0.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r3-pending-author-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 412013,
+      "sha256": "05e3c7952adca2fcb18d0ba479e9be05b3e7ee1c7f7ead1f71d3729b6e47248f",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/05e3c7952adca2fcb18d0ba479e9be05b3e7ee1c7f7ead1f71d3729b6e47248f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r3-pending-author-input-001/AUTHOR-INPUT.actual.json",
+      "bytes": 2949,
+      "sha256": "0d01813f4247b7ad95dd62866c0bbabdfbdae5be023d680a55e8db9ca8d5190a",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/0d01813f4247b7ad95dd62866c0bbabdfbdae5be023d680a55e8db9ca8d5190a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r3-pending-author-input-001/AUTHOR-ARGV.actual.json",
+      "bytes": 497,
+      "sha256": "ec3112b7ca6042cd9e272e45d6f176bab1e5a333425c83ccb9f8e57b88c89204",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/ec3112b7ca6042cd9e272e45d6f176bab1e5a333425c83ccb9f8e57b88c89204.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r3-pending-author-001/RESULT.json",
+      "bytes": 1085681,
+      "sha256": "1d974010b677376053df69474785f20f5f084d85646ecbfa45749366d1fdc4ca",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/1d974010b677376053df69474785f20f5f084d85646ecbfa45749366d1fdc4ca.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r3-pending-author-001/INPUT.exact.json",
+      "bytes": 2967,
+      "sha256": "049d7dfa567425035bb85e8f67e810e7877bcb7acb4af796b15849e4da7ac15b",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/049d7dfa567425035bb85e8f67e810e7877bcb7acb4af796b15849e4da7ac15b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r3-pending-author-001/STATE.json",
+      "bytes": 2607113,
+      "sha256": "0cada5fe84cd1c0b30d9bbe9ae3c964ed26d567bb8d570a90fff8581599155af",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/0cada5fe84cd1c0b30d9bbe9ae3c964ed26d567bb8d570a90fff8581599155af.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r3-pending-author-001/TYPED-PROTECTION.json",
+      "bytes": 1157884,
+      "sha256": "df93123ea702f742540b919a89274f87874105cd1093b2ac21a57f701742a4df",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/df93123ea702f742540b919a89274f87874105cd1093b2ac21a57f701742a4df.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r3-pending-author-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 959842,
+      "sha256": "a10096be99de9a837880f1894d29ef7fc125723a96679c7142f4aab0605e6798",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/a10096be99de9a837880f1894d29ef7fc125723a96679c7142f4aab0605e6798.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r3-pending-author-input-001/AUTHOR-INPUT.actual.json",
+      "bytes": 2967,
+      "sha256": "049d7dfa567425035bb85e8f67e810e7877bcb7acb4af796b15849e4da7ac15b",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/049d7dfa567425035bb85e8f67e810e7877bcb7acb4af796b15849e4da7ac15b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r3-pending-author-input-001/AUTHOR-ARGV.actual.json",
+      "bytes": 497,
+      "sha256": "efd9ee5ab933790f88f751dfd5cb09f4ff2f39a509f021de338097015f523180",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/efd9ee5ab933790f88f751dfd5cb09f4ff2f39a509f021de338097015f523180.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r3-pending-author-001/RESULT.json",
+      "bytes": 1085689,
+      "sha256": "7cc277d4bca7a4c20f19dbbc8aa99e301517ca4008292ddf09df6c9d1f11dc4d",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/7cc277d4bca7a4c20f19dbbc8aa99e301517ca4008292ddf09df6c9d1f11dc4d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r3-pending-author-001/INPUT.exact.json",
+      "bytes": 2969,
+      "sha256": "2a4df6da8a0b765923cd4ca04260297d475a0be54ab0a3d66e2a491c158883b2",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/2a4df6da8a0b765923cd4ca04260297d475a0be54ab0a3d66e2a491c158883b2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r3-pending-author-001/STATE.json",
+      "bytes": 2600873,
+      "sha256": "3a3c378be96c1324d3766832762d0ada8771a78edfd311fcbc02225922f61dbd",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/3a3c378be96c1324d3766832762d0ada8771a78edfd311fcbc02225922f61dbd.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r3-pending-author-001/TYPED-PROTECTION.json",
+      "bytes": 1158887,
+      "sha256": "c41e28d418b73a9fa799225fce31f62aed7219c77ff709d5d3c59608e5356379",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/c41e28d418b73a9fa799225fce31f62aed7219c77ff709d5d3c59608e5356379.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r3-pending-author-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 1537331,
+      "sha256": "558ba6c5c2e4a23c6252552c7bec5074964f03ac591f9b1851497c1524097e31",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/558ba6c5c2e4a23c6252552c7bec5074964f03ac591f9b1851497c1524097e31.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r3-pending-author-input-001/AUTHOR-INPUT.actual.json",
+      "bytes": 2969,
+      "sha256": "2a4df6da8a0b765923cd4ca04260297d475a0be54ab0a3d66e2a491c158883b2",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/2a4df6da8a0b765923cd4ca04260297d475a0be54ab0a3d66e2a491c158883b2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r3-pending-author-input-001/AUTHOR-ARGV.actual.json",
+      "bytes": 497,
+      "sha256": "79c9554bba82aeab92905c92ba7d51269b397aa1a33334402a4e1ccf5244e389",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/79c9554bba82aeab92905c92ba7d51269b397aa1a33334402a4e1ccf5244e389.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r4-pending-author-001/RESULT.json",
+      "bytes": 1085684,
+      "sha256": "53e3c144a542c7b12bb00e2d0bd0a1d6a681078c34dc61120be88dfe37e62c4d",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/53e3c144a542c7b12bb00e2d0bd0a1d6a681078c34dc61120be88dfe37e62c4d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r4-pending-author-001/INPUT.exact.json",
+      "bytes": 2949,
+      "sha256": "ea9074b2ee22478a583e28d38ac3179d4f7353c1685e050d5e800a96fa38cf8c",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/ea9074b2ee22478a583e28d38ac3179d4f7353c1685e050d5e800a96fa38cf8c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r4-pending-author-001/STATE.json",
+      "bytes": 2605636,
+      "sha256": "7dc5799b31a537b3675fcb77f4c909d3e1e1b6c63a8b22d1fcbe759c005c1c70",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/7dc5799b31a537b3675fcb77f4c909d3e1e1b6c63a8b22d1fcbe759c005c1c70.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r4-pending-author-001/TYPED-PROTECTION.json",
+      "bytes": 1156294,
+      "sha256": "43f7e82427760c0e99a64bd6dcac735e551b6be9084a8dce8ad04c2fa7d38f0a",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/43f7e82427760c0e99a64bd6dcac735e551b6be9084a8dce8ad04c2fa7d38f0a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r4-pending-author-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 2516343,
+      "sha256": "9ec65edd818e457cdec38282265cc045622e23c55732542bcfc115958f931bcb",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/9ec65edd818e457cdec38282265cc045622e23c55732542bcfc115958f931bcb.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r4-pending-author-input-001/AUTHOR-INPUT.actual.json",
+      "bytes": 2949,
+      "sha256": "ea9074b2ee22478a583e28d38ac3179d4f7353c1685e050d5e800a96fa38cf8c",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/ea9074b2ee22478a583e28d38ac3179d4f7353c1685e050d5e800a96fa38cf8c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B1-r4-pending-author-input-001/AUTHOR-ARGV.actual.json",
+      "bytes": 497,
+      "sha256": "9125f5c257bec1dc6db70a1867b945f98183dc09076b32efa64706354afe82b5",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/9125f5c257bec1dc6db70a1867b945f98183dc09076b32efa64706354afe82b5.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r4-pending-author-001/RESULT.json",
+      "bytes": 1085693,
+      "sha256": "f126d06a9413a2fa197eae6c26bfb2cbc5960cc3e81343b64f753aa109b2b3d3",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/f126d06a9413a2fa197eae6c26bfb2cbc5960cc3e81343b64f753aa109b2b3d3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r4-pending-author-001/INPUT.exact.json",
+      "bytes": 2967,
+      "sha256": "50f772dbc8af94873a9351d7a79f34f928feeef55245ae58138a9d89c7f9f989",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/50f772dbc8af94873a9351d7a79f34f928feeef55245ae58138a9d89c7f9f989.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r4-pending-author-001/STATE.json",
+      "bytes": 2607114,
+      "sha256": "64d85c5912945ec70b9194c4a658aabcc3ec0a45042a5f27fc5767ebb25b37c0",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/64d85c5912945ec70b9194c4a658aabcc3ec0a45042a5f27fc5767ebb25b37c0.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r4-pending-author-001/TYPED-PROTECTION.json",
+      "bytes": 1157885,
+      "sha256": "a60a8dc72a060e3d670cf0f8659c781f32a76c7a2f6c53afaa726e8f5f6fb7bc",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/a60a8dc72a060e3d670cf0f8659c781f32a76c7a2f6c53afaa726e8f5f6fb7bc.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r4-pending-author-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 3064293,
+      "sha256": "f4a6746ce1ab2e7b3837bf77ff450d69f6c717b87c226734b4111824f123868b",
+      "role": "existing parsed window/input; exact status only, no reparse or new save body",
+      "zip_entry": "sha256/f4a6746ce1ab2e7b3837bf77ff450d69f6c717b87c226734b4111824f123868b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r4-pending-author-input-001/AUTHOR-INPUT.actual.json",
+      "bytes": 2967,
+      "sha256": "50f772dbc8af94873a9351d7a79f34f928feeef55245ae58138a9d89c7f9f989",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/50f772dbc8af94873a9351d7a79f34f928feeef55245ae58138a9d89c7f9f989.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B2-r4-pending-author-input-001/AUTHOR-ARGV.actual.json",
+      "bytes": 497,
+      "sha256": "1e73613db635e0e2836d1df5bd7da705d482ad7bac34d83b03bea4777f8b28a1",
+      "role": "original checkpoint author request/argv",
+      "zip_entry": "sha256/1e73613db635e0e2836d1df5bd7da705d482ad7bac34d83b03bea4777f8b28a1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0002-r26-root-attach-001.request.json",
+      "bytes": 169,
+      "sha256": "d725d9041ce40e0033c724d99b75dcd9b297fc153c14b7a352260d0d8a5b933d",
+      "role": "first actual attach",
+      "zip_entry": "sha256/d725d9041ce40e0033c724d99b75dcd9b297fc153c14b7a352260d0d8a5b933d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0002-r26-root-attach-001.response.json",
+      "bytes": 977,
+      "sha256": "038e10d202f368b92d9483cd301d1d2f0d75d14bed80bcc48aa27121658da4ab",
+      "role": "first actual attach",
+      "zip_entry": "sha256/038e10d202f368b92d9483cd301d1d2f0d75d14bed80bcc48aa27121658da4ab.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0002-r26-root-attach-001.sdk-result.json",
+      "bytes": 49871,
+      "sha256": "4c0d4b9ae96ce58d615fcd9c0246401b90b96927b08725500b8f3492ac8965f6",
+      "role": "first actual attach",
+      "zip_entry": "sha256/4c0d4b9ae96ce58d615fcd9c0246401b90b96927b08725500b8f3492ac8965f6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0002-r26-root-attach-001.native-01.json",
+      "bytes": 23476,
+      "sha256": "7edb5bffb6644fdad8f37e0cd4e6709761cbd1934f34df34b71f8ab5f48f081f",
+      "role": "first actual attach",
+      "zip_entry": "sha256/7edb5bffb6644fdad8f37e0cd4e6709761cbd1934f34df34b71f8ab5f48f081f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0046-r26-root-r3-withdraw430-query-001.request.json",
+      "bytes": 249,
+      "sha256": "76dde85164fe98d2b34cfbd2d9adb9c2d2aa26db9b8b0eae94fb3f75fdf279f5",
+      "role": "phase2 pending false-positive readonly query",
+      "zip_entry": "sha256/76dde85164fe98d2b34cfbd2d9adb9c2d2aa26db9b8b0eae94fb3f75fdf279f5.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0046-r26-root-r3-withdraw430-query-001.response.json",
+      "bytes": 1039,
+      "sha256": "caac79d243761e23090cba6c2cfd6641ea4eaee8ddc87d05039b1c781a290c1c",
+      "role": "phase2 pending false-positive readonly query",
+      "zip_entry": "sha256/caac79d243761e23090cba6c2cfd6641ea4eaee8ddc87d05039b1c781a290c1c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0046-r26-root-r3-withdraw430-query-001.sdk-result.json",
+      "bytes": 32063,
+      "sha256": "8e692e7f825802014ed3d4e62bd2a2f6dc848bfdda0acc7a523436f4efde1251",
+      "role": "phase2 pending false-positive readonly query",
+      "zip_entry": "sha256/8e692e7f825802014ed3d4e62bd2a2f6dc848bfdda0acc7a523436f4efde1251.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0046-r26-root-r3-withdraw430-query-001.native-01.json",
+      "bytes": 14828,
+      "sha256": "ffa11e9552042f37a5f8e9a2a534fed1896f15b183d10e229cfcebd906247f12",
+      "role": "phase2 pending false-positive readonly query",
+      "zip_entry": "sha256/ffa11e9552042f37a5f8e9a2a534fed1896f15b183d10e229cfcebd906247f12.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0047-r26-root-r3-withdraw430-select-001.request.json",
+      "bytes": 275,
+      "sha256": "5b52ea3e3fc0b9222dfe914428ab8cac2e4d1a371b2632c54d251b176878cf09",
+      "role": "lawful r3 withdraw",
+      "zip_entry": "sha256/5b52ea3e3fc0b9222dfe914428ab8cac2e4d1a371b2632c54d251b176878cf09.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0047-r26-root-r3-withdraw430-select-001.response.json",
+      "bytes": 1044,
+      "sha256": "104446b46369aaf391548d8be74f8e6f086f3fd42396ca6a175f264836075a8e",
+      "role": "lawful r3 withdraw",
+      "zip_entry": "sha256/104446b46369aaf391548d8be74f8e6f086f3fd42396ca6a175f264836075a8e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0047-r26-root-r3-withdraw430-select-001.sdk-result.json",
+      "bytes": 4078065,
+      "sha256": "f66b4a825126edd3a2b720a9d002f227d25e4afce910fe412e7165a4d9dba163",
+      "role": "lawful r3 withdraw",
+      "zip_entry": "sha256/f66b4a825126edd3a2b720a9d002f227d25e4afce910fe412e7165a4d9dba163.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0047-r26-root-r3-withdraw430-select-001.native-01.json",
+      "bytes": 1933134,
+      "sha256": "17836f9a9fcf2b43b1f5882bf0433900a14709d46baf0d20c09829186e751651",
+      "role": "lawful r3 withdraw",
+      "zip_entry": "sha256/17836f9a9fcf2b43b1f5882bf0433900a14709d46baf0d20c09829186e751651.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0048-r26-root-r3-withdraw-save-001.request.json",
+      "bytes": 212,
+      "sha256": "6f11b95b7d6d635de1ecbc9845673066003f50f3b8ab133ef55005e57725f989",
+      "role": "immutable withdrawn checkpoint save",
+      "zip_entry": "sha256/6f11b95b7d6d635de1ecbc9845673066003f50f3b8ab133ef55005e57725f989.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0048-r26-root-r3-withdraw-save-001.response.json",
+      "bytes": 1022,
+      "sha256": "ee3446cb2576771a4e65a841fbd8cc31348e729778b4fdfc5d9d9ab5f6493d76",
+      "role": "immutable withdrawn checkpoint save",
+      "zip_entry": "sha256/ee3446cb2576771a4e65a841fbd8cc31348e729778b4fdfc5d9d9ab5f6493d76.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0048-r26-root-r3-withdraw-save-001.sdk-result.json",
+      "bytes": 4083195,
+      "sha256": "f54929b6374d0bdd25e267ebc379737363fdb578b15cd321ca8c7e45d9db81a1",
+      "role": "immutable withdrawn checkpoint save",
+      "zip_entry": "sha256/f54929b6374d0bdd25e267ebc379737363fdb578b15cd321ca8c7e45d9db81a1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0048-r26-root-r3-withdraw-save-001.native-01.json",
+      "bytes": 1935576,
+      "sha256": "fd99529e9c7fadf9a18001449b698243056ecdb6604b55305cd7c8f7760f480a",
+      "role": "immutable withdrawn checkpoint save",
+      "zip_entry": "sha256/fd99529e9c7fadf9a18001449b698243056ecdb6604b55305cd7c8f7760f480a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0064-r26-root-r4-410-query-001.request.json",
+      "bytes": 241,
+      "sha256": "80bce19ddbeeab22b5697407fc5ab6eee8c32cded34deb169d1cd780b3f7ca49",
+      "role": "R4 nomination410 before",
+      "zip_entry": "sha256/80bce19ddbeeab22b5697407fc5ab6eee8c32cded34deb169d1cd780b3f7ca49.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0064-r26-root-r4-410-query-001.response.json",
+      "bytes": 1007,
+      "sha256": "32ec5c9bee99a50f50c74567ef194d5b11f52ad9b02abe875fd08f90179a24d8",
+      "role": "R4 nomination410 before",
+      "zip_entry": "sha256/32ec5c9bee99a50f50c74567ef194d5b11f52ad9b02abe875fd08f90179a24d8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0064-r26-root-r4-410-query-001.sdk-result.json",
+      "bytes": 30323,
+      "sha256": "92c567e069ff8b2c66420112344ce78b6843f2341daba080b08e4bd56524c478",
+      "role": "R4 nomination410 before",
+      "zip_entry": "sha256/92c567e069ff8b2c66420112344ce78b6843f2341daba080b08e4bd56524c478.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0064-r26-root-r4-410-query-001.native-01.json",
+      "bytes": 14008,
+      "sha256": "9c679cc3269468d54a072bc9c3a5bf3adb5fa8a311a7b2a8e709b6bcde7a8c2f",
+      "role": "R4 nomination410 before",
+      "zip_entry": "sha256/9c679cc3269468d54a072bc9c3a5bf3adb5fa8a311a7b2a8e709b6bcde7a8c2f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0065-r26-root-r4-410-select-001.request.json",
+      "bytes": 267,
+      "sha256": "50d9235e6ea938133a9d2f5ee4454095f613da12e77db52843efa8706e53eb9c",
+      "role": "R4 nomination410 select",
+      "zip_entry": "sha256/50d9235e6ea938133a9d2f5ee4454095f613da12e77db52843efa8706e53eb9c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0065-r26-root-r4-410-select-001.response.json",
+      "bytes": 1012,
+      "sha256": "5e0c86f71fa75ff41897e905556e5f78d580a62d782e47aadc169bf4284377ce",
+      "role": "R4 nomination410 select",
+      "zip_entry": "sha256/5e0c86f71fa75ff41897e905556e5f78d580a62d782e47aadc169bf4284377ce.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0065-r26-root-r4-410-select-001.sdk-result.json",
+      "bytes": 6171409,
+      "sha256": "8d75f9b81b6660d0d04d1afb57fb5d4b4b4f639d8dd7d67d70d4f65460c9f29e",
+      "role": "R4 nomination410 select",
+      "zip_entry": "sha256/8d75f9b81b6660d0d04d1afb57fb5d4b4b4f639d8dd7d67d70d4f65460c9f29e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0065-r26-root-r4-410-select-001.native-01.json",
+      "bytes": 2925554,
+      "sha256": "660fe5ae1c486aebe1d66a400675767a5b6b9a1e517c3bb367a4ae965e25911c",
+      "role": "R4 nomination410 select",
+      "zip_entry": "sha256/660fe5ae1c486aebe1d66a400675767a5b6b9a1e517c3bb367a4ae965e25911c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0076-r26-root-r4-human412-query-001.request.json",
+      "bytes": 246,
+      "sha256": "768a5ca94da124f8e82f4cb9d605b53e2e62b52b31f0c4c5310dd18e8fa80ed9",
+      "role": "R4 human412 before",
+      "zip_entry": "sha256/768a5ca94da124f8e82f4cb9d605b53e2e62b52b31f0c4c5310dd18e8fa80ed9.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0076-r26-root-r4-human412-query-001.response.json",
+      "bytes": 1027,
+      "sha256": "7e1f13272d6a21805321913e90013c08238d59c23a48f8602fd59ead41958319",
+      "role": "R4 human412 before",
+      "zip_entry": "sha256/7e1f13272d6a21805321913e90013c08238d59c23a48f8602fd59ead41958319.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0076-r26-root-r4-human412-query-001.sdk-result.json",
+      "bytes": 26791,
+      "sha256": "a0476188c9b084e4f69f1b8dd35ca529a52312392931484a6557967a42155441",
+      "role": "R4 human412 before",
+      "zip_entry": "sha256/a0476188c9b084e4f69f1b8dd35ca529a52312392931484a6557967a42155441.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0076-r26-root-r4-human412-query-001.native-01.json",
+      "bytes": 12362,
+      "sha256": "730d6f12451eaac61a340b0368542cf4d9fff081977437946974c7a397bae434",
+      "role": "R4 human412 before",
+      "zip_entry": "sha256/730d6f12451eaac61a340b0368542cf4d9fff081977437946974c7a397bae434.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0077-r26-root-r4-human412-yes-001.request.json",
+      "bytes": 269,
+      "sha256": "5af249f76e62aba4e10587591930f1dadb3fa34e6f78f99609bbe799719edb99",
+      "role": "R4 human412 YES",
+      "zip_entry": "sha256/5af249f76e62aba4e10587591930f1dadb3fa34e6f78f99609bbe799719edb99.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0077-r26-root-r4-human412-yes-001.response.json",
+      "bytes": 1020,
+      "sha256": "1782d25ba89bf38378d518af19dcf7706213ccc9d625c6b27aa01ce6853efe4f",
+      "role": "R4 human412 YES",
+      "zip_entry": "sha256/1782d25ba89bf38378d518af19dcf7706213ccc9d625c6b27aa01ce6853efe4f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0077-r26-root-r4-human412-yes-001.sdk-result.json",
+      "bytes": 7284675,
+      "sha256": "8ea979c435ba0f886a8d8ff9b2985ba5dc38608670bd39e9b26f8b8128664e1d",
+      "role": "R4 human412 YES",
+      "zip_entry": "sha256/8ea979c435ba0f886a8d8ff9b2985ba5dc38608670bd39e9b26f8b8128664e1d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0077-r26-root-r4-human412-yes-001.native-01.json",
+      "bytes": 3453232,
+      "sha256": "3186d09f82d877f7f989cb335afbae4317b3b4f9a0e402422753769a109eabc1",
+      "role": "R4 human412 YES",
+      "zip_entry": "sha256/3186d09f82d877f7f989cb335afbae4317b3b4f9a0e402422753769a109eabc1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0078-r26-root-r4-scholar411-query-001.request.json",
+      "bytes": 248,
+      "sha256": "e344e73fdc27d4225b25e8eeb55c624e25e87ca71f466b1c5557fd5c89c860a3",
+      "role": "R4 scholar411 before",
+      "zip_entry": "sha256/e344e73fdc27d4225b25e8eeb55c624e25e87ca71f466b1c5557fd5c89c860a3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0078-r26-root-r4-scholar411-query-001.response.json",
+      "bytes": 1035,
+      "sha256": "8fb85ed445445eb26577ec1020cf9a6ced34bdc1d8b04cadded048840564e67b",
+      "role": "R4 scholar411 before",
+      "zip_entry": "sha256/8fb85ed445445eb26577ec1020cf9a6ced34bdc1d8b04cadded048840564e67b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0078-r26-root-r4-scholar411-query-001.sdk-result.json",
+      "bytes": 26791,
+      "sha256": "ab64fd1bb478f9765b3044c1e7b4748250a66aca5a558e44d49970e57acd1363",
+      "role": "R4 scholar411 before",
+      "zip_entry": "sha256/ab64fd1bb478f9765b3044c1e7b4748250a66aca5a558e44d49970e57acd1363.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0078-r26-root-r4-scholar411-query-001.native-01.json",
+      "bytes": 12362,
+      "sha256": "19dafd9e8de9c6fc6d9ea0f79ce10c8f2d47b7ba9345b229ac8c08bba263a13f",
+      "role": "R4 scholar411 before",
+      "zip_entry": "sha256/19dafd9e8de9c6fc6d9ea0f79ce10c8f2d47b7ba9345b229ac8c08bba263a13f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0079-r26-root-r4-scholar411-yes-001.request.json",
+      "bytes": 271,
+      "sha256": "05eec0f9db120977f9cc502923f93ef0806819e813dd8867bb79ce13b9973ed7",
+      "role": "R4 scholar411 YES",
+      "zip_entry": "sha256/05eec0f9db120977f9cc502923f93ef0806819e813dd8867bb79ce13b9973ed7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0079-r26-root-r4-scholar411-yes-001.response.json",
+      "bytes": 1028,
+      "sha256": "1aacf24eb478fa852698f74d7a16c653d8e6a2ea5cb2647b0476d4187ec5b235",
+      "role": "R4 scholar411 YES",
+      "zip_entry": "sha256/1aacf24eb478fa852698f74d7a16c653d8e6a2ea5cb2647b0476d4187ec5b235.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0079-r26-root-r4-scholar411-yes-001.sdk-result.json",
+      "bytes": 7361863,
+      "sha256": "ed9498904b3aff24a8b8af7e1aa14ba46f1593bb25ff3c4d7b9d0abfe1a00f9a",
+      "role": "R4 scholar411 YES",
+      "zip_entry": "sha256/ed9498904b3aff24a8b8af7e1aa14ba46f1593bb25ff3c4d7b9d0abfe1a00f9a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0079-r26-root-r4-scholar411-yes-001.native-01.json",
+      "bytes": 3489708,
+      "sha256": "a8e5c299a2b04d8363a96792897bbce4198e4a88b51e7206949f1939db5dd7a9",
+      "role": "R4 scholar411 YES",
+      "zip_entry": "sha256/a8e5c299a2b04d8363a96792897bbce4198e4a88b51e7206949f1939db5dd7a9.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0080-r26-root-r4-sign413-query-001.request.json",
+      "bytes": 245,
+      "sha256": "a4f15e1f333ce507e3c0afa90681ee6858cc51b3f7839567ec7227fd410115ab",
+      "role": "R4 signature413 before",
+      "zip_entry": "sha256/a4f15e1f333ce507e3c0afa90681ee6858cc51b3f7839567ec7227fd410115ab.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0080-r26-root-r4-sign413-query-001.response.json",
+      "bytes": 1023,
+      "sha256": "588e5517b6d8adb793a0a819c3143416dff8f31924189ccbac83fad57d80ad46",
+      "role": "R4 signature413 before",
+      "zip_entry": "sha256/588e5517b6d8adb793a0a819c3143416dff8f31924189ccbac83fad57d80ad46.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0080-r26-root-r4-sign413-query-001.sdk-result.json",
+      "bytes": 33823,
+      "sha256": "16837c2c1ef4fd99f92a338999c5c2e8841239a17336d0ee7c21d7bde31c2e7d",
+      "role": "R4 signature413 before",
+      "zip_entry": "sha256/16837c2c1ef4fd99f92a338999c5c2e8841239a17336d0ee7c21d7bde31c2e7d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0080-r26-root-r4-sign413-query-001.native-01.json",
+      "bytes": 15650,
+      "sha256": "fb6a45731e381d85b0db9e88cdac798d65cebdab73600a027a57f90558483cdd",
+      "role": "R4 signature413 before",
+      "zip_entry": "sha256/fb6a45731e381d85b0db9e88cdac798d65cebdab73600a027a57f90558483cdd.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0081-r26-root-r4-sign413-yes-001.request.json",
+      "bytes": 268,
+      "sha256": "64000ab7cf7f7c8eefb7ce0208fd3856f818395543752d4973bed69a31b58eab",
+      "role": "R4 signature413 YES",
+      "zip_entry": "sha256/64000ab7cf7f7c8eefb7ce0208fd3856f818395543752d4973bed69a31b58eab.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0081-r26-root-r4-sign413-yes-001.response.json",
+      "bytes": 1016,
+      "sha256": "2b4b4780153c1fc10072d614510722f4bd70b460029893231f2324ad1cf76741",
+      "role": "R4 signature413 YES",
+      "zip_entry": "sha256/2b4b4780153c1fc10072d614510722f4bd70b460029893231f2324ad1cf76741.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0081-r26-root-r4-sign413-yes-001.sdk-result.json",
+      "bytes": 7452129,
+      "sha256": "4b5c0972e4c8a795090187420d697f2d46e65dd1b48332e4d2f1990452e838e6",
+      "role": "R4 signature413 YES",
+      "zip_entry": "sha256/4b5c0972e4c8a795090187420d697f2d46e65dd1b48332e4d2f1990452e838e6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0081-r26-root-r4-sign413-yes-001.native-01.json",
+      "bytes": 3532396,
+      "sha256": "9ef96024a00aefabd4c953781c89335e59bac4a4e2d8cd921864aa2a8ed0af82",
+      "role": "R4 signature413 YES",
+      "zip_entry": "sha256/9ef96024a00aefabd4c953781c89335e59bac4a4e2d8cd921864aa2a8ed0af82.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0087-r26-root-r4-review430-query-001.request.json",
+      "bytes": 247,
+      "sha256": "266b32b9b8c500c9e88e30a0442bd5cd674ed66d9260bba4758c165804a3b5d6",
+      "role": "R4 review430 current query",
+      "zip_entry": "sha256/266b32b9b8c500c9e88e30a0442bd5cd674ed66d9260bba4758c165804a3b5d6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0087-r26-root-r4-review430-query-001.response.json",
+      "bytes": 1031,
+      "sha256": "05e1b98db75d5f9fc0f0dce748649310209645d89530fe25cc49b74a69ba98ea",
+      "role": "R4 review430 current query",
+      "zip_entry": "sha256/05e1b98db75d5f9fc0f0dce748649310209645d89530fe25cc49b74a69ba98ea.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0087-r26-root-r4-review430-query-001.sdk-result.json",
+      "bytes": 32063,
+      "sha256": "41d2daf2ea12c321953a8cf1ba0190b0b85e3a8e783bd806f68cb0444f12429c",
+      "role": "R4 review430 current query",
+      "zip_entry": "sha256/41d2daf2ea12c321953a8cf1ba0190b0b85e3a8e783bd806f68cb0444f12429c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0087-r26-root-r4-review430-query-001.native-01.json",
+      "bytes": 14828,
+      "sha256": "eca5ba02cf389d7a00bb5e682394861415d8f346e9a6e12aeb3f23fa759e9c27",
+      "role": "R4 review430 current query",
+      "zip_entry": "sha256/eca5ba02cf389d7a00bb5e682394861415d8f346e9a6e12aeb3f23fa759e9c27.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0088-r26-root-r4-reference430-query-001.request.json",
+      "bytes": 250,
+      "sha256": "e2314e01b7ec4370a0e9bac2a40ffe59da1b6ceb68eee8b600337520205bfce1",
+      "role": "R4 same-round reference430 query",
+      "zip_entry": "sha256/e2314e01b7ec4370a0e9bac2a40ffe59da1b6ceb68eee8b600337520205bfce1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0088-r26-root-r4-reference430-query-001.response.json",
+      "bytes": 1043,
+      "sha256": "1e3d0de9553674253070e448a88140a62101453e7bdd129218da5885c240833e",
+      "role": "R4 same-round reference430 query",
+      "zip_entry": "sha256/1e3d0de9553674253070e448a88140a62101453e7bdd129218da5885c240833e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0088-r26-root-r4-reference430-query-001.sdk-result.json",
+      "bytes": 32063,
+      "sha256": "7f6680580fbb0f632f9ec49cfdf0e212c84fa85311196865429e1556f9c604f8",
+      "role": "R4 same-round reference430 query",
+      "zip_entry": "sha256/7f6680580fbb0f632f9ec49cfdf0e212c84fa85311196865429e1556f9c604f8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0088-r26-root-r4-reference430-query-001.native-01.json",
+      "bytes": 14828,
+      "sha256": "05c84609711a32c8a9c43284518c1146f957d367325a3de7e2365f3f015ee54d",
+      "role": "R4 same-round reference430 query",
+      "zip_entry": "sha256/05c84609711a32c8a9c43284518c1146f957d367325a3de7e2365f3f015ee54d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0089-r26-root-r4-b3-save-001.request.json",
+      "bytes": 206,
+      "sha256": "b09686c01f8cc8de377330b2827eb1d9e426f276d7117bd7bd6afb592e73f6a4",
+      "role": "R4 B3 save only; author pending at cutoff",
+      "zip_entry": "sha256/b09686c01f8cc8de377330b2827eb1d9e426f276d7117bd7bd6afb592e73f6a4.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0089-r26-root-r4-b3-save-001.response.json",
+      "bytes": 998,
+      "sha256": "1bd659c24b988a1ec3d3bbe1e9674cb7509cc306cb39528c1c5a32c5b08ae791",
+      "role": "R4 B3 save only; author pending at cutoff",
+      "zip_entry": "sha256/1bd659c24b988a1ec3d3bbe1e9674cb7509cc306cb39528c1c5a32c5b08ae791.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0089-r26-root-r4-b3-save-001.sdk-result.json",
+      "bytes": 8552387,
+      "sha256": "ada1d5d525b9e439cd912916dd5778b8ff693970caef1849392d046baf0b0f93",
+      "role": "R4 B3 save only; author pending at cutoff",
+      "zip_entry": "sha256/ada1d5d525b9e439cd912916dd5778b8ff693970caef1849392d046baf0b0f93.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0089-r26-root-r4-b3-save-001.native-01.json",
+      "bytes": 4053918,
+      "sha256": "7c855308f464a78600dde9b5930d734f20ecdf943b994c130db074b0dc863a24",
+      "role": "R4 B3 save only; author pending at cutoff",
+      "zip_entry": "sha256/7c855308f464a78600dde9b5930d734f20ecdf943b994c130db074b0dc863a24.raw"
+    }
+  ],
+  "unique_original_sets": 127,
+  "raw_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/raw-evidence.zip",
+    "bytes": 6803511,
+    "sha256": "7de1563c7e57e2be9812ea98d76ca08b807b72fd777c4daed3e5fd95e12cbd82"
+  },
+  "external_reference_only": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/baseline-withdrawal-resume/checkpoint.ck3",
+      "bytes": 91671419,
+      "sha256": "fc27048d8a856e2ff0ebb633c750bba2e94cb503fd11e624d696ecd87eba6a67",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91671419,
+      "sha256": "fc27048d8a856e2ff0ebb633c750bba2e94cb503fd11e624d696ecd87eba6a67",
+      "date_raw": 53144712,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 1,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B1-phase1-r3-pending/checkpoint.ck3",
+      "bytes": 91709199,
+      "sha256": "1b5e231fbe5bd78ee317addb1dfb41a34ebe998323289673a50f96119ea9b00b",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709199,
+      "sha256": "1b5e231fbe5bd78ee317addb1dfb41a34ebe998323289673a50f96119ea9b00b",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 5,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B2-representatives-r3-pending/checkpoint.ck3",
+      "bytes": 91708585,
+      "sha256": "4b99bcec7ff9ccdd01ef1cc6eeb0ca23882bd57cd644eafc770f994a162bec10",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91708585,
+      "sha256": "4b99bcec7ff9ccdd01ef1cc6eeb0ca23882bd57cd644eafc770f994a162bec10",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 13,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B3-signed-precommit-r3-pending/checkpoint.ck3",
+      "bytes": 91708580,
+      "sha256": "795ac295ac1a810b1851d9f51194ef0adba1ca9809729c8af19393fa38599bb5",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91708580,
+      "sha256": "795ac295ac1a810b1851d9f51194ef0adba1ca9809729c8af19393fa38599bb5",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 23,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B1-phase1-r4-pending/checkpoint.ck3",
+      "bytes": 91709837,
+      "sha256": "0600c76685140bb78e1ddcc1cde9c2c48aa7baffb2f2e37eac0707dab647a576",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709837,
+      "sha256": "0600c76685140bb78e1ddcc1cde9c2c48aa7baffb2f2e37eac0707dab647a576",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 33,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B2-representatives-r4-pending/checkpoint.ck3",
+      "bytes": 91709222,
+      "sha256": "6f4e2f524ba676b34a661817fdf0cab9ec59a3a3d0a1b9f9586f3806c56d891f",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709222,
+      "sha256": "6f4e2f524ba676b34a661817fdf0cab9ec59a3a3d0a1b9f9586f3806c56d891f",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 41,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91672056,
+      "sha256": "d690818c1264505c286c24aee4d4c9ada9f479166c6c54c5ecfb19e76327ea4d",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 29,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709986,
+      "sha256": "38119cc76d82285613b92e0591e218c8a01f20ab2038eb62cad068e686e250e7",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 58,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    }
+  ],
+  "closure_refs": [],
+  "closure_status_literal": null,
+  "whole_mod": "NOT_GREEN",
+  "future_business_credit": null,
+  "archive_status": "CURRENT_CUTOFF_DRAFT_ONLY"
+}

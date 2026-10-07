@@ -1,0 +1,1441 @@
+{
+  "schema": "lyd.r26.original-byte-inventory.v1",
+  "status": "R26_TYPED_LIFECYCLE_CLOSED_BUSINESS_NOT_GREEN",
+  "source_head": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+  "original_files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/DELIVERY.actual.json",
+      "bytes": 4598,
+      "sha256": "a0896023458582a173f30d300bea7ced7c8c45f7e2a9e4bce3c56b6fde3df73b",
+      "role": "prior immutable cutoff delivery; its ZIPs are not reread or copied",
+      "zip_entry": "sha256/a0896023458582a173f30d300bea7ced7c8c45f7e2a9e4bce3c56b6fde3df73b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-b3-formal-cutoff-supplement-sourceonly-20261008-001/DELIVERY.actual.json",
+      "bytes": 2074,
+      "sha256": "9bd915333f3b57ff7a6cf47504abe0886025de51f1f9f88e87b1965681a4df2d",
+      "role": "prior immutable cutoff delivery; its ZIPs are not reread or copied",
+      "zip_entry": "sha256/9bd915333f3b57ff7a6cf47504abe0886025de51f1f9f88e87b1965681a4df2d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/CHECKPOINT-REQUEST.actual.json",
+      "bytes": 153754,
+      "sha256": "8c11637c5d0b4e7e6e0e8e5df37a9d975c8211a8c52cdb9649a150675e419318",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/8c11637c5d0b4e7e6e0e8e5df37a9d975c8211a8c52cdb9649a150675e419318.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/CHECKPOINT-REQUEST.native-qualified.json",
+      "bytes": 164563,
+      "sha256": "76595300d8896e24c331abd100429b4cd4b779d965351d19c2773e796c8b6bcb",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/76595300d8896e24c331abd100429b4cd4b779d965351d19c2773e796c8b6bcb.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 4026791,
+      "sha256": "3c127fcebe6827dfb9b807d214b678db1f30176fe65942ec1a4e67e014a33137",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/3c127fcebe6827dfb9b807d214b678db1f30176fe65942ec1a4e67e014a33137.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/CONVERSION-REQUEST.actual-or-pending.json",
+      "bytes": 10247,
+      "sha256": "5b913b8d665b2d1b2b5cdde2d4b2bf263ccd16a9e507056a61238dc69cfd24d9",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/5b913b8d665b2d1b2b5cdde2d4b2bf263ccd16a9e507056a61238dc69cfd24d9.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/FORMAL-NATIVE-QUALIFICATION.actual-or-pending.json",
+      "bytes": 9855,
+      "sha256": "b26d8461c1d0aa986dcdbceda14da86a8397d93131c463ed962cf2bd7bc10c49",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/b26d8461c1d0aa986dcdbceda14da86a8397d93131c463ed962cf2bd7bc10c49.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/INPUT.exact.json",
+      "bytes": 2963,
+      "sha256": "f990588614cfc56bd754c8485ff3a393bf96a3bd837a5c0f9465362a84fc5520",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/f990588614cfc56bd754c8485ff3a393bf96a3bd837a5c0f9465362a84fc5520.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+      "bytes": 1022553,
+      "sha256": "795e5a32fab30dc8b3c970b47103ae95be34092896464fee634e2d975303c91c",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/795e5a32fab30dc8b3c970b47103ae95be34092896464fee634e2d975303c91c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/PROVENANCE.actual-or-pending.json",
+      "bytes": 10938,
+      "sha256": "8e0a2b4ba7d4e81539d89bc1f66ae3f4d8536daddc2ccb0d743bbe1b9dcad1a2",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/8e0a2b4ba7d4e81539d89bc1f66ae3f4d8536daddc2ccb0d743bbe1b9dcad1a2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/RESULT.json",
+      "bytes": 1086732,
+      "sha256": "24244fc17f81197cc27199125d7bfc78f57abeb2d6da87c88d3b91e8bef2a45d",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/24244fc17f81197cc27199125d7bfc78f57abeb2d6da87c88d3b91e8bef2a45d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/STATE.json",
+      "bytes": 630861,
+      "sha256": "378890f648ba4eb867ec7e71c0734be8769763dee0102993421f1db26cd5d593",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/378890f648ba4eb867ec7e71c0734be8769763dee0102993421f1db26cd5d593.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/STATE.native-qualified.json",
+      "bytes": 630861,
+      "sha256": "378890f648ba4eb867ec7e71c0734be8769763dee0102993421f1db26cd5d593",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/378890f648ba4eb867ec7e71c0734be8769763dee0102993421f1db26cd5d593.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/TYPED-PROTECTION.json",
+      "bytes": 1010657,
+      "sha256": "a767d13982d52923130143199aebdae86208f9b8a68af4d0717c7d387c06e495",
+      "role": "B4 first body parse0 / actual protection RED / independent formal UNKNOWN",
+      "zip_entry": "sha256/a767d13982d52923130143199aebdae86208f9b8a68af4d0717c7d387c06e495.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-author-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1548,
+      "sha256": "fe28a8715029b8ff79ac814d489d8a6a6b9ebc03543c5478c6ceaaeca9084cd9",
+      "role": "ROOT original B4 author completion; body1, no rerun",
+      "zip_entry": "sha256/fe28a8715029b8ff79ac814d489d8a6a6b9ebc03543c5478c6ceaaeca9084cd9.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-author-original-exec-20261008-001/stdout",
+      "bytes": 215,
+      "sha256": "aace48faa2774ded39382964a51c20cf6664d738d81b3a40109c8305f4f21bd8",
+      "role": "ROOT original B4 author completion; body1, no rerun original stdio",
+      "zip_entry": "sha256/aace48faa2774ded39382964a51c20cf6664d738d81b3a40109c8305f4f21bd8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-author-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT original B4 author completion; body1, no rerun original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/INDEX.json",
+      "bytes": 12416,
+      "sha256": "de8975099e726637e68ed79fb35eabdd58c1648c4a19b73ee4b72a3f206365e4",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/de8975099e726637e68ed79fb35eabdd58c1648c4a19b73ee4b72a3f206365e4.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/REPORT.actual.json",
+      "bytes": 4540,
+      "sha256": "f52ed99fb72d3fea5ca58d74e14579a8da01263e9e8a07fd8e3b2097fb8b3a17",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/f52ed99fb72d3fea5ca58d74e14579a8da01263e9e8a07fd8e3b2097fb8b3a17.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/ASSESSMENT.md",
+      "bytes": 4406,
+      "sha256": "c004ac9b57952a24806e0f245d96e618a253c7c6554472662d7600da90648329",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/c004ac9b57952a24806e0f245d96e618a253c7c6554472662d7600da90648329.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/DELTA-SUMMARY.actual.json",
+      "bytes": 3714,
+      "sha256": "92e38e3f5a34ecfe3345c2045fc9430c89f2226a8630a820fd0b14929f0b6f87",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/92e38e3f5a34ecfe3345c2045fc9430c89f2226a8630a820fd0b14929f0b6f87.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/FIELD-DELTAS.actual.json",
+      "bytes": 38539,
+      "sha256": "5461b54b1cbf1f76aa9c8f2541f27b4e36025de6e8da109b1fca355018a2a70f",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/5461b54b1cbf1f76aa9c8f2541f27b4e36025de6e8da109b1fca355018a2a70f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/CURRENT-MEMBERSHIP.actual.json",
+      "bytes": 977,
+      "sha256": "35642af39a69515ec45b7b7d428067188b01cf44a38ddf58f81960a54fa0de8e",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/35642af39a69515ec45b7b7d428067188b01cf44a38ddf58f81960a54fa0de8e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/LAW-ORIGINS.actual.json",
+      "bytes": 38579,
+      "sha256": "09a68b1de6d7964237b648a2bfc4aa8968c7472a13816bcd78f826b88d8e57cd",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/09a68b1de6d7964237b648a2bfc4aa8968c7472a13816bcd78f826b88d8e57cd.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/VANILLA-TITLE-PATHS.actual.json",
+      "bytes": 10384,
+      "sha256": "d19c55df7fe8ec10162b3b585c96d74cf2de0c3fe026de210efee4368b175f37",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/d19c55df7fe8ec10162b3b585c96d74cf2de0c3fe026de210efee4368b175f37.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/CANDIDATE-AUTHOR.actual.json",
+      "bytes": 1141,
+      "sha256": "9008ae05c1fc4af86a0ea7f8b9891e3c9cd459bd9febd23d466b1d9dfe8fada0",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/9008ae05c1fc4af86a0ea7f8b9891e3c9cd459bd9febd23d466b1d9dfe8fada0.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/CANDIDATE-AUTHOR-002.actual.json",
+      "bytes": 1149,
+      "sha256": "a390626531307b8ce1cd97e680b0434827e12dac9786c244f990d255b29235a0",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/a390626531307b8ce1cd97e680b0434827e12dac9786c244f990d255b29235a0.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/candidate-author.stderr",
+      "bytes": 671,
+      "sha256": "3de24b35abf0d0f99a5757d79bc08d8e2048885f210beb357f8b765c3048cb66",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/3de24b35abf0d0f99a5757d79bc08d8e2048885f210beb357f8b765c3048cb66.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/candidate-author-002.stdout",
+      "bytes": 826,
+      "sha256": "5551db3132e4d8d8908fd74de5c1b0267d2fcc5aed686ae2e110c30908fbf7b1",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/5551db3132e4d8d8908fd74de5c1b0267d2fcc5aed686ae2e110c30908fbf7b1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/candidate-author-002.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "bounded already-parsed AST/source diagnosis, candidate unvalidated, old source failures retained",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/zero-explicit-realm-candidate-002/INDEX.json",
+      "bytes": 2422,
+      "sha256": "6bfeebfb310e7d6cebab433db2dac338b5ea2b7247cc1823b17c9faae447de63",
+      "role": "zero explicit realm-effect source isolation candidate; no native/runtime acceptance",
+      "zip_entry": "sha256/6bfeebfb310e7d6cebab433db2dac338b5ea2b7247cc1823b17c9faae447de63.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/zero-explicit-realm-candidate-002/SOURCE-CHECKS.actual.json",
+      "bytes": 6496,
+      "sha256": "9d77428c910bdda9a3b13f53ede7ba12a2528a9768a03eec2af937ef6115f23f",
+      "role": "zero explicit realm-effect source isolation candidate; no native/runtime acceptance",
+      "zip_entry": "sha256/9d77428c910bdda9a3b13f53ede7ba12a2528a9768a03eec2af937ef6115f23f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/zero-explicit-realm-candidate-002/FACTORY-ONLY.candidate.patch",
+      "bytes": 6101,
+      "sha256": "5f1fd0b6d5c175236192738c05b77e464edf34760bb993ea4649b5175114596b",
+      "role": "zero explicit realm-effect source isolation candidate; no native/runtime acceptance",
+      "zip_entry": "sha256/5f1fd0b6d5c175236192738c05b77e464edf34760bb993ea4649b5175114596b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/zero-explicit-realm-candidate-002/ZERO-EXPLICIT-REALM-LAW.candidate.patch",
+      "bytes": 20817,
+      "sha256": "8da4eecaf622ddb5fe55c435b6e4035c25c5d2f863b949e347e176034cbd00d5",
+      "role": "zero explicit realm-effect source isolation candidate; no native/runtime acceptance",
+      "zip_entry": "sha256/8da4eecaf622ddb5fe55c435b6e4035c25c5d2f863b949e347e176034cbd00d5.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/zero-explicit-realm-candidate-002/FOCUSED.actual.json",
+      "bytes": 1012,
+      "sha256": "d787ea9b360b07f419d286c508e8b4ccbed186ec23c7b2437784b0e6ee405c25",
+      "role": "zero explicit realm-effect source isolation candidate; no native/runtime acceptance",
+      "zip_entry": "sha256/d787ea9b360b07f419d286c508e8b4ccbed186ec23c7b2437784b0e6ee405c25.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/zero-explicit-realm-candidate-002/focused.stderr",
+      "bytes": 108,
+      "sha256": "fa51cb72365868738637ccdcd51945b7bb05958aedcaa21f3084c1e3aee30ed1",
+      "role": "zero explicit realm-effect source isolation candidate; no native/runtime acceptance",
+      "zip_entry": "sha256/fa51cb72365868738637ccdcd51945b7bb05958aedcaa21f3084c1e3aee30ed1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-postcommit-protection-and-temp-law-sourceonly-20261008-001/zero-explicit-realm-candidate-002/focused.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "zero explicit realm-effect source isolation candidate; no native/runtime acceptance",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0098-r26-root-r4-final431-query-001.request.json",
+      "bytes": 246,
+      "sha256": "203769b15ecda05231c930dc4661ebf1b8ce27e9d4c87024bafb9091aad0167e",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/203769b15ecda05231c930dc4661ebf1b8ce27e9d4c87024bafb9091aad0167e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0098-r26-root-r4-final431-query-001.response.json",
+      "bytes": 1027,
+      "sha256": "a6277c67846f3b0e38c8edaf4eaabc0b8b629d3ec79edcacbd664b71cedfafe6",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/a6277c67846f3b0e38c8edaf4eaabc0b8b629d3ec79edcacbd664b71cedfafe6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0098-r26-root-r4-final431-query-001.sdk-result.json",
+      "bytes": 40011,
+      "sha256": "e2a4d75a0e7b3cf0f4918c8e84d94c0970aa51d518a83f5690437a5072448543",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/e2a4d75a0e7b3cf0f4918c8e84d94c0970aa51d518a83f5690437a5072448543.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0098-r26-root-r4-final431-query-001.native-01.json",
+      "bytes": 18520,
+      "sha256": "f8442c1059549d934c2df6162a81eb347208342f63647bba8ed8eaf83bef446f",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/f8442c1059549d934c2df6162a81eb347208342f63647bba8ed8eaf83bef446f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0099-r26-root-r4-final431-ack-001.request.json",
+      "bytes": 269,
+      "sha256": "5655eb414fd026ecc77f69a744e2431afaea58637e5ed248113c646a19ffded9",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/5655eb414fd026ecc77f69a744e2431afaea58637e5ed248113c646a19ffded9.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0099-r26-root-r4-final431-ack-001.response.json",
+      "bytes": 1020,
+      "sha256": "76db8a20202201ee66aa84802e12c6a3c96cdaa76cbc5afc7f2b7ca84b44fada",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/76db8a20202201ee66aa84802e12c6a3c96cdaa76cbc5afc7f2b7ca84b44fada.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0099-r26-root-r4-final431-ack-001.sdk-result.json",
+      "bytes": 8839145,
+      "sha256": "076e5a9dccb322ed60fbd4cc815d9285f28d0ab734ba1c0f0730a60fa3945c47",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/076e5a9dccb322ed60fbd4cc815d9285f28d0ab734ba1c0f0730a60fa3945c47.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0099-r26-root-r4-final431-ack-001.native-01.json",
+      "bytes": 4189346,
+      "sha256": "fdcbf5f96f5c4ca55e63ab8a5c6cd59b7f2e74af6fb0196e8a5b9d0f1db5ed76",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/fdcbf5f96f5c4ca55e63ab8a5c6cd59b7f2e74af6fb0196e8a5b9d0f1db5ed76.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0100-r26-root-r4-red-final-save-001.request.json",
+      "bytes": 213,
+      "sha256": "11132728db9d6c0b72943dab17cfa459ab4b16e0942997e49e2e682dc3c6d412",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/11132728db9d6c0b72943dab17cfa459ab4b16e0942997e49e2e682dc3c6d412.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0100-r26-root-r4-red-final-save-001.response.json",
+      "bytes": 1027,
+      "sha256": "aa760bb7653f4d7c77fc383ebde6bceadf9900ba6f9d0bde671370e64eccac57",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/aa760bb7653f4d7c77fc383ebde6bceadf9900ba6f9d0bde671370e64eccac57.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0100-r26-root-r4-red-final-save-001.sdk-result.json",
+      "bytes": 8845121,
+      "sha256": "0dd0e7b652a449685cf0dbb3bd18ba6672c4a471a4eae2be527766f5edab1f5c",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/0dd0e7b652a449685cf0dbb3bd18ba6672c4a471a4eae2be527766f5edab1f5c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0100-r26-root-r4-red-final-save-001.native-01.json",
+      "bytes": 4192181,
+      "sha256": "586787669df99515bd2fd5dbe3340217f2346c47a71f59154d1fa26e1ada2f51",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/586787669df99515bd2fd5dbe3340217f2346c47a71f59154d1fa26e1ada2f51.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0101-r26-root-normal-exit-context-001.request.json",
+      "bytes": 217,
+      "sha256": "ff1c3cb19e38e6c52dbf8bb514169023b34a4d4927520dff90cd84c27fe17330",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/ff1c3cb19e38e6c52dbf8bb514169023b34a4d4927520dff90cd84c27fe17330.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0101-r26-root-normal-exit-context-001.response.json",
+      "bytes": 1042,
+      "sha256": "b0cedff898768e4162263ee96c8ed2babfecbf0635e9bcc45c264d70ff38970d",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/b0cedff898768e4162263ee96c8ed2babfecbf0635e9bcc45c264d70ff38970d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0101-r26-root-normal-exit-context-001.sdk-result.json",
+      "bytes": 8848667,
+      "sha256": "d0d48d2422fb51a7e69eaa126055496c344762f9c7c1a72fcdcd00cbaa98ab0d",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/d0d48d2422fb51a7e69eaa126055496c344762f9c7c1a72fcdcd00cbaa98ab0d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0101-r26-root-normal-exit-context-001.native-01.json",
+      "bytes": 4193881,
+      "sha256": "c9d5b7fd5976a2453fdfb2d1db17978bd853324ea0a67dfd58fd27ae8c925195",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/c9d5b7fd5976a2453fdfb2d1db17978bd853324ea0a67dfd58fd27ae8c925195.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0102-r26-root-normal-exit-prepare-001.request.json",
+      "bytes": 356,
+      "sha256": "87381428d0e36fa0a084c6d9acbc34ef195a467f942bbfcbfeb0d66a189b546c",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/87381428d0e36fa0a084c6d9acbc34ef195a467f942bbfcbfeb0d66a189b546c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0102-r26-root-normal-exit-prepare-001.response.json",
+      "bytes": 1057,
+      "sha256": "63ffa141e12b52127ec747554adc5d80180dd74e48ec7564cc8a9f86abc02304",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/63ffa141e12b52127ec747554adc5d80180dd74e48ec7564cc8a9f86abc02304.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0102-r26-root-normal-exit-prepare-001.sdk-result.json",
+      "bytes": 4429859,
+      "sha256": "3817abd08f613eb2589c63c1f8df4c4b9b456cb40486da65c9cba73d2bb938d2",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/3817abd08f613eb2589c63c1f8df4c4b9b456cb40486da65c9cba73d2bb938d2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0102-r26-root-normal-exit-prepare-001.native-01.json",
+      "bytes": 2099475,
+      "sha256": "69d617be24ce614d6da6d3c8b0c7e759585a578d80a61d37c2783e1757df2e73",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/69d617be24ce614d6da6d3c8b0c7e759585a578d80a61d37c2783e1757df2e73.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0103-r26-root-normal-exit-context-002.request.json",
+      "bytes": 217,
+      "sha256": "53b306a4e089e3914f4ef142457b0831a106c71a947b6b37b5057af7eef5352d",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/53b306a4e089e3914f4ef142457b0831a106c71a947b6b37b5057af7eef5352d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0103-r26-root-normal-exit-context-002.response.json",
+      "bytes": 1042,
+      "sha256": "8b0bf26fb1040756b531294dc70e147b387bae5ff2e33aac8da4d046a0fb9439",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/8b0bf26fb1040756b531294dc70e147b387bae5ff2e33aac8da4d046a0fb9439.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0103-r26-root-normal-exit-context-002.sdk-result.json",
+      "bytes": 8848665,
+      "sha256": "8f3f6abaf9a2e114500f0298ff8d585eab4bf16a805a153dfeea842c1a8a8af3",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/8f3f6abaf9a2e114500f0298ff8d585eab4bf16a805a153dfeea842c1a8a8af3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0103-r26-root-normal-exit-context-002.native-01.json",
+      "bytes": 4193880,
+      "sha256": "cc80baf2ccec09db7ca2dc3a645e1667cc738a57da415dae6d4d85284780bfd1",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/cc80baf2ccec09db7ca2dc3a645e1667cc738a57da415dae6d4d85284780bfd1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0104-r26-root-normal-exit-continue-001.request.json",
+      "bytes": 357,
+      "sha256": "69999456dec7ce44d2d71e56dd79c7595d7b3de06e7bd8dab97d677ff3f92586",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/69999456dec7ce44d2d71e56dd79c7595d7b3de06e7bd8dab97d677ff3f92586.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0104-r26-root-normal-exit-continue-001.response.json",
+      "bytes": 1061,
+      "sha256": "d6bc4bfb767d53e65a03ebcf84592a762abe5c859a69cac2190a0c82b152e992",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/d6bc4bfb767d53e65a03ebcf84592a762abe5c859a69cac2190a0c82b152e992.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0104-r26-root-normal-exit-continue-001.sdk-result.json",
+      "bytes": 4429857,
+      "sha256": "edd7668d47f7a25ceba01ef19581c40523498f965de325ae31ebebc1ad69f192",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/edd7668d47f7a25ceba01ef19581c40523498f965de325ae31ebebc1ad69f192.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0104-r26-root-normal-exit-continue-001.native-01.json",
+      "bytes": 2099474,
+      "sha256": "45f1dd4963bafbd4e1390c48884ad434a72defe67544c64e7cf51d73dfb3d428",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/45f1dd4963bafbd4e1390c48884ad434a72defe67544c64e7cf51d73dfb3d428.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0105-r26-root-normal-exit-context-003.request.json",
+      "bytes": 217,
+      "sha256": "af7cc81c2a6a89d72a0de79c997b3e62a9486cce814ddf2ea5f98c085e344024",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/af7cc81c2a6a89d72a0de79c997b3e62a9486cce814ddf2ea5f98c085e344024.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0105-r26-root-normal-exit-context-003.response.json",
+      "bytes": 1042,
+      "sha256": "09a4c18811ca5c1b30613e017591b676b80ef7bcab2063e1b8d66585a6776f73",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/09a4c18811ca5c1b30613e017591b676b80ef7bcab2063e1b8d66585a6776f73.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0105-r26-root-normal-exit-context-003.sdk-result.json",
+      "bytes": 8848655,
+      "sha256": "01e4e8a38256d61fa2a14348fa87cb515b4f2b5a5576a10fecff160d3597f8f8",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/01e4e8a38256d61fa2a14348fa87cb515b4f2b5a5576a10fecff160d3597f8f8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0105-r26-root-normal-exit-context-003.native-01.json",
+      "bytes": 4193875,
+      "sha256": "4df7f425c8996930431712fad400bdcc59a1e5c40f4d1f70042c17df8e142fbb",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/4df7f425c8996930431712fad400bdcc59a1e5c40f4d1f70042c17df8e142fbb.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0106-r26-root-normal-exit-confirm-001.request.json",
+      "bytes": 351,
+      "sha256": "c1a69810ad3187a10f77ef6781ef2c710cad4f4c3e542cd63720cab35d9f3086",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/c1a69810ad3187a10f77ef6781ef2c710cad4f4c3e542cd63720cab35d9f3086.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0106-r26-root-normal-exit-confirm-001.response.json",
+      "bytes": 1052,
+      "sha256": "b5c0959df65abfc48eb4cf4171d7660d34c656c3eafdf7673eb40a8511c3e9dc",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/b5c0959df65abfc48eb4cf4171d7660d34c656c3eafdf7673eb40a8511c3e9dc.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0106-r26-root-normal-exit-confirm-001.sdk-result.json",
+      "bytes": 4432019,
+      "sha256": "0123d1d5b3c2bf8894bae16bb899899b4e8e170136143af8b61b7d25508f1462",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/0123d1d5b3c2bf8894bae16bb899899b4e8e170136143af8b61b7d25508f1462.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0106-r26-root-normal-exit-confirm-001.native-01.json",
+      "bytes": 2100499,
+      "sha256": "f4fc1517541fababa7c22ebde9652eb0923048389f0e1bf5fd68ce0fc5bb41e3",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/f4fc1517541fababa7c22ebde9652eb0923048389f0e1bf5fd68ce0fc5bb41e3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0107-r26-root-normal-exit-observe-001.request.json",
+      "bytes": 188,
+      "sha256": "af6db91a45a63da4803d560a92f15cc411d2f9255b9dc056f7e27df4fb3a6a9a",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/af6db91a45a63da4803d560a92f15cc411d2f9255b9dc056f7e27df4fb3a6a9a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0107-r26-root-normal-exit-observe-001.response.json",
+      "bytes": 1338,
+      "sha256": "48536a3e482b8b2828c194483b592e71f57b45764ad7bd933977645e63b93b92",
+      "role": "ROOT explicit final ACK/SAVE and typed normal-exit originals SDK98-107; full raw even >8MiB",
+      "zip_entry": "sha256/48536a3e482b8b2828c194483b592e71f57b45764ad7bd933977645e63b93b92.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0107-r26-root-normal-exit-observe-001.sdk-result.json",
+      "bytes": 12819,
+      "sha256": "b509350eb0ce0a6dc3b9c8c3203ca19a129537dbe07f8e232551aef0818b9449",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/b509350eb0ce0a6dc3b9c8c3203ca19a129537dbe07f8e232551aef0818b9449.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0107-r26-root-normal-exit-observe-001.native-01.json",
+      "bytes": 5908,
+      "sha256": "94716ec3b8deb5ce53735aec18e32f590732c5027f9f7499cea658e60d941149",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/94716ec3b8deb5ce53735aec18e32f590732c5027f9f7499cea658e60d941149.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0108-r26-root-canonical-close-001.request.json",
+      "bytes": 113,
+      "sha256": "b0f85ceac1ebee016f026b952c19b9fa4565365b7eb2aacb6699a88e99508c6b",
+      "role": "ROOT canonical Client close once original; no replay",
+      "zip_entry": "sha256/b0f85ceac1ebee016f026b952c19b9fa4565365b7eb2aacb6699a88e99508c6b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0108-r26-root-canonical-close-001.response.json",
+      "bytes": 495,
+      "sha256": "1d52f7ca53924deeb2fee6321a6b5705ec38970c0d10f872e5d858c6b4f55cc7",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/1d52f7ca53924deeb2fee6321a6b5705ec38970c0d10f872e5d858c6b4f55cc7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0108-r26-root-canonical-close-001.started.json",
+      "bytes": 349,
+      "sha256": "c0b8c812cc927c74952a8e9ed16816bd2901ce61d967d700a5f39ea253aecb58",
+      "role": "ROOT canonical Client close once original; no replay",
+      "zip_entry": "sha256/c0b8c812cc927c74952a8e9ed16816bd2901ce61d967d700a5f39ea253aecb58.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/r4-factory-protection-red-final/COPY.actual.json",
+      "bytes": 2141,
+      "sha256": "f70409733da0b75cf3aae5193b0db7b16e8759fbc94b40b72452fb10115aef09",
+      "role": "immutable final bad-world copy-only receipt; never a future passing seed",
+      "zip_entry": "sha256/f70409733da0b75cf3aae5193b0db7b16e8759fbc94b40b72452fb10115aef09.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-client-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1748,
+      "sha256": "ceb88afa3e76afc8b8515e005eaaf171df9e4ea58ad12a3c5790ca660904021c",
+      "role": "original launched Client process completion; no post-exit reopened process",
+      "zip_entry": "sha256/ceb88afa3e76afc8b8515e005eaaf171df9e4ea58ad12a3c5790ca660904021c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-client-original-exec-20261008-001/stdout",
+      "bytes": 24942,
+      "sha256": "f16016c7f8c28bf42e4c4760cecc6dc7103a64b4a0e74fbbf1f00f081b4e80d8",
+      "role": "original launched Client process completion; no post-exit reopened process original stdio",
+      "zip_entry": "sha256/f16016c7f8c28bf42e4c4760cecc6dc7103a64b4a0e74fbbf1f00f081b4e80d8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-client-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "original launched Client process completion; no post-exit reopened process original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-game-handle-original-exec-20261008-002/RESULT.actual.json",
+      "bytes": 1705,
+      "sha256": "4de5f2e00e2531807210abde7b1a5fdb52c4aaff2a38a6816e70049343e20a3f",
+      "role": "original launched game_holder process completion; no post-exit reopened process",
+      "zip_entry": "sha256/4de5f2e00e2531807210abde7b1a5fdb52c4aaff2a38a6816e70049343e20a3f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-game-handle-original-exec-20261008-002/stdout",
+      "bytes": 1323,
+      "sha256": "ec5c7138dd018557cea083731c996a3f13aac1247f66d5c3c2599aa8a1934bc6",
+      "role": "original launched game_holder process completion; no post-exit reopened process original stdio",
+      "zip_entry": "sha256/ec5c7138dd018557cea083731c996a3f13aac1247f66d5c3c2599aa8a1934bc6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-game-handle-original-exec-20261008-002/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "original launched game_holder process completion; no post-exit reopened process original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-helper-handles-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1582,
+      "sha256": "314d19ee34947b6e93b24a6110299cbb3b9b41b65d52b54dcf150880108fbf79",
+      "role": "original launched helper_holder process completion; no post-exit reopened process",
+      "zip_entry": "sha256/314d19ee34947b6e93b24a6110299cbb3b9b41b65d52b54dcf150880108fbf79.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-helper-handles-original-exec-20261008-001/stdout",
+      "bytes": 520,
+      "sha256": "a6301baa0f73f40c00a35a5494ea456de51131ee1b5d06999faafc9ba3fcaf0f",
+      "role": "original launched helper_holder process completion; no post-exit reopened process original stdio",
+      "zip_entry": "sha256/a6301baa0f73f40c00a35a5494ea456de51131ee1b5d06999faafc9ba3fcaf0f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-helper-handles-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "original launched helper_holder process completion; no post-exit reopened process original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-keeper-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1533,
+      "sha256": "03d639b847dd281f16ba60b0f85f3b038b79bf299b8cee8b362e56b33792a63d",
+      "role": "original launched keeper process completion; no post-exit reopened process",
+      "zip_entry": "sha256/03d639b847dd281f16ba60b0f85f3b038b79bf299b8cee8b362e56b33792a63d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-keeper-original-exec-20261008-001/stdout",
+      "bytes": 11254,
+      "sha256": "d12f766d8b4778286e822a17fdd9081a0500db4a140f3a939c8734c748b57cae",
+      "role": "original launched keeper process completion; no post-exit reopened process original stdio",
+      "zip_entry": "sha256/d12f766d8b4778286e822a17fdd9081a0500db4a140f3a939c8734c748b57cae.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-keeper-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "original launched keeper process completion; no post-exit reopened process original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/ROOT-ORIGINAL-GAME-HANDLE-PRE-ATTACH-002/CAPTURED.actual.json",
+      "bytes": 2130,
+      "sha256": "bfebbbcb15b158bde44576997a2fbdd5e24d83ba827345750f78ceb353a9fe2d",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/bfebbbcb15b158bde44576997a2fbdd5e24d83ba827345750f78ceb353a9fe2d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/ROOT-ORIGINAL-GAME-HANDLE-PRE-ATTACH-002/EXIT.actual.json",
+      "bytes": 1167,
+      "sha256": "907d2fc3aa1d7e1002ced275c596c66cbd01fd7104750d75f1f0bb1dd85072c7",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/907d2fc3aa1d7e1002ced275c596c66cbd01fd7104750d75f1f0bb1dd85072c7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/ROOT-ORIGINAL-HELPER-HANDLES-001/CAPTURED.actual.json",
+      "bytes": 4774,
+      "sha256": "c4d38b55d37cdcf03b28056107afdd538e8fd3e0bfc59827e1f86d2b37b6a2d7",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/c4d38b55d37cdcf03b28056107afdd538e8fd3e0bfc59827e1f86d2b37b6a2d7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/ROOT-ORIGINAL-HELPER-HANDLES-001/EXIT-client.actual.json",
+      "bytes": 1793,
+      "sha256": "01e57f079ecab85717dc9b7efbbf175a0ce8e3ca08d8a88966561763af0be4a4",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/01e57f079ecab85717dc9b7efbbf175a0ce8e3ca08d8a88966561763af0be4a4.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/ROOT-ORIGINAL-HELPER-HANDLES-001/EXIT-keeper.actual.json",
+      "bytes": 1589,
+      "sha256": "ef516670ca4cabfd0d74c41f050964b683f4f3cca89c36002d0adfffabcef2ff",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/ef516670ca4cabfd0d74c41f050964b683f4f3cca89c36002d0adfffabcef2ff.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/ROOT-ORIGINAL-HELPER-HANDLES-001/FINAL.actual.json",
+      "bytes": 4241,
+      "sha256": "2a1870a8eaa63691bfb1f2251f9177168a639038e6cf3de793e4425047ebe97b",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/2a1870a8eaa63691bfb1f2251f9177168a639038e6cf3de793e4425047ebe97b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/root-screen-keeper-001/ADMITTED.json",
+      "bytes": 792,
+      "sha256": "4453b6a8f65546d8efb27f6b74772561225c86215d25f2b1721680cca17898fb",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/4453b6a8f65546d8efb27f6b74772561225c86215d25f2b1721680cca17898fb.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/root-screen-keeper-001/FINAL.json",
+      "bytes": 411,
+      "sha256": "88a08678e125a12f8196dc00bb736d885eb82f9e8f0238d248f92849c9d5f89a",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/88a08678e125a12f8196dc00bb736d885eb82f9e8f0238d248f92849c9d5f89a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/root-screen-keeper-001/INPUTS.json",
+      "bytes": 2731,
+      "sha256": "5bd0ecea40130d4eb8805d3f4cea8223f51bdc8d13a3ed1ebd78a9150f0d1c1e",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/5bd0ecea40130d4eb8805d3f4cea8223f51bdc8d13a3ed1ebd78a9150f0d1c1e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/root-screen-keeper-001/READY.json",
+      "bytes": 743,
+      "sha256": "5e126e7331c35cddadda1d0a28d8fde524cf6593bb536f9bb86ef0df4c67b907",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/5e126e7331c35cddadda1d0a28d8fde524cf6593bb536f9bb86ef0df4c67b907.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/root-screen-keeper-001/STOP.request",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "original retained HANDLE identity/waits and keeper STOP/FINAL raw facts",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-canonical-close-author-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1663,
+      "sha256": "3be3eccad386f9ca0fe3dce1a6515a43334d44b7d579bae5295bc8abdcb2b4d8",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/3be3eccad386f9ca0fe3dce1a6515a43334d44b7d579bae5295bc8abdcb2b4d8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-canonical-close-author-original-exec-20261008-001/stdout",
+      "bytes": 710,
+      "sha256": "e4f5be73eb277142df814c6c2a20854b24eb6f731c44e2f658937751f2c21576",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e4f5be73eb277142df814c6c2a20854b24eb6f731c44e2f658937751f2c21576.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-canonical-close-author-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-canonical-close-enqueue-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1474,
+      "sha256": "f38670a2a1388c9448b15e3416b971054088c1a1eb55fd5468f57d38ee7508bf",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/f38670a2a1388c9448b15e3416b971054088c1a1eb55fd5468f57d38ee7508bf.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-canonical-close-enqueue-original-exec-20261008-001/stdout",
+      "bytes": 295,
+      "sha256": "bac92f1b497faba7205a8118a3788147b011204b8c582729a5072ac8a16be2c0",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/bac92f1b497faba7205a8118a3788147b011204b8c582729a5072ac8a16be2c0.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-canonical-close-enqueue-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-screen-release-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1580,
+      "sha256": "99f62e568340ecc29e5b42ddb440b977c55e8cdc10214e04ce2121a0ce8367dd",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/99f62e568340ecc29e5b42ddb440b977c55e8cdc10214e04ce2121a0ce8367dd.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-screen-release-original-exec-20261008-001/stdout",
+      "bytes": 1424,
+      "sha256": "52253a06611bd08c0767d9ccb36069913eec287cf24885a4daedb024d6af5a91",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/52253a06611bd08c0767d9ccb36069913eec287cf24885a4daedb024d6af5a91.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-screen-release-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-postrelease-list-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1314,
+      "sha256": "9398eda6985878d6dad9eb28fcf5efb2e245e6b4d548758999f7dd7d6be27e47",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/9398eda6985878d6dad9eb28fcf5efb2e245e6b4d548758999f7dd7d6be27e47.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-postrelease-list-original-exec-20261008-001/stdout",
+      "bytes": 118305,
+      "sha256": "5cd9ee3a9936472da395794b7251001934fe4f1d048bd49358d4db184180339e",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/5cd9ee3a9936472da395794b7251001934fe4f1d048bd49358d4db184180339e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-postrelease-list-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-postrelease-list-original-exec-20261008-002/RESULT.actual.json",
+      "bytes": 1314,
+      "sha256": "ba45b78ac6eeefc63d83d4caca871b2c7088fd48dee181f347dd353255839a6c",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/ba45b78ac6eeefc63d83d4caca871b2c7088fd48dee181f347dd353255839a6c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-postrelease-list-original-exec-20261008-002/stdout",
+      "bytes": 119006,
+      "sha256": "68df59296960ca0d4d528528e5f82eff3135581d70aa7ac59dfc4a65a3709969",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/68df59296960ca0d4d528528e5f82eff3135581d70aa7ac59dfc4a65a3709969.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-postrelease-list-original-exec-20261008-002/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-inspect-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1177,
+      "sha256": "38e57b0b0c938cea38be5c1dab4037cf4c0d2ff4934dc35ff383894d78d9f4c3",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/38e57b0b0c938cea38be5c1dab4037cf4c0d2ff4934dc35ff383894d78d9f4c3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-inspect-original-exec-20261008-001/stdout",
+      "bytes": 461,
+      "sha256": "8504866e24597ef5a3a1ec8413f1ccb38d3c14ec38307c705d6329f741136569",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/8504866e24597ef5a3a1ec8413f1ccb38d3c14ec38307c705d6329f741136569.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-inspect-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-inspect-original-exec-20261008-002/RESULT.actual.json",
+      "bytes": 1257,
+      "sha256": "cad69c1ba9e52afa4e51eba28d674262443aa102ee7f48e0f6b83aedd5645a6d",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/cad69c1ba9e52afa4e51eba28d674262443aa102ee7f48e0f6b83aedd5645a6d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-inspect-original-exec-20261008-002/stdout",
+      "bytes": 492,
+      "sha256": "9031b016b37b327c391264fb9de76f19fc031ade3ac89a091f690da484198625",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/9031b016b37b327c391264fb9de76f19fc031ade3ac89a091f690da484198625.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-inspect-original-exec-20261008-002/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-recover-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1382,
+      "sha256": "ecba8100f6030ee10b1cb28ad384fa3fda4310c3b1e2607e9ab6358bb23da8b1",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/ecba8100f6030ee10b1cb28ad384fa3fda4310c3b1e2607e9ab6358bb23da8b1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-recover-original-exec-20261008-001/stdout",
+      "bytes": 851,
+      "sha256": "e4457634741fc01634df5f45bc538c1f7762f4c010c45158dc18e212eb753e3e",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e4457634741fc01634df5f45bc538c1f7762f4c010c45158dc18e212eb753e3e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-recover-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-recover-original-exec-20261008-002/RESULT.actual.json",
+      "bytes": 1463,
+      "sha256": "4916b8d515bb70362e4fcc508f33c9ac86c96a6df7dee400a70fa560c2b4df35",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/4916b8d515bb70362e4fcc508f33c9ac86c96a6df7dee400a70fa560c2b4df35.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-recover-original-exec-20261008-002/stdout",
+      "bytes": 1285,
+      "sha256": "919c980547f77d70de728f95305b988097a2f1fcf82a68c389f369dbc2346829",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/919c980547f77d70de728f95305b988097a2f1fcf82a68c389f369dbc2346829.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-recover-original-exec-20261008-002/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-lease-acquire-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1628,
+      "sha256": "a1cfbfcc2e49f0ec7a173a54ad3ce9536ea8f55d648838624ad7ea6851effb50",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/a1cfbfcc2e49f0ec7a173a54ad3ce9536ea8f55d648838624ad7ea6851effb50.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-lease-acquire-original-exec-20261008-001/stdout",
+      "bytes": 1414,
+      "sha256": "d61b795d0bbdb4f183b39d6735beea270d813a89cb875f1f2024203e81da624f",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/d61b795d0bbdb4f183b39d6735beea270d813a89cb875f1f2024203e81da624f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-lease-acquire-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-lease-release-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1604,
+      "sha256": "83ed5846184839e737982c0daa169626b595e01f1e00bd8130ba84588f7b498d",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/83ed5846184839e737982c0daa169626b595e01f1e00bd8130ba84588f7b498d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-lease-release-original-exec-20261008-001/stdout",
+      "bytes": 1393,
+      "sha256": "6d117caf8b521e1c370b8ad0c999768f0b96da62768a87a4b5c2ec6d61477b68",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/6d117caf8b521e1c370b8ad0c999768f0b96da62768a87a4b5c2ec6d61477b68.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-final-offline-lease-release-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-check-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1296,
+      "sha256": "eda54befa571cc437c5494cd1d08cf767d541237b14c18b1178942c994da7a97",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/eda54befa571cc437c5494cd1d08cf767d541237b14c18b1178942c994da7a97.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-check-original-exec-20261008-001/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-check-original-exec-20261008-001/stderr",
+      "bytes": 814,
+      "sha256": "90c006d7e30073df2c2322e193a9936b7f83b114e902eeae34f1c8fb98564e6c",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/90c006d7e30073df2c2322e193a9936b7f83b114e902eeae34f1c8fb98564e6c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-check-original-exec-20261008-002/RESULT.actual.json",
+      "bytes": 1301,
+      "sha256": "73f0deefdc988d04f6b2ce275799d8ffe9969d4196f383f6280dab6f2a4174f3",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/73f0deefdc988d04f6b2ce275799d8ffe9969d4196f383f6280dab6f2a4174f3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-check-original-exec-20261008-002/stdout",
+      "bytes": 8962,
+      "sha256": "e24acfe44f8b219d90668c0b109246828954f97bd5f0e908b7cfa5f904f428d6",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e24acfe44f8b219d90668c0b109246828954f97bd5f0e908b7cfa5f904f428d6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-check-original-exec-20261008-002/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-create-original-exec-20261008-002/RESULT.actual.json",
+      "bytes": 1416,
+      "sha256": "150fada85252fe1605a26ca0f80b78976890dd574e4a9168f6a4fcce5e0ed33f",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original",
+      "zip_entry": "sha256/150fada85252fe1605a26ca0f80b78976890dd574e4a9168f6a4fcce5e0ed33f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-create-original-exec-20261008-002/stdout",
+      "bytes": 685,
+      "sha256": "cad6d6337e4e6adb69df8f825a31974debf6f57521af4e4821715c5f19d11f5c",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/cad6d6337e4e6adb69df8f825a31974debf6f57521af4e4821715c5f19d11f5c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-create-original-exec-20261008-002/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT explicit close/release/offline/closure validation original; failures remain original original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/steam-offline-final-001/events.jsonl",
+      "bytes": 689,
+      "sha256": "276947ccdc36b5557176d4a025b86ab368c6216997ef04f082af4dc7c4cb4fb2",
+      "role": "final offline001 blocked / offline002 fresh frame and ROOT actual visual review",
+      "zip_entry": "sha256/276947ccdc36b5557176d4a025b86ab368c6216997ef04f082af4dc7c4cb4fb2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/steam-offline-final-001/recovery.json",
+      "bytes": 984,
+      "sha256": "3b3e237e1241733637c5dcf408476cba74c15e5363925a7b7b74382eacbc3d92",
+      "role": "final offline001 blocked / offline002 fresh frame and ROOT actual visual review",
+      "zip_entry": "sha256/3b3e237e1241733637c5dcf408476cba74c15e5363925a7b7b74382eacbc3d92.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/steam-offline-final-002/events.jsonl",
+      "bytes": 1920,
+      "sha256": "9d4d648b5e071221683255378396c5756dc124a6189b4870afd07310ec3528ba",
+      "role": "final offline001 blocked / offline002 fresh frame and ROOT actual visual review",
+      "zip_entry": "sha256/9d4d648b5e071221683255378396c5756dc124a6189b4870afd07310ec3528ba.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/steam-offline-final-002/probe-1/ROOT-OFFLINE-REVIEW.actual.json",
+      "bytes": 879,
+      "sha256": "cd2de069eb8c6df7d0918f4170db158c0cb04fc8d1b1e82b6f4d9266d374f713",
+      "role": "final offline001 blocked / offline002 fresh frame and ROOT actual visual review",
+      "zip_entry": "sha256/cd2de069eb8c6df7d0918f4170db158c0cb04fc8d1b1e82b6f4d9266d374f713.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/steam-offline-final-002/probe-1/ROOT-OFFLINE-REVIEW.explicit-credit-002.actual.json",
+      "bytes": 1315,
+      "sha256": "38b0cb7b9b68e0f95795511dcba425379d51b699704bc2bf23ee7a3c2d1a8ce6",
+      "role": "final offline001 blocked / offline002 fresh frame and ROOT actual visual review",
+      "zip_entry": "sha256/38b0cb7b9b68e0f95795511dcba425379d51b699704bc2bf23ee7a3c2d1a8ce6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/steam-offline-final-002/probe-1/steam-frame-freshness.json",
+      "bytes": 1221,
+      "sha256": "859ff82486e7ae496f678053a437100a61a786afdb0d990b8f9d59249d4bd7d1",
+      "role": "final offline001 blocked / offline002 fresh frame and ROOT actual visual review",
+      "zip_entry": "sha256/859ff82486e7ae496f678053a437100a61a786afdb0d990b8f9d59249d4bd7d1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/steam-offline-final-002/recovery.json",
+      "bytes": 1466,
+      "sha256": "60734a9d0b1610b58d6a211f0fad17d0095deb66046947e52c2758b94b1f5ac3",
+      "role": "final offline001 blocked / offline002 fresh frame and ROOT actual visual review",
+      "zip_entry": "sha256/60734a9d0b1610b58d6a211f0fad17d0095deb66046947e52c2758b94b1f5ac3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-actual-typed-closed-boundary-20261008-002/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 3078,
+      "sha256": "998732394e083ee0291cdbac355e4dd308f243a0ca172fb0c403d9b78b0d0cae",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/998732394e083ee0291cdbac355e4dd308f243a0ca172fb0c403d9b78b0d0cae.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-002/verify_previous_boundary.py",
+      "bytes": 24362,
+      "sha256": "24f682a2b5c51392f8b3716fbd2af8a4fc895c312988100cebfb46f9b99b3646",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/24f682a2b5c51392f8b3716fbd2af8a4fc895c312988100cebfb46f9b99b3646.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/launch.json",
+      "bytes": 2400,
+      "sha256": "056f09b9bdda91b0471a094eee465ba09ffc73afe08bb6fd1248a7ede2cacff7",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/056f09b9bdda91b0471a094eee465ba09ffc73afe08bb6fd1248a7ede2cacff7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-actual-typed-closed-boundary-20261008-002/HELPERS-CLOSED.actual.json",
+      "bytes": 5329,
+      "sha256": "3f769b2b0fef908e5406780e42f1d9e239bf51272c58deb07712ff4c79cbf21c",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/3f769b2b0fef908e5406780e42f1d9e239bf51272c58deb07712ff4c79cbf21c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/ROOT-POST-RELEASE-CENSUS-001.actual.json",
+      "bytes": 621,
+      "sha256": "3842c47a4d3c0780438ee1456a2661e554de0d107204ec4091fd0e301f1f4fe3",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/3842c47a4d3c0780438ee1456a2661e554de0d107204ec4091fd0e301f1f4fe3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/session-closed.json",
+      "bytes": 5531,
+      "sha256": "58974b7aeb42f85e89ba2cd661ea70b5fbaabb7a2e6c083d2941602997aa2547",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/58974b7aeb42f85e89ba2cd661ea70b5fbaabb7a2e6c083d2941602997aa2547.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/session.json",
+      "bytes": 1244,
+      "sha256": "97211d8085d2f4913fd06e7a25ccc3f21d6d8dfa3953ab12afc9dae801479dc6",
+      "role": "actual boundary original referenced metadata",
+      "zip_entry": "sha256/97211d8085d2f4913fd06e7a25ccc3f21d6d8dfa3953ab12afc9dae801479dc6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-actual-typed-closed-boundary-20261008-002/INDEX.json",
+      "bytes": 1103,
+      "sha256": "7e8082cfddbf8e21130543e5b76d3cf83f83ec85f612ab382180b12e2ad3b9d5",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/7e8082cfddbf8e21130543e5b76d3cf83f83ec85f612ab382180b12e2ad3b9d5.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-actual-typed-closed-boundary-20261008-002/VERIFIED.actual.json",
+      "bytes": 12791,
+      "sha256": "94d721eb090f77a523d8717c19e37bade42f8386d9ae3d1c9721a4e553247c40",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/94d721eb090f77a523d8717c19e37bade42f8386d9ae3d1c9721a4e553247c40.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-001/author_closed_boundary.py",
+      "bytes": 98,
+      "sha256": "7c2bac41ec81eb19525dd9cf6e91e220e7b23b0d49f443ea86cce2e7c3679a31",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/7c2bac41ec81eb19525dd9cf6e91e220e7b23b0d49f443ea86cce2e7c3679a31.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-001/DEPENDENCIES.json",
+      "bytes": 6790,
+      "sha256": "98df72e41ffc931cae274dd3682e06bbf9783bf737d39c1ef37ca978c94210e2",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/98df72e41ffc931cae274dd3682e06bbf9783bf737d39c1ef37ca978c94210e2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-001/INDEX.json",
+      "bytes": 1494,
+      "sha256": "77edb2dd4c64218800929f26c237dd4b4e8ab0d1aa19efe18574100152e71f38",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/77edb2dd4c64218800929f26c237dd4b4e8ab0d1aa19efe18574100152e71f38.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-001/verify_previous_boundary.py",
+      "bytes": 24362,
+      "sha256": "24f682a2b5c51392f8b3716fbd2af8a4fc895c312988100cebfb46f9b99b3646",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/24f682a2b5c51392f8b3716fbd2af8a4fc895c312988100cebfb46f9b99b3646.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-002/author_closed_boundary.py",
+      "bytes": 98,
+      "sha256": "7c2bac41ec81eb19525dd9cf6e91e220e7b23b0d49f443ea86cce2e7c3679a31",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/7c2bac41ec81eb19525dd9cf6e91e220e7b23b0d49f443ea86cce2e7c3679a31.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-002/DEPENDENCIES.json",
+      "bytes": 6811,
+      "sha256": "2920ab89b0cabeaabd1de9c147c63ab70c439b7c9f4a77bb75dd9e8ab7883df7",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/2920ab89b0cabeaabd1de9c147c63ab70c439b7c9f4a77bb75dd9e8ab7883df7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-002/INDEX.json",
+      "bytes": 1494,
+      "sha256": "b57170358f1c263c46911eda3fca9b53f412176b469f466db9595cfda4871193",
+      "role": "ROOT closure source/pins/actual output; first omitted-review-key failure retained",
+      "zip_entry": "sha256/b57170358f1c263c46911eda3fca9b53f412176b469f466db9595cfda4871193.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-1982837ee-exact-official-ci-20261008-001/FINAL.actual.json",
+      "bytes": 19303,
+      "sha256": "6efbe7725ae12c82ca0cb1e8a0a94f3a4bf764c43691b5f573c08c38aa96d943",
+      "role": "exact198 CI: Linear and LYD success; Official foreign RMTM tooling failed",
+      "zip_entry": "sha256/6efbe7725ae12c82ca0cb1e8a0a94f3a4bf764c43691b5f573c08c38aa96d943.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-1982837ee-exact-official-ci-20261008-001/INDEX.json",
+      "bytes": 9950,
+      "sha256": "2dd20b2a2d10febdfd5f1cc453b7e386b4511afee45e58db93c316226667474d",
+      "role": "exact198 CI: Linear and LYD success; Official foreign RMTM tooling failed",
+      "zip_entry": "sha256/2dd20b2a2d10febdfd5f1cc453b7e386b4511afee45e58db93c316226667474d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-1982837ee-exact-official-ci-20261008-001/REPORT.md",
+      "bytes": 2796,
+      "sha256": "256feff920cc042546664b90961afdce83c671d5e1999863460fc3eefd4ff686",
+      "role": "exact198 CI: Linear and LYD success; Official foreign RMTM tooling failed",
+      "zip_entry": "sha256/256feff920cc042546664b90961afdce83c671d5e1999863460fc3eefd4ff686.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-1982837ee-exact-official-ci-20261008-001/FAILED-STEP.source-facts.json",
+      "bytes": 8797,
+      "sha256": "77ab41a8e9a19749dcb79dd3074bc0392819da67df3af2902c5c1cfdeb04bd0d",
+      "role": "exact198 CI: Linear and LYD success; Official foreign RMTM tooling failed",
+      "zip_entry": "sha256/77ab41a8e9a19749dcb79dd3074bc0392819da67df3af2902c5c1cfdeb04bd0d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-1982837ee-exact-official-ci-20261008-001/ARCHIVE-CHECK.source-facts.json",
+      "bytes": 198,
+      "sha256": "ad1284509d6df0847264ccbb141c52d69bfac35281e2ee87bd6b7917e791b762",
+      "role": "exact198 CI: Linear and LYD success; Official foreign RMTM tooling failed",
+      "zip_entry": "sha256/ad1284509d6df0847264ccbb141c52d69bfac35281e2ee87bd6b7917e791b762.raw"
+    }
+  ],
+  "unique_original_sets": 150,
+  "raw_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-final-cutoff-archive-sourceonly-20261008-001/closed-supplement-004/raw-evidence.zip",
+    "bytes": 5161362,
+    "sha256": "0f6a11913741aa5b06b118a4f443bcab948b4a13207d38fe5bd96f6d28c4dd80"
+  },
+  "external_reference_only": [
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91671419,
+      "sha256": "fc27048d8a856e2ff0ebb633c750bba2e94cb503fd11e624d696ecd87eba6a67",
+      "date_raw": 53144712,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 1,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "original SAVE descriptor or screenshot referenced by original native receipt; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709199,
+      "sha256": "1b5e231fbe5bd78ee317addb1dfb41a34ebe998323289673a50f96119ea9b00b",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 5,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "original SAVE descriptor or screenshot referenced by original native receipt; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91708585,
+      "sha256": "4b99bcec7ff9ccdd01ef1cc6eeb0ca23882bd57cd644eafc770f994a162bec10",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 13,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "original SAVE descriptor or screenshot referenced by original native receipt; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91708580,
+      "sha256": "795ac295ac1a810b1851d9f51194ef0adba1ca9809729c8af19393fa38599bb5",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 23,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "original SAVE descriptor or screenshot referenced by original native receipt; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91672056,
+      "sha256": "d690818c1264505c286c24aee4d4c9ada9f479166c6c54c5ecfb19e76327ea4d",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 29,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "original SAVE descriptor or screenshot referenced by original native receipt; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709837,
+      "sha256": "0600c76685140bb78e1ddcc1cde9c2c48aa7baffb2f2e37eac0707dab647a576",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 33,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "original SAVE descriptor or screenshot referenced by original native receipt; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709222,
+      "sha256": "6f4e2f524ba676b34a661817fdf0cab9ec59a3a3d0a1b9f9586f3806c56d891f",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 41,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "original SAVE descriptor or screenshot referenced by original native receipt; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709986,
+      "sha256": "38119cc76d82285613b92e0591e218c8a01f20ab2038eb62cad068e686e250e7",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 58,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "original SAVE descriptor or screenshot referenced by original native receipt; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91678348,
+      "sha256": "d4d64980137a409a94926bc817cfd57ef94f92b35b2998d8f597540d6713cda5",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 62,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "original SAVE descriptor or screenshot referenced by original native receipt; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91677276,
+      "sha256": "678536947b34e3600d8c76e75b68213689bb074318f5338c704343e98413424e",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 65,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "final immutable bad-world checkpoint preserved externally; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/r4-factory-protection-red-final/checkpoint.ck3",
+      "bytes": 91677276,
+      "sha256": "678536947b34e3600d8c76e75b68213689bb074318f5338c704343e98413424e",
+      "archive_policy": "final immutable bad-world checkpoint preserved externally; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/steam-offline-final-002/probe-1/steam-moved.png",
+      "bytes": 1626303,
+      "sha256": "905f61d86362e57b9b3728476e1d17066c945b3545e323f904f2423aabe7a842",
+      "archive_policy": "final offline image original external reference; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\steam-offline-final-002\\probe-1\\steam-moved.png",
+      "bytes": 1626303,
+      "sha256": "905F61D86362E57B9B3728476E1D17066C945B3545E323F904F2423AABE7A842",
+      "archive_policy": "final offline image original external reference; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-1982837ee-exact-official-ci-20261008-001/raw-evidence.zip",
+      "bytes": 100601,
+      "sha256": "c2a9faf807c614da507065875e624f35fcc72cacda30bcdf48e9e5a30ab00b2b",
+      "archive_policy": "previously sealed original CI ZIP external metadata; not reread or re-compressed; metadata only, no current body equality, body scan/hash/copy by this archiver"
+    }
+  ],
+  "prior_original_cutoffs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/DELIVERY.actual.json",
+      "bytes": 4598,
+      "sha256": "a0896023458582a173f30d300bea7ced7c8c45f7e2a9e4bce3c56b6fde3df73b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-b3-formal-cutoff-supplement-sourceonly-20261008-001/DELIVERY.actual.json",
+      "bytes": 2074,
+      "sha256": "9bd915333f3b57ff7a6cf47504abe0886025de51f1f9f88e87b1965681a4df2d"
+    }
+  ],
+  "ROOT_actual_closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-actual-typed-closed-boundary-20261008-002/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3078,
+    "sha256": "998732394e083ee0291cdbac355e4dd308f243a0ca172fb0c403d9b78b0d0cae"
+  },
+  "ROOT_closure_verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-002/verify_previous_boundary.py",
+    "bytes": 24362,
+    "sha256": "24f682a2b5c51392f8b3716fbd2af8a4fc895c312988100cebfb46f9b99b3646"
+  },
+  "archive_proves_new_business": false,
+  "whole_mod": "NOT_GREEN"
+}

@@ -1,0 +1,182 @@
+{
+  "cutoff": "Through original SDK89 R4 B3 save; future author/commit/postcommit/exit/CAS credit absent",
+  "source_head": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+  "run_identity": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0026",
+    "execution_id": "798c4e79-97e0-47e1-8249-d51729abbcff",
+    "machine_id": "bf-202609141645-5434332d4d",
+    "mod_key": "li-yu-dao",
+    "sequence": 26,
+    "allocated_at_utc": "2026-10-07T20:52:23.802167+00:00",
+    "allocator_pid": 12836,
+    "legacy_alias": null
+  },
+  "client_session": "f1955d5a03f04afbbb3d7f5df4195854",
+  "epoch_id": "r26-root-1982837ee-20261008-001",
+  "profile_sha256": "ecc49c3ec23e1c11656101e8c8b35e60f9a89a2d6c54593262fff834ae3c0a22",
+  "native_session": "7955b50c4e12404bbbfd83ad15bf775f",
+  "actual_attach": {
+    "ref": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0002-r26-root-attach-001.native-01.json",
+      "bytes": 23476,
+      "sha256": "7edb5bffb6644fdad8f37e0cd4e6709761cbd1934f34df34b71f8ab5f48f081f"
+    },
+    "status": "attached_snapshot_verified",
+    "result_status": null,
+    "session_id": "7955b50c4e12404bbbfd83ad15bf775f"
+  },
+  "phase2_counterexample": {
+    "state_ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\B3-r3-pending-author-001\\STATE.json",
+      "bytes": 2600873,
+      "sha256": "3a3c378be96c1324d3766832762d0ada8771a78edfd311fcbc02225922f61dbd"
+    },
+    "typed_ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\B3-r3-pending-author-001\\TYPED-PROTECTION.json",
+      "bytes": 1158887,
+      "sha256": "c41e28d418b73a9fa799225fce31f62aed7219c77ff709d5d3c59608e5356379"
+    },
+    "school": {
+      "rite_id": 169,
+      "owner_id": 31254,
+      "serial": 3,
+      "members_total": 51,
+      "total": 2,
+      "yes": 1,
+      "signed": 0,
+      "dormant": 0,
+      "counties": 0,
+      "delegate_id": 31254,
+      "counted_members_total": 51,
+      "counted_total": 2,
+      "counted_yes": 1,
+      "quorum_numerator": -1
+    },
+    "native_query": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\mcp-client-001\\0046-r26-root-r3-withdraw430-query-001.native-01.json",
+      "bytes": 14828,
+      "sha256": "ffa11e9552042f37a5f8e9a2a534fed1896f15b183d10e229cfcebd906247f12"
+    },
+    "commit0_shown": true,
+    "commit0_enabled": true,
+    "pending1_absent": true,
+    "commit_not_selected": true,
+    "commit_not_selected_source": "ROOT report; original selected47 request preserves withdrawal"
+  },
+  "withdraw": {
+    "ref": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0047-r26-root-r3-withdraw430-select-001.native-01.json",
+      "bytes": 1933134,
+      "sha256": "17836f9a9fcf2b43b1f5882bf0433900a14709d46baf0d20c09829186e751651"
+    },
+    "status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted"
+  },
+  "withdraw_save": {
+    "ref": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0048-r26-root-r3-withdraw-save-001.native-01.json",
+      "bytes": 1935576,
+      "sha256": "fd99529e9c7fadf9a18001449b698243056ecdb6604b55305cd7c8f7760f480a"
+    },
+    "status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted"
+  },
+  "R4_callbacks": {
+    "65": {
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0065-r26-root-r4-410-select-001.native-01.json",
+        "bytes": 2925554,
+        "sha256": "660fe5ae1c486aebe1d66a400675767a5b6b9a1e517c3bb367a4ae965e25911c"
+      },
+      "status": "native_gameplay_postcondition_verified",
+      "result_status": "submitted"
+    },
+    "77": {
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0077-r26-root-r4-human412-yes-001.native-01.json",
+        "bytes": 3453232,
+        "sha256": "3186d09f82d877f7f989cb335afbae4317b3b4f9a0e402422753769a109eabc1"
+      },
+      "status": "native_gameplay_postcondition_verified",
+      "result_status": "submitted"
+    },
+    "79": {
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0079-r26-root-r4-scholar411-yes-001.native-01.json",
+        "bytes": 3489708,
+        "sha256": "a8e5c299a2b04d8363a96792897bbce4198e4a88b51e7206949f1939db5dd7a9"
+      },
+      "status": "native_gameplay_postcondition_verified",
+      "result_status": "submitted"
+    },
+    "81": {
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0081-r26-root-r4-sign413-yes-001.native-01.json",
+        "bytes": 3532396,
+        "sha256": "9ef96024a00aefabd4c953781c89335e59bac4a4e2d8cd921864aa2a8ed0af82"
+      },
+      "status": "native_gameplay_postcondition_verified",
+      "result_status": "submitted"
+    }
+  },
+  "R4_B3_save": {
+    "ref": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0089-r26-root-r4-b3-save-001.native-01.json",
+      "bytes": 4053918,
+      "sha256": "7c855308f464a78600dde9b5930d734f20ecdf943b994c130db074b0dc863a24"
+    },
+    "status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "result_keys": [
+      "step",
+      "accepted",
+      "status",
+      "submission",
+      "backend_id",
+      "checkpoint",
+      "episode_seed",
+      "materialization"
+    ],
+    "snapshot_before": null,
+    "snapshot_after": null,
+    "SDK_bytes": 8552387,
+    "author_result": null
+  },
+  "R4_B3_author": null,
+  "B4": null,
+  "B5": null,
+  "normal_exit": null,
+  "client_close": null,
+  "keeper_stop": null,
+  "holder_final": null,
+  "CAS_release": null,
+  "closed_boundary": null,
+  "whole_mod": "NOT_GREEN",
+  "archiver_did_not_read_save_body": true,
+  "first_R4_B3_SPEC_failure": {
+    "original_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b3-spec-author-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 3104,
+      "sha256": "8773855e88bb558678256341a411923e2200996eb35aa28cfb73a9c4e1117a7e"
+    },
+    "body_reads": 0,
+    "body_reads_source": "ROOT report; this SPEC stage precedes author execution",
+    "old_failure_preserved": true,
+    "new_CP_CAP_source_only": true,
+    "future_author_result": null
+  },
+  "withdraw_immutable_copy_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/round-3-withdrawal/COPY.actual.json",
+    "bytes": 2112,
+    "sha256": "31dc6313d6f58bd8147eb42aeb52b359c3949951dd858be6f94201be00a2534f"
+  },
+  "withdraw_immutable_checkpoint": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/round-3-withdrawal/checkpoint.ck3",
+    "bytes": 91672056,
+    "sha256": "d690818c1264505c286c24aee4d4c9ada9f479166c6c54c5ecfb19e76327ea4d"
+  },
+  "closure_verifier": null,
+  "closure_check_result": null,
+  "closure_status_literal": null
+}

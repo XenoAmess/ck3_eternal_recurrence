@@ -1,0 +1,12 @@
+{
+  "original_files": 54,
+  "unique_sets": 52,
+  "all_original_byte_sha_checks_pass": true,
+  "zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-b3-formal-cutoff-supplement-sourceonly-20261008-001/candidate-b3-append-001/raw-evidence.zip",
+    "bytes": 1940716,
+    "sha256": "6edb403552cfc6373ade41598915da324f96dac7a36442f2fe8d734dd54c866b"
+  },
+  "save_body_reads": 0,
+  "SDK_MAIN_actions": 0
+}

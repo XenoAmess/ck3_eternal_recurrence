@@ -147,7 +147,7 @@ class ActualScriptTests(unittest.TestCase):
 
     def test_separate_school_quorum_and_all_players_are_executable_requirements(self):
         ready=self.c.triggers['lyd_i3b_ready_trigger']
-        self.assertTrue(contains_direct_fragment(ready,'NOT = { any_in_list = { variable = lyd_i3b_rites var:lyd_i3b_dormant = 0 NOT = { var:lyd_i3b_total > 0 lyd_i3b_quorum_value >= 0 var:lyd_i3b_signed = 1 exists = var:lyd_i3b_delegate } } }'))
+        self.assertTrue(contains_direct_fragment(ready,'NOT = { any_in_list = { variable = lyd_i3b_rites var:lyd_i3b_dormant = 0 NOT = { AND = { var:lyd_i3b_total > 0 lyd_i3b_quorum_value >= 0 var:lyd_i3b_signed = 1 exists = var:lyd_i3b_delegate } } } }'))
         self.assertTrue(contains_direct_fragment(ready,'NOT = { any_in_list = { variable = lyd_i3b_members var:lyd_i3b_was_player = 1 NOT = { var:lyd_i3b_player_yes = 1 } } }'))
         self.assertTrue(contains_direct_fragment(self.c.defs['lyd_i3b_quorum_value'],'value = var:lyd_i3b_yes multiply = 3 subtract = { value = var:lyd_i3b_total multiply = 2 }'))
         nomination=self.c.effects['lyd_i3b_accept_nomination_effect']

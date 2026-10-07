@@ -41,6 +41,10 @@ lyd_c2_single_rite_faith_trigger = {
 lyd_c2_start_join_trigger = {
     scope:actor = {
         lyd_c2_actor_trigger = yes
+        custom_description = {
+            text = lyd_m3_source_assets_clear_tt
+            faith = { lyd_m3_faith_assets_clear_trigger = yes }
+        }
         NOT = { has_variable = lyd_c2_active }
         rite = { lyd_c2_school_free_trigger = yes }
         OR = {
@@ -50,6 +54,10 @@ lyd_c2_start_join_trigger = {
     }
     scope:recipient = {
         lyd_c2_elector_trigger = yes
+        custom_description = {
+            text = lyd_m3_target_assets_clear_tt
+            faith = { lyd_m3_faith_assets_clear_trigger = yes }
+        }
         faith = { religion = religion:confucianism_religion any_faith_rite = { count >= 1 } NOT = { any_faith_rite = { NOT = { lyd_c2_receiver_free_trigger = yes } } } }
         faith != scope:actor.faith
         rite = faith.main_rite
@@ -58,6 +66,10 @@ lyd_c2_start_join_trigger = {
 }
 lyd_c2_start_detach_trigger = {
     lyd_c2_actor_trigger = yes
+    custom_description = {
+        text = lyd_m3_source_assets_clear_tt
+        faith = { lyd_m3_faith_assets_clear_trigger = yes }
+    }
     NOT = { has_variable = lyd_c2_active }
     NOT = { rite = faith.main_rite }
     rite = { lyd_c2_school_free_trigger = yes }
@@ -363,6 +375,10 @@ lyd_c2_source_mandate_trigger = {
     var:lyd_c2_vote_yes = 1
 }
 lyd_c2_ready_to_confirm_trigger = {
+    custom_description = {
+        text = lyd_m3_current_assets_clear_tt
+        lyd_m3_c2_assets_clear_trigger = yes
+    }
     lyd_c2_source_mandate_trigger = { ACTOR = $ACTOR$ }
     trigger_if = { limit = { has_variable = lyd_c2_source_signed } var:lyd_c2_source_signed = 1 }
     trigger_else = { always = no }

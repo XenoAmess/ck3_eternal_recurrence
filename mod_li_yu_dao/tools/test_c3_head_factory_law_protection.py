@@ -158,12 +158,14 @@ class FactoryLawProtectionTests(unittest.TestCase):
         fi, faith_entry = faith_heads[0]
         hi, holder_entry = holder_scopes[0]
         self.assertEqual([e.key for e in holder_entry.value.entries], ['change_title_holder'])
-        self.assertEqual(hi, fi + 1)
-        self.assertEqual(body[fi - 1].key, 'scope:new_title')
-        props = body[fi - 1]
+        ri = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
+        self.assertEqual(fi, ri + 1)
+        self.assertEqual(body[hi - 1].key, 'scope:new_title')
+        props = body[hi - 1]
         combined = replace(props, value=replace(props.value,
                            entries=[*props.value.entries, *holder_entry.value.entries]))
-        body[fi - 1:hi + 1] = [combined]
+        body[hi - 1:hi + 1] = [combined]
+        body.remove(faith_entry)
         ri = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
         body.insert(ri + 1, faith_entry)
         original = replace(original, entries=body)
@@ -182,7 +184,7 @@ class FactoryLawProtectionTests(unittest.TestCase):
         mutant = single(mutant_cleanup, 'limit')
         self.assertTrue(should_cleanup(mutant, {}, {LAW}))
 
-    def test_declared_head_before_holder_ordering_keeps_law_after_resolve(self):
+    def test_declared_holder_resolve_head_ordering_keeps_cleanup_and_law_after_head(self):
         body = self.body.entries
         fi = next(i for i,e in enumerate(body)
                   if e.key == 'faith' and entries(e.value, 'set_religious_head_title'))
@@ -191,10 +193,12 @@ class FactoryLawProtectionTests(unittest.TestCase):
         ri = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
         li = next(i for i,e in enumerate(body)
                   if e.key == 'scope:new_title' and entries(e.value, 'add_title_law'))
-        self.assertLess(fi, hi)
+        ci = next(i for i,e in enumerate(body) if e.value is self.cleanup)
         self.assertLess(hi, ri)
-        self.assertLess(ri, li)
-        props = body[fi - 1]
+        self.assertLess(ri, fi)
+        self.assertLess(fi, ci)
+        self.assertLess(ci, li)
+        props = body[hi - 1]
         self.assertEqual(props.key, 'scope:new_title')
         self.assertEqual([e.key for e in props.value.entries],
             ['set_variable','set_variable','set_destroy_if_invalid_heir',

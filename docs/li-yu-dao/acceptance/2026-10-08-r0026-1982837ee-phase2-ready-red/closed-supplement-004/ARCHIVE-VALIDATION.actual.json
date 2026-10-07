@@ -1,0 +1,14 @@
+{
+  "status": "ORIGINAL_BYTE_ZIP_VERIFIED_ONLY",
+  "files": 174,
+  "unique_sets": 150,
+  "zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-final-cutoff-archive-sourceonly-20261008-001/closed-supplement-004/raw-evidence.zip",
+    "bytes": 5161362,
+    "sha256": "0f6a11913741aa5b06b118a4f443bcab948b4a13207d38fe5bd96f6d28c4dd80"
+  },
+  "all_original_bytes_sha_match": true,
+  "old_cutoff_ZIPs_reread": false,
+  "save_body_reads": 0,
+  "MAIN_Git_SDK_game_process_bus_actions": 0
+}

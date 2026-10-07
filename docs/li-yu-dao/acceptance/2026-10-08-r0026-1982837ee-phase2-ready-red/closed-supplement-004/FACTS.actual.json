@@ -1,0 +1,213 @@
+{
+  "status": "R26_TYPED_LIFECYCLE_CLOSED_BUSINESS_NOT_GREEN",
+  "source_head": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+  "run_identity": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0026",
+    "execution_id": "798c4e79-97e0-47e1-8249-d51729abbcff",
+    "machine_id": "bf-202609141645-5434332d4d",
+    "mod_key": "li-yu-dao",
+    "sequence": 26,
+    "allocated_at_utc": "2026-10-07T20:52:23.802167+00:00",
+    "allocator_pid": 12836,
+    "legacy_alias": null
+  },
+  "client_session": "f1955d5a03f04afbbb3d7f5df4195854",
+  "native_session": "7955b50c4e12404bbbfd83ad15bf775f",
+  "prior_original_cutoffs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/DELIVERY.actual.json",
+      "bytes": 4598,
+      "sha256": "a0896023458582a173f30d300bea7ced7c8c45f7e2a9e4bce3c56b6fde3df73b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-b3-formal-cutoff-supplement-sourceonly-20261008-001/DELIVERY.actual.json",
+      "bytes": 2074,
+      "sha256": "9bd915333f3b57ff7a6cf47504abe0886025de51f1f9f88e87b1965681a4df2d"
+    }
+  ],
+  "B3_independent_formal": {
+    "qualification_pass": true,
+    "formal_mandate_credit": true,
+    "whole_product_pass": null,
+    "certificate": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-independent-formal-qualification-001/FORMAL-NATIVE-QUALIFICATION.actual-or-pending.json",
+      "bytes": 30135,
+      "sha256": "c75cc7028a94c93951b164d09a429b73903d2804f399b4af50e3436bf7e6ed68"
+    },
+    "original_author_RED_preserved": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/RESULT.json",
+      "bytes": 1088704,
+      "sha256": "fc7c80a312bed5d2d322566bd5824e1ddb11ae0ee7088d4225adfdd94a3b458a"
+    },
+    "extra_body_reads": 0
+  },
+  "B4": {
+    "author_original_exit0": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-author-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1548,
+      "sha256": "fe28a8715029b8ff79ac814d489d8a6a6b9ebc03543c5478c6ceaaeca9084cd9"
+    },
+    "RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/RESULT.json",
+      "bytes": 1086732,
+      "sha256": "24244fc17f81197cc27199125d7bfc78f57abeb2d6da87c88d3b91e8bef2a45d"
+    },
+    "STATE": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/STATE.json",
+      "bytes": 630861,
+      "sha256": "378890f648ba4eb867ec7e71c0734be8769763dee0102993421f1db26cd5d593"
+    },
+    "TYPED": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/TYPED-PROTECTION.json",
+      "bytes": 1010657,
+      "sha256": "a767d13982d52923130143199aebdae86208f9b8a68af4d0717c7d387c06e495"
+    },
+    "formal": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-001/FORMAL-NATIVE-QUALIFICATION.actual-or-pending.json",
+      "bytes": 9855,
+      "sha256": "b26d8461c1d0aa986dcdbceda14da86a8397d93131c463ed962cf2bd7bc10c49"
+    },
+    "protection_true": 82,
+    "protection_total": 88,
+    "false_checks": [
+      "political_2230_full_AST",
+      "political_2231_full_AST",
+      "political_2235_full_AST",
+      "political_2262_full_AST",
+      "political_2264_full_AST",
+      "actor_complete_protected_landed_projection"
+    ],
+    "actor_succession": {
+      "before_count": 45,
+      "after_count": 40,
+      "removed_ids": [
+        38561,
+        39045,
+        39171,
+        39352,
+        39527
+      ],
+      "added_ids": [],
+      "same_removed_ids_as_R24": false,
+      "R24_removed_still_Faith107_ids": [
+        37244,
+        36445,
+        36663,
+        36873,
+        38561,
+        39045,
+        39171,
+        39352,
+        39527,
+        32236
+      ],
+      "R24_same_faith_filter_explanation_rejected": true
+    },
+    "saved_realm_law_fields_same": true,
+    "newT": 18373,
+    "formal_status": "UNKNOWN",
+    "formal_pass": null
+  },
+  "B5": null,
+  "C3": null,
+  "I4": null,
+  "normal_exit": {
+    "native": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0107-r26-root-normal-exit-observe-001.native-01.json",
+      "bytes": 5908,
+      "sha256": "94716ec3b8deb5ce53735aec18e32f590732c5027f9f7499cea658e60d941149"
+    },
+    "typed_normal_exit_observed": true,
+    "original_HANDLE_wait_result": 0,
+    "exit_code": 0,
+    "autosave_verified": false
+  },
+  "original_helper_execs": {
+    "Client": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-client-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1748,
+      "sha256": "ceb88afa3e76afc8b8515e005eaaf171df9e4ea58ad12a3c5790ca660904021c"
+    },
+    "game_holder": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-game-handle-original-exec-20261008-002/RESULT.actual.json",
+      "bytes": 1705,
+      "sha256": "4de5f2e00e2531807210abde7b1a5fdb52c4aaff2a38a6816e70049343e20a3f"
+    },
+    "helper_holder": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-original-helper-handles-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1582,
+      "sha256": "314d19ee34947b6e93b24a6110299cbb3b9b41b65d52b54dcf150880108fbf79"
+    },
+    "keeper": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-keeper-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1533,
+      "sha256": "03d639b847dd281f16ba60b0f85f3b038b79bf299b8cee8b362e56b33792a63d"
+    }
+  },
+  "final_bad_checkpoint_copy": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/r4-factory-protection-red-final/COPY.actual.json",
+    "bytes": 2141,
+    "sha256": "f70409733da0b75cf3aae5193b0db7b16e8759fbc94b40b72452fb10115aef09"
+  },
+  "final_bad_checkpoint_metadata": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/r4-factory-protection-red-final/checkpoint.ck3",
+    "bytes": 91677276,
+    "sha256": "678536947b34e3600d8c76e75b68213689bb074318f5338c704343e98413424e"
+  },
+  "bad_checkpoint_allowed_as_future_passing_seed": false,
+  "ROOT_actual_closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-actual-typed-closed-boundary-20261008-002/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3078,
+    "sha256": "998732394e083ee0291cdbac355e4dd308f243a0ca172fb0c403d9b78b0d0cae"
+  },
+  "ROOT_verifier_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-actual-source-20261008-002/verify_previous_boundary.py",
+    "bytes": 24362,
+    "sha256": "24f682a2b5c51392f8b3716fbd2af8a4fc895c312988100cebfb46f9b99b3646"
+  },
+  "ROOT_check_exit0": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-check-original-exec-20261008-002/RESULT.actual.json",
+    "bytes": 1301,
+    "sha256": "73f0deefdc988d04f6b2ce275799d8ffe9969d4196f383f6280dab6f2a4174f3"
+  },
+  "ROOT_create_exit0": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-typed-close-create-original-exec-20261008-002/RESULT.actual.json",
+    "bytes": 1416,
+    "sha256": "150fada85252fe1605a26ca0f80b78976890dd574e4a9168f6a4fcce5e0ed33f"
+  },
+  "phase2_counterexample_still_OPEN": true,
+  "phase2_source_candidate_live_pass": null,
+  "factory_source_candidate_live_pass": null,
+  "Defender_registration": "ROOT reported actual WMI/settings failure; registration not claimed",
+  "exact198_CI": [
+    {
+      "name": "Official Runner CI",
+      "conclusion": "failure",
+      "run_id": 37681573818,
+      "head_sha": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+      "failed_steps": [
+        "Test Reclaim the Motherland release tooling"
+      ]
+    },
+    {
+      "name": "Linear history",
+      "conclusion": "success",
+      "run_id": 37681573801,
+      "head_sha": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+      "failed_steps": []
+    },
+    {
+      "name": "Li Yu Dao static checks",
+      "conclusion": "success",
+      "run_id": 37681573848,
+      "head_sha": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+      "failed_steps": []
+    }
+  ],
+  "CI_whole_success": false,
+  "whole_mod": "NOT_GREEN",
+  "archiver_save_body_reads": 0,
+  "archiver_MAIN_SDK_game_process_bus_actions": 0,
+  "sealed_at_utc": "2026-10-07T23:25:22.461767+00:00"
+}

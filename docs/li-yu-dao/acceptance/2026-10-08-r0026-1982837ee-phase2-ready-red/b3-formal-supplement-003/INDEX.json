@@ -1,0 +1,549 @@
+{
+  "schema": "lyd.r26.original-byte-inventory.v1",
+  "source_head": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+  "original_files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/RESULT.json",
+      "bytes": 1088704,
+      "sha256": "fc7c80a312bed5d2d322566bd5824e1ddb11ae0ee7088d4225adfdd94a3b458a",
+      "role": "original body1 B3 retained parse and optional Title harness RED; original status untouched",
+      "zip_entry": "sha256/fc7c80a312bed5d2d322566bd5824e1ddb11ae0ee7088d4225adfdd94a3b458a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/STATE.json",
+      "bytes": 2603596,
+      "sha256": "dfa4d0671d9db009e813c763010e879e45b6b7b01f6c3418ca0d2dfc29acc1ab",
+      "role": "original body1 B3 retained parse and optional Title harness RED; original status untouched",
+      "zip_entry": "sha256/dfa4d0671d9db009e813c763010e879e45b6b7b01f6c3418ca0d2dfc29acc1ab.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/TYPED-PROTECTION.json",
+      "bytes": 1161163,
+      "sha256": "9cc515f39a022ee30965ef97f42c631fd224e55500f3605196c452a4a9297e64",
+      "role": "original body1 B3 retained parse and optional Title harness RED; original status untouched",
+      "zip_entry": "sha256/9cc515f39a022ee30965ef97f42c631fd224e55500f3605196c452a4a9297e64.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/INPUT.exact.json",
+      "bytes": 2967,
+      "sha256": "ef2ce5da3d6d32a84283b5d496bf2100ab43147739015ed8d7a4805c79a69ffe",
+      "role": "original body1 B3 retained parse and optional Title harness RED; original status untouched",
+      "zip_entry": "sha256/ef2ce5da3d6d32a84283b5d496bf2100ab43147739015ed8d7a4805c79a69ffe.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/NATIVE-EVENT-NUMERIC-QUERY-INPUT.exact.json",
+      "bytes": 588,
+      "sha256": "82922c5e9c4e64d93bf90f0a05e3fe3c70c2ddf2e20796d41a6f365d6400df46",
+      "role": "original body1 B3 retained parse and optional Title harness RED; original status untouched",
+      "zip_entry": "sha256/82922c5e9c4e64d93bf90f0a05e3fe3c70c2ddf2e20796d41a6f365d6400df46.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/NATIVE-TITLE-QUERY-INPUT.exact.json",
+      "bytes": 595,
+      "sha256": "3f76a8e85dd4df6c207875e51378fde201813bf1fa428320cc8db6b8593ff12f",
+      "role": "original body1 B3 retained parse and optional Title harness RED; original status untouched",
+      "zip_entry": "sha256/3f76a8e85dd4df6c207875e51378fde201813bf1fa428320cc8db6b8593ff12f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/stderr.traceback.txt",
+      "bytes": 2305,
+      "sha256": "3e0854e09cc154677267dd27880b72874dace024b0c148bf8f1ca0f24e26fc04",
+      "role": "original body1 B3 retained parse and optional Title harness RED; original status untouched",
+      "zip_entry": "sha256/3e0854e09cc154677267dd27880b72874dace024b0c148bf8f1ca0f24e26fc04.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b3-retained-formal-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1874,
+      "sha256": "270cefc9c024ca2cce91114ec9d36d6d0d6f9b447948eee6633582dc27123d55",
+      "role": "ROOT actual retained-JSON qualification execution exit0",
+      "zip_entry": "sha256/270cefc9c024ca2cce91114ec9d36d6d0d6f9b447948eee6633582dc27123d55.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b3-retained-formal-original-exec-20261008-001/stdout",
+      "bytes": 246,
+      "sha256": "d49f1d7a69ea715b0878f80d9b901f46a5ecd29277eae3b6ee4c132249635cd1",
+      "role": "ROOT retained-JSON qualification original stdio",
+      "zip_entry": "sha256/d49f1d7a69ea715b0878f80d9b901f46a5ecd29277eae3b6ee4c132249635cd1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b3-retained-formal-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT retained-JSON qualification original stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-independent-formal-qualification-001/RESULT.actual.json",
+      "bytes": 1401,
+      "sha256": "5da62cd762101762a28e18db8105c413f7436a7961a2f1b4a2ab9b0fd97bbffe",
+      "role": "independent formal qualification actual PASS only",
+      "zip_entry": "sha256/5da62cd762101762a28e18db8105c413f7436a7961a2f1b4a2ab9b0fd97bbffe.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-independent-formal-qualification-001/FORMAL-NATIVE-QUALIFICATION.actual-or-pending.json",
+      "bytes": 30135,
+      "sha256": "c75cc7028a94c93951b164d09a429b73903d2804f399b4af50e3436bf7e6ed68",
+      "role": "original independent formal certificate; no whole-product credit",
+      "zip_entry": "sha256/c75cc7028a94c93951b164d09a429b73903d2804f399b4af50e3436bf7e6ed68.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-checkpoint-author-sourceonly-20261008-005/INDEX.json",
+      "bytes": 17136,
+      "sha256": "9f80f99a07086da6ebd7bc65a347b020edb008bddc7c420e8a1e7a3cf8aa439a",
+      "role": "CP/CAP005 exact source/provenance: event pin and retained JSON only",
+      "zip_entry": "sha256/9f80f99a07086da6ebd7bc65a347b020edb008bddc7c420e8a1e7a3cf8aa439a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-checkpoint-author-sourceonly-20261008-005/CURRENT-EVENT-PIN-AND-RETAINED-INPUT-SOURCE-PROOF.json",
+      "bytes": 33889,
+      "sha256": "ba1233743e6c15e29980e20210f6d85cfa658a9009550e6c7028b4960c591f3b",
+      "role": "CP/CAP005 exact source/provenance: event pin and retained JSON only",
+      "zip_entry": "sha256/ba1233743e6c15e29980e20210f6d85cfa658a9009550e6c7028b4960c591f3b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-checkpoint-author-sourceonly-20261008-005/FORMAL-EVENT-PIN-ONLY.diff",
+      "bytes": 804,
+      "sha256": "39954cbf5fc63764fb337131838c7e880a1cf311a91c65c6e1781ca1183c56e2",
+      "role": "CP/CAP005 exact source/provenance: event pin and retained JSON only",
+      "zip_entry": "sha256/39954cbf5fc63764fb337131838c7e880a1cf311a91c65c6e1781ca1183c56e2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-checkpoint-author-sourceonly-20261008-005/qualify_retained_formal_json_root_only.py",
+      "bytes": 8496,
+      "sha256": "4ff9f4e3721b08c8c23f564506f26c1264cfbb2f85b3da49ef2f046fc7083c47",
+      "role": "CP/CAP005 exact source/provenance: event pin and retained JSON only",
+      "zip_entry": "sha256/4ff9f4e3721b08c8c23f564506f26c1264cfbb2f85b3da49ef2f046fc7083c47.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-formal-capture-root-sourceonly-20261008-005/INDEX.json",
+      "bytes": 5051,
+      "sha256": "7c54e809645b277bad7b23e718f4ed99826330dbcc2e76d6d58e2d8b37ac20d1",
+      "role": "CP/CAP005 exact source/provenance: event pin and retained JSON only",
+      "zip_entry": "sha256/7c54e809645b277bad7b23e718f4ed99826330dbcc2e76d6d58e2d8b37ac20d1.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-formal-capture-root-sourceonly-20261008-005/CAP005-PINS-AND-REGISTRY-SDK-ROLE.diff",
+      "bytes": 5281,
+      "sha256": "d5fef6d975d2d021a14c9e229d51247a0a0177dfec29a016370728bfe35e7120",
+      "role": "CP/CAP005 exact source/provenance: event pin and retained JSON only",
+      "zip_entry": "sha256/d5fef6d975d2d021a14c9e229d51247a0a0177dfec29a016370728bfe35e7120.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-formal-capture-root-sourceonly-20261008-005/RETAINED-B3-QUALIFICATION-ARGV.actual.json",
+      "bytes": 838,
+      "sha256": "35967f58cb52dd291e402ac6409d61da1f525aafcfb93bf6d939a1ccfc569da2",
+      "role": "CP/CAP005 exact source/provenance: event pin and retained JSON only",
+      "zip_entry": "sha256/35967f58cb52dd291e402ac6409d61da1f525aafcfb93bf6d939a1ccfc569da2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0092-r26-root-r4-commit430-query-001.request.json",
+      "bytes": 247,
+      "sha256": "cd1b723c22451970543c8a75af0dcfef2837af7f4e869cd789ce0a5906458e3b",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/cd1b723c22451970543c8a75af0dcfef2837af7f4e869cd789ce0a5906458e3b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0092-r26-root-r4-commit430-query-001.response.json",
+      "bytes": 1031,
+      "sha256": "bfb291c7fa8a022fc55777e1704e541fc3b05365a84affedd5e12147c9557d92",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/bfb291c7fa8a022fc55777e1704e541fc3b05365a84affedd5e12147c9557d92.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0092-r26-root-r4-commit430-query-001.sdk-result.json",
+      "bytes": 32063,
+      "sha256": "7d8d8bd592926b1451580d3b61e2547d344b55ebc19754433be6232ae4980e72",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/7d8d8bd592926b1451580d3b61e2547d344b55ebc19754433be6232ae4980e72.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0092-r26-root-r4-commit430-query-001.native-01.json",
+      "bytes": 14828,
+      "sha256": "4f3d0841d8a563b754b5e34e2f7396bd44565c5ee9f0625a7c459d992c24aadc",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/4f3d0841d8a563b754b5e34e2f7396bd44565c5ee9f0625a7c459d992c24aadc.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0093-r26-root-r4-commit430-select-001.request.json",
+      "bytes": 273,
+      "sha256": "6378ddd9637bbeb187ddfd87039877b738023545235b2fc6f8de8b1c4da195e0",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/6378ddd9637bbeb187ddfd87039877b738023545235b2fc6f8de8b1c4da195e0.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0093-r26-root-r4-commit430-select-001.response.json",
+      "bytes": 1036,
+      "sha256": "3963997b5fa3926cbf89db9b1798fff0936a6a2bfcd8f209f981779c76478b41",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/3963997b5fa3926cbf89db9b1798fff0936a6a2bfcd8f209f981779c76478b41.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0093-r26-root-r4-commit430-select-001.sdk-result.json",
+      "bytes": 8638895,
+      "sha256": "da90050922faf9ff914df2f4ea48e2b79d07c19e92957bfe2b17274b1d106009",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/da90050922faf9ff914df2f4ea48e2b79d07c19e92957bfe2b17274b1d106009.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0093-r26-root-r4-commit430-select-001.native-01.json",
+      "bytes": 4094788,
+      "sha256": "f359716975f58eec8393907db7625bf62476da6e8737f5522ff75d10770e5860",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/f359716975f58eec8393907db7625bf62476da6e8737f5522ff75d10770e5860.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0094-r26-root-r4-result431-query-001.request.json",
+      "bytes": 247,
+      "sha256": "f56bf3a9f89047d0670bcbbe853dd711f45d5771fa462a90682610b8e82c1df6",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/f56bf3a9f89047d0670bcbbe853dd711f45d5771fa462a90682610b8e82c1df6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0094-r26-root-r4-result431-query-001.response.json",
+      "bytes": 1031,
+      "sha256": "ee4e88d51c9d79a2e112e825151aa739c0870d6b388f5fc31608c2dbf94e19b0",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/ee4e88d51c9d79a2e112e825151aa739c0870d6b388f5fc31608c2dbf94e19b0.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0094-r26-root-r4-result431-query-001.sdk-result.json",
+      "bytes": 40011,
+      "sha256": "b6c5ff9c945999e906037bb2df26e5cc2d82119b3997f087050d358741c31858",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/b6c5ff9c945999e906037bb2df26e5cc2d82119b3997f087050d358741c31858.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0094-r26-root-r4-result431-query-001.native-01.json",
+      "bytes": 18520,
+      "sha256": "264578f4f164a54c53e554c33b5230ddf9ba59d577dde679d9b11f843a5e4fd7",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/264578f4f164a54c53e554c33b5230ddf9ba59d577dde679d9b11f843a5e4fd7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0095-r26-root-r4-b4-save-001.request.json",
+      "bytes": 206,
+      "sha256": "caae2a02899729d237cb84379f4f2fd0944bf44527f7d69bc6ba6fd74e362ed6",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/caae2a02899729d237cb84379f4f2fd0944bf44527f7d69bc6ba6fd74e362ed6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0095-r26-root-r4-b4-save-001.response.json",
+      "bytes": 998,
+      "sha256": "a838a3561c90c6cda2d88c663df3f0b1f9034ee9e4e76991f01a4dbd6c7909f7",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/a838a3561c90c6cda2d88c663df3f0b1f9034ee9e4e76991f01a4dbd6c7909f7.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0095-r26-root-r4-b4-save-001.sdk-result.json",
+      "bytes": 8734607,
+      "sha256": "f7ff9561a2b134b06d3ed7718baddc057bb0418c138590b089f5c477ede58f36",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/f7ff9561a2b134b06d3ed7718baddc057bb0418c138590b089f5c477ede58f36.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0095-r26-root-r4-b4-save-001.native-01.json",
+      "bytes": 4139986,
+      "sha256": "544a1117628f2f05c93ba41803caf7efbe0b599d6520d3d751d5ccd4caca8dda",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/544a1117628f2f05c93ba41803caf7efbe0b599d6520d3d751d5ccd4caca8dda.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0096-r26-root-r4-b4-g2-001.request.json",
+      "bytes": 224,
+      "sha256": "c27d913b6d64afe32dbcad643730f691f9eb9469f28f367237e4b491df0f5ca2",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/c27d913b6d64afe32dbcad643730f691f9eb9469f28f367237e4b491df0f5ca2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0096-r26-root-r4-b4-g2-001.response.json",
+      "bytes": 1018,
+      "sha256": "8b85dd4126b96bd7629612ec048cda9e794ee6e2ca39e15b99834e2f8127cbac",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/8b85dd4126b96bd7629612ec048cda9e794ee6e2ca39e15b99834e2f8127cbac.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0096-r26-root-r4-b4-g2-001.sdk-result.json",
+      "bytes": 61869,
+      "sha256": "fdc50560b76d2be172c9cc3c105fb344dbd01a566275cbdb036c51551dafb010",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/fdc50560b76d2be172c9cc3c105fb344dbd01a566275cbdb036c51551dafb010.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0096-r26-root-r4-b4-g2-001.native-01.json",
+      "bytes": 29025,
+      "sha256": "2052e6533aa8d68f854e0950c75e0dd0c0be6b6d58a23e9f515e50a7450dfdaa",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/2052e6533aa8d68f854e0950c75e0dd0c0be6b6d58a23e9f515e50a7450dfdaa.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0097-r26-root-r4-b4-g3-001.request.json",
+      "bytes": 220,
+      "sha256": "d7413235e3d46708f8487af23f4f973261988c3313a46fe1b8036f74633281b2",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/d7413235e3d46708f8487af23f4f973261988c3313a46fe1b8036f74633281b2.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0097-r26-root-r4-b4-g3-001.response.json",
+      "bytes": 1014,
+      "sha256": "e36835059f336ceee6b9c485db9040d64f67d609e55cc7964d7139f86cead342",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/e36835059f336ceee6b9c485db9040d64f67d609e55cc7964d7139f86cead342.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0097-r26-root-r4-b4-g3-001.sdk-result.json",
+      "bytes": 9223,
+      "sha256": "4789058daf8476d23b61656d4ad545d69d7f1439a6d8e99c8ffc4b145b90f517",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/4789058daf8476d23b61656d4ad545d69d7f1439a6d8e99c8ffc4b145b90f517.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0097-r26-root-r4-b4-g3-001.native-01.json",
+      "bytes": 4214,
+      "sha256": "2013f5c6460a0c72e89081f920899d5372bcd552c94df7026593493c2a2a154a",
+      "role": "ROOT explicit commit/query/SAVE/G2/G3 original through SDK97; no B4 parse credit",
+      "zip_entry": "sha256/2013f5c6460a0c72e89081f920899d5372bcd552c94df7026593493c2a2a154a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B4-factory-result-r4-signed/CAPTURE.actual.json",
+      "bytes": 2161,
+      "sha256": "fcff906a14ecd4e301fa11059a2b034dbe02f64248f681a2b873162d465ee895",
+      "role": "B4 immutable capture actual; author result not sampled",
+      "zip_entry": "sha256/fcff906a14ecd4e301fa11059a2b034dbe02f64248f681a2b873162d465ee895.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-input-001/AUTHOR-INPUT.actual.json",
+      "bytes": 2963,
+      "sha256": "f990588614cfc56bd754c8485ff3a393bf96a3bd837a5c0f9465362a84fc5520",
+      "role": "B4 materialized author inputs actual; first body author result remains NULL at ROOT cutoff",
+      "zip_entry": "sha256/f990588614cfc56bd754c8485ff3a393bf96a3bd837a5c0f9465362a84fc5520.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-input-001/AUTHOR-ARGV.actual.json",
+      "bytes": 646,
+      "sha256": "dad28af0b4f8eee0943560cdce9375900797bb52a88b812b40ba2bdc44c48fc9",
+      "role": "B4 materialized author inputs actual; first body author result remains NULL at ROOT cutoff",
+      "zip_entry": "sha256/dad28af0b4f8eee0943560cdce9375900797bb52a88b812b40ba2bdc44c48fc9.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B4-r4-signed-author-input-001/REQUEST-BINDING.actual.json",
+      "bytes": 4253602,
+      "sha256": "a36a35585103a7b421bd1f0406aac7762be24c49e815cc02f76a74488b7bd943",
+      "role": "B4 materialized author inputs actual; first body author result remains NULL at ROOT cutoff",
+      "zip_entry": "sha256/a36a35585103a7b421bd1f0406aac7762be24c49e815cc02f76a74488b7bd943.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-capture-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1458,
+      "sha256": "20408d904e5c88070e307af01cb690ea47ad8ef42a729d3b633cd697ea277015",
+      "role": "B4 actual ROOT capture/materializer original completion; no author completion inferred",
+      "zip_entry": "sha256/20408d904e5c88070e307af01cb690ea47ad8ef42a729d3b633cd697ea277015.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-capture-original-exec-20261008-001/stdout",
+      "bytes": 823,
+      "sha256": "7540348cf526d5ffa12d5d03ce03581276b89f13cdde990e5d0fe8ae48977a9e",
+      "role": "B4 original capture/materializer stdio",
+      "zip_entry": "sha256/7540348cf526d5ffa12d5d03ce03581276b89f13cdde990e5d0fe8ae48977a9e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-capture-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "B4 original capture/materializer stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-materialize-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1550,
+      "sha256": "14411022289d3500252931cedc873e0bf09b78d32cf3c5aa4a4f398fe16e85fa",
+      "role": "B4 actual ROOT capture/materializer original completion; no author completion inferred",
+      "zip_entry": "sha256/14411022289d3500252931cedc873e0bf09b78d32cf3c5aa4a4f398fe16e85fa.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-materialize-original-exec-20261008-001/stdout",
+      "bytes": 911,
+      "sha256": "05c2d17792dadddaff8c838bbd510c8dbaf9a4a7784551151032df7ea5400778",
+      "role": "B4 original capture/materializer stdio",
+      "zip_entry": "sha256/05c2d17792dadddaff8c838bbd510c8dbaf9a4a7784551151032df7ea5400778.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b4-materialize-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "B4 original capture/materializer stdio",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/DELIVERY.actual.json",
+      "bytes": 4598,
+      "sha256": "a0896023458582a173f30d300bea7ced7c8c45f7e2a9e4bce3c56b6fde3df73b",
+      "role": "previous immutable SDK89/current-source cutoff delivery refs; its ZIPs are not copied or scanned again",
+      "zip_entry": "sha256/a0896023458582a173f30d300bea7ced7c8c45f7e2a9e4bce3c56b6fde3df73b.raw"
+    }
+  ],
+  "raw_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-b3-formal-cutoff-supplement-sourceonly-20261008-001/candidate-b3-append-001/raw-evidence.zip",
+    "bytes": 1940716,
+    "sha256": "6edb403552cfc6373ade41598915da324f96dac7a36442f2fe8d734dd54c866b"
+  },
+  "unique_original_sets": 52,
+  "prior_archive_delivery": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/DELIVERY.actual.json",
+    "bytes": 4598,
+    "sha256": "a0896023458582a173f30d300bea7ced7c8c45f7e2a9e4bce3c56b6fde3df73b"
+  },
+  "external_reference_only": [
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91671419,
+      "sha256": "fc27048d8a856e2ff0ebb633c750bba2e94cb503fd11e624d696ecd87eba6a67",
+      "date_raw": 53144712,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 1,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "Original historical mutable SAVE descriptor only; no current body equality, no body read/hash/copy by archive"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709199,
+      "sha256": "1b5e231fbe5bd78ee317addb1dfb41a34ebe998323289673a50f96119ea9b00b",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 5,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "Original historical mutable SAVE descriptor only; no current body equality, no body read/hash/copy by archive"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91708585,
+      "sha256": "4b99bcec7ff9ccdd01ef1cc6eeb0ca23882bd57cd644eafc770f994a162bec10",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 13,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "Original historical mutable SAVE descriptor only; no current body equality, no body read/hash/copy by archive"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91708580,
+      "sha256": "795ac295ac1a810b1851d9f51194ef0adba1ca9809729c8af19393fa38599bb5",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 23,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "Original historical mutable SAVE descriptor only; no current body equality, no body read/hash/copy by archive"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91672056,
+      "sha256": "d690818c1264505c286c24aee4d4c9ada9f479166c6c54c5ecfb19e76327ea4d",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 29,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "Original historical mutable SAVE descriptor only; no current body equality, no body read/hash/copy by archive"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709837,
+      "sha256": "0600c76685140bb78e1ddcc1cde9c2c48aa7baffb2f2e37eac0707dab647a576",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 33,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "Original historical mutable SAVE descriptor only; no current body equality, no body read/hash/copy by archive"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709222,
+      "sha256": "6f4e2f524ba676b34a661817fdf0cab9ec59a3a3d0a1b9f9586f3806c56d891f",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 41,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "Original historical mutable SAVE descriptor only; no current body equality, no body read/hash/copy by archive"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709986,
+      "sha256": "38119cc76d82285613b92e0591e218c8a01f20ab2038eb62cad068e686e250e7",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 58,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "Original historical mutable SAVE descriptor only; no current body equality, no body read/hash/copy by archive"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91678348,
+      "sha256": "d4d64980137a409a94926bc817cfd57ef94f92b35b2998d8f597540d6713cda5",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 62,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "archive_policy": "ROOT supplied B4 immutable/source-copy ref only; no body read/hash/copy by archive"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B4-factory-result-r4-signed/checkpoint.ck3",
+      "bytes": 91678348,
+      "sha256": "d4d64980137a409a94926bc817cfd57ef94f92b35b2998d8f597540d6713cda5",
+      "archive_policy": "ROOT supplied B4 immutable/source-copy ref only; no body read/hash/copy by archive"
+    }
+  ],
+  "whole_mod": "NOT_GREEN",
+  "future_B4_B5_exit_CAS": null
+}

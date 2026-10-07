@@ -29,11 +29,11 @@ lyd_c3_create_owned_temporal_head_effect = {
             set_definitive_form = yes
             set_always_follows_primary_heir = yes
         }
-        faith = { set_religious_head_title = scope:new_title }
         scope:new_title = {
             change_title_holder = { holder = root change = scope:lyd_c3_head_change }
         }
         resolve_title_and_vassal_change = scope:lyd_c3_head_change
+        faith = { set_religious_head_title = scope:new_title }
         # Preserve a preexisting law; remove only the law newly added by this factory's native path.
         # Future native maintenance/reload may re-add it: full political AST protection remains mandatory.
         if = {

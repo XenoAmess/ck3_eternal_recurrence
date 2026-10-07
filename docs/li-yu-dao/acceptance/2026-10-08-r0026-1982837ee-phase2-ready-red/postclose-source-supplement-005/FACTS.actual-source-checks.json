@@ -1,0 +1,33 @@
+{
+  "status": "ACTUAL_SOURCE_CHECKS_ONLY_NOT_RUNTIME",
+  "phase2_check_original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/phase2-focused.actual.json",
+    "bytes": 891,
+    "sha256": "0573154ad0e1426dc14929e314ad78b2c097fad7cbba4937b54933306bd7b7cd"
+  },
+  "phase2_actual_OS_exit": 0,
+  "canonical_generator_original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/canonical-generate.actual.json",
+    "bytes": 774,
+    "sha256": "bb58a03c1e6f091e413b0948bea8821a2b2488954a28b686923034fcac029892"
+  },
+  "canonical_generator_exit": 0,
+  "M3_original_report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/M3-FOCUSED.actual.json",
+    "bytes": 2751,
+    "sha256": "8f4b816b4a7551fedbab5fdd20f2e2ca0fe45111ed44090bbb9d00eab24fe695"
+  },
+  "M3_literal_status": "PASS_SOURCE_ONLY",
+  "M3_cases": 14,
+  "M3_mutants": 2,
+  "M3_OS_exit_independent_record": null,
+  "M3_ROOT_reported_outer_exit": 1,
+  "M3_ROOT_reported_wrapper_failure": "Windows case collision between M3-FOCUSED.actual.json child report and m3-focused.actual.json outer record; original report/stdout retained, no test rerun",
+  "M3_runtime": null,
+  "phase2_engine_after_fix": null,
+  "factory_modified_by_this_ROOT_integration": false,
+  "zero_realm_candidate_selected": false,
+  "next_factory_ROOT_selection": null,
+  "MAIN_writes_by_archiver": 0,
+  "SDK_body_runtime_actions": 0
+}

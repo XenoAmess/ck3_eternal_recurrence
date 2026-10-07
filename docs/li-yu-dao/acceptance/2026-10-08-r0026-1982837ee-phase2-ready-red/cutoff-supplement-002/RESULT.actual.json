@@ -1,0 +1,28 @@
+{
+  "status": "ARCHIVE_CANDIDATE_CREATED_ONLY",
+  "directory": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002",
+  "INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/INDEX.json",
+    "bytes": 17354,
+    "sha256": "863d2de7f1b216ad5db37abb1dc7b082d2150b127204279d993eb7d665d67709"
+  },
+  "REPORT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/REPORT.md",
+    "bytes": 2950,
+    "sha256": "fc13a74582e240b900291207ca2eeed5c070ba2841401caf5434a7cd3a231b4e"
+  },
+  "ZIP": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/raw-evidence.zip",
+    "bytes": 29612,
+    "sha256": "5b6567b0f5ad873cae353d247b16b429368b20546fac70f1e31371962dd6555e"
+  },
+  "IMPORT_MANIFEST": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/IMPORT-MANIFEST.source-only.json",
+    "bytes": 2390,
+    "sha256": "85f36c2c1dfef175fbd9054a0b72afe31e506ab54ca8af880ab5d26dde7bd5cb"
+  },
+  "selected_count": 16,
+  "whole_mod": "NOT_GREEN",
+  "closure_credit_from_archiver": null,
+  "MAIN_writes": 0
+}

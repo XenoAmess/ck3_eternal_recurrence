@@ -1,0 +1,29 @@
+﻿# GENERATED FILE: edit tools/gen_faith_assets.py and run tools/gen_runtime.py.
+# Faith scope. Orders include military and monastic orders: neither is moved.
+# Registered saints retain their native faith association and relic references.
+lyd_m3_faith_assets_clear_trigger = {
+    NOT = { any_faith_holy_order = { always = yes } }
+    NOT = { any_saint = { always = yes } }
+}
+# Character scope; read only captured C2 faiths, with presence before dereference.
+# Re-evaluate at final authorization, rather than trusting the opening state.
+lyd_m3_c2_assets_clear_trigger = {
+    trigger_if = {
+        limit = { has_variable = lyd_c2_source_faith exists = var:lyd_c2_source_faith }
+        var:lyd_c2_source_faith = { lyd_m3_faith_assets_clear_trigger = yes }
+    }
+    trigger_else = { always = no }
+    trigger_if = {
+        limit = { has_variable = lyd_c2_kind }
+        trigger_if = {
+            limit = { var:lyd_c2_kind = 1 }
+            trigger_if = {
+                limit = { has_variable = lyd_c2_target_faith exists = var:lyd_c2_target_faith }
+                var:lyd_c2_target_faith = { lyd_m3_faith_assets_clear_trigger = yes }
+            }
+            trigger_else = { always = no }
+        }
+        trigger_else = { var:lyd_c2_kind = 2 }
+    }
+    trigger_else = { always = no }
+}

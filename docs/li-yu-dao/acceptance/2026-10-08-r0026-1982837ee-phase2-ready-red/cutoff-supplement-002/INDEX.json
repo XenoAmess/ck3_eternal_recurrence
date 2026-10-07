@@ -1,0 +1,318 @@
+{
+  "schema": "lyd.r26.original-byte-inventory.v1",
+  "source_head": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+  "candidate_target": "docs/li-yu-dao/acceptance/2026-10-08-r0026-1982837ee-phase2-ready-red/cutoff-supplement-002",
+  "created_at_utc": "2026-10-07T22:44:01.513813+00:00",
+  "original_files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B1-phase1-r3-pending/CAPTURE.actual.json",
+      "bytes": 2149,
+      "sha256": "106567f592c0d743c9198f5b6d5b5b7a2ffa1d5d78e3d048a0f997b3af56b3d8",
+      "role": "original immutable-copy receipt; no .ck3 body re-read",
+      "zip_entry": "sha256/106567f592c0d743c9198f5b6d5b5b7a2ffa1d5d78e3d048a0f997b3af56b3d8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B1-phase1-r4-pending/CAPTURE.actual.json",
+      "bytes": 2150,
+      "sha256": "9a31d91b4e32d2b8cfd36d6d78f5fa98c9bb6a2f099fad6f3bc0fdf812b00ee3",
+      "role": "original immutable-copy receipt; no .ck3 body re-read",
+      "zip_entry": "sha256/9a31d91b4e32d2b8cfd36d6d78f5fa98c9bb6a2f099fad6f3bc0fdf812b00ee3.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B2-representatives-r3-pending/CAPTURE.actual.json",
+      "bytes": 2168,
+      "sha256": "62a2ecabfb42f37fec462e6f92e5be39c0282956b8d0f27d7367cdbd0b147dcd",
+      "role": "original immutable-copy receipt; no .ck3 body re-read",
+      "zip_entry": "sha256/62a2ecabfb42f37fec462e6f92e5be39c0282956b8d0f27d7367cdbd0b147dcd.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B2-representatives-r4-pending/CAPTURE.actual.json",
+      "bytes": 2168,
+      "sha256": "426488b13830aeaacd35b3e89d3671a6f767d5a50262c56239489149fc7ea4b8",
+      "role": "original immutable-copy receipt; no .ck3 body re-read",
+      "zip_entry": "sha256/426488b13830aeaacd35b3e89d3671a6f767d5a50262c56239489149fc7ea4b8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B3-signed-precommit-r3-pending/CAPTURE.actual.json",
+      "bytes": 2170,
+      "sha256": "b93b284a14e463ec04c4a5185ab69ff501d98ecefbb76126c6a18062889c2517",
+      "role": "original immutable-copy receipt; no .ck3 body re-read",
+      "zip_entry": "sha256/b93b284a14e463ec04c4a5185ab69ff501d98ecefbb76126c6a18062889c2517.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/baseline-withdrawal-resume/CAPTURE.actual.json",
+      "bytes": 1896,
+      "sha256": "8c073bfc06eecdfbbf6385964724cffdcc97260058fa65e856ac30d54f412bbe",
+      "role": "original immutable-copy receipt; no .ck3 body re-read",
+      "zip_entry": "sha256/8c073bfc06eecdfbbf6385964724cffdcc97260058fa65e856ac30d54f412bbe.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/round-3-withdrawal/COPY.actual.json",
+      "bytes": 2112,
+      "sha256": "31dc6313d6f58bd8147eb42aeb52b359c3949951dd858be6f94201be00a2534f",
+      "role": "original immutable-copy receipt; no .ck3 body re-read",
+      "zip_entry": "sha256/31dc6313d6f58bd8147eb42aeb52b359c3949951dd858be6f94201be00a2534f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b3-spec-author-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 3104,
+      "sha256": "8773855e88bb558678256341a411923e2200996eb35aa28cfb73a9c4e1117a7e",
+      "role": "original first SDK8MiB SPEC-author failure; body0 ROOT assertion preserved",
+      "zip_entry": "sha256/8773855e88bb558678256341a411923e2200996eb35aa28cfb73a9c4e1117a7e.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b3-spec-author-original-exec-20261008-001/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "original first SDK8MiB SPEC-author failure; body0 ROOT assertion preserved",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b3-spec-author-original-exec-20261008-001/stderr",
+      "bytes": 1975,
+      "sha256": "f057f80bbc3778b303d2d58440cfe150eebd4e552491959bff037af7051e7a6c",
+      "role": "original first SDK8MiB SPEC-author failure; body0 ROOT assertion preserved",
+      "zip_entry": "sha256/f057f80bbc3778b303d2d58440cfe150eebd4e552491959bff037af7051e7a6c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-checkpoint-author-sourceonly-20261008-004/INDEX.json",
+      "bytes": 16066,
+      "sha256": "256d99e99f7aa7b3627b8dfde193526e86c9a01a900815bb493edc203229473a",
+      "role": "CP/CAP SDK16MiB narrow source successor only; future author credit NULL",
+      "zip_entry": "sha256/256d99e99f7aa7b3627b8dfde193526e86c9a01a900815bb493edc203229473a.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-formal-capture-root-sourceonly-20261008-004/INDEX.json",
+      "bytes": 5582,
+      "sha256": "ca191e4d32129ab761a0e96aa21c620854720d5e1011fc92957a0848618dc002",
+      "role": "CP/CAP SDK16MiB narrow source successor only; future author credit NULL",
+      "zip_entry": "sha256/ca191e4d32129ab761a0e96aa21c620854720d5e1011fc92957a0848618dc002.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-formal-capture-root-sourceonly-20261008-004/ROOT-B3-r4-signed-SPECIFICATION-AUTHOR-ARGV.actual.json",
+      "bytes": 2058,
+      "sha256": "8b6f992ce2dacb4df11e9611327b32022ccd961d550f93962b5d4d202a2e125c",
+      "role": "ROOT next explicit SPEC argv; execution not inferred",
+      "zip_entry": "sha256/8b6f992ce2dacb4df11e9611327b32022ccd961d550f93962b5d4d202a2e125c.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/INDEX.json",
+      "bytes": 64320,
+      "sha256": "1902e0a3365b204f4aaf0928d643ede4415ca9662a82c03365fc6ebdc65cca3f",
+      "role": "previous draft immutable cutoff reference; its raw ZIP is not copied again",
+      "zip_entry": "sha256/1902e0a3365b204f4aaf0928d643ede4415ca9662a82c03365fc6ebdc65cca3f.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/FACTS.actual-cutoff.json",
+      "bytes": 5951,
+      "sha256": "69473066dc6349427b907a12aa953c34ef7e39b046bad0f0ea7c76861a7eaf2d",
+      "role": "previous draft immutable cutoff reference; its raw ZIP is not copied again",
+      "zip_entry": "sha256/69473066dc6349427b907a12aa953c34ef7e39b046bad0f0ea7c76861a7eaf2d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/ARCHIVE-VALIDATION.actual.json",
+      "bytes": 470,
+      "sha256": "b4b49551dc7a31bfda88a7013db6b41771ef92b09cec32670cab04bea7859f5c",
+      "role": "previous draft immutable cutoff reference; its raw ZIP is not copied again",
+      "zip_entry": "sha256/b4b49551dc7a31bfda88a7013db6b41771ef92b09cec32670cab04bea7859f5c.raw"
+    }
+  ],
+  "unique_original_sets": 16,
+  "raw_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/raw-evidence.zip",
+    "bytes": 29612,
+    "sha256": "5b6567b0f5ad873cae353d247b16b429368b20546fac70f1e31371962dd6555e"
+  },
+  "external_reference_only": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/baseline-withdrawal-resume/checkpoint.ck3",
+      "bytes": 91671419,
+      "sha256": "fc27048d8a856e2ff0ebb633c750bba2e94cb503fd11e624d696ecd87eba6a67",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91671419,
+      "sha256": "fc27048d8a856e2ff0ebb633c750bba2e94cb503fd11e624d696ecd87eba6a67",
+      "date_raw": 53144712,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 1,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "HISTORICAL_MUTABLE_SAVE_SOURCE_DESCRIPTOR_ONLY; not current body equality; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B1-phase1-r3-pending/checkpoint.ck3",
+      "bytes": 91709199,
+      "sha256": "1b5e231fbe5bd78ee317addb1dfb41a34ebe998323289673a50f96119ea9b00b",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709199,
+      "sha256": "1b5e231fbe5bd78ee317addb1dfb41a34ebe998323289673a50f96119ea9b00b",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 5,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "HISTORICAL_MUTABLE_SAVE_SOURCE_DESCRIPTOR_ONLY; not current body equality; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B2-representatives-r3-pending/checkpoint.ck3",
+      "bytes": 91708585,
+      "sha256": "4b99bcec7ff9ccdd01ef1cc6eeb0ca23882bd57cd644eafc770f994a162bec10",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91708585,
+      "sha256": "4b99bcec7ff9ccdd01ef1cc6eeb0ca23882bd57cd644eafc770f994a162bec10",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 13,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "HISTORICAL_MUTABLE_SAVE_SOURCE_DESCRIPTOR_ONLY; not current body equality; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B3-signed-precommit-r3-pending/checkpoint.ck3",
+      "bytes": 91708580,
+      "sha256": "795ac295ac1a810b1851d9f51194ef0adba1ca9809729c8af19393fa38599bb5",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91708580,
+      "sha256": "795ac295ac1a810b1851d9f51194ef0adba1ca9809729c8af19393fa38599bb5",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 23,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "HISTORICAL_MUTABLE_SAVE_SOURCE_DESCRIPTOR_ONLY; not current body equality; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B1-phase1-r4-pending/checkpoint.ck3",
+      "bytes": 91709837,
+      "sha256": "0600c76685140bb78e1ddcc1cde9c2c48aa7baffb2f2e37eac0707dab647a576",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709837,
+      "sha256": "0600c76685140bb78e1ddcc1cde9c2c48aa7baffb2f2e37eac0707dab647a576",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 33,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "HISTORICAL_MUTABLE_SAVE_SOURCE_DESCRIPTOR_ONLY; not current body equality; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B2-representatives-r4-pending/checkpoint.ck3",
+      "bytes": 91709222,
+      "sha256": "6f4e2f524ba676b34a661817fdf0cab9ec59a3a3d0a1b9f9586f3806c56d891f",
+      "role": "checkpoint ref retained from original author RESULT",
+      "archive_policy": "PERMANENT_EXTERNAL_REFERENCE_ONLY; supplied receipt pin; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709222,
+      "sha256": "6f4e2f524ba676b34a661817fdf0cab9ec59a3a3d0a1b9f9586f3806c56d891f",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 41,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "HISTORICAL_MUTABLE_SAVE_SOURCE_DESCRIPTOR_ONLY; not current body equality; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91672056,
+      "sha256": "d690818c1264505c286c24aee4d4c9ada9f479166c6c54c5ecfb19e76327ea4d",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 29,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "HISTORICAL_MUTABLE_SAVE_SOURCE_DESCRIPTOR_ONLY; not current body equality; no body/hash/copy read by archiver"
+    },
+    {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-026\\userdir\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 91709986,
+      "sha256": "38119cc76d82285613b92e0591e218c8a01f20ab2038eb62cad068e686e250e7",
+      "date_raw": 53144712,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 58,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "role": "R4 B3 save only; author pending at cutoff checkpoint ref supplied by original native envelope",
+      "archive_policy": "HISTORICAL_MUTABLE_SAVE_SOURCE_DESCRIPTOR_ONLY; not current body equality; no body/hash/copy read by archiver"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/round-3-withdrawal/checkpoint.ck3",
+      "bytes": 91672056,
+      "sha256": "d690818c1264505c286c24aee4d4c9ada9f479166c6c54c5ecfb19e76327ea4d",
+      "role": "actual0048 immutable withdrawn checkpoint via original COPY receipt",
+      "archive_policy": "PERMANENT_EXTERNAL_IMMUTABLE_COPY_REFERENCE_ONLY; no body/hash/copy read by archiver"
+    }
+  ],
+  "closure_refs": [],
+  "closure_status_literal": null,
+  "whole_mod": "NOT_GREEN",
+  "future_business_credit": null,
+  "archive_status": "CURRENT_CUTOFF_DRAFT_ONLY"
+}

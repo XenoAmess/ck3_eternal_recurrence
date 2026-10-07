@@ -1,0 +1,47 @@
+{
+  "schema": "lyd.r26.archive-create-only-import-manifest.v1",
+  "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0026-1982837ee-phase2-ready-red/cutoff-supplement-002",
+  "loaded_source_head": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+  "default_MAIN_apply_authorized": false,
+  "archive_is_closed": false,
+  "whole_mod": "NOT_GREEN",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/ARCHIVE-VALIDATION.actual.json",
+      "bytes": 477,
+      "sha256": "d06c91dedceb9a39e1b38a029eff8a60ddf278344f5dd71ed49b3c0af726f897",
+      "target_relative_file": "ARCHIVE-VALIDATION.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/FACTS.actual-cutoff.json",
+      "bytes": 6984,
+      "sha256": "dd1e5523a573b711a3f91ed0297decfebae7f84d7ea742e5e9beb9261494192b",
+      "target_relative_file": "FACTS.actual-cutoff.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/INDEX.json",
+      "bytes": 17354,
+      "sha256": "863d2de7f1b216ad5db37abb1dc7b082d2150b127204279d993eb7d665d67709",
+      "target_relative_file": "INDEX.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/raw-evidence.zip",
+      "bytes": 29612,
+      "sha256": "5b6567b0f5ad873cae353d247b16b429368b20546fac70f1e31371962dd6555e",
+      "target_relative_file": "raw-evidence.zip"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/REPORT.md",
+      "bytes": 2950,
+      "sha256": "fc13a74582e240b900291207ca2eeed5c070ba2841401caf5434a7cd3a231b4e",
+      "target_relative_file": "REPORT.md"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-supplement-002/SOURCE-SELECTION.source-only.json",
+      "bytes": 18199,
+      "sha256": "844881af8b1ddfc913e7d1eeadc00c49a5bbe5c81deb475c6f9f730ab3a09943",
+      "target_relative_file": "SOURCE-SELECTION.source-only.json"
+    }
+  ],
+  "MAIN_action_by_archiver": 0
+}

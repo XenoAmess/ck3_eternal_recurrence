@@ -334,10 +334,12 @@ lyd.{10 + page_index} = {{
     from gen_school_consent import DEFAULT_NATIVE_EVIDENCE, build_outputs as consent_outputs
     from gen_leadership import build_outputs as leadership_outputs
     from gen_institution import build_outputs as institution_outputs
+    from gen_faith_assets import build_outputs as faith_asset_outputs
     for extension in (
         consent_outputs(native_evidence=DEFAULT_NATIVE_EVIDENCE, include_shared=False),
         leadership_outputs(),
         institution_outputs(),
+        faith_asset_outputs(),
     ):
         duplicates = outputs.keys() & extension.keys()
         if duplicates:

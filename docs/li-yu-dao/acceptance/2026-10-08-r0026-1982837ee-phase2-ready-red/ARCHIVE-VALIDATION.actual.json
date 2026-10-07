@@ -1,0 +1,13 @@
+{
+  "status": "ORIGINAL_BYTE_ZIP_VERIFIED_ONLY",
+  "original_files": 133,
+  "unique_original_sets": 127,
+  "zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/raw-evidence.zip",
+    "bytes": 6803511,
+    "sha256": "7de1563c7e57e2be9812ea98d76ca08b807b72fd777c4daed3e5fd95e12cbd82"
+  },
+  "all_original_bytes_sha_match": true,
+  "MAIN_Git_SDK_game_bus_actions": 0,
+  "save_body_reads": 0
+}

@@ -1,0 +1,449 @@
+{
+  "status": "B3_INDEPENDENT_FORMAL_PASS_B4_INPUTS_ONLY_PARTIAL",
+  "created_at_utc": "2026-10-07T23:02:03.035084+00:00",
+  "source_head": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+  "prior_cutoff_delivery": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/DELIVERY.actual.json",
+    "bytes": 4598,
+    "sha256": "a0896023458582a173f30d300bea7ced7c8c45f7e2a9e4bce3c56b6fde3df73b"
+  },
+  "original_B3_author_RESULT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/RESULT.json",
+    "bytes": 1088704,
+    "sha256": "fc7c80a312bed5d2d322566bd5824e1ddb11ae0ee7088d4225adfdd94a3b458a"
+  },
+  "original_B3_STATE": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/STATE.json",
+    "bytes": 2603596,
+    "sha256": "dfa4d0671d9db009e813c763010e879e45b6b7b01f6c3418ca0d2dfc29acc1ab"
+  },
+  "original_B3_TYPED": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-author-001/TYPED-PROTECTION.json",
+    "bytes": 1161163,
+    "sha256": "9cc515f39a022ee30965ef97f42c631fd224e55500f3605196c452a4a9297e64"
+  },
+  "retained_ROOT_execution": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-r4-b3-retained-formal-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 1874,
+    "sha256": "270cefc9c024ca2cce91114ec9d36d6d0d6f9b447948eee6633582dc27123d55"
+  },
+  "independent_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-independent-formal-qualification-001/RESULT.actual.json",
+    "bytes": 1401,
+    "sha256": "5da62cd762101762a28e18db8105c413f7436a7961a2f1b4a2ab9b0fd97bbffe"
+  },
+  "independent_certificate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/B3-r4-signed-independent-formal-qualification-001/FORMAL-NATIVE-QUALIFICATION.actual-or-pending.json",
+    "bytes": 30135,
+    "sha256": "c75cc7028a94c93951b164d09a429b73903d2804f399b4af50e3436bf7e6ed68"
+  },
+  "qualification_status": "FORMAL_NATIVE_CALLBACK_SAVED_MANDATE_PASS",
+  "qualification_pass": true,
+  "formal_mandate_credit": true,
+  "whole_product_pass": null,
+  "actual_round": {
+    "serial": 4,
+    "nonce": 8,
+    "phase": 2,
+    "result_code": null
+  },
+  "mandate": {
+    "complete_member_ids": [
+      31254,
+      31538,
+      31692,
+      32236,
+      32535,
+      32536,
+      33234,
+      33542,
+      34232,
+      34741,
+      34973,
+      35386,
+      35598,
+      35899,
+      36311,
+      36329,
+      36445,
+      36638,
+      36663,
+      36847,
+      36873,
+      37064,
+      37221,
+      37244,
+      37702,
+      38561,
+      38924,
+      38925,
+      39045,
+      39171,
+      39348,
+      39352,
+      39527,
+      39979,
+      40259,
+      40507,
+      40526,
+      40694,
+      40695,
+      40843,
+      40847,
+      41028,
+      41032,
+      41235,
+      41288,
+      41495,
+      65851,
+      65852,
+      65853,
+      65854,
+      65865
+    ],
+    "human_ids": [
+      31254
+    ],
+    "natural_NPC_votes": {
+      "34232": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "34741": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "34973": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "35386": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "35598": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "41495": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "35899": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "36311": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "36329": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "36445": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "36638": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "36663": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "36847": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "36873": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "37064": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "37221": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "37244": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "37702": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "38561": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "38924": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "38925": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "39045": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "39171": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "39348": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "39352": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "39527": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "39979": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "40259": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "40507": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "40526": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "40694": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "40695": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "40843": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "40847": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "65852": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "41028": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "41032": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "31538": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "31692": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "32236": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "41235": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "32535": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "32536": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "41288": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "33234": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "33542": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "65853": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "65854": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "65851": {
+        "vote": -1,
+        "was_elector": 0,
+        "actual_native_is_ai": true
+      },
+      "65865": {
+        "vote": 1,
+        "was_elector": 1,
+        "actual_native_is_ai": true
+      }
+    },
+    "schools": [
+      {
+        "rite_id": 169,
+        "members": 51,
+        "electors": 2,
+        "yes": 2,
+        "signed": 1,
+        "delegate": 31254,
+        "dormant": false
+      }
+    ]
+  },
+  "extra_checkpoint_body_reads": 0,
+  "ROOT_reported_saved_matches": {
+    "STATE": "250/250",
+    "protected": "87/87",
+    "school_total": 2,
+    "school_yes": 2,
+    "school_signed": 1,
+    "serial": 4,
+    "nonce": 8
+  },
+  "old_author_title_ERROR_cause": "ROOT reported wrong optional Title/current reference harness input; retained original unique named native Title sample required RED",
+  "native_92_to_97": {
+    "92": {
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0092-r26-root-r4-commit430-query-001.native-01.json",
+        "bytes": 14828,
+        "sha256": "4f3d0841d8a563b754b5e34e2f7396bd44565c5ee9f0625a7c459d992c24aadc"
+      },
+      "status": "native_event_query_verified"
+    },
+    "93": {
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0093-r26-root-r4-commit430-select-001.native-01.json",
+        "bytes": 4094788,
+        "sha256": "f359716975f58eec8393907db7625bf62476da6e8737f5522ff75d10770e5860"
+      },
+      "status": "native_gameplay_postcondition_verified"
+    },
+    "94": {
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0094-r26-root-r4-result431-query-001.native-01.json",
+        "bytes": 18520,
+        "sha256": "264578f4f164a54c53e554c33b5230ddf9ba59d577dde679d9b11f843a5e4fd7"
+      },
+      "status": "native_event_query_verified"
+    },
+    "95": {
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0095-r26-root-r4-b4-save-001.native-01.json",
+        "bytes": 4139986,
+        "sha256": "544a1117628f2f05c93ba41803caf7efbe0b599d6520d3d751d5ccd4caca8dda"
+      },
+      "status": "native_gameplay_postcondition_verified"
+    },
+    "96": {
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0096-r26-root-r4-b4-g2-001.native-01.json",
+        "bytes": 29025,
+        "sha256": "2052e6533aa8d68f854e0950c75e0dd0c0be6b6d58a23e9f515e50a7450dfdaa"
+      },
+      "status": "native_confucian_readonly_observed"
+    },
+    "97": {
+      "native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/mcp-client-001/0097-r26-root-r4-b4-g3-001.native-01.json",
+        "bytes": 4214,
+        "sha256": "2013f5c6460a0c72e89081f920899d5372bcd552c94df7026593493c2a2a154a"
+      },
+      "status": "native_confucian_readonly_observed"
+    }
+  },
+  "B4_capture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-026/checkpoints/B4-factory-result-r4-signed/CAPTURE.actual.json",
+    "bytes": 2161,
+    "sha256": "fcff906a14ecd4e301fa11059a2b034dbe02f64248f681a2b873162d465ee895"
+  },
+  "B4_materializer": "ROOT reported actual0; original input/capture completions pinned where present",
+  "B4_author_result": null,
+  "B4_protection": null,
+  "B5": null,
+  "exit": null,
+  "CAS_release": null,
+  "closed_boundary": null,
+  "phase2_R3_counterexample_still_OPEN": true,
+  "candidate_trigger_live_verification": null,
+  "whole_mod": "NOT_GREEN",
+  "archiver_MAIN_Git_SDK_game_process_bus_actions": 0,
+  "archiver_save_body_reads": 0
+}

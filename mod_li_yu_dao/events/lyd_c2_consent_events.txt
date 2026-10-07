@@ -77,6 +77,14 @@ lyd.220 = {
         hidden_effect = { lyd_c2_event_commit_effect = yes }
     }
     option = {
+        name = lyd_m3_assets_blocked
+        trigger = {
+            lyd_c2_initiator_event_context_trigger = yes
+            NOT = { lyd_m3_c2_assets_clear_trigger = yes }
+        }
+        custom_tooltip = lyd_m3_assets_blocked_tt
+    }
+    option = {
         name = lyd_c2_native_pending
         trigger = { NOT = { lyd_c2_native_admitted_trigger = yes } }
         custom_tooltip = lyd_c2_native_pending_tt

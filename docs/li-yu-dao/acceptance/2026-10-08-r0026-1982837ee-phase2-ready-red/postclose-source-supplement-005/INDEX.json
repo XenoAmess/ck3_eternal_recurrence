@@ -1,0 +1,66 @@
+{
+  "status": "ACTUAL_SOURCE_CHECKS_ONLY_NOT_RUNTIME",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/phase2-focused.actual.json",
+      "bytes": 891,
+      "sha256": "0573154ad0e1426dc14929e314ad78b2c097fad7cbba4937b54933306bd7b7cd",
+      "role": "ROOT original postclose source-only check, no runtime credit",
+      "zip_entry": "sha256/0573154ad0e1426dc14929e314ad78b2c097fad7cbba4937b54933306bd7b7cd.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/phase2-focused.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT original postclose source-only check, no runtime credit",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/phase2-focused.stderr",
+      "bytes": 103,
+      "sha256": "6e07c088647a1385b1ee1a154db80440316cccefd547d94632ec2fd3c45192d8",
+      "role": "ROOT original postclose source-only check, no runtime credit",
+      "zip_entry": "sha256/6e07c088647a1385b1ee1a154db80440316cccefd547d94632ec2fd3c45192d8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/canonical-generate.actual.json",
+      "bytes": 774,
+      "sha256": "bb58a03c1e6f091e413b0948bea8821a2b2488954a28b686923034fcac029892",
+      "role": "ROOT original postclose source-only check, no runtime credit",
+      "zip_entry": "sha256/bb58a03c1e6f091e413b0948bea8821a2b2488954a28b686923034fcac029892.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/canonical-generate.stdout",
+      "bytes": 51,
+      "sha256": "8d9eaaab88e3f3b680343ce4aef9de68622cd09e523f2b2118b8a0075955c858",
+      "role": "ROOT original postclose source-only check, no runtime credit",
+      "zip_entry": "sha256/8d9eaaab88e3f3b680343ce4aef9de68622cd09e523f2b2118b8a0075955c858.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/canonical-generate.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "ROOT original postclose source-only check, no runtime credit",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-root-phase2-and-m3-integration-20261008-001/M3-FOCUSED.actual.json",
+      "bytes": 2751,
+      "sha256": "8f4b816b4a7551fedbab5fdd20f2e2ca0fe45111ed44090bbb9d00eab24fe695",
+      "role": "ROOT original postclose source-only check, no runtime credit",
+      "zip_entry": "sha256/8f4b816b4a7551fedbab5fdd20f2e2ca0fe45111ed44090bbb9d00eab24fe695.raw"
+    }
+  ],
+  "zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-final-cutoff-archive-sourceonly-20261008-001/postclose-source-supplement-005/raw-source-checks.zip",
+    "bytes": 2934,
+    "sha256": "d0af64b33869b57da6ebd85b5a5c5f9628774b4c79c8891b12c20febec99e9e4"
+  },
+  "facts": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-final-cutoff-archive-sourceonly-20261008-001/postclose-source-supplement-005/FACTS.actual-source-checks.json",
+    "bytes": 1517,
+    "sha256": "4505b246af58ad48d7d6dae85f6fa1ed61d061d362b833c5ec3e514ac4acadca"
+  },
+  "original_zip_bytes_verified": true,
+  "runtime_credit": null
+}

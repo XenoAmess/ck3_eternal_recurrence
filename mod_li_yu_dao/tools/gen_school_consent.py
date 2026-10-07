@@ -117,6 +117,21 @@ for _key in ("lyd_c2_proposal_desc", "lyd_c2_source_ballot_desc", "lyd_c2_target
     LOC[_key] = tuple(text + clause for text, clause in zip(LOC[_key], OFFICE_TERMS))
 
 
+ASSET_TERMS = (
+    " 本轮不迁移军会、圣人登记或圣物。来源或接收共同体现有军会或圣人登记时，归属调整须停止，原归属、组织、圣物持有人及引用保留；不收取迁移费用。没有这些绑定对象时仍须满足其余全部授权条件。",
+    " This round transfers no order, saint registration or relic. Existing orders or registered saints in either affected communion block affiliation changes; original affiliations, organizations, relic owners and references remain, without transition charges. Without these bound objects every other mandate condition still applies.",
+)
+for _key in ("lyd_c2_proposal_desc", "lyd_c2_source_ballot_desc", "lyd_c2_target_ballot_desc", "lyd_c2_player_consent_desc", "lyd_c2_receive_desc"):
+    LOC[_key] = tuple(text + clause for text, clause in zip(LOC[_key], ASSET_TERMS))
+LOC.update({
+    "lyd_m3_source_assets_clear_tt": ("来源共同体没有原生军会或圣人登记；本轮不转移这些绑定对象。", "The source communion has no native orders or registered saints; this round does not transfer them."),
+    "lyd_m3_target_assets_clear_tt": ("接收共同体没有原生军会或圣人登记；本轮不转移这些绑定对象。", "The receiving communion has no native orders or registered saints; this round does not transfer them."),
+    "lyd_m3_current_assets_clear_tt": ("来源与接收共同体的实际对象仍有效，且没有军会或圣人登记；否则本轮不得调整归属。", "The captured affected communions remain valid and have no native orders or registered saints; otherwise affiliation cannot change."),
+    "lyd_m3_assets_blocked": ("现有共同体绑定对象须保留", "Existing communion-bound objects must remain"),
+    "lyd_m3_assets_blocked_tt": ("本轮不支持军会或圣人登记的跨共同体迁移。原归属、组织及圣物保留，不扣迁移费用；可以等待或撤回，另议不能绕过此条件。", "This round does not support transferring orders or saint registrations between communions. Affiliations, organizations and relics remain without transition charges. Wait or withdraw; a new round cannot bypass this condition."),
+})
+
+
 def side_references(side: str) -> tuple[str, str]:
     return ("var:lyd_c2_moving_rite", "scope:lyd_c2_actor") if side == "source" else ("var:lyd_c2_target_main", "var:lyd_c2_target_rep")
 

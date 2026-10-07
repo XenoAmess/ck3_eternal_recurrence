@@ -1,0 +1,47 @@
+{
+  "schema": "lyd.r26.archive-create-only-import-manifest.v1",
+  "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0026-1982837ee-phase2-ready-red",
+  "loaded_source_head": "1982837ee25a9991c8bfdf9285913d2d84d44236",
+  "default_MAIN_apply_authorized": false,
+  "archive_is_closed": false,
+  "whole_mod": "NOT_GREEN",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/ARCHIVE-VALIDATION.actual.json",
+      "bytes": 470,
+      "sha256": "b4b49551dc7a31bfda88a7013db6b41771ef92b09cec32670cab04bea7859f5c",
+      "target_relative_file": "ARCHIVE-VALIDATION.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/FACTS.actual-cutoff.json",
+      "bytes": 5951,
+      "sha256": "69473066dc6349427b907a12aa953c34ef7e39b046bad0f0ea7c76861a7eaf2d",
+      "target_relative_file": "FACTS.actual-cutoff.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/INDEX.json",
+      "bytes": 64320,
+      "sha256": "1902e0a3365b204f4aaf0928d643ede4415ca9662a82c03365fc6ebdc65cca3f",
+      "target_relative_file": "INDEX.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/raw-evidence.zip",
+      "bytes": 6803511,
+      "sha256": "7de1563c7e57e2be9812ea98d76ca08b807b72fd777c4daed3e5fd95e12cbd82",
+      "target_relative_file": "raw-evidence.zip"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/REPORT.md",
+      "bytes": 2706,
+      "sha256": "2cc8c6c716f9bf42755660f8b1ad4402caa9486105a2f4ca613dc8e8a99c1f38",
+      "target_relative_file": "REPORT.md"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r26-permanent-archive-draft-sourceonly-20261008-001/candidate-cutoff-001/SOURCE-SELECTION.source-only.json",
+      "bytes": 64055,
+      "sha256": "a7ca1e21d8ac250c9b5de70c2a46fd9c2da26b11f634eac74b042e6faeabd0f1",
+      "target_relative_file": "SOURCE-SELECTION.source-only.json"
+    }
+  ],
+  "MAIN_action_by_archiver": 0
+}
