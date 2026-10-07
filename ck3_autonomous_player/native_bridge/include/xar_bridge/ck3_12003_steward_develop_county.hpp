@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12002_council_candidates.hpp"
+#include "xar_bridge/ck3_12004_council_candidates.hpp"
 #include "xar_bridge/steward_develop_county_candidates_v1.hpp"
 
 namespace xar::ck3_12003 {
@@ -51,6 +52,9 @@ struct StewardDevelopCountyEnvironment12003 {
   DevelopProgress current_progress = nullptr;
   DevelopProgress maximum_progress = nullptr;
   DevelopProducer produce_targets = nullptr;
+
+  // Actual .4 role profile; appended to retain every existing aggregate prefix.
+  ck3_12004::CouncilCandidatesEnvironmentV1 council12004{};
 };
 
 struct StewardDevelopCountyAccess12003 {

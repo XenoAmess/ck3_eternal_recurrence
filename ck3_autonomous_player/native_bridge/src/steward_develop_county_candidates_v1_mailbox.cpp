@@ -1,4 +1,5 @@
 #include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
+#include "xar_bridge/ck3_12004_steward_develop_county.hpp"
 
 #include <windows.h>
 
@@ -62,8 +63,11 @@ bool ProxyCaptureFrame(void *opaque,
   if (proxy->query->material_profile) {
     ck3_12002::CoreSnapshotPrefix core{};
     const auto &expected = proxy->query->expected_snapshot;
-    if (!ck3_12002::ReadCoreSnapshot(
-            proxy->query->material_core_bindings, core) ||
+    const auto read_core =
+        proxy->query->material_environment.admitted_executable_sha256 ==
+                ck3_12004::kExecutableSha256
+            ? &ck3_12004::ReadCoreSnapshot : &ck3_12002::ReadCoreSnapshot;
+    if (!read_core(proxy->query->material_core_bindings, core) ||
         core.clock.date_raw != expected.date_raw ||
         core.clock.speed != expected.speed ||
         core.clock.paused != expected.paused ||
@@ -213,8 +217,13 @@ bool ExecuteStewardDevelopCountyCandidatesMailboxQueryV1(
       access.read_memory = query->material_access.read_memory == nullptr
                                ? nullptr
                                : &ProxyReadMaterialMemory;
-      query->read_result = ck3_12003::ReadStewardDevelopCounty12003(
-          query->material_environment, access, query->request, query->result);
+      query->read_result =
+          query->material_environment.admitted_executable_sha256 ==
+                  ck3_12004::kExecutableSha256
+              ? ck3_12004::ReadStewardDevelopCounty12004(
+                    query->material_environment, access, query->request, query->result)
+              : ck3_12003::ReadStewardDevelopCounty12003(
+                    query->material_environment, access, query->request, query->result);
     } else {
       StewardDevelopCountyCandidatesAccessV1 access{};
       access.context = &proxy;

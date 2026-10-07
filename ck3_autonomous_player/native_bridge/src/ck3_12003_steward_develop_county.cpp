@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_steward_develop_county.hpp"
+#include "xar_bridge/ck3_12004_steward_develop_county.hpp"
 
 #include <algorithm>
 #include <array>
@@ -54,6 +55,31 @@ bool MainThread(void *opaque) noexcept {
          proxy.access->is_main_thread(proxy.access->context);
 }
 
+ck3_12004::CouncilCandidatesAccessV1 Actual4Access(const CouncilAccess &access) noexcept {
+  ck3_12004::CouncilCandidatesAccessV1 out{};
+  out.context = access.context;
+  out.capture_frame = access.capture_frame;
+  out.is_main_thread = access.is_main_thread;
+  out.read_memory = access.read_memory;
+  return out;
+}
+
+bool ResolveSourceCharacter(const Environment &env, const CouncilAccess &access,
+                            std::int32_t id, const void *&pointer) noexcept {
+  if (env.admitted_executable_sha256 == ck3_12004::kExecutableSha256)
+    return ck3_12004::ResolveCouncilCharacter12004(
+        env.council12004, Actual4Access(access), id, pointer);
+  return ck3_12002::ResolveCouncilCharacter12002(env.council, access, id, pointer);
+}
+
+bool CaptureSourceFrame(const Environment &env, const CouncilAccess &access,
+                        CouncilFrame &frame) noexcept {
+  if (env.admitted_executable_sha256 == ck3_12004::kExecutableSha256)
+    return ck3_12004::CaptureCouncilCandidatesFrame12004(
+        env.council12004, Actual4Access(access), frame);
+  return ck3_12002::CaptureCouncilCandidatesFrame12002(env.council, access, frame);
+}
+
 bool Capture(void *opaque, CouncilFrame &out) noexcept {
   auto &proxy = *static_cast<Proxy *>(opaque);
   game::StewardDevelopCountyCandidatesFrameV1 frame{};
@@ -73,7 +99,7 @@ bool Capture(void *opaque, CouncilFrame &out) noexcept {
   access.read_memory = &Memory;
   const void *player = nullptr;
   if (frame.has_played_character &&
-      ck3_12002::ResolveCouncilCharacter12002(proxy.environment->council,
+      ResolveSourceCharacter(*proxy.environment,
           access, frame.played_character_id, player))
     out.played_character = reinterpret_cast<std::uintptr_t>(player);
   return true;
@@ -179,6 +205,8 @@ struct OwnedVector {
 };
 
 bool Exact(const Environment &env) noexcept {
+  if (env.admitted_executable_sha256 == ck3_12004::kExecutableSha256)
+    return ck3_12004::IsStewardDevelopCountyEnvironment12004(env);
   if (!env.exact_build_admitted || env.module_base == 0 ||
       env.admitted_executable_sha256 != kExecutableSha256 ||
       env.game_state_slot == nullptr || env.title_storage_slot == nullptr ||
@@ -268,7 +296,7 @@ bool Binding(const Environment &env, const CouncilAccess &access,
   if (!Read(access, task, 0x18, type) || type == nullptr || !Key(access, type, key) ||
       !Read(access, task, 0x40, incumbent) || incumbent <= 0 ||
       !Read(access, task, 0x44, owner) || owner != frame.played_character_id ||
-      !ck3_12002::ResolveCouncilCharacter12002(env.council, access, incumbent, steward) ||
+      !ResolveSourceCharacter(env, access, incumbent, steward) ||
       !Read(access, type, 0x48, kind) || kind < 0 || kind > 2 ||
       !Read(access, type, 0x54, progress_kind) || progress_kind < 0 || progress_kind > 2 ||
       !Read(access, task, 0x39, frozen) || frozen > 1) return false;
@@ -292,7 +320,7 @@ bool Binding(const Environment &env, const CouncilAccess &access,
       out.target = game::CampaignRootCouncilTargetV1{target, std::nullopt};
     } else {
       const void *character = nullptr;
-      if (tag != 4 || !ck3_12002::ResolveCouncilCharacter12002(env.council, access,
+      if (tag != 4 || !ResolveSourceCharacter(env, access,
           target, character)) return false;
       out.target = game::CampaignRootCouncilTargetV1{std::nullopt, target};
     }
@@ -325,7 +353,7 @@ Failure ReadSample(const Environment &env, const CouncilAccess &access,
   const void *steward = nullptr, *owner = nullptr, *liege = nullptr, *type = nullptr;
   game::CampaignRootCouncilPositionV1 binding{};
   if (!Binding(env, access, frame, binding, steward) ||
-      !ck3_12002::ResolveCouncilCharacter12002(env.council, access,
+      !ResolveSourceCharacter(env, access,
           frame.played_character_id, owner)) return Failure::identity_round_trip_failed;
   bool human = false;
   if (!Invoke(env.immediate_liege, liege, steward) || liege != owner ||
@@ -381,7 +409,7 @@ Failure ReadSample(const Environment &env, const CouncilAccess &access,
           !Read(access, county, 0x18, row.county_title_id) ||
           !Title(env, access, row.county_title_id, title) ||
           !Read(access, title, 0x128, row.holder_character_id) ||
-          !ck3_12002::ResolveCouncilCharacter12002(env.council, access,
+          !ResolveSourceCharacter(env, access,
               row.holder_character_id, holder)) {
         failure = Failure::identity_round_trip_failed; break;
       }
@@ -478,7 +506,7 @@ game::ReadStewardDevelopCountyCandidatesResultV1 ReadStewardDevelopCounty12003(
     Proxy proxy{&env, &access};
     const auto source = SourceAccess(proxy);
     CouncilFrame before{}, after{};
-    if (!ck3_12002::CaptureCouncilCandidatesFrame12002(env.council, source, before))
+    if (!CaptureSourceFrame(env, source, before))
       return Unavailable(output, request.expected_snapshot_revision, Failure::frame_capture_failed);
     if (before.native_revision != request.expected_snapshot_revision)
       return Unavailable(output, request.expected_snapshot_revision, Failure::snapshot_revision_mismatch);
@@ -489,7 +517,7 @@ game::ReadStewardDevelopCountyCandidatesResultV1 ReadStewardDevelopCounty12003(
     Sample first{}, second{};
     auto failure = ReadSample(env, source, before, first);
     if (failure == Failure::none) failure = ReadSample(env, source, before, second);
-    if (!ck3_12002::CaptureCouncilCandidatesFrame12002(env.council, source, after) ||
+    if (!CaptureSourceFrame(env, source, after) ||
         before != after)
       return Unavailable(output, request.expected_snapshot_revision, Failure::same_frame_drift, before.date_raw);
     if (failure != Failure::none)
