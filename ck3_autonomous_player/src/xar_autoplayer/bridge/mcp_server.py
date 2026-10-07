@@ -1435,8 +1435,15 @@ def create_server(
         def ck3_query_player_prisoner_collection_private_v1(
             expected_revision: int, ransom_ordinal: int = 0,
             release_option_keys: list[str] | None = None,
+            release_material_target_character_id: int | None = None,
         ) -> dict[str, object]:
-            """Read player custody and optional selected release terms on one paused frame."""
+            """Read custody, release terms and an optional retained target's current relation."""
+            if release_material_target_character_id is not None:
+                return driver.query_player_prisoner_collection_private_v1(
+                    expected_revision=expected_revision, ransom_ordinal=ransom_ordinal,
+                    release_option_keys=release_option_keys,
+                    release_material_target_character_id=release_material_target_character_id,
+                )
             if release_option_keys is not None:
                 return driver.query_player_prisoner_collection_private_v1(
                     expected_revision=expected_revision,
