@@ -31,6 +31,14 @@ BattleBindings BindBattleImage(
       dependencies.army_internal_fallback_slot;
   bindings.regiment_storage_slot =
       dependencies.combat_context.regiment_storage_slot;
+  // Independent actual4 lookup/producer/COL proofs are retained in
+  // upstream-build-migration/reinforcement-ai-binding-review. The shared
+  // reader still requires actual current AI membership for each subject.
+  bindings.ai_war_coordinator_storage_slot =
+      reinterpret_cast<void **>(base + 0x5D20550);
+  bindings.ai_unit_stack_vtable = base + 0x45AA618;
+  bindings.ai_subunit_stack_vtable = base + 0x45AB4C0;
+  bindings.ai_war_coordinator_vtable = base + 0x45AB0C8;
   bindings.province_context = dependencies.province_context;
   bindings.resolve_province = dependencies.resolve_province;
 
