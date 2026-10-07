@@ -4656,6 +4656,16 @@ class GameplayBridgeService:
             if isinstance(diagnostics, dict)
             else None
         )
+        if isinstance(hello, dict):
+            hello = {
+                **hello,
+                "game_version": hello.get(
+                    "expected_ck3_version", hello.get("game_version")
+                ),
+                "executable_sha256": hello.get(
+                    "expected_ck3_sha256", hello.get("executable_sha256")
+                ),
+            }
         joined_land_rates = project_observed_post_refill_land_supply_rates_v1(selected_rows)
         selected_refill_assemblies = project_selected_refill_monthly_assemblies_v1(
             selected_rows, joined_land_rates=joined_land_rates)
