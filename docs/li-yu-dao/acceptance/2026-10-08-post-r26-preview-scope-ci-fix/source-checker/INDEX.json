@@ -1,0 +1,33 @@
+{
+  "schema": "lyd.preview.phase2-finite-inverse.source-index.v1",
+  "status": "SOURCE_ONLY_READY",
+  "manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/INTEGRATION-MANIFEST.json",
+    "bytes": 2579,
+    "sha256": "0916caf227ae20fc720e52d4142f1f0bc8062e2bf6b6354408d07ed59fe27f18"
+  },
+  "README": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/README.zh.md",
+    "bytes": 2369,
+    "sha256": "f309e787d06a59a233c412d453160f3312d452de1d7efe5000056c6f1bdf9248"
+  },
+  "author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/author_candidate.py",
+    "bytes": 5146,
+    "sha256": "3acef604c10dff9522391e4cdf4dfec6c14f5e4af84f756ce899ba8da84b7432"
+  },
+  "bounded_error_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/check_bounded_mutants.py",
+    "bytes": 4851,
+    "sha256": "854bd6a37f5fe742f3a674c2637e7727b82556f1032f7fa470263d10ffa30e60"
+  },
+  "CI_actual_failure": {
+    "run_id": 37702997797,
+    "job_id": 113070638610,
+    "step": "Check product builder",
+    "line": 135,
+    "message": "existing script expressions changed: common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+    "provenance": "ROOT actual CI report; original CI raw logs not fabricated here"
+  },
+  "live": null
+}

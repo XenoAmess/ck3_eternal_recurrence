@@ -1,0 +1,61 @@
+{
+  "schema": "lyd.preview.phase2-finite-inverse.candidate.v1",
+  "actual_HEAD": "574c015bd7e6e37eb6cbb3f5b88bdd868b1a4bab",
+  "target": "mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+  "before": {
+    "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+    "bytes": 17345,
+    "sha256": "69e31ff67440ee846cb2e7457f26b365151214f6a51529e7b43c62038ed8ba8e"
+  },
+  "after": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/candidate/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+    "bytes": 18913,
+    "sha256": "1625a63e6324a83f393bcbf5577920c0286e2b3cc5344efd3d7acc3ba870a5e6"
+  },
+  "AST_parse": true,
+  "baseline_fingerprints_unchanged": true,
+  "exact_dependencies": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c2_preview_scope.py",
+        "bytes": 23956,
+        "sha256": "cab52e503d32b75b4ccd49317c125dc8c06cfadfec90f55c4e9a9758b7319e65"
+      },
+      "copied": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/candidate/mod_li_yu_dao/tools/test_c2_preview_scope.py",
+        "bytes": 23956,
+        "sha256": "cab52e503d32b75b4ccd49317c125dc8c06cfadfec90f55c4e9a9758b7319e65"
+      },
+      "byte_equal": true
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/extract_auto_upgrade_buildings.py",
+        "bytes": 15976,
+        "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+      },
+      "copied": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/candidate/tools/extract_auto_upgrade_buildings.py",
+        "bytes": 15976,
+        "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+      },
+      "byte_equal": true
+    }
+  ],
+  "read_set": [
+    "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+    "common/scripted_triggers/lyd_i3b_institution_triggers.txt"
+  ],
+  "M3_and_factory": "Not in this checker read set; no new inverse or waiver introduced",
+  "observed_CI_failure": {
+    "run_id": 37702997797,
+    "job_id": 113070638610,
+    "step": "Check product builder",
+    "line": 135,
+    "message": "existing script expressions changed: common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+    "provenance": "ROOT actual CI report; original CI raw logs not fabricated here"
+  },
+  "main_writes": 0,
+  "SDK_calls": 0,
+  "save_body_reads": 0
+}

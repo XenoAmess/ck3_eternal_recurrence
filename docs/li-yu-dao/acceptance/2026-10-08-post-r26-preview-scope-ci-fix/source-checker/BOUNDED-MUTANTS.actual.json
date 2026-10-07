@@ -1,0 +1,72 @@
+{
+  "schema": "lyd.preview.phase2-finite-inverse.bounded-mutants.v1",
+  "status": "PASS_SOURCE_ONLY",
+  "original_fingerprints": {
+    "common/scripted_triggers/lyd_c3_leadership_triggers.txt": "e9836265a7371777dca0d784fcd614a85d689267cbdf3f5e614412eb30f1dc0e",
+    "common/scripted_triggers/lyd_i3b_institution_triggers.txt": "45b2043addbc812e2e7b41426f1451187d159708ec2df14f30a7d7bc659e8284"
+  },
+  "mutants": [
+    {
+      "name": "quorum_relaxed",
+      "rejected": true,
+      "stage": "finite_shape"
+    },
+    {
+      "name": "empty_electorate_authorized",
+      "rejected": true,
+      "stage": "finite_shape"
+    },
+    {
+      "name": "unsigned_authorized",
+      "rejected": true,
+      "stage": "finite_shape"
+    },
+    {
+      "name": "wrong_delegate_reference",
+      "rejected": true,
+      "stage": "finite_shape"
+    },
+    {
+      "name": "AND_replaced_by_OR",
+      "rejected": true,
+      "stage": "finite_shape"
+    },
+    {
+      "name": "reviewed_AND_removed",
+      "rejected": true,
+      "stage": "finite_shape"
+    },
+    {
+      "name": "extra_authority_condition",
+      "rejected": true,
+      "stage": "finite_shape"
+    },
+    {
+      "name": "different_iteration_list",
+      "rejected": true,
+      "stage": "finite_shape"
+    },
+    {
+      "name": "dormant_rites_authorized",
+      "rejected": true,
+      "stage": "finite_shape"
+    },
+    {
+      "name": "unrelated_I3_electorate_relaxed",
+      "rejected": true,
+      "stage": "original_fingerprint"
+    },
+    {
+      "name": "unrelated_C3_ownership_changed",
+      "rejected": true,
+      "stage": "original_fingerprint"
+    }
+  ],
+  "mutation_count": 11,
+  "baseline_sha_table_changed": false,
+  "full_preview_cases_rerun": false,
+  "M3_and_factory_scope": "No waiver: not part of this checker input pair",
+  "live": null,
+  "SDK": null,
+  "save_body": null
+}

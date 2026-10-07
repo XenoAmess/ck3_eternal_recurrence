@@ -1,0 +1,58 @@
+{
+  "schema": "lyd.preview.phase2-finite-inverse.integration-manifest.v1",
+  "base_HEAD": "574c015bd7e6e37eb6cbb3f5b88bdd868b1a4bab",
+  "targets": [
+    {
+      "relative_path": "mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+      "operation": "MODIFY",
+      "before": {
+        "path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+        "bytes": 17345,
+        "sha256": "69e31ff67440ee846cb2e7457f26b365151214f6a51529e7b43c62038ed8ba8e"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/candidate/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+        "bytes": 18913,
+        "sha256": "1625a63e6324a83f393bcbf5577920c0286e2b3cc5344efd3d7acc3ba870a5e6"
+      }
+    }
+  ],
+  "baseline_SHA_table": "Unchanged original C3/I3 fingerprints",
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/candidate.patch",
+    "bytes": 3608,
+    "sha256": "fb3fdad95e295afbf27274f81166d8b91b77145185ddb28e0379d1abb1577849"
+  },
+  "source_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/SOURCE.actual.json",
+    "bytes": 2621,
+    "sha256": "360a09b277ab0622d4dfbb58e65c37fb6745ac338d3d5b818258b9f6feadf354"
+  },
+  "preview_once": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/PREVIEW.actual.json",
+    "bytes": 9828,
+    "sha256": "3dce164bf853a9abf7afd6e295c3ebde094e30b5945bff2d066ebee16d7762c7"
+  },
+  "bounded_errors": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/BOUNDED-MUTANTS.actual.json",
+    "bytes": 1926,
+    "sha256": "a9bb5f47111fcd5017d424d82dccd2245ebfa23aa9b9d0722aac850111562221"
+  },
+  "ROOT_argv": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/ROOT-ARGV.json",
+    "bytes": 2113,
+    "sha256": "0bb8469c907697b1222581ad492bea9cdd2a0e9568053317f3e324724552caaf"
+  },
+  "README": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/README.zh.md",
+    "bytes": 2369,
+    "sha256": "f309e787d06a59a233c412d453160f3312d452de1d7efe5000056c6f1bdf9248"
+  },
+  "business_changes": 0,
+  "protection_contract_changes": 0,
+  "main_applied": false,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "save_body_reads": 0,
+  "native_or_live_PASS": null
+}

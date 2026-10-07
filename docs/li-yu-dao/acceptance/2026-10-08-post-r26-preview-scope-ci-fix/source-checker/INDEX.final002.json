@@ -1,0 +1,29 @@
+{
+  "schema": "lyd.preview.phase2-finite-inverse.final-source-index.v1",
+  "status": "SOURCE_ONLY_ROOT_REVIEWED_READY_TO_APPLY",
+  "original_frozen_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/INDEX.json",
+    "bytes": 1474,
+    "sha256": "300a415e47ebca557be57ec5fb8290430bf6b26fc4abddf5703fb0b830439372"
+  },
+  "manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/INTEGRATION-MANIFEST.json",
+    "bytes": 2579,
+    "sha256": "0916caf227ae20fc720e52d4142f1f0bc8062e2bf6b6354408d07ed59fe27f18"
+  },
+  "ROOT_apply_argv": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/ROOT-APPLY-ARGV.json",
+    "bytes": 2324,
+    "sha256": "42c0b2c706db1c56b0d5b118e89ae42a3976571f380f9a1744f482a4b945bcec"
+  },
+  "REPORT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/preview-phase2-finite-inverse-ci-fix-20261008-001/REPORT.md",
+    "bytes": 2746,
+    "sha256": "08bda088ede9f4db73dffce09c5311a848c74a64da8c670b9e7406e9c203f6c4"
+  },
+  "candidate_checker_SHA": "1625a63e6324a83f393bcbf5577920c0286e2b3cc5344efd3d7acc3ba870a5e6",
+  "tests_rerun_after_initial_freeze": false,
+  "main_applied": null,
+  "canonical_HEAD": null,
+  "live_PASS": null
+}

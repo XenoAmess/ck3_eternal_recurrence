@@ -55,6 +55,36 @@ def strip_added(block):
         result.append(Entry(e.key,e.operator,strip_added(e.value) if isinstance(e.value,Block) else e.value))
     return Block(tuple(result))
 
+
+def invert_phase2_mandate(block):
+    """Undo only the reviewed AND wrapper, in its exact ready/rites context.
+
+    The old SHA remains authoritative for every other expression. Requiring the
+    entire current shape also rejects removal or drift of the reviewed fix.
+    """
+    mandate = Block((Entry('var:lyd_i3b_total','>','0'),
+                     Entry('lyd_i3b_quorum_value','>=','0'),
+                     Entry('var:lyd_i3b_signed','=','1'),
+                     Entry('exists','=','var:lyd_i3b_delegate')))
+    prefix = (Entry('variable','=','lyd_i3b_rites'),
+              Entry('var:lyd_i3b_dormant','=','0'))
+    declared = Entry('NOT','=',Block((Entry('any_in_list','=',Block(
+        prefix + (Entry('NOT','=',Block((Entry('AND','=',mandate),))),))),)))
+    previous = Entry('NOT','=',Block((Entry('any_in_list','=',Block(
+        prefix + (Entry('NOT','=',mandate),))),)))
+    ready = [e for e in block.entries if e.key=='lyd_i3b_ready_trigger']
+    if len(ready)!=1 or not isinstance(ready[0].value,Block):
+        raise ValueError('Expected one reviewed I3b ready definition')
+    if sum(e==declared for e in ready[0].value.entries)!=1:
+        raise ValueError('Reviewed phase2 mandate AST differs or is absent')
+    projected = Block(tuple(previous if e==declared else e for e in ready[0].value.entries))
+    return Block(tuple(Entry(e.key,e.operator,projected) if e is ready[0] else e for e in block.entries))
+
+def strip_declared(block,relative):
+    if relative==I3:
+        block=invert_phase2_mandate(block)
+    return strip_added(block)
+
 class Evaluator:
     def __init__(self,actor,common):
         self.actor=actor;self.common=common;self.saved={};self.reads=[]
@@ -130,7 +160,7 @@ def world():
 
 def run(source,baseline=None):
     trees={p:parse_clausewitz((source/p).read_text('utf-8-sig')) for p in (C3,I3)}
-    previous={p:strip_added(trees[p]) for p in (C3,I3)}
+    previous={p:strip_declared(trees[p],p) for p in (C3,I3)}
     for p in trees:
         assert hashlib.sha256(repr(previous[p]).encode('utf-8')).hexdigest()==BASELINE_AST_SHA256[p],f'existing script expressions changed: {p}'
         if baseline is not None:
@@ -217,7 +247,7 @@ def run(source,baseline=None):
     test('post_detached_missing_target','post',lambda w:(detached(w),w['actor'].variables.pop('lyd_i3b_result_native_hor')),False,True)
     test('post_detached_current_hor_missing','post',lambda w:w['rite'].values.pop('head_of_rite'),False,True)
     test('post_detached_hor_drift','post',lambda w:w['actor'].variables.update(lyd_i3b_result_native_hor=w['head']),False)
-    return {'result':'PASS_SOURCE_ONLY','script_tree_preservation':'PASS_EXACT_AST_AFTER_STRIPPING_DECLARED_GUARDS','cases':cases,'guard_removal_mutants':mutants,'live':'NOT_RUN','boundary':'Focused test double evaluation. No old C2/11/118 tests run; no CK3 renderer or field proof.'}
+    return {'result':'PASS_SOURCE_ONLY','script_tree_preservation':'PASS_EXACT_AST_AFTER_FINITE_DECLARED_INVERSE','cases':cases,'guard_removal_mutants':mutants,'live':'NOT_RUN','boundary':'Focused test double evaluation. No old C2/11/118 tests run; no CK3 renderer or field proof.'}
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source-root',type=Path,default=SOURCE);p.add_argument('--baseline-root',type=Path);p.add_argument('--report',type=Path,required=True);a=p.parse_args()

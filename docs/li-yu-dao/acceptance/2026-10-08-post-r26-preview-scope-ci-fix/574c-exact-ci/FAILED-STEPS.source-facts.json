@@ -1,0 +1,87 @@
+{
+  "exact_head": "574c015bd7e6e37eb6cbb3f5b88bdd868b1a4bab",
+  "failures": [
+    {
+      "workflow": "Official Runner CI",
+      "run_id": 37702997764,
+      "job_id": 113070638653,
+      "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37702997764/job/113070638653",
+      "failed_steps": [
+        {
+          "name": "Test Reclaim the Motherland release tooling",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 31,
+          "started_at": "2026-10-07T23:38:31Z",
+          "completed_at": "2026-10-07T23:38:31Z"
+        }
+      ],
+      "producer_log_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-574c015bd-exact-official-ci-20261008-001/failed-job-113070638653-001.stdout",
+        "bytes": 138152,
+        "sha256": "8c1e6a69906a7a4f8e06e93f844f7e42aa90c5e2e102e08ddaadcaebf6b3fd2c"
+      },
+      "traceback_raw_excerpt": "Traceback (most recent call last):\r\n2026-10-07T23:38:31.3807851Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_reclaim_the_motherland_contract.py\", line 579, in test_phase_three_title_law_and_idempotent_save_migration\r\n2026-10-07T23:38:31.3809980Z     self.assertEqual(text.count(\"add_title_law = single_heir_succession_law\"), 2)\r\n2026-10-07T23:38:31.3810432Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n2026-10-07T23:38:31.3810756Z AssertionError: 3 != 2\r\n2026-10-07T23:38:31.3810905Z \r\n2026-10-07T23:38:31.3811049Z ----------------------------------------------------------------------\r\n2026-10-07T23:38:31.3811385Z Ran 20 tests in 0.131s\r\n2026-10-07T23:38:31.3811515Z \r\n2026-10-07T23:38:31.3811614Z FAILED (failures=1, skipped=2)\r\n2026-10-07T23:38:31.3966200Z ",
+      "actual_error_lines": [
+        "2026-10-07T23:38:31.3810756Z AssertionError: 3 != 2"
+      ],
+      "traceback_file_lines": [
+        [
+          "D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_reclaim_the_motherland_contract.py",
+          "579",
+          "test_phase_three_title_law_and_idempotent_save_migration"
+        ]
+      ],
+      "bounded_actual_reason": "Reclaim the Motherland contract assertion; no RMTM changed path in this commit",
+      "old198_log_reused": false,
+      "local_source_fix_test_rerun": false
+    },
+    {
+      "workflow": "Li Yu Dao static checks",
+      "run_id": 37702997797,
+      "job_id": 113070638610,
+      "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37702997797/job/113070638610",
+      "failed_steps": [
+        {
+          "name": "Check product and builder",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 5,
+          "started_at": "2026-10-07T23:34:42Z",
+          "completed_at": "2026-10-07T23:34:49Z"
+        }
+      ],
+      "producer_log_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-574c015bd-exact-official-ci-20261008-001/failed-job-113070638610-001.stdout",
+        "bytes": 64782,
+        "sha256": "6faae72913751f5e87cc12bd4a892af9ee70e6bf4987098f937fff25f9b39586"
+      },
+      "traceback_raw_excerpt": "Traceback (most recent call last):\n2026-10-07T23:34:49.7564090Z   File \"/home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py\", line 229, in <module>\n2026-10-07T23:34:49.7565006Z     if __name__=='__main__':raise SystemExit(main())\n2026-10-07T23:34:49.7565365Z                                              ~~~~^^\n2026-10-07T23:34:49.7566381Z   File \"/home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py\", line 225, in main\n2026-10-07T23:34:49.7567641Z     report=run(a.source_root,a.baseline_root);a.report.parent.mkdir(parents=True,exist_ok=True);a.report.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\\n',encoding='utf-8')\n2026-10-07T23:34:49.7568925Z   File \"/home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py\", line 135, in run\n2026-10-07T23:34:49.7569995Z     assert hashlib.sha256(repr(previous[p]).encode('utf-8')).hexdigest()==BASELINE_AST_SHA256[p],f'existing script expressions changed: {p}'\n2026-10-07T23:34:49.7570729Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-10-07T23:34:49.7571387Z AssertionError: existing script expressions changed: common/scripted_triggers/lyd_i3b_institution_triggers.txt\n2026-10-07T23:34:49.7650783Z ",
+      "actual_error_lines": [
+        "2026-10-07T23:34:49.7571387Z AssertionError: existing script expressions changed: common/scripted_triggers/lyd_i3b_institution_triggers.txt"
+      ],
+      "traceback_file_lines": [
+        [
+          "/home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+          "229",
+          "<module>"
+        ],
+        [
+          "/home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+          "225",
+          "main"
+        ],
+        [
+          "/home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+          "135",
+          "run"
+        ]
+      ],
+      "bounded_actual_reason": "Preview-scope baseline AST checksum assertion for common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "old198_log_reused": false,
+      "local_source_fix_test_rerun": false
+    }
+  ],
+  "current_commit_RMTM_changed_paths": [],
+  "runtime_behavior_error_or_source_introducer_attribution": null
+}
