@@ -120,7 +120,8 @@ def actual_closed_decision_detail(raw: object) -> bool:
             and roots[0].get("effective_visible") is False)
 
 
-def reject_unresolved_claims(directory: Path, identity: dict[str, object]) -> None:
+def reject_unresolved_claims(directory: Path, identity: dict[str, object], *,
+                             current_binding: dict[str, object] | None = None) -> None:
     """Unknown results block all later revisions for the same semantic action."""
     base = {key: identity[key] for key in ("game_pid", "actor_id", "episode_run_id",
                                           "decision_key", "action")}
@@ -151,6 +152,11 @@ def reject_unresolved_claims(directory: Path, identity: dict[str, object]) -> No
         verified_path = claim.with_suffix(".verified.json")
         try:
             verified = json.loads(verified_path.read_text(encoding="utf-8"))
+        except FileNotFoundError as error:
+            from .ingame_decision_predispatch_contract import allows_later_select
+            if allows_later_select(claim, value, identity, current_binding):
+                continue
+            raise ValueError("decision action already claimed with an unresolved result; no retry at any revision") from error
         except (OSError, ValueError) as error:
             raise ValueError("decision action already claimed with an unresolved result; no retry at any revision") from error
         result = verified.get("result")

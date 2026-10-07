@@ -1,0 +1,30 @@
+{
+  "recorded_at_utc": "2026-10-07T03:13:54.164229+00:00",
+  "failure_layer": "documentation evidence-copy input identity; no runtime or author replay",
+  "original_exit_code": 1,
+  "original_error": "source bytes differ from supplied original: C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\B3-r2-pending-author-001\\RESULT.json",
+  "cause": "author execution wrapper SHA was incorrectly assigned to the generated author output RESULT",
+  "generated_output": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\B3-r2-pending-author-001\\RESULT.json",
+    "bytes": 1041432,
+    "sha256": "78fa21f32367a29acccdebb18906a31e85b6ad343b210da9cb3109b1b966a64b"
+  },
+  "actual_execution_wrapper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r18-root-B3-r2-pending-author-execution-20261007-001/RESULT.actual.json",
+    "sha256": "06f50ab7f4f7a60be373222270e5186910768fe83c086857ca9a73bcd13c9c69"
+  },
+  "failed_source": {
+    "path": "C:\\lci18w1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0018-dbaf5f8db-rounds-lock-0304\\preserve_rounds_lock_partial.py",
+    "bytes": 15628,
+    "sha256": "fe571de486008f63846a9011260d93e169fc6a84a66463a63c09301325688dae"
+  },
+  "partial_archive": {
+    "path": "C:\\lci18w1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0018-dbaf5f8db-rounds-lock-0304\\ROUNDS-LOCK-0304.original-json.zip",
+    "bytes": 651078,
+    "sha256": "48cf8af97f54b7c9a2258c161c437bdfcaef3747cb40f14a5b2df04dfb66b098",
+    "status": "partial original archive; not a complete package"
+  },
+  "repeated_author_calls": 0,
+  "save_body_reads": 0,
+  "SDK_game_process_main_mutation": 0
+}

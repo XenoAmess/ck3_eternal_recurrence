@@ -1,0 +1,324 @@
+{
+  "created_at_utc": "2026-10-07T03:13:55.565108+00:00",
+  "runtime_cutoff_utc": "2026-10-07T03:04:00Z",
+  "status": "PARTIAL_NOT_GREEN",
+  "runtime_frozen_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+  "archive": {
+    "path": "ROUNDS-LOCK-0304.original-json.zip",
+    "bytes": 1736194,
+    "sha256": "8879ec06880a7e2377fd0e498de13d9baed7abdcf47c037b162b79b55f94b10d",
+    "members": 29,
+    "member_bytes": "exact original JSON bytes"
+  },
+  "members": [
+    {
+      "archive_member": "round-1/pending-author-STATE.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\B3-r1-pending-author-001\\STATE.json",
+      "bytes": 2600872,
+      "sha256_original_and_member": "a4fff19e5954b20696dde7c129023916c4941116a14b0d598b6d191102cbbf1a",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "existing observed pending state or protection/author result",
+      "original_status": null,
+      "original_schema": "lyd.i3b.checkpoint-observations.v1"
+    },
+    {
+      "archive_member": "round-1/pending-author-TYPED-PROTECTION.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\B3-r1-pending-author-001\\TYPED-PROTECTION.json",
+      "bytes": 1158886,
+      "sha256_original_and_member": "658f7d58e9d4400807428021f8bf10e9ff68d9ab622e2e8af4a58349d385ffa0",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "existing observed pending state or protection/author result",
+      "original_status": null,
+      "original_schema": "lyd.actual-i3b-checkpoint-typed-protection.v2"
+    },
+    {
+      "archive_member": "round-1/pending-author-RESULT.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\B3-r1-pending-author-001\\RESULT.json",
+      "bytes": 1041430,
+      "sha256_original_and_member": "b429b5236a3dfeca3f9587829375e30b683e53941baf83eb8a991c009ad0a960",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "existing observed pending state or protection/author result",
+      "original_status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "original_schema": "lyd.r18.actual-checkpoint-request-author.formal-registry.v2"
+    },
+    {
+      "archive_member": "round-1/cancel-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\formal-r1-cancel-001\\RESULT.actual.json",
+      "bytes": 13663,
+      "sha256_original_and_member": "14df2853bfc782b1acbb9ce00051517b8542a666d549d4e358b60d9488e760d8",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual four-call cancellation sequence provenance",
+      "original_status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "original_schema": null
+    },
+    {
+      "archive_member": "round-1/cancel-FINAL-SNAPSHOT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\formal-r1-cancel-001\\FINAL-SNAPSHOT.actual.json",
+      "bytes": 490031,
+      "sha256_original_and_member": "158d201ac4479c62bee731892ec119a5789aae3aed7fbc45b010148260e088b5",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual same-process post-cancel snapshot",
+      "original_status": null,
+      "original_schema": null
+    },
+    {
+      "archive_member": "round-1/cancel-confirm-native.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0049-r18-guard-b467e3edbcb144dfb688cb77f244156b-04.native-01.json",
+      "bytes": 1054217,
+      "sha256_original_and_member": "1190113680087c5615a2414f121ad6a5691e39d9beba9e0644f27f161d028c50",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual final native cancellation receipt, rather than command exit ACK",
+      "original_status": "native_gameplay_postcondition_verified",
+      "original_schema": "ck3.native-profile-receipt.v1"
+    },
+    {
+      "archive_member": "round-2/pending-author-STATE.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\B3-r2-pending-author-001\\STATE.json",
+      "bytes": 2600872,
+      "sha256_original_and_member": "13062d7242beaf1897c23de67f9425d68d7fd43b3b46ab089968439353eecf98",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "existing observed pending state or protection/author result",
+      "original_status": null,
+      "original_schema": "lyd.i3b.checkpoint-observations.v1"
+    },
+    {
+      "archive_member": "round-2/pending-author-TYPED-PROTECTION.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\B3-r2-pending-author-001\\TYPED-PROTECTION.json",
+      "bytes": 1158886,
+      "sha256_original_and_member": "42f43a6219162ace5ee26f16d16a2a25343d7e679730e6ef1ed2ea8009628707",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "existing observed pending state or protection/author result",
+      "original_status": null,
+      "original_schema": "lyd.actual-i3b-checkpoint-typed-protection.v2"
+    },
+    {
+      "archive_member": "round-2/pending-author-RESULT.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\B3-r2-pending-author-001\\RESULT.json",
+      "bytes": 1041432,
+      "sha256_original_and_member": "78fa21f32367a29acccdebb18906a31e85b6ad343b210da9cb3109b1b966a64b",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "existing observed pending state or protection/author result",
+      "original_status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "original_schema": "lyd.r18.actual-checkpoint-request-author.formal-registry.v2"
+    },
+    {
+      "archive_member": "round-2/cancel-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\formal-r2-cancel-001\\RESULT.actual.json",
+      "bytes": 13664,
+      "sha256_original_and_member": "183202adfe7a17b8f4450ec26cfcc45ef7c22c484e05d4fac486144cb51bf9a1",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual four-call cancellation sequence provenance",
+      "original_status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "original_schema": null
+    },
+    {
+      "archive_member": "round-2/cancel-FINAL-SNAPSHOT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\formal-r2-cancel-001\\FINAL-SNAPSHOT.actual.json",
+      "bytes": 807267,
+      "sha256_original_and_member": "36b83fe63d7dfc27c65b500bc234026478291c265cace7be6913f78673200c23",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual same-process post-cancel snapshot",
+      "original_status": null,
+      "original_schema": null
+    },
+    {
+      "archive_member": "round-2/cancel-confirm-native.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0078-r18-guard-024e3393df2a451d8640302a30ba972c-04.native-01.json",
+      "bytes": 1739683,
+      "sha256_original_and_member": "881c0062119834fa1fe9678729b5885ade16f1adea352fabc4e850d293ae5316",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual final native cancellation receipt, rather than command exit ACK",
+      "original_status": "native_gameplay_postcondition_verified",
+      "original_schema": "ck3.native-profile-receipt.v1"
+    },
+    {
+      "archive_member": "SAVE72-recovery/author-execution-001-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-root-B3-r2-pending-author-execution-20261007-001\\RESULT.actual.json",
+      "bytes": 1313,
+      "sha256_original_and_member": "06f50ab7f4f7a60be373222270e5186910768fe83c086857ca9a73bcd13c9c69",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual execution wrapper, distinct from produced author RESULT JSON",
+      "original_status": null,
+      "original_schema": null
+    },
+    {
+      "archive_member": "SAVE72-recovery/materializer-001-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-root-B3-r2-pending-materialize-execution-20261007-001\\RESULT.actual.json",
+      "bytes": 1467,
+      "sha256_original_and_member": "4e045aa9b316fd2ae3b467719d6fa38e381d41f7041cb543d8c804365b7784b1",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "original failed attempt or separate actual successful Python materialization",
+      "original_status": null,
+      "original_schema": null
+    },
+    {
+      "archive_member": "SAVE72-recovery/materializer-002-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-root-B3-r2-pending-materialize-execution-20261007-002\\RESULT.actual.json",
+      "bytes": 1501,
+      "sha256_original_and_member": "210d49c6f44f7fe4b14f43689948722a96ac90c5bb550fdae7c8475aecae428a",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "original failed attempt or separate actual successful Python materialization",
+      "original_status": null,
+      "original_schema": null
+    },
+    {
+      "archive_member": "SAVE72-recovery/CHECKPOINT-TRANSITION.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\B3-r2-pending-author-001\\CHECKPOINT-TRANSITION.actual.json",
+      "bytes": 1564917,
+      "sha256_original_and_member": "ca8aa7c79d6e500432f1531158b4bc7fd0f9961da9db770a4aba65620e0e9f7e",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "existing same-frame checkpoint transition evidence",
+      "original_status": null,
+      "original_schema": "lyd.sdk-checkpoint-transition.v2"
+    },
+    {
+      "archive_member": "source-preparation/cp003-INDEX.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-checkpoint-author-sourceonly-20261008-003\\INDEX.json",
+      "bytes": 32663,
+      "sha256_original_and_member": "21b9a523efc42f86b9ca406d0cae80de268b4bd7bd8e27ed5de1fd620cd00c9f",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "source-only timing-path correction; execution credit comes from separate actual results",
+      "original_status": "SOURCE_ONLY_SAVE72_TIMING_PATH_HOTFIX_PENDING_FOCUSED_JSON_REPLAY",
+      "original_schema": "lyd.r18.checkpoint-single-diagnostic-hotfix-index.v1"
+    },
+    {
+      "archive_member": "source-preparation/cp003-HOTFIX-SOURCE-PROJECTION.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-checkpoint-author-sourceonly-20261008-003\\HOTFIX-SOURCE-PROJECTION.actual.json",
+      "bytes": 5314,
+      "sha256_original_and_member": "e40e64bc377dada5b3acb7012c64d522a3c272551c8e8f9c95fc84d2cd3c55d0",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "source-only timing-path correction; execution credit comes from separate actual results",
+      "original_status": null,
+      "original_schema": "lyd.r18.checkpoint-single-diagnostic-hotfix-source.v1"
+    },
+    {
+      "archive_member": "source-preparation/capture004-INDEX.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-formal-capture-root-sourceonly-20261007-004\\INDEX.json",
+      "bytes": 2348,
+      "sha256_original_and_member": "f0b8012f6b3e91ea7156253695a5ad0fa05e0f5296ebbcc8e5c5d6df733fa9c7",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "future capture source preparation only; no actual capture",
+      "original_status": "CHECKPOINT003_DEFAULT_SOURCE_ONLY_READY",
+      "original_schema": "lyd.r18.root-capture-checkpoint003-sourceonly-index.v1"
+    },
+    {
+      "archive_member": "SDK-72/ROOT-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-request-executions\\072-r2-pending-save\\RESULT.actual.json",
+      "bytes": 5359,
+      "sha256_original_and_member": "198938322fe4b7eb584f002f59c6268658cdecb99ed1ea1e307022d1fc685a0c",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual SDK save request provenance; not an unlock acknowledgement",
+      "original_status": "EXPLICIT_REQUEST_RECORDED",
+      "original_schema": null
+    },
+    {
+      "archive_member": "SDK-72/native.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0072-r18-072-r2-pending-save.native-01.json",
+      "bytes": 1607611,
+      "sha256_original_and_member": "1d8a5a69bbb528b754a24499f4d33dca3d9b8f7c57ac587796bacbef51f24183",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "existing native checkpoint result and same-process frame",
+      "original_status": "native_gameplay_postcondition_verified",
+      "original_schema": "ck3.native-profile-receipt.v1"
+    },
+    {
+      "archive_member": "SDK-86/ROOT-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-request-executions\\086-r2-cancel-cleanup-save\\RESULT.actual.json",
+      "bytes": 5430,
+      "sha256_original_and_member": "65caeb188cc601c3d650b9e68095487953af8bde311a1cefea6860ed3babe6c6",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual SDK save request provenance; not an unlock acknowledgement",
+      "original_status": "EXPLICIT_REQUEST_RECORDED",
+      "original_schema": null
+    },
+    {
+      "archive_member": "SDK-86/native.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0086-r18-086-r2-cancel-cleanup-save.native-01.json",
+      "bytes": 1752222,
+      "sha256_original_and_member": "db256dda7157fea0f8b89bb03137a04afd530bb6bdad421aa06d9934baa868af",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "existing native checkpoint result and same-process frame",
+      "original_status": "native_gameplay_postcondition_verified",
+      "original_schema": "ck3.native-profile-receipt.v1"
+    },
+    {
+      "archive_member": "SDK-80/native-copy.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0080-r18-guard-944e13464e1b4d0aa3d5a45039a1758c-02.native-01.json",
+      "bytes": 873693,
+      "sha256_original_and_member": "6a68a8e97e0a26d51078bdde52addf6adddafd8b5e936bb275b8da114611150d",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "native pre-dispatch rejection",
+      "original_status": "RED",
+      "original_schema": "ck3.native-profile-receipt.v1"
+    },
+    {
+      "archive_member": "SDK-80/ROOT-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-request-executions\\r18-guard-944e13464e1b4d0aa3d5a45039a1758c-02\\RESULT.actual.json",
+      "bytes": 5603,
+      "sha256_original_and_member": "86455d42fe694a12fae584354ec614cfc12f370776a1c1f1ad9831a93b087ad5",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual official SDK request and envelope provenance",
+      "original_status": "EXPLICIT_REQUEST_RECORDED",
+      "original_schema": null
+    },
+    {
+      "archive_member": "SDK-84/native-copy.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0084-r18-guard-557b8eb1e4364d2d8b0b157ca7164208-02.native-01.json",
+      "bytes": 874224,
+      "sha256_original_and_member": "dd32f5be4cd4c2bd1dd8fbe738e18641f244dc8113e1a6a65601c377c4be7df3",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "Python unresolved-result lock; native-copy filename does not change the error layer",
+      "original_status": "RED",
+      "original_schema": "ck3.native-profile-receipt.v1"
+    },
+    {
+      "archive_member": "SDK-84/ROOT-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-request-executions\\r18-guard-557b8eb1e4364d2d8b0b157ca7164208-02\\RESULT.actual.json",
+      "bytes": 5603,
+      "sha256_original_and_member": "1213c0eb1762413b3bc82d099cdfd4190a8b9b9468ac00d978906fd165c593a1",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual official SDK request and envelope provenance",
+      "original_status": "EXPLICIT_REQUEST_RECORDED",
+      "original_schema": null
+    },
+    {
+      "archive_member": "SDK-88/native-copy.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0088-r18-guard-1bf0fb27c12e46c8975b7309fd87b254-02.native-01.json",
+      "bytes": 875624,
+      "sha256_original_and_member": "a4f00102e7e77386f2bf431a79291d12d4945c5af114ac84b558e24dc5c785b8",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "Python unresolved-result lock; native-copy filename does not change the error layer",
+      "original_status": "RED",
+      "original_schema": "ck3.native-profile-receipt.v1"
+    },
+    {
+      "archive_member": "SDK-88/ROOT-RESULT.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-request-executions\\r18-guard-1bf0fb27c12e46c8975b7309fd87b254-02\\RESULT.actual.json",
+      "bytes": 5603,
+      "sha256_original_and_member": "381875826274c733f3a4d937cd7c6108cf4b844b776f3576d08ac81527534f21",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual official SDK request and envelope provenance",
+      "original_status": "EXPLICIT_REQUEST_RECORDED",
+      "original_schema": null
+    }
+  ],
+  "scope": {
+    "normal_exit": "UNVALIDATED at cutoff",
+    "formal": null,
+    "new_T": null,
+    "C3": null,
+    "I4": null,
+    "whole_business": "NOT_GREEN"
+  },
+  "authoring_actions": {
+    "SDK_calls": 0,
+    "game_calls": 0,
+    "process_mutations": 0,
+    "main_writes": 0,
+    "save_body_reads": 0,
+    "source_binary_reads": 0,
+    "retests": 0,
+    "CI_polls": 0,
+    "commit_push": 0
+  }
+}

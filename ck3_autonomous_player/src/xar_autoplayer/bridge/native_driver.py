@@ -864,10 +864,14 @@ _WAR_TERMINATION_REVISION_RETRY_ERRORS = frozenset(
 class _NativeCommandRejectedError(BridgeUnavailableError):
     def __init__(self, native_error: str, *,
                  native_raw_return_receipt: dict[str, object] | None = None,
-                 native_request_id: str | None = None) -> None:
+                 native_request_id: str | None = None,
+                 native_request_frame: dict[str, object] | None = None,
+                 native_command_result_frame: dict[str, object] | None = None) -> None:
         self.native_error = native_error
         self.native_raw_return_receipt = native_raw_return_receipt
         self.native_request_id = native_request_id
+        self.native_request_frame = copy.deepcopy(native_request_frame)
+        self.native_command_result_frame = copy.deepcopy(native_command_result_frame)
         message = f"native gameplay step failed: {native_error}"
         if native_raw_return_receipt is not None:
             message += "; original parsed return receipt=" + json.dumps(native_raw_return_receipt, sort_keys=True)
@@ -6679,7 +6683,7 @@ class NativeHeadlessGameplayDriver:
         if action == "select":
             identity["public_revision"] = revision
         try:
-            reject_unresolved_claims(claim_dir, identity)
+            reject_unresolved_claims(claim_dir, identity, current_binding=binding)
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
         key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
@@ -6749,7 +6753,13 @@ class NativeHeadlessGameplayDriver:
                            "queried_revision": revision, "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
             preserve_verified_claim(claim, request_id, result)
         except Exception as error:
-            self._record_command(step, ok=False, result={"raw": raw, "action_claim_path": str(claim)},
+            failure = {"raw": raw, "action_claim_path": str(claim)}
+            if action == "select" and isinstance(error, _NativeCommandRejectedError):
+                from .ingame_decision_predispatch_contract import preserve_select_error
+                failure["native_error_evidence"] = preserve_select_error(
+                    claim, error.native_request_frame, error.native_command_result_frame)
+                failure["native_request_id"] = error.native_request_id
+            self._record_command(step, ok=False, result=failure,
                                  error=f"{type(error).__name__}: {error}")
             raise
         self._record_command(step, ok=True, result=result)
@@ -10971,6 +10981,8 @@ class NativeHeadlessGameplayDriver:
                 native_error if isinstance(native_error, str) else "unknown error",
                 native_raw_return_receipt=trace_raw_receipt,
                 native_request_id=request_id,
+                native_request_frame=request,
+                native_command_result_frame=frame,
             )
         result = frame.get("result")
         if isinstance(result, dict):
