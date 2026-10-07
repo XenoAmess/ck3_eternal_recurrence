@@ -1,0 +1,98 @@
+{
+  "schema": "lyd.r22.actual4-normal-exit-static-pin-comparison.v1",
+  "started_at_utc": "2026-10-07T12:00:52.350565+00:00",
+  "ended_at_utc": "2026-10-07T12:00:52.702605+00:00",
+  "actual_exe": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "source_refs": [
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_pins_v1.inc",
+      "bytes": 830,
+      "sha256": "6f286b24df3cc8b01a87443ee536c7c03f89390c5b600f34ec17fc18ff565076"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_state_v1.hpp",
+      "bytes": 17747,
+      "sha256": "b69fb3258eefdf2bb89e5aae88f3d5ae2ede91ba87d69fc7cfe825f334954db8"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\zhongguo_scoreboard_action_v1.hpp",
+      "bytes": 10076,
+      "sha256": "360e9ceee029bdb12a277014e2d2f2945083f1e1bd68f3f8cb5725d73e5c05e6"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_v1.cpp",
+      "bytes": 18271,
+      "sha256": "fa2c5d6d8a4ac45163952fd8cd56864a5ca50d7cd223d0648087f837bb9e9bb7"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1459923,
+      "sha256": "7b5de882a224ab5fa4f4d722389c840802f556cf4dcaf9bbfa60d6532b73aa72"
+    }
+  ],
+  "original_native_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-022\\mcp-client-001\\0007-r22-007-normal-exit-readonly.native-01.json",
+    "bytes": 39223,
+    "sha256": "d221adaf0c18896f6d9f53146cf1134d2fba96fc132596ffb9487fee510321e9"
+  },
+  "observed_reason": "exact_gui_code_pins_changed",
+  "pre_pin_read_environment_admission_missing_SHA_proven": true,
+  "rows": [
+    {
+      "symbol": "kCrozier12004GuiFindTopLevelWidgetRva",
+      "legacy_pin_rva": "0x3AAB100",
+      "actual4_header_rva": "0x3aab0e0",
+      "file_offset": 61514976,
+      "section": ".text",
+      "expected_prefix_hex": "48895c240848896c24104889742418574883ec20488b81d0000000488bfa488b",
+      "actual_prefix_hex": "48895c240848896c24104889742418574883ec20488b81d0000000488bfa488b",
+      "exact_prefix_equal": true,
+      "prefix_sha256": "a487e7aec80c4ea474d52cddfe9d9a4d6b2e0bba455a354bef2ba7ea0229e2af",
+      "raw_prefix_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\01-kCrozier12004GuiFindTopLevelWidgetRva.actual32.bin"
+    },
+    {
+      "symbol": "kCrozier12004ShortcutManagerActivateRva",
+      "legacy_pin_rva": "0x3ABC4D0",
+      "actual4_header_rva": "0x3abc4b0",
+      "file_offset": 61585584,
+      "section": ".text",
+      "expected_prefix_hex": "48895c240848896c24104889742418574883ec60498bf08bea488bf9498b5948",
+      "actual_prefix_hex": "48895c240848896c24104889742418574883ec60498bf08bea488bf9498b5948",
+      "exact_prefix_equal": true,
+      "prefix_sha256": "071e0dbf90038868163045d5b8d2548ed03854743af2a7b1075a2c5aa93826e0",
+      "raw_prefix_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\02-kCrozier12004ShortcutManagerActivateRva.actual32.bin"
+    },
+    {
+      "symbol": "kCrozier12004StrictDescendantRva",
+      "legacy_pin_rva": "0x3A78230",
+      "actual4_header_rva": "0x3a78210",
+      "file_offset": 61306384,
+      "section": ".text",
+      "expected_prefix_hex": "48895c240848896c24104889742418574883ec20488bf1488bea488b89f00000",
+      "actual_prefix_hex": "48895c240848896c24104889742418574883ec20488bf1488bea488b89f00000",
+      "exact_prefix_equal": true,
+      "prefix_sha256": "fb1f316d9e64308a47f7953b22711d5ddc54a85db1f4520546b7c9e56717d056",
+      "raw_prefix_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\03-kCrozier12004StrictDescendantRva.actual32.bin"
+    },
+    {
+      "symbol": "kCrozier12004ButtonBaseSlot13Rva",
+      "legacy_pin_rva": "0x3AA0D40",
+      "actual4_header_rva": "0x3aa0d20",
+      "file_offset": 61473056,
+      "section": ".text",
+      "expected_prefix_hex": "40534883ec20488bd90fb689d000000080e1027426448b42104183e80d740c41",
+      "actual_prefix_hex": "40534883ec20488bd90fb689d000000080e1027426448b42104183e80d740c41",
+      "exact_prefix_equal": true,
+      "prefix_sha256": "17bf5acb32394937706927260537761bdcd62d3624f6470f687a15d6fd6358e6",
+      "raw_prefix_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\04-kCrozier12004ButtonBaseSlot13Rva.actual32.bin"
+    }
+  ],
+  "all_four_exact_32byte_prefixes_equal": true,
+  "new_pin_or_RVA_mapping_added": false,
+  "native_memory_SDK_process_or_runtime_build_used": false,
+  "runtime_native_exit_credit": null
+}

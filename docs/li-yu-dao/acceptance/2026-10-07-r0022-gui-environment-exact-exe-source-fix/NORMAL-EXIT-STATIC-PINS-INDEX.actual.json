@@ -1,0 +1,65 @@
+{
+  "schema": "lyd.r22.actual4-normal-exit-static-pin-archive-append.v1",
+  "files": [
+    {
+      "archive_path": "NORMAL-EXIT-STATIC-RESULT.actual.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\RESULT.actual.json",
+        "bytes": 4998,
+        "sha256": "96a4f7abc9db78eb8c36816e1049f20e2bbe906d0d4b41988dfc668195b8d8cf"
+      }
+    },
+    {
+      "archive_path": "NORMAL-EXIT-STATIC-compare_actual4_static_pins.py",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\compare_actual4_static_pins.py",
+        "bytes": 4489,
+        "sha256": "c2ad0385285da072afe7e629cdfc32221370c9424de03bb0b4a085fc6456c511"
+      }
+    },
+    {
+      "archive_path": "NORMAL-EXIT-STATIC-ORIGINAL-R22-NORMAL-EXIT-READONLY.native.json",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\ORIGINAL-R22-NORMAL-EXIT-READONLY.native.json",
+        "bytes": 39223,
+        "sha256": "d221adaf0c18896f6d9f53146cf1134d2fba96fc132596ffb9487fee510321e9"
+      }
+    },
+    {
+      "archive_path": "NORMAL-EXIT-STATIC-01-kCrozier12004GuiFindTopLevelWidgetRva.actual32.bin",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\01-kCrozier12004GuiFindTopLevelWidgetRva.actual32.bin",
+        "bytes": 32,
+        "sha256": "a487e7aec80c4ea474d52cddfe9d9a4d6b2e0bba455a354bef2ba7ea0229e2af"
+      }
+    },
+    {
+      "archive_path": "NORMAL-EXIT-STATIC-02-kCrozier12004ShortcutManagerActivateRva.actual32.bin",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\02-kCrozier12004ShortcutManagerActivateRva.actual32.bin",
+        "bytes": 32,
+        "sha256": "071e0dbf90038868163045d5b8d2548ed03854743af2a7b1075a2c5aa93826e0"
+      }
+    },
+    {
+      "archive_path": "NORMAL-EXIT-STATIC-03-kCrozier12004StrictDescendantRva.actual32.bin",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\03-kCrozier12004StrictDescendantRva.actual32.bin",
+        "bytes": 32,
+        "sha256": "fb1f316d9e64308a47f7953b22711d5ddc54a85db1f4520546b7c9e56717d056"
+      }
+    },
+    {
+      "archive_path": "NORMAL-EXIT-STATIC-04-kCrozier12004ButtonBaseSlot13Rva.actual32.bin",
+      "original_ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r22-normal-exit-actual4-code-pins-20261007-001\\04-kCrozier12004ButtonBaseSlot13Rva.actual32.bin",
+        "bytes": 32,
+        "sha256": "17bf5acb32394937706927260537761bdcd62d3624f6470f687a15d6fd6358e6"
+      }
+    }
+  ],
+  "all_four_exact_prefix_equal": true,
+  "production_pin_or_RVA_change_needed": false,
+  "original_R22_native_error_preserved": true,
+  "live_exit_or_business_credit": null
+}
