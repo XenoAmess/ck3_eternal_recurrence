@@ -1,5 +1,15 @@
 # Actual 1.20.0.4 restored-tool live repairs — 2026-10-07
 
+## Current scope and accepted migration — 2026-10-07 13:19 Asia/Shanghai
+
+The user cancelled vacation/handoff at12:14: existing-tool migration has highest priority and real G2 work proceeds in parallel, up to64 independent agents. Root's actual R63/title12 qualifier at **13:19:28 /05:19:28 UTC**, source **`89d72878` /G110r13/entry14**, accepted **all existing enabled MCP tools as migrated:100% within that scope**. The [sealed qualification](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9613-title12/ROOT-R63-ALL-EXISTING-MCP-MIGRATION-QUALIFIED.json) is GREEN/migration_complete=true; its [current-scope successor](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9613-title12/ROOT-R63-ALL-EXISTING-MCP-MIGRATION-QUALIFIED-CURRENT-SCOPE.json) preserves the evidence with **g2_resume_ready=true, handoff=false**. The old vacation promise below is superseded, not an outstanding delivery.
+
+Accepted evidence includes finite28(24+4),9 reused,20 offline,208 registry,84 old enabled game descriptor tokens,88 hello tokens,all10 original streams,full14 Snapshot,h9626 normal save and the first verified center primitive. Existing OFF stays unchanged; all-capabilities-complete remains false. R61/R62 center REDs remain genuine, the intermittent camera cause is still unknown, and R63's xyz1828/0/2386,current==target,zoom174/index4,settledtrue,blockedfalse success followed diagnostic-only source changes; no semantic camera fix is claimed. Root is now running the original normal route's one-day G2 operation, with no added day yet credited:5997/36524,date53288256,natural0,G2 5/8,NW2 2/4. No additional runtime, scene, EXE, save or Driver verification was performed for this report update.
+
+Root's post-qualification source is now **`80d34269`**, after14 pure/source/documentation adoptions; the qualified live SDK is still **`89d72878`/entry14**, with no live credit from those source changes. The normal one-day runner started05:20 UTC/session11716 at [route-day01](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/post-migration-g2-r63-route-day01), initially querying war termination options under the preserved dynasty_continuity goal. Its independent saved day is pending, so5998 is not credited.
+
+## Historical R0060 scope and repair record — superseded at12:14
+
 Scope: finish migration of the existing enabled MCP tools, then hand off for
 vacation. No new gameplay activities or G2 days are authorized by this work.
 The original Robert campaign remains paused at date_raw 53288256.
