@@ -160,3 +160,41 @@ This source increment touches only the camera TU and this topic; central
 diagnostic serialization remains Root-owned. Native-update cause and numeric
 live observation remain pending. No EXE read, SDK, test, build or game action
 was performed by this owner.
+
+## R0063 first successful registered actual .4 primitive
+
+Root's sole recheck at source
+`89d728782be11d6995e14fb195f19101e90ccab6`, runtime entry14,
+`managed-full-h9613-title12/operator/gameplay-responses/010-title-center-numeric.json`
+completed from `2026-10-07T05:04:22.721233+00:00` to
+`2026-10-07T05:05:00.287398+00:00`. It used the unchanged registered
+`ck3_center_map_on_landed_title_v1` for `c_salerno` at public revision3.
+The source owner read only this small complete response once. The original
+response's text JSON and structured result match in full.
+
+The response is `complete`, `is_error=false`, `accepted=true`, `status=centered`.
+Its binding is `native:2`, public revision3, native revision2, date53288256,
+episode `native-29829-2bc2d599f7f9`, connection generation1. Title full ID2156
+is county tier2, capital province2612, bounds `[1828,2386,1828,2386]`, map-X
+adjustment0. Source version, frozen executable SHA and backend are the actual
+.4 tuple. Native ACK sequence1 says `dispatched`; completion is independently
+supported by the actual camera readback, not ACK alone.
+
+Expected XYZ is `[1828,0,2386]`. The complete six-float current and target states
+both equal `[1828,0,2386,174,1.0821040868759155,0]`, including float32 bit equality.
+Zoom index4 and expected zoom174 match the readback; `settled=true`,
+`target_write_blocked=false`, `postcondition_verified=true` and completion
+predicate `exact-build-native-camera-settled-v1`. Root also reports its fresh
+14/14 full-query and 208-tool admission receipts GREEN for this runtime; those
+are separate coordinator evidence and were not rerun by this owner.
+
+This establishes the first **production-live primitive** success of the
+migrated explicit title-map provider. R61's unattributed `state_changed` and
+R62's `post_dispatch_target_prefix_changed` remain real failed attempts.
+R0063 succeeded after diagnostic-only changes: native addresses, dispatch,
+comparison and completion rules were unchanged. The intermittent later-pump
+target mismatch is not explained or claimed fixed. This one success does not
+prove repeatability, rendered-pixel positioning, autonomous planner use, a
+production-live loop or complete gameplay capability. No additional game
+request was made; only the held successful body was reviewed for the finite
+qualifier.
