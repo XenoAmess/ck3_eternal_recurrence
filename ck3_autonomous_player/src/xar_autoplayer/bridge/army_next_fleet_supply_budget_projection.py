@@ -17,10 +17,15 @@ def _integer(value: object, bits: int) -> bool:
     return type(value) is int and -(1 << (bits - 1)) <= value < (1 << (bits - 1))
 
 
-def project_source_derived_next_fleet_supply_budget_v1(
+def _project_source_next_fleet_supply_budget_at_stock_v1(
     same_query_strength: Mapping[str, object],
+    supply_stock_raw: object,
+    *,
+    stock_basis: str = "captured_current_stock_unchanged",
+    post_updater_stock_used: bool = False,
+    stock_input_name: str = "current_supply_raw",
 ) -> dict[str, object]:
-    """Recompute signed Fleet suppression, then reuse the held-stock evaluator."""
+    """Evaluate the source-next getter with an explicit, separately named stock."""
     row = same_query_strength
     family = normalize_current_fleet_supply_tick_inputs_v1(row.get("current_fleet_supply_tick_inputs_v1"))
     future = normalize_source_derived_next_daily_supply_frame_inputs_v1(
@@ -30,7 +35,7 @@ def project_source_derived_next_fleet_supply_budget_v1(
     inputs = inputs if isinstance(inputs, Mapping) else {}
     losses = row.get("loss_application_inputs_v1")
     losses = losses if isinstance(losses, Mapping) else {}
-    stock = row.get("current_supply_raw")
+    stock = supply_stock_raw
     next_date = future.get("source_derived_next_date_raw_i32") if future else None
     bare_fleet = family.get("native_fleet_branch_applicable") if family else None
     fleet_day = family.get("fleet_day_raw") if family else None
@@ -41,9 +46,9 @@ def project_source_derived_next_fleet_supply_budget_v1(
         "status": "unavailable", "ready": False, "missing_inputs": [],
         "army_id": row.get("army_id"), "native_carmy_id": row.get("native_carmy_id"),
         "condition": "one direct 24E32C0 getter evaluation with source-derived next GLOBAL GameState low32 date and CURRENT captured stock/Fleet/commander/eligible-current inputs unchanged",
-        "stock_basis": "captured_current_stock_unchanged",
-        "post_updater_stock_used": False,
-        "held_current_supply_stock_raw": stock,
+        "stock_basis": stock_basis,
+        "post_updater_stock_used": post_updater_stock_used,
+        "held_current_supply_stock_raw": row.get("current_supply_raw"),
         "observed_current_native_fleet_supply_loss_suppressed": inputs.get("native_fleet_supply_loss_suppressed"),
         "observed_current_supply_loss_budget_soldiers": losses.get("current_supply_loss_budget"),
         "source_next_global_clock": deepcopy(future),
@@ -104,10 +109,10 @@ def project_source_derived_next_fleet_supply_budget_v1(
                       conditional_supply_budget_soldiers=0)
         return result
     if not _integer(stock, 64):
-        result.update(status="partial", missing_inputs=["current_supply_raw"])
+        result.update(status="partial", missing_inputs=[stock_input_name])
         return result
-    # The reused evaluator's argument name is legacy. Its seed is explicitly the
-    # captured CURRENT stock here; no post-updater stock is constructed or tagged.
+    # The reused evaluator's argument name is legacy. The stock is an explicit
+    # isolated argument; the original row and its current stock are unchanged.
     kernel: dict[str, object] = {
         "conditional_post_supply_raw": stock, "missing_inputs": [],
         "supply_state_index": None, "supply_base_fraction_raw": None,
@@ -126,3 +131,11 @@ def project_source_derived_next_fleet_supply_budget_v1(
         missing_inputs=list(dict.fromkeys(kernel["missing_inputs"])),
     )
     return result
+
+
+def project_source_derived_next_fleet_supply_budget_v1(
+    same_query_strength: Mapping[str, object],
+) -> dict[str, object]:
+    """Retain the direct getter's captured-current-stock public contract."""
+    return _project_source_next_fleet_supply_budget_at_stock_v1(
+        same_query_strength, same_query_strength.get("current_supply_raw"))
