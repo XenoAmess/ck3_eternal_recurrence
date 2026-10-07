@@ -29,9 +29,9 @@ def _trunc0(numerator: int, denominator: int) -> int:
 
 
 def _native_fixed_div(value: int, divisor: int) -> tuple[int, str]:
-    """24E6129..61CE, including zero raw-1 and signed abs/wrap semantics."""
+    """24E6129..61CE, including zero DWORD quotient and signed abs/wrap semantics."""
     if divisor == 0:
-        return -1, "zero_divisor_raw_minus_one"
+        return 4294967295, "zero_divisor_positive_u32_max"
     if -0x53E2D6238DA3 <= value <= 0x53E2D6238DA3:
         return _trunc0(_wrap64(value * Q), divisor), "fast"
     if _wrap64(abs(divisor)) >= Q * Q:
