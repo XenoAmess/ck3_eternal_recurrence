@@ -1,0 +1,83 @@
+{
+  "status": "BOUND_IMPORT_COMPLETE",
+  "archive_member_count": 3837,
+  "restored_exact_four_anchors": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/B3-r3-signed-author-001/FORMAL-NATIVE-QUALIFICATION.actual-or-pending.json",
+      "bytes": 30364,
+      "sha256": "903f907783b639daad9ea77b174c811cd6dfc0e841a0ae53d3616af5eb08b372",
+      "archive_member": "live-attempt-024/B3-r3-signed-author-001/FORMAL-NATIVE-QUALIFICATION.actual-or-pending.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/B4-r3-signed-author-001/TYPED-PROTECTION.json",
+      "bytes": 1005925,
+      "sha256": "2d31ec3e881983af997a5576e8c24cf712f89e86e9c4af6f3b73eb1ff90b0d42",
+      "archive_member": "live-attempt-024/B4-r3-signed-author-001/TYPED-PROTECTION.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/mcp-client-002/0094-r24-102-observe-normal-exit.native-01.json",
+      "bytes": 5908,
+      "sha256": "6dce295a76145007428d513710393638243d1ac1c84053dce274dddb95fde1ba",
+      "archive_member": "live-attempt-024/mcp-client-002/0094-r24-102-observe-normal-exit.native-01.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 3063,
+      "sha256": "e7a32435b40867f644c3ee4906211bfa8d282e3a962a62fcff9926f215d7aec5",
+      "archive_member": "r24-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json"
+    }
+  ],
+  "additional_original_boundary_sources": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-typed-close-predecessor-sourceonly-20261008-001/author_closed_boundary.py",
+        "bytes": 207,
+        "sha256": "4cc626c1046aa825b8217fd8d11b74b70e91bd8f72f42e8a401059e279112727"
+      },
+      "tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/typed-boundary-source/author_closed_boundary.py",
+        "bytes": 207,
+        "sha256": "4cc626c1046aa825b8217fd8d11b74b70e91bd8f72f42e8a401059e279112727"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-typed-close-predecessor-sourceonly-20261008-001/DEPENDENCIES.json",
+        "bytes": 6728,
+        "sha256": "5a29feb6d43afbe1c1491ef09976f9fe4ab807435f38edef4fa9654a01ef5997"
+      },
+      "tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/typed-boundary-source/DEPENDENCIES.json",
+        "bytes": 6728,
+        "sha256": "5a29feb6d43afbe1c1491ef09976f9fe4ab807435f38edef4fa9654a01ef5997"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-typed-close-predecessor-sourceonly-20261008-001/INDEX.json",
+        "bytes": 1249,
+        "sha256": "cee2e727a78c5e761451fd1e002f0579834d5ac98adc03bde24f1b61266ffdb5"
+      },
+      "tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/typed-boundary-source/INDEX.json",
+        "bytes": 1249,
+        "sha256": "cee2e727a78c5e761451fd1e002f0579834d5ac98adc03bde24f1b61266ffdb5"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-typed-close-predecessor-sourceonly-20261008-001/verify_previous_boundary.py",
+        "bytes": 22405,
+        "sha256": "cbcc59d1240182ffb07022fd875ad34522cfd72ddb0bb1d3ebd060fff73f18b1"
+      },
+      "tracked": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0024-e0e017da1-signed-protection-red/typed-boundary-source/verify_previous_boundary.py",
+        "bytes": 22405,
+        "sha256": "cbcc59d1240182ffb07022fd875ad34522cfd72ddb0bb1d3ebd060fff73f18b1"
+      }
+    }
+  ],
+  "checkpoint_body_reads": 0,
+  "native_or_game_calls": 0,
+  "all_prior_RED_unchanged": true
+}

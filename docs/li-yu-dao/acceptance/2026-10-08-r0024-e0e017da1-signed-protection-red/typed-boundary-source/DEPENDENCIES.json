@@ -1,0 +1,137 @@
+{
+  "launch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/launch.json",
+    "bytes": 2374,
+    "sha256": "18199aaeb694d133ebe4813a289eeae599d12743c894372794c3ef3ad8950af9"
+  },
+  "consumer_session": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/mcp-client-002/session.json",
+    "bytes": 1251,
+    "sha256": "47e61bf5eccbd7a830542b561149621372ef2d6a7527720ad591961ca8d1f1b1"
+  },
+  "game_native": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/mcp-client-002/0094-r24-102-observe-normal-exit.native-01.json",
+    "bytes": 5908,
+    "sha256": "6dce295a76145007428d513710393638243d1ac1c84053dce274dddb95fde1ba"
+  },
+  "game_sdk": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/mcp-client-002/0094-r24-102-observe-normal-exit.sdk-result.json",
+    "bytes": 12819,
+    "sha256": "e09121362d547a8bfe319fca7ae6a6db4c01f0cc95c88be79aea25d6bebaad83"
+  },
+  "original_game_native": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/native-evidence/01bc16ca823f4c84b3804823a4f2c6dc/0093-normal-exit-observe.json",
+    "bytes": 5908,
+    "sha256": "6dce295a76145007428d513710393638243d1ac1c84053dce274dddb95fde1ba"
+  },
+  "game_response": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/mcp-client-002/0094-r24-102-observe-normal-exit.response.json",
+    "bytes": 1317,
+    "sha256": "984debb48cb5037a269521eb69d822f2f25aaf6490c3b7b69fd891e97ce4ff45"
+  },
+  "game_request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/mcp-queue-002/r24-102-observe-normal-exit.request.json",
+    "bytes": 183,
+    "sha256": "b57496ff3802b0d563f9c47bfac5dde276c215d03de6f37f5c941ee022356b08"
+  },
+  "passive_game_capture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/ROOT-ORIGINAL-GAME-HANDLE-001/CAPTURED.actual.json",
+    "bytes": 1849,
+    "sha256": "2db40f95dce353201de4513619bb157a6750207ae0c707d95f64a04d4b79fb05"
+  },
+  "passive_game_exit": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/ROOT-ORIGINAL-GAME-HANDLE-001/EXIT.actual.json",
+    "bytes": 1180,
+    "sha256": "f6ed32735f5ee8a7066217ec5228005b4b43f69188235d35e048581b145b2b1b"
+  },
+  "helper_capture": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/ROOT-ORIGINAL-HELPER-HANDLES-001/CAPTURED.actual.json",
+    "bytes": 6066,
+    "sha256": "53108163742090a4d054d58e4bb513941be1e5c13433e81a0ec7f55fcda9a68c"
+  },
+  "client_exit": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/ROOT-ORIGINAL-HELPER-HANDLES-001/EXIT-client.actual.json",
+    "bytes": 1789,
+    "sha256": "4e01f2b2f86401592c32d688551b0c3a2e710d7e486b6fafd290e284f2133e00"
+  },
+  "keeper_exit": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/ROOT-ORIGINAL-HELPER-HANDLES-001/EXIT-keeper.actual.json",
+    "bytes": 1693,
+    "sha256": "24cd1ff72cc1627cb449a0a5f55c9af79f7dcad1fe033a41ce63600d123e6686"
+  },
+  "holder_final": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/ROOT-ORIGINAL-HELPER-HANDLES-001/FINAL.actual.json",
+    "bytes": 4345,
+    "sha256": "ff3b8ccdacd948c485e71f1dc5ca35b0110bf63c3653eeb871a79592317a0ce3"
+  },
+  "consumer_closed": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/mcp-client-002/session-closed.json",
+    "bytes": 4377,
+    "sha256": "9aa0b6a15c920ecc10f172086d3e82f7c4bd884ba58ded99f67ba0a6bba7a07d"
+  },
+  "consumer_close_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/mcp-client-002/0095-r24-103-close-client.response.json",
+    "bytes": 478,
+    "sha256": "8bb051f3f53172aef52f0af0e5c63bd106194c926f7b45d6bb282d8abb5090e7"
+  },
+  "consumer_close_request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/mcp-queue-002/r24-103-close-client.request.json",
+    "bytes": 105,
+    "sha256": "1f1977cb10cd33a0c72dc54df1828666346667d4245509977d675e4da5f69743"
+  },
+  "keeper_final": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/screen-lease-keeper-001/FINAL.json",
+    "bytes": 412,
+    "sha256": "466462174f2d169d1eb63e70fad58e8c1778ab6c78d9d1822684bdf04933041f"
+  },
+  "client_original_exec": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-client2-serve-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 1726,
+    "sha256": "1a4cb364279190a17281db36cfaa763e7de389760e7c89277a88c4a5ecb33195"
+  },
+  "keeper_original_exec": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-keeper-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 1533,
+    "sha256": "5b2a267f50747c9ca9b042e9b9dd1fe51914bba633c3dcc9e4812189882729d2"
+  },
+  "holder_original_exec": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-helper-holder-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 1562,
+    "sha256": "d70c245e69ac135423c282ededa979eabfa809df708e64e032d769596c4bb9f7"
+  },
+  "game_observer_original_exec": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-game-handle-observer-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 1876,
+    "sha256": "a082956754eab07c7c4c49e06ed1295ab1eedfba36102724b6436c4b9e754b68"
+  },
+  "release_original_exec": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-screen-release-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 1437,
+    "sha256": "497f18878c9c58c07058bf84ed33ac40a945f08fe13626662ac586651c829887"
+  },
+  "after_list_original_exec": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-root-postrelease-list-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 1314,
+    "sha256": "2ce71974ea6de3868abf1b50f25918de913c5bebafdb6ea29e2f57cbfc5f82bf"
+  },
+  "process_absence": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/ROOT-POST-RELEASE-CENSUS-001/RESULT.actual.json",
+    "bytes": 360,
+    "sha256": "20f5726676f61fc57f94c7c19af1ed2ab76e81c59665fce164c2135d9d875d09"
+  },
+  "final_offline_review": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-024/steam-offline-final-001/probe-1/ROOT-OFFLINE-REVIEW.actual.json",
+    "bytes": 899,
+    "sha256": "9b654f20547288460ddfbce255942975c57d0416796771454610cddf2ef4a25b"
+  },
+  "contract_source": {
+    "path": "C:/lr24s2/ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_contract_v1.py",
+    "bytes": 22690,
+    "sha256": "b794d7176c4928c5c74c22ce0cbb6894d18d74e787f3418512fec11b5ba5b942"
+  },
+  "observer_source": {
+    "path": "C:/lr24s2/ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_process_observer_v1.py",
+    "bytes": 10155,
+    "sha256": "ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70"
+  }
+}

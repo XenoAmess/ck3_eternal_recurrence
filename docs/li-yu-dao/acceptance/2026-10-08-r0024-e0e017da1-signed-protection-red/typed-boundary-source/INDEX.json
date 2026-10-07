@@ -1,0 +1,31 @@
+{
+  "status": "R24_FILE_ONLY_TYPED_CLOSE_AUTHOR_SOURCE_READY",
+  "source_head": "e0e017da1ad84eea9cf623728d38d29d55d8bbdf",
+  "author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-typed-close-predecessor-sourceonly-20261008-001/author_closed_boundary.py",
+    "bytes": 207,
+    "sha256": "4cc626c1046aa825b8217fd8d11b74b70e91bd8f72f42e8a401059e279112727"
+  },
+  "verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-typed-close-predecessor-sourceonly-20261008-001/verify_previous_boundary.py",
+    "bytes": 22405,
+    "sha256": "cbcc59d1240182ffb07022fd875ad34522cfd72ddb0bb1d3ebd060fff73f18b1"
+  },
+  "source_pins": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r24-typed-close-predecessor-sourceonly-20261008-001/DEPENDENCIES.json",
+    "bytes": 6728,
+    "sha256": "5a29feb6d43afbe1c1491ef09976f9fe4ab807435f38edef4fa9654a01ef5997"
+  },
+  "closure_function": "verify_previous_boundary_v3",
+  "limits_function": "validate_previous_boundary_limits",
+  "normal_exit_typed_green_expected_from_actual_receipt": true,
+  "autosave_verified": false,
+  "business_GREEN": false,
+  "actual_boundary": null,
+  "AST_once": true,
+  "SDK_calls": 0,
+  "OS_queries": 0,
+  "bus_calls": 0,
+  "body_reads": 0,
+  "main_writes": 0
+}

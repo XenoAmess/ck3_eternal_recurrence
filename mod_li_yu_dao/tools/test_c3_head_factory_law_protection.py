@@ -98,12 +98,14 @@ class FactoryLawProtectionTests(unittest.TestCase):
     def test_absent_snapshot_rejects_without_numeric_read(self):
         self.assertFalse(should_cleanup(self.limit, {}, {LAW}))
 
-    def test_cleanup_occurs_after_temporal_title_law(self):
+    def test_cleanup_occurs_after_resolve_before_temporal_title_law(self):
         body = self.body.entries
         addition = next(i for i,e in enumerate(body) if e.key == 'scope:new_title' and entries(e.value, 'add_title_law'))
         cleanup = next(i for i,e in enumerate(body) if e.value is self.cleanup)
-        self.assertGreater(cleanup, addition)
-        self.assertLess(cleanup, next(i for i,e in enumerate(body) if e.key == 'set_variable'))
+        resolve = next(i for i,e in enumerate(body) if e.key == 'resolve_title_and_vassal_change')
+        self.assertGreater(cleanup, resolve)
+        self.assertLess(cleanup, addition)
+        self.assertLess(addition, next(i for i,e in enumerate(body) if e.key == 'set_variable'))
 
     def test_owner_and_shared_template_ast_match_generated(self):
         for relative in ['tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in',
