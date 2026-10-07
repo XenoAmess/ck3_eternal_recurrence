@@ -17,6 +17,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <span>
 #include <string>
 #include <vector>
@@ -1420,6 +1421,8 @@ struct MarriageCandidateAlliancePrivateReadV1 {
   bool recipient_acceptance_ready = false;
   std::int64_t recipient_ai_accept_raw = 0;
   std::uint8_t recipient_answer_status_raw = 3;
+  // Optional loaded producer-floor raw; one value shared by the rich frame.
+  std::optional<std::int64_t> native_candidate_fertility_floor_raw{};
 };
 
 // Recreates and finalizes one exact five-role context on application-main.

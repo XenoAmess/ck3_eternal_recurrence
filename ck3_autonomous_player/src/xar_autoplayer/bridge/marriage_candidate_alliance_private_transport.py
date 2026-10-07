@@ -158,8 +158,17 @@ def query_first_heir_candidate_alliance_projection_private_v1(
                 "candidate_is_adult", "grand_wedding_option_selected",
                 "heir_adult_measure_raw", "candidate_adult_measure_raw",
                 "heir_adult_threshold_raw", "candidate_adult_threshold_raw"))
-        ):
+            ):
             raise BridgeUnavailableError("marriage projection row identity malformed")
+        floor_raw = row.get("native_candidate_fertility_floor_raw")
+        if floor_raw is not None and (
+            type(floor_raw) is not int or not -2**63 <= floor_raw < 2**63
+        ):
+            raise BridgeUnavailableError("marriage native fertility floor malformed")
+        row["candidate_native_fertility_floor_comparison_v1"] = {
+            "source": "derived_signed_native_fertility_floor_comparison",
+            "ready": False, "passes": None,
+        }
         pairs = row.get("possible_alliance_pairs")
         if not isinstance(pairs, list) or len(pairs) > 3:
             raise BridgeUnavailableError("marriage projection pair bounds malformed")
@@ -195,6 +204,14 @@ def query_first_heir_candidate_alliance_projection_private_v1(
         if any(not _native_fertility_input_valid(row[field])
                for field in _NATIVE_FERTILITY_FIELDS):
             raise BridgeUnavailableError("marriage native fertility input malformed")
+        # This derives one signed native branch, not a total candidate score.
+        # Old/nullable observations leave that comparison unavailable.
+        candidate_fertility = row["candidate_native_fertility"]
+        if floor_raw is not None:
+            row["candidate_native_fertility_floor_comparison_v1"].update({
+                "ready": True,
+                "passes": candidate_fertility["effective_raw"] > floor_raw,
+            })
         costs = row.get("generic_costs")
         if (not isinstance(costs, dict)
             or set(costs) != {*_GENERIC_COST_FIELDS, "raw_scale",

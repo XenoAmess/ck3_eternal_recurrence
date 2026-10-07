@@ -31,6 +31,8 @@ _SELECTED_VALUE_FIELDS = (
     "heir_adult_threshold_raw", "candidate_adult_threshold_raw",
     "grand_wedding_option_selected",
     "heir_native_fertility", "candidate_native_fertility",
+    "native_candidate_fertility_floor_raw",
+    "candidate_native_fertility_floor_comparison_v1",
 )
 
 
@@ -300,6 +302,8 @@ def _private_five_candidate_diagnostic(
               "heir_adult_threshold_raw", "candidate_adult_threshold_raw",
               "grand_wedding_option_selected",
               "heir_native_fertility", "candidate_native_fertility",
+              "native_candidate_fertility_floor_raw",
+              "candidate_native_fertility_floor_comparison_v1",
               "generic_costs",
               "heir_betrothed_character_id", "heir_primary_spouse_character_id",
               "played_house_id", "played_dynasty_id", "heir_house_id",

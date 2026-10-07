@@ -60,6 +60,8 @@ struct Bindings {
   void **dynasty_store = nullptr;
   void **dynasty_fallback = nullptr;
   FertilityGate fertility_gate = nullptr;
+  // Optional actual4 loaded producer-floor operand; older binders leave null.
+  const std::int64_t *candidate_fertility_floor = nullptr;
 };
 
 // Address calculation only. Neither function discovers or attaches to a game.

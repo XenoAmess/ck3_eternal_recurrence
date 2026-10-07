@@ -46,6 +46,8 @@ inline constexpr std::uintptr_t kFamilyProjectionReadOptionRva = 0x3078860;
 inline constexpr std::uintptr_t kFamilyProjectionSetOptionRva = 0x30788C0;
 inline constexpr std::uintptr_t kFamilyProjectionIsAlliedRva = 0x2911DD0;
 inline constexpr std::uintptr_t kFamilyFertilityGateRva = 0x28BB4C0;
+// Exact actual4 CMP 1A3C871 RIP operand, signed QWORD; runtime value is read.
+inline constexpr std::uintptr_t kFamilyCandidateFertilityFloorRva = 0x5C6A1B0;
 inline constexpr std::uintptr_t kNativeChildHousePreviewParentRva = 0x1375380;
 inline constexpr std::uintptr_t kNativeMarriageMatchOfferVtableRva = 0x454E470;
 // Shared actual4 collection ledger and parent producer/outcome DETAIL receipts.

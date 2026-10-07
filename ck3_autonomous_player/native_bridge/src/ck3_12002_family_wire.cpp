@@ -241,6 +241,10 @@ std::string SerializeFamilyAllianceFrameV1(std::string_view request_id,
       };
       append_fertility("heir_native_fertility", read.heir_fertility);
       append_fertility("candidate_native_fertility", read.candidate_fertility);
+      result += ",\"native_candidate_fertility_floor_raw\":";
+      result += available && read.native_candidate_fertility_floor_raw.has_value()
+                    ? SignedNumber(*read.native_candidate_fertility_floor_raw)
+                    : "null";
     }
     result += ",\"grand_wedding_option_selected\":";
     result += available ? (read.grand_wedding_option_selected ? "true" : "false")

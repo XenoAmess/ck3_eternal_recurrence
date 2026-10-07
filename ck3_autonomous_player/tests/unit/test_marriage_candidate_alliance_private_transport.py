@@ -137,6 +137,199 @@ class _Driver:
 
 
 class MarriageCandidateAlliancePrivateTransportTests(unittest.TestCase):
+    def test_optional_native_fertility_floor_reaches_real_service_diagnostic(self) -> None:
+        """Consume four native wires when supplied; otherwise authored shapes.
+
+        Compiled FIRST sets XAR_FIRST_HEIR_FERTILITY_NATIVE_WIRE_DIR to the
+        parent-owned rich-reader/serializer output directory. The old-absent
+        case is a compatibility copy, not a new native execution or live
+        observation. This method invokes the production rich transport and
+        the real Service family-planning entry without submitting a proposal.
+        """
+        import json
+        import os
+        import tempfile
+
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+        from xar_autoplayer.bridge.version_identity import CK3_12004
+
+        raw_field = "native_candidate_fertility_floor_raw"
+        comparison_field = "candidate_native_fertility_floor_comparison_v1"
+        wire_dir = os.environ.get("XAR_FIRST_HEIR_FERTILITY_NATIVE_WIRE_DIR")
+        output_path = os.environ.get("XAR_FIRST_HEIR_FERTILITY_SERVICE_OUTPUT")
+        inputs = [
+            ("positive", 10000, [15000, 10000, -1, 0, 25000],
+             [True, False, False, False, True]),
+            ("negative", -2, [-1, -2, -3, 0, 1],
+             [True, False, False, True, True]),
+            ("unbound", None, [15000, 10000, -1, 0, 25000],
+             [None] * 5),
+            ("deniedread", None, [15000, 10000, -1, 0, 25000],
+             [None] * 5),
+        ]
+        cases = []
+        for name, floor, candidate_raws, expected_passes in inputs:
+            if wire_dir:
+                reply = json.loads((Path(wire_dir) / f"{name}.json")
+                                   .read_text(encoding="utf-8"))
+            else:
+                reply = _reply()
+                for row, raw in zip(reply["result"]["rows"], candidate_raws):
+                    row[raw_field] = floor
+                    row["candidate_native_fertility"]["effective_raw"] = raw
+                    row.update({
+                        "requested_matrilineal_option": False,
+                        "selected_option_readback": None,
+                        "final_legality_sampled": True,
+                        "complete_can_send": True,
+                        "recipient_ai_accept_raw": 1600000,
+                        "recipient_answer_status_raw": 0,
+                    })
+            self.assertEqual(len(reply["result"]["rows"]), 5)
+            for row in reply["result"]["rows"]:
+                self.assertIn(raw_field, row)
+                self.assertEqual(row[raw_field], floor)
+            if floor is not None:
+                self.assertEqual([
+                    row["candidate_native_fertility"]["effective_raw"]
+                    for row in reply["result"]["rows"]], candidate_raws)
+            cases.append((name, reply, expected_passes))
+        old_absent = deepcopy(cases[0][1])
+        for row in old_absent["result"]["rows"]:
+            del row[raw_field]
+        cases.append(("oldabsent", old_absent, [None] * 5))
+
+        class ServiceDriver(_Driver):
+            allow_private_family_marriage_formal_trial = True
+
+            def __init__(self, reply, frame, legality, state_dir):
+                super().__init__(reply, [deepcopy(frame), deepcopy(frame)])
+                self.legality = legality
+                self.state_dir = state_dir
+                self.consumed_projection = None
+
+            def query_observed_first_heir_marriage_legality_v1(
+                self, *, expected_native_revision,
+            ):
+                if expected_native_revision != self.legality["native_revision"]:
+                    raise AssertionError("Service changed the fixture frame")
+                return self.legality
+
+            def query_first_heir_candidate_alliance_projection_private_v1(
+                self, *, legality, candidate_character_ids,
+            ):
+                self.consumed_projection = (
+                    query_first_heir_candidate_alliance_projection_private_v1(
+                        self, legality=legality,
+                        candidate_character_ids=candidate_character_ids))
+                return self.consumed_projection
+
+        selected_candidates = []
+        service_outputs = []
+        for name, native_reply, expected_passes in cases:
+            with self.subTest(case=name), tempfile.TemporaryDirectory() as temporary:
+                reply = deepcopy(native_reply)
+                result = reply["result"]
+                native_rows = result["rows"]
+                frame = _frame()
+                frame.update({
+                    "native_revision": result["native_revision"],
+                    "active_event": None,
+                    "pending_character_interaction": None, "active_wars": [],
+                    "episode_run_id": "fertility-floor-offline-compound",
+                    "played_character": {
+                        "character_id": native_rows[0]["actor_character_id"],
+                        "alive": True,
+                    },
+                    "diagnostics": {"hello": {
+                        "expected_ck3_version": CK3_12004.game_version,
+                        "expected_ck3_sha256": CK3_12004.executable_sha256,
+                    }},
+                })
+                legality = {
+                    "schema": "xar.ck3.observed-first-heir-marriage-legality.v1",
+                    "status": "available", "native_revision": frame["native_revision"],
+                    "query_sequence": result["legality_query_sequence"],
+                    "observed_first_heir_character_id": native_rows[0]["heir_character_id"],
+                    "exact_ck3_build": CK3_12004.game_version,
+                    "exe_sha256": CK3_12004.executable_sha256,
+                    "native_legal_candidates": [{
+                        "candidate_character_id": row["candidate_character_id"],
+                        "played_character_id": row["actor_character_id"],
+                        "subject_character_id": row["heir_character_id"],
+                        "recipient_matchmaker_character_id": row["recipient_character_id"],
+                        "heir_adult_measure_raw": row["heir_adult_measure_raw"],
+                        "candidate_adult_measure_raw": row["candidate_adult_measure_raw"],
+                        "played_dynasty_id": row["played_dynasty_id"],
+                        "heir_dynasty_id": row["heir_dynasty_id"],
+                        "candidate_dynasty_id": row["candidate_dynasty_id"],
+                        "realm_backed_actor_recipient": True,
+                        "complete_can_send": row["complete_can_send"],
+                        "recipient_answer_allows_send":
+                            row["recipient_answer_status_raw"] in (0, 1),
+                        "recipient_answer_status_raw": row["recipient_answer_status_raw"],
+                        "recipient_ai_accept_raw": row["recipient_ai_accept_raw"],
+                        **({"final_legality_sampled": row["final_legality_sampled"]}
+                           if "final_legality_sampled" in row else {}),
+                    } for row in native_rows],
+                }
+                driver = ServiceDriver(reply, frame, legality, Path(temporary))
+                planned = GameplayBridgeService(driver)._plan_private_family_opportunity_v1(
+                    {"plan": {"selected_step": "life-advance"}}, frame)
+                diagnostic = planned["plan"]["family_marriage_private_diagnostic"]
+                self.assertEqual(diagnostic["exact_ck3_build"], CK3_12004.game_version)
+                self.assertEqual(len(diagnostic["rows"]), 5)
+                selected_candidates.append(
+                    planned["plan"]["family_marriage_choice"]["candidate_character_id"])
+                service_outputs.append({
+                    "case": name,
+                    "family_marriage_choice": deepcopy(
+                        planned["plan"]["family_marriage_choice"]),
+                    "family_marriage_private_diagnostic": deepcopy(diagnostic),
+                })
+                for index, observed in enumerate(diagnostic["rows"]):
+                    original = native_rows[index]
+                    comparison = observed[comparison_field]
+                    self.assertEqual(observed[raw_field], original.get(raw_field))
+                    self.assertEqual(observed["candidate_native_fertility"],
+                                     original["candidate_native_fertility"])
+                    self.assertEqual(observed["heir_native_fertility"],
+                                     original["heir_native_fertility"])
+                    self.assertEqual(observed["recipient_ai_accept_raw"],
+                                     original["recipient_ai_accept_raw"])
+                    self.assertEqual(observed["recipient_answer_status_raw"],
+                                     original["recipient_answer_status_raw"])
+                    self.assertIs(observed["complete_can_send"],
+                                  original["complete_can_send"])
+                    if "final_legality_sampled" in original:
+                        self.assertIs(driver.legality["native_legal_candidates"][index][
+                            "final_legality_sampled"], original["final_legality_sampled"])
+                    self.assertEqual(comparison["source"],
+                                     "derived_signed_native_fertility_floor_comparison")
+                    self.assertIs(comparison["ready"], expected_passes[index] is not None)
+                    self.assertIs(comparison["passes"], expected_passes[index])
+                    consumed = driver.consumed_projection["rows"][index]
+                    if name == "oldabsent":
+                        self.assertNotIn(raw_field, consumed)
+                    else:
+                        self.assertIn(raw_field, consumed)
+                request = driver.endpoint.request
+                self.assertEqual(request["step"], STEP)
+                self.assertEqual([request[f"candidate_id_{index}"] for index in range(5)],
+                                 [row["candidate_character_id"] for row in native_rows])
+        self.assertEqual(len(set(selected_candidates)), 1)
+        if output_path:
+            destination = Path(output_path)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(json.dumps({
+                "schema": "xar.ck3.first-heir-fertility-floor-service-compound.v1",
+                "source_mode": ("compiled_native_whole_wire" if wire_dir
+                                else "authored_source_shape"),
+                "native_wire_directory": wire_dir,
+                "production_live": False, "material_result": False,
+                "cases": service_outputs,
+            }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
     def test_paired_native_fertility_is_consumed_by_rich_rows(self) -> None:
         frame = _frame()
         frame["diagnostics"] = {"hello": {

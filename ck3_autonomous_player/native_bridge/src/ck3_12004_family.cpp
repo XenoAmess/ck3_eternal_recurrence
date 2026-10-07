@@ -120,6 +120,8 @@ ck3_12002::family_value::Bindings BindFamilyValuesImage(
   bindings.fertility_gate =
       reinterpret_cast<ck3_12002::family_value::FertilityGate>(
           base + kFamilyFertilityGateRva);
+  bindings.candidate_fertility_floor = reinterpret_cast<const std::int64_t *>(
+      base + kFamilyCandidateFertilityFloorRva);
   return bindings;
 }
 
