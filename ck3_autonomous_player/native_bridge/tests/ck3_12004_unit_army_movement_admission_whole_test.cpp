@@ -1,7 +1,8 @@
 // SOURCE_PREPARED/NOTRUN. Root owns the sole fresh build and execution.
 // Actual4 wrapper -> common production Strength collector -> production wire.
 // This observes current operands with owned readonly stubs; it never calls
-// NewDate, the ADD writer, edge-cost/route-consumption handlers, or Game.
+// NewDate, the ADD writer, native provider initialization, arrival handlers,
+// or Game. New edge scenes install only fixture-owned readonly observers.
 // Admission is a current readonly bool input; future Combat/Army context is
 // held explicitly by the pure gate-slice projection, not observed as effects.
 #include "xar_bridge/ck3_12004_army.hpp"
@@ -45,12 +46,33 @@ struct Scene {
   bool edge_getter_bound;
   bool admission_value;
   bool admission_getter_bound;
+  bool edge_selection_scene = false;
+  std::int64_t first_edge_cost = 0;
+  bool first_edge_cost_getter_bound = false;
+  std::uint8_t provider_byte_e = 0;
+  bool provider_byte_bound = false;
+  std::int64_t normalized_progress = 0;
+  std::int64_t remaining_duration = 0;
+  std::optional<bool> expected_branch_selected;
 };
 constexpr std::array<Scene, 4> kScenes{{
     {"admission_true", 2, 2, 100, 7, 11, true, true, true, true},
     {"admission_false", 2, 2, 100, 0, 11, true, true, false, true},
     {"admission_unavailable", 2, 2, 100, 7, 11, true, true, false, false},
     {"admission_bypass_state1", 1, 2, 100, 7, 11, true, true, false, false},
+}};
+
+constexpr std::array<Scene, 5> kEdgeSelectionScenes{{
+    {"edge_above_cost", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 106, true, 0, false, 94339, 85714, true},
+    {"edge_equal_hold", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 107, true, 0, true, 93457, 100000, false},
+    {"edge_below_override", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 108, true, 3, true, 92592, 114285, true},
+    {"edge_provider_unavailable", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 107, true, 0, false, 93457, 100000, std::nullopt},
+    {"edge_cost_unavailable", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 107, false, 0, true, 93457, 100000, std::nullopt},
 }};
 
 void Check(bool condition, const char *message) {
@@ -78,6 +100,7 @@ struct Inputs {
       0x02000001U, static_cast<std::uint32_t>(kUnit), 0xFFFFFFFFU,
       static_cast<std::uint32_t>(kUnit)};
   std::array<std::uintptr_t, 4> secondary_vtable{};
+  std::uint8_t first_edge_arrival_provider_byte_e = 0;
   friend bool operator==(const Inputs &, const Inputs &) = default;
 };
 struct Counters {
@@ -85,6 +108,7 @@ struct Counters {
   std::size_t supply_capacity = 0, attrition_fraction = 0, monthly_supply = 0;
   std::size_t current_edge_speed = 0;
   std::size_t army_movement_admission = 0;
+  std::size_t first_edge_cost = 0, normalized_progress = 0, remaining_duration = 0;
   bool abi_matches = true;
 };
 struct Fixture;
@@ -96,6 +120,9 @@ std::int64_t *Attrition(void *, std::int64_t *, void *);
 std::int64_t *MonthlySupply(void *, std::int64_t *, void *, void *);
 std::int64_t *CurrentEdgeSpeed(void *, std::int64_t *);
 bool ArmyMovementAdmission(void *);
+std::int64_t *FirstEdgeCost(void *, std::int64_t *);
+std::int64_t *NormalizedProgress(void *, std::int64_t *);
+std::int64_t *FirstEdgeRemainingDuration(void *, std::int64_t *, std::int32_t);
 
 struct Fixture {
   Inputs input{};
@@ -107,8 +134,11 @@ struct Fixture {
   Counters calls{};
   std::int64_t edge_rate;
   bool admission_value;
+  std::int64_t first_edge_cost = 0, normalized_progress = 0, remaining_duration = 0;
   explicit Fixture(const Scene &scene)
-      : edge_rate(scene.edge_rate), admission_value(scene.admission_value) {
+      : edge_rate(scene.edge_rate), admission_value(scene.admission_value),
+        first_edge_cost(scene.first_edge_cost), normalized_progress(scene.normalized_progress),
+        remaining_duration(scene.remaining_duration) {
     Store(input.game_state, 8, static_cast<std::int64_t>(kDate));
     Store(input.game_state, 0x9C, std::int32_t{12});
     Store(input.game_state, 0xA0, static_cast<void *>(input.game_data.data()));
@@ -168,12 +198,21 @@ struct Fixture {
         current::BindCurrentUnitNewDateCallbackEntryInputs12004(kImageBase, current::kExecutableSha256);
     bindings.monthly_loss_budget_bindings.enabled = true;
     // Existing production slot type is reused with one fixture-owned getter.
-    // The full committed-route timeline remains disabled; no future route,
-    // cost/duration or budget callback is installed or invoked.
+    // The full committed-route timeline remains disabled. New scenes add
+    // current ratio/duration/cost stubs and a borrowed byte, never future calls.
     bindings.read_native_army_movement_admission =
         scene.admission_getter_bound ? ArmyMovementAdmission : nullptr;
     bindings.get_unit_current_edge_movement_rate =
         scene.edge_getter_bound ? CurrentEdgeSpeed : nullptr;
+    if (scene.edge_selection_scene) {
+      input.first_edge_arrival_provider_byte_e = scene.provider_byte_e;
+      bindings.get_unit_normalized_edge_progress = NormalizedProgress;
+      bindings.get_unit_first_route_edge_duration = FirstEdgeRemainingDuration;
+      bindings.get_unit_first_route_edge_weight_cost =
+          scene.first_edge_cost_getter_bound ? FirstEdgeCost : nullptr;
+      bindings.unit_first_edge_arrival_provider_byte_e = scene.provider_byte_bound
+          ? &input.first_edge_arrival_provider_byte_e : nullptr;
+    }
     Check(bindings.current_unit_new_date_schedule_bindings.enabled &&
         bindings.current_unit_new_date_callback_entry_bindings.enabled &&
         (bindings.get_unit_current_edge_movement_rate != nullptr) == scene.edge_getter_bound &&
@@ -236,6 +275,28 @@ bool ArmyMovementAdmission(void *receiver) {
   ++f.calls.army_movement_admission;
   f.calls.abi_matches &= receiver == f.input.army.data();
   return f.admission_value;
+}
+std::int64_t *FirstEdgeCost(void *receiver, std::int64_t *out) {
+  auto &f = *active;
+  ++f.calls.first_edge_cost;
+  f.calls.abi_matches &= receiver == f.input.unit.data() && out != nullptr;
+  *out = f.first_edge_cost;
+  return out;
+}
+std::int64_t *NormalizedProgress(void *receiver, std::int64_t *out) {
+  auto &f = *active;
+  ++f.calls.normalized_progress;
+  f.calls.abi_matches &= receiver == f.input.unit.data() && out != nullptr;
+  *out = f.normalized_progress;
+  return out;
+}
+std::int64_t *FirstEdgeRemainingDuration(
+    void *receiver, std::int64_t *out, std::int32_t index) {
+  auto &f = *active;
+  ++f.calls.remaining_duration;
+  f.calls.abi_matches &= receiver == f.input.unit.data() && out != nullptr && index == 0;
+  *out = f.remaining_duration;
+  return out;
 }
 void AppendString(std::string &out, std::string_view value) {
   out += '"';
@@ -308,12 +369,31 @@ void AssertScene(const Fixture &f, const Inputs &before,
       ? std::optional<bool>{scene.admission_value} : std::nullopt;
   Check(movement.native_army_movement_admission == expected_admission,
       "same-CArmy native AL bool omitted, false collapsed, or unbound value fabricated");
+  const std::optional<std::int64_t> expected_progress = scene.edge_selection_scene
+      ? std::optional<std::int64_t>{scene.normalized_progress} : std::nullopt;
+  const std::optional<std::int64_t> expected_duration = scene.edge_selection_scene
+      ? std::optional<std::int64_t>{scene.remaining_duration} : std::nullopt;
+  const std::optional<std::int64_t> expected_cost =
+      scene.edge_selection_scene && scene.first_edge_cost_getter_bound
+      ? std::optional<std::int64_t>{scene.first_edge_cost} : std::nullopt;
+  const std::optional<std::uint8_t> expected_provider =
+      scene.edge_selection_scene && scene.provider_byte_bound
+      ? std::optional<std::uint8_t>{scene.provider_byte_e} : std::nullopt;
   Check(movement.accumulated_movement_weight_raw == scene.accumulated_weight &&
       movement.cached_edge_speed_raw == scene.cached_speed &&
       movement.current_edge_movement_rate_raw == expected_rate && !movement.unit_state_raw &&
-      !movement.normalized_edge_progress_raw && !movement.first_route_edge_remaining_duration_raw &&
+      movement.normalized_edge_progress_raw == expected_progress &&
+      movement.first_route_edge_remaining_duration_raw == expected_duration &&
+      movement.first_route_edge_weight_cost_raw == expected_cost &&
+      movement.first_edge_arrival_provider_byte_e_u8 == expected_provider &&
       !movement.committed_route_timeline,
-      "movement raw inputs changed or unsupported timeline outputs fabricated");
+      "movement raw operands or exact current edge observers changed");
+  if (scene.edge_selection_scene) {
+    Check(movement.status == game::ArmyMovementProgressStatus::available,
+        "existing current ratio/duration availability lost");
+    Check(scene.accumulated_weight + scene.cached_speed == 107,
+        "new scene lost its supplied post-ADD prefix107");
+  }
   if (row.source_derived_next_daily_supply_frame_inputs_v1) {
     const auto &date = *row.source_derived_next_daily_supply_frame_inputs_v1;
     Check(!date.source_derived_full_cdate64_ready && !date.source_derived_next_date_storage_raw64,
@@ -323,14 +403,20 @@ void AssertScene(const Fixture &f, const Inputs &before,
       f.calls.maximum_soldiers == 1 && f.calls.supply_capacity == 1 &&
       f.calls.attrition_fraction == 1 && f.calls.monthly_supply == 1 &&
       f.calls.current_edge_speed == (getter_used ? 1U : 0U) &&
-      f.calls.army_movement_admission == (scene.admission_getter_bound ? 1U : 0U),
+      f.calls.army_movement_admission == (scene.admission_getter_bound ? 1U : 0U) &&
+      f.calls.first_edge_cost ==
+          (scene.edge_selection_scene && scene.first_edge_cost_getter_bound ? 1U : 0U) &&
+      f.calls.normalized_progress == (scene.edge_selection_scene ? 1U : 0U) &&
+      f.calls.remaining_duration == (scene.edge_selection_scene ? 1U : 0U),
       "whole reader ABI/count or current getter selection changed");
   Check(f.input == before, "readonly whole reader changed owned Unit/queue/route inputs");
 }
 std::string SerializeWhole(const game::ArmyStrengthSnapshot &row,
-    std::string_view scene, std::size_t sequence) {
+    std::string_view scene, std::size_t sequence, bool edge_selection_scene = false) {
   std::string out = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
-  AppendString(out, std::string("unit-army-movement-admission-") + std::string(scene));
+  AppendString(out, std::string(edge_selection_scene ? "unit-first-edge-selection-"
+                                                 : "unit-army-movement-admission-") +
+                    std::string(scene));
   out += ",\"ok\":true,\"result\":{\"step\":\"query-army-strengths-v1\","
          "\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
   out += std::to_string(sequence);
@@ -391,23 +477,73 @@ std::string Context(const Fixture &f, const Scene &scene, std::size_t sequence) 
          "\"post_entry_operands_held_into_gate\":true,\"intervening_empty_route_handler_closed\":false}";
   return out;
 }
+std::string EdgeSelectionContext(
+    const Fixture &f, const Scene &scene, std::size_t sequence) {
+  auto out = Context(f, scene, sequence);
+  const auto replace = [&](std::string_view from, std::string_view to) {
+    for (auto at = out.find(from); at != std::string::npos; at = out.find(from, at + to.size())) {
+      out.replace(at, from.size(), to);
+    }
+  };
+  replace("xar.unit-army-movement-admission-native-context.v1",
+          "xar.unit-first-edge-selection-native-context.v1");
+  replace("unit-army-movement-admission-12004", "unit-first-edge-selection-12004");
+  replace("first selected supplied gate-entry slice after ADD",
+          "conditional first edge selection after supplied ADD prefix; actual arrival/effects unobserved");
+  std::string inputs = ",\"first_route_edge_weight_cost_raw\":";
+  inputs += scene.first_edge_cost_getter_bound ? std::to_string(scene.first_edge_cost) : "null";
+  inputs += ",\"first_edge_weight_cost_getter_bound\":";
+  inputs += scene.first_edge_cost_getter_bound ? "true" : "false";
+  inputs += ",\"first_edge_arrival_provider_byte_e_u8\":";
+  inputs += scene.provider_byte_bound ? std::to_string(scene.provider_byte_e) : "null";
+  inputs += ",\"first_edge_arrival_provider_byte_bound\":";
+  inputs += scene.provider_byte_bound ? "true" : "false";
+  inputs += ",\"normalized_edge_progress_raw\":" + std::to_string(scene.normalized_progress);
+  inputs += ",\"first_route_edge_remaining_duration_raw\":" + std::to_string(scene.remaining_duration);
+  inputs += ",\"expected_source_derived_next_progress_prefix_raw\":107";
+  inputs += ",\"conditional_first_edge_arrival_branch_selected\":";
+  inputs += scene.expected_branch_selected
+      ? (*scene.expected_branch_selected ? "true" : "false") : "null";
+  const auto input_at = out.find(",\"monthly_budget_callbacks_enabled\":");
+  Check(input_at != std::string::npos, "whole native-input context anchor missing");
+  out.insert(input_at, inputs);
+  std::string callbacks = ",\"first_route_edge_weight_cost\":" + std::to_string(f.calls.first_edge_cost);
+  callbacks += ",\"normalized_edge_progress\":" + std::to_string(f.calls.normalized_progress);
+  callbacks += ",\"first_route_edge_remaining_duration\":" + std::to_string(f.calls.remaining_duration);
+  callbacks += ",\"native_first_edge_provider_getter\":0";
+  const auto callback_at = out.find(",\"monthly_budget_helpers\":");
+  Check(callback_at != std::string::npos, "whole callback context anchor missing");
+  out.insert(callback_at, callbacks);
+  Check(!out.empty() && out.back() == '}', "whole context object boundary missing");
+  out.pop_back();
+  out += ",\"actual_first_edge_arrival_observed\":false,"
+         "\"first_edge_consumption_or_clamp_reconstructed\":false,"
+         "\"source_derived_branch_is_conditional\":true}";
+  return out;
+}
 } // namespace
 
 int main(int argc, char **argv) {
   std::filesystem::path output;
+  bool edge_selection_mode = false;
   try {
-    Check(argc == 3 && std::string_view(argv[1]) == "--wire-dir",
-        "usage: xar_ck3_12004_unit_army_movement_admission_whole_test --wire-dir <fresh-dir>");
+    Check(argc == 3 && (std::string_view(argv[1]) == "--wire-dir" ||
+                       std::string_view(argv[1]) == "--edge-selection-wire-dir"),
+        "usage: xar_ck3_12004_unit_army_movement_admission_whole_test "
+        "--wire-dir <fresh-dir> | --edge-selection-wire-dir <fresh-dir>");
+    edge_selection_mode = std::string_view(argv[1]) == "--edge-selection-wire-dir";
+    const Scene *scenes = edge_selection_mode ? kEdgeSelectionScenes.data() : kScenes.data();
+    const auto scene_count = edge_selection_mode ? kEdgeSelectionScenes.size() : kScenes.size();
     output = argv[2];
     std::filesystem::create_directories(output);
     std::string aggregate = "{\"schema_version\":1,\"scene_order\":[";
-    for (std::size_t index = 0; index < kScenes.size(); ++index) {
+    for (std::size_t index = 0; index < scene_count; ++index) {
       if (index != 0) aggregate += ',';
-      AppendString(aggregate, kScenes[index].name);
+      AppendString(aggregate, scenes[index].name);
     }
     aggregate += "],\"samples\":{";
-    for (std::size_t index = 0; index < kScenes.size(); ++index) {
-      const auto &scene = kScenes[index];
+    for (std::size_t index = 0; index < scene_count; ++index) {
+      const auto &scene = scenes[index];
       auto fixture = std::make_unique<Fixture>(scene);
       auto before = std::make_unique<Inputs>(fixture->input);
       active = fixture.get();
@@ -418,9 +554,11 @@ int main(int argc, char **argv) {
       Check(result == game::ReadArmyStrengthsResult::available && rows.size() == 1,
           "genuine whole Strength did not produce an available original row");
       AssertScene(*fixture, *before, rows.front(), scene);
-      const auto wire = SerializeWhole(rows.front(), scene.name, index + 1);
+      const auto wire = SerializeWhole(rows.front(), scene.name, index + 1, edge_selection_mode);
       Write(output / (std::string(scene.name) + ".command-result.json"), wire);
-      Write(output / (std::string(scene.name) + ".native-context.json"), Context(*fixture, scene, index + 1));
+      Write(output / (std::string(scene.name) + ".native-context.json"),
+          edge_selection_mode ? EdgeSelectionContext(*fixture, scene, index + 1)
+                              : Context(*fixture, scene, index + 1));
       if (index != 0) aggregate += ',';
       AppendString(aggregate, scene.name);
       aggregate += ':';
@@ -428,20 +566,36 @@ int main(int argc, char **argv) {
       active = nullptr;
     }
     aggregate += "}}";
-    Write(output / "unit-army-movement-admission-whole.json", aggregate);
-    Write(output / "PRODUCER-RECEIPT.json",
-        "{\"schema\":\"xar.unit-army-movement-admission-producer-receipt.v1\","
-        "\"status\":\"PASS\",\"scene_count\":4,\"whole_reader_calls\":4,\"whole_serializer_calls\":4,"
-        "\"fixture_owned_objects_and_callbacks\":true,\"all_fixture_input_bytes_unchanged\":true,"
-        "\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false,"
-        "\"old_GREEN_replayed\":false,\"full_adapter_snapshot_path_exercised\":false}");
-    std::cout << "four current CArmy admission whole scenes emitted\n";
+    Write(output / (edge_selection_mode ? "unit-first-edge-selection-whole.json"
+                                        : "unit-army-movement-admission-whole.json"), aggregate);
+    if (edge_selection_mode) {
+      Write(output / "PRODUCER-RECEIPT.json",
+          "{\"schema\":\"xar.unit-first-edge-selection-producer-receipt.v1\","
+          "\"status\":\"PASS\",\"scene_count\":5,\"whole_reader_calls\":5,\"whole_serializer_calls\":5,"
+          "\"fixture_owned_objects_and_callbacks\":true,\"all_fixture_input_bytes_unchanged\":true,"
+          "\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false,"
+          "\"native_first_edge_provider_getter_invoked\":false,\"actual_arrival_observed\":false,"
+          "\"old_GREEN_replayed\":false,\"old_four_scenes_replayed\":false,"
+          "\"full_adapter_snapshot_path_exercised\":false}");
+    } else {
+      Write(output / "PRODUCER-RECEIPT.json",
+          "{\"schema\":\"xar.unit-army-movement-admission-producer-receipt.v1\","
+          "\"status\":\"PASS\",\"scene_count\":4,\"whole_reader_calls\":4,\"whole_serializer_calls\":4,"
+          "\"fixture_owned_objects_and_callbacks\":true,\"all_fixture_input_bytes_unchanged\":true,"
+          "\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false,"
+          "\"old_GREEN_replayed\":false,\"full_adapter_snapshot_path_exercised\":false}");
+    }
+    std::cout << (edge_selection_mode ? "five first edge selection whole scenes emitted\n"
+                                     : "four current CArmy admission whole scenes emitted\n");
     return 0;
   } catch (const std::exception &error) {
     active = nullptr;
     if (!output.empty()) {
-      std::string receipt = "{\"schema\":\"xar.unit-army-movement-admission-producer-receipt.v1\","
-                            "\"status\":\"FAIL\",\"error\":";
+      std::string receipt = "{\"schema\":";
+      AppendString(receipt, edge_selection_mode
+          ? "xar.unit-first-edge-selection-producer-receipt.v1"
+          : "xar.unit-army-movement-admission-producer-receipt.v1");
+      receipt += ",\"status\":\"FAIL\",\"error\":";
       AppendString(receipt, error.what());
       receipt += ",\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false}";
       std::ofstream file(output / "PRODUCER-RECEIPT.json", std::ios::binary);

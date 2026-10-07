@@ -183,6 +183,13 @@ ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
   result.read_native_army_movement_admission =
       reinterpret_cast<decltype(result.read_native_army_movement_admission)>(
           image_base + 0x24E91E0);
+  // Actual readonly cost [24AA850,24AA91A); RCX CUnit, RDX out i64.
+  result.get_unit_first_route_edge_weight_cost =
+      reinterpret_cast<decltype(result.get_unit_first_route_edge_weight_cost)>(
+          image_base + 0x24AA850);
+  // A75D00 returns object5D1E330. Read byte+E without its initialization call.
+  result.unit_first_edge_arrival_provider_byte_e =
+      reinterpret_cast<const std::uint8_t *>(image_base + 0x5D1E33E);
   result.current_detachment_callback_bindings =
       BindCurrentDetachmentCallbackInputs12004(image_base, executable_sha256);
   result.current_detachment_store_bindings =

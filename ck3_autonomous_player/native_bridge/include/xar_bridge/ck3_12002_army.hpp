@@ -226,6 +226,8 @@ struct ArmyBindings {
   // installing or executing a committed-route timeline.
   std::int64_t *(*get_unit_current_edge_movement_rate)(void *, std::int64_t *) = nullptr;
   bool (*read_native_army_movement_admission)(void *) = nullptr;
+  std::int64_t *(*get_unit_first_route_edge_weight_cost)(void *, std::int64_t *) = nullptr;
+  const std::uint8_t *unit_first_edge_arrival_provider_byte_e = nullptr;
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

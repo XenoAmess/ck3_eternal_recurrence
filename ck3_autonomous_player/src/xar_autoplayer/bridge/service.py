@@ -41,6 +41,7 @@ from .army_next_fleet_supply_budget_projection import project_source_derived_nex
 from .army_current_unit_new_date_entry_normalization_projection import project_current_unit_new_date_entry_normalization_v1
 from .army_next_stock_supply_budget_projection import project_source_derived_next_stock_supply_budget_v1
 from .army_current_unit_next_movement_prefix_projection import project_current_unit_next_movement_prefix_v1
+from .army_current_unit_next_first_edge_selection_projection import project_current_unit_next_first_edge_selection_v1
 from .army_next_land_stock_supply_budget_projection import project_source_derived_next_land_stock_supply_budget_v1
 from .army_current_callback_supply_risk_projection import project_current_callback_supply_risk_v1
 from .army_current_detachment_callback_projection import project_current_detachment_callback_inputs_v1
@@ -3523,21 +3524,30 @@ class GameplayBridgeService:
         ]
 
     @staticmethod
-    def _unit_next_movement_prefix_rows(
+    def _unit_next_movement_projection_rows(
         result: dict[str, object], rows: list[dict[str, object]],
-    ) -> list[dict[str, object]]:
-        return [
-            {
-                "army_id": row["army_id"],
-                "source_provenance": {
-                    "snapshot_id": result.get("queried_snapshot_id"),
-                    "revision": result.get("queried_revision"),
-                    "native_revision": result.get("queried_native_revision"),
-                },
-                "projection": project_current_unit_next_movement_prefix_v1(row),
-            }
-            for row in rows
-        ]
+    ) -> dict[str, list[dict[str, object]]]:
+        prefixes = []
+        selections = []
+        provenance = {
+            "snapshot_id": result.get("queried_snapshot_id"),
+            "revision": result.get("queried_revision"),
+            "native_revision": result.get("queried_native_revision"),
+        }
+        for row in rows:
+            prefix = project_current_unit_next_movement_prefix_v1(row)
+            wrapper = {"army_id": row["army_id"], "source_provenance": dict(provenance)}
+            prefixes.append({**wrapper, "projection": prefix})
+            selections.append({
+                **wrapper,
+                "projection": project_current_unit_next_first_edge_selection_v1(
+                    row, movement_prefix=prefix,
+                ),
+            })
+        return {
+            "current_unit_next_movement_prefix_v1": prefixes,
+            "current_unit_next_first_edge_selection_v1": selections,
+        }
 
     def execute_step(
         self, step: str, *, expected_revision: int | None = None,
@@ -3571,8 +3581,7 @@ class GameplayBridgeService:
                 **result,
                 "current_unit_new_date_entry_normalization_v1":
                     self._unit_new_date_entry_normalization_rows(result, result["army_strengths"]),
-                "current_unit_next_movement_prefix_v1":
-                    self._unit_next_movement_prefix_rows(result, result["army_strengths"]),
+                **self._unit_next_movement_projection_rows(result, result["army_strengths"]),
             }
         return result
 
@@ -4900,8 +4909,7 @@ class GameplayBridgeService:
             "army_strengths": selected_rows,
             "current_unit_new_date_entry_normalization_v1":
                 self._unit_new_date_entry_normalization_rows(result, selected_rows),
-            "current_unit_next_movement_prefix_v1":
-                self._unit_next_movement_prefix_rows(result, selected_rows),
+            **self._unit_next_movement_projection_rows(result, selected_rows),
             "same_input_replenishment_v1": project_observed_replenishment_v1(selected_rows),
             "loss_allocation_requests_v1": project_observed_army_loss_requests(selected_rows),
             "same_input_conditional_next_admitted_day_fleet_rate_v1": [

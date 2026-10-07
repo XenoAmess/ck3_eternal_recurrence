@@ -225,6 +225,17 @@ game::ArmyMovementProgressSnapshot MovementProgress(
     result.native_army_movement_admission =
         bindings.read_native_army_movement_admission(army);
 
+  // Observe the independent cost used after NewDate's ADD, while retaining
+  // the current route/region context. Never call the provider initializer.
+  if (bindings.get_unit_first_route_edge_weight_cost != nullptr) {
+    std::int64_t raw = 0;
+    if (bindings.get_unit_first_route_edge_weight_cost(unit, &raw) == &raw)
+      result.first_route_edge_weight_cost_raw = raw;
+  }
+  if (bindings.unit_first_edge_arrival_provider_byte_e != nullptr)
+    result.first_edge_arrival_provider_byte_e_u8 =
+        *bindings.unit_first_edge_arrival_provider_byte_e;
+
   // Actual .4 NewDate ADD prefix selects this readonly rate only when190<=0.
   // The complete current route and already-qualified callback are reused;
   // this observes an input and never invokes the Unit NewDate writer.

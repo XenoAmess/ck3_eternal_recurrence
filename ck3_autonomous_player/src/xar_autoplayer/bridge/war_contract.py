@@ -2240,7 +2240,7 @@ def _normalize_current_movement_progress(
         "first_route_edge_remaining_duration", "unavailable_reason",
     }
     if (not isinstance(value, dict) or not required <= value.keys()
-            or set(value) - required - {"committed_route_timeline", "current_edge_movement_rate_raw", "native_army_movement_admission"}):
+            or set(value) - required - {"committed_route_timeline", "current_edge_movement_rate_raw", "native_army_movement_admission", "first_route_edge_weight_cost_raw", "first_edge_arrival_provider_byte_e_u8"}):
         raise ValueError(f"native {name} schema is malformed")
     if value["status"] not in {"available", "not_applicable", "partial", "unavailable"}:
         raise ValueError(f"native {name}.status is malformed")
@@ -2253,7 +2253,7 @@ def _normalize_current_movement_progress(
     normalized["unit_state_raw"] = _optional_signed_int32(
         value["unit_state_raw"], f"{name}.unit_state_raw"
     )
-    for field in ("accumulated_movement_weight_raw", "cached_edge_speed_raw", "current_edge_movement_rate_raw"):
+    for field in ("accumulated_movement_weight_raw", "cached_edge_speed_raw", "current_edge_movement_rate_raw", "first_route_edge_weight_cost_raw"):
         if field not in value:
             continue
         raw = value[field]
@@ -2267,6 +2267,11 @@ def _normalize_current_movement_progress(
         if admission is not None and type(admission) is not bool:
             raise ValueError(f"native {name}.native_army_movement_admission must be bool or null")
         normalized["native_army_movement_admission"] = admission
+    if "first_edge_arrival_provider_byte_e_u8" in value:
+        provider = value["first_edge_arrival_provider_byte_e_u8"]
+        if provider is not None and (type(provider) is not int or not 0 <= provider <= 255):
+            raise ValueError(f"native {name}.first_edge_arrival_provider_byte_e_u8 must be uint8 or null")
+        normalized["first_edge_arrival_provider_byte_e_u8"] = provider
     for field in ("normalized_edge_progress", "first_route_edge_remaining_duration"):
         amount = value[field]
         normalized[field] = (

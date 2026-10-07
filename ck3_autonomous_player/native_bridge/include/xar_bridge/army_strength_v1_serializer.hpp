@@ -1023,6 +1023,14 @@ inline void AppendArmyStrengthV1(
     result += movement.native_army_movement_admission.has_value()
                   ? (*movement.native_army_movement_admission ? "true" : "false")
                   : "null";
+    result += ",\"first_route_edge_weight_cost_raw\":";
+    result += movement.first_route_edge_weight_cost_raw.has_value()
+                  ? number(*movement.first_route_edge_weight_cost_raw) : "null";
+    result += ",\"first_edge_arrival_provider_byte_e_u8\":";
+    result += movement.first_edge_arrival_provider_byte_e_u8.has_value()
+                  ? number(static_cast<unsigned>(
+                        *movement.first_edge_arrival_provider_byte_e_u8))
+                  : "null";
     const auto append_fixed = [&](const std::optional<std::int64_t> &raw) {
       if (raw.has_value()) {
         result += "{\"raw\":";
