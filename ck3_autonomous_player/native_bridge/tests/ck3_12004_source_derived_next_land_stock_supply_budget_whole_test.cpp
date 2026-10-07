@@ -571,8 +571,10 @@ void AssertScene(const Fixture &f, const Inputs &before, const game::ArmyStrengt
       f.calls.province_limit == 1 && f.calls.province_usage == 1 &&
       f.calls.regiment_eligible == 2 && f.calls.shares_war_side == 0 &&
       f.calls.resupply == 1 && f.calls.province_condition == 1 && f.calls.province_component == 1 &&
-      f.calls.modifier_aggregator == 2 && f.calls.modifier_reads == 2 &&
-      f.calls.modifier_ordinals == std::vector<std::int32_t>({0x1B0, 0x1A9}) &&
+      // MonthlyBudgetInputs samples the validated commander twice; the
+      // current LAND collector then reads its independent fixed1A9 operand.
+      f.calls.modifier_aggregator == 3 && f.calls.modifier_reads == 3 &&
+      f.calls.modifier_ordinals == std::vector<std::int32_t>({0x1B0, 0x1B0, 0x1A9}) &&
       f.calls.events == std::vector<std::string>({
           "army_current_soldiers_flags_0", "army_maximum_soldiers", "army_supply_capacity",
           "army_attrition_fraction", "army_monthly_supply_change", "army_siege_active",
@@ -581,6 +583,7 @@ void AssertScene(const Fixture &f, const Inputs &before, const game::ArmyStrengt
           "unit_in_combat", "unit_gathering", "army_fleet_active",
           "valid_commander_modifier_aggregator", "valid_commander_modifier_432",
           "unit_in_combat", "unit_gathering", "army_fleet_active",
+          "valid_commander_modifier_aggregator", "valid_commander_modifier_432",
           "current_province_native_limit", "current_province_native_usage",
           "army_current_soldiers_flags_2", "province_contributor_regiment_eligible",
           "province_contributor_regiment_eligible", "army_fleet_active",
@@ -658,8 +661,8 @@ std::string Context(const Fixture &f, const game::ArmyStrengthSnapshot &row) {
       "\"army_whole_loss_budget\":0,\"province_limit\":1,\"province_usage\":1,"
       "\"regiment_supply_eligible\":2,\"shares_current_war_side\":0,"
       "\"resupply_eligible\":1,\"province_component_condition\":1,\"province_component\":1,"
-      "\"character_modifier_aggregator\":2,\"character_modifier_reads\":2,"
-      "\"character_modifier_ordinals\":[432,425],\"native_updater\":0,"
+      "\"character_modifier_aggregator\":3,\"character_modifier_reads\":3,"
+      "\"character_modifier_ordinals\":[432,432,425],\"native_updater\":0,"
       "\"native_daily_date_writer\":0,\"abi_matches\":";
   out += f.calls.abi_matches ? "true" : "false";
   out += ",\"ordered_events\":[";
