@@ -1,5 +1,11 @@
 # Installed Steam build 25734779: MCP migration
 
+## Latest R65 diagnostic: installed/executed, then post_execution_drift; frontend unavailable
+
+Root's single R65 state02 diagnostic is **RED, not a frontend fix or mod RED**. The retained FIRST observation was `initialboundary-notready`, pump0. FINAL instead records **installed=true**, failure **1024=`post_execution_drift`**, **pump8983 /owner_verified7015 /executed126**, application=true, stamp=true, date **53144352**, paused=true; frontend is ultimately unavailable. The initial zero-pump observation cannot stand in for the final result. The SDL-unobserved explanation was excluded; the source owner is checking the exact4 **ResolveRoute/Finder binding**. No NewGame, trait or screenshot control occurred, and these diagnostic counts do not qualify an867 campaign.
+
+Root's tracked real-test-state-02 cleanup is **game exit1 /job0 /tree gone /0 CK3**. The prior documentation was adopted as **`5833bf19`** and pushed successfully with Root's merge at **`ca13dff1`**; the reported cross-machine merge changed no ck3_autonomous_player source. This next documentation increment is based onca13dff1 and awaits separate adoption/push. No repeated diagnosis, new test/build/SDK/game call or body/source inspection is added. Next is the bounded binding correction and Root's return to original G2 fromH9635 with pending live exact+24 qualification; normal credit remains **6004/36524 /resume2851 /natural0 /G2 5/8 /NW2 2/4**. R65's diagnostic date is not credited as normal saved-day progress.
+
 ## Latest repair qualification: Python FIRST GREEN, entry16 build GREEN; live exact day pending
 
 Root confirms the unique Clock Python production **FIRST1/1 GREEN**. Entry16 compiled the native adapter's **one CPP GREEN**, source **`bc27b6a60e7fdeb2b4caabf30ad3bd2ae8c6289b`**, DLL SHA-256 **`b4fee188608766ce60c657418eec70794f4b97fa58d922c7202b7772166c814d`**. Entry15's input-source SHA typo failed before compilation and remains retained; entry16 rebuilt that input from frozen metadata and compiled successfully, without another broad check. These are consumer/build qualifications, **not live exact+24 success**. The saved H9635 seven-day result and exact-one-day RED below remain unchanged; current runtime qualification is still pending, **6004/36524 /resume2851 /natural0 /G2 5/8 /NW2 2/4**.

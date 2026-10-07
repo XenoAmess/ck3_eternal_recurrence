@@ -1,5 +1,11 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-07 R65：FIRST零pump与FINAL执行后漂移要分开保留
+
+一次state02诊断的FIRST `initialboundary-notready/pump0`和FINAL **installedtrue/failure1024=`post_execution_drift`/pump8983/owner_verified7015/executed126/applicationtrue/stamptrue/date53144352/pausedtrue**是不同阶段。FINAL frontend unavailable不能写成未安装/未执行；两阶段均保留，执行计数也不能冒充NewGame/trait/screenshot完成。本次SDL-unobserved解释已被排除，后续只查实际exact4 ResolveRoute/Finder绑定，不扩大无关诊断，不判mod RED。
+
+Root real-test-state-02 cleanup **game exit1/job0/treegone/0CK3**如实记录；这不是game正常exit0。R65诊断日期和泵数不用于原Robert saved-day或G2里程碑信用。本文仅复用Root实际字段，未重跑心跳/游戏或添加测试；原H9635保存与live exact＋24待验状态仍独立。
+
 ## 2026-10-07补记：输入失败、consumer/build与live资格分别记账
 
 Clock修复的Python production unique FIRST **1/1 GREEN**，entry16 native adapter **单CPP编译GREEN**，sourcebc27b6a6/DLL `b4fee188608766ce60c657418eec70794f4b97fa58d922c7202b7772166c814d`；仍需真实独立paused snapshot的date **＋24**，不加live exact-one-day信用。entry15的输入source SHA笔误在编译前失败，不能写成native CPP编译失败；保留原input/harness RED后，entry16按冻结metadata重建成功即可，不重复展开已闭结论。

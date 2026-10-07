@@ -1,5 +1,11 @@
 # Actual 1.20.0.4 restored-tool live repairs — 2026-10-07
 
+## Latest R65 once diagnosis: post_execution_drift after verified execution
+
+FIRST was `initialboundary-notready`, pump0. FINAL is **installed=true /failure1024=post_execution_drift /pump8983 /owner_verified7015 /executed126 /application=true /stamp=true /date53144352 /paused=true**, but the frontend remains unavailable. This is a retained diagnostic RED, not a frontend fix or mod RED. The SDL-unobserved explanation is excluded; the exact4 ResolveRoute/Finder binding is the concrete source-owner next step. NewGame, traits and screenshot were not controlled; no867 campaign qualification is inferred from pump or execution counts.
+
+The real-test-state-02 cleanup is game exit1, job exit0, tree gone,0 CK3. Root adopted the preceding reports as5833bf19 and pushedca13dff1 after the cross-machine merge; this incremental five-doc update awaits Root adoption/push and adds no tests, game, build, SDK, body or source inspection. The original G2 H9635 recovery and live exact+24 qualification remain next; diagnostic date53144352 adds no normal saved-day credit.
+
 ## Latest concrete repair results: entry16 build qualified, exact-day live unqualified
 
 The Clock Python production unique FIRST is **1/1 GREEN**. Entry16 compiled **one native adapter CPP GREEN** from source **`bc27b6a60e7fdeb2b4caabf30ad3bd2ae8c6289b`**, DLL SHA **`b4fee188608766ce60c657418eec70794f4b97fa58d922c7202b7772166c814d`**. Entry15's source-SHA input typo failed before compilation and is preserved as input/harness RED; entry16 regenerated the input from frozen metadata and succeeded. **Live exact+24 remains pending**; no new day or corrected one-day loop is credited from a consumer or compiler result.
