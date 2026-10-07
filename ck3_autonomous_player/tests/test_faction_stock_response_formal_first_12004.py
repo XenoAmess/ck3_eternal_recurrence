@@ -118,7 +118,8 @@ class FactionStockResponseFormalFirst12004(unittest.TestCase):
                         "executable_sha256": CK3_12004.executable_sha256,
                         "expected_ck3_version": CK3_12004.game_version,
                         "expected_ck3_sha256": CK3_12004.executable_sha256,
-                        "capabilities": ["game.state.snapshot", QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY]})
+                        "capabilities": ["game.state.snapshot", "game.command.life-advance",
+                                         QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY]})
                     endpoint.publish({"type": "heartbeat", "protocol_version": 1,
                         "sequence": 1, "g2_faction_gift_mitigation_async_glue_v1": {"private_build": True}})
                     endpoint.publish({"type": "state_snapshot", "protocol_version": 1,
@@ -156,6 +157,9 @@ class FactionStockResponseFormalFirst12004(unittest.TestCase):
                             patch.object(source_module, "query_construction_private", return_value=building):
                         planned = GameplayBridgeService(driver).plan_turn()
                     plan = planned["plan"]
+                    receipt["last_plan"] = planned
+                    receipt["last_requests"] = deepcopy(endpoint.requests)
+                    self.assertIn("m5_joint_query_only", plan, json.dumps(plan))
                     dispatch = plan["m5_joint_query_only"]["dispatch"]
                     should_gift = name in {"original-positive-gift", "controlled-danger-vs-income"}
                     self.assertEqual(plan["selected_step"], "private-submit-faction-gift-member-v1"
