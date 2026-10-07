@@ -1392,7 +1392,6 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1
     XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1
     XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1
-    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1
@@ -1409,7 +1408,6 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1
-    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1
@@ -2174,6 +2172,37 @@ endif()
 if(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=1)
 endif()
+# These two private readers branch only in their named mailbox/router sources
+# and the shared router header. Keep every recorded header consumer in the
+# same scope so switching PAM readers preserves all unrelated compiled objects.
+foreach(pam_reader_flag IN ITEMS
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1
+  )
+  if(${pam_reader_flag})
+    set_property(SOURCE
+      src/bridge.cpp
+      src/ck3_12002_nonwar_mailbox.cpp
+      src/ck3_12002_nonwar_mailbox_test.cpp
+      src/ck3_12002_nonwar_router.cpp
+      src/ck3_12002_nonwar_router_test.cpp
+      src/ck3_12002_religion_mailbox.cpp
+      src/ck3_12003_holy_order_loan_mailbox.cpp
+      src/ck3_12003_holy_order_loan_wire.cpp
+      src/ck3_12003_holy_order_selected_title_terms_mailbox.cpp
+      src/ck3_12003_holy_order_selected_title_terms_wire.cpp
+      src/ck3_12003_player_hof_gold_mailbox.cpp
+      src/ck3_12003_player_hof_gold_wire.cpp
+      src/ck3_12003_player_holy_order_mailbox.cpp
+      src/ck3_12003_player_holy_order_wire.cpp
+      src/ck3_12003_player_repentance_mailbox.cpp
+      src/ck3_12003_player_repentance_wire.cpp
+      src/ck3_12003_player_seek_indulgences_mailbox.cpp
+      src/ck3_12003_player_seek_indulgences_wire.cpp
+      src/religion_doctrine12002_personal_parameters_mailbox.cpp
+      APPEND PROPERTY COMPILE_DEFINITIONS ${pam_reader_flag}=1)
+  endif()
+endforeach()
 if(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
   # This private switch is read only by these four translation units; no header
   # branches depend on it. Scope it here to retain unchanged compiled objects.

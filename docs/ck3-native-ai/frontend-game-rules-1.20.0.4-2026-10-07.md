@@ -38,3 +38,9 @@
 ## 2026-10-07 合回事实
 
 根操作者逐字节比对12份源码与冻结source02，并采用已审阅的两份QOL来源契约；提交经普通fetch/rebase后成为 `cea89f9f13982d941c18e60904335214228fa6af`，已实际普通push到 `master`。主树工作区随后clean；冻结来源、正式产品tag和旧证据不随rebase改写。
+
+## 2026-10-07 QOL/PAM 构建补充
+
+QOL/PAM 独立构建已实际启用 religion context 与 personal parameters 两个私有读取开关，DLL 8588800 B，SHA `89642b8aeba5283f3f78281123b6e7a57a5f29f85f78e236c77385c7ec22bd76`。实际 build exit0、精确 EXE Defender 读回 verified；[PAM packet03](C:/workspace/ck3-upgrade-20261007/local12004-runtime-build-01/LOCAL12004-PAM-NATIVE-BUILD-BOUND-03.json)保留完整编译、配置与失败链接回执。CCC 原冻结DLL与source-index02不变。
+
+两份 CMake 源码补丁将这两个宏限定到包含共享router头的完整19个消费单元，并在两个开关任一启用时登记33个既有纯数据provider；其他私有命令开关和广告资格不变。生产源码实际 CMake 配置成功，全部551份DLL编译输入的宏集合、FLAGS、INCLUDES与已构建PAM配置完全相同，仅归一化source root路径，无新增或缺失编译单元。[完整交付](C:/workspace/ck3-upgrade-20261007/local12004-runtime-build-01/LOCAL12004-NATIVE-MASTER-FIX-DELIVERY-01.json)回链这项验证。此项仍只授构建资格，产品实机待验收。

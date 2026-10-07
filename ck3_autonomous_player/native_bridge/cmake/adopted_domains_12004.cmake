@@ -271,3 +271,45 @@ include("${CMAKE_CURRENT_LIST_DIR}/clergy_appointment_12004_whole_fixture.cmake"
 
 # Repair only the new strict04 fixture link failures with genuine providers.
 include("${CMAKE_CURRENT_LIST_DIR}/fixture_real_link_closure_12004.cmake")
+
+# The grouped .4 religion wrappers reference these pure legacy implementations
+# when either PAM reader is linked. Register their complete data dependency
+# closure without enabling or advertising the independent private command families.
+if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+  target_sources(xar_ck3_12002_runtime PRIVATE
+    src/ck3_12002_religion_conversion_ai_inputs.cpp
+    src/ck3_12002_religion_conversion_cost.cpp
+    src/ck3_12002_religion_conversion_faith.cpp
+    src/ck3_12002_religion_conversion_gates.cpp
+    src/ck3_12002_religion_conversion_reasons.cpp
+    src/ck3_12002_religion_conversion_rite.cpp
+    src/ck3_12002_religion_conversion_terms.cpp
+    src/ck3_12003_conversion_fervor_inputs.cpp
+    src/ck3_12003_player_tenet_knowledge_catalogue.cpp
+    src/ck3_12003_target_rite_tenet_comparison.cpp
+    src/conversion_outcome12002_actor.cpp
+    src/conversion_outcome12002_query.cpp
+    src/conversion_outcome12002_state.cpp
+    src/religion_doctrine12002_choices.cpp
+    src/religion_doctrine12002_hostility.cpp
+    src/religion_doctrine12002_intrinsic.cpp
+    src/religion_doctrine12002_numeric.cpp
+    src/religion_doctrine12002_numeric_final.cpp
+    src/religion_doctrine12002_query.cpp
+    src/religion_doctrine12002_rite.cpp
+    src/religion_doctrine12002_selection.cpp
+    src/religion_doctrine12002_tenet.cpp
+    src/religion_reform12002_choices.cpp
+    src/religion_reform12002_costs.cpp
+    src/religion_reform12002_eligibility.cpp
+    src/religion_reform12002_fullchoices.cpp
+    src/religion_reform12002_group_model.cpp
+    src/religion_reform12002_query_runtime.cpp
+    src/religion_reform12002_rite.cpp
+    src/religion_reform12002_willingness.cpp
+    src/religion_reform12003_creation_terms.cpp
+    src/religion_rite_governance12002_head.cpp
+    src/religion_rite_governance12002_state_rite.cpp
+  )
+endif()
