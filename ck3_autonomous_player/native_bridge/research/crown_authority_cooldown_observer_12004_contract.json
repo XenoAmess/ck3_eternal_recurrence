@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_package": "m7_crown_authority_actual_cooldown_timing_12004",
-  "status": "ACTUAL_SCALAR_REMAINING_AND_CLOCK_SOURCE_CLOSED_CALENDAR_ATTACHMENT_PENDING",
+  "status": "ACTUAL_SCALAR_RECEIVER_AND_RAW_TIMING_CLOSED_CALENDAR_CADENCE_UNQUALIFIED",
   "source_base": "28f19693cc79afe9ab8de94ee17b64dcc6204306",
   "target": {
     "product_version": "1.20.0.4",
@@ -38,17 +38,12 @@
   },
   "cache_first_source_request": {
     "executor": "Root central native mapper",
-    "current_phase": "EXACT_RUNTIME_CHARACTER_SCOPE_REGISTRATION_REFERENCER_REQUIRED",
+    "current_phase": "SAME_FULL_CONTEXT_CALENDAR_CADENCE_OR_NAMED_DATE_CONVERSION",
     "runnable_capture_rows": [],
     "new_native_bytes_authorized_by_this_file": 0,
     "root_only_proposed_manifest": null,
     "root_only_proposed_manifest_rows": 0,
-    "root_only_proposed_physical_cost_before_cache": {
-      "old3_bytes": 0,
-      "actual4_bytes": 0,
-      "total_bytes": 0,
-      "exact_reads": 0
-    },
+    "root_only_proposed_physical_cost_before_cache": null,
     "cached_current_attachment_metadata": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/CACHED-CANDIDATE-ATTACHMENTS.json",
     "direct_remaining_getter": {
       "name": "GetVarTimeRemaining",
@@ -96,7 +91,8 @@
         "row identifier DWORD+0x08"
       ],
       "existing_owner_actual_capture_bytes": 15,
-      "this_worker_capture_bytes": 0
+      "this_worker_capture_bytes": 0,
+      "variable_context_rva_software_symbol_return_role_corrected": "Actual consumer380 + same-registry writer270 + complete callback113 + held getter331 prove370EAF0 returns full VariableContext for valid Character kind4, not Character*."
     },
     "historical_named_locators_only": {
       "product_version": "1.19.0.6",
@@ -160,14 +156,13 @@
     ],
     "required_source_roles": [
       {
-        "id": "character_scalar_calendar_attachment",
-        "need": "Actual kind4 callback+30 LEA/STORE or named registration producer using source-closed runtime registry54F2AF0; then actual Character day caller or renderer converter scale.",
-        "source_entry": "Held exact RIP/caller references to54F2AF0/3795A60; first retain true registration source producer bytes and emitted callback target, excluding singleton init and destructor.",
-        "callback_rva_or_producer_not_guessed": true,
-        "runnable_extraction_rows": []
+        "id": "actual_same_context_remaining_calendar_unit",
+        "need": "Same GameData+68 context-table daily updater or actual named GetVarTimeRemaining/GetCurrentDateWithDiff native date conversion; globalGameData+C8 and CDate24 alone do not close Character scalar units.",
+        "receiver_source_closed": "Character+1B0 signed handle -> GameData+68 table[index] -> full VariableContext",
+        "numeric_next_RVA_guessed": false
       }
     ],
-    "next_cached_reference_recipe": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\ROOT-CACHED-CHARACTER-REGISTRATION-REFS-RECIPE.json"
+    "previous_cached_reference_recipe": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\ROOT-CACHED-CHARACTER-REGISTRATION-REFS-RECIPE.json"
   },
   "same_query_value_contract": {
     "status_values": [
@@ -223,11 +218,11 @@
   "root_hook_recipe": [
     {
       "file": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_realm_law.hpp",
-      "change": "Add owned typed cooldown result to existing RealmLawReadback12002 once actual timing source is closed."
+      "change": "Add owned crown_cooldown::Observation to existing RealmLawReadback12002; integrate one same-query timing object after actual calendar source is closed."
     },
     {
       "file": "ck3_autonomous_player/native_bridge/src/ck3_12002_realm_law.cpp",
-      "change": "Invoke the exact4 observer within existing current Character/frame capture and serialize one top-level cooldown object."
+      "change": "Invoke crown_cooldown::Read in current played Character/frame capture via exact4 shared identifier/scope bindings; serialize one cooldown object. Positive retry date still needs same-context calendar source; actions unchanged."
     },
     {
       "file": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_law_paused_private_transport.py",
@@ -256,17 +251,22 @@
   "readiness": {
     "research": true,
     "native_timing_source_closed": false,
-    "bound_observer_authored": false,
+    "bound_observer_authored": true,
     "static_ready": false,
     "fixture_live": false,
     "production_live_primitive": false,
     "production_live_loop": false,
     "complete": false,
-    "remaining": "CALL-derived Character scope registry/provider attachment -> exact Character calendar cadence or native date converter -> real readonly same-MCP observer and new whole/registered FIRST. Presence-only and raw remaining with no usable positive retry date are unfinished.",
+    "remaining": "Actual same GameData+68 context-table calendar cadence or native date converter -> complete calendar retry observer -> Root same-MCP integration/new whole producer/registered consumer FIRST. Raw source leaf is authored, not completed observation.",
     "actual_scalar_storage_and_remaining_source_closed": true,
     "actual_scalar_updater_receiver_source_closed": true,
     "actual_calendar_unit_source_closed": false,
-    "actual_scope_registry_initialization_source_closed": true
+    "actual_scope_registry_initialization_source_closed": true,
+    "actual_Character_kind4_registration_source_closed": true,
+    "actual_Character_ScriptContext_wrapper_source_closed": true,
+    "actual_Character_scalar_receiver_source_closed": true,
+    "raw_timing_observer_authored_notrun": true,
+    "positive_calendar_retry_date_authored": false
   },
   "worker_execution_counts": {
     "tests": 0,
@@ -443,10 +443,12 @@
       "actual4_date_D_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/army-supply-next-tick-12004/actual4-selected-writer-root-first01/ROOT-SELECTED-WRITER-RECEIPT.json",
       "existing_date24_proof_is_Character_scalar_cadence_proof": false,
       "named_renderer_lookup": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\scalar-clock-prefix02\\renderer-entry-lookup\\ROOT-RENDERER-ENTRY-LOOKUP.json",
-      "next_concrete_entrance": "Runtime registry54F2AF0 genuine Character-kind4 registration producer writing callback+30; exact cached-ref recipe records the source fields required before any new finite byte row."
+      "next_concrete_entrance": "Same GameData+68 context-table daily updater or actual named GetVarTimeRemaining/GetCurrentDateWithDiff native date conversion; globalGameData+C8 and CDate24 alone do not close Character scalar units.",
+      "same_receiver_daily_cache_lookup": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-provider04\\char-cadence\\DAILY-SAME-CONTEXT-CACHE-LOOKUP.json",
+      "named_renderer_source_request": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-provider04\\renderer-units\\ROOT-NAMED-RENDERER-PRODUCER-REQUEST.json"
     },
-    "root_total_physical_bytes": 954,
-    "root_total_exact_reads": 8,
+    "root_total_physical_bytes": 2565,
+    "root_total_exact_reads": 16,
     "worker_native_reads": 0,
     "registry03": {
       "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-scope-registry03\\FAMILY-MAP.json",
@@ -468,6 +470,249 @@
       "exit_destructor_actual_target": "0x43A1E10",
       "writes_Character_kind4_callback": false,
       "static_image_empty_registry_or_adjacent_data_is_callback_proof": false
+    },
+    "constructor04": {
+      "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-kind4-constructor04\\FAMILY-MAP.json",
+      "old_held189_source": "Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/phase-descriptor-construction/body-0043FB20/disassembly.txt",
+      "old_and_actual_entry": "0x43FB20",
+      "bytes": 189,
+      "complete_normalized_equal": true,
+      "fresh_bytes": 189,
+      "fresh_reads": 1,
+      "old_bytes_reused": true,
+      "kind": 4,
+      "actual_registration_call_target": "0x3796100",
+      "callbacks": [
+        {
+          "descriptor_member": "0x10",
+          "old_target": "0x22565B0",
+          "actual_target": "0x2256590",
+          "actual_LEA_site": "0x43FB4C",
+          "role": "Existing.3 metadata: bool Character type4 exists, not a scalar context pointer."
+        },
+        {
+          "descriptor_member": "0x18",
+          "old_target": "0x225DE80",
+          "actual_target": "0x225DE60",
+          "actual_LEA_site": "0x43FB77",
+          "role": "Output-argument ScriptContext wrapper construction, source closed in05."
+        },
+        {
+          "descriptor_member": "0x30/0x38",
+          "old_target": "0x225E000",
+          "actual_target": "0x225DFE0",
+          "actual_LEA_sites": [
+            "0x43FB83",
+            "0x43FB93"
+          ],
+          "role": "Complete return08 validates Character then selects Character+1B0 handle and tail-dispatches to genuine full VariableContext getter1D671E0; early identity prefix is not final object-return proof."
+        }
+      ],
+      "positive_source_supersedes_prior_scoped_registration_MISS": true,
+      "PhaseVariableContext_software_symbol_is_scalar_return_proof": false
+    },
+    "scriptcontext05": {
+      "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-script-callback18-05\\FAMILY-MAP.json",
+      "actual_entry": "0x225DE60",
+      "old_entry": "0x225DE80",
+      "bytes_per_build": 371,
+      "complete_normalized_equal": true,
+      "fresh_bytes": 742,
+      "fresh_reads": 2,
+      "actual_ABI_role": "RCX output/sret pointer, RDX EventTarget16 kind4/fullID8; constructs and returns typed ScriptContext output pointer.",
+      "Character_pointer_temp": "stack+0x60 after generation/fullID resolution",
+      "type_object_call": {
+        "site": "0x225DF06",
+        "target": "0x9DAC60"
+      },
+      "bind_character_to_temporary_context_call": {
+        "site": "0x225DF18",
+        "target": "0x879390",
+        "native_character_pointer_source": "RDX=&stack+0x60"
+      },
+      "copy_temporary_context_to_output_call": {
+        "site": "0x225DF48",
+        "target": "0x87C910"
+      },
+      "output_type_id_member": "0x28",
+      "return_output_site": "0x225DF87",
+      "emitted_callbacks": [
+        {
+          "output_member": "0x30",
+          "LEA_site": "0x225DF51",
+          "LEA_bytes": "48 8D 05 58 CF 02 00",
+          "target": "0x228AEB0",
+          "store_site": "0x225DF58",
+          "store_bytes": "48 89 47 30",
+          "target_return_role_closed": true,
+          "target_return_role": "Native Character pointer, distinct from descriptor+30 full VariableContext return."
+        },
+        {
+          "output_member": "0x38",
+          "LEA_site": "0x225DF5C",
+          "LEA_bytes": "48 8D 05 CD C1 53 01",
+          "target": "0x379A130",
+          "store_site": "0x225DF63",
+          "target_return_role_closed": false
+        }
+      ],
+      "wrapper_is_direct_scalar_context": false,
+      "calendar_unit_closed": false
+    },
+    "Root_retained_capture_timestamps": [
+      {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\scalar-timing-first01\\FAMILY-MAP.json",
+        "started_utc": "2026-10-07T10:23:09.409177+00:00",
+        "ended_utc": "2026-10-07T10:23:10.160203+00:00",
+        "new_partial_bytes": 762,
+        "new_partial_reads": 6
+      },
+      {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\scalar-clock-prefix02\\FAMILY-MAP.json",
+        "started_utc": "2026-10-07T10:40:18.210869+00:00",
+        "ended_utc": "2026-10-07T10:40:18.840992+00:00",
+        "new_partial_bytes": 192,
+        "new_partial_reads": 2
+      },
+      {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-scope-registry03\\FAMILY-MAP.json",
+        "started_utc": "2026-10-07T10:49:01.354801+00:00",
+        "ended_utc": "2026-10-07T10:49:02.131228+00:00",
+        "new_partial_bytes": 0,
+        "new_partial_reads": 0
+      },
+      {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-kind4-constructor04\\FAMILY-MAP.json",
+        "started_utc": "2026-10-07T11:03:03.184265+00:00",
+        "ended_utc": "2026-10-07T11:03:03.969720+00:00",
+        "new_partial_bytes": 189,
+        "new_partial_reads": 1
+      },
+      {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-script-callback18-05\\FAMILY-MAP.json",
+        "started_utc": "2026-10-07T11:08:57.725685+00:00",
+        "ended_utc": "2026-10-07T11:08:58.370992+00:00",
+        "new_partial_bytes": 742,
+        "new_partial_reads": 2
+      },
+      {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-script-typed-accessor06\\FAMILY-MAP.json",
+        "started_utc": "2026-10-07T11:12:56.434642+00:00",
+        "ended_utc": "2026-10-07T11:12:57.084143+00:00",
+        "new_partial_bytes": 184,
+        "new_partial_reads": 2
+      },
+      {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\registration-writer-identity07\\FAMILY-MAP.json",
+        "started_utc": "2026-10-07T11:27:25.747077+00:00",
+        "ended_utc": "2026-10-07T11:27:26.600023+00:00",
+        "new_partial_bytes": 270,
+        "new_partial_reads": 1
+      },
+      {
+        "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-variable-context-return08\\FAMILY-MAP.json",
+        "started_utc": "2026-10-07T11:31:36.856481+00:00",
+        "ended_utc": "2026-10-07T11:31:37.718412+00:00",
+        "new_partial_bytes": 226,
+        "new_partial_reads": 2
+      }
+    ],
+    "accessor06": {
+      "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-script-typed-accessor06\\FAMILY-MAP.json",
+      "old_entry": "0x228AED0",
+      "actual_entry": "0x228AEB0",
+      "bytes_per_build": 92,
+      "complete_normalized_equal": true,
+      "fresh_bytes": 184,
+      "fresh_reads": 2,
+      "final_native_Character_pointer_dereference_site": "0x228AEF1",
+      "is_scalar_context_or_calendar_proof": false,
+      "branch_complete_no_further_expansion": true
+    },
+    "writer07": {
+      "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\registration-writer-identity07\\FAMILY-MAP.json",
+      "old_entry": "0x3796120",
+      "actual_entry": "0x3796100",
+      "bytes_per_build": 270,
+      "complete_normalized_equal": true,
+      "fresh_bytes": 270,
+      "fresh_reads": 1,
+      "old_bytes_reused": true,
+      "actual_registry_getter": "0x3795A60",
+      "actual_registry_object": "0x54F2AF0",
+      "copies_incoming30_to_selected_kind_row30": true,
+      "same_registry_as_scope370EAF0": true,
+      "separate_registry_hypothesis_withdrawn": true
+    },
+    "return08": {
+      "receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-variable-context-return08\\FAMILY-MAP.json",
+      "old_entry": "0x225E000",
+      "actual_entry": "0x225DFE0",
+      "bytes_per_build": 113,
+      "complete_normalized_equal": true,
+      "fresh_bytes": 226,
+      "fresh_reads": 2,
+      "old2_reference_was_not_relabelled_old3": true,
+      "old3_held4_prefix_was_not_full_return_proof": true,
+      "actual_handle_load": {
+        "site": "0x225E03E",
+        "bytes": "48 8B 88 B0 01 00 00",
+        "source": "QWORD[Character+0x1B0]",
+        "destination": "RCX"
+      },
+      "actual_tail_dispatch": {
+        "site": "0x225E048",
+        "bytes": "0F 85 92 91 B0 FF",
+        "target": "0x1D671E0",
+        "old_target": "0x1D67200"
+      },
+      "invalid_or_null_return": "EAX=0 at225E04E,RET225E050",
+      "final_return_role": "genuine full VariableContext, closed by held331 getter and actual380 consumer"
+    },
+    "held_full_context_getter": {
+      "detail": "C:/codex-ck3-background/packets/religion-addons-12004-migration-20261007/context-hostility-conversion/missing-batch02/religion_1D67200-DETAIL.json",
+      "old_entry": "0x1D67200",
+      "actual_entry": "0x1D671E0",
+      "bytes_per_build": 331,
+      "complete_normalized_equal": true,
+      "worker_new_bytes": 0,
+      "typed_attachment": "Z:\\ck3_mod_rewrite_process_assets\\g2-migration-20261007\\m7-crown-cooldown-12004\\native\\character-provider04\\char-cadence\\ACTUAL-CHARACTER-FULL-CONTEXT-RETURN.json",
+      "handle_index_read": "signed32[RCX] at1D671F2",
+      "same_context_table": "QWORD[GameData+0x68] at1D67245",
+      "normal_return": "QWORD[table+index*8] at1D67249",
+      "minus_one_handle_return": "initialized shared0x50-byte full VariableContext with clock+28=0",
+      "CharacterFlagCollection_label_proves_calendar_unit": false
+    },
+    "held_genuine_variable_consumer": {
+      "detail": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/epidemic-functions/primary-spans/has-variable-list_readonly_executor-DETAIL.json",
+      "actual_entry": "0x378A610",
+      "bytes": 380,
+      "call_site": "0x378A62B",
+      "call_target": "0x370EAF0",
+      "actual_return_directly_consumed_as_full_context": "378A630 MOV RDX,RAX; nonnull branch378A73F rows[RDX+30],378A743 count[RDX+3C]",
+      "intermediate_Character_to_Variables_conversion": false,
+      "worker_new_bytes": 0
     }
+  },
+  "owned_candidate": {
+    "header": "ck3_autonomous_player/native_bridge/include/xar_bridge/crown_authority_cooldown_observer_12004.hpp",
+    "source": "ck3_autonomous_player/native_bridge/src/crown_authority_cooldown_observer_12004.cpp",
+    "status": "AUTHORED_NOTRUN_RAW_TIMING_ONLY_CALENDAR_PENDING",
+    "existing_binding_reused": "BindFamilyBreakIdentifiersImage + ResolvePhaseVariableIdentifier + variable_context370EAF0",
+    "combined_timing_reader_not_duplicate_presence_getter": true,
+    "actual_row_and_context_offsets": {
+      "rows": "0x10",
+      "count": "0x1C",
+      "stride": "0x20",
+      "key": "0x08",
+      "expiry": "0x0C",
+      "clock": "0x28"
+    },
+    "first_matching_row_matches_native_helper": true,
+    "remaining_arithmetic": "bit-preserved signed32 native subtraction; absent/untimed -1 distinct from timed computed-1",
+    "remaining_unit": "scalar_clock_step_calendar_unqualified",
+    "positive_calendar_retry_date_authored": false,
+    "absent_query_retry_date": "same captured frame date, independent of timing units",
+    "no_new_mcp_capability_action_gate_or_native_dispatch": true
   }
 }
