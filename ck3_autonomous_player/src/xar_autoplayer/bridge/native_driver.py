@@ -22211,53 +22211,59 @@ class NativeHeadlessGameplayDriver:
             )
         actions: list[dict[str, object]] = []
 
-        speed_result = self._execute_composite_primitive(
-            speed_step, starting
+        sentinel_receipt: dict[str, object] | None = None
+        bridge_capabilities = set(
+            _string_list(self.state.capabilities().get("bridge_capabilities"))
         )
-        actions.append({"step": speed_step, "result": speed_result})
-        current = self._wait_for_life_advance_snapshot(
-            self.take_internal_semantic_snapshot(),
-            lambda snapshot: snapshot.get("speed") == timeline_speed,
-            timeout_seconds=self.command_timeout_seconds,
-        )
-        if current.get("speed") != timeline_speed:
-            raise BridgeUnavailableError(
-                "native life-advance did not observe "
-                f"speed {timeline_speed}"
+        if (exact_one_day and _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES
+                <= bridge_capabilities):
+            current, sentinel_receipt = self._advance_exact_day_with_sentinel(
+                starting, speed=timeline_speed, actions=actions
             )
-
-        current = self._resume_life_advance(current, actions)
-
-        progress_deadline = time.monotonic() + self.life_advance_timeout_seconds
-        horizon_days_override = 1 if exact_one_day else None
-        native_pause_observed = current.get("paused") is True
-        semantic_progress_observed = _life_advance_progressed(
-            current,
-            starting,
-            horizon_days_override=horizon_days_override,
-        )
-        while not native_pause_observed and not semantic_progress_observed:
-            remaining = progress_deadline - time.monotonic()
-            if remaining <= 0:
-                break
-            current = self._wait_for_life_advance_change(
-                int(current["revision"]),
-                timeout_seconds=remaining,
+            reached_progress_postcondition = True
+        else:
+            speed_result = self._execute_composite_primitive(
+                speed_step, starting
             )
-            # This observation happens before the composite submits its own
-            # cleanup pause.  A paused frame here is therefore CK3's native
-            # auto-pause and is a legitimate early timeline boundary.
+            actions.append({"step": speed_step, "result": speed_result})
+            current = self._wait_for_life_advance_snapshot(
+                self.take_internal_semantic_snapshot(),
+                lambda snapshot: snapshot.get("speed") == timeline_speed,
+                timeout_seconds=self.command_timeout_seconds,
+            )
+            if current.get("speed") != timeline_speed:
+                raise BridgeUnavailableError(
+                    "native life-advance did not observe "
+                    f"speed {timeline_speed}"
+                )
+
+            current = self._resume_life_advance(current, actions)
+            progress_deadline = time.monotonic() + self.life_advance_timeout_seconds
+            horizon_days_override = 1 if exact_one_day else None
             native_pause_observed = current.get("paused") is True
             semantic_progress_observed = _life_advance_progressed(
                 current,
                 starting,
                 horizon_days_override=horizon_days_override,
             )
-
-        reached_progress_postcondition = (
-            native_pause_observed or semantic_progress_observed
-        )
-        current = self._pause_life_advance(current, actions)
+            while not native_pause_observed and not semantic_progress_observed:
+                remaining = progress_deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                current = self._wait_for_life_advance_change(
+                    int(current["revision"]),
+                    timeout_seconds=remaining,
+                )
+                native_pause_observed = current.get("paused") is True
+                semantic_progress_observed = _life_advance_progressed(
+                    current,
+                    starting,
+                    horizon_days_override=horizon_days_override,
+                )
+            reached_progress_postcondition = (
+                native_pause_observed or semantic_progress_observed
+            )
+            current = self._pause_life_advance(current, actions)
         if not reached_progress_postcondition:
             current_date_raw = _date_raw(
                 current, "active-war bounded ending snapshot"
@@ -22423,12 +22429,111 @@ class NativeHeadlessGameplayDriver:
             result["battle_identity_materialization"] = (
                 materialization_result
             )
+        if sentinel_receipt is not None:
+            result["exact_day_native_clock"] = sentinel_receipt
         return result
+
+    def _advance_exact_day_with_sentinel(
+        self,
+        starting: dict[str, object],
+        *,
+        speed: int,
+        actions: list[dict[str, object]],
+    ) -> tuple[dict[str, object], dict[str, object]]:
+        """Stop the actual daily callback before polling can pass another day."""
+        starting_date_raw = _date_raw(starting, "exact-day starting snapshot")
+        target_date_raw = starting_date_raw + 24
+        arm_step = (
+            f"{_TACTICAL_DAILY_SENTINEL_ARM_PREFIX}{starting_date_raw}"
+            f"-to-{target_date_raw}-speed-{speed}-mode-terminal-a-0"
+        )
+        current = starting
+        arm_status: dict[str, object] | None = None
+        try:
+            speed_step = f"set-speed-{speed}"
+            speed_result = self._execute_composite_primitive(speed_step, current)
+            actions.append({"step": speed_step, "result": speed_result})
+            current = self._wait_for_life_advance_snapshot(
+                self.take_internal_semantic_snapshot(),
+                lambda snapshot: snapshot.get("speed") == speed,
+                timeout_seconds=self.command_timeout_seconds,
+            )
+            if current.get("speed") != speed:
+                raise BridgeUnavailableError("exact-day clock did not observe its speed")
+            arm_result = self._execute_primitive_step(
+                arm_step,
+                expected_revision=None,
+                required_capability=_TACTICAL_DAILY_SENTINEL_ARM_CAPABILITY,
+                internal_semantic_snapshot=True,
+            )
+            actions.append({"step": arm_step, "result": arm_result})
+            arm_status = _normalize_tactical_daily_sentinel_status(
+                arm_result.get("tactical_daily_sentinel")
+            )
+            _validate_tactical_daily_sentinel_arm(
+                arm_result, arm_status, arm_step=arm_step,
+                starting_date_raw=starting_date_raw,
+                target_date_raw=target_date_raw, speed=speed,
+                mode="terminal_or_sentinel", watch_army_ids=(),
+                sentinel_scope="exact_one_day",
+            )
+            current = self._resume_life_advance(
+                current, actions, native_stop_target_date_raw=target_date_raw
+            )
+            current = self._wait_for_life_advance_snapshot(
+                current, lambda snapshot: snapshot.get("paused") is True,
+                timeout_seconds=self.life_advance_timeout_seconds,
+            )
+            if current.get("paused") is not True:
+                raise BridgeUnavailableError("exact-day native clock did not stop the map")
+            status_result = self._execute_primitive_step(
+                _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
+                expected_revision=None,
+                required_capability=_TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY,
+                internal_semantic_snapshot=True,
+            )
+            actions.append({"step": _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
+                            "result": status_result})
+            status = _normalize_tactical_daily_sentinel_status(
+                status_result.get("tactical_daily_sentinel")
+            )
+            ending_date_raw = _date_raw(current, "exact-day native ending snapshot")
+            _validate_tactical_daily_sentinel_stop(
+                status, arm_status=arm_status,
+                starting_date_raw=starting_date_raw,
+                target_date_raw=target_date_raw,
+                ending_date_raw=ending_date_raw,
+                elapsed_days=(ending_date_raw - starting_date_raw) // 24,
+                speed=speed, mode="terminal_or_sentinel", watch_army_ids=(),
+            )
+            return current, {"armed": arm_status, "stopped": status}
+        except Exception:
+            try:
+                self._pause_life_advance(
+                    self.take_internal_semantic_snapshot(), actions
+                )
+                if arm_status is not None:
+                    cancel_step = (
+                        f"{_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX}"
+                        f"{arm_status['generation']}"
+                    )
+                    cancel_result = self._execute_primitive_step(
+                        cancel_step, expected_revision=None,
+                        required_capability=_TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY,
+                        internal_semantic_snapshot=True,
+                    )
+                    actions.append({"step": cancel_step, "result": cancel_result})
+            except Exception as cleanup_error:
+                actions.append({"step": "exact-day-clock-cleanup",
+                                "error": str(cleanup_error)})
+            raise
 
     def _resume_life_advance(
         self,
         snapshot: dict[str, object],
         actions: list[dict[str, object]],
+        *,
+        native_stop_target_date_raw: int | None = None,
     ) -> dict[str, object]:
         if snapshot.get("paused") is False:
             return snapshot
@@ -22459,14 +22564,23 @@ class NativeHeadlessGameplayDriver:
         resume_attempt_count = 1
         resume_ack_statuses = [_timeline_ack_status(result)]
         remaining = max(0.0, deadline - time.monotonic())
+        def running_or_native_stop(candidate: dict[str, object]) -> bool:
+            date_raw = candidate.get("date_raw")
+            return candidate.get("paused") is False or bool(
+                native_stop_target_date_raw is not None
+                and candidate.get("paused") is True
+                and type(date_raw) is int
+                and _date_raw(snapshot, "resume starting snapshot") < date_raw
+            )
+
         current = self._wait_for_life_advance_snapshot(
             self.take_internal_semantic_snapshot(),
-            lambda candidate: candidate.get("paused") is False,
+            running_or_native_stop,
             timeout_seconds=min(
                 remaining, _LIFE_ADVANCE_TIMELINE_RETRY_SECONDS
             ),
         )
-        if current.get("paused") is False:
+        if running_or_native_stop(current):
             return current
 
         retry_suppressed = None
@@ -22495,10 +22609,10 @@ class NativeHeadlessGameplayDriver:
                 remaining = max(0.0, deadline - time.monotonic())
                 current = self._wait_for_life_advance_snapshot(
                     self.take_internal_semantic_snapshot(),
-                    lambda candidate: candidate.get("paused") is False,
+                    running_or_native_stop,
                     timeout_seconds=remaining,
                 )
-        if current.get("paused") is not False:
+        if not running_or_native_stop(current):
             raise BridgeUnavailableError(
                 "native life-advance did not observe the running map; "
                 f"resume_attempts={resume_attempt_count}, "
@@ -26011,7 +26125,7 @@ def _validate_tactical_daily_sentinel_arm(
             (sentinel_scope == "active_battle" and combat_count > 0)
             or (
                 sentinel_scope
-                in {"committed_route", "stationary_objective_hold"}
+                in {"committed_route", "stationary_objective_hold", "exact_one_day"}
                 and combat_count == 0
             )
         )
