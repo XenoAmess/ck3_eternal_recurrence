@@ -76,7 +76,69 @@ flowchart TD
   W --> R
 ```
 
-State is **research / complete direct wrapper source**. No new Character input
+Root centrally executed the separately approved actual origin getter interval
+**`28B1820..28B19AF`**,399B/one read, with101 completely decoded instructions.
+Receipt is `character-origin-map01/SELECTED-GETTER-CAPTURE.json`. Its own body
+has no non-stack writes; this does **not** close readonly behavior of its three
+selected calls. Total intentional fresh source cost is now1664B/ten reads,
+including this Root-owned capture once.
+
+The getter tests Character1C0. Nonnull selects capital helper`28B1CB0`; a Prov
+result returns immediately. Otherwise it reads first title ID from fresh
+Character1C0's1E0 vector when1EC is nonzero, or Character1D0's68 vector when74
+is nonzero, or fullID`FFFFFFFF`. Through held Title registry`5D1DAF8` and
+fallback`5D1DAE0` it selects that title, then titleE4's second title. Definition
+pointer48's DWORD64 equal2 selects the first title ID in second title110 when
+11C is nonzero, otherwise sentinel; this third title role selects
+`230F8E0(title)` at`28B194B`. Other definition values use second title338
+directly. A Prov output returns; otherwise the getter continues.
+
+The fallback ladder then checks fresh Character1B8: nonnull selects
+`28B1750(Character)` at`28B1972`, returning immediately if its output is Prov.
+Next Character1B0's268 pointer is tested for Prov; a miss/null1B0 returns the
+source fallback Province pointer from`5D1E390`. Source counts here test
+**nonzero**, not positive, and complete ID/generation equality is retained.
+
+The existing actual4 detachment binding already identifies capital helper
+`28B1CB0`; the new origin getter is not installed or invoked. Its type2 Title
+callee has no containing cached runtime interval, and its selected nonnull
+extension helper's first cached interval is30B; neither body's effects are
+closed by this399B capture. Only necessary selected helper sources may receive
+a further finite plan. Independent source-defined direct-field/early-return
+arms should be implemented without demanding every unused fallback branch.
+Crucially, the parent clears extensionF8/QWORD100 before calling this getter:
+an origin queried from the standing pre-reset state is not automatically the
+source's post-reset origin. Any after-reset projection must apply the known
+reset to the helper's actual source inputs rather than silently substituting
+the current native getter output.
+
+```mermaid
+flowchart TD
+  A[Actual28B1820 Character] --> C{Character1C0 nonnull}
+  C -->|yes| K[Known capital-role28B1CB0]
+  K --> P{Capital output Prov}
+  P -->|yes| R[Return selected Province]
+  P -->|no| T[First title ID; titleE4; actual Title selectors]
+  T --> D{Definition48 type64 equals2}
+  D -->|no| V[Second title338 pointer]
+  D -->|yes| Q[Third title; selected230F8E0]
+  Q -. selected source unknown .-> H{Output Prov}
+  V --> H
+  H -->|yes| R
+  H -->|no| E{Fresh Character1B8 nonnull}
+  C -->|no| E
+  E -->|yes| G[Selected28B1750 Character extension origin]
+  G -. selected source unknown .-> X{Output Prov}
+  X -->|yes| R
+  X -->|no| B[Character1B0 plus268 Prov test]
+  E -->|no| B
+  B -->|Prov| R
+  B -->|miss| F[Source fallback5D1E390]
+  F --> R
+```
+
+State is **research / complete direct wrapper and own origin-getter source**.
+No new Character input
 code, native call, import, test, build, SDK query or paused artifact is credited.
 The next same-Army MCP increment should publish real extension reset operands,
 selected source-role resolutions and origin observation after readonly source
