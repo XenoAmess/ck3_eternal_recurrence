@@ -15,8 +15,9 @@ into a source-defined next-date stage. Migration validation remains Root-owned.
 
 | Decision/input gap | Existing useful observation | Concrete construction entrance |
 | --- | --- | --- |
-| Next ordered ArRg visit after removal | Current raw DATA occurrences, physical chunks, mapper resolution and full `GameState+8` date | Source-selected ArRg callback must be closed before applying outer zero/invalidation and resolving the next raw cursor request. The held .3 constructor proves primary `4744DA0`, slot0 `2632DB0`, unconditional core `2632DF0`; actual4 mapping is still required. |
-| Nonempty Character suffix before date | ArRg148, actual Character generation/fallback selection, Character1B8 presence/identity | Capture/source-model selected `28CBE70` writes, readonly location and actual `28B2730` continuation, then saved Unit174 owner/context and full date operands. No observed current role is a post-callee state. |
+| Next ordered ArRg visit after removal | Current raw DATA occurrences, physical chunks, mapper resolution and full `GameState+8` date | Actual4 primary `4744DB0`, slot0 `2632D90`, core `2632DD0`, reached `EBA050` loop and selected parent mode0 are source-closed. Commit `bbd06d13` adds real current callback targets/allocator descriptors and a conditional header result. Actual resource effects and coherent changed-stage replay remain separate. |
+| Actual ArRg store admission and removal indexes | Current incoming full IDs and actual4 registry slot binding | Complete direct method `2A9E620..2A9E732` now closes store48 / unsigned count2C / slot16+8 / fullID10 skip/admit and direct invalidation sequence. A separate same-query current store frame is being authored; source-selected zero150 and post-callback state remain explicitly unknown. |
+| Nonempty Character suffix before date | ArRg148, actual Character generation/fallback selection, Character1B8 presence/identity | Actual complete wrapper `28CBE50..28CC059` now matches old521B source, closing direct extensionF8/QWORD100 reset, reached origin`28B1820`, mutator`28B2710` and known date`2C54320` roles. Getter/mutator and post-mutator role/date inputs remain explicit dependencies. No standing role is a post-callee state. |
 | Future pending consumption | Current primary130 map and distinct primary468 typed records | Keep the distinct protocols. The typed468 consumer has no held exact entrance; it cannot be fabricated from `2A92320`, `2A9FC80` or `2A9A360`. |
 | Date-specific future stock and strength | Current daily/monthly dispatch, supply admission, source rates, refill/loss inputs | Continue source-specific future date eligibility and changed province/regiment inputs. The parallel supply leaf records the smallest unresolved source dependency. |
 
@@ -30,11 +31,10 @@ flowchart TD
   Q[Actual4 same Army query: current source operands] --> D[Current DATA and full date prefix]
   D --> S{Source selects ArRg removal callback}
   S -->|skip| N[Closed skipped callback arm]
-  S -->|selected| V[Held .3 canonical constructor and wrapper locator]
-  V -. exact4 mapping requested .-> W[Actual4 primary slot0 wrapper]
-  W -. selected core body not read .-> C[Actual4 ArRg callback effects]
-  C -. required before next visit .-> I[Outer zero150, FullID invalidation and slot clear]
-  N --> I
+  S -->|selected| W[Actual4 primary slot0 wrapper; source mode0]
+  W --> C[Actual4 selected core and record cleanup]
+  C -. selected resource effects unmodeled .-> I[Outer zero150, FullID invalidation and slot clear]
+  N --> P
   I -. parent capture and changed roster .-> P[Next raw cursor and current ArRg resolution]
   D -. nonnull Character1B8 suffix .-> H[Selected location/effects then full date]
   P -. future changed-stage inputs .-> F[Next-date daily/monthly construction]
@@ -48,10 +48,22 @@ ordinal132800 to `2632D90..2632DC4` (52B); core `2632DF0..2632E5C`
 has ordinal132801 candidate `2632DD0..2632E3C` (108B).
 The actual4 constructor, primary4744DB0 slot0, wrapper2632D90 and directly
 reached core2632DD0 are now closed at the direct-source level by exactly377B /
-four fresh reads. [The callback source](army-ordered-detachment-callback-12004.md)
+four fresh reads. Subsequent approved helper93B/caller19B reads closed the
+selected record algorithm and parent mode0; remaining parent255B/two reads
+closed the complete direct admission/invalidation method. Total intentional
+source cost at the store milestone was **744B/eight reads**. A subsequent
+separately approved Character wrapper521B/one read brought cumulative selected
+source cost to **1265B/nine reads**. [The Character source](army-character-detachment-suffix-12004.md)
+records its direct extension reset, exact reached helper targets and fresh
+post-mutator date/context boundary. [The callback source](army-ordered-detachment-callback-12004.md)
 records the concrete DATA20/allocator30/tag14 footprint and actual selected
-EBA050 cleanup entrance. Record-callback effects and ordered parent replay
-remain separate; no allocator or CRT expansion was performed.
+EBA050 cleanup. Its new input leaf preserves actual record targets, legal null
+and signed nonpositive branches, and an independently closed no-op prefix for
+known target8863D0 mode0. [The store source](army-detachment-store-admission-12004.md)
+records actual source-defined skip/admit and registry writes. Ordered
+post-callback replay remains separate; no allocator or CRT expansion was
+performed. Root explicitly has no held actual4226F10 zeroing-role proof, so its
+call arguments are not treated as completed memset effects.
 
 The independently useful candidate now captures every subject pointer
 occurrence in all30 current native supply phases, rather than stopping after
