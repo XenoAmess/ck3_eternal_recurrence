@@ -1115,7 +1115,9 @@ def ck3_process_inventory() -> dict[str, object]:
         raise UnsafeCleanupError(
             "CK3 tasklist inventory returned an empty full-process list"
         )
-    processes = _toolhelp_ck3_processes()
+    signaled_dead_pids: set[int] = set()
+    processes = _toolhelp_ck3_processes(signaled_dead_pids=signaled_dead_pids)
+    tasklist_pids = [pid for pid in tasklist_pids if pid not in signaled_dead_pids]
     native_pids = [int(item["pid"]) for item in processes]
     if sorted(tasklist_pids) != native_pids:
         raise UnsafeCleanupError(
@@ -1138,16 +1140,20 @@ def _is_access_denied(detail: object) -> bool:
     return "access denied" in str(detail).casefold()
 
 
-def _toolhelp_ck3_processes() -> list[dict[str, object]]:
-    return sorted(
-        (
-            identity
-            for entry in _toolhelp_process_entries()
-            if str(entry["name"]).casefold() == "ck3.exe"
-            and (identity := _toolhelp_process_identity_from_entry(entry)) is not None
-        ),
-        key=lambda item: int(item["pid"]),
-    )
+def _toolhelp_ck3_processes(
+    *, signaled_dead_pids: set[int] | None = None
+) -> list[dict[str, object]]:
+    processes = []
+    for entry in _toolhelp_process_entries():
+        if str(entry["name"]).casefold() != "ck3.exe":
+            continue
+        identity = _toolhelp_process_identity_from_entry(entry)
+        if identity is None:
+            if signaled_dead_pids is not None:
+                signaled_dead_pids.add(int(entry["pid"]))
+        else:
+            processes.append(identity)
+    return sorted(processes, key=lambda item: int(item["pid"]))
 
 
 def _toolhelp_process_identity(pid: int) -> dict[str, object] | None:
@@ -1230,7 +1236,7 @@ def _toolhelp_process_entries() -> list[dict[str, object]]:
 
 def _toolhelp_process_identity_from_entry(
     entry: dict[str, object],
-) -> dict[str, object]:
+) -> dict[str, object] | None:
     kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
     kernel32.OpenProcess.argtypes = [
         ctypes.wintypes.DWORD,
@@ -1253,6 +1259,11 @@ def _toolhelp_process_identity_from_entry(
         ctypes.POINTER(ctypes.wintypes.FILETIME),
     ]
     kernel32.GetProcessTimes.restype = ctypes.wintypes.BOOL
+    kernel32.WaitForSingleObject.argtypes = [
+        ctypes.wintypes.HANDLE,
+        ctypes.wintypes.DWORD,
+    ]
+    kernel32.WaitForSingleObject.restype = ctypes.wintypes.DWORD
     kernel32.CloseHandle.argtypes = [ctypes.wintypes.HANDLE]
     kernel32.CloseHandle.restype = ctypes.wintypes.BOOL
 
@@ -1269,9 +1280,19 @@ def _toolhelp_process_identity_from_entry(
         if not kernel32.QueryFullProcessImageNameW(
             handle, 0, path_buffer, ctypes.byref(path_length)
         ):
+            image_error = ctypes.get_last_error()
+            # A terminated process can still report exit code 259. Only its
+            # signaled handle proves that this stale Toolhelp entry is dead.
+            synchronize_handle = kernel32.OpenProcess(0x00100000, False, pid)
+            if synchronize_handle:
+                try:
+                    if kernel32.WaitForSingleObject(synchronize_handle, 0) == 0:
+                        return None
+                finally:
+                    kernel32.CloseHandle(synchronize_handle)
             raise UnsafeCleanupError(
                 f"Toolhelp process {pid} image query failed: "
-                f"winerror={ctypes.get_last_error()}"
+                f"winerror={image_error}"
             )
         creation = ctypes.wintypes.FILETIME()
         exit_time = ctypes.wintypes.FILETIME()
