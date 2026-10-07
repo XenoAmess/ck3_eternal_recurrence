@@ -1,5 +1,11 @@
 # Actual 1.20.0.4 restored-tool live repairs — 2026-10-07
 
+## Latest R66 exact-day verification: production-live primitive GREEN
+
+Root cold-restored the original H9635 on **bc27b6a6/runtime16**, with12 original full paused checks GREEN including minimized. The [actual one-native-day result](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/post-migration-g2-h9635-one-native-day01/ROOT-ONE-NATIVE-DAY-RESULT.json) is **GREEN_ONE_SAVED_NATIVE_DAY**, raw **53288424→53288448 (+24)**, independent paused/map-ready observation, and the latest normal checkpoint **H9638/104716851B/SHA `b17f8bdc861bf91217fe1622dcd94d10f9e63919547c2ba3c47ce08707b8d409`**. Credit is +1 saved day→6005 and resume2851+this1=2852 by ledger derivation, not an independent native counter or M4 loop. All10 streams copied, SDK retained; no launches/movement orders/extra hashes. The original +7 overshoot RED remains; natural0,G2 5/8,NW2 2/4 remain unchanged. H9635 is now the restore origin, not the latest checkpoint; Root is closing R66 normally, then sideR67/profile03entry18, with later original G2 restoration fromH9638.
+
+The source750b query-only repair/topic926 and sourcefreeze15 belong to the later frontend candidate: entry17 precompileRED from two production-owner ambiguity is retained, owner18 preserves both owners in the minimum5 TUs, entry18 build exits0,parent16. Frontend live/mod effect/screenshot still pending. M6 retained-observer sources6268/9cbe/c19 adopted do not grant native/Public FIRST or natural-prisoner action credit. This update changes only the five owned documentation files; the new exclusive frontend topic and shared source are untouched.
+
 ## Latest R65 once diagnosis: post_execution_drift after verified execution
 
 FIRST was `initialboundary-notready`, pump0. FINAL is **installed=true /failure1024=post_execution_drift /pump8983 /owner_verified7015 /executed126 /application=true /stamp=true /date53144352 /paused=true**, but the frontend remains unavailable. This is a retained diagnostic RED, not a frontend fix or mod RED. The SDL-unobserved explanation is excluded; the exact4 ResolveRoute/Finder binding is the concrete source-owner next step. NewGame, traits and screenshot were not controlled; no867 campaign qualification is inferred from pump or execution counts.
