@@ -1332,9 +1332,12 @@ class GameplayBridgeService:
             return finish_release_root_arbitration(
                 self._plan_initial_lifestyle_focus_first_v1(planned, available_steps))
         baseline = planned.get("plan")
+        # A current accepted captive offer may precede ordinary discovery;
+        # checkpoint, opening-focus and selected actions keep their priority.
         if (isinstance(baseline, dict)
                 and baseline.get("selected_step") in {
-                    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, "query-declarable-wars"}):
+                    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, "query-declarable-wars",
+                    QUERY_ARRANGE_MARRIAGE_CHOICES_STEP}):
             release = plan_release_formal(self.driver, planned, snapshot)
             if release["plan"].get("selected_step") == PRISONER_RELEASE_SUBMIT_STEP:
                 for key in list(release):

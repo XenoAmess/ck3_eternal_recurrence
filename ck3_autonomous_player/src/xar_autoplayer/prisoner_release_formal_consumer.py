@@ -25,7 +25,11 @@ from .bridge.war_contract import query_war_prisoner_release_pairs_v1_step
 SUBMIT_STEP = "submit-player-prisoner-release-v1"
 _LEDGER = "player-prisoner-release-formal-v1.json"
 _QUERY_STEP = "query-player-prisoner-collection-private-v1"
-_DISCOVERY_STEPS = {"query-campaign-root-context-v1", "query-declarable-wars"}
+_DISCOVERY_STEPS = {
+    "query-campaign-root-context-v1",
+    "query-declarable-wars",
+    "query-arrange-marriage-choices",
+}
 
 
 def read_release_ledger(state_dir: Path) -> dict[str, object]:
