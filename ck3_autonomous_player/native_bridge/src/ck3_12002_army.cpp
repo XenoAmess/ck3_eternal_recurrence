@@ -6,6 +6,7 @@
 #include "xar_bridge/ck3_12004_future_daily_supply_schedule.hpp"
 #include "xar_bridge/ck3_12004_source_derived_next_daily_supply_frame.hpp"
 #include "xar_bridge/ck3_12004_current_unit_new_date_schedule_inputs.hpp"
+#include "xar_bridge/ck3_12004_current_unit_new_date_callback_entry_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_detachment_callback_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_detachment_store_inputs.hpp"
 #include "xar_bridge/ck3_12004_current_character_detachment_inputs.hpp"
@@ -1427,6 +1428,19 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
       row.current_unit_new_date_schedule_inputs_v1 =
           ck3_12004::BuildCurrentUnitNewDateScheduleInputs12004(
               inventory, static_cast<std::uint32_t>(row.army_id), carmy_id);
+    }
+  }
+  if (bindings.current_unit_new_date_callback_entry_bindings.enabled) {
+    for (auto &row : output) {
+      std::optional<std::uint32_t> carmy_id;
+      if (row.native_carmy_id_observable) {
+        carmy_id = static_cast<std::uint32_t>(row.native_carmy_id);
+      }
+      row.current_unit_new_date_callback_entry_inputs_v1 =
+          ck3_12004::ReadCurrentUnitNewDateCallbackEntryInputs12004(
+              bindings.current_unit_new_date_callback_entry_bindings,
+              ResolveArmyUnit(bindings, row.army_id),
+              static_cast<std::uint32_t>(row.army_id), carmy_id);
     }
   }
   return partial ? game::ReadArmyStrengthsResult::partial

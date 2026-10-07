@@ -22,6 +22,7 @@
 #include "xar_bridge/army_future_daily_supply_schedule_v1.hpp"
 #include "xar_bridge/army_source_derived_next_daily_supply_frame_v1.hpp"
 #include "xar_bridge/army_current_unit_new_date_schedule_inputs_v1.hpp"
+#include "xar_bridge/army_current_unit_new_date_callback_entry_inputs_v1.hpp"
 #include "xar_bridge/army_current_detachment_callback_inputs_v1.hpp"
 #include "xar_bridge/army_current_detachment_store_inputs_v1.hpp"
 #include "xar_bridge/army_current_character_detachment_inputs_v1.hpp"
@@ -872,6 +873,8 @@ struct ArmyStrengthSnapshot {
       source_derived_next_daily_supply_frame_inputs_v1;
   std::optional<ArmyCurrentUnitNewDateScheduleInputsV1>
       current_unit_new_date_schedule_inputs_v1;
+  std::optional<ArmyCurrentUnitNewDateCallbackEntryInputsV1>
+      current_unit_new_date_callback_entry_inputs_v1;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;

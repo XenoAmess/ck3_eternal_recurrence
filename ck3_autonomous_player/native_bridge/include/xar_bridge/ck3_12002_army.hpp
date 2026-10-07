@@ -220,6 +220,8 @@ struct ArmyBindings {
       source_derived_next_daily_supply_frame_bindings{};
   ck3_12004::CurrentUnitNewDateScheduleBindings12004
       current_unit_new_date_schedule_bindings{};
+  ck3_12004::CurrentUnitNewDateCallbackEntryBindings12004
+      current_unit_new_date_callback_entry_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

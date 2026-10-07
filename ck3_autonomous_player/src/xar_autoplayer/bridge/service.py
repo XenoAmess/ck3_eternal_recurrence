@@ -38,6 +38,7 @@ from .army_current_detachment_data_builder import build_same_input_current_detac
 from .army_source_derived_next_daily_supply_frame_projection import project_native_next_daily_supply_schedule_v1
 from .army_next_updater_write_projection import project_source_derived_next_updater_writes_v1
 from .army_next_fleet_supply_budget_projection import project_source_derived_next_fleet_supply_budget_v1
+from .army_current_unit_new_date_entry_normalization_projection import project_current_unit_new_date_entry_normalization_v1
 from .army_current_callback_supply_risk_projection import project_current_callback_supply_risk_v1
 from .army_current_detachment_callback_projection import project_current_detachment_callback_inputs_v1
 from .army_current_detachment_store_projection import project_current_detachment_store_inputs_v1
@@ -3450,6 +3451,23 @@ class GameplayBridgeService:
             ],
         }
 
+    @staticmethod
+    def _unit_new_date_entry_normalization_rows(
+        result: dict[str, object], rows: list[dict[str, object]],
+    ) -> list[dict[str, object]]:
+        return [
+            {
+                "army_id": row["army_id"],
+                "source_provenance": {
+                    "snapshot_id": result.get("queried_snapshot_id"),
+                    "revision": result.get("queried_revision"),
+                    "native_revision": result.get("queried_native_revision"),
+                },
+                "projection": project_current_unit_new_date_entry_normalization_v1(row),
+            }
+            for row in rows
+        ]
+
     def execute_step(
         self, step: str, *, expected_revision: int | None = None,
         expected_h2743_frame: dict[str, object] | None = None,
@@ -3476,7 +3494,14 @@ class GameplayBridgeService:
             return self.assign_army_commander_v1(
                 *commander_assignment, expected_revision=expected_revision,
             )
-        return self.driver.execute_step(step, expected_revision=expected_revision)
+        result = self.driver.execute_step(step, expected_revision=expected_revision)
+        if step == QUERY_ARMY_STRENGTHS_STEP and isinstance(result.get("army_strengths"), list):
+            return {
+                **result,
+                "current_unit_new_date_entry_normalization_v1":
+                    self._unit_new_date_entry_normalization_rows(result, result["army_strengths"]),
+            }
+        return result
 
     def save_checkpoint(
         self, *, expected_revision: int | None = None
@@ -4800,6 +4825,8 @@ class GameplayBridgeService:
             "ordered_besieging_entry_mode": ordered_besieging_entry_mode,
             "scope_army_ids": scope_ids,
             "army_strengths": selected_rows,
+            "current_unit_new_date_entry_normalization_v1":
+                self._unit_new_date_entry_normalization_rows(result, selected_rows),
             "same_input_replenishment_v1": project_observed_replenishment_v1(selected_rows),
             "loss_allocation_requests_v1": project_observed_army_loss_requests(selected_rows),
             "same_input_conditional_next_admitted_day_fleet_rate_v1": [
