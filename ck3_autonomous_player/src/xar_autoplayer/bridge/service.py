@@ -1282,6 +1282,12 @@ class GameplayBridgeService:
             return self._plan_initial_lifestyle_focus_first_v1(
                 planned, available_steps
             )
+        from ..holy_order_siege_reinforcement_v1 import plan_holy_order_siege_reinforcement_v1
+
+        planned = plan_holy_order_siege_reinforcement_v1(
+            self.driver, planned=planned, snapshot=snapshot,
+            bridge_capabilities=bridge_capabilities,
+        )
         m5_snapshot = planned.pop("_private_m5_snapshot_v1", None)
         m5_history = planned.pop("_private_m5_history_v1", None)
         m5_enabled = getattr(
@@ -2944,6 +2950,12 @@ class GameplayBridgeService:
                 result = executor(
                     pending=pending,
                     expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == "hire-holy-order-v1" and isinstance(plan.get("holy_order_hire_proposal"), dict):
+                from ..holy_order_siege_reinforcement_v1 import submit_holy_order_siege_reinforcement_v1
+
+                result = submit_holy_order_siege_reinforcement_v1(
+                    self.driver, plan=plan, expected_revision=int(planned["revision"]),
                 )
             else:
                 result = self.execute_step(
