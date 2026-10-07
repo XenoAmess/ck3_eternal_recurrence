@@ -1,5 +1,9 @@
 # Crown cooldown duration parser: actual named factory continuation
 
+The subsequent [Character cadence source handoff](crown-authority-cooldown-character-cadence-source-12004.md)
+records Root's sole pure FIRST qualification and the distinct unresolved
+Character pool daily-caller edge; the source/candidate snapshot below is preserved.
+
 2026-10-08 /2026-W41, exact CK3 1.20.0.4 /Steam25734779 /EXE
 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
 This is the next candidate after the sealed
