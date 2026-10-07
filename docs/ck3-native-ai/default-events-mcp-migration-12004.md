@@ -128,3 +128,37 @@ an actual4 event-resolution result.
 Combined unique new mapping cost is 276 finite calls / 9,885 bytes. Current
 proofs, source commits, shared recipes and Oct7/W41 handoff fields are indexed
 at `default-events-12004/ROOT-DELIVERY.json` within the parent migration packet.
+
+## First production consumer failure and necessary repair
+
+Root's actual `.4` Window native fixture passed, including canonical trait
+lookup. The next02 registered MCP compound then failed after nine checks:
+`events-phase-existing-next02/window/registered/RESULT.json` is RED,
+`qualification=synthetic-native-fixture`, two cases, zero live queries and
+zero game actions. Its stderr is
+`events-phase-existing-next02/01-registered-window.stderr.log`. Preserve these
+failures and the original next01 native frames; they are separate from a
+nonempty production game event.
+
+Two production source gaps explain the rejected frame. The strict Python
+normalizer omitted the `.4` backend from both its exact provenance and build
+maps. The shared `.2` serializer emitted idler `0x44BC408`, while the actual
+`.4` factory and closed typed source pin use `0x44BC418`. Identity rendering
+changed backend and indicator coverage but did not change that locator.
+
+The source repair adds an explicit `.4` provenance row with unchanged root
+`module+0x5C6A520->+0x10` and manager `+0x28`, and exact idler `0x44BC418`.
+It also accepts only the already bound `.4` reader's numeric scopes, nullable
+saved character/title identities and six indicator kinds; field, identity,
+coverage, readiness and completeness assertions remain intact. Historical
+build behavior remains intact.
+
+Root's shared adapter recipe scopes the idler replacement to the existing
+exact `.4` descriptor guard and `current-event-window-context-v1` schema.
+Only `ck3_12004_adapter.cpp` needs to recompile; no header, new target or
+fixture JSON changes are needed. The source patch and affected-only retry
+recipe are indexed by
+`event-window-production-provenance-fix-12004/ROOT-DELIVERY.json` in the
+migration packet. This repair is **SOURCE_READY / Root validation NOT_RUN**;
+there are no new native reads, builds, tests, SDK calls or game actions in
+this repair lane. Events, Phase and Pending qualification is reused.
