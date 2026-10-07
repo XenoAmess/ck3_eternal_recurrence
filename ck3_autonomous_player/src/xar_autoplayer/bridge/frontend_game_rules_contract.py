@@ -1,8 +1,10 @@
-"""Exact .3 current rules-window selection observations, before Apply."""
+"""Exact .3/.4 current rules-window selection observations, before Apply."""
 
 from __future__ import annotations
 
 import re
+
+from xar_autoplayer.bridge.version_identity import CK3_12003, CK3_12004, require_exact_native_build
 from typing import Final
 
 QUERY_FRONTEND_GAME_RULE_SELECTIONS_V1_CAPABILITY: Final = (
@@ -23,11 +25,14 @@ _KEY = re.compile(r"[A-Za-z0-9_]{1,96}\Z", re.ASCII)
 def normalize_frontend_game_rule_selections_v1(value: object) -> dict[str, object]:
     if not isinstance(value, dict):
         raise ValueError("game rule observation must be an object")
+    build = require_exact_native_build(value.get("game_version"), value.get("executable_sha256"))
+    if build not in (CK3_12003, CK3_12004):
+        raise ValueError("native frontend game rules build is not admitted")
     expected = {
         "schema": "frontend_game_rule_selections_v1",
         "schema_version": 1,
-        "game_version": "1.20.0.3",
-        "executable_sha256": _SHA,
+        "game_version": build.game_version,
+        "executable_sha256": build.executable_sha256,
         "source": "CJominiGameRulesGui.current_selections",
         "read_only": True,
         "uses_ocr": False,
