@@ -4,6 +4,8 @@ Authored without execution. The native callbacks, captive and date are synthetic
 An endpoint supplied to the production Driver replays original whole responses;
 only request_id changes. ACKs are pending, with no live or material release credit.
 The two original unsendable/refused cases reuse their existing registered GREEN.
+A separately labeled synthetic caller checkpoint baseline uses persisted Driver
+state. It is not a native checkpoint command, save file or material game result.
 """
 from __future__ import annotations
 
@@ -86,6 +88,7 @@ def main() -> int:
     from xar_autoplayer.bridge.driver import BridgeUnavailableError
     from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
     from xar_autoplayer.bridge.service import GameplayBridgeService
+    from xar_autoplayer.environment import write_json_atomic
     from xar_autoplayer.bridge.succession_transition_contract import (
         ORDINARY_CAMPAIGN_SUCCESSION, normalize_succession_lifecycle_binding_v1,
     )
@@ -163,6 +166,8 @@ def main() -> int:
                              "Driver.submit_player_prisoner_release_private_v1"],
         "scope": "offline_native_owned_packets_and_production_service",
         "sdk_calls": 0, "named_pipe_connections": 0, "game_actions": 0,
+        "fixture_owned_synthetic_caller_baseline": True,
+        "native_checkpoint_commands": 0, "native_checkpoint_materialized": False,
         "live_capture": False, "live_release": False, "production_live_release": False,
         "real_captive_credit": False, "custody_change_credit": False,
         "independent_after_native_frame": False, "material_result": False,
@@ -243,6 +248,39 @@ def main() -> int:
                 succession_lifecycle_binding=lifecycle_binding,
             )
             try:
+                baseline_row = {
+                    "index": 1, "command": "save-checkpoint", "ok": True,
+                    "result": {
+                        "step": "save-checkpoint",
+                        "fixture_owned_synthetic_caller_baseline": True,
+                        "native_command_sent": False, "material_result": False,
+                        "checkpoint": {
+                            "status": "fixture_owned_synthetic_caller_baseline",
+                            "path": None, "size": None, "sha256": None,
+                        },
+                        "materialization": {
+                            "available": False, "reason": "offline_caller_fixture_only",
+                        },
+                    },
+                }
+                baseline_payload = {
+                    "format_version": 2, "pipe_name": endpoint.pipe_name,
+                    "bridge_pid": packet["hello"]["pid"],
+                    "episode_character_id": None, "episode_run_id": None,
+                    "command_history": [baseline_row], "last_checkpoint": None,
+                    "rollback_war_failure": None, "rollback_war_failures": [],
+                    "managed_restore_transaction": None, "succession_expectation": None,
+                    "succession_lifecycle": lifecycle_binding, "campaign_goal": None,
+                }
+                baseline_path = driver._native_driver_state_path()
+                write_json_atomic(baseline_path, baseline_payload)
+                entry["caller_baseline_state"] = {
+                    "path": str(baseline_path),
+                    "setup_sha256": hashlib.sha256(baseline_path.read_bytes()).hexdigest(),
+                    "payload": baseline_payload,
+                    "scope": "root_authorized_fixture_owned_synthetic_caller_only",
+                    "material_result": False, "native_checkpoint_commands": 0,
+                }
                 endpoint.publish(packet["hello"])
                 endpoint.publish(packet["before_snapshot"])
                 before = driver.take_snapshot()
@@ -250,6 +288,8 @@ def main() -> int:
                 require(before["succession_lifecycle"]["lifecycle"] == ORDINARY_CAMPAIGN_SUCCESSION
                         and isinstance(before.get("campaign_goal"), dict),
                         case + ": actual Driver did not use the configured ordinary campaign scope")
+                require(before["native_command_history"] == [baseline_row],
+                        case + ": actual same-PID Driver state did not restore the synthetic caller baseline")
                 query_arguments = {"expected_revision": before["revision"], "ransom_ordinal": 0}
                 if case != "all_off_pending":
                     query_arguments["release_option_keys"] = ["gain_hook"]
