@@ -586,7 +586,7 @@ calls, and mod live acceptance retains priority over these source tasks.
 
 Root reported the new registered-MCP compound case GREEN and pushed
 `34083516`; the single new case and retained15 cases are not repeated here.
-The next source-only worktree is based on Root `6a098708`. Its concrete
+The candidate worktree was based on Root `6a098708`. Its concrete
 production gap was visible in `construction_formal_consumer.py`: the
 completed branch consumed only the old pure receipt projection, still
 requested the public root or stopped when completed gross was missing, and
@@ -648,7 +648,7 @@ native header/CMake input changes. The specific actual realized-income
 dependency remains the held `2479F50(owner,3)` tail edge and its transfer to
 Province+718/holder NET.
 
-The new source-only compound case is
+The new offline compound case is
 `tests/unit/test_construction_cash_formal_decision_v1.py`. It uses the real
 NativeHeadlessGameplayDriver current-cash query and durable applied ledger,
 the actual M5 peacetime source producer, dispatcher and selected-building
@@ -661,8 +661,24 @@ cash baseline and remain unable to attribute an individual building's NET
 yield. The standalone route additionally fills a genuinely completed
 receipt's missing gross observation. Each decision requests cash once,
 then construction once, and sends no construction action. This is one new
-compound test, authored **NOTRUN** in this lane; Root alone runs its first
-case. The retained15 and registered-MCP GREEN cases are not rerun.
+compound test. Root ran its first case once on the actual joint source
+`c5ebc8ffbd25a59f98e2552f86c1f6da28455cad` in `Z:/gb0`, with GREEN exit0,
+one passed case and four decision legs. Root reported pytest3.20s; the
+launch receipt records2026-10-07T10:51:08.077007Z through10:51:12.131398Z.
+The retained15 and registered-MCP GREEN cases were not rerun.
+
+| Source/evidence | Exact identity | Qualification boundary |
+|---|---|---|
+| Candidate authoring basis | Root `6a098708` | Source input to the isolated worktree; not the source head of this first run |
+| Candidate policy | `bda9ce0cd4c838b5508d0d7fa34f543487e99780` | Authored source and compound; this lane performed only the cached diff check |
+| Root policy adoption | `544124fd` | Root adopted the candidate before composing its joint source |
+| Actual first-run source | `c5ebc8ffbd25a59f98e2552f86c1f6da28455cad` | Offline GREEN1/1, four legs through actual standalone and M5 construction routes with controlled wire fixtures |
+| First-run launch receipt | `Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/economy-yield/formal-cash-decision-root-first01/ROOT-LAUNCH-RESULT.json` | Read and reused small metadata only; no repeated tests, source capture or raw observations reread |
+| Detailed observations | `Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/economy-yield/formal-cash-decision-root-first01/FORMAL-CASH-DECISION-OBSERVATIONS.json` | Root's existing four-leg result; retained by reference |
+
+This qualifies the current-cash-to-native-quote decision on the tested joint
+Python source. It adds no C++ ABI compilation result, SDK/game run,
+production-live construction, Robert payment or completed-building yield.
 
 No new valid Robert construction has been shown by this source change.
 M4 remains false; resuming the ordinary campaign and observing a genuinely
