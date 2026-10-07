@@ -17226,25 +17226,100 @@ void RunConnectedSession(
             std::string decision_key,window_kind,expected_outcome,event_key; xar::game::Snapshot current{};
             const bool select=step==xar::ck3_11906::kIngameDecisionItemSelectV1Step;
             const bool outcome=step==xar::ck3_11906::kIngameDecisionOutcomeConfirmV1Step;
-            if (!xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision) ||
-                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor) ||
-                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid) ||
-                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation) ||
-                !xar::bridge::JsonStringField(incoming.payload,"decision_key",decision_key,192) ||
-                (!select&&!outcome&&(!xar::bridge::JsonStringField(incoming.payload,"expected_window_kind",window_kind,32)||window_kind!="vivhite_courtier")) ||
-                (outcome&&(!xar::bridge::JsonStringField(incoming.payload,"expected_outcome",expected_outcome,32)||
-                  (expected_outcome=="decision_closed"?!xar::ck3_11906::IngameDecisionOutcomeEmptyEventKeyWireV1(incoming.payload):
-                    !xar::bridge::JsonStringField(incoming.payload,"expected_event_definition_key",event_key,192))||
-                  !xar::ck3_11906::IngameDecisionOutcomeRequestValidV1(expected_outcome,event_key))) ||
-                expected_revision==0 || expected_revision!=state_revision ||
-                expected_pid!=GetCurrentProcessId() || expected_generation!=connection_generation ||
-                !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||
-                !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive ||
-                current.played_character_id<=0 || expected_actor!=static_cast<std::uint64_t>(current.played_character_id) ||
-                (outcome&&(current.has_active_event||current.has_pending_character_interaction)) ||
-                game.descriptor().game_version!="1.20.0.3" ||
-                game.descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
-              connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"exact_alive_paused_decision_action_binding_changed"));
+            std::string_view failed_predicate;
+            bool snapshot_read_attempted=false, snapshot_read_ok=false;
+            const auto admitted = [&failed_predicate](bool pass, std::string_view name) {
+              if (!pass) failed_predicate=name;
+              return pass;
+            };
+            const auto read_current = [&] {
+              snapshot_read_attempted=true;
+              snapshot_read_ok=xar::game::ReadSnapshot(game,current);
+              return snapshot_read_ok;
+            };
+            // Same predicates and short-circuit order as the original guard.
+            // Failure data is emitted before any owner ticket can be submitted.
+            const bool binding_admitted =
+                admitted(xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision),"expected_revision_field") &&
+                admitted(xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor),"expected_player_character_id_field") &&
+                admitted(xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid),"expected_game_pid_field") &&
+                admitted(xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation),"expected_connection_generation_field") &&
+                admitted(xar::bridge::JsonStringField(incoming.payload,"decision_key",decision_key,192),"decision_key_field") &&
+                admitted(select||outcome||(xar::bridge::JsonStringField(incoming.payload,"expected_window_kind",window_kind,32)&&window_kind=="vivhite_courtier"),"expected_window_kind") &&
+                admitted(!outcome||(xar::bridge::JsonStringField(incoming.payload,"expected_outcome",expected_outcome,32)&&
+                  (expected_outcome=="decision_closed"?xar::ck3_11906::IngameDecisionOutcomeEmptyEventKeyWireV1(incoming.payload):
+                    xar::bridge::JsonStringField(incoming.payload,"expected_event_definition_key",event_key,192))&&
+                  xar::ck3_11906::IngameDecisionOutcomeRequestValidV1(expected_outcome,event_key)),"expected_outcome") &&
+                admitted(expected_revision!=0,"revision_positive") && admitted(expected_revision==state_revision,"revision_matches") &&
+                admitted(expected_pid==GetCurrentProcessId(),"pid_matches") && admitted(expected_generation==connection_generation,"generation_matches") &&
+                admitted(previous_snapshot.has_value(),"previous_snapshot_available") && admitted(read_current(),"snapshot_read_ok") &&
+                admitted(current==*previous_snapshot,"snapshot_equal") && admitted(current.map_ready,"map_ready") &&
+                admitted(current.paused,"paused") && admitted(current.has_played_character,"has_played_character") &&
+                admitted(current.played_character_alive,"played_character_alive") && admitted(current.played_character_id>0,"actor_positive") &&
+                admitted(expected_actor==static_cast<std::uint64_t>(current.played_character_id),"actor_matches") &&
+                admitted(!outcome||(!current.has_active_event&&!current.has_pending_character_interaction),"outcome_window_clear") &&
+                admitted(game.descriptor().game_version=="1.20.0.3","game_version_matches") &&
+                admitted(game.descriptor().executable_sha256=="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6","executable_sha256_matches");
+            if (!binding_admitted) {
+              auto error=CommandResultFrame(request_id,step,false,"exact_alive_paused_decision_action_binding_changed");
+              error.pop_back();
+              error+=",\"decision_action_pre_dispatch_rejection_v1\":{\"schema\":\"ck3-decision-action-pre-dispatch-rejection-v1\","
+                     "\"guard_source_id\":\"ingame_decision_item_action_admission_v1\",\"dispatch_stage\":\"before_main_thread_submit\","
+                     "\"submitted\":false,\"dispatch_invoked\":false,\"request_id\":";
+              AppendJsonString(error,request_id);error+=",\"step\":";AppendJsonString(error,step);
+              error+=",\"decision_key\":";AppendJsonString(error,decision_key);
+              error+=",\"failed_predicates\":[";AppendJsonString(error,failed_predicate);error+="]";
+              const auto append_binding = [&](std::string_view name, std::uint64_t revision, std::uint64_t pid, std::uint64_t generation, bool expected) {
+                error+=",\"";error+=name;error+="\":{\"native_revision\":";error+=std::to_string(revision);
+                error+=",\"game_pid\":";error+=std::to_string(pid);error+=",\"connection_generation\":";error+=std::to_string(generation);
+                error+=",\"played_character_id\":";
+                error+=expected?std::to_string(expected_actor):snapshot_read_ok?std::to_string(current.played_character_id):"null";
+                error+='}';
+              };
+              append_binding("expected",expected_revision,expected_pid,expected_generation,true);
+              append_binding("actual",state_revision,GetCurrentProcessId(),connection_generation,false);
+              error+=",\"previous_snapshot_available\":";error+=previous_snapshot.has_value()?"true":"false";
+              error+=",\"snapshot_read_attempted\":";error+=snapshot_read_attempted?"true":"false";
+              error+=",\"snapshot_read_ok\":";error+=snapshot_read_ok?"true":"false";
+              error+=",\"snapshot_equal\":";error+=snapshot_read_ok&&previous_snapshot.has_value()?(current==*previous_snapshot?"true":"false"):"null";
+              const auto append_observed_bool = [&](std::string_view name, bool value) {
+                error+=",\"";error+=name;error+="\":";error+=snapshot_read_ok?(value?"true":"false"):"null";
+              };
+              append_observed_bool("map_ready",current.map_ready);append_observed_bool("paused",current.paused);
+              append_observed_bool("has_played_character",current.has_played_character);append_observed_bool("played_character_alive",current.played_character_alive);
+              // Reuse the two already-held snapshots. These are diagnostic
+              // serializations, not a publication or an additional native read.
+              error+=",\"current_snapshot\":";
+              error+=snapshot_read_ok?StateSnapshotFrame(current,state_revision,checkpoint_submission):"null";
+              error+=",\"previous_snapshot\":";
+              error+=previous_snapshot.has_value()?StateSnapshotFrame(*previous_snapshot,state_revision,checkpoint_submission):"null";
+              error+=",\"snapshot_differing_fields\":";
+              if (snapshot_read_ok&&previous_snapshot.has_value()) {
+                error+='[';bool comma=false;
+                const auto difference = [&](std::string_view name, bool equal) {
+                  if (equal) return;
+                  if (comma) error+=',';
+                  AppendJsonString(error,name);comma=true;
+                };
+#define XAR_DECISION_SNAPSHOT_DIFFERENCE(field) difference(#field,current.field==previous_snapshot->field)
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(date_raw);XAR_DECISION_SNAPSHOT_DIFFERENCE(speed);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(paused);XAR_DECISION_SNAPSHOT_DIFFERENCE(player_id);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(map_ready);XAR_DECISION_SNAPSHOT_DIFFERENCE(has_played_character);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(played_character_id);XAR_DECISION_SNAPSHOT_DIFFERENCE(played_character_alive);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(played_character_stress_points);XAR_DECISION_SNAPSHOT_DIFFERENCE(played_character_gold);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(played_character_prestige);XAR_DECISION_SNAPSHOT_DIFFERENCE(played_character_piety);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(played_character_betrothed_id);XAR_DECISION_SNAPSHOT_DIFFERENCE(played_character_primary_spouse_id);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(played_character_spouse_ids);XAR_DECISION_SNAPSHOT_DIFFERENCE(has_active_event);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(active_event_instance_id);XAR_DECISION_SNAPSHOT_DIFFERENCE(active_event_option_count);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(has_pending_character_interaction);XAR_DECISION_SNAPSHOT_DIFFERENCE(pending_character_interaction_id);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(pending_sender_character_id);XAR_DECISION_SNAPSHOT_DIFFERENCE(pending_auto_accept_notification);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(active_wars);XAR_DECISION_SNAPSHOT_DIFFERENCE(player_armies);
+                XAR_DECISION_SNAPSHOT_DIFFERENCE(has_one_life_settlement);XAR_DECISION_SNAPSHOT_DIFFERENCE(one_life_settlement);
+#undef XAR_DECISION_SNAPSHOT_DIFFERENCE
+                error+=']';
+              } else error+="null";
+              error+="}}";
+              connected=write_frame(pipe,error);
             } else {
               xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
               query.mailbox=&g_main_thread_query_mailbox_v1;

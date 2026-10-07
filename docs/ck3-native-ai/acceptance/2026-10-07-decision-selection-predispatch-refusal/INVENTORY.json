@@ -1,0 +1,199 @@
+{
+  "schema": "lyd.decision-predispatch-source-focused-original-inventory.v1",
+  "archived_at_utc": "2026-10-07T03:27:04.469599+00:00",
+  "candidate_base_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+  "merged_base_head": "e53011d06984c3d1bf6192394014e9fc6f8436ae",
+  "merged_source_files_original_pins": [
+    {
+      "path": "C:/lci18w1/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1448784,
+      "sha256": "67dcea4a2338108f73410695d67fc07f2a6a7ae050ecf00fbfb66967faed783f"
+    },
+    {
+      "path": "C:/lci18w1/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1399610,
+      "sha256": "b4e68514635cafe110ef416f823ca6b186b1a6b5ec690b437fd3bacc5bd684c9"
+    },
+    {
+      "path": "C:/lci18w1/ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_outcome_contract.py",
+      "bytes": 9452,
+      "sha256": "a082ceb1d04047df9e9140f45861cc0f30f698fd181e622fbcab964b7cfac77d"
+    },
+    {
+      "path": "C:/lci18w1/ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_predispatch_contract.py",
+      "bytes": 11358,
+      "sha256": "f198af416c9d90b98c34ff9303a0c3c63ef0c9885e44f4ac2dd427cf2ff708cc"
+    },
+    {
+      "path": "C:/lci18w1/ck3_autonomous_player/tests/unit/test_ingame_decision_predispatch_rejection.py",
+      "bytes": 11281,
+      "sha256": "7f9092ca315f2bce4c89ce5039616d87b9cc6921054dcc2f9d9ae8ea61e8e6f3"
+    }
+  ],
+  "archive": {
+    "path": "SOURCE-FOCUSED.original-evidence.zip",
+    "bytes": 30918,
+    "sha256": "8c70cb885697ab93bf7b2f9460930d5588a65f6084da05f38923a1c4eb5dfc20",
+    "members": 20
+  },
+  "entries": [
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/INDEX.json",
+      "member": "r18-decision-predispatch-fix-20261007-001/INDEX.json",
+      "bytes": 2172,
+      "sha256": "82321c217b64e792dc4375d1b224e138c2179e8bcaa3f0b30f9b77219000330f",
+      "scope": "saved source/focused evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/INTEGRATION-MANIFEST.json",
+      "member": "r18-decision-predispatch-fix-20261007-001/INTEGRATION-MANIFEST.json",
+      "bytes": 7754,
+      "sha256": "2cc5214dc282ab4d5bb8664c8ba1ec858d5f8d5ea33ec1e43502d36b2ff92385",
+      "scope": "saved source/focused evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/PATCH.diff",
+      "member": "r18-decision-predispatch-fix-20261007-001/PATCH.diff",
+      "bytes": 40905,
+      "sha256": "06d8e64e7f2c4fed8eddf6b006c62778788576d25ce550cfb31bd6a69c324323",
+      "scope": "saved source/focused evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/ROOT-HANDOFF.md",
+      "member": "r18-decision-predispatch-fix-20261007-001/ROOT-HANDOFF.md",
+      "bytes": 3267,
+      "sha256": "498975b95b2ebe91ea61cd920dd55152427018bc943b0b92a4b7b2f6c704d7e4",
+      "scope": "saved source/focused evidence"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/focused-attempt-001/RESULT.json",
+      "member": "r18-decision-predispatch-fix-20261007-001/focused-attempt-001/RESULT.json",
+      "bytes": 1001,
+      "sha256": "4b0512177b9c439e6ae1990bd7d676d3ad126d8e9f1c0b4305e274be67246471",
+      "scope": "Original candidate focused check; failure preserved"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/focused-attempt-001/stderr.txt",
+      "member": "r18-decision-predispatch-fix-20261007-001/focused-attempt-001/stderr.txt",
+      "bytes": 141934,
+      "sha256": "d695c5e03587926126a9a5483de37050fc8a35c6110caf478eb4480bc2d3210f",
+      "scope": "Original focused stdout/stderr bytes"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/focused-attempt-001/stdout.txt",
+      "member": "r18-decision-predispatch-fix-20261007-001/focused-attempt-001/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scope": "Original focused stdout/stderr bytes"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/focused-attempt-002/RESULT.json",
+      "member": "r18-decision-predispatch-fix-20261007-001/focused-attempt-002/RESULT.json",
+      "bytes": 997,
+      "sha256": "77b3f927ef6d862e6b1dddc2fa3dee989b36d4a54ea66a61e8856336df879d64",
+      "scope": "Original candidate focused check; failure preserved"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/focused-attempt-002/stderr.txt",
+      "member": "r18-decision-predispatch-fix-20261007-001/focused-attempt-002/stderr.txt",
+      "bytes": 7016,
+      "sha256": "b4a8e96655d52e577ca76ad2755ee02aa2c6d39a4686319d4ade49ca075d82e6",
+      "scope": "Original focused stdout/stderr bytes"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/focused-attempt-002/stdout.txt",
+      "member": "r18-decision-predispatch-fix-20261007-001/focused-attempt-002/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scope": "Original focused stdout/stderr bytes"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/patch-check.stderr.txt",
+      "member": "r18-decision-predispatch-fix-20261007-001/patch-check.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scope": "Original source patch-check stdio; no repeated check"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/patch-check.stdout.txt",
+      "member": "r18-decision-predispatch-fix-20261007-001/patch-check.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scope": "Original source patch-check stdio; no repeated check"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/reverse-check.stderr.txt",
+      "member": "r18-decision-predispatch-fix-20261007-001/reverse-check.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scope": "Original source patch-check stdio; no repeated check"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/reverse-check.stdout.txt",
+      "member": "r18-decision-predispatch-fix-20261007-001/reverse-check.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scope": "Original source patch-check stdio; no repeated check"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/run_focused_checks.py",
+      "member": "r18-decision-predispatch-fix-20261007-001/run_focused_checks.py",
+      "bytes": 1764,
+      "sha256": "615862d8b743cfb040ee23b63844c83786e0946221c699da3d7e06d4bca710f4",
+      "scope": "Original focused runner source; archived without replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r18-decision-predispatch-fix-20261007-001/run_focused_checks002.py",
+      "member": "r18-decision-predispatch-fix-20261007-001/run_focused_checks002.py",
+      "bytes": 1790,
+      "sha256": "6d9c169824acc98c95d760005d6e5ce13a052d1dc4b5a00ef7d6086250a0c55f",
+      "scope": "Original focused runner source; archived without replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-focused-integration-20261007-001/actual-001/RESULT.actual.json",
+      "member": "r19-root-focused-integration-20261007-001/actual-001/RESULT.actual.json",
+      "bytes": 2525,
+      "sha256": "5e55e05aa2d5724c21c3bdb75d8c6bb0b4ef9fc3e80b61c9b01a20389ad0748f",
+      "scope": "ROOT actual merged source focused check at e53011d06984c3d1bf6192394014e9fc6f8436ae"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-focused-integration-20261007-001/actual-001/stderr.txt",
+      "member": "r19-root-focused-integration-20261007-001/actual-001/stderr.txt",
+      "bytes": 7408,
+      "sha256": "f4b5f8efea69544d8d0081f91fdcc98fbda765ebf022b363d98bdc40277ee5e4",
+      "scope": "ROOT actual merged focused stdout/stderr bytes"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-focused-integration-20261007-001/actual-001/stdout.txt",
+      "member": "r19-root-focused-integration-20261007-001/actual-001/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scope": "ROOT actual merged focused stdout/stderr bytes"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-focused-integration-20261007-001/run_focused.py",
+      "member": "r19-root-focused-integration-20261007-001/run_focused.py",
+      "bytes": 2721,
+      "sha256": "c54af288340369e75c8d9886e94c6ca4e6509f81aa31d9afd726174312aa668e",
+      "scope": "ROOT original merged focused runner; archived without replay"
+    }
+  ],
+  "credit": {
+    "source_applied_by_ROOT": true,
+    "candidate_focused_pass": 35,
+    "merged_focused_pass": 37,
+    "native_compile": null,
+    "live": null,
+    "old_SDK80_raw_ACK_recovered": false,
+    "business_GREEN": false
+  },
+  "archiver_actions": {
+    "checks_replayed": 0,
+    "SDK_calls": 0,
+    "game_calls": 0,
+    "save_body_reads": 0,
+    "main_tree_writes": 0,
+    "commit_push": 0
+  },
+  "large_source_copy": false
+}
