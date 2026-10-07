@@ -1,6 +1,9 @@
 #include "xar_bridge/ck3_12004_army_support.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_army.hpp"
+#include "xar_bridge/ck3_12004_commands.hpp"
+#include "xar_bridge/ck3_12004_military.hpp"
+#include "xar_bridge/ck3_12004_routes.hpp"
 
 namespace xar::ck3_12004 {
 namespace {
@@ -9,6 +12,47 @@ T ImageAddress12004(std::uintptr_t base, std::uintptr_t rva) noexcept {
   return reinterpret_cast<T>(base + rva);
 }
 } // namespace
+
+ck3_12002::RouteBindings BindRouteImage12004(
+    std::uintptr_t image_base, std::string_view executable_sha256) noexcept {
+  ck3_12002::RouteBindings result{};
+  if (!image_base || executable_sha256 != kExecutableSha256) return result;
+  const auto core = BindCoreImage(image_base, executable_sha256);
+  const auto armies = BindArmyImage12004(image_base, executable_sha256);
+  const auto commands = BindCommandImage12004(image_base, executable_sha256);
+  const auto military = BindMilitaryImage12004(
+      image_base, executable_sha256, commands);
+  if (!core.enabled || !armies.enabled || !military.enabled) return result;
+
+  result.game_state_slot = core.game_state_slot;
+  result.jomini_state_slot = core.jomini_state_slot;
+  result.army_storage_slot = armies.unit_storage_slot;
+  result.get_army_move_mode = military.move_mode;
+  result.read_route_progress = military.read_move_progress;
+  result.get_route_front = military.read_route_first;
+  result.get_route_tail = military.read_route_last;
+  result.movement_locked_threshold = military.move_progress_cutoff;
+  result.construct_move_path_context = military.construct_path_context;
+  result.construct_army_move_path = military.construct_move_path;
+  result.build_army_move_route = military.build_route;
+  result.destroy_move_army_command = military.destroy_move;
+  result.move_army_primary_vtable = military.move_primary;
+  result.move_army_secondary_vtable = military.move_secondary;
+  result.read_unit_land_route_speed =
+      ImageAddress12004<decltype(result.read_unit_land_route_speed)>(
+          image_base, kCommanderLandMovementRateRva12004);
+  result.read_unit_naval_route_speed =
+      ImageAddress12004<decltype(result.read_unit_naval_route_speed)>(
+          image_base, kCommanderNavalMovementRateRva12004);
+  result.read_unit_current_edge_speed =
+      ImageAddress12004<decltype(result.read_unit_current_edge_speed)>(
+          image_base, kCommanderCurrentEdgeMovementRateRva12004);
+  result.read_route_travel_duration =
+      ImageAddress12004<decltype(result.read_route_travel_duration)>(
+          image_base, kRouteTravelDurationRva12004);
+  result.enabled = true;
+  return result;
+}
 
 void PopulateArmySupportBindings12004(
     std::uintptr_t image_base, std::string_view executable_sha256,

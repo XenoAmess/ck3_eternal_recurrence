@@ -12,6 +12,7 @@
 #include "xar_bridge/ck3_12004_snapshot_foundation.hpp"
 #include "xar_bridge/ck3_12004_world.hpp"
 #include "xar_bridge/ck3_12004_army.hpp"
+#include "xar_bridge/ck3_12004_routes.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 
@@ -43,6 +44,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.war-objective-siege-progress", "game.state.war-objective-assault",
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
+      "game.command.query-route-contact-horizon-v1-N",
       ck3_12003::kArmyCommanderCandidatesCapability,
       ck3_12003::kArmyCommanderCandidatesForTargetCapability,
       ck3_12003::kArmyCommanderAssignmentCapability,
@@ -110,6 +112,8 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
   // The concrete adapter repairs this borrow after moving the bundle.
   bindings.military.submit_context = nullptr;
   bindings.armies = ck3_12004::BindArmyImage12004(image_base, executable_sha256);
+  bindings.movement_routes = ck3_12004::BindRouteImage12004(
+      image_base, executable_sha256);
   bindings.owned_regiments.persistent_regiment_storage_slot =
       bindings.armies.persistent_regiment_storage_slot;
   bindings.owned_regiments.read_type = ck3_12002::ReadOwnedRegimentTypeV1;
