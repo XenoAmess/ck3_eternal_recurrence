@@ -14,8 +14,10 @@ from pathlib import Path
 
 from .construction_formal_consumer import (
     SUBMIT_STEP as CONSTRUCTION_SUBMIT_STEP,
+    observe_construction_cash_before_quote,
     plan_construction_private,
     priority_construction_receipt,
+    project_construction_quote_current_cash,
     read_construction_ledger,
 )
 from .bridge.observed_heir_marriage_private_action_v1 import (
@@ -545,6 +547,19 @@ def plan_m5_formal_query_only(
                 },
             }
     try:
+        # The source reader obtains the authoritative construction quote.
+        # Reuse one current-cash read for the selected quote and old outcome.
+        cash_observation = observe_construction_cash_before_quote(
+            driver, expected_revision=revision,
+        )
+        if cash_observation is not None:
+            baseline["construction_cash_outcome"] = cash_observation
+            material = cash_observation.get("material_receipt")
+            consumed = baseline.get("construction_receipt_consumed")
+            if (isinstance(material, Mapping) and isinstance(consumed, Mapping)
+                    and material.get("action_request_id") == consumed.get("action_request_id")):
+                baseline["construction_receipt_consumed"] = deepcopy(dict(material))
+                baseline["construction_economic_outcome"] = cash_observation["construction_economic_outcome"]
         sources = reader(
             snapshot=deepcopy(dict(snapshot)),
             history=deepcopy([dict(row) for row in history]),
@@ -575,6 +590,23 @@ def plan_m5_formal_query_only(
         and type(income) is int and income > 0
         and isinstance(query, Mapping)
     ):
+        query, cash_reason = project_construction_quote_current_cash(
+            query, cash_observation,
+        )
+        if "construction_monthly_budget" in query:
+            baseline["construction_monthly_budget"] = query["construction_monthly_budget"]
+        if cash_reason is not None:
+            return {
+                **cleaned,
+                "plan": {
+                    **baseline,
+                    "phase": "m5_joint_construction_cash_budget_deferred",
+                    "construction_private_query": query,
+                    "reason": cash_reason,
+                    "m5_joint_query_only": collection,
+                    "m5_joint_formal_action_ready": False,
+                },
+            }
         return {
             **cleaned,
             "plan": {

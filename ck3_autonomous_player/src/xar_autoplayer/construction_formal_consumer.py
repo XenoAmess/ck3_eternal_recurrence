@@ -13,7 +13,10 @@ from typing import Mapping
 from .environment import write_json_atomic
 from .bridge.declaration_contract import is_native_declaration_step
 from .bridge.nonwar_private_build import private_native_build_identity
-from .construction_economic_outcome_v1 import construction_economic_outcome_v1
+from .construction_economic_outcome_v1 import (
+    completed_construction_cash_fields_v1, construction_economic_outcome_v1,
+    prepare_construction_cash_fields_v1,
+)
 from .lifestyle_formal_consumer import ROOT_QUERY_STEP, same_frame_feudal_peace_scope
 
 
@@ -21,6 +24,53 @@ SUBMIT_STEP = "private-submit-player-construction-v1"
 RECEIPT_STEP = "private-query-player-construction-receipt-v1"
 _LEDGER = "construction-formal-pending-v1.json"
 COMPLETION_WATCH_INTERVAL_RAW = 30 * 24  # 30 game days; date_raw is hourly.
+
+
+def observe_construction_cash_before_quote(
+    driver: object, *, expected_revision: int,
+) -> dict[str, object] | None:
+    """Read the existing authorized finance input before a native quote."""
+    reader = getattr(driver, "query_construction_cash_outcome_private_v1", None)
+    if not callable(reader):
+        return None
+    if getattr(driver, "allow_private_construction_formal_trial", False) is True:
+        driver.allow_private_war_cash_query = True
+    if getattr(driver, "allow_private_war_cash_query", False) is not True:
+        return None
+    from .bridge.domain_construction_private_transport_v1 import RESERVE_RAW
+    from .bridge.driver import BridgeUnavailableError
+
+    try:
+        return reader(
+            expected_revision=expected_revision, reserve_gold_raw=RESERVE_RAW,
+            existing_commitment_gold_raw=0, horizon_months=1,
+        )
+    except BridgeUnavailableError as error:
+        return {"status": "unavailable", "reason": str(error)}
+
+
+def project_construction_quote_current_cash(
+    query: Mapping[str, object], observation: Mapping[str, object] | None,
+) -> tuple[dict[str, object], str | None]:
+    """Project only this new quote using the one pre-quote cash packet."""
+    quoted = dict(query)
+    if observation is None:
+        return quoted, None
+    budget = observation.get("current_cash_scenarios")
+    packet = budget.get("source_cash_resources") if isinstance(budget, Mapping) else None
+    candidate = quoted["candidate"]
+    treasury = packet.get("current_treasury") if isinstance(packet, Mapping) else None
+    if (not isinstance(treasury, Mapping)
+            or treasury.get("raw") != candidate.get("gold_before_raw")):
+        return quoted, "current cash and native construction quote are not jointly observed"
+    fields = prepare_construction_cash_fields_v1(
+        candidate, packet, reserve_gold_raw=budget["reserve_gold_raw"],
+        existing_commitment_gold_raw=0, horizon_months=1,
+    )
+    quoted.update(fields)
+    if fields["construction_monthly_budget"]["scenarios"]["current"]["scenario_floor_ready"] is not True:
+        return quoted, "defer this quote because current one-month cash does not retain the reserve"
+    return quoted, None
 
 
 def same_frame_construction_income(
@@ -173,6 +223,19 @@ def plan_construction_private(
                                     "reason": "construction trial lacks durable state_dir"}}
     ledger = read_construction_ledger(state_dir)
     episode = snapshot.get("episode_run_id")
+    cash_observation = None
+    cash_loaded = False
+
+    def current_cash():
+        nonlocal cash_observation, cash_loaded
+        if cash_loaded:
+            return cash_observation
+        cash_loaded = True
+        cash_observation = observe_construction_cash_before_quote(
+            driver, expected_revision=int(planned["revision"]),
+        )
+        return cash_observation
+
     pending = ledger["pending"]
     if isinstance(pending, dict):
         if pending.get("episode_run_id") != episode:
@@ -234,6 +297,33 @@ def plan_construction_private(
                 "construction_economic_outcome": construction_economic_outcome_v1(
                     applied, exact_ck3_build=private_native_build_identity(
                         snapshot).game_version)}
+        if (applied.get("completion_status") == "completed"
+                and applied.get("observed_player_monthly_gold_income_raw") is None):
+            observed = current_cash()
+            budget = observed.get("current_cash_scenarios") if isinstance(observed, Mapping) else None
+            packet = budget.get("source_cash_resources") if isinstance(budget, Mapping) else None
+            gross = packet.get("player_monthly_gross_income") if isinstance(packet, Mapping) else None
+            if (isinstance(gross, Mapping) and type(gross.get("raw")) is int
+                    and packet["readiness"].get("monthly_gross_income_ready") is True):
+                fields = completed_construction_cash_fields_v1(
+                    {**applied, "observed_player_monthly_gold_income_raw": gross["raw"],
+                     "income_observed_date_raw": packet["date_raw"]}, packet,
+                    exact_ck3_build=budget["game_version"],
+                )
+                applied = fields["receipt"]
+                if ledger["applied"] is not None and (
+                        ledger["applied"].get("action_request_id") == applied.get("action_request_id")):
+                    ledger = {**ledger, "applied": applied}
+                else:
+                    ledger = {**ledger, "applied_prior": [
+                        applied if row.get("action_request_id") == applied.get("action_request_id")
+                        else row for row in ledger["applied_prior"]]}
+                write_construction_ledger(state_dir, ledger)
+                priority_applied = priority_construction_receipt(
+                    driver, ledger, snapshot, process_identity=process_identity)
+                plan = {**plan, "construction_receipt_consumed": applied,
+                        "construction_economic_outcome": fields["construction_economic_outcome"],
+                        "construction_cash_outcome": observed}
         if (applied.get("completion_status") == "completed"
                 and applied.get("observed_player_monthly_gold_income_raw") is None):
             income_observed, actual_income = same_frame_construction_income(
@@ -361,6 +451,9 @@ def plan_construction_private(
         return planned
     from .bridge.domain_construction_private_transport_v1 import query_construction_private
 
+    observed = current_cash()
+    if observed is not None:
+        plan = {**plan, "construction_cash_outcome": observed}
     query = query_construction_private(driver, expected_revision=int(planned["revision"]))
     if query.get("status") == "no_legal_budgeted_building":
         if prewar:
@@ -382,6 +475,14 @@ def plan_construction_private(
         return {**planned, "plan": {**plan, "selected_step": None,
             "construction_private_query": query,
             "reason": "private construction source unavailable; preserve RED"}}
+    if observed is not None:
+        query, cash_reason = project_construction_quote_current_cash(query, observed)
+        if "construction_monthly_budget" in query:
+            plan = {**plan, "construction_monthly_budget": query["construction_monthly_budget"]}
+        if cash_reason is not None:
+            return {**planned, "plan": {**plan, "construction_private_query": query,
+                "phase": "construction_cash_budget_deferred",
+                "reason": cash_reason}}
     if prewar:
         candidate = query.get("candidate")
         gold = snapshot.get("played_character_gold")

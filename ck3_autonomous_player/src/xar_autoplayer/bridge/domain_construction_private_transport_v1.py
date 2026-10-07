@@ -493,6 +493,9 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
                "pre_player_monthly_gold_income_raw": pre_income,
                "pre_province_income_observation": pre_province_income,
                "candidate": dict(candidate)}
+    for field in ("pre_cash_v2", "construction_monthly_budget"):
+        if field in query:
+            pending[field] = query[field]
     write_construction_ledger(state_dir, {**ledger, "pending": pending})
     driver._record_command(SUBMIT_STEP, ok=True, result=pending)
     if getattr(driver, "_driver_state_error", None) is not None:
@@ -724,6 +727,9 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                "post_proof_epoch": epoch, "post_player_gold_raw": world.get("player_gold_raw"),
                "post_bridge_pid": pid, "post_bridge_creation_date": creation,
                "candidate": dict(candidate)}
+    for field in ("pre_cash_v2", "construction_monthly_budget"):
+        if field in pending:
+            receipt[field] = pending[field]
     if cold_recheck:
         # Preserve the original action proof, including its earlier active
         # receipt. A completed slot is a distinct later material observation.

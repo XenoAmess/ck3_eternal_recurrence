@@ -581,3 +581,90 @@ Root's supplied current baseline is source14f/runtime19,
 G2H9638/date53288448/saved6005. That is coordination context supplied by
 Root, not a new live observation by this leaf. Root owns all SDK/build/live
 calls, and mod live acceptance retains priority over these source tasks.
+
+## Formal chooser consumes current cash after an actual completed receipt
+
+Root reported the new registered-MCP compound case GREEN and pushed
+`34083516`; the single new case and retained15 cases are not repeated here.
+The next source-only worktree is based on Root `6a098708`. Its concrete
+production gap was visible in `construction_formal_consumer.py`: the
+completed branch consumed only the old pure receipt projection, still
+requested the public root or stopped when completed gross was missing, and
+the new-action branch called only the construction observer before selecting
+submit. `domain_construction_private_transport_v1._candidate` considered
+only current gold minus quoted stock cost and the existing20M reserve. The
+monthly NET input from the already closed native cash tree was unused.
+
+The same missing input also occurs in the actual M5 selected-building path:
+`plan_m5_formal_query_only` obtains the construction quote through
+`query_m5_peacetime_proposal_sources_v1` and directly routes a selected
+building to typed submit. It does not call the standalone chooser for a
+released receipt. The M5 collector therefore needs its own pre-quote cash
+read, followed by the same pure quote-budget function used by the standalone
+chooser. Its existing analytic domain selection and non-building routes
+remain their current owners; only the selected building's current-month
+spend is delayed when it does not retain the existing reserve.
+
+The minimum policy consumes those already researched inputs. The existing
+formal-construction authorization admits the same read-only private cash
+query. The observer runs once before a new authoritative construction quote,
+using the existing20M reserve, zero unspent construction commitments and an
+explicit one-month constant-current-state scenario. The zero means that
+previous applied construction costs are already in the observed treasury.
+An original cash baseline is required only for an interval classification;
+its absence does not invalidate a ready current cash scenario.
+
+For a genuinely completed, already bound material receipt missing its old
+gross read, the same observed native gross and post cash packet can be
+attached through the existing ledger writer. This clears only that missing
+observation; cold-process, active/pending and completed-slot requirements
+continue through their existing paths. The actual current cash packet is
+then reused for a newly selected native quote. Only that quote's cost is
+projected once, using `prepare_construction_cash_fields_v1`. The same packet
+and budget are retained with pending and the first material receipt so a
+future completed interval has an actual original baseline. No new query is
+inserted after the authoritative construction quote.
+
+```mermaid
+flowchart TD
+  R[Bound actual completed receipt / cold and slot checks] --> Q[Existing currentcash-v2 query once / stock and nativeNET]
+  Q --> Z[Zero new cost / existing20M reserve / one-month current scenario]
+  Q --> G[Actual current gross and postpacket / existing completed ledger writer]
+  G --> O[Completed result / original baseline absent affects only interval]
+  Z --> C[Standalone or M5 peacetime native legality and authored-delta query]
+  C --> P[Same current packet / project only new native quote cost]
+  P --> F{Current one-month reserve floor holds}
+  F -- yes --> S[Original typed submit / pending preserves prepacket]
+  F -- no --> D[Keep ordinary life advance / defer this expenditure]
+  O -. individual contribution still unclosed .-> U[2479F50 owner mode3 to Province718 / holderNET]
+```
+
+This is a minimum current-cash spending policy, not the native AI's complete
+budget planner or a future-war upper bound. The existing native legality,
+positive authored increment ranking and prewar opportunity rules supply the
+candidate; current/all-raised finance stays an observed scenario. No
+per-building realized yield is inferred, and no army/commander policy or
+native header/CMake input changes. The specific actual realized-income
+dependency remains the held `2479F50(owner,3)` tail edge and its transfer to
+Province+718/holder NET.
+
+The new source-only compound case is
+`tests/unit/test_construction_cash_formal_decision_v1.py`. It uses the real
+NativeHeadlessGameplayDriver current-cash query and durable applied ledger,
+the actual M5 peacetime source producer, dispatcher and selected-building
+branch, and the standalone completed-receipt route. Controlled existing
+production wire fixtures quote the same native-legal15M building against
+50M observed treasury after a previous paid30M building. With gross450K,
+expenses380K admit submit; expenses20.45M defer the new quote while the
+zero-new-cost current budget remains ready. Both routes lack an original
+cash baseline and remain unable to attribute an individual building's NET
+yield. The standalone route additionally fills a genuinely completed
+receipt's missing gross observation. Each decision requests cash once,
+then construction once, and sends no construction action. This is one new
+compound test, authored **NOTRUN** in this lane; Root alone runs its first
+case. The retained15 and registered-MCP GREEN cases are not rerun.
+
+No new valid Robert construction has been shown by this source change.
+M4 remains false; resuming the ordinary campaign and observing a genuinely
+available legal quote is the live execution entrance. Fixtures do not
+authorize invented real quotes or payments.
