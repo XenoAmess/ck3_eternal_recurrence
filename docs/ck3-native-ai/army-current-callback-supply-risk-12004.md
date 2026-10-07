@@ -103,3 +103,22 @@ Root G2 reference is H9638 / Robert29829 / raw date53288448 / saved day6005.
 It is provenance supplied by the coordinator, not a new child capture. SideR68
 contributes0 G2 credit. External packet:
 `Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/attrition-supply/`.
+
+## Root first source-tooling attempt and necessary correction
+
+Root's first wrapper selected the actual retained three-fragment geometry at
+24E3410:9+1412+159=1580 B. This metadata result establishes selected extent,
+not instruction correspondence. The wrapper then stopped with exit2 **before
+the mapper** because its authored cached-text parser required8-digit address
+tokens. The actual source uses9-digit tokens (`0024E3439`..`0024E39B7`), so the
+parser selected0 bytes. This is source-tooling RED, not a supply capability RED;
+new EXE bytes and body mapper executions were0.
+
+The minimal8/9-digit rule correction reconstructs exactly1412 contiguous cached
+bytes through24E39BD. No old hash, new EXE or production test was needed.
+`ROOT-PARSER-RED-AND-RETRY02.json` and
+`CACHED-PARSER-CORRECTION-RECEIPT.json` preserve the actual fault and correction.
+Original selection/wrapper/argv/manifest remain in `current-callback-root-first01`.
+The corrected Root-only command uses distinct `current-callback-root-retry02`
+output and is still NOTRUN by this child. Actual whole instruction/operand
+correspondence and this package's new numerical query value remain unqualified.
