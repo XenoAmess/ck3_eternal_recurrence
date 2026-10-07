@@ -67,8 +67,9 @@ class CurrentFirstHeirDescendantsRegisteredServiceTests(unittest.TestCase):
             allow_private_current_first_heir_relationship_query = True
             allow_private_current_first_heir_betrothal_fulfillment = True
             allow_private_family_marriage_formal_trial = True
-            # Use Service's existing opening life-advance opportunity route.
-            require_initial_lifestyle_focus_before_date_advance = True
+            # Use ordinary family arbitration without the opening-focus opt-in,
+            # which intentionally returns before the private relationship route.
+            require_initial_lifestyle_focus_before_date_advance = False
 
             def __init__(self, packet: dict[str, object], state_dir: Path) -> None:
                 def no_action(_step: str, _revision: int | None):

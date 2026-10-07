@@ -75,9 +75,9 @@ class CurrentBetrothalProspectiveLineageServiceTests(unittest.TestCase):
             allow_private_current_first_heir_relationship_query = True
             allow_private_current_first_heir_betrothal_fulfillment = True
             allow_private_family_marriage_formal_trial = True
-            # Exercise Service's existing life-advance opportunity entrance.
-            # No lifestyle query/action is enabled and no planner is replaced.
-            require_initial_lifestyle_focus_before_date_advance = True
+            # This current-family scenario has no opening-focus prerequisite.
+            # Its opt-in would return before ordinary family arbitration.
+            require_initial_lifestyle_focus_before_date_advance = False
 
             def __init__(self, packet: dict[str, object], state_dir: Path) -> None:
                 def no_action(_step: str, _revision: int | None) -> dict[str, object]:
