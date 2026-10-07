@@ -15,6 +15,17 @@ three choices, native AI weights, immediate one-shot flag and common cleanup.
 `migration_1_20_0_4.py:33-62` reuses the unchanged authored data while separating
 historical runtime evidence from the new executable.
 
+The actual registered chain is `.4 registry -> .4 migration -> .3 registry ->
+.3 migration -> .2 migration -> historical record`. It replaces the old 1.19
+script pin `A488...` with current source SHA
+`76A50F2B779E085419279801B1396A1C67C8785831E8859FCEC6D0F088853C3A`.
+`data/source_compatibility_1_20_0_3.json:13326-13457` publishes the current
+selected effect profile and source pin; its current event definition is
+`1250-1413`. The preceding .2 review's option-ordinal deltas
+(`source_compatibility_1_20_0_2.json:104286-104475`) replace all three options'
+conditional stress operation with `stress_and_fulfillment_impact`. The stress
+facet is used independently of unobserved secondary fulfillment.
+
 | Input or branch | Existing production source | Consequence |
 | --- | --- | --- |
 | Fixed choice | `vanilla_events/policy.py:791-861,1515-1548` | Source ordinal utility is copied after the contract's choice is selected. |
@@ -140,3 +151,20 @@ Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe -B -X utf8 -m unittest discove
 
 This command is recorded, not executed by this lane. It exercises the actual
 registered registry consumer and material comparator, not an SDK/game frame.
+
+## Root first qualification and correction
+
+Root retained two attempts in
+`g2-background-20261007/g2-candidate-first-consumers/`: `poet-RESULT.json` is an
+import harness RED because the sparse candidate lacked `tools/build_release`.
+Root supplied only its tools path for the second harness. That attempt's
+`poet-harness02-RESULT.json` and `.log` ran the four new tests and found two
+semantic failures: high-stress choices stayed native0 instead of native1/2.
+
+The consumer's guard incorrectly compared current registry sources to the old
+1.19 SHA, so it returned no comparison and retained the original choice. The
+successor binds the current source SHA above and carries the actual current
+stress/fulfillment operation metadata. The four tests and expected indices are
+unchanged. This lane only read that finite log and source-cache rows; Root owns
+the successor focused execution. No production failure or live qualification is
+inferred from either attempt.

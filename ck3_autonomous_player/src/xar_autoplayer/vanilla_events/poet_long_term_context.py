@@ -8,7 +8,9 @@ from copy import deepcopy
 
 EVENT_KEY = "trait_specific.9001"
 _SOURCE = "events/trait_specific_events/trait_specific_events.txt"
-_SOURCE_SHA = "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7"
+# The .3 compatibility row replaces the historical 1.19 file hash. The .4
+# registry inherits this current authored source under the unchanged data depot.
+_SOURCE_SHA = "76A50F2B779E085419279801B1396A1C67C8785831E8859FCEC6D0F088853C3A"
 
 
 def _stress_decrease(option: Mapping[str, object]) -> bool:
@@ -132,18 +134,21 @@ def poet_selected_effect_profile_v1(
         profile["selected_option_effects"] = [
             {"domain": "trait", "subject": "root", "operation": "add_trait",
              "trait": "journaller", "permanent": True, "authored_resource_cost": "none"},
-            {"domain": "stress", "subject": "root", "operation": "conditional_stress_impact",
+            {"domain": "stress", "subject": "root", "operation": "stress_and_fulfillment_impact",
              "loss_condition_trait": "content", "gain_condition_trait": "ambitious",
              "runtime_delta_exact": False},
         ]
-        profile["source_anchors"][0] = f"{_SOURCE}:1336-1364"
+        profile["source_anchors"][0] = f"{_SOURCE}:1250-1413"
     elif index == 2:
         profile["selected_option_effects"] = [{
-            "domain": "stress", "subject": "root", "operation": "authored_stress_and_trait_impact",
-            "base_value_key": "minor_stress_loss", "loss_condition_traits": ["lazy", "fickle"],
+            "domain": "stress", "subject": "root", "operation": "add_stress",
+            "authored_value_key": "minor_stress_loss", "runtime_delta_exact": False,
+        }, {
+            "domain": "stress", "subject": "root", "operation": "stress_and_fulfillment_impact",
+            "loss_condition_traits": ["lazy", "fickle"],
             "gain_condition_trait": "diligent", "runtime_delta_exact": False,
         }]
-        profile["source_anchors"][0] = f"{_SOURCE}:1367-1397"
+        profile["source_anchors"][0] = f"{_SOURCE}:1250-1413"
     trait_key = "lifestyle_poet" if index == 0 else "journaller"
     profile["observable_postcondition"] = {
         "metric": "played_character.stress_points" if index == 2
