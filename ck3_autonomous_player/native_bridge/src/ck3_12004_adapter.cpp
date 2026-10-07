@@ -190,6 +190,8 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
       image_base, executable_sha256);
   bindings.phase = ck3_12004::BindPhaseImage12004(
       image_base, executable_sha256);
+  bindings.phase_event_calendar12004 =
+      ck3_12004::BindPhaseEventCalendarImage12004(image_base, executable_sha256);
   bindings.military = ck3_12004::BindMilitaryImage12004(
       image_base, executable_sha256, bindings.commands);
   bindings.native_maa_recruitment =

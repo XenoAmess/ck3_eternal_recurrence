@@ -20,6 +20,7 @@
 #include "xar_bridge/ck3_12002_prewar_muster.hpp"
 #include "xar_bridge/ck3_12003_war_cash_current_reader.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
+#include "xar_bridge/ck3_12004_phase_event_calendar.hpp"
 #include "xar_bridge/ck3_12002_settlement.hpp"
 
 #include <memory>
@@ -64,6 +65,7 @@ struct Ck3_12002AdapterBindings {
   // and their selected image bindings retain their original layout.
   std::shared_ptr<const ck3_12004::SnapshotFoundationBindings>
       snapshot_foundation12004;
+  ck3_12004::PhaseEventCalendarBindings12004 phase_event_calendar12004;
 };
 
 // Same row publisher called by the current Army query and focused fixtures.

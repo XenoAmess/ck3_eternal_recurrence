@@ -447,6 +447,8 @@ public:
       // Partial contextual observation is independent of existing v2 readiness.
       (void)ck3_12002::ReadContextualAdvantageInputs(
           bindings_.phase, scope, output, output.contextual_advantage);
+      ck3_12004::AttachPhaseEventCalendarInputs12004(
+          bindings_.phase_event_calendar12004, output);
     }
     return result;
   }

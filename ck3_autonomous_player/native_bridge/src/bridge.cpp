@@ -2,6 +2,7 @@
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/army_strength_result_write_diagnostic_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/phase_event_calendar_observation_v1_serializer.hpp"
 #if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
 #include "xar_bridge/ordinary_interaction_mailbox_v1.hpp"
 #endif
@@ -4033,6 +4034,11 @@ void AppendCombatSimulationInputs(
     result += ",\"contextual_advantage\":";
     result += xar::bridge::SerializeContextualAdvantageV1(
         snapshot.contextual_advantage);
+  }
+  if (snapshot.phase_event_calendar_observation_v1) {
+    result += ",\"phase_event_calendar_observation_v1\":";
+    xar::game::AppendPhaseEventCalendarObservationV1(
+        result, *snapshot.phase_event_calendar_observation_v1);
   }
   result += '}';
 }
