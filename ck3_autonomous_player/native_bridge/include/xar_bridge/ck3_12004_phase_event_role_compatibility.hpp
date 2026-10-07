@@ -58,9 +58,11 @@ inline game::PhaseEventRoleCompatibilityV1 ReadPhaseEventRoleInputs12004(
     row.encounter_role = army.encounter_role;
     row.phase_role = role;
     row.requested_role_raw = requested;
-    // Only the actual21B Knight EDX=1 caller is closed. Commander role0 is
-    // a conditional software input; its distinct old47B caller is not mapped.
-    row.native_role_argument_source_closed = bindings.enabled && requested == 1;
+    // actual21B supplies Knight EDX=1. actual47B at264D713 preserves the
+    // successful DIV's zero remainder in EDX through CALL264D73D->3298EC0.
+    // This closes role0/1 values, not V2 roster == actual Side participants.
+    row.native_role_argument_source_closed =
+        bindings.enabled && (requested == 0 || requested == 1);
     output.occurrences.push_back(std::move(row));
   };
   for (const auto &army : inputs.armies) {

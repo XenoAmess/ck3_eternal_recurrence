@@ -174,8 +174,14 @@ def normalize_phase_event_role_compatibility_v1(
             requested = 0 if source["phase_role"] == "commander" else 1
             if _integer(occurrence["requested_role_raw"], "requested_role_raw", 0, 0xFFFFFFFF) != requested:
                 raise ValueError("requested role differs from conditional commander0/knight1")
-            if occurrence["native_role_argument_source_closed"] is not (source["phase_role"] == "knight"):
-                raise ValueError("only the actual knight caller argument is source-closed")
+            caller_closed = occurrence["native_role_argument_source_closed"]
+            if type(caller_closed) is not bool:
+                raise ValueError("native role caller source flag must be bool")
+            if source["phase_role"] == "knight" and caller_closed is not True:
+                raise ValueError("the actual knight caller argument must remain source-closed")
+            # Actual Commander47 closes implicit EDX0. Retain old conditional
+            # false packets; true attributes the caller argument, not this
+            # roster Character's current Side membership or native admission.
             conditions = occurrence["conditions"]
             if not isinstance(conditions, list) or len(conditions) != len(rows):
                 raise ValueError("conditions differ from the loaded row list")
@@ -214,3 +220,10 @@ def compatible_loaded_row_indices(occurrence: dict[str, object]) -> list[int]:
         for condition in occurrence["conditions"]
         if condition["role_compatible"] is True
     ]
+
+
+def source_qualified_role_row_indices(occurrence: dict[str, object]) -> list[int] | None:
+    """Rows compatible with a source-closed role argument, not a participant."""
+    if occurrence["native_role_argument_source_closed"] is not True:
+        return None
+    return compatible_loaded_row_indices(occurrence)
