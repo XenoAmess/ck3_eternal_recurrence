@@ -9,10 +9,12 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
-from xar_autoplayer.bridge.war_contract import (
+from xar_autoplayer.bridge.combat_contract import (
     QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY,
-    normalize_route_contact_horizon,
     query_combat_simulation_inputs_step,
+)
+from xar_autoplayer.bridge.war_contract import (
+    normalize_route_contact_horizon,
     query_route_contact_horizon_step,
 )
 from xar_autoplayer.strategy import _general_battle_forecast_ingress
