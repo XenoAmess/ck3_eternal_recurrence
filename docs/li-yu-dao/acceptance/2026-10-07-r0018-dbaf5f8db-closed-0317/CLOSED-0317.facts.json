@@ -1,0 +1,226 @@
+{
+  "schema": "lyd.r18.closed-postscript.saved-facts.v1",
+  "source_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+  "runtime_cutoff_utc": "2026-10-07T03:17:47.829692+00:00",
+  "normal_exit": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "9cdca47579f54d3191efdecdb7400374",
+    "profile_sha256": "0189ab2c8ec4135b8b007d4a8254cb859ae970e5fe852de75015ca9846e3c404",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_9cdca47579f54d3191efdecdb7400374",
+    "recorded_at_utc": "2026-10-07T03:10:32.076055+00:00",
+    "status": "process_exit_observed_zero",
+    "result": {
+      "schema": "ck3-normal-exit-process-observation-result-v1",
+      "action": "confirm_desktop",
+      "public_revision": 26,
+      "request_id": "normal-exit-confirm_desktop-c06033d90926400580aa29bf08c19f8f",
+      "claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\native-state\\native-session\\normal-exit-map-requests\\b063a0906353dab8f0c050869494605a3667c73a4e02a7e0ccfc0bf7709ae937.claim.json",
+      "source_inventory_sha256": "70536cbfdbca44ef8ee64fc952b037e91216f1650ca92aa384e1996f3be12817",
+      "process_creation_filetime_100ns": 134358115483546531,
+      "process_preconfirm_pin": {
+        "pid": 5920,
+        "creation_filetime_100ns": 134358115483546531,
+        "retained_handle_token": "5b71f3b3a181886f1d79a75c1254216a",
+        "wait_result": 258,
+        "verified_monotonic_ns": 813077316422200,
+        "observation_clock_domain": "driver_monotonic_v1"
+      },
+      "claim_consumed": true,
+      "retry_authorized": false,
+      "process_exit_observed": true,
+      "exit_code": 0,
+      "typed_normal_exit_observed": true,
+      "autosave_verified": false,
+      "status": "process_exit_observed_zero",
+      "native_observation": {
+        "schema": "ck3-normal-exit-map-v1",
+        "step": "normal-exit-map-v1",
+        "action": "confirm_desktop",
+        "status": "dispatch_pending",
+        "native_revision": 25,
+        "connection_generation": 1,
+        "game_pid": 5920,
+        "played_character_id": 31254,
+        "process_creation_filetime_100ns": 134358115483546531,
+        "pump_epoch": 443861,
+        "exact_build_verified": true,
+        "owner_verified": true,
+        "process_identity_verified": true,
+        "source_abi_pins_verified": true,
+        "stock_files_verified": true,
+        "loaded_source_binding_verified": true,
+        "frame_verified": true,
+        "context_signature_verified": true,
+        "confirmation_visible": true,
+        "orderly_exit_verified": false,
+        "autosave_verified": false,
+        "exit_context_signature": "ae6d29c72069919f49c21aeafa22fc2bc2ec94a486fd0ba4922d28723fd1d163",
+        "reason": "desktop_dispatch_pending_independent_process_observation",
+        "stage_consumed": [
+          true,
+          true,
+          true
+        ],
+        "targets": [
+          {
+            "read_complete": true,
+            "root_exists": true,
+            "root_visible": false,
+            "target_exists": true,
+            "target_visible": false,
+            "target_enabled": true,
+            "unique_target": true,
+            "dispatch_admitted": false,
+            "target_vtable_rva": 76961464
+          },
+          {
+            "read_complete": true,
+            "root_exists": true,
+            "root_visible": true,
+            "target_exists": true,
+            "target_visible": true,
+            "target_enabled": true,
+            "unique_target": true,
+            "dispatch_admitted": true,
+            "target_vtable_rva": 76961464
+          },
+          {
+            "read_complete": true,
+            "root_exists": true,
+            "root_visible": true,
+            "target_exists": true,
+            "target_visible": true,
+            "target_enabled": true,
+            "unique_target": true,
+            "dispatch_admitted": true,
+            "target_vtable_rva": 76961464
+          }
+        ],
+        "dispatches": [
+          {
+            "claim_latched": false,
+            "dispatch_invoked": false,
+            "native_handled": false,
+            "post_read_complete": false,
+            "postcondition_observed": false
+          },
+          {
+            "claim_latched": false,
+            "dispatch_invoked": false,
+            "native_handled": false,
+            "post_read_complete": false,
+            "postcondition_observed": false
+          },
+          {
+            "claim_latched": true,
+            "dispatch_invoked": true,
+            "native_handled": true,
+            "post_read_complete": true,
+            "postcondition_observed": false
+          }
+        ]
+      },
+      "process_observation": {
+        "pid": 5920,
+        "creation_filetime_100ns": 134358115483546531,
+        "retained_handle_token": "5b71f3b3a181886f1d79a75c1254216a",
+        "wait_result": 0,
+        "wait_state": "signaled",
+        "exit_code": 0,
+        "process_identity_verified": true,
+        "process_exit_observed": true,
+        "observed_monotonic_ns": 813109060690300,
+        "timeout_ms": 5000,
+        "observation_deadline_reached": false,
+        "observation_clock_domain": "driver_monotonic_v1",
+        "errors": []
+      },
+      "driver_dispatch_receipt_observed_monotonic_ns": 813078216281800,
+      "receipt_clock_meaning": "driver observed validated dispatch_invoked response; not native callback time",
+      "observer_retained": false,
+      "snapshot_after_required": false,
+      "native_submission_count": 0,
+      "uses_desktop_input": false,
+      "uses_ocr": false,
+      "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\native-state\\native-session\\normal-exit-map-requests\\cf48a335fd60f29d3439.observe-15d85575987c4b58.json",
+      "observer_close_receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\native-state\\native-session\\normal-exit-map-requests\\cf48a335fd60f29d3439.observer-close-b33c6d2d9f1d4533.json"
+    },
+    "snapshot_after_required": false,
+    "uses_ocr": false,
+    "uses_desktop_input": false,
+    "uses_injection": false,
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\native-evidence\\9cdca47579f54d3191efdecdb7400374\\0095-normal-exit-observe.json"
+  },
+  "original_exit_observation_limits": {
+    "game_original_HANDLE_exit0_observed": true,
+    "typed_normal_exit_observed": true,
+    "terminal_native_ack_observed": true,
+    "normal_exit_callback_verified": true,
+    "closure_credit": "TYPED_NORMAL_EXIT_AND_ORIGINAL_PROCESS_HANDLE_EXIT0",
+    "client_exit_code": 0,
+    "keeper_exit_code": 0,
+    "client_OS_exit0_observed": true,
+    "keeper_OS_exit0_observed": true,
+    "holder_original_exec_process_exit0_observed": true,
+    "holder_original_exec_session_id": 37726,
+    "keeper_original_exec_session_id": 55834,
+    "native_session_id": "9cdca47579f54d3191efdecdb7400374",
+    "consumer_session_id": "3491d70b2e304e49bbf3e649c0597103",
+    "autosave_verified": false
+  },
+  "original_exec_wrapper_capture_scopes": {
+    "keeper": "First complete stdout line only, transcribed from the actual original write_stdin completion; the complete returned output remains in the Codex tool transcript and is not claimed here.",
+    "holder": "Complete stdout text transcribed from the actual original write_stdin completion."
+  },
+  "release_sequence": 3536,
+  "release_state": "done",
+  "release_resources": [],
+  "same_original_identities_absent": true,
+  "no_current_managed_game_or_native_services": true,
+  "original_identities": [
+    {
+      "role": "game",
+      "pid": 5920,
+      "create_time": 1791337948.3546531,
+      "same_original_identity_alive": false,
+      "current_create_time": null,
+      "observation": "NO_SUCH_PROCESS"
+    },
+    {
+      "role": "client",
+      "pid": 16100,
+      "create_time": 1791338582.2219286,
+      "same_original_identity_alive": false,
+      "current_create_time": null,
+      "observation": "NO_SUCH_PROCESS"
+    },
+    {
+      "role": "keeper",
+      "pid": 11024,
+      "create_time": 1791337751.4565928,
+      "same_original_identity_alive": false,
+      "current_create_time": null,
+      "observation": "NO_SUCH_PROCESS"
+    },
+    {
+      "role": "holder",
+      "pid": 10148,
+      "create_time": 1791339687.121975,
+      "same_original_identity_alive": false,
+      "current_create_time": null,
+      "observation": "NO_SUCH_PROCESS"
+    }
+  ],
+  "boundary_author_actual_exit_code": 0,
+  "boundary_index_original_status": "ACTUAL_R18_CLOSED_RELEASED_BOUNDARY_VERIFIED",
+  "whole_status": "NOT_GREEN",
+  "formal_acceptance": null,
+  "new_T": null,
+  "C3": null,
+  "I4": null,
+  "autosave_verified": false,
+  "earlier_partials_unchanged": [
+    "../2026-10-07-r0018-dbaf5f8db/PARTIAL-20261007-FIRST430.md",
+    "../2026-10-07-r0018-dbaf5f8db-rounds-lock-0304-002/PARTIAL-20261007-ROUNDS-LOCK-0304.md"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "lyd.r18.natural-no.saved-source-interpretation.v1",
+  "source_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+  "scope": "Source interpretation for actual saved R1/R2 vote0 only; no runtime replay or R3 forecast.",
+  "sources": [
+    {
+      "source_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "original_path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 6758,
+      "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207",
+      "selected_original_lines": [
+        {
+          "line": 65,
+          "text": "                set_variable = { name = lyd_i3b_vote value = -1 }"
+        }
+      ]
+    },
+    {
+      "source_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "original_path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 4939,
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "selected_original_lines": [
+        {
+          "line": 4,
+          "text": "        set_variable = { name = lyd_i3b_vote value = $YES$ }"
+        }
+      ]
+    },
+    {
+      "source_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "path": "mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+      "original_path": "C:/workspace/ck3_eternal_recurrence/mod_li_yu_dao/events/lyd_i3b_institution_events.txt",
+      "bytes": 5666,
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "selected_original_lines": [
+        {
+          "line": 4,
+          "text": "lyd.411 = { type = character_event title = lyd_i3b_ballot_t desc = lyd_i3b_terms_desc theme = faith trigger = { lyd_i3b_ballot_trigger = yes } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_yes custom_tooltip = lyd_i3b_ballot_choice_tt hidden_effect = { lyd_i3b_vote_effect = { YES = 1 } } ai_chance = { base = 60 } } option = { scope:lyd_i3b_actor = { lyd_i3b_show_terms_effect = yes } name = lyd_i3b_no custom_tooltip = lyd_i3b_ballot_no_choice_tt hidden_effect = { lyd_i3b_vote_effect = { YES = 0 } } ai_chance = { base = 40 } } }"
+        }
+      ]
+    }
+  ],
+  "interpretation": "The saved NPC vote0 is the NO callback value, not the untouched initial -1; original R1/R2 school counts and assessment remain unchanged."
+}
