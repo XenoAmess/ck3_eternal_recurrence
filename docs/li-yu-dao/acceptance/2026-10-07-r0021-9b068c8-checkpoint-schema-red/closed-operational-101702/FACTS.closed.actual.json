@@ -1,0 +1,128 @@
+{
+  "schema": "lyd.r21.operational_closed_red.actual.v1",
+  "cutoff_utc": "2026-10-07T10:17:02.896526+00:00",
+  "source_head": "9b068c8fc9bb45d69417bf6857dddd65abece7d6",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0021",
+  "status": "RED_UI_NORMAL_CLOSE_OPERATIONAL_ABSENCE_CONFIRMED",
+  "boundary_original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-021/ROOT-AFTER-RELEASE-CENSUS-001/RESULT.actual.json",
+    "bytes": 4845,
+    "sha256": "7210aed9ab1858abe9ee1976387b1bd35977d71d36b8f223319dc5f28885537c"
+  },
+  "actual_process_census": [],
+  "fresh_screen_owners": [],
+  "release_sequence": 3604,
+  "release_state": "done",
+  "release_resources": [],
+  "game_original_HANDLE_exit0_observed": false,
+  "game_original_HANDLE_exit_code": null,
+  "typed_normal_exit_green": false,
+  "forced_exit": false,
+  "normal_UI": {
+    "root_report": "Normal window X then ExitDesktop; autosave checkbox selected by ROOT direct pixel review",
+    "original_close_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-021/ROOT-NORMAL-UI-CLOSE-001/RESULT.actual.json",
+      "bytes": 844,
+      "sha256": "2d2fc643a0a25f716bc817c6b073cb64c9fb889f4f0a4f0c0e126a948a38765d"
+    },
+    "coordinate_map_original_exec": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r21-root-exit-desktop-map-original-exec-20261007-001/RESULT.actual.json",
+      "bytes": 1589,
+      "sha256": "0c36ee734750bfc530cc3a7604f82087ae5934a4570072e0f5620c4dceb73a6e"
+    },
+    "pixel_originals": "External refs retained; this archive did not review/copy screenshots",
+    "new_desktop_input_by_archive": false
+  },
+  "helper_original_HANDLE_results": [
+    {
+      "role": "client",
+      "pid": 2012,
+      "create_time": 1791366506.6734867,
+      "observation": "ORIGINAL_RETAINED_HANDLE",
+      "wait_result": 0,
+      "exit_code": 0,
+      "observed_at_utc": "2026-10-07T10:10:16.968082+00:00"
+    },
+    {
+      "role": "keeper",
+      "pid": 13552,
+      "create_time": 1791363983.6410117,
+      "observation": "ORIGINAL_RETAINED_HANDLE",
+      "wait_result": 0,
+      "exit_code": 0,
+      "observed_at_utc": "2026-10-07T10:12:28.942131+00:00"
+    }
+  ],
+  "original_helper_execs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r21-client-serve-original-exec-20261007-001/RESULT.actual.json",
+      "bytes": 1721,
+      "sha256": "fc58d3a021b1ab2f5e3ea05573b0d7b6c51b06851253914eb5fe0bc95f8e9a31"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r20-root-keeper-original-exec-20261007-002/RESULT.actual.json",
+      "bytes": 1437,
+      "sha256": "2aab560f88a9e51c85aba879725fd8705e6c89616329f7dc9a674a0dac341931"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r21-holder-original-exec-20261007-001/RESULT.actual.json",
+      "bytes": 1538,
+      "sha256": "6a8adc5dcabaefc6339b23c333c5fe7eb4969f6b448284c2c303121c27febf8e"
+    }
+  ],
+  "checkpoint_preservation_original": {
+    "original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-021/userdir/save games/xar_checkpoint.ck3",
+      "bytes": 91669783,
+      "sha256": "aa57de8382eae22d94e55091c8d370405748d39fa0917c04d313f2d555618849"
+    },
+    "copy": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-021/ROOT-UI-EXIT-ABSENCE-002/checkpoint.ck3",
+      "bytes": 91669783,
+      "sha256": "aa57de8382eae22d94e55091c8d370405748d39fa0917c04d313f2d555618849"
+    },
+    "AST_read": false,
+    "new_T": null
+  },
+  "initial_checkpoint_preservation_failure": {
+    "actual_successor_record": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-021/ROOT-UI-EXIT-ABSENCE-002/PROCESS-ABSENCE.actual.json",
+      "bytes": 2655,
+      "sha256": "cc82a73ce2aeaa6ffdde8c5300b47dcfd83bb90741601e308eaecc2e0e51278b"
+    },
+    "original_partial_error": "Checkpoint preservation key native_ack absent; no STOP issued; new successor uses actual result.checkpoint.",
+    "first_source_and_absence_preserved": true,
+    "separate_first_tool_stderr_file": null,
+    "new_successor_used": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r21-root-preserve-checkpoint-stop-keeper-20261007-002.py",
+      "bytes": 2787,
+      "sha256": "c67823b8b9583c0fd44297f2fc70d7518d0e1d95a59d67ef256cf3a95192d290"
+    }
+  },
+  "initial_context_RED_reused": "../INDEX.partial.json",
+  "observe_original_HANDLE_RED": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-021/mcp-client-001/0008-r21-008-original-exit-observation.sdk-result.json",
+    "bytes": 468,
+    "sha256": "b4214c5e4e9636876ef33be9f16b20b00000b152f007d6a6c048131908daded3"
+  },
+  "business_status": "G2_G3_SCHEMA_RED",
+  "formal_approval": null,
+  "new_T": null,
+  "C3": null,
+  "I4": null,
+  "whole_mod": "NOT_GREEN",
+  "next_run_or_source_repair_runtime_credit": null,
+  "original_partial_unchanged": true,
+  "archive_actions": {
+    "main_writes": 0,
+    "SDK_calls": 0,
+    "game_actions": 0,
+    "desktop_actions": 0,
+    "process_queries": 0,
+    "bus_calls": 0,
+    "CI": 0,
+    "tests": 0,
+    "builds": 0,
+    "checkpoint_body_read": 0
+  }
+}
