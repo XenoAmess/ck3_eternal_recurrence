@@ -1,0 +1,228 @@
+{
+  "schema": "lyd.r21.native-semantic-schema-exit-fix-small-archive.v1",
+  "entries": [
+    {
+      "name": "SOURCE-INDEX.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\INDEX.json",
+        "bytes": 3938,
+        "sha256": "437361ebb5f09d99ad5f786c3c450919ecac665d4535b213f373dbf595828be0"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\SOURCE-INDEX.json",
+        "bytes": 3938,
+        "sha256": "437361ebb5f09d99ad5f786c3c450919ecac665d4535b213f373dbf595828be0"
+      }
+    },
+    {
+      "name": "PATCH.diff",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\PATCH.diff",
+        "bytes": 2443,
+        "sha256": "93bf5b30725530eb15ebb00254e2e8b5714dc0f6a53399b690fdbfcb6e326824"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\PATCH.diff",
+        "bytes": 2443,
+        "sha256": "93bf5b30725530eb15ebb00254e2e8b5714dc0f6a53399b690fdbfcb6e326824"
+      }
+    },
+    {
+      "name": "PREIMAGE.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\PREIMAGE.actual.json",
+        "bytes": 692,
+        "sha256": "1a3d774765b3d3bf8ef30d6b041a939a85de635cf603f8d3561690386e38084c"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\PREIMAGE.actual.json",
+        "bytes": 692,
+        "sha256": "1a3d774765b3d3bf8ef30d6b041a939a85de635cf603f8d3561690386e38084c"
+      }
+    },
+    {
+      "name": "ORIGINAL-RUNTIME-RED-REFS.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\ORIGINAL-RUNTIME-RED-REFS.actual.json",
+        "bytes": 6949,
+        "sha256": "f1e4748ebf41953658a2b6790f9fcd985fcae3fd06913a3535dd72db2863b519"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\ORIGINAL-RUNTIME-RED-REFS.actual.json",
+        "bytes": 6949,
+        "sha256": "f1e4748ebf41953658a2b6790f9fcd985fcae3fd06913a3535dd72db2863b519"
+      }
+    },
+    {
+      "name": "DEVELOPMENT-FAILURES.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\DEVELOPMENT-FAILURES.actual.json",
+        "bytes": 1280,
+        "sha256": "24e1d6293a5e8965fc3481a556c881511f87dfeb1d798f39dcfefdd4a784fb3e"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\DEVELOPMENT-FAILURES.actual.json",
+        "bytes": 1280,
+        "sha256": "24e1d6293a5e8965fc3481a556c881511f87dfeb1d798f39dcfefdd4a784fb3e"
+      }
+    },
+    {
+      "name": "FIXTURE-AUTHOR-FAILED002.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\FIXTURE-AUTHOR.actual.json",
+        "bytes": 861,
+        "sha256": "e421853715a1ecd3755ffc3875d28a0c7040357b47ee94673bfb148cef5ebd1d"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\FIXTURE-AUTHOR-FAILED002.actual.json",
+        "bytes": 861,
+        "sha256": "e421853715a1ecd3755ffc3875d28a0c7040357b47ee94673bfb148cef5ebd1d"
+      }
+    },
+    {
+      "name": "FIXTURE-AUTHOR-FAILED002.stderr.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\fixture-author.stderr.raw",
+        "bytes": 2312,
+        "sha256": "5cb4000a98c5d4759dc7973202cfcbc898a9eb16dd3a2b195ac0bae3aa8f506d"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\FIXTURE-AUTHOR-FAILED002.stderr.txt",
+        "bytes": 2312,
+        "sha256": "5cb4000a98c5d4759dc7973202cfcbc898a9eb16dd3a2b195ac0bae3aa8f506d"
+      }
+    },
+    {
+      "name": "FIXTURE-AUTHOR-FAILED003.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\FIXTURE-AUTHOR003.actual.json",
+        "bytes": 861,
+        "sha256": "6cf146e35defe941cee91999eeca78b49c90283c275b6b7821279fd31a79d843"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\FIXTURE-AUTHOR-FAILED003.actual.json",
+        "bytes": 861,
+        "sha256": "6cf146e35defe941cee91999eeca78b49c90283c275b6b7821279fd31a79d843"
+      }
+    },
+    {
+      "name": "FIXTURE-AUTHOR-FAILED003.stdout.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\fixture-author003.stdout.raw",
+        "bytes": 306,
+        "sha256": "8ee3b3c979428c6d26160b20fd78b9f7b2cba9fea6b58591feb14185831fb104"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\FIXTURE-AUTHOR-FAILED003.stdout.txt",
+        "bytes": 306,
+        "sha256": "8ee3b3c979428c6d26160b20fd78b9f7b2cba9fea6b58591feb14185831fb104"
+      }
+    },
+    {
+      "name": "FIXTURE-AUTHOR-FAILED003.stderr.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\fixture-author003.stderr.raw",
+        "bytes": 992,
+        "sha256": "7b78ada1d116d1c6212b2e0e0b50a489ed6c96d175d7fd87224dbaedebcf88b1"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\FIXTURE-AUTHOR-FAILED003.stderr.txt",
+        "bytes": 992,
+        "sha256": "7b78ada1d116d1c6212b2e0e0b50a489ed6c96d175d7fd87224dbaedebcf88b1"
+      }
+    },
+    {
+      "name": "ISOLATED-FIXTURE.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\RESULT.actual.json",
+        "bytes": 6844,
+        "sha256": "fedec00507e39a880b336b6cc7823b14bace67b0fb21a4fb7deadc831336ec7a"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\ISOLATED-FIXTURE.actual.json",
+        "bytes": 6844,
+        "sha256": "fedec00507e39a880b336b6cc7823b14bace67b0fb21a4fb7deadc831336ec7a"
+      }
+    },
+    {
+      "name": "ISOLATED-FIXTURE.cpp",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\fixture.cpp",
+        "bytes": 14359,
+        "sha256": "f52988b554acdb4c88ac6502e1fc134ccd34917b3ecbc3bead9e2ad4f6676296"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\ISOLATED-FIXTURE.cpp",
+        "bytes": 14359,
+        "sha256": "f52988b554acdb4c88ac6502e1fc134ccd34917b3ecbc3bead9e2ad4f6676296"
+      }
+    },
+    {
+      "name": "ISOLATED-COMPILE.stdout.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\compile.stdout.raw",
+        "bytes": 13,
+        "sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\ISOLATED-COMPILE.stdout.txt",
+        "bytes": 13,
+        "sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6"
+      }
+    },
+    {
+      "name": "ISOLATED-COMPILE.stderr.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\compile.stderr.raw",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\ISOLATED-COMPILE.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "ISOLATED-FIXTURE.stdout.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\fixture.stdout.raw",
+        "bytes": 8453,
+        "sha256": "72dad5cd2609931661086891f9a11d8b532cbdf6f624648942597ca671ec0d81"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\ISOLATED-FIXTURE.stdout.json",
+        "bytes": 8453,
+        "sha256": "72dad5cd2609931661086891f9a11d8b532cbdf6f624648942597ca671ec0d81"
+      }
+    },
+    {
+      "name": "PYTHON-FOCUSED.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\python-focused-001\\RESULT.actual.json",
+        "bytes": 569,
+        "sha256": "434f2f4de9bf6f9d1ebd9324dfef62b82286aacd0bb43e62553d2451f269847e"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\PYTHON-FOCUSED.actual.json",
+        "bytes": 569,
+        "sha256": "434f2f4de9bf6f9d1ebd9324dfef62b82286aacd0bb43e62553d2451f269847e"
+      }
+    },
+    {
+      "name": "PYTHON-FOCUSED.stderr.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\python-focused-001\\stderr.raw",
+        "bytes": 1207,
+        "sha256": "183c4ae015a8a03f8799cb02bef155d3b2eaf34a2542589608d5f1c91facff76"
+      },
+      "archived": {
+        "path": "C:\\lr21rw1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0021-native-semantic-schema-exit-fix\\PYTHON-FOCUSED.stderr.txt",
+        "bytes": 1207,
+        "sha256": "183c4ae015a8a03f8799cb02bef155d3b2eaf34a2542589608d5f1c91facff76"
+      }
+    }
+  ],
+  "original_runtime_raw_remains_external_and_partial_archive": "../2026-10-07-r0021-9b068c8-checkpoint-schema-red/",
+  "runtime_credit": null
+}

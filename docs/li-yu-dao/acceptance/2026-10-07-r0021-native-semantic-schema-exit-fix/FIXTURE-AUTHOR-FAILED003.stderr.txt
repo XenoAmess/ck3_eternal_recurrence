@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\lr21rw1\ck3_autonomous_player\native_bridge\tests\run_confucian_semantic_identity_fixture.py", line 191, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\lr21rw1\ck3_autonomous_player\native_bridge\tests\run_confucian_semantic_identity_fixture.py", line 170, in main
+    run('compile',[compiler,'/nologo','/std:c++20','/EHsc','/W4','/WX','/O2','/MD',str(cpp),'/Fe:'+str(executable),'/Fo:'+str(output/'fixture.obj'),'/link','/INCREMENTAL:NO'])
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\lr21rw1\ck3_autonomous_player\native_bridge\tests\run_confucian_semantic_identity_fixture.py", line 165, in run
+    if result.returncode:raise RuntimeError(name+' failed')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: compile failed

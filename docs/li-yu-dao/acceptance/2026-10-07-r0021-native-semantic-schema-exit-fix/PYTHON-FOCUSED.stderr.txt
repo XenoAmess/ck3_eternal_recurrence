@@ -1,0 +1,11 @@
+test_connected_build_and_changed_required_helper_remain_rejected (test_sdk_exact_build_pairs.ExactBuildPairTests.test_connected_build_and_changed_required_helper_remain_rejected) ... ok
+test_current_codec_body_changed_still_rejected (test_sdk_exact_build_pairs.ExactBuildPairTests.test_current_codec_body_changed_still_rejected) ... ok
+test_current_production_codec_passes_lineage_and_checkpoint_transition (test_sdk_exact_build_pairs.ExactBuildPairTests.test_current_production_codec_passes_lineage_and_checkpoint_transition) ... ok
+test_mixed_envelope_nested_backend_or_checkpoint_build_rejected (test_sdk_exact_build_pairs.ExactBuildPairTests.test_mixed_envelope_nested_backend_or_checkpoint_build_rejected) ... ok
+test_mixed_hello_version_image_adapter_and_unknown_build_rejected (test_sdk_exact_build_pairs.ExactBuildPairTests.test_mixed_hello_version_image_adapter_and_unknown_build_rejected) ... ok
+test_old_and_new_full_checkpoint_paths_keep_wire_and_unknown_credit (test_sdk_exact_build_pairs.ExactBuildPairTests.test_old_and_new_full_checkpoint_paths_keep_wire_and_unknown_credit) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.525s
+
+OK

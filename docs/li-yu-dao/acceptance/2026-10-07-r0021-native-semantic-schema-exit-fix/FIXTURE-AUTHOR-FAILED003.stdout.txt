@@ -1,0 +1,1 @@
+{"phase": "compile", "exit_code": 2, "stdout": "fixture.cpp\r\nC:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-003\\fixture.cpp(293): fatal error C1004: \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\u03b2\r\n", "stderr": ""}

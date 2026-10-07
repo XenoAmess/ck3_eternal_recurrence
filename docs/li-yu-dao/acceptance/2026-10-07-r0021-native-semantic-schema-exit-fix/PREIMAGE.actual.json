@@ -1,0 +1,15 @@
+{
+  "base_head": "3408351667e1f502e58bb19c18935989d1c1ea75",
+  "rows": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\preimage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_adapter.cpp",
+      "bytes": 17744,
+      "sha256": "7765182ded848f4d3a2caaa1c0dc621d3189c481624b2bdf5a244125f859a016"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\preimage\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+      "bytes": 34515,
+      "sha256": "75cd083eb5f9343dbdaabe7892aeb4e431b0a902ee7daf1a72428464f6087016"
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "schema": "lyd.r21.isolated-production-source-fragment-fixture.v1",
+  "status": "OFFLINE_FIXTURE_PASSED",
+  "source_refs": [
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002.hpp",
+      "bytes": 3898,
+      "sha256": "3a6a701735402a75dd4c99deb6aa1027aff7283d1a636784ebb8efb68d41308c"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003.hpp",
+      "bytes": 1058,
+      "sha256": "ef7a8a1854e6c8c129fd66bf5397bdf453a1f0d46ff855b57ec3c5d70b1f1c6a"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004.hpp",
+      "bytes": 2922,
+      "sha256": "03f3487d485c75996a9f1bd022f2454cae04ea1f2293aa6d62441ed294e203e6"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\game_adapter.hpp",
+      "bytes": 20652,
+      "sha256": "dd2bf1450624772e56b697ae2beaf03c0c5b17b36ce5b6fabd723ec797a80bcb"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_abi_profile.cpp",
+      "bytes": 12698,
+      "sha256": "628d752540de8e4726ce0074f8f5c36e444158a9ed364c68f714ad48d886bcb8"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_query_mailbox.cpp",
+      "bytes": 7242,
+      "sha256": "19d66d929e27a0ca6bb0b6594c413a6de0b246a12b9843333fa8e44268719daf"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_query_mailbox.cpp",
+      "bytes": 7242,
+      "sha256": "19d66d929e27a0ca6bb0b6594c413a6de0b246a12b9843333fa8e44268719daf"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\normal_exit_map_v1.hpp",
+      "bytes": 5717,
+      "sha256": "cc6c635affeaacc449648e815647821748e93a81e308b685be4dcd546eb64882"
+    },
+    {
+      "path": "C:\\lr20s2\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_adapter.cpp",
+      "bytes": 17345,
+      "sha256": "de430a952ec61285693fe10646b3e2c75423c2436d4fd4d676599825a18accf3"
+    },
+    {
+      "path": "C:\\lr20s2\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_adapter.cpp",
+      "bytes": 17345,
+      "sha256": "de430a952ec61285693fe10646b3e2c75423c2436d4fd4d676599825a18accf3"
+    },
+    {
+      "path": "C:\\lr20s2\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+      "bytes": 34515,
+      "sha256": "75cd083eb5f9343dbdaabe7892aeb4e431b0a902ee7daf1a72428464f6087016"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_adapter.cpp",
+      "bytes": 18260,
+      "sha256": "5dea11b79a83446109bd39a11f36f0267a518c7be1204e336a4050230e1420d9"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_adapter.cpp",
+      "bytes": 18260,
+      "sha256": "5dea11b79a83446109bd39a11f36f0267a518c7be1204e336a4050230e1420d9"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+      "bytes": 34566,
+      "sha256": "31369e60e584574bd535663fed4e30f316f7e1cdf8ca1080084a5f6a76c12bd9"
+    }
+  ],
+  "exact_production_spans": [
+    {
+      "label": "original",
+      "renderer_sha256": "8a0336fbfb4cf212d121ae7ca58e7d692bdc48991e8c395b02e68a1daf8fa486",
+      "normal_exit_branch_sha256": "ca6e11e04b7b415be1acc9dd14cd15657213f3c91194fa3e86f03a8df9d54c76",
+      "common_supports_sha256": "7701a0b3d12f2693e44ca429a6a7602b4b6e80047e73cce4e725023188a908d3"
+    },
+    {
+      "label": "fixed",
+      "renderer_sha256": "46b771244095e9c036870a886116c36a4f11af96ae8af8055899f4416a4c6fcb",
+      "normal_exit_branch_sha256": "84393fd7c0aaaf811ac8243d0cf28899da5c9aba18246bffca1c8fc810f4a916",
+      "common_supports_sha256": "7701a0b3d12f2693e44ca429a6a7602b4b6e80047e73cce4e725023188a908d3"
+    }
+  ],
+  "cpp": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\fixture.cpp",
+    "bytes": 14359,
+    "sha256": "f52988b554acdb4c88ac6502e1fc134ccd34917b3ecbc3bead9e2ad4f6676296"
+  },
+  "executable": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\confucian_semantic_identity_fixture.exe",
+    "bytes": 64512,
+    "sha256": "c0fef0c346600369786e8b1ea39888b3ce4bbb7b5c3712dba47a49afc4a31712"
+  },
+  "compiler_and_fixture": [
+    {
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MD",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\fixture.cpp",
+        "/Fe:C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\confucian_semantic_identity_fixture.exe",
+        "/Fo:C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\fixture.obj",
+        "/link",
+        "/INCREMENTAL:NO"
+      ],
+      "started_at": "2026-10-07T10:17:28.029137+00:00",
+      "ended_at": "2026-10-07T10:17:30.306096+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\confucian_semantic_identity_fixture.exe",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\assembly_predicates.inert.json",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\religious_title.inert.json",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\challenger_graph.inert.json"
+      ],
+      "started_at": "2026-10-07T10:17:30.306250+00:00",
+      "ended_at": "2026-10-07T10:17:30.385144+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "72dad5cd2609931661086891f9a11d8b532cbdf6f624648942597ca671ec0d81",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "normal_exit_admission_checks": 8,
+  "G2_G3_original_renderer_rejected_fixed_renderer_DTO_accepted": true,
+  "G4_schema_only_checked": true,
+  "runtime_DLL_built": false,
+  "game_process_handles_SDK_or_saved_body_used": false,
+  "live_acceptance_credit": null
+}

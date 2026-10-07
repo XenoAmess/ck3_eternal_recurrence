@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "C:\lr21rw1\ck3_autonomous_player\native_bridge\tests\run_confucian_semantic_identity_fixture.py", line 188, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\lr21rw1\ck3_autonomous_player\native_bridge\tests\run_confucian_semantic_identity_fixture.py", line 167, in main
+    run('compile',['cl.exe','/nologo','/std:c++20','/EHsc','/W4','/WX','/O2','/MD',str(cpp),'/Fe:'+str(executable),'/Fo:'+str(output/'fixture.obj'),'/link','/INCREMENTAL:NO'])
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\lr21rw1\ck3_autonomous_player\native_bridge\tests\run_confucian_semantic_identity_fixture.py", line 158, in run
+    result=subprocess.run(argv,cwd=output,env=environment,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 1554, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+                             # no special security
+                             ^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+                             cwd,
+                             ^^^^
+                             startupinfo)
+                             ^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] 系统找不到指定的文件。

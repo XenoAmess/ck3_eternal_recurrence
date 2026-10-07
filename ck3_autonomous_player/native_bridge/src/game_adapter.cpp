@@ -470,8 +470,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   } else if (step == ck3_11906::kWhitePlayerBusinessVariablesV1Step) {
     capability = ck3_11906::kWhitePlayerBusinessVariablesV1Capability;
   } else if (step == ck3_12003::kNormalExitMapV1Step) {
-    if (descriptor().game_version != ck3_12003::kGameVersion ||
-        descriptor().executable_sha256 != ck3_12003::kExecutableSha256) return false;
+    if ((descriptor().game_version != ck3_12003::kGameVersion ||
+         descriptor().executable_sha256 != ck3_12003::kExecutableSha256) &&
+        !IsCk3_12004Descriptor(descriptor())) return false;
     capability = ck3_12003::kNormalExitMapV1Capability;
 #if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
   } else if (step == ck3_12003::kGrantTitlePickerQueryV1Step) {

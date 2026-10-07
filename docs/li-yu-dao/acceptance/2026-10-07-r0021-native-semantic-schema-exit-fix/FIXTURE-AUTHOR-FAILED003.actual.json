@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-X",
+    "utf8",
+    "C:/lr21rw1/ck3_autonomous_player/native_bridge/tests/run_confucian_semantic_identity_fixture.py",
+    "--source-root",
+    "C:/lr21rw1",
+    "--legacy-source-root",
+    "C:/lr20s2",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-003",
+    "--vcvars",
+    "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvars64.bat"
+  ],
+  "started_at": "2026-10-07T10:16:26.961395+00:00",
+  "ended_at": "2026-10-07T10:16:30.277672+00:00",
+  "exit_code": 1,
+  "stdout_sha256": "8ee3b3c979428c6d26160b20fd78b9f7b2cba9fea6b58591feb14185831fb104",
+  "stderr_sha256": "7b78ada1d116d1c6212b2e0e0b50a489ed6c96d175d7fd87224dbaedebcf88b1"
+}

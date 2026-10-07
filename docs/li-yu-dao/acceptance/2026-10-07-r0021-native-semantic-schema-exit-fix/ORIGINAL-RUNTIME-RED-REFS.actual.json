@@ -1,0 +1,146 @@
+[
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0005-r21-005-baseline-g2.request.json",
+      "bytes": 221,
+      "sha256": "072212b9e266d9eb53462dea96b2420f5cb7499df7f272be1035b411eb1c4070"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0005-r21-005-baseline-g2.request.json",
+      "bytes": 221,
+      "sha256": "072212b9e266d9eb53462dea96b2420f5cb7499df7f272be1035b411eb1c4070"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0005-r21-005-baseline-g2.response.json",
+      "bytes": 672,
+      "sha256": "0f9e13add87dd753c5bcbf77607516cfa1ad84fdfbcf48dc8f932c26937f5215"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0005-r21-005-baseline-g2.response.json",
+      "bytes": 672,
+      "sha256": "0f9e13add87dd753c5bcbf77607516cfa1ad84fdfbcf48dc8f932c26937f5215"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0005-r21-005-baseline-g2.sdk-result.json",
+      "bytes": 495,
+      "sha256": "8cf12fec5e958cd216a148fdc1fee03d80fdadb7cb18b745fe73437f6469a702"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0005-r21-005-baseline-g2.sdk-result.json",
+      "bytes": 495,
+      "sha256": "8cf12fec5e958cd216a148fdc1fee03d80fdadb7cb18b745fe73437f6469a702"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0005-r21-005-baseline-g2.started.json",
+      "bytes": 338,
+      "sha256": "dca2b13204e83177ec93ec0bd70148c2cd73235c27922ac259bba883e4734b8a"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0005-r21-005-baseline-g2.started.json",
+      "bytes": 338,
+      "sha256": "dca2b13204e83177ec93ec0bd70148c2cd73235c27922ac259bba883e4734b8a"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0006-r21-006-baseline-g3.request.json",
+      "bytes": 217,
+      "sha256": "2a6e9ee48a368d6d35e24a6f4515c83a39210959260b283138244c3fba6b42f8"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0006-r21-006-baseline-g3.request.json",
+      "bytes": 217,
+      "sha256": "2a6e9ee48a368d6d35e24a6f4515c83a39210959260b283138244c3fba6b42f8"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0006-r21-006-baseline-g3.response.json",
+      "bytes": 672,
+      "sha256": "3f09c8408d8afdf4bd89892b0b475091c2740065c649558f16e76d4672653c42"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0006-r21-006-baseline-g3.response.json",
+      "bytes": 672,
+      "sha256": "3f09c8408d8afdf4bd89892b0b475091c2740065c649558f16e76d4672653c42"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0006-r21-006-baseline-g3.sdk-result.json",
+      "bytes": 491,
+      "sha256": "938223719012c04080efcc138564e35f316bd6e9d4a57da3e642634eafc1e752"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0006-r21-006-baseline-g3.sdk-result.json",
+      "bytes": 491,
+      "sha256": "938223719012c04080efcc138564e35f316bd6e9d4a57da3e642634eafc1e752"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0006-r21-006-baseline-g3.started.json",
+      "bytes": 338,
+      "sha256": "d92c1ae47a8984fff9a85f0f13c089be9a66b02fa7af2b47cf8842b3ec55231c"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0006-r21-006-baseline-g3.started.json",
+      "bytes": 338,
+      "sha256": "d92c1ae47a8984fff9a85f0f13c089be9a66b02fa7af2b47cf8842b3ec55231c"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0007-r21-007-exit-context.request.json",
+      "bytes": 204,
+      "sha256": "525178ddcb6bc779e677ca22d3c13a0a000baeff54c9464de52a4aa60c2ae314"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0007-r21-007-exit-context.request.json",
+      "bytes": 204,
+      "sha256": "525178ddcb6bc779e677ca22d3c13a0a000baeff54c9464de52a4aa60c2ae314"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0007-r21-007-exit-context.response.json",
+      "bytes": 675,
+      "sha256": "044d733e7983b4a2a6c2c695bb9f9fb41f1f9b6f48282701510146cdf8380792"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0007-r21-007-exit-context.response.json",
+      "bytes": 675,
+      "sha256": "044d733e7983b4a2a6c2c695bb9f9fb41f1f9b6f48282701510146cdf8380792"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0007-r21-007-exit-context.sdk-result.json",
+      "bytes": 473,
+      "sha256": "c266458c65408286d95b637cceae3273080055bd5b92d9922d56e9c356191da0"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0007-r21-007-exit-context.sdk-result.json",
+      "bytes": 473,
+      "sha256": "c266458c65408286d95b637cceae3273080055bd5b92d9922d56e9c356191da0"
+    }
+  },
+  {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-021\\mcp-client-001\\0007-r21-007-exit-context.started.json",
+      "bytes": 339,
+      "sha256": "0cb0a3ef88cf4f4904d789600d867bd8c27c9d4b02a3622ac142c6a51b3fa22c"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\original-runtime-RED\\0007-r21-007-exit-context.started.json",
+      "bytes": 339,
+      "sha256": "0cb0a3ef88cf4f4904d789600d867bd8c27c9d4b02a3622ac142c6a51b3fa22c"
+    }
+  }
+]

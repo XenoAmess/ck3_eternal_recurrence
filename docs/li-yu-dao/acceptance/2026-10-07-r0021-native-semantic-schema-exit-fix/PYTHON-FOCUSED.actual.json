@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "test_sdk_exact_build_pairs",
+    "-v"
+  ],
+  "started_at": "2026-10-07T10:18:25.730546+00:00",
+  "ended_at": "2026-10-07T10:18:26.570331+00:00",
+  "exit_code": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "183c4ae015a8a03f8799cb02bef155d3b2eaf34a2542589608d5f1c91facff76",
+  "tests": 6,
+  "SDK_game_process_handles_savebody_used": false
+}

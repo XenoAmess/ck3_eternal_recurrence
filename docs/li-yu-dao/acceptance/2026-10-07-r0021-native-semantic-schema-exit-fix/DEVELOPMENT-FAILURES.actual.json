@@ -1,0 +1,23 @@
+{
+  "first_author_tool_chunk": "72f2c8",
+  "first_exit_code": 1,
+  "first_reason": "common capability return spelling assertion failed before fixture generation/compiler",
+  "second_author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\FIXTURE-AUTHOR.actual.json",
+    "bytes": 861,
+    "sha256": "e421853715a1ecd3755ffc3875d28a0c7040357b47ee94673bfb148cef5ebd1d"
+  },
+  "second_reason": "Windows subprocess did not resolve cl.exe from child PATH; no compiler process created",
+  "third_author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\FIXTURE-AUTHOR003.actual.json",
+    "bytes": 861,
+    "sha256": "6cf146e35defe941cee91999eeca78b49c90283c275b6b7821279fd31a79d843"
+  },
+  "third_reason": "C1004 in isolated fixture: optional following grant preprocessor directive entered the extracted normal-exit fragment",
+  "fourth_author": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\FIXTURE-AUTHOR004.actual.json",
+    "bytes": 861,
+    "sha256": "adedf597a2d3c6bb0f225a89ded6740828ff6eaabb7bf4d4b65d07d3359b1c7f"
+  },
+  "product_patch_changed_for_author_failures": false
+}

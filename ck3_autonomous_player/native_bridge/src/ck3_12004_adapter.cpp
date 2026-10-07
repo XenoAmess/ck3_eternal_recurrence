@@ -332,6 +332,15 @@ std::string Render12004BuildIdentity(
   }
   ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12002_", "\"schema\":\"ck3_12004_");
   ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12003_", "\"schema\":\"ck3_12004_");
+  // Confucian DTO schemas describe the shared semantic wire contract, not the
+  // executable build. Their exact Python/reader normalizers retain these names.
+  for (const auto schema : {"confucian_assembly_predicates_v1",
+                           "confucian_religious_title_v1",
+                           "confucian_challenger_graph_v1"}) {
+    ReplaceIdentityToken(serialized,
+        std::string("\"schema\":\"ck3_12004_") + schema + "\"",
+        std::string("\"schema\":\"ck3_12003_") + schema + "\"");
+  }
   // This nested Army semantic contract is independent of executable identity.
   // Its production normalizer and shared serializer retain the canonical name.
   ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12004_owned_regiments_v1\"",
