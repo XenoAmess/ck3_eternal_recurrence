@@ -107,7 +107,7 @@ def validate(*, release_localization: bool = False) -> list[str]:
         'tags={\n\t"Gameplay"\n}\n'
         'name="Reclaim the Motherland — 重整河山"\n'
         'picture="thumbnail.png"\n'
-        'supported_version="1.20.0.3"\n'
+        'supported_version="1.20.0.4"\n'
     )
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     from workshop_compatibility_tags import render_workshop_descriptor_bytes
