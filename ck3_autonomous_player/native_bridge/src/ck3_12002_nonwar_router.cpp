@@ -19,6 +19,7 @@
 #endif
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
 #include "xar_bridge/ck3_12002_realm_law_action_mailbox.hpp"
+#include "xar_bridge/ck3_12004_realm_law_action_mailbox.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_government_mailbox.hpp"
@@ -253,6 +254,9 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 }
 
 void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept {
+#if defined(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
+  out.law_action = &ck3_12004::ExecuteRealmLawPrivateAction12004;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1)
   out.government = &bridge::private_observer::ExecuteGovernmentRuntimeAdapterPrivateOperationV1;
 #endif
@@ -499,6 +503,9 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
   if (step == kRealmLawPausedPrivateQueryStep12002) return true;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
+  if (ck3_12004::IsRealmLawPrivateActionStep12004(step)) return true;
+#endif
   return IsActivityFeastPrivateStep12002(step);
 }
 
@@ -673,6 +680,12 @@ bool HandleNonwarPrivate12002(
         failure = "exact-build nonwar published revision unavailable";
         return false;
       }
+#if defined(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
+      if (ck3_12004::IsRealmLawPrivateActionStep12004(step))
+        return ck3_12004::HandleRealmLawPrivate12004(
+            native, mailbox, published, revision, step, payload, request_id,
+            serialized, failure);
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
       std::uint32_t prisoner_ordinal = 0;
       if (ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, prisoner_ordinal) ||

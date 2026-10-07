@@ -14,7 +14,7 @@ from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import (
     private_native_build_identity, private_native_provenance, private_native_readback_matches,
 )
-from .version_identity import CK3_12002, CK3_12003
+from .version_identity import CK3_12002, CK3_12003, CK3_12004
 
 
 QUERY_STEP = "query-realm-law-crown-action-v1-private"
@@ -50,7 +50,7 @@ def _paused(driver: object, *, public_revision: int | None = None,
             or type(before.get("date_raw")) is not int
             or (public_revision is not None and before.get("revision") != public_revision)
             or (native_revision is not None and before.get("native_revision") != native_revision)
-            or private_native_build_identity(before) not in (CK3_12002, CK3_12003)):
+            or private_native_build_identity(before) not in (CK3_12002, CK3_12003, CK3_12004)):
         raise BridgeUnavailableError("private crown-law action requires its exact paused 1.20 frame")
     return before
 

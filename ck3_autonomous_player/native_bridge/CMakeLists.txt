@@ -858,6 +858,13 @@ list(APPEND XAR_CK3_12002_SOURCES
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_maa_create_private_mailbox.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_army_supply_timing.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_army_replenishment_records.cpp")
+if(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12004_realm_law_source_adapter.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12004_realm_law_action_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12004_realm_law_enact_mutation_abi_v1.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12004_realm_law_enact_command_v1.cpp")
+endif()
 # R11 owns only explicitly READY outcome production CPPs below.
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "/ck3_12002_sway_outcome.*\\.cpp$")
 # READY explicit source lists below own these namespaces.
@@ -9426,4 +9433,25 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME xar_ck3_12004_army_route_binding_test
     COMMAND $<TARGET_FILE:xar_ck3_12004_army_route_binding_test>)
   set_tests_properties(xar_ck3_12004_army_route_binding_test PROPERTIES TIMEOUT 10)
+endif()
+
+# M7 actual4 formal Crown factory whole: unique first-only target.
+if(BUILD_TESTING AND XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
+  add_executable(xar_ck3_12004_realm_law_formal_whole_test
+    tests/ck3_12004_realm_law_formal_whole_test.cpp)
+  target_include_directories(xar_ck3_12004_realm_law_formal_whole_test PRIVATE
+    include src research)
+  target_link_libraries(xar_ck3_12004_realm_law_formal_whole_test PRIVATE
+    xar_ck3_12002_runtime)
+  target_compile_features(xar_ck3_12004_realm_law_formal_whole_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_realm_law_formal_whole_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+    XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1=1)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_realm_law_formal_whole_test PRIVATE
+      /UNDEBUG /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_12004_realm_law_formal_whole_test
+    COMMAND xar_ck3_12004_realm_law_formal_whole_test
+      "${CMAKE_BINARY_DIR}/ck3_12004_realm_law_formal_whole_wire")
 endif()

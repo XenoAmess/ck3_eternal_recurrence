@@ -1,0 +1,220 @@
+{
+  "contract": "ck3_12004_realm_law_enact_mutation_v1_abi",
+  "contract_version": 1,
+  "status": "exact actual4 direct-command source closed; factory field dependencies and runtime qualification separate",
+  "build": {
+    "game_version": "1.20.0.4",
+    "architecture": "x86_64",
+    "preferred_image_base": "0x140000000",
+    "sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "command": {
+    "size": "0x30",
+    "primary_vtable_rva": "0x4760108",
+    "secondary_vtable_rva": "0x47601A0",
+    "actor_id_offset": "0x20",
+    "law_pointer_offset": "0x28",
+    "secondary_this_offset": "0x18",
+    "submit_flags": "0x0E",
+    "class_key": "0x2FF3",
+    "validator_rva": "0x288DA20",
+    "clone_rva": "0x2896210",
+    "destroy_rva": "0x9D1560",
+    "locked_queue_rva": "0x37F06D0",
+    "manager_rva": "0x5CC1240"
+  },
+  "instruction_spans": [
+    {
+      "name": "engine_final_law_evaluator",
+      "rva": "0x30b1b50",
+      "size": 365,
+      "sha256": "A6805E20505ECBFE00B1AC0435AE62AB5CAFAC144477AF62AEFA279E032F17A1"
+    },
+    {
+      "name": "engine_final_command_validator",
+      "rva": "0x30b1cc0",
+      "size": 309,
+      "sha256": "45A94EBD0ED829FF51D11FC3B9FE21DC765029D154BBA8E4FEB6C759975B75A3"
+    },
+    {
+      "name": "add_law_command_executor",
+      "rva": "0x288d990",
+      "size": 137,
+      "sha256": "9F942000F9EE50F8D1230DC2F0A4DAF29C967671A20D2B659DFAE02D5AD7B7EE"
+    },
+    {
+      "name": "add_law_command_validator_adapter",
+      "rva": "0x288da20",
+      "size": 78,
+      "sha256": "8D5E1094AF8B570F19FFF46CB0DCB4D0C71171590FF4FC8A7ADEBBEB9F7701C1"
+    },
+    {
+      "name": "add_law_command_heap_clone",
+      "rva": "0x2896210",
+      "size": 124,
+      "sha256": "FC29C46C27A33F62320F43499F012A5349F99849D7F39CA1D33FD29372026E21"
+    },
+    {
+      "name": "add_law_command_class_key",
+      "rva": "0x2896290",
+      "size": 6,
+      "sha256": "A3E5408F5F55BE0748CD4AAF0E6B33C439B4C69719D5DCE93911B1D4F40730B5"
+    },
+    {
+      "name": "add_law_command_serializer",
+      "rva": "0x288da70",
+      "size": 159,
+      "sha256": "F68077E743B70FDCEA711CEFA0468CE89531B2A62A4B611EFFE3BDEB747B7210"
+    },
+    {
+      "name": "add_law_command_deserializer",
+      "rva": "0x288db10",
+      "size": 201,
+      "sha256": "8693B76160265D3EC142ED20538745BE5660C6979B7452DE21FA1870E779B92D"
+    },
+    {
+      "name": "locked_command_queue",
+      "rva": "0x37f06d0",
+      "size": 250,
+      "sha256": "35BE39318795009EF6176E9C135E9CD7ECDADE099F895515F3DD664949E34D0C"
+    },
+    {
+      "name": "law_mutation_context_constructor",
+      "rva": "0x28a94d0",
+      "size": 159,
+      "sha256": "453293DC9688406C0C388C4F4B2A0D4B498011651AE5DC52853E1A03DF76DF55"
+    },
+    {
+      "name": "law_mutation_select_group",
+      "rva": "0x28a96c0",
+      "size": 168,
+      "sha256": "2B2A8EFD1D61BA31DD29BD00FDFD972B5A0FFFFD2E53604F18F8C81D9361501B"
+    },
+    {
+      "name": "law_mutation_apply_logical_span",
+      "rva": "0x28a9770",
+      "size": 442,
+      "sha256": "4F15B1E2431E41EBEA92C1C56D1EE054447BA627EAE9B7E50AC9ED893ECEA1E6"
+    },
+    {
+      "name": "law_mutation_finalizer",
+      "rva": "0x28a9570",
+      "size": 334,
+      "sha256": "AD264178B5B6F11C3676EC46B63C376058063187758BBB48FF37FCB09F1F95DA"
+    },
+    {
+      "name": "add_law_command_destructor",
+      "rva": "0x9d1560",
+      "size": 43,
+      "sha256": "30F2F57FE59FC3BC3C2B6C0C186D2C749325E8502A00404FBC1D6F13EE82E30F"
+    }
+  ],
+  "relative_edges": [
+    {
+      "name": "validator_reaches_final_command_evaluator",
+      "instruction_rva": "0x288da69",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x30b1cc0"
+    },
+    {
+      "name": "command_validator_reaches_final_law_evaluator",
+      "instruction_rva": "0x30b1dee",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x30b1b50"
+    },
+    {
+      "name": "executor_constructs_mutation_context",
+      "instruction_rva": "0x288d9f5",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x28a94d0"
+    },
+    {
+      "name": "executor_selects_same_group",
+      "instruction_rva": "0x288da03",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x28a96c0"
+    },
+    {
+      "name": "executor_finalizes_mutation",
+      "instruction_rva": "0x288da0e",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x28a9570"
+    },
+    {
+      "name": "selector_calls_apply",
+      "instruction_rva": "0x28a9753",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x28a9770"
+    }
+  ],
+  "absolute_pointer_edges": [
+    {
+      "name": "primary_destructor",
+      "pointer_rva": "0x4760108",
+      "target_rva": "0x9d1560"
+    },
+    {
+      "name": "primary_validator",
+      "pointer_rva": "0x4760138",
+      "target_rva": "0x288da20"
+    },
+    {
+      "name": "primary_clone",
+      "pointer_rva": "0x4760148",
+      "target_rva": "0x2896210"
+    },
+    {
+      "name": "primary_serializer",
+      "pointer_rva": "0x4760188",
+      "target_rva": "0x288da70"
+    },
+    {
+      "name": "primary_deserializer",
+      "pointer_rva": "0x4760190",
+      "target_rva": "0x288db10"
+    },
+    {
+      "name": "secondary_executor",
+      "pointer_rva": "0x47601a8",
+      "target_rva": "0x288d990"
+    }
+  ],
+  "ascii_evidence": [
+    {
+      "name": "add_law_command_rtti",
+      "rva": "0x5a04f58",
+      "value": ".?AVCAddLawCommand@@"
+    }
+  ],
+  "uint64_evidence": [],
+  "dependency_boundary": {
+    "dedicated_actual4_minimum": "direct typed command used by the three formal Crown factories",
+    "popup_GUI_not_consumed_by_factory": true,
+    "old2_verifier_changed": false,
+    "full17_source_provenance": "FUNCTIONS01-SOURCE.json",
+    "root_scope_confirmation": "Parent confirmed minimum14/6/6/1 on 2026-10-08; direct Submit73-118 and source/mailbox do not consume popup"
+  },
+  "calling_conventions": {
+    "validator": "bool(command, optional_error_sink); AL result",
+    "clone": "void**(command, void** out_clone); native 0x30 allocation",
+    "queue": "bool(embedded manager, void** owned_command, uint32 flags, unused argument, void** unused_result); actual bool acceptance",
+    "destroy": "scalar deleting destructor(command, flags=1)",
+    "executor": "void(secondary_this=command+0x18)"
+  },
+  "semantic_boundary": [
+    "queue acceptance is submitted_verification_pending",
+    "later active law/resources/successor observation is independent",
+    "no policy or calendar-cadence input added"
+  ],
+  "source_refs": [
+    "FUNCTIONS01-SOURCE.json",
+    "DATA02-SOURCE.json",
+    "RTTI03-SOURCE.json"
+  ]
+}
