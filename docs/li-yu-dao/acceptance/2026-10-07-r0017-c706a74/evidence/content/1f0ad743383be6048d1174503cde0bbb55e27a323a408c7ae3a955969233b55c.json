@@ -1,0 +1,16 @@
+{
+ "schema":"lyd.root.actual-native-dispatch-regression.v1",
+ "source_head_before_commit":"c706a74f9d00dd842b7edce8901fb3417344fd9c",
+ "test_source":{"path":"C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/tests/unit/test_native_bridge_dispatch_topology.py","bytes":11631,"sha256":"4262c993825d801449b71446e7374777d45c290cf75b8de5242cb992ef4d7637"},
+ "argv":["C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe","-B","-X","utf8","ck3_autonomous_player/tests/unit/test_native_bridge_dispatch_topology.py","-v"],
+ "raw_tool_result":{
+  "chunk_id":"842c68",
+  "wall_time_seconds":1.5272483000000001,
+  "exit_code":0,
+  "original_token_count":100,
+  "output":"test_handled_normal_exit_has_one_response_site (__main__.NativeBridgeDispatchTopologyTests.test_handled_normal_exit_has_one_response_site) ... ok\r\ntest_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 2 tests in 1.531s\r\n\r\nOK\r\n"
+ },
+ "native_compilation":null,
+ "new_runtime_acceptance":null,
+ "whole_product_status":"NOT_GREEN"
+}

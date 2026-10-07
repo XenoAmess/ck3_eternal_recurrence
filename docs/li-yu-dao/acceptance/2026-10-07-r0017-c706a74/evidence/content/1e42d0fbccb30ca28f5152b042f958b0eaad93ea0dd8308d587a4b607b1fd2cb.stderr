@@ -1,0 +1,77 @@
+test_handled_normal_exit_has_one_response_site (__main__.NativeBridgeDispatchTopologyTests.test_handled_normal_exit_has_one_response_site) ... 
+  test_handled_normal_exit_has_one_response_site (__main__.NativeBridgeDispatchTopologyTests.test_handled_normal_exit_has_one_response_site) (flags='normal_exit_only') ... FAIL
+  test_handled_normal_exit_has_one_response_site (__main__.NativeBridgeDispatchTopologyTests.test_handled_normal_exit_has_one_response_site) (flags='all_declared_on') ... FAIL
+  test_handled_normal_exit_has_one_response_site (__main__.NativeBridgeDispatchTopologyTests.test_handled_normal_exit_has_one_response_site) (flags='actual_cache') ... FAIL
+test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) ... 
+  test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) (flags='private_off') ... FAIL
+  test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) (flags='normal_exit_only') ... FAIL
+  test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) (flags='all_declared_on') ... FAIL
+  test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) (flags='actual_cache') ... FAIL
+
+======================================================================
+FAIL: test_handled_normal_exit_has_one_response_site (__main__.NativeBridgeDispatchTopologyTests.test_handled_normal_exit_has_one_response_site) (flags='normal_exit_only')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-dispatch-regression-sourceonly-20261007-001\candidate\ck3_autonomous_player\tests\unit\test_native_bridge_dispatch_topology.py", line 233, in test_handled_normal_exit_has_one_response_site
+    self.assertEqual(response_sites, 1, "a handled normal exit reaches a second unsupported reply")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1 : a handled normal exit reaches a second unsupported reply
+
+======================================================================
+FAIL: test_handled_normal_exit_has_one_response_site (__main__.NativeBridgeDispatchTopologyTests.test_handled_normal_exit_has_one_response_site) (flags='all_declared_on')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-dispatch-regression-sourceonly-20261007-001\candidate\ck3_autonomous_player\tests\unit\test_native_bridge_dispatch_topology.py", line 233, in test_handled_normal_exit_has_one_response_site
+    self.assertEqual(response_sites, 1, "a handled normal exit reaches a second unsupported reply")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1 : a handled normal exit reaches a second unsupported reply
+
+======================================================================
+FAIL: test_handled_normal_exit_has_one_response_site (__main__.NativeBridgeDispatchTopologyTests.test_handled_normal_exit_has_one_response_site) (flags='actual_cache')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-dispatch-regression-sourceonly-20261007-001\candidate\ck3_autonomous_player\tests\unit\test_native_bridge_dispatch_topology.py", line 233, in test_handled_normal_exit_has_one_response_site
+    self.assertEqual(response_sites, 1, "a handled normal exit reaches a second unsupported reply")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1 : a handled normal exit reaches a second unsupported reply
+
+======================================================================
+FAIL: test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) (flags='private_off')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-dispatch-regression-sourceonly-20261007-001\candidate\ck3_autonomous_player\tests\unit\test_native_bridge_dispatch_topology.py", line 223, in test_unmatched_event_option_reaches_legacy_tail
+    self.assertTrue(tail_reached(segments, already_handled=False), "select-event-option-3 was swallowed without a response")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : select-event-option-3 was swallowed without a response
+
+======================================================================
+FAIL: test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) (flags='normal_exit_only')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-dispatch-regression-sourceonly-20261007-001\candidate\ck3_autonomous_player\tests\unit\test_native_bridge_dispatch_topology.py", line 223, in test_unmatched_event_option_reaches_legacy_tail
+    self.assertTrue(tail_reached(segments, already_handled=False), "select-event-option-3 was swallowed without a response")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : select-event-option-3 was swallowed without a response
+
+======================================================================
+FAIL: test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) (flags='all_declared_on')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-dispatch-regression-sourceonly-20261007-001\candidate\ck3_autonomous_player\tests\unit\test_native_bridge_dispatch_topology.py", line 223, in test_unmatched_event_option_reaches_legacy_tail
+    self.assertTrue(tail_reached(segments, already_handled=False), "select-event-option-3 was swallowed without a response")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : select-event-option-3 was swallowed without a response
+
+======================================================================
+FAIL: test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) (flags='actual_cache')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-dispatch-regression-sourceonly-20261007-001\candidate\ck3_autonomous_player\tests\unit\test_native_bridge_dispatch_topology.py", line 223, in test_unmatched_event_option_reaches_legacy_tail
+    self.assertTrue(tail_reached(segments, already_handled=False), "select-event-option-3 was swallowed without a response")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : select-event-option-3 was swallowed without a response
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.189s
+
+FAILED (failures=7)

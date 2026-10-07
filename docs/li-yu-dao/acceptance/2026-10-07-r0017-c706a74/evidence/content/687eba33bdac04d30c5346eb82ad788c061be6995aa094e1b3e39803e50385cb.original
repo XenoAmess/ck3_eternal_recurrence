@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\source003\author_i4_arguments.py", line 144, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\source003\author_i4_arguments.py", line 82, in main
+    need(type(rev) is int and rev>0 and rev==native+1 and s['snapshot_id']=='native:'+str(native),'Actual public/native snapshot frame differs')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\source003\author_i4_arguments.py", line 10, in need
+    if not ok:raise ValueError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Actual public/native snapshot frame differs

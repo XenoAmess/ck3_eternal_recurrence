@@ -1,0 +1,7 @@
+test_handled_normal_exit_has_one_response_site (__main__.NativeBridgeDispatchTopologyTests.test_handled_normal_exit_has_one_response_site) ... ok
+test_unmatched_event_option_reaches_legacy_tail (__main__.NativeBridgeDispatchTopologyTests.test_unmatched_event_option_reaches_legacy_tail) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.129s
+
+OK

@@ -1,0 +1,83 @@
+{
+  "status": "ACTUAL_POSTRELEASE_ABSENCE_AND_SEVEN_REF_REQUEST_READY_ROOT_AUTHOR_NOT_EXECUTED",
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ROOT-BOUNDARY-INPUTS.actual.json",
+    "bytes": 1827,
+    "sha256": "3592feec99ea1528dc3826c6303e973123025a65afeac30bee101d6c9ebad21a"
+  },
+  "root_argv": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ROOT-AUTHOR-ARGV.actual.json",
+    "bytes": 2273,
+    "sha256": "2c038f243b00153b50f78a906787d38b96888f277ed158af34c6ae259a1ac4ea"
+  },
+  "source_refs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ACTUAL-CLOSURE-SOURCE-REFS.json",
+    "bytes": 4425,
+    "sha256": "116b434b05ae8842c97f20a9644fb9a6bba8573cee9b6803a2aff683f652c056"
+  },
+  "author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/author_closed_boundary.py",
+    "bytes": 2970,
+    "sha256": "1b94208e7d2c4729209927663d5024687836e0c2cd2a92c3e2153084413b11f7"
+  },
+  "verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/verify_previous_boundary.py",
+    "bytes": 12887,
+    "sha256": "848239426fed443590f6902fc90c3cf329b50e88e99bca0656c52a037f051bfe"
+  },
+  "guard": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/guarded_helper_close.py",
+    "bytes": 26774,
+    "sha256": "2250d30bc5df4e7ed29434afdd002da1fe7525b225e266695f1ae87ef29f9be0"
+  },
+  "actual_process_absence": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ACTUAL-PROCESS-ABSENCE.json",
+    "bytes": 3074,
+    "sha256": "8a3539de389426b7c276f7266a48e4722debbacec36f7535f64a5cb005c72345"
+  },
+  "recorded_at_utc": "2026-10-07T01:07:48.323224+00:00",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ACTUAL-CLOSURE-SOURCE-REFS.json",
+      "bytes": 4425,
+      "sha256": "116b434b05ae8842c97f20a9644fb9a6bba8573cee9b6803a2aff683f652c056"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ACTUAL-PROCESS-ABSENCE.json",
+      "bytes": 3074,
+      "sha256": "8a3539de389426b7c276f7266a48e4722debbacec36f7535f64a5cb005c72345"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/author_boundary_inputs.py",
+      "bytes": 5383,
+      "sha256": "8e543f0b8336f4572ae26dce598f16417985ad1c1510f2cea8df1aef9b911968"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/capture_process_absence.py",
+      "bytes": 4759,
+      "sha256": "de7962cc5662ff911ae6e9aba1deab134e0eb54b093bbc9d50fe008ec20c9a7b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/read_completion_shapes.py",
+      "bytes": 620,
+      "sha256": "2502ad1919473e5236f92bf6dc35220ca7ccc3aa91a93f80d86ae831d125eb7d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ROOT-AUTHOR-ARGV.actual.json",
+      "bytes": 2273,
+      "sha256": "2c038f243b00153b50f78a906787d38b96888f277ed158af34c6ae259a1ac4ea"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ROOT-BOUNDARY-INPUTS.actual.json",
+      "bytes": 1827,
+      "sha256": "3592feec99ea1528dc3826c6303e973123025a65afeac30bee101d6c9ebad21a"
+    }
+  ],
+  "SDK_calls": 0,
+  "game_actions": 0,
+  "bus_calls": 0,
+  "process_mutations": 0,
+  "main_writes": 0,
+  "business_GREEN": false,
+  "typed_normal_exit_observed": false
+}

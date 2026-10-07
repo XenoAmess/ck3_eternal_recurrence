@@ -1,0 +1,14 @@
+{
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "started_at_utc": "2026-10-07T00:28:29.842799+00:00",
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/read_exact_head_ci_20261007_001.py",
+    "bytes": 10049,
+    "sha256": "ecaf55a2d0d6f83cc0d85f837997dcff83595908f5e0b545bd7dd95071dddcf1"
+  },
+  "api_method": "GET",
+  "main_writes": 0,
+  "fetches": 0,
+  "SDK_game_UI_bus_build_actions": 0
+}

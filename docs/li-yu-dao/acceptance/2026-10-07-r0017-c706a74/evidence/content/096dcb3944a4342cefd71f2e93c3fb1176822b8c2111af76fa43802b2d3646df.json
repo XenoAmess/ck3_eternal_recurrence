@@ -1,0 +1,32 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-input-001/AUTHOR-ARGV.actual.json",
+    "bytes": 492,
+    "sha256": "453b6eae4ef5a604a2cbd0ebf95a044f8aebab29e70b41f06cf9ca4f84370f3e"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/author_actual_checkpoint.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-input-001/AUTHOR-INPUT.actual.json",
+    "--read-checkpoint",
+    "--convert"
+  ],
+  "started_at_utc": "2026-10-07T00:43:02.970891+00:00",
+  "finished_at_utc": "2026-10-07T00:43:30.212668+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-baseline-author-exec-001/stdout",
+    "bytes": 211,
+    "sha256": "2b8be814c99c5483cf9e4a2e378db01707e27e3e78f2b366862e23024644def9"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-baseline-author-exec-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

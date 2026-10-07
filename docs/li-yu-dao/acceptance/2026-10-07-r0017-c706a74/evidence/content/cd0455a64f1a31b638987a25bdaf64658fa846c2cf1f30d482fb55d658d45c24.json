@@ -1,0 +1,31 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/ROOT-BOUNDARY-CHECK-ARGV.actual.json",
+    "bytes": 736,
+    "sha256": "15bd5bbf6243aad8ab52d886de9a6e704d830623987a242a8e67481c008b8265"
+  },
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/author_closed_boundary.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ROOT-BOUNDARY-INPUTS.actual.json",
+    "--sha256",
+    "3592feec99ea1528dc3826c6303e973123025a65afeac30bee101d6c9ebad21a",
+    "--check"
+  ],
+  "started_at_utc": "2026-10-07T01:08:26.300872+00:00",
+  "finished_at_utc": "2026-10-07T01:08:26.586938+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-boundary-check-exec-001/stdout",
+    "bytes": 1002,
+    "sha256": "d7e8efb1a22f8bb76924edbabbdf073e0551ba3e260da98878b82c9e7be910ba"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-boundary-check-exec-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 14,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\queue-001\\r17-016-formal-begin-confirm.request.json",
+  "request_sha256": "d1fc721a4d0cfcbcf8a7b922b141df884f4b1d410c65aa149c7fbe91ee5c07f9",
+  "started_at_utc": "2026-10-07T00:48:35.628785+00:00",
+  "request_id": "r17-016-formal-begin-confirm",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0014-r17-016-formal-begin-confirm.sdk-result.json",
+  "sdk_result_sha256": "670195aed07250d0aaadda45d5dfc1a44ad88bda9133fa42828d25f38fde4cba",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-evidence\\42abe9df32d34dd1840c23cb5246623d\\0013-decision-confirm_outcome.json",
+      "copy": "0014-r17-016-formal-begin-confirm.native-01.json",
+      "sha256": "f59b914431e6cf01e46b12b1d64e4f364e8ba65c15fb1d8421bf56a1ed8e62af"
+    }
+  ],
+  "finished_at_utc": "2026-10-07T00:48:38.365822+00:00"
+}

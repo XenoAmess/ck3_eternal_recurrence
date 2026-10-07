@@ -1,0 +1,9 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r17-025-normal-exit-confirmation-query",
+  "operation": "call_tool",
+  "name": "ck3_query_normal_exit_context_v1",
+  "arguments": {
+    "expected_revision": 4
+  }
+}

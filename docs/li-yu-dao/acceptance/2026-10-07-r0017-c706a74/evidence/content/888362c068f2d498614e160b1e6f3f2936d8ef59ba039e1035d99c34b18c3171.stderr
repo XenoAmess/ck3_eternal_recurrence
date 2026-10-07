@@ -1,0 +1,6 @@
+test_reproducible_archive_and_fixture_exclusion (test_build_release.BuildTests.test_reproducible_archive_and_fixture_exclusion) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.438s
+
+OK

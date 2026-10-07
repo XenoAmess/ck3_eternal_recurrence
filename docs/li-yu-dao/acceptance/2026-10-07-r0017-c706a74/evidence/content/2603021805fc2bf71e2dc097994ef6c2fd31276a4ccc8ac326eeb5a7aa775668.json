@@ -1,0 +1,106 @@
+{
+  "status": "ACTUAL_GRANT28_METADATA_BOUND_R17_FORMAL_CONSUMER_SOURCE_ONLY",
+  "source_revision": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "source_export": "C:/lr17s1",
+  "actual_metadata": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-sdk-metadata-20261007-001/RESULT.json",
+    "bytes": 7124,
+    "sha256": "31503d1314a6502fdc46890f12859f35e22085872ec448ac338e7b45d982ec26"
+  },
+  "actual_native_qualification": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-sdk-metadata-20261007-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+    "bytes": 980692,
+    "sha256": "71e6eab48fffbccfffda2d6a79f5a661508c38c67944425eff7a3f6ba3a69bd3"
+  },
+  "native_gate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-metadata-r16-boundary-sourceonly-20261007-001/source/metadata/r14_clean_native_gate.py",
+    "bytes": 15644,
+    "sha256": "d3850e5f951a02c5fe2608e78dea8324bd025a00dbee0e60358854cf66d3225e"
+  },
+  "run_root": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/fixture-mirror/run",
+  "attempt_id": "R0017",
+  "root_screen_task": "ck3-lyd-r17-original0240-formal-20261007-001",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/consumer_binding.py",
+      "bytes": 24699,
+      "sha256": "76282168e1694de320068662d28ee9e10c526557ebd8b20bcebb6ab73db57a0e"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/consumer_metadata_semantics.py",
+      "bytes": 7480,
+      "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/consumer_native_build_adapter.py",
+      "bytes": 1720,
+      "sha256": "df88a585d09c4d239525fdbe8c9824f3fc33f1e107226729134b314f0fe29ed0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/grant_metadata_semantics.py",
+      "bytes": 7322,
+      "sha256": "f603ce5395a2a6ca857bce925438e45ad93c51b9da5ca2b4d1224572f894d46b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/persistent_native_mcp_queue_28.py",
+      "bytes": 15201,
+      "sha256": "56e53b3b3be226b5f22538d0bebc19ff5b7b3a7427fbc263d383cbbee8e4b25d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/prepare_fresh_native_profile.py",
+      "bytes": 11185,
+      "sha256": "ff9ea37c0713caea17720125b06837549706b6249b25a78e3df0db0a2e4ae602"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/prepare_mcp_binding.py",
+      "bytes": 2242,
+      "sha256": "0994472bdf02fb07450cd86d76a3f18546113a688e7bb420787415d19b8f4814"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/r14_metadata_common.py",
+      "bytes": 4540,
+      "sha256": "c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/r14_metadata_semantics.py",
+      "bytes": 7480,
+      "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/root_compact_dispatch.py",
+      "bytes": 1497,
+      "sha256": "d7549c16b61a351ba594d615dd0b601c11cf28c3d35a36d7859352208986ca33"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/root_queue_ops.py",
+      "bytes": 5400,
+      "sha256": "ae9fc2e15e6d285a497fef2ee0c4a6ad1dd8103bcf83ab1b14c0b57c2c58cc7f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/runtime_bindings.py",
+      "bytes": 4794,
+      "sha256": "cb79d23140ffcb8b6a587ffec0833b3c64557cc88389e07f14f5cb343b3df33b"
+    }
+  ],
+  "queue_helper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/persistent_native_mcp_queue_28.py",
+    "bytes": 15201,
+    "sha256": "56e53b3b3be226b5f22538d0bebc19ff5b7b3a7427fbc263d383cbbee8e4b25d"
+  },
+  "profile_freezer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/prepare_fresh_native_profile.py",
+    "bytes": 11185,
+    "sha256": "ff9ea37c0713caea17720125b06837549706b6249b25a78e3df0db0a2e4ae602"
+  },
+  "actual_complete_tool_inventory_count": 28,
+  "diagnostic_dispatch_only": false,
+  "actual_process_identity": null,
+  "Client_started": false,
+  "native_attached": false,
+  "main_writes": 0,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "bus_calls": 0,
+  "process_lookups": 0,
+  "formal_acceptance": null
+}

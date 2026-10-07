@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r17-014-formal-begin-select",
+  "operation": "call_tool",
+  "name": "ck3_select_profile_decision_item_v1",
+  "arguments": {
+    "decision_key": "lyd_i3b_begin_decision",
+    "expected_revision": 3
+  }
+}

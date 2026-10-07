@@ -1,0 +1,21 @@
+{
+  "historical_suite_source003_original_record": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/RESULT.fixture.json",
+    "bytes": 86093,
+    "sha256": "fb3fe54d2ae11b5e60a669290d7144389b5a91a2c17348608b6f83794dd805ea"
+  },
+  "historical_record_pointed_to_working_test_path_later_extended_for_source004": true,
+  "original26test_exact_bytes_recovered": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/preserved_test_sources/test_actual_interface.source003.original.py",
+    "bytes": 11998,
+    "sha256": "b75968b1cac09d31ae8b739cd351510fddc85f778afb1a665609fbc987912964"
+  },
+  "recovered_sha_matches_actual_original_execution_record": true,
+  "current28test_exact_bytes": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/preserved_test_sources/test_actual_interface.source004.original.py",
+    "bytes": 13087,
+    "sha256": "5714288d85d4dd3cd18d9f46d7c5fdef6a8aab270ee1a369e298fa356894eb11"
+  },
+  "raw_suite_records_not_rewritten": true,
+  "old26tests_not_reexecuted": true
+}

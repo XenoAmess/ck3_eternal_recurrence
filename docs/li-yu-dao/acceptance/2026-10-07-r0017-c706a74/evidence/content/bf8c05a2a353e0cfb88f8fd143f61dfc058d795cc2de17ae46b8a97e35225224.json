@@ -1,0 +1,51 @@
+{
+  "status": "ACTUAL_REQUESTED_PHASE_COMPLETE",
+  "command": "stop-keeper",
+  "result": {
+    "consumer_closed": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/session-closed.json",
+      "bytes": 1379,
+      "sha256": "e59a9692c4b6af7e060b1858d0a3191c5ffe83810624e3de6bc77eac3625b1df"
+    },
+    "consumer_close_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0026-r17-028-client-close.response.json",
+      "bytes": 474,
+      "sha256": "ae453cd83ac15271eb4c9dea83c6d18899b5b7420a67cd590b9fced0288a2217"
+    },
+    "consumer_close_request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/queue-001/r17-028-client-close.request.json",
+      "bytes": 105,
+      "sha256": "3f618ea7158846f17704160274f8a664a9627bb72ea2902eb59f35969587cf00"
+    },
+    "client_original_handle_exit": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/EXIT-client.actual.json",
+      "bytes": 1784,
+      "sha256": "b9749d83f23994673fe87aabb53d6eb64b3e7c7eed6c99015cb49074422a9099"
+    },
+    "keeper_original_handle_exit": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/EXIT-keeper.actual.json",
+      "bytes": 1650,
+      "sha256": "b0e7a0521cefd7b9ef2728c8a94c31806746a748b0be1f166f853f027494c1cb"
+    },
+    "retained_holder_final": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/FINAL.actual.json",
+      "bytes": 4300,
+      "sha256": "d55a3c5f2ad7809023e3d11ebb7c70bc464f295bb2be81da0f3616c6ac8443ac"
+    },
+    "keeper_final": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0017/FINAL.json",
+      "bytes": 406,
+      "sha256": "a2f41b6d0aea2440912384ce5e80303db5e3cd2139148395ed8f5bb38ac84d5f"
+    },
+    "keeper_last_sequence": 3505,
+    "helpers_closed": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-keeper-stop-20261007-001/HELPERS-CLOSED.actual.json",
+      "bytes": 4044,
+      "sha256": "7d29bc76faf25353a49d5d15ab5f513f7c50f31f3c9f22641718a12a2ef2075a"
+    }
+  },
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "finished_at_utc": "2026-10-07T01:04:21.609943+00:00",
+  "autosave_verified": false
+}

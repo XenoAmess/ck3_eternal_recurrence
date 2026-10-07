@@ -1,0 +1,50 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-formal-argv-source-20261007-004/ROOT-CONTROL-ARGV.actual-inputs.json",
+    "bytes": 1940,
+    "sha256": "e76f89af76b1b436b5d99c21fb59b6aa75d908a5cf06a74b921414f958445413"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-root-formal-argv-source-20261007-004\\compare_initial0240_political_control.py",
+    "--cold-state",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/STATE.json",
+    "--cold-state-sha256",
+    "6a63cbd0ab5de458874a641fa3a0e79d2baa6c06fed6fe9d3689358e09701177",
+    "--cold-input",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/INPUT.exact.json",
+    "--cold-input-sha256",
+    "83768cb5d96aef7b31e93f07cb42d9aaa7f9b04d6d7574a705c6beffda4b713b",
+    "--qualified-native",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/native-qualification/QUALIFIED-NATIVE.json",
+    "--qualified-native-sha256",
+    "5a565aca0fea37f50d3caa6b925100a075241b98542e02274a3eb625f84a4e56",
+    "--baseline-input",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/BASELINE-ORIGINAL0240.actual-input.json",
+    "--baseline-input-sha256",
+    "25bd5256433a8a990b1dfbc68678101faeb2259a966ca1dac9436d78074850c6",
+    "--metadata-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-sdk-metadata-20261007-001/RESULT.json",
+    "--metadata-result-sha256",
+    "31503d1314a6502fdc46890f12859f35e22085872ec448ac338e7b45d982ec26",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\initial0240-political-control-003"
+  ],
+  "started_at_utc": "2026-10-07T00:47:25.979733+00:00",
+  "finished_at_utc": "2026-10-07T00:47:26.123324+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-003/stdout",
+    "bytes": 287,
+    "sha256": "b3f73e4fbd6170c2674876f56b1b491b450c35d61b982dbbbca4c062efab8430"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-003/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

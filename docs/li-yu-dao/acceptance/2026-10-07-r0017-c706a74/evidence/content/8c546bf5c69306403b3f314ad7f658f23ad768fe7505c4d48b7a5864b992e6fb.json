@@ -1,0 +1,68 @@
+{
+  "refs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-sdk-metadata-20261007-001/RESULT.json",
+      "bytes": 7124,
+      "sha256": "31503d1314a6502fdc46890f12859f35e22085872ec448ac338e7b45d982ec26"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-sdk-metadata-20261007-001/ACTUAL-grant28-profile-all-tools.json",
+      "bytes": 29956,
+      "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/INDEX.json",
+      "bytes": 4799,
+      "sha256": "6a6aab2ddfff1fdef3baa430d685182397a640941d847ad1c5391be98a51a527"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/PREPARED.json",
+      "bytes": 7187,
+      "sha256": "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-profile-with-exit-inventory.json",
+      "bytes": 1104,
+      "sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/ready.json",
+      "bytes": 1370,
+      "sha256": "abec4a9dffc50a84cf970c7eb012b41bbacd81fcd010ee23d4bbf3472efd3ff2"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/ROOT-ATTACHED-BINDING.actual.json",
+      "bytes": 784,
+      "sha256": "c63bbbb3524b17b35129b0a6ad17b9c38502583212059ac90d6b90c712b37cbd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0003-r17-005-snapshot.sdk-result.json",
+      "bytes": 38107,
+      "sha256": "961f5bc20dfab761652de86a0efe7106b59ac381e7a3191400bd267046106ef4"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0003-r17-005-snapshot.native-01.json",
+      "bytes": 17920,
+      "sha256": "59612f2809f42460ecb0e6cea8305924731b642903cd364867073c65b5c5083f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/author_formal_request.py",
+      "bytes": 3069,
+      "sha256": "989f222e3913b75191540c12aa9460bb98991370129ecd93f8f88999fd2d4558"
+    }
+  ],
+  "native_session_id_from_original_snapshot": "42abe9df32d34dd1840c23cb5246623d",
+  "Client_session_id": "d0ce9f8302bb4ff8a474e9f091c4f1bd",
+  "fixture_index_only_run_root_relocated": true,
+  "profile_guard_meta_raw_original_refs_unchanged": true,
+  "actual_baseline_source_only": {
+    "actor": 31254,
+    "public_revision": 2,
+    "native_revision": 1,
+    "date_raw": 53144712
+  },
+  "actual_I4_query": null,
+  "actual_newT": null,
+  "game_SDK_calls": 0,
+  "save_body_reads": 0
+}

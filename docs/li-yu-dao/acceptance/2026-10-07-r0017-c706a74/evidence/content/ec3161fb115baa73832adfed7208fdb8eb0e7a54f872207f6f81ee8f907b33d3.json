@@ -1,0 +1,129 @@
+{
+  "schema": "lyd.business-contract-limited-migration-policy.r17-ordering.v3",
+  "old_contract": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-checkpoint-transition-v2-20261006-005/reader/dependencies/frozen_business_contract.json",
+    "bytes": 8755,
+    "sha256": "a95b8f65cf46b731c4556ffb12bbce38d47de61ede8222c383f85209c9730643"
+  },
+  "old_contract_source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "old_runtime_source_head": "19e660105e05395caa6cc95e76c299312ee89d51",
+  "new_actual_source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "allowed_exact_changed_files": {
+    "common/scripted_effects/lyd_c3_head_factory.txt": {
+      "before": {
+        "path": "C:/lr14s1/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+        "bytes": 1993,
+        "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+      },
+      "after": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+        "bytes": 3022,
+        "sha256": "383e121e41bc730d90c478fffe39679b9cd0d5ccf0db95cd4945a15443530141"
+      },
+      "original_complete_AST_sha256": "a89fdf21d80f474379ef89cbc7c0f2cdc2146ebc1c34669e3c7df56d1dc1d6b0",
+      "candidate_complete_AST_sha256": "52327774bfefdfc75248bcadea36d5e668b199d52a09cb414610eb94b29521d7"
+    },
+    "common/scripted_effects/lyd_i3b_setup_effects.txt": {
+      "before": {
+        "path": "C:/lr14s1/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "bytes": 6448,
+        "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/afterclose-static-origin-overlap-and-i4-order-20261007-001/origin-numeric-then-preview/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "bytes": 6758,
+        "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+      },
+      "original_complete_AST_sha256": "1d396e27a1ee46a46fbf7970ef1ae201ed71ad18e261421f632366546eb9cd29",
+      "candidate_complete_AST_sha256": "2222fb13dfbe3809853e6f329f2299869ac727dc9841fd04883e42cfb3616547"
+    }
+  },
+  "unchanged_file_count": 67,
+  "business_file_count": 69,
+  "production_file_count": 70,
+  "descriptor": {
+    "path": "descriptor.mod",
+    "sha256": "20f413d234c3c42c3f797c2cad72995ea7d41debd583dc31e7a6d326f769383b",
+    "size": 156
+  },
+  "parser": {
+    "path": "C:/lr14s1/tools/extract_auto_upgrade_buildings.py",
+    "bytes": 15976,
+    "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+  },
+  "source_reviews": {
+    "factory": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/AFTERCLOSE-MANIFEST.json",
+      "bytes": 3835,
+      "sha256": "87845f078cffd5483d14692efede8a117e47da3eac13e398a5f24c1374952f82"
+    },
+    "factory_focused": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r14-factory-samefaith-law-diagnostic-20261007-001/candidate-003/FOCUSED-003.json",
+      "bytes": 1386,
+      "sha256": "b5d7e4c329eb06a621e4d99728885b0bd74e74f5a2c44aca0e2e8625280f9686"
+    },
+    "preview": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/afterclose-static-origin-overlap-and-i4-order-20261007-001/OVERLAP-AND-APPLY.actual.json",
+      "bytes": 22881,
+      "sha256": "896d6ae5da7f68d1adf07cd3c65215cd77e09712172305a0604b88184e4ae5a1"
+    },
+    "ROOT_final_factory_review": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-factory-positive-sentinel-review-20261007-001/candidate-004/THREE-TOKEN-AND-AST-PROOF.actual.json",
+      "bytes": 2672,
+      "sha256": "455a32e109641b39c60ad950f5d207862dfae88f7538d15e47bb58a6508d988e"
+    }
+  },
+  "future_actual_registry": null,
+  "future_actual_native_build": null,
+  "old_R14_failure_credit": null,
+  "native_acceptance_credit": null,
+  "old_production_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-root-head-export-20261006-001/production/mod_li_yu_dao.manifest.json",
+    "bytes": 12940,
+    "sha256": "edc43d98e2332bd4e1388177fb49da8d6f5adff1540aa0e7eaa442aae90c44aa"
+  },
+  "supersedes_source_only_policy004": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r15-versioned-business-seam-author-20261007-004/reader/dependencies/business_migration_policy_v2.json",
+    "bytes": 3655,
+    "sha256": "769717652c0e607bff19199618f008778db79ce1d0ac8f4bcb49af784c145f10"
+  },
+  "ordering_revision": {
+    "only_delta_from_policy005": "Move Faith religious_head assignment before holder/resolve; split six unchanged marker/property rows from unchanged holder row. All values and all other AST entries exact.",
+    "prior_policy": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/reader/dependencies/prior_policy005/business_migration_policy_v2.json",
+      "bytes": 4517,
+      "sha256": "e0900b603ba818f6160545c07c54cf310c26ef7af5bb9d2f0080b5b385790113"
+    },
+    "prior_factory": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/reader/dependencies/migration_originals/lyd_c3_head_factory.policy005.txt",
+      "bytes": 2984,
+      "sha256": "6ad85b8f73a48077befa78b68b51c7930177d93b537904c905b6c9a704ad1d66"
+    },
+    "prior_factory_complete_AST_sha256": "d4a12f09e9c38e37820394dcba2a12fd24365f5cdf3c1a35d00adfc3f19aa8c5",
+    "ROOT_review": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-07-r0017-factory-ordering-source/REPORT.md",
+      "bytes": 2694,
+      "sha256": "d4f6712612fecb42bdcd7fd5516b0402e835a3e3c4cc4f0f253b31e949ad2b86"
+    },
+    "ROOT_source": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-07-r0017-factory-ordering-source/evidence/SOURCE.actual.json",
+      "bytes": 971,
+      "sha256": "6f1e012a0f2546bbd0d650e6904bdabdcc50bc80d6ab77681fd2d4f372dcc3df"
+    },
+    "ROOT_apply": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-07-r0017-factory-ordering-source/evidence/ROOT-APPLY.actual.json",
+      "bytes": 2241,
+      "sha256": "6dd273f09293e15a178973eafed11f8bf8379126809040e5b601b5e040031817"
+    },
+    "actual_export": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-head-export-20261007-001/REPORT.json",
+      "bytes": 23120,
+      "sha256": "523fc4e66d06cd5cefb467c7f26464e4138ec91618ef1ff75793fce40315f9de"
+    },
+    "unchanged_from_policy005_file_count": 68,
+    "runtime_business_acceptance": null,
+    "future_metadata": null,
+    "future_profile": null,
+    "future_native_session": null
+  }
+}

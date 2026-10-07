@@ -1,0 +1,19 @@
+--- SOURCE002/author_i4_arguments.py
++++ SOURCE004/author_i4_arguments.py
+@@ -14,7 +14,7 @@
+     r=ref(path);need(r['sha256']==digest,'Actual bytes differ: '+r['path']);return json.loads(Path(path).read_bytes()),r
+ def exact_descriptor(row):
+     need(type(row) is dict and set(row)=={'path','bytes','sha256'},'Actual exact ref3 required')
+-    need(ref(row['path'])==row,'Actual descriptor differs');return json.loads(Path(row['path']).read_bytes())
++    actual=ref(row['path']);need(Path(actual['path']).resolve()==Path(row['path']).resolve() and actual['bytes']==row['bytes'] and actual['sha256']==row['sha256'],'Actual descriptor differs');return json.loads(Path(row['path']).read_bytes())
+ def original_sdk(path,digest):
+     wrapper,r=read(path,digest);need(not wrapper.get('isError'),'SDK error is not an action input');candidates=[]
+     for x in wrapper.get('content',[]):
+@@ -120,6 +120,7 @@
+         c=q['current_event_window_context'];need(a.event_definition==c['event_definition_key'],'Exact current definition differs')
+         need(c['root_scope']['typed_identity']['character_id']==actor,'Actual event root differs')
+         need(type(c['current_event_instance_id']) is int and c['current_event_instance_id']>=0,'Actual event instance required')
++        need(type(s.get('active_event')) is dict and s['active_event'].get('instance_id')==c['current_event_instance_id'],'Fresh snapshot event instance differs')
+         args['event_instance_id']=c['current_event_instance_id'];tool='ck3_query_profile_event_window_v1'
+         if mode=='select-event':
+             need(type(a.native_index) is int and a.native_index>=0 and a.source_option_key,'ROOT explicit key/index review required')

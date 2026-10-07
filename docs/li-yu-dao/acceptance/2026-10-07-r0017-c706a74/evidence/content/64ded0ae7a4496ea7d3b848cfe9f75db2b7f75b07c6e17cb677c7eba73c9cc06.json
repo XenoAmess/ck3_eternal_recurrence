@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "--method",
+    "GET",
+    "--paginate",
+    "--slurp",
+    "repos/XenoAmess/ck3_eternal_recurrence/actions/runs?head_sha=c706a74f9d00dd842b7edce8901fb3417344fd9c&per_page=100"
+  ],
+  "method": "GET",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/actions-runs.stdout",
+    "bytes": 26529,
+    "sha256": "e4b766ad741f7e3870e300f644365334ef9ee0495c1648ec8bd720fe57b1e7b4"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/actions-runs.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "finished_at_utc": "2026-10-07T00:28:31.148754+00:00"
+}

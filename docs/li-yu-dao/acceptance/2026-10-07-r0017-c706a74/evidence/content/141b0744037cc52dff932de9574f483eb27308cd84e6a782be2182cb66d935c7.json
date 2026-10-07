@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 18,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\queue-001\\r17-020-before-normal-exit-snapshot.request.json",
+  "request_sha256": "e64a765de1e80477335d808a368279cfa8c3e2195b4230a452fea0270e278ac8",
+  "started_at_utc": "2026-10-07T00:57:45.187012+00:00",
+  "request_id": "r17-020-before-normal-exit-snapshot",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0018-r17-020-before-normal-exit-snapshot.sdk-result.json",
+  "sdk_result_sha256": "c49faba50e89823a7ced01a952e5345dd8453e4d73bc789a3d83d10dcd3d8d72",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-evidence\\42abe9df32d34dd1840c23cb5246623d\\0017-snapshot.json",
+      "copy": "0018-r17-020-before-normal-exit-snapshot.native-01.json",
+      "sha256": "88e293e369c2328d1a3d5c2a4fae9ffae61506be899c237685ad7582f6a83523"
+    }
+  ],
+  "finished_at_utc": "2026-10-07T00:57:46.397038+00:00"
+}

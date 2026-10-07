@@ -1,0 +1,7 @@
+{
+  "chunk_id": "5ac40c",
+  "wall_time_seconds": 1.3049418,
+  "exit_code": 0,
+  "original_token_count": 194,
+  "output": "{\"INDEX\": {\"path\": \"C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/INDEX.json\", \"bytes\": 3931, \"sha256\": \"b75dfb951f3869d9281bf849a5fe32b829cae2574699549dee9935e6accdb64b\"}, \"patch\": {\"path\": \"C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/CANDIDATE.incremental.patch\", \"bytes\": 520, \"sha256\": \"08147ca43d97403d79d408723010d6d17ad9793e2b794b4746ea61d4a97d8bbd\"}, \"focused\": {\"path\": \"C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/OFFLINE-BRACE-MODEL.actual.json\", \"bytes\": 14135, \"sha256\": \"19056d08b6aa360c2ddeeb07eced85925c232a5c35983fc0cb4afcde200047e9\"}, \"source_model_checks_passed\": 23, \"apply_check_exit_code\": 0, \"main_changed\": false}\r\n"
+}

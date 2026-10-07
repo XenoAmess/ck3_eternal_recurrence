@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 17,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\queue-001\\r17-019-after-wait-timeout-snapshot.request.json",
+  "request_sha256": "7d475ba0e125a12b6130995e0eff946fd66af7cf7f101beab2f273b94115f40d",
+  "started_at_utc": "2026-10-07T00:50:14.992515+00:00",
+  "request_id": "r17-019-after-wait-timeout-snapshot",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0017-r17-019-after-wait-timeout-snapshot.sdk-result.json",
+  "sdk_result_sha256": "ca2378b7b29f1c7c627f6f95d207b81ef68ec60b98dc88bc39a02b5e55ef1661",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-evidence\\42abe9df32d34dd1840c23cb5246623d\\0016-snapshot.json",
+      "copy": "0017-r17-019-after-wait-timeout-snapshot.native-01.json",
+      "sha256": "ab1ea551514e719ebf51fb517decffd2c59fa66f288e4a54588267c61401521a"
+    }
+  ],
+  "finished_at_utc": "2026-10-07T00:50:16.212855+00:00"
+}

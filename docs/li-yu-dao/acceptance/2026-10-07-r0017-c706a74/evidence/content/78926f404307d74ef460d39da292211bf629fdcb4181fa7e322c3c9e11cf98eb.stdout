@@ -1,0 +1,8 @@
+usage: verify_previous_boundary.py [-h] --review REVIEW --sha256 SHA256
+
+Genuine R17 v3 closure source; no SDK/game/signals/lease/process lookup.
+
+options:
+  -h, --help       show this help message and exit
+  --review REVIEW
+  --sha256 SHA256

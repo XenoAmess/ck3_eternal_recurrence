@@ -1,0 +1,95 @@
+{
+  "inputs": {
+    "original_handle_observation": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0025-r17-027-normal-exit-observe.sdk-result.json",
+      "bytes": 6923,
+      "sha256": "52058e9e0490252e6cd9ee43bb64b38492840d4a12c2f4c1d9b001944abe5894"
+    },
+    "original_native_observation": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0025-r17-027-normal-exit-observe.native-01.json",
+      "bytes": 3121,
+      "sha256": "99b840c43c4163229835f4597eb3943cb1419ca1c32d895fff21d59281c91e3d"
+    },
+    "process_absence": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ACTUAL-PROCESS-ABSENCE.json",
+      "bytes": 3074,
+      "sha256": "8a3539de389426b7c276f7266a48e4722debbacec36f7535f64a5cb005c72345"
+    },
+    "release_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-screen-release-20261007-001/RELEASE.actual.json",
+      "bytes": 1311,
+      "sha256": "98ef6ab47ccd68d502f891407a94aff8dd0a6bd7cc01d5f12ae2242ae0e868b2"
+    },
+    "after_list": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-screen-release-20261007-001/BUS-AFTER-RELEASE.parsed.json",
+      "bytes": 102966,
+      "sha256": "0cf746a0912cade4586e067f61d887f56c3d5e7ff7930bc1e27ea2b96f6e0242"
+    },
+    "original_holder_process_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-original-exec-completion-20261007-001/HOLDER-ORIGINAL-EXEC.actual.json",
+      "bytes": 567,
+      "sha256": "ee35cb770a5d4ba57aba75e3984c6d9fc8c455fb2bd99c755b60aefc95bae594"
+    },
+    "original_keeper_process_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-original-exec-completion-20261007-001/KEEPER-ORIGINAL-EXEC.actual.json",
+      "bytes": 563,
+      "sha256": "8fa3d26a4a96809089c180198d1cea83f5962828d83347fdfd338f74ad22341e"
+    }
+  },
+  "supporting_actual_refs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-client-execution-20261007-001/RESULT.actual.json",
+      "bytes": 1609,
+      "sha256": "062603e7e6b932953e2100693fa8690431a732241d0d3dfc12d390b2a2e20eb8"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-keeper-execution-20261007-001/RESULT.actual.json",
+      "bytes": 1440,
+      "sha256": "f8dc548cb9f065b00f377f4459f8abc94562d59b01d27778d12dcb3cd5d55c29"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-holder-execution-002/RESULT.actual.json",
+      "bytes": 1434,
+      "sha256": "4f09996fdd934b1e5092ecacca3ae808233e8e1613686aaf4148774f1cc06274"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/EXIT-client.actual.json",
+      "bytes": 1784,
+      "sha256": "b9749d83f23994673fe87aabb53d6eb64b3e7c7eed6c99015cb49074422a9099"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/EXIT-keeper.actual.json",
+      "bytes": 1650,
+      "sha256": "b0e7a0521cefd7b9ef2728c8a94c31806746a748b0be1f166f853f027494c1cb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/FINAL.actual.json",
+      "bytes": 4300,
+      "sha256": "d55a3c5f2ad7809023e3d11ebb7c70bc464f295bb2be81da0f3616c6ac8443ac"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0017/FINAL.json",
+      "bytes": 406,
+      "sha256": "a2f41b6d0aea2440912384ce5e80303db5e3cd2139148395ed8f5bb38ac84d5f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/session-closed.json",
+      "bytes": 1379,
+      "sha256": "e59a9692c4b6af7e060b1858d0a3191c5ffe83810624e3de6bc77eac3625b1df"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0024-r17-026-normal-exit-confirm-desktop.native-01.json",
+      "bytes": 190159,
+      "sha256": "1d1d27800224c5ae19d6f68d35c29b48cf3334349bf70524814c7619e2deff24"
+    }
+  ],
+  "typed_normal_exit_observed": false,
+  "terminal_native_ack_observed": false,
+  "normal_exit_callback_verified": false,
+  "game_original_HANDLE_exit0_observed": true,
+  "source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "business_GREEN": false,
+  "formal_PASS": null,
+  "autosave_verified": false,
+  "new_boundary_authored_here": false
+}

@@ -1,0 +1,48 @@
+{
+  "author_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/author_closed_boundary.py",
+    "bytes": 2970,
+    "sha256": "1b94208e7d2c4729209927663d5024687836e0c2cd2a92c3e2153084413b11f7"
+  },
+  "verifier_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/verify_previous_boundary.py",
+    "bytes": 12887,
+    "sha256": "848239426fed443590f6902fc90c3cf329b50e88e99bca0656c52a037f051bfe"
+  },
+  "guard_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/guarded_helper_close.py",
+    "bytes": 26774,
+    "sha256": "2250d30bc5df4e7ed29434afdd002da1fe7525b225e266695f1ae87ef29f9be0"
+  },
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ROOT-BOUNDARY-INPUTS.actual.json",
+    "bytes": 1827,
+    "sha256": "3592feec99ea1528dc3826c6303e973123025a65afeac30bee101d6c9ebad21a"
+  },
+  "check": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/author_closed_boundary.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ROOT-BOUNDARY-INPUTS.actual.json",
+    "--sha256",
+    "3592feec99ea1528dc3826c6303e973123025a65afeac30bee101d6c9ebad21a",
+    "--check"
+  ],
+  "create": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/author_closed_boundary.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-postrelease-process-absence-20261007-001/ROOT-BOUNDARY-INPUTS.actual.json",
+    "--sha256",
+    "3592feec99ea1528dc3826c6303e973123025a65afeac30bee101d6c9ebad21a",
+    "--create",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-closed-boundary-20261007-001"
+  ],
+  "root_execution_only": true,
+  "executed_by_this_author": false,
+  "future_actual_review_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-actual-closed-boundary-20261007-001\\PREVIOUS-BOUNDARY.actual.json",
+  "future_actual_review_ref": null
+}

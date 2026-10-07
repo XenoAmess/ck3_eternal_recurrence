@@ -1,0 +1,35 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-helper-identity-holder-inputs-20261007-001/HOLDER-ARGV.json",
+    "bytes": 556,
+    "sha256": "b5ea053983687a59b3d89197f122239d8355848dc86ee5fb08a522c13f76430a"
+  },
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/retain_helper_handles.py",
+    "hold",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-helper-identity-holder-inputs-20261007-001/HOLDER-REQUEST.actual.json",
+    "--sha256",
+    "5d756bccadd2d945cbdb7943c9bad691e91d94679ae09020bad76aedb7c7e062",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001"
+  ],
+  "started_at_utc": "2026-10-07T00:42:46.162000+00:00",
+  "finished_at_utc": "2026-10-07T01:04:21.325279+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-holder-execution-002/stdout",
+    "bytes": 523,
+    "sha256": "daa03f154d9f118e174324cc16e2c95129fad2a7f4293d21768e12336bbc6457"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-holder-execution-002/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

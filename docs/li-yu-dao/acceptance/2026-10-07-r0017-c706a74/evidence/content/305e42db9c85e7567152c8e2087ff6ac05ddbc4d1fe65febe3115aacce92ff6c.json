@@ -1,0 +1,94 @@
+{
+  "status": "PASS_SOURCE_CONTROL_FLOW_MODEL_ONLY",
+  "checks": [
+    {
+      "case": "original_unmatched_event",
+      "check": "tail_reached",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "case": "original_unmatched_event",
+      "check": "response_site_count",
+      "expected": 0,
+      "actual": 0,
+      "passed": true
+    },
+    {
+      "case": "candidate_unmatched_event",
+      "check": "tail_reached",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "case": "candidate_unmatched_event",
+      "check": "response_site_count",
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "case": "original_already_handled_normal_exit",
+      "check": "tail_reached",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "case": "original_already_handled_normal_exit",
+      "check": "response_site_count",
+      "expected": 2,
+      "actual": 2,
+      "passed": true
+    },
+    {
+      "case": "candidate_already_handled_normal_exit",
+      "check": "tail_reached",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "case": "candidate_already_handled_normal_exit",
+      "check": "response_site_count",
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    }
+  ],
+  "passed": 8,
+  "basis_source": {
+    "path": "C:/lr17s1/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "bytes": 1441365,
+    "sha256": "666a2d3673abfe443f5fba152ec0fc51b11fb8a0b217891b9db069a712e98adf"
+  },
+  "candidate_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/bridge.cpp.candidate",
+    "bytes": 1441363,
+    "sha256": "4669b0921231ca69537cbe6ba4368868a950ec745965fc88a6095a7faad86e06"
+  },
+  "existing_patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/CANDIDATE.incremental.patch",
+    "bytes": 520,
+    "sha256": "08147ca43d97403d79d408723010d6d17ad9793e2b794b4746ea61d4a97d8bbd"
+  },
+  "actual_enabled_flags": [
+    "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1",
+    "XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1",
+    "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1",
+    "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1",
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1",
+    "XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1",
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1",
+    "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1",
+    "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1"
+  ],
+  "actual_native_callbacks_executed": 0,
+  "C++_compiled": false,
+  "extra_production_hunks_needed": false
+}

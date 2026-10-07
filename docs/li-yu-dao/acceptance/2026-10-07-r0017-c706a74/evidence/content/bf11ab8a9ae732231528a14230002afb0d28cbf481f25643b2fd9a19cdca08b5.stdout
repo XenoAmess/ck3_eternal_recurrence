@@ -1,0 +1,42 @@
+usage: author_i4_arguments.py [-h] --consumer-source CONSUMER_SOURCE
+                              --consumer-index-sha256 CONSUMER_INDEX_SHA256
+                              --request-author REQUEST_AUTHOR
+                              --request-author-sha256 REQUEST_AUTHOR_SHA256
+                              --prepared PREPARED
+                              --prepared-sha256 PREPARED_SHA256
+                              --session-id SESSION_ID
+                              --snapshot-sdk SNAPSHOT_SDK
+                              --snapshot-sdk-sha256 SNAPSHOT_SDK_SHA256
+                              [--query-sdk QUERY_SDK]
+                              [--query-sdk-sha256 QUERY_SDK_SHA256]
+                              --mode {snapshot,open-decisions,query-decision,select-decision,confirm-decision,query-event,select-event,save,G2,G3,simulation}
+                              [--decision-key {lyd_c2_cancel_proposal_decision,lyd_c2_propose_detach_decision,lyd_change_school_decision,lyd_study_decision}]
+                              [--event-definition EVENT_DEFINITION]
+                              [--source-option-key SOURCE_OPTION_KEY]
+                              [--native-index NATIVE_INDEX]
+                              [--simulation-action {pause,resume,speed_5}]
+                              --output OUTPUT
+
+Write one ROOT-reviewed I4 arguments file from fresh original SDK receipts.
+Never enqueue.
+
+options:
+  -h, --help            show this help message and exit
+  --consumer-source CONSUMER_SOURCE
+  --consumer-index-sha256 CONSUMER_INDEX_SHA256
+  --request-author REQUEST_AUTHOR
+  --request-author-sha256 REQUEST_AUTHOR_SHA256
+  --prepared PREPARED
+  --prepared-sha256 PREPARED_SHA256
+  --session-id SESSION_ID
+  --snapshot-sdk SNAPSHOT_SDK
+  --snapshot-sdk-sha256 SNAPSHOT_SDK_SHA256
+  --query-sdk QUERY_SDK
+  --query-sdk-sha256 QUERY_SDK_SHA256
+  --mode {snapshot,open-decisions,query-decision,select-decision,confirm-decision,query-event,select-event,save,G2,G3,simulation}
+  --decision-key {lyd_c2_cancel_proposal_decision,lyd_c2_propose_detach_decision,lyd_change_school_decision,lyd_study_decision}
+  --event-definition EVENT_DEFINITION
+  --source-option-key SOURCE_OPTION_KEY
+  --native-index NATIVE_INDEX
+  --simulation-action {pause,resume,speed_5}
+  --output OUTPUT

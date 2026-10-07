@@ -1,0 +1,2005 @@
+{
+  "status": "PRE_CLOSE_EXISTING_IMMUTABLE_BYTES_PRESERVED_FUTURE_BOUNDARY_PENDING",
+  "source_HEAD": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "run_root": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017",
+  "recorded_at_utc": "2026-10-07T00:57:16.705206+00:00",
+  "files": [
+    {
+      "category": "actual_initial_baseline_no_formal_credit_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/CHECKPOINT-TRANSITION.actual.json",
+        "bytes": 32856,
+        "sha256": "e5c6238dfbd71c63f57f9cd8323958272900e5c32703535f7ed79bf9d7b33738"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e5c6238dfbd71c63f57f9cd8323958272900e5c32703535f7ed79bf9d7b33738.json",
+        "bytes": 32856,
+        "sha256": "e5c6238dfbd71c63f57f9cd8323958272900e5c32703535f7ed79bf9d7b33738"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_initial_baseline_no_formal_credit_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/CONVERSION-REQUEST.actual-or-pending.json",
+        "bytes": 10234,
+        "sha256": "86d99fb496882eebeb9febfb8150c8553156dfd247c8b84168ca426e4fdf3357"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/86d99fb496882eebeb9febfb8150c8553156dfd247c8b84168ca426e4fdf3357.json",
+        "bytes": 10234,
+        "sha256": "86d99fb496882eebeb9febfb8150c8553156dfd247c8b84168ca426e4fdf3357"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_initial_baseline_no_formal_credit_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/INPUT.exact.json",
+        "bytes": 2973,
+        "sha256": "83768cb5d96aef7b31e93f07cb42d9aaa7f9b04d6d7574a705c6beffda4b713b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/83768cb5d96aef7b31e93f07cb42d9aaa7f9b04d6d7574a705c6beffda4b713b.json",
+        "bytes": 2973,
+        "sha256": "83768cb5d96aef7b31e93f07cb42d9aaa7f9b04d6d7574a705c6beffda4b713b"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_initial_baseline_no_formal_credit_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/NATIVE-CLEAN-QUALIFICATION.actual.json",
+        "bytes": 980692,
+        "sha256": "71e6eab48fffbccfffda2d6a79f5a661508c38c67944425eff7a3f6ba3a69bd3"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/71e6eab48fffbccfffda2d6a79f5a661508c38c67944425eff7a3f6ba3a69bd3.json",
+        "bytes": 980692,
+        "sha256": "71e6eab48fffbccfffda2d6a79f5a661508c38c67944425eff7a3f6ba3a69bd3"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_initial_baseline_no_formal_credit_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/native-qualification/QUALIFIED-NATIVE.json",
+        "bytes": 93422,
+        "sha256": "5a565aca0fea37f50d3caa6b925100a075241b98542e02274a3eb625f84a4e56"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/5a565aca0fea37f50d3caa6b925100a075241b98542e02274a3eb625f84a4e56.json",
+        "bytes": 93422,
+        "sha256": "5a565aca0fea37f50d3caa6b925100a075241b98542e02274a3eb625f84a4e56"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_initial_baseline_no_formal_credit_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/PROVENANCE.actual-or-pending.json",
+        "bytes": 10943,
+        "sha256": "49a500ba6ec16c40ee25545ca60e87f1e46e9f47ddcd7d8176660de7905b7009"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/49a500ba6ec16c40ee25545ca60e87f1e46e9f47ddcd7d8176660de7905b7009.json",
+        "bytes": 10943,
+        "sha256": "49a500ba6ec16c40ee25545ca60e87f1e46e9f47ddcd7d8176660de7905b7009"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_initial_baseline_no_formal_credit_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/RESULT.json",
+        "bytes": 1040145,
+        "sha256": "7f5054124f50326f8a465c10b1bd3ffecb79cec760f5b3b8d71a469049f7e2d3"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/7f5054124f50326f8a465c10b1bd3ffecb79cec760f5b3b8d71a469049f7e2d3.json",
+        "bytes": 1040145,
+        "sha256": "7f5054124f50326f8a465c10b1bd3ffecb79cec760f5b3b8d71a469049f7e2d3"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_initial_baseline_no_formal_credit_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/STATE.json",
+        "bytes": 1317829,
+        "sha256": "6a63cbd0ab5de458874a641fa3a0e79d2baa6c06fed6fe9d3689358e09701177"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/6a63cbd0ab5de458874a641fa3a0e79d2baa6c06fed6fe9d3689358e09701177.json",
+        "bytes": 1317829,
+        "sha256": "6a63cbd0ab5de458874a641fa3a0e79d2baa6c06fed6fe9d3689358e09701177"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_initial_baseline_no_formal_credit_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-001/TYPED-PROTECTION.json",
+        "bytes": 966756,
+        "sha256": "589bd95c3b6ed58a731291b206a8ae9ea17b5c4df3b0f9faa4a4aea7ce6043c4"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/589bd95c3b6ed58a731291b206a8ae9ea17b5c4df3b0f9faa4a4aea7ce6043c4.json",
+        "bytes": 966756,
+        "sha256": "589bd95c3b6ed58a731291b206a8ae9ea17b5c4df3b0f9faa4a4aea7ce6043c4"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_exec_001",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-001/RESULT.actual.json",
+        "bytes": 2406,
+        "sha256": "0b4d43b58e49ad410580e92ed03c4cef168baa18891f995cc5f453964fde18aa"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/0b4d43b58e49ad410580e92ed03c4cef168baa18891f995cc5f453964fde18aa.json",
+        "bytes": 2406,
+        "sha256": "0b4d43b58e49ad410580e92ed03c4cef168baa18891f995cc5f453964fde18aa"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_exec_001",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-001/stderr",
+        "bytes": 1533,
+        "sha256": "5b0e9d8c90f8f6a9045ffa16df6f0f72e3c4c1df6801c5064afd8f3a1cb1cd45"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/5b0e9d8c90f8f6a9045ffa16df6f0f72e3c4c1df6801c5064afd8f3a1cb1cd45",
+        "bytes": 1533,
+        "sha256": "5b0e9d8c90f8f6a9045ffa16df6f0f72e3c4c1df6801c5064afd8f3a1cb1cd45"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_exec_001",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-001/stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_attempt_002",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/initial0240-political-control-002/REPORT.json",
+        "bytes": 26160,
+        "sha256": "492a73e73de62687dda8e16d744fa721fdd6f0d7e7400a2589109a0d0a2761b0"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/492a73e73de62687dda8e16d744fa721fdd6f0d7e7400a2589109a0d0a2761b0.json",
+        "bytes": 26160,
+        "sha256": "492a73e73de62687dda8e16d744fa721fdd6f0d7e7400a2589109a0d0a2761b0"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_exec_002",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-002/RESULT.actual.json",
+        "bytes": 2390,
+        "sha256": "f265566bb95f1ea4f66c0261b8ae5a402d973ddab2f62ae4cfb636913f51b835"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/f265566bb95f1ea4f66c0261b8ae5a402d973ddab2f62ae4cfb636913f51b835.json",
+        "bytes": 2390,
+        "sha256": "f265566bb95f1ea4f66c0261b8ae5a402d973ddab2f62ae4cfb636913f51b835"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_exec_002",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-002/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_exec_002",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-002/stdout",
+        "bytes": 288,
+        "sha256": "928429a8f7f0b114e82669d44ea864657ecf8ca7b400502ff1d282f9f6165add"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/928429a8f7f0b114e82669d44ea864657ecf8ca7b400502ff1d282f9f6165add",
+        "bytes": 288,
+        "sha256": "928429a8f7f0b114e82669d44ea864657ecf8ca7b400502ff1d282f9f6165add"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_attempt_003",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/initial0240-political-control-003/REPORT.json",
+        "bytes": 26156,
+        "sha256": "ca6aec85457810f7fddee977201df2c916603db18b826e3780c53bea5b35618f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/ca6aec85457810f7fddee977201df2c916603db18b826e3780c53bea5b35618f.json",
+        "bytes": 26156,
+        "sha256": "ca6aec85457810f7fddee977201df2c916603db18b826e3780c53bea5b35618f"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_exec_003",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-003/RESULT.actual.json",
+        "bytes": 2421,
+        "sha256": "96e66984cbc259d844de0a8e481471fa8e799805ef68a1574d5436021b886d15"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/96e66984cbc259d844de0a8e481471fa8e799805ef68a1574d5436021b886d15.json",
+        "bytes": 2421,
+        "sha256": "96e66984cbc259d844de0a8e481471fa8e799805ef68a1574d5436021b886d15"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_exec_003",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-003/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "political_comparator_original_exec_003",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-initial0240-control-exec-003/stdout",
+        "bytes": 287,
+        "sha256": "b3f73e4fbd6170c2674876f56b1b491b450c35d61b982dbbbca4c062efab8430"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/b3f73e4fbd6170c2674876f56b1b491b450c35d61b982dbbbca4c062efab8430",
+        "bytes": 287,
+        "sha256": "b3f73e4fbd6170c2674876f56b1b491b450c35d61b982dbbbca4c062efab8430"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-baseline-author-exec-001/RESULT.actual.json",
+        "bytes": 1291,
+        "sha256": "096dcb3944a4342cefd71f2e93c3fb1176822b8c2111af76fa43802b2d3646df"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/096dcb3944a4342cefd71f2e93c3fb1176822b8c2111af76fa43802b2d3646df.json",
+        "bytes": 1291,
+        "sha256": "096dcb3944a4342cefd71f2e93c3fb1176822b8c2111af76fa43802b2d3646df"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-baseline-author-exec-001/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-baseline-author-exec-001/stdout",
+        "bytes": 211,
+        "sha256": "2b8be814c99c5483cf9e4a2e378db01707e27e3e78f2b366862e23024644def9"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/2b8be814c99c5483cf9e4a2e378db01707e27e3e78f2b366862e23024644def9",
+        "bytes": 211,
+        "sha256": "2b8be814c99c5483cf9e4a2e378db01707e27e3e78f2b366862e23024644def9"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-baseline-materialize-exec-001/RESULT.actual.json",
+        "bytes": 1432,
+        "sha256": "0b22b27720de77d2a6b5127b5ef067c9d0601f58e47a6e4dc5d033d40ae8095b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/0b22b27720de77d2a6b5127b5ef067c9d0601f58e47a6e4dc5d033d40ae8095b.json",
+        "bytes": 1432,
+        "sha256": "0b22b27720de77d2a6b5127b5ef067c9d0601f58e47a6e4dc5d033d40ae8095b"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-baseline-materialize-exec-001/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-baseline-materialize-exec-001/stdout",
+        "bytes": 751,
+        "sha256": "35a150532b4be92e20bde13f1418bc82eef9a9272a1d8788e1f6633ab36d3347"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/35a150532b4be92e20bde13f1418bc82eef9a9272a1d8788e1f6633ab36d3347",
+        "bytes": 751,
+        "sha256": "35a150532b4be92e20bde13f1418bc82eef9a9272a1d8788e1f6633ab36d3347"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/ARGUMENTS.actual.json",
+        "bytes": 79,
+        "sha256": "3b00218265e6fa5909f17729d4653638fad293d17f15a9b88c1a7af86b2ba83d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/3b00218265e6fa5909f17729d4653638fad293d17f15a9b88c1a7af86b2ba83d.json",
+        "bytes": 79,
+        "sha256": "3b00218265e6fa5909f17729d4653638fad293d17f15a9b88c1a7af86b2ba83d"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/AUTHOR-ARGV.json",
+        "bytes": 3698,
+        "sha256": "3211bb5e65665b657d9d764b22c8cbf224dd80267f1bd837a4032496f47d980d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/3211bb5e65665b657d9d764b22c8cbf224dd80267f1bd837a4032496f47d980d.json",
+        "bytes": 3698,
+        "sha256": "3211bb5e65665b657d9d764b22c8cbf224dd80267f1bd837a4032496f47d980d"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/author.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/author.stdout",
+        "bytes": 731,
+        "sha256": "17c2df7a626bbe5ecf2f1371262ee211d8b9fd642d39c3b7d909640de899f471"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/17c2df7a626bbe5ecf2f1371262ee211d8b9fd642d39c3b7d909640de899f471.stdout",
+        "bytes": 731,
+        "sha256": "17c2df7a626bbe5ecf2f1371262ee211d8b9fd642d39c3b7d909640de899f471"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/ENQUEUE-ARGV.json",
+        "bytes": 3298,
+        "sha256": "5a8264162f9b4e01053d69caca77eab5deee3cce0730ace6e34d91949332e395"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/5a8264162f9b4e01053d69caca77eab5deee3cce0730ace6e34d91949332e395.json",
+        "bytes": 3298,
+        "sha256": "5a8264162f9b4e01053d69caca77eab5deee3cce0730ace6e34d91949332e395"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/enqueue.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/enqueue.stdout",
+        "bytes": 277,
+        "sha256": "c42649ac311738bd7fd24759be1d085fc79f5fec3514412f78029c6c2d3fd89d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/c42649ac311738bd7fd24759be1d085fc79f5fec3514412f78029c6c2d3fd89d.stdout",
+        "bytes": 277,
+        "sha256": "c42649ac311738bd7fd24759be1d085fc79f5fec3514412f78029c6c2d3fd89d"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/REQUEST.actual.json",
+        "bytes": 261,
+        "sha256": "2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7.json",
+        "bytes": 261,
+        "sha256": "2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/RESULT.actual.json",
+        "bytes": 5337,
+        "sha256": "3795d4756bdcd9bf200558a94c05c4c132e2354d5782eb1e4607cc0aeb0d0461"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/3795d4756bdcd9bf200558a94c05c4c132e2354d5782eb1e4607cc0aeb0d0461.json",
+        "bytes": 5337,
+        "sha256": "3795d4756bdcd9bf200558a94c05c4c132e2354d5782eb1e4607cc0aeb0d0461"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "completed_existing_baseline_or_first_wait_attempt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-request-executions/018-first430-wait/SPEC.original.json",
+        "bytes": 185,
+        "sha256": "cbc9ba369cb578b7c9ab10dfc709f47da3b3726076b79ee7594f7ae28b4252e1"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/cbc9ba369cb578b7c9ab10dfc709f47da3b3726076b79ee7594f7ae28b4252e1.json",
+        "bytes": 185,
+        "sha256": "cbc9ba369cb578b7c9ab10dfc709f47da3b3726076b79ee7594f7ae28b4252e1"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_first018_wait_timeout_no_relabel",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0016-r17-018-first430-wait.native-01.json",
+        "bytes": 187712,
+        "sha256": "d5905b3adabcb39a3360a203643428869e833d4b3a1283826f9152672b9a4449"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/d5905b3adabcb39a3360a203643428869e833d4b3a1283826f9152672b9a4449.json",
+        "bytes": 187712,
+        "sha256": "d5905b3adabcb39a3360a203643428869e833d4b3a1283826f9152672b9a4449"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_first018_wait_timeout_no_relabel",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0016-r17-018-first430-wait.request.json",
+        "bytes": 261,
+        "sha256": "2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7.json",
+        "bytes": 261,
+        "sha256": "2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_first018_wait_timeout_no_relabel",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0016-r17-018-first430-wait.response.json",
+        "bytes": 988,
+        "sha256": "3ad963f72a8fc7e3e15363c7303dd0cbe60caf2d3b5b073066d054bdb1e3b34d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/3ad963f72a8fc7e3e15363c7303dd0cbe60caf2d3b5b073066d054bdb1e3b34d.json",
+        "bytes": 988,
+        "sha256": "3ad963f72a8fc7e3e15363c7303dd0cbe60caf2d3b5b073066d054bdb1e3b34d"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_first018_wait_timeout_no_relabel",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0016-r17-018-first430-wait.sdk-result.json",
+        "bytes": 396153,
+        "sha256": "7e2f39cf278ebf841ea1d05b35097600957c652f57bc7127384e4ca8eacca0cd"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/7e2f39cf278ebf841ea1d05b35097600957c652f57bc7127384e4ca8eacca0cd.json",
+        "bytes": 396153,
+        "sha256": "7e2f39cf278ebf841ea1d05b35097600957c652f57bc7127384e4ca8eacca0cd"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_first018_wait_timeout_no_relabel",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0016-r17-018-first430-wait.started.json",
+        "bytes": 337,
+        "sha256": "1a851838ebc7459a3a8afc675d90ca9e4c475d0ecc19902d1fbc76d9195ef7fc"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/1a851838ebc7459a3a8afc675d90ca9e4c475d0ecc19902d1fbc76d9195ef7fc.json",
+        "bytes": 337,
+        "sha256": "1a851838ebc7459a3a8afc675d90ca9e4c475d0ecc19902d1fbc76d9195ef7fc"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_first018_wait_queue_input",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/queue-001/r17-018-first430-wait.120888a326ff4cb5b808a99e5d0bcb9a.input",
+        "bytes": 261,
+        "sha256": "2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7.input",
+        "bytes": 261,
+        "sha256": "2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_first018_wait_queue_input",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/queue-001/r17-018-first430-wait.request.json",
+        "bytes": 261,
+        "sha256": "2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7.json",
+        "bytes": 261,
+        "sha256": "2bca52c9c6efb71e8a526d74d654282a1c5a058696d4f8485bf3ad70f0c3ddf7"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_first018_wait_root_spec",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/root-specs/018-first430-wait.json",
+        "bytes": 185,
+        "sha256": "cbc9ba369cb578b7c9ab10dfc709f47da3b3726076b79ee7594f7ae28b4252e1"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/cbc9ba369cb578b7c9ab10dfc709f47da3b3726076b79ee7594f7ae28b4252e1.json",
+        "bytes": 185,
+        "sha256": "cbc9ba369cb578b7c9ab10dfc709f47da3b3726076b79ee7594f7ae28b4252e1"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_first018_wait_native_receipt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence/42abe9df32d34dd1840c23cb5246623d/0015-event-select.json",
+        "bytes": 187712,
+        "sha256": "d5905b3adabcb39a3360a203643428869e833d4b3a1283826f9152672b9a4449"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/d5905b3adabcb39a3360a203643428869e833d4b3a1283826f9152672b9a4449.json",
+        "bytes": 187712,
+        "sha256": "d5905b3adabcb39a3360a203643428869e833d4b3a1283826f9152672b9a4449"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_initial_capture_not_current_liveness",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/CAPTURED.actual.json",
+        "bytes": 6054,
+        "sha256": "97fb74b5379953a1e8200f022a413cc93245ee629669311bba31fe81073a5b40"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/97fb74b5379953a1e8200f022a413cc93245ee629669311bba31fe81073a5b40.json",
+        "bytes": 6054,
+        "sha256": "97fb74b5379953a1e8200f022a413cc93245ee629669311bba31fe81073a5b40"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_holder_original_source_and_request",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/retain_helper_handles.py",
+        "bytes": 9762,
+        "sha256": "7501f77d1e47562edb8bd55ed46bf72cd5df3a3a23721837f288ad78b4da1b46"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/7501f77d1e47562edb8bd55ed46bf72cd5df3a3a23721837f288ad78b4da1b46.py",
+        "bytes": 9762,
+        "sha256": "7501f77d1e47562edb8bd55ed46bf72cd5df3a3a23721837f288ad78b4da1b46"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_holder_original_source_and_request",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-helper-identity-holder-inputs-20261007-001/HOLDER-REQUEST.actual.json",
+        "bytes": 5077,
+        "sha256": "5d756bccadd2d945cbdb7943c9bad691e91d94679ae09020bad76aedb7c7e062"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/5d756bccadd2d945cbdb7943c9bad691e91d94679ae09020bad76aedb7c7e062.json",
+        "bytes": 5077,
+        "sha256": "5d756bccadd2d945cbdb7943c9bad691e91d94679ae09020bad76aedb7c7e062"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_actual_attach_receipt",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence/42abe9df32d34dd1840c23cb5246623d/0001-attach.json",
+        "bytes": 22722,
+        "sha256": "98efefeab10f2ba182013a05f251990a26aa27f99f634e527ca650e4d2728d6d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/98efefeab10f2ba182013a05f251990a26aa27f99f634e527ca650e4d2728d6d.json",
+        "bytes": 22722,
+        "sha256": "98efefeab10f2ba182013a05f251990a26aa27f99f634e527ca650e4d2728d6d"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "already_captured_initial_identity_binding_not_current_freshness",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-helper-identity-holder-inputs-20261007-001/INDEX.json",
+        "bytes": 3714,
+        "sha256": "adde56fdbaa4984213ba7c11a08b78461cd3af9fd886b65475c0ec4b6fc95db3"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/adde56fdbaa4984213ba7c11a08b78461cd3af9fd886b65475c0ec4b6fc95db3.json",
+        "bytes": 3714,
+        "sha256": "adde56fdbaa4984213ba7c11a08b78461cd3af9fd886b65475c0ec4b6fc95db3"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "already_captured_initial_identity_binding_not_current_freshness",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-helper-identity-holder-inputs-20261007-001/RUNTIME.actual.json",
+        "bytes": 3951,
+        "sha256": "16a4ab8c15b9ff4be82b53d1394856cc0c2f8c139165f23f333d02d387ed540e"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/16a4ab8c15b9ff4be82b53d1394856cc0c2f8c139165f23f333d02d387ed540e.json",
+        "bytes": 3951,
+        "sha256": "16a4ab8c15b9ff4be82b53d1394856cc0c2f8c139165f23f333d02d387ed540e"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "immutable_prelaunch_source_index_not_runtime_state",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/INDEX.json",
+        "bytes": 4799,
+        "sha256": "6a6aab2ddfff1fdef3baa430d685182397a640941d847ad1c5391be98a51a527"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/6a6aab2ddfff1fdef3baa430d685182397a640941d847ad1c5391be98a51a527.json",
+        "bytes": 4799,
+        "sha256": "6a6aab2ddfff1fdef3baa430d685182397a640941d847ad1c5391be98a51a527"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/consumer_binding.py",
+        "bytes": 24699,
+        "sha256": "76282168e1694de320068662d28ee9e10c526557ebd8b20bcebb6ab73db57a0e"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/76282168e1694de320068662d28ee9e10c526557ebd8b20bcebb6ab73db57a0e.py",
+        "bytes": 24699,
+        "sha256": "76282168e1694de320068662d28ee9e10c526557ebd8b20bcebb6ab73db57a0e"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/consumer_metadata_semantics.py",
+        "bytes": 7480,
+        "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f.py",
+        "bytes": 7480,
+        "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/consumer_native_build_adapter.py",
+        "bytes": 1720,
+        "sha256": "df88a585d09c4d239525fdbe8c9824f3fc33f1e107226729134b314f0fe29ed0"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/df88a585d09c4d239525fdbe8c9824f3fc33f1e107226729134b314f0fe29ed0.py",
+        "bytes": 1720,
+        "sha256": "df88a585d09c4d239525fdbe8c9824f3fc33f1e107226729134b314f0fe29ed0"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/grant_metadata_semantics.py",
+        "bytes": 7322,
+        "sha256": "f603ce5395a2a6ca857bce925438e45ad93c51b9da5ca2b4d1224572f894d46b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/f603ce5395a2a6ca857bce925438e45ad93c51b9da5ca2b4d1224572f894d46b.py",
+        "bytes": 7322,
+        "sha256": "f603ce5395a2a6ca857bce925438e45ad93c51b9da5ca2b4d1224572f894d46b"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/persistent_native_mcp_queue_28.py",
+        "bytes": 15201,
+        "sha256": "56e53b3b3be226b5f22538d0bebc19ff5b7b3a7427fbc263d383cbbee8e4b25d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/56e53b3b3be226b5f22538d0bebc19ff5b7b3a7427fbc263d383cbbee8e4b25d.py",
+        "bytes": 15201,
+        "sha256": "56e53b3b3be226b5f22538d0bebc19ff5b7b3a7427fbc263d383cbbee8e4b25d"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/prepare_fresh_native_profile.py",
+        "bytes": 11185,
+        "sha256": "ff9ea37c0713caea17720125b06837549706b6249b25a78e3df0db0a2e4ae602"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/ff9ea37c0713caea17720125b06837549706b6249b25a78e3df0db0a2e4ae602.py",
+        "bytes": 11185,
+        "sha256": "ff9ea37c0713caea17720125b06837549706b6249b25a78e3df0db0a2e4ae602"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/prepare_mcp_binding.py",
+        "bytes": 2242,
+        "sha256": "0994472bdf02fb07450cd86d76a3f18546113a688e7bb420787415d19b8f4814"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/0994472bdf02fb07450cd86d76a3f18546113a688e7bb420787415d19b8f4814.py",
+        "bytes": 2242,
+        "sha256": "0994472bdf02fb07450cd86d76a3f18546113a688e7bb420787415d19b8f4814"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/r14_metadata_common.py",
+        "bytes": 4540,
+        "sha256": "c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b.py",
+        "bytes": 4540,
+        "sha256": "c66ce599ab8f0f11a73ccb50cb3a96142beb5cb6f0862ca23a75fb2a70a6dd6b"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/r14_metadata_semantics.py",
+        "bytes": 7480,
+        "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f.py",
+        "bytes": 7480,
+        "sha256": "7864ee5271043e98b398ce6e261150e8639ad6bc2492e1570a9ab75cf17d459f"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/root_compact_dispatch.py",
+        "bytes": 1497,
+        "sha256": "d7549c16b61a351ba594d615dd0b601c11cf28c3d35a36d7859352208986ca33"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/d7549c16b61a351ba594d615dd0b601c11cf28c3d35a36d7859352208986ca33.py",
+        "bytes": 1497,
+        "sha256": "d7549c16b61a351ba594d615dd0b601c11cf28c3d35a36d7859352208986ca33"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/root_queue_ops.py",
+        "bytes": 5400,
+        "sha256": "ae9fc2e15e6d285a497fef2ee0c4a6ad1dd8103bcf83ab1b14c0b57c2c58cc7f"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/ae9fc2e15e6d285a497fef2ee0c4a6ad1dd8103bcf83ab1b14c0b57c2c58cc7f.py",
+        "bytes": 5400,
+        "sha256": "ae9fc2e15e6d285a497fef2ee0c4a6ad1dd8103bcf83ab1b14c0b57c2c58cc7f"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_consumer_source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-consumer-source-20261007-001/runtime_bindings.py",
+        "bytes": 4794,
+        "sha256": "cb79d23140ffcb8b6a587ffec0833b3c64557cc88389e07f14f5cb343b3df33b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/cb79d23140ffcb8b6a587ffec0833b3c64557cc88389e07f14f5cb343b3df33b.py",
+        "bytes": 4794,
+        "sha256": "cb79d23140ffcb8b6a587ffec0833b3c64557cc88389e07f14f5cb343b3df33b"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-profile-with-exit-inventory.json",
+        "bytes": 1104,
+        "sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6.json",
+        "bytes": 1104,
+        "sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-head-export-20261007-001/REPORT.json",
+        "bytes": 23120,
+        "sha256": "523fc4e66d06cd5cefb467c7f26464e4138ec91618ef1ff75793fce40315f9de"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/523fc4e66d06cd5cefb467c7f26464e4138ec91618ef1ff75793fce40315f9de.json",
+        "bytes": 23120,
+        "sha256": "523fc4e66d06cd5cefb467c7f26464e4138ec91618ef1ff75793fce40315f9de"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-clean-native-build-20261007-001/RESULT.json",
+        "bytes": 1006028,
+        "sha256": "38a474c96658321243cac654c9dffa6374f6cd0e9fa7554c5f34d1009099327c"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/38a474c96658321243cac654c9dffa6374f6cd0e9fa7554c5f34d1009099327c.json",
+        "bytes": 1006028,
+        "sha256": "38a474c96658321243cac654c9dffa6374f6cd0e9fa7554c5f34d1009099327c"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-actual-sdk-metadata-20261007-001/RESULT.json",
+        "bytes": 7124,
+        "sha256": "31503d1314a6502fdc46890f12859f35e22085872ec448ac338e7b45d982ec26"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/31503d1314a6502fdc46890f12859f35e22085872ec448ac338e7b45d982ec26.json",
+        "bytes": 7124,
+        "sha256": "31503d1314a6502fdc46890f12859f35e22085872ec448ac338e7b45d982ec26"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-r13-formal-route23-20261006-001/inputs/i3b-0240-native-preparation-20261006-001/BASELINE-0240.json",
+        "bytes": 426067,
+        "sha256": "e08d6f60d54085594297d227dc0213343fd86e372ff4c6cea558e847f5064323"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e08d6f60d54085594297d227dc0213343fd86e372ff4c6cea558e847f5064323.json",
+        "bytes": 426067,
+        "sha256": "e08d6f60d54085594297d227dc0213343fd86e372ff4c6cea558e847f5064323"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/lr17s1/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-REQUEST.template.json",
+        "bytes": 129789,
+        "sha256": "eb3985bf3e791464a46d62f10b9fea7fbdebdf5eb91742be3765ef516420e3c4"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/eb3985bf3e791464a46d62f10b9fea7fbdebdf5eb91742be3765ef516420e3c4.json",
+        "bytes": 129789,
+        "sha256": "eb3985bf3e791464a46d62f10b9fea7fbdebdf5eb91742be3765ef516420e3c4"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FIVE-SOURCE-WINDOWS.expected.json",
+        "bytes": 10360,
+        "sha256": "1c8ef638365f09fb6544749402551944924e44b4442585dbb66b85e78b527bbb"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/1c8ef638365f09fb6544749402551944924e44b4442585dbb66b85e78b527bbb.json",
+        "bytes": 10360,
+        "sha256": "1c8ef638365f09fb6544749402551944924e44b4442585dbb66b85e78b527bbb"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence/42abe9df32d34dd1840c23cb5246623d/0005-checkpoint.json",
+        "bytes": 36118,
+        "sha256": "7b5dc86b2b765763629154aa1bb78ab36404b92b9c9c59fab5eb08ebf2f8e181"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/7b5dc86b2b765763629154aa1bb78ab36404b92b9c9c59fab5eb08ebf2f8e181.json",
+        "bytes": 36118,
+        "sha256": "7b5dc86b2b765763629154aa1bb78ab36404b92b9c9c59fab5eb08ebf2f8e181"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence/42abe9df32d34dd1840c23cb5246623d/0006-confucian-readonly-assembly_predicates.json",
+        "bytes": 29020,
+        "sha256": "0b0c3f5313928b0efa2567cebeabc5234ac4f559b8b1b908ee7d8dd0751d1134"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/0b0c3f5313928b0efa2567cebeabc5234ac4f559b8b1b908ee7d8dd0751d1134.json",
+        "bytes": 29020,
+        "sha256": "0b0c3f5313928b0efa2567cebeabc5234ac4f559b8b1b908ee7d8dd0751d1134"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "initial_baseline_declared_provenance_no_source_requalification",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-evidence/42abe9df32d34dd1840c23cb5246623d/0007-confucian-readonly-religious_title.json",
+        "bytes": 4120,
+        "sha256": "6f5519af5d852865f0805af490a1ea33af16928bf87dbd4836f5868ff54fd251"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/6f5519af5d852865f0805af490a1ea33af16928bf87dbd4836f5868ff54fd251.json",
+        "bytes": 4120,
+        "sha256": "6f5519af5d852865f0805af490a1ea33af16928bf87dbd4836f5868ff54fd251"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "executing_baseline_author_or_adapter",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/author_actual_checkpoint.py",
+        "bytes": 41115,
+        "sha256": "900a0351cc107d10d12e60e83fe035b0d7f2e11c9042b1c61b9bfb8581f5dcf5"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/900a0351cc107d10d12e60e83fe035b0d7f2e11c9042b1c61b9bfb8581f5dcf5.py",
+        "bytes": 41115,
+        "sha256": "900a0351cc107d10d12e60e83fe035b0d7f2e11c9042b1c61b9bfb8581f5dcf5"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "executing_baseline_author_or_adapter",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/qualification/next_cold_qualification.py",
+        "bytes": 11113,
+        "sha256": "19f154bc6d863ac2132301511f78a380a344558e48fbcf7fa5d746642155ff04"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/19f154bc6d863ac2132301511f78a380a344558e48fbcf7fa5d746642155ff04.py",
+        "bytes": 11113,
+        "sha256": "19f154bc6d863ac2132301511f78a380a344558e48fbcf7fa5d746642155ff04"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "executing_baseline_reader",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/reader/i3b_checkpoint_reader.py",
+        "bytes": 51455,
+        "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736.py",
+        "bytes": 51455,
+        "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "actual_root_source_index",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/INDEX.json",
+        "bytes": 9406,
+        "sha256": "95a67e2ef5ca92dbb5cbf0ee0674ef843886fd2e629fb0ae7fdf684a5e4761a3"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/95a67e2ef5ca92dbb5cbf0ee0674ef843886fd2e629fb0ae7fdf684a5e4761a3.json",
+        "bytes": 9406,
+        "sha256": "95a67e2ef5ca92dbb5cbf0ee0674ef843886fd2e629fb0ae7fdf684a5e4761a3"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "original_actual_launch",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/launch.json",
+        "bytes": 2346,
+        "sha256": "ea7e8b9f52e90de30d43454c5a7913dd315d6de678ebfc13a93fb259e19e4245"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/ea7e8b9f52e90de30d43454c5a7913dd315d6de678ebfc13a93fb259e19e4245.json",
+        "bytes": 2346,
+        "sha256": "ea7e8b9f52e90de30d43454c5a7913dd315d6de678ebfc13a93fb259e19e4245"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "external_ROOT_executor_hotfix_source_no_main_apply_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/execute_request.py",
+        "bytes": 13044,
+        "sha256": "10501a7c2ffdfe446c83a196309634e1e2fcd028874625a917400d95855240cc"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/10501a7c2ffdfe446c83a196309634e1e2fcd028874625a917400d95855240cc.py",
+        "bytes": 13044,
+        "sha256": "10501a7c2ffdfe446c83a196309634e1e2fcd028874625a917400d95855240cc"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "external_ROOT_executor_hotfix_source_no_main_apply_inferred",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/INDEX.json",
+        "bytes": 2946,
+        "sha256": "3816842113bb518f102eada41d38f22b9f1184076af965d5d64ef09505e2674d"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/3816842113bb518f102eada41d38f22b9f1184076af965d5d64ef09505e2674d.json",
+        "bytes": 2946,
+        "sha256": "3816842113bb518f102eada41d38f22b9f1184076af965d5d64ef09505e2674d"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_not_applied",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/INDEX.json",
+        "bytes": 1437,
+        "sha256": "b717fd47e7357ceb8a1a194f9c0f8ea4af84f37e012b22bfd616befd1ab8cd0e"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/b717fd47e7357ceb8a1a194f9c0f8ea4af84f37e012b22bfd616befd1ab8cd0e.json",
+        "bytes": 1437,
+        "sha256": "b717fd47e7357ceb8a1a194f9c0f8ea4af84f37e012b22bfd616befd1ab8cd0e"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_not_applied",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/MANIFEST.json",
+        "bytes": 6949,
+        "sha256": "3f0a3d594e1c20999012a321e86d31d0c7ca3d489cc9e7e2d3469f53dfe78cea"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/3f0a3d594e1c20999012a321e86d31d0c7ca3d489cc9e7e2d3469f53dfe78cea.json",
+        "bytes": 6949,
+        "sha256": "3f0a3d594e1c20999012a321e86d31d0c7ca3d489cc9e7e2d3469f53dfe78cea"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_not_applied",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/candidate.patch",
+        "bytes": 2943,
+        "sha256": "e6fc151d364398bea37dd62204f8565f44956d539886524d95b7864924b7650a"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e6fc151d364398bea37dd62204f8565f44956d539886524d95b7864924b7650a.patch",
+        "bytes": 2943,
+        "sha256": "e6fc151d364398bea37dd62204f8565f44956d539886524d95b7864924b7650a"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_not_applied",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/REVIEW.md",
+        "bytes": 1893,
+        "sha256": "2bc749d74bff20c1a497d0c4badddd58ac6a96337441e18a41afdbf93219b542"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/2bc749d74bff20c1a497d0c4badddd58ac6a96337441e18a41afdbf93219b542.md",
+        "bytes": 1893,
+        "sha256": "2bc749d74bff20c1a497d0c4badddd58ac6a96337441e18a41afdbf93219b542"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_not_applied",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/INPUTS.json",
+        "bytes": 1519,
+        "sha256": "a22737c552b6c028aaf5b10891d8ef671eeab7a1537bb12da105e011ed1916a8"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/a22737c552b6c028aaf5b10891d8ef671eeab7a1537bb12da105e011ed1916a8.json",
+        "bytes": 1519,
+        "sha256": "a22737c552b6c028aaf5b10891d8ef671eeab7a1537bb12da105e011ed1916a8"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_not_applied",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/SOURCE-CONTEXT.actual.json",
+        "bytes": 12667,
+        "sha256": "fc1d34559456db0129ec72eaa929d881dcadf565feb0694d7771d5ef29dbb983"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/fc1d34559456db0129ec72eaa929d881dcadf565feb0694d7771d5ef29dbb983.json",
+        "bytes": 12667,
+        "sha256": "fc1d34559456db0129ec72eaa929d881dcadf565feb0694d7771d5ef29dbb983"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_not_applied",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/verify_changed_packaging_imports.py",
+        "bytes": 971,
+        "sha256": "fc6498cea6a5987eba02813cc93bd887adf7c6d3b80b294d0359966c1d3ce25b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/fc6498cea6a5987eba02813cc93bd887adf7c6d3b80b294d0359966c1d3ce25b.py",
+        "bytes": 971,
+        "sha256": "fc6498cea6a5987eba02813cc93bd887adf7c6d3b80b294d0359966c1d3ce25b"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_before",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py",
+        "bytes": 6955,
+        "sha256": "aa0d33e5647b0200ef51f466ddf5f2c6f29248212fc1bfc0c10b0a8714f42290"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/aa0d33e5647b0200ef51f466ddf5f2c6f29248212fc1bfc0c10b0a8714f42290.py",
+        "bytes": 6955,
+        "sha256": "aa0d33e5647b0200ef51f466ddf5f2c6f29248212fc1bfc0c10b0a8714f42290"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_after",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py",
+        "bytes": 7137,
+        "sha256": "cfb5b88ea53b1590680653661a96f9c28a593e43ca909e97fd9b88f5be49ff67"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/cfb5b88ea53b1590680653661a96f9c28a593e43ca909e97fd9b88f5be49ff67.py",
+        "bytes": 7137,
+        "sha256": "cfb5b88ea53b1590680653661a96f9c28a593e43ca909e97fd9b88f5be49ff67"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_before",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before/mod_li_yu_dao/tools/build_release.py",
+        "bytes": 10844,
+        "sha256": "a5f0343ced67d68438116a4424adac579c6b3913429c558df6ec638a17c754ce"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/a5f0343ced67d68438116a4424adac579c6b3913429c558df6ec638a17c754ce.py",
+        "bytes": 10844,
+        "sha256": "a5f0343ced67d68438116a4424adac579c6b3913429c558df6ec638a17c754ce"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_after",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after/mod_li_yu_dao/tools/build_release.py",
+        "bytes": 10841,
+        "sha256": "dbb2e01589a1dc925cdd343b3e6bcbb0cad46355e22a64da969143b1ddfcaf47"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/dbb2e01589a1dc925cdd343b3e6bcbb0cad46355e22a64da969143b1ddfcaf47.py",
+        "bytes": 10841,
+        "sha256": "dbb2e01589a1dc925cdd343b3e6bcbb0cad46355e22a64da969143b1ddfcaf47"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_before",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before/mod_li_yu_dao/tools/test_build_release.py",
+        "bytes": 21655,
+        "sha256": "18eec05254e9a537b97089c237c4886775ed1f0d432ae38a1abbb83d07d75fe4"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/18eec05254e9a537b97089c237c4886775ed1f0d432ae38a1abbb83d07d75fe4.py",
+        "bytes": 21655,
+        "sha256": "18eec05254e9a537b97089c237c4886775ed1f0d432ae38a1abbb83d07d75fe4"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_after",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after/mod_li_yu_dao/tools/test_build_release.py",
+        "bytes": 21664,
+        "sha256": "5d5c7d898d0bf1c07266df83f123fa021b7ec260baf14ba2bfbdea3682dc42ef"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/5d5c7d898d0bf1c07266df83f123fa021b7ec260baf14ba2bfbdea3682dc42ef.py",
+        "bytes": 21664,
+        "sha256": "5d5c7d898d0bf1c07266df83f123fa021b7ec260baf14ba2bfbdea3682dc42ef"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_before",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before/mod_li_yu_dao/tools/validate_static.py",
+        "bytes": 21914,
+        "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189.py",
+        "bytes": 21914,
+        "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "source_only_CI_candidate_after",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after/mod_li_yu_dao/tools/validate_static.py",
+        "bytes": 21911,
+        "sha256": "523ea7f5a60b247cbdc3e90de2aa3343797ceec3356f739e89639e774fc4c7d4"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/523ea7f5a60b247cbdc3e90de2aa3343797ceec3356f739e89639e774fc4c7d4.py",
+        "bytes": 21911,
+        "sha256": "523ea7f5a60b247cbdc3e90de2aa3343797ceec3356f739e89639e774fc4c7d4"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_local_CI_candidate_validation_no_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/git-apply-check.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_local_CI_candidate_validation_no_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/git-apply-check.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_local_CI_candidate_validation_no_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/affected-packaging-import-and-fixture-checks.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_local_CI_candidate_validation_no_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/affected-packaging-import-and-fixture-checks.stderr",
+        "bytes": 238,
+        "sha256": "888362c068f2d498614e160b1e6f3f2936d8ef59ba039e1035d99c34b18c3171"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/888362c068f2d498614e160b1e6f3f2936d8ef59ba039e1035d99c34b18c3171.stderr",
+        "bytes": 238,
+        "sha256": "888362c068f2d498614e160b1e6f3f2936d8ef59ba039e1035d99c34b18c3171"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_local_CI_candidate_validation_no_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/existing-public-cunit-validation-test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_local_CI_candidate_validation_no_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/existing-public-cunit-validation-test.stderr",
+        "bytes": 825,
+        "sha256": "3d6b171ed98744417c2015e4c2b9a0425642dd04bc3231b0d355c907b9298b7e"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/3d6b171ed98744417c2015e4c2b9a0425642dd04bc3231b0d355c907b9298b7e.stderr",
+        "bytes": 825,
+        "sha256": "3d6b171ed98744417c2015e4c2b9a0425642dd04bc3231b0d355c907b9298b7e"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "failed_CI_candidate001_preserved",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/FAILED-VALIDATION.actual.json",
+        "bytes": 2247,
+        "sha256": "187dffbe29b277e272327c18d4d536a71cae9d72767824a4f31a564048bef8fd"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/187dffbe29b277e272327c18d4d536a71cae9d72767824a4f31a564048bef8fd.json",
+        "bytes": 2247,
+        "sha256": "187dffbe29b277e272327c18d4d536a71cae9d72767824a4f31a564048bef8fd"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "failed_CI_candidate001_preserved",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/affected-packaging-import-and-fixture-checks.stderr",
+        "bytes": 2017,
+        "sha256": "d130af242e2e979da44e9c180a8e81f8bf4655fe4685d7401ee8d5f8b872d6ef"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/d130af242e2e979da44e9c180a8e81f8bf4655fe4685d7401ee8d5f8b872d6ef.stderr",
+        "bytes": 2017,
+        "sha256": "d130af242e2e979da44e9c180a8e81f8bf4655fe4685d7401ee8d5f8b872d6ef"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/actions-runs.receipt.json",
+        "bytes": 778,
+        "sha256": "64ded0ae7a4496ea7d3b848cfe9f75db2b7f75b07c6e17cb677c7eba73c9cc06"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/64ded0ae7a4496ea7d3b848cfe9f75db2b7f75b07c6e17cb677c7eba73c9cc06.json",
+        "bytes": 778,
+        "sha256": "64ded0ae7a4496ea7d3b848cfe9f75db2b7f75b07c6e17cb677c7eba73c9cc06"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/actions-runs.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/actions-runs.stdout",
+        "bytes": 26529,
+        "sha256": "e4b766ad741f7e3870e300f644365334ef9ee0495c1648ec8bd720fe57b1e7b4"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e4b766ad741f7e3870e300f644365334ef9ee0495c1648ec8bd720fe57b1e7b4.stdout",
+        "bytes": 26529,
+        "sha256": "e4b766ad741f7e3870e300f644365334ef9ee0495c1648ec8bd720fe57b1e7b4"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/check-runs.receipt.json",
+        "bytes": 770,
+        "sha256": "4a0543bdf0602a447b4a817086c0095fb4f5e600e2a3c38dc486e544e86da6d9"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/4a0543bdf0602a447b4a817086c0095fb4f5e600e2a3c38dc486e544e86da6d9.json",
+        "bytes": 770,
+        "sha256": "4a0543bdf0602a447b4a817086c0095fb4f5e600e2a3c38dc486e544e86da6d9"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/check-runs.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/check-runs.stdout",
+        "bytes": 6244,
+        "sha256": "669c1be0c06369607fd1e9e5ebd82e881ad011c64a8989c09f10605346127f7b"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/669c1be0c06369607fd1e9e5ebd82e881ad011c64a8989c09f10605346127f7b.stdout",
+        "bytes": 6244,
+        "sha256": "669c1be0c06369607fd1e9e5ebd82e881ad011c64a8989c09f10605346127f7b"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit-status.receipt.json",
+        "bytes": 772,
+        "sha256": "9676207866170cfe2a3b9d7f4089cdc91cc25c3bfcd378e43c84416e554ce10a"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/9676207866170cfe2a3b9d7f4089cdc91cc25c3bfcd378e43c84416e554ce10a.json",
+        "bytes": 772,
+        "sha256": "9676207866170cfe2a3b9d7f4089cdc91cc25c3bfcd378e43c84416e554ce10a"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit-status.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit-status.stdout",
+        "bytes": 5028,
+        "sha256": "59dcf6c8d21f0d331ae873bfdfe21229ba07139c6259bdae33a9efc4d5c202c2"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/59dcf6c8d21f0d331ae873bfdfe21229ba07139c6259bdae33a9efc4d5c202c2.stdout",
+        "bytes": 5028,
+        "sha256": "59dcf6c8d21f0d331ae873bfdfe21229ba07139c6259bdae33a9efc4d5c202c2"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit.receipt.json",
+        "bytes": 741,
+        "sha256": "d8ffa8be75df32cb42fe5781ae30d0c487e188877581fd1bab39f6040ee948eb"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/d8ffa8be75df32cb42fe5781ae30d0c487e188877581fd1bab39f6040ee948eb.json",
+        "bytes": 741,
+        "sha256": "d8ffa8be75df32cb42fe5781ae30d0c487e188877581fd1bab39f6040ee948eb"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit.stdout",
+        "bytes": 1613078,
+        "sha256": "4d1a40ac5890c531dda0488b64a09138f309bc670b677fb6df72227714f3c20a"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/4d1a40ac5890c531dda0488b64a09138f309bc670b677fb6df72227714f3c20a.stdout",
+        "bytes": 1613078,
+        "sha256": "4d1a40ac5890c531dda0488b64a09138f309bc670b677fb6df72227714f3c20a"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/INDEX.json",
+        "bytes": 2423,
+        "sha256": "6efd3e015469cc36c46e503efbff87a22c660ed15d570a9a69f09a5e9cc3f8c9"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/6efd3e015469cc36c46e503efbff87a22c660ed15d570a9a69f09a5e9cc3f8c9.json",
+        "bytes": 2423,
+        "sha256": "6efd3e015469cc36c46e503efbff87a22c660ed15d570a9a69f09a5e9cc3f8c9"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/INPUTS.json",
+        "bytes": 470,
+        "sha256": "3fa7fe19e27c689bb04ed51467458d806144faf5bf46613ef7d4ac839f8b42bb"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/3fa7fe19e27c689bb04ed51467458d806144faf5bf46613ef7d4ac839f8b42bb.json",
+        "bytes": 470,
+        "sha256": "3fa7fe19e27c689bb04ed51467458d806144faf5bf46613ef7d4ac839f8b42bb"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135155.receipt.json",
+        "bytes": 753,
+        "sha256": "3f328b17b170529f5b6b33da3865c2b007f171bc7ea849a32331d2df05af3a5a"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/3f328b17b170529f5b6b33da3865c2b007f171bc7ea849a32331d2df05af3a5a.json",
+        "bytes": 753,
+        "sha256": "3f328b17b170529f5b6b33da3865c2b007f171bc7ea849a32331d2df05af3a5a"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135155.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135155.stdout",
+        "bytes": 16002,
+        "sha256": "b7f49a46a7c7025a0a4f5f72f7167aebc7c741586b588bd66b6bd50abd580238"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/b7f49a46a7c7025a0a4f5f72f7167aebc7c741586b588bd66b6bd50abd580238.stdout",
+        "bytes": 16002,
+        "sha256": "b7f49a46a7c7025a0a4f5f72f7167aebc7c741586b588bd66b6bd50abd580238"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135181.receipt.json",
+        "bytes": 752,
+        "sha256": "ab16cb7c0e44e53c96f061c3bfec20432a9f47b0cb312612bcecd59c0a583b55"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/ab16cb7c0e44e53c96f061c3bfec20432a9f47b0cb312612bcecd59c0a583b55.json",
+        "bytes": 752,
+        "sha256": "ab16cb7c0e44e53c96f061c3bfec20432a9f47b0cb312612bcecd59c0a583b55"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135181.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135181.stdout",
+        "bytes": 2463,
+        "sha256": "ff74dc33ac37b174a9fe30d7943fc6652c417cf797785a3256174c7734149b77"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/ff74dc33ac37b174a9fe30d7943fc6652c417cf797785a3256174c7734149b77.stdout",
+        "bytes": 2463,
+        "sha256": "ff74dc33ac37b174a9fe30d7943fc6652c417cf797785a3256174c7734149b77"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/REPORT.actual.json",
+        "bytes": 21313,
+        "sha256": "ccbc15e9dd7467a4bea8b24ef3818730707ccd7b12d94ef83357fe71a335af65"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/ccbc15e9dd7467a4bea8b24ef3818730707ccd7b12d94ef83357fe71a335af65.json",
+        "bytes": 21313,
+        "sha256": "ccbc15e9dd7467a4bea8b24ef3818730707ccd7b12d94ef83357fe71a335af65"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/REPORT.actual.md",
+        "bytes": 1117,
+        "sha256": "d17699c5beda2296aae1a56c3be500db2b0282eb793173ca7cb0a09f2c919578"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/d17699c5beda2296aae1a56c3be500db2b0282eb793173ca7cb0a09f2c919578.md",
+        "bytes": 1117,
+        "sha256": "d17699c5beda2296aae1a56c3be500db2b0282eb793173ca7cb0a09f2c919578"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/INDEX.json",
+        "bytes": 1262,
+        "sha256": "29eb6d1ddcf4d5c5972a8205dd66984245e14f99051c48fba829046bcf473c62"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/29eb6d1ddcf4d5c5972a8205dd66984245e14f99051c48fba829046bcf473c62.json",
+        "bytes": 1262,
+        "sha256": "29eb6d1ddcf4d5c5972a8205dd66984245e14f99051c48fba829046bcf473c62"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/REPORT.actual.json",
+        "bytes": 37739,
+        "sha256": "046b2b3396078e68757de7ef4960543be02f65bd640821b833633b8b0339ba5c"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/046b2b3396078e68757de7ef4960543be02f65bd640821b833633b8b0339ba5c.json",
+        "bytes": 37739,
+        "sha256": "046b2b3396078e68757de7ef4960543be02f65bd640821b833633b8b0339ba5c"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/run-37549135155.receipt.json",
+        "bytes": 678,
+        "sha256": "e29f302a1a574a3cfffca5fb05dc174d2eee92a67a18cc34bf5bec21271a8ad0"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e29f302a1a574a3cfffca5fb05dc174d2eee92a67a18cc34bf5bec21271a8ad0.json",
+        "bytes": 678,
+        "sha256": "e29f302a1a574a3cfffca5fb05dc174d2eee92a67a18cc34bf5bec21271a8ad0"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/run-37549135155.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/run-37549135155.stdout",
+        "bytes": 43365,
+        "sha256": "6b8eb30fcb4c0148c6a852efdd3206c319f0a31fd881ac5999edb85a7a597a35"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/6b8eb30fcb4c0148c6a852efdd3206c319f0a31fd881ac5999edb85a7a597a35.stdout",
+        "bytes": 43365,
+        "sha256": "6b8eb30fcb4c0148c6a852efdd3206c319f0a31fd881ac5999edb85a7a597a35"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/run-37549135181.receipt.json",
+        "bytes": 678,
+        "sha256": "f8d6fbf2561fde38e7c232c75a9dcd06bd8345c8265b52ccca1a367916e641b1"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/f8d6fbf2561fde38e7c232c75a9dcd06bd8345c8265b52ccca1a367916e641b1.json",
+        "bytes": 678,
+        "sha256": "f8d6fbf2561fde38e7c232c75a9dcd06bd8345c8265b52ccca1a367916e641b1"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/run-37549135181.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-failure-logs-readonly-20261007-001/run-37549135181.stdout",
+        "bytes": 18199,
+        "sha256": "63d59ad6d18d6dc54679cc9e8e0f717d973cfe75c6b7758f485b2537578bd2c6"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/63d59ad6d18d6dc54679cc9e8e0f717d973cfe75c6b7758f485b2537578bd2c6.stdout",
+        "bytes": 18199,
+        "sha256": "63d59ad6d18d6dc54679cc9e8e0f717d973cfe75c6b7758f485b2537578bd2c6"
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "category": "existing_exact_HEAD_CI_failure_snapshot_no_GitHub_read_or_rerun",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-final-report-20261007-001/REPORT.md",
+        "bytes": 2969,
+        "sha256": "821c3e49cfe559457332f84f731d20f4cf4b2631323da7b0452c1079db453698"
+      },
+      "preserved": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-preclose-baseline-source-inventory-20261007-001/content/821c3e49cfe559457332f84f731d20f4cf4b2631323da7b0452c1079db453698.md",
+        "bytes": 2969,
+        "sha256": "821c3e49cfe559457332f84f731d20f4cf4b2631323da7b0452c1079db453698"
+      },
+      "original_bytes_unchanged": true
+    }
+  ],
+  "missing_existing_artifacts": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/initial0240-political-control-001",
+      "category": "political_comparator_original_attempt_001",
+      "observation": "NO_EXISTING_OUTPUT_DIRECTORY_AT_CAPTURE_TIME_NOT_A_PASS"
+    }
+  ],
+  "baseline_original_literal": {
+    "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+    "actual_pass": null,
+    "formal_mandate_credit": null
+  },
+  "ROOT_reported_initial_baseline_only_not_new_independent_validation": {
+    "all_87_protection_checks": true,
+    "political_7_full_AST_match_original0240": true
+  },
+  "political_comparator_original_literals": [
+    {
+      "attempt": "001",
+      "original_report": null,
+      "claim": "No report observed; preserved existing attempt/exec artifacts are authoritative"
+    },
+    {
+      "attempt": "002",
+      "original_report": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/initial0240-political-control-002/REPORT.json",
+        "bytes": 26160,
+        "sha256": "492a73e73de62687dda8e16d744fa721fdd6f0d7e7400a2589109a0d0a2761b0"
+      },
+      "original_top_level_scalar_fields": {
+        "status": "INITIAL_COLD_POLITICAL_CONTROL_RED",
+        "complete_political_AST_matches": false,
+        "root_sequence_requirement": "ROOT reviews this initial cold SAVE control before any formal event/decision/C3/grant/simulation action. This pure comparison cannot infer absent prior actions.",
+        "formal_acceptance": null,
+        "new_T_acceptance": null,
+        "C3_credit": null,
+        "I4_credit": null,
+        "save_body_reads": 0,
+        "SDK_calls": 0,
+        "game_calls": 0,
+        "bus_calls": 0,
+        "main_writes": 0
+      }
+    },
+    {
+      "attempt": "003",
+      "original_report": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/initial0240-political-control-003/REPORT.json",
+        "bytes": 26156,
+        "sha256": "ca6aec85457810f7fddee977201df2c916603db18b826e3780c53bea5b35618f"
+      },
+      "original_top_level_scalar_fields": {
+        "status": "INITIAL_COLD_POLITICAL_CONTROL_MATCHES",
+        "complete_political_AST_matches": true,
+        "root_sequence_requirement": "ROOT reviews this initial cold SAVE control before any formal event/decision/C3/grant/simulation action. This pure comparison cannot infer absent prior actions.",
+        "formal_acceptance": null,
+        "new_T_acceptance": null,
+        "C3_credit": null,
+        "I4_credit": null,
+        "save_body_reads": 0,
+        "SDK_calls": 0,
+        "game_calls": 0,
+        "bus_calls": 0,
+        "main_writes": 0
+      }
+    }
+  ],
+  "first018_wait_native_original_literals": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "status": "RED",
+    "reason": "BridgeUnavailableError: native command_result timed out for gameplay step select-event-option-3",
+    "session_id": "42abe9df32d34dd1840c23cb5246623d",
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-evidence\\42abe9df32d34dd1840c23cb5246623d\\0015-event-select.json"
+  },
+  "holder_original_capture_only": {
+    "capture": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-retained-helper-handles-20261007-001/capture-001/CAPTURED.actual.json",
+      "bytes": 6054,
+      "sha256": "97fb74b5379953a1e8200f022a413cc93245ee629669311bba31fe81073a5b40"
+    },
+    "holder_pid": 14208,
+    "holder_create_time": 1791333766.1629004,
+    "original_exec_session_id_ROOT_reported": 45013,
+    "capture_status": "ORIGINAL_CLIENT_AND_KEEPER_HANDLES_CAPTURED_ALIVE_BEFORE_CLOSE",
+    "current_liveness_rechecked": false,
+    "actual_exit0": null
+  },
+  "source_only_CI_candidate_main_applied": false,
+  "external_ROOT_executor_hotfix_source_inventory": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/execute_request.py",
+      "bytes": 13044,
+      "sha256": "10501a7c2ffdfe446c83a196309634e1e2fcd028874625a917400d95855240cc"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-root-handoff-20261007-002/INDEX.json",
+      "bytes": 2946,
+      "sha256": "3816842113bb518f102eada41d38f22b9f1184076af965d5d64ef09505e2674d"
+    }
+  ],
+  "external_ROOT_executor_hotfix_main_apply_inferred": false,
+  "save_body_reads_by_archive": 0,
+  "actual_fresh_runtime_or_process_queries": 0,
+  "SDK_game_native_UI_bus_actions": 0,
+  "main_writes": 0,
+  "CI_or_local_tests_rerun": 0,
+  "future_closure_or_product_credit": null
+}

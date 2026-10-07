@@ -1,0 +1,82 @@
+{
+  "status": "SOURCE_ONLY_BRACE_RELOCATION_CANDIDATE_AFTER_GENUINE_CLOSE_REQUIRED",
+  "source_revision": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "target": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+  "before": {
+    "path": "C:/lr17s1/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "bytes": 1441365,
+    "sha256": "666a2d3673abfe443f5fba152ec0fc51b11fb8a0b217891b9db069a712e98adf"
+  },
+  "after": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/bridge.cpp.candidate",
+    "bytes": 1441363,
+    "sha256": "4669b0921231ca69537cbe6ba4368868a950ec745965fc88a6095a7faad86e06"
+  },
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/CANDIDATE.incremental.patch",
+    "bytes": 520,
+    "sha256": "08147ca43d97403d79d408723010d6d17ad9793e2b794b4746ea61d4a97d8bbd"
+  },
+  "source_model": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/OFFLINE-BRACE-MODEL.actual.json",
+    "bytes": 14135,
+    "sha256": "19056d08b6aa360c2ddeeb07eced85925c232a5c35983fc0cb4afcde200047e9"
+  },
+  "actual_cache": {
+    "path": "C:/lr17b1/CMakeCache.txt",
+    "bytes": 38218,
+    "sha256": "2d040c048a38c05a07ff7e65099d9b8f2a802a17c441ff661dd491203a549625"
+  },
+  "included_numeric_macro_default": {
+    "path": "C:/lr17s1/ck3_autonomous_player/native_bridge/include/xar_bridge/h2743_stock_private_query_v1.hpp",
+    "bytes": 1884,
+    "sha256": "c576c8929fd4ce62238d48fa4d4f59a69eb980925dfc42ffaec4d0105c351654"
+  },
+  "original_receipts": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0015-r17-017-first430-reference-query.native-01.json",
+      "bytes": 16451,
+      "sha256": "bfa6df7c499bba5f03228026eaa9e603aeb634995aa92178d76307f888f898b0"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0015-r17-017-first430-reference-query.sdk-result.json",
+      "bytes": 35549,
+      "sha256": "e0e288b4dcf7f923872473e8ef1cfcb9ec359ba550acb8665f8473240629b026"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0016-r17-018-first430-wait.native-01.json",
+      "bytes": 187712,
+      "sha256": "d5905b3adabcb39a3360a203643428869e833d4b3a1283826f9152672b9a4449"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0016-r17-018-first430-wait.sdk-result.json",
+      "bytes": 396153,
+      "sha256": "7e2f39cf278ebf841ea1d05b35097600957c652f57bc7127384e4ca8eacca0cd"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0017-r17-019-after-wait-timeout-snapshot.native-01.json",
+      "bytes": 189772,
+      "sha256": "ab1ea551514e719ebf51fb517decffd2c59fa66f288e4a54588267c61401521a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0017-r17-019-after-wait-timeout-snapshot.sdk-result.json",
+      "bytes": 400547,
+      "sha256": "ca2378b7b29f1c7c627f6f95d207b81ef68ec60b98dc88bc39a02b5e55ef1661"
+    }
+  ],
+  "apply_check": {
+    "exit_code": 0,
+    "workdir": "C:/workspace/ck3_lyd_runtime_20261004/r17-first430-native-timeout-diagnostic-20261007-001/apply-check-base"
+  },
+  "normal_exit_route_affected": false,
+  "deferred_event_submission": false,
+  "deferred_state_basis": "Unmatched legacy step enters segment3 and sets handled true; malformed closure prevents reset false. All later segments and the sole SubmitSelectEventOption tail call are skipped. incoming frame is loop-local; no event command/mailbox request is retained by this path.",
+  "native_event_dispatch_trace_available": false,
+  "runtime_pending_pointer_observed": null,
+  "future_fixed_runtime": null,
+  "main_writes": 0,
+  "native_builds": 0,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "bus_calls": 0
+}

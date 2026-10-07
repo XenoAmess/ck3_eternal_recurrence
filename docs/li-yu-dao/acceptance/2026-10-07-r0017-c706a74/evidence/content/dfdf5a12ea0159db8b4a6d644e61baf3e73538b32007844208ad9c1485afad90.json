@@ -1,0 +1,70 @@
+{
+  "schema": "lyd.ck3-1.20.0.3.saved-Faith-semantics.v2",
+  "version": "saved-Faith-Title-and-effective-head-doctrine-v2",
+  "qualified_static_model_image": {
+    "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "bytes": 101039736,
+    "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "version_from_exact_image_binding": "1.20.0.3",
+    "steam_build": "25652598"
+  },
+  "source_proof": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-effective-faith-doctrine-source-proof-20261007-001/REPORT.source-only.json",
+    "bytes": 60758,
+    "sha256": "7820991270e203b205e8a22525b3fdd09a880cf8f7799313daf100181763dd30"
+  },
+  "current_PE_exact_spans": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-effective-faith-doctrine-source-proof-20261007-001/PE-DOCTRINE-CURRENT-EXACT-SPANS.json",
+    "bytes": 14026,
+    "sha256": "36a747ddd5e89b9072569c5b6d69e04823edc5dc5e388a42c4c7cc43f1decb77"
+  },
+  "stock_head_group_proof": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-effective-doctrine-head-group-source-20261007-001/STOCK-HEAD-GROUP.source-only.json",
+    "bytes": 15844,
+    "sha256": "8439f3fb5aef926d16f65b3c627a9b24545c842bf3971d5f914b99c75920a55e"
+  },
+  "stock_group_file": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r14-effective-doctrine-head-group-source-20261007-001/20_doctrines.txt",
+    "bytes": 54665,
+    "sha256": "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504"
+  },
+  "head_group": {
+    "key": "doctrine_head_of_faith",
+    "doctrine_keys": [
+      "doctrine_no_head",
+      "doctrine_spiritual_head",
+      "doctrine_temporal_head"
+    ],
+    "same_group_precedence": "main_Rite_over_Faith",
+    "Faith_unoccupied_group": "additive"
+  },
+  "allowed_factory_delta": {
+    "religious_head": {
+      "before": "4294967295",
+      "after": "actual_result_Title_full_ID"
+    },
+    "recognized_leader_variable": true,
+    "recognized_leader": {
+      "before": "absent",
+      "after_type": "char",
+      "after_identity": "actual_actor_full_ID",
+      "duplicates_allowed": false
+    },
+    "direct_Faith_doctrine_rows": "exactly_unchanged",
+    "other_Faith_rows": "exactly_unchanged"
+  },
+  "recognized_leader_effect_source": {
+    "artifact": {
+      "path": "C:/lr14s1/mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 4751,
+      "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+    },
+    "line": 39,
+    "exact_line": "            faith = { set_variable = { name = lyd_c3_recognized_leader value = scope:lyd_i3b_actor } }"
+  },
+  "native_predicate_observed": null,
+  "effective_doctrine_native_credit": null,
+  "whole_formal_acceptance_credit": null,
+  "old_v1_contract_and_R14_RED": "permanently_retained",
+  "political_protection_changes_allowed": false
+}

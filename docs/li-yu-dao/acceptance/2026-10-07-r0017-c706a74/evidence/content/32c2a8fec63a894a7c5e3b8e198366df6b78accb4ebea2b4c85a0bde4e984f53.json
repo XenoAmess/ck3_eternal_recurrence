@@ -1,0 +1,54 @@
+{
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-argument-author-r17-source-review-fix-20261007-002/author_i4_arguments.py",
+    "bytes": 12978,
+    "sha256": "f8cfc06b16e15393d7f3abb9f4f559b8546990cac95b2f6e437f455d1eef7d0b"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-argument-author-r17-source-review-fix-20261007-002\\author_i4_arguments.py",
+    "--consumer-source",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/fixture-mirror/consumer",
+    "--consumer-index-sha256",
+    "2603021805fc2bf71e2dc097994ef6c2fd31276a4ccc8ac326eeb5a7aa775668",
+    "--request-author",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/author_formal_request.py",
+    "--request-author-sha256",
+    "989f222e3913b75191540c12aa9460bb98991370129ecd93f8f88999fd2d4558",
+    "--prepared",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/fixture-mirror/run/PREPARED.json",
+    "--prepared-sha256",
+    "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f",
+    "--session-id",
+    "42abe9df32d34dd1840c23cb5246623d",
+    "--snapshot-sdk",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0003-r17-005-snapshot.sdk-result.json",
+    "--snapshot-sdk-sha256",
+    "961f5bc20dfab761652de86a0efe7106b59ac381e7a3191400bd267046106ef4",
+    "--mode",
+    "open-decisions",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r17-argument-author-actual-contract-validation-20261007-003\\fixture-mirror\\run\\first-SOURCE002-open"
+  ],
+  "exit_code": 1,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-first.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/SOURCE002-first.stderr",
+    "bytes": 1211,
+    "sha256": "e83a98d9beab437f3a6bd63c096a0fef5de33fc37f2fceb1b9ce805ec1bf34f6"
+  },
+  "expected_pure_fixture": "Actual28/final10/session bytes, mirror run only, no requests executed.",
+  "output_created": false,
+  "SDK_calls": 0,
+  "native_calls": 0,
+  "game_calls": 0,
+  "main_writes": 0,
+  "formal_credit": null
+}

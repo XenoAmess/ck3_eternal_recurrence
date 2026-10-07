@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\source004\author_i4_arguments.py", line 145, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\source004\author_i4_arguments.py", line 123, in main
+    need(type(s.get('active_event')) is dict and s['active_event'].get('instance_id')==c['current_event_instance_id'],'Fresh snapshot event instance differs')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\source004\author_i4_arguments.py", line 10, in need
+    if not ok:raise ValueError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Fresh snapshot event instance differs

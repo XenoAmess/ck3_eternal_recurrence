@@ -1,0 +1,6 @@
+{
+  "decision_key": "lyd_i3b_begin_decision",
+  "expected_outcome": "event_window",
+  "expected_revision": 3,
+  "expected_event_definition_key": "lyd.430"
+}

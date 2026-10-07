@@ -1,0 +1,6 @@
+Executing <Task pending name='Task-2' coro=<PublicCUnitMcpTests.test_all_public_unit_facades_preserve_zero_and_reject_coercion() running at C:\workspace\ck3_lyd_runtime_20261004\r17-ci-two-failures-candidate-20261007-002\after\ck3_autonomous_player\tests\unit\test_public_cunit_mcp_contract.py:77> wait_for=<Future pending cb=[Task.task_wakeup()] created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py:1007> cb=[_run_until_complete_cb() at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py:181] created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 1.813 seconds
+.
+----------------------------------------------------------------------
+Ran 1 test in 2.403s
+
+OK

@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 17,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\queue-001\\r17-019-after-wait-timeout-snapshot.request.json",
+  "request_sha256": "7d475ba0e125a12b6130995e0eff946fd66af7cf7f101beab2f273b94115f40d",
+  "started_at_utc": "2026-10-07T00:50:14.992515+00:00"
+}

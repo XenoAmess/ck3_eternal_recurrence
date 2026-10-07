@@ -1,0 +1,88 @@
+{
+  "source_HEAD": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "rows": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "committed_source_before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-before/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+        "bytes": 1441365,
+        "sha256": "666a2d3673abfe443f5fba152ec0fc51b11fb8a0b217891b9db069a712e98adf"
+      },
+      "working_source_at_archive_cutoff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-current-cutoff/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+        "bytes": 1441363,
+        "sha256": "4669b0921231ca69537cbe6ba4368868a950ec745965fc88a6095a7faad86e06"
+      },
+      "working_source_is_loaded_R17_DLL": false
+    },
+    {
+      "target": "ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py",
+      "committed_source_before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-before/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py",
+        "bytes": 6955,
+        "sha256": "aa0d33e5647b0200ef51f466ddf5f2c6f29248212fc1bfc0c10b0a8714f42290"
+      },
+      "working_source_at_archive_cutoff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-current-cutoff/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py",
+        "bytes": 7137,
+        "sha256": "cfb5b88ea53b1590680653661a96f9c28a593e43ca909e97fd9b88f5be49ff67"
+      },
+      "working_source_is_loaded_R17_DLL": false
+    },
+    {
+      "target": "mod_li_yu_dao/tools/build_release.py",
+      "committed_source_before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-before/mod_li_yu_dao/tools/build_release.py",
+        "bytes": 10844,
+        "sha256": "a5f0343ced67d68438116a4424adac579c6b3913429c558df6ec638a17c754ce"
+      },
+      "working_source_at_archive_cutoff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-current-cutoff/mod_li_yu_dao/tools/build_release.py",
+        "bytes": 10841,
+        "sha256": "dbb2e01589a1dc925cdd343b3e6bcbb0cad46355e22a64da969143b1ddfcaf47"
+      },
+      "working_source_is_loaded_R17_DLL": false
+    },
+    {
+      "target": "mod_li_yu_dao/tools/test_build_release.py",
+      "committed_source_before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-before/mod_li_yu_dao/tools/test_build_release.py",
+        "bytes": 21655,
+        "sha256": "18eec05254e9a537b97089c237c4886775ed1f0d432ae38a1abbb83d07d75fe4"
+      },
+      "working_source_at_archive_cutoff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-current-cutoff/mod_li_yu_dao/tools/test_build_release.py",
+        "bytes": 21664,
+        "sha256": "5d5c7d898d0bf1c07266df83f123fa021b7ec260baf14ba2bfbdea3682dc42ef"
+      },
+      "working_source_is_loaded_R17_DLL": false
+    },
+    {
+      "target": "mod_li_yu_dao/tools/validate_static.py",
+      "committed_source_before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-before/mod_li_yu_dao/tools/validate_static.py",
+        "bytes": 21914,
+        "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+      },
+      "working_source_at_archive_cutoff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-current-cutoff/mod_li_yu_dao/tools/validate_static.py",
+        "bytes": 21911,
+        "sha256": "523ea7f5a60b247cbdc3e90de2aa3343797ceec3356f739e89639e774fc4c7d4"
+      },
+      "working_source_is_loaded_R17_DLL": false
+    },
+    {
+      "target": "ck3_autonomous_player/tests/unit/test_native_bridge_dispatch_topology.py",
+      "committed_source_before": null,
+      "working_source_at_archive_cutoff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-final-archive-candidate-20261007-001/source-current-cutoff/ck3_autonomous_player/tests/unit/test_native_bridge_dispatch_topology.py",
+        "bytes": 11631,
+        "sha256": "4262c993825d801449b71446e7374777d45c290cf75b8de5242cb992ef4d7637"
+      },
+      "working_source_is_loaded_R17_DLL": false
+    }
+  ],
+  "historical_R17_runtime_source_is_c706": true,
+  "future_fixed_native_build": null,
+  "future_fixed_native_runtime": null
+}

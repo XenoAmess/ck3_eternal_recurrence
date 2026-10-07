@@ -1,0 +1,10 @@
+--- SOURCE003/author_i4_arguments.py
++++ SOURCE004/author_i4_arguments.py
+@@ -120,6 +120,7 @@
+         c=q['current_event_window_context'];need(a.event_definition==c['event_definition_key'],'Exact current definition differs')
+         need(c['root_scope']['typed_identity']['character_id']==actor,'Actual event root differs')
+         need(type(c['current_event_instance_id']) is int and c['current_event_instance_id']>=0,'Actual event instance required')
++        need(type(s.get('active_event')) is dict and s['active_event'].get('instance_id')==c['current_event_instance_id'],'Fresh snapshot event instance differs')
+         args['event_instance_id']=c['current_event_instance_id'];tool='ck3_query_profile_event_window_v1'
+         if mode=='select-event':
+             need(type(a.native_index) is int and a.native_index>=0 and a.source_option_key,'ROOT explicit key/index review required')

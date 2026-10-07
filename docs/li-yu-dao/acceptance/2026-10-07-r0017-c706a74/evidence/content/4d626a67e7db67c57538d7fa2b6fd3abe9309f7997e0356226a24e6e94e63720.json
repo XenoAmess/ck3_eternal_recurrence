@@ -1,0 +1,16 @@
+{
+  "schema": "lyd.final-business-migration-policy-registration.r17-ordering.v3",
+  "approved_policy_sha256": "ec3161fb115baa73832adfed7208fdb8eb0e7a54f872207f6f81ee8f907b33d3",
+  "approved_policy_file": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/reader/dependencies/business_migration_policy_v2.json",
+    "bytes": 6690,
+    "sha256": "ec3161fb115baa73832adfed7208fdb8eb0e7a54f872207f6f81ee8f907b33d3"
+  },
+  "ROOT_final_factory_review": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-07-r0017-factory-ordering-source/REPORT.md",
+    "bytes": 2694,
+    "sha256": "d4f6712612fecb42bdcd7fd5516b0402e835a3e3c4cc4f0f253b31e949ad2b86"
+  },
+  "actual_new_source_HEAD": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "actual_acceptance_credit": null
+}

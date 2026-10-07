@@ -1,0 +1,324 @@
+{
+  "source_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "verified_source_binding": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-key-path-r17-c706a74f-20261007-001/SOURCE-BINDING.actual.json",
+    "bytes": 12325,
+    "sha256": "e4176a3ae1f7d569ab685ff56d51d607ddffcaf1922d23157a4040e4d02463b2"
+  },
+  "contracts": {
+    "lyd_can_enter_display_trigger": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt",
+      "first_line": 11,
+      "last_line": 28,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt",
+        "bytes": 2885,
+        "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+      },
+      "definition": "lyd_can_enter_display_trigger = {\n    lyd_display_eligible_trigger = yes\n    faith = { religion = religion:confucianism_religion }\n    custom_description = {\n        text = lyd_not_current_faith_head_tt\n        subject = root\n        NOT = { this = faith.religious_head }\n    }\n    custom_description = {\n        text = lyd_not_current_rite_head_tt\n        subject = root\n        NOT = { this = rite.head_of_rite }\n    }\n    OR = {\n        NOT = { has_character_flag = lyd_enabled }\n        NOT = { lyd_catalogue_rite_trigger = yes }\n    }\n}"
+    },
+    "lyd_can_change_school_display_trigger": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt",
+      "first_line": 49,
+      "last_line": 52,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt",
+        "bytes": 2885,
+        "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+      },
+      "definition": "lyd_can_change_school_display_trigger = {\n    lyd_can_use_school_display_trigger = yes\n    NOT = { has_character_flag = lyd_school_cooldown }\n}"
+    },
+    "lyd_can_study_display_trigger": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt",
+      "first_line": 57,
+      "last_line": 60,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt",
+        "bytes": 2885,
+        "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+      },
+      "definition": "lyd_can_study_display_trigger = {\n    lyd_can_use_school_display_trigger = yes\n    NOT = { has_character_flag = lyd_study_cooldown }\n}"
+    },
+    "lyd_study_decision": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/decisions/lyd_decisions.txt",
+      "first_line": 28,
+      "last_line": 39,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/decisions/lyd_decisions.txt",
+        "bytes": 1774,
+        "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+      },
+      "definition": "lyd_study_decision = {\n    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }\n    decision_group_type = religious\n    ai_check_interval = 0\n    desc = lyd_study_decision_desc\n    selection_tooltip = lyd_study_decision_tooltip\n    confirm_text = lyd_study_decision_confirm\n    is_shown = { lyd_is_player_trigger = yes lyd_can_use_school_trigger = yes }\n    is_valid = { lyd_can_use_school_display_trigger = yes lyd_can_study_display_trigger = yes }\n    effect = { lyd_open_study_effect = yes }\n    ai_will_do = { base = 0 }\n}"
+    },
+    "lyd_change_school_decision": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/decisions/lyd_decisions.txt",
+      "first_line": 15,
+      "last_line": 26,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/decisions/lyd_decisions.txt",
+        "bytes": 1774,
+        "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+      },
+      "definition": "lyd_change_school_decision = {\n    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }\n    decision_group_type = religious\n    ai_check_interval = 0\n    desc = lyd_change_school_decision_desc\n    selection_tooltip = lyd_change_school_decision_tooltip\n    confirm_text = lyd_change_school_decision_confirm\n    is_shown = { lyd_is_player_trigger = yes lyd_can_use_school_trigger = yes }\n    is_valid = { lyd_can_use_school_display_trigger = yes lyd_can_change_school_display_trigger = yes }\n    effect = { lyd_open_school_effect = yes }\n    ai_will_do = { base = 0 }\n}"
+    },
+    "lyd_open_study_effect": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt",
+      "first_line": 20,
+      "last_line": 25,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt",
+        "bytes": 3415,
+        "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+      },
+      "definition": "lyd_open_study_effect = {\n    if = {\n        limit = { lyd_can_study_trigger = yes }\n        if = { limit = { rite = rite:lyd_rite_kongmen } trigger_event = lyd.100 } if = { limit = { rite = rite:lyd_rite_mengzi } trigger_event = lyd.101 } if = { limit = { rite = rite:lyd_rite_xunzi } trigger_event = lyd.102 } if = { limit = { rite = rite:lyd_rite_zhengxuan } trigger_event = lyd.103 } if = { limit = { rite = rite:lyd_rite_wangsu } trigger_event = lyd.104 } if = { limit = { rite = rite:lyd_rite_jingshu } trigger_event = lyd.105 } if = { limit = { rite = rite:lyd_rite_zhuxi } trigger_event = lyd.106 } if = { limit = { rite = rite:lyd_rite_lujiuyuan } trigger_event = lyd.107 } if = { limit = { rite = rite:lyd_rite_dongzhongshu } trigger_event = lyd.108 } if = { limit = { rite = rite:lyd_rite_guwen } trigger_event = lyd.109 } if = { limit = { rite = rite:lyd_rite_wangbi } trigger_event = lyd.110 } if = { limit = { rite = rite:lyd_rite_guoxiang } trigger_event = lyd.111 } if = { limit = { rite = rite:lyd_rite_hanyu } trigger_event = lyd.112 } if = { limit = { rite = rite:lyd_rite_liao } trigger_event = lyd.113 } if = { limit = { rite = rite:lyd_rite_zhoudunyi } trigger_event = lyd.114 } if = { limit = { rite = rite:lyd_rite_chengbrothers } trigger_event = lyd.115 } if = { limit = { rite = rite:lyd_rite_zhangzai } trigger_event = lyd.116 } if = { limit = { rite = rite:lyd_rite_shaoyong } trigger_event = lyd.117 } if = { limit = { rite = rite:lyd_rite_wanganshi } trigger_event = lyd.118 } if = { limit = { rite = rite:lyd_rite_sushi } trigger_event = lyd.119 } if = { limit = { rite = rite:lyd_rite_huxiang } trigger_event = lyd.120 } if = { limit = { rite = rite:lyd_rite_yongjia } trigger_event = lyd.121 } if = { limit = { rite = rite:lyd_rite_yongkang } trigger_event = lyd.122 } if = { limit = { rite = rite:lyd_rite_wucheng } trigger_event = lyd.123 } if = { limit = { rite = rite:lyd_rite_chenxianzhang } trigger_event = lyd.124 } if = { limit = { rite = rite:lyd_rite_zhanruoshui } trigger_event = lyd.125 } if = { limit = { rite = rite:lyd_rite_wangyangming } trigger_event = lyd.126 } if = { limit = { rite = rite:lyd_rite_jiangyou } trigger_event = lyd.127 } if = { limit = { rite = rite:lyd_rite_taizhou } trigger_event = lyd.128 } if = { limit = { rite = rite:lyd_rite_liuzongzhou } trigger_event = lyd.129 } if = { limit = { rite = rite:lyd_rite_donglin } trigger_event = lyd.130 } if = { limit = { rite = rite:lyd_rite_wangfuzhi } trigger_event = lyd.131 } if = { limit = { rite = rite:lyd_rite_yanli } trigger_event = lyd.132 } if = { limit = { rite = rite:lyd_rite_qianjia } trigger_event = lyd.133 } if = { limit = { rite = rite:lyd_rite_changzhou } trigger_event = lyd.134 } if = { limit = { rite = rite:lyd_rite_jingshi } trigger_event = lyd.135 }\n    }\n}"
+    },
+    "lyd_open_school_effect": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt",
+      "first_line": 14,
+      "last_line": 19,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt",
+        "bytes": 3415,
+        "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+      },
+      "definition": "lyd_open_school_effect = {\n    if = {\n        limit = { lyd_can_change_school_trigger = yes }\n        trigger_event = lyd.10\n    }\n}"
+    },
+    "lyd_practice_zhuxi_c_effect": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_practice_3_effects.txt",
+      "first_line": 50,
+      "last_line": 60,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_practice_3_effects.txt",
+        "bytes": 2756,
+        "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+      },
+      "definition": "lyd_practice_zhuxi_c_effect = {\n    if = {\n        limit = {\n            lyd_can_study_trigger = yes\n            rite = rite:lyd_rite_zhuxi\n            gold >= 35\n        }\n        remove_short_term_gold = 35 add_piety = -20 add_prestige = 20\n        add_character_flag = { flag = lyd_study_cooldown days = 180 }\n    }\n}"
+    },
+    "lyd_practice_jingshi_b_effect": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_practice_14_effects.txt",
+      "first_line": 26,
+      "last_line": 36,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_practice_14_effects.txt",
+        "bytes": 1526,
+        "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+      },
+      "definition": "lyd_practice_jingshi_b_effect = {\n    if = {\n        limit = {\n            lyd_can_study_trigger = yes\n            rite = rite:lyd_rite_jingshi\n            gold >= 35\n        }\n        remove_short_term_gold = 35 add_piety = 45 add_prestige = 15 add_stress = 5 add_learning_lifestyle_xp = 30\n        add_character_flag = { flag = lyd_study_cooldown days = 180 }\n    }\n}"
+    },
+    "lyd_adopt_jingshi_effect": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_school_5_effects.txt",
+      "first_line": 38,
+      "last_line": 48,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_school_5_effects.txt",
+        "bytes": 1968,
+        "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+      },
+      "definition": "lyd_adopt_jingshi_effect = {\n    if = {\n        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_jingshi } }\n        set_character_rite = rite:lyd_rite_jingshi\n        if = {\n            limit = { rite = rite:lyd_rite_jingshi faith = rite:lyd_rite_jingshi.faith }\n            add_character_flag = { flag = lyd_school_cooldown days = 365 }\n        }\n        else = { debug_log = \"LYD_SCHOOL_RITE_POSTCONDITION_FAILED\" trigger_event = lyd.2 }\n    }\n}"
+    },
+    "lyd.10": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+      "first_line": 21,
+      "last_line": 90,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      },
+      "definition": "lyd.10 = {\n    type = character_event\n    title = lyd_choose_school_t\n    desc = lyd_choose_school_desc\n    theme = faith\n    trigger = { lyd_can_change_school_trigger = yes }\n\n    option = {\n        name = lyd_adopt_kongmen\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_kongmen } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_kongmen_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_mengzi\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_mengzi } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_mengzi_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_xunzi\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_xunzi } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_xunzi_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_zhengxuan\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhengxuan } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_zhengxuan_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_wangsu\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangsu } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_wangsu_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_jingshu\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jingshu } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_jingshu_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_zhuxi\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhuxi } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_zhuxi_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_lujiuyuan\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_lujiuyuan } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_lujiuyuan_effect = yes\n    }\n\n    option = {\n        name = lyd_choose_school_next_page\n        trigger = { lyd_can_change_school_display_trigger = yes }\n        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.11 }\n    }\n    option = { name = lyd_cancel }\n}"
+    },
+    "lyd.11": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+      "first_line": 92,
+      "last_line": 160,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      },
+      "definition": "lyd.11 = {\n    type = character_event\n    title = lyd_choose_school_t\n    desc = lyd_choose_school_desc\n    theme = faith\n    trigger = { lyd_can_change_school_trigger = yes }\n\n    option = {\n        name = lyd_adopt_dongzhongshu\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_dongzhongshu } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_dongzhongshu_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_guwen\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_guwen } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_guwen_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_wangbi\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangbi } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_wangbi_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_guoxiang\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_guoxiang } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_guoxiang_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_hanyu\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_hanyu } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_hanyu_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_liao\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_liao } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_liao_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_zhoudunyi\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhoudunyi } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_zhoudunyi_effect = yes\n    }\n\n    option = {\n        name = lyd_choose_school_previous_page\n        trigger = { lyd_can_change_school_display_trigger = yes }\n        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.10 }\n    }\n\n    option = {\n        name = lyd_choose_school_next_page\n        trigger = { lyd_can_change_school_display_trigger = yes }\n        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.12 }\n    }\n    option = { name = lyd_cancel }\n}"
+    },
+    "lyd.12": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+      "first_line": 162,
+      "last_line": 230,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      },
+      "definition": "lyd.12 = {\n    type = character_event\n    title = lyd_choose_school_t\n    desc = lyd_choose_school_desc\n    theme = faith\n    trigger = { lyd_can_change_school_trigger = yes }\n\n    option = {\n        name = lyd_adopt_chengbrothers\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_chengbrothers } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_chengbrothers_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_zhangzai\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhangzai } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_zhangzai_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_shaoyong\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_shaoyong } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_shaoyong_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_wanganshi\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wanganshi } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_wanganshi_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_sushi\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_sushi } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_sushi_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_huxiang\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_huxiang } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_huxiang_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_yongjia\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_yongjia } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_yongjia_effect = yes\n    }\n\n    option = {\n        name = lyd_choose_school_previous_page\n        trigger = { lyd_can_change_school_display_trigger = yes }\n        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.11 }\n    }\n\n    option = {\n        name = lyd_choose_school_next_page\n        trigger = { lyd_can_change_school_display_trigger = yes }\n        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.13 }\n    }\n    option = { name = lyd_cancel }\n}"
+    },
+    "lyd.13": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+      "first_line": 232,
+      "last_line": 300,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      },
+      "definition": "lyd.13 = {\n    type = character_event\n    title = lyd_choose_school_t\n    desc = lyd_choose_school_desc\n    theme = faith\n    trigger = { lyd_can_change_school_trigger = yes }\n\n    option = {\n        name = lyd_adopt_yongkang\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_yongkang } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_yongkang_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_wucheng\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wucheng } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_wucheng_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_chenxianzhang\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_chenxianzhang } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_chenxianzhang_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_zhanruoshui\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhanruoshui } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_zhanruoshui_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_wangyangming\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangyangming } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_wangyangming_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_jiangyou\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jiangyou } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_jiangyou_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_taizhou\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_taizhou } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_taizhou_effect = yes\n    }\n\n    option = {\n        name = lyd_choose_school_previous_page\n        trigger = { lyd_can_change_school_display_trigger = yes }\n        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.12 }\n    }\n\n    option = {\n        name = lyd_choose_school_next_page\n        trigger = { lyd_can_change_school_display_trigger = yes }\n        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.14 }\n    }\n    option = { name = lyd_cancel }\n}"
+    },
+    "lyd.14": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+      "first_line": 302,
+      "last_line": 364,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      },
+      "definition": "lyd.14 = {\n    type = character_event\n    title = lyd_choose_school_t\n    desc = lyd_choose_school_desc\n    theme = faith\n    trigger = { lyd_can_change_school_trigger = yes }\n\n    option = {\n        name = lyd_adopt_liuzongzhou\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_liuzongzhou } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_liuzongzhou_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_donglin\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_donglin } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_donglin_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_wangfuzhi\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangfuzhi } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_wangfuzhi_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_yanli\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_yanli } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_yanli_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_qianjia\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_qianjia } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_qianjia_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_changzhou\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_changzhou } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_changzhou_effect = yes\n    }\n\n    option = {\n        name = lyd_adopt_jingshi\n        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jingshi } }\n        custom_tooltip = lyd_adopt_school_tt\n        lyd_adopt_jingshi_effect = yes\n    }\n\n    option = {\n        name = lyd_choose_school_previous_page\n        trigger = { lyd_can_change_school_display_trigger = yes }\n        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.13 }\n    }\n    option = { name = lyd_cancel }\n}"
+    },
+    "lyd.106": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+      "first_line": 564,
+      "last_line": 595,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      },
+      "definition": "lyd.106 = {\n    type = character_event\n    title = lyd_practice_zhuxi_t\n    desc = lyd_practice_zhuxi_desc\n    theme = faith\n    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_zhuxi }\n\n    option = {\n        name = lyd_practice_zhuxi_a\n        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }\n        custom_tooltip = lyd_practice_zhuxi_a_tt\n        custom_tooltip = lyd_study_cooldown_tt\n        lyd_practice_zhuxi_a_effect = yes\n    }\n\n    option = {\n        name = lyd_practice_zhuxi_b\n        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }\n        custom_tooltip = lyd_practice_zhuxi_b_tt\n        custom_tooltip = lyd_study_cooldown_tt\n        lyd_practice_zhuxi_b_effect = yes\n    }\n\n    option = {\n        name = lyd_practice_zhuxi_c\n        trigger = { lyd_can_study_display_trigger = yes gold >= 35 }\n        custom_tooltip = lyd_practice_zhuxi_c_tt\n        custom_tooltip = lyd_study_cooldown_tt\n        lyd_practice_zhuxi_c_effect = yes\n    }\n    option = { name = lyd_cancel }\n}"
+    },
+    "lyd.135": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+      "first_line": 1521,
+      "last_line": 1552,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/events/lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      },
+      "definition": "lyd.135 = {\n    type = character_event\n    title = lyd_practice_jingshi_t\n    desc = lyd_practice_jingshi_desc\n    theme = faith\n    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_jingshi }\n\n    option = {\n        name = lyd_practice_jingshi_a\n        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }\n        custom_tooltip = lyd_practice_jingshi_a_tt\n        custom_tooltip = lyd_study_cooldown_tt\n        lyd_practice_jingshi_a_effect = yes\n    }\n\n    option = {\n        name = lyd_practice_jingshi_b\n        trigger = { lyd_can_study_display_trigger = yes gold >= 35 }\n        custom_tooltip = lyd_practice_jingshi_b_tt\n        custom_tooltip = lyd_study_cooldown_tt\n        lyd_practice_jingshi_b_effect = yes\n    }\n\n    option = {\n        name = lyd_practice_jingshi_c\n        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }\n        custom_tooltip = lyd_practice_jingshi_c_tt\n        custom_tooltip = lyd_study_cooldown_tt\n        lyd_practice_jingshi_c_effect = yes\n    }\n    option = { name = lyd_cancel }\n}"
+    },
+    "lyd_c2_school_free_trigger": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "first_line": 23,
+      "last_line": 29,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "bytes": 16511,
+        "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+      },
+      "definition": "lyd_c2_school_free_trigger = {\n    NOT = { has_variable = lyd_c2_proposal_owner }\n    NOT = { has_variable = lyd_c3_proposal_owner }\n    NOT = { has_variable = lyd_i3b_owner }\n    NOT = { has_variable = lyd_c2_transition_cooldown }\n    NOT = { has_variable = lyd_c2_retry_cooldown }\n}"
+    },
+    "lyd_c2_start_join_trigger": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "first_line": 42,
+      "last_line": 59,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "bytes": 16511,
+        "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+      },
+      "definition": "lyd_c2_start_join_trigger = {\n    scope:actor = {\n        lyd_c2_actor_trigger = yes\n        NOT = { has_variable = lyd_c2_active }\n        rite = { lyd_c2_school_free_trigger = yes }\n        OR = {\n            NOT = { rite = faith.main_rite }\n            faith = { lyd_c2_single_rite_faith_trigger = yes }\n        }\n    }\n    scope:recipient = {\n        lyd_c2_elector_trigger = yes\n        faith = { religion = religion:confucianism_religion any_faith_rite = { count >= 1 } NOT = { any_faith_rite = { NOT = { lyd_c2_receiver_free_trigger = yes } } } }\n        faith != scope:actor.faith\n        rite = faith.main_rite\n        rite = { lyd_c2_receiver_free_trigger = yes }\n    }\n}"
+    },
+    "lyd_c2_start_detach_trigger": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "first_line": 60,
+      "last_line": 65,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "bytes": 16511,
+        "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+      },
+      "definition": "lyd_c2_start_detach_trigger = {\n    lyd_c2_actor_trigger = yes\n    NOT = { has_variable = lyd_c2_active }\n    NOT = { rite = faith.main_rite }\n    rite = { lyd_c2_school_free_trigger = yes }\n}"
+    },
+    "lyd_c2_cancel_proposal_decision": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt",
+      "first_line": 42,
+      "last_line": 61,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt",
+        "bytes": 2408,
+        "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+      },
+      "definition": "lyd_c2_cancel_proposal_decision = {\n    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }\n    decision_group_type = religious\n    ai_check_interval = 0\n    desc = lyd_c2_cancel_proposal_decision_desc\n    selection_tooltip = lyd_c2_cancel_proposal_decision_tooltip\n    confirm_text = lyd_c2_cancel_proposal_decision_confirm\n    is_shown = { is_ai = no has_variable = lyd_c2_active }\n    is_valid = {\n        custom_description = {\n            text = lyd_c2_cancel_requirements_tt\n            is_ai = no has_variable = lyd_c2_active\n        }\n    }\n    effect = {\n        custom_tooltip = lyd_c2_cancel_round_tt\n        hidden_effect = { lyd_c2_cancel_round_effect = yes }\n    }\n    ai_will_do = { base = 0 }\n}"
+    },
+    "lyd_c2_propose_join_interaction": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "first_line": 2,
+      "last_line": 24,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt",
+        "bytes": 986,
+        "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+      },
+      "definition": "lyd_c2_propose_join_interaction = {\n    category = interaction_category_religion\n    common_interaction = yes\n    desc = lyd_c2_propose_join_interaction_desc\n    # Automatic delivery is not approval: all voters and representatives receive\n    # separate affirmative/refusal options after this player opens the round.\n    auto_accept = yes\n    is_shown = {\n        scope:actor = { lyd_c2_actor_trigger = yes }\n        scope:recipient = { is_alive = yes faith != scope:actor.faith faith = { religion = religion:confucianism_religion } }\n    }\n    is_valid_showing_failures_only = {\n        custom_description = {\n            text = lyd_c2_join_requirements_tt\n            lyd_c2_start_join_trigger = yes\n        }\n    }\n    on_auto_accept = {\n        custom_tooltip = lyd_c2_join_open_tt\n        hidden_effect = { lyd_c2_begin_join_effect = yes }\n    }\n    ai_will_do = { base = 0 }\n}"
+    },
+    "lyd_c2_start_round_effect": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "first_line": 51,
+      "last_line": 135,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt",
+        "bytes": 12698,
+        "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+      },
+      "definition": "lyd_c2_start_round_effect = {\n    if = {\n    limit = { lyd_c2_actor_trigger = yes is_ai = no }\n    # Character scope, set by the already guarded join/detach entry.\n    save_scope_as = lyd_c2_actor\n    lyd_c2_reset_round_effect = yes\n    set_variable = { name = lyd_c2_active value = 1 days = 365 }\n    set_variable = { name = lyd_c2_kind value = $KIND$ }\n    set_variable = { name = lyd_c2_terms_revision value = 1 }\n    set_variable = { name = lyd_c2_result value = 0 }\n    # Persistent per-actor generation: rite serials alone can collide after the\n    # same player changes school. Never include this in reset_round fields.\n    if = { limit = { NOT = { has_variable = lyd_c2_callback_nonce } } set_variable = { name = lyd_c2_callback_nonce value = 0 } }\n    change_variable = { name = lyd_c2_callback_nonce add = 1 }\n    if = { limit = { NOT = { has_variable = lyd_c2_completed_joins } } set_variable = { name = lyd_c2_completed_joins value = 0 } }\n    if = { limit = { NOT = { has_variable = lyd_c2_completed_detaches } } set_variable = { name = lyd_c2_completed_detaches value = 0 } }\n    set_variable = { name = lyd_c2_source_faith value = faith }\n    set_variable = { name = lyd_c2_source_main value = faith.main_rite }\n    set_variable = { name = lyd_c2_moving_rite value = rite }\n    set_variable = { name = lyd_c2_source_singleton value = 0 }\n    if = { limit = { faith = { lyd_c2_single_rite_faith_trigger = yes } }\n        set_variable = { name = lyd_c2_source_singleton value = 1 }\n    }\n    if = { limit = { exists = rite.head_of_rite } set_variable = { name = lyd_c2_source_rite_head value = rite.head_of_rite } }\n    if = { limit = { exists = faith.religious_head }\n        set_variable = { name = lyd_c2_source_head value = faith.religious_head }\n        set_variable = { name = lyd_c2_source_head_title value = faith.religious_head_title }\n        faith.religious_head = {\n            every_held_title = {\n                limit = { this != scope:lyd_c2_actor.var:lyd_c2_source_head_title }\n                save_scope_as = lyd_c2_protected_title\n                scope:lyd_c2_actor = { add_to_variable_list = { name = lyd_c2_protected_head_titles target = scope:lyd_c2_protected_title } }\n            }\n        }\n    }\n    rite = {\n        save_scope_as = lyd_c2_event_school\n        if = { limit = { NOT = { has_variable = lyd_c2_proposal_serial } } set_variable = { name = lyd_c2_proposal_serial value = 0 } }\n        change_variable = { name = lyd_c2_proposal_serial add = 1 }\n        set_variable = { name = lyd_c2_lock_serial value = var:lyd_c2_proposal_serial }\n        set_variable = { name = lyd_c2_proposal_owner value = scope:lyd_c2_actor days = 365 }\n        scope:lyd_c2_actor = { set_variable = { name = lyd_c2_serial value = prev.var:lyd_c2_proposal_serial } }\n    }\n    # Tooltip projection does not execute the preceding assignments.\n    # Read and deliver this round only after its actual variables exist.\n    if = {\n        limit = {\n            has_variable = lyd_c2_active\n            has_variable = lyd_c2_serial\n            has_variable = lyd_c2_terms_revision\n            has_variable = lyd_c2_callback_nonce\n            has_variable = lyd_c2_kind\n            has_variable = lyd_c2_source_faith\n            has_variable = lyd_c2_source_main\n            has_variable = lyd_c2_moving_rite\n        }\n        save_scope_value_as = { name = lyd_c2_event_serial value = var:lyd_c2_serial }\n        save_scope_value_as = { name = lyd_c2_event_terms value = var:lyd_c2_terms_revision }\n        save_scope_value_as = { name = lyd_c2_event_nonce value = var:lyd_c2_callback_nonce }\n        set_variable = { name = lyd_c2_source_total value = 0 }\n        set_variable = { name = lyd_c2_target_total value = 0 }\n        set_variable = { name = lyd_c2_target_rite_total value = 0 }\n        set_variable = { name = lyd_c2_dormant_total value = 0 }\n        set_variable = { name = lyd_c2_source_yes value = 0 }\n        set_variable = { name = lyd_c2_target_yes value = 0 }\n        set_variable = { name = lyd_c2_player_total value = 0 }\n        set_variable = { name = lyd_c2_player_yes value = 0 }\n        if = {\n            limit = { var:lyd_c2_kind = 1 }\n            set_variable = { name = lyd_c2_target_rep value = scope:recipient }\n            set_variable = { name = lyd_c2_target_faith value = scope:recipient.faith }\n            set_variable = { name = lyd_c2_target_main value = scope:recipient.faith.main_rite }\n            if = {\n                limit = { exists = scope:recipient.faith.religious_head }\n                set_variable = { name = lyd_c2_target_head value = scope:recipient.faith.religious_head }\n            }\n            lyd_c2_collect_target_effect = yes\n        }\n        lyd_c2_collect_source_effect = yes\n        lyd_c2_snapshot_terms_effect = yes\n        trigger_event = lyd.200\n        trigger_event = { id = lyd.229 days = 365 }\n    }\n    }\n}"
+    },
+    "lyd_c2_reject_round_effect": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt",
+      "first_line": 20,
+      "last_line": 28,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      },
+      "definition": "lyd_c2_reject_round_effect = {\n    if = {\n        limit = { lyd_c2_current_proposal_trigger = { ACTOR = scope:lyd_c2_actor } }\n        var:lyd_c2_moving_rite = { set_variable = { name = lyd_c2_retry_cooldown value = 1 days = 365 } }\n        set_variable = { name = lyd_c2_result value = 2 }\n        lyd_c2_release_locks_effect = yes\n        trigger_event = lyd.228\n    }\n}"
+    },
+    "lyd_c2_cancel_round_effect": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt",
+      "first_line": 29,
+      "last_line": 36,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      },
+      "definition": "lyd_c2_cancel_round_effect = {\n    if = {\n        limit = { is_ai = no has_variable = lyd_c2_active }\n        set_variable = { name = lyd_c2_result value = 3 }\n        lyd_c2_release_locks_effect = yes\n        trigger_event = lyd.228\n    }\n}"
+    },
+    "lyd_c2_expire_round_effect": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt",
+      "first_line": 70,
+      "last_line": 89,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      },
+      "definition": "lyd_c2_expire_round_effect = {\n    if = {\n        # Expiry may clean an otherwise invalid snapshot; do not use the\n        # current-proposal predicate, whose lock lifetime expires today.\n        limit = {\n            exists = scope:lyd_c2_actor\n            exists = scope:lyd_c2_event_school\n            this = scope:lyd_c2_actor\n            var:lyd_c2_moving_rite = scope:lyd_c2_event_school\n            var:lyd_c2_serial = scope:lyd_c2_event_serial\n            var:lyd_c2_terms_revision = scope:lyd_c2_event_terms\n            has_variable = lyd_c2_callback_nonce\n            var:lyd_c2_callback_nonce = scope:lyd_c2_event_nonce\n            var:lyd_c2_result = 0\n        }\n        set_variable = { name = lyd_c2_result value = 4 }\n        lyd_c2_release_locks_effect = yes\n        trigger_event = lyd.228\n    }\n}"
+    },
+    "lyd.228": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/events/lyd_c2_consent_events.txt",
+      "first_line": 166,
+      "last_line": 179,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/events/lyd_c2_consent_events.txt",
+        "bytes": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      },
+      "definition": "lyd.228 = {\n    type = character_event\n    title = lyd_c2_result_t\n    desc = {\n        triggered_desc = { trigger = { var:lyd_c2_result = 1 } desc = lyd_c2_success_desc }\n        triggered_desc = { trigger = { var:lyd_c2_result = 2 } desc = lyd_c2_rejected_desc }\n        triggered_desc = { trigger = { var:lyd_c2_result = 3 } desc = lyd_c2_cancelled_desc }\n        triggered_desc = { trigger = { var:lyd_c2_result = 4 } desc = lyd_c2_expired_desc }\n        triggered_desc = { trigger = { var:lyd_c2_result = 5 } desc = lyd_c2_failed_desc }\n    }\n    theme = faith\n    trigger = { is_ai = no has_variable = lyd_c2_result }\n    option = { name = lyd_c2_acknowledge }\n}"
+    },
+    "lyd.229": {
+      "source_path": "C:/lr17s1/mod_li_yu_dao/events/lyd_c2_consent_events.txt",
+      "first_line": 180,
+      "last_line": 184,
+      "source_raw_ref": {
+        "path": "C:/lr17s1/mod_li_yu_dao/events/lyd_c2_consent_events.txt",
+        "bytes": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      },
+      "definition": "lyd.229 = {\n    type = character_event\n    hidden = yes\n    immediate = { lyd_c2_expire_round_effect = yes }\n}"
+    }
+  },
+  "contract_excerpts_are_source_only": true,
+  "prior_original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-key-path-runbook-fea6a2f9-20261007-001/SOURCE-CONTRACTS.json",
+    "bytes": 42719,
+    "sha256": "dd0f024853e270206f7699ba3261fe519061c04eb907c7deb7c8eb18bdcc56db"
+  }
+}

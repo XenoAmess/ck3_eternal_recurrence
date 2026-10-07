@@ -1,0 +1,52 @@
+{
+  "name": "wrong-profile",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-r17-argument-author-actual-contract-validation-20261007-003\\source003\\author_i4_arguments.py",
+    "--consumer-source",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/consumer",
+    "--consumer-index-sha256",
+    "827c5ec60d3aadfaf7ce02a7f94b8fa246a5cab6f4201f6682dc4ef3dd138c6d",
+    "--request-author",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-formal-original0240-source-20261007-002/author_formal_request.py",
+    "--request-author-sha256",
+    "989f222e3913b75191540c12aa9460bb98991370129ecd93f8f88999fd2d4558",
+    "--prepared",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/PREPARED.json",
+    "--prepared-sha256",
+    "411dea05eb881698e21bc4a35f3420dcdbe4bbd8b18933dc2cd3a649193cae9f",
+    "--session-id",
+    "42abe9df32d34dd1840c23cb5246623d",
+    "--snapshot-sdk",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-profile/SYNTHETIC-snapshot-sdk.json",
+    "--snapshot-sdk-sha256",
+    "4506fdc887433acc63336480a7ac1bb91ec68b4d93d0ee6814de20c23fe915e7",
+    "--mode",
+    "open-decisions",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/mirror/run/wrong-profile"
+  ],
+  "expected_accept": false,
+  "actual_exit": 1,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-profile/stdout.original",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/suite-source003/fixtures/wrong-profile/stderr.original",
+    "bytes": 1054,
+    "sha256": "2623d7a18da63d8a8ba2352332b8680fb7fe3db1142cb283512f0d167cd930c2"
+  },
+  "output_exists": false,
+  "fixture_is_synthetic_I4_not_actualquery": true,
+  "original_actual28_profile_session_refs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i4-r17-argument-author-actual-contract-validation-20261007-003/ACTUAL-SOURCE-INTERFACE-REFS.json",
+    "bytes": 2788,
+    "sha256": "8c546bf5c69306403b3f314ad7f658f23ad768fe7505c4d48b7a5864b992e6fb"
+  },
+  "runtime_or_formal_credit": null
+}

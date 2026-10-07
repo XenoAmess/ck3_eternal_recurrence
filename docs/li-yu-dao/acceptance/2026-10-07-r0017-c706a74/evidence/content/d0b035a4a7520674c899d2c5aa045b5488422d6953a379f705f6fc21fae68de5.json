@@ -1,0 +1,19 @@
+{
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-001/guarded_helper_close.py",
+    "bytes": 25865,
+    "sha256": "88836db54b082fc212799f8e999891e5eb5c2344a04986369be3633ea8d0b6c2"
+  },
+  "SDK": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0025-r17-027-normal-exit-observe.sdk-result.json",
+    "bytes": 6923,
+    "sha256": "52058e9e0490252e6cd9ee43bb64b38492840d4a12c2f4c1d9b001944abe5894"
+  },
+  "native": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001/0025-r17-027-normal-exit-observe.native-01.json",
+    "bytes": 3121,
+    "sha256": "99b840c43c4163229835f4597eb3943cb1419ca1c32d895fff21d59281c91e3d"
+  },
+  "error": "ValueError: Actual typed normal original game HANDLE exit0 required; no retry or autosave credit",
+  "actions": 0
+}

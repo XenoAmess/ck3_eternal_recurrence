@@ -1,0 +1,39 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/ROOT-BINDING.json/serve-cli.json",
+    "bytes": 1328,
+    "sha256": "9b19cf960e03d278bccc5b5661334b7cd6a3a9065e0c56c6e51fc7e2f0ed218c"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-actual-consumer-source-20261007-001\\persistent_native_mcp_queue_28.py",
+    "serve",
+    "--profile",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/native-profile-with-exit-inventory.json",
+    "--queue",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/queue-001",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/mcp-client-001",
+    "--binding",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\ROOT-BINDING.json\\ROOT-BINDING.json",
+    "--binding-sha256",
+    "47a89acb59b7a7a7301f13b08765bede49fad33ddbd5d7203fa703fb02045920"
+  ],
+  "started_at_utc": "2026-10-07T00:30:31.587476+00:00",
+  "finished_at_utc": "2026-10-07T01:02:11.819991+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-client-execution-20261007-001/stdout",
+    "bytes": 6056,
+    "sha256": "e0c357705e6966fc43b00ff7b025b752a79ad419def3097544c34e8d7f0c7c02"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-client-execution-20261007-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

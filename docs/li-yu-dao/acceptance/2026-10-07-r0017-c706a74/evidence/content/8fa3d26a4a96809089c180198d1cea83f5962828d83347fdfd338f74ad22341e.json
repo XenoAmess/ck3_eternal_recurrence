@@ -1,0 +1,14 @@
+{
+ "schema":"lyd.original-exec-process-completion.v1",
+ "tool_session_id":39989,
+ "expected_pid":20436,
+ "expected_create_time":1791332451.9545596,
+ "raw_tool_result":{
+  "chunk_id":"5bd6f7",
+  "wall_time_seconds":0.0000279,
+  "exit_code":0,
+  "original_token_count":58,
+  "output":"{\"result\": {\"path\": \"C:/workspace/ck3_lyd_runtime_20261004/r17-root-keeper-execution-20261007-001/RESULT.actual.json\", \"bytes\": 1440, \"sha256\": \"f8dc548cb9f065b00f377f4459f8abc94562d59b01d27778d12dcb3cd5d55c29\"}, \"exit_code\": 0}\r\n"
+ },
+ "reopened_process":false
+}

@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-root-formal-argv-source-20261007-003\compare_initial0240_political_control.py", line 53, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-root-formal-argv-source-20261007-003\compare_initial0240_political_control.py", line 29, in main
+    packet=load_packet(refs['baseline_input']);before=json.loads(checked(packet['original0240_state'])[1]);cold=json.loads(checked(refs['cold_state'])[1]);source=json.loads(checked(refs['cold_input'])[1]);qualified=json.loads(checked(refs['qualified_native'])[1]);metadata=json.loads(checked(refs['metadata_result'])[1])
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-formal-original0240-source-20261007-002\original0240_baseline_adapter.py", line 16, in load_packet
+    need(set(packet)=={'purpose','checkpoint','legacy_baseline','original_request','original0240_state','formal_acceptance'},'Exact original0240 input fields required')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-formal-original0240-source-20261007-002\original0240_baseline_adapter.py", line 9, in need
+    if not ok:raise ValueError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Exact original0240 input fields required

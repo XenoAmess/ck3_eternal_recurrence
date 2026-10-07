@@ -1,0 +1,56 @@
+{
+  "report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/REPORT.actual.json",
+    "bytes": 21313,
+    "sha256": "ccbc15e9dd7467a4bea8b24ef3818730707ccd7b12d94ef83357fe71a335af65"
+  },
+  "short_report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/REPORT.actual.md",
+    "bytes": 1117,
+    "sha256": "d17699c5beda2296aae1a56c3be500db2b0282eb793173ca7cb0a09f2c919578"
+  },
+  "inputs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/INPUTS.json",
+    "bytes": 470,
+    "sha256": "3fa7fe19e27c689bb04ed51467458d806144faf5bf46613ef7d4ac839f8b42bb"
+  },
+  "source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/read_exact_head_ci_20261007_001.py",
+    "bytes": 10049,
+    "sha256": "ecaf55a2d0d6f83cc0d85f837997dcff83595908f5e0b545bd7dd95071dddcf1"
+  },
+  "raw_captures": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/actions-runs.receipt.json",
+      "bytes": 778,
+      "sha256": "64ded0ae7a4496ea7d3b848cfe9f75db2b7f75b07c6e17cb677c7eba73c9cc06"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/check-runs.receipt.json",
+      "bytes": 770,
+      "sha256": "4a0543bdf0602a447b4a817086c0095fb4f5e600e2a3c38dc486e544e86da6d9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit-status.receipt.json",
+      "bytes": 772,
+      "sha256": "9676207866170cfe2a3b9d7f4089cdc91cc25c3bfcd378e43c84416e554ce10a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/commit.receipt.json",
+      "bytes": 741,
+      "sha256": "d8ffa8be75df32cb42fe5781ae30d0c487e188877581fd1bab39f6040ee948eb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135155.receipt.json",
+      "bytes": 753,
+      "sha256": "3f328b17b170529f5b6b33da3865c2b007f171bc7ea849a32331d2df05af3a5a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-exact-head-ci-readonly-20261007-001/jobs-37549135181.receipt.json",
+      "bytes": 752,
+      "sha256": "ab16cb7c0e44e53c96f061c3bfec20432a9f47b0cb312612bcecd59c0a583b55"
+    }
+  ],
+  "head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "read_only": true
+}

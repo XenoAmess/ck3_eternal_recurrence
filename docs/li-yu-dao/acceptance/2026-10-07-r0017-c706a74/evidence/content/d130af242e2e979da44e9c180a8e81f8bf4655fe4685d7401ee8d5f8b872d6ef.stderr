@@ -1,0 +1,23 @@
+test_static_gate_and_meaningful_negative_cases (test_build_release.BuildTests.test_static_gate_and_meaningful_negative_cases) ... ok
+test_reproducible_archive_and_fixture_exclusion (test_build_release.BuildTests.test_reproducible_archive_and_fixture_exclusion) ... ERROR
+
+======================================================================
+ERROR: test_reproducible_archive_and_fixture_exclusion (test_build_release.BuildTests.test_reproducible_archive_and_fixture_exclusion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-ci-two-failures-candidate-20261007-001\after\mod_li_yu_dao\tools\test_build_release.py", line 209, in test_reproducible_archive_and_fixture_exclusion
+    first = release.build_release(source, base / "a" / release.PRODUCT_ID, revision="0" * 40)
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-ci-two-failures-candidate-20261007-001\after\mod_li_yu_dao\tools\build_release.py", line 135, in build_release
+    payloads = {relative: render_release_file_bytes(relative, (source / relative).read_bytes()) for relative in inventory}
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-ci-two-failures-candidate-20261007-001\after\tools\workshop_compatibility_tags.py", line 78, in render_release_file_bytes
+    return render_workshop_descriptor_bytes(data) if relative == "descriptor.mod" else data
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r17-ci-two-failures-candidate-20261007-001\after\tools\workshop_compatibility_tags.py", line 43, in render_workshop_descriptor_bytes
+    raise ValueError("descriptor must contain exactly one tags block")
+ValueError: descriptor must contain exactly one tags block
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.255s
+
+FAILED (errors=1)

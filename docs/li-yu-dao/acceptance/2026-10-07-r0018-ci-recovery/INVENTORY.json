@@ -1,0 +1,598 @@
+{
+  "created_at_utc": "2026-10-07T02:07:14.648253+00:00",
+  "archive": {
+    "path": "evidence.originals.zip",
+    "bytes": 27693,
+    "sha256": "8dd35c5bcbcacb3febf11ae98d4df15367ae75e4fda09b7c95955b71ab19c944",
+    "members": 34,
+    "format": "deterministic ZIP; each member contains exact original bytes"
+  },
+  "sources": [
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/actions-runs.stdout",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\actions-runs.stdout",
+      "bytes": 26557,
+      "sha256_original_and_member": "6ebe2f5bb22cc5992ac282465c8936209f303c623f21d83d58d9435f2c5c300e",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702028,
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/actions-runs.stderr",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\actions-runs.stderr",
+      "bytes": 0,
+      "sha256_original_and_member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702028,
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/actions-runs.receipt.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\actions-runs.receipt.json",
+      "bytes": 886,
+      "sha256_original_and_member": "fb130a34faa3599d7ae4a6e21fae6826f449d5524e3eb1158c380facdd77d00f",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702028,
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/jobs-37556702028.stdout",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\jobs-37556702028.stdout",
+      "bytes": 2463,
+      "sha256_original_and_member": "df5e2cfd3f926b93fc4c27f523ff53358ef1b2895c39f3ec90a8bb7854650cfe",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702028
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/jobs-37556702028.stderr",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\jobs-37556702028.stderr",
+      "bytes": 0,
+      "sha256_original_and_member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702028
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/jobs-37556702028.receipt.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\jobs-37556702028.receipt.json",
+      "bytes": 871,
+      "sha256_original_and_member": "f16935c5a8b4036c4ae99f1838fae5be5f3382f305e151043ad53394c363dfea",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702028
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/jobs-37556702039.stdout",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\jobs-37556702039.stdout",
+      "bytes": 16002,
+      "sha256_original_and_member": "caf835b4afc87215ae5ba79867d0a87063a697fc909ae3adc59d9adf96b591ec",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/jobs-37556702039.stderr",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\jobs-37556702039.stderr",
+      "bytes": 0,
+      "sha256_original_and_member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/jobs-37556702039.receipt.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\jobs-37556702039.receipt.json",
+      "bytes": 872,
+      "sha256_original_and_member": "8c4b288dce3aa858e3662cf37750e4f3b39c1bdb4563677960f9aa83ff555008",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/failed-logs-37556702039.stdout",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\failed-logs-37556702039.stdout",
+      "bytes": 3917,
+      "sha256_original_and_member": "e67a0046e21a504e3ee3b94847f71b070be64213394eda6883f90ea044896e21",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/failed-logs-37556702039.stderr",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\failed-logs-37556702039.stderr",
+      "bytes": 0,
+      "sha256_original_and_member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "dbaf-ci/failed-logs-37556702039.receipt.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\snapshot-001\\failed-logs-37556702039.receipt.json",
+      "bytes": 856,
+      "sha256_original_and_member": "9db2aa204496bf7199d259890118269ec0f4a3ecc9154368e602756786c54183",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs or failed-step original and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "source-reports/dbaf-REPORT.final.md",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\REPORT.final.md",
+      "bytes": 2804,
+      "sha256_original_and_member": "668caea3f868c46613c43694291f9c0b871f7e428d3509f377dac3170a340c0f",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702028,
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "original final CI report"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "candidate-001/FAILED.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\candidate-001\\FAILED.actual.json",
+      "bytes": 734,
+      "sha256_original_and_member": "365cb68eb074318c14d38a4eb807159a7b5ea24cb5a9dd1d7a53e1065e2110e6",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "retained failed candidate attempt; not CI failure"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "candidate-002/candidate.patch",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\candidate-002\\candidate.patch",
+      "bytes": 10393,
+      "sha256_original_and_member": "8a82f34f3d7d1e4772a8d19927a28c0b55465031f693effb33b1a3afdc25e56a",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "exact four-document candidate; integrated by ROOT as docs HEAD 3475ba2eac392221321c9c83e62f918fd3339db1"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "candidate-002/MANIFEST.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\candidate-002\\MANIFEST.json",
+      "bytes": 4369,
+      "sha256_original_and_member": "60856620ecca416e8126e1c8552baab302b866b9a90f75fe71aeb0b5df6ac6e1",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "exact four-document candidate; integrated by ROOT as docs HEAD 3475ba2eac392221321c9c83e62f918fd3339db1"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "candidate-002/DOC-CHECK.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\candidate-002\\DOC-CHECK.actual.json",
+      "bytes": 840,
+      "sha256_original_and_member": "88a2c6b996f7df83300121974d4769486fa6d876cbca473a7f03cfeda24c2d48",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "exact four-document candidate; integrated by ROOT as docs HEAD 3475ba2eac392221321c9c83e62f918fd3339db1"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "candidate-002/git-apply-check.stdout",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\candidate-002\\git-apply-check.stdout",
+      "bytes": 0,
+      "sha256_original_and_member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "exact four-document candidate; integrated by ROOT as docs HEAD 3475ba2eac392221321c9c83e62f918fd3339db1"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "candidate-002/git-apply-check.stderr",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\candidate-002\\git-apply-check.stderr",
+      "bytes": 0,
+      "sha256_original_and_member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "exact four-document candidate; integrated by ROOT as docs HEAD 3475ba2eac392221321c9c83e62f918fd3339db1"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "candidate-002/REPORT.md",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-exact-head-ci-20261007-001\\candidate-002\\REPORT.md",
+      "bytes": 1002,
+      "sha256_original_and_member": "76ad476c179687560958a160b741f03e37e14f31f345dbbad99c26dc3d1d9d37",
+      "exact_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37556702039
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "exact four-document candidate; integrated by ROOT as docs HEAD 3475ba2eac392221321c9c83e62f918fd3339db1"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "docs-3475-ci/actions-runs.stdout",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-002\\snapshot-002\\actions-runs.stdout",
+      "bytes": 13483,
+      "sha256_original_and_member": "cd95c28e1758253c91d9828554a41c3ffcd43a19c888b08265c8f5f919494ab2",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "docs-3475-ci/actions-runs.stderr",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-002\\snapshot-002\\actions-runs.stderr",
+      "bytes": 0,
+      "sha256_original_and_member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "docs-3475-ci/actions-runs.receipt.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-002\\snapshot-002\\actions-runs.receipt.json",
+      "bytes": 896,
+      "sha256_original_and_member": "6e0bb3c03ef2b4d0ecf2312bfa0a7d93aa9fec4eacd9d8ea32e1c0780489000a",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "docs-3475-ci/jobs-37558948225.stdout",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-002\\snapshot-002\\jobs-37558948225.stdout",
+      "bytes": 16002,
+      "sha256_original_and_member": "57358749299a07c17b5d368dbdd82ef307818713c16a6df4e7309fd1a07f75e8",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "docs-3475-ci/jobs-37558948225.stderr",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-002\\snapshot-002\\jobs-37558948225.stderr",
+      "bytes": 0,
+      "sha256_original_and_member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "docs-3475-ci/jobs-37558948225.receipt.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-002\\snapshot-002\\jobs-37558948225.receipt.json",
+      "bytes": 882,
+      "sha256_original_and_member": "8d5210268fe5a6c75f5ea291983c65c12b169e4ce78d1b676aeaf63fd40a6f3c",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "actual final API/jobs and receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "source-reports/3475-REPORT.final.md",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-002\\REPORT.final.md",
+      "bytes": 2009,
+      "sha256_original_and_member": "f3754625d8ca816e72174189fafea609698e0c8ab9b6df21e42f698a9b1d9e85",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "original final follow-up CI report"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "transport-001/FAILED.transport.actual.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-001\\FAILED.transport.actual.json",
+      "bytes": 898,
+      "sha256_original_and_member": "2a345c3438454742cc1278c621b4f426060ff7a709d1eaff6d286667b2d527c0",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "original proxy transport failure; not CI failure"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "transport-001/actions-runs.stdout",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-001\\snapshot-006\\actions-runs.stdout",
+      "bytes": 13480,
+      "sha256_original_and_member": "8f918665a94f8091bdbe043f0c67a23ca9aa03f431f0dd66c3be859b772dfb57",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "original run GET and failed jobs GET bytes/receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "transport-001/actions-runs.stderr",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-001\\snapshot-006\\actions-runs.stderr",
+      "bytes": 0,
+      "sha256_original_and_member": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "original run GET and failed jobs GET bytes/receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "transport-001/actions-runs.receipt.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-001\\snapshot-006\\actions-runs.receipt.json",
+      "bytes": 896,
+      "sha256_original_and_member": "1bb71f88167e51b2d67a3600fa626d41ff29286f8765e4dad23bfc73308e9705",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "original run GET and failed jobs GET bytes/receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "transport-001/jobs-37558948225.stdout",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-001\\snapshot-006\\jobs-37558948225.stdout",
+      "bytes": 2,
+      "sha256_original_and_member": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "original run GET and failed jobs GET bytes/receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "transport-001/jobs-37558948225.stderr",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-001\\snapshot-006\\jobs-37558948225.stderr",
+      "bytes": 238,
+      "sha256_original_and_member": "2e42130e4325bf36b970027e5bb5fc71f4aae5e8a1b49ebefa126af453b34558",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "original run GET and failed jobs GET bytes/receipt"
+    },
+    {
+      "archive": "evidence.originals.zip",
+      "archive_member": "transport-001/jobs-37558948225.receipt.json",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-docs-exact-head-ci-20261007-001\\snapshot-006\\jobs-37558948225.receipt.json",
+      "bytes": 880,
+      "sha256_original_and_member": "2797ff93b963239891311d9dbde9462f3cebaff03f0fd03088d78403a8550aee",
+      "exact_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "repository": "XenoAmess/ck3_eternal_recurrence",
+      "run_ids": [
+        37558948225
+      ],
+      "event": "push",
+      "ref": "refs/heads/master",
+      "run_attempt": 1,
+      "role": "original run GET and failed jobs GET bytes/receipt"
+    }
+  ],
+  "runtime_frozen_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+  "docs_fix_head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+  "actual_results": [
+    {
+      "head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "run_id": 37556702028,
+      "workflow": "Li Yu Dao static checks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "run_id": 37556702039,
+      "workflow": "Official Runner CI",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "run_id": 37558948225,
+      "workflow": "Official Runner CI",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "head": "3475ba2eac392221321c9c83e62f918fd3339db1",
+      "run_id": null,
+      "workflow": "Li Yu Dao static checks",
+      "status": "NOT_TRIGGERED",
+      "conclusion": null
+    }
+  ],
+  "native_game_business": "NOT_GREEN",
+  "C3_I4_business_success": "not asserted by this CI package",
+  "write_scope": "C:\\lci18w1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0018-ci-recovery",
+  "main_execution_tree_writes": 0,
+  "commit_push_move_delete": 0,
+  "new_audits_rechecks_tests_CI_dispatch_rerun_native_game_SDK_bus": 0
+}

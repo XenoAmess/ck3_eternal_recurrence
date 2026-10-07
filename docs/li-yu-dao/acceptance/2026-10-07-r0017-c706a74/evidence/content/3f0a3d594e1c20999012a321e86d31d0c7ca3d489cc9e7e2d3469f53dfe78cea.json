@@ -1,0 +1,148 @@
+{
+  "base_head": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "status": "EXTERNAL_MINIMAL_CI_CANDIDATE_FOCUSED_VALIDATION_PASSED_NOT_APPLIED",
+  "changes": [
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py",
+      "before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py",
+        "bytes": 6955,
+        "sha256": "aa0d33e5647b0200ef51f466ddf5f2c6f29248212fc1bfc0c10b0a8714f42290"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after/ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py",
+        "bytes": 7137,
+        "sha256": "cfb5b88ea53b1590680653661a96f9c28a593e43ca909e97fd9b88f5be49ff67"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/build_release.py",
+      "before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before/mod_li_yu_dao/tools/build_release.py",
+        "bytes": 10844,
+        "sha256": "a5f0343ced67d68438116a4424adac579c6b3913429c558df6ec638a17c754ce"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after/mod_li_yu_dao/tools/build_release.py",
+        "bytes": 10841,
+        "sha256": "dbb2e01589a1dc925cdd343b3e6bcbb0cad46355e22a64da969143b1ddfcaf47"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_build_release.py",
+      "before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before/mod_li_yu_dao/tools/test_build_release.py",
+        "bytes": 21655,
+        "sha256": "18eec05254e9a537b97089c237c4886775ed1f0d432ae38a1abbb83d07d75fe4"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after/mod_li_yu_dao/tools/test_build_release.py",
+        "bytes": 21664,
+        "sha256": "5d5c7d898d0bf1c07266df83f123fa021b7ec260baf14ba2bfbdea3682dc42ef"
+      }
+    },
+    {
+      "path": "mod_li_yu_dao/tools/validate_static.py",
+      "before": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before/mod_li_yu_dao/tools/validate_static.py",
+        "bytes": 21914,
+        "sha256": "ac9691d257ac8a4631211ac55d853b0b411e581afce80333516479a99cd49189"
+      },
+      "after": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after/mod_li_yu_dao/tools/validate_static.py",
+        "bytes": 21911,
+        "sha256": "523ea7f5a60b247cbdc3e90de2aa3343797ceec3356f739e89639e774fc4c7d4"
+      }
+    }
+  ],
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/candidate.patch",
+    "bytes": 2943,
+    "sha256": "e6fc151d364398bea37dd62204f8565f44956d539886524d95b7864924b7650a"
+  },
+  "unchanged_export_file_count": 2141,
+  "all_other_exported_bytes_unchanged": true,
+  "generated_or_business_runtime_files_changed": 0,
+  "production_MCP_implementation_or_schema_changed": false,
+  "failed_candidate001": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/FAILED-VALIDATION.actual.json",
+    "bytes": 2247,
+    "sha256": "187dffbe29b277e272327c18d4d536a71cae9d72767824a4f31a564048bef8fd"
+  },
+  "passed_static_negative_fixture001_not_repeated": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-001/affected-packaging-import-and-fixture-checks.stderr",
+    "bytes": 2017,
+    "sha256": "d130af242e2e979da44e9c180a8e81f8bf4655fe4685d7401ee8d5f8b872d6ef"
+  },
+  "checks": [
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-ci-two-failures-candidate-20261007-002\\candidate.patch"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/before",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/git-apply-check.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/git-apply-check.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "no_actual_game_or_native_transport": true
+    },
+    {
+      "argv": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-ci-two-failures-candidate-20261007-002\\verify_changed_packaging_imports.py"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/affected-packaging-import-and-fixture-checks.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/affected-packaging-import-and-fixture-checks.stderr",
+        "bytes": 238,
+        "sha256": "888362c068f2d498614e160b1e6f3f2936d8ef59ba039e1035d99c34b18c3171"
+      },
+      "no_actual_game_or_native_transport": true
+    },
+    {
+      "argv": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r17-ci-two-failures-candidate-20261007-002\\after\\ck3_autonomous_player\\tests\\unit\\test_public_cunit_mcp_contract.py"
+      ],
+      "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/after",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/existing-public-cunit-validation-test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-ci-two-failures-candidate-20261007-002/existing-public-cunit-validation-test.stderr",
+        "bytes": 825,
+        "sha256": "3d6b171ed98744417c2015e4c2b9a0425642dd04bc3231b0d355c907b9298b7e"
+      },
+      "no_actual_game_or_native_transport": true
+    }
+  ],
+  "actual_game_native_SDK_UI_bus_build_actions": 0,
+  "main_applied": false,
+  "CI_rerun": false,
+  "GitHub_CI_current_result": "FAILURE_PRESERVED_FOR_C706"
+}

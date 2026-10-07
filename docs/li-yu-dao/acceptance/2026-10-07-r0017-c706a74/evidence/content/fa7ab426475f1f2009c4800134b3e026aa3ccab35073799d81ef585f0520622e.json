@@ -1,0 +1,25 @@
+{
+  "schema": "lyd.r17.external-checkpoint-author-index.v2",
+  "manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/FORMAL-INTEGRATION-MANIFEST.source008.json",
+    "bytes": 34475,
+    "sha256": "36be61289ba1d7fafc51e3300cd3139b0735cd5ae8797d10c46f804bb4c70155"
+  },
+  "source008_formal": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-008/author_actual_checkpoint.py",
+    "bytes": 43633,
+    "sha256": "bdb22a6ea0d690925c8dbee2f706ac6322e75ce7687dffe81adaa107929fe14a"
+  },
+  "baseline005_preserved": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/author_actual_checkpoint.py",
+    "bytes": 41115,
+    "sha256": "900a0351cc107d10d12e60e83fe035b0d7f2e11c9042b1c61b9bfb8581f5dcf5"
+  },
+  "body_scans_by_this_sourcepreparation": 0,
+  "actual_baseline_CONTROL_only": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/ORIGINAL0240-CONTROL.actual.json",
+    "bytes": 1250,
+    "sha256": "50c658a78fe00b408dcb585e7944b86fc9a5b13f73c20e87cefa889e53021d2f"
+  },
+  "future_formal_acceptance": null
+}

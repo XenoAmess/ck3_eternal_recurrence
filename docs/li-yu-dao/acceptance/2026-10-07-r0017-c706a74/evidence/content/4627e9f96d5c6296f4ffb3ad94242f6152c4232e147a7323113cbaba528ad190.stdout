@@ -1,0 +1,12 @@
+usage: author_closed_boundary.py [-h] --request REQUEST --sha256 SHA256
+                                 (--check | --create) [--output OUTPUT]
+
+ROOT-only author/check existing v3 R15 boundary from actual closed refs.
+
+options:
+  -h, --help         show this help message and exit
+  --request REQUEST
+  --sha256 SHA256
+  --check
+  --create
+  --output OUTPUT

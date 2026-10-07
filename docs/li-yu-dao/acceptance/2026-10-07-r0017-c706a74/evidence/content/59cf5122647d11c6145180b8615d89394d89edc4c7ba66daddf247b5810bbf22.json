@@ -1,0 +1,1 @@
+{"request_id":"r17-022-normal-exit-prepare","operation":"call_tool","name":"ck3_request_normal_exit_v1","arguments":{"action":"prepare_confirmation","expected_revision":4,"expected_exit_context_signature":"f7185581c92ddd36d0c9e80bc5af576f8381cbf679b1be54758b40ba9d1256e3"}}

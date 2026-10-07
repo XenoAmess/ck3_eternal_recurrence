@@ -1,0 +1,1 @@
+{"request_id":"r17-026-normal-exit-confirm-desktop","operation":"call_tool","name":"ck3_request_normal_exit_v1","arguments":{"action":"confirm_desktop","expected_revision":4,"expected_exit_context_signature":"c41d00d8b689760d0f3732783ec16f9e72fceea8ff8156c437b2bbc4cad338f6"}}

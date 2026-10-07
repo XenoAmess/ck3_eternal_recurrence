@@ -1,0 +1,31 @@
+usage: guarded_helper_close.py [-h] [--game-sdk GAME_SDK]
+                               [--game-sdk-sha256 GAME_SDK_SHA256]
+                               [--game-native GAME_NATIVE]
+                               [--game-native-sha256 GAME_NATIVE_SHA256]
+                               [--output OUTPUT] [--execute-root-authorized]
+                               [--wait-seconds WAIT_SECONDS]
+                               [--summary SUMMARY]
+                               {check-source,check-game-exit,close-client,stop-keeper,release-screen}
+
+R17 root-only post-game-exit close candidate. No SDK/game calls or PID reopen.
+Without --execute-root-authorized this only validates existing facts. The root
+must first complete B4/B5 and preserve the actual checkpoint. This program
+never performs normal exit; it consumes the official original-HANDLE exit
+receipt.
+
+positional arguments:
+  {check-source,check-game-exit,close-client,stop-keeper,release-screen}
+
+options:
+  -h, --help            show this help message and exit
+  --game-sdk GAME_SDK
+  --game-sdk-sha256 GAME_SDK_SHA256
+  --game-native GAME_NATIVE
+  --game-native-sha256 GAME_NATIVE_SHA256
+  --output OUTPUT
+  --execute-root-authorized
+                        Only root may explicitly select this after actual
+                        B5/checkpoint preservation; never sends normal-exit
+                        tools
+  --wait-seconds WAIT_SECONDS
+  --summary SUMMARY

@@ -1,0 +1,80 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"schema\": \"ck3.native-profile-receipt.v1\",\n  \"session_id\": \"42abe9df32d34dd1840c23cb5246623d\",\n  \"profile_sha256\": \"80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6\",\n  \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_profile_42abe9df32d34dd1840c23cb5246623d\",\n  \"recorded_at_utc\": \"2026-10-07T01:00:24.772356+00:00\",\n  \"status\": \"process_exit_observed_zero\",\n  \"result\": {\n    \"schema\": \"ck3-normal-exit-process-observation-result-v1\",\n    \"action\": \"confirm_desktop\",\n    \"public_revision\": 4,\n    \"request_id\": \"normal-exit-confirm_desktop-6cda9d74a684402792aef110bc37ec03\",\n    \"claim_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-017\\\\native-state\\\\native-session\\\\normal-exit-map-requests\\\\3976655893cb7e030ce70bfab4db399af9d57b58a03128eea759530095c03f20.claim.json\",\n    \"source_inventory_sha256\": \"ce70e275043a759965866d062b8a030e684f809f240c6e5014a77fc1612be1a2\",\n    \"process_creation_filetime_100ns\": 134358062142963333,\n    \"process_preconfirm_pin\": {\n      \"pid\": 14608,\n      \"creation_filetime_100ns\": 134358062142963333,\n      \"retained_handle_token\": \"169afb5b705fc047620fa5c0340758ab\",\n      \"wait_result\": 258,\n      \"verified_monotonic_ns\": 805258641332100,\n      \"observation_clock_domain\": \"driver_monotonic_v1\"\n    },\n    \"claim_consumed\": true,\n    \"retry_authorized\": false,\n    \"process_exit_observed\": true,\n    \"exit_code\": 0,\n    \"typed_normal_exit_observed\": false,\n    \"autosave_verified\": false,\n    \"status\": \"process_exit_observed_zero\",\n    \"native_observation\": null,\n    \"process_observation\": {\n      \"pid\": 14608,\n      \"creation_filetime_100ns\": 134358062142963333,\n      \"retained_handle_token\": \"169afb5b705fc047620fa5c0340758ab\",\n      \"wait_result\": 0,\n      \"wait_state\": \"signaled\",\n      \"exit_code\": 0,\n      \"process_identity_verified\": true,\n      \"process_exit_observed\": true,\n      \"observed_monotonic_ns\": 805301758375000,\n      \"timeout_ms\": 5000,\n      \"observation_deadline_reached\": false,\n      \"observation_clock_domain\": \"driver_monotonic_v1\",\n      \"errors\": []\n    },\n    \"driver_dispatch_receipt_observed_monotonic_ns\": null,\n    \"receipt_clock_meaning\": \"driver observed validated dispatch_invoked response; not native callback time\",\n    \"observer_retained\": false,\n    \"snapshot_after_required\": false,\n    \"native_submission_count\": 0,\n    \"uses_desktop_input\": false,\n    \"uses_ocr\": false,\n    \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-017\\\\native-state\\\\native-session\\\\normal-exit-map-requests\\\\2fe7d11e9e0b0a6e6231.observe-b769e5626ae54a80.json\",\n    \"observer_close_receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-017\\\\native-state\\\\native-session\\\\normal-exit-map-requests\\\\2fe7d11e9e0b0a6e6231.observer-close-78b3e2971f124137.json\"\n  },\n  \"snapshot_after_required\": false,\n  \"uses_ocr\": false,\n  \"uses_desktop_input\": false,\n  \"uses_injection\": false,\n  \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-017\\\\native-evidence\\\\42abe9df32d34dd1840c23cb5246623d\\\\0024-normal-exit-observe.json\"\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "42abe9df32d34dd1840c23cb5246623d",
+    "profile_sha256": "80fa0ed760a7ea201bdff0347afde62d2a94ed333d5e21b8e87e4f20af0fb0a6",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_42abe9df32d34dd1840c23cb5246623d",
+    "recorded_at_utc": "2026-10-07T01:00:24.772356+00:00",
+    "status": "process_exit_observed_zero",
+    "result": {
+      "schema": "ck3-normal-exit-process-observation-result-v1",
+      "action": "confirm_desktop",
+      "public_revision": 4,
+      "request_id": "normal-exit-confirm_desktop-6cda9d74a684402792aef110bc37ec03",
+      "claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-state\\native-session\\normal-exit-map-requests\\3976655893cb7e030ce70bfab4db399af9d57b58a03128eea759530095c03f20.claim.json",
+      "source_inventory_sha256": "ce70e275043a759965866d062b8a030e684f809f240c6e5014a77fc1612be1a2",
+      "process_creation_filetime_100ns": 134358062142963333,
+      "process_preconfirm_pin": {
+        "pid": 14608,
+        "creation_filetime_100ns": 134358062142963333,
+        "retained_handle_token": "169afb5b705fc047620fa5c0340758ab",
+        "wait_result": 258,
+        "verified_monotonic_ns": 805258641332100,
+        "observation_clock_domain": "driver_monotonic_v1"
+      },
+      "claim_consumed": true,
+      "retry_authorized": false,
+      "process_exit_observed": true,
+      "exit_code": 0,
+      "typed_normal_exit_observed": false,
+      "autosave_verified": false,
+      "status": "process_exit_observed_zero",
+      "native_observation": null,
+      "process_observation": {
+        "pid": 14608,
+        "creation_filetime_100ns": 134358062142963333,
+        "retained_handle_token": "169afb5b705fc047620fa5c0340758ab",
+        "wait_result": 0,
+        "wait_state": "signaled",
+        "exit_code": 0,
+        "process_identity_verified": true,
+        "process_exit_observed": true,
+        "observed_monotonic_ns": 805301758375000,
+        "timeout_ms": 5000,
+        "observation_deadline_reached": false,
+        "observation_clock_domain": "driver_monotonic_v1",
+        "errors": []
+      },
+      "driver_dispatch_receipt_observed_monotonic_ns": null,
+      "receipt_clock_meaning": "driver observed validated dispatch_invoked response; not native callback time",
+      "observer_retained": false,
+      "snapshot_after_required": false,
+      "native_submission_count": 0,
+      "uses_desktop_input": false,
+      "uses_ocr": false,
+      "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-state\\native-session\\normal-exit-map-requests\\2fe7d11e9e0b0a6e6231.observe-b769e5626ae54a80.json",
+      "observer_close_receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-state\\native-session\\normal-exit-map-requests\\2fe7d11e9e0b0a6e6231.observer-close-78b3e2971f124137.json"
+    },
+    "snapshot_after_required": false,
+    "uses_ocr": false,
+    "uses_desktop_input": false,
+    "uses_injection": false,
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017\\native-evidence\\42abe9df32d34dd1840c23cb5246623d\\0024-normal-exit-observe.json"
+  },
+  "isError": false,
+  "resultType": "complete"
+}

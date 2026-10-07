@@ -1,0 +1,63 @@
+{
+  "schema": "lyd.sdk-checkpoint-transition-contract.v2",
+  "supersedes_identity_rule_only": "lyd.sdk-checkpoint-binding-contract.v1",
+  "frozen_strict_contract": {
+    "path": "C:/lr13s2/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-BINDING-CONTRACT.json",
+    "bytes": 2659,
+    "sha256": "66357c9f66d9c3bf5b61b8031aefbd5f9dc47984cf966f1f32d75c312eaa1d0a"
+  },
+  "reason": "Actual SDK native-autosave-command-v1 increments native snapshot revision when checkpoint sequence changes even if all observed gameplay state is unchanged; Python projection also increments public revision. The R13 baseline proves this exact behavior.",
+  "source_export_head": "768fd56e6f078c8fc6b1cc669cad71fb2594e3a2",
+  "source_lines": {
+    "native_publish": "ck3_autonomous_player/native_bridge/src/bridge.cpp:11280-11288",
+    "public_ingest": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py:1004-1007",
+    "materialization": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py:10966-11045",
+    "sdk_save": "tools/ck3_native_profile_mcp.py:855-868"
+  },
+  "original_before_after": "Both complete actual snapshots retained unchanged; no rewriting raw snapshot_before or synthesizing a same-frame receipt.",
+  "new_anchor": "Actual snapshot_after. G2/G3 public/native normalizers must match its exact snapshot/public/native/date/actor/PID/generation; reader revision is snapshot_after.native_revision.",
+  "revisions": "Exactly one positive native and public increment; snapshot IDs must be native:<their actual native_revision>. PID, session, profile, pipe, connection generation, actor, raw date, pause and every other observed business snapshot field unchanged.",
+  "snapshot_bookkeeping_keys": [
+    "snapshot_id",
+    "revision",
+    "native_revision",
+    "last_checkpoint_submission",
+    "native_command_history",
+    "diagnostics"
+  ],
+  "diagnostic_change_paths": [
+    "last_heartbeat.main_thread_query_mailbox_v1.consecutive_verified",
+    "last_heartbeat.main_thread_query_mailbox_v1.owner_verified_pump_epochs",
+    "last_heartbeat.main_thread_query_mailbox_v1.pump_epochs",
+    "last_heartbeat.monotonic_ms",
+    "last_heartbeat.sequence",
+    "last_heartbeat.snapshot_observer_12002.completed_ms",
+    "last_heartbeat.snapshot_observer_12002.started_ms"
+  ],
+  "unknown_diagnostic_change": "Reject every diagnostic difference outside the explicit path whitelist, including new/missing keys. HELLO/PID/connection/pipe remain exact.",
+  "checkpoint_submission": "Exactly next sequence; expected xar_checkpoint name/date; last_checkpoint_submission must equal result.submission plus submitted status.",
+  "command_history": "Exactly one appended save-checkpoint command with unchanged prefix; positive history index equals prior count+1 and materialized checkpoint.history_index; ok=true and command.result exactly equals the SDK result.",
+  "materialized_descriptor": "Absolute SDK path/name, native-autosave-command-v1, positive bytes/exact SHA/raw date, available isolated save directory. Preserve its content-addressed copy separately without rewriting original SDK descriptor.",
+  "metadata": "The independently supplied exact actual factory metadata artifact must explicitly contain readonly23 or current24 tools. Its actual SHA/size/path/count remain distinct from the frozen v1 metadata contract SHA. The reference lists all frozen readonly23 names; current24 adds only the named challenger-graph tool. Both original G2/G3 Tool entries, including argument/output schemas and annotations, must match the mechanical frozen projection exactly.",
+  "unchanged_seam": "Existing pinned SDK DTO projection and all G2/G3 mapping, completeness, typed ownership/full saved AST checks retained. All actual/formal/full-product credit NULL/false; complete native join remains pending real G2/G3.",
+  "versioned_entrypoint": "reader/sdk_checkpoint_transition_qualification_v2.py; request/provenance/output schemas v2; original strict v1 module and contract remain preserved.",
+  "revision": "portable-sdk-artifact-lineage-003",
+  "sdk_codec": "sdk_codec_artifact is an independently preserved bounded Python-source descriptor, whose actual SHA must match sdk_codec_sha256. Its full actual SHA may differ from frozen a8dd contract only when all 12 frozen pure G2/G3 DTO functions match exact AST including signature and complete body. No source import/execution, branch removal, AST normalization, or rewriting actual artifact hashes. Additional independent graph wrappers do not grant G2/G3 or graph runtime credit.",
+  "frozen_codec_contract_sha256": "a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969",
+  "frozen_dto_primitives_sha256": "4f63059ad9c7842cc88502366cafb5e2d3701671d40d648e47f40b6c54be1b39",
+  "frozen_metadata_projection_sha256": "422f55005412f68b24ded177e63ba616a35a2c74a2982d0559eb704327e6803a",
+  "pure_DTO_functions": [
+    "integer",
+    "exact",
+    "optional",
+    "full_id",
+    "nullable_id",
+    "reason",
+    "_common_payload",
+    "_ids",
+    "normalize_assembly",
+    "normalize_title",
+    "project_native_query",
+    "normalize_public_query"
+  ]
+}

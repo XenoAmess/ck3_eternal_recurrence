@@ -1,0 +1,85 @@
+"""Read verified SDK source/metadata artifacts without importing or executing them."""
+from __future__ import annotations
+import ast
+import hashlib
+import json
+import re
+from pathlib import Path
+
+FROZEN_CODEC_CONTRACT_SHA256 = 'a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969'
+FROZEN_DTO_PRIMITIVES_SHA256 = '4f63059ad9c7842cc88502366cafb5e2d3701671d40d648e47f40b6c54be1b39'
+FROZEN_METADATA_PROJECTION_SHA256 = '422f55005412f68b24ded177e63ba616a35a2c74a2982d0559eb704327e6803a'
+PURE_DTO_FUNCTIONS = (
+    'integer', 'exact', 'optional', 'full_id', 'nullable_id', 'reason',
+    '_common_payload', '_ids', 'normalize_assembly', 'normalize_title',
+    'project_native_query', 'normalize_public_query',
+)
+GRAPH_TOOL_NAME = 'ck3_query_profile_confucian_challenger_graph_v1'
+
+def need(ok, message):
+    if not ok:
+        raise ValueError(message)
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+def _functions(data, label):
+    tree = ast.parse(data.decode('utf-8-sig'), filename=label)
+    result = {}
+    for node in tree.body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in PURE_DTO_FUNCTIONS:
+            need(node.name not in result, 'duplicate pure DTO function ' + node.name)
+            result[node.name] = node
+    need(set(result) == set(PURE_DTO_FUNCTIONS), 'missing exact pure DTO functions')
+    return result
+
+def verify_codec_artifact(descriptor, declared_sha256):
+    """Hash and parse the same bounded source buffer; retain full actual SHA separately."""
+    need(type(descriptor) is dict and set(descriptor) == {'path', 'bytes', 'sha256'}, 'closed SDK codec artifact descriptor')
+    need(type(descriptor['path']) is str and Path(descriptor['path']).suffix.lower() == '.py', 'SDK codec artifact must be Python source')
+    need(type(descriptor['bytes']) is int and 0 < descriptor['bytes'] <= 2 * 1024 * 1024, 'bounded SDK codec bytes')
+    need(type(declared_sha256) is str and re.fullmatch('[0-9a-f]{64}', declared_sha256) is not None and descriptor['sha256'] == declared_sha256, 'actual SDK codec descriptor SHA differs')
+    path = Path(descriptor['path'])
+    need(path.stat().st_size == descriptor['bytes'], 'SDK codec artifact size mismatch')
+    raw = path.read_bytes()
+    need(len(raw) == descriptor['bytes'] and sha(raw) == declared_sha256, 'SDK codec artifact bytes/SHA mismatch')
+    fixed_path = Path(__file__).parent / 'dependencies/confucian_dto_primitives.py'
+    fixed_raw = fixed_path.read_bytes()
+    need(sha(fixed_raw) == FROZEN_DTO_PRIMITIVES_SHA256, 'frozen DTO projection bytes changed')
+    actual, frozen = _functions(raw, 'actual SDK codec'), _functions(fixed_raw, 'frozen DTO projection')
+    matches = {name: ast.dump(actual[name], include_attributes=False) == ast.dump(frozen[name], include_attributes=False) for name in PURE_DTO_FUNCTIONS}
+    need(all(matches.values()), 'actual SDK pure DTO AST differs: ' + ','.join(name for name, match in matches.items() if not match))
+    return {'actual_artifact': dict(descriptor), 'actual_sha256': declared_sha256,
+            'frozen_codec_contract_sha256': FROZEN_CODEC_CONTRACT_SHA256,
+            'frozen_primitives_sha256': FROZEN_DTO_PRIMITIVES_SHA256,
+            'pure_DTO_AST_matches': matches, 'all_12_match': True,
+            'source_executed': False, 'actual_acceptance_credit': None}
+
+def verify_metadata_artifact(metadata, descriptor, declared_sha256):
+    """Keep actual factory 23/24 identity and exact frozen G2/G3 Tool schemas."""
+    need(descriptor['sha256'] == declared_sha256, 'actual SDK metadata descriptor SHA differs')
+    need(type(metadata) is list and len(metadata) in (23, 24, 28), 'actual SDK metadata must explicitly contain 23, 24 or grant28 tools')
+    need(all(type(row) is dict and type(row.get('name')) is str for row in metadata), 'SDK Tool metadata rows')
+    rows = {row['name']: row for row in metadata}
+    need(len(rows) == len(metadata), 'duplicate SDK Tool metadata names')
+    reference_path = Path(__file__).parent / 'dependencies/frozen_sdk_g2_g3_metadata.json'
+    reference_raw = reference_path.read_bytes()
+    need(sha(reference_raw) == FROZEN_METADATA_PROJECTION_SHA256, 'frozen G2/G3 metadata projection bytes changed')
+    reference = json.loads(reference_raw)
+    names = set(reference['readonly23_tool_names'])
+    wanted_names = names if len(metadata) == 23 else names | {GRAPH_TOOL_NAME}
+    if len(metadata)==28:
+        import sys
+        sys.path.insert(0,str(Path(__file__).parent.parent/'qualification'))
+        from grant_metadata_semantics import GRANT_TOOLS,check_grant_tool
+        wanted_names |= set(GRANT_TOOLS)
+        for name in GRANT_TOOLS:
+            need(name in rows,'missing declared grant Tool '+name)
+            check_grant_tool(rows[name])
+    need(set(rows) == wanted_names and len(wanted_names) == len(metadata), 'actual SDK metadata tool set differs from declared readonly23/24 factory')
+    for name, row in reference['G2_G3_tools'].items():
+        need(json.dumps(rows[name], sort_keys=True, separators=(',', ':'), allow_nan=False) == json.dumps(row, sort_keys=True, separators=(',', ':'), allow_nan=False), 'actual SDK G2/G3 Tool metadata differs: ' + name)
+    return {'actual_artifact': dict(descriptor), 'actual_sha256': declared_sha256,
+            'actual_tool_count': len(metadata), 'G2_G3_tools_exact': True,
+            'readonly23_reference_sha256': reference['readonly23_source_artifact_sha256'],
+            'actual_acceptance_credit': None}

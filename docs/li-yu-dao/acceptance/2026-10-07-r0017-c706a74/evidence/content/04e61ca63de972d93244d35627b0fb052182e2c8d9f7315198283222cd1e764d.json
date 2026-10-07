@@ -1,0 +1,51 @@
+{
+  "status": "ACTUAL_GAME_ORIGINAL_HANDLE_EXIT0_BOUND_SOURCE_ONLY_HELPER_CLOSURE_PENDING",
+  "previous_source_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-001/INDEX.json",
+    "bytes": 2686,
+    "sha256": "0cabadb4e0abf14d189ff6a89636110c13b3955ab4e932fc84aca243be939f61"
+  },
+  "guarded_close_source": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/guarded_helper_close.py",
+    "bytes": 26774,
+    "sha256": "2250d30bc5df4e7ed29434afdd002da1fe7525b225e266695f1ae87ef29f9be0"
+  },
+  "verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/verify_previous_boundary.py",
+    "bytes": 12887,
+    "sha256": "848239426fed443590f6902fc90c3cf329b50e88e99bca0656c52a037f051bfe"
+  },
+  "closed_boundary_author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/author_closed_boundary.py",
+    "bytes": 2970,
+    "sha256": "1b94208e7d2c4729209927663d5024687836e0c2cd2a92c3e2153084413b11f7"
+  },
+  "dependencies": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/DEPENDENCIES.json",
+    "bytes": 939,
+    "sha256": "49e23fedaa92d21378a3937abb1ff99bc632b25308176ce054da9333ac953bc0"
+  },
+  "focused_actual_check": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/FOCUSED-ACTUAL-GAME-EXIT.json",
+    "bytes": 6097,
+    "sha256": "27327ff761e843564a110e96f68a06407e29475304673a954bf533c11b7dcf42"
+  },
+  "root_argv": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r17-root-bound-close-source-20261007-002/ROOT-ARGV.actual-game-inputs.json",
+    "bytes": 3995,
+    "sha256": "2c1934d0cc338f8cb45d1d23d0be9182fcefe6b93a6314d417e35cf41770010a"
+  },
+  "source_revision": "c706a74f9d00dd842b7edce8901fb3417344fd9c",
+  "run_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-017",
+  "root_screen_task": "ck3-lyd-r17-original0240-formal-20261007-001",
+  "typed_normal_exit_observed": false,
+  "terminal_native_ack_observed": false,
+  "normal_exit_callback_verified": false,
+  "game_original_HANDLE_exit0_observed": true,
+  "business_GREEN": false,
+  "autosave_verified": false,
+  "future_client_exit0": null,
+  "future_keeper_exit0": null,
+  "future_CAS_release": null,
+  "all_mutation_actions": 0
+}

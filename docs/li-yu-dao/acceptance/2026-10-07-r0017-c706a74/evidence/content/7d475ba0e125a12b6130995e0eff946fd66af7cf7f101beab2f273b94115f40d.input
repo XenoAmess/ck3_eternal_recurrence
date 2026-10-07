@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r17-019-after-wait-timeout-snapshot",
+  "operation": "call_tool",
+  "name": "ck3_take_profile_native_snapshot_v1",
+  "arguments": {}
+}

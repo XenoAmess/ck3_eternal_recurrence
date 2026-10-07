@@ -1,0 +1,20 @@
+{
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-input-001/AUTHOR-INPUT.actual.json",
+    "bytes": 2973,
+    "sha256": "83768cb5d96aef7b31e93f07cb42d9aaa7f9b04d6d7574a705c6beffda4b713b"
+  },
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r17-checkpoint-author-sourceonly-20261007-001/source-005/author_actual_checkpoint.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-017/baseline-author-input-001/AUTHOR-INPUT.actual.json",
+    "--read-checkpoint",
+    "--convert"
+  ],
+  "formal_acceptance": null,
+  "body_reads": 0
+}

@@ -1,0 +1,6 @@
+{
+ "request_id":"r17-010-baseline-after-g3",
+ "operation":"call_tool",
+ "name":"ck3_query_profile_confucian_religious_title_v1",
+ "arguments":{"expected_revision":3}
+}

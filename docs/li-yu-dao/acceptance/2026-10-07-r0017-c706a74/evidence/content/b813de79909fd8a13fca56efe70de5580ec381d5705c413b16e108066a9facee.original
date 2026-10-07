@@ -1,0 +1,43 @@
+test_01_actual28_final10_session_open (__main__.Contract.test_01_actual28_final10_session_open) ... ok
+test_02_paid_actual_index_not_source_ordinal (__main__.Contract.test_02_paid_actual_index_not_source_ordinal) ... ok
+test_03_lastpage_school (__main__.Contract.test_03_lastpage_school) ... ok
+test_04_cancel (__main__.Contract.test_04_cancel) ... ok
+test_05_decision_select (__main__.Contract.test_05_decision_select) ... ok
+test_06_decision_confirm (__main__.Contract.test_06_decision_confirm) ... ok
+test_07_running_pause (__main__.Contract.test_07_running_pause) ... ok
+test_08_bootstrap_event_query (__main__.Contract.test_08_bootstrap_event_query) ... ok
+test_09_wrong_client_vs_native_session (__main__.Contract.test_09_wrong_client_vs_native_session) ... ok
+test_10_wrong_profile (__main__.Contract.test_10_wrong_profile) ... ok
+test_11_structured_diff (__main__.Contract.test_11_structured_diff) ... ok
+test_12_public_native_mismatch (__main__.Contract.test_12_public_native_mismatch) ... ok
+test_13_unpaused_effect (__main__.Contract.test_13_unpaused_effect) ... ok
+test_14_stale_event_query (__main__.Contract.test_14_stale_event_query) ... ok
+test_15_event_root (__main__.Contract.test_15_event_root) ... ok
+test_16_event_definition (__main__.Contract.test_16_event_definition) ... ok
+test_17_event_instance (__main__.Contract.test_17_event_instance) ... FAIL
+test_18_disabled_option (__main__.Contract.test_18_disabled_option) ... ok
+test_19_hidden_option (__main__.Contract.test_19_hidden_option) ... ok
+test_20_duplicate_native_index (__main__.Contract.test_20_duplicate_native_index) ... ok
+test_21_wrong_source_key (__main__.Contract.test_21_wrong_source_key) ... ok
+test_22_old_pid_decision (__main__.Contract.test_22_old_pid_decision) ... ok
+test_23_decision_actor (__main__.Contract.test_23_decision_actor) ... ok
+test_24_detail_key (__main__.Contract.test_24_detail_key) ... ok
+test_25_no_query_business (__main__.Contract.test_25_no_query_business) ... ok
+test_26_stale_date (__main__.Contract.test_26_stale_date) ... ok
+
+======================================================================
+FAIL: test_17_event_instance (__main__.Contract.test_17_event_instance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\test_actual_interface.py", line 88, in test_17_event_instance
+    def test_17_event_instance(self):call('wrong-instance','select-event',False,query=event_receipt(instance=902),extra=EVENT)
+                                     ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\i4-r17-argument-author-actual-contract-validation-20261007-003\test_actual_interface.py", line 65, in call
+    assert result.returncode!=0,'Unexpectedly accepted invalid fixture'
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError: Unexpectedly accepted invalid fixture
+
+----------------------------------------------------------------------
+Ran 26 tests in 3.901s
+
+FAILED (failures=1)
