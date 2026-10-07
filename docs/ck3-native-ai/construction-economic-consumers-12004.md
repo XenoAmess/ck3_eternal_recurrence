@@ -224,10 +224,21 @@ flowchart TD
   S --> R[2467F9A calls246CA40 with actual holding receiver]
   R --> H[Root-held 27B prologue: RDX=holdingF0 + 28]
   H --> B[Root-held 420B body: hierarchy IDs / conditional list]
-  B --> Q[Prov85C -> CoDa3E0 / receiver+90 -> call2864950]
+  B -->|branch boolean true| Q[Prov85C -> CoDa3E0 / receiver+90 -> call2864950]
   Q --> D[holdingF0+28 / EDX3 -> call28662F0]
-  B -. false branch body remains beyond246CBFF .-> V[Complete callback semantics unknown]
-  D -. callee body not captured / no718 writer .-> V
+  B -->|false| Z[Prov/CoDa valid; context virtualslot0 AL and dirtyflag2A0]
+  Z -->|AL true / flag0| L[Write flag1; call880340 with globalA0+CCD0 and context]
+  Z --> U[Common246CCDC]
+  L --> U
+  D --> U
+  U --> N[Two2470780 calls; holding10C/110 raw32 writes]
+  N --> A{Char tag / ID valid / field1D0 zero}
+  A -->|false| E[Actual RET246CE2D]
+  A --> G[ID array lookup; object1B0/258 / ChMd2F0 / same Char guard]
+  G --> E
+  G --> J[Restore stack; tail JMP2A3E200]
+  G --> Y[Call2A3E120 then actual RET246CE2D]
+  D -. downstream bodies and Province718 writer unknown .-> V[Specific building contribution / holder NET unknown]
   R --> F[Building-valid completion followups246CE30 and246D0B0]
   O --> C[Common2468B80]
   F --> C
@@ -304,15 +315,51 @@ decode completely and normalize equal. The actual body reaches:
   to 246CCDC. These source operands are concrete; the numeric mode and
   operation semantics are not renamed as an income recalculation.
 
-The false branch enters 246CBF8 and the captured interval ends after its
-first instruction at246CBFF. The corresponding held rows at the known
-common jump target are old `[246CCFC,246CD5B)` and actual
-`[246CCDC,246CD3B)`. A new **unexecuted** 632-byte proposal reads only the
-contiguous remaining tails, old `[246CC1F,246CD5B)` and actual
-`[246CBFF,246CD3B)`, each316 bytes. It follows the observed sequential
-continuation and common target to close the two branches/return, without
-expanding any downstream callee. Current source does not contain a
-Province+718 write or a holder true-NET contribution formula.
+The false branch enters 246CBF8 and that 420-byte interval ends after its
+first instruction at246CBFF. Root then explicitly approved and centrally
+captured the contiguous 632-byte pair once: old `[246CC1F,246CD5B)` and
+actual `[246CBFF,246CD3B)`, each316 bytes, complete decode/normalized equal.
+This closes the false branch's actual deferred path: after the same Prov/CoDa
+checks, the CoDa+90 context's virtual slot0 must return AL=true and its
+byte+2A0 must be zero before it writes that byte1 and calls880340 with the
+context pointer and global+A0+CCD0 receiver. Failed guards skip that enqueue.
+
+Both paths converge at246CCDC. Two calls2470780 use holding RCX and the two
+stack function-object code targets2465C80 and1F12FB0; EAX is written into
+holding+10C and+110. These are concrete raw32 cached fields, without a
+proven tax/income unit or callback semantics. This interval then checks the
+2467540-returned object's `Char` tag+1C and branches246CD35→246CE25; it
+ends at246CD3B. The earlier 632-byte proposal's return closure was therefore
+not yet satisfied by that fragment alone.
+
+Root's final approved pair reads only the held remaining runtime interval:
+old `[246CD5B,246CE4E)` and actual `[246CD3B,246CE2E)`, each243 bytes,
+486 total in two reads. It also decodes completely and normalizes equal.
+The actual callback now has two proven terminal paths: normal RET246CE2D
+(`.3`246CE4D) and a stack-restored tail jump2A3E200 (`.3`2A3E220), whose
+target body remains uncaptured. The final branch requires Char+18 ID != -1
+and Char+1D0 == 0. It calls880430 with global+A0's +22358/count22364 ID
+array and the ID, then uses Char+1B0→+258, same-Char pointer+8 and `ChMd`
+tag+2F0 guards. One guarded path tail-jumps2A3E200; the other calls2A3E120
+(`.3`2A3E140) before the normal RET. Failed/null/invalid guards return at
+that normal epilogue. No expanded callee or caller was captured.
+
+The reached callback's full source is thus held across four central pairs:
+actual `[246CA40,246CE2E)` and old `[246CA60,246CE4E)`, 1006 bytes per
+image / 2012 bytes total. This closes its actual control flow and direct
+mutations, not a per-building income getter. There is no Province+718 write,
+building-attributed gold output or holder true-NET formula in these held
+bytes. The direct 28662F0 holding+F0/+28, mode3 edge remains the concrete
+next source entrance for that separate contribution/recalculation question;
+its body is outside current authorization.
+
+Final evidence folders under the same external economy-yield directory are
+`completion-post-slot-return-tail-root-first01/` and
+`completion-post-slot-holder-exit-root-first01/`, with `FAMILY-MAP.json` and
+the owned detail records. Each capture ran centrally once, exited0 and
+retained both exact images. Only generated finite details and held interval
+rows were read by this lane. No live callback execution, new test, symbol
+scan, PE/pdata reparse or source expansion is claimed.
 
 ## Source-only adapter for the current shared Root hooks
 
@@ -358,3 +405,13 @@ edited here and no new test repetition. Root still owns registration,
 paused actual `.4` finance collection and real receipt sampling. A projected
 reserve floor is a current-state scenario and does not by itself admit a
 war/construction action or claim an attributed building benefit.
+
+Root adopted the same-cash utility commit
+`43c8d69c2acc2bf701e3378ac16fa309247ed5b9` as `79faa931`; this updates the
+source availability, not the live finance/sample boundary. The callback
+source above also demonstrates that completed-slot and later aggregate
+finance are distinct observations: a queued context/cached-field update
+cannot be substituted for an actual cash-v2 rate reading. The existing
+classifier keeps the observed monthly NET difference separate from an
+attributed building benefit. No new cash-outcome rule or test replay is
+needed merely to record this source closure.
