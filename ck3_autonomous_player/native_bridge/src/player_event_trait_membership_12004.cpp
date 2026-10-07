@@ -15,15 +15,16 @@ Bindings BindImage(std::uintptr_t image_base,
   return output;
 }
 
-bool ReadPlayerEventTraitMembershipV1(
-    const Bindings &bindings, std::uint64_t expected_native_revision,
-    std::int32_t expected_date_raw, std::int32_t expected_played_character_id,
+bool ReadPlayerEventTraitMembershipForSnapshotV1(
+    const Bindings &bindings, std::int32_t expected_date_raw,
+    std::int32_t expected_played_character_id,
     PlayerEventTraitMembershipV1 &output) noexcept {
   output = {};
-  output.snapshot_revision = expected_native_revision;
   output.date_raw = expected_date_raw;
   output.played_character_id = expected_played_character_id;
-  if (!bindings.enabled || expected_native_revision == 0 ||
+  if (!bindings.enabled || !bindings.traits.enabled ||
+      bindings.traits.get_trait_database == nullptr ||
+      bindings.traits.character_has_trait == nullptr ||
       expected_played_character_id <= 0) {
     output.unavailable_reason = "current_player_frame_unavailable";
     return false;
@@ -73,6 +74,23 @@ bool ReadPlayerEventTraitMembershipV1(
   return true;
 }
 
+bool ReadPlayerEventTraitMembershipV1(
+    const Bindings &bindings, std::uint64_t expected_native_revision,
+    std::int32_t expected_date_raw, std::int32_t expected_played_character_id,
+    PlayerEventTraitMembershipV1 &output) noexcept {
+  if (expected_native_revision == 0) {
+    output = {};
+    output.date_raw = expected_date_raw;
+    output.played_character_id = expected_played_character_id;
+    output.unavailable_reason = "current_player_frame_unavailable";
+    return false;
+  }
+  const bool available = ReadPlayerEventTraitMembershipForSnapshotV1(
+      bindings, expected_date_raw, expected_played_character_id, output);
+  output.snapshot_revision = expected_native_revision;
+  return available;
+}
+
 std::string SerializePlayerEventTraitMembershipV1(
     const PlayerEventTraitMembershipV1 &value) {
   std::string output =
@@ -99,6 +117,14 @@ std::string SerializePlayerEventTraitMembershipV1(
     output += "\"}";
   }
   return output;
+}
+
+std::string SerializePlayerEventTraitMembershipV1(
+    const PlayerEventTraitMembershipV1 &value,
+    std::uint64_t publication_native_revision) {
+  auto published = value;
+  published.snapshot_revision = publication_native_revision;
+  return SerializePlayerEventTraitMembershipV1(published);
 }
 
 } // namespace xar::ck3_12004::person_events

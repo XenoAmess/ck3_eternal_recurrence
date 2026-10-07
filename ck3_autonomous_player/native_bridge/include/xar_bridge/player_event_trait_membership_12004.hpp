@@ -23,10 +23,20 @@ struct PlayerEventTraitMembershipV1 {
   bool lifestyle_poet = false;
   bool journaller = false;
   std::string unavailable_reason = "not_observed";
+
+  friend bool operator==(const PlayerEventTraitMembershipV1 &,
+                         const PlayerEventTraitMembershipV1 &) = default;
 };
 
 Bindings BindImage(std::uintptr_t image_base,
                    std::string_view executable_sha256) noexcept;
+
+// Snapshot capture precedes publication. Keep revision zero in the detached DTO
+// until the existing state-snapshot publisher assigns its actual native revision.
+bool ReadPlayerEventTraitMembershipForSnapshotV1(
+    const Bindings &bindings, std::int32_t expected_date_raw,
+    std::int32_t expected_played_character_id,
+    PlayerEventTraitMembershipV1 &output) noexcept;
 
 // Caller uses its existing ordinary owning-thread read-only frame. The revision
 // is that frame's native revision, not the independently published public one.
@@ -37,5 +47,8 @@ bool ReadPlayerEventTraitMembershipV1(
 
 std::string SerializePlayerEventTraitMembershipV1(
     const PlayerEventTraitMembershipV1 &value);
+std::string SerializePlayerEventTraitMembershipV1(
+    const PlayerEventTraitMembershipV1 &value,
+    std::uint64_t publication_native_revision);
 
 } // namespace xar::ck3_12004::person_events

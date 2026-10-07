@@ -31,6 +31,7 @@
 #include "xar_bridge/phase_warmonger_core_v1.hpp"
 #include "xar_bridge/phase_berserker_validity_inputs_v1.hpp"
 #include "xar_bridge/phase_berserker_chance_inputs_v1.hpp"
+#include "xar_bridge/player_event_trait_membership_12004.hpp"
 
 #include <array>
 #include <cstdint>
@@ -2211,6 +2212,8 @@ struct Snapshot {
   std::int32_t played_character_id = -1;
   bool played_character_alive = false;
   std::int32_t played_character_stress_points = -1;
+  std::optional<ck3_12004::person_events::PlayerEventTraitMembershipV1>
+      played_character_event_trait_membership;
   FixedPointValue played_character_gold;
   FixedPointValue played_character_prestige;
   FixedPointValue played_character_piety;

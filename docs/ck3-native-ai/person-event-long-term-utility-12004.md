@@ -5,7 +5,10 @@ the current-build Event/Pending production readers GREEN; no migration or live
 qualification is repeated here. Source baseline is
 `23c3c4bc7fdf261f46174d35db12732808523463`, CK3 1.20.0.4, Steam 25734779,
 EXE SHA `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
-The new consumer and two-trait reader are authored, not run or live-qualified.
+Root's four focused registered-consumer cases are GREEN at
+`f6ef70f18f8d73e2f38e45f20eb7a80d3a4ac1d8`; the two-trait native publication
+and whole-pipeline fixture below are authored and remain NOTRUN. No natural
+poet event or new material effect is live-qualified by this package.
 
 ## Source tree and necessity
 
@@ -49,11 +52,12 @@ flowchart TD
     C --> L[Prefer permanent trait with observed stress relief at break threshold]
     C --> B[Otherwise retain source-reviewed poet choice]
     T[Adopted actual4 Core and HasTrait bindings] --> R[New two-key read-only reader]
-    R -. Root shared snapshot hook pending .-> W[played_character.event_trait_membership]
+    R --> W[Candidate public Snapshot: played_character.event_trait_membership]
     W --> O[False to true material comparator]
     L --> O
     B --> O
-    O -. qualification not run .-> V[Root ordinary Robert paused pre/post frames]
+    O -. whole pipeline FIRST not run .-> F[Native owned-memory fixture and production Driver replay]
+    F -. natural event not observed .-> V[Root ordinary Robert paused pre/post frames]
 ```
 
 ## Minimal player policy
@@ -80,12 +84,15 @@ software `FindUniqueTraitDefinition`; presence uses the adopted HasTrait entry.
 They read `lifestyle_poet` and `journaller`, never the actor's whole trait set.
 No new EXE capture or ABI mapping is required.
 
-Root still owns the shared Snapshot/adapter/Driver/CMake/Service integration.
-The smallest producer hook is to publish the helper's detached object as
+Root owns the shared-tree adoption and execution. The exclusive Root14f patch
+publishes the helper's detached object as
 `played_character.event_trait_membership` in the existing public state snapshot,
-available before and after the active event disappears. The helper accepts the
-owning frame's native revision/date and supplies only current-player identity and
-the two booleans. Add its source to the existing native runtime target. This is
+available before and after the active event disappears. Snapshot capture occurs
+before native publication revision is assigned: the owning-thread reader captures
+date/player/two booleans with internal revision zero, then the pure existing
+`StateSnapshotFrame` publisher stamps its actual native revision. The already
+revision-bound reader API remains available for an owning query frame. Its source
+is added to the existing native runtime target. This is
 **not** a new player-vitals MCP: vitals is currently a turn-bundle projection.
 Do not place the postcondition input solely in an event window, which is gone
 after selection; do not expand the LIFE 32-key array or its unrelated perk flow.
@@ -99,13 +106,89 @@ separate from a successfully observed false membership. Existing continuation is
 not blocked solely because this new material input has not been published yet.
 
 The actual owned interfaces are `person_events::BindImage`,
+`ReadPlayerEventTraitMembershipForSnapshotV1`,
 `ReadPlayerEventTraitMembershipV1` and `SerializePlayerEventTraitMembershipV1`.
 The detached JSON uses schema `xar.ck3.player-event-trait-membership/v1`,
 `snapshot_revision` (native), `date_raw`, `played_character_id`, status and the
 two booleans under `traits`. The Python normalizer takes the expected native
 revision explicitly; public revision stays independent in material expectations.
-The source hooks are confined to the exact poet branch in `policy.py`,
-`outcome.py` and `strategy.py`. No shared native TU or service has been modified.
+The policy hooks remain confined to the exact poet branch in `policy.py`,
+`outcome.py` and `strategy.py`. Shared native and Driver hook candidates are
+authored only in the isolated tree; the main tree and Service are untouched.
+
+## Root14f publication patch and whole pipeline FIRST
+
+The current patch base is `14f07ade00e9ad359da3aa6af3642592ede3f48d`.
+It already contains the adopted poet consumer/reader from the original
+`7ca94972f628006c8caa6cca24eab397fe7f425e` and
+`f6ef70f18f8d73e2f38e45f20eb7a80d3a4ac1d8` candidates; do not apply those
+again. Only the `213c1c6c` wiring increment was cherry-picked into an isolated
+clone of the current frozen source. The resulting Driver/adapter/Bridge diff
+preserves Root14f's existing Clock, date/tick, lobby and prisoner integrations.
+The original Root89d/bc27 patches remain historical evidence. Shared hook scope:
+
+- `game_contract.hpp`: optional detached membership DTO on `Snapshot`.
+- `ck3_12004_snapshot_foundation.hpp/.cpp`: actual4 trait bindings.
+- `ck3_12004_adapter.cpp`: two-key capture beside current-player resources.
+- `bridge.cpp`: pure writer publishes the captured object with actual revision.
+- `native_driver.py`: strict outer-frame parsing and starting/ending trait material retention.
+- `CMakeLists.txt`: one include for `player_event_trait_membership_12004.cmake`.
+
+`Snapshot` gains an optional owned DTO and `SnapshotFoundationBindings` gains
+trait bindings, so these two C++ layouts change. The public declaration of
+`SerializeStateSnapshotFrameV1` does not change. An external source-only ledger,
+`person-events-pending/rebase-bc27/SNAPSHOT-ABI-COMPILE-INPUTS.json`, records the
+existing CPP include chains and their literal CMake target registrations. That
+historical source-wide possible-registration ledger
+finds 855 existing CPP files reaching either changed layout/header; 356 have
+possible production-target registration (193 runtime inputs and 165 Bridge
+inputs, with two shared between targets). These counts include conditional
+inputs and old fixture sources; Root's unchanged active CMake flags determine
+which are compiled. They are recompilation dependencies, not new test requests.
+`xar_bridge_protocol` has no reached source input in this ledger. Rebuild active
+affected production objects together with the new producer; do not mix old
+Snapshot-layout objects into the newly linked Bridge or whole fixture.
+
+For the planned single joint native build with Army's family-layout candidate,
+Root receives a separate active-production compile-input packet under
+`person-events-pending/rebase-14f/`. It reuses the historical include ledger and
+the frozen actual compiler/object metadata, rather than declaring every possible
+conditional or old fixture a new build/test target. Merge the active affected
+Runtime/Bridge/Protocol object inputs with Army's inputs and compile once; keep
+the unique poet native fixture and registered consumer pending until Root runs
+their original FIRST. No fallback membership fields are added in this rebase.
+
+The producer source `src/player_event_trait_membership_12004.cpp` already exists
+in Root14f but gets its first runtime target registration in this patch. The only
+new C++ file is `src/player_event_trait_membership_12004_fixture.cpp`, registered
+once on the single new whole-pipeline target below. No extra profile, old suite,
+parallel fixture or policy consumer is added.
+
+The native target/CTest leaf is
+`xar_ck3_12004_player_event_trait_pipeline_test`. It uses the adopted caller-owned
+Core fixture, concrete loaded definitions and HasTrait callbacks, the actual4
+adapter's complete Snapshot reader, and the production state-snapshot formatter.
+Its three original wires show an active event with absent traits, event closure
+without any trait gain, and independently observed journaller after closure.
+Capture must keep internal revision zero; publication must stamp 51/52/53.
+Both concrete traits are queried on every captured frame. No game function RVA
+is called; this is an offline fixture, not a paused live frame.
+
+```text
+<new-build>/fixtures/xar_ck3_12004_player_event_trait_pipeline_test.exe <fresh-artifact>/native-wire
+Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe -B -X utf8 tools/replay_player_event_trait_pipeline_12004.py --source-root <integrated-source> --wire-dir <fresh-artifact>/native-wire --output-dir <fresh-artifact>/consumer
+```
+
+The replay reads these original native files and invokes the production Driver's
+native-frame parser and `_execute_event_option_step` against a caller-owned frame
+endpoint. It then invokes the actual registered poet recommendation/material
+planner/comparator. The event icon/saved-scope projection is explicitly offline
+typed fixture input, reusing the existing GREEN event query contract rather than
+requalifying that reader. The meaningful assertions require event disappearance
+without membership gain to yield `failed`, and actual journaller membership to
+yield `verified_change`; public revisions 7/8/9 must not replace native 51/52/53.
+The native FIRST and this consumer are authored, **NOTRUN**, and Root executes
+them once in a fresh external artifact. No old focused case is repeated here.
 
 ## Pending gap kept separate
 
@@ -165,6 +248,8 @@ The consumer's guard incorrectly compared current registry sources to the old
 1.19 SHA, so it returned no comparison and retained the original choice. The
 successor binds the current source SHA above and carries the actual current
 stress/fulfillment operation metadata. The four tests and expected indices are
-unchanged. This lane only read that finite log and source-cache rows; Root owns
-the successor focused execution. No production failure or live qualification is
-inferred from either attempt.
+unchanged. Root reports all four successor cases GREEN in
+`g2-background-20261007/g2-candidate-first-consumers/poet-repair03-RESULT.json`.
+Both previous RED artifacts are preserved. This lane only read the finite failure
+log and source-cache rows; it performed no test/import/build. No production
+failure or live qualification is inferred from any focused attempt.

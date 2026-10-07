@@ -264,6 +264,12 @@ bool ReadCk3_12004Snapshot(const Ck3_12004AdapterBindings &bindings,
         relationships.primary_spouse_character_id;
     observed.played_character_spouse_ids =
         std::move(relationships.spouse_character_ids);
+    auto event_traits = foundation->event_traits;
+    event_traits.core = bindings.core;
+    ck3_12004::person_events::PlayerEventTraitMembershipV1 membership;
+    ck3_12004::person_events::ReadPlayerEventTraitMembershipForSnapshotV1(
+        event_traits, prefix.clock.date_raw, prefix.played_character_id, membership);
+    observed.played_character_event_trait_membership = std::move(membership);
   }
   auto events = foundation->events;
   events.core = bindings.core;

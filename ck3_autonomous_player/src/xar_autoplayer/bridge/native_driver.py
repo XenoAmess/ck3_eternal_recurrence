@@ -50,6 +50,10 @@ from .application_main_pump_readiness import (
 )
 from .session_queue import SESSION_QUEUE_PROTOCOL_VERSION
 from .version_identity import require_exact_native_build
+from .player_event_trait_membership_contract import (
+    normalize_player_event_trait_membership_v1,
+    played_character_event_trait_observation_v1,
+)
 from .core_frame_contract import (
     CORE_FRAME_V1_STEP,
     normalize_core_frame_v1,
@@ -11382,6 +11386,12 @@ class NativeHeadlessGameplayDriver:
                 ),
                 "ending_played_character_stress": (
                     _played_character_stress_observation(changed)
+                ),
+                "starting_played_character_event_traits": (
+                    played_character_event_trait_observation_v1(starting)
+                ),
+                "ending_played_character_event_traits": (
+                    played_character_event_trait_observation_v1(changed)
                 ),
                 "starting_played_character_gold": (
                     _played_character_gold_observation(starting)
@@ -25197,7 +25207,10 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
         "one_life_settlement": normalize_one_life_settlement(
             state.get("one_life_settlement")
         ),
-        "played_character": _played_character(state.get("played_character")),
+        "played_character": _played_character(
+            state.get("played_character"), native_revision=revision,
+            date_raw=state.get("date_raw"),
+        ),
         "played_character_gold": _played_character_gold(
             state.get("played_character_gold")
         ),
@@ -32532,7 +32545,9 @@ def _played_character_piety(value: object) -> dict[str, int] | None:
     return {"raw": raw, "scale": 100_000}
 
 
-def _played_character(value: object) -> dict[str, object] | None:
+def _played_character(
+    value: object, *, native_revision: object = None, date_raw: object = None,
+) -> dict[str, object] | None:
     if value is None:
         return None
     if not isinstance(value, dict):
@@ -32561,6 +32576,11 @@ def _played_character(value: object) -> dict[str, object] | None:
         ):
             raise ValueError("native played_character stress_points is malformed")
         result["stress_points"] = stress_points
+    if "event_trait_membership" in value:
+        result["event_trait_membership"] = normalize_player_event_trait_membership_v1(
+            value["event_trait_membership"], expected_character_id=character_id,
+            expected_native_revision=native_revision, expected_date_raw=date_raw,
+        )
     if "primary_heir_id" in value or "has_heir" in value:
         primary_heir_id = value.get("primary_heir_id")
         has_heir = value.get("has_heir")

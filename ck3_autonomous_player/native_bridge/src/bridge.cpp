@@ -5362,6 +5362,11 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     result += snapshot.played_character_alive ? "true" : "false";
     result += ",\"stress_points\":";
     result += SignedNumber(snapshot.played_character_stress_points);
+    if (snapshot.played_character_event_trait_membership) {
+      result += ",\"event_trait_membership\":";
+      result += xar::ck3_12004::person_events::SerializePlayerEventTraitMembershipV1(
+          *snapshot.played_character_event_trait_membership, revision);
+    }
     result += ",\"betrothed_id\":";
     if (snapshot.played_character_betrothed_id == -1) {
       result += "null";

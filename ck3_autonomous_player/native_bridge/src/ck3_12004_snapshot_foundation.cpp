@@ -201,6 +201,7 @@ SnapshotFoundationBindings BindSnapshotFoundationImage(
       image_base, executable_sha256);
   bindings.settlement = ck3_12004::BindSnapshotSettlementImage(
       image_base, executable_sha256);
+  bindings.event_traits = person_events::BindImage(image_base, executable_sha256);
   return bindings;
 }
 

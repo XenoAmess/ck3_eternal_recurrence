@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_actor_resources.hpp"
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_settlement.hpp"
+#include "xar_bridge/player_event_trait_membership_12004.hpp"
 
 namespace xar::ck3_12004 {
 
@@ -39,6 +40,7 @@ struct SnapshotFoundationBindings {
   CoreBindings core;
   SnapshotEventBindings events;
   SettlementBindings settlement;
+  person_events::Bindings event_traits;
 };
 
 SnapshotFoundationBindings BindSnapshotFoundationImage(

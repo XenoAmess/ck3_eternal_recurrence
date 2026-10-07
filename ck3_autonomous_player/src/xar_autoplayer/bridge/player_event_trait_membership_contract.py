@@ -62,6 +62,24 @@ def normalize_player_event_trait_membership_v1(
     return result
 
 
+def played_character_event_trait_observation_v1(
+    snapshot: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Retain the independent membership wire from a public native snapshot."""
+    played = snapshot.get("played_character")
+    if not isinstance(played, Mapping):
+        return None
+    try:
+        return normalize_player_event_trait_membership_v1(
+            played.get("event_trait_membership"),
+            expected_character_id=played.get("character_id"),
+            expected_native_revision=snapshot.get("native_revision"),
+            expected_date_raw=snapshot.get("date_raw"),
+        )
+    except ValueError:
+        return None
+
+
 def plan_poet_trait_material_postcondition_v1(
     decision: Mapping[str, object], played_character: object, *,
     snapshot_id: object, revision: object, native_revision: object,
