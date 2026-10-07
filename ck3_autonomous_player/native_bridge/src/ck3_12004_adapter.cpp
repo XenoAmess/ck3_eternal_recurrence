@@ -49,6 +49,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
       "game.command.query-title-holder-v1-N",
+      "game.command.center-map-on-landed-title-v1",
       ck3_11906::kStewardDevelopCountyCandidatesV1Capability,
       "game.command.select-event-option-N",
       "game.command.accept-pending-character-interaction",
@@ -80,6 +81,9 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.command.query-campaign-root-context-v1",
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
       "game.command.query-player-faction-alerts-v1",
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+      "game.command.query-war-prisoner-release-pairs-v1-N",
 #endif
       "game.command.query-combat-simulation-inputs-v2-N",
       "game.command.query-player-default-raise-v1",

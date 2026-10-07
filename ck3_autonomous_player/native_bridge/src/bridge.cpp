@@ -88,6 +88,7 @@
 #include "xar_bridge/ck3_12002_province.hpp"
 #include "xar_bridge/ck3_12002_world.hpp"
 #include "xar_bridge/ck3_12002_title_map.hpp"
+#include "xar_bridge/ck3_12004_title_map.hpp"
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12004_campaign.hpp"
@@ -10874,15 +10875,26 @@ bool ExecuteTypedQuery12002(
           envelope->expected_snapshot_revision, query.event_instance_id, query.event);
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::title_map) {
-      xar::ck3_12002::TitleMapNavigationCameraAccessV1 access{};
-      access.title.context = envelope;
-      access.title.capture_frame = &CaptureTypedFrame12002<xar::game::TitleMapNavigationFrameV1>;
-      access.title.is_owning_thread = &xar::ck3_12002::IsQueryOwningThread;
       const bool previously_dispatched = query.title_command.dispatched;
-      xar::ck3_12002::AdvanceTitleMapNavigationCommandV1(
-          xar::ck3_12002::BindTitleMapNavigationNativeEnvironmentV1(query.image_base, true),
-          xar::ck3_12002::BindTitleMapNavigationCameraEnvironmentV1(query.image_base, true),
-          access, query.title_command);
+      if (actual4) {
+        xar::ck3_12004::TitleMapNavigationCameraAccessV1 access{};
+        access.title.context = envelope;
+        access.title.capture_frame = &CaptureTypedFrame12002<xar::game::TitleMapNavigationFrameV1>;
+        access.title.is_owning_thread = &xar::ck3_12002::IsQueryOwningThread;
+        xar::ck3_12004::AdvanceTitleMapNavigationCommandV1(
+            xar::ck3_12004::BindTitleMapNavigationNativeEnvironmentV1(query.image_base, sha),
+            xar::ck3_12004::BindTitleMapNavigationCameraEnvironmentV1(query.image_base, sha),
+            access, query.title_command);
+      } else {
+        xar::ck3_12002::TitleMapNavigationCameraAccessV1 access{};
+        access.title.context = envelope;
+        access.title.capture_frame = &CaptureTypedFrame12002<xar::game::TitleMapNavigationFrameV1>;
+        access.title.is_owning_thread = &xar::ck3_12002::IsQueryOwningThread;
+        xar::ck3_12002::AdvanceTitleMapNavigationCommandV1(
+            xar::ck3_12002::BindTitleMapNavigationNativeEnvironmentV1(query.image_base, true),
+            xar::ck3_12002::BindTitleMapNavigationCameraEnvironmentV1(query.image_base, true),
+            access, query.title_command);
+      }
       if (!previously_dispatched && query.title_command.dispatched) {
         query.title_dispatch_ticket = envelope->ticket.sequence;
       }
@@ -11568,6 +11580,8 @@ public:
         &ExecuteTypedQuery12002<QueryKind12002::campaign>;
     environment.permitted_executor_duodenary =
         &ExecuteTypedQuery12002<QueryKind12002::route>;
+    environment.permitted_executor_thirdenary =
+        &ExecuteTypedQuery12002<QueryKind12002::title_map>;
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
     nonwar.steward_develop_county = &xar::ck3_11906::
@@ -12421,6 +12435,7 @@ bool IsBattleWarTypedQuery12004(const xar::game::GameAdapter &game,
   const auto kind = TypedQueryKind12002(step);
   return kind == QueryKind12002::war_entry ||
          kind == QueryKind12002::route ||
+         kind == QueryKind12002::title_map ||
          kind == QueryKind12002::battle_control ||
          kind == QueryKind12002::battle_transition ||
          kind == QueryKind12002::battle_reinforcement ||
@@ -12775,8 +12790,11 @@ std::string RunTypedQuery12002(
       return CommandResultFrame(request_id, step, false,
           xar::ck3_12002::TitleMapNavigationCommandRejectionCodeV1(status));
     }
-    const auto title_payload = xar::ck3_12002::SerializeTitleMapNavigationResultV1(
-        query.title_command, query.title_dispatch_ticket);
+    const auto title_payload = xar::game::IsCk3_12004Descriptor(game.descriptor())
+        ? xar::ck3_12004::SerializeTitleMapNavigationResultV1(
+              query.title_command, query.title_dispatch_ticket)
+        : xar::ck3_12002::SerializeTitleMapNavigationResultV1(
+              query.title_command, query.title_dispatch_ticket);
     if (!title_payload.empty()) {
       response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
       AppendJsonString(response, request_id);
