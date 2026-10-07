@@ -1,0 +1,32 @@
+{
+  "schema": "lyd.r21.targeted-normal-exit-render-append.v1",
+  "files": [
+    {
+      "archive_path": "NORMAL-EXIT-RENDER-ACCEPTANCE.actual.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\RESULT.actual.json",
+      "bytes": 4629,
+      "sha256": "13cc160d13cf75c84dbe144c89fbd6d5c44ed5a9b0ce1b3c0b2fbd1b1e433b75"
+    },
+    {
+      "archive_path": "NORMAL-EXIT-RENDER.stdout.json",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\stdout.raw",
+      "bytes": 10573,
+      "sha256": "97fdb7c8a4efdf985a4c5bbe5920e539d413bd9a735d33d261cedf0688af1bea"
+    },
+    {
+      "archive_path": "NORMAL-EXIT-RENDER.stderr.txt",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\stderr.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_path": "NORMAL-EXIT-RENDER-AUTHOR.py",
+      "original_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\check_normal_exit_render.py",
+      "bytes": 4256,
+      "sha256": "dd9da031ddc2cdb72ad3574c4f64061677e92614a0cb37d720da0f2cddbfd06e"
+    }
+  ],
+  "production_changes_added": false,
+  "context_callback_or_signature_generation_executed": false,
+  "live_or_typed_normal_exit_credit": null
+}

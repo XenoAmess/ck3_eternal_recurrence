@@ -20,3 +20,12 @@ C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe -X utf
 ```
 
 [小型 source/test 归档](acceptance/2026-10-07-r0021-native-semantic-schema-exit-fix/INDEX.json) 保存 patch、preimage、真实编译 argv、生成源、stdout/SHA 与失败回执。R0021 正常 GUI 关闭或原 HANDLE0 的生命周期事实由 ROOT 另行保全，不能改写为 typed normal-exit callback PASS。本源码还需新的 clean HEAD/export/native qualification/metadata/fresh cold 实机才能授运行信用；正式 I3b 与全模组继续 NOT_GREEN。源码发布采用 fetch→rebase→复测→普通 fast-forward push，无 merge/force push。
+
+
+## Normal-exit schema 定向补核
+
+`SerializeNormalExitMapObservationV1` 的 canonical schema 为 `ck3-normal-exit-map-v1`，与 Python `normalize_native_exit_observation` 精确一致；bridge normal-exit 分支直接发送 serializer，不调用 build renderer。真实签名生成的 domain prefix 为 `normal-exit-map-v1|`，没有 `.2/.3/.4` semantic schema 改写项。本次新增准入仍受 exact descriptor、enabled/capability 及原 owner/frame/source/signature/once 保护。
+
+复用已经编译的唯一 pure fixture，对既有 Python integrated fixture 的 `query_context`、`prepare_confirmation`、`confirm_desktop` inert observation 执行原/修复最终 renderer；全部 closed DTO 字段、canonical schema 与 64 字符 signature 原样，严格 Python normalizer 接收。`orderly_exit_verified`、`autosave_verified` 均保持 false。此补核只证明 renderer/DTO 不再有该类 schema 障碍，没有执行真实 context callback、签名生成、正常退出或原始 HANDLE 观察；R21 原 unsupported/未 typed closure 不改。
+
+[补核原件索引](acceptance/2026-10-07-r0021-native-semantic-schema-exit-fix/NORMAL-EXIT-RENDER-INDEX.actual.json) 为新追加，与原 isolated admission8 结果分列。

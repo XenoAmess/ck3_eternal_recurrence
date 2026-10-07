@@ -1,0 +1,101 @@
+{
+  "schema": "lyd.r21.normal-exit-canonical-render-acceptance.v1",
+  "status": "INERT_RENDER_AND_STRICT_DTO_ACCEPTED",
+  "started_at_utc": "2026-10-07T10:28:12.354869+00:00",
+  "ended_at_utc": "2026-10-07T10:28:12.375919+00:00",
+  "argv": [
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\confucian_semantic_identity_fixture.exe",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\query_context.inert.json",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\prepare_confirmation.inert.json",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\confirm_desktop.inert.json"
+  ],
+  "exit_code": 0,
+  "input_refs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\query_context.inert.json",
+      "bytes": 1747,
+      "sha256": "d947dd64c67bb7c8a32ecf8f6529fbfa5422d66f23f405d373efb46b7b4d85f5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\prepare_confirmation.inert.json",
+      "bytes": 1745,
+      "sha256": "5e6c98953b4cbf277dbbeedaf45d3d828cd145e8c7fedd9b688bfd9e36c0afc4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\confirm_desktop.inert.json",
+      "bytes": 1740,
+      "sha256": "3146b547015151560ef1bfad08cda0d9561050c405da68e63910a7442bbe382e"
+    }
+  ],
+  "source_refs": [
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\tests\\unit\\test_normal_exit_integrated_v1.py",
+      "bytes": 28898,
+      "sha256": "c7f43770aa5c63b410eb030f52d8ce1fb3ebec7f9d45028ebce76c4584361031"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_contract_v1.py",
+      "bytes": 22690,
+      "sha256": "b794d7176c4928c5c74c22ce0cbb6894d18d74e787f3418512fec11b5ba5b942"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_request_v1.cpp",
+      "bytes": 12268,
+      "sha256": "9a500f073cbe73a4f12151fda4751fb08ca4b20bec0d5ae88b3cbec7dda0c442"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_v1.cpp",
+      "bytes": 18271,
+      "sha256": "fa2c5d6d8a4ac45163952fd8cd56864a5ca50d7cd223d0648087f837bb9e9bb7"
+    },
+    {
+      "path": "C:\\lr21rw1\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1459738,
+      "sha256": "ef9db9810c139c83fd94ac9b18d195393a357b776b7910c7c0245b7a529cd761"
+    }
+  ],
+  "existing_compiled_fixture": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\isolated-004\\confucian_semantic_identity_fixture.exe",
+    "bytes": 64512,
+    "sha256": "c0fef0c346600369786e8b1ea39888b3ce4bbb7b5c3712dba47a49afc4a31712"
+  },
+  "output_ref": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r21-confucian-payload-build-mismatch-20261007-001\\normal-exit-render-001\\stdout.raw",
+    "bytes": 10573,
+    "sha256": "97fdb7c8a4efdf985a4c5bbe5920e539d413bd9a735d33d261cedf0688af1bea"
+  },
+  "cases": [
+    {
+      "action": "query_context",
+      "original_renderer_equal": true,
+      "fixed_renderer_equal": true,
+      "canonical_schema": "ck3-normal-exit-map-v1",
+      "signature_bytes_unchanged": true,
+      "strict_DTO_accepted": true,
+      "live_credit": null
+    },
+    {
+      "action": "prepare_confirmation",
+      "original_renderer_equal": true,
+      "fixed_renderer_equal": true,
+      "canonical_schema": "ck3-normal-exit-map-v1",
+      "signature_bytes_unchanged": true,
+      "strict_DTO_accepted": true,
+      "live_credit": null
+    },
+    {
+      "action": "confirm_desktop",
+      "original_renderer_equal": true,
+      "fixed_renderer_equal": true,
+      "canonical_schema": "ck3-normal-exit-map-v1",
+      "signature_bytes_unchanged": true,
+      "strict_DTO_accepted": true,
+      "live_credit": null
+    }
+  ],
+  "actual_handler_serializes_directly_without_build_rewrite": true,
+  "shared_native_wire_schema_version_independent": true,
+  "no_context_callback_or_signature_generation_executed": true,
+  "runtime_DLL_build_or_live_operations": false,
+  "live_native_context_credit": null
+}
