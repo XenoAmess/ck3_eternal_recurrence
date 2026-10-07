@@ -123,7 +123,7 @@ class FactionStockResponseFormalFirst12004(unittest.TestCase):
                     endpoint.publish({"type": "heartbeat", "protocol_version": 1,
                         "sequence": 1, "g2_faction_gift_mitigation_async_glue_v1": {"private_build": True}})
                     endpoint.publish({"type": "state_snapshot", "protocol_version": 1,
-                        "snapshot_id": "faction-formal-first:1", "revision": 1,
+                        "snapshot_id": "native:1", "revision": 1,
                         "state": {"phase": "map_hud", "date": "synthetic-not-live",
                             "date_raw": 53175816, "speed": 1, "paused": True, "map_ready": True,
                             "history": [], "active_event": None, "pending_character_interaction": None,
@@ -133,6 +133,7 @@ class FactionStockResponseFormalFirst12004(unittest.TestCase):
                             "player_armies": [], "active_wars": [],
                             "episode_run_id": "faction-formal-first-offline"}})
                     snapshot = driver.take_snapshot()
+                    receipt["last_snapshot"] = deepcopy(snapshot)
                     root = {"status": "available", "snapshot_revision": snapshot["native_revision"],
                         "date_raw": snapshot["date_raw"], "player_character_id": 50331649,
                         "player_character_alive": True, "government": {"key": "feudal_government"},
