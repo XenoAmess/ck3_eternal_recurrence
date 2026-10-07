@@ -82,12 +82,18 @@
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12004_routes.hpp"
+#include "xar_bridge/ck3_12004_contact.hpp"
+#include "xar_bridge/ck3_12004_phase.hpp"
 #include "xar_bridge/ck3_12002_battle.hpp"
 #include "xar_bridge/ck3_12003_battle_current_state.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
 #include "xar_bridge/ck3_12002_province.hpp"
 #include "xar_bridge/ck3_12002_world.hpp"
 #include "xar_bridge/ck3_12002_title_map.hpp"
+#include "xar_bridge/ck3_12004_title_map.hpp"
+#include "xar_bridge/ck3_12004_pending_context.hpp"
+#include "xar_bridge/ck3_12004_world.hpp"
+#include "xar_bridge/ck3_12004_event_window_context.hpp"
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12004_campaign.hpp"
@@ -170,6 +176,7 @@
 #include "player_construction_view_probe_v1_mailbox.hpp"
 #endif
 #include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
+#include "xar_bridge/ck3_12004_steward_develop_county.hpp"
 #include "xar_bridge/steward_develop_county_enumerator_observer_v1.hpp"
 #include "domain_construction_application_main_runtime_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
@@ -8216,8 +8223,10 @@ std::string LoadedFeatureManifestResultFrame(
 std::string PendingCharacterInteractionContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::PendingCharacterInteractionContextV1 &context,
-    bool crozier = false) {
-  const auto payload = crozier
+    bool crozier = false, bool actual4 = false) {
+  const auto payload = actual4
+      ? xar::ck3_12004::SerializePendingCharacterInteractionContext12004(context)
+      : crozier
       ? xar::ck3_12002::SerializePendingCharacterInteractionContextV1(context)
       : xar::ck3_11906::SerializePendingCharacterInteractionContextV1(context);
   if (payload.empty()) {
@@ -10654,6 +10663,12 @@ bool ResolvePendingWar12002(void *opaque, std::int32_t id, void *&output) noexce
     return false;
   }
   auto *query = static_cast<TypedQuery12002 *>(envelope->typed_context);
+  if (xar::game::IsCk3_12004Descriptor(envelope->game->descriptor())) {
+    const auto bindings = xar::ck3_12004::BindWorldImage12004(
+        query->image_base, envelope->game->descriptor().executable_sha256);
+    output = xar::ck3_12004::ResolveWar12004(bindings, id);
+    return output != nullptr;
+  }
   const auto bindings = xar::ck3_12002::BindWorldImage(
       query->image_base, xar::game::ReviewedCrozierAbiSha256(envelope->game->descriptor()));
   output = xar::ck3_12002::ResolveWar(bindings, id);
@@ -10701,11 +10716,13 @@ bool ExecuteTypedQuery12002(
           xar::game::RouteContactHorizonStatus::available;
       query.route.snapshot_revision = envelope->expected_snapshot_revision;
     } else if constexpr (Kind == QueryKind12002::actual_contact) {
-      const auto bindings = xar::ck3_12002::BindRouteImage(query.image_base, sha);
+      const auto bindings = actual4
+          ? xar::ck3_12004::BindContactImage12004(query.image_base, sha)
+          : xar::ck3_12002::BindRouteImage(query.image_base, sha);
       if (query.projected_contact_query) {
         // Read-only projected contact shares the existing contact executor.
         query.typed_result =
-            xar::game::IsCk3_12003Descriptor(envelope->game->descriptor()) &&
+            (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor()) || actual4) &&
             xar::ck3_12002::ReadProjectedContactScope(
                 bindings, snapshot, query.projected_request, query.projected) ==
                 xar::game::ProjectedContactScopeStatus::available;
@@ -10717,9 +10734,13 @@ bool ExecuteTypedQuery12002(
         query.actual.snapshot_revision = envelope->expected_snapshot_revision;
       }
     } else if constexpr (Kind == QueryKind12002::combat_v3) {
-      auto phase_bindings = xar::ck3_12002::BindPhaseImage(query.image_base, sha);
-      phase_bindings.combat.phase_rite_parameters = xar::ck3_12003::phase_rite::BindImage(
-          query.image_base, envelope->game->descriptor().executable_sha256);
+      auto phase_bindings = actual4
+          ? xar::ck3_12004::BindPhaseImage12004(query.image_base, sha)
+          : xar::ck3_12002::BindPhaseImage(query.image_base, sha);
+      if (!actual4) {
+        phase_bindings.combat.phase_rite_parameters = xar::ck3_12003::phase_rite::BindImage(
+            query.image_base, envelope->game->descriptor().executable_sha256);
+      }
       query.combat_result = xar::ck3_12002::ReadCombatSimulationInputsV3(
           phase_bindings, snapshot,
           query.combat_request, query.combat);
@@ -10862,26 +10883,46 @@ bool ExecuteTypedQuery12002(
       access.invoke_common_war_relation = &xar::ck3_12002::InvokePendingCharacterInteractionCommonWarRelationDirectV1;
       access.invoke_target_type_registry = &xar::ck3_12002::InvokePendingCharacterInteractionTargetTypeRegistryDirectV1;
       access.invoke_script_identifier_name = &xar::ck3_12002::InvokePendingCharacterInteractionScriptIdentifierNameDirectV1;
-      xar::ck3_12002::ReadPendingCharacterInteractionContextV1(
-          xar::ck3_12002::BindPendingCharacterInteractionNativeEnvironmentV1(query.image_base, true),
-          access, query.pending_request, query.pending);
+      if (actual4) {
+        xar::ck3_12004::ReadPendingCharacterInteractionContext12004(
+            xar::ck3_12004::BindPendingCharacterInteractionNativeEnvironment12004(
+                query.image_base, sha),
+            access, query.pending_request, query.pending);
+      } else {
+        xar::ck3_12002::ReadPendingCharacterInteractionContextV1(
+            xar::ck3_12002::BindPendingCharacterInteractionNativeEnvironmentV1(query.image_base, true),
+            access, query.pending_request, query.pending);
+      }
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::event_window) {
+      const auto bindings = actual4
+          ? xar::ck3_12004::BindEventWindowImage12004(query.image_base, sha)
+          : xar::ck3_12002::BindEventWindowImage(query.image_base, sha);
       xar::ck3_12002::ReadEventWindowContextV1(
-          xar::ck3_12002::BindEventWindowImage(
-              query.image_base, envelope->game->descriptor().executable_sha256),
+          bindings,
           envelope->expected_snapshot_revision, query.event_instance_id, query.event);
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::title_map) {
-      xar::ck3_12002::TitleMapNavigationCameraAccessV1 access{};
-      access.title.context = envelope;
-      access.title.capture_frame = &CaptureTypedFrame12002<xar::game::TitleMapNavigationFrameV1>;
-      access.title.is_owning_thread = &xar::ck3_12002::IsQueryOwningThread;
       const bool previously_dispatched = query.title_command.dispatched;
-      xar::ck3_12002::AdvanceTitleMapNavigationCommandV1(
-          xar::ck3_12002::BindTitleMapNavigationNativeEnvironmentV1(query.image_base, true),
-          xar::ck3_12002::BindTitleMapNavigationCameraEnvironmentV1(query.image_base, true),
-          access, query.title_command);
+      if (actual4) {
+        xar::ck3_12004::TitleMapNavigationCameraAccessV1 access{};
+        access.title.context = envelope;
+        access.title.capture_frame = &CaptureTypedFrame12002<xar::game::TitleMapNavigationFrameV1>;
+        access.title.is_owning_thread = &xar::ck3_12002::IsQueryOwningThread;
+        xar::ck3_12004::AdvanceTitleMapNavigationCommandV1(
+            xar::ck3_12004::BindTitleMapNavigationNativeEnvironmentV1(query.image_base, actual4),
+            xar::ck3_12004::BindTitleMapNavigationCameraEnvironmentV1(query.image_base, actual4),
+            access, query.title_command);
+      } else {
+        xar::ck3_12002::TitleMapNavigationCameraAccessV1 access{};
+        access.title.context = envelope;
+        access.title.capture_frame = &CaptureTypedFrame12002<xar::game::TitleMapNavigationFrameV1>;
+        access.title.is_owning_thread = &xar::ck3_12002::IsQueryOwningThread;
+        xar::ck3_12002::AdvanceTitleMapNavigationCommandV1(
+            xar::ck3_12002::BindTitleMapNavigationNativeEnvironmentV1(query.image_base, true),
+            xar::ck3_12002::BindTitleMapNavigationCameraEnvironmentV1(query.image_base, true),
+            access, query.title_command);
+      }
       if (!previously_dispatched && query.title_command.dispatched) {
         query.title_dispatch_ticket = envelope->ticket.sequence;
       }
@@ -11567,8 +11608,20 @@ public:
         &ExecuteTypedQuery12002<QueryKind12002::campaign>;
     environment.permitted_executor_duodenary =
         &ExecuteTypedQuery12002<QueryKind12002::route>;
+    environment.permitted_executor_thirdenary =
+        &ExecuteTypedQuery12002<QueryKind12002::title_map>;
+    environment.permitted_executor_sexdenary =
+        &ExecuteTypedQuery12002<QueryKind12002::actual_contact>;
+    environment.permitted_executor_octodenary =
+        &ExecuteTypedQuery12002<QueryKind12002::combat_v3>;
+    environment.permitted_executor_novemdenary =
+        &ExecuteTypedQuery12002<QueryKind12002::pending_interaction>;
+    environment.permitted_executor_vigintary =
+        &ExecuteTypedQuery12002<QueryKind12002::event_window>;
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
+    nonwar.steward_develop_county = &xar::ck3_11906::
+        ExecuteStewardDevelopCountyCandidatesMailboxQueryV1;
     nonwar.warcash = &ExecuteWarCashCurrentResources12004;
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
     nonwar.alliance_projection = &ExecuteMarriageCandidateAllianceMailboxQueryV1;
@@ -12418,6 +12471,11 @@ bool IsBattleWarTypedQuery12004(const xar::game::GameAdapter &game,
   const auto kind = TypedQueryKind12002(step);
   return kind == QueryKind12002::war_entry ||
          kind == QueryKind12002::route ||
+         kind == QueryKind12002::title_map ||
+         kind == QueryKind12002::actual_contact ||
+         kind == QueryKind12002::combat_v3 ||
+         kind == QueryKind12002::pending_interaction ||
+         kind == QueryKind12002::event_window ||
          kind == QueryKind12002::battle_control ||
          kind == QueryKind12002::battle_transition ||
          kind == QueryKind12002::battle_reinforcement ||
@@ -12575,14 +12633,16 @@ std::string RunTypedQuery12002(
         xar::ck3_12002::QuerySnapshotComparison12002::core_frame;
   }
   if (query.combat_request.constructor_adjacency_kind_raw.has_value() &&
-      !xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+      !xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
+      !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     return CommandResultFrame(request_id, step, false,
-                              "constructor contact geometry requires the exact 1.20.0.3 adapter");
+                              "constructor contact geometry requires the exact 1.20.0.3 or 1.20.0.4 adapter");
   }
   if (query.projected_contact_query &&
-      !xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+      !xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
+      !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     return CommandResultFrame(request_id, step, false,
-                              "projected contact requires the exact 1.20.0.3 adapter");
+                              "projected contact requires the exact 1.20.0.3 or 1.20.0.4 adapter");
   }
   if (query.envelope.expected_snapshot_revision != state.state_revision ||
       state.state_revision == 0 || !state.previous_snapshot.has_value() ||
@@ -12760,11 +12820,13 @@ std::string RunTypedQuery12002(
     break;
   case QueryKind12002::pending_interaction:
     response = PendingCharacterInteractionContextResultFrame(request_id,
-        ++state.pending_character_interaction_context_query_sequence, query.pending, true); break;
+        ++state.pending_character_interaction_context_query_sequence, query.pending, true,
+        xar::game::IsCk3_12004Descriptor(game.descriptor())); break;
   case QueryKind12002::event_window:
     response = EventWindowContextResultFrame(request_id,
         ++state.event_window_context_query_sequence, query.event, true,
-        game.descriptor().executable_sha256 == xar::ck3_12003::kExecutableSha256); break;
+        xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+        xar::game::IsCk3_12004Descriptor(game.descriptor())); break;
   case QueryKind12002::title_map: {
     const auto status = query.title_command.status;
     if (status != xar::game::TitleMapNavigationCommandStatusV1::centered &&
@@ -12772,8 +12834,11 @@ std::string RunTypedQuery12002(
       return CommandResultFrame(request_id, step, false,
           xar::ck3_12002::TitleMapNavigationCommandRejectionCodeV1(status));
     }
-    const auto title_payload = xar::ck3_12002::SerializeTitleMapNavigationResultV1(
-        query.title_command, query.title_dispatch_ticket);
+    const auto title_payload = xar::game::IsCk3_12004Descriptor(game.descriptor())
+        ? xar::ck3_12004::SerializeTitleMapNavigationResultV1(
+              query.title_command, query.title_dispatch_ticket)
+        : xar::ck3_12002::SerializeTitleMapNavigationResultV1(
+              query.title_command, query.title_dispatch_ticket);
     if (!title_payload.empty()) {
       response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
       AppendJsonString(response, request_id);
@@ -13447,7 +13512,8 @@ std::string RunTitleHolderQueryV1(
     std::string_view payload) {
   std::int32_t title_id = -1;
   std::uint64_t expected_revision = 0;
-  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+  if ((!xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
+       !xar::game::IsCk3_12004Descriptor(game.descriptor())) ||
       !xar::game::ParseTitleHolderStepV1(step, title_id) ||
       !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
           payload, expected_revision)) {
@@ -13481,9 +13547,11 @@ std::string RunTitleHolderQueryV1(
     observation.title_id = title_id;
     observation.unavailable_reason = "typed_mailbox_read_unavailable";
   }
-  const auto result = xar::game::SerializeTitleHolderV1(
-      observation, read_result, ++state.title_holder_query_sequence,
-      expected_revision, step);
+  const auto result = xar::game::Render12004BuildIdentity(
+      xar::game::SerializeTitleHolderV1(
+          observation, read_result, ++state.title_holder_query_sequence,
+          expected_revision, step),
+      game.descriptor());
   std::string response =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(response, request_id);
@@ -14274,7 +14342,8 @@ void RunConnectedSession(
                           kArmyCommanderCandidatesStepPrefix) ||
                       step.starts_with(xar::ck3_12003::
                           kArmyCommanderAssignmentStepPrefix) ||
-                      step.starts_with(xar::game::kWarOccupationTargetsV1StepPrefix)))) &&
+                      step.starts_with(xar::game::kWarOccupationTargetsV1StepPrefix) ||
+                      step.starts_with(xar::game::kTitleHolderV1StepPrefix)))) &&
                     (step.starts_with(xar::ck3_12003::
                                          kArmyCommanderAssignmentStepPrefix) ||
                     step.starts_with(xar::ck3_12003::
@@ -20743,7 +20812,16 @@ void RunConnectedSession(
               xar::ck3_11906::
                   StewardDevelopCountyCandidatesMailboxContextV1 query{};
               query.mailbox = &g_main_thread_query_mailbox_v1;
-              if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+              if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+                const auto module_base = reinterpret_cast<std::uintptr_t>(
+                    GetModuleHandleW(nullptr));
+                query.material_profile = true;
+                query.material_environment =
+                    xar::ck3_12004::BindStewardDevelopCounty12004(
+                        module_base, game.descriptor().executable_sha256);
+                query.material_core_bindings = xar::ck3_12004::BindCoreImage(
+                    module_base, game.descriptor().executable_sha256);
+              } else if (xar::game::IsCk3_12003Descriptor(game.descriptor())) {
                 const auto module_base = reinterpret_cast<std::uintptr_t>(
                     GetModuleHandleW(nullptr));
                 query.material_profile = true;
@@ -20815,10 +20893,15 @@ void RunConnectedSession(
                                             StewardDevelopCountyCandidatesMailboxCompletionV1::
                                                 completed &&
                     completion_snapshot_stable) {
-                  response = StewardDevelopCountyCandidatesResultFrame(
-                      request_id,
-                      steward_develop_county_candidates_query_sequence + 1,
-                      query.result);
+                  response = xar::game::IsCk3_12004Descriptor(game.descriptor())
+                      ? xar::ck3_12004::SerializeStewardDevelopCountyQueryResult12004(
+                            query.material_environment, request_id,
+                            steward_develop_county_candidates_query_sequence + 1,
+                            query.result)
+                      : StewardDevelopCountyCandidatesResultFrame(
+                            request_id,
+                            steward_develop_county_candidates_query_sequence + 1,
+                            query.result);
                   if (!response.empty()) {
                     ++steward_develop_county_candidates_query_sequence;
                   }

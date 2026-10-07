@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_12004_steward_develop_county.hpp"
 #include "xar_bridge/steward_develop_county_candidates_v1.hpp"
 #include "xar_bridge/ck3_12003_steward_develop_county.hpp"
 
@@ -371,8 +372,10 @@ void AppendMaterialCandidate(
   output += "}}";
 }
 
-std::string SerializeMaterial12003(
-    const game::StewardDevelopCountyCandidatesV1 &value) {
+std::string SerializeMaterialProfile(
+    const game::StewardDevelopCountyCandidatesV1 &value,
+    std::string_view version, std::string_view executable_sha256,
+    std::string_view backend) {
   using Status = game::StewardDevelopCountyCandidatesStatusV1;
   if (!value.material.has_value() ||
       (value.status != Status::available && value.status != Status::unavailable))
@@ -430,17 +433,48 @@ std::string SerializeMaterial12003(
   output += ",\"readiness\":";
   output += value.readiness.ready ? "true" : "false";
   output += ",\"provenance\":{\"game_version\":";
-  AppendJsonString(output, ck3_12003::kGameVersion);
+  AppendJsonString(output, version);
   output += ",\"executable_sha256\":";
-  AppendJsonString(output, ck3_12003::kExecutableSha256);
+  AppendJsonString(output, executable_sha256);
   output += ",\"backend_id\":";
-  AppendJsonString(output, ck3_12003::kDevelopMaterialBackend);
+  AppendJsonString(output, backend);
   output += ",\"reader_mode\":";
   AppendJsonString(output, ck3_12003::kDevelopMaterialReaderMode);
   output += ",\"next_reverse_engineering_entry\":";
   AppendJsonString(output, ck3_12003::kDevelopMaterialNextEntry);
   output += "}}";
   return output;
+}
+
+std::string SerializeStewardDevelopCountyQueryFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const game::StewardDevelopCountyCandidatesV1 &candidates,
+    std::string_view payload) {
+  if (payload.empty()) {
+    return {};
+  }
+  const std::string_view status =
+      candidates.status ==
+              game::StewardDevelopCountyCandidatesStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{\"step\":"
+      "\"query-steward-develop-county-candidates-v1\","
+      "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(candidates.snapshot_revision);
+  result += ",\"steward_develop_county_candidates\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
 }
 
 } // namespace
@@ -534,32 +568,9 @@ std::string SerializeStewardDevelopCountyCandidatesV1(
 std::string SerializeStewardDevelopCountyQueryResultV1(
     std::string_view request_id, std::uint64_t query_sequence,
     const game::StewardDevelopCountyCandidatesV1 &candidates) {
-  const auto payload = SerializeStewardDevelopCountyCandidatesV1(candidates);
-  if (payload.empty()) {
-    return {};
-  }
-  const std::string_view status =
-      candidates.status ==
-              game::StewardDevelopCountyCandidatesStatusV1::available
-          ? "available"
-          : "unavailable";
-  std::string result =
-      "{\"type\":\"command_result\",\"protocol_version\":1,"
-      "\"request_id\":";
-  AppendJsonString(result, request_id);
-  result +=
-      ",\"ok\":true,\"result\":{\"step\":"
-      "\"query-steward-develop-county-candidates-v1\","
-      "\"accepted\":true,\"status\":";
-  AppendJsonString(result, status);
-  result += ",\"query_sequence\":";
-  result += Number(query_sequence);
-  result += ",\"snapshot_revision\":";
-  result += Number(candidates.snapshot_revision);
-  result += ",\"steward_develop_county_candidates\":";
-  result += payload;
-  result += ",\"backend_id\":\"native-headless\"}}";
-  return result;
+  return SerializeStewardDevelopCountyQueryFrame(
+      request_id, query_sequence, candidates,
+      SerializeStewardDevelopCountyCandidatesV1(candidates));
 }
 
 } // namespace xar::ck3_11906
@@ -568,7 +579,29 @@ namespace xar::ck3_12003 {
 
 std::string SerializeStewardDevelopCountyMaterial12003(
     const game::StewardDevelopCountyCandidatesV1 &value) {
-  return ck3_11906::SerializeMaterial12003(value);
+  return ck3_11906::SerializeMaterialProfile(
+      value, kGameVersion, kExecutableSha256, kDevelopMaterialBackend);
 }
 
 } // namespace xar::ck3_12003
+
+namespace xar::ck3_12004 {
+
+std::string SerializeStewardDevelopCountyMaterial12004(
+    const StewardDevelopCountyEnvironment12004 &environment,
+    const game::StewardDevelopCountyCandidatesV1 &value) {
+  if (!IsStewardDevelopCountyEnvironment12004(environment)) return {};
+  return ck3_11906::SerializeMaterialProfile(
+      value, kGameVersion, kExecutableSha256, kDevelopMaterialBackend12004);
+}
+
+std::string SerializeStewardDevelopCountyQueryResult12004(
+    const StewardDevelopCountyEnvironment12004 &environment,
+    std::string_view request_id, std::uint64_t query_sequence,
+    const game::StewardDevelopCountyCandidatesV1 &value) {
+  return ck3_11906::SerializeStewardDevelopCountyQueryFrame(
+      request_id, query_sequence, value,
+      SerializeStewardDevelopCountyMaterial12004(environment, value));
+}
+
+} // namespace xar::ck3_12004

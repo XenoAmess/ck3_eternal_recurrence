@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12004_commands.hpp"
 #include "xar_bridge/ck3_12004_events.hpp"
 #include "xar_bridge/ck3_12004_combat.hpp"
+#include "xar_bridge/ck3_12004_phase.hpp"
 #include "xar_bridge/ck3_12004_military.hpp"
 #include "xar_bridge/ck3_12004_diplomacy.hpp"
 #include "xar_bridge/ck3_12004_war_declarations.hpp"
@@ -18,6 +19,7 @@
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
+#include "xar_bridge/steward_develop_county_candidates_v1.hpp"
 
 #include <windows.h>
 #include <array>
@@ -48,6 +50,10 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
       "game.command.query-title-holder-v1-N",
+      "game.command.query-pending-character-interaction-context-v1",
+      "game.command.query-current-event-window-context-v1",
+      "game.command.center-map-on-landed-title-v1",
+      ck3_11906::kStewardDevelopCountyCandidatesV1Capability,
       "game.command.select-event-option-N",
       "game.command.accept-pending-character-interaction",
       "game.command.reject-pending-character-interaction",
@@ -69,6 +75,8 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       ck3_11906::kFrontendGuiStartSelectedBookmarkV1Capability,
 #endif
       "game.command.query-route-contact-horizon-v1-N",
+      "game.command.query-actual-contact-scope-v1-N",
+      "game.command.query-projected-contact-scope-v1-N",
       ck3_12003::kArmyCommanderCandidatesCapability,
       ck3_12003::kArmyCommanderCandidatesForTargetCapability,
       ck3_12003::kArmyCommanderAssignmentCapability,
@@ -78,6 +86,9 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.command.query-campaign-root-context-v1",
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
       "game.command.query-player-faction-alerts-v1",
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+      "game.command.query-war-prisoner-release-pairs-v1-N",
 #endif
       "game.command.query-combat-simulation-inputs-v2-N",
       "game.command.query-player-default-raise-v1",
@@ -134,6 +145,8 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
       image_base, executable_sha256);
 #endif
   bindings.combat = ck3_12004::BindCombatImage12004(
+      image_base, executable_sha256);
+  bindings.phase = ck3_12004::BindPhaseImage12004(
       image_base, executable_sha256);
   bindings.military = ck3_12004::BindMilitaryImage12004(
       image_base, executable_sha256, bindings.commands);
@@ -242,6 +255,14 @@ std::string Render12004BuildIdentity(
     std::string serialized, const AdapterDescriptor &descriptor) {
   if (!IsCk3_12004Descriptor(descriptor)) return serialized;
   serialized = ck3_12002::RenderQueryBuildIdentity(std::move(serialized));
+  // The shared event-window serializer retains its historical .2 locator.
+  // The independently mapped .4 factory uses 0x44BC418 (SOURCE-CLOSURE.json).
+  if (serialized.find("\"schema\":\"current-event-window-context-v1\"") !=
+      std::string::npos) {
+    ReplaceIdentityToken(serialized,
+        "\"idler_vtable_rva\":\"0x44BC408\"",
+        "\"idler_vtable_rva\":\"0x44BC418\"");
+  }
   for (const auto old_version : {"1.20.0.2", "1.20.0.3"}) {
     for (const auto key : {"game_version", "exact_ck3_build", "exact_build",
                            "version", "build_version", "build"}) {
@@ -267,6 +288,14 @@ std::string Render12004BuildIdentity(
   // Its production normalizer and shared serializer retain the canonical name.
   ReplaceIdentityToken(serialized, "\"schema\":\"ck3_12004_owned_regiments_v1\"",
       "\"schema\":\"ck3_12003_owned_regiments_v1\"");
+  // Knight semantic contracts retain their canonical schema across builds.
+  // The actual V2 consumer rejected a rewritten effectiveness schema in R0060.
+  ReplaceIdentityToken(serialized,
+      "\"schema\":\"ck3_12004_knight_effectiveness_context_v1\"",
+      "\"schema\":\"ck3_12003_knight_effectiveness_context_v1\"");
+  ReplaceIdentityToken(serialized,
+      "\"schema\":\"ck3_12004_knight_current_model_association_v1\"",
+      "\"schema\":\"ck3_12003_knight_current_model_association_v1\"");
   for (const auto old_hash : {std::string_view(ck3_12002::kExecutableSha256),
                             std::string_view(ck3_12003::kExecutableSha256)}) {
     ReplaceIdentityToken(serialized, std::string("\"") + std::string(old_hash) + "\"",

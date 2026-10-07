@@ -29,6 +29,7 @@ inline constexpr std::uintptr_t kEventScriptIdentifierNameFallbackRva = 0x5DC136
 
 using EventHashStableKey = std::int32_t (*)(void *, const char *, std::uint32_t);
 using EventLookupSchemeType = void *(*)(void *, std::int32_t);
+using EventLookupTraitDefinition = void *(*)(void *, std::int32_t);
 using EventGetRegistry = void *(*)();
 using EventResolveTypeName = const std::string *(*)(std::int32_t);
 using EventResolveIdentifierName = const std::string *(*)(void *, std::int32_t);
@@ -67,6 +68,13 @@ struct EventWindowBindings {
   EventGetRegistry get_script_identifier_table = nullptr;
   EventLookupIdentifier lookup_script_identifier_id = nullptr;
   EventResolveIdentifierName resolve_script_identifier_name = nullptr;
+  // Actual .4 supplies its independent Core/Events observation algorithms.
+  // Historical factories leave this null and retain their original readers.
+  bool (*read_observation_prefix)(const EventWindowBindings &,
+                                  game::Snapshot &) noexcept = nullptr;
+  // Actual .4 resolves the canonical definition by native database ID.
+  // Historical factories keep their original definition-member identity path.
+  EventLookupTraitDefinition lookup_trait_definition = nullptr;
 };
 
 EventWindowBindings BindEventWindowImage(std::uintptr_t image_base,

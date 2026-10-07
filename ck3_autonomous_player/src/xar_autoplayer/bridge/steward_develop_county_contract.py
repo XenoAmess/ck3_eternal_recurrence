@@ -1,6 +1,6 @@
-"""Develop County observations with distinct legacy AI and .3 material profiles.
+"""Develop County observations with legacy AI and exact native material profiles.
 
-The .3 reader publishes native player-realm task/location predicates and current
+The native material reader publishes player-realm task/location predicates and current
 county growth. Its readiness describes the observation, including observed
 false predicates, rather than task assignment or proposed-task growth.
 """
@@ -11,7 +11,7 @@ import re
 from typing import Final
 
 from .campaign_root_context_contract import _normalize_council_progress
-from .version_identity import CK3_12003
+from .version_identity import CK3_12003, CK3_12004
 
 
 QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY: Final = (
@@ -64,6 +64,12 @@ _MATERIAL_PROVENANCE_VALUES: Final = {
     "next_reverse_engineering_entry": (
         "native_develop_county_ai_inputs_and_proposed_task_growth"
     ),
+}
+_MATERIAL_PROVENANCE_VALUES_12004: Final = {
+    **_MATERIAL_PROVENANCE_VALUES,
+    "game_version": CK3_12004.game_version,
+    "executable_sha256": CK3_12004.executable_sha256,
+    "backend_id": CK3_12004.backend_id("steward-develop-county-material-v1"),
 }
 
 _FIELDS: Final = {
@@ -336,8 +342,10 @@ def _normalize_material(
     if value.get("candidate_collection_scope") != "player_realm":
         raise ValueError("candidate_collection_scope must be player_realm")
     provenance = value.get("provenance")
-    if not isinstance(provenance, dict) or provenance != _MATERIAL_PROVENANCE_VALUES:
-        raise ValueError("material provenance does not match the exact .3 reader")
+    if not isinstance(provenance, dict) or provenance not in (
+        _MATERIAL_PROVENANCE_VALUES, _MATERIAL_PROVENANCE_VALUES_12004
+    ):
+        raise ValueError("material provenance does not match an exact native reader")
     candidates = value.get("candidates")
     if not isinstance(candidates, list):
         raise ValueError("candidates must be a list")

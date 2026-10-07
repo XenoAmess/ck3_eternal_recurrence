@@ -118,6 +118,9 @@ T LoadAt(const void *base, std::size_t offset) noexcept {
 bool ReadObservationPrefix(const EventWindowBindings &bindings,
                            game::Snapshot &output) noexcept {
   output = {};
+  if (bindings.read_observation_prefix != nullptr) {
+    return bindings.read_observation_prefix(bindings, output);
+  }
   CoreSnapshotPrefix core{};
   if (!ReadCoreSnapshot(bindings.events.core, core) ||
       !ReadEventsSnapshot(bindings.events, output)) {
@@ -587,17 +590,27 @@ void ReadTraitIndicatorIdentity(const EventWindowBindings &bindings, const void 
     return;
   }
   std::int32_t pointer_matches = 0;
+  std::int32_t matched_native_index = -1;
   for (std::int32_t index = 0; index < count; ++index) {
     void *const definition = LoadAt<void *>(
         definitions, static_cast<std::size_t>(index) * sizeof(void *));
     if (definition == payload) {
       ++pointer_matches;
+      matched_native_index = index;
     }
   }
   if (pointer_matches != 1) {
     return;
   }
-  const auto native_id = LoadAt<std::int32_t>(payload, kTraitNativeIdOffset);
+  // Actual .4's native getter defines IDs as database indexes and returns the
+  // canonical definition. It avoids borrowing the old object's ID member.
+  const auto native_id = bindings.lookup_trait_definition != nullptr
+                             ? matched_native_index
+                             : LoadAt<std::int32_t>(payload, kTraitNativeIdOffset);
+  if (bindings.lookup_trait_definition != nullptr &&
+      bindings.lookup_trait_definition(database, native_id) != payload) {
+    return;
+  }
   std::string stable_key;
   if (native_id < 0 ||
       !ReadNativeString(static_cast<const std::byte *>(payload) +
@@ -614,7 +627,8 @@ void ReadTraitIndicatorIdentity(const EventWindowBindings &bindings, const void 
     if (definition == payload) {
       continue;
     }
-    if (LoadAt<std::int32_t>(definition, kTraitNativeIdOffset) == native_id) {
+    if (bindings.lookup_trait_definition == nullptr &&
+        LoadAt<std::int32_t>(definition, kTraitNativeIdOffset) == native_id) {
       return;
     }
     std::string other_key;

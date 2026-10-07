@@ -1454,6 +1454,7 @@ add_library(xar_ck3_bridge SHARED
   src/player_world_building_action_candidate_v1.cpp
   src/steward_develop_county_candidates_v1.cpp
   src/ck3_12003_steward_develop_county.cpp
+  src/ck3_12004_steward_develop_county.cpp
   src/steward_develop_county_candidates_v1_mailbox.cpp
   src/steward_develop_county_candidates_v1_serializer.cpp
   src/steward_develop_county_action_v1.cpp
@@ -9313,3 +9314,4 @@ include(cmake/religion_observers_12004.cmake)
 include(cmake/commander_movement_metadata_12004.cmake)
 include(cmake/snapshot_foundation_12004_first.cmake)
 include(cmake/adopted_domains_12004.cmake)
+include(cmake/steward_existing_target_closure_12004.cmake)

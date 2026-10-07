@@ -83,6 +83,13 @@ struct PhaseBindings {
   std::uintptr_t combat_primary_vtable = 0;
   std::uintptr_t combat_secondary_vtable = 0;
   PhaseMiscBindings misc;
+  // Source callbacks and loaded operands belong to the selected image profile.
+  // Legacy image_base fallback remains available to existing software callers.
+  bool (*commander_army_gate)(void *) = nullptr;
+  void **commander_null_army_slot = nullptr;
+  std::uint8_t (*rite_hostility)(void *, void *, void *) = nullptr;
+  const std::int32_t *hostility_factor_count = nullptr;
+  const std::int64_t *const *hostility_factors = nullptr;
 };
 
 // Address calculation only. Resolving the current game's entities is supplied

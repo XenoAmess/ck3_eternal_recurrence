@@ -279,6 +279,10 @@ CommanderSourceObservation ReadCommanderSources(
       used_fallback = object == nullptr;
       return object ? object : (fallback ? *fallback : nullptr);
     };
+    if (!rite_hostility) rite_hostility = bindings.rite_hostility;
+    if (!hostility_factor_count)
+      hostility_factor_count = bindings.hostility_factor_count;
+    if (!hostility_factors) hostility_factors = bindings.hostility_factors;
     if (!rite_hostility && bindings.image_base)
       rite_hostility = reinterpret_cast<std::uint8_t (*)(void *, void *, void *)>(
           bindings.image_base + 0x2591CE0);
@@ -1406,6 +1410,15 @@ PhaseBindings BindPhaseImage(std::uintptr_t base, std::string_view hash) noexcep
   result.relation_kind = reinterpret_cast<PhaseRelationKind>(base + kPhaseRelationKindRva);
   result.combat_primary_vtable = base + kPhaseCombatPrimaryVtableRva;
   result.combat_secondary_vtable = base + kPhaseCombatSecondaryVtableRva;
+  result.commander_army_gate = reinterpret_cast<decltype(result.commander_army_gate)>(
+      base + 0x24DFB70);
+  result.commander_null_army_slot = reinterpret_cast<void **>(base + 0x5D1DE50);
+  result.rite_hostility = reinterpret_cast<decltype(result.rite_hostility)>(
+      base + 0x2591CE0);
+  result.hostility_factor_count = reinterpret_cast<const std::int32_t *>(
+      base + 0x5451D34);
+  result.hostility_factors = reinterpret_cast<const std::int64_t *const *>(
+      base + 0x5451D28);
   return result;
 }
 
@@ -1588,11 +1601,15 @@ static ReadNativeCombatPhaseResult ReadNativeCombatPhaseWithModifierSources(
               row.relation_kind_raw);
         if (commander_sources) {
           CommanderSourceNativeBindings source_bindings{};
+          source_bindings.army_gate = bindings.commander_army_gate;
+          source_bindings.null_army_slot = bindings.commander_null_army_slot;
           if (bindings.image_base) {
-            source_bindings.army_gate = reinterpret_cast<bool (*)(void *)>(
-                bindings.image_base + 0x24DFB70);
-            source_bindings.null_army_slot = reinterpret_cast<void **>(
-                bindings.image_base + 0x5D1DE50);
+            if (!source_bindings.army_gate)
+              source_bindings.army_gate = reinterpret_cast<bool (*)(void *)>(
+                  bindings.image_base + 0x24DFB70);
+            if (!source_bindings.null_army_slot)
+              source_bindings.null_army_slot = reinterpret_cast<void **>(
+                  bindings.image_base + 0x5D1DE50);
           }
           (*commander_sources)[i] = ReadCommanderSources(bindings,
               local.shell.data(), commanders[i], static_cast<std::int32_t>(i),

@@ -407,7 +407,8 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   std::uint32_t prisoner_ordinal = 0;
-  if (ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, prisoner_ordinal))
+  if (ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, prisoner_ordinal) ||
+      step.starts_with(kPrisonerWarRetentionStepPrefix12002))
     return true;
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
   if (step == "submit-player-prisoner-ransom-private-v1") return true;
@@ -650,7 +651,8 @@ bool HandleNonwarPrivate12002(
       }
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
       std::uint32_t prisoner_ordinal = 0;
-      if (ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, prisoner_ordinal))
+      if (ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, prisoner_ordinal) ||
+          step.starts_with(kPrisonerWarRetentionStepPrefix12002))
         return ck3_12004::HandlePlayerPrisonerCollection12004(
             native, mailbox, published, revision, step, payload, request_id,
             state.prisoner12004, serialized, failure);
