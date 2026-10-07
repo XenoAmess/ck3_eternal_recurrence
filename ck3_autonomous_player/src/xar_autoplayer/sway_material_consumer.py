@@ -28,7 +28,7 @@ def record_sway_material_intervention(
     Call after the two existing registered read tools, then use the ordinary
     gameplay turn.  The following-turn consumer already lives on that path.
     """
-    from .sway_formal_consumer import _write, read_sway_ledger
+    from .sway_formal_consumer import read_sway_ledger
 
     if (sway_read.get("schema") != "active-scheme-sway-private-read-v1"
             or opinion_read.get("schema") != "xar.ck3.sway-outcome-opinion-v1"
@@ -62,6 +62,25 @@ def record_sway_material_intervention(
         and row.get("target_character_id") == resolved["target_character_id"]
         for row in rows
     )
+    return _record_sway_material(
+        state_dir, ledger=ledger, resolved=resolved, opinion_read=opinion_read,
+        tracked_active=tracked_active,
+    )
+
+
+def _record_sway_material(
+    state_dir: Path, *, ledger: Mapping[str, object],
+    resolved: Mapping[str, object], opinion_read: Mapping[str, object],
+    tracked_active: bool, terminal_observation: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    """Share the named-material projection across census and exact-instance reads."""
+    from .sway_formal_consumer import _write
+
+    receipt = resolved["native_receipt"]
+    instance_id = receipt["scheme_instance_id"]
+    generation = receipt["scheme_instance_generation"]
+    terminal = bool(terminal_observation and terminal_observation.get(
+        "instance_terminal_outcome_observed") is True)
     sway = opinion_read.get("scheme_sway_opinion")
     blocker = opinion_read.get("sway_blocker_opinion")
     if not isinstance(sway, Mapping) or not isinstance(blocker, Mapping):
@@ -78,6 +97,7 @@ def record_sway_material_intervention(
                 and opinion_read["date_raw"] > previous["source_date_raw"]
                 and sway_points > old_points)
     if (previous and previous.get("tracked_instance_active") is tracked_active
+            and previous.get("instance_terminal_outcome_observed") is terminal
             and previous.get("scheme_sway_opinion") == sway
             and previous.get("sway_blocker_opinion") == blocker
             and previous.get("target_opinion_of_actor")
@@ -102,11 +122,19 @@ def record_sway_material_intervention(
         "incremental_named_gain_observed": gain,
         "previous_scheme_sway_opinion": dict(old_sway)
         if isinstance(old_sway, Mapping) else None,
-        "decision": "retain_existing_sway" if tracked_active
-        else "observe_tracked_instance_end",
-        "instance_terminal_outcome_observed": False,
+        "decision": ("retain_existing_sway" if tracked_active else
+                     "consume_retained_termination" if terminal else
+                     "observe_tracked_instance_end"),
+        "instance_terminal_outcome_observed": terminal,
         "next_turn_consumed": False,
     }
+    if terminal_observation is not None:
+        material["completion_source_native_revision"] = terminal_observation[
+            "source_native_revision"]
+        material["native_status_key"] = terminal_observation["native_status_key"]
+        material["terminal_cause_observed"] = terminal_observation[
+            "terminal_cause_observed"]
+        material["terminal_cause"] = terminal_observation["terminal_cause"]
     _write(state_dir, {**ledger, "resolved": {
         **resolved, "material_intervention": material,
     }})

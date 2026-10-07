@@ -1644,7 +1644,7 @@ def create_server(
             expected_revision: int, target_character_id: int,
         ) -> dict[str, object]:
             """Read current target opinion and native Sway modifiers without an event."""
-            return driver.query_active_scheme_sway_outcome_opinion_private_v1(
+            return service.query_active_scheme_sway_outcome_opinion_private_v1(
                 expected_revision=expected_revision,
                 target_character_id=target_character_id,
             )
@@ -1818,7 +1818,7 @@ def create_server(
             expected_revision: int, target_character_id: int, scheme_instance_id: int,
         ) -> dict[str, object]:
             """Read exact Sway instance state without inferring its terminal cause."""
-            return driver.query_active_scheme_sway_completion_private_v1(
+            return service.query_active_scheme_sway_completion_private_v1(
                 expected_revision=expected_revision, target_character_id=target_character_id,
                 scheme_instance_id=scheme_instance_id,
             )

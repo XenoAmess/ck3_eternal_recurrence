@@ -716,6 +716,38 @@ class GameplayBridgeService:
             raise UnsupportedStepError("bridge driver does not implement core-frame query")
         return query()
 
+    def query_active_scheme_sway_completion_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+        scheme_instance_id: int,
+    ) -> dict[str, object]:
+        """Keep the existing read body and stage its original-instance facts."""
+        from ..sway_lifecycle_consumer import record_sway_terminal_observation
+
+        result = self.driver.query_active_scheme_sway_completion_private_v1(
+            expected_revision=expected_revision,
+            target_character_id=target_character_id,
+            scheme_instance_id=scheme_instance_id,
+        )
+        state_dir = self._strategy_state_dir()
+        if state_dir is not None:
+            record_sway_terminal_observation(Path(state_dir), completion_read=result)
+        return result
+
+    def query_active_scheme_sway_outcome_opinion_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+    ) -> dict[str, object]:
+        """Stage independent named material after the existing opinion read."""
+        from ..sway_lifecycle_consumer import record_sway_material_from_completion
+
+        result = self.driver.query_active_scheme_sway_outcome_opinion_private_v1(
+            expected_revision=expected_revision,
+            target_character_id=target_character_id,
+        )
+        state_dir = self._strategy_state_dir()
+        if state_dir is not None:
+            record_sway_material_from_completion(Path(state_dir), opinion_read=result)
+        return result
+
     def bridge_diagnostics(self) -> dict[str, object]:
         """Return transport/private observer diagnostics without advertising capability."""
         diagnostics = getattr(self.driver, "diagnostics", None)
@@ -2713,13 +2745,32 @@ class GameplayBridgeService:
         | None = None,
     ) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
-        return self._execute_planned_turn(self.plan_turn(), before_submit=before_submit)
+        return self._consume_sway_after_turn(
+            self._execute_planned_turn(self.plan_turn(), before_submit=before_submit))
 
     def auto_nonwar_turn(
         self, *, before_submit: Callable[[dict[str, object]], dict[str, object] | None] | None = None,
     ) -> dict[str, object]:
         """Execute one planned nonwar action through the existing typed dispatch."""
-        return self._execute_planned_turn(self.plan_nonwar_turn(), before_submit=before_submit)
+        return self._consume_sway_after_turn(
+            self._execute_planned_turn(self.plan_nonwar_turn(), before_submit=before_submit))
+
+    def _consume_sway_after_turn(self, outcome: dict[str, object]) -> dict[str, object]:
+        """Consume staged Sway observations on the ordinary managed turn path."""
+        from ..sway_formal_consumer import consume_sway_following_turn
+        from ..sway_lifecycle_consumer import has_pending_sway_following_turn
+
+        state_dir = self._strategy_state_dir()
+        if outcome.get("status") != "executed" or state_dir is None:
+            return outcome
+        state_dir = Path(state_dir)
+        if not has_pending_sway_following_turn(state_dir):
+            return outcome
+        following = consume_sway_following_turn(
+            state_dir, self.snapshot(include_native_command_history=False))
+        if following is not None:
+            return {**outcome, "sway_following_turn": following}
+        return outcome
 
     def _execute_planned_turn(
         self, planned: dict[str, object], *,

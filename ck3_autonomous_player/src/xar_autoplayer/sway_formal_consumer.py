@@ -225,7 +225,7 @@ def consume_sway_private_once(driver: object, *, target_character_id: int,
 
 def consume_sway_following_turn(state_dir: Path,
                                 snapshot: Mapping[str, object]) -> dict[str, object] | None:
-    """Consume the proven start and independently staged relation material."""
+    """Consume start, named material and exact-instance observations independently."""
     from .sway_material_consumer import consume_sway_material_following_turn
 
     ledger = read_sway_ledger(state_dir)
@@ -243,10 +243,14 @@ def consume_sway_following_turn(state_dir: Path,
         resolved.get("material_intervention"), actor_character_id=actor_id,
         native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
     )
+    terminal = consume_sway_material_following_turn(
+        resolved.get("terminal_intervention"), actor_character_id=actor_id,
+        native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
+    )
     start_consumed = (resolved.get("next_turn_consumed") is not True
                       and (snapshot["native_revision"] > resolved["post_native_revision"]
                            or snapshot["date_raw"] > resolved["post_date_raw"]))
-    if not start_consumed and material is None:
+    if not start_consumed and material is None and terminal is None:
         return None
     if start_consumed:
         resolved = {**resolved, "next_turn_consumed": True,
@@ -254,5 +258,7 @@ def consume_sway_following_turn(state_dir: Path,
                     "following_date_raw": snapshot["date_raw"]}
     if material is not None:
         resolved = {**resolved, "material_intervention": material}
+    if terminal is not None:
+        resolved = {**resolved, "terminal_intervention": terminal}
     _write(state_dir, {**ledger, "resolved": resolved})
     return resolved
