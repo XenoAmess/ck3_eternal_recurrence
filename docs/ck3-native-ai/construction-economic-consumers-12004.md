@@ -222,7 +222,8 @@ flowchart TD
   K -->|0 / valid ordinary slot| S[2467F90 definition into holding10 + slot*10; slotflag0]
   K --> O[Other category slots remain separate]
   S --> R[2467F9A calls246CA40 with actual holding receiver]
-  R -. body not captured / effective contribution unknown .-> V[Specific building modifier application]
+  R --> H[Root-held27B prologue: RDX=holdingF0 + 28]
+  H -. Sequential continuation246CA5B not captured .-> V[Specific building modifier application unknown]
   R --> F[Building-valid completion followups246CE30 and246D0B0]
   O --> C[Common2468B80]
   F --> C
@@ -259,6 +260,72 @@ false. This is the smallest useful actual-financial classifier while the
 specific modifier/holder-tax source remains open.
 
 The sole new semantic test uses unchanged gross, changed complete expenses,
-an independently proved one-time debit, and interval cash movement. It is
-**NOTRUN** in this lane; Root runs only that new case. It does not replay the
-already GREEN 14 or claim a real completed Robert sample.
+an independently proved one-time debit, and interval cash movement. Root
+reported this one new case **GREEN**, on source
+`b28a1e7af392e4fbc3ed4de7d694c3e2331acb0b`, alongside the retained original
+14. This lane did not run or repeat them. No real completed Robert cash
+interval is claimed by those controlled inputs.
+
+## Root-held post-slot prologue and the next finite body interval
+
+Root centrally captured exactly 54 bytes in two reads after explicit plan
+approval: `.3 [246CA60,246CA7B)` and `.4 [246CA40,246CA5B)`. The instruction
+spans decode completely and normalize equal. This result closes a **27-byte
+runtime interval**, not the whole function: it pushes registers, subtracts
+stack space, loads RDX from holding+F0, loads RAX from actual RIP target
+5C68C50, adds 28 to RDX and falls through at 246CA5B. There is no CALL or RET
+in this held interval and no Province+718 write. The initial plan's phrase
+"complete wrapper" was a hypothesis corrected by this actual source result.
+
+The result and detail are under
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/economy-yield/completion-post-slot-root-first01/`.
+Only this generated detail was reviewed here; no further executable bytes,
+PE metadata, symbols or hashes were read by this lane. The corresponding
+existing runtime-table rows identify the immediately adjacent continuation:
+old `[246CA7B,246CC1F)` and actual `[246CA5B,246CBFF)`, each 420 bytes. A
+separate **unexecuted** proposal limits the next source read to these two
+contiguous intervals, 840 fresh bytes total. Its purpose is to follow the
+observed holding+F0/+28 receiver into actual body operations. It does not
+preassert completed-building traversal, modifier application, Province+718
+recalculation or holder NET. All downstream callee bodies remain outside
+that proposal.
+
+## Source-only adapter for the current shared Root hooks
+
+The reviewable adapter is
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/economy-yield/ROOT-SHARED-HOOK-ADAPTER.py`.
+It calls the existing f81 projection and b28 classifier, with no independent
+arithmetic, query or action. Root can use an existing normalized current-cash
+query from the same paused pre-submit interval; collect it **before** the
+construction quote/action path so this adapter does not insert a query
+between the authoritative quote and native send. Root's source coupling is:
+
+- Use the actual construction query's `candidate.stock_gold_cost_raw` as the
+  projection's cost. Keep the caller-supplied cost basis; reserve, existing
+  commitments and 1–24 months are explicit Root policy inputs.
+- Preserve the existing cash-v2 packet only when its actor/date and exact
+  version/SHA are the quote's paused actor/date and exact build, and its
+  observed treasury matches `candidate.gold_before_raw`. These observations
+  retain their own query/revision metadata; do not invent a shared revision.
+- Add `prepare_construction_cash_fields(...)` output to the durable pending
+  payload at `domain_construction_private_transport_v1.py`'s pending creation
+  (`pre_date_raw`, `actor_character_id`, native quote and action ID already
+  exist there). Its `pre_cash_v2` comes directly from the f81 projection's
+  `source_cash_resources`, with no second read.
+- The first material receipt is a freshly constructed dictionary. Copy
+  `pre_cash_v2` and `construction_monthly_budget` from pending before the
+  existing ledger writer persists it. Later completion rechecks already
+  merge the original pending/applied dictionary and preserve `start_receipt`;
+  preserve these two fields through the same path.
+- After the independent native completed-slot receipt, use the current
+  normalized cash-v2 observation to call `completed_construction_cash_fields`
+  and persist its enriched `receipt` through the existing ledger writer.
+  The formal consumer's existing outcome hook then consumes the attached
+  pre/post packets. A start ACK, active row, zero remaining work or current
+  query without the original baseline cannot supply a completed interval.
+
+This is source ready for Root integration, with no shared driver/server file
+edited here and no new test repetition. Root still owns registration,
+paused actual `.4` finance collection and real receipt sampling. A projected
+reserve floor is a current-state scenario and does not by itself admit a
+war/construction action or claim an attributed building benefit.
