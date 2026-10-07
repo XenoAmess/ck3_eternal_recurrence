@@ -11082,7 +11082,7 @@ def _choose_one_life_turn_core(
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_siege_progress",
                 "selected_step": "life-advance",
-                "reason": "the exact paused state confirms a player siege; advance one seven-day progress slice",
+                "reason": "the exact paused state confirms a player siege; advance one observed day and read the siege again",
                 "siege_state": exact_siege_status,
                 **(
                     {"siege_relief": siege_relief}
