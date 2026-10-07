@@ -82,6 +82,8 @@
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12004_routes.hpp"
+#include "xar_bridge/ck3_12004_contact.hpp"
+#include "xar_bridge/ck3_12004_phase.hpp"
 #include "xar_bridge/ck3_12002_battle.hpp"
 #include "xar_bridge/ck3_12003_battle_current_state.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
@@ -10703,11 +10705,13 @@ bool ExecuteTypedQuery12002(
           xar::game::RouteContactHorizonStatus::available;
       query.route.snapshot_revision = envelope->expected_snapshot_revision;
     } else if constexpr (Kind == QueryKind12002::actual_contact) {
-      const auto bindings = xar::ck3_12002::BindRouteImage(query.image_base, sha);
+      const auto bindings = actual4
+          ? xar::ck3_12004::BindContactImage12004(query.image_base, sha)
+          : xar::ck3_12002::BindRouteImage(query.image_base, sha);
       if (query.projected_contact_query) {
         // Read-only projected contact shares the existing contact executor.
         query.typed_result =
-            xar::game::IsCk3_12003Descriptor(envelope->game->descriptor()) &&
+            (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor()) || actual4) &&
             xar::ck3_12002::ReadProjectedContactScope(
                 bindings, snapshot, query.projected_request, query.projected) ==
                 xar::game::ProjectedContactScopeStatus::available;
@@ -10719,9 +10723,13 @@ bool ExecuteTypedQuery12002(
         query.actual.snapshot_revision = envelope->expected_snapshot_revision;
       }
     } else if constexpr (Kind == QueryKind12002::combat_v3) {
-      auto phase_bindings = xar::ck3_12002::BindPhaseImage(query.image_base, sha);
-      phase_bindings.combat.phase_rite_parameters = xar::ck3_12003::phase_rite::BindImage(
-          query.image_base, envelope->game->descriptor().executable_sha256);
+      auto phase_bindings = actual4
+          ? xar::ck3_12004::BindPhaseImage12004(query.image_base, sha)
+          : xar::ck3_12002::BindPhaseImage(query.image_base, sha);
+      if (!actual4) {
+        phase_bindings.combat.phase_rite_parameters = xar::ck3_12003::phase_rite::BindImage(
+            query.image_base, envelope->game->descriptor().executable_sha256);
+      }
       query.combat_result = xar::ck3_12002::ReadCombatSimulationInputsV3(
           phase_bindings, snapshot,
           query.combat_request, query.combat);
@@ -11582,6 +11590,10 @@ public:
         &ExecuteTypedQuery12002<QueryKind12002::route>;
     environment.permitted_executor_thirdenary =
         &ExecuteTypedQuery12002<QueryKind12002::title_map>;
+    environment.permitted_executor_sexdenary =
+        &ExecuteTypedQuery12002<QueryKind12002::actual_contact>;
+    environment.permitted_executor_octodenary =
+        &ExecuteTypedQuery12002<QueryKind12002::combat_v3>;
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
     nonwar.steward_develop_county = &xar::ck3_11906::
@@ -12436,6 +12448,8 @@ bool IsBattleWarTypedQuery12004(const xar::game::GameAdapter &game,
   return kind == QueryKind12002::war_entry ||
          kind == QueryKind12002::route ||
          kind == QueryKind12002::title_map ||
+         kind == QueryKind12002::actual_contact ||
+         kind == QueryKind12002::combat_v3 ||
          kind == QueryKind12002::battle_control ||
          kind == QueryKind12002::battle_transition ||
          kind == QueryKind12002::battle_reinforcement ||
@@ -12593,14 +12607,16 @@ std::string RunTypedQuery12002(
         xar::ck3_12002::QuerySnapshotComparison12002::core_frame;
   }
   if (query.combat_request.constructor_adjacency_kind_raw.has_value() &&
-      !xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+      !xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
+      !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     return CommandResultFrame(request_id, step, false,
-                              "constructor contact geometry requires the exact 1.20.0.3 adapter");
+                              "constructor contact geometry requires the exact 1.20.0.3 or 1.20.0.4 adapter");
   }
   if (query.projected_contact_query &&
-      !xar::game::IsCk3_12003Descriptor(game.descriptor())) {
+      !xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
+      !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     return CommandResultFrame(request_id, step, false,
-                              "projected contact requires the exact 1.20.0.3 adapter");
+                              "projected contact requires the exact 1.20.0.3 or 1.20.0.4 adapter");
   }
   if (query.envelope.expected_snapshot_revision != state.state_revision ||
       state.state_revision == 0 || !state.previous_snapshot.has_value() ||

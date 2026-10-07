@@ -2,6 +2,8 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ordinary_interaction_request_v1.hpp"
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/title_holder_v1_serializer.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
@@ -647,9 +649,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
       capability = "game.command.query-combat-simulation-inputs-v2-N";
     }
     if (request.constructor_adjacency_kind_raw.has_value() &&
-        (descriptor().adapter_id != ck3_12003::kAdapterId ||
-         descriptor().game_version != ck3_12003::kGameVersion ||
-         descriptor().executable_sha256 != ck3_12003::kExecutableSha256)) {
+        !IsCk3_12003Descriptor(descriptor()) &&
+        !IsCk3_12004Descriptor(descriptor())) {
       return false;
     }
   }

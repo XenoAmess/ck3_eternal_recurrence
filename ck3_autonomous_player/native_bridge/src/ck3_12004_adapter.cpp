@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12004_commands.hpp"
 #include "xar_bridge/ck3_12004_events.hpp"
 #include "xar_bridge/ck3_12004_combat.hpp"
+#include "xar_bridge/ck3_12004_phase.hpp"
 #include "xar_bridge/ck3_12004_military.hpp"
 #include "xar_bridge/ck3_12004_diplomacy.hpp"
 #include "xar_bridge/ck3_12004_war_declarations.hpp"
@@ -72,6 +73,8 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       ck3_11906::kFrontendGuiStartSelectedBookmarkV1Capability,
 #endif
       "game.command.query-route-contact-horizon-v1-N",
+      "game.command.query-actual-contact-scope-v1-N",
+      "game.command.query-projected-contact-scope-v1-N",
       ck3_12003::kArmyCommanderCandidatesCapability,
       ck3_12003::kArmyCommanderCandidatesForTargetCapability,
       ck3_12003::kArmyCommanderAssignmentCapability,
@@ -140,6 +143,8 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
       image_base, executable_sha256);
 #endif
   bindings.combat = ck3_12004::BindCombatImage12004(
+      image_base, executable_sha256);
+  bindings.phase = ck3_12004::BindPhaseImage12004(
       image_base, executable_sha256);
   bindings.military = ck3_12004::BindMilitaryImage12004(
       image_base, executable_sha256, bindings.commands);
