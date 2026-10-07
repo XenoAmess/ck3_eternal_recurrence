@@ -1,8 +1,9 @@
-﻿"""Consume the five retained native packets through real release Service hooks.
+﻿"""Exercise three retained release packets through real production Service hooks.
 
 Authored without execution. The native callbacks, captive and date are synthetic.
 An endpoint supplied to the production Driver replays original whole responses;
 only request_id changes. ACKs are pending, with no live or material release credit.
+The two original unsendable/refused cases reuse their existing registered GREEN.
 """
 from __future__ import annotations
 
@@ -12,14 +13,14 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import traceback
 
 
 _CASES = (
-    "all_off_pending", "gain_hook_pending", "gain_hook_native_false",
-    "gain_hook_native_refused", "gain_hook_copied_mask_changed",
+    "all_off_pending", "gain_hook_pending", "gain_hook_copied_mask_changed",
 )
 _POSITIVE = {"all_off_pending", "gain_hook_pending"}
-_NO_SUBMIT = {"gain_hook_native_false", "gain_hook_native_refused"}
+_REUSED_CASES = ("gain_hook_native_false", "gain_hook_native_refused")
 _QUERY_STEP = "query-player-prisoner-collection-private-v1"
 _NATIVE_SUBMIT_STEP = "submit-player-prisoner-release-private-v1"
 _PENDING = "submitted_verification_pending"
@@ -114,7 +115,8 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     report = {
         "schema": "xar.ck3.prisoner-release-service-first/v1",
-        "status": "RED", "compound_methods": 1,
+        "status": "RED", "compound_methods": 1, "service_packet_count": 3,
+        "original_native_packet_count": 5, "reused_negative_packet_count": 2,
         "source_root": str(args.source_root), "native_wire_dir": str(args.native_wire_dir),
         "consumer_methods": ["Driver.query_player_prisoner_collection_private_v1",
                              "Service.plan_turn", "Service._execute_planned_turn",
@@ -126,10 +128,40 @@ def main() -> int:
         "independent_after_native_frame": False, "material_result": False,
         "mailbox_route_fixture_covered": False,
         "native_wire_mutations": "request_id correlation only", "cases": {},
+        "reused_negative_evidence": {},
     }
     lines = ["One offline production Service compound; original native whole packets."]
     exit_code = 1
     try:
+        existing_path = (
+            args.native_wire_dir.parent / "registered-toolsvenv-02" / "CONSUMER-FIRST.json"
+        )
+        existing_bytes = existing_path.read_bytes()
+        existing = json.loads(existing_bytes)
+        require(existing["status"] == "GREEN" and existing["material_result"] is False,
+                "the reused registered five-case evidence is not pending-only GREEN")
+        for case in _REUSED_CASES:
+            packet_path = args.native_wire_dir / (case + ".json")
+            packet_bytes = packet_path.read_bytes()
+            packet = json.loads(packet_bytes)
+            rows = [row for row in existing["rows"] if row["scenario"] == case]
+            require(packet["scenario"] == case
+                    and packet["native_expectations"]["queue_calls"] == 0
+                    and packet["native_expectations"]["material_result"] is False
+                    and len(rows) == 1 and rows[0]["action_request_count"] == 0
+                    and rows[0]["material_result"] is False,
+                    case + ": reused evidence does not show the original no-action branch")
+            report["reused_negative_evidence"][case] = {
+                "native_packet": str(packet_path),
+                "native_packet_sha256": hashlib.sha256(packet_bytes).hexdigest(),
+                "native_expectations": packet["native_expectations"],
+                "registered_consumer_first": str(existing_path),
+                "registered_consumer_first_sha256": hashlib.sha256(existing_bytes).hexdigest(),
+                "registered_case_result": rows[0],
+                "replayed_by_this_service_compound": False,
+                "material_result": False,
+            }
+        lines.append("Three original packets replayed by Service; two negative cases reuse the prior registered GREEN.")
         for case in _CASES:
             packet_path = args.native_wire_dir / (case + ".json")
             packet_bytes = packet_path.read_bytes()
@@ -192,43 +224,25 @@ def main() -> int:
                 entry["planned"] = planned
                 plan = planned["plan"]
                 selected = plan.get("selected_step")
-                if case in _NO_SUBMIT:
-                    require(selected != SUBMIT_STEP,
-                            case + ": Service selected an observed unsendable or refused release")
-                    expected_observation = (
-                        "native_unsendable" if case == "gain_hook_native_false" else "native_refused"
-                    )
-                    require(plan["prisoner_release_observation"]["status"] == expected_observation,
-                            case + ": Service did not consume the actual native rejection branch")
-                    # These packets have no unrelated campaign-discovery response.
-                    # Preserve the original Service plan and its existing callback path.
-                    def stop_unrelated_action(context):
-                        return {"status": "offline_packet_scope",
-                                "selected_step": context["selected_step"],
-                                "release_submit_selected": False}
-
-                    entry["outcome"] = service._execute_planned_turn(
-                        planned, before_submit=stop_unrelated_action,
-                    )
-                else:
-                    require(selected == SUBMIT_STEP,
-                            case + ": Service did not select the observed current accepted release")
-                    choice = plan["prisoner_release_choice"]
-                    require(choice["prisoner_character_id"] == row["prisoner_character_id"]
-                            and choice["source_ordinal"] == row["source_ordinal"]
-                            and choice["release_option_mask_bits"] == expectations["requested_option_mask_bits"]
-                            and choice["release_option_keys"] == query_arguments.get("release_option_keys", [])
-                            and choice["preview"] == preview
-                            and choice["collection"] == collection,
-                            case + ": formal planning changed typed native release terms")
-                    try:
-                        entry["outcome"] = service._execute_planned_turn(planned)
-                    except BridgeUnavailableError as failure:
-                        entry["action_error"] = {
-                            "type": type(failure).__name__, "message": str(failure),
-                            "selected_step": getattr(failure, "selected_step", None),
-                            "plan": getattr(failure, "plan", None),
-                        }
+                require(selected == SUBMIT_STEP,
+                        case + ": Service did not select the observed current accepted release")
+                choice = plan["prisoner_release_choice"]
+                require(choice["prisoner_character_id"] == row["prisoner_character_id"]
+                        and choice["source_ordinal"] == row["source_ordinal"]
+                        and choice["release_option_mask_bits"] == expectations["requested_option_mask_bits"]
+                        and choice["release_option_keys"] == query_arguments.get("release_option_keys", [])
+                        and choice["preview"] == preview
+                        and choice["collection"] == collection,
+                        case + ": formal planning changed typed native release terms")
+                try:
+                    entry["outcome"] = service._execute_planned_turn(planned)
+                except BridgeUnavailableError as failure:
+                    entry["action_error"] = {
+                        "type": type(failure).__name__, "message": str(failure),
+                        "selected_step": getattr(failure, "selected_step", None),
+                        "plan": getattr(failure, "plan", None),
+                        "traceback": traceback.format_exc(),
+                    }
                 after = driver.take_snapshot()
                 entry["after_snapshot"] = after
                 entry["after_frame_kind"] = "same_retained_native_frame_after_service_dispatch"
@@ -261,12 +275,6 @@ def main() -> int:
                             and expectations["queued_option_mask_bits"] == ack["release_option_mask_bits"],
                             case + ": pending ledger or native owned queue mask differs")
                     entry["status"] = _PENDING
-                elif case in _NO_SUBMIT:
-                    require(not actions and entry["action_error"] is None
-                            and expectations["queue_calls"] == 0
-                            and entry["ledger"].get("pending") is None,
-                            case + ": native false/refused terms acquired a release submission")
-                    entry["status"] = "native_offer_not_selected"
                 else:
                     retained = entry["ledger"].get("pending")
                     require(len(actions) == 1 and entry["outcome"] is None
@@ -287,8 +295,10 @@ def main() -> int:
         report["status"] = "GREEN"
         exit_code = 0
     except Exception as failure:
-        report["error"] = {"type": type(failure).__name__, "message": str(failure)}
+        report["error"] = {"type": type(failure).__name__, "message": str(failure),
+                           "traceback": traceback.format_exc()}
         lines.append(f"RED: {type(failure).__name__}: {failure}")
+        lines.append(report["error"]["traceback"])
     finally:
         lines.append("Synthetic offline packets only; no live captive, custody change or material freedom credit.")
         (args.output_dir / "CONSUMER-FIRST.json").write_text(
