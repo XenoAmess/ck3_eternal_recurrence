@@ -104,8 +104,16 @@ struct Counters {
   std::vector<std::int32_t> modifier_ordinals;
   std::array<std::size_t, 4> soldier_flags{};
   bool abi_matches = true;
+  std::vector<std::string> abi_failures;
   std::vector<std::string> events;
 };
+std::string PointerText(const void *value) {
+  return std::to_string(reinterpret_cast<std::uintptr_t>(value));
+}
+void RecordAbi(Counters &calls, bool matches, std::string arguments) {
+  calls.abi_matches &= matches;
+  if (!matches) calls.abi_failures.push_back(std::move(arguments));
+}
 struct Fixture;
 Fixture *active = nullptr;
 std::int32_t CurrentSoldiers(void *, std::uint8_t);
@@ -298,7 +306,9 @@ std::int32_t CurrentSoldiers(void *receiver, std::uint8_t flags) {
   auto &f = *active;
   ++f.calls.current_soldiers;
   f.calls.events.emplace_back("army_current_soldiers_flags_" + std::to_string(flags));
-  f.calls.abi_matches &= receiver == f.input.army.data() + 0x38 && flags < 4;
+  RecordAbi(f.calls, receiver == f.input.army.data() + 0x38 && flags < 4,
+      "CurrentSoldiers receiver=" + PointerText(receiver) + " expected=" +
+      PointerText(f.input.army.data() + 0x38) + " flags=" + std::to_string(flags));
   if (flags >= 4) return -1;
   ++f.calls.soldier_flags[flags];
   return flags == 0 || flags == 2 ? 100 : 0;
@@ -307,14 +317,17 @@ std::int32_t MaximumSoldiers(void *receiver) {
   auto &f = *active;
   ++f.calls.maximum_soldiers;
   f.calls.events.emplace_back("army_maximum_soldiers");
-  f.calls.abi_matches &= receiver == f.input.army.data();
+  RecordAbi(f.calls, receiver == f.input.army.data(),
+      "MaximumSoldiers receiver=" + PointerText(receiver) + " expected=" + PointerText(f.input.army.data()));
   return 200;
 }
 std::int64_t *SupplyCapacity(std::int64_t *out, void *receiver, void *details) {
   auto &f = *active;
   ++f.calls.supply_capacity;
   f.calls.events.emplace_back("army_supply_capacity");
-  f.calls.abi_matches &= out && receiver == f.input.army.data() && details == nullptr;
+  RecordAbi(f.calls, out && receiver == f.input.army.data() && details == nullptr,
+      "SupplyCapacity out=" + PointerText(out) + " receiver=" + PointerText(receiver) +
+      " expected=" + PointerText(f.input.army.data()) + " details=" + PointerText(details));
   *out = 200000000;
   return out;
 }
@@ -322,7 +335,9 @@ std::int64_t *Attrition(void *receiver, std::int64_t *out, void *details) {
   auto &f = *active;
   ++f.calls.attrition_fraction;
   f.calls.events.emplace_back("army_attrition_fraction");
-  f.calls.abi_matches &= out && receiver == f.input.army.data() && details == nullptr;
+  RecordAbi(f.calls, out && receiver == f.input.army.data() && details == nullptr,
+      "Attrition out=" + PointerText(out) + " receiver=" + PointerText(receiver) +
+      " expected=" + PointerText(f.input.army.data()) + " details=" + PointerText(details));
   *out = 0;
   return out;
 }
@@ -330,8 +345,11 @@ std::int64_t *MonthlySupply(void *receiver, std::int64_t *out, void *province, v
   auto &f = *active;
   ++f.calls.monthly_supply;
   f.calls.events.emplace_back("army_monthly_supply_change");
-  f.calls.abi_matches &= out && receiver == f.input.army.data() &&
-      province == f.input.province.data() && details == nullptr;
+  RecordAbi(f.calls, out && receiver == f.input.army.data() &&
+      province == f.input.province.data() && details == nullptr,
+      "MonthlySupply out=" + PointerText(out) + " receiver=" + PointerText(receiver) +
+      " expected_army=" + PointerText(f.input.army.data()) + " province=" + PointerText(province) +
+      " expected_province=" + PointerText(f.input.province.data()) + " details=" + PointerText(details));
   // Direct current LAND rate has no date/grace gate. Preserve the source-
   // consistent observed current total separately from the prospective program.
   *out = f.scene.observed_rate;
@@ -341,30 +359,37 @@ bool InCombat(void *receiver) {
   auto &f = *active;
   ++f.calls.combat;
   f.calls.events.emplace_back("unit_in_combat");
-  f.calls.abi_matches &= receiver == f.input.unit.data();
+  RecordAbi(f.calls, receiver == f.input.unit.data(),
+      "InCombat receiver=" + PointerText(receiver) + " expected=" + PointerText(f.input.unit.data()));
   return false;
 }
 bool Gathering(void *receiver) {
   auto &f = *active;
   ++f.calls.gathering;
   f.calls.events.emplace_back("unit_gathering");
-  f.calls.abi_matches &= receiver == f.input.unit.data();
+  RecordAbi(f.calls, receiver == f.input.unit.data(),
+      "Gathering receiver=" + PointerText(receiver) + " expected=" + PointerText(f.input.unit.data()));
   return false;
 }
 bool FleetActive(void *receiver) {
   auto &f = *active;
   ++f.calls.fleet_active;
   f.calls.events.emplace_back("army_fleet_active");
-  f.calls.abi_matches &= receiver == f.input.army.data();
+  RecordAbi(f.calls, receiver == f.input.army.data(),
+      "FleetActive receiver=" + PointerText(receiver) + " expected=" + PointerText(f.input.army.data()));
   return false;
 }
 std::int32_t ProvinceLimit(void *province, void *owner, void *commander, void *details) {
   auto &f = *active;
   ++f.calls.province_limit;
   f.calls.events.emplace_back("current_province_native_limit");
-  f.calls.abi_matches &= province == f.input.province.data() &&
+  RecordAbi(f.calls, province == f.input.province.data() &&
       owner == f.input.owner.data() && commander == f.input.commander.data() &&
-      details == nullptr;
+      details == nullptr,
+      "ProvinceLimit province=" + PointerText(province) + " expected_province=" + PointerText(f.input.province.data()) +
+      " owner=" + PointerText(owner) + " expected_owner=" + PointerText(f.input.owner.data()) +
+      " commander=" + PointerText(commander) + " expected_commander=" + PointerText(f.input.commander.data()) +
+      " details=" + PointerText(details));
   return 100;
 }
 std::int32_t ProvinceUsage(void *province, void *owner, std::int32_t mode,
@@ -372,36 +397,44 @@ std::int32_t ProvinceUsage(void *province, void *owner, std::int32_t mode,
   auto &f = *active;
   ++f.calls.province_usage;
   f.calls.events.emplace_back("current_province_native_usage");
-  f.calls.abi_matches &= province == f.input.province.data() &&
-      owner == f.input.owner.data() && mode == 0 && details == nullptr;
+  RecordAbi(f.calls, province == f.input.province.data() &&
+      owner == f.input.owner.data() && mode == 0 && details == nullptr,
+      "ProvinceUsage province=" + PointerText(province) + " expected_province=" + PointerText(f.input.province.data()) +
+      " owner=" + PointerText(owner) + " expected_owner=" + PointerText(f.input.owner.data()) +
+      " mode=" + std::to_string(mode) + " details=" + PointerText(details));
   return f.input.native_usage;
 }
 bool RegimentEligible(void *regiment) {
   auto &f = *active;
   ++f.calls.regiment_eligible;
   f.calls.events.emplace_back("province_contributor_regiment_eligible");
-  f.calls.abi_matches &= regiment == f.input.regiment.data();
+  RecordAbi(f.calls, regiment == f.input.regiment.data(),
+      "RegimentEligible receiver=" + PointerText(regiment) + " expected=" + PointerText(f.input.regiment.data()));
   return true;
 }
 bool SharesWarSide(void *left, void *right, void *details) {
   auto &f = *active;
   ++f.calls.shares_war_side;
-  f.calls.abi_matches &= left == f.input.owner.data() &&
-      right == f.input.owner.data() && details == nullptr;
+  RecordAbi(f.calls, left == f.input.owner.data() && right == f.input.owner.data() && details == nullptr,
+      "SharesWarSide left=" + PointerText(left) + " right=" + PointerText(right) +
+      " expected_owner=" + PointerText(f.input.owner.data()) + " details=" + PointerText(details));
   return true;
 }
 bool ResupplyEligible(void *owner, void *province) {
   auto &f = *active;
   ++f.calls.resupply;
   f.calls.events.emplace_back("current_owner_province_resupply");
-  f.calls.abi_matches &= owner == f.input.owner.data() && province == f.input.province.data();
+  RecordAbi(f.calls, owner == f.input.owner.data() && province == f.input.province.data(),
+      "ResupplyEligible owner=" + PointerText(owner) + " expected_owner=" + PointerText(f.input.owner.data()) +
+      " province=" + PointerText(province) + " expected_province=" + PointerText(f.input.province.data()));
   return true;
 }
 bool ProvinceCondition(void *province) {
   auto &f = *active;
   ++f.calls.province_condition;
   f.calls.events.emplace_back("current_province_component_condition");
-  f.calls.abi_matches &= province == f.input.province.data();
+  RecordAbi(f.calls, province == f.input.province.data(),
+      "ProvinceCondition receiver=" + PointerText(province) + " expected=" + PointerText(f.input.province.data()));
   return true;
 }
 std::int64_t *ProvinceComponent(std::int64_t *out, void *receiver,
@@ -409,8 +442,11 @@ std::int64_t *ProvinceComponent(std::int64_t *out, void *receiver,
   auto &f = *active;
   ++f.calls.province_component;
   f.calls.events.emplace_back("current_province_component_427");
-  f.calls.abi_matches &= out != nullptr && receiver == f.input.province.data() + 0x30 &&
-      ordinal == 0x1AB && details == nullptr && multiplier == 100000 && mode == 0;
+  RecordAbi(f.calls, out != nullptr && receiver == f.input.province.data() + 0x30 &&
+      ordinal == 0x1AB && details == nullptr && multiplier == 100000 && mode == 0,
+      "ProvinceComponent out=" + PointerText(out) + " receiver=" + PointerText(receiver) +
+      " expected=" + PointerText(f.input.province.data() + 0x30) + " ordinal=" + std::to_string(ordinal) +
+      " details=" + PointerText(details) + " multiplier=" + std::to_string(multiplier) + " mode=" + std::to_string(mode));
   if (out == nullptr) return nullptr;
   *out = 0;
   return out;
@@ -419,7 +455,8 @@ void *ModifierAggregator(void *commander) {
   auto &f = *active;
   ++f.calls.modifier_aggregator;
   f.calls.events.emplace_back("valid_commander_modifier_aggregator");
-  f.calls.abi_matches &= commander == f.input.commander.data();
+  RecordAbi(f.calls, commander == f.input.commander.data(),
+      "ModifierAggregator receiver=" + PointerText(commander) + " expected=" + PointerText(f.input.commander.data()));
   return f.input.modifier_aggregator.data();
 }
 std::int64_t *ReadModifier(void *receiver, std::int64_t *out, std::int32_t ordinal) {
@@ -427,9 +464,11 @@ std::int64_t *ReadModifier(void *receiver, std::int64_t *out, std::int32_t ordin
   ++f.calls.modifier_reads;
   f.calls.modifier_ordinals.push_back(ordinal);
   f.calls.events.emplace_back("valid_commander_modifier_" + std::to_string(ordinal));
-  f.calls.abi_matches &= out != nullptr &&
+  RecordAbi(f.calls, out != nullptr &&
       receiver == f.input.modifier_aggregator.data() + 0x68 &&
-      (ordinal == 0x1B0 || ordinal == 0x1A9);
+      (ordinal == 0x1B0 || ordinal == 0x1A9),
+      "ReadModifier out=" + PointerText(out) + " receiver=" + PointerText(receiver) +
+      " expected=" + PointerText(f.input.modifier_aggregator.data() + 0x68) + " ordinal=" + std::to_string(ordinal));
   if (out == nullptr) return nullptr;
   *out = f.input.modifier_values[ordinal == 0x1A9 ? 0 : 1];
   return out;
@@ -438,14 +477,16 @@ bool SiegeActive(void *receiver) {
   auto &f = *active;
   ++f.calls.siege_active;
   f.calls.events.emplace_back("army_siege_active");
-  f.calls.abi_matches &= receiver == f.input.army.data();
+  RecordAbi(f.calls, receiver == f.input.army.data(),
+      "SiegeActive receiver=" + PointerText(receiver) + " expected=" + PointerText(f.input.army.data()));
   return false;
 }
 std::int32_t SupplyLossBudget(void *receiver) {
   auto &f = *active;
   ++f.calls.supply_budget;
   f.calls.events.emplace_back("army_current_supply_loss_budget");
-  f.calls.abi_matches &= receiver == f.input.army.data();
+  RecordAbi(f.calls, receiver == f.input.army.data(),
+      "SupplyLossBudget receiver=" + PointerText(receiver) + " expected=" + PointerText(f.input.army.data()));
   // All three ORIGINAL stocks select state1/fraction12500/eligible100.
   // This current direct getter12 is independent of updater grace rejection.
   return 12;
@@ -454,7 +495,9 @@ std::int32_t WholeLossBudget(std::int64_t rate, void *receiver) {
   auto &f = *active;
   ++f.calls.whole_budget;
   f.calls.events.emplace_back("army_whole_loss_budget");
-  f.calls.abi_matches &= receiver == f.input.army.data() && rate == 0;
+  RecordAbi(f.calls, receiver == f.input.army.data() && rate == 0,
+      "WholeLossBudget receiver=" + PointerText(receiver) + " expected=" +
+      PointerText(f.input.army.data()) + " rate=" + std::to_string(rate));
   return 0;
 }
 void AppendString(std::string &out, std::string_view value) {
@@ -472,6 +515,49 @@ void AppendIds(std::string &out, const std::vector<std::int32_t> &ids) {
     out += std::to_string(ids[i]);
   }
   out += ']';
+}
+std::string CallbackDiagnostics(const Fixture &f) {
+  const auto &calls = f.calls;
+  const std::pair<const char *, std::size_t> counters[]{
+      {"current_soldiers", calls.current_soldiers}, {"maximum_soldiers", calls.maximum_soldiers},
+      {"supply_capacity", calls.supply_capacity}, {"attrition_fraction", calls.attrition_fraction},
+      {"monthly_supply", calls.monthly_supply}, {"combat", calls.combat},
+      {"gathering", calls.gathering}, {"fleet_active", calls.fleet_active},
+      {"siege_active", calls.siege_active}, {"supply_budget", calls.supply_budget},
+      {"whole_budget", calls.whole_budget}, {"province_limit", calls.province_limit},
+      {"province_usage", calls.province_usage}, {"regiment_eligible", calls.regiment_eligible},
+      {"resupply", calls.resupply}, {"province_condition", calls.province_condition},
+      {"province_component", calls.province_component}, {"modifier_aggregator", calls.modifier_aggregator},
+      {"modifier_reads", calls.modifier_reads}, {"shares_war_side", calls.shares_war_side}};
+  std::string out = "{\"scene\":";
+  AppendString(out, f.scene.stem);
+  for (const auto &[name, value] : counters) {
+    out += ',';
+    AppendString(out, name);
+    out += ':';
+    out += std::to_string(value);
+  }
+  out += ",\"abi_matches\":";
+  out += calls.abi_matches ? "true" : "false";
+  out += ",\"soldier_flags\":[";
+  for (std::size_t i = 0; i < calls.soldier_flags.size(); ++i) {
+    if (i) out += ',';
+    out += std::to_string(calls.soldier_flags[i]);
+  }
+  out += "],\"modifier_ordinals\":";
+  AppendIds(out, calls.modifier_ordinals);
+  out += ",\"abi_failures\":[";
+  for (std::size_t i = 0; i < calls.abi_failures.size(); ++i) {
+    if (i) out += ',';
+    AppendString(out, calls.abi_failures[i]);
+  }
+  out += "],\"events\":[";
+  for (std::size_t i = 0; i < calls.events.size(); ++i) {
+    if (i) out += ',';
+    AppendString(out, calls.events[i]);
+  }
+  out += "]}";
+  return out;
 }
 void Write(const std::filesystem::path &path, std::string_view text) {
   std::ofstream file(path, std::ios::binary);
@@ -569,13 +655,16 @@ void AssertScene(const Fixture &f, const Inputs &before, const game::ArmyStrengt
       f.calls.combat == 2 && f.calls.gathering == 2 && f.calls.fleet_active == 3 &&
       f.calls.siege_active == 1 && f.calls.supply_budget == 1 && f.calls.whole_budget == 0 &&
       f.calls.province_limit == 1 && f.calls.province_usage == 1 &&
-      f.calls.regiment_eligible == 2 && f.calls.shares_war_side == 0 &&
+      f.calls.regiment_eligible == 4 && f.calls.shares_war_side == 0 &&
       f.calls.resupply == 1 && f.calls.province_condition == 1 && f.calls.province_component == 1 &&
       // MonthlyBudgetInputs samples the validated commander twice; the
       // current LAND collector then reads its independent fixed1A9 operand.
       f.calls.modifier_aggregator == 3 && f.calls.modifier_reads == 3 &&
       f.calls.modifier_ordinals == std::vector<std::int32_t>({0x1B0, 0x1B0, 0x1A9}) &&
       f.calls.events == std::vector<std::string>({
+          // Base regiment_strengths reads eligibility per original occurrence;
+          // the later Province contributor independently reads both again.
+          "province_contributor_regiment_eligible", "province_contributor_regiment_eligible",
           "army_current_soldiers_flags_0", "army_maximum_soldiers", "army_supply_capacity",
           "army_attrition_fraction", "army_monthly_supply_change", "army_siege_active",
           "army_current_soldiers_flags_1", "army_current_soldiers_flags_2",
@@ -590,7 +679,7 @@ void AssertScene(const Fixture &f, const Inputs &before, const game::ArmyStrengt
           "current_owner_province_resupply", "current_province_component_condition",
           "current_province_component_427", "valid_commander_modifier_aggregator",
           "valid_commander_modifier_425"}),
-      "whole LAND callback ABI/count/order changed");
+      ("whole LAND callback ABI/count/order changed: " + CallbackDiagnostics(f)).c_str());
   Check(f.input == before, "readonly whole reader changed original held-stock/input memory");
 }
 
@@ -659,7 +748,7 @@ std::string Context(const Fixture &f, const game::ArmyStrengthSnapshot &row) {
       "\"unit_in_combat\":2,\"unit_gathering\":2,\"army_fleet_active\":3,"
       "\"army_siege_active\":1,\"army_current_supply_loss_budget\":1,"
       "\"army_whole_loss_budget\":0,\"province_limit\":1,\"province_usage\":1,"
-      "\"regiment_supply_eligible\":2,\"shares_current_war_side\":0,"
+      "\"regiment_supply_eligible\":4,\"shares_current_war_side\":0,"
       "\"resupply_eligible\":1,\"province_component_condition\":1,\"province_component\":1,"
       "\"character_modifier_aggregator\":3,\"character_modifier_reads\":3,"
       "\"character_modifier_ordinals\":[432,432,425],\"native_updater\":0,"
