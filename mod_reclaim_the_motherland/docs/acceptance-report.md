@@ -208,3 +208,7 @@ Run：`D:\workspace\ck3_reclaim_phase2_20260913_process_assets\reclaim\runs\desk
 `R0005` 保留为 environment RED：未显式设置迁移后的 `XAR_CK3_EXE`，preflight 即停止且没有启动 CK3。`R0006` 是单独的 GREEN preflight-only 记录。二者均未覆盖，也未被冒充为最终 L3。
 
 上传后已从 exact tag 重建正式 staging；manifest/ZIP 哈希保持不变，内层 `descriptor.mod` 不含 `remote_file_id`。Steam 最终恢复 Offline Mode，CK3 进程数为 0。缓存核对与最终离线记录 SHA-256 分别为 `d03e70fb410b22a01b548883a086b851b5bf784c3769124191b2c5c296a9471c` / `a48c09d45e2f2c57b5bd0d056af91b055723d67c510292b73dceb72d9cd34561`。
+
+## 2026-10-08维护候选续办（旧0.4.0发布历史保留）
+
+CK3 1.20.0.4新场R0008实际law FALSE/heir TRUE、原D3 FAIL1后正常OS/native0及CAS5798闭场；0.4.1源码仅追加finalize/set_primary后缺法时幂等补法的8行，尚未实机、未发布，不外推旧0.4.0 COMPLETE。[当前适配专题与实际证据](../../docs/reclaim-the-motherland-ck3-1.20.0.3-readiness-2026-10-05.md)保存具体边界；原36项合同/14days不变。

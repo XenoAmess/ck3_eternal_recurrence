@@ -327,6 +327,14 @@ rmtm_finalize_restoration_hegemony_effect = {
 	# kingdoms and unrelated personal titles remain untouched.
 	destroy_title = title:h_china
 	set_primary_title_to = scope:rmtm_restoration_hegemony_title
+	# Keep the explicit Later-title law after the final primary-title transition.
+	# The creation helper still installs it after the initial grant resolves.
+	scope:rmtm_restoration_hegemony_title = {
+		if = {
+			limit = { NOT = { has_title_law = single_heir_succession_law } }
+			add_title_law = single_heir_succession_law
+		}
+	}
 }
 
 # Character scope inherited from tgp_dynastic_cycle.0081.
