@@ -1,0 +1,446 @@
+{
+  "schema": "lyd.r22.actual_closed_operational_red.archive.v1",
+  "status": "RED_UI_NORMAL_CLOSE_OPERATIONAL_ABSENCE_CONFIRMED",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0022",
+  "execution_id": "3fac1862-a721-4dcf-b0df-fa732421d304",
+  "loaded_source_head": "776818162eaac6925e01ea9e25ec23547dc2d615",
+  "source_fix_published_head": "77c11406a3630f5d9fa168dc3f51179af5b802e7",
+  "cutoff_utc": "2026-10-07T12:31:19.968470+00:00",
+  "actual_census_time_utc": "2026-10-07T12:26:17.204265+00:00",
+  "old_PARTIAL_immutable": {
+    "path": "C:/lr19dw1/docs/li-yu-dao/acceptance/2026-10-07-r0022-776818162-readonly-repaired/PARTIAL-20261007-114039.md",
+    "bytes": 4954,
+    "sha256": "45454679430f66e6080d15ca1be8147d7c1c297d6ddce95136c37676f717d537"
+  },
+  "baseline": {
+    "result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-022/baseline-author-003/RESULT.json",
+      "bytes": 1056102,
+      "sha256": "2efe01c4522ab1cec883a2a84e77a06ca454ed17922b711c6f1c8026dde01b8b"
+    },
+    "original_exec": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r22-root-baseline-hot-author-original-exec-20261007-003/RESULT.actual.json",
+      "bytes": 1389,
+      "sha256": "1f6cebba599cc37eefa5f430d8c9d906198ee41425012c650e227402f3f90adb"
+    },
+    "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+    "body_reads_by_ROOT_author": 1,
+    "author_exit_code": 0,
+    "game_calls_by_author": 0,
+    "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+    "G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+    "protection_count": 87,
+    "protection_all_match": true,
+    "typed_protection": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-022/baseline-author-003/TYPED-PROTECTION.json",
+      "bytes": 966756,
+      "sha256": "187a10e1a688df81e09c59aa4dfb1cfcb1d1abbfd1e3b9e2813675cc05a7f44d"
+    },
+    "original0240_control": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-022/ORIGINAL0240-CONTROL.actual.json",
+      "bytes": 1250,
+      "sha256": "9755f52a1456c92921ab8f5d156418b8517aa1bf5c1647e2a26f78bfabd0d3bc"
+    },
+    "STATE_original_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+    "STATE_source_head_formal_contract": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+    "strict_formal_reader_executed": false,
+    "actual_pass": null,
+    "formal_mandate_credit": null,
+    "actual_metadata_factory": {
+      "variant": "grant28",
+      "artifact": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r22-metadata-sdk-20261007-001/ACTUAL-grant28-profile-all-tools.json",
+        "bytes": 29956,
+        "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+      },
+      "tool_count": 28,
+      "independent_actual_RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r22-metadata-sdk-20261007-001/RESULT.json",
+        "bytes": 7056,
+        "sha256": "e66edcd684e3983272e99f7558d28a09cc5bfc3575785069825b00234d05a855"
+      }
+    }
+  },
+  "ROOT_once_requests": [
+    {
+      "request_id": "r22-006-begin-decision-readonly",
+      "status": "EXPLICIT_REQUEST_RECORDED",
+      "response_status": "MCP_RESULT_RECORDED",
+      "sdk_isError": false,
+      "enqueued_once": true,
+      "automatic_retry": false,
+      "automatic_attach": false,
+      "automatic_reconnect": false,
+      "formal_acceptance": null,
+      "new_T": null,
+      "finished_at_utc": "2026-10-07T11:47:16.627308+00:00"
+    },
+    {
+      "request_id": "r22-007-normal-exit-readonly",
+      "status": "EXPLICIT_REQUEST_RECORDED",
+      "response_status": "MCP_RESULT_RECORDED",
+      "sdk_isError": false,
+      "enqueued_once": true,
+      "automatic_retry": false,
+      "automatic_attach": false,
+      "automatic_reconnect": false,
+      "formal_acceptance": null,
+      "new_T": null,
+      "finished_at_utc": "2026-10-07T11:51:28.055619+00:00"
+    },
+    {
+      "request_id": "r22-008-close-client",
+      "status": "EXPLICIT_REQUEST_RECORDED",
+      "response_status": "CLIENT_CLOSE_REQUESTED",
+      "sdk_isError": null,
+      "enqueued_once": true,
+      "automatic_retry": false,
+      "automatic_attach": false,
+      "automatic_reconnect": false,
+      "formal_acceptance": null,
+      "new_T": null,
+      "finished_at_utc": "2026-10-07T12:15:16.641444+00:00"
+    }
+  ],
+  "decision_native_original": {
+    "status": "native_decision_query_observed",
+    "result": {
+      "schema": "ck3-ingame-decision-item-v1",
+      "step": "query-ingame-decision-item-v1",
+      "read_only": true,
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "native_revision": 2,
+      "connection_generation": 1,
+      "game_pid": 18032,
+      "played_character_id": -1,
+      "date_raw": 0,
+      "group_count": 0,
+      "row_count": 0,
+      "matching_row_count": 0,
+      "row_context_reference_key": 0,
+      "detail_actor_reference_key": -1,
+      "available": false,
+      "owner_thread_verified": false,
+      "frame_verified": false,
+      "source_abi_pins_verified": false,
+      "gui_owner_binding_verified": false,
+      "decisions_tree_complete": false,
+      "decisions_root_visible": false,
+      "row_owner_verified": false,
+      "row_scope_reference_available": false,
+      "detail_tree_complete": false,
+      "detail_root_visible": false,
+      "detail_definition_available": false,
+      "detail_definition_matches_target": false,
+      "detail_actor_binding_verified": false,
+      "row_widget_datacontext_verified": false,
+      "action_qualified": false,
+      "decision_key": "",
+      "detail_decision_key": "",
+      "unavailable_reason": "exact_crozier_keyed_query_unavailable",
+      "backend_id": "native-headless",
+      "episode_run_id": null,
+      "queried_revision": 3,
+      "uses_mouse": false,
+      "uses_keyboard": false,
+      "uses_ocr": false
+    }
+  },
+  "normal_exit_native_original": {
+    "status": "unavailable",
+    "result": {
+      "schema": "ck3-normal-exit-context-result-v1",
+      "status": "unavailable",
+      "public_revision": 3,
+      "native_observation": {
+        "schema": "ck3-normal-exit-map-v1",
+        "step": "normal-exit-map-v1",
+        "action": "query_context",
+        "status": "unavailable",
+        "native_revision": 2,
+        "connection_generation": 1,
+        "game_pid": 18032,
+        "played_character_id": 31254,
+        "process_creation_filetime_100ns": 134358460019876834,
+        "pump_epoch": 92793,
+        "exact_build_verified": true,
+        "owner_verified": true,
+        "process_identity_verified": true,
+        "source_abi_pins_verified": false,
+        "stock_files_verified": false,
+        "loaded_source_binding_verified": false,
+        "frame_verified": false,
+        "context_signature_verified": false,
+        "confirmation_visible": false,
+        "orderly_exit_verified": false,
+        "autosave_verified": false,
+        "exit_context_signature": "",
+        "reason": "exact_gui_code_pins_changed",
+        "stage_consumed": [
+          false,
+          false,
+          false
+        ],
+        "targets": [
+          {
+            "read_complete": false,
+            "root_exists": false,
+            "root_visible": false,
+            "target_exists": false,
+            "target_visible": false,
+            "target_enabled": false,
+            "unique_target": false,
+            "dispatch_admitted": false,
+            "target_vtable_rva": 0
+          },
+          {
+            "read_complete": false,
+            "root_exists": false,
+            "root_visible": false,
+            "target_exists": false,
+            "target_visible": false,
+            "target_enabled": false,
+            "unique_target": false,
+            "dispatch_admitted": false,
+            "target_vtable_rva": 0
+          },
+          {
+            "read_complete": false,
+            "root_exists": false,
+            "root_visible": false,
+            "target_exists": false,
+            "target_visible": false,
+            "target_enabled": false,
+            "unique_target": false,
+            "dispatch_admitted": false,
+            "target_vtable_rva": 0
+          }
+        ],
+        "dispatches": [
+          {
+            "claim_latched": false,
+            "dispatch_invoked": false,
+            "native_handled": false,
+            "post_read_complete": false,
+            "postcondition_observed": false
+          },
+          {
+            "claim_latched": false,
+            "dispatch_invoked": false,
+            "native_handled": false,
+            "post_read_complete": false,
+            "postcondition_observed": false
+          },
+          {
+            "claim_latched": false,
+            "dispatch_invoked": false,
+            "native_handled": false,
+            "post_read_complete": false,
+            "postcondition_observed": false
+          }
+        ]
+      },
+      "exit_context_signature": "",
+      "source_inventory_sha256": "8738cb9371418cd6dd24daf3f36730a2852d9ea0cb4c021aaa686387ddcced05",
+      "process_creation_filetime_100ns": 134358460019876834,
+      "claim_consumed": false,
+      "retry_authorized": false,
+      "orderly_exit_verified": false,
+      "autosave_verified": false
+    }
+  },
+  "closure_limits_original": {
+    "game_original_HANDLE_exit0_observed": false,
+    "game_exit_code": null,
+    "game_original_creation_filetime_100ns": null,
+    "typed_normal_exit_observed": false,
+    "normal_exit_typed_green": false,
+    "terminal_native_ack_observed": false,
+    "normal_exit_callback_verified": false,
+    "closure_credit": "ACTUAL_UI_NORMAL_CLOSE_ORIGINAL_HELPERS_EXIT0_AND_OPERATIONAL_ABSENCE_ONLY",
+    "client_exit_code": 0,
+    "keeper_exit_code": 0,
+    "client_OS_exit0_observed": true,
+    "keeper_OS_exit0_observed": true,
+    "holder_original_exec_process_exit0_observed": true,
+    "all_original_helper_exec_exit0_observed": true,
+    "ui_normal_close_evidence_bound": true,
+    "no_forced_termination": true,
+    "fresh_no_game_or_original_owned_helpers_absence_verified": true,
+    "screen_released_and_vacant": true,
+    "native_session_id": "281d9e000a8f479d8b6a48aeba332648",
+    "consumer_session_id": "b12b9d3ce7ef4990bd26204378079d3c",
+    "autosave_verified": false,
+    "business_GREEN": false,
+    "other_unowned_native_service_census_credit": null
+  },
+  "original_process_identities": {
+    "18032": 1791372401.9876833,
+    "11568": 1791373044.6700747,
+    "1324": 1791373050.0563064,
+    "14020": 1791372201.3648856,
+    "13508": 1791373146.684053
+  },
+  "census": [],
+  "screen_owners": [],
+  "release_sequence": 3626,
+  "release_original_task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "776818162eaac6925e01ea9e25ec23547dc2d615"
+    },
+    "last_sequence": 3626,
+    "next_step": "",
+    "pid": 11732,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R22 normally exited through reviewed UI autosave confirmation; game and Client/server actually absent; original Client and keeper HANDLE wait0 exit0 and all three original helper exec0. Baseline single scan and 87 protections passed. Decision and typed exit Native unavailable because exact EXE SHA argument was omitted; typed exit false/game HANDLE unknown; no formal/newT/C3/I4 credit. First CAS rejected before mutation because CLI pin used lowercase; successor uses exact uppercase from existing successful contract.",
+    "task_id": "ck3-lyd-r22-runtime-20261007-001",
+    "updated_at_utc": "2026-10-07T12:23:10.742332+00:00"
+  },
+  "published_exact_CI": {
+    "head": "77c11406a3630f5d9fa168dc3f51179af5b802e7",
+    "packet": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r22-77c11406-exact-official-ci-20261007-001/FINAL.actual.json",
+      "bytes": 6607,
+      "sha256": "34090fc5fd5cedf854eaccd5ccf748781353b79e1c14390b78e544ca63533dcc"
+    },
+    "workflows": [
+      {
+        "id": 37618237025,
+        "name": "Official Runner CI",
+        "path": ".github/workflows/static-ci.yml",
+        "head_sha": "77c11406a3630f5d9fa168dc3f51179af5b802e7",
+        "head_branch": "master",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37618237025",
+        "created_at": "2026-10-07T12:02:51Z",
+        "updated_at": "2026-10-07T12:08:14Z",
+        "run_attempt": 1,
+        "workflow_id": 336785267,
+        "jobs": [
+          {
+            "id": 112781710288,
+            "name": "static",
+            "head_sha": "77c11406a3630f5d9fa168dc3f51179af5b802e7",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37618237025/job/112781710288",
+            "started_at": "2026-10-07T12:02:53Z",
+            "completed_at": "2026-10-07T12:08:13Z",
+            "failed_steps": [],
+            "nonterminal_steps": []
+          }
+        ],
+        "jobs_API_raw": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r22-77c11406-exact-official-ci-20261007-001/official-jobs-final-001.stdout",
+          "bytes": 16000,
+          "sha256": "4dd4062cec10877f82bfddb0edecbb92d17c80192aadfa2c812d96df4b2bc892"
+        }
+      },
+      {
+        "id": 37618237054,
+        "name": "Linear history",
+        "path": ".github/workflows/linear-history.yml",
+        "head_sha": "77c11406a3630f5d9fa168dc3f51179af5b802e7",
+        "head_branch": "master",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37618237054",
+        "created_at": "2026-10-07T12:02:51Z",
+        "updated_at": "2026-10-07T12:03:29Z",
+        "run_attempt": 1,
+        "workflow_id": 377165366,
+        "jobs": [
+          {
+            "id": 112781710009,
+            "name": "No new merge commits",
+            "head_sha": "77c11406a3630f5d9fa168dc3f51179af5b802e7",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37618237054/job/112781710009",
+            "started_at": "2026-10-07T12:02:54Z",
+            "completed_at": "2026-10-07T12:03:28Z",
+            "failed_steps": [],
+            "nonterminal_steps": []
+          }
+        ],
+        "jobs_API_raw": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r22-77c11406-exact-official-ci-20261007-001/linear-jobs-001.stdout",
+          "bytes": 1789,
+          "sha256": "1f9300726a59dbb4934985932d2e06ea14d83a4ba1a0975d3144bfb45cd66b07"
+        }
+      }
+    ],
+    "Li_Yu_Dao_static": {
+      "name": "Li Yu Dao static checks",
+      "status": "NOT_TRIGGERED",
+      "conclusion": null,
+      "run_id": null,
+      "job_id": null,
+      "not_GREEN": true,
+      "basis": "Exact HEAD official API has no Li Yu run; exact workflow push paths and HEAD commit files do not match",
+      "workflow_exact_blob_sha": "f383249db0221ddd4b6d4a3aa4d44c9d4c6de7b6",
+      "workflow_raw": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r22-77c11406-exact-official-ci-20261007-001/liyu-workflow-001.raw.yml",
+        "bytes": 2050,
+        "sha256": "ea15a2dc333a5502efc9d66a079c52bee2f4782f4b1c86b23209802f6cb67290"
+      },
+      "push_path_patterns": [
+        "mod_li_yu_dao/**",
+        "tools/extract_auto_upgrade_buildings.py",
+        "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**",
+        ".github/workflows/li-yu-dao-static.yml"
+      ],
+      "head_commit_files": [
+        "docs/autonomous-agent-progress/daily/2026-10-07.md",
+        "docs/li-yu-dao/acceptance/2026-10-07-r0022-gui-environment-exact-exe-source-fix/NORMAL-EXIT-STATIC-01-kCrozier12004GuiFindTopLevelWidgetRva.actual32.bin",
+        "docs/li-yu-dao/acceptance/2026-10-07-r0022-gui-environment-exact-exe-source-fix/NORMAL-EXIT-STATIC-02-kCrozier12004ShortcutManagerActivateRva.actual32.bin",
+        "docs/li-yu-dao/acceptance/2026-10-07-r0022-gui-environment-exact-exe-source-fix/NORMAL-EXIT-STATIC-03-kCrozier12004StrictDescendantRva.actual32.bin",
+        "docs/li-yu-dao/acceptance/2026-10-07-r0022-gui-environment-exact-exe-source-fix/NORMAL-EXIT-STATIC-04-kCrozier12004ButtonBaseSlot13Rva.actual32.bin",
+        "docs/li-yu-dao/acceptance/2026-10-07-r0022-gui-environment-exact-exe-source-fix/NORMAL-EXIT-STATIC-ORIGINAL-R22-NORMAL-EXIT-READONLY.native.json",
+        "docs/li-yu-dao/acceptance/2026-10-07-r0022-gui-environment-exact-exe-source-fix/NORMAL-EXIT-STATIC-PINS-INDEX.actual.json",
+        "docs/li-yu-dao/acceptance/2026-10-07-r0022-gui-environment-exact-exe-source-fix/NORMAL-EXIT-STATIC-RESULT.actual.json",
+        "docs/li-yu-dao/acceptance/2026-10-07-r0022-gui-environment-exact-exe-source-fix/NORMAL-EXIT-STATIC-compare_actual4_static_pins.py",
+        "docs/li-yu-dao/gui-environment-exact-executable-callsite-12004.md"
+      ],
+      "head_commit_matched_paths": []
+    },
+    "credit": "Only this source HEAD static CI, no old DLL/live/typed-exit credit"
+  },
+  "checkpoint": {
+    "bytes": 91669783,
+    "sha256": "639801235c038d6eeefc3924eb57adad7b3b686cbcd5cedc17b2dbe2e3b12603",
+    "raw_storage": "external only; original descriptor/native SAVE already in PARTIAL archive",
+    "body_reads_by_document_author": 0,
+    "body_copies_to_Git": 0
+  },
+  "formal_approval": null,
+  "new_T": null,
+  "C3": null,
+  "I4": null,
+  "whole_mod": "NOT_GREEN",
+  "document_author_actions": {
+    "MAIN_writes": 0,
+    "SDK_game_process_screen_actions": 0,
+    "save_body_reads": 0,
+    "new_tests_builds_CI_API_calls": 0,
+    "own_docs_task_resources": []
+  },
+  "large_build_refs": "Reuse original PARTIAL inventory source pins; no large build/EXE/DLL/save copies",
+  "post_cutoff_source_publication": {
+    "head": "1d17fbbde058baeb5b254bd0466f5de54c6efba5",
+    "scope": "Canonical Python two-reader leaf fix and portable related regressions; later publication does not change the original runtime cutoff",
+    "reported_by_source_owner": "r13_cold_launch",
+    "existing_offline_tests": 16,
+    "source_only_not_new_live": true,
+    "document": "docs/li-yu-dao/r22-checkpoint-frame-metadata-and-grant28-lineage-hotfix.md"
+  }
+}
