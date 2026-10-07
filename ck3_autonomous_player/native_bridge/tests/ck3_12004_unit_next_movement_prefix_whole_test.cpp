@@ -150,6 +150,7 @@ struct Fixture {
     Store(input.regiment, 0x3C, std::int32_t{100});
     Store(input.regiment, 0x40, std::int64_t{25000000});
     bindings.enabled = true;
+    bindings.current_movement_progress_enabled = true;
     bindings.game_state_slot = &game_slot;
     bindings.unit_storage_slot = &unit_slot;
     bindings.internal_army_storage_slot = &army_slot;
