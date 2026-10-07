@@ -7,6 +7,9 @@
 #include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
 #include "active_scheme_sway_private_transport_v1.hpp"
 #include "active_scheme_sway_formal_private_transport_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+#include "xar_bridge/ck3_12004_sway_terminal.hpp"
+#endif
 #include "ck3_12002_activity_feast_router.hpp"
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_faction_mailbox.hpp"
@@ -315,6 +318,7 @@ void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept 
   out.rite_members = &ExecutePlayerRiteMembersMailbox12002;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  out.sway_completion = &ck3_12004::ExecuteSwayTerminalMailbox12004;
   out.sway_state = &ExecuteActiveSwayMailbox12002;
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
   out.sway_action = &ExecuteActiveSwayMailbox12002;
@@ -457,6 +461,7 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
   if (IsPlayerRiteMembersPrivateStep12002(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  if (step == kSwayCompletionStepV1) return true;
   std::uint32_t sway_target = 0;
   if (ck3_11906::ParseActiveSchemeSwayPrivateQueryStepV1(step, sway_target))
     return true;
@@ -839,9 +844,14 @@ bool HandleNonwarPrivate12002(
           step, payload, request_id, serialized, failure);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
-    if (step == kSwayCompletionStepV1)
+    if (step == kSwayCompletionStepV1) {
+      if (game::IsCk3_12004Descriptor(native.descriptor()))
+        return ck3_12004::HandleSwayTerminal12004(
+            native, mailbox, published, revision,
+            step, payload, request_id, serialized, failure);
       return HandleSwayCompletionV1(native, mailbox, published, revision,
           step, payload, request_id, serialized, failure);
+    }
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
     if (IsPlayerReligionHostilityPrivateStep12002(step))
