@@ -1351,7 +1351,6 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1
-    XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1
     XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1
@@ -2176,7 +2175,14 @@ if(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
-  target_compile_definitions(xar_ck3_bridge PRIVATE
+  # This private switch is read only by these four translation units; no header
+  # branches depend on it. Scope it here to retain unchanged compiled objects.
+  set_property(SOURCE
+    src/bridge.cpp
+    src/ck3_12003_adapter.cpp
+    src/ck3_12004_adapter.cpp
+    src/frontend_gui_route_v1.cpp
+    APPEND PROPERTY COMPILE_DEFINITIONS
     XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1)

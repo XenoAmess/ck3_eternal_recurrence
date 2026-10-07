@@ -7,9 +7,19 @@ from pathlib import Path
 import re
 
 from ..ck3_runtime_diagnostics import MAX_LITERAL_CHARS, MAX_LOG_LITERALS
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 ROBERT_KEY = "bookmark_rags_to_riches_duke_robert"
 EXE_SHA256 = "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+EXE_SHA256_12004 = CK3_12004.executable_sha256
+
+
+def require_fixture_native_build(game_version: object, executable_sha256: object):
+    """Admit only the frozen .3/.4 identities, without granting capabilities."""
+    build = require_exact_native_build(game_version, executable_sha256)
+    if build not in (CK3_12003, CK3_12004):
+        raise ValueError("fixture startup requires an exact .3 or .4 build")
+    return build
 
 
 def require_fixture_frontend_build(capabilities: object) -> dict[str, int]:
@@ -28,10 +38,13 @@ def require_fixture_frontend_build(capabilities: object) -> dict[str, int]:
         if (isinstance(hello, dict) and hello.get("pid") == binding["bridge_pid"]
                 and hello.get("connection_generation") == binding["connection_generation"]):
             matches.append(hello)
-    if not matches or any((hello.get("game_adapter_id"), hello.get("expected_ck3_version"),
-            hello.get("expected_ck3_sha256")) != ("ck3-1.20.0.3-msvc-x64", "1.20.0.3", EXE_SHA256)
-            for hello in matches):
-        raise ValueError("fixture frontend startup requires the actual exact .3 bridge")
+    if not matches:
+        raise ValueError("fixture frontend startup requires an actual exact-build bridge")
+    builds = [require_fixture_native_build(hello.get("expected_ck3_version"),
+        hello.get("expected_ck3_sha256")) for hello in matches]
+    if any(build != builds[0] or hello.get("game_adapter_id") !=
+            f"ck3-{build.game_version}-msvc-x64" for hello, build in zip(matches, builds)):
+        raise ValueError("fixture frontend startup has inconsistent exact-build identities")
     return binding
 
 
@@ -165,9 +178,9 @@ def fixture_business_context_binding(snapshot: object, root: object, policy: dic
             "date_raw": "date_raw"}.items()):
         raise ValueError("fixture campaign-root observation is not bound to the actual paused frame")
     provenance = root.get("provenance")
-    if not isinstance(provenance, dict) or provenance.get("game_version") != "1.20.0.3" or str(
-            provenance.get("executable_sha256")).upper() != EXE_SHA256:
-        raise ValueError("fixture campaign root lacks exact .3 native provenance")
+    if not isinstance(provenance, dict):
+        raise ValueError("fixture campaign root lacks exact native provenance")
+    require_fixture_native_build(provenance.get("game_version"), provenance.get("executable_sha256"))
     played = snapshot.get("played_character")
     actor = played.get("character_id") if isinstance(played, dict) else None
     if type(actor) is not int or actor < 1 or root.get("player_character_id") != actor or root.get("player_character_alive") is not True:

@@ -1,0 +1,66 @@
+{
+  "game_version": "1.20.0.4",
+  "steam_build_id": "25734779",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source": "Installed Steam CK3 exact build, frozen on 2026-10-07 after reviewed-source comparison; all 19 dependencies match the complete reviewed 1.20.0.3 source packet. Source contract only; no runtime or publication claim.",
+  "source_review": {
+    "previous_contract": "xqol_vanilla_1_20_0_2.json",
+    "previous_contract_sha256": "5265a5e5f3358469c3ed696cfc48047c8e74bf4f64bce039177fefc2e518885d",
+    "source_files": 19,
+    "same_raw_1_20_0_2": 17,
+    "same_raw_reviewed_1_20_0_3": 19,
+    "reviewed_1_20_0_3_handoff": {
+      "path": "C:/workspace/ck3-upgrade-20261005/xqol-current-stock-callchain-review-agent-01/HANDOFF-04.md",
+      "bytes": 9329,
+      "sha256": "cbac4f1cb5cd1686fb6e5a3e476abb4af038ceaa24a3d7e2445e2522797f59de"
+    },
+    "actual_1_20_0_4_comparison": {
+      "path": "C:/workspace/ck3-upgrade-20261007/xqol12004-vanilla-contract-01/CURRENT04-SOURCE-SEMANTIC-COMPARISON-01.json",
+      "bytes": 32043,
+      "sha256": "7f0228f72c71bfd3a096905753309dd8b58d943d6eee996e5dcc2560fd2e059b"
+    },
+    "installed_binary_identity": {
+      "path": "C:/workspace/ck3-upgrade-20261006/local04-freeze-readonly-resource-03/INSTALLED-BINARIES-FREEZE-03.json",
+      "bytes": 14829,
+      "sha256": "d35fb0627a90d7c34b0c4bd3ae376fb01c68413e69b6e984413eac95fd258651"
+    },
+    "fresh_installed_metadata": {
+      "path": "C:/workspace/ck3-upgrade-20261007/current-install-readonly-resource-01/local-installed-CK3-metadata-receipt-01.json",
+      "bytes": 2424,
+      "sha256": "b573d932deaf20547ebbfe7a442409a10cc5f6343367e5245e82fbb322e028c4"
+    },
+    "drifted_relative_paths_from_1_20_0_2": [
+      "common/scripted_effects/pam_effects.txt",
+      "common/scripted_triggers/00_religious_triggers.txt"
+    ],
+    "semantic_basis": [
+      "The two complete current files and 11 relevant named definitions are byte-identical to the reviewed 1.20.0.3 packet.",
+      "Conversion uses the native validity/acceptance paths; actor and puppet_or_actor remain explicitly bound before native consequences and personal-tenet rewards.",
+      "Ransom delegates payer/prisoner and Philanthropia rewards to native interaction effects; governor overrides retain native Rite crime and combat eligibility values.",
+      "Seven current QOL caller/projection files match the reviewed source packet; no product script or generated output change is required."
+    ],
+    "historical_limit": "The complete two drifted 1.20.0.2 source bodies were not preserved or found by the existing bounded lookup. An exact full old2-to-current4 semantic diff is unavailable and is not claimed. Old2 pins and old static RED evidence remain unchanged.",
+    "runtime_limit": "Asynchronous final conversion and rewards, paused native reads, GUI, cleanup and release qualification require their own actual 1.20.0.4 evidence."
+  },
+  "files": {
+    "common/succession_appointment/admin_governor.txt": "39d287c7d7a1071274e461bc97a1a84d7a4aeba7b15c82f9d64acf79be509d3d",
+    "common/succession_appointment/meritocratic_governor.txt": "35dc79fd631979589861f71aa86a4378188d753e3bdb78af5b67858a7ef17ff7",
+    "common/succession_appointment/celestial_governor.txt": "c0e63231ed61bd84dfd2b5d4278c8923a3210cdd86473604d602e10ca10780b2",
+    "common/character_interactions/00_vassal_interactions.txt": "b0f81cf740b6dbf42952d9a08703ba75e23d6918dd44f4d8e9999f11695b3a20",
+    "common/character_interactions/00_alliance.txt": "11e852967499e73c8bfbf9d6fe222278db66bb88cb674ea04f3758c86f35f1b4",
+    "common/character_interactions/00_religious_interactions.txt": "63afe4538725929fb20bc20cbbbbc86705dba55a384755949431419265db0ac6",
+    "common/character_interactions/00_prison_interactions.txt": "1bb43b3c2061212af8d41b11314ff4e569af2a3506319f820d05877a7762abc5",
+    "common/character_interactions/00_perk_interactions.txt": "da103fd27abf644fde3609375e9d7b441a44e12a723cb3f63b38128a322e02ea",
+    "common/on_action/war_on_actions.txt": "70cd2a388d849251665a237d6b05b52514d9142d2f7ba404186a523595a2cf9e",
+    "common/scripted_effects/00_interaction_effects.txt": "4247f484295988b50098a43869d4c4056b7e0855bf8d5fa6ec0755cb996d7e82",
+    "common/scripted_effects/00_religious_interaction_effects.txt": "9ecc22104b057e3425673917acbefaa320833226dd02b9a6c3dca7475b5b0928",
+    "common/scripted_effects/00_prison_effects.txt": "ea8bb72426246692bf1f310ae7eb83715ae1b7314d046e3660df66443d486030",
+    "common/scripted_effects/pam_effects.txt": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f",
+    "common/scripted_triggers/00_religious_triggers.txt": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+    "common/scripted_modifiers/00_religion_scripted_modifiers.txt": "0d3fbd5d6740212f9acd318aa400560f2572f81f4562c3984c9d158e382fbc71",
+    "common/script_values/pam_values.txt": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+    "common/script_values/07_appointment_values.txt": "04e1eb472d255fbf26e4fcf910a9220f43517907bb3bdf1f61bbe4cbf1ca78ec",
+    "common/governments/00_government_types.txt": "f7f07123192eebf4053f917d8458639126ab42e2a7efa9176f43495a6275c86b",
+    "common/script_values/00_interaction_values.txt": "52a7cf8ef212c835bfc5bc5ce049af2e33d7586eb9d477343e8eedacf58ebd66"
+  }
+}

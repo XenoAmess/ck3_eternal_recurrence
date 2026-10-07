@@ -29,6 +29,11 @@ struct FrontendGameRulesObservationV1 {
   std::vector<FrontendGameRuleSelectionV1> selections;
 };
 
+// Uses the source-proven rules ABI for exact .3 or exact .4; other revisions
+// and a mismatched .4 executable remain unavailable before reads/calls.
+bool FrontendGameRulesEnvironmentAdmittedV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment) noexcept;
+
 // Application-main mailbox only. game_rules_root is resolved by the native
 // named-widget reader; the public request accepts no pointer, key or limit.
 // Reads CJominiGameRulesGui's current selection model, never a preset or OCR.
@@ -38,7 +43,8 @@ bool ProbeFrontendGameRulesV1(
     FrontendGameRulesObservationV1 &output) noexcept;
 
 std::string SerializeFrontendGameRulesV1(
-    const FrontendGameRulesObservationV1 &observation);
+    const FrontendGameRulesObservationV1 &observation,
+    GuiAbiRevisionV1 revision = GuiAbiRevisionV1::crozier12003);
 
 // Exact original GUI predicates and the current owner's actual root visibility.
 // This observation remains distinct from current selections and applied rules.
@@ -127,10 +133,12 @@ bool ApplyAndHideFrontendGameRulesV1(
     bool apply, const FrontendGameRulesCallsV1 &calls,
     FrontendGameRulesMutationV1 &output) noexcept;
 std::string SerializeFrontendGameRulesControlV1(
-    const FrontendGameRulesControlV1 &observation);
+    const FrontendGameRulesControlV1 &observation,
+    GuiAbiRevisionV1 revision = GuiAbiRevisionV1::crozier12003);
 std::string SerializeFrontendGameRulesMutationV1(
     FrontendGameRulesMutationKindV1 kind,
-    const FrontendGameRulesMutationV1 &result);
+    const FrontendGameRulesMutationV1 &result,
+    GuiAbiRevisionV1 revision = GuiAbiRevisionV1::crozier12003);
 
 inline constexpr std::string_view kFrontendAppliedGameRulesV1Capability =
     "game.command.query-frontend-applied-game-rules-v1";
@@ -146,6 +154,7 @@ bool ProbeFrontendAppliedGameRulesV1(
     const ZhongguoScoreboardAccessV1 &access,
     FrontendAppliedGameRulesV1 &output) noexcept;
 std::string SerializeFrontendAppliedGameRulesV1(
-    const FrontendAppliedGameRulesV1 &observation);
+    const FrontendAppliedGameRulesV1 &observation,
+    GuiAbiRevisionV1 revision = GuiAbiRevisionV1::crozier12003);
 
 } // namespace xar::ck3_11906
