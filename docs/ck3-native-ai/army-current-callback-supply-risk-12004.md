@@ -22,7 +22,7 @@ equality are reused, rather than assuming a fixed RVA shift.
 | `2A9A570` | `support_2A9A590-DETAIL.json`, 1539 B | Selects `uint32(GameState+9C)%30`; walks the actual pointer bucket in stored order, including repeats. `2A9AB46` calls **24E3410** with the actual Army pointer and address of GameState+8. |
 | `24E4CF0` | `support_24E4D10-DETAIL.json`, 463 B | Sets Army byte22=1 before admission. Rejects Unit170==3, combat, gathering, Army5C!=0, or signed wrapped `(passedDate.low32-Army190)/24 <= loadedGrace`. On success stores the full passed date at188, obtains actual current-Province rate24E5180, adds it once to stock180, and clamps the signed result to0/current capacity2C53BF0. There is no division of the rate by30. |
 | `24E2E30` / `24E32C0` | Adopted support getter closures | Current final attrition fraction and current supply-only integer budget are observations at the captured stock. They do not by themselves provide a post-updater stock budget. |
-| `24E3410` | Direct call proven; own body **NOTHELD** | Necessary callback-to-updater and post-updater budget ordering must be mapped before publishing this new exact4 conditional callback value. |
+| `24E3410` | Root retry02 complete1580 B paired local body | Success of24E4CF0 is required before24E32C0; rejected admission supplies integer budget0. Full correspondence was acquired after the initial source plan below. |
 
 The first two cache files are under
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/commander-supply/support-first01/`.
@@ -35,10 +35,10 @@ flowchart TD
   Q[Same paused Army query: current stock/rate/capacity/grace and loaded tables] --> U[24E4CF0 source-defined current callback admission]
   D[2A9A570 actual stored D modulo30] --> P[Observed pointer bucket: preserve every occurrence]
   P --> C[24E3410 actual call at2A9AB46]
-  C -. own exact4 body NOTHELD .-> O[Verify updater then supply budget read order]
+  C --> O[Actual paired ownbody: updater then supply budget read order]
   U --> S[One signed Q64 rate ADD; lower0 and current-capacity clamp]
   S --> B[Loaded stock state plus actual commander/fleet component and eligible current]
-  O -. source prerequisite .-> B
+  O --> B
   B --> V[Conditional current-callback stock crossing and integer supply budget]
   N[Current date/day and all30 bucket observations] --> F[Separately supplied prospective date and stored D]
   F -. future stored D writer NOTHELD .-> T[Actual next-day callback selection]
@@ -56,8 +56,8 @@ or proposed. No repeat of the203 B Character mapping is needed here.
 
 The old complete logical caller is24E3430..24E3A5C, 1580 B. Its exact cached
 prologue9 B, middle1412 B and tail159 B are already sealed. The actual4 direct
-caller is24E3410, proven by the migrated dispatcher. Only this named caller needs
-a Root-central source selection: actual verified pdata/unwind first, then the
+caller is24E3410, proven by the migrated dispatcher. Only this named caller needed
+a Root-central source selection: actual retained pdata fragments first, then the
 selected body if its exact extent agrees with the held logical role. No sibling,
 allocator, date-helper or Character capture is requested. The machine-readable
 central request records the exact target and all cached locators.
@@ -93,10 +93,10 @@ remain false/null until their own source and real paused evidence exist.
 
 ## Status and next handoff
 
-This source-only package is `research`: the actual4 updater/dispatcher and existing
-observation landing points are closed;24E3410 ownbody is the precise remaining
-source dependency. Root owns its finite central capture, shared service hook,
-formal qualification and live query. Child direct EXE reads, tests, builds,
+This package now closes the independent current-callback source dependency and
+provides an authored Python/service candidate. FIRST qualification remains
+NOTRUN. Root owns shared integration, coherent formal qualification and the live
+query. Child direct EXE reads, tests, builds,
 SDK/game/process/UI operations and new game-day credit are all0.
 
 Root G2 reference is H9638 / Robert29829 / raw date53288448 / saved day6005.
@@ -122,3 +122,58 @@ Original selection/wrapper/argv/manifest remain in `current-callback-root-first0
 The corrected Root-only command uses distinct `current-callback-root-retry02`
 output and is still NOTRUN by this child. Actual whole instruction/operand
 correspondence and this package's new numerical query value remain unqualified.
+
+## Actual caller closure and independent numerical implementation plan
+
+Root's necessary retry02 completed at2026-10-07T08:37:45.530080Z. The central
+mapper captured **1580 actual4 bytes in one range read**; old source was rebuilt
+from held caches. Both complete instruction streams, retained member/immediate
+operands, ordered edge shapes and full local control topology match. The actual
+logical extent is24E3410..24E3A3C across the selected three fragments. This is
+actual paired evidence, not an inferred end/constant shift. First source-tooling
+RED and its zero-byte/no-mapper boundary remain preserved.
+
+The exact actual prefix calls24E4CF0 at24E3430, testsAL, and calls24E32C0 at
+24E343E only on success;24E3448 sets supply budget0 on rejection. Independent
+siege/raid budget branches follow. The closed325 B24E32C0 first applies actual
+fleet-date suppression; otherwise it obtains503 B24E4F80's runtime stock-state
+and commander component. Only a positive component consumes the original ArRg
+occurrences, valid generation/tag/ID and2A956B0 eligibility, signed wrapped
+current38 sum, then low64 product/trunc0/low32/min count. No whole-Army UI
+fraction multiplication is introduced.
+
+```mermaid
+flowchart TD
+  E[24E3410 actual current-entry Army/date] --> U[24E4CF0 admission and one stock ADD/clamp]
+  U -->|AL false| Z[Supply-only caller budget0; stock unchanged]
+  U -->|AL true| F[24E32C0 actual fleet-date suppression]
+  F -->|suppressed| Z0[Supply budget0; conditional poststock independent]
+  F -->|not suppressed| T[24E4F80 loaded levels/fractions and commander component]
+  T -->|component<=0| Z1[Supply budget0; no eligible-current operand needed]
+  T -->|component>0| N[Original admitted ArRg occurrences;2A956B0; wrap32 sum current38]
+  N --> I[Source signed integer supply budget at derived stock]
+  Z --> V[New same-query current-callback supply risk result]
+  Z0 --> V
+  Z1 --> V
+  I --> V
+  V -. no actual writer execution .-> X[Actual loss/poststage/future daily/monthly remainfalse/null]
+```
+
+The implementation uses one new owned Python leaf and one additive existing
+Army-service field, `current_callback_supply_risk_v1`. It exposes observed raw
+stock/capacity/rate/current attrition/current integer budget separately from the
+conditional one-entry admission/poststock/runtime-state/integer budget. State
+selection uses runtime-loaded thresholds.
+Known rejection, fleet suppression and zero component retain their independent
+source-defined zero without unused rate/table/count requirements.
+
+Current selected-bucket positions/count can accompany this value, but repeats do
+not multiply the one-entry budget: earlier physical writes change the next frame.
+Observed empty current membership is distinct from hypothetical one-entry risk.
+No prospective stored D/date, earlier manager/refill/assault output, after-reset
+context, final casualty or actual post-stage frame is synthesized.
+
+Source-first plan and frozen eight scene expectations:
+`CURRENT-CALLBACK-NUMERIC-IMPLEMENTATION-PLAN.json`. One new compound exercises
+the real Army service/normalizer path; FIRST is authored NOTRUN pending Root's
+coherent source instruction. Existing monthly/four-pass/old tests are not run.
