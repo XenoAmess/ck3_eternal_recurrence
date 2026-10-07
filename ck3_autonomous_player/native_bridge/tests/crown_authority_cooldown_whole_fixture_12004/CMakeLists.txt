@@ -35,11 +35,7 @@ if(BUILD_TESTING AND WIN32)
       CACHE PATH "Fresh directory for the six compiled M7 whole wires and receipt")
   add_executable(xar_crown_authority_cooldown_whole_fixture_12004
       "${CMAKE_CURRENT_LIST_DIR}/../crown_authority_cooldown_whole_fixture_12004.cpp"
-      # The real Capture failure formatter is in this existing value TU, whose
-      # object also references the existing active collection implementation.
-      # Root registers these in Bridge, not the Runtime library.
-      "${XAR_CROWN_NATIVE_SOURCE_DIR}/src/realm_law_candidate_collection_11906.cpp"
-      "${XAR_CROWN_NATIVE_SOURCE_DIR}/src/realm_law_active_collection_11906.cpp")
+      $<TARGET_OBJECTS:xar_ck3_bridge>)
   # The observer is a new owned leaf outside the old ck3_12002*.cpp glob.
   # Compile it here only when the integrated runtime does not already own it.
   get_target_property(crown_runtime_sources xar_ck3_12002_runtime SOURCES)
@@ -59,9 +55,11 @@ if(BUILD_TESTING AND WIN32)
       PRIVATE cxx_std_20)
   # PUBLIC native feature definitions stay inherited from the actual library.
   target_link_libraries(xar_crown_authority_cooldown_whole_fixture_12004
-      PRIVATE xar_bridge_protocol xar_ck3_12002_runtime bcrypt user32)
+      PRIVATE xar_bridge_protocol xar_ck3_12002_runtime bcrypt
+      $<TARGET_PROPERTY:xar_ck3_bridge,LINK_LIBRARIES>)
   target_compile_definitions(xar_crown_authority_cooldown_whole_fixture_12004
-      PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+      PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+      $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>)
   if(MSVC)
     target_compile_options(xar_crown_authority_cooldown_whole_fixture_12004
         PRIVATE /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)

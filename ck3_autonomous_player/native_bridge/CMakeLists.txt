@@ -9361,6 +9361,9 @@ include(cmake/source_derived_next_daily_supply_frame_whole_12004.cmake)
 include(cmake/first_heir_fertility_floor_12004.cmake)
 include(cmake/source_derived_next_full_cdate64_whole_12004.cmake)
 include(cmake/phase_calendar_whole_fixture.cmake)
+include(cmake/phase_role_whole_fixture.cmake)
+include(cmake/current_unit_new_date_schedule_whole_12004.cmake)
+include(cmake/first_heir_scorer_age_12004.cmake)
 
 if(TARGET xar_ck3_12002_runtime)
   target_sources(xar_ck3_12002_runtime PRIVATE
