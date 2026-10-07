@@ -17197,12 +17197,26 @@ def _primary_defender_siege_forecast_ingress(
         )
     defenders = tuple(partition["defender_army_ids"])
     evidence["participant_partition"] = partition
-    query_step = query_combat_simulation_inputs_v3_step(
+    use_v3 = QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY in bridge_capabilities
+    query_capability = (
+        QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY if use_v3
+        else QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
+    )
+    query_builder = (
+        query_combat_simulation_inputs_v3_step if use_v3
+        else query_combat_simulation_inputs_step
+    )
+    query_parser = (
+        parse_query_combat_simulation_inputs_v3_step if use_v3
+        else parse_query_combat_simulation_inputs_step
+    )
+    cache_key = "combat_simulation_inputs_v3" if use_v3 else "combat_simulation_inputs"
+    query_step = query_builder(
         target, entry, [army_id], list(defenders)
     )
     attempted_on_current_date = False
     for row in reversed(_history_after_latest_restore(commands)):
-        if parse_query_combat_simulation_inputs_v3_step(_effective_command(row)) != (
+        if query_parser(_effective_command(row)) != (
             target, entry, [army_id], list(defenders)
         ):
             continue
@@ -17218,21 +17232,21 @@ def _primary_defender_siege_forecast_ingress(
             and result.get("queried_native_revision") == snapshot.get("native_revision")
         ):
             break
-        payload = snapshot.get("combat_simulation_inputs_v3")
+        payload = snapshot.get(cache_key)
         completeness = payload.get("completeness") if isinstance(payload, dict) else None
         if not (
-            snapshot.get("combat_simulation_inputs_v3_target_province_id") == target
-            and snapshot.get("combat_simulation_inputs_v3_attacker_entry_province_id") == entry
-            and snapshot.get("combat_simulation_inputs_v3_attacker_army_ids") == [army_id]
-            and snapshot.get("combat_simulation_inputs_v3_defender_army_ids") == list(defenders)
-            and snapshot.get("combat_simulation_inputs_v3_queried_snapshot_id") == snapshot.get("snapshot_id")
-            and snapshot.get("combat_simulation_inputs_v3_queried_revision") == snapshot.get("revision")
-            and snapshot.get("combat_simulation_inputs_v3_status") == result.get("status")
+            snapshot.get(f"{cache_key}_target_province_id") == target
+            and snapshot.get(f"{cache_key}_attacker_entry_province_id") == entry
+            and snapshot.get(f"{cache_key}_attacker_army_ids") == [army_id]
+            and snapshot.get(f"{cache_key}_defender_army_ids") == list(defenders)
+            and snapshot.get(f"{cache_key}_queried_snapshot_id") == snapshot.get("snapshot_id")
+            and snapshot.get(f"{cache_key}_queried_revision") == snapshot.get("revision")
+            and snapshot.get(f"{cache_key}_status") == result.get("status")
             and isinstance(completeness, dict)
         ):
             return blocked(
-                "the v3 query returned but its generation-bound cached readback is absent or mismatched",
-                "fresh-v3-cache-readback",
+                "the selected input query returned but its generation-bound cached readback is absent or mismatched",
+                f"fresh-v{3 if use_v3 else 2}-cache-readback",
                 detail={"route_preview": preview, "route_contact_horizon": contact},
             )
         qualified = _qualified_siege_forecast_move(
@@ -17369,12 +17383,13 @@ def _primary_defender_siege_forecast_ingress(
             attacker_army_id=army_id,
             defender_army_ids=defenders,
             friendly_current_soldiers=int(balance["friendly_current_soldiers"]),
+            **({"input_query_version": 2} if not use_v3 else {}),
         )
         if (
             len(defenders) == 1
             and provisional.get("status") == "provisional_admissible"
         ):
-            # The native route is a real proposal, but the v3 battle is a
+            # The native route is a real proposal, but the model battle is a
             # conditional encounter at its final entry.  A long route must
             # stop at its first waypoint; it cannot spend today's model result
             # on an encounter many days in the future.
@@ -17545,7 +17560,7 @@ def _primary_defender_siege_forecast_ingress(
                         **evidence,
                     }
         return blocked(
-            "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact",
+            "the selected combat input readback has no admitted battle forecast authorizing contact",
             "qualified-same-frame-combat-forecast-and-expected-utility",
             detail={
                 "phase": "native_war_siege_forecast_inputs_observed",
@@ -17553,7 +17568,7 @@ def _primary_defender_siege_forecast_ingress(
                 "route_contact_horizon": contact,
                 "qualified_forecast": qualified,
                 "provisional_forecast": provisional,
-                "combat_inputs_v3_query": {
+                f"combat_inputs_v{3 if use_v3 else 2}_query": {
                     "step": query_step,
                     "accepted": result.get("accepted"),
                     "status": result.get("status"),
@@ -17576,16 +17591,16 @@ def _primary_defender_siege_forecast_ingress(
     if attempted_on_current_date:
         return blocked(
             "the same siege input query was already attempted in this date epoch without a reusable current-frame result",
-            "fresh-v3-query-after-state-change",
+            f"fresh-v{3 if use_v3 else 2}-query-after-state-change",
             detail={"route_preview": preview, "route_contact_horizon": contact},
         )
-    if QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY not in bridge_capabilities:
-        return blocked("the exact v3 read-only query is unavailable", query_step)
+    if query_capability not in bridge_capabilities:
+        return blocked("the selected combat input read-only query is unavailable", query_step)
     return {
         "policy": "one-life-turn-v1",
         "phase": "native_war_siege_forecast_inputs_query",
         "selected_step": query_step,
-        "reason": "read exact same-frame combat v3 inputs for the observed siege encounter; no attack is authorized",
+        "reason": "read exact same-frame combat inputs for the observed siege encounter; no attack is authorized",
         "route_preview": preview,
         "route_contact_horizon": contact,
         **evidence,
@@ -17622,8 +17637,9 @@ def _provisional_defense_research_assessment(
     attacker_army_id: int,
     defender_army_ids: tuple[int, ...],
     friendly_current_soldiers: int,
+    input_query_version: int = 3,
 ) -> dict[str, object]:
-    """Use the current v3 frame as a bounded, explicitly imperfect trial."""
+    """Use the selected same-frame input as a bounded, imperfect trial."""
 
     diagnostics = snapshot.get("diagnostics")
     hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
@@ -17631,16 +17647,28 @@ def _provisional_defense_research_assessment(
     if not (
         isinstance(hello, dict)
         and hello.get("ck3_build_match") is True
-        and hello.get("expected_ck3_sha256")
-        == "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        and hello.get("expected_ck3_sha256") == (
+            "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+            if input_query_version == 2 else
+            "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        )
         and isinstance(lifecycle, dict)
         and lifecycle.get("lifecycle") == ORDINARY_CAMPAIGN_SUCCESSION
         and lifecycle.get("xar_enabled") == "xar_off"
     ):
         return {"status": "exact_build_or_profile_unavailable"}
-    payload = snapshot.get("combat_simulation_inputs_v3")
+    if input_query_version == 2:
+        base = snapshot.get("combat_simulation_inputs")
+        payload = {
+            "schema_version": 2,
+            "source": "same_frame_v2_base",
+            "base_inputs": base,
+            "completeness": base.get("completeness") if isinstance(base, dict) else None,
+        } if isinstance(base, dict) else None
+    else:
+        payload = snapshot.get("combat_simulation_inputs_v3")
     if not isinstance(payload, dict):
-        return {"status": "same_frame_v3_unavailable"}
+        return {"status": f"same_frame_v{input_query_version}_unavailable"}
     completeness = payload.get("completeness")
     base = payload.get("base_inputs")
     scenario = base.get("scenario") if isinstance(base, dict) else None
