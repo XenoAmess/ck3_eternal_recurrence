@@ -1,5 +1,11 @@
 # Actual 1.20.0.4 restored-tool live repairs — 2026-10-07
 
+## Latest R68: Back action submitted but unconfirmed; R69 normal startup pending
+
+The [attempt04 receipt](Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/real-test-state-04/artifacts/ROOT-BYZANTIUM-867-REAL-TEST.json) retains the actual failure `native action activate-frontend-lobby-back-v1 unconfirmed; do not replay it`, with `SUBMITTED_UNVERIFIED`, recorded **08:03:42 UTC**. Root's runtime19 build is GREEN and owned cleanup is PROVEN/tree gone. No actual867 campaign or mod-effect success is credited. The runtime18/source750b R67 query's accepted=true/failure0 remains a separate read-only primitive; its success does not qualify this action. Root acknowledged the status complaint and switched to R69 vanilla05 normal startup, PID169700 minimized, without Bridge/native DLL/MCP; the normal867 result is pending.
+
+Later source adoption and consumer evidence are separate: first-hop `de971` unique FIRST1/1 GREEN; four Root leaves through `3c11`; adopted siegeV2 `89e2` with Root's new compound RED on stale `unmodeled_domains`, owner repair pending. None changes an earlier qualified runtime freeze. Normal G2 H9638/date53288448/saved6005/all10, G2 5/8/NW2 2/4/natural0/M4false remain unchanged; historical REDs and M6 fixture-only qualification remain recorded. This five-doc report leaf awaits Root adoption/push and performs no runtime work or exclusive frontend-topic edit.
+
 ## Latest R67 frontend query GREEN; M6 observer fixture FIRST GREEN
 
 Root's **R67/runtime18/source750b** frontend query now returns **accepted=true/failure0**, independently verified tree and lobby route, after the retained R65 post_execution_drift correction. This is one **production-live read-only query primitive**. No all-frontend-tools live claim,867 campaign, mod-effect, NewGame/trait or screenshot qualification is made; previous RED diagnostics are retained.

@@ -3,6 +3,11 @@
 ## 2026-10-07 当前发布后缓存验收范围
 
 按项目所有者的新永久指令，全部 mod 的发布后缓存验收仅核对 **Steam 实际下载文件与正式构建一致，以及 CK3 实际加载这份缓存**。完整规则见 [Workshop 缓存验收](workshop-cache-acceptance.md)。实际启动加载日志可以证明目标缓存已加载时即可收尾；不要求新游戏、地图、native 业务查询、功能/事件/按钮/数值复测或业务 fixture。发布前源码功能验收继续按对应产品合同执行。下方历史缓存业务矩阵和旧门槛只保留当时事实，不能继续作为新发布的缓存验收要求。
+## 2026-10-07 R68/R69：query 成功、action 未确认与普通启动分别记账
+
+R67 runtime18/source750b 的 frontend query live acceptedtrue/failure0，并不能替代 R68 runtime19 的 Back 动作资格。[R68 attempt04](Z:/ck3_mod_rewrite_process_assets/byzantium-867-review-20261007/real-test-state-04/artifacts/ROOT-BYZANTIUM-867-REAL-TEST.json) 实际 `SUBMITTED_UNVERIFIED`，停止后续动作、不重放，保留 RED；Root 另证 owned cleanup PROVEN/tree gone。runtime19 build GREEN、已安装/挂载 mod 都不能改称实际 867 或 mod 效果成功。R69 vanilla05 不加载 Bridge/native DLL/MCP、最小化普通启动，是新的 pending 实机尝试，尚无 867 结果。
+
+first-hop unique compound1/1 GREEN 与 siegeV2 新 compound 的旧 `unmodeled_domains` expectation RED也分开保留；source采用不等于新消费已通过，更不等于 live。G2 保留 H9638/all10/date53288448/saved6005，旧 exact-day overshoot 与 frontend RED 不删除。本条只记录 Root 已执行字段及一次4,589B小结果 metadata，未新跑 test/build/SDK/game、未读 Driver/save/EXE。
 
 ## 2026-10-07：standalone native/Public FIRST与game live query分别授信
 
