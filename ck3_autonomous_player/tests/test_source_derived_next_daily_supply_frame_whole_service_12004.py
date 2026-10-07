@@ -282,7 +282,9 @@ class SourceDerivedNextDailySupplyFrameWholeService12004Tests(unittest.TestCase)
             self.assertEqual(observed["army_strengths"][0]["future_daily_supply_schedule_inputs_v1"], schedule)
             for key in ("date_raw", "revision", "native_revision", "snapshot_id"):
                 self.assertEqual(observed["source"][key], before[key])
-                self.assertEqual(observed["binding"][key], before[key])
+            for key in ("revision", "native_revision", "snapshot_id"):
+                self.assertEqual(observed["queried_" + key], before[key])
+                self.assertEqual(receipt["actual_driver_result"]["queried_" + key], before[key])
             siblings = observed["same_input_conditional_future_daily_supply_schedule_v1"]
             self.assertEqual(len(siblings), 1)
             self.assertEqual(siblings[0]["army_id"], row["army_id"])
@@ -319,6 +321,7 @@ class SourceDerivedNextDailySupplyFrameWholeService12004Tests(unittest.TestCase)
             _write(output / "actual-projected-next-frame.json", projected)
             requests = [request for request in endpoint.requests if request.get("type") == "execute_step"]
             self.assertEqual(len(requests), 1)
+            self.assertEqual(requests[0]["expected_revision"], before["native_revision"])
             self.assertEqual(len(endpoint.delivered_frames), 1)
             delivered = endpoint.delivered_frames[0]
             self.assertEqual(delivered["request_id"], requests[0]["request_id"])
