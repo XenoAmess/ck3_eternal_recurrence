@@ -31,6 +31,11 @@ inline void AppendArmySourceDerivedNextDailySupplyFrameInputsV1(
   numeric("current_native_day_index_raw_i32", input.current_native_day_index_raw_i32);
   numeric("source_derived_next_date_raw_i32", input.source_derived_next_date_raw_i32);
   numeric("source_derived_next_native_day_index_raw_i32", input.source_derived_next_native_day_index_raw_i32);
+  numeric("source_derived_next_date_storage_raw64", input.source_derived_next_date_storage_raw64);
+  numeric("source_derived_next_calendar_day_u8", input.source_derived_next_calendar_day_u8);
+  numeric("source_derived_next_calendar_month_u8", input.source_derived_next_calendar_month_u8);
+  output += ",\"source_derived_full_cdate64_ready\":";
+  output += input.source_derived_full_cdate64_ready ? "true" : "false";
   output += ",\"actual_future_date_stage_observed\":false,\"actual_future_callback_observed\":false";
   output += ",\"future_bucket_mutations_reconstructed\":false,\"future_stock_or_strength_ready\":false";
   output += ",\"full_daily_supply_transition_ready\":false,\"full_monthly_ready\":false}";

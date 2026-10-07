@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_future_daily_supply_schedule.hpp"
 #include "xar_bridge/ck3_12004_source_derived_next_daily_supply_frame.hpp"
+#include "xar_bridge/ck3_12004_cdate_calendar.hpp"
 #include "xar_bridge/army_strength_v1_serializer.hpp"
 
 #include <array>
@@ -28,7 +29,7 @@ constexpr std::int32_t kCurrentDate = 53288448;
 // Independent synthetic stored D; source-derived future D must not be D+1.
 constexpr std::int32_t kCurrentD = 12;
 constexpr std::int64_t kCurrentDateStorage = (std::int64_t{7} << 32) | kCurrentDate;
-constexpr std::string_view kStem = "01-source-derived-next-daily-supply-frame";
+constexpr std::string_view kStem = "01-source-derived-next-full-cdate64";
 constexpr std::uintptr_t kFixtureImageBase = 0x140000000ULL;
 
 void Check(bool condition, const char *message) {
@@ -54,6 +55,7 @@ struct Inputs {
   std::array<void *, 2> provinces{};
   std::array<std::int32_t, 2> regiment_ids{kRegiment, kRegiment};
   std::array<const void *, 4> next_phase_pointers{};
+  std::array<std::uint8_t, 365> calendar_day_table{}, calendar_month_table{};
   friend bool operator==(const Inputs &, const Inputs &) = default;
 };
 struct Counters {
@@ -136,10 +138,21 @@ struct Fixture {
         current::BindFutureDailySupplySchedule12004(kFixtureImageBase, current::kExecutableSha256);
     bindings.source_derived_next_daily_supply_frame_bindings =
         current::BindSourceDerivedNextDailySupplyFrame12004(kFixtureImageBase, current::kExecutableSha256);
-    // This earlier low/D scene has no loaded calendar-table fixture inputs.
-    bindings.source_derived_next_daily_supply_frame_bindings.calendar_day_table = nullptr;
-    bindings.source_derived_next_daily_supply_frame_bindings.calendar_month_table = nullptr;
-    // No optional historical producer or native EXE callback is enabled.
+    const auto &bound = bindings.source_derived_next_daily_supply_frame_bindings;
+    Check(bound.calendar_day_table == reinterpret_cast<const std::uint8_t *>(
+        kFixtureImageBase + current::kCDateCalendarDayTableRva12004) &&
+        bound.calendar_month_table == reinterpret_cast<const std::uint8_t *>(
+        kFixtureImageBase + current::kCDateCalendarMonthTableRva12004),
+        "exact actual4 calendar RIP targets were not bound");
+    // Only two selected bytes are caller-owned fixture inputs. This does not
+    // claim an executable table dump or an observed future game frame.
+    input.calendar_day_table[58] = 28;
+    input.calendar_month_table[58] = 1;
+    bindings.source_derived_next_daily_supply_frame_bindings.calendar_day_table =
+        input.calendar_day_table.data();
+    bindings.source_derived_next_daily_supply_frame_bindings.calendar_month_table =
+        input.calendar_month_table.data();
+    // No native date writer or future effect callback is enabled.
   }
 };
 std::int32_t CurrentSoldiers(void *receiver, std::uint8_t flags) {
@@ -253,6 +266,14 @@ void AssertScene(const Fixture &f, const Inputs &before, const game::ArmyStrengt
       pair.source_derived_next_native_day_index_raw_i32 == 395353 &&
       pair.source_derived_next_native_day_index_raw_i32 != kCurrentD + 1,
       "native source arithmetic changed or was replaced by currentD+1");
+  constexpr auto expected_full_date = (std::int64_t{1083} << 48) |
+      (std::int64_t{1} << 40) | (std::int64_t{28} << 32) | 53288472;
+  Check(pair.source_derived_full_cdate64_ready &&
+      pair.source_derived_next_date_storage_raw64 == expected_full_date &&
+      pair.source_derived_next_calendar_day_u8 == 28 &&
+      pair.source_derived_next_calendar_month_u8 == 1 &&
+      pair.source_derived_next_date_storage_raw64 != kCurrentDateStorage + 24,
+      "full source-derived clock did not use the selected month/day table bytes");
   Check(f.calls.abi_matches && f.calls.current_soldiers == 1 &&
       f.calls.maximum_soldiers == 1 && f.calls.supply_capacity == 1 &&
       f.calls.attrition_fraction == 1 && f.calls.monthly_supply == 1 &&
@@ -265,7 +286,7 @@ void AssertScene(const Fixture &f, const Inputs &before, const game::ArmyStrengt
 std::string SerializeWhole(const game::ArmyStrengthSnapshot &row) {
   std::string wire =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
-      "\"request_id\":\"army-next-frame-source-derived-01\",\"ok\":true,"
+      "\"request_id\":\"army-next-full-cdate64-source-derived-01\",\"ok\":true,"
       "\"result\":{\"step\":\"query-army-strengths-v1\",\"accepted\":true,"
       "\"status\":\"available\",\"query_sequence\":1,\"army_strengths\":[";
   game::AppendArmyStrengthV1(wire, row,
@@ -276,8 +297,8 @@ std::string SerializeWhole(const game::ArmyStrengthSnapshot &row) {
 std::string Context(const Fixture &f, const game::ArmyStrengthSnapshot &row) {
   const auto &pair = *row.source_derived_next_daily_supply_frame_inputs_v1;
   std::string out =
-      "{\"schema\":\"xar.source-derived-next-daily-supply-frame-native-context.v1\","
-      "\"scene\":\"source-derived-next-day-native-row-join\","
+      "{\"schema\":\"xar.source-derived-next-full-cdate64-native-context.v1\","
+      "\"scene\":\"source-derived-next-full-cdate64-native-row-join\","
       "\"producer\":\"ReadArmyStrengthsForScope12004 -> AppendArmyStrengthV1 -> Render12004BuildIdentity\","
       "\"actual4_identity\":{\"backend_id\":";
   AppendString(out, current::kAdapterId);
@@ -290,8 +311,8 @@ std::string Context(const Fixture &f, const game::ArmyStrengthSnapshot &row) {
       "\"date_raw\":53288448,\"paused\":true,\"map_ready\":true,"
       "\"bridge_host_pid\":1200401,\"current_province_id\":1,\"scope_role\":\"player\","
       "\"scope_army_ids\":[16777217],\"war_ids\":[],"
-      "\"transport_connection_id\":\"source-derived-next-daily-supply-frame-12004\","
-      "\"episode_id\":\"source-derived-next-daily-supply-frame-12004\"},"
+      "\"transport_connection_id\":\"source-derived-next-full-cdate64-12004\","
+      "\"episode_id\":\"source-derived-next-full-cdate64-12004\"},"
       "\"heartbeat_published\":false,\"native_inputs\":{\"current_date_storage_raw64\":";
   out += std::to_string(*pair.current_date_storage_raw64);
   out += ",\"current_date_raw_i32\":";
@@ -302,6 +323,13 @@ std::string Context(const Fixture &f, const game::ArmyStrengthSnapshot &row) {
   out += std::to_string(*pair.source_derived_next_date_raw_i32);
   out += ",\"source_derived_next_native_day_index_raw_i32\":";
   out += std::to_string(*pair.source_derived_next_native_day_index_raw_i32);
+  out += ",\"source_derived_next_date_storage_raw64\":";
+  out += std::to_string(*pair.source_derived_next_date_storage_raw64);
+  out += ",\"source_derived_next_calendar_day_u8\":";
+  out += std::to_string(*pair.source_derived_next_calendar_day_u8);
+  out += ",\"source_derived_next_calendar_month_u8\":";
+  out += std::to_string(*pair.source_derived_next_calendar_month_u8);
+  out += ",\"source_derived_full_cdate64_ready\":true";
   out += ",\"current_phase_index_i32\":12,\"current_phase_count_raw_i32\":0,"
       "\"current_phase_matching_positions\":[],\"current_phase_subject_occurrence_count_i32\":0,"
       "\"demanded_next_phase_index_i32\":13,\"next_phase_count_raw_i32\":4,"
@@ -326,6 +354,13 @@ std::string Context(const Fixture &f, const game::ArmyStrengthSnapshot &row) {
     AppendString(out, f.calls.events[i]);
   }
   out += "]},\"all_fixture_input_bytes_unchanged\":true,\"assertions_passed\":true,"
+      "\"calendar_source\":{\"day_table_rva\":\"0x444C4B0\","
+      "\"month_table_rva\":\"0x444C340\",\"calendar_index_i32\":58,"
+      "\"year_quotient_i32\":1083,\"fixture_owned_table_inputs\":true,"
+      "\"selected_day_byte\":28,\"selected_month_byte\":1,"
+      "\"old_month_LEA_reference_captured_raw\":false,"
+      "\"old_month_LEA_reference_origin\":\"reconstructed_from_held_decoded_instruction\","
+      "\"new_month_LEA_actual_read_bytes\":7},"
       "\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false,"
       "\"G2_context_is_metadata_only\":true,\"G2_actual_stored_D_claimed\":false}";
   return out;
@@ -336,7 +371,7 @@ int main(int argc, char **argv) {
   std::filesystem::path output;
   try {
     Check(argc == 3 && std::string_view(argv[1]) == "--wire-dir",
-        "usage: xar_ck3_12004_source_derived_next_daily_supply_frame_whole_test --wire-dir <fresh-dir>");
+        "usage: xar_ck3_12004_source_derived_next_full_cdate64_whole_test --wire-dir <fresh-dir>");
     output = argv[2];
     std::filesystem::create_directories(output);
     auto fixture = std::make_unique<Fixture>();
@@ -355,19 +390,19 @@ int main(int argc, char **argv) {
     Write(output / (std::string(kStem) + ".json"), SerializeWhole(rows.front()));
     Write(output / (std::string(kStem) + "-native-context.json"), Context(*fixture, rows.front()));
     Write(output / "PRODUCER-RECEIPT.json",
-        "{\"schema\":\"xar.source-derived-next-daily-supply-frame-producer-receipt.v1\","
+        "{\"schema\":\"xar.source-derived-next-full-cdate64-producer-receipt.v1\","
         "\"status\":\"PASS\",\"scene_count\":1,\"whole_reader_calls\":1,"
         "\"whole_serializer_calls\":1,\"fixture_owned_objects_and_callbacks\":true,"
         "\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false,"
         "\"old_GREEN_replayed\":false,\"all_fixture_input_bytes_unchanged\":true}");
     active = nullptr;
-    std::cout << "one source-derived next daily supply whole scene emitted\n";
+    std::cout << "one source-derived full CDate64 whole scene emitted\n";
     return 0;
   } catch (const std::exception &error) {
     active = nullptr;
     if (!output.empty()) {
       std::string receipt =
-          "{\"schema\":\"xar.source-derived-next-daily-supply-frame-producer-receipt.v1\","
+          "{\"schema\":\"xar.source-derived-next-full-cdate64-producer-receipt.v1\","
           "\"status\":\"FAIL\",\"scene_count\":1,\"error\":";
       AppendString(receipt, error.what());
       receipt += ",\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false}";

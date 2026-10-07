@@ -1,4 +1,4 @@
-"""SOURCE_PREPARED/NOTRUN: native-produced conditional next date/D input."""
+"""Native-produced conditional next clock pair and optional complete CDate64."""
 from __future__ import annotations
 
 from copy import deepcopy
@@ -21,6 +21,13 @@ _KEYS = {
     "schema_version", "source", "stage", "status", "ready", "unavailable_reason",
     "current_date_storage_raw64", *_I32, *_U32, *_FALSE,
 }
+_FULL_VALUES = (
+    "source_derived_next_date_storage_raw64",
+    "source_derived_next_calendar_day_u8",
+    "source_derived_next_calendar_month_u8",
+)
+_FULL_READY = "source_derived_full_cdate64_ready"
+_EXTENDED_KEYS = _KEYS | {*_FULL_VALUES, _FULL_READY}
 
 
 def _integer(value: object, bits: int, *, unsigned: bool = False) -> bool:
@@ -32,10 +39,10 @@ def normalize_source_derived_next_daily_supply_frame_inputs_v1(
     value: object, *, expected_army_id: int | None = None,
     expected_carmy_id: int | None = None,
 ) -> dict[str, object] | None:
-    """Preserve the same-row native pair; do not calculate or fill future values."""
+    """Preserve closed legacy19/extended23 rows without filling absent native keys."""
     if value is None:
         return None
-    if not isinstance(value, dict) or set(value) != _KEYS:
+    if not isinstance(value, dict) or set(value) not in (_KEYS, _EXTENDED_KEYS):
         raise ValueError("source-derived native next supply frame schema is malformed")
     if type(value["schema_version"]) is not int or value["schema_version"] != 1:
         raise ValueError("source-derived native next supply frame version is malformed")
@@ -67,4 +74,16 @@ def normalize_source_derived_next_daily_supply_frame_inputs_v1(
             raise ValueError("source-derived native next supply frame subject differs from same-query row")
     if ready and any(value[field] is None for field in (*_I32, *_U32, "current_date_storage_raw64")):
         raise ValueError("ready source-derived native next supply frame operands are incomplete")
+    if _FULL_READY in value:
+        full_ready = value[_FULL_READY]
+        if type(full_ready) is not bool:
+            raise ValueError("source-derived complete CDate64 readiness must be boolean")
+        full_storage = value[_FULL_VALUES[0]]
+        if full_storage is not None and not _integer(full_storage, 64):
+            raise ValueError("source-derived complete CDate64 storage must be signed64 or null")
+        for field in _FULL_VALUES[1:]:
+            if value[field] is not None and not _integer(value[field], 8, unsigned=True):
+                raise ValueError(f"source-derived complete CDate64 {field} must be uint8 or null")
+        if full_ready and (not ready or any(value[field] is None for field in _FULL_VALUES)):
+            raise ValueError("ready source-derived complete CDate64 operands are incomplete")
     return deepcopy(value)
