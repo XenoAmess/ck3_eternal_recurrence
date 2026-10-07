@@ -4,6 +4,7 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/phase_event_calendar_observation_v1_serializer.hpp"
 #include "xar_bridge/phase_event_role_compatibility_v1_serializer.hpp"
+#include "xar_bridge/phase_event_commander_trigger_conditions_v1_serializer.hpp"
 #include "xar_bridge/phase_event_commander_side_identity_v1_serializer.hpp"
 #if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
 #include "xar_bridge/ordinary_interaction_mailbox_v1.hpp"
@@ -4054,6 +4055,11 @@ void AppendCombatSimulationInputs(
     result += ",\"phase_event_commander_side_identity_v1\":";
     xar::game::AppendPhaseEventCommanderSideIdentityV1(
         result, *snapshot.phase_event_commander_side_identity_v1);
+  }
+  if (snapshot.phase_event_commander_trigger_conditions_v1) {
+    result += ",\"phase_event_commander_trigger_conditions_v1\":";
+    xar::game::AppendPhaseEventCommanderTriggerConditionsV1(
+        result, *snapshot.phase_event_commander_trigger_conditions_v1);
   }
   result += '}';
 }
