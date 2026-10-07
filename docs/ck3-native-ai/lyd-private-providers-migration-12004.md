@@ -59,3 +59,23 @@ Finite source receipts are preserved externally under
 `private-gui/SOURCE-DELIVERY-001.actual.json`, and `grant/`.
 Failed finite mapping attempts are preserved alongside their successful successors.
 No SDK, CK3, screen, live process, save-body read or build was run by these source authors.
+
+ROOT's first fresh canonical build of historical `27be60e0` failed at link:
+the always-linked .4 religion binder translation units reference 15 functions
+whose shared .2/.3 software readers were selected only by unrelated query
+options. The sparse LYD twelve-option configuration left those implementations
+out. The original failure is preserved in
+`r20-root-native-build-failure-20261007-001/FAILURE.actual.json` (SHA-256
+`31acb400517ab771d444114ea63cbcbd547b2fa4eea19206d52c7b6983053704`).
+
+The successor CMake recipe adds only the 14 existing reader translation units
+that own those symbols and their 14 transitive software dependencies. It
+compares resolved source paths to avoid duplicating readers already supplied
+by general religion options. Mailbox registration, feature options, exact .4
+bindings and business checks are unchanged. Two focused tests configure the
+actual recipe without compiler discovery or a build, covering the sparse
+source set and existing mixed absolute/relative source paths. Their actual
+receipt is `r20-native-link-recovery-sourceonly-20261007-001/`
+`focused-cmake-source-check-004.actual.json` (exit 0). A new ROOT export and
+canonical build must establish whether the real link succeeds; the old failed
+build and its qualification remain RED.

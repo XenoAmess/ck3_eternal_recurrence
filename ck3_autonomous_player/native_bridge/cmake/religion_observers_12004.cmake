@@ -1,4 +1,5 @@
 # Actual .4 binders use the existing software readers and unchanged DTOs.
+include("${CMAKE_CURRENT_LIST_DIR}/religion_shared_readers_12004.cmake")
 target_sources(xar_ck3_12002_runtime PRIVATE
   src/ck3_12004_religion_bindings.cpp)
 
