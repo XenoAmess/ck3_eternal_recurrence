@@ -68,6 +68,7 @@ foreach(target IN ITEMS
     xar_ck3_12004_hired_troop_migration_test
     xar_ck3_12004_ordinary_holy_war_declaration_context_whole_mailbox_test
     ck3_12004_prisoner_collection_test
+    ck3_12004_prisoner_release_material_whole_first
     ck3_12004_prisoner_ransom_action_test
     xar_ck3_12004_sway_whole_producer_test
     xar_ck3_12004_lifestyle_first_v1_test

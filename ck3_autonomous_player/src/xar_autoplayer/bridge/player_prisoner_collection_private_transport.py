@@ -7,6 +7,9 @@ from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import private_native_provenance
+from .prisoner_release_material_opinion_contract_12004 import (
+    normalize_prisoner_release_material_opinion_12004,
+)
 from .prisoner_release_preview_contract_12003 import normalize_prisoner_release_preview_12003
 from .prisoner_native_kinship_contract_12003 import normalize_prisoner_native_kinship_12003
 from .prisoner_negotiated_preview_contract_12003 import (
@@ -60,6 +63,7 @@ def _lineage_id(value: object) -> bool:
 def query_player_prisoner_collection_private_v1(
     driver: object, *, expected_revision: int, ransom_ordinal: int = 0,
     release_option_keys: list[str] | None = None,
+    release_material_target_character_id: int | None = None,
     timeout_seconds: float = 30.0,
 ) -> dict[str, object]:
     if getattr(driver, "allow_private_prisoner_collection_query", False) is not True:
@@ -68,6 +72,11 @@ def query_player_prisoner_collection_private_v1(
         raise ValueError("expected_revision must be a positive integer")
     if type(ransom_ordinal) is not int or not 0 <= ransom_ordinal < 64:
         raise ValueError("ransom_ordinal must be an integer from 0 through 63")
+    if release_material_target_character_id is not None and (
+        type(release_material_target_character_id) is not int
+        or not 0 < release_material_target_character_id < 2**32 - 1
+    ):
+        raise ValueError("release material target must be a positive full character ID")
     release_option_mask_bits = None
     requested_release_option_keys = None
     if release_option_keys is not None:
@@ -93,6 +102,11 @@ def query_player_prisoner_collection_private_v1(
         raise BridgeUnavailableError("prisoner collection requires a living player on a paused map frame")
     request_id = "prisoner-collection-" + uuid.uuid4().hex
     provenance = private_native_provenance(before)
+    if release_material_target_character_id is not None and (
+        provenance.get("exact_ck3_build") != CK3_12004.game_version
+        or release_material_target_character_id == played["character_id"]
+    ):
+        raise BridgeUnavailableError("release material requires an actual4 distinct player-target pair")
     step = STEP if ransom_ordinal == 0 else f"{RANSOM_ORDINAL_STEP_PREFIX}{ransom_ordinal}"
     request = {
         "type": "execute_step", "protocol_version": 1,
@@ -101,6 +115,8 @@ def query_player_prisoner_collection_private_v1(
     }
     if release_option_mask_bits is not None:
         request["release_option_mask_bits"] = release_option_mask_bits
+    if release_material_target_character_id is not None:
+        request["release_material_target_character_id"] = release_material_target_character_id
     driver.endpoint.send(request)
     frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
     if frame is None:
@@ -115,8 +131,11 @@ def query_player_prisoner_collection_private_v1(
             f"private prisoner collection native RED: {native_error}"
         )
     envelope = frame.get("result")
+    expected_envelope_keys = _ENVELOPE_KEYS
+    if release_material_target_character_id is not None:
+        expected_envelope_keys = _ENVELOPE_KEYS | {"prisoner_release_material_opinion"}
     if (
-        not isinstance(envelope, dict) or set(envelope) != _ENVELOPE_KEYS
+        not isinstance(envelope, dict) or set(envelope) != expected_envelope_keys
         or envelope.get("step") != step or envelope.get("accepted") is not True
         or envelope.get("snapshot_revision") != native_revision
         or envelope.get("private_build") is not True
@@ -387,12 +406,23 @@ def query_player_prisoner_collection_private_v1(
             raise BridgeUnavailableError("private prisoner collection unavailable result is malformed")
     else:
         raise BridgeUnavailableError("private prisoner collection status is malformed")
+    if release_material_target_character_id is not None:
+        try:
+            envelope["prisoner_release_material_opinion"] = normalize_prisoner_release_material_opinion_12004(
+                envelope["prisoner_release_material_opinion"], native_revision=native_revision,
+                date_raw=date_raw, player_character_id=played["character_id"],
+                target_character_id=release_material_target_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
     if _binding(driver.take_snapshot()) != _binding(before):
         raise BridgeUnavailableError("private prisoner collection crossed its paused frame")
     result = {**envelope, **provenance,
               "queried_snapshot_id": before.get("snapshot_id"),
               "queried_revision": before.get("revision"),
               "queried_native_revision": native_revision}
+    if release_material_target_character_id is not None:
+        result["queried_release_material_target_character_id"] = release_material_target_character_id
     if release_option_mask_bits is not None:
         result.update({
             "queried_release_option_keys": requested_release_option_keys,
