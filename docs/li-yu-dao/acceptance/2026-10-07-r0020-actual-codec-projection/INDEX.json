@@ -1,0 +1,123 @@
+{
+  "schema": "lyd.r20.actual-codec-projection-small-archive.v1",
+  "entries": [
+    {
+      "name": "SOURCE-INDEX.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\INDEX.json",
+        "bytes": 6396,
+        "sha256": "0b2745fab5275f953119ee48bfcf69a985df61f0feaa76136a3ad1f8ba61330a"
+      },
+      "archived": {
+        "path": "C:\\lci20reader1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0020-actual-codec-projection\\SOURCE-INDEX.json",
+        "bytes": 6396,
+        "sha256": "0b2745fab5275f953119ee48bfcf69a985df61f0feaa76136a3ad1f8ba61330a"
+      }
+    },
+    {
+      "name": "PATCH.diff",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\PATCH.diff",
+        "bytes": 25553,
+        "sha256": "7fdb57ef0aa64a07a9c3932b76fef29ea772b431babcb724f226ebd323f56275"
+      },
+      "archived": {
+        "path": "C:\\lci20reader1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0020-actual-codec-projection\\PATCH.diff",
+        "bytes": 25553,
+        "sha256": "7fdb57ef0aa64a07a9c3932b76fef29ea772b431babcb724f226ebd323f56275"
+      }
+    },
+    {
+      "name": "PREIMAGE.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\PREIMAGE.actual.json",
+        "bytes": 1713,
+        "sha256": "e2d8514b53c67d7b3beed3e75d2cd05dbccfe59d66dffac7940009760b0efb4c"
+      },
+      "archived": {
+        "path": "C:\\lci20reader1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0020-actual-codec-projection\\PREIMAGE.actual.json",
+        "bytes": 1713,
+        "sha256": "e2d8514b53c67d7b3beed3e75d2cd05dbccfe59d66dffac7940009760b0efb4c"
+      }
+    },
+    {
+      "name": "COLD-CODEC-FREEZE-RED.original.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\COLD-CODEC-FREEZE-RED.original.json",
+        "bytes": 1092,
+        "sha256": "e82824399fc4f70599af983a7606d81ce4141c57f4994a9af4aa7dbd5eb283b5"
+      },
+      "archived": {
+        "path": "C:\\lci20reader1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0020-actual-codec-projection\\COLD-CODEC-FREEZE-RED.original.json",
+        "bytes": 1092,
+        "sha256": "e82824399fc4f70599af983a7606d81ce4141c57f4994a9af4aa7dbd5eb283b5"
+      }
+    },
+    {
+      "name": "ACTUAL-CODEC-AST-MATCH.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\ACTUAL-CODEC-AST-MATCH.actual.json",
+        "bytes": 1196,
+        "sha256": "8068bba72c0853b1e4227ea6611b4cadff990a537c2b191a0beca76b9e8501a1"
+      },
+      "archived": {
+        "path": "C:\\lci20reader1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0020-actual-codec-projection\\ACTUAL-CODEC-AST-MATCH.actual.json",
+        "bytes": 1196,
+        "sha256": "8068bba72c0853b1e4227ea6611b4cadff990a537c2b191a0beca76b9e8501a1"
+      }
+    },
+    {
+      "name": "FOCUSED-FAILED.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\focused-001\\RESULT.actual.json",
+        "bytes": 693,
+        "sha256": "b327903427ddad9ddde9f48bd3f74d24f51cd6e1e63a6535d29311819f2702eb"
+      },
+      "archived": {
+        "path": "C:\\lci20reader1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0020-actual-codec-projection\\FOCUSED-FAILED.actual.json",
+        "bytes": 693,
+        "sha256": "b327903427ddad9ddde9f48bd3f74d24f51cd6e1e63a6535d29311819f2702eb"
+      }
+    },
+    {
+      "name": "FOCUSED-FAILED.stderr.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\focused-001\\stderr.raw",
+        "bytes": 10697,
+        "sha256": "4d9bd586e9e6ae792eb314a4decf874f670c44e4a019748a832b614f165da1cd"
+      },
+      "archived": {
+        "path": "C:\\lci20reader1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0020-actual-codec-projection\\FOCUSED-FAILED.stderr.txt",
+        "bytes": 10697,
+        "sha256": "4d9bd586e9e6ae792eb314a4decf874f670c44e4a019748a832b614f165da1cd"
+      }
+    },
+    {
+      "name": "FOCUSED-PASS.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\focused-002\\RESULT.actual.json",
+        "bytes": 693,
+        "sha256": "11272ae9549eb5e24031a05f55b44bb5557cfed384f16eb1afd07d490351e070"
+      },
+      "archived": {
+        "path": "C:\\lci20reader1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0020-actual-codec-projection\\FOCUSED-PASS.actual.json",
+        "bytes": 693,
+        "sha256": "11272ae9549eb5e24031a05f55b44bb5557cfed384f16eb1afd07d490351e070"
+      }
+    },
+    {
+      "name": "FOCUSED-PASS.stderr.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\focused-002\\stderr.raw",
+        "bytes": 8698,
+        "sha256": "2de4861da87208dfbe9ceed7766e1b337c32cda3c4f56c1f40f294047aa4bbf1"
+      },
+      "archived": {
+        "path": "C:\\lci20reader1\\docs\\li-yu-dao\\acceptance\\2026-10-07-r0020-actual-codec-projection\\FOCUSED-PASS.stderr.txt",
+        "bytes": 8698,
+        "sha256": "2de4861da87208dfbe9ceed7766e1b337c32cda3c4f56c1f40f294047aa4bbf1"
+      }
+    }
+  ],
+  "no_live_or_build_credit": true
+}

@@ -1,18 +1,22 @@
-"""Exact pure normalization bodies projected from pinned actual SDK codec; no driver/provider calls."""
 from copy import deepcopy
-from types import SimpleNamespace
-CK3_12003=SimpleNamespace(executable_sha256="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6")
-CK3_12004=SimpleNamespace(executable_sha256="98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")
-SUPPORTED_BUILDS={'1.20.0.3':CK3_12003,'1.20.0.4':CK3_12004}
-TITLE_12004_STATIC_INDEX_SHA='5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d'
+from native_build_identity import CK3_12003, CK3_12004, require_exact_native_build
 
+ACTUAL4_ABI_INDEX_SHA256 = '5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d'
+
+def _query_build(value):
+    build = require_exact_native_build(value.get('game_version'), value.get('executable_sha256'))
+    if build not in (CK3_12003, CK3_12004):
+        raise ValueError('private Confucian query requires an exact .3 or .4 native build')
+    return build
+
+def _operation_backend(legacy_backend, build):
+    return legacy_backend.replace('ck3-1.20.0.3-', 'ck3-' + build.game_version + '-', 1)
 
 def exact_build_identity(version,image):
-    if (type(version)is not str or version not in SUPPORTED_BUILDS
-            or type(image)is not str or image.upper()!=SUPPORTED_BUILDS[version].executable_sha256):
+    if type(version)is not str or type(image)is not str:
         raise ValueError('native exact version/image pair differs')
-    return version,SUPPORTED_BUILDS[version].executable_sha256
-
+    build=_query_build({'game_version':version,'executable_sha256':image})
+    return build.game_version,build.executable_sha256
 
 def snapshot_build_identity(snapshot):
     hello=snapshot['diagnostics']['hello']
@@ -28,42 +32,37 @@ OPERATIONS = {
     'religious_title': ('query-confucian-religious-title-v1',
         'confucian_religious_title_v1', 'ck3-1.20.0.3-native-confucian-religious-title-v1',
         'confucian_religious_title', 'ck3_12003_confucian_religious_title_v1'),
+    'challenger_graph': ('query-confucian-challenger-graph-v1',
+        'confucian_challenger_graph_v1', 'ck3-1.20.0.3-native-confucian-challenger-graph-v1',
+        'confucian_challenger_graph', 'ck3_12003_confucian_challenger_graph_v1'),
 }
-
 
 ENVELOPE_KEYS = {'step','accepted','status','private_build','read_only','advertised',
     'game_version','executable_sha256','domain_key','backend_id','snapshot_revision','date_raw'}
 
-
 PUBLIC_KEYS = {'schema','operation','native_result','queried_snapshot_id','queried_revision',
     'queried_native_revision','date_raw','game_pid','connection_generation','player_character_id',
     'business_postcondition_verified','full_product_acceptance_credit'}
-
 
 def integer(value, low, high, label):
     if type(value) is not int or not low <= value <= high:
         raise ValueError(label+' must be an exact integer in range')
     return value
 
-
 def exact(value, keys, label):
     if type(value) is not dict or set(value) != set(keys):
         raise ValueError(label+' requires exact fields')
     return value
 
-
 def optional(value, kind, label):
     if value is not None and type(value) is not kind:
         raise ValueError(label+' requires its actual type or null')
 
-
 def full_id(value, label):
     return integer(value, 0, 2**32-2, label)
 
-
 def nullable_id(value, label):
     if value is not None: full_id(value,label)
-
 
 def reason(value, required, label):
     if not required:
@@ -72,9 +71,8 @@ def reason(value, required, label):
     if type(value) is not str or not value or len(value)>4096:
         raise ValueError(label+' requires an explicit unavailable reason')
 
-
 def _common_payload(value, schema, binding):
-    exact_build_identity(value.get('game_version'),value.get('executable_sha256'))
+    _query_build(value)
     if value.get('schema')!=schema:
         raise ValueError('native payload exact build/schema differs')
     for name,wanted in (('date_raw',binding['date_raw']),
@@ -86,13 +84,11 @@ def _common_payload(value, schema, binding):
     integer(value.get('capture_epoch'),1,2**64-1,'capture_epoch')
     if type(value.get('available'))is not bool: raise ValueError('available must be an actual bool')
 
-
 def _ids(value,label):
     if type(value)is not list: raise ValueError(label+' requires a complete actual list')
     for item in value: full_id(item,label)
     if len(set(value))!=len(value): raise ValueError(label+' contains duplicate full identities')
     return value
-
 
 def normalize_assembly(value,binding):
     keys={'schema','read_only','game_version','executable_sha256','available','predicates_complete',
@@ -156,7 +152,6 @@ def normalize_assembly(value,binding):
     if value['predicates_complete']is not complete:raise ValueError('overall predicates completeness differs from all rows')
     reason(value['unavailable_reason'],not complete,'assembly')
     return deepcopy(value)
-
 
 def normalize_title(value,binding):
     exact(value,{'schema','game_version','executable_sha256','available','unavailable_reason','capture_epoch',
@@ -239,27 +234,27 @@ def normalize_title(value,binding):
         'title_laws_index_sha256':'9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60',
         'head_getters_index_sha256':'d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973',
         'faith_reference_identity_offset':8,'title_full_id_offset':16,'faith_typed_fallback_slot_rva':'0x5D1E2E0','runtime_acceptance':None}
-    if value['game_version']=='1.20.0.4':
+    if _query_build(value)==CK3_12004:
         for name in ('title_properties_index_sha256','title_laws_index_sha256','head_getters_index_sha256'):
-            expected[name]=TITLE_12004_STATIC_INDEX_SHA
+            expected[name]=ACTUAL4_ABI_INDEX_SHA256
     if any(type(qualification[name])is not type(wanted)or qualification[name]!=wanted for name,wanted in expected.items()):
         raise ValueError('native exact-current static qualification differs')
     return deepcopy(value)
 
-
-def project_native_query(raw,binding,operation):
+def project_native_query(raw,binding,operation,expected_build=None):
     if operation not in OPERATIONS:raise ValueError('unsupported Confucian read operation')
     step,domain,backend,nested,schema=OPERATIONS[operation]
     exact(raw,ENVELOPE_KEYS|{nested},'native Confucian readonly envelope')
-    build=exact_build_identity(raw['game_version'],raw['executable_sha256'])
-    backend=backend.replace('ck3-1.20.0.3-','ck3-'+build[0]+'-',1)
+    build=_query_build(raw)
+    if expected_build is not None and build!=expected_build:
+        raise ValueError('native Confucian envelope differs from its connected build')
     expected={'step':step,'accepted':True,'private_build':True,'read_only':True,'advertised':False,
-        'game_version':build[0],'domain_key':domain,'backend_id':backend,
+        'game_version':build.game_version,'domain_key':domain,'backend_id':_operation_backend(backend,build),
         'snapshot_revision':binding['native_revision'],'date_raw':binding['date_raw']}
     if any(type(raw[name])is not type(wanted)or raw[name]!=wanted for name,wanted in expected.items()):
         raise ValueError('native Confucian envelope differs from actual operation/frame')
-    if exact_build_identity(raw[nested].get('game_version'),raw[nested].get('executable_sha256'))!=build:
-        raise ValueError('native Confucian envelope/payload exact build differs')
+    if _query_build(raw[nested])!=build:
+        raise ValueError('native Confucian payload/envelope build differs')
     value=(normalize_assembly if operation=='assembly_predicates'else normalize_title)(raw[nested],binding)
     if raw['status']!=('observed'if value['available']else'unavailable'):
         raise ValueError('native Confucian envelope availability differs')
@@ -269,7 +264,6 @@ def project_native_query(raw,binding,operation):
         'game_pid':binding['game_pid'],'connection_generation':binding['connection_generation'],
         'player_character_id':binding['played_character_id'],'business_postcondition_verified':False,
         'full_product_acceptance_credit':False}
-
 
 def normalize_public_query(raw,binding,operation):
     exact(raw,PUBLIC_KEYS,'public Confucian readonly result')

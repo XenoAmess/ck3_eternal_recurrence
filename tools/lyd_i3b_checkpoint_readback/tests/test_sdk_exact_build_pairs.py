@@ -39,6 +39,43 @@ def variants():
     return [(strict,old.fixture,old.run),(transition,changing.fixture,changing.convert)]
 
 class ExactBuildPairTests(unittest.TestCase):
+    def test_current_production_codec_passes_lineage_and_checkpoint_transition(self):
+        import sdk_artifact_lineage as lineage
+        import hashlib
+        path=P.parents[1]/'ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py'
+        raw=path.read_bytes();digest=hashlib.sha256(raw).hexdigest()
+        descriptor={'path':str(path),'bytes':len(raw),'sha256':digest}
+        result=lineage.verify_codec_artifact(descriptor,digest)
+        self.assertEqual(len(result['pure_DTO_AST_matches']),12)
+        self.assertTrue(all(result['pure_DTO_AST_matches'].values()))
+        self.assertTrue(all(result['pure_build_helper_AST_matches'].values()))
+        self.assertFalse(result['source_executed'])
+        for version in ('1.20.0.3','1.20.0.4'):
+            with self.subTest(version=version):
+                data=build(changing.fixture(),version)
+                data['provenance'].update(sdk_codec_sha256=digest,sdk_codec_artifact=descriptor)
+                out=changing.convert(data)
+                self.assertEqual(out['G2_status'],'BOUND_COMPLETE_NATIVE_OBSERVATION')
+                self.assertEqual(out['runtime_binding']['sdk_codec_sha256'],digest)
+
+    def test_connected_build_and_changed_required_helper_remain_rejected(self):
+        data=build(old.fixture(),'1.20.0.4')
+        binding=strict.frame_binding(data['checkpoint']['snapshot_after'])
+        raw=data['g2']['result']['native_result']
+        with self.assertRaisesRegex(ValueError,'connected build'):
+            strict.sdk.project_native_query(raw,binding,'assembly_predicates',expected_build=strict.sdk.CK3_12003)
+        from tempfile import TemporaryDirectory
+        import sdk_artifact_lineage as lineage
+        import hashlib
+        with TemporaryDirectory() as tmp:
+            path=Path(tmp)/'changed_helper.py'
+            source=(P/'tests/fixtures/inert_sdk_codec.py').read_bytes()
+            changed=source.replace(b"if build not in (CK3_12003, CK3_12004):",b"if False:")
+            self.assertNotEqual(source,changed)
+            path.write_bytes(changed);digest=hashlib.sha256(changed).hexdigest()
+            with self.assertRaisesRegex(ValueError,'build helper AST'):
+                lineage.verify_codec_artifact({'path':str(path),'bytes':len(changed),'sha256':digest},digest)
+
     def test_old_and_new_full_checkpoint_paths_keep_wire_and_unknown_credit(self):
         for seam,factory,run in variants():
             for version in ('1.20.0.3','1.20.0.4'):

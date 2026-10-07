@@ -158,7 +158,7 @@ class ArtifactLineageTests(unittest.TestCase):
         self.assertTrue(binding['sdk_codec_DTO_AST']['all_12_match'])
         self.assertFalse(binding['sdk_codec_DTO_AST']['source_executed'])
     def test_changed_DTO_signature_rejected(self):
-        raw=Path(codec['path']).read_bytes().replace(b'def project_native_query(raw,binding,operation):',b'def project_native_query(raw,binding,operation,faith_full_ids=None):')
+        raw=Path(codec['path']).read_bytes().replace(b'def project_native_query(raw,binding,operation,expected_build=None):',b'def project_native_query(raw,binding,operation,expected_build=None,faith_full_ids=None):')
         desc=self.codec_source(raw)
         with self.assertRaisesRegex(ValueError,'project_native_query'):
             lineage.verify_codec_artifact(desc,desc['sha256'])

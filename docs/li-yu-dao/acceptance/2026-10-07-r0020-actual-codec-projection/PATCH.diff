@@ -1,0 +1,439 @@
+diff --git a/tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py b/tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py
+index aeaebd713..2bbc7e287 100644
+--- a/tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py
++++ b/tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py
+@@ -1,18 +1,22 @@
+-"""Exact pure normalization bodies projected from pinned actual SDK codec; no driver/provider calls."""
+ from copy import deepcopy
+-from types import SimpleNamespace
+-CK3_12003=SimpleNamespace(executable_sha256="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6")
+-CK3_12004=SimpleNamespace(executable_sha256="98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")
+-SUPPORTED_BUILDS={'1.20.0.3':CK3_12003,'1.20.0.4':CK3_12004}
+-TITLE_12004_STATIC_INDEX_SHA='5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d'
++from native_build_identity import CK3_12003, CK3_12004, require_exact_native_build
+ 
++ACTUAL4_ABI_INDEX_SHA256 = '5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d'
++
++def _query_build(value):
++    build = require_exact_native_build(value.get('game_version'), value.get('executable_sha256'))
++    if build not in (CK3_12003, CK3_12004):
++        raise ValueError('private Confucian query requires an exact .3 or .4 native build')
++    return build
++
++def _operation_backend(legacy_backend, build):
++    return legacy_backend.replace('ck3-1.20.0.3-', 'ck3-' + build.game_version + '-', 1)
+ 
+ def exact_build_identity(version,image):
+-    if (type(version)is not str or version not in SUPPORTED_BUILDS
+-            or type(image)is not str or image.upper()!=SUPPORTED_BUILDS[version].executable_sha256):
++    if type(version)is not str or type(image)is not str:
+         raise ValueError('native exact version/image pair differs')
+-    return version,SUPPORTED_BUILDS[version].executable_sha256
+-
++    build=_query_build({'game_version':version,'executable_sha256':image})
++    return build.game_version,build.executable_sha256
+ 
+ def snapshot_build_identity(snapshot):
+     hello=snapshot['diagnostics']['hello']
+@@ -28,43 +32,38 @@ OPERATIONS = {
+     'religious_title': ('query-confucian-religious-title-v1',
+         'confucian_religious_title_v1', 'ck3-1.20.0.3-native-confucian-religious-title-v1',
+         'confucian_religious_title', 'ck3_12003_confucian_religious_title_v1'),
++    'challenger_graph': ('query-confucian-challenger-graph-v1',
++        'confucian_challenger_graph_v1', 'ck3-1.20.0.3-native-confucian-challenger-graph-v1',
++        'confucian_challenger_graph', 'ck3_12003_confucian_challenger_graph_v1'),
+ }
+ 
+-
+ ENVELOPE_KEYS = {'step','accepted','status','private_build','read_only','advertised',
+     'game_version','executable_sha256','domain_key','backend_id','snapshot_revision','date_raw'}
+ 
+-
+ PUBLIC_KEYS = {'schema','operation','native_result','queried_snapshot_id','queried_revision',
+     'queried_native_revision','date_raw','game_pid','connection_generation','player_character_id',
+     'business_postcondition_verified','full_product_acceptance_credit'}
+ 
+-
+ def integer(value, low, high, label):
+     if type(value) is not int or not low <= value <= high:
+         raise ValueError(label+' must be an exact integer in range')
+     return value
+ 
+-
+ def exact(value, keys, label):
+     if type(value) is not dict or set(value) != set(keys):
+         raise ValueError(label+' requires exact fields')
+     return value
+ 
+-
+ def optional(value, kind, label):
+     if value is not None and type(value) is not kind:
+         raise ValueError(label+' requires its actual type or null')
+ 
+-
+ def full_id(value, label):
+     return integer(value, 0, 2**32-2, label)
+ 
+-
+ def nullable_id(value, label):
+     if value is not None: full_id(value,label)
+ 
+-
+ def reason(value, required, label):
+     if not required:
+         if value is not None:raise ValueError(label+' must have null reason when complete')
+@@ -72,9 +71,8 @@ def reason(value, required, label):
+     if type(value) is not str or not value or len(value)>4096:
+         raise ValueError(label+' requires an explicit unavailable reason')
+ 
+-
+ def _common_payload(value, schema, binding):
+-    exact_build_identity(value.get('game_version'),value.get('executable_sha256'))
++    _query_build(value)
+     if value.get('schema')!=schema:
+         raise ValueError('native payload exact build/schema differs')
+     for name,wanted in (('date_raw',binding['date_raw']),
+@@ -86,14 +84,12 @@ def _common_payload(value, schema, binding):
+     integer(value.get('capture_epoch'),1,2**64-1,'capture_epoch')
+     if type(value.get('available'))is not bool: raise ValueError('available must be an actual bool')
+ 
+-
+ def _ids(value,label):
+     if type(value)is not list: raise ValueError(label+' requires a complete actual list')
+     for item in value: full_id(item,label)
+     if len(set(value))!=len(value): raise ValueError(label+' contains duplicate full identities')
+     return value
+ 
+-
+ def normalize_assembly(value,binding):
+     keys={'schema','read_only','game_version','executable_sha256','available','predicates_complete',
+         'unavailable_reason','capture_epoch','date_raw','played_character_id','faith_id','played_rite_id',
+@@ -157,7 +153,6 @@ def normalize_assembly(value,binding):
+     reason(value['unavailable_reason'],not complete,'assembly')
+     return deepcopy(value)
+ 
+-
+ def normalize_title(value,binding):
+     exact(value,{'schema','game_version','executable_sha256','available','unavailable_reason','capture_epoch',
+         'date_raw','played_character_id','played_character_full_id','graph_available','graph_unavailable_reason',
+@@ -239,27 +234,27 @@ def normalize_title(value,binding):
+         'title_laws_index_sha256':'9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60',
+         'head_getters_index_sha256':'d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973',
+         'faith_reference_identity_offset':8,'title_full_id_offset':16,'faith_typed_fallback_slot_rva':'0x5D1E2E0','runtime_acceptance':None}
+-    if value['game_version']=='1.20.0.4':
++    if _query_build(value)==CK3_12004:
+         for name in ('title_properties_index_sha256','title_laws_index_sha256','head_getters_index_sha256'):
+-            expected[name]=TITLE_12004_STATIC_INDEX_SHA
++            expected[name]=ACTUAL4_ABI_INDEX_SHA256
+     if any(type(qualification[name])is not type(wanted)or qualification[name]!=wanted for name,wanted in expected.items()):
+         raise ValueError('native exact-current static qualification differs')
+     return deepcopy(value)
+ 
+-
+-def project_native_query(raw,binding,operation):
++def project_native_query(raw,binding,operation,expected_build=None):
+     if operation not in OPERATIONS:raise ValueError('unsupported Confucian read operation')
+     step,domain,backend,nested,schema=OPERATIONS[operation]
+     exact(raw,ENVELOPE_KEYS|{nested},'native Confucian readonly envelope')
+-    build=exact_build_identity(raw['game_version'],raw['executable_sha256'])
+-    backend=backend.replace('ck3-1.20.0.3-','ck3-'+build[0]+'-',1)
++    build=_query_build(raw)
++    if expected_build is not None and build!=expected_build:
++        raise ValueError('native Confucian envelope differs from its connected build')
+     expected={'step':step,'accepted':True,'private_build':True,'read_only':True,'advertised':False,
+-        'game_version':build[0],'domain_key':domain,'backend_id':backend,
++        'game_version':build.game_version,'domain_key':domain,'backend_id':_operation_backend(backend,build),
+         'snapshot_revision':binding['native_revision'],'date_raw':binding['date_raw']}
+     if any(type(raw[name])is not type(wanted)or raw[name]!=wanted for name,wanted in expected.items()):
+         raise ValueError('native Confucian envelope differs from actual operation/frame')
+-    if exact_build_identity(raw[nested].get('game_version'),raw[nested].get('executable_sha256'))!=build:
+-        raise ValueError('native Confucian envelope/payload exact build differs')
++    if _query_build(raw[nested])!=build:
++        raise ValueError('native Confucian payload/envelope build differs')
+     value=(normalize_assembly if operation=='assembly_predicates'else normalize_title)(raw[nested],binding)
+     if raw['status']!=('observed'if value['available']else'unavailable'):
+         raise ValueError('native Confucian envelope availability differs')
+@@ -270,7 +265,6 @@ def project_native_query(raw,binding,operation):
+         'player_character_id':binding['played_character_id'],'business_postcondition_verified':False,
+         'full_product_acceptance_credit':False}
+ 
+-
+ def normalize_public_query(raw,binding,operation):
+     exact(raw,PUBLIC_KEYS,'public Confucian readonly result')
+     projected=project_native_query(raw['native_result'],binding,operation)
+diff --git a/tools/lyd_i3b_checkpoint_readback/reader/sdk_artifact_lineage.py b/tools/lyd_i3b_checkpoint_readback/reader/sdk_artifact_lineage.py
+index b35f15b66..80f6655c7 100644
+--- a/tools/lyd_i3b_checkpoint_readback/reader/sdk_artifact_lineage.py
++++ b/tools/lyd_i3b_checkpoint_readback/reader/sdk_artifact_lineage.py
+@@ -7,7 +7,9 @@ import re
+ from pathlib import Path
+ 
+ FROZEN_CODEC_CONTRACT_SHA256 = 'a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969'
+-FROZEN_DTO_PRIMITIVES_SHA256 = '4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee'
++FROZEN_DTO_PRIMITIVES_SHA256 = '39c6b004baf91a79db9beaa991a3a4a462ce81418f58b3a7f78c86805f935944'
++FROZEN_BUILD_IDENTITY_SHA256 = '9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086'
++PURE_BUILD_HELPERS = ('_query_build', '_operation_backend')
+ FROZEN_METADATA_PROJECTION_SHA256 = '422f55005412f68b24ded177e63ba616a35a2c74a2982d0559eb704327e6803a'
+ PURE_DTO_FUNCTIONS = (
+     'integer', 'exact', 'optional', 'full_id', 'nullable_id', 'reason',
+@@ -23,14 +25,14 @@ def need(ok, message):
+ def sha(data):
+     return hashlib.sha256(data).hexdigest()
+ 
+-def _functions(data, label):
++def _functions(data, label, names=PURE_DTO_FUNCTIONS):
+     tree = ast.parse(data.decode('utf-8-sig'), filename=label)
+     result = {}
+     for node in tree.body:
+-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in PURE_DTO_FUNCTIONS:
++        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in names:
+             need(node.name not in result, 'duplicate pure DTO function ' + node.name)
+             result[node.name] = node
+-    need(set(result) == set(PURE_DTO_FUNCTIONS), 'missing exact pure DTO functions')
++    need(set(result) == set(names), 'missing exact pure DTO functions')
+     return result
+ 
+ def verify_codec_artifact(descriptor, declared_sha256):
+@@ -49,10 +51,18 @@ def verify_codec_artifact(descriptor, declared_sha256):
+     actual, frozen = _functions(raw, 'actual SDK codec'), _functions(fixed_raw, 'frozen DTO projection')
+     matches = {name: ast.dump(actual[name], include_attributes=False) == ast.dump(frozen[name], include_attributes=False) for name in PURE_DTO_FUNCTIONS}
+     need(all(matches.values()), 'actual SDK pure DTO AST differs: ' + ','.join(name for name, match in matches.items() if not match))
++    actual_helpers = _functions(raw, 'actual SDK build helpers', PURE_BUILD_HELPERS)
++    frozen_helpers = _functions(fixed_raw, 'frozen build helpers', PURE_BUILD_HELPERS)
++    helper_matches = {name: ast.dump(actual_helpers[name], include_attributes=False) == ast.dump(frozen_helpers[name], include_attributes=False) for name in PURE_BUILD_HELPERS}
++    need(all(helper_matches.values()), 'actual SDK build helper AST differs')
++    build_identity_raw = (fixed_path.parent / 'native_build_identity.py').read_bytes()
++    need(sha(build_identity_raw) == FROZEN_BUILD_IDENTITY_SHA256, 'frozen exact build identity bytes changed')
+     return {'actual_artifact': dict(descriptor), 'actual_sha256': declared_sha256,
+             'frozen_codec_contract_sha256': FROZEN_CODEC_CONTRACT_SHA256,
+             'frozen_primitives_sha256': FROZEN_DTO_PRIMITIVES_SHA256,
+             'pure_DTO_AST_matches': matches, 'all_12_match': True,
++            'pure_build_helper_AST_matches': helper_matches,
++            'frozen_build_identity_sha256': FROZEN_BUILD_IDENTITY_SHA256,
+             'source_executed': False, 'actual_acceptance_credit': None}
+ 
+ def verify_metadata_artifact(metadata, descriptor, declared_sha256):
+diff --git a/tools/lyd_i3b_checkpoint_readback/tests/fixtures/inert_sdk_codec.py b/tools/lyd_i3b_checkpoint_readback/tests/fixtures/inert_sdk_codec.py
+index aeaebd713..2bbc7e287 100644
+--- a/tools/lyd_i3b_checkpoint_readback/tests/fixtures/inert_sdk_codec.py
++++ b/tools/lyd_i3b_checkpoint_readback/tests/fixtures/inert_sdk_codec.py
+@@ -1,18 +1,22 @@
+-"""Exact pure normalization bodies projected from pinned actual SDK codec; no driver/provider calls."""
+ from copy import deepcopy
+-from types import SimpleNamespace
+-CK3_12003=SimpleNamespace(executable_sha256="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6")
+-CK3_12004=SimpleNamespace(executable_sha256="98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")
+-SUPPORTED_BUILDS={'1.20.0.3':CK3_12003,'1.20.0.4':CK3_12004}
+-TITLE_12004_STATIC_INDEX_SHA='5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d'
++from native_build_identity import CK3_12003, CK3_12004, require_exact_native_build
+ 
++ACTUAL4_ABI_INDEX_SHA256 = '5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d'
++
++def _query_build(value):
++    build = require_exact_native_build(value.get('game_version'), value.get('executable_sha256'))
++    if build not in (CK3_12003, CK3_12004):
++        raise ValueError('private Confucian query requires an exact .3 or .4 native build')
++    return build
++
++def _operation_backend(legacy_backend, build):
++    return legacy_backend.replace('ck3-1.20.0.3-', 'ck3-' + build.game_version + '-', 1)
+ 
+ def exact_build_identity(version,image):
+-    if (type(version)is not str or version not in SUPPORTED_BUILDS
+-            or type(image)is not str or image.upper()!=SUPPORTED_BUILDS[version].executable_sha256):
++    if type(version)is not str or type(image)is not str:
+         raise ValueError('native exact version/image pair differs')
+-    return version,SUPPORTED_BUILDS[version].executable_sha256
+-
++    build=_query_build({'game_version':version,'executable_sha256':image})
++    return build.game_version,build.executable_sha256
+ 
+ def snapshot_build_identity(snapshot):
+     hello=snapshot['diagnostics']['hello']
+@@ -28,43 +32,38 @@ OPERATIONS = {
+     'religious_title': ('query-confucian-religious-title-v1',
+         'confucian_religious_title_v1', 'ck3-1.20.0.3-native-confucian-religious-title-v1',
+         'confucian_religious_title', 'ck3_12003_confucian_religious_title_v1'),
++    'challenger_graph': ('query-confucian-challenger-graph-v1',
++        'confucian_challenger_graph_v1', 'ck3-1.20.0.3-native-confucian-challenger-graph-v1',
++        'confucian_challenger_graph', 'ck3_12003_confucian_challenger_graph_v1'),
+ }
+ 
+-
+ ENVELOPE_KEYS = {'step','accepted','status','private_build','read_only','advertised',
+     'game_version','executable_sha256','domain_key','backend_id','snapshot_revision','date_raw'}
+ 
+-
+ PUBLIC_KEYS = {'schema','operation','native_result','queried_snapshot_id','queried_revision',
+     'queried_native_revision','date_raw','game_pid','connection_generation','player_character_id',
+     'business_postcondition_verified','full_product_acceptance_credit'}
+ 
+-
+ def integer(value, low, high, label):
+     if type(value) is not int or not low <= value <= high:
+         raise ValueError(label+' must be an exact integer in range')
+     return value
+ 
+-
+ def exact(value, keys, label):
+     if type(value) is not dict or set(value) != set(keys):
+         raise ValueError(label+' requires exact fields')
+     return value
+ 
+-
+ def optional(value, kind, label):
+     if value is not None and type(value) is not kind:
+         raise ValueError(label+' requires its actual type or null')
+ 
+-
+ def full_id(value, label):
+     return integer(value, 0, 2**32-2, label)
+ 
+-
+ def nullable_id(value, label):
+     if value is not None: full_id(value,label)
+ 
+-
+ def reason(value, required, label):
+     if not required:
+         if value is not None:raise ValueError(label+' must have null reason when complete')
+@@ -72,9 +71,8 @@ def reason(value, required, label):
+     if type(value) is not str or not value or len(value)>4096:
+         raise ValueError(label+' requires an explicit unavailable reason')
+ 
+-
+ def _common_payload(value, schema, binding):
+-    exact_build_identity(value.get('game_version'),value.get('executable_sha256'))
++    _query_build(value)
+     if value.get('schema')!=schema:
+         raise ValueError('native payload exact build/schema differs')
+     for name,wanted in (('date_raw',binding['date_raw']),
+@@ -86,14 +84,12 @@ def _common_payload(value, schema, binding):
+     integer(value.get('capture_epoch'),1,2**64-1,'capture_epoch')
+     if type(value.get('available'))is not bool: raise ValueError('available must be an actual bool')
+ 
+-
+ def _ids(value,label):
+     if type(value)is not list: raise ValueError(label+' requires a complete actual list')
+     for item in value: full_id(item,label)
+     if len(set(value))!=len(value): raise ValueError(label+' contains duplicate full identities')
+     return value
+ 
+-
+ def normalize_assembly(value,binding):
+     keys={'schema','read_only','game_version','executable_sha256','available','predicates_complete',
+         'unavailable_reason','capture_epoch','date_raw','played_character_id','faith_id','played_rite_id',
+@@ -157,7 +153,6 @@ def normalize_assembly(value,binding):
+     reason(value['unavailable_reason'],not complete,'assembly')
+     return deepcopy(value)
+ 
+-
+ def normalize_title(value,binding):
+     exact(value,{'schema','game_version','executable_sha256','available','unavailable_reason','capture_epoch',
+         'date_raw','played_character_id','played_character_full_id','graph_available','graph_unavailable_reason',
+@@ -239,27 +234,27 @@ def normalize_title(value,binding):
+         'title_laws_index_sha256':'9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60',
+         'head_getters_index_sha256':'d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973',
+         'faith_reference_identity_offset':8,'title_full_id_offset':16,'faith_typed_fallback_slot_rva':'0x5D1E2E0','runtime_acceptance':None}
+-    if value['game_version']=='1.20.0.4':
++    if _query_build(value)==CK3_12004:
+         for name in ('title_properties_index_sha256','title_laws_index_sha256','head_getters_index_sha256'):
+-            expected[name]=TITLE_12004_STATIC_INDEX_SHA
++            expected[name]=ACTUAL4_ABI_INDEX_SHA256
+     if any(type(qualification[name])is not type(wanted)or qualification[name]!=wanted for name,wanted in expected.items()):
+         raise ValueError('native exact-current static qualification differs')
+     return deepcopy(value)
+ 
+-
+-def project_native_query(raw,binding,operation):
++def project_native_query(raw,binding,operation,expected_build=None):
+     if operation not in OPERATIONS:raise ValueError('unsupported Confucian read operation')
+     step,domain,backend,nested,schema=OPERATIONS[operation]
+     exact(raw,ENVELOPE_KEYS|{nested},'native Confucian readonly envelope')
+-    build=exact_build_identity(raw['game_version'],raw['executable_sha256'])
+-    backend=backend.replace('ck3-1.20.0.3-','ck3-'+build[0]+'-',1)
++    build=_query_build(raw)
++    if expected_build is not None and build!=expected_build:
++        raise ValueError('native Confucian envelope differs from its connected build')
+     expected={'step':step,'accepted':True,'private_build':True,'read_only':True,'advertised':False,
+-        'game_version':build[0],'domain_key':domain,'backend_id':backend,
++        'game_version':build.game_version,'domain_key':domain,'backend_id':_operation_backend(backend,build),
+         'snapshot_revision':binding['native_revision'],'date_raw':binding['date_raw']}
+     if any(type(raw[name])is not type(wanted)or raw[name]!=wanted for name,wanted in expected.items()):
+         raise ValueError('native Confucian envelope differs from actual operation/frame')
+-    if exact_build_identity(raw[nested].get('game_version'),raw[nested].get('executable_sha256'))!=build:
+-        raise ValueError('native Confucian envelope/payload exact build differs')
++    if _query_build(raw[nested])!=build:
++        raise ValueError('native Confucian payload/envelope build differs')
+     value=(normalize_assembly if operation=='assembly_predicates'else normalize_title)(raw[nested],binding)
+     if raw['status']!=('observed'if value['available']else'unavailable'):
+         raise ValueError('native Confucian envelope availability differs')
+@@ -270,7 +265,6 @@ def project_native_query(raw,binding,operation):
+         'player_character_id':binding['played_character_id'],'business_postcondition_verified':False,
+         'full_product_acceptance_credit':False}
+ 
+-
+ def normalize_public_query(raw,binding,operation):
+     exact(raw,PUBLIC_KEYS,'public Confucian readonly result')
+     projected=project_native_query(raw['native_result'],binding,operation)
+diff --git a/tools/lyd_i3b_checkpoint_readback/tests/test_checkpoint_transition_v2.py b/tools/lyd_i3b_checkpoint_readback/tests/test_checkpoint_transition_v2.py
+index 747a53a7b..4c97db501 100644
+--- a/tools/lyd_i3b_checkpoint_readback/tests/test_checkpoint_transition_v2.py
++++ b/tools/lyd_i3b_checkpoint_readback/tests/test_checkpoint_transition_v2.py
+@@ -158,7 +158,7 @@ class ArtifactLineageTests(unittest.TestCase):
+         self.assertTrue(binding['sdk_codec_DTO_AST']['all_12_match'])
+         self.assertFalse(binding['sdk_codec_DTO_AST']['source_executed'])
+     def test_changed_DTO_signature_rejected(self):
+-        raw=Path(codec['path']).read_bytes().replace(b'def project_native_query(raw,binding,operation):',b'def project_native_query(raw,binding,operation,faith_full_ids=None):')
++        raw=Path(codec['path']).read_bytes().replace(b'def project_native_query(raw,binding,operation,expected_build=None):',b'def project_native_query(raw,binding,operation,expected_build=None,faith_full_ids=None):')
+         desc=self.codec_source(raw)
+         with self.assertRaisesRegex(ValueError,'project_native_query'):
+             lineage.verify_codec_artifact(desc,desc['sha256'])
+diff --git a/tools/lyd_i3b_checkpoint_readback/tests/test_sdk_exact_build_pairs.py b/tools/lyd_i3b_checkpoint_readback/tests/test_sdk_exact_build_pairs.py
+index fc8bca0db..365f3e6b7 100644
+--- a/tools/lyd_i3b_checkpoint_readback/tests/test_sdk_exact_build_pairs.py
++++ b/tools/lyd_i3b_checkpoint_readback/tests/test_sdk_exact_build_pairs.py
+@@ -39,6 +39,43 @@ def variants():
+     return [(strict,old.fixture,old.run),(transition,changing.fixture,changing.convert)]
+ 
+ class ExactBuildPairTests(unittest.TestCase):
++    def test_current_production_codec_passes_lineage_and_checkpoint_transition(self):
++        import sdk_artifact_lineage as lineage
++        import hashlib
++        path=P.parents[1]/'ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py'
++        raw=path.read_bytes();digest=hashlib.sha256(raw).hexdigest()
++        descriptor={'path':str(path),'bytes':len(raw),'sha256':digest}
++        result=lineage.verify_codec_artifact(descriptor,digest)
++        self.assertEqual(len(result['pure_DTO_AST_matches']),12)
++        self.assertTrue(all(result['pure_DTO_AST_matches'].values()))
++        self.assertTrue(all(result['pure_build_helper_AST_matches'].values()))
++        self.assertFalse(result['source_executed'])
++        for version in ('1.20.0.3','1.20.0.4'):
++            with self.subTest(version=version):
++                data=build(changing.fixture(),version)
++                data['provenance'].update(sdk_codec_sha256=digest,sdk_codec_artifact=descriptor)
++                out=changing.convert(data)
++                self.assertEqual(out['G2_status'],'BOUND_COMPLETE_NATIVE_OBSERVATION')
++                self.assertEqual(out['runtime_binding']['sdk_codec_sha256'],digest)
++
++    def test_connected_build_and_changed_required_helper_remain_rejected(self):
++        data=build(old.fixture(),'1.20.0.4')
++        binding=strict.frame_binding(data['checkpoint']['snapshot_after'])
++        raw=data['g2']['result']['native_result']
++        with self.assertRaisesRegex(ValueError,'connected build'):
++            strict.sdk.project_native_query(raw,binding,'assembly_predicates',expected_build=strict.sdk.CK3_12003)
++        from tempfile import TemporaryDirectory
++        import sdk_artifact_lineage as lineage
++        import hashlib
++        with TemporaryDirectory() as tmp:
++            path=Path(tmp)/'changed_helper.py'
++            source=(P/'tests/fixtures/inert_sdk_codec.py').read_bytes()
++            changed=source.replace(b"if build not in (CK3_12003, CK3_12004):",b"if False:")
++            self.assertNotEqual(source,changed)
++            path.write_bytes(changed);digest=hashlib.sha256(changed).hexdigest()
++            with self.assertRaisesRegex(ValueError,'build helper AST'):
++                lineage.verify_codec_artifact({'path':str(path),'bytes':len(changed),'sha256':digest},digest)
++
+     def test_old_and_new_full_checkpoint_paths_keep_wire_and_unknown_credit(self):
+         for seam,factory,run in variants():
+             for version in ('1.20.0.3','1.20.0.4'):

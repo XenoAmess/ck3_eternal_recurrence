@@ -1,0 +1,36 @@
+{
+  "actual_head": "27be60e032bd93cd1200efb2e3e50183482bd5f0",
+  "sources": {
+    "trusted": {
+      "path": "C:/lr20s1/tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py",
+      "bytes": 19316,
+      "sha256": "4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee"
+    },
+    "actual": {
+      "path": "C:/lr20s1/ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+      "bytes": 24757,
+      "sha256": "33ee4cd98deff01d48b512d6ba77fd318accdd6a8c914a3437515522136e0881"
+    }
+  },
+  "12ASTmatches": {
+    "integer": true,
+    "exact": true,
+    "optional": true,
+    "full_id": true,
+    "nullable_id": true,
+    "reason": true,
+    "_common_payload": false,
+    "_ids": true,
+    "normalize_assembly": true,
+    "normalize_title": false,
+    "project_native_query": false,
+    "normalize_public_query": true
+  },
+  "all_12_match": false,
+  "new_source_ready": false,
+  "metadata": null,
+  "SDK_calls": 0,
+  "save_body_reads": 0,
+  "main_writes": 0,
+  "whole_product_PASS": null
+}

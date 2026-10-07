@@ -1,0 +1,40 @@
+{
+  "head": "fd282d12f95f1abd6c85919229702783fd55ddf4",
+  "rows": [
+    {
+      "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\confucian_dto_primitives.py",
+      "bytes": 19316,
+      "sha256": "4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee"
+    },
+    {
+      "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\tests\\fixtures\\inert_sdk_codec.py",
+      "bytes": 19316,
+      "sha256": "4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee"
+    },
+    {
+      "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\reader\\sdk_artifact_lineage.py",
+      "bytes": 5110,
+      "sha256": "b5451484b6c931dda0301988010526a0afc5d04b943b63e1f1cc2710ffcb81ed"
+    },
+    {
+      "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\tests\\test_checkpoint_transition_v2.py",
+      "bytes": 18959,
+      "sha256": "5bbdfbed6f76a81203e642b6144c66cb18afbcc6110a4d2fbf2a79ad12cdf1b0"
+    },
+    {
+      "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\tests\\test_sdk_exact_build_pairs.py",
+      "bytes": 6159,
+      "sha256": "ca2fd991b59f0b2e97dbcc8b30dc774e902ced3c9b260788f4a2840acb4955c9"
+    },
+    {
+      "path": "C:\\lci20reader1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\confucian_readonly_private_v1.py",
+      "bytes": 24757,
+      "sha256": "33ee4cd98deff01d48b512d6ba77fd318accdd6a8c914a3437515522136e0881"
+    },
+    {
+      "path": "C:\\lci20reader1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\version_identity.py",
+      "bytes": 2114,
+      "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+    }
+  ]
+}

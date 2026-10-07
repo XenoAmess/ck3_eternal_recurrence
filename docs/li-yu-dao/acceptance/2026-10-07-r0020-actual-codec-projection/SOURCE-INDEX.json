@@ -1,0 +1,120 @@
+{
+  "schema": "lyd.r20.actual-codec-projection-source.v1",
+  "status": "SOURCE_TESTED_ONLY",
+  "base_head": "fd282d12f95f1abd6c85919229702783fd55ddf4",
+  "actual_production_codec": {
+    "path": "C:\\lci20reader1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\confucian_readonly_private_v1.py",
+    "bytes": 24757,
+    "sha256": "33ee4cd98deff01d48b512d6ba77fd318accdd6a8c914a3437515522136e0881"
+  },
+  "actual_source_build_identity": {
+    "path": "C:\\lci20reader1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\version_identity.py",
+    "bytes": 2114,
+    "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+  },
+  "cold_original_RED": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-codec12-actual-export-diff-sourceonly-20261007-001\\REPORT.json",
+    "bytes": 1092,
+    "sha256": "e82824399fc4f70599af983a7606d81ce4141c57f4994a9af4aa7dbd5eb283b5"
+  },
+  "source_files": [
+    {
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/confucian_dto_primitives.py",
+      "tested_source": {
+        "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\confucian_dto_primitives.py",
+        "bytes": 19519,
+        "sha256": "39c6b004baf91a79db9beaa991a3a4a462ce81418f58b3a7f78c86805f935944"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\confucian_dto_primitives.py",
+        "bytes": 19519,
+        "sha256": "39c6b004baf91a79db9beaa991a3a4a462ce81418f58b3a7f78c86805f935944"
+      }
+    },
+    {
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/native_build_identity.py",
+      "tested_source": {
+        "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\native_build_identity.py",
+        "bytes": 2114,
+        "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\native_build_identity.py",
+        "bytes": 2114,
+        "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+      }
+    },
+    {
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/reader/sdk_artifact_lineage.py",
+      "tested_source": {
+        "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\reader\\sdk_artifact_lineage.py",
+        "bytes": 6028,
+        "sha256": "b7bcbfc371d7a3f6601f1231aae0e25b96e8d456c71f17d6ddab29d026f7bb37"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\reader\\sdk_artifact_lineage.py",
+        "bytes": 6028,
+        "sha256": "b7bcbfc371d7a3f6601f1231aae0e25b96e8d456c71f17d6ddab29d026f7bb37"
+      }
+    },
+    {
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/tests/fixtures/inert_sdk_codec.py",
+      "tested_source": {
+        "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\tests\\fixtures\\inert_sdk_codec.py",
+        "bytes": 19519,
+        "sha256": "39c6b004baf91a79db9beaa991a3a4a462ce81418f58b3a7f78c86805f935944"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\tests\\fixtures\\inert_sdk_codec.py",
+        "bytes": 19519,
+        "sha256": "39c6b004baf91a79db9beaa991a3a4a462ce81418f58b3a7f78c86805f935944"
+      }
+    },
+    {
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/tests/test_checkpoint_transition_v2.py",
+      "tested_source": {
+        "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\tests\\test_checkpoint_transition_v2.py",
+        "bytes": 18999,
+        "sha256": "d25461114535760a3d32f87e4ffccc824a41bde070da106af8e2ac295317f4b6"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\tests\\test_checkpoint_transition_v2.py",
+        "bytes": 18999,
+        "sha256": "d25461114535760a3d32f87e4ffccc824a41bde070da106af8e2ac295317f4b6"
+      }
+    },
+    {
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/tests/test_sdk_exact_build_pairs.py",
+      "tested_source": {
+        "path": "C:\\lci20reader1\\tools\\lyd_i3b_checkpoint_readback\\tests\\test_sdk_exact_build_pairs.py",
+        "bytes": 8472,
+        "sha256": "d8fa52489484f9a6d4acbc26bb356dca399b6958e32ac7d526fee80c15add76d"
+      },
+      "preserved_source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\source\\tools\\lyd_i3b_checkpoint_readback\\tests\\test_sdk_exact_build_pairs.py",
+        "bytes": 8472,
+        "sha256": "d8fa52489484f9a6d4acbc26bb356dca399b6958e32ac7d526fee80c15add76d"
+      }
+    }
+  ],
+  "codec_matches": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\ACTUAL-CODEC-AST-MATCH.actual.json",
+    "bytes": 1196,
+    "sha256": "8068bba72c0853b1e4227ea6611b4cadff990a537c2b191a0beca76b9e8501a1"
+  },
+  "focused_failure_preserved": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\focused-001\\RESULT.actual.json",
+    "bytes": 693,
+    "sha256": "b327903427ddad9ddde9f48bd3f74d24f51cd6e1e63a6535d29311819f2702eb"
+  },
+  "focused_success": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r20-checkpoint-actual-codec-projection-20261007-001\\focused-002\\RESULT.actual.json",
+    "bytes": 693,
+    "sha256": "11272ae9549eb5e24031a05f55b44bb5557cfed384f16eb1afd07d490351e070"
+  },
+  "focused_tests": 56,
+  "SDK_game_process_or_savebody_used": false,
+  "future_native_build_credit": null,
+  "future_live_acceptance_credit": null,
+  "git_publication_policy": "fetch_then_rebase_then_retest_then_ordinary_fast_forward_push_no_merge_no_force"
+}

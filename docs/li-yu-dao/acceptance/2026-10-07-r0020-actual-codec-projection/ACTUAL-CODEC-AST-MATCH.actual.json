@@ -1,0 +1,32 @@
+{
+  "actual_artifact": {
+    "path": "C:\\lci20reader1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\confucian_readonly_private_v1.py",
+    "bytes": 24757,
+    "sha256": "33ee4cd98deff01d48b512d6ba77fd318accdd6a8c914a3437515522136e0881"
+  },
+  "actual_sha256": "33ee4cd98deff01d48b512d6ba77fd318accdd6a8c914a3437515522136e0881",
+  "frozen_codec_contract_sha256": "a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969",
+  "frozen_primitives_sha256": "39c6b004baf91a79db9beaa991a3a4a462ce81418f58b3a7f78c86805f935944",
+  "pure_DTO_AST_matches": {
+    "integer": true,
+    "exact": true,
+    "optional": true,
+    "full_id": true,
+    "nullable_id": true,
+    "reason": true,
+    "_common_payload": true,
+    "_ids": true,
+    "normalize_assembly": true,
+    "normalize_title": true,
+    "project_native_query": true,
+    "normalize_public_query": true
+  },
+  "all_12_match": true,
+  "pure_build_helper_AST_matches": {
+    "_query_build": true,
+    "_operation_backend": true
+  },
+  "frozen_build_identity_sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086",
+  "source_executed": false,
+  "actual_acceptance_credit": null
+}

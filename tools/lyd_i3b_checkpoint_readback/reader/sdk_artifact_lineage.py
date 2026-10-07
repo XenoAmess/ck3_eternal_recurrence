@@ -7,7 +7,9 @@ import re
 from pathlib import Path
 
 FROZEN_CODEC_CONTRACT_SHA256 = 'a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969'
-FROZEN_DTO_PRIMITIVES_SHA256 = '4202e23626327c33908389e1e8f5b8ad8c6cf1f890a32141d5de69fd9a724aee'
+FROZEN_DTO_PRIMITIVES_SHA256 = '39c6b004baf91a79db9beaa991a3a4a462ce81418f58b3a7f78c86805f935944'
+FROZEN_BUILD_IDENTITY_SHA256 = '9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086'
+PURE_BUILD_HELPERS = ('_query_build', '_operation_backend')
 FROZEN_METADATA_PROJECTION_SHA256 = '422f55005412f68b24ded177e63ba616a35a2c74a2982d0559eb704327e6803a'
 PURE_DTO_FUNCTIONS = (
     'integer', 'exact', 'optional', 'full_id', 'nullable_id', 'reason',
@@ -23,14 +25,14 @@ def need(ok, message):
 def sha(data):
     return hashlib.sha256(data).hexdigest()
 
-def _functions(data, label):
+def _functions(data, label, names=PURE_DTO_FUNCTIONS):
     tree = ast.parse(data.decode('utf-8-sig'), filename=label)
     result = {}
     for node in tree.body:
-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in PURE_DTO_FUNCTIONS:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in names:
             need(node.name not in result, 'duplicate pure DTO function ' + node.name)
             result[node.name] = node
-    need(set(result) == set(PURE_DTO_FUNCTIONS), 'missing exact pure DTO functions')
+    need(set(result) == set(names), 'missing exact pure DTO functions')
     return result
 
 def verify_codec_artifact(descriptor, declared_sha256):
@@ -49,10 +51,18 @@ def verify_codec_artifact(descriptor, declared_sha256):
     actual, frozen = _functions(raw, 'actual SDK codec'), _functions(fixed_raw, 'frozen DTO projection')
     matches = {name: ast.dump(actual[name], include_attributes=False) == ast.dump(frozen[name], include_attributes=False) for name in PURE_DTO_FUNCTIONS}
     need(all(matches.values()), 'actual SDK pure DTO AST differs: ' + ','.join(name for name, match in matches.items() if not match))
+    actual_helpers = _functions(raw, 'actual SDK build helpers', PURE_BUILD_HELPERS)
+    frozen_helpers = _functions(fixed_raw, 'frozen build helpers', PURE_BUILD_HELPERS)
+    helper_matches = {name: ast.dump(actual_helpers[name], include_attributes=False) == ast.dump(frozen_helpers[name], include_attributes=False) for name in PURE_BUILD_HELPERS}
+    need(all(helper_matches.values()), 'actual SDK build helper AST differs')
+    build_identity_raw = (fixed_path.parent / 'native_build_identity.py').read_bytes()
+    need(sha(build_identity_raw) == FROZEN_BUILD_IDENTITY_SHA256, 'frozen exact build identity bytes changed')
     return {'actual_artifact': dict(descriptor), 'actual_sha256': declared_sha256,
             'frozen_codec_contract_sha256': FROZEN_CODEC_CONTRACT_SHA256,
             'frozen_primitives_sha256': FROZEN_DTO_PRIMITIVES_SHA256,
             'pure_DTO_AST_matches': matches, 'all_12_match': True,
+            'pure_build_helper_AST_matches': helper_matches,
+            'frozen_build_identity_sha256': FROZEN_BUILD_IDENTITY_SHA256,
             'source_executed': False, 'actual_acceptance_credit': None}
 
 def verify_metadata_artifact(metadata, descriptor, declared_sha256):
