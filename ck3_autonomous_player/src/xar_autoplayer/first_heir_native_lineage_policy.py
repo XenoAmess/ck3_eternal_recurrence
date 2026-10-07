@@ -5,22 +5,29 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Mapping, Sequence
 
+from .first_heir_native_reproductive_preference import (
+    prioritize_observed_native_reproductive_choices,
+)
+
 
 def choose_native_lineage_opportunity(
     driver: object, *, snapshot: Mapping[str, object],
     legality: Mapping[str, object], projection: Mapping[str, object],
     choices: Sequence[Mapping[str, object]],
 ) -> tuple[dict[str, object] | None, list[dict[str, object]]]:
-    """Keep existing order and choose the first native main-Dynasty preview.
+    """Prefer observed reproductive comparisons, then use native House previews.
 
     The caller has already established the current unpartnered first heir and
     exact five rich final-legal rows. This reads those existing opportunities;
-    it neither enumerates another pool nor forecasts a birth.
+    every positive choice remains available in stable comparison classes. It
+    neither enumerates another pool nor forecasts a birth.
     """
     rows = {row["candidate_character_id"]: row
             for row in projection["rows"]}
     observations = []
-    for choice in choices:
+    ordered_choices = prioritize_observed_native_reproductive_choices(
+        choices, projection["rows"])
+    for choice in ordered_choices:
         candidate = choice["candidate_character_id"]
         row = rows[candidate]
         observation = driver.query_family_obligations_private_v1(

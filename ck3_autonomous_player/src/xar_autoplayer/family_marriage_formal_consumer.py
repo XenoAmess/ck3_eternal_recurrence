@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from pathlib import Path
 from typing import Mapping
 
@@ -825,6 +826,10 @@ def submit_family_marriage_private(driver: object, *, plan: Mapping[str, object]
             if selected_row.get(field) is None
         ],
     }
+    reproductive_preference = choice.get("native_reproductive_branch_preference_v1")
+    if isinstance(reproductive_preference, Mapping):
+        selected_value_projection["native_reproductive_branch_preference_v1"] = deepcopy(
+            reproductive_preference)
     native_preview_observation = choice.get("native_child_house_preview")
     if isinstance(native_preview_observation, Mapping):
         native_preview = native_preview_observation["native_child_house_preview"]
