@@ -1,6 +1,7 @@
 #include "xar_bridge/normal_exit_map_v1.hpp"
 #include "xar_bridge/normal_exit_map_source_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
+#include "xar_bridge/ingame_private_gui_profile_v1.hpp"
 #include <windows.h>
 
 #include <array>
@@ -26,12 +27,16 @@ bool Pins(const ZhongguoScoreboardNativeEnvironmentV1 &env,
   if(!env.exact_build_admitted || !dispatch.exact_build_admitted ||
       env.offline_fixture_function_overrides || dispatch.offline_fixture_function_overrides ||
       env.module_base==0 || env.module_base!=dispatch.module_base ||
-      env.gui_abi_revision!=GuiAbiRevisionV1::crozier12003 ||
-      dispatch.gui_abi_revision!=GuiAbiRevisionV1::crozier12003) return false;
-  for(const auto &pin:kPins) {
-    if(env.module_base>(std::numeric_limits<std::uintptr_t>::max)()-pin.rva) return false;
+      (env.gui_abi_revision!=GuiAbiRevisionV1::crozier12003 && env.gui_abi_revision!=GuiAbiRevisionV1::crozier12004) ||
+      dispatch.gui_abi_revision!=env.gui_abi_revision) return false;
+  const std::array<std::uintptr_t,4> rvas{GuiFindTopLevelWidgetRvaV1(env.gui_abi_revision),
+      GuiShortcutManagerActivateRvaV1(env.gui_abi_revision),GuiStrictDescendantRvaV1(env.gui_abi_revision),
+      GuiButtonBaseSlot13RvaV1(env.gui_abi_revision)};
+  for(std::size_t i=0;i<kPins.size();++i) {
+    const auto &pin=kPins[i];
+    if(env.module_base>(std::numeric_limits<std::uintptr_t>::max)()-rvas[i]) return false;
     std::array<unsigned char,32> actual{}; SIZE_T received=0;
-    if(!ReadProcessMemory(GetCurrentProcess(),reinterpret_cast<void *>(env.module_base+pin.rva),actual.data(),actual.size(),&received) ||
+    if(!ReadProcessMemory(GetCurrentProcess(),reinterpret_cast<void *>(env.module_base+rvas[i]),actual.data(),actual.size(),&received) ||
         received!=actual.size() || actual!=pin.bytes) return false;
   }
   return true;
@@ -181,11 +186,13 @@ bool ExecuteNormalExitMapV1(NormalExitMapContextV1 &ctx,MainThreadQueryMailboxV1
   try {
     const auto reject=[&](const char *why) { out.reason=why; return true; };
     if(!kNormalExitMapV1CompiledEnabled) return reject("normal_exit_map_private_default_off");
-    if(!ctx.game || !ctx.game->enabled() || ctx.game->descriptor().game_version!="1.20.0.3" ||
-        ctx.game->descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6" ||
+    if(!ctx.game || !ctx.game->enabled() ||
         ctx.native_revision==0 || ctx.connection_generation==0 || ctx.request.expected_revision!=ctx.native_revision ||
         ctx.request.expected_connection_generation!=ctx.connection_generation || !ctx.session ||
         NormalExitMapActionNameV1(ctx.request.action).empty()) return reject("exact_paused_map_request_binding_unavailable");
+    const auto &descriptor=ctx.game->descriptor();
+    if(!IngamePrivateGuiIdentityAdmittedV1(descriptor.game_version,descriptor.executable_sha256,env.gui_abi_revision)||
+        dispatch.gui_abi_revision!=env.gui_abi_revision)return reject("exact_paused_map_request_binding_unavailable");
     out.exact_build_verified=true;
     if(!Owner(ctx,mailbox,stamp)) return reject("paused_owner_ticket_tls_unverified"); out.owner_verified=true;
     if(!Process(ctx.request)) return reject("retained_process_identity_changed"); out.process_identity_verified=true;

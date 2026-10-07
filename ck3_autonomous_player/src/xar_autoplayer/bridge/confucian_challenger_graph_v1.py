@@ -3,7 +3,8 @@ from __future__ import annotations
 
 from copy import deepcopy
 from .confucian_readonly_private_v1 import (
-    _common_payload, exact, full_id, integer, reason,
+    _common_payload, _query_build, _operation_backend, ACTUAL4_ABI_INDEX_SHA256,
+    CK3_12004, exact, full_id, integer, reason,
 )
 
 PERMISSION = 'allow_private_confucian_challenger_queries'
@@ -96,9 +97,14 @@ def normalize_graph(value, binding, faith_full_ids):
         raise ValueError('native graph selectors differ from actual request')
     if value['mod_owned_markers'] is not None or value['saved_owner_faith_variables'] is not None:
         raise ValueError('native registrations do not authenticate saved mod ownership')
-    qualification = exact(value['qualification'], QUALIFICATION, 'graph static qualification')
+    expected_qualification = dict(QUALIFICATION)
+    if _query_build(value) == CK3_12004:
+        for key in expected_qualification:
+            if key.endswith('_index_sha256'):
+                expected_qualification[key] = ACTUAL4_ABI_INDEX_SHA256
+    qualification = exact(value['qualification'], expected_qualification, 'graph static qualification')
     if any(type(qualification[key]) is not type(wanted) or qualification[key] != wanted
-            for key, wanted in QUALIFICATION.items()):
+            for key, wanted in expected_qualification.items()):
         raise ValueError('graph exact-current static qualification differs')
     if value['graph_complete'] is not value['available']:
         raise ValueError('complete graph availability differs')
@@ -156,18 +162,21 @@ def normalize_graph(value, binding, faith_full_ids):
     return deepcopy(value)
 
 
-def project_native_graph_query(raw, binding, faith_full_ids):
+def project_native_graph_query(raw, binding, faith_full_ids, expected_build=None):
     """Project graph envelopes without changing the frozen G2/G3 DTO entrypoints."""
-    from .confucian_readonly_private_v1 import CK3_12003, ENVELOPE_KEYS, OPERATIONS
+    from .confucian_readonly_private_v1 import ENVELOPE_KEYS, OPERATIONS
     step, domain, backend, nested, schema = OPERATIONS['challenger_graph']
     exact(raw, ENVELOPE_KEYS | {nested}, 'native Confucian readonly envelope')
+    build = _query_build(raw)
+    if expected_build is not None and build != expected_build:
+        raise ValueError('native Confucian envelope differs from its connected build')
     expected = {'step': step, 'accepted': True, 'private_build': True, 'read_only': True,
-        'advertised': False, 'game_version': '1.20.0.3', 'domain_key': domain,
-        'backend_id': backend, 'snapshot_revision': binding['native_revision'], 'date_raw': binding['date_raw']}
+        'advertised': False, 'game_version': build.game_version, 'domain_key': domain,
+        'backend_id': _operation_backend(backend, build), 'snapshot_revision': binding['native_revision'], 'date_raw': binding['date_raw']}
     if any(type(raw[name]) is not type(wanted) or raw[name] != wanted for name, wanted in expected.items()):
         raise ValueError('native Confucian envelope differs from actual operation/frame')
-    if type(raw['executable_sha256']) is not str or raw['executable_sha256'].upper() != CK3_12003.executable_sha256:
-        raise ValueError('native Confucian envelope image differs')
+    if _query_build(raw[nested]) != build:
+        raise ValueError('native Confucian payload/envelope build differs')
     value = normalize_graph(raw[nested], binding, faith_full_ids)
     if raw['status'] != ('observed' if value['available'] else 'unavailable'):
         raise ValueError('native Confucian envelope availability differs')

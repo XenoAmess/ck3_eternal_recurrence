@@ -1,15 +1,31 @@
 #include "xar_bridge/grant_title_picker_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/ordinary_character_interaction_v1.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_grant_title_picker_profile.hpp"
 #include <Windows.h>
 #include <algorithm>
 #include <array>
 #include <charconv>
 #include <limits>
+#include <span>
 
 namespace xar::ck3_12003 {
 namespace {
 constexpr std::string_view kSha="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6";
+using ImageProfile=ck3_12004::GrantTitlePickerImageProfileV1;
+constexpr ImageProfile kImageProfile12003{
+    false,ck3_11906::GuiAbiRevisionV1::crozier12003,
+    0x44D6048,0x55072C0,0x44BC408,0x5514460,
+    0x44BA890,0x5694B50,0x452DBD8,0x5742F88,
+    0x45250D8,0x5731DB8,0x4712A18,
+    0x10EC1F0,0x10EC2F0,0x10EC4B0,0x10EC0E0,
+    0x117C530,0x117BAE0,0x10E6FF0,0xAF34A0,0x10E7810,0x21603A0};
+const ImageProfile *Profile(const game::AdapterDescriptor &d) noexcept {
+  if(d.game_version=="1.20.0.3"&&d.executable_sha256==kSha)return &kImageProfile12003;
+  if(game::IsCk3_12004Descriptor(d))return &ck3_12004::kGrantTitlePickerImageProfile12004V1;
+  return nullptr;
+}
 constexpr std::size_t kMaximumRows=2048,kMaximumRequested=64;
 bool Bytes(const void *p,void *out,std::size_t n) noexcept {
   if(!p||!out||!n)return false;SIZE_T got=0;
@@ -26,10 +42,27 @@ bool CallVoid(std::uintptr_t f,void *object) noexcept {
   __try {reinterpret_cast<void(*)(void *)>(f)(object);return true;} __except(EXCEPTION_EXECUTE_HANDLER){return false;}
 }
 #include "grant_title_picker_pins_v1.inc"
+#include "grant_title_picker_pins_12004_v1.inc"
 struct CodePin {std::uintptr_t rva;std::array<std::uint8_t,32> bytes;};
 #include "ordinary_interaction_code_pins_v1.inc"
-bool OrdinaryPins(std::uintptr_t base) noexcept {
-  for(const auto &pin:kOrdinaryInteractionCodePinsV1){std::array<std::uint8_t,32> actual{};
+#include "ordinary_interaction_code_pins_12004_v1.inc"
+bool GrantPins12004(std::uintptr_t base) noexcept {
+  std::array<unsigned char,1358> actual{};
+  for(const auto &pin:kGrantImageCodePins12004V1){
+    if(pin.bytes.size()>actual.size()||!Bytes(reinterpret_cast<const void *>(base+pin.rva),actual.data(),pin.bytes.size())||
+        !std::equal(pin.bytes.begin(),pin.bytes.end(),actual.begin()))return false;
+  }
+  return true;
+}
+bool GrantClosedPins12004(std::uintptr_t base,const ImageProfile &profile) noexcept {
+  const void *grant_method=nullptr,*confirmation_method=nullptr;
+  return Load(reinterpret_cast<const void *>(base+profile.grant_vtable),0x38,grant_method)&&
+      grant_method==reinterpret_cast<const void *>(base+profile.is_open)&&
+      Load(reinterpret_cast<const void *>(base+profile.confirmation_vtable),0x38,confirmation_method)&&confirmation_method==grant_method;
+}
+bool OrdinaryPins(std::uintptr_t base,bool actual4) noexcept {
+  const auto &pins=actual4?kOrdinaryInteractionCodePins12004V1:kOrdinaryInteractionCodePinsV1;
+  for(const auto &pin:pins){std::array<std::uint8_t,32> actual{};
     if(!Bytes(reinterpret_cast<const void *>(base+pin.rva),actual.data(),actual.size())||actual!=pin.bytes)return false;}
   return true;
 }
@@ -55,10 +88,10 @@ bool Character(std::uintptr_t base,std::uint32_t id,bool alive) noexcept {
   const auto *p=Resolve(base,0x5C67568,0x5C67570,id,0x18);std::uint32_t kind=0;const void *death=nullptr;
   return p&&Load(p,0x1C,kind)&&kind==0x43686172U&&Load(p,0x1D0,death)&&(!alive||!death);
 }
-bool Holder(std::uintptr_t base,std::uint32_t id,GrantTitlePickerHolderV1 &out) noexcept {
+bool Holder(std::uintptr_t base,std::uint32_t id,GrantTitlePickerHolderV1 &out,const ImageProfile &profile) noexcept {
   out={};out.title_full_id=id;
   const auto *p=Resolve(base,0x5D1DAF8,0x5D1DAE0,id,0x10);std::uintptr_t vt=0;std::uint32_t holder=UINT32_MAX;
-  if(!p||!Load(p,0,vt)||vt!=base+0x4712A18||!Load(p,0x128,holder))return false;
+  if(!p||!Load(p,0,vt)||vt!=base+profile.title_vtable||!Load(p,0x128,holder))return false;
   if(holder!=UINT32_MAX){if(!Character(base,holder,false))return false;out.holder_character_full_id=holder;}
   out.available=true;return true;
 }
@@ -89,28 +122,29 @@ struct Pass {
   bool operator==(const Pass &) const=default;
 };
 bool ReadPass(const GrantTitlePickerContextV1 &c,const ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 &env,
-    const ck3_11906::MainThreadExecutionStampV1 &stamp,Pass &p,bool permit_closed_prepare=false) {
+    const ck3_11906::MainThreadExecutionStampV1 &stamp,Pass &p,const ImageProfile &profile,bool permit_closed_prepare=false) {
   const auto base=env.module_base;const void *back=nullptr,*definition=nullptr;std::uint32_t actor=UINT32_MAX,recipient=UINT32_MAX,effective_actor=UINT32_MAX;
   if(!Load(reinterpret_cast<const void *>(base+0x5C6A520),0,p.logical)||
-      reinterpret_cast<std::uintptr_t>(p.logical)!=stamp.jomini_state||!Typed(p.logical,base,0x44D6048,0x55072C0)||
-      !Load(p.logical,0x10,p.gfx)||!Typed(p.gfx,base,0x44BC408,0x5514460)||
-      !Load(p.gfx,0x20,back)||back!=p.logical||!Load(p.gfx,0x88,p.handler)||!Typed(p.handler,base,0x44BA890,0x5694B50))return false;
-  // Actual .3 constructor stores Grant at handler+110; GUI getter reads Confirmation at+F0.
-  if(!Load(p.handler,0x110,p.grant)||!Typed(p.grant,base,0x452DBD8,0x5742F88)||
-      !Load(p.handler,0xF0,p.confirmation)||!Typed(p.confirmation,base,0x45250D8,0x5731DB8)||
+      reinterpret_cast<std::uintptr_t>(p.logical)!=stamp.jomini_state||!Typed(p.logical,base,profile.logical_vtable,profile.logical_type)||
+      !Load(p.logical,0x10,p.gfx)||!Typed(p.gfx,base,profile.gfx_vtable,profile.gfx_type)||
+      !Load(p.gfx,0x20,back)||back!=p.logical||!Load(p.gfx,0x88,p.handler)||!Typed(p.handler,base,profile.handler_vtable,profile.handler_type))return false;
+  // Both actual profiles qualify the stock Grant+110 and Confirmation+F0 slots.
+  if(!Load(p.handler,0x110,p.grant)||!Typed(p.grant,base,profile.grant_vtable,profile.grant_type)||
+      !Load(p.handler,0xF0,p.confirmation)||!Typed(p.confirmation,base,profile.confirmation_vtable,profile.confirmation_type)||
       !Load(p.grant,0x98,back)||back!=p.logical||
       !Load(p.grant,0xA0,back)||back!=p.handler||!Load(p.confirmation,0x98,back)||back!=p.logical||
       !Load(p.confirmation,0xA0,back)||back!=p.handler)return false;
   if(permit_closed_prepare&&c.operation==GrantTitlePickerOperationV1::prepare){
-    // Both exact .3 primary VT+38 slots resolve to 21603A0. Its NULL +60 path
-    // is closed; stock 117EFF0 establishes C8 and GUI binding on first open.
+    // Each profile checks both primary VT+38 slots and its exact IsOpen body.
+    // The NULL +60 path is closed; stock first-open establishes C8 and GUI binding.
     // No row/selection or business eligibility is inferred from a closed model.
     using Predicate=bool(*)(void *);bool grant_open=true;
-    if(!GrantClosedPins(base)||!Call(reinterpret_cast<Predicate>(base+0x21603A0),grant_open,p.grant)||
-        !Call(reinterpret_cast<Predicate>(base+0x21603A0),p.confirmation_visible,p.confirmation))return false;
+    if(!(profile.actual4?GrantClosedPins12004(base,profile):GrantClosedPins(base))||
+        !Call(reinterpret_cast<Predicate>(base+profile.is_open),grant_open,p.grant)||
+        !Call(reinterpret_cast<Predicate>(base+profile.is_open),p.confirmation_visible,p.confirmation))return false;
     if(!grant_open){
       if(!Load(p.grant,0x60,p.root))return false;
-      for(const auto id:c.requested_title_full_ids){GrantTitlePickerHolderV1 h{};if(!Holder(base,id,h))return false;p.observation.requested_title_holders.push_back(h);}
+      for(const auto id:c.requested_title_full_ids){GrantTitlePickerHolderV1 h{};if(!Holder(base,id,h,profile))return false;p.observation.requested_title_holders.push_back(h);}
       p.observation.available=true;return true;
     }
   }
@@ -128,7 +162,7 @@ bool ReadPass(const GrantTitlePickerContextV1 &c,const ck3_11906::ZhongguoScoreb
   void *confirmation_root=nullptr,*confirmation_vtable=nullptr;std::string confirmation_name;bool confirmation_enabled=false;
   if(!Load(p.confirmation,0x60,confirmation_root)||!confirmation_root||
       !ck3_11906::ReadGuiWidgetRuntimeV1(access,confirmation_root,confirmation_name,confirmation_vtable,p.confirmation_visible,confirmation_enabled))return false;
-  for(const auto id:c.requested_title_full_ids){GrantTitlePickerHolderV1 h{};if(!Holder(base,id,h))return false;p.observation.requested_title_holders.push_back(h);}
+  for(const auto id:c.requested_title_full_ids){GrantTitlePickerHolderV1 h{};if(!Holder(base,id,h,profile))return false;p.observation.requested_title_holders.push_back(h);}
   p.observation.available=true;
   if(!p.observation.window_visible)return true;
   if(!Load(p.confirmation,0x3A0,actor)||actor!=static_cast<std::uint32_t>(c.expected_snapshot.played_character_id)||
@@ -152,18 +186,18 @@ bool ReadPass(const GrantTitlePickerContextV1 &c,const ck3_11906::ZhongguoScoreb
       bool member=false;for(std::int32_t j=0;j<count;++j){const void *candidate=nullptr;if(!Load(p.data,static_cast<std::size_t>(j)*8,candidate))return false;if(candidate==ancestor)member=true;}
       if(!member||!Load(ancestor,0x18,ancestor))return false;
     }
-    if(!Call(reinterpret_cast<Getter>(base+0x10EC1F0),title,item)||!title||
+    if(!Call(reinterpret_cast<Getter>(base+profile.row_title),title,item)||!title||
         title!=Resolve(base,0x5D1DAF8,0x5D1DAE0,id,0x10)||!Load(title,0x10,returned_id)||returned_id!=id)return false;
     GrantTitlePickerHolderV1 h{};GrantTitlePickerRowV1 row{};row.title_full_id=id;
-    if(!Holder(base,id,h)||!Call(reinterpret_cast<Predicate>(base+0x10EC2F0),row.selected,item)||
-        !Call(reinterpret_cast<Predicate>(base+0x10EC4B0),row.selectable,item))return false;
+    if(!Holder(base,id,h,profile)||!Call(reinterpret_cast<Predicate>(base+profile.row_selected),row.selected,item)||
+        !Call(reinterpret_cast<Predicate>(base+profile.row_selectable),row.selectable,item))return false;
     row.holder_character_full_id=h.holder_character_full_id;
     if(std::any_of(p.observation.rows.begin(),p.observation.rows.end(),[id](const auto &r){return r.title_full_id==id;}))return false;
     if(row.selected)p.observation.selected_title_full_ids.push_back(id);
     p.items.push_back(item);p.observation.rows.push_back(row);
   }
   bool can_send=false;std::uint8_t warning=0;
-  if(!Call(reinterpret_cast<Predicate>(base+0x117C530),can_send,p.grant)||!Load(p.grant,0x158,warning)||warning>1)return false;
+  if(!Call(reinterpret_cast<Predicate>(base+profile.can_send),can_send,p.grant)||!Load(p.grant,0x158,warning)||warning>1)return false;
   p.observation.native_can_send=can_send;p.observation.warning_confirmation_required=warning!=0;p.observation.rows_complete=true;
   return true;
 }
@@ -172,6 +206,8 @@ bool Control(const game::Snapshot &a,const game::Snapshot &b) noexcept {
       a.played_character_alive&&b.played_character_alive&&a.played_character_id==b.played_character_id&&a.date_raw==b.date_raw;
 }
 } // namespace
+
+bool IsGrantTitlePickerBuildV1(const game::AdapterDescriptor &d) noexcept {return Profile(d)!=nullptr;}
 
 bool ParseGrantTitlePickerIdsV1(std::string_view text,std::vector<std::uint32_t> &out,bool allow_empty) noexcept {
   try {out.clear();if(text.empty())return allow_empty;while(!text.empty()){
@@ -201,21 +237,27 @@ bool ExecuteGrantTitlePickerV1(GrantTitlePickerContextV1 &c,ck3_11906::MainThrea
   out.game_pid=GetCurrentProcessId();out.recipient_character_full_id=c.recipient_character_full_id;
   try {
     const auto reject=[&](const char *reason){out.status="unavailable";out.unavailable_reason=reason;return true;};
-    if(!c.game||c.game->descriptor().game_version!="1.20.0.3"||c.game->descriptor().executable_sha256!=kSha||
+    const auto *profile=c.game?Profile(c.game->descriptor()):nullptr;
+    if(!profile||
         !c.native_revision||!c.connection_generation||!c.recipient_character_full_id||c.recipient_character_full_id==UINT32_MAX||
         !Ids(c.requested_title_full_ids,true)||!Ids(c.expected_selected_title_full_ids,true)||
-        !env.exact_build_admitted||env.offline_fixture_function_overrides||env.gui_abi_revision!=ck3_11906::GuiAbiRevisionV1::crozier12003)
-      return reject("exact_12003_grant_request_unavailable");
+        !env.exact_build_admitted||env.offline_fixture_function_overrides||env.gui_abi_revision!=profile->gui_revision)
+      return reject(c.game&&c.game->descriptor().game_version=="1.20.0.4"?
+          "exact_12004_grant_request_unavailable":"exact_12003_grant_request_unavailable");
+    out.exact_build=c.game->descriptor().game_version;out.executable_sha256=c.game->descriptor().executable_sha256;
     if(!ck3_11906::IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()))return reject("paused_application_owner_unverified");
     out.owner_thread_verified=true;game::Snapshot before{};
     if(!game::ReadSnapshot(*c.game,before)||before!=c.expected_snapshot||!Control(before,before)||before.date_raw!=stamp.date_raw||
         before.has_active_event||before.has_pending_character_interaction)return reject("fresh_grant_frame_unverified");
     out.played_character_id=before.played_character_id;out.date_raw=before.date_raw;
     if(!Character(env.module_base,c.recipient_character_full_id,true))return reject("grant_recipient_full_identity_unavailable");
-    if(!GrantPins(env.module_base)||!GrantOpenPins(env.module_base)||!GrantRefreshPin(env.module_base)||!OrdinaryPins(env.module_base))return reject("loaded_12003_grant_method_pins_changed");out.source_abi_pins_verified=true;
+    const bool grant_pins=profile->actual4?GrantPins12004(env.module_base):
+        GrantPins(env.module_base)&&GrantOpenPins(env.module_base)&&GrantRefreshPin(env.module_base);
+    if(!grant_pins||!OrdinaryPins(env.module_base,profile->actual4))return reject(profile->actual4?
+        "loaded_12004_grant_method_pins_changed":"loaded_12003_grant_method_pins_changed");out.source_abi_pins_verified=true;
     Pass first{},second{};
     const bool prepare=c.operation==GrantTitlePickerOperationV1::prepare;
-    if(!ReadPass(c,env,stamp,first,prepare)||!ReadPass(c,env,stamp,second,prepare)||first!=second)return reject("grant_window_or_complete_rows_unstable");
+    if(!ReadPass(c,env,stamp,first,*profile,prepare)||!ReadPass(c,env,stamp,second,*profile,prepare)||first!=second)return reject("grant_window_or_complete_rows_unstable");
     out.before=first.observation;
     if(c.operation==GrantTitlePickerOperationV1::prepare){
       if(first.observation.window_visible){if(!first.observation.window_binding_verified)return reject("existing_grant_window_binding_changed");}
@@ -225,7 +267,9 @@ bool ExecuteGrantTitlePickerV1(GrantTitlePickerContextV1 &c,ck3_11906::MainThrea
         // it never discards another interaction's live selection/context.
         if(first.confirmation_visible)return reject("other_stock_confirmation_window_open");
         struct Frame {const game::GameAdapter *game; game::Snapshot snapshot;};Frame frame{c.game,before};
-        auto bindings=ordinary_interaction::BindOrdinaryInteractionImage12003(env.module_base,kSha);
+        auto bindings=profile->actual4?
+            ordinary_interaction::BindOrdinaryInteractionImage12004(env.module_base,out.executable_sha256):
+            ordinary_interaction::BindOrdinaryInteractionImage12003(env.module_base,kSha);
         bindings.dispatch_frame_context=&frame;
         bindings.verify_dispatch_frame=[](void *raw) noexcept {const auto &f=*static_cast<const Frame *>(raw);game::Snapshot actual{};return game::ReadSnapshot(*f.game,actual)&&actual==f.snapshot;};
         OrdinaryInteractionRequestV1 request{};
@@ -233,9 +277,9 @@ bool ExecuteGrantTitlePickerV1(GrantTitlePickerContextV1 &c,ck3_11906::MainThrea
         request.expected_player_character_id=before.played_character_id;request.expected_revision=c.native_revision;
         request.expected_connection_generation=c.connection_generation;request.expected_game_pid=GetCurrentProcessId();
         ordinary_interaction::GrantWindowBindingsV1 window{};window.confirmation=first.confirmation;window.handler=first.handler;
-        window.install_context=reinterpret_cast<decltype(window.install_context)>(env.module_base+0x10E6FF0);
-        window.open_window=reinterpret_cast<decltype(window.open_window)>(env.module_base+0xAF34A0);
-        window.refresh_window=reinterpret_cast<decltype(window.refresh_window)>(env.module_base+0x10E7810);
+        window.install_context=reinterpret_cast<decltype(window.install_context)>(env.module_base+profile->copy_context);
+        window.open_window=reinterpret_cast<decltype(window.open_window)>(env.module_base+profile->handler_open);
+        window.refresh_window=reinterpret_cast<decltype(window.refresh_window)>(env.module_base+profile->refresh);
         ordinary_interaction::GrantPrepareObservationV1 prepared{};
         ordinary_interaction::PrepareGrantTitlePickerWindowV1(bindings,request,window,prepared);
         out.dispatch_invoked=prepared.dispatch_invoked;out.native_call_completed=prepared.native_call_completed;
@@ -250,22 +294,22 @@ bool ExecuteGrantTitlePickerV1(GrantTitlePickerContextV1 &c,ck3_11906::MainThrea
         if(row==first.observation.rows.end()||row->holder_character_full_id!=static_cast<std::uint32_t>(before.played_character_id)||!row->selectable)return reject("requested_title_not_selectable_owned_row");
         if(row->selected!=c.desired_selected){
           out.dispatch_invoked=true;const auto i=static_cast<std::size_t>(row-first.observation.rows.begin());
-          out.native_call_completed=CallVoid(env.module_base+0x10EC0E0,first.items[i]);
+          out.native_call_completed=CallVoid(env.module_base+profile->row_toggle,first.items[i]);
           if(!out.native_call_completed)return reject("grant_selection_call_result_unknown_no_retry");
         }
       }else{
         if(c.expected_selected_title_full_ids.empty()||!SameIds(c.requested_title_full_ids,c.expected_selected_title_full_ids)||!first.observation.native_can_send.value_or(false))return reject("native_grant_can_send_false_or_targets_changed");
         // The stock warning dialog must receive its own fresh qualification; no bypass or auto-confirm.
         if(first.observation.warning_confirmation_required.value_or(true))return reject("stock_grant_warning_confirmation_required");
-        for(const auto id:c.expected_selected_title_full_ids){GrantTitlePickerHolderV1 h{};if(!Holder(env.module_base,id,h)||h.holder_character_full_id!=static_cast<std::uint32_t>(before.played_character_id))return reject("selected_title_holder_changed");}
-        out.dispatch_invoked=true;out.native_call_completed=CallVoid(env.module_base+0x117BAE0,first.grant);
+        for(const auto id:c.expected_selected_title_full_ids){GrantTitlePickerHolderV1 h{};if(!Holder(env.module_base,id,h,*profile)||h.holder_character_full_id!=static_cast<std::uint32_t>(before.played_character_id))return reject("selected_title_holder_changed");}
+        out.dispatch_invoked=true;out.native_call_completed=CallVoid(env.module_base+profile->send,first.grant);
         if(!out.native_call_completed)return reject("grant_send_call_result_unknown_no_retry");
       }
     }
     // Resolve the current model afresh. Send can close/rebuild a model; old pointers are never reread.
     Pass after{},stable{};game::Snapshot completion{};
     if(!game::ReadSnapshot(*c.game,completion)||(c.operation==GrantTitlePickerOperationV1::send?!Control(before,completion):completion!=before)||
-        !ReadPass(c,env,stamp,after)||!ReadPass(c,env,stamp,stable)||after!=stable)return reject("grant_completion_state_unavailable_no_retry");
+        !ReadPass(c,env,stamp,after,*profile)||!ReadPass(c,env,stamp,stable,*profile)||after!=stable)return reject("grant_completion_state_unavailable_no_retry");
     out.after=after.observation;out.frame_verified=true;
     if(c.operation==GrantTitlePickerOperationV1::query){out.status="observed";return true;}
     if(c.operation==GrantTitlePickerOperationV1::prepare){
@@ -280,7 +324,7 @@ bool ExecuteGrantTitlePickerV1(GrantTitlePickerContextV1 &c,ck3_11906::MainThrea
       out.status=out.selection_verified?"selection_observed":"selection_changed_observed";return true;
     }
     out.transfer_verified=out.dispatch_invoked&&out.native_call_completed&&!c.expected_selected_title_full_ids.empty();
-    for(const auto id:c.expected_selected_title_full_ids){GrantTitlePickerHolderV1 h{};out.transfer_verified=Holder(env.module_base,id,h)&&h.holder_character_full_id==c.recipient_character_full_id&&out.transfer_verified;}
+    for(const auto id:c.expected_selected_title_full_ids){GrantTitlePickerHolderV1 h{};out.transfer_verified=Holder(env.module_base,id,h,*profile)&&h.holder_character_full_id==c.recipient_character_full_id&&out.transfer_verified;}
     out.status=out.transfer_verified?"holder_transfer_observed":"pending";return true;
   }catch(...){out.status="unavailable";out.unavailable_reason="grant_provider_exception_no_retry";return true;}
 }
@@ -302,6 +346,7 @@ std::string Observation(const GrantTitlePickerObservationV1 &v){
 std::string SerializeGrantTitlePickerV1(const GrantTitlePickerResultV1 &r){
   const auto operation=r.operation==GrantTitlePickerOperationV1::query?"query":r.operation==GrantTitlePickerOperationV1::prepare?"prepare":r.operation==GrantTitlePickerOperationV1::select?"select":"send";
   std::string s="{\"schema\":\"ck3_12003_grant_title_picker_v1\",\"operation\":\"";s+=operation;
+  s+="\",\"exact_build\":\""+r.exact_build+"\",\"executable_sha256\":\""+r.executable_sha256;
   s+="\",\"native_revision\":"+std::to_string(r.native_revision)+",\"connection_generation\":"+std::to_string(r.connection_generation)+",\"game_pid\":"+std::to_string(r.game_pid);
   s+=",\"played_character_id\":"+std::to_string(r.played_character_id)+",\"date_raw\":"+std::to_string(r.date_raw)+",\"recipient_character_full_id\":"+std::to_string(r.recipient_character_full_id);
   s+=",\"owner_thread_verified\":";s+=Bool(r.owner_thread_verified);s+=",\"frame_verified\":";s+=Bool(r.frame_verified);s+=",\"source_abi_pins_verified\":";s+=Bool(r.source_abi_pins_verified);

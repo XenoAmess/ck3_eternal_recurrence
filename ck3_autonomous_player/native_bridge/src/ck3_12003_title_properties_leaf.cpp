@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12003_title_properties_leaf.hpp"
+#include "xar_bridge/ck3_12004_confucian_title_profile.hpp"
+#include "xar_bridge/ck3_12004_title_holder.hpp"
 
 #include <bit>
 #include <cstring>
@@ -47,7 +49,7 @@ struct Sample {
 bool Capture(const Bindings &bindings, const void *title,
              std::uint32_t requested, Sample &sample) noexcept {
   return Load(title, 0, sample.vptr) &&
-      sample.vptr == bindings.image_base + kCLandedTitlePrimaryVtableRva &&
+      sample.vptr == bindings.image_base + bindings.primary_title_vtable_rva &&
       Load(title, kTitleFullIdOffset, sample.full_id) &&
       sample.full_id == requested &&
       Load(title, kNativeDestroyIfInvalidHeirOffset, sample.destroy) &&
@@ -69,8 +71,18 @@ bool Same(const Sample &a, const Sample &b) noexcept {
 Bindings BindImage(std::uintptr_t image_base,
                    std::string_view executable_sha256) noexcept {
   Bindings bindings{};
-  if (image_base == 0 || executable_sha256 != kExecutableSha256) return bindings;
-  bindings.title_holder = BindTitleHolderImageV1(image_base, executable_sha256);
+  if (image_base == 0) return bindings;
+  if (executable_sha256 == ck3_12004::kExecutableSha256) {
+    bindings.title_holder = ck3_12004::BindTitleHolderImageV1(
+        image_base, executable_sha256);
+    bindings.actual4 = true;
+    bindings.primary_title_vtable_rva =
+        ck3_12004::confucian_titles::kCLandedTitlePrimaryVtableRva;
+  } else if (executable_sha256 == kExecutableSha256) {
+    bindings.title_holder = BindTitleHolderImageV1(image_base, executable_sha256);
+  } else {
+    return bindings;
+  }
   if (!bindings.title_holder.enabled ||
       !bindings.title_holder.provinces.enabled) return bindings;
   bindings.enabled = true;

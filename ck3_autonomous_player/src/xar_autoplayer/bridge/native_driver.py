@@ -18499,7 +18499,7 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         from .ordinary_interaction_contract import (
             QUERY_STEP, QUERY_CAPABILITY, validate_interaction_key, validate_recipient_id,
-            interaction_binding, same_query_frame, project_query,
+            interaction_binding, same_query_frame, project_query, require_result_build, QUERY_PAYLOAD,
         )
         validate_interaction_key(interaction_key)
         validate_recipient_id(recipient_id)
@@ -18518,6 +18518,7 @@ class NativeHeadlessGameplayDriver:
         if not same_query_frame(before, after, binding):
             raise BridgeUnavailableError("ordinary interaction query crossed its actual frame")
         try:
+            require_result_build(raw, before, QUERY_PAYLOAD)
             return project_query(raw, binding, interaction_key, recipient_id)
         except ValueError as error:
             raise BridgeUnavailableError(f"malformed ordinary interaction query: {error}") from error
@@ -18528,7 +18529,7 @@ class NativeHeadlessGameplayDriver:
         from .ordinary_interaction_contract import (
             INITIATE_STEP, INITIATE_CAPABILITY, validate_interaction_key, validate_recipient_id,
             interaction_binding, same_query_frame, after_control_binding,
-            create_once_claim, project_initiation, preserve_receipt,
+            create_once_claim, project_initiation, preserve_receipt, require_result_build, INITIATE_PAYLOAD,
         )
         validate_interaction_key(interaction_key)
         validate_recipient_id(recipient_id)
@@ -18577,6 +18578,7 @@ class NativeHeadlessGameplayDriver:
         after = self.take_snapshot()
         try:
             later = after_control_binding(before, after, binding)
+            require_result_build(raw, before, INITIATE_PAYLOAD)
             result = project_initiation(raw, binding, interaction_key, recipient_id, later, request_id, claim)
             preserve_receipt(claim, request_id, result)
             return result

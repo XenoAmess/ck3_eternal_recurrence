@@ -29,6 +29,7 @@ struct Bindings {
   bool enabled = false;
   religious_title::Bindings titles{};
   void **faith_storage_slot = nullptr;
+  std::uintptr_t primary_faith_vtable_rva = kCFaithPrimaryVtableRva;
 };
 struct TitleObservation {
   bool available = false;
@@ -68,6 +69,7 @@ struct FaithObservation {
 };
 struct Observation {
   bool available = false;
+  bool actual4 = false;
   bool graph_complete = false;
   std::string unavailable_reason = "not_read";
   std::uint64_t capture_epoch = 0;

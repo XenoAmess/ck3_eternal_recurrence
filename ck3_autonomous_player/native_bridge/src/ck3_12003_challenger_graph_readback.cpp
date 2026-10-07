@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_challenger_graph_readback.hpp"
+#include "xar_bridge/ck3_12004_confucian_title_profile.hpp"
 #include <algorithm>
 #include <bit>
 #include <cstring>
@@ -58,7 +59,7 @@ void *Resolve(void **slot, std::uint32_t id, std::size_t identity,
 bool FaithType(const Bindings &b, void *faith, std::uint32_t id) noexcept {
   std::uintptr_t vptr = 0; std::uint32_t actual = UINT32_MAX, kind = 0;
   return faith && id != UINT32_MAX && Load(faith, 0, vptr) &&
-      vptr == b.titles.properties.image_base + kCFaithPrimaryVtableRva &&
+      vptr == b.titles.properties.image_base + b.primary_faith_vtable_rva &&
       Load(faith, kFaithFullIdOffset, actual) && actual == id &&
       Load(faith, kFaithKindOffset, kind) && kind == kFaithKindMagic;
 }
@@ -88,7 +89,7 @@ void *Title(const Bindings &b, std::uint32_t id) noexcept {
   std::uint32_t actual = UINT32_MAX;
   return title && Load(b.titles.title_fallback_slot, 0, fallback) && title != fallback &&
       Load(title, 0, vptr) &&
-      vptr == b.titles.properties.image_base + title_properties::kCLandedTitlePrimaryVtableRva &&
+      vptr == b.titles.properties.image_base + b.titles.properties.primary_title_vtable_rva &&
       Load(title, 0x10, actual) && actual == id ? title : nullptr;
 }
 
@@ -358,16 +359,24 @@ bool Same(const Pass &a, const Pass &b) {
 
 Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
   Bindings b;
-  if (base == 0 || sha != kExecutableSha256) return b;
+  if (base == 0 || (sha != kExecutableSha256 && sha != ck3_12004::kExecutableSha256))
+    return b;
   b.titles = religious_title::BindImage(base, sha);
   if (!b.titles.enabled) return b;
-  b.faith_storage_slot = reinterpret_cast<void **>(base + kFaithStorageSlotRva);
+  if (b.titles.properties.actual4) {
+    b.faith_storage_slot = reinterpret_cast<void **>(
+        base + ck3_12004::confucian_titles::kFaithStorageSlotRva);
+    b.primary_faith_vtable_rva = ck3_12004::confucian_titles::kCFaithPrimaryVtableRva;
+  } else {
+    b.faith_storage_slot = reinterpret_cast<void **>(base + kFaithStorageSlotRva);
+  }
   b.enabled = true; return b;
 }
 bool Read(const Bindings &b, const game::Snapshot &frame, std::uint64_t epoch,
           std::span<const std::uint32_t> ids, Observation &out) noexcept {
   try {
-    out = {}; out.capture_epoch = epoch; out.date_raw = frame.date_raw;
+    out = {}; out.actual4 = b.titles.properties.actual4;
+    out.capture_epoch = epoch; out.date_raw = frame.date_raw;
     out.played_character_id = frame.played_character_id;
     out.requested_faith_full_ids.assign(ids.begin(), ids.end());
     const auto fail = [&out](std::string_view reason) {
@@ -403,6 +412,18 @@ bool Read(const Bindings &b, const game::Snapshot &frame, std::uint64_t epoch,
   }
 }
 std::string Serialize(const Observation &o) {
+  const auto version = o.actual4 ? ck3_12004::kGameVersion : kGameVersion;
+  const auto sha = o.actual4 ? ck3_12004::kExecutableSha256 : kExecutableSha256;
+  const auto faith_index = o.actual4 ? ck3_12004::confucian_titles::kFiniteMapSha256 :
+      "712298a183573a588c24fd0a357e0d83d4e6886a9e5ddd45db7ddf8e5a3aba2d";
+  const auto challenger_index = o.actual4 ? ck3_12004::confucian_titles::kFiniteMapSha256 :
+      "3dffb1d4ee1fa0e100ea26b12f577841317ebdcae4d6e702282bad768ceadfb1";
+  const auto record_index = o.actual4 ? ck3_12004::confucian_titles::kFiniteMapSha256 :
+      "3e24fe49a46749ce353274c2a22659f229802a972b720b6153349effe01af35f";
+  const auto properties_index = o.actual4 ? ck3_12004::confucian_titles::kFiniteMapSha256 :
+      "14bf997b58a8ff33d7407ece6be2675917a2b7ed7e6ffdba70ca8ea938347a0a";
+  const auto laws_index = o.actual4 ? ck3_12004::confucian_titles::kFiniteMapSha256 :
+      "9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60";
   std::string ids = "["; bool first = true;
   for (const auto id : o.requested_faith_full_ids) { if (!first) ids += ','; first = false; ids += std::to_string(id); }
   ids += ']'; std::string rows = "null";
@@ -411,19 +432,19 @@ std::string Serialize(const Observation &o) {
     for (const auto &f : *o.faiths) { if (!first) rows += ','; first = false; rows += FaithJson(f); }
     rows += ']';
   }
-  return "{\"schema\":\"ck3_12003_confucian_challenger_graph_v1\",\"game_version\":\"1.20.0.3\","
-      "\"executable_sha256\":" + Quote(kExecutableSha256) + ",\"read_only\":true,\"available\":" + Bool(o.available) +
+  return "{\"schema\":\"ck3_12003_confucian_challenger_graph_v1\",\"game_version\":" + Quote(version) + ',' +
+      "\"executable_sha256\":" + Quote(sha) + ",\"read_only\":true,\"available\":" + Bool(o.available) +
       ",\"graph_complete\":" + Bool(o.graph_complete) + ",\"unavailable_reason\":" + Reason(o.available, o.unavailable_reason) +
       ",\"capture_epoch\":" + std::to_string(o.capture_epoch) + ",\"date_raw\":" + std::to_string(o.date_raw) +
       ",\"played_character_id\":" + std::to_string(o.played_character_id) + ",\"played_character_full_id\":" +
       (o.played_character_id != -1 ? std::to_string(std::bit_cast<std::uint32_t>(o.played_character_id)) : "null") +
       ",\"requested_faith_full_ids\":" + ids + ",\"faiths\":" + rows +
       ",\"mod_owned_markers\":null,\"saved_owner_faith_variables\":null,\"qualification\":{"
-      "\"kind\":\"exact_current_static_abi\",\"faith_rtti_index_sha256\":\"712298a183573a588c24fd0a357e0d83d4e6886a9e5ddd45db7ddf8e5a3aba2d\","
-      "\"faith_challenger_abi_index_sha256\":\"3dffb1d4ee1fa0e100ea26b12f577841317ebdcae4d6e702282bad768ceadfb1\","
-      "\"record_layout_index_sha256\":\"3e24fe49a46749ce353274c2a22659f229802a972b720b6153349effe01af35f\","
-      "\"title_properties_index_sha256\":\"14bf997b58a8ff33d7407ece6be2675917a2b7ed7e6ffdba70ca8ea938347a0a\","
-      "\"title_laws_index_sha256\":\"9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60\","
+      "\"kind\":\"exact_current_static_abi\",\"faith_rtti_index_sha256\":" + Quote(faith_index) + ',' +
+      "\"faith_challenger_abi_index_sha256\":" + Quote(challenger_index) + ',' +
+      "\"record_layout_index_sha256\":" + Quote(record_index) + ',' +
+      "\"title_properties_index_sha256\":" + Quote(properties_index) + ',' +
+      "\"title_laws_index_sha256\":" + Quote(laws_index) + ',' +
       "\"runtime_acceptance\":null}}";
 }
 } // namespace xar::ck3_12003::challenger_graph

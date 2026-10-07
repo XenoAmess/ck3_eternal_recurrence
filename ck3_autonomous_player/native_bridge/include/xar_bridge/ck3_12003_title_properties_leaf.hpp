@@ -23,7 +23,9 @@ inline constexpr std::size_t kNativeAlwaysFollowsPrimaryHeirOffset = 0x39;
 
 struct Bindings {
   bool enabled = false;
+  bool actual4 = false;
   std::uintptr_t image_base = 0;
+  std::uintptr_t primary_title_vtable_rva = kCLandedTitlePrimaryVtableRva;
   TitleHolderBindingsV1 title_holder;
 };
 

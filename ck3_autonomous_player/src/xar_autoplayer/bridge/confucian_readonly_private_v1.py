@@ -7,7 +7,20 @@ import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import private_native_build_identity
-from .version_identity import CK3_12003
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
+
+ACTUAL4_ABI_INDEX_SHA256 = '5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d'
+
+
+def _query_build(value):
+    build = require_exact_native_build(value.get('game_version'), value.get('executable_sha256'))
+    if build not in (CK3_12003, CK3_12004):
+        raise ValueError('private Confucian query requires an exact .3 or .4 native build')
+    return build
+
+
+def _operation_backend(legacy_backend, build):
+    return legacy_backend.replace('ck3-1.20.0.3-', 'ck3-' + build.game_version + '-', 1)
 
 PERMISSION = 'allow_private_confucian_readonly_queries'
 OPERATIONS = {
@@ -72,13 +85,13 @@ def query_binding(snapshot, expected_revision):
     except BridgeUnavailableError as error:raise ValueError('private Confucian query lacks an exact native build')from error
     if (type(diagnostics) is not dict or diagnostics.get('connected') is not True
             or type(hello)is not dict or hello.get('ck3_build_match')is not True
-            or hello.get('game_adapter_id')!='ck3-1.20.0.3-msvc-x64'
+            or hello.get('game_adapter_id')!='ck3-'+build.game_version+'-msvc-x64'
             or snapshot.get('paused') is not True or snapshot.get('map_ready') is not True
             or type(snapshot.get('revision')) is not int or snapshot['revision']!=revision
             or type(actor) is not dict or actor.get('alive') is not True
             or snapshot.get('one_life_terminal_reason') is not None
-            or build!=CK3_12003):
-        raise ValueError('private Confucian query requires its current paused exact .3 actor/frame')
+            or build not in (CK3_12003,CK3_12004)):
+        raise ValueError('private Confucian query requires its current paused exact .3/.4 actor/frame')
     actor_id=integer(actor.get('character_id'),-(2**31),2**32-2,'played_character_id')
     if actor_id==-1: raise ValueError('invalid full played-character identity')
     identity=snapshot.get('snapshot_id')
@@ -95,13 +108,13 @@ def same_query_frame(before, after, binding):
     except (ValueError,TypeError,AttributeError): return False
     fields=('paused','speed','map_ready','local_player_id','episode_character_id','played_character',
             'episode_run_id','active_event','pending_character_interaction')
-    return later==binding and all(before.get(name)==after.get(name)for name in fields)
+    return (later==binding and private_native_build_identity(before)==private_native_build_identity(after)
+            and all(before.get(name)==after.get(name)for name in fields))
 
 
 def _common_payload(value, schema, binding):
-    if (value.get('schema')!=schema or value.get('game_version')!='1.20.0.3'
-            or type(value.get('executable_sha256'))is not str
-            or value['executable_sha256'].upper()!=CK3_12003.executable_sha256):
+    _query_build(value)
+    if value.get('schema')!=schema:
         raise ValueError('native payload exact build/schema differs')
     for name,wanted in (('date_raw',binding['date_raw']),
                         ('played_character_id',binding['played_character_id'])):
@@ -265,22 +278,28 @@ def normalize_title(value,binding):
         'title_laws_index_sha256':'9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60',
         'head_getters_index_sha256':'d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973',
         'faith_reference_identity_offset':8,'title_full_id_offset':16,'faith_typed_fallback_slot_rva':'0x5D1E2E0','runtime_acceptance':None}
+    if _query_build(value)==CK3_12004:
+        for name in ('title_properties_index_sha256','title_laws_index_sha256','head_getters_index_sha256'):
+            expected[name]=ACTUAL4_ABI_INDEX_SHA256
     if any(type(qualification[name])is not type(wanted)or qualification[name]!=wanted for name,wanted in expected.items()):
         raise ValueError('native exact-current static qualification differs')
     return deepcopy(value)
 
 
-def project_native_query(raw,binding,operation):
+def project_native_query(raw,binding,operation,expected_build=None):
     if operation not in OPERATIONS:raise ValueError('unsupported Confucian read operation')
     step,domain,backend,nested,schema=OPERATIONS[operation]
     exact(raw,ENVELOPE_KEYS|{nested},'native Confucian readonly envelope')
+    build=_query_build(raw)
+    if expected_build is not None and build!=expected_build:
+        raise ValueError('native Confucian envelope differs from its connected build')
     expected={'step':step,'accepted':True,'private_build':True,'read_only':True,'advertised':False,
-        'game_version':'1.20.0.3','domain_key':domain,'backend_id':backend,
+        'game_version':build.game_version,'domain_key':domain,'backend_id':_operation_backend(backend,build),
         'snapshot_revision':binding['native_revision'],'date_raw':binding['date_raw']}
     if any(type(raw[name])is not type(wanted)or raw[name]!=wanted for name,wanted in expected.items()):
         raise ValueError('native Confucian envelope differs from actual operation/frame')
-    if type(raw['executable_sha256'])is not str or raw['executable_sha256'].upper()!=CK3_12003.executable_sha256:
-        raise ValueError('native Confucian envelope image differs')
+    if _query_build(raw[nested])!=build:
+        raise ValueError('native Confucian payload/envelope build differs')
     value=(normalize_assembly if operation=='assembly_predicates'else normalize_title)(raw[nested],binding)
     if raw['status']!=('observed'if value['available']else'unavailable'):
         raise ValueError('native Confucian envelope availability differs')
@@ -340,6 +359,7 @@ def query_confucian_readonly_private_v1(driver,operation,*,expected_revision,fai
     try:
         if operation == 'challenger_graph':
             from .confucian_challenger_graph_v1 import project_native_graph_query
-            return project_native_graph_query(frame.get('result'), binding, faith_full_ids)
-        return project_native_query(frame.get('result'),binding,operation)
+            return project_native_graph_query(frame.get('result'), binding, faith_full_ids,
+                                              private_native_build_identity(before))
+        return project_native_query(frame.get('result'),binding,operation,private_native_build_identity(before))
     except ValueError as error:raise BridgeUnavailableError('malformed native Confucian read: '+str(error))from error

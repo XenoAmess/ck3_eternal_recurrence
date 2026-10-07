@@ -21,6 +21,11 @@
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/steward_develop_county_candidates_v1.hpp"
+#include "xar_bridge/ordinary_interaction_request_v1.hpp"
+#include "xar_bridge/normal_exit_map_v1.hpp"
+#include "xar_bridge/grant_title_picker_v1.hpp"
+#include "xar_bridge/ingame_decisions_opener_v1.hpp"
+#include "xar_bridge/ingame_decision_item_v1.hpp"
 
 #include <windows.h>
 #include <array>
@@ -53,6 +58,30 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.command.query-title-holder-v1-N",
       "game.command.query-pending-character-interaction-context-v1",
       "game.command.query-current-event-window-context-v1",
+#if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
+      ck3_12003::kNormalExitMapV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+      ck3_12003::kGrantTitlePickerQueryV1Capability,
+      ck3_12003::kGrantTitlePickerPrepareV1Capability,
+      ck3_12003::kGrantTitlePickerSelectV1Capability,
+      ck3_12003::kGrantTitlePickerSendV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+      ck3_12003::kOrdinaryInteractionQueryV1Capability,
+      ck3_12003::kOrdinaryInteractionInitiateV1Capability,
+#endif
+#if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
+      ck3_11906::kIngameDecisionsOpenV1Capability,
+      ck3_11906::kIngameDecisionItemQueryV1Capability,
+#if defined(XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)
+      ck3_11906::kIngameDecisionItemSelectV1Capability,
+      ck3_11906::kIngameDecisionItemConfirmV1Capability,
+#if defined(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
+      ck3_11906::kIngameDecisionOutcomeConfirmV1Capability,
+#endif
+#endif
+#endif
       "game.command.center-map-on-landed-title-v1",
       ck3_11906::kStewardDevelopCountyCandidatesV1Capability,
       "game.command.select-event-option-N",

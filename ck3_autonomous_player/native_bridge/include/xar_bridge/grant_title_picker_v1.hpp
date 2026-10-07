@@ -38,6 +38,7 @@ struct GrantTitlePickerObservationV1 {
   bool operator==(const GrantTitlePickerObservationV1 &) const=default;
 };
 struct GrantTitlePickerResultV1 {
+  std::string exact_build,executable_sha256;
   std::uint64_t native_revision=0,connection_generation=0;
   std::uint32_t game_pid=0,recipient_character_full_id=UINT32_MAX;
   std::int32_t played_character_id=-1,date_raw=0;
@@ -59,6 +60,7 @@ struct GrantTitlePickerContextV1 {
   GrantTitlePickerResultV1 result{};
 };
 bool ParseGrantTitlePickerIdsV1(std::string_view,std::vector<std::uint32_t> &,bool allow_empty) noexcept;
+bool IsGrantTitlePickerBuildV1(const game::AdapterDescriptor &) noexcept;
 bool ParseGrantTitlePickerIdsFieldV1(std::string_view,std::string_view,std::vector<std::uint32_t> &,bool allow_empty) noexcept;
 bool ExecuteGrantTitlePickerV1(GrantTitlePickerContextV1 &,ck3_11906::MainThreadQueryMailboxV1 &,
     const ck3_11906::MainThreadExecutionStampV1 &,const ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 &) noexcept;

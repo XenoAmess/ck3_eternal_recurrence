@@ -18,10 +18,22 @@ using ContainerGetter = const void *(*)(void *);
 using BoolGetter = bool (*)(void *);
 using EffectiveSkillGetter = std::int32_t (*)(void *, std::int32_t);
 using Collector = ck3_12002::religion::organization::members::Collector;
+using CoreSnapshotReader = bool (*)(const ck3_12002::CoreBindings &,
+                                   ck3_12002::CoreSnapshotPrefix &) noexcept;
+using CoreCharacterResolver = void *(*)(const ck3_12002::CoreBindings &,
+                                       std::int32_t) noexcept;
+
+enum class NativeBuild { crozier_12003, crozier_12004 };
+std::string_view GameVersion(NativeBuild) noexcept;
+std::string_view ExecutableSha256(NativeBuild) noexcept;
+std::string_view BackendId(NativeBuild) noexcept;
 
 struct Bindings {
   bool enabled = false;
+  NativeBuild native_build = NativeBuild::crozier_12003;
   ck3_12002::CoreBindings core{};
+  CoreSnapshotReader read_core_snapshot = &ck3_12002::ReadCoreSnapshot;
+  CoreCharacterResolver resolve_core_character = &ck3_12002::ResolveCoreCharacter;
   ck3_12002::phase_character::Bindings traits{};
   void **rite_storage_slot = nullptr;
   void **title_storage_slot = nullptr;
@@ -66,6 +78,7 @@ struct RiteCounties {
 };
 
 struct Snapshot {
+  NativeBuild native_build = NativeBuild::crozier_12003;
   bool available = false;
   bool predicates_complete = false;
   std::string unavailable_reason = "bindings_unavailable";

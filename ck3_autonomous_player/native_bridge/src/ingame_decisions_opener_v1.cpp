@@ -1,5 +1,6 @@
 #include "xar_bridge/ingame_decisions_opener_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
+#include "xar_bridge/ingame_private_gui_profile_v1.hpp"
 #include <windows.h>
 #include <array>
 #include <charconv>
@@ -9,7 +10,7 @@
 
 namespace xar::ck3_11906 {
 namespace {
-// Bytes read from the installed exact .3 image, not an inherited .2/.19 pin.
+// The original .3 pins and independently closed actual .4 GUI source spans.
 struct CodePin { std::uintptr_t rva; std::array<unsigned char,32> bytes; };
 constexpr CodePin kPins[]{
   {0x3AAB100,{0x48,0x89,0x5c,0x24,0x08,0x48,0x89,0x6c,0x24,0x10,0x48,0x89,0x74,0x24,0x18,0x57,0x48,0x83,0xec,0x20,0x48,0x8b,0x81,0xd0,0x00,0x00,0x00,0x48,0x8b,0xfa,0x48,0x8b}},
@@ -22,10 +23,15 @@ template<class T> bool ReadAt(void *object,std::size_t offset,T &out) noexcept {
   SIZE_T got=0;return ReadProcessMemory(GetCurrentProcess(),reinterpret_cast<const void *>(reinterpret_cast<std::uintptr_t>(object)+offset),&out,sizeof(out),&got)&&got==sizeof(out);
 }
 bool PinsMatch(const ZhongguoScoreboardNativeEnvironmentV1 &env) noexcept {
-  if (!env.exact_build_admitted || env.offline_fixture_function_overrides || env.gui_abi_revision!=GuiAbiRevisionV1::crozier12003) return false;
-  for (const auto &pin:kPins) {
+  if (!env.exact_build_admitted || env.offline_fixture_function_overrides ||
+      (env.gui_abi_revision!=GuiAbiRevisionV1::crozier12003 && env.gui_abi_revision!=GuiAbiRevisionV1::crozier12004)) return false;
+  const std::array<std::uintptr_t,4> rvas{GuiFindTopLevelWidgetRvaV1(env.gui_abi_revision),
+      GuiShortcutManagerActivateRvaV1(env.gui_abi_revision),GuiStrictDescendantRvaV1(env.gui_abi_revision),
+      GuiButtonBaseSlot13RvaV1(env.gui_abi_revision)};
+  for (std::size_t i=0;i<std::size(kPins);++i) {
+    const auto &pin=kPins[i];
     std::array<unsigned char,32> actual{};SIZE_T got=0;
-    if(!ReadProcessMemory(GetCurrentProcess(),reinterpret_cast<const void *>(env.module_base+pin.rva),actual.data(),actual.size(),&got)||got!=actual.size()||actual!=pin.bytes)return false;
+    if(!ReadProcessMemory(GetCurrentProcess(),reinterpret_cast<const void *>(env.module_base+rvas[i]),actual.data(),actual.size(),&got)||got!=actual.size()||actual!=pin.bytes)return false;
   }
   return true;
 }
@@ -88,12 +94,16 @@ bool ExecuteIngameDecisionsOpenV1(IngameDecisionsOpenContextV1 &query,
   auto &out=query.result;out={};out.native_revision=query.native_revision;out.connection_generation=query.connection_generation;out.game_pid=GetCurrentProcessId();
   try {
     const auto reject=[&](const char *why){out.unavailable_reason=why;return true;};
-    if(!query.game||query.game->descriptor().game_version!="1.20.0.3"||query.game->descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"||query.native_revision==0||query.connection_generation==0)return reject("exact_12003_request_unavailable");
+    if(!query.game||query.native_revision==0||query.connection_generation==0)return reject("exact_crozier_request_unavailable");
+    const auto &descriptor=query.game->descriptor();
+    if(!IngamePrivateGuiIdentityAdmittedV1(descriptor.game_version,descriptor.executable_sha256,env.gui_abi_revision)||
+        dispatch.gui_abi_revision!=env.gui_abi_revision)return reject("exact_crozier_request_unavailable");
+    out.game_version=descriptor.game_version;out.executable_sha256=descriptor.executable_sha256;
     if(!IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()))return reject("paused_application_owner_unverified");
     out.owner_thread_verified=true;game::Snapshot before{};
     if(!game::ReadSnapshot(*query.game,before)||before!=query.expected_snapshot||!before.paused||!before.map_ready||!before.has_played_character||!before.played_character_alive||before.played_character_id<=0||before.date_raw!=stamp.date_raw)return reject("fresh_alive_paused_frame_unverified");
     out.played_character_id=before.played_character_id;out.date_raw=before.date_raw;
-    if(!PinsMatch(env)||dispatch.gui_abi_revision!=GuiAbiRevisionV1::crozier12003)return reject("loaded_12003_gui_code_pins_changed");out.source_abi_pins_verified=true;
+    if(!PinsMatch(env))return reject("loaded_crozier_gui_code_pins_changed");out.source_abi_pins_verified=true;
     ZhongguoScoreboardAccessV1 access{};void *context=nullptr,*owner=nullptr;
     if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,owner))return reject("gui_owner_unavailable");
     void *decisions_before=nullptr;NamedGuiTreeInspectionV1 initial{};
@@ -128,7 +138,7 @@ bool ExecuteIngameDecisionsOpenV1(IngameDecisionsOpenContextV1 &query,
 }
 
 std::string SerializeIngameDecisionsOpenV1(const IngameDecisionsOpenResultV1 &v) {
-  std::string s="{\"schema\":\"ck3-ingame-decisions-open-v1\",\"step\":\"activate-ingame-decisions-v1\",\"game_version\":\"1.20.0.3\",\"executable_sha256\":\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\"";
+  std::string s="{\"schema\":\"ck3-ingame-decisions-open-v1\",\"step\":\"activate-ingame-decisions-v1\",\"game_version\":\""+v.game_version+"\",\"executable_sha256\":\""+v.executable_sha256+"\"";
   const auto number=[&](const char *k,auto n){s+=",\"";s+=k;s+="\":";s+=std::to_string(n);};
   const auto boolean=[&](const char *k,bool b){s+=",\"";s+=k;s+="\":";s+=b?"true":"false";};
   const auto text=[&](const char *k,const std::string &t){s+=",\"";s+=k;s+="\":\"";s+=t;s+='"';};

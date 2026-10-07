@@ -1,5 +1,5 @@
 """Read actual exact .3 decision model identity without projecting UI action qualification."""
-from .ingame_decisions_open_contract import EXE_SHA256
+from .ingame_decisions_open_contract import result_build
 
 STEP = "query-ingame-decision-item-v1"
 CAPABILITY = "game.command.query-ingame-decision-item-v1"
@@ -15,12 +15,11 @@ def validate_decision_key(key: object) -> str:
 
 def normalize_decision_item(raw: object, binding: dict[str, object], requested_key: str) -> dict[str, object]:
     validate_decision_key(requested_key)
+    result_build(raw)
     if (not isinstance(raw, dict) or raw.get("schema") != "ck3-ingame-decision-item-v1"
             or raw.get("step") != STEP or raw.get("read_only") is not True
-            or raw.get("game_version") != "1.20.0.3"
-            or str(raw.get("executable_sha256", "")).lower() != EXE_SHA256
             or type(raw.get("available")) is not bool):
-        raise ValueError("malformed exact .3 keyed decision observation")
+        raise ValueError("malformed exact .3/.4 keyed decision observation")
     if raw.get("row_widget_datacontext_verified") is not False or raw.get("action_qualified") is not False:
         raise ValueError("model observation cannot qualify a widget action")
     if not raw["available"]:

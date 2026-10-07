@@ -26,6 +26,8 @@ struct OrdinaryInteractionMailboxContextV1 {
 };
 
 bool OrdinaryInteractionCodePinsMatchV1(std::uintptr_t image_base) noexcept;
+bool OrdinaryInteractionCodePinsMatchV1(std::uintptr_t image_base,
+                                      std::string_view executable_sha256) noexcept;
 bool OrdinaryInteractionControlFrameMatchesV1(
     const game::Snapshot &before, const game::Snapshot &after) noexcept;
 bool OrdinaryInteractionReadyV1(

@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12003_religious_title_readback.hpp"
+#include "xar_bridge/ck3_12004_confucian_title_profile.hpp"
+#include "xar_bridge/ck3_12004_religion_adopted_observers.hpp"
 
 #include <bit>
 #include <cstring>
@@ -136,7 +138,7 @@ bool CaptureGraph(const Bindings &b, const game::Snapshot &frame, Graph &g,
       !Load(g.title, 0x10, actual_title_id) || actual_title_id != g.title_id ||
       !Load(g.title, 0, g.title_vptr) ||
       g.title_vptr != b.properties.image_base +
-          title_properties::kCLandedTitlePrimaryVtableRva ||
+          b.properties.primary_title_vtable_rva ||
       !Load(g.title, 0x128, g.holder_id)) return false;
   reason = "native_title_holder_generation_or_getter_unavailable";
   if (g.holder_id == UINT32_MAX) return getter_holder == g.character_fallback;
@@ -255,9 +257,27 @@ std::string LegacyHolder(const game::TitleHolderV1 &h) {
 
 Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
   Bindings b{};
-  if (base == 0 || sha != kExecutableSha256) return b;
+  if (base == 0 || (sha != kExecutableSha256 && sha != ck3_12004::kExecutableSha256))
+    return b;
   b.properties = title_properties::BindImage(base, sha);
   if (!b.properties.enabled) return b;
+  if (b.properties.actual4) {
+    // Use the existing independent .4 context/governance factory callbacks;
+    // the original .3 image factory never receives a substituted legacy SHA.
+    const auto governance =
+        ck3_12004::religion::adopted::BindRiteGovernanceImage12004(base, sha);
+    if (!governance.enabled || !governance.heads.enabled ||
+        !governance.heads.context.enabled) return b;
+    b.character_faith = governance.heads.context.character_faith;
+    b.faith_head = governance.heads.faith_religious_head;
+    b.faith_head_title = governance.heads.faith_religious_head_title;
+    b.title_fallback_slot = reinterpret_cast<void **>(
+        base + ck3_12004::confucian_titles::kTitleFallbackSlotRva);
+    b.faith_fallback_slot = reinterpret_cast<void **>(
+        base + ck3_12004::confucian_titles::kFaithFallbackSlotRva);
+    b.enabled = true;
+    return b;
+  }
   // Direct exact-current binding: no old executable hash is supplied here.
   b.character_faith = reinterpret_cast<ObjectGetter>(base + kCurrentCharacterFaithGetterRva);
   b.faith_head = reinterpret_cast<ObjectGetter>(base + kCurrentFaithHeadGetterRva);
@@ -272,6 +292,7 @@ bool Read(const Bindings &b, const game::Snapshot &frame, std::uint64_t epoch,
           Observation &out) noexcept {
   try {
     out = {};
+    out.actual4 = b.properties.actual4;
     out.capture_epoch = epoch;
     out.date_raw = frame.date_raw;
     out.played_character_id = frame.played_character_id;
@@ -323,6 +344,7 @@ bool Read(const Bindings &b, const game::Snapshot &frame, std::uint64_t epoch,
     if (!CaptureGraph(b, frame, third, graph_reason) || !Same(first, third))
       return fail("native_religious_title_graph_changed");
     Observation value;
+    value.actual4 = b.properties.actual4;
     value.capture_epoch = epoch;
     value.date_raw = frame.date_raw;
     value.played_character_id = frame.played_character_id;
@@ -371,8 +393,16 @@ bool Read(const Bindings &b, const game::Snapshot &frame, std::uint64_t epoch,
 }
 
 std::string Serialize(const Observation &o) {
+  const auto version = o.actual4 ? ck3_12004::kGameVersion : kGameVersion;
+  const auto sha = o.actual4 ? ck3_12004::kExecutableSha256 : kExecutableSha256;
+  const auto properties_index = o.actual4 ? ck3_12004::confucian_titles::kFiniteMapSha256 :
+      "14bf997b58a8ff33d7407ece6be2675917a2b7ed7e6ffdba70ca8ea938347a0a";
+  const auto laws_index = o.actual4 ? ck3_12004::confucian_titles::kFiniteMapSha256 :
+      "9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60";
+  const auto heads_index = o.actual4 ? ck3_12004::confucian_titles::kFiniteMapSha256 :
+      "d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973";
   return "{\"schema\":\"ck3_12003_confucian_religious_title_v1\","
-      "\"game_version\":\"1.20.0.3\",\"executable_sha256\":" + Quote(kExecutableSha256) +
+      "\"game_version\":" + Quote(version) + ",\"executable_sha256\":" + Quote(sha) +
       ",\"available\":" + Bool(o.available) + ",\"unavailable_reason\":" +
       Reason(o.available, o.unavailable_reason) + ",\"capture_epoch\":" +
       std::to_string(o.capture_epoch) + ",\"date_raw\":" + std::to_string(o.date_raw) +
@@ -393,9 +423,9 @@ std::string Serialize(const Observation &o) {
       ",\"title_laws\":" + Laws(o.title_laws) +
       ",\"mod_owned_marker\":null,\"mod_owner_faith_variable\":null,"
       "\"qualification\":{\"kind\":\"exact_current_static_abi\","
-      "\"title_properties_index_sha256\":\"14bf997b58a8ff33d7407ece6be2675917a2b7ed7e6ffdba70ca8ea938347a0a\","
-      "\"title_laws_index_sha256\":\"9d371bf97f50281c621d777890915d6767c354275222fa38d7e1127076afeb60\","
-      "\"head_getters_index_sha256\":\"d93f24e7be97fc7a59c35b76313e9b7a10f8d97dcb7534015b504373aa2dd973\","
+      "\"title_properties_index_sha256\":" + Quote(properties_index) + ',' +
+      "\"title_laws_index_sha256\":" + Quote(laws_index) + ',' +
+      "\"head_getters_index_sha256\":" + Quote(heads_index) + ',' +
       "\"faith_reference_identity_offset\":8,\"title_full_id_offset\":16,"
       "\"faith_typed_fallback_slot_rva\":\"0x5D1E2E0\","
       "\"runtime_acceptance\":null}}";

@@ -6,6 +6,8 @@ import os
 from pathlib import Path
 import uuid
 from .ingame_decisions_open_contract import opening_binding
+from .nonwar_private_build import private_native_build_identity
+from .version_identity import require_exact_native_build
 
 SCHEMA = "ck3_12003_grant_title_picker_v1"
 PERMISSION = "_grant_title_picker_private_enabled_v1"
@@ -209,10 +211,16 @@ def execute(driver, operation: str, recipient_id: int, *, expected_revision: int
                             "status": "claimed_result_unknown_no_retry"})
     raw = driver._execute_primitive_step(step, expected_revision=expected_revision,
         required_capability=capability, request_fields=fields, protocol_request_id=request_id)
+    if (type(raw) is not dict or
+            require_exact_native_build(raw.get('exact_build'), raw.get('executable_sha256')) !=
+            private_native_build_identity(starting)):
+        raise ValueError('native grant result differs from its original connected build')
     result = normalize_result(raw, binding, operation, recipient_id, requested_title_full_ids,
                               expected_selected_title_full_ids, title_full_id, desired_selected)
     ending = driver.take_snapshot()
     ending_binding = opening_binding(ending)
+    if private_native_build_identity(starting) != private_native_build_identity(ending):
+        raise ValueError('grant action crossed its original exact native build')
     for key in ("connection_generation", "game_pid", "played_character_id", "date_raw", "episode_run_id"):
         if ending_binding[key] != binding[key]:
             raise ValueError("grant action crossed its original paused episode")

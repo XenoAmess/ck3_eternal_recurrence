@@ -2563,6 +2563,18 @@ bool ConfucianProductionRegistrationSource(const char* bridge_path) {
   if (scope.find("#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)\n      environment.permitted_executor_confucian_challenger_graph12003 =\n          &xar::ck3_12003::ExecuteConfucianChallengerGraphMailbox12003;\n#endif")==std::string::npos) {
     std::fprintf(stderr,"production confucian registration missing: confucian_challenger_graph12003\n"); return false;
   }
+  const auto actual_start=bridge.find("  void InstallCoreFrame12004() noexcept {");
+  const auto actual_end=bridge.find("  void MaybeConfigureCouncilPrivateRoute() noexcept {",actual_start);
+  if(actual_start==std::string::npos||actual_end==std::string::npos)return false;
+  const auto actual_scope=bridge.substr(actual_start,actual_end-actual_start);
+  for(const auto assignment:{
+      "#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)\n    environment.permitted_executor_confucian_assembly12003 =\n        &xar::ck3_12003::ExecuteConfucianAssemblyMailbox12003;\n#endif",
+      "#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)\n    environment.permitted_executor_confucian_religious_title12003 =\n        &xar::ck3_12003::ExecuteConfucianReligiousTitleMailbox12003;\n#endif",
+      "#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)\n    environment.permitted_executor_confucian_challenger_graph12003 =\n        &xar::ck3_12003::ExecuteConfucianChallengerGraphMailbox12003;\n#endif"}) {
+    if(actual_scope.find(assignment)==std::string::npos){
+      std::fprintf(stderr,"production actual4 Confucian registration missing\n");return false;
+    }
+  }
   return true;
 }
 

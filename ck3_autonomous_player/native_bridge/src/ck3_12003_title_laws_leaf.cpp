@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_title_laws_leaf.hpp"
+#include "xar_bridge/ck3_12004_confucian_title_profile.hpp"
 
 #include <array>
 #include <bit>
@@ -66,7 +67,7 @@ bool ReadHeader(const title_properties::Bindings &bindings, const void *title,
                 std::uint32_t requested, Header &out) noexcept {
   return Load(title, 0, out.vptr) &&
       out.vptr == bindings.image_base +
-          title_properties::kCLandedTitlePrimaryVtableRva &&
+          bindings.primary_title_vtable_rva &&
       Load(title, 0x10, out.title_id) && out.title_id == requested &&
       Load(title, 0x128, out.raw_holder_id) &&
       Load(title, 0x228, out.data) && Load(title, 0x230, out.capacity) &&
@@ -88,7 +89,9 @@ bool ReadLaw(const title_properties::Bindings &bindings,
   const auto *law = reinterpret_cast<const void *>(pointer);
   out.pointer = pointer;
   if (!Load(law, 0, out.vptr) ||
-      out.vptr != bindings.image_base + kCLawPrimaryVtableRva ||
+      out.vptr != bindings.image_base + (bindings.actual4
+          ? ck3_12004::confucian_titles::kCLawPrimaryVtableRva
+          : kCLawPrimaryVtableRva) ||
       !Load(law, 0x10, out.id) || !Load(law, 0x38, out.magic) ||
       out.magic != kCLawDatabaseObjectMagic ||
       !Copy(static_cast<const std::byte *>(law) + 0x18,

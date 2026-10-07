@@ -83,11 +83,16 @@ def service_fixture(root):
     return service, backend, driver, arguments, path
 
 
-def late_attach_fixture(root: Path):
+def late_attach_fixture(root: Path, build=native.CK3_12003):
     from xar_autoplayer.bridge.native_driver import BridgeUnavailableError
     _, path = fixture(root)
     payload = json.loads(path.read_text(encoding="utf-8"))
-    payload["game_version"] = "1.20.0.3"
+    payload["game_version"] = build.game_version
+    guard_path = Path(payload["guard_profile"])
+    guard = json.loads(guard_path.read_text(encoding="utf-8"))
+    guard["target"]["executable_sha256"] = build.executable_sha256.lower()
+    guard_path.write_text(json.dumps(guard), encoding="utf-8")
+    payload["guard_profile_sha256"] = native.desktop.sha256(guard_path)
     path.write_text(json.dumps(payload), encoding="utf-8")
     profile = native.load_profile(path)
     backend, driver = Backend(profile), Driver(profile)
@@ -102,7 +107,7 @@ def late_attach_fixture(root: Path):
     driver.endpoint = SimpleNamespace(pipe_name=service.pipe_name)
     driver.snapshot["diagnostics"].update(pipe_name=service.pipe_name, connected=True, connection_generation=1)
     driver.snapshot["diagnostics"]["hello"].update(
-        connection_generation=1, game_adapter_id="ck3-1.20.0.3-msvc-x64")
+        connection_generation=1, game_adapter_id=f"ck3-{build.game_version}-msvc-x64")
     driver.state = SimpleNamespace(pipe_name=service.pipe_name,
         diagnostics=lambda: copy.deepcopy(driver.snapshot["diagnostics"]))
     with patch.object(driver, "take_snapshot", side_effect=BridgeUnavailableError(
@@ -113,6 +118,27 @@ def late_attach_fixture(root: Path):
 
 
 class NativeProfileTests(unittest.TestCase):
+    def test_actual4_late_attach_retains_original_connection_and_rejects_mixed_identity(self):
+        for mutation in (None, 'profile_sha', 'adapter', 'hello_sha', 'generation'):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary:
+                service, backend, driver, arguments, initial = late_attach_fixture(Path(temporary), native.CK3_12004)
+                original_path = Path(initial['receipt_path'])
+                original_raw = original_path.read_bytes()
+                if mutation == 'profile_sha':
+                    service.profile['guard']['target']['executable_sha256'] = native.CK3_12003.executable_sha256
+                elif mutation == 'adapter':
+                    driver.snapshot['diagnostics']['hello']['game_adapter_id'] = 'ck3-1.20.0.3-msvc-x64'
+                elif mutation == 'hello_sha':
+                    driver.snapshot['diagnostics']['hello']['expected_ck3_sha256'] = native.CK3_12003.executable_sha256
+                elif mutation == 'generation':
+                    driver.snapshot['diagnostics']['connection_generation'] = 2
+                result = service.attach()
+                self.assertEqual(result['status'], 'attached_snapshot_verified' if mutation is None else 'RED')
+                self.assertEqual(original_path.read_bytes(), original_raw)
+                self.assertEqual(len(backend.injections), 1)
+                self.assertEqual(len(arguments), 1)
+                self.assertIs(service.driver, driver)
+
     def test_explicit_late_attach_verifies_original_driver_without_reinjection(self):
         with tempfile.TemporaryDirectory() as temporary:
             service, backend, driver, arguments, initial = late_attach_fixture(Path(temporary))

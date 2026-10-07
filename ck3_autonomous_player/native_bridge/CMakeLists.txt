@@ -976,6 +976,7 @@ endif()
 if(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confucian_assembly_predicates.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12004_confucian_assembly_bindings.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confucian_assembly_mailbox.cpp")
 endif()
 if(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
@@ -9070,6 +9071,7 @@ if(BUILD_TESTING AND WIN32)
     src/ck3_12002.cpp
     src/ck3_12002_commands.cpp)
   target_include_directories(xar_ck3_ordinary_character_interaction_v1_test PRIVATE include)
+  target_link_libraries(xar_ck3_ordinary_character_interaction_v1_test PRIVATE xar_ck3_12002_runtime)
   target_compile_features(xar_ck3_ordinary_character_interaction_v1_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_ordinary_character_interaction_v1_test PRIVATE
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
@@ -9089,7 +9091,7 @@ if(BUILD_TESTING AND WIN32)
     src/main_thread_query_mailbox_v1.cpp
     src/ck3_12002_query_mailbox.cpp
     src/ck3_12003_abi_profile.cpp)
-  target_link_libraries(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE user32)
+  target_link_libraries(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE xar_ck3_12002_runtime user32)
   target_include_directories(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE include)
   target_compile_features(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE
@@ -9315,3 +9317,4 @@ include(cmake/commander_movement_metadata_12004.cmake)
 include(cmake/snapshot_foundation_12004_first.cmake)
 include(cmake/adopted_domains_12004.cmake)
 include(cmake/steward_existing_target_closure_12004.cmake)
+include(cmake/lyd_private_12004.cmake)

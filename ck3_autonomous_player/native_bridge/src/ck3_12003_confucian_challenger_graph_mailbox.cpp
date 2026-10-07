@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12003_confucian_challenger_graph_mailbox.hpp"
 #include "xar_bridge/ck3_12003_readonly_revision.hpp"
+#include "xar_bridge/ck3_12004_confucian_title_profile.hpp"
 
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
@@ -59,6 +60,7 @@ bool ExecuteConfucianChallengerGraphMailbox12003(
     if (out.available && (out.played_character_id != frame.played_character_id ||
                           out.date_raw != frame.date_raw)) {
       out = {};
+      out.actual4 = query.bindings.titles.properties.actual4;
       out.unavailable_reason = "native_frame_changed";
       out.capture_epoch = stamp.pump_epoch;
       out.requested_faith_full_ids.assign(query.request.faith_full_ids.begin(),
@@ -81,13 +83,17 @@ std::string SerializeConfucianChallengerGraphResult12003(
     const ConfucianChallengerGraphMailboxContext12003 &query, std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
+  const bool actual4 = query.bindings.titles.properties.actual4;
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kConfucianChallengerGraphPrivateStep12003) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
-      ",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"game_version\":\"1.20.0.3\"," +
-      "\"executable_sha256\":" + Quote(kExecutableSha256) +
+      ",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"game_version\":" +
+      Quote(actual4 ? ck3_12004::kGameVersion : kGameVersion) + ',' +
+      "\"executable_sha256\":" + Quote(actual4 ? ck3_12004::kExecutableSha256 : kExecutableSha256) +
       ",\"domain_key\":" + Quote(kConfucianChallengerGraphDomainKey12003) +
-      ",\"backend_id\":" + Quote(kConfucianChallengerGraphBackend12003) +
+      ",\"backend_id\":" + Quote(actual4
+          ? "ck3-1.20.0.4-native-confucian-challenger-graph-v1"
+          : kConfucianChallengerGraphBackend12003) +
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
       ",\"confucian_challenger_graph\":" + challenger_graph::Serialize(query.observation) + "}}";
@@ -142,8 +148,12 @@ bool HandleConfucianChallengerGraphPrivate12003(const game::GameAdapter &adapter
   if (!challenger_graph::ParseRequest(payload, request)) {
     failure = "confucian_challenger_graph_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != ck3_12003::kGameVersion ||
-      adapter.descriptor().executable_sha256 != ck3_12003::kExecutableSha256 ||
+  const auto &descriptor = adapter.descriptor();
+  const bool exact3 = descriptor.game_version == kGameVersion &&
+      descriptor.executable_sha256 == kExecutableSha256;
+  const bool exact4 = descriptor.game_version == ck3_12004::kGameVersion &&
+      descriptor.executable_sha256 == ck3_12004::kExecutableSha256;
+  if (!adapter.enabled() || (!exact3 && !exact4) ||
       !ValidFrame(published, revision) || (request.expected_snapshot_revision != revision)) {
     failure = "confucian_challenger_graph_current_frame_unavailable"; return false;
   }

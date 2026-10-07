@@ -34,6 +34,7 @@ struct Bindings {
 
 struct Observation {
   bool available = false;
+  bool actual4 = false;
   std::string unavailable_reason = "not_read";
   std::uint64_t capture_epoch = 0;
   std::int32_t date_raw = 0;

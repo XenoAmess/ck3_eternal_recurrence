@@ -11666,6 +11666,22 @@ public:
     environment.permitted_executor_quinquadragintary =
         &xar::ck3_11906::ExecuteDeathSuccessionModalContinueMailboxV1;
 #endif
+#if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+    environment.permitted_executor_ordinary_interaction12003 =
+        &xar::ck3_12003::ExecuteOrdinaryInteractionMailboxV1;
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+    environment.permitted_executor_confucian_assembly12003 =
+        &xar::ck3_12003::ExecuteConfucianAssemblyMailbox12003;
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+    environment.permitted_executor_confucian_religious_title12003 =
+        &xar::ck3_12003::ExecuteConfucianReligiousTitleMailbox12003;
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
+    environment.permitted_executor_confucian_challenger_graph12003 =
+        &xar::ck3_12003::ExecuteConfucianChallengerGraphMailbox12003;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -11725,6 +11741,18 @@ public:
   bool council_private_route_configured_ = false;
 #endif
 };
+
+bool IsLydPrivateBuild(const xar::game::AdapterDescriptor &descriptor) noexcept {
+  return xar::game::IsCk3_12003Descriptor(descriptor) ||
+         xar::game::IsCk3_12004Descriptor(descriptor);
+}
+
+xar::ck3_11906::GuiAbiRevisionV1 LydPrivateGuiRevision(
+    const xar::game::AdapterDescriptor &descriptor) noexcept {
+  return xar::game::IsCk3_12004Descriptor(descriptor)
+      ? xar::ck3_11906::GuiAbiRevisionV1::crozier12004
+      : xar::ck3_11906::GuiAbiRevisionV1::crozier12003;
+}
 
 bool RouteHostileScopeMatchesSnapshot(
     const xar::game::Snapshot &snapshot,
@@ -13096,7 +13124,7 @@ std::string RunOrdinaryInteractionV1(
   query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
   query.envelope.typed_context = &query;
   query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+  if (!IsLydPrivateBuild(game.descriptor()) ||
       !game.supports_step(step) ||
       !ParseOrdinaryInteractionRequestV1(payload, query.initiate, query.request) ||
       query.request.expected_revision != state.state_revision ||
@@ -14416,7 +14444,17 @@ void RunConnectedSession(
                       step.starts_with(xar::ck3_12003::
                           kArmyCommanderAssignmentStepPrefix) ||
                       step.starts_with(xar::game::kWarOccupationTargetsV1StepPrefix) ||
-                      step.starts_with(xar::game::kTitleHolderV1StepPrefix)))) &&
+                       step.starts_with(xar::game::kTitleHolderV1StepPrefix)
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+                       || xar::ck3_12003::IsConfucianAssemblyPrivateStep12003(step)
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+                       || xar::ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step)
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
+                       || xar::ck3_12003::IsConfucianChallengerGraphPrivateStep12003(step)
+#endif
+                       ))) &&
                     (step.starts_with(xar::ck3_12003::
                                          kArmyCommanderAssignmentStepPrefix) ||
                     step.starts_with(xar::ck3_12003::
@@ -17201,14 +17239,14 @@ void RunConnectedSession(
                 !current.has_played_character||!current.played_character_alive||current.played_character_id<=0||
                 current.has_active_event||current.has_pending_character_interaction||
                 expected_actor!=static_cast<std::uint64_t>(current.played_character_id)||
-                game.descriptor().game_version!="1.20.0.3"||game.descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
+                !IsLydPrivateBuild(game.descriptor())) {
               connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"grant_title_picker_exact_frame_or_request_unavailable"));
             }else{
               grant.game=&game;grant.expected_snapshot=current;grant.native_revision=state_revision;
               grant.connection_generation=connection_generation;grant.recipient_character_full_id=static_cast<std::uint32_t>(recipient);
               grant.title_full_id=static_cast<std::uint32_t>(title);grant.desired_selected=desired;
               const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
               const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
               std::string response;
@@ -17246,8 +17284,7 @@ void RunConnectedSession(
                 !current.paused || !current.map_ready || !current.has_played_character ||
                 !current.played_character_alive || current.played_character_id <= 0 ||
                 request.expected_player_character_id != static_cast<std::uint32_t>(current.played_character_id) ||
-                game.descriptor().game_version != xar::ck3_12003::kGameVersion ||
-                game.descriptor().executable_sha256 != xar::ck3_12003::kExecutableSha256) {
+                !IsLydPrivateBuild(game.descriptor())) {
               connected = write_frame(pipe, CommandResultFrame(request_id, step, false,
                   parse_reason.empty() ? "normal_exit_map_exact_episode_binding_changed" : parse_reason));
             } else {
@@ -17260,9 +17297,9 @@ void RunConnectedSession(
               exit.session = &g_normal_exit_map_session_v1;
               const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
               query.environment = xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base, true,
-                  xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+                  LydPrivateGuiRevision(game.descriptor()));
               query.dispatch_environment = xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base, true,
-                  xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+                  LydPrivateGuiRevision(game.descriptor()));
               const auto submitted = xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1, &query, query.ticket);
               std::string response;
@@ -17320,8 +17357,7 @@ void RunConnectedSession(
                 !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||
                 !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive ||
                 current.played_character_id<=0 || expected_actor!=static_cast<std::uint64_t>(current.played_character_id) ||
-                game.descriptor().game_version!="1.20.0.3" ||
-                game.descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
+                !IsLydPrivateBuild(game.descriptor())) {
               connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"exact_alive_paused_episode_binding_changed"));
             } else {
               xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
@@ -17330,8 +17366,8 @@ void RunConnectedSession(
               query.ingame_decisions.game=&game;query.ingame_decisions.expected_snapshot=current;
               query.ingame_decisions.native_revision=state_revision;query.ingame_decisions.connection_generation=connection_generation;
               const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
-              query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
+              query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
               const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
               std::string response;
@@ -17400,8 +17436,8 @@ void RunConnectedSession(
                 admitted(current.played_character_alive,"played_character_alive") && admitted(current.played_character_id>0,"actor_positive") &&
                 admitted(expected_actor==static_cast<std::uint64_t>(current.played_character_id),"actor_matches") &&
                 admitted(!outcome||(!current.has_active_event&&!current.has_pending_character_interaction),"outcome_window_clear") &&
-                admitted(game.descriptor().game_version=="1.20.0.3","game_version_matches") &&
-                admitted(game.descriptor().executable_sha256=="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6","executable_sha256_matches");
+                admitted(game.descriptor().game_version=="1.20.0.3"||game.descriptor().game_version=="1.20.0.4","game_version_matches") &&
+                admitted(IsLydPrivateBuild(game.descriptor()),"executable_sha256_matches");
             if (!binding_admitted) {
               auto error=CommandResultFrame(request_id,step,false,"exact_alive_paused_decision_action_binding_changed");
               error.pop_back();
@@ -17475,8 +17511,8 @@ void RunConnectedSession(
               action.observation.native_revision=state_revision;action.observation.connection_generation=connection_generation;
               action.observation.requested_key=decision_key;
               const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
-              query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
+              query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
               const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
               std::string response;
@@ -17517,8 +17553,7 @@ void RunConnectedSession(
                 !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||
                 !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive ||
                 current.played_character_id<=0 || expected_actor!=static_cast<std::uint64_t>(current.played_character_id) ||
-                game.descriptor().game_version!="1.20.0.3" ||
-                game.descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
+                !IsLydPrivateBuild(game.descriptor())) {
               connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"exact_alive_paused_keyed_query_binding_changed"));
             } else {
               xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
@@ -17528,7 +17563,7 @@ void RunConnectedSession(
               query.ingame_decision_item.native_revision=state_revision;query.ingame_decision_item.connection_generation=connection_generation;
               query.ingame_decision_item.requested_key=decision_key;
               const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
               const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
               std::string response;

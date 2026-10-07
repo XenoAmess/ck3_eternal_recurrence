@@ -15,7 +15,9 @@ from pathlib import Path
 import re
 
 from .current_actor_stress_adjustment_contract import stress_query_binding, same_stress_query_frame
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 from .ingame_decisions_open_contract import EXE_SHA256
+from .nonwar_private_build import private_native_build_identity
 
 QUERY_STEP = "query-character-interaction-ordinary-v1"
 QUERY_CAPABILITY = "game.query.character-interaction-ordinary.v1"
@@ -77,7 +79,8 @@ def interaction_binding(snapshot: object, expected_revision: object, *, initiati
 
 def same_query_frame(before: dict, after: object, binding: dict) -> bool:
     original = {key: val for key, val in binding.items() if key not in {"active_event_present", "incoming_interaction_present"}}
-    return same_stress_query_frame(before, after, original)
+    return (same_stress_query_frame(before, after, original)
+            and private_native_build_identity(before)==private_native_build_identity(after))
 
 
 def after_control_binding(before: dict, after: object, binding: dict) -> dict:
@@ -85,6 +88,8 @@ def after_control_binding(before: dict, after: object, binding: dict) -> dict:
     if not isinstance(after, dict):
         raise ValueError("ordinary initiation lacks an actual after snapshot")
     later = interaction_binding(after, after.get("revision"))
+    if private_native_build_identity(before)!=private_native_build_identity(after):
+        raise ValueError("ordinary initiation changed its exact native build")
     for key in ("game_pid", "connection_generation", "played_character_id", "date_raw", "episode_run_id"):
         if later[key] != binding[key]:
             raise ValueError(f"ordinary initiation changed control identity {key}")
@@ -110,21 +115,30 @@ def _common(value: object, keys: set, binding: dict, interaction_key: str, recip
             schema: str, source: str, read_only: bool, status: str) -> dict:
     if not isinstance(value, dict) or set(value) != keys:
         raise ValueError("ordinary interaction payload is not closed")
+    build = require_exact_native_build(value.get("exact_build"), value.get("executable_sha256"))
+    if build not in (CK3_12003, CK3_12004):
+        raise ValueError("ordinary interaction requires an exact .3/.4 native build")
+    source = source.replace('1.20.0.3', build.game_version)
     for key, expected in {"schema": schema, "status": status, "source": source, "read_only": read_only,
-            "exact_build": "1.20.0.3", "snapshot_revision": binding["native_revision"],
+            "exact_build": build.game_version, "snapshot_revision": binding["native_revision"],
             "date_raw": binding["date_raw"], "game_pid": binding["game_pid"],
             "connection_generation": binding["connection_generation"],
             "player_character_id": binding["played_character_id"], "recipient_id": recipient_id,
             "interaction_key": interaction_key, "business_postcondition_verified": False}.items():
         _exact(value, key, expected)
-    if not isinstance(value.get("executable_sha256"), str) or value["executable_sha256"].lower() != EXE_SHA256:
-        raise ValueError("ordinary interaction exact executable is mismatched")
     for key in PROOFS:
         if type(value[key]) is not bool:
             raise ValueError(f"ordinary interaction proof {key} is malformed")
     _integer(value["owner_thread_id"], 0, 2**32 - 1, "owner_thread_id")
     _integer(value["owner_pump_epoch"], 0, 2**64 - 1, "owner_pump_epoch")
     return value
+
+
+def require_result_build(raw, snapshot, payload_key):
+    value = raw.get(payload_key) if isinstance(raw, dict) else None
+    if not isinstance(value, dict) or require_exact_native_build(
+            value.get('exact_build'), value.get('executable_sha256')) != private_native_build_identity(snapshot):
+        raise ValueError('ordinary interaction result differs from its connected native build')
 
 
 def normalize_context_payload(raw: object, binding: dict, interaction_key: str, recipient_id: int) -> dict:
@@ -231,6 +245,9 @@ def normalize_native_initiation(raw: object, binding: dict, interaction_key: str
     ack = _common(value[INITIATE_PAYLOAD], INITIATE_KEYS, binding, interaction_key, recipient_id,
                   INITIATE_SCHEMA, "native_current_ordinary_interaction_command_1.20.0.3", False, value["status"])
     preflight = normalize_context_payload(ack["preflight_context"], binding, interaction_key, recipient_id)
+    if (preflight['exact_build'] != ack['exact_build'] or
+            preflight['executable_sha256'].upper() != ack['executable_sha256'].upper()):
+        raise ValueError('ordinary initiation and preflight native builds differ')
     for key in ("native_call_completed", "dispatch_invoked", "queue_submitted", "verification_pending", "postcondition_verified"):
         if type(ack[key]) is not bool:
             raise ValueError(f"ordinary initiation {key} is malformed")

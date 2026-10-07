@@ -1,4 +1,7 @@
 #include "xar_bridge/ordinary_character_interaction_v1.hpp"
+#include "xar_bridge/ck3_12004_interaction_context.hpp"
+#include "xar_bridge/ck3_12004_commands.hpp"
+#include "xar_bridge/ck3_12004_prisoner_ransom_action.hpp"
 
 #include <bit>
 #include <cstring>
@@ -279,6 +282,32 @@ Bindings BindOrdinaryInteractionImage12003(std::uintptr_t base,
   b.is_shown = reinterpret_cast<MenuShown>(base + 0x30796B0);
   b.read_option = reinterpret_cast<ReadOption>(base + 0x3078880);
   b.outer_answer = reinterpret_cast<OuterAnswer>(base + 0x307BC80);
+  return b;
+}
+
+Bindings BindOrdinaryInteractionImage12004(std::uintptr_t base,
+                                          std::string_view sha) noexcept {
+  Bindings b{};
+  if (base == 0 || sha != ck3_12004::kExecutableSha256) return b;
+  const auto context = ck3_12004::BindInteractionContext12004(base, sha);
+  const auto commands = ck3_12004::BindCommandImage12004(base, sha);
+  if (!context.enabled || !context.context.enabled || !commands.enabled) return b;
+  b.interaction = context.context;
+  auto &i = b.interaction;
+  i.commands = commands;
+  i.intermediary_answer_score = reinterpret_cast<ck3_12002::MarriageReadInteractionAnswerScore>(base + 0x307C340);
+  i.construct_send_command = reinterpret_cast<ck3_12002::MarriageConstructSendInteractionCommand>(
+      base + ck3_12004::kPrisonerRansomSendConstructorRva12004);
+  i.send_primary_vtable = base + ck3_12004::kPrisonerRansomSendPrimaryVtableRva12004;
+  i.send_secondary_vtable = base + ck3_12004::kPrisonerRansomSendSecondaryVtableRva12004;
+  b.get_database = context.get_database;
+  b.stable_hash = context.stable_hash;
+  b.lookup_definition = context.lookup_definition;
+  b.construct_two_role = context.construct_two_role;
+  b.is_shown = reinterpret_cast<MenuShown>(base + 0x3079690);
+  b.read_option = reinterpret_cast<ReadOption>(base + 0x3078860);
+  b.outer_answer = reinterpret_cast<OuterAnswer>(base + ck3_12004::kInteractionEvaluateAnswerRva12004);
+  b.enabled = true;
   return b;
 }
 

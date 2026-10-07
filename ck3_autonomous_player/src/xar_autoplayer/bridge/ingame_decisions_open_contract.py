@@ -1,9 +1,19 @@
-"""Exact .3 HUD Decisions opening; no decision-row or product panel action."""
+"""Exact .3/.4 HUD Decisions opening; no decision-row or product panel action."""
 from __future__ import annotations
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 STEP = "activate-ingame-decisions-v1"
 CAPABILITY = "game.command.activate-ingame-decisions-v1"
 EXE_SHA256 = "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+
+
+def result_build(raw):
+    if not isinstance(raw, dict):
+        raise ValueError("missing exact native result")
+    build = require_exact_native_build(raw.get("game_version"), raw.get("executable_sha256"))
+    if build not in (CK3_12003, CK3_12004):
+        raise ValueError("requires exact .3/.4 native result")
+    return build
 
 def opening_binding(snapshot: object) -> dict[str, object]:
     if not isinstance(snapshot, dict):
@@ -11,13 +21,15 @@ def opening_binding(snapshot: object) -> dict[str, object]:
     character = snapshot.get("played_character")
     diagnostics = snapshot.get("diagnostics")
     hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+    if not isinstance(hello, dict):
+        raise ValueError("missing exact native hello")
+    build = require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
     if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
             or not isinstance(character, dict) or character.get("alive") is not True
             or not isinstance(hello, dict) or hello.get("ck3_build_match") is not True
-            or hello.get("game_adapter_id") != "ck3-1.20.0.3-msvc-x64"
-            or hello.get("expected_ck3_version") != "1.20.0.3"
-            or str(hello.get("expected_ck3_sha256", "")).lower() != EXE_SHA256):
-        raise ValueError("requires exact .3 alive paused map")
+            or hello.get("game_adapter_id") != f"ck3-{build.game_version}-msvc-x64"
+            or build not in (CK3_12003, CK3_12004)):
+        raise ValueError("requires exact .3/.4 alive paused map")
     values = {"native_revision": snapshot.get("native_revision"),
               "connection_generation": diagnostics.get("connection_generation"),
               "game_pid": hello.get("pid"),
@@ -33,10 +45,10 @@ def opening_binding(snapshot: object) -> dict[str, object]:
     return values
 
 def normalize_open_result(raw: object, binding: dict[str, object]) -> dict[str, object]:
+    result_build(raw)
     if (not isinstance(raw, dict) or raw.get("schema") != "ck3-ingame-decisions-open-v1"
-            or raw.get("step") != STEP or raw.get("game_version") != "1.20.0.3"
-            or str(raw.get("executable_sha256", "")).lower() != EXE_SHA256):
-        raise ValueError("malformed exact .3 opening result")
+            or raw.get("step") != STEP):
+        raise ValueError("malformed exact .3/.4 opening result")
     for key in ("native_revision", "connection_generation", "game_pid", "played_character_id", "date_raw"):
         value = raw.get(key)
         if isinstance(value, bool) or not isinstance(value, int) or value != binding[key]:

@@ -1,5 +1,6 @@
 #include "xar_bridge/ordinary_interaction_mailbox_v1.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 
 #include <windows.h>
 #include <array>
@@ -13,6 +14,7 @@ struct CodePin { std::uintptr_t rva; std::array<std::uint8_t, 32> bytes; };
 // spans. Vtable entries are ASLR-adjusted pointers and are verified on the
 // constructed command, never compared to unrelocated disk pointer bytes.
 #include "ordinary_interaction_code_pins_v1.inc"
+#include "ordinary_interaction_code_pins_12004_v1.inc"
 
 bool PinMatches(std::uintptr_t image_base, const CodePin &pin) noexcept {
   if (image_base == 0) return false;
@@ -47,9 +49,16 @@ void Reason(std::ostream &out, const char *value, bool absent) {
   if (absent) out << "null";
   else Quote(out, value != nullptr && value[0] != '\0' ? value : "unavailable");
 }
+bool Actual4(const OrdinaryInteractionMailboxContextV1 &q) noexcept {
+  return q.envelope.game != nullptr && game::IsCk3_12004Descriptor(q.envelope.game->descriptor());
+}
+std::string_view BuildVersion(const OrdinaryInteractionMailboxContextV1 &q) noexcept {
+  return Actual4(q) ? "1.20.0.4" : "1.20.0.3";
+}
 void Metadata(std::ostream &out, const OrdinaryInteractionMailboxContextV1 &q) {
-  out << ",\"exact_build\":\"1.20.0.3\",\"executable_sha256\":";
-  Quote(out, ordinary_interaction::kExecutableSha256);
+  out << ",\"exact_build\":"; Quote(out, BuildVersion(q));
+  out << ",\"executable_sha256\":";
+  Quote(out, Actual4(q) ? ck3_12004::kExecutableSha256 : ordinary_interaction::kExecutableSha256);
   out << ",\"snapshot_revision\":" << q.request.expected_revision <<
       ",\"date_raw\":" << q.envelope.expected_snapshot.date_raw <<
       ",\"game_pid\":" << q.request.expected_game_pid <<
@@ -95,7 +104,7 @@ void QueryPayload(std::ostream &out, const OrdinaryInteractionMailboxContextV1 &
   const bool available = Available(q, o);
   out << "{\"schema\":\"ck3-character-interaction-ordinary-context-v1\",\"status\":";
   Quote(out, available ? "available" : "unavailable");
-  out << ",\"source\":\"native_current_ordinary_interaction_context_1.20.0.3\",\"read_only\":true";
+  out << ",\"source\":\"native_current_ordinary_interaction_context_" << BuildVersion(q) << "\",\"read_only\":true";
   Metadata(out, q);
   out << ",\"actor_alive\":"; Optional(out, available ? o.actor_alive : std::optional<bool>{});
   out << ",\"recipient_alive\":"; Optional(out, available ? o.recipient_alive : std::optional<bool>{});
@@ -152,8 +161,16 @@ std::string_view QueueName(ordinary_interaction::QueueResult result) noexcept {
 } // namespace
 
 bool OrdinaryInteractionCodePinsMatchV1(std::uintptr_t image_base) noexcept {
+  return OrdinaryInteractionCodePinsMatchV1(image_base, ordinary_interaction::kExecutableSha256);
+}
+
+bool OrdinaryInteractionCodePinsMatchV1(std::uintptr_t image_base,
+                                      std::string_view executable_sha256) noexcept {
   if (image_base == 0) return false;
-  for (const auto &pin : kOrdinaryInteractionCodePinsV1)
+  const auto *pins = executable_sha256 == ordinary_interaction::kExecutableSha256 ? &kOrdinaryInteractionCodePinsV1 :
+      executable_sha256 == ck3_12004::kExecutableSha256 ? &kOrdinaryInteractionCodePins12004V1 : nullptr;
+  if (pins == nullptr) return false;
+  for (const auto &pin : *pins)
     if (!PinMatches(image_base, pin)) return false;
   return true;
 }
@@ -192,7 +209,8 @@ bool ExecuteOrdinaryInteractionMailboxV1(
           *envelope, stamp, &ExecuteOrdinaryInteractionMailboxV1)) return false;
   auto &q = *static_cast<OrdinaryInteractionMailboxContextV1 *>(envelope->typed_context);
   if (envelope != &q.envelope || q.completed ||
-      !game::IsCk3_12003Descriptor(envelope->game->descriptor()) ||
+      (!game::IsCk3_12003Descriptor(envelope->game->descriptor()) &&
+       !game::IsCk3_12004Descriptor(envelope->game->descriptor())) ||
       !OrdinaryInteractionRequestValidV1(q.request) ||
       q.request.expected_revision != envelope->expected_snapshot_revision ||
       q.request.expected_game_pid != GetCurrentProcessId() ||
@@ -204,15 +222,18 @@ bool ExecuteOrdinaryInteractionMailboxV1(
   q.proof.tls_verified = true;
   q.proof.owner_thread_id = stamp.thread_id;
   q.proof.owner_pump_epoch = stamp.pump_epoch;
-  q.proof.source_code_pins_verified = OrdinaryInteractionCodePinsMatchV1(q.image_base);
+  q.proof.source_code_pins_verified = OrdinaryInteractionCodePinsMatchV1(
+      q.image_base, envelope->game->descriptor().executable_sha256);
   q.proof.frame_verified = true;
   if (!q.proof.source_code_pins_verified) {
     q.observation.unavailable_reason = "current_interaction_code_pins_changed";
     q.observation.unsupported_reason = "native_context_unavailable";
     q.initiation.reason = "current_interaction_code_pins_changed";
   } else {
-    auto bindings = ordinary_interaction::BindOrdinaryInteractionImage12003(
-        q.image_base, envelope->game->descriptor().executable_sha256);
+    auto bindings = Actual4(q) ? ordinary_interaction::BindOrdinaryInteractionImage12004(
+        q.image_base, envelope->game->descriptor().executable_sha256) :
+        ordinary_interaction::BindOrdinaryInteractionImage12003(
+            q.image_base, envelope->game->descriptor().executable_sha256);
     bindings.dispatch_frame_context = envelope;
     bindings.verify_dispatch_frame = &VerifyDispatchFrame;
     if (!q.initiate) {
@@ -268,7 +289,7 @@ std::string SerializeOrdinaryInteractionV1(
   } else {
     out << ",\"character_interaction_ordinary_initiation\":{\"schema\":\"ck3-character-interaction-ordinary-initiation-v1\",\"status\":";
     Quote(out, status);
-    out << ",\"source\":\"native_current_ordinary_interaction_command_1.20.0.3\",\"read_only\":false";
+    out << ",\"source\":\"native_current_ordinary_interaction_command_" << BuildVersion(q) << "\",\"read_only\":false";
     Metadata(out, q);
     Proof(out, q, o, q.proof.frame_verified);
     out << ",\"native_call_completed\":"; Bool(out, q.initiation.native_call_completed);

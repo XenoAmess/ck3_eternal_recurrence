@@ -80,7 +80,11 @@ struct SendObservation {
 // independently; no .2 executable gate, discovery, pipe or process attachment.
 // Actual current code-pin, owner/TLS/frame verification belongs to the wrapper.
 Bindings BindOrdinaryInteractionImage12003(std::uintptr_t module_base,
-                                         std::string_view executable_sha256) noexcept;
+                                          std::string_view executable_sha256) noexcept;
+// Actual .4 dependencies come from its own Core, interaction and command
+// profiles. The .3 binder is never used for an actual .4 executable.
+Bindings BindOrdinaryInteractionImage12004(std::uintptr_t module_base,
+                                          std::string_view executable_sha256) noexcept;
 
 // In-process, application-owner leaves. Callers must already hold the freshly
 // verified owner/TLS/paused-frame gate. No capability/registry wiring here.

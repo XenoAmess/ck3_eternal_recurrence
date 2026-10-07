@@ -374,6 +374,15 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
                              std::string_view step) noexcept {
   if (!adapter.enabled() ||
       !game::IsCk3_12004Descriptor(adapter.descriptor())) return false;
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+  if (ck3_12003::IsConfucianAssemblyPrivateStep12003(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+  if (ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
+  if (ck3_12003::IsConfucianChallengerGraphPrivateStep12003(step)) return true;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1)
   if (IsGovernmentRuntimeAdapterQuery12002(step)) return true;
 #endif

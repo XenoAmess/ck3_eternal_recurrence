@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12002_family_query_abi.hpp"
 #include "xar_bridge/ck3_12002_religion_context.hpp"
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 
 #include <algorithm>
 #include <array>
@@ -46,7 +47,7 @@ void *Resolve(void **slot, std::uint32_t id, std::size_t identity) noexcept {
 
 void *Character(const Bindings &b, std::uint32_t id) noexcept {
   if (id == absent) return nullptr;
-  auto *object = ck3_12002::ResolveCoreCharacter(b.core, static_cast<std::int32_t>(id));
+  auto *object = b.resolve_core_character(b.core, static_cast<std::int32_t>(id));
   return object != nullptr && Load<std::uint32_t>(object, p::kCharacterKindOffset) == 0x43686172U
       ? object : nullptr;
 }
@@ -162,7 +163,7 @@ CharacterPredicate ReadMember(const Bindings &b, std::uint32_t id,
 
 bool Read(const Bindings &b, std::uint64_t epoch, Snapshot &out) {
   ck3_12002::CoreSnapshotPrefix frame;
-  if (!ck3_12002::ReadCoreSnapshot(b.core, frame) || !frame.map_ready ||
+  if (!b.read_core_snapshot(b.core, frame) || !frame.map_ready ||
       !frame.has_played_character || !frame.played_character_alive) { out.unavailable_reason = "paused_frame_unavailable"; return false; }
   if (!frame.clock.paused) { out.unavailable_reason = "frame_not_paused"; return false; }
   out.capture_epoch = epoch;
@@ -287,7 +288,7 @@ bool Read(const Bindings &b, std::uint64_t epoch, Snapshot &out) {
     stable = stable && ids == counties.county_title_ids;
   }
   ck3_12002::CoreSnapshotPrefix after;
-  stable = stable && ck3_12002::ReadCoreSnapshot(b.core, after) && after.clock.paused &&
+  stable = stable && b.read_core_snapshot(b.core, after) && after.clock.paused &&
       after.map_ready && after.has_played_character && after.played_character_alive &&
       after.clock.date_raw == frame.clock.date_raw && after.played_character_id == frame.played_character_id &&
       Character(b, static_cast<std::uint32_t>(frame.played_character_id)) == actor &&
@@ -348,6 +349,18 @@ std::string Ids(const std::vector<std::uint32_t> &ids) {
 }
 } // namespace
 
+std::string_view GameVersion(NativeBuild build) noexcept {
+  return build == NativeBuild::crozier_12004 ? ck3_12004::kGameVersion : ck3_12003::kGameVersion;
+}
+std::string_view ExecutableSha256(NativeBuild build) noexcept {
+  return build == NativeBuild::crozier_12004 ? ck3_12004::kExecutableSha256 : ck3_12003::kExecutableSha256;
+}
+std::string_view BackendId(NativeBuild build) noexcept {
+  return build == NativeBuild::crozier_12004
+      ? "ck3-1.20.0.4-native-confucian-assembly-predicates-v1"
+      : "ck3-1.20.0.3-native-confucian-assembly-predicates-v1";
+}
+
 Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
   Bindings b;
   if (base == 0 || sha != ck3_12003::kExecutableSha256) return b;
@@ -381,8 +394,10 @@ Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept {
 bool ReadCurrentFaithPredicates(const Bindings &b, std::uint64_t epoch,
                                Snapshot &out) noexcept {
   out = {};
+  out.native_build = b.native_build;
   out.capture_epoch = epoch;
   if (!b.enabled || !b.core.enabled || !b.traits.enabled ||
+      !b.read_core_snapshot || !b.resolve_core_character ||
       !b.core.game_state_slot || !b.core.jomini_state_slot || !b.core.character_storage_slot || !b.core.get_local_player ||
       !b.rite_storage_slot || !b.title_storage_slot || !b.character_rite || !b.rite_faith || !b.faith_religion ||
       !b.faith_rites || !b.faith_characters || !b.rite_counties || !b.effective_skill ||
@@ -390,6 +405,7 @@ bool ReadCurrentFaithPredicates(const Bindings &b, std::uint64_t epoch,
       !b.traits.character_has_trait || !b.traits.is_human_player_character) return false;
   try {
     Snapshot current;
+    current.native_build = b.native_build;
     current.capture_epoch = epoch;
     bool access_fault = false;
     const bool ok = GuardedRead(b, epoch, current, access_fault);
@@ -401,11 +417,11 @@ bool ReadCurrentFaithPredicates(const Bindings &b, std::uint64_t epoch,
     }
     out = std::move(current);
     return true;
-  } catch (...) { out = {}; out.capture_epoch = epoch; out.unavailable_reason = "native_read_exception"; return false; }
+  } catch (...) { out = {}; out.native_build = b.native_build; out.capture_epoch = epoch; out.unavailable_reason = "native_read_exception"; return false; }
 }
 
 std::string Serialize(const Snapshot &s) {
-  std::string out = "{\"schema\":\"ck3_12003_confucian_assembly_predicates_v1\",\"read_only\":true,\"game_version\":\"1.20.0.3\",\"executable_sha256\":" + Quote(ck3_12003::kExecutableSha256) +
+  std::string out = "{\"schema\":\"ck3_12003_confucian_assembly_predicates_v1\",\"read_only\":true,\"game_version\":" + Quote(GameVersion(s.native_build)) + ",\"executable_sha256\":" + Quote(ExecutableSha256(s.native_build)) +
       ",\"available\":" + (s.available ? "true" : "false") + ",\"predicates_complete\":" + (s.predicates_complete ? "true" : "false") +
       ",\"unavailable_reason\":" + (s.unavailable_reason.empty() ? "null" : Quote(s.unavailable_reason)) +
       ",\"capture_epoch\":" + std::to_string(s.capture_epoch) + ",\"date_raw\":" + std::to_string(s.date_raw) +

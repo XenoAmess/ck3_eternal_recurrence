@@ -1,6 +1,8 @@
 #include "xar_bridge/ingame_decision_item_v1.hpp"
 #include "xar_bridge/aub_business_state_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
+#include "xar_bridge/ck3_12004_ingame_decision_v1.hpp"
+#include "xar_bridge/ingame_private_gui_profile_v1.hpp"
 #include <Windows.h>
 #include <array>
 #include <charconv>
@@ -11,6 +13,29 @@
 
 namespace xar::ck3_11906 {
 namespace {
+#include "ingame_decision_item_12004_pins_v1.inc"
+using DecisionTypeIdentityV1=ck3_12004::IngameDecisionTypeIdentity12004V1;
+struct DecisionItemProfileV1 {
+  DecisionTypeIdentityV1 application,logical,gfx,handler,list,detail,definition,null_definition;
+  std::uintptr_t groups_getter,definition_getter,onselect,onselect_wrapper,set_decision,detail_dispatch;
+  std::uintptr_t actor_reference_slot,character_storage_slot,jomini_slot;
+};
+constexpr DecisionItemProfileV1 kDecisionItem12003{
+  {0x449BDA8,0x5667F88},{0x44D6048,0x55072C0},{0x44BC408,0x5514460},{0x44BA890,0x5694B50},
+  {0x455CC80,0x5794DB0},{0x455D4E8,0x5795080},{0x48BD140,0x5586B90},{0x4893190,0x5AB0548},
+  0x14560B0,0xA935B0,0x14582D0,0x1459530,0x1471650,0x1471230,0x54DBC00,0x5C67568,0x5C6A520};
+constexpr DecisionItemProfileV1 kDecisionItem12004{
+  ck3_12004::kDecisionApplicationType12004V1,ck3_12004::kDecisionLogicalType12004V1,
+  ck3_12004::kDecisionGfxType12004V1,ck3_12004::kDecisionHandlerType12004V1,
+  ck3_12004::kDecisionListType12004V1,ck3_12004::kDecisionDetailType12004V1,
+  ck3_12004::kDecisionDefinitionType12004V1,ck3_12004::kDecisionNullDefinitionType12004V1,
+  ck3_12004::kDecisionGroupsGetterRva12004V1,ck3_12004::kDecisionDefinitionGetterRva12004V1,
+  ck3_12004::kDecisionRowOnSelectRva12004V1,ck3_12004::kDecisionRowOnSelectWrapperRva12004V1,
+  ck3_12004::kDecisionSetDecisionRva12004V1,ck3_12004::kDecisionDetailDispatchRva12004V1,
+  ck3_12004::kDecisionActorReferenceSlotRva12004V1,ck3_12004::kCharacterStorageSlotRva,ck3_12004::kJominiStateSlotRva};
+const DecisionItemProfileV1 &DecisionProfile(const ZhongguoScoreboardNativeEnvironmentV1 &env) noexcept {
+  return env.gui_abi_revision==GuiAbiRevisionV1::crozier12004?kDecisionItem12004:kDecisionItem12003;
+}
 constexpr std::uintptr_t kImageSize=0x61C5000;
 constexpr std::size_t kMaximumGroups=64, kMaximumRows=2048, kMaximumKey=192;
 bool Bytes(const void *p,void *out,std::size_t size) noexcept {
@@ -23,13 +48,14 @@ const void *At(const void *p,std::size_t offset) noexcept {
 }
 template<class T> bool Read(const void *p,std::size_t offset,T &out) noexcept {return Bytes(At(p,offset),&out,sizeof(out));}
 bool CodePins(const ZhongguoScoreboardNativeEnvironmentV1 &env) noexcept {
+  const auto &profile=DecisionProfile(env);
   const std::array<unsigned char,32> find{0x48,0x89,0x5c,0x24,0x08,0x48,0x89,0x6c,0x24,0x10,0x48,0x89,0x74,0x24,0x18,0x57,0x48,0x83,0xec,0x20,0x48,0x8b,0x81,0xd0,0x00,0x00,0x00,0x48,0x8b,0xfa,0x48,0x8b};
   const std::array<unsigned char,8> groups{0x48,0x8d,0x81,0x58,0x02,0x00,0x00,0xc3};
   const std::array<unsigned char,4> decision{0x48,0x8b,0x01,0xc3};
   std::array<unsigned char,32> actual_find{};std::array<unsigned char,8> actual_groups{};std::array<unsigned char,4> actual_decision{};
-  return Bytes(reinterpret_cast<const void *>(env.module_base+0x3AAB100),actual_find.data(),actual_find.size())&&actual_find==find&&
-      Bytes(reinterpret_cast<const void *>(env.module_base+0x14560B0),actual_groups.data(),actual_groups.size())&&actual_groups==groups&&
-      Bytes(reinterpret_cast<const void *>(env.module_base+0xA935B0),actual_decision.data(),actual_decision.size())&&actual_decision==decision;
+  return Bytes(reinterpret_cast<const void *>(env.module_base+GuiFindTopLevelWidgetRvaV1(env.gui_abi_revision)),actual_find.data(),actual_find.size())&&actual_find==find&&
+      Bytes(reinterpret_cast<const void *>(env.module_base+profile.groups_getter),actual_groups.data(),actual_groups.size())&&actual_groups==groups&&
+      Bytes(reinterpret_cast<const void *>(env.module_base+profile.definition_getter),actual_decision.data(),actual_decision.size())&&actual_decision==decision;
 }
 bool KeySyntax(std::string_view key) noexcept {
   if(key.empty()||key.size()>kMaximumKey)return false;
@@ -44,10 +70,9 @@ bool Typed(const void *object,std::uintptr_t base,std::uintptr_t vt,std::uint32_
   return address>=base&&address-base<=kImageSize-sizeof(col)&&Bytes(locator,col.data(),sizeof(col))&&
       col[0]==1&&col[1]==0&&col[3]==td&&col[5]==address-base;
 }
-bool DefinitionKey(const void *definition,std::uintptr_t base,std::string &key) {
-  // Actual installed .3 RTTI: CDecisionType TD5586B90/COL4F7D400/vtable48BD140.
-  // The existing .3 mystical-communion provider reads the same native key at18.
-  if(!Typed(definition,base,0x48BD140,0x5586B90))return false;
+bool DefinitionKey(const void *definition,const ZhongguoScoreboardNativeEnvironmentV1 &env,std::string &key) {
+  const auto &identity=DecisionProfile(env).definition;
+  if(!Typed(definition,env.module_base,identity.vtable_rva,identity.type_descriptor_rva))return false;
   const void *string=At(definition,0x18),*text=string;std::uint64_t size=0,capacity=0;
   if(!Read(string,0x10,size)||!Read(string,0x18,capacity)||!size||size>kMaximumKey||size>capacity||
      (capacity<16&&capacity!=15))return false;
@@ -103,29 +128,29 @@ bool ModelTypeFailure(IngameDecisionItemResultV1 *d,const char *stage,
 }
 bool ModelPass(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *list_root,Pass &p,
     const void *expected_current_owner,IngameDecisionItemResultV1 *d=nullptr) {
-  const auto base=env.module_base;const void *back=nullptr;
+  const auto base=env.module_base;const auto &profile=DecisionProfile(env);const void *back=nullptr;
   if(!Read(env.gui_global_slot,0,p.application))return ModelFailure(d,"application_read");
-  if(!Typed(p.application,base,0x449BDA8,0x5667F88))return ModelTypeFailure(d,"application_type",p.application,base+0x449BDA8);
+  if(!Typed(p.application,base,profile.application.vtable_rva,profile.application.type_descriptor_rva))return ModelTypeFailure(d,"application_type",p.application,base+profile.application.vtable_rva);
   // The GUI Application's idle slot can be empty after Start. The existing .3
   // event-window and religion-window readers take the current owner from the
   // exact core Jomini slot, then owner+10 -> the same pinned Gfx idler.
   // This remains a read-only owner chain: require this very mailbox stamp and
   // retain all original logical RTTI, App/Gfx backlinks and actual root guards.
-  if(!Read(reinterpret_cast<const void *>(base+0x5C6A520),0,p.logical))return ModelFailure(d,"current_jomini_owner_read");
+  if(!Read(reinterpret_cast<const void *>(base+profile.jomini_slot),0,p.logical))return ModelFailure(d,"current_jomini_owner_read");
   if(!expected_current_owner||p.logical!=expected_current_owner)return ModelFailure(d,"current_jomini_owner_stamp_binding",p.logical,expected_current_owner);
-  if(!Typed(p.logical,base,0x44D6048,0x55072C0))return ModelTypeFailure(d,"logical_type",p.logical,base+0x44D6048);
+  if(!Typed(p.logical,base,profile.logical.vtable_rva,profile.logical.type_descriptor_rva))return ModelTypeFailure(d,"logical_type",p.logical,base+profile.logical.vtable_rva);
   if(!Read(p.logical,0x18,back))return ModelFailure(d,"logical_application_backref_read");
   if(back!=p.application)return ModelFailure(d,"logical_application_backref",back,p.application);
   if(!Read(p.logical,0x10,p.gfx))return ModelFailure(d,"gfx_read");
-  if(!Typed(p.gfx,base,0x44BC408,0x5514460))return ModelTypeFailure(d,"gfx_type",p.gfx,base+0x44BC408);
+  if(!Typed(p.gfx,base,profile.gfx.vtable_rva,profile.gfx.type_descriptor_rva))return ModelTypeFailure(d,"gfx_type",p.gfx,base+profile.gfx.vtable_rva);
   if(!Read(p.gfx,0x90,back))return ModelFailure(d,"gfx_application_backref_read");
   if(back!=p.application)return ModelFailure(d,"gfx_application_backref",back,p.application);
   if(!Read(p.gfx,0x20,back))return ModelFailure(d,"gfx_logical_backref_read");
   if(back!=p.logical)return ModelFailure(d,"gfx_logical_backref",back,p.logical);
   if(!Read(p.gfx,0x88,p.handler))return ModelFailure(d,"handler_read");
-  if(!Typed(p.handler,base,0x44BA890,0x5694B50))return ModelTypeFailure(d,"handler_type",p.handler,base+0x44BA890);
+  if(!Typed(p.handler,base,profile.handler.vtable_rva,profile.handler.type_descriptor_rva))return ModelTypeFailure(d,"handler_type",p.handler,base+profile.handler.vtable_rva);
   if(!Read(p.handler,0x1B0,p.list))return ModelFailure(d,"list_read");
-  if(!Typed(p.list,base,0x455CC80,0x5794DB0))return ModelTypeFailure(d,"list_type",p.list,base+0x455CC80);
+  if(!Typed(p.list,base,profile.list.vtable_rva,profile.list.type_descriptor_rva))return ModelTypeFailure(d,"list_type",p.list,base+profile.list.vtable_rva);
   if(!Read(p.list,0x98,back))return ModelFailure(d,"list_logical_backref_read");
   if(back!=p.logical)return ModelFailure(d,"list_logical_backref",back,p.logical);
   if(!Read(p.list,0xA0,back))return ModelFailure(d,"list_handler_backref_read");
@@ -133,7 +158,7 @@ bool ModelPass(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *list_root,
   if(!Read(p.list,0x60,p.list_root))return ModelFailure(d,"list_root_read");
   if(p.list_root!=list_root)return ModelFailure(d,"list_root_binding",p.list_root,list_root);
   if(!Read(p.handler,0x1B8,p.detail))return ModelFailure(d,"detail_read");
-  if(!Typed(p.detail,base,0x455D4E8,0x5795080))return ModelTypeFailure(d,"detail_type",p.detail,base+0x455D4E8);
+  if(!Typed(p.detail,base,profile.detail.vtable_rva,profile.detail.type_descriptor_rva))return ModelTypeFailure(d,"detail_type",p.detail,base+profile.detail.vtable_rva);
   if(!Read(p.detail,0xA0,back))return ModelFailure(d,"detail_handler_backref_read");
   if(back!=p.handler)return ModelFailure(d,"detail_handler_backref",back,p.handler);
   if(!Read(p.detail,0x60,p.detail_root))return ModelFailure(d,"detail_root_read");
@@ -143,10 +168,10 @@ bool ModelPass(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *list_root,
   // R0010 observes this exact .3 TPdxNullObject<CDecisionType> before selection.
   // Keep its actual pointer in all stable-pass comparisons; only this pinned
   // RTTI/vtable can represent an empty selection. Other wrong types still fail.
-  if(p.selected_definition&&Typed(p.selected_definition,base,0x4893190,0x5AB0548))
+  if(p.selected_definition&&Typed(p.selected_definition,base,profile.null_definition.vtable_rva,profile.null_definition.type_descriptor_rva))
     p.selected_definition_is_null_object=true;
-  else if(p.selected_definition&&!DefinitionKey(p.selected_definition,base,p.selected_key))
-    return ModelTypeFailure(d,"selected_definition_key_guard",p.selected_definition,base+0x48BD140);
+  else if(p.selected_definition&&!DefinitionKey(p.selected_definition,env,p.selected_key))
+    return ModelTypeFailure(d,"selected_definition_key_guard",p.selected_definition,base+profile.definition.vtable_rva);
   for(std::size_t n=0;n<p.groups.count;++n){
     const void *group=At(p.groups.data,n*0x20),*definition=nullptr;Vector rows{};
     if(!Read(group,0,definition))return ModelFailure(d,"group_definition_read");
@@ -161,34 +186,35 @@ bool ModelPass(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *list_root,
       if(!Read(row,0x10,item.context_reference_key))return ModelFailure(d,"row_context_reference_read");
       if(!Read(row,0x18,item.owner))return ModelFailure(d,"row_owner_read");
       if(item.owner!=p.list)return ModelFailure(d,"row_owner_binding",item.owner,p.list);
-      if(!DefinitionKey(item.definition,base,item.key))return ModelTypeFailure(d,"row_definition_key_guard",item.definition,base+0x48BD140);
+      if(!DefinitionKey(item.definition,env,item.key))return ModelTypeFailure(d,"row_definition_key_guard",item.definition,base+profile.definition.vtable_rva);
       p.rows.push_back(std::move(item));
     }
   }
   return true;
 }
 bool ActionPins(const ZhongguoScoreboardNativeEnvironmentV1 &env) noexcept {
+  const auto &profile=DecisionProfile(env);const bool current4=env.gui_abi_revision==GuiAbiRevisionV1::crozier12004;
   constexpr std::array<unsigned char,189> expected0{0x48,0x89,0x5c,0x24,0x08,0x48,0x89,0x74,0x24,0x10,0x57,0x48,0x83,0xec,0x30,0x48,0x8b,0x41,0x18,0x48,0x8b,0xf9,0x48,0x8b,0x31,0x48,0x8b,0x90,0xa0,0x00,0x00,0x00,0x48,0x8b,0x9a,0xb8,0x01,0x00,0x00,0x48,0x85,0xdb,0x75,0x39,0xb9,0x6d,0x2e,0x00,0x00,0xe8,0xfa,0x75,0xaf,0x02,0x48,0x83,0x78,0x18,0x10,0x72,0x03,0x48,0x8b,0x00,0x48,0x89,0x44,0x24,0x28,0x4c,0x8d,0x0d,0xe8,0x59,0x8c,0x04,0x33,0xd2,0x48,0x8d,0x05,0x63,0x90,0x04,0x03,0x33,0xc9,0x48,0x89,0x44,0x24,0x20,0x44,0x8d,0x42,0x01,0xe8,0x5b,0x28,0xb2,0x02,0x48,0x8b,0xcb,0xe8,0x63,0x80,0xd0,0x00,0x84,0xc0,0x74,0x14,0x48,0x39,0xb3,0xd0,0x00,0x00,0x00,0x75,0x0b,0x48,0x8b,0x03,0x48,0x8b,0xcb,0xff,0x50,0x20,0xeb,0x13,0x48,0x8b,0xd6,0x48,0x8b,0xcb,0xe8,0xf0,0x92,0x01,0x00,0x48,0x8b,0xcb,0xe8,0x78,0x85,0x01,0x00,0x48,0x8b,0x47,0x18,0x48,0x8b,0x5c,0x24,0x40,0x48,0x8b,0x74,0x24,0x48,0xc7,0x80,0xd4,0x02,0x00,0x00,0x00,0x00,0x00,0x00,0xc6,0x80,0xd0,0x02,0x00,0x00,0x01,0x48,0x83,0xc4,0x30,0x5f,0xc3};
   std::array<unsigned char,189> actual0{};
-  if(!Bytes(reinterpret_cast<const void *>(env.module_base+0x14582D0),actual0.data(),actual0.size())||actual0!=expected0)return false;
+  if(!Bytes(reinterpret_cast<const void *>(env.module_base+profile.onselect),actual0.data(),actual0.size())||actual0!=(current4?kDecisionOnSelectPin12004V1:expected0))return false;
   constexpr std::array<unsigned char,28> expected1{0x48,0x83,0xec,0x28,0x48,0x85,0xc9,0x74,0x0c,0xe8,0x92,0xed,0xff,0xff,0xb0,0x01,0x48,0x83,0xc4,0x28,0xc3,0x32,0xc0,0x48,0x83,0xc4,0x28,0xc3};
   std::array<unsigned char,28> actual1{};
-  if(!Bytes(reinterpret_cast<const void *>(env.module_base+0x1459530),actual1.data(),actual1.size())||actual1!=expected1)return false;
+  if(!Bytes(reinterpret_cast<const void *>(env.module_base+profile.onselect_wrapper),actual1.data(),actual1.size())||actual1!=(current4?kDecisionOnSelectWrapperPin12004V1:expected1))return false;
   constexpr std::array<unsigned char,205> expected2{0x48,0x89,0x5c,0x24,0x10,0x48,0x89,0x74,0x24,0x18,0x57,0x48,0x83,0xec,0x30,0x4c,0x8b,0x05,0x02,0x5f,0x7f,0x04,0x48,0x8b,0xf2,0xc7,0x81,0xdc,0x00,0x00,0x00,0xff,0xff,0xff,0xff,0x48,0x8b,0xf9,0x4d,0x85,0xc0,0x74,0x2c,0x8b,0x05,0x7f,0xa5,0x06,0x04,0x8b,0xc8,0x81,0xe1,0xff,0xff,0xff,0x00,0x41,0x3b,0x48,0x2c,0x73,0x18,0x8b,0xd1,0x49,0x8b,0x48,0x20,0x48,0x03,0xd2,0x48,0x8b,0x5c,0xd1,0x08,0x48,0x85,0xdb,0x74,0x05,0x39,0x43,0x18,0x74,0x07,0x48,0x8b,0x1d,0xc2,0x5e,0x7f,0x04,0x48,0x8b,0xd3,0x48,0x8b,0xce,0xe8,0x47,0x1d,0xc9,0x01,0x84,0xc0,0x75,0x42,0xe8,0xfe,0xc0,0x67,0x01,0x48,0x8b,0xd6,0x48,0x8b,0xc8,0xe8,0x73,0xff,0xd9,0x01,0x4c,0x8b,0xc0,0x48,0xc7,0x44,0x24,0x20,0x00,0x00,0x00,0x00,0x41,0xb1,0x01,0x48,0x8d,0x4c,0x24,0x40,0x48,0x8b,0xd3,0xe8,0x37,0x14,0x7d,0x01,0x44,0x8b,0x44,0x24,0x40,0x41,0x83,0xf8,0xff,0x74,0x0b,0x8b,0x43,0x18,0x89,0x87,0xdc,0x00,0x00,0x00,0xeb,0x04,0x44,0x8b,0x43,0x18,0x48,0x8b,0xd6,0x48,0x8b,0xcf,0x48,0x8b,0x5c,0x24,0x48,0x48,0x8b,0x74,0x24,0x50,0x48,0x83,0xc4,0x30,0x5f,0xe9,0x13,0xfb,0xff,0xff};
   std::array<unsigned char,205> actual2{};
-  if(!Bytes(reinterpret_cast<const void *>(env.module_base+0x1471650),actual2.data(),actual2.size())||actual2!=expected2)return false;
+  if(!Bytes(reinterpret_cast<const void *>(env.module_base+profile.set_decision),actual2.data(),actual2.size())||actual2!=(current4?kDecisionSetDecisionPin12004V1:expected2))return false;
   constexpr std::array<unsigned char,32> expected3{0x48,0x8b,0xc4,0x48,0x89,0x58,0x08,0x48,0x89,0x68,0x10,0x48,0x89,0x70,0x20,0x57,0x41,0x56,0x41,0x57,0x48,0x81,0xec,0x90,0x00,0x00,0x00,0x41,0x8b,0xd8,0x4c,0x8b};
   std::array<unsigned char,32> actual3{};
-  if(!Bytes(reinterpret_cast<const void *>(env.module_base+0x1471230),actual3.data(),actual3.size())||actual3!=expected3)return false;
+  if(!Bytes(reinterpret_cast<const void *>(env.module_base+profile.detail_dispatch),actual3.data(),actual3.size())||actual3!=(current4?kDecisionDetailDispatchPin12004V1:expected3))return false;
   constexpr std::array<unsigned char,32> expected4{0x48,0x89,0x5c,0x24,0x08,0x48,0x89,0x6c,0x24,0x10,0x48,0x89,0x74,0x24,0x18,0x57,0x48,0x83,0xec,0x60,0x49,0x8b,0xf0,0x8b,0xea,0x48,0x8b,0xf9,0x49,0x8b,0x59,0x48};
   std::array<unsigned char,32> actual4{};
-  if(!Bytes(reinterpret_cast<const void *>(env.module_base+0x3ABC4D0),actual4.data(),actual4.size())||actual4!=expected4)return false;
+  if(!Bytes(reinterpret_cast<const void *>(env.module_base+GuiShortcutManagerActivateRvaV1(env.gui_abi_revision)),actual4.data(),actual4.size())||actual4!=expected4)return false;
   constexpr std::array<unsigned char,32> expected5{0x48,0x89,0x5c,0x24,0x08,0x48,0x89,0x6c,0x24,0x10,0x48,0x89,0x74,0x24,0x18,0x57,0x48,0x83,0xec,0x20,0x48,0x8b,0xf1,0x48,0x8b,0xea,0x48,0x8b,0x89,0xf0,0x00,0x00};
   std::array<unsigned char,32> actual5{};
-  if(!Bytes(reinterpret_cast<const void *>(env.module_base+0x3A78230),actual5.data(),actual5.size())||actual5!=expected5)return false;
+  if(!Bytes(reinterpret_cast<const void *>(env.module_base+GuiStrictDescendantRvaV1(env.gui_abi_revision)),actual5.data(),actual5.size())||actual5!=expected5)return false;
   constexpr std::array<unsigned char,32> expected6{0x40,0x53,0x48,0x83,0xec,0x20,0x48,0x8b,0xd9,0x0f,0xb6,0x89,0xd0,0x00,0x00,0x00,0x80,0xe1,0x02,0x74,0x26,0x44,0x8b,0x42,0x10,0x41,0x83,0xe8,0x0d,0x74,0x0c,0x41};
   std::array<unsigned char,32> actual6{};
-  if(!Bytes(reinterpret_cast<const void *>(env.module_base+0x3AA0D40),actual6.data(),actual6.size())||actual6!=expected6)return false;
+  if(!Bytes(reinterpret_cast<const void *>(env.module_base+GuiButtonBaseSlot13RvaV1(env.gui_abi_revision)),actual6.data(),actual6.size())||actual6!=expected6)return false;
   return true;
 }
 
@@ -207,9 +233,9 @@ bool ActualActor(const ZhongguoScoreboardNativeEnvironmentV1 &env,std::int32_t i
   // SetDecision(1471650) uses this exact .3 current-player reference/storage chain.
   std::int32_t current=-1;const void *storage=nullptr,*data=nullptr,*actor=nullptr,*death=nullptr;std::uint32_t count=0;
   std::int32_t observed=-1;
-  const auto base=env.module_base;
-  return id>0&&Read(reinterpret_cast<const void *>(base+0x54DBC00),0,current)&&current==id&&
-      Read(reinterpret_cast<const void *>(base+0x5C67568),0,storage)&&storage&&Read(storage,0x20,data)&&data&&
+  const auto base=env.module_base;const auto &profile=DecisionProfile(env);
+  return id>0&&Read(reinterpret_cast<const void *>(base+profile.actor_reference_slot),0,current)&&current==id&&
+      Read(reinterpret_cast<const void *>(base+profile.character_storage_slot),0,storage)&&storage&&Read(storage,0x20,data)&&data&&
       Read(storage,0x2C,count)&&count>0&&count<=0x1000000&&
       (static_cast<std::uint32_t>(id)&0xFFFFFF)<count&&
       Read(data,(static_cast<std::uint32_t>(id)&0xFFFFFF)*0x10ULL+8,actor)&&actor&&
@@ -219,10 +245,10 @@ bool CallOnSelect(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *row) no
   // Wrapper1459530 forwards RCX unchanged. Handler14582D0 reads row[0]/row+18 directly.
   using OnSelect=void(__fastcall *)(void *);
 #if defined(_MSC_VER)
-  __try {reinterpret_cast<OnSelect>(env.module_base+0x14582D0)(row);return true;}
+  __try {reinterpret_cast<OnSelect>(env.module_base+DecisionProfile(env).onselect)(row);return true;}
   __except(EXCEPTION_EXECUTE_HANDLER){return false;}
 #else
-  reinterpret_cast<OnSelect>(env.module_base+0x14582D0)(row);return true;
+  reinterpret_cast<OnSelect>(env.module_base+DecisionProfile(env).onselect)(row);return true;
 #endif
 }
 const NamedGuiWidgetInspectionV1 *TreeRow(const NamedGuiTreeInspectionV1 &tree,std::string_view path) noexcept {
@@ -329,19 +355,21 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,
   auto &out=query.result;out={};out.native_revision=query.native_revision;out.connection_generation=query.connection_generation;out.game_pid=GetCurrentProcessId();
   try {
     const auto reject=[&](const char *reason){out.available=false;out.unavailable_reason=reason;return true;};
-    if(!query.game||query.game->descriptor().game_version!="1.20.0.3"||
-       query.game->descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"||
+    if(!query.game||
        !query.native_revision||!query.connection_generation||!KeySyntax(query.requested_key)||
-       !env.exact_build_admitted||env.offline_fixture_function_overrides||env.gui_abi_revision!=GuiAbiRevisionV1::crozier12003)
-      return reject("exact_12003_keyed_query_unavailable");
+       !env.exact_build_admitted||env.offline_fixture_function_overrides)
+      return reject("exact_crozier_keyed_query_unavailable");
+    const auto &descriptor=query.game->descriptor();
+    if(!IngamePrivateGuiIdentityAdmittedV1(descriptor.game_version,descriptor.executable_sha256,env.gui_abi_revision))return reject("exact_crozier_keyed_query_unavailable");
+    out.game_version=descriptor.game_version;out.executable_sha256=descriptor.executable_sha256;
     if(!IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()))return reject("paused_application_owner_unverified");
     out.owner_thread_verified=true;game::Snapshot before{};
     if(!game::ReadSnapshot(*query.game,before)||before!=query.expected_snapshot||!before.paused||!before.map_ready||
        !before.has_played_character||!before.played_character_alive||before.played_character_id<=0||before.date_raw!=stamp.date_raw)
       return reject("fresh_alive_paused_frame_unverified");
     out.played_character_id=before.played_character_id;out.date_raw=before.date_raw;
-    // Check the loaded exact .3 root resolver and two actual leaf property entrypoints before traversing.
-    if(!CodePins(env))return reject("loaded_12003_keyed_reader_pins_changed");
+    // Check the selected exact root resolver and both actual leaf getters before traversal.
+    if(!CodePins(env))return reject("loaded_crozier_keyed_reader_pins_changed");
     out.source_abi_pins_verified=true;
     ZhongguoScoreboardAccessV1 access{};void *context=nullptr,*owner=nullptr;
     if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,owner))return reject("gui_owner_unavailable");
@@ -381,7 +409,7 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,
 }
 
 std::string SerializeIngameDecisionItemV1(const IngameDecisionItemResultV1 &v) {
-  std::string s="{\"schema\":\"ck3-ingame-decision-item-v1\",\"step\":\"query-ingame-decision-item-v1\",\"read_only\":true,\"game_version\":\"1.20.0.3\",\"executable_sha256\":\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\"";
+  std::string s="{\"schema\":\"ck3-ingame-decision-item-v1\",\"step\":\"query-ingame-decision-item-v1\",\"read_only\":true,\"game_version\":\""+v.game_version+"\",\"executable_sha256\":\""+v.executable_sha256+"\"";
   const auto number=[&](const char *key,auto n){s+=",\"";s+=key;s+="\":";s+=std::to_string(n);};
   const auto boolean=[&](const char *key,bool b){s+=",\"";s+=key;s+="\":";s+=b?"true":"false";};
   const auto text=[&](const char *key,const std::string &value){s+=",\"";s+=key;s+="\":\"";s+=value;s+='"';};
@@ -417,8 +445,8 @@ bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,
     if(!ExecuteIngameDecisionItemQueryV1(query.observation,mailbox,stamp,env))return reject("keyed_before_execution_unavailable");
     out.before=query.observation.result;
     if(!out.before.available)return reject("actual_keyed_before_unavailable");
-    if(!ActionPins(env)||dispatch.gui_abi_revision!=GuiAbiRevisionV1::crozier12003||
-        dispatch.offline_fixture_function_overrides||!dispatch.exact_build_admitted)return reject("loaded_12003_decision_action_pins_changed");
+    if(!ActionPins(env)||dispatch.gui_abi_revision!=env.gui_abi_revision||
+        dispatch.offline_fixture_function_overrides||!dispatch.exact_build_admitted)return reject("loaded_crozier_decision_action_pins_changed");
     out.action_abi_pins_verified=true;
     if(!ActualActor(env,out.before.played_character_id))return reject("source_current_player_reference_not_bound_to_snapshot");
     ZhongguoScoreboardAccessV1 access{};void *context=nullptr,*owner=nullptr,*list_root=nullptr;bool visible=false,complete=false;
@@ -574,7 +602,7 @@ std::string SerializeIngameDecisionItemActionV1(const IngameDecisionItemActionRe
   s+="\",\"step\":\"";
   s+=outcome?kIngameDecisionOutcomeConfirmV1Step:select?kIngameDecisionItemSelectV1Step:kIngameDecisionItemConfirmV1Step;
   s+="\",\"action\":\"";s+=outcome?"confirm_outcome":select?"select":"confirm";
-  s+="\",\"game_version\":\"1.20.0.3\",\"executable_sha256\":\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\"";
+  s+="\",\"game_version\":\""+v.before.game_version+"\",\"executable_sha256\":\""+v.before.executable_sha256+"\"";
   const auto number=[&](const char *key,auto n){s+=",\"";s+=key;s+="\":";s+=std::to_string(n);};
   const auto boolean=[&](const char *key,bool b){s+=",\"";s+=key;s+="\":";s+=b?"true":"false";};
   const auto text=[&](const char *key,const std::string &value){s+=",\"";s+=key;s+="\":\"";s+=value;s+='"';};

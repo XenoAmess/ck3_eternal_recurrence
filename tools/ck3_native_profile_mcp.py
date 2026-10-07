@@ -46,6 +46,7 @@ import desktop_semantic_action_mcp as desktop
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player/src"))
 from xar_autoplayer.operator_mcp import _forbid_unknown_tool_arguments_v1
+from xar_autoplayer.bridge.version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 def _load_profile_common(path: Path, extra_fields: set[str]) -> dict:
@@ -221,7 +222,7 @@ class NativeProfileService:
         loading_reason = ("BridgeUnavailableError: native game state is not available yet; "
                           "CK3 may still be loading or may not have entered a map")
         if (original.get("status") != "RED" or original.get("reason") != loading_reason
-                or self.driver is None or self.profile["game_version"] != "1.20.0.3"):
+                or self.driver is None or self.profile["game_version"] not in ("1.20.0.3", "1.20.0.4")):
             return original
         injected = original.get("injector")
         if (not isinstance(injected, dict) or type(injected.get("returncode")) is not int
@@ -237,6 +238,10 @@ class NativeProfileService:
                  "reinjected": False, "reconnected": False,
                  "uses_ocr": False, "uses_desktop_input": False}
         try:
+            build = require_exact_native_build(self.profile["game_version"],
+                                              self.profile["guard"]["target"]["executable_sha256"])
+            if build not in (CK3_12003, CK3_12004):
+                raise RuntimeError("late attach requires an exact supported native build")
             directory = Path(self.profile["evidence_directory"]) / self.session_id
             if (original_path.parent.resolve() != directory.resolve()
                     or not original_path.name.endswith("-attach.json")
@@ -277,10 +282,10 @@ class NativeProfileService:
                     or diagnostics["connection_generation"] != 1
                     or diagnostics["hello"].get("connection_generation") != 1
                     or type(diagnostics["hello"].get("connection_generation")) is not int
-                    or diagnostics["hello"].get("game_adapter_id") != "ck3-1.20.0.3-msvc-x64"
+                    or diagnostics["hello"].get("game_adapter_id") != f"ck3-{build.game_version}-msvc-x64"
                     or snapshot.get("map_ready") is not True or snapshot.get("paused") is not True
                     or any(snapshot.get(key) != before[key] for key in ("date_raw", "paused", "speed"))):
-                raise RuntimeError("late attach snapshot does not match the retained .3 connection and paused clock")
+                raise RuntimeError("late attach snapshot does not match the retained exact connection and paused clock")
             facts["snapshot"] = snapshot
             facts["native_clock_after"] = self.backend.read_clock(self.profile)
             facts["observation_after"] = self.guard()

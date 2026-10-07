@@ -15,6 +15,8 @@ inline constexpr std::string_view kIngameDecisionItemConfirmV1Capability = "game
 inline constexpr std::string_view kIngameDecisionOutcomeConfirmV1Step = "confirm-ingame-decision-outcome-v1";
 inline constexpr std::string_view kIngameDecisionOutcomeConfirmV1Capability = "game.command.confirm-ingame-decision-outcome-v1";
 struct IngameDecisionItemResultV1 {
+  std::string game_version = "1.20.0.3";
+  std::string executable_sha256 = "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6";
   std::uint64_t native_revision=0, connection_generation=0;
   std::uint32_t game_pid=0, row_context_reference_key=0;
   std::int32_t played_character_id=-1, date_raw=0;

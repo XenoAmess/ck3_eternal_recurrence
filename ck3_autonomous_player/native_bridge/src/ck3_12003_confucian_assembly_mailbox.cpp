@@ -2,6 +2,8 @@
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
 #include "xar_bridge/ck3_12003_readonly_revision.hpp"
+#include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/ck3_12004_confucian_assembly_bindings.hpp"
 
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
@@ -54,6 +56,7 @@ bool ExecuteConfucianAssemblyMailbox12003(
     if (out.available && (out.played_character_id != frame.played_character_id ||
                           out.date_raw != frame.date_raw)) {
       out = {};
+      out.native_build = query.bindings.native_build;
       out.unavailable_reason = "native_frame_changed";
       out.capture_epoch = stamp.pump_epoch;
     }
@@ -77,10 +80,10 @@ std::string SerializeConfucianAssemblyResult12003(
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kConfucianAssemblyPrivateStep12003) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
-      ",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"game_version\":\"1.20.0.3\"," +
-      "\"executable_sha256\":" + Quote(kExecutableSha256) +
+      ",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"game_version\":" + Quote(confucian_assembly::GameVersion(query.bindings.native_build)) + ',' +
+      "\"executable_sha256\":" + Quote(confucian_assembly::ExecutableSha256(query.bindings.native_build)) +
       ",\"domain_key\":" + Quote(kConfucianAssemblyDomainKey12003) +
-      ",\"backend_id\":" + Quote(kConfucianAssemblyBackend12003) +
+      ",\"backend_id\":" + Quote(confucian_assembly::BackendId(query.bindings.native_build)) +
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
       ",\"confucian_assembly_predicates\":" + confucian_assembly::Serialize(query.observation) + "}}";
@@ -135,8 +138,12 @@ bool HandleConfucianAssemblyPrivate12003(const game::GameAdapter &adapter,
   if (!ParseConfucianAssemblyRevision12003(payload, expected)) {
     failure = "confucian_assembly_predicates_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != ck3_12003::kGameVersion ||
-      adapter.descriptor().executable_sha256 != ck3_12003::kExecutableSha256 ||
+  const auto &descriptor = adapter.descriptor();
+  const bool actual4 = descriptor.game_version == ck3_12004::kGameVersion &&
+      descriptor.executable_sha256 == ck3_12004::kExecutableSha256;
+  const bool actual3 = descriptor.game_version == ck3_12003::kGameVersion &&
+      descriptor.executable_sha256 == ck3_12003::kExecutableSha256;
+  if (!adapter.enabled() || (!actual3 && !actual4) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "confucian_assembly_predicates_current_frame_unavailable"; return false;
   }
@@ -146,9 +153,10 @@ bool HandleConfucianAssemblyPrivate12003(const game::GameAdapter &adapter,
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
-    query.bindings = confucian_assembly::BindImage(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        adapter.descriptor().executable_sha256);
+    const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    query.bindings = actual4
+        ? ck3_12004::confucian_assembly::BindImage(base, descriptor.executable_sha256)
+        : confucian_assembly::BindImage(base, descriptor.executable_sha256);
     return RunConfucianAssemblyMailbox12003(query, request_id, serialized, failure);
   } catch (...) { failure = "confucian_assembly_predicates_handler_exception"; return false; }
 }
