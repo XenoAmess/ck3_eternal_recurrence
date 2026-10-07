@@ -1,0 +1,172 @@
+{
+  "schema": "lyd.r19.actual-native-build-addendum-original-inventory.v1",
+  "head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "runtime_cutoff_utc": "2026-10-07T03:51:20.223905+00:00",
+  "archived_at_utc": "2026-10-07T04:15:20.512492+00:00",
+  "archive": {
+    "path": "BUILD-035120.original-evidence.zip",
+    "bytes": 236619,
+    "sha256": "ea37f96b26ba4aa285e9492507fdce17a56c04d050888f3f4cc2c248a29f2046",
+    "members": 19
+  },
+  "entries": [
+    {
+      "source_path": "C:/lr19b1/defender-exe-exclusions/20261007T035100Z-1cd7514f/manifest.json",
+      "member": "build-output/defender-exe-exclusions/20261007T035100Z-1cd7514f/manifest.json",
+      "bytes": 5825,
+      "sha256": "3bb8ba1784beb34371d8f06a5a59fb1cb6cd5beff415e4bafa0e683183f88462",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual Defender manifest/failed receipt; no settings action"
+    },
+    {
+      "source_path": "C:/lr19b1/defender-exe-exclusions/20261007T035100Z-1cd7514f/receipt.json",
+      "member": "build-output/defender-exe-exclusions/20261007T035100Z-1cd7514f/receipt.json",
+      "bytes": 3673,
+      "sha256": "c14227aa31ff23b1542a085dc160ed77c75b96ec077ceea3e145385cc521965a",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual Defender manifest/failed receipt; no settings action"
+    },
+    {
+      "source_path": "C:/lr19b1/native-msvc-result.json",
+      "member": "build-output/native-msvc-result.json",
+      "bytes": 1836,
+      "sha256": "f20132a8a1ae0d5f75523da713a29fad0d53bf2ed10200922bc61dcc21fa80e3",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual canonical native producer JSON"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-build-preparation-20261007-001/ROOT-ARGV.json",
+      "member": "r19-root-build-preparation-20261007-001/ROOT-ARGV.json",
+      "bytes": 528,
+      "sha256": "5e99dfd84d250464bd78fdc6474cfc44aa0c3b69c76b5bc8bef0b7ac058e14d4",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual original native execution provenance"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/RESULT.json",
+      "member": "r19-root-clean-native-build-20261007-001/RESULT.json",
+      "bytes": 1007154,
+      "sha256": "d22dce6903eb6fb9548c2b906bdb7f543f504f132c2f59b803836ed9db546b5b",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual build JSON/stdio"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_ck3_12002_event_window_context_test.stderr",
+      "member": "r19-root-clean-native-build-20261007-001/xar_ck3_12002_event_window_context_test.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_ck3_12002_event_window_context_test.stdout",
+      "member": "r19-root-clean-native-build-20261007-001/xar_ck3_12002_event_window_context_test.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+      "member": "r19-root-clean-native-build-20261007-001/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+      "member": "r19-root-clean-native-build-20261007-001/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+      "bytes": 153,
+      "sha256": "4176b3f9995db06619739794617a1df5597e0e59b9ee7b420b06b4918bdf4acd",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_assembly_predicates_v1_test.stderr",
+      "member": "r19-root-clean-native-build-20261007-001/xar_confucian_assembly_predicates_v1_test.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_assembly_predicates_v1_test.stdout",
+      "member": "r19-root-clean-native-build-20261007-001/xar_confucian_assembly_predicates_v1_test.stdout",
+      "bytes": 69,
+      "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_challenger_graph_v1_test.stderr",
+      "member": "r19-root-clean-native-build-20261007-001/xar_confucian_challenger_graph_v1_test.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_challenger_graph_v1_test.stdout",
+      "member": "r19-root-clean-native-build-20261007-001/xar_confucian_challenger_graph_v1_test.stdout",
+      "bytes": 71,
+      "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_religious_title_readback_v1_test.stderr",
+      "member": "r19-root-clean-native-build-20261007-001/xar_confucian_religious_title_readback_v1_test.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/xar_confucian_religious_title_readback_v1_test.stdout",
+      "member": "r19-root-clean-native-build-20261007-001/xar_confucian_religious_title_readback_v1_test.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual focused native test stdio; no replay"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-native-original-exec-20261007-001/ORIGINAL-TOOL-COMPLETION.actual.json",
+      "member": "r19-root-native-original-exec-20261007-001/ORIGINAL-TOOL-COMPLETION.actual.json",
+      "bytes": 379,
+      "sha256": "80174cdd1927d42823ade585731c20650b7370d159b2818ce7be2656d4667779",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual build JSON/stdio"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-native-original-exec-20261007-001/RESULT.actual.json",
+      "member": "r19-root-native-original-exec-20261007-001/RESULT.actual.json",
+      "bytes": 1336,
+      "sha256": "ccf02336508afeaea1f10fef93ab2d8a0c8c44e804503bc96acfc00068bf130f",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual build JSON/stdio"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-native-original-exec-20261007-001/stderr",
+      "member": "r19-root-native-original-exec-20261007-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual original native execution provenance"
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-native-original-exec-20261007-001/stdout",
+      "member": "r19-root-native-original-exec-20261007-001/stdout",
+      "bytes": 311,
+      "sha256": "7ae156f8bfbcbcda309fc820790ae343fd7ba3161ae8e13c70a98d9cc37a2fea",
+      "exact_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+      "scope": "actual original native execution provenance"
+    }
+  ],
+  "binary_refs_only": true,
+  "binary_or_savebody_reads": 0,
+  "SDK_game_bus": 0,
+  "checks_or_compilation_replayed": 0,
+  "main_writes": 0,
+  "commit_push": 0
+}
