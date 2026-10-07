@@ -349,9 +349,9 @@ actual `[246CA40,246CE2E)` and old `[246CA60,246CE4E)`, 1006 bytes per
 image / 2012 bytes total. This closes its actual control flow and direct
 mutations, not a per-building income getter. There is no Province+718 write,
 building-attributed gold output or holder true-NET formula in these held
-bytes. The direct 28662F0 holding+F0/+28, mode3 edge remains the concrete
-next source entrance for that separate contribution/recalculation question;
-its body is outside current authorization.
+bytes. The direct 28662F0 holding+F0/+28, mode3 edge is the separately
+authorized source entrance documented below; the callback closure does not
+itself establish that context's contribution/recalculation semantics.
 
 Final evidence folders under the same external economy-yield directory are
 `completion-post-slot-return-tail-root-first01/` and
@@ -424,11 +424,67 @@ callback is retained without another review. A nonrecursive named-range
 lookup in the central mapper's five existing cache directories found no
 old/actual cache covering this new entry, with zero payload reads. Existing
 runtime rows bound the paired entry interval to old `[2866310,286659A)` and
-actual `[28662F0,286657A)`, each 650 bytes. The unexecuted proposal is
-`PROVINCE-CONTEXT-MODE3-PROPOSED-MANIFEST.json` under the same external
-economy-yield directory, capped at 1300 fresh bytes and two Root-central
-reads. No whole-function/return or income contribution is asserted before
-that actual capture. No other new callee or caller is included.
+actual `[28662F0,286657A)`, each 650 bytes. Root centrally executed
+`PROVINCE-CONTEXT-MODE3-PROPOSED-MANIFEST.json` once on 2026-10-07
+07:54:49–07:54:50 UTC: 1300 fresh bytes / two reads, exit0, one
+`complete_instruction_span_normalized_equal` row. The retained result is
+`province-context-mode3-root-first01/FAMILY-MAP.json` and its owned DETAIL
+under the same external economy-yield directory. This lane consumed only
+that finite generated cache; no additional source, callee or caller was read.
+
+The actual entry saves mode3 and retains the supplied receiver in R15. Let
+`P = holdingF0+28`. The following operands are source facts, rather than
+names inferred from the numerical offsets:
+
+| Actual instruction / branch | Concrete input or destination passed | Source boundary |
+| --- | --- | --- |
+| 2866304→2866280; 2866315–2866349 | Call with the entry receiver, then use RCX+5D0→+738 to resolve an ID; fallback global object | The first helper body and its RCX post-call convention are unclosed |
+| 2866350–28663F0 | Resolved `Land` tag+14, ID+10 and byte+1D8 guard; call2866BF0(P, Land) | Calls under the Land branch; byte guards are not renamed as tax semantics |
+| 286638C–2866397 | `8FD4E0` result+15B0→+40 to `2438830(P+8, input, 100000)` | Input block and call arguments are held; combiner body is unexpanded |
+| 286639C–28663C8 | `P+5D0`→+8 object bytes+18/+1B gate `8FD4E0` result+1550→+40 to the same P+8 destination | Both flags must be nonzero |
+| 28663CD–28663E5 | That +8 object→+B8→+230 to the same destination / argument100000 | This is a source block pointer, not a proved income rate |
+| 28663F5–286644B | Call2866870(P), then the same +18/+1B guard supplies global result+1540→+40; +B8→+70 supplies another input | No direct member write is visible outside the unexpanded callees |
+| 2866450–286647F | Call2481290(P+5D0), result+40 to 2438830; call2491D60(P+8, (P+5D0)+608) | Actual owner backpointer and separate source block |
+| 2866484–2866501 | `P+5D0`→+848→+388 ID resolution; resolved/fallback object list+F8/count104, stride8 entries to 2438830(P+8, entry,100000) | The finite list traversal is held; entry semantics remain unclosed |
+| 286650A–2866531 | Call28666A0(P); call1698AB0(P+238); call2866DF0(owner, R9=P+238, fifth argument=P+8) | Two distinct context destinations are passed; helper mutations are not yet established |
+| 2866536–286657A | Owner+7D8/count7E4, stride4 list; zero/empty branch to286667A | The interval stops while setting up this list, before its body or return |
+
+Repeated calls sharing P+8 and argument100000 are consistent with an
+aggregate input combiner, but that meaning is an inference; 100000 here does
+not establish a gold unit. The captured interval stores mode3 but does not
+yet show its consumption. It contains neither a direct Province+718 write
+nor the holder gross/expense/NET formula, and ends before the function's
+return. If holdingF0 is the Province pointer, P+8 is Province+30 and P+238
+is Province+260 by arithmetic; neither is Province+718. The downstream
+transfer between these contexts and the already held Province+718 getter
+remains the specific missing source relationship. No new ABI yield field or
+per-building benefit is published from these unresolved operands.
+
+The minimum proposed next capture stays within this same reached function:
+actual `[286657A,286669E)` / old `[286659A,28666BE)`, 292 bytes each.
+The existing adjacent runtime rows bound a 256-byte continuation and the
+36-byte common interval already reached by the two paired forward branches.
+`PROVINCE-CONTEXT-MODE3-CONTINUATION-PROPOSED-MANIFEST.json` and its sibling
+`...-PROPOSED-ARGV.json` provide the exact existing Root-central helper,
+584-byte/two-read cap and output directory. This is a proposed source plan,
+not execution or a preasserted return closure; no callee is included.
+
+```mermaid
+flowchart TD
+  E[Completed-slot callback / holdingF0+28 / mode3] --> P[28662F0 entry / saved receiver P]
+  P --> L[Land ID resolution / tag and byte guards]
+  L --> C[2438830 receives P+8 / source block / argument100000]
+  P --> O[P+5D0 owner / +8 flags and +B8 blocks]
+  O --> C
+  G[8FD4E0 result / +15B0 +1550 +1540 blocks] --> C
+  P --> I[Owner +848 / +388 ID / resolved +F8 list count104]
+  I --> C
+  P --> A[P+238 / 1698AB0 and2866DF0 / P+8 passed separately]
+  A --> T[Owner +7D8 list count7E4 / captured setup ends286657A]
+  T -. list body / mode handling / return unknown .-> U[Same function continuation]
+  C -. unexpanded combiner and transfer unknown .-> V[Province+718 aggregate getter]
+  V -. scale / holder transfer / individual contribution unknown .-> N[Building-attributed player NET]
+```
 
 The independent financial query uses only the already closed cash input
 tree: exact `.4` gross2BCA940, complete expense2BCB160 with context28BFD80,
@@ -443,7 +499,7 @@ flowchart LR
   R[Existing independent native material receipt / original pre packet] --> O
   B --> F[Current reserve floor / burn / maximum additional one-off spend]
   O --> D[Observed gross / expense / trueNET / stock difference]
-  M[Held mode3 call28662F0 / receiverF0+28] -. contribution semantics pending Root capture .-> A[Per-building attributed income remains open]
+  M[Held28662F0 first650B / context inputs and destinations] -. Province718 transfer / holder contribution unknown .-> A[Per-building attributed income remains open]
 ```
 
 `query_construction_cash_outcome_private_v1` is a small leaf in the same
