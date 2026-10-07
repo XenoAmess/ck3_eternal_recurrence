@@ -41,6 +41,10 @@ from .phase_event_commander_trigger_conditions_contract import (
     PHASE_EVENT_COMMANDER_TRIGGER_LEAF,
     normalize_phase_event_commander_trigger_conditions_v1,
 )
+from .phase_event_commander_chance_weights_contract import (
+    PHASE_EVENT_COMMANDER_CHANCE_WEIGHTS_LEAF,
+    normalize_phase_event_commander_chance_weights_v1,
+)
 
 
 QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY = (
@@ -487,7 +491,8 @@ def normalize_combat_simulation_inputs(
     optional_keys = ({"contextual_advantage", PHASE_EVENT_CALENDAR_LEAF,
                       PHASE_EVENT_ROLE_COMPATIBILITY_LEAF,
                       PHASE_EVENT_COMMANDER_SIDE_IDENTITY_LEAF,
-                      PHASE_EVENT_COMMANDER_TRIGGER_LEAF} & set(value)
+                      PHASE_EVENT_COMMANDER_TRIGGER_LEAF,
+                      PHASE_EVENT_COMMANDER_CHANCE_WEIGHTS_LEAF} & set(value)
                      if isinstance(value, dict) else set())
     root = _exact_object(
         value,
@@ -643,6 +648,12 @@ def normalize_combat_simulation_inputs(
             root[PHASE_EVENT_COMMANDER_TRIGGER_LEAF], armies=normalized_armies,
             role_compatibility=normalized.get(PHASE_EVENT_ROLE_COMPATIBILITY_LEAF),
             commander_side_identity=normalized.get(PHASE_EVENT_COMMANDER_SIDE_IDENTITY_LEAF),
+        )
+    if PHASE_EVENT_COMMANDER_CHANCE_WEIGHTS_LEAF in root:
+        normalized[PHASE_EVENT_COMMANDER_CHANCE_WEIGHTS_LEAF] = normalize_phase_event_commander_chance_weights_v1(
+            root[PHASE_EVENT_COMMANDER_CHANCE_WEIGHTS_LEAF], armies=normalized_armies,
+            role_compatibility=normalized.get(PHASE_EVENT_ROLE_COMPATIBILITY_LEAF),
+            commander_trigger_conditions=normalized.get(PHASE_EVENT_COMMANDER_TRIGGER_LEAF),
         )
     # Return detached canonical values so a transport fixture cannot mutate a
     # query cache after validation.
