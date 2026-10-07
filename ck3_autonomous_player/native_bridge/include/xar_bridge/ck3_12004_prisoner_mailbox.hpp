@@ -10,6 +10,7 @@ namespace xar::ck3_12004 {
 
 struct PrisonerPrivateWorkerState12004 {
   std::uint64_t query_sequence = 0;
+  std::uint64_t war_query_sequence = 0;
   std::optional<PlayerPrisonerRansomQuoteV1> current_quote;
   std::uint64_t quote_revision = 0;
   std::uint64_t quote_query_sequence = 0;

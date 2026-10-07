@@ -3,6 +3,8 @@
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_prisoner_ransom_action.hpp"
+#include "xar_bridge/ck3_12004_prisoner_war_retention.hpp"
+#include "xar_bridge/ck3_12002_prisoner_mailbox.hpp"
 #include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
 #include "xar_bridge/protocol.hpp"
 
@@ -24,6 +26,10 @@ struct CollectionQuery {
   bridge::PlayerPrisonerCollectionSnapshotV1 collection{};
   std::array<PlayerPrisonerRansomQuoteV1,
       bridge::kPlayerPrisonerMaximumRowsV1> quotes{};
+  bool war_retention = false;
+  std::int32_t war_id = -1;
+  ck3_12002::PrisonerWarRetentionBindings war_bindings{};
+  ck3_11906::WarPrisonerReleasePairsObservationV1 war_observation{};
   bool completed = false;
 };
 
@@ -135,6 +141,16 @@ bool ExecutePlayerPrisonerCollection12004(void *opaque,
       !ck3_12002::EnterQueryMailbox(*envelope, stamp,
           &ExecutePlayerPrisonerCollection12004)) return true;
   auto &query = *static_cast<CollectionQuery *>(envelope->typed_context);
+  if (query.war_retention) {
+    query.completed = ck3_12002::ReadWarPrisonerReleasePairsV1(
+        query.war_bindings, query.war_id, query.war_observation) ==
+        ck3_11906::ReadWarPrisonerReleasePairsResultV1::available &&
+        query.war_observation.same_frame_stable &&
+        query.war_observation.full_participant_scan &&
+        query.war_observation.primary_and_first_three_successors_scanned;
+    (void)ck3_12002::FinishQueryMailbox(*envelope);
+    return true;
+  }
   bridge::PlayerPrisonerCollectionAccessV1 access{};
   access.exact_build_admitted = query.bindings.enabled;
   access.admitted_executable_sha256 = kExecutableSha256;
@@ -176,7 +192,11 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
     PrisonerPrivateWorkerState12004 &state, std::string &serialized,
     std::string &failure) {
   std::uint32_t ordinal = 0;
-  if (!ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, ordinal)) return false;
+  const bool is_collection =
+      ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, ordinal);
+  const bool is_war = step.starts_with(
+      ck3_12002::kPrisonerWarRetentionStepPrefix12002);
+  if (!is_collection && !is_war) return false;
   serialized.clear(); failure.clear();
   std::uint64_t expected = 0;
   if (!bridge::JsonUnsignedField(payload, "expected_revision", expected) ||
@@ -186,6 +206,48 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
       !published_core.has_played_character || !published_core.played_character_alive ||
       published_core.played_character_id <= 0) {
     failure = "prisoner request revision or paused player frame is stale";
+    return true;
+  }
+  if (is_war) {
+    const auto war_id = ck3_12002::ParsePrisonerWarRetentionStep12002(step);
+    if (!war_id) {
+      failure = "war prisoner release query identity is invalid";
+      return true;
+    }
+    CollectionQuery query{};
+    query.war_retention = true;
+    query.war_id = *war_id;
+    query.module = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    query.war_bindings = BindPrisonerWarRetentionImage12004(
+        query.module, adapter.descriptor().executable_sha256);
+    query.envelope.game = &adapter;
+    query.envelope.mailbox = &mailbox;
+    query.envelope.expected_snapshot = published_core;
+    query.envelope.expected_snapshot_revision = revision;
+    query.envelope.typed_context = &query;
+    query.envelope.snapshot_comparison =
+        ck3_12002::QuerySnapshotComparison12002::core_frame;
+    if (!RunMailbox(mailbox, query.envelope,
+        &ExecutePlayerPrisonerCollection12004, failure)) return true;
+    if (!query.completed) {
+      failure = "war prisoner release source scan is unavailable";
+      return true;
+    }
+    const auto value = ck3_12002::SerializePrisonerWarRetentionV1(
+        query.war_observation);
+    if (value.empty()) {
+      failure = "war prisoner release result serialization unavailable";
+      return true;
+    }
+    ++state.war_query_sequence;
+    serialized = ResultPrefix(request_id, step) +
+        ",\"status\":\"available\",\"query_sequence\":" +
+        std::to_string(state.war_query_sequence) +
+        ",\"observation_revision\":" +
+        std::to_string(query.envelope.execution_stamp.pump_epoch) +
+        ",\"snapshot_revision\":" + std::to_string(revision) +
+        ",\"war_prisoner_release_pairs_v1\":" + value +
+        ",\"read_only\":true,\"backend_id\":\"native-headless\"}}";
     return true;
   }
   std::uint64_t requested_mask = 0;
