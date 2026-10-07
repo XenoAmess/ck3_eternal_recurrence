@@ -1,0 +1,19 @@
+# One new whole producer for the actual loaded candidate fertility floor.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_first_heir_fertility_floor_test EXCLUDE_FROM_ALL
+    src/ck3_12004_first_heir_fertility_floor_test.cpp)
+  target_link_libraries(xar_ck3_12004_first_heir_fertility_floor_test PRIVATE
+    xar_ck3_12002_runtime xar_bridge_protocol)
+  target_include_directories(xar_ck3_12004_first_heir_fertility_floor_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_first_heir_fertility_floor_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_first_heir_fertility_floor_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+    $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_first_heir_fertility_floor_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_12004_first_heir_fertility_floor_test
+    COMMAND $<TARGET_FILE:xar_ck3_12004_first_heir_fertility_floor_test>
+      ${CMAKE_CURRENT_BINARY_DIR}/wire/first-heir-fertility-floor-12004)
+endif()
