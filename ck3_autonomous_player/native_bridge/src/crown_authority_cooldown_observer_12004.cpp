@@ -33,7 +33,7 @@ Bindings BindImage(std::uintptr_t base, std::string_view sha256) noexcept {
 }
 
 bool Read(const Bindings &bindings, std::int32_t character_id,
-          std::int32_t frame_date_raw, Observation &output) noexcept {
+          std::int64_t frame_date_raw, Observation &output) noexcept {
   output = {};
   const auto &identifiers = bindings.identifiers;
   if (!identifiers.enabled || !identifiers.variable_context || character_id < 0)

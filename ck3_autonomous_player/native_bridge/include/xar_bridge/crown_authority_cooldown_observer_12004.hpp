@@ -22,7 +22,7 @@ struct Observation {
   std::optional<std::int32_t> expiry_raw;
   std::optional<std::int32_t> current_clock_raw;
   std::optional<std::int32_t> remaining_raw;
-  std::optional<std::int32_t> retry_date_raw;
+  std::optional<std::int64_t> retry_date_raw;
   std::string_view expiry_type = "signed32_scalar_clock_counter";
   std::string_view remaining_unit = "scalar_clock_step_calendar_unqualified";
 };
@@ -35,6 +35,6 @@ Bindings BindImage(std::uintptr_t image_base,
 // action. An absent row can request fresh terms now; a positive calendar retry
 // date remains unqualified until its actual source unit is closed.
 bool Read(const Bindings &, std::int32_t played_character_id,
-          std::int32_t frame_date_raw, Observation &) noexcept;
+          std::int64_t frame_date_raw, Observation &) noexcept;
 
 } // namespace xar::ck3_12004::crown_cooldown
