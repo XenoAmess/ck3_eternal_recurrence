@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12004_prisoner.hpp"
 #include "xar_bridge/ck3_12004_prisoner_ransom_action.hpp"
+#include "xar_bridge/ck3_12004_prisoner_release_action.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 
 #include <optional>
@@ -14,6 +15,9 @@ struct PrisonerPrivateWorkerState12004 {
   std::optional<PlayerPrisonerRansomQuoteV1> current_quote;
   std::uint64_t quote_revision = 0;
   std::uint64_t quote_query_sequence = 0;
+  std::optional<PrisonerNegotiatedPreview12004> current_release;
+  std::uint64_t release_revision = 0;
+  std::uint64_t release_query_sequence = 0;
   bool may_have_submitted = false;
 };
 
@@ -39,6 +43,13 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
     std::string &failure);
 
 bool HandlePlayerPrisonerRansom12004(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published_core, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    PrisonerPrivateWorkerState12004 &state, std::string &serialized,
+    std::string &failure);
+
+bool HandlePlayerPrisonerRelease12004(const game::GameAdapter &adapter,
     ck3_11906::MainThreadQueryMailboxV1 &mailbox,
     const game::Snapshot &published_core, std::uint64_t revision,
     std::string_view step, std::string_view payload, std::string_view request_id,

@@ -10,6 +10,7 @@
 #include "xar_bridge/protocol.hpp"
 
 #include <cstring>
+#include <utility>
 #include <windows.h>
 
 namespace xar::ck3_12004 {
@@ -47,6 +48,9 @@ struct RansomQuery {
   PrisonerRansomActionBindings12004 bindings{};
   PlayerPrisonerRansomQuoteV1 quote{};
   PlayerPrisonerRansomSubmitV1 result = PlayerPrisonerRansomSubmitV1::unavailable;
+  bool release = false;
+  PrisonerReleaseActionBindings12004 release_bindings{};
+  PrisonerNegotiatedPreview12004 release_terms{};
 };
 
 bool CapturePrisonerFrame(void *opaque,
@@ -313,11 +317,25 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
   ++state.query_sequence;
   state.current_quote.reset();
   state.quote_revision = state.quote_query_sequence = 0;
+  state.current_release.reset();
+  state.release_revision = state.release_query_sequence = 0;
   if (query.completed && ordinal < query.collection.returned_count &&
       query.quotes[ordinal].available) {
     state.current_quote = query.quotes[ordinal];
     state.quote_revision = revision;
     state.quote_query_sequence = state.query_sequence;
+  }
+  if (query.completed && ordinal < query.collection.returned_count) {
+    PrisonerNegotiatedPreview12004 terms{};
+    if (requested_mask != 0)
+      terms = query.negotiated_previews[ordinal];
+    else
+      terms.observation = query.release_previews[ordinal];
+    if (terms.observation.available) {
+      state.current_release = std::move(terms);
+      state.release_revision = revision;
+      state.release_query_sequence = state.query_sequence;
+    }
   }
   return true;
 }
@@ -329,8 +347,15 @@ bool ExecutePlayerPrisonerRansom12004(void *opaque,
       !ck3_12002::EnterQueryMailbox(*envelope, stamp,
           &ExecutePlayerPrisonerRansom12004)) return true;
   auto &query = *static_cast<RansomQuery *>(envelope->typed_context);
-  query.result = SubmitPlayerPrisonerRansomPrivateV1(query.bindings, query.module,
-      query.quote, envelope->expected_snapshot_revision, stamp.date_raw);
+  if (query.release) {
+    const PrisonerReleasePreviewAccess12004 access{GetCurrentThreadId(), stamp.thread_id,
+        envelope, &CapturePrisonerFrame, &ReadPrisonerMemory};
+    query.result = SubmitPlayerPrisonerRelease12004(query.release_bindings, access,
+        query.release_terms, envelope->expected_snapshot_revision, stamp.date_raw);
+  } else {
+    query.result = SubmitPlayerPrisonerRansomPrivateV1(query.bindings, query.module,
+        query.quote, envelope->expected_snapshot_revision, stamp.date_raw);
+  }
   (void)ck3_12002::FinishQueryMailbox(*envelope);
   return true;
 }
@@ -403,6 +428,64 @@ bool HandlePlayerPrisonerRansom12004(const game::GameAdapter &adapter,
     return true;
   }
   serialized = SerializePlayerPrisonerRansomCommandResult12004(request_id, query.result);
+  return true;
+}
+
+bool HandlePlayerPrisonerRelease12004(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published_core, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    PrisonerPrivateWorkerState12004 &state, std::string &serialized,
+    std::string &failure) {
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+  const bool is_submit = step == "submit-player-prisoner-release-private-v1";
+#else
+  static_cast<void>(step);
+  const bool is_submit = false;
+#endif
+  if (!is_submit) return false;
+  serialized.clear(); failure.clear();
+  std::uint64_t expected = 0;
+  if (!bridge::JsonUnsignedField(payload, "expected_revision", expected) ||
+      expected == 0 || expected != revision ||
+      !game::IsCk3_12004Descriptor(adapter.descriptor()) ||
+      !published_core.paused || !published_core.map_ready ||
+      !published_core.has_played_character || !published_core.played_character_alive ||
+      published_core.played_character_id <= 0) {
+    failure = "prisoner request revision or paused player frame is stale";
+    return true;
+  }
+  std::uint64_t sequence = 0, prisoner = 0, mask = 0;
+  if (!state.current_release || state.release_revision != revision || state.may_have_submitted ||
+      !bridge::JsonUnsignedField(payload, "release_query_sequence", sequence) || sequence == 0 ||
+      sequence != state.release_query_sequence ||
+      !bridge::JsonUnsignedField(payload, "prisoner_character_id", prisoner) ||
+      !bridge::JsonUnsignedField(payload, "release_option_mask_bits", mask) ||
+      prisoner != state.current_release->observation.prisoner_character_id ||
+      mask != state.current_release->requested_option_mask_bits ||
+      state.current_release->observation.jailer_character_id !=
+          static_cast<std::uint32_t>(published_core.played_character_id)) {
+    failure = "private release terms or request are stale";
+    return true;
+  }
+  RansomQuery query{};
+  query.release = true;
+  query.module = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.release_bindings = BindPrisonerReleaseAction12004(query.module,
+      adapter.descriptor().executable_sha256);
+  query.release_terms = *state.current_release;
+  query.envelope.game = &adapter;
+  query.envelope.mailbox = &mailbox;
+  query.envelope.expected_snapshot = published_core;
+  query.envelope.expected_snapshot_revision = revision;
+  query.envelope.typed_context = &query;
+  query.envelope.snapshot_comparison = ck3_12002::QuerySnapshotComparison12002::core_frame;
+  state.may_have_submitted = true;
+  if (!RunMailbox(mailbox, query.envelope, &ExecutePlayerPrisonerRansom12004, failure)) {
+    if (query.envelope.ticket.sequence == 0) state.may_have_submitted = false;
+    return true;
+  }
+  serialized = SerializePlayerPrisonerReleaseCommandResult12004(request_id, query.result);
   return true;
 }
 

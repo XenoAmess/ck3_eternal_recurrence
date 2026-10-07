@@ -3647,6 +3647,19 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def submit_player_prisoner_release_private_v1(
+        self, *, collection: Mapping[str, object], prisoner_character_id: int,
+    ) -> dict[str, object]:
+        from .prisoner_release_action_private_12004 import (
+            submit_player_prisoner_release_private_v1,
+        )
+
+        return submit_player_prisoner_release_private_v1(
+            self, collection=collection,
+            prisoner_character_id=prisoner_character_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_player_epidemic_recovery_private_v1(
         self, *, expected_revision: int, requested_title_id: int = 0,
         expected_event_instance_id: int | None = None,

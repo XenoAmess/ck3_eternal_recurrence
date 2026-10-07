@@ -1469,6 +1469,15 @@ def create_server(
                 collection=collection, prisoner_character_id=prisoner_character_id,
             )
 
+        @server.tool()
+        def ck3_release_player_prisoner_private_v1(
+            collection: dict[str, object], prisoner_character_id: int,
+        ) -> dict[str, object]:
+            """Submit the queried native release terms and return a pending ACK."""
+            return driver.submit_player_prisoner_release_private_v1(
+                collection=collection, prisoner_character_id=prisoner_character_id,
+            )
+
     if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_current_first_heir_relationship_private_v1(
