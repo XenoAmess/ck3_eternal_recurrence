@@ -88,3 +88,39 @@ and registered/live entrance. Current status is **research; finite source
 closure and implementation authored**. `compiled FIRST`, `registered FIRST`
 and paused live are **NOT_RUN**. This package claims no new fixture-live,
 production-live primitive, camera action or gameplay loop.
+
+## R61 real `state_changed` remains RED
+
+Root's R61 attempt, source `23c3c4bc7fdf261f46174d35db12732808523463`
+and runtime entry12, called the registered tool for `c_salerno` at public
+revision3. It returned `native gameplay step failed: state_changed` in
+`managed-full-h9613-finaltools10/operator/gameplay-responses/012-final-title-center.json`.
+Root's subsequent small scene binding remained `native:2`, public3, native2,
+date53288256, paused and map-ready. This is a failed real presentation attempt;
+it is not GREEN and does not qualify the migrated primitive.
+
+Finite source diagnosis reused the actual integrated source only. Hybrid Driver
+already maps public revision to its native backend revision, and the typed
+parser binds that native revision to the mailbox envelope. The actual .4
+matcher, slot13 executor, actual .4 factories and serializer are wired. The
+short error does not distinguish the preflight full Snapshot comparison from
+the individual resolver/camera `state_changed` branches. The old error shape
+therefore cannot establish the cause. No speculative camera/profile or state
+comparison repair is made.
+
+The actual .4 access now accepts an optional fixed failure-stage label pointer.
+The resolver and camera fill it only at the already failing branch. The
+existing conditions, native reads, owning-thread calls, one dispatch and
+later-pump settlement rules are preserved. The stage identifies start/end
+frame capture versus revision/frame mismatch, title fallback read, frozen
+title binding/anchor, handler/camera identity, frozen plan, and the later-pump
+transient, target, zoom or frame comparison. It does not expose pointers or
+add an executable read. Root's finite central recipe attaches this label and
+the existing cached revision/command fields to `typed_query_failure_v1`, which
+the existing Driver already includes in its error text. Preflight gets a
+separate explicit stage before any leaf call.
+
+All three `.4` title-map TUs consume the updated header. Root must rebuild all
+three after integrating this header change. No build, test, EXE read, SDK or
+game action was performed for this diagnosis. Cause and the next actual
+diagnostic attempt remain pending; the R61 failure is retained.

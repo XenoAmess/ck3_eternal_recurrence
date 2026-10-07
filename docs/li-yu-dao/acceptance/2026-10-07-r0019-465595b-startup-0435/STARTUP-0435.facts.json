@@ -1,0 +1,83 @@
+{
+  "schema": "lyd.r19.startup-0435.selected-facts.v1",
+  "runtime_cutoff_utc": "2026-10-07T04:35:00Z",
+  "head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "game_pid": 19980,
+  "game_create_time": 1791346683.45508,
+  "native_session_id": "172caf27cc8b44549ea94ed2f306cfe0",
+  "client_session_id": "5b11bc8186974854aa695cf2704e8866",
+  "connection_generation": 1,
+  "attach_original": {
+    "status": "RED",
+    "reason": "BridgeUnavailableError: native game state is not available yet; CK3 may still be loading or may not have entered a map",
+    "recorded_at_utc": "2026-10-07T04:25:42.488464+00:00",
+    "injector_returncode": 0
+  },
+  "snapshot_original": {
+    "status": "native_snapshot_verified",
+    "recorded_at_utc": "2026-10-07T04:30:08.362389+00:00",
+    "snapshot": {
+      "date_raw": 53144712,
+      "speed": 1,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "played_character": {
+        "character_id": 31254,
+        "alive": true,
+        "source": "native",
+        "stress_points": 0,
+        "betrothed_id": null,
+        "primary_spouse_id": 36311,
+        "spouse_ids": [
+          36311
+        ]
+      },
+      "played_character_gold": {
+        "raw": 104300000,
+        "scale": 100000
+      },
+      "played_character_prestige": {
+        "raw": 220000000,
+        "scale": 100000
+      },
+      "played_character_piety": {
+        "raw": 315000000,
+        "scale": 100000
+      },
+      "one_life_settlement": null,
+      "active_event": null,
+      "pending_character_interaction": null,
+      "active_wars": [],
+      "player_armies": [],
+      "last_checkpoint_submission": null,
+      "history": [],
+      "format_version": 1,
+      "snapshot_id": "native:1",
+      "revision": 2,
+      "native_revision": 1,
+      "backend_id": "native-headless",
+      "source": "injected-dll-named-pipe",
+      "episode_projection": "native_campaign",
+      "native_command_history": [],
+      "native_rollback_war_failure": null,
+      "native_rollback_war_failures": []
+    }
+  },
+  "metadata_stage_counts": {
+    "sdk_version": "2.0.0",
+    "pydantic_version": "2.13.5",
+    "tool_count": 28,
+    "default_tool_count": 21,
+    "readonly_tool_count": 23,
+    "challenger_tool_count": 24
+  },
+  "whole_mod": "NOT_GREEN",
+  "attached_verified_credit": null,
+  "formal_acceptance": null,
+  "new_T": null,
+  "C3": null,
+  "I4": null,
+  "normal_exit": "NOT_VALIDATED_AT_CUTOFF",
+  "debugpy_hotfix_success": "OUTSIDE_THIS_CUTOFF_NO_CREDIT_FROM_THIS_REPORT"
+}
