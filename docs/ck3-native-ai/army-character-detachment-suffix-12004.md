@@ -137,11 +137,58 @@ flowchart TD
   F --> R
 ```
 
-State is **research / complete direct wrapper and own origin-getter source**.
-No new Character input
-code, native call, import, test, build, SDK query or paused artifact is credited.
-The next same-Army MCP increment should publish real extension reset operands,
-selected source-role resolutions and origin observation after readonly source
-closure. It must keep reset, non-Prov, owner-context and computed-date branches
-independent, and label mutator/post-call gaps as selected dependencies. No new
-forecast prerequisite is added to current legal OODA or migration acceptance.
+The next concrete same-Army MCP input leaf is
+`current_character_detachment_inputs_v1`. It retains every existing query's
+incoming native index and passed Province, rather than merging calls that happen
+to select the same Character. Its standing observations are current Character1B8,
+extensionF8 and whole signed64 extension100, plus the wrapper's current
+extension-to-ArRg-to-Army-to-saved-Unit selection roles. Army140 is demanded only
+when the Army registry is nonnull; Unit124 is demanded only when the Unit registry
+is nonnull. An unused missing ID cannot invalidate a source fallback selection.
+
+Invalid Character fullID`FFFFFFFF` and a known null current1B8 have independent
+no-suffix results. A known nonnull extension selects independently known reset
+descriptors: F8=`FFFFFFFF` and whole100=`FFFFFFFF029C77F8` (signed64
+`-4251158536`). These constant values do not require the old fields to be readable.
+The source's first F8 store targets the captured extension; its second store
+targets a freshly reloaded Character1B8 when nonnull. A standing query does not
+observe that reload after a write. The descriptors therefore preserve those two
+target roles and cannot credit an observed reset, reached getter, post-reset
+origin or computed suffix date. Current selector completeness is separate from
+reset descriptor completeness and from whole suffix readiness.
+
+```mermaid
+flowchart TD
+  A[Same-query incoming Character and passed Province] --> I{Character ID invalid}
+  I -->|yes| N[Independent no suffix result]
+  I -->|no| E{Current Character1B8 pointer known}
+  E -->|null| N
+  E -->|nonnull| F[Observed extensionF8 and whole100; optional before values]
+  E -->|unread| U[Partial current extension input]
+  F --> R[Independent source constant reset descriptors]
+  F --> C[Current source ArRg Army savedUnit selectors]
+  C --> S[Independent current source-chain readiness]
+  R -. actual reset and fresh reload not observed .-> G[Post-reset origin getter]
+  G -. selected helper sources unknown .-> D[Post-mutator context and computed date]
+```
+
+State is **research / complete direct wrapper and own origin-getter source**;
+the current input leaf is **AUTHORED_NOTRUN**, an independent five-file candidate.
+Native DTO, inline reader and serializer live in
+`army_current_character_detachment_inputs_v1.hpp`,
+`ck3_12004_current_character_detachment_inputs.hpp` and
+`army_current_character_detachment_inputs_serializer_v1.hpp`. The exact4 binder
+`BindCurrentCharacterDetachmentInputs12004` supplies the source role only;
+`ReadCurrentCharacterDetachmentInputs12004` performs software reads from the
+same-query seed and executes no native helper. Python
+`normalize_current_character_detachment_inputs_v1` preserves its strict optional
+wire; `project_current_character_detachment_inputs_v1` supplies the independent
+`current_character_detachment_suffix_v1` result. No shared hook was applied here.
+External `CHARACTER-INPUTS-ROOT-DELIVERY.json` and
+`character-current-source/SHARED-HOOK-RECIPE.md` provide concrete Root adoption
+fragments; Root owns the unified producer, complete registered consumer and
+paused exact4 snapshot qualification. This increment used no new EXE bytes.
+No native call, import, test, build, SDK query or paused artifact is credited.
+Selected origin-helper source closure remains necessary for origin observation.
+Mutator/post-call gaps stay selected dependencies, with no forecast prerequisite
+added to current legal OODA or migration acceptance.
