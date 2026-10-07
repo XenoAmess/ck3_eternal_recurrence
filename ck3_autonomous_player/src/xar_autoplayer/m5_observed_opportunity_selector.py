@@ -352,7 +352,8 @@ def faction_gift_proposal(
         projected_supply_margin_raw=None, war_slot_claim=0,
         army_ids=[], ally_character_ids=[], character_ids=[recipient],
         commitment_keys=[f"faction-gift:{source}:{recipient}"],
-        evidence={"source_faction_id": source, "opinion_delta": opinion},
+        evidence={"source_faction_id": source, "opinion_delta": opinion,
+                  "stock_threat_response": deepcopy(candidate.get("stock_threat_response"))},
     )
 
 
@@ -591,8 +592,9 @@ def select_observed_m5_opportunity(
 ) -> dict[str, object]:
     """Choose one feasible domain-approved proposal with observed benefit first.
 
-    In the bounded peaceful building/gift comparison, a positive authored
-    building income takes precedence over an unpriced gift. Other domains and
+    In the bounded peaceful building/gift comparison, an observed stock-dangerous
+    faction response precedes positive authored building income. A watch-only or
+    unobserved gift keeps the existing income preference. Other domains and
     remaining ties use measured shared costs.
     Authored income is a script value, not realized tax or cross-domain utility.
     """
@@ -682,6 +684,7 @@ def select_observed_m5_opportunity(
         "income_preference_applied": prefer_income,
         "selection_basis": [
             "family_policy_rank_within_marriage",
+            "observed_stock_dangerous_faction_response_in_peace",
             "positive_authored_building_income_in_peace", "war_slot_claim",
             "army_claim_count", "ally_claim_count",
             "gold_cost_raw", "commitment_key_count", "character_claim_count",
@@ -797,7 +800,13 @@ def _opportunity_key(
     evidence = row["evidence"]
     income = (evidence.get("authored_monthly_income_hundredths")
               if row["domain"] == "building" else None)
+    threat = evidence.get("stock_threat_response")
+    dangerous_response = (row["domain"] == "diplomacy"
+                          and isinstance(threat, Mapping)
+                          and threat.get("status") == "observed"
+                          and threat.get("dangerous_response_ready") is True)
     return (
+        0 if prefer_income and dangerous_response else 1,
         0 if prefer_income and type(income) is int and income > 0 else 1,
         row["war_slot_claim"], len(row["army_ids"]),
         len(row["ally_character_ids"]), row["gold_cost_raw"],

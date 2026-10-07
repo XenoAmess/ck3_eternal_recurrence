@@ -27,6 +27,7 @@ from .faction_gift_formal_candidate_v1 import (
     latest_same_frame_faction_root_v1,
 )
 from .faction_gift_pending_v1 import read_faction_gift_ledger_v1
+from .faction_threat_response_inputs_v1 import observe_faction_gift_stock_threat_v1
 from .family_marriage_formal_consumer import (
     plan_family_marriage_private, read_family_marriage_ledger,
 )
@@ -219,6 +220,12 @@ def query_m5_peacetime_proposal_sources_v1(
             raise BridgeUnavailableError(
                 "M5 peacetime faction gold crossed the planning frame"
             )
+        if faction_status == "selected":
+            faction["stock_threat_response"] = observe_faction_gift_stock_threat_v1(
+                driver, snapshot=snapshot, history=history, candidate=faction,
+                expected_revision=expected_revision,
+            )
+            _require_driver_frame(driver, frame, expected_gold_raw=observed_gold_raw)
 
     family_status = "opt_in_off"
     family_plan: dict[str, object] | None = None
