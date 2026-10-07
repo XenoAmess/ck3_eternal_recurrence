@@ -9388,3 +9388,26 @@ endif()
 if(BUILD_TESTING AND WIN32 AND XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
   add_subdirectory(tests/crown_authority_cooldown_whole_fixture_12004)
 endif()
+
+
+# Focused current-player claims leaf fixture: no runtime/bridge/SDK linkage.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_player_claims_v1_test
+    src/ck3_12004_player_claims_v1_test.cpp
+    src/ck3_12004_player_claims_v1.cpp
+    src/player_claims_v1_serializer.cpp
+    src/ck3_12004_abi_profile.cpp
+    src/ck3_12002_province.cpp)
+  target_include_directories(xar_ck3_12004_player_claims_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_player_claims_v1_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_player_claims_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_player_claims_v1_test PRIVATE
+      /W4 /WX /Gy /permissive- /EHsc /utf-8 /UNDEBUG)
+    target_link_options(xar_ck3_12004_player_claims_v1_test PRIVATE /OPT:REF)
+  endif()
+  add_test(NAME xar_ck3_12004_player_claims_v1_test
+    COMMAND $<TARGET_FILE:xar_ck3_12004_player_claims_v1_test>
+      "${CMAKE_CURRENT_BINARY_DIR}/wire/player_claims_v1-focused-first")
+endif()

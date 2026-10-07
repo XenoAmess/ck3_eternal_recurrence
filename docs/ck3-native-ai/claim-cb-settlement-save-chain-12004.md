@@ -231,3 +231,14 @@ remains frozen. [The source packet](C:/workspace/ck3-upgrade-20261007/g2-postter
 and [independent Python review](C:/workspace/ck3-upgrade-20261007/g2-player-claims-python-review-01/INDEPENDENT-PYTHON-SOURCE-REVIEW-FINAL-02.md)
 retain the focused source verification. This adopts source only; compilation,
 native fixture and actual paused observations are still pending.
+
+
+## 2026-10-08：current-player claims 独立 native 叶级夹具实际通过
+
+新 `xar_ck3_12004_player_claims_v1_test` 已在本机外置独立 source/build 以 x64 MSVC 实际配置、编译、链接并运行一次：**110 checks、21 scenarios、17 synthetic production-serializer wires，exit0**。目标只有新夹具、生产 `ck3_12004_player_claims_v1.cpp`、生产 `player_claims_v1_serializer.cpp`、实际4 core ABI profile、保留的 full-ID province/title resolver 五个 TU；实际 argv 保留 `/W4 /WX /Gy /UNDEBUG` 与 CMake `-std:c++20`。已有项目构建 hook 对新 EXE 精确路径取得管理员 WMI 新鲜实际 `verified` 读回，未把旧目录排除或 ACK 当作成功。
+
+实际首个 link 证明 `/Gy` 加 `/OPT:REF` 没有清除省份 TU 内另外两项 army helper 引用，返回 LNK2019；该 source01/build01/stdio/input index 原样保全。仅在新夹具补 `BindArmyImage` 与 `ResolveInternalArmy` 两个调用即报错 `abort` 的链接桩，保持五 TU，任何 claims 路径触及它们即失败，不返回伪造军队数据。新的 source02/build02 独立保留；4095 项逐文件比较确认只有这份夹具改变，4094 项和生产算法/header/CMake 均原字节。最终 link0 和一次21场景运行0证明所测 claims 路径未调用链接桩。执行前 Python 命令门禁误仅接受 `/std:c++20`，对实际 `-std:c++20` 在 EXE 运行前拒绝；原脚本与纠正回执保全，native 总运行仍为一次。
+
+实证只覆盖 caller-owned synthetic components/getter 下的生产当前玩家读取、完整 ID 解析、ordered parser、optional 生命周期、两次 rows/core-frame guard 与 serializer。未执行新 actual getter/destructor 机器码，未资格 owning-thread mailbox/semantic worker 的请求与完成路由、runtime DLL/managed bridge、实机战后 claims、Save/Load continuation 或 G2 milestone；没有重跑旧 Python8+2、全矩阵或其他 target，没有 CK3/Steam/SDK/pipe/screen/注入动作。
+
+最终证据：`C:/workspace/ck3-upgrade-20261007/g2-player-claims-focused-native-validation-01/G2-PLAYER-CLAIMS-FOCUSED-NATIVE-ACTUAL-FINAL-03.json`（16236 B，SHA-256 `e90daefd7e903fc792554a8c0488a1855bc1fa888a991ec457d8bdd0a886fea9`）；唯一补丁 `FOCUSED-FIXTURE-LINK-CLOSURE-ONLY-03.diff`（1310 B，SHA-256 `48c0747bf12a362096b81ca710e4b32592b0758e5afafd631ffca3020efd9071`）。实际 run receipt SHA-256 `a0d214e7feba9612cc0a13cad7878a02f9adad15f7b55076981967142a7ad1d5`；新 EXE 121344 B，SHA-256 `0a1b7280f98ae89136b290a719d478701b8cf89c0e5d80cd7988262008efbbf3`；Defender actual receipt SHA-256 `01c4c9cd0c0689180c4df65b9fa476cdf94e9078ac068ba722ba2317d7c3fafa`。
