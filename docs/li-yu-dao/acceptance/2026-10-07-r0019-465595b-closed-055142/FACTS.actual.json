@@ -1,0 +1,494 @@
+{
+  "schema": "lyd.r19.closed055142.archival-facts.v1",
+  "cutoff_utc": "2026-10-07T05:51:42Z",
+  "frozen_historical_source_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "documentation_base_HEAD": "6281813f23b9dbd3e749f933de2bdb2e0dc5d1a4",
+  "boundary_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-actual-closed-boundary-20261007-001/INDEX.json",
+    "bytes": 1609,
+    "sha256": "20343839fca7ae203e5000f8d75e3846af92617838f4da53efd3e7b14a46550c"
+  },
+  "boundary_review": {
+    "schema": "lyd.root.previous-cold-boundary-review.v3",
+    "status": "ROOT_REVIEWED_ACTUAL_CLOSED_RELEASED_BOUNDARY",
+    "source_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+    "root_screen_task": "ck3-lyd-r19-original0240-formal-20261007-001",
+    "original_process": {
+      "pid": 19980,
+      "process_create_time": 1791346683.45508,
+      "process_creation_filetime_100ns": 134358202834550800
+    },
+    "launch": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/launch.json",
+      "bytes": 2320,
+      "sha256": "384036e18828b5f6dac841dee27844750c819c69ce2e72dcf1150d907c652896"
+    },
+    "original_handle_observation": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/0063-r19-025-exit-observe.sdk-result.json",
+      "bytes": 12819,
+      "sha256": "65325fec31ef8dce613cb67fa09770b17cb69257da0dd80d4ef1864a3539c479"
+    },
+    "original_native_observation": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/0063-r19-025-exit-observe.native-01.json",
+      "bytes": 5908,
+      "sha256": "982d988116f22c63a61acd17c43f00d0da1dc8f548ad097e20cc9cd930109577"
+    },
+    "helpers_closed": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-actual-closed-boundary-20261007-001/HELPERS-CLOSED.actual.json",
+      "bytes": 5394,
+      "sha256": "907b87bcd9a5c4e240819fa9f971b147a187e351166a3f39070dfedbf576c21d"
+    },
+    "process_absence": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-closed-boundary-inputs-20261007-001/PROCESS-ABSENCE.actual.json",
+      "bytes": 880,
+      "sha256": "a08cf086ce2e8f8f8de82e97199379d93619fff1a07cfce98350dafb37d08ed1"
+    },
+    "keeper_final": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-actual-screen-keeper-20261007-001/FINAL.json",
+      "bytes": 420,
+      "sha256": "30dd91e5697a28e401f71f74304567f3abac63e6ec9c972aef5514b08fad544b"
+    },
+    "release_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-release-screen-actual-20261007-001/RELEASE.actual.json",
+      "bytes": 1310,
+      "sha256": "c78ba7d4d2701f2f05000d17ebad5812e50521862208ef5066ffa8e9b4ee6773"
+    },
+    "after_list": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-release-screen-actual-20261007-001/BUS-AFTER-RELEASE.parsed.json",
+      "bytes": 104296,
+      "sha256": "6e00fd6a723ec0fafbf9bbfc1e5e757f6b2e845250e64aa84572306b350b62c5"
+    },
+    "consumer_closed": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/session-closed.json",
+      "bytes": 3731,
+      "sha256": "d43e9facecd183bd90e121bd27ac5f07804659d0d4191cf55da42bcdbcd332bd"
+    },
+    "consumer_session": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/session.json",
+      "bytes": 1242,
+      "sha256": "561c82eb3fbb2d6a047a1e5c39dee54dca00ee72037fad9000f92a4bd3149c54"
+    },
+    "consumer_close_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/mcp-client-001/0064-r19-root-close-4ceec131571349a9a18149aa57890bdf.response.json",
+      "bytes": 532,
+      "sha256": "f667a3cd747ea9cb169135d7f6b2fe0784764b664ff48e025c94579157480724"
+    }
+  },
+  "actual_exit_observation_limits": {
+    "game_original_HANDLE_exit0_observed": true,
+    "typed_normal_exit_observed": true,
+    "terminal_native_ack_observed": true,
+    "normal_exit_callback_verified": true,
+    "closure_credit": "TYPED_NORMAL_EXIT_AND_ORIGINAL_PROCESS_HANDLE_EXIT0",
+    "client_exit_code": 0,
+    "keeper_exit_code": 0,
+    "client_OS_exit0_observed": true,
+    "keeper_OS_exit0_observed": true,
+    "holder_original_exec_process_exit0_observed": true,
+    "holder_original_exec_session_id": 88883,
+    "keeper_original_exec_session_id": 34416,
+    "native_session_id": "172caf27cc8b44549ea94ed2f306cfe0",
+    "consumer_session_id": "5b11bc8186974854aa695cf2704e8866",
+    "autosave_verified": false
+  },
+  "release_sequence": 3570,
+  "after_own_task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "465595b67efa8f72dfc97bc0de218302c75e3bfd"
+    },
+    "last_sequence": 3570,
+    "next_step": "",
+    "pid": 7156,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R19 actual original HANDLE game/helper exit0, normal Client closure, keeper stopped; release retained screen",
+    "task_id": "ck3-lyd-r19-original0240-formal-20261007-001",
+    "updated_at_utc": "2026-10-07T05:50:13.785442+00:00",
+    "age_seconds": 0,
+    "stale": false
+  },
+  "process_absence": {
+    "observed_at_utc": "2026-10-07T05:51:24.267007+00:00",
+    "original_identities": [
+      {
+        "role": "game",
+        "pid": 19980,
+        "create_time": 1791346683.45508,
+        "same_original_identity_alive": false
+      },
+      {
+        "role": "client",
+        "pid": 17364,
+        "create_time": 1791346987.1258173,
+        "same_original_identity_alive": false
+      },
+      {
+        "role": "keeper",
+        "pid": 1984,
+        "create_time": 1791346539.5645258,
+        "same_original_identity_alive": false
+      },
+      {
+        "role": "holder",
+        "pid": 17104,
+        "create_time": 1791348868.331875,
+        "same_original_identity_alive": false
+      }
+    ],
+    "same_original_identities_absent": true,
+    "remaining_managed_game_or_native_services": [],
+    "no_current_managed_game_or_native_services": true,
+    "errors": [],
+    "process_signals_sent": 0
+  },
+  "author_recoveries": {
+    "B2-r1-pending-author-002": {
+      "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "utc": "2026-10-07T05:34:12.573325+00:00",
+      "save_body_reads": 1,
+      "frame_binding": {
+        "revision": 10,
+        "native_revision": 9,
+        "date_raw": 53144712,
+        "game_pid": 19980,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:9"
+      },
+      "state": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/B2-r1-pending-author-002/STATE.json",
+        "bytes": 2599124,
+        "sha256": "a354377c0dba98bdcfd13d04283294c0cfd863ef4544a9ec6b9a89cd93916691"
+      },
+      "stage": "ballot",
+      "round": {
+        "serial": 1,
+        "nonce": 2,
+        "phase": 2,
+        "result_code": null
+      },
+      "assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "typed": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/B2-r1-pending-author-002/TYPED-PROTECTION.json",
+        "bytes": 1157710,
+        "sha256": "9e053385afb7473dfb8565e517ae17955c4363e07003cb9085e3cf5b7871cad5"
+      },
+      "protection_true": 87,
+      "protection_failed": 0,
+      "actual_pass": null,
+      "formal_mandate_credit": null
+    },
+    "B3-r1-signed-author-002": {
+      "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "utc": "2026-10-07T05:47:22.833047+00:00",
+      "save_body_reads": 1,
+      "frame_binding": {
+        "revision": 15,
+        "native_revision": 14,
+        "date_raw": 53144712,
+        "game_pid": 19980,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:14"
+      },
+      "state": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/B3-r1-signed-author-002/STATE.json",
+        "bytes": 2600873,
+        "sha256": "5c3c707e48acffad34b54d7419179de25c8182b2a800c72b7c36fd6ef324fd43"
+      },
+      "stage": "signed_precommit",
+      "round": {
+        "serial": 1,
+        "nonce": 2,
+        "phase": 2,
+        "result_code": null
+      },
+      "assessment": "OBSERVED_CONTRACT_MISMATCH",
+      "typed": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/B3-r1-signed-author-002/TYPED-PROTECTION.json",
+        "bytes": 1158887,
+        "sha256": "0c234ba9c7685cb19530cb4e8161d71cc2815a1b916d42c837184fb33f67c353"
+      },
+      "protection_true": 87,
+      "protection_failed": 0,
+      "actual_pass": null,
+      "formal_mandate_credit": null
+    }
+  },
+  "B3_vote_observation": {
+    "members": [
+      {
+        "character_id": 31254,
+        "was_elector": 1,
+        "was_player": 1,
+        "player_yes": 1,
+        "vote": 1
+      },
+      {
+        "character_id": 65865,
+        "was_elector": 1,
+        "was_player": 0,
+        "player_yes": 0,
+        "vote": 0
+      }
+    ],
+    "total": 2,
+    "yes": 1,
+    "signed": 0,
+    "delegate": 31254,
+    "original_rite_variables": {
+      "lyd_i3b_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_i3b_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_i3b_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_i3b_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_i3b_signed": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_i3b_signed"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_i3b_delegate": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_i3b_delegate"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "B3_materializer001": {
+    "exit_code": 1,
+    "save_body_reads": 0,
+    "source_RESULT": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-root-B3-r1-signed-materialize-exec-20261007-001\\RESULT.actual.json"
+  },
+  "B3_materializer002": {
+    "direct_tool_exit_code_as_recorded_in_ROOT_conversation": 0,
+    "direct_tool_wall_time_seconds_as_recorded_in_ROOT_conversation": 0.5891055,
+    "external_original_tool_stdout": null,
+    "external_RESULT_wrapper": null,
+    "original_chunk_id": null,
+    "source_only_inputs": "C:\\workspace\\ck3_lyd_runtime_20261004\\r19-source-successors-20261007-001\\CLOSEOUT-001\\B3-R1-MATERIALIZER-INPUTS.title-routed.json",
+    "actual_output": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\B3-r1-signed-author-input-002\\AUTHOR-INPUT.actual.json",
+    "author_input_sha256": "f53bc418d8446358d4fdf12880de47c6e11edbabe66c009c2fbbc5aa5b948984",
+    "no_reconstructed_wrapper": true
+  },
+  "withdrawal_steps": [
+    {
+      "step": "formal-r1-withdraw-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "revision": 16,
+      "native_revision": 15,
+      "active_event": null
+    },
+    {
+      "step": "formal-r2-begin-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "revision": 17,
+      "native_revision": 16,
+      "active_event": {
+        "source": "native",
+        "instance_id": 107,
+        "option_count": 4,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 2,
+            "option_number": 3,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 3,
+            "option_number": 4,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      }
+    },
+    {
+      "step": "formal-r2-withdraw-before-upgrade-001",
+      "status": "EXPLICIT_STEP_ACTUALLY_COMPLETED",
+      "full_product_credit": null,
+      "revision": 18,
+      "native_revision": 17,
+      "active_event": null
+    }
+  ],
+  "final_checkpoint_descriptor": {
+    "schema": "lyd.r19.final-checkpoint-preserved.v1",
+    "native_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/native-evidence/172caf27cc8b44549ea94ed2f306cfe0/0053-checkpoint.json",
+      "bytes": 1162541,
+      "sha256": "cf8714e783d6d53ae2e59ac6549aadcd2a5c9ddc1cb23176a519714d61bb0653"
+    },
+    "checkpoint": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/checkpoints/final-before-upgrade/checkpoint.ck3",
+      "bytes": 91671418,
+      "sha256": "9977b3527478849190acfcc408b3af2d4c33a499fcbdbd6a562ef005cf9faeae"
+    },
+    "save_body_parsed": false,
+    "formal_credit": null
+  },
+  "autosave_verified": false,
+  "whole_mod_status": "NOT_GREEN",
+  "formal_new_T_C3_I4_credit": null,
+  "future_upgrade": {
+    "new_game_build": null,
+    "future_HEAD": null,
+    "new_native_build": null,
+    "new_metadata": null,
+    "new_run_PID_session": null,
+    "GREEN": null
+  },
+  "archive": {
+    "path": "docs/li-yu-dao/acceptance/2026-10-07-r0019-465595b-closed-055142/raw-evidence.zip",
+    "bytes": 3993317,
+    "sha256": "f71c6e6fc83e1a268de3e930cd6ba20c2f0c13077b0ca2e1569519e7b8705d61",
+    "original_source_count": 219,
+    "unique_payload_count": 211
+  },
+  "document_author_actions": {
+    "checkpoint_body_reads_or_copies": 0,
+    "main_writes": 0,
+    "SDK_game_process_bus_screen_calls": 0,
+    "CI_queries_tests_builds_rerun": 0
+  }
+}
