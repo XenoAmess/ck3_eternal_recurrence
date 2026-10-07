@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace xar::ck3_11906 {
@@ -36,6 +37,13 @@ bool ValidateCurrentFirstHeirBilateralRelationshipV1(
 
 std::string CurrentFirstHeirBetrothalActionabilityJsonV1(
     const CurrentFirstHeirBetrothalActionabilityReadV1 &read);
+
+// Existing complete private result envelope; build rendering stays with caller.
+std::string CurrentFirstHeirRelationshipResultJsonV1(
+    std::string_view request_id, std::uint64_t native_revision,
+    std::int32_t heir_character_id,
+    const CurrentFirstHeirRelationshipReadV1 &read,
+    std::string_view override_unavailable_reason = {});
 
 #endif
 } // namespace xar::ck3_11906

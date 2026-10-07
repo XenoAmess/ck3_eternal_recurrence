@@ -67,6 +67,10 @@ def build_current_betrothal_fulfillment_proposal(
             if value.get("ready_to_marry_betrothed") is True else None
         ),
         "predicted_outcome_if_accepted": value.get("predicted_outcome_if_accepted"),
+        "matrilineal_option_selected": value.get("matrilineal_option_selected"),
+        # The selected parent's current House/Dynasty is prospective input,
+        # independent of the still-unpriced actual child result below.
+        "native_child_house_preview": deepcopy(value.get("native_child_house_preview")),
         "effective_matrilineal_if_accepted": value.get("effective_matrilineal_if_accepted"),
         "recipient_ai_accept_raw": value.get("recipient_ai_accept_raw"),
         "recipient_answer_status_raw": value.get("recipient_answer_status_raw"),

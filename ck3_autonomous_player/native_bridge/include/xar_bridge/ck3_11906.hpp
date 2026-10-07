@@ -1306,8 +1306,38 @@ struct CurrentFirstHeirBetrothalActionabilityReadV1 {
   bool outcome_available = false;
   bool lineality_available = false;
   bool effective_matrilineal_if_accepted = false;
-  friend bool operator==(const CurrentFirstHeirBetrothalActionabilityReadV1 &,
-                         const CurrentFirstHeirBetrothalActionabilityReadV1 &) = default;
+  // Optional same-context prospective lineage observer; legacy terms remain independent.
+  std::optional<bool> matrilineal_option_selected{};
+  bool native_child_house_preview_available = false;
+  std::string_view native_child_house_preview_reason =
+      "native_child_house_preview_binding_unavailable";
+  std::int32_t native_selected_parent_character_id = -1;
+  MarriageCharacterLineageV1 native_preview_lineage{};
+  // Cached/fresh submission compares the original action terms only. The
+  // appended optional preview is read-only metadata, not a submission term.
+  friend bool operator==(const CurrentFirstHeirBetrothalActionabilityReadV1 &first,
+                         const CurrentFirstHeirBetrothalActionabilityReadV1 &second) {
+    return first.has_betrothal == second.has_betrothal &&
+        first.unavailable_reason == second.unavailable_reason &&
+        first.actor_character_id == second.actor_character_id &&
+        first.heir_character_id == second.heir_character_id &&
+        first.partner_character_id == second.partner_character_id &&
+        first.recipient_character_id == second.recipient_character_id &&
+        first.intermediary_character_id == second.intermediary_character_id &&
+        first.adult_readback_available == second.adult_readback_available &&
+        first.adult == second.adult &&
+        first.final_legality_sampled == second.final_legality_sampled &&
+        first.complete_can_send == second.complete_can_send &&
+        first.recipient_acceptance_ready == second.recipient_acceptance_ready &&
+        first.recipient_ai_accept_raw == second.recipient_ai_accept_raw &&
+        first.recipient_answer_status_raw == second.recipient_answer_status_raw &&
+        first.generic_costs_available == second.generic_costs_available &&
+        first.generic_cost_raw == second.generic_cost_raw &&
+        first.outcome_available == second.outcome_available &&
+        first.lineality_available == second.lineality_available &&
+        first.effective_matrilineal_if_accepted ==
+            second.effective_matrilineal_if_accepted;
+  }
 };
 
 struct CurrentFirstHeirRelationshipReadV1 {

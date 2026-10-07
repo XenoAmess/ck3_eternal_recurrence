@@ -150,3 +150,81 @@ native/Service qualification, paused values, material fulfillment, birth,
 natural succession and additional G2 credit remain0. Root owns integration,
 FIRST, shared reports and publication. External input ledger/API/FIRST recipe:
 `Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/first-heir-next-readiness25/`.
+
+## Observer candidate, 2026-10-07
+
+Root authorized implementation after the source plan. The separate candidate
+starts at `337270d7700e514169d6fc55e121a3063c579e08`; Root25's completed
+Age/floor qualification is reused and receives zero replay here.
+
+The lower `ReadSelectedPairPreview` stage accepts the resolved pair's existing
+core, actual selected option, effective lineality and already sampled CanSend.
+It creates only the source-defined detached offer; it does not construct,
+refresh, finalize or send a second pair context. The current actionability
+reader samples its option before its existing final frame/relationship check.
+The existing new-proposal preview uses the same lower stage while retaining
+its own prior context construction and requested-option behavior.
+
+`betrothal_actionability.matrilineal_option_selected` publishes legal false
+independently of effective lineality. The optional `native_child_house_preview`
+retains the existing preview fields and its own availability/reason. Missing
+only the new preview binding leaves the legacy adulthood, CanSend, answer,
+cost and outcome inputs available. No current betrothal avoids the unused
+context/preview branch. Older wires with absent new fields remain supported.
+
+The production mailbox appends its lineage binding, selects the existing
+actual4 binder and passes it to the current reader. The whole relationship
+wire core is extracted from the previous bridge renderer and reused by both
+the bridge and the new fixture, so the five new whole frames use the actual
+current relationship serializer. Build identity still comes from the adapter
+envelope. No source acquisition or native ABI entrance is added.
+
+One concrete action-compatibility dependency was found during implementation:
+the cached actionability/fresh submission comparison uses DTO equality, but
+the submission's ordinary read does not demand the optional preview. DTO
+equality therefore retains exactly its original action-term fields and ignores
+only the new observation siblings. This keeps observer availability from
+changing the existing action's validity; no submit policy or rank is changed.
+
+The strict current relationship transport retains the selected option and
+prospective preview. The actual registered `ck3_plan_turn` Service route
+retains them in current fixed-pair choice/resource evidence and its value
+ledger. The existing pending action option keeps its effective-lineality
+meaning. The actual-child `unpriced` entry remains unchanged, and no preview
+is counted as a child, pregnancy, birth or natural succession.
+
+```mermaid
+flowchart TD
+    R[Actual current bilateral pair] --> C[One owning finalized context]
+    C --> L[Existing action terms and effective lineality]
+    C --> S[Actual selected option]
+    S --> O[Detached offer28/2C/80 null8]
+    O --> P[Qualified parent getter1375380]
+    P --> H[Current full House and Dynasty]
+    S --> W[Current relationship whole wire]
+    L --> W
+    H --> W
+    W --> T[Strict optional preview contract]
+    T --> Q[Registered plan_turn Service current fixed-pair choice]
+    Q --> V[Independent prospective lineage evidence]
+    L --> A[Existing action-term comparison unchanged]
+    Q -. actual offspring unknown .-> U[Birth and actual child Dynasty]
+```
+
+The new native target is
+`xar_ck3_12004_current_betrothal_prospective_lineage_test`, linked to the
+existing runtime/protocol production libraries. Its five newly authored
+whole-wire cases are `selected-false`, `selected-true`, `same-selector`,
+`preview-binding-missing` and `no-betrothal`. The third has selected true,
+effective false and the partner's preview lineage, proving the distinct input.
+The fixture checks one context construction/destruction and a parent getter
+call only while that original context is alive. A single newly authored
+registered-Service compound consumes these five frames and an older-schema
+copy derived from a new frame. It executes no marriage sender.
+
+Candidate readiness is **authored / NOTRUN**. Root owns the full native build,
+new native FIRST and sole new Service FIRST. This implementation package
+executes zero imports, tests, native builds, SDK/game/process/UI operations or
+EXE reads; no prior qualified case is repeated. The independent external
+candidate recipe and Oct7/W41 fields are under
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/first-heir-current-betrothal-lineage26/`.

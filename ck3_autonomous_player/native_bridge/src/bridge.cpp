@@ -9455,78 +9455,14 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
 }
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
-std::string_view CurrentFirstHeirRelationshipFailureKeyV1(
-    xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1 failure) {
-  using Failure = xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1;
-  switch (failure) {
-  case Failure::none: return "none";
-  case Failure::frame_changed: return "frame_changed";
-  case Failure::heir_unavailable: return "heir_unavailable";
-  case Failure::relationship_unavailable: return "relationship_unavailable";
-  case Failure::partner_unavailable: return "partner_unavailable";
-  case Failure::bilateral_inconsistent: return "bilateral_inconsistent";
-  }
-  return "unknown";
-}
-
 std::string CurrentFirstHeirRelationshipResultFrameV1(
     std::string_view request_id, std::uint64_t native_revision,
     std::int32_t heir_character_id,
     const xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 &read,
     std::string_view override_unavailable_reason = {}, bool crozier = false) {
-  const bool available =
-      override_unavailable_reason.empty() &&
-      read.failure ==
-          xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none;
-  std::string result =
-      "{\"type\":\"command_result\",\"protocol_version\":1,"
-      "\"request_id\":";
-  AppendJsonString(result, request_id);
-  result += ",\"ok\":true,\"result\":{\"step\":";
-  AppendJsonString(result, kCurrentFirstHeirRelationshipStepV1);
-  result += ",\"accepted\":true,\"private_build\":true,"
-            "\"read_only\":true,\"advertised\":false,\"status\":";
-  AppendJsonString(result, available ? "available" : "unavailable");
-  result += ",\"native_revision\":" + Number(native_revision);
-  result += ",\"subject_source\":\"public_campaign_root_primary_first_heir\","
-            "\"heir_character_id\":" + SignedNumber(heir_character_id);
-  result += ",\"unavailable_reason\":";
-  if (available) {
-    result += "null";
-  } else {
-    AppendJsonString(result, override_unavailable_reason.empty()
-                                 ? CurrentFirstHeirRelationshipFailureKeyV1(
-                                       read.failure)
-                                 : override_unavailable_reason);
-  }
-  result += ",\"bilateral_verified\":";
-  result += available ? "true" : "false";
-  result += ",\"betrothed_character_id\":";
-  if (available && read.relationship.betrothed_character_id > 0)
-    result += SignedNumber(read.relationship.betrothed_character_id);
-  else
-    result += "null";
-  result += ",\"primary_spouse_character_id\":";
-  if (available && read.relationship.primary_spouse_character_id > 0)
-    result += SignedNumber(read.relationship.primary_spouse_character_id);
-  else
-    result += "null";
-  result += ",\"spouse_character_ids\":";
-  if (!available) {
-    result += "null";
-  } else {
-    result += '[';
-    for (std::size_t index = 0;
-         index < read.relationship.spouse_character_ids.size(); ++index) {
-      if (index != 0) result += ',';
-      result += SignedNumber(read.relationship.spouse_character_ids[index]);
-    }
-    result += ']';
-  }
-  result += ",\"betrothal_actionability\":";
-  result += xar::ck3_11906::CurrentFirstHeirBetrothalActionabilityJsonV1(
-      read.betrothal_actionability);
-  result += "}}";
+  auto result = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
+      request_id, native_revision, heir_character_id, read,
+      override_unavailable_reason);
   return crozier ? xar::ck3_12002::RenderQueryBuildIdentity(std::move(result))
                  : result;
 }
@@ -9565,6 +9501,7 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   xar::bridge::MarriageCandidateAllianceProjectionEnvironmentV1 option_environment{};
   xar::bridge::MarriageNativeOutcomeClassifierEnvironmentV1 outcome_environment{};
   bool frame_observed = false;
+  xar::ck3_12002::family_obligations_lineage::Bindings lineage12002{};
 };
 
 bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
@@ -9609,7 +9546,7 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
           query.family12002, query.heir_character_id);
       query.read.betrothal_actionability =
           xar::ck3_12002::ReadCurrentFirstHeirBetrothalActionabilityV1(
-              query.family12002, query.read);
+              query.family12002, query.read, &query.lineage12002);
     }
     xar::game::Snapshot after{};
     query.frame_observed = xar::game::ReadSnapshot(*query.adapter12002, after) &&
@@ -9641,6 +9578,7 @@ void BindFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query,
   if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     const auto sha = game.descriptor().executable_sha256;
     query.family12002 = xar::ck3_12004::BindFamilyImage(base, sha);
+    query.lineage12002 = xar::ck3_12004::BindFamilyLineageImage(base, sha);
     query.subject_bindings12002 = xar::ck3_12004::BindFamilySubjectImage(base, sha);
     query.projection12002 = xar::ck3_12004::BindFamilyProjectionImage(base, sha);
     query.outbound_bindings12002 = xar::ck3_12004::BindFamilyOutboundImage(base, sha);
@@ -9648,6 +9586,8 @@ void BindFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query,
         xar::game::BindCk3_12004AdapterImage(base, sha));
   } else {
     query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+    query.lineage12002 = xar::ck3_12002::family_obligations_lineage::BindImage(
+        base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
     query.subject_bindings12002 = xar::ck3_12002::BindFamilySubjectImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
     query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
     query.outbound_bindings12002 = xar::ck3_12002::BindFamilyOutboundImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));

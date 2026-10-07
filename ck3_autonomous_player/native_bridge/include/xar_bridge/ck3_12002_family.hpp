@@ -9,6 +9,8 @@
 namespace xar::ck3_12002 {
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 
+namespace family_obligations_lineage { struct Bindings; }
+
 // The old namespace's value types are retained for the private wire serializer.
 // Every native function and object layout below belongs to 1.20.0.2.
 using CurrentFirstHeirRelationshipReadV1 =
@@ -82,7 +84,8 @@ CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
     const FamilyBindings &, std::int32_t heir_character_id) noexcept;
 CurrentFirstHeirBetrothalActionabilityReadV1
 ReadCurrentFirstHeirBetrothalActionabilityV1(
-    const FamilyBindings &, const CurrentFirstHeirRelationshipReadV1 &) noexcept;
+    const FamilyBindings &, const CurrentFirstHeirRelationshipReadV1 &,
+    const family_obligations_lineage::Bindings *lineage = nullptr) noexcept;
 
 bool ReadFamilyBilateralRelationshipV1(
     const FamilyBindings &, std::int32_t subject_character_id,

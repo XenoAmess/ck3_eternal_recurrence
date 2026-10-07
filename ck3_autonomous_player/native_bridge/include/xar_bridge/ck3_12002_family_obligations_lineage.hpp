@@ -33,6 +33,15 @@ struct Snapshot {
 
 Bindings BindImage(std::uintptr_t base, std::string_view sha) noexcept;
 
+// Reads the detached native offer from already observed finalized selection.
+// The caller owns context/frame lifetime and supplies the actual paired terms.
+bool ReadSelectedPairPreview(
+    const CoreBindings &, const Bindings &, std::int32_t played_character_id,
+    std::int64_t date_raw, std::int32_t subject_character_id,
+    std::int32_t candidate_character_id, bool actual_selected,
+    bool effective_matrilineal_if_accepted, bool complete_can_send,
+    Snapshot &, std::string_view *reason = nullptr) noexcept;
+
 // Reuses the finalized exact marriage context and the native MatchOffer house
 // preview getter. It observes a prospective UI result, never an unborn child,
 // a birth probability, or a realized dynasty continuation reward.

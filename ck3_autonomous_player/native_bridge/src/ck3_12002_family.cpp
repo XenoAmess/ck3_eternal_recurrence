@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_family.hpp"
+#include "xar_bridge/ck3_12002_family_obligations_lineage.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_family_abi.hpp"
@@ -499,7 +500,8 @@ CurrentFirstHeirRelationshipReadV1 ReadCurrentFirstHeirRelationshipV1(
 }
 
 CurrentFirstHeirBetrothalActionabilityReadV1 ReadCurrentFirstHeirBetrothalActionabilityV1(
-    const FamilyBindings &b, const CurrentFirstHeirRelationshipReadV1 &relation) noexcept {
+    const FamilyBindings &b, const CurrentFirstHeirRelationshipReadV1 &relation,
+    const family_obligations_lineage::Bindings *lineage) noexcept {
   CurrentFirstHeirBetrothalActionabilityReadV1 out{};
   CoreSnapshotPrefix before{}, after{};
   if (relation.failure != Failure::none || !Frame(b, before)) return out;
@@ -551,6 +553,30 @@ CurrentFirstHeirBetrothalActionabilityReadV1 ReadCurrentFirstHeirBetrothalAction
     out.adult = finalized;
     out.adult_readback_available = true;
     out.lineality_available = true;
+  }
+  if (b.read_boolean_option != nullptr && b.matrilineal_option != nullptr)
+    out.matrilineal_option_selected =
+        b.read_boolean_option(context, *b.matrilineal_option);
+  if (lineage != nullptr && out.matrilineal_option_selected.has_value() &&
+      out.lineality_available) {
+    family_obligations_lineage::Snapshot preview{};
+    out.native_child_house_preview_available =
+        family_obligations_lineage::ReadSelectedPairPreview(
+            b.context.core, *lineage, before.played_character_id,
+            before.clock.date_raw, out.heir_character_id,
+            out.partner_character_id, *out.matrilineal_option_selected,
+            out.effective_matrilineal_if_accepted, out.complete_can_send,
+            preview, &out.native_child_house_preview_reason);
+    if (out.native_child_house_preview_available) {
+      out.native_selected_parent_character_id =
+          preview.native_selected_parent_character_id;
+      out.native_preview_lineage = {preview.native_preview_lineage.house_id,
+                                   preview.native_preview_lineage.dynasty_id};
+    }
+  } else if (!out.matrilineal_option_selected.has_value()) {
+    out.native_child_house_preview_reason = "native_matrilineal_option_unavailable";
+  } else if (!out.lineality_available) {
+    out.native_child_house_preview_reason = "native_marriage_final_terms_unavailable";
   }
   const auto checked = ReadCurrentFirstHeirRelationshipV1(b, relation.heir_character_id);
   if (!Frame(b, after) || !SameFrame(before, after) || checked.failure != Failure::none ||

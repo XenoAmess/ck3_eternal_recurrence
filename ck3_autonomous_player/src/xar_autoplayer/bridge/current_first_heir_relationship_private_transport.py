@@ -50,6 +50,48 @@ _COST_FIELDS = ("gold_raw", "prestige_raw", "piety_raw", "renown_raw",
                 "treasury_or_gold_raw", "merit_raw", "barter_goods_raw")
 
 
+def _current_child_house_preview(
+    value: object, *, heir: int | None, partner: int | None,
+    selected: bool | None, effective: bool | None, complete: bool | None,
+) -> dict[str, object] | None:
+    """Validate an optional prospective lineage from this finalized pair."""
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise BridgeUnavailableError("current pair child House preview is malformed")
+    status = value.get("status")
+    reason = value.get("reason")
+    fields = ("selected_matrilineal_option", "effective_matrilineal_if_accepted",
+              "complete_can_send", "native_selected_parent_character_id",
+              "house_id", "dynasty_id")
+    if (status not in {"available", "unavailable", "not_applicable"}
+            or not isinstance(reason, str)
+            or (reason != "" if status == "available" else not reason)
+            or any(value.get(key) is not None and (
+                type(value[key]) is not int or not 0 < value[key] < 2**31)
+                   for key in ("subject_character_id", "candidate_character_id"))
+            or value.get("subject_character_id") != heir
+            or value.get("candidate_character_id") != partner
+            or value.get("requested_matrilineal_option") is not False):
+        raise BridgeUnavailableError("current pair child House preview identity changed")
+    if status == "available":
+        if (partner is None or type(selected) is not bool
+                or any(type(value.get(key)) is not bool for key in fields[:3])
+                or value["selected_matrilineal_option"] is not selected
+                or value["effective_matrilineal_if_accepted"] is not effective
+                or value["complete_can_send"] is not complete
+                or type(value.get("native_selected_parent_character_id")) is not int
+                or value["native_selected_parent_character_id"] not in (heir, partner)
+                or any(value.get(key) is not None and (
+                    type(value[key]) is not int or not 0 <= value[key] < 2**31)
+                       for key in fields[4:])):
+            raise BridgeUnavailableError("current pair child House preview values are malformed")
+    elif (any(value.get(key) is not None for key in fields)
+          or (status == "not_applicable" and partner is not None)):
+        raise BridgeUnavailableError("unavailable current pair child House preview is malformed")
+    return dict(value)
+
+
 def _current_pair_actionability(
     value: object, *, actor: int, heir: int | None, partner: int | None,
 ) -> dict[str, object]:
@@ -64,6 +106,8 @@ def _current_pair_actionability(
                 "recipient_acceptance_ready": False,
                 "recipient_ai_accept_raw": None,
                 "recipient_answer_status_raw": None, "generic_costs": None,
+                "matrilineal_option_selected": None,
+                "native_child_house_preview": None,
                 "effective_matrilineal_if_accepted": None,
                 "predicted_outcome_if_accepted": None,
                 **{key: None for key in (*_ADULT_FIELDS,
@@ -112,11 +156,13 @@ def _current_pair_actionability(
     costs = value.get("generic_costs")
     outcome = value.get("predicted_outcome_if_accepted")
     lineality = value.get("effective_matrilineal_if_accepted")
+    selected = value.get("matrilineal_option_selected")
     if ((type(complete) is not bool if sampled else complete is not None)
             or (type(score) is not int or not -2**63 <= score < 2**63
                 or type(answer) is not int or answer not in (0, 1, 2)
                 if acceptance else score is not None or answer is not None)
             or (lineality is not None and type(lineality) is not bool)
+            or (selected is not None and type(selected) is not bool)
             or outcome not in (None, "marriage", "betrothal")
             or (costs is not None and (
                 not isinstance(costs, dict) or costs.get("raw_scale") != 100000
@@ -132,8 +178,11 @@ def _current_pair_actionability(
         raise BridgeUnavailableError("available current pair value is incomplete")
     if status == "not_applicable" and (
             partner is not None or adult or sampled or acceptance or costs is not None
-            or lineality is not None or outcome is not None):
+            or lineality is not None or selected is not None or outcome is not None):
         raise BridgeUnavailableError("inapplicable current pair value is malformed")
+    _current_child_house_preview(
+        value.get("native_child_house_preview"), heir=heir, partner=partner,
+        selected=selected, effective=lineality, complete=complete)
     return dict(value)
 
 

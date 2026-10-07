@@ -95,6 +95,8 @@ def evaluate_current_betrothal_fulfillment(
         "recipient_character_id": value.get("recipient_character_id"),
         "intermediary_character_id": value.get("intermediary_character_id"),
         "generic_costs": deepcopy(costs),
+        "matrilineal_option_selected": value.get("matrilineal_option_selected"),
+        "native_child_house_preview": deepcopy(value.get("native_child_house_preview")),
         "effective_matrilineal_if_accepted": value.get("effective_matrilineal_if_accepted"),
         "predicted_outcome_if_accepted": value.get("predicted_outcome_if_accepted"),
         "resource_proposal": build_current_betrothal_fulfillment_proposal(
@@ -254,6 +256,8 @@ def submit_current_first_heir_betrothal_fulfillment_private(
         "episode_run_id": snapshot["episode_run_id"],
         "source_bridge_pid": pid, "source_bridge_creation_date": creation,
         "prior_betrothal_relationship": deepcopy(relation),
+        # This retains the observed selected option and prospective lineage;
+        # the action option above continues to carry the existing effective value.
         "selected_value_projection": deepcopy(relation["betrothal_actionability"]),
         "resource_proposal": deepcopy(choice["resource_proposal"]),
         "submission_state": "may_have_submitted",

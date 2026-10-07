@@ -64,6 +64,33 @@ bool Read(const Bindings &b, std::int32_t subject, std::int32_t candidate,
   const bool selected = b.family.read_boolean_option(context.bytes.data(),
                                                      *b.family.matrilineal_option);
 
+  Snapshot result{};
+  if (!ReadSelectedPairPreview(b.family.context.core, b,
+          before.played_character_id, before.clock.date_raw, subject, candidate,
+          selected, terms.effective_matrilineal_if_accepted,
+          terms.complete_can_send, result, reason)) return false;
+  result.requested_matrilineal_option = request_matrilineal;
+  CoreSnapshotPrefix after{};
+  if (!Frame(b, after) || after.played_character_id != before.played_character_id ||
+      after.clock.date_raw != before.clock.date_raw)
+    return Fail(reason, "native_child_house_preview_frame_changed");
+  out = result;
+  return true;
+}
+
+bool ReadSelectedPairPreview(
+    const CoreBindings &core, const Bindings &b, std::int32_t played,
+    std::int64_t date_raw, std::int32_t subject, std::int32_t candidate,
+    bool selected, bool effective, bool can_send, Snapshot &out,
+    std::string_view *reason) noexcept {
+  out = {};
+  if (reason != nullptr) *reason = {};
+  if (!b.enabled || b.native_preview_parent == nullptr ||
+      b.native_offer_vtable == 0)
+    return Fail(reason, "native_child_house_preview_binding_unavailable");
+  if (subject == -1 || candidate == -1 || subject == candidate)
+    return Fail(reason, "invalid_marriage_pair");
+
   // The native offer initializer copies these exact secondary IDs at
   // 1373318/1373323 and caches the selected option at 1373C43. The detached
   // offer's +8 is null, selecting the native cached-option branch at 1375418.
@@ -75,26 +102,21 @@ bool Read(const Bindings &b, std::int32_t subject, std::int32_t candidate,
   Store(offer.data(), 0x2C, candidate);
   Store(offer.data(), 0x80, selected);
   void *parent = b.native_preview_parent(offer.data());
-  void *subject_object = ResolveCoreCharacter(b.family.context.core, subject);
-  void *candidate_object = ResolveCoreCharacter(b.family.context.core, candidate);
+  void *subject_object = ResolveCoreCharacter(core, subject);
+  void *candidate_object = ResolveCoreCharacter(core, candidate);
   if (parent == nullptr || (parent != subject_object && parent != candidate_object))
     return Fail(reason, "native_child_house_preview_parent_unavailable");
   Snapshot result{};
-  result.played_character_id = before.played_character_id;
-  result.date_raw = before.clock.date_raw;
+  result.played_character_id = played;
+  result.date_raw = date_raw;
   result.subject_character_id = subject;
   result.candidate_character_id = candidate;
-  result.requested_matrilineal_option = request_matrilineal;
   result.selected_matrilineal_option = selected;
-  result.effective_matrilineal_if_accepted = terms.effective_matrilineal_if_accepted;
-  result.complete_can_send = terms.complete_can_send;
+  result.effective_matrilineal_if_accepted = effective;
+  result.complete_can_send = can_send;
   result.native_selected_parent_character_id = parent == subject_object ? subject : candidate;
   if (!family_value::ReadCharacterLineage(b.family.values, parent,
                                          result.native_preview_lineage, reason)) return false;
-  CoreSnapshotPrefix after{};
-  if (!Frame(b, after) || after.played_character_id != before.played_character_id ||
-      after.clock.date_raw != before.clock.date_raw)
-    return Fail(reason, "native_child_house_preview_frame_changed");
   result.available = true;
   out = result;
   return true;

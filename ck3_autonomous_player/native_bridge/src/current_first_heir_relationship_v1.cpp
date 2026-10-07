@@ -4,6 +4,38 @@
 #include <algorithm>
 
 namespace xar::ck3_11906 {
+namespace {
+void AppendJsonString(std::string &result, std::string_view value) {
+  constexpr char hex[] = "0123456789ABCDEF";
+  result += '"';
+  for (const unsigned char character : value) {
+    if (character == '"' || character == '\\') {
+      result += '\\';
+      result += static_cast<char>(character);
+    } else if (character < 0x20U) {
+      result += "\\u00";
+      result += hex[(character >> 4U) & 0x0FU];
+      result += hex[character & 0x0FU];
+    } else {
+      result += static_cast<char>(character);
+    }
+  }
+  result += '"';
+}
+std::string_view CurrentFirstHeirRelationshipFailureKeyV1(
+    CurrentFirstHeirRelationshipFailureV1 failure) {
+  using Failure = CurrentFirstHeirRelationshipFailureV1;
+  switch (failure) {
+  case Failure::none: return "none";
+  case Failure::frame_changed: return "frame_changed";
+  case Failure::heir_unavailable: return "heir_unavailable";
+  case Failure::relationship_unavailable: return "relationship_unavailable";
+  case Failure::partner_unavailable: return "partner_unavailable";
+  case Failure::bilateral_inconsistent: return "bilateral_inconsistent";
+  }
+  return "unknown";
+}
+} // namespace
 
 bool ValidateCurrentFirstHeirRawRelationshipV1(
     std::int32_t raw_betrothed_character_id,
@@ -129,12 +161,87 @@ std::string CurrentFirstHeirBetrothalActionabilityJsonV1(
   }
   boolean("effective_matrilineal_if_accepted", read.lineality_available,
           read.effective_matrilineal_if_accepted);
+  boolean("matrilineal_option_selected", read.matrilineal_option_selected.has_value(),
+          read.matrilineal_option_selected.value_or(false));
+  json += ",\"native_child_house_preview\":{\"status\":";
+  AppendJsonString(json, not_applicable ? "not_applicable" :
+      read.native_child_house_preview_available ? "available" : "unavailable");
+  json += ",\"reason\":";
+  AppendJsonString(json, not_applicable ? read.unavailable_reason :
+                   read.native_child_house_preview_reason);
+  id("subject_character_id", read.heir_character_id);
+  id("candidate_character_id", read.partner_character_id);
+  json += ",\"requested_matrilineal_option\":false";
+  if (read.native_child_house_preview_available) {
+    boolean("selected_matrilineal_option", true,
+            read.matrilineal_option_selected.value_or(false));
+    boolean("effective_matrilineal_if_accepted", true,
+            read.effective_matrilineal_if_accepted);
+    boolean("complete_can_send", true, read.complete_can_send);
+    id("native_selected_parent_character_id", read.native_selected_parent_character_id);
+    number("house_id", read.native_preview_lineage.house_id >= 0,
+           read.native_preview_lineage.house_id);
+    number("dynasty_id", read.native_preview_lineage.dynasty_id >= 0,
+           read.native_preview_lineage.dynasty_id);
+  }
+  json += '}';
   json += ",\"predicted_outcome_if_accepted\":";
   json += !read.outcome_available ? "null" :
       read.adult.predicted_outcome == bridge::MarriagePredictedOutcomeV1::marriage
           ? "\"marriage\"" : "\"betrothal\"";
   json += '}';
   return json;
+}
+
+std::string CurrentFirstHeirRelationshipResultJsonV1(
+    std::string_view request_id, std::uint64_t native_revision,
+    std::int32_t heir_character_id,
+    const CurrentFirstHeirRelationshipReadV1 &read,
+    std::string_view override_unavailable_reason) {
+  const bool available = override_unavailable_reason.empty() &&
+      read.failure == CurrentFirstHeirRelationshipFailureV1::none;
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, "query-current-first-heir-relationship-v1-private");
+  result += ",\"accepted\":true,\"private_build\":true,"
+            "\"read_only\":true,\"advertised\":false,\"status\":";
+  AppendJsonString(result, available ? "available" : "unavailable");
+  result += ",\"native_revision\":" + std::to_string(native_revision);
+  result += ",\"subject_source\":\"public_campaign_root_primary_first_heir\","
+            "\"heir_character_id\":" + std::to_string(heir_character_id);
+  result += ",\"unavailable_reason\":";
+  if (available) {
+    result += "null";
+  } else {
+    AppendJsonString(result, override_unavailable_reason.empty()
+        ? CurrentFirstHeirRelationshipFailureKeyV1(read.failure)
+        : override_unavailable_reason);
+  }
+  result += ",\"bilateral_verified\":";
+  result += available ? "true" : "false";
+  result += ",\"betrothed_character_id\":";
+  result += available && read.relationship.betrothed_character_id > 0
+      ? std::to_string(read.relationship.betrothed_character_id) : "null";
+  result += ",\"primary_spouse_character_id\":";
+  result += available && read.relationship.primary_spouse_character_id > 0
+      ? std::to_string(read.relationship.primary_spouse_character_id) : "null";
+  result += ",\"spouse_character_ids\":";
+  if (!available) {
+    result += "null";
+  } else {
+    result += '[';
+    for (std::size_t index = 0; index < read.relationship.spouse_character_ids.size(); ++index) {
+      if (index != 0) result += ',';
+      result += std::to_string(read.relationship.spouse_character_ids[index]);
+    }
+    result += ']';
+  }
+  result += ",\"betrothal_actionability\":";
+  result += CurrentFirstHeirBetrothalActionabilityJsonV1(read.betrothal_actionability);
+  result += "}}";
+  return result;
 }
 
 } // namespace xar::ck3_11906
