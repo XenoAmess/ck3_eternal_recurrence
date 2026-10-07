@@ -28,6 +28,13 @@ constexpr std::size_t kGameDataProvinceCountOffset = 0x14C;
 constexpr std::int32_t kMaximumComponentSlots = 4'194'304;
 constexpr std::int32_t kMaximumProvinceCount = 1'048'576;
 
+void RecordFailureStage(const TitleMapNavigationAccessV1 &access,
+                        std::string_view stage) noexcept {
+  if (access.failure_stage != nullptr) {
+    *access.failure_stage = stage;
+  }
+}
+
 struct NativeMsvcStringV1 {
   union Storage {
     std::array<char, 16> inline_bytes;
@@ -380,8 +387,12 @@ game::ResolveLandedTitleMapAnchorResultV1 ResolveLandedTitleMapAnchorV1(
     if (!IsCanonicalLandedTitleKeyV1(request.title_key)) {
       return Result::internal_error;
     }
-    if (!access.capture_frame(access.context, binding) ||
+    const bool binding_captured = access.capture_frame(access.context, binding);
+    if (!binding_captured ||
         binding.snapshot_revision != request.expected_snapshot_revision) {
+      RecordFailureStage(access, binding_captured
+                                    ? "title_frame_start_revision_changed"
+                                    : "title_frame_start_capture_failed");
       return Result::state_changed;
     }
     if (!binding.paused) {
@@ -411,6 +422,7 @@ game::ResolveLandedTitleMapAnchorResultV1 ResolveLandedTitleMapAnchorV1(
 
     void *fallback = nullptr;
     if (!ReadSlot(access, environment.landed_title_fallback_slot, fallback)) {
+      RecordFailureStage(access, "title_fallback_read");
       return Result::state_changed;
     }
     if (title == nullptr || title == fallback) {
@@ -479,7 +491,10 @@ game::ResolveLandedTitleMapAnchorResultV1 ResolveLandedTitleMapAnchorV1(
     }
 
     game::TitleMapNavigationFrameV1 ending{};
-    if (!access.capture_frame(access.context, ending) || ending != binding) {
+    const bool ending_captured = access.capture_frame(access.context, ending);
+    if (!ending_captured || ending != binding) {
+      RecordFailureStage(access, ending_captured ? "title_frame_end_changed"
+                                                : "title_frame_end_capture_failed");
       return Result::state_changed;
     }
     output.key = request.title_key;

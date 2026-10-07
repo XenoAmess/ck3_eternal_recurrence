@@ -78,6 +78,10 @@ struct TitleMapNavigationAccessV1 {
   ReadTitleMapNavigationMemoryV1 read_memory = nullptr;
   ReadTitleMapNavigationStringV1 read_string = nullptr;
 
+  // Optional fixed branch label for the real R61 state_changed diagnosis.
+  // Observation only: no additional native read or altered command result.
+  std::string_view *failure_stage = nullptr;
+
   // Test-only ABI-independent seams.  Production exact-environment
   // validation rejects environments that opt into these overrides.
   ResolveTitleMapNavigationTitleFixtureV1 resolve_title_fixture = nullptr;
