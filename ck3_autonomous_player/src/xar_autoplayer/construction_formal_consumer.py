@@ -12,6 +12,8 @@ from typing import Mapping
 
 from .environment import write_json_atomic
 from .bridge.declaration_contract import is_native_declaration_step
+from .bridge.nonwar_private_build import private_native_build_identity
+from .construction_economic_outcome_v1 import construction_economic_outcome_v1
 from .lifestyle_formal_consumer import ROOT_QUERY_STEP, same_frame_feudal_peace_scope
 
 
@@ -228,7 +230,10 @@ def plan_construction_private(
                 "selected_step": RECEIPT_STEP,
                 "construction_pending_action": dict(applied),
                 "reason": "cold restore may load an earlier checkpoint; verify construction before using ledger"}}
-        plan = {**plan, "construction_receipt_consumed": dict(applied)}
+        plan = {**plan, "construction_receipt_consumed": dict(applied),
+                "construction_economic_outcome": construction_economic_outcome_v1(
+                    applied, exact_ck3_build=private_native_build_identity(
+                        snapshot).game_version)}
         if (applied.get("completion_status") == "completed"
                 and applied.get("observed_player_monthly_gold_income_raw") is None):
             income_observed, actual_income = same_frame_construction_income(
