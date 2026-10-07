@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "work_package": "m7_crown_authority_actual_cooldown_timing_12004",
-  "status": "RESEARCH_CONSTRUCTION_PREPARED_NOTRUN",
+  "status": "FINITE_ROOT_SCALAR_TIMING_SOURCE_PROPOSAL_NOTRUN",
   "source_base": "14f07ade00e9ad359da3aa6af3642592ede3f48d",
   "target": {
     "product_version": "1.20.0.4",
@@ -38,9 +38,37 @@
   },
   "cache_first_source_request": {
     "executor": "Root central native mapper",
-    "current_phase": "NAMED_SOURCE_LOCATOR_CACHE_HANDOFF",
+    "current_phase": "FINITE_ROOT_ONLY_PAIRED_SOURCE_WINDOW_PROPOSAL",
     "runnable_capture_rows": [],
     "new_native_bytes_authorized_by_this_file": 0,
+    "root_only_proposed_manifest": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/ROOT-FINITE-SCALAR-TIMING-MANIFEST.json",
+    "root_only_proposed_manifest_rows": 3,
+    "root_only_proposed_physical_cost_before_cache": {"old3_bytes": 381, "actual4_bytes": 381, "total_bytes": 762, "exact_reads": 6},
+    "cached_current_attachment_metadata": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/m7-crown-cooldown-12004/CACHED-CANDIDATE-ATTACHMENTS.json",
+    "direct_remaining_getter": {
+      "name": "GetVarTimeRemaining",
+      "date_consumer": "GetCurrentDateWithDiff",
+      "actual_game_source": "Z:/ck3_mod_rewrite/Crusader Kings III/game/localization/english/laws_l_english.yml:55",
+      "scalar_key": "crown_authority_cooldown",
+      "registered_callback_rva_held": null,
+      "clock_return_units_proved": false,
+      "local_helper_proposal_is_this_named_getter_address": false
+    },
+    "source_reference_provenance": {
+      "version": "1.20.0.2",
+      "path": "Z:/gb0/research/conversion_outcome12002_state_abi.json",
+      "writer_rva": "0x3728420",
+      "writer_complete_cached_bytes": 398,
+      "row_type_rip_site": "0x3728440",
+      "row_type_rip_bytes": "48 8D 05 D9 4D D6 00",
+      "row_type_rip_target": "0x448D220",
+      "row_serializer": "0x888870",
+      "serializer_variable_identifier_table_call_site": "0x888885",
+      "serializer_variable_identifier_table_call_bytes": "E8 76 1F 70 03",
+      "serializer_variable_identifier_table_call_target": "0x3F8A800",
+      "reference_is_old3_or_actual4_byte_proof": false,
+      "reference_may_be_registered_as_old3_raw_cache": false
+    },
     "reused_actual4": {
       "variable_context_rva": "0x370EAF0",
       "variable_identifier_table_rva": "0x3F8A7E0",
@@ -72,8 +100,9 @@
     "before_any_follow_up_capture": [
       "Locate concrete source sites in existing named cache/central inventory.",
       "Reuse all held operand bytes and shared exact4 bindings.",
-      "Fill exact actual RVA/count/retained-byte locators for remaining consumed sites; missing addresses are a locator request, not an executable manifest.",
-      "Submit that finite manifest to Root; this file does not authorize native capture."
+      "Use the declared exact old3/current4 windows and their cached ordinal/local-boundary candidate evidence only after Root adopts the proposal.",
+      "Verify the actual old3 source bytes against the explicitly separate .2 source reference before transferring any timed-row meaning.",
+      "Submit any further unit/date-conversion window from actual returned source locations to Root; this file does not authorize native capture."
     ],
     "excluded_research": ["full image/EXE scan or hash", "shared identifier/context/collection recapture", "FlagSet-to-scalar timing inference", "20-year inferred current expiry", "new character/seed/game", "government policy expansion"]
   },
