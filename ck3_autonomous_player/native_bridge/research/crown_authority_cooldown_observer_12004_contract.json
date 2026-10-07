@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "work_package": "m7_crown_authority_actual_cooldown_timing_12004",
+  "status": "RESEARCH_CONSTRUCTION_PREPARED_NOTRUN",
+  "source_base": "14f07ade00e9ad359da3aa6af3642592ede3f48d",
+  "target": {
+    "product_version": "1.20.0.4",
+    "steam_build_id": "25734779",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "actor_character_id": 29829,
+    "episode_id": "native-29829-2bc2d599f7f9",
+    "root_supplied_current_frame": "H9638",
+    "root_supplied_date_raw": 53288448,
+    "root_supplied_runtime": "runtime19",
+    "root_supplied_save": "saved6005",
+    "frame_read_by_this_worker": false
+  },
+  "existing_route": {
+    "step": "query-realm-law-final-terms-v1-private",
+    "wire_schema": "realm-law-final-terms-private-read-v1",
+    "additional_top_level_field": "crown_authority_cooldown",
+    "new_mcp_capability": false,
+    "action_authority": "existing FinalCanEnact",
+    "same_actor_date_native_revision_capture": true
+  },
+  "native_input": {
+    "fixed_scalar_variable_key": "crown_authority_cooldown",
+    "authored_source": "Crusader Kings III/game/common/laws/00_realm_laws.txt",
+    "authored_duration_is_actual_remaining": false,
+    "existing_observations_reused": [
+      "govtSummary",
+      "active crown and succession laws",
+      "realm-law candidate collection",
+      "final native legality/reason/all ten costs",
+      "four succession value profiles",
+      "current per-held-title first heirs"
+    ]
+  },
+  "cache_first_source_request": {
+    "executor": "Root central native mapper",
+    "current_phase": "NAMED_SOURCE_LOCATOR_CACHE_HANDOFF",
+    "runnable_capture_rows": [],
+    "new_native_bytes_authorized_by_this_file": 0,
+    "reused_actual4": {
+      "variable_context_rva": "0x370EAF0",
+      "variable_identifier_table_rva": "0x3F8A7E0",
+      "variable_identifier_lookup_rva": "0x3F8A660",
+      "variable_identifier_name_rva": "0x3F8A6D0",
+      "scalar_layout_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/marriage-family/actual4-break-penalty/context-map-no-pdata/FAMILY-MAP.json",
+      "actual_member_sites": ["0x37274A0", "0x37274A4", "0x37274A8", "0x37274B4"],
+      "proven_roles": ["context rows+0x10", "context count+0x1C", "row stride0x20", "row identifier DWORD+0x08"],
+      "existing_owner_actual_capture_bytes": 15,
+      "this_worker_capture_bytes": 0
+    },
+    "historical_named_locators_only": {
+      "product_version": "1.19.0.6",
+      "source": "ck3_autonomous_player/native_bridge/src/scoped_character_variable_monitor_v1.cpp",
+      "setter_rva": "0x3346BE0",
+      "setter_source_prefix": "48 89 5C 24 20 56 48 83 EC 40 4C 63 51 14",
+      "setter_abi": "uintptr_t(void* container, int32 key, const void* value, int32 duration)",
+      "monitor_member_locator": "ReadSignature row+0x0C expiration_raw",
+      "actual4_offset_or_unit_proof": false
+    },
+    "required_source_roles": [
+      {"id": "scalar_set_variable_caller", "need": "Concrete actual set_variable execution selects this Character scalar context and calls the timed scalar setter; do not substitute a flag caller.", "max_new_actual_bytes": 64, "max_exact_reads": 1},
+      {"id": "scalar_timed_writer", "need": "Consumed native expiry/type widths, duration-to-clock arithmetic and permanent sentinel writes.", "max_new_actual_bytes": 256, "max_exact_reads": 2},
+      {"id": "scalar_expiry_update", "need": "Actual scalar current clock, expiry comparison/removal and any normalization relationship used by the returned remaining value.", "max_new_actual_bytes": 256, "max_exact_reads": 1},
+      {"id": "scalar_native_clock_cadence", "need": "Named native updater caller and its calendar cadence/daily ordering sufficient to derive the real retry date from the current paused frame.", "max_new_actual_bytes": 128, "max_exact_reads": 1},
+      {"id": "scalar_value_type", "need": "Consumed raw scalar type role if not already held; an unrelated same-offset type is insufficient.", "max_new_actual_bytes": 64, "max_exact_reads": 1}
+    ],
+    "follow_up_manifest_physical_ceiling": {"actual_bytes": 768, "exact_reads": 6},
+    "before_any_follow_up_capture": [
+      "Locate concrete source sites in existing named cache/central inventory.",
+      "Reuse all held operand bytes and shared exact4 bindings.",
+      "Fill exact actual RVA/count/retained-byte locators for remaining consumed sites; missing addresses are a locator request, not an executable manifest.",
+      "Submit that finite manifest to Root; this file does not authorize native capture."
+    ],
+    "excluded_research": ["full image/EXE scan or hash", "shared identifier/context/collection recapture", "FlagSet-to-scalar timing inference", "20-year inferred current expiry", "new character/seed/game", "government policy expansion"]
+  },
+  "same_query_value_contract": {
+    "status_values": ["available", "read_failed"],
+    "fields": ["status", "present", "timed", "scalar_type_raw", "expiry_raw", "current_clock_raw", "remaining_raw", "expiry_type", "remaining_unit", "retry_date_raw"],
+    "timing_storage_widths_and_sentinel": "TO_BE_FILLED_FROM_ACTUAL_SCALAR_SOURCE_BEFORE_BINDER_IMPLEMENTATION",
+    "expiry_type_and_unit": "EXACT_ENUM_SELECTED_FROM_ACTUAL_SCALAR_SOURCE_BEFORE_PUBLICATION",
+    "absent": {"status": "available", "present": false, "timed": false, "scalar_type_raw": null, "expiry_raw": null, "current_clock_raw": null, "remaining_raw": 0, "expiry_type": null, "remaining_unit": null, "retry_date_raw": "same captured frame date_raw"},
+    "timed": "Publish actual typed expiry/clock, signed native remaining including zero or negatives, proved unit and usable retry_date_raw; never erase a present row because remaining is zero.",
+    "untimed": "Publish presence, actual native sentinel and typed raw data, timed=false; no invented finite deadline.",
+    "read_failed": "Nullable timing values are read failure; never convert them to absence or remaining zero.",
+    "schedule_requery_does_not_grant_action_permission": true,
+    "presence_only_satisfies_work_package": false
+  },
+  "root_hook_recipe": [
+    {"file": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_realm_law.hpp", "change": "Add owned typed cooldown result to existing RealmLawReadback12002 once actual timing source is closed."},
+    {"file": "ck3_autonomous_player/native_bridge/src/ck3_12002_realm_law.cpp", "change": "Invoke the exact4 observer within existing current Character/frame capture and serialize one top-level cooldown object."},
+    {"file": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_law_paused_private_transport.py", "change": "Extend the strict top-level key set and normalize the actual typed timing object; preserve zero/null and same-frame identity."},
+    {"file": "existing registered realm-law MCP consumer", "change": "Retain that object and schedule a fresh terms query at its observed retry date through the existing plan; fresh FinalCanEnact remains action permission."}
+  ],
+  "new_first_recipe_notrun": {
+    "whole_producer_cases": ["absent", "positive timed", "timed zero", "timed negative", "native untimed sentinel", "read failure"],
+    "producer": "Root new exact4 capture-to-real serializer whole fixture",
+    "consumer": "Root sole registered MCP law consumer on those new whole-producer wires",
+    "production_acceptance": "Root current genuine Robert29829 paused same-query result with usable retry timing; no replayed R54/R61 or new seed",
+    "old_suites_to_repeat": 0,
+    "execution": "NOTRUN"
+  },
+  "readiness": {
+    "research": true,
+    "native_timing_source_closed": false,
+    "bound_observer_authored": false,
+    "static_ready": false,
+    "fixture_live": false,
+    "production_live_primitive": false,
+    "production_live_loop": false,
+    "complete": false,
+    "remaining": "Named scalar timeout/type/clock/cadence source -> finite central capture if cache misses -> real exact4 bound observer -> same-MCP FIRST -> current paused timing and scheduled retry."
+  },
+  "worker_execution_counts": {"tests": 0, "imports": 0, "builds": 0, "sdk": 0, "game_queries": 0, "save_reads": 0, "exe_reads": 0, "hashes": 0, "new_capabilities": 0, "old_qualified_suite_reruns": 0}
+}
