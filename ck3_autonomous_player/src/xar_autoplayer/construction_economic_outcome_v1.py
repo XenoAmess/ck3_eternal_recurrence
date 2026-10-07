@@ -9,7 +9,10 @@ from __future__ import annotations
 from collections.abc import Mapping
 from copy import deepcopy
 
-from .bridge.construction_monthly_budget_v1 import project_construction_monthly_budget_v1
+from .bridge.construction_monthly_budget_v1 import (
+    project_construction_monthly_budget_v1,
+    query_construction_monthly_budget_private_v1,
+)
 from .bridge.version_identity import require_exact_native_build
 from .bridge.war_cash_private_transport_v1 import _monthly_flow
 
@@ -262,4 +265,37 @@ def completed_construction_cash_fields_v1(
         "receipt": receipt,
         "construction_economic_outcome": construction_economic_outcome_v1(
             receipt, exact_ck3_build=exact_ck3_build),
+    }
+
+
+def query_construction_cash_outcome_private_v1(
+    driver: object, *, expected_revision: int,
+    material_receipt: Mapping[str, object], reserve_gold_raw: int,
+    existing_commitment_gold_raw: int, horizon_months: int,
+) -> dict[str, object]:
+    """Read cash once for both material outcome and the current cash decision.
+
+    Root supplies the existing native material receipt and its original pre
+    packet. The current projection quotes zero new construction spend because
+    any verified building debit is already in the observed treasury. Missing
+    interval baseline does not erase the independent current-state scenarios.
+    """
+    budget = query_construction_monthly_budget_private_v1(
+        driver, expected_revision=expected_revision,
+        construction_gold_cost_raw=0, reserve_gold_raw=reserve_gold_raw,
+        existing_commitment_gold_raw=existing_commitment_gold_raw,
+        horizon_months=horizon_months,
+    )
+    observed = completed_construction_cash_fields_v1(
+        material_receipt, budget["source_cash_resources"],
+        exact_ck3_build=budget["game_version"],
+    )
+    return {
+        "schema": "xar.ck3.construction-cash-outcome-query.v1",
+        "read_only": True, "source": budget["source"],
+        "current_cash_scenarios": budget,
+        "material_receipt": observed["receipt"],
+        "construction_economic_outcome": observed["construction_economic_outcome"],
+        "new_construction_spend_projected_raw": 0,
+        "formal_action_ready": False,
     }

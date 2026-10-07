@@ -415,3 +415,62 @@ cannot be substituted for an actual cash-v2 rate reading. The existing
 classifier keeps the observed monthly NET difference separate from an
 attributed building benefit. No new cash-outcome rule or test replay is
 needed merely to record this source closure.
+
+## Unique mode3 entrance and a finite same-cash outcome query
+
+The next authorized research entrance is only the held actual
+246CBEE→28662F0 edge with RCX=`holdingF0+28`, EDX=3. The closed 1006-byte
+callback is retained without another review. A nonrecursive named-range
+lookup in the central mapper's five existing cache directories found no
+old/actual cache covering this new entry, with zero payload reads. Existing
+runtime rows bound the paired entry interval to old `[2866310,286659A)` and
+actual `[28662F0,286657A)`, each 650 bytes. The unexecuted proposal is
+`PROVINCE-CONTEXT-MODE3-PROPOSED-MANIFEST.json` under the same external
+economy-yield directory, capped at 1300 fresh bytes and two Root-central
+reads. No whole-function/return or income contribution is asserted before
+that actual capture. No other new callee or caller is included.
+
+The independent financial query uses only the already closed cash input
+tree: exact `.4` gross2BCA940, complete expense2BCB160 with context28BFD80,
+treasury, and the existing normalized cash-v2 NET=gross−complete expenses.
+It does not depend on mode3 semantics or a per-building prediction:
+
+```mermaid
+flowchart LR
+  I[Exact-build gross / complete expenses / treasury native source] --> Q[Existing current-cash-v2 query once]
+  Q --> B[f81 projection / zero new construction cost / explicit policy horizon]
+  Q --> O[b28 material receipt and pre/post aggregate cash observation]
+  R[Existing independent native material receipt / original pre packet] --> O
+  B --> F[Current reserve floor / burn / maximum additional one-off spend]
+  O --> D[Observed gross / expense / trueNET / stock difference]
+  M[Held mode3 call28662F0 / receiverF0+28] -. contribution semantics pending Root capture .-> A[Per-building attributed income remains open]
+```
+
+`query_construction_cash_outcome_private_v1` is a small leaf in the same
+outcome module. It calls the existing f81 budget query exactly once with
+new construction cost0, then passes that projection's **same**
+`source_cash_resources` to the adopted completed-receipt utility/b28
+classifier. The zero is an explicit new-spend projection: an independently
+verified construction debit is already in actual treasury and is not
+deducted again. Caller-provided reserve, commitments and 1–24 months retain
+their current-state assumptions. A missing original financial baseline
+leaves interval attribution unavailable while the current cash floor can
+still support an independent visible decision.
+
+Root's shared adapter can supply the existing
+`plan.construction_receipt_consumed` as `material_receipt` and the current
+public revision, then preserve the returned `material_receipt` through the
+existing ledger writer. Registration uses the already authorized private
+war-cash permission and read-only tool annotation, for example
+`ck3_query_construction_cash_outcome_private_v1`; no new registration or
+driver file is edited here. The leaf performs no construction query,
+native action, budget arithmetic or per-building benefit calculation.
+Source is ready for Root integration; this new query leaf is **NOTRUN** in
+this lane and does not inherit a live-sample claim from the retained 15
+GREEN controlled cases. Its financial inputs and arithmetic reuse those
+qualified consumers instead of retesting them.
+
+Root's supplied current baseline is source14f/runtime19,
+G2H9638/date53288448/saved6005. That is coordination context supplied by
+Root, not a new live observation by this leaf. Root owns all SDK/build/live
+calls, and mod live acceptance retains priority over these source tasks.
