@@ -1,0 +1,199 @@
+{
+  "created_at_utc": "2026-10-07T02:33:52.662558+00:00",
+  "status": "PARTIAL_NOT_GREEN",
+  "cutoff_evidence_utc": "2026-10-07T02:25:53.045489+00:00",
+  "runtime_frozen_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+  "archive": {
+    "path": "FIRST430-PARTIAL.original-json.zip",
+    "bytes": 448762,
+    "sha256": "56e85cbcbd5ecd8a169bc68bc6041ecbb4ac0de914eb666fc553b30403d21f58",
+    "members": 16,
+    "member_bytes": "exact original JSON bytes"
+  },
+  "members": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-root-head-export-20261007-002\\REPORT.json",
+      "archive_member": "source/export-002-REPORT.json",
+      "bytes": 23057,
+      "sha256_original_and_member": "e62c322c4656efebcb8c6edebb7960b68f512901607b40b521592677b28eedce",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "exact frozen source export and production staging",
+      "top_level_status": "ACTUAL_CLEAN_HEAD_EXPORTED_FORMAL_STAGE_BUILT",
+      "top_level_schema": "lyd.root.exact-head-export-build.v1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-actual-sdk-metadata-20261007-001\\RESULT.json",
+      "archive_member": "source/sdk-metadata-RESULT.json",
+      "bytes": 7123,
+      "sha256_original_and_member": "820f8fd01009159d64f158e73d8e9c020b5cc7bf0dd79af00156d543c13492ad",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual official SDK metadata and fresh-source qualification",
+      "top_level_status": "ACTUAL_OFFICIAL_CLIENT_METADATA_AND_FRESH_CODE_INVENTORY",
+      "top_level_schema": null
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\native-profile-with-exit-inventory.json",
+      "archive_member": "binding/native-profile-with-exit-inventory.json",
+      "bytes": 1104,
+      "sha256_original_and_member": "0189ab2c8ec4135b8b007d4a8254cb859ae970e5fe852de75015ca9846e3c404",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "profile bytes bound by actual request 13",
+      "top_level_status": null,
+      "top_level_schema": null
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\baseline-author-001\\RESULT.json",
+      "archive_member": "baseline-author-001/RESULT.json",
+      "bytes": 1040128,
+      "sha256_original_and_member": "73ec2d0a062c05ebe817f13d80b4b8c660c31ccc6186132b9deb3752295d6b5b",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "already completed baseline author result; one original body read",
+      "top_level_status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+      "top_level_schema": "lyd.r17.actual-checkpoint-request-author.grant-numeric.v1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\baseline-author-001\\STATE.json",
+      "archive_member": "baseline-author-001/STATE.json",
+      "bytes": 1317828,
+      "sha256_original_and_member": "77283142284744e70903146fb23e65bc2d0dc794d4f88553668ec6670bf19a38",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "already parsed baseline observations; not a new reader run",
+      "top_level_status": null,
+      "top_level_schema": "lyd.i3b.checkpoint-observations.v1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\baseline-author-001\\TYPED-PROTECTION.json",
+      "archive_member": "baseline-author-001/TYPED-PROTECTION.json",
+      "bytes": 966755,
+      "sha256_original_and_member": "a22d3c1067acbc6c3529db5a196c004ac8c3591c9991aceb09ad048f747b23aa",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "already parsed typed protection with 87 checks",
+      "top_level_status": null,
+      "top_level_schema": "lyd.actual-i3b-checkpoint-typed-protection.v2"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\initial0240-political-control-002\\REPORT.json",
+      "archive_member": "initial0240-political-control-002/REPORT.json",
+      "bytes": 26155,
+      "sha256_original_and_member": "86f1c86a25aa8a9b95830408e4f23793e57213b261b098940b7eebb438d8b5fb",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "completed pure seven-title whole political AST control",
+      "top_level_status": "INITIAL_COLD_POLITICAL_CONTROL_MATCHES",
+      "top_level_schema": null
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-request-executions\\013-first430-wait\\RESULT.actual.json",
+      "archive_member": "request-013/RESULT.actual.json",
+      "bytes": 5337,
+      "sha256_original_and_member": "9015ecae425047be51e0a18b7d0dca2bc152dc4a039bf97546dcfb3294f5f00b",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual request/enqueue and official SDK result provenance",
+      "top_level_status": "EXPLICIT_REQUEST_RECORDED",
+      "top_level_schema": null
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-request-executions\\013-first430-wait\\REQUEST.actual.json",
+      "archive_member": "request-013/REQUEST.actual.json",
+      "bytes": 261,
+      "sha256_original_and_member": "e347ff5cdabb55a07a7b1f9ba9369c6eea6d51da01932da3aa8d7131a22e3bed",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "exact action arguments",
+      "top_level_status": null,
+      "top_level_schema": "ck3.lyd.mcp-request.v1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0012-r18-012-first430-reference-query.native-01.json",
+      "archive_member": "sdk-012/0012-r18-012-first430-reference-query.native-01.json",
+      "bytes": 16451,
+      "sha256_original_and_member": "31686f6338e51fb1c848d00cef240eaca505864642085422e0e865a46dd54189",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual event identity and option context before action",
+      "top_level_status": "native_event_query_verified",
+      "top_level_schema": "ck3.native-profile-receipt.v1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0012-r18-012-first430-reference-query.sdk-result.json",
+      "archive_member": "sdk-012/0012-r18-012-first430-reference-query.sdk-result.json",
+      "bytes": 35549,
+      "sha256_original_and_member": "7d11dbb93f16fb62340a18033342ba209f1388eafb13450d6683079399d5f793",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "official SDK query result",
+      "top_level_status": null,
+      "top_level_schema": null
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0013-r18-013-first430-wait.native-01.json",
+      "archive_member": "sdk-013/0013-r18-013-first430-wait.native-01.json",
+      "bytes": 380647,
+      "sha256_original_and_member": "50ebcbfacd880194e643366ac11b4b2486befe5933260f5d5744459ed7792132",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "actual event selection and native before/after postcondition",
+      "top_level_status": "native_gameplay_postcondition_verified",
+      "top_level_schema": "ck3.native-profile-receipt.v1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\mcp-client-001\\0013-r18-013-first430-wait.sdk-result.json",
+      "archive_member": "sdk-013/0013-r18-013-first430-wait.sdk-result.json",
+      "bytes": 803075,
+      "sha256_original_and_member": "ed0d165da054deb40aa5ea15244272f7593ec9958ab50d10092a535c2342e9d5",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "official SDK action result",
+      "top_level_status": null,
+      "top_level_schema": null
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-preflight-001\\RESULT.json",
+      "archive_member": "initial-attempts/root-preflight-001-RESULT.json",
+      "bytes": 1305,
+      "sha256_original_and_member": "660dc766c81be41f468ef445f94811aae4bdf562f1fb01c9fa71a6f746a1bc1a",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "original pre-game path-identity RED",
+      "top_level_status": "RED",
+      "top_level_schema": "lyd.r18.root-launch-profile-helper.v1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-preflight-002\\RESULT.json",
+      "archive_member": "initial-attempts/root-preflight-002-RESULT.json",
+      "bytes": 664,
+      "sha256_original_and_member": "5ee76bcc3171f7e5418a3c7064bb6507b50fde65c9b49bb852c9790d55aa5ed2",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "subsequent preflight-only completion; not game acceptance",
+      "top_level_status": "ACTUAL_NEW_FORMAL_PREFLIGHT_ONLY_NO_GAME",
+      "top_level_schema": "lyd.r18.root-launch-profile-helper.v1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-018\\root-profile-request-001\\RESULT.json",
+      "archive_member": "initial-attempts/root-profile-request-001-RESULT.json",
+      "bytes": 1231,
+      "sha256_original_and_member": "7721d0d913dced5803763a1c110af35dd3a98fb1269a1d791f5120ad06c559ed",
+      "frozen_runtime_head": "dbaf5f8db2067419838b814e278d962f428dc33c",
+      "role": "original foreground-condition RED before profile freeze",
+      "top_level_status": "RED",
+      "top_level_schema": "lyd.r18.root-launch-profile-helper.v1"
+    }
+  ],
+  "not_archived": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r18-root-head-export-20261007-001",
+      "reason": "no direct JSON body found at the supplied location; original stdout remains in external tool history per ROOT; no content or rating inferred"
+    }
+  ],
+  "partial_scope": {
+    "normal_exit": "UNVALIDATED",
+    "formal": null,
+    "new_T": null,
+    "C3": null,
+    "I4": null,
+    "whole_business": "NOT_GREEN"
+  },
+  "authoring_actions": {
+    "save_body_reads": 0,
+    "binary_reads": 0,
+    "SDK_calls": 0,
+    "game_calls": 0,
+    "process_mutations": 0,
+    "main_mutations": 0,
+    "retests": 0,
+    "CI_polls": 0
+  }
+}
