@@ -9,8 +9,12 @@ if(BUILD_TESTING)
     PRIVATE include src research)
   target_compile_features(ck3_12004_prisoner_keeper_opinion_whole_first
     PRIVATE cxx_std_20)
+  target_sources(ck3_12004_prisoner_keeper_opinion_whole_first PRIVATE
+    $<TARGET_OBJECTS:xar_ck3_bridge>)
+  get_target_property(_keeper_bridge_link_libraries xar_ck3_bridge LINK_LIBRARIES)
   target_link_libraries(ck3_12004_prisoner_keeper_opinion_whole_first
-    PRIVATE xar_ck3_12002_runtime)
+    PRIVATE xar_ck3_12002_runtime xar_bridge_protocol bcrypt
+    ${_keeper_bridge_link_libraries})
   if(MSVC)
     target_compile_options(ck3_12004_prisoner_keeper_opinion_whole_first PRIVATE
       /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)

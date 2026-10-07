@@ -18805,11 +18805,15 @@ void RunConnectedSession(
                 if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
                   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
                   query.family12002 = xar::ck3_12004::BindFamilyImage(base, game.descriptor().executable_sha256);
+                  query.lineage12002 = xar::ck3_12004::BindFamilyLineageImage(
+                      base, game.descriptor().executable_sha256);
                   query.adapter12002 = xar::game::CreateCk3_12004AdapterFromBindings(
                       xar::game::BindCk3_12004AdapterImage(base, game.descriptor().executable_sha256));
                 } else if (xar::game::IsReviewedCrozierAdapter(game)) {
                   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
                   query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+                  query.lineage12002 = xar::ck3_12002::family_obligations_lineage::BindImage(
+                      base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
                   query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
                       xar::game::BindCk3_12002AdapterImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor())));
                 } else {

@@ -9368,6 +9368,7 @@ include(cmake/campaign_root_legitimacy_12004_first.cmake)
 include(cmake/prisoner_keeper_opinion_12004.cmake)
 include(cmake/current_unit_new_date_schedule_whole_12004.cmake)
 include(cmake/first_heir_scorer_age_12004.cmake)
+include(cmake/current_betrothal_prospective_lineage_12004.cmake)
 
 if(TARGET xar_ck3_12002_runtime)
   target_sources(xar_ck3_12002_runtime PRIVATE

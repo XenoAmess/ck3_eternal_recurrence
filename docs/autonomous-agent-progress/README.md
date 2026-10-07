@@ -1,5 +1,13 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-07 23:32:27 CST latest: Runtime26b offline GREEN; SDK exited only
+
+既有MCP迁移accepted保持。[Runtime26 canonical](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix26/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json) 实际713owners GREEN，新四native／三有效consumer GREEN仅offline，26未部署；ADL／keeper13符号link／commander CLI harness原RED保留。最新用户禁止本机CK3操作，Root仅exit_client026／SDK64153正常exit0，未关闭或控制Game／未R75／新增日0。**H9658/date53288472/saved6006、G2 5/8、NW2 2/4、natural0/M4false**不变；日报／周报仍rolling、尚未午夜收口。完整结果与边界见[Oct7日报](daily/2026-10-07.md)、[W41周报](weekly/2026-W41.md)与[live-repair专题](../ck3-native-ai/actual4-restored-tools-live-repairs-2026-10-07.md)。
+
+### 2026-10-07 latest: migration accepted; one exact native day saved
+
+既有已启用MCP已完成1.20.0.4迁移并获[Root正式验收](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9638-startup24crestore01/operator/ROOT-R74-EXISTING-MCP-MIGRATION-ACCEPTED.json)。随后R74/024实际53288448→53288472、恰好1day／overshoot0／paused，025普通SAVE materialized savedhistory9658，累计 **saved6006**，仍原Robert29829／episode。**G2 5/8、NW2 2/4、natural0、M4false**不变；Game仍Runtime24c／SDK24d minimized，R75尚未live，source26编译/FIRST pending不冒live。完整事实与失败历史见[Oct7滚动日报](daily/2026-10-07.md)、[W41周报](weekly/2026-W41.md)及[迁移／修复专题](../ck3-native-ai/actual4-restored-tools-live-repairs-2026-10-07.md)。Root acceptance＋26hooks已ordinary FF push **0a74c2cd63840680c190f51951bb20d99aaced00 GREEN／0merge**，本轮文字增量待统一发布。
+
 
 ### 2026-10-06 late update: actual Army query recovered
 
