@@ -1,0 +1,127 @@
+{
+  "schema": "lyd.r19.baseline0508.archival-facts.v1",
+  "cutoff_utc": "2026-10-07T05:08:00Z",
+  "frozen_native_mod_export_head": "465595b67efa8f72dfc97bc0de218302c75e3bfd",
+  "documentation_base_head": "52094f0133e59bd643de46258cbc14c40dc93afb",
+  "loaded_python_source": "465 base plus explicit late-attach overlay; prior permanent repair report is authoritative",
+  "author001": {
+    "status": "RED_PRESERVED",
+    "utc": "2026-10-07T04:59:35.965560+00:00",
+    "save_body_reads": 0,
+    "error_type": "MigrationError",
+    "error": "actual69 manifest/source differs",
+    "source_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/baseline-author-001/RESULT.json",
+      "bytes": 1031282,
+      "sha256": "357168d73afc741713f2feefbc185baddac88e72c7fb88ced48119f5665da36c"
+    }
+  },
+  "source_head_recovery": {
+    "original_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-baseline-migration-head-recovery-sourceonly-20261007-001/INDEX.json",
+      "bytes": 4198,
+      "sha256": "1f1d765305db57f2ca6a773437e6ebb3bc080cbcbf430c05b5e976c0be150e81"
+    },
+    "manifest_changed_keys": [
+      "source_head"
+    ],
+    "business_files_changed": [],
+    "policy_original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-checkpoint-author-sourceonly-20261007-001/source-005/reader/dependencies/business_migration_policy_v2.json",
+      "bytes": 6584,
+      "sha256": "2c2aaac6b8a48e1cb5a3cf933bea6e9805a28b4f1545d3814397013387ae5c20"
+    },
+    "author_original": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-checkpoint-author-sourceonly-20261007-001/source-005/author_actual_checkpoint.py",
+      "bytes": 41115,
+      "sha256": "900a0351cc107d10d12e60e83fe035b0d7f2e11c9042b1c61b9bfb8581f5dcf5"
+    },
+    "checkpoint_source_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-checkpoint-author-sourceonly-20261007-002/INDEX.json",
+      "bytes": 27066,
+      "sha256": "8b0fd3e326edf8696100e1605ee2f8ba1e5523fb2c2ad76db8cdfee1755eced8"
+    },
+    "future_formal_capture_source_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-formal-capture-root-sourceonly-20261007-002/INDEX.json",
+      "bytes": 2538,
+      "sha256": "9736fed8b8af5136e682cb70dadc812334434fd813f5eb384ef7abfab18965f0"
+    },
+    "source_only_at_preparation": true
+  },
+  "author002": {
+    "status": "ACTUAL_COMPACT_NATIVE_SAVED_OBSERVATIONS_JOINED",
+    "utc": "2026-10-07T05:07:04.593836+00:00",
+    "save_body_reads": 1,
+    "game_calls": 0,
+    "actual_pass": null,
+    "formal_mandate_credit": null,
+    "original_execution_exit_code": 0,
+    "frame_binding": {
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53144712,
+      "game_pid": 19980,
+      "connection_generation": 1,
+      "played_character_id": 31254,
+      "snapshot_id": "native:2"
+    },
+    "G2_status": "BOUND_COMPLETE_NATIVE_OBSERVATION",
+    "G3_status": "BOUND_NATIVE_HEADLESS_OBSERVATION",
+    "strict_formal_reader_executed": false
+  },
+  "typed_protection": {
+    "check_count": 87,
+    "true_count": 87,
+    "failure_count": 0,
+    "original_identity": {
+      "actor_id": 31254,
+      "faith_id": 107,
+      "main_rite_id": 169,
+      "pid": 19980,
+      "session_id": "172caf27cc8b44549ea94ed2f306cfe0",
+      "revision": 2,
+      "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-019\\userdir\\save games\\xar_checkpoint.ck3"
+    },
+    "protection_checks_match": true,
+    "actual_pass": null,
+    "formal_mandate_credit": null
+  },
+  "checkpoint_descriptor_only": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-019/checkpoints/baseline-original0240/checkpoint.ck3",
+    "bytes": 91669783,
+    "sha256": "8f05670973c3b4084259816ffcdc103c59cdc0765b5ca10696673069289401c8"
+  },
+  "prior_sources_reused": {
+    "source_export_report": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-head-export-20261007-001/REPORT.json",
+      "bytes": 23057,
+      "sha256": "46022befec74b62cdc47d9ed13f525340d88a4cfb72ab2b0cd5678d456440fcf"
+    },
+    "compiled_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-root-clean-native-build-20261007-001/RESULT.json",
+      "bytes": 1007154,
+      "sha256": "d22dce6903eb6fb9548c2b906bdb7f543f504f132c2f59b803836ed9db546b5b"
+    },
+    "metadata_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r19-actual-sdk-metadata-20261007-001/RESULT.json",
+      "bytes": 7123,
+      "sha256": "b21e0efc80ea6cabfd6bedaa40475f04c16b030f9d1159aa29b15e676535b473"
+    }
+  },
+  "whole_mod_status": "NOT_GREEN",
+  "formal_new_T_C3_I4_credit": null,
+  "normal_exit": "UNVALIDATED_AT_CUTOFF",
+  "archive": {
+    "path": "docs/li-yu-dao/acceptance/2026-10-07-r0019-465595b-baseline-0508/raw-evidence.zip",
+    "bytes": 685152,
+    "sha256": "1f23b0d1f4467bc6398e78334c2aa3c10bc700ad64b8d97266d0afc4d857962c",
+    "original_file_count": 49
+  },
+  "documentation_author_actions": {
+    "checkpoint_body_reads": 0,
+    "sdk_game_process_bus_actions": 0,
+    "ci_queries": 0,
+    "tests_builds_rerun": 0,
+    "main_worktree_writes": 0
+  }
+}
