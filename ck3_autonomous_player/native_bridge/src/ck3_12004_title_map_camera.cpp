@@ -17,6 +17,13 @@ constexpr std::size_t kIngameIdlerObjectOffset = 0x10;
 constexpr std::size_t kIngameIdlerHandlerOffset = 0x88;
 constexpr std::int32_t kMaximumCameraBuckets = 4'096;
 
+void RecordFailureStage(const TitleMapNavigationCameraAccessV1 &access,
+                        std::string_view stage) noexcept {
+  if (access.title.failure_stage != nullptr) {
+    *access.title.failure_stage = stage;
+  }
+}
+
 bool GuardedDirectRead(const void *address, void *output,
                        std::size_t size) noexcept {
   if (address == nullptr || output == nullptr || size == 0) {
@@ -709,6 +716,7 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
     return command.status;
   }
   try {
+    RecordFailureStage(access, {});
     if ((command.dispatched && !command.initialized) ||
         (!command.initialized &&
          (command.native_handler_identity != nullptr ||
@@ -731,6 +739,9 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
     }
     if (command.initialized &&
         (binding != command.binding || title != command.title)) {
+      RecordFailureStage(access, binding != command.binding
+                                    ? "title_binding_changed"
+                                    : "title_anchor_changed");
       command.status = Status::state_changed;
       return command.status;
     }
@@ -745,6 +756,9 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
     if (command.initialized &&
         (handler != command.native_handler_identity ||
          camera != command.native_camera_identity)) {
+      RecordFailureStage(access, handler != command.native_handler_identity
+                                    ? "handler_identity_changed"
+                                    : "camera_identity_changed");
       command.status = Status::state_changed;
       return command.status;
     }
@@ -761,6 +775,10 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
         BuildCameraPlan(camera_environment, access, handler, camera,
                         title.native_title, seed, plan);
     if (plan_result != BuildCameraPlanResultV1::ready) {
+      if (command.initialized &&
+          plan_result != BuildCameraPlanResultV1::not_centerable) {
+        RecordFailureStage(access, "camera_plan_unavailable_after_initialization");
+      }
       command.status =
           plan_result == BuildCameraPlanResultV1::not_centerable
               ? Status::title_not_centerable
@@ -769,6 +787,7 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
       return command.status;
     }
     if (command.initialized && !SamePlan(FrozenPlan(command), plan)) {
+      RecordFailureStage(access, "camera_plan_changed");
       command.status = Status::state_changed;
       return command.status;
     }
@@ -797,6 +816,7 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
         NoTransientPositionShift(before) && target_is_canonical &&
         current_equals_target && zoom_matches) {
       if (!CaptureSameBinding(access, command.binding)) {
+        RecordFailureStage(access, "already_centered_frame_changed");
         command.status = Status::state_changed;
         return command.status;
       }
@@ -849,21 +869,25 @@ game::TitleMapNavigationCommandStatusV1 AdvanceTitleMapNavigationCommandV1(
     // snapping current_state to target_state.
     if (before.target_write_blocked != 0 ||
         !NoTransientPositionShift(before)) {
+      RecordFailureStage(access, "post_dispatch_transient_or_write_blocked");
       command.status = Status::state_changed;
       return command.status;
     }
     const bool target_is_raw =
         SameExpectedPrefix(before.target, plan.raw_expected);
     if (!target_is_raw && !target_is_canonical) {
+      RecordFailureStage(access, "post_dispatch_target_prefix_changed");
       command.status = Status::state_changed;
       return command.status;
     }
     if (before.zoom_index != plan.zoom_index ||
         !SameFloat(before.target[3], plan.expected_zoom)) {
+      RecordFailureStage(access, "post_dispatch_zoom_changed");
       command.status = Status::state_changed;
       return command.status;
     }
     if (!CaptureSameBinding(access, command.binding)) {
+      RecordFailureStage(access, "post_dispatch_frame_changed");
       command.status = Status::state_changed;
       return command.status;
     }
