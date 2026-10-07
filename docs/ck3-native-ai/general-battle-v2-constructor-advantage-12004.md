@@ -77,6 +77,12 @@ R0061/011的17份Knight effectiveness与association契约已由唯一whole-respo
 
 ## Root FIRST与 actual postcondition
 
+2026-10-07 Root已执行既有forecast suite **7/7 GREEN**，复用 [Root source consumer result](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/g2-candidate-first-consumers/ROOT-FIRST-CONSUMER-RESULT.json)。该记录的forecast source为`9d9dcdf79132c002e3122e7dada7733ab2975221`，没有game/SDK调用；本包不重复运行。这支持既有模型回归，但当前真实schema2 constructor branch仍待Root首次消费，不能把七项测试冒充actual4 forecast loop。
+
+当前帧source-only配方与消费者在 [actual-frame FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/g2-combat-forecast-12004/actual-frame-first/ROOT-RECIPE.md)。Root的title12 R63 packet基线为`native:2/public3/native2/raw53288256`、episode`native-29829-2bc2d599f7f9`、connection1，center010未推进帧；这是owner提供的参考事实，本包没有读取whole Snapshot。配方只从Root已持有parser导出的最新frame scalar动态取`expected_revision`，不将3写进请求代码。新realday后必须使用那时的最新scalar与新registered V2响应。
+
+生产source链已有限核对：registered V2→native_driver strict normalize→完整base deepcopy/query cache→strategy既有schema2 envelope→本次forecast hook。Root配方单次消费新返回的normalized base、报告真实signed total/selected IDs及既有admission boolean；模型拒绝也可证明消费者完成，不要求制造admission=true。2618/2619 hypothetical FIRST不批准2606实际接战；一般forecast ingress只有拟移动目标确实有observed defender时才运行，真实2606场景的entry来自同帧route最后一条边，既有cache精确匹配不接收2618输入。
+
 Root FIRST使用本次实际target2618/entry2619的full native V2→strict normalizer→现有同帧cache/envelope→new helper→既有forecast和contact_admission；不拿该输入批准2606。若Root的当前目标已改变，沿原路径取得对应fresh query，保持现有frame/scope匹配规则。源码提交仍待Root在正式runtime采用与首次资格，不据本包source修改授live信用。
 
 指定入口没有14日literal。当前bounded模型默认256trial/120日，普通准入仍为Wilson已结算胜利下界≥0.65、p90 hard loss≤0.25、wipe≤0.05、未决≤0.10。现有防御解围预算保持0.70/0.20/0.02/0.10。正式EU fidelity是独立范围，本包不新增或利用OFF阻断bounded行为。
