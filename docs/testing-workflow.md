@@ -1,5 +1,11 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-08 11:27:25：实际release ACK与后态、horizon与日期分别记账
+
+R76 ordinaryauto013在原paused native2/public3/date53288472实际选submit-player-prisoner-release-v1：61540/options[]/all-offmask0/十fees0/autoaccept，request **prisoner-release-801d779a60204a83a9100c9af8eb0445**只到 **submitted_verification_pending/materialfalse**。14normal-receipt-plan已派发但独立后态未回；因此当前不能授custody改变／release/M6 material／完整M4。参数免费与autoaccept不替代真实后态，Root后续receipt／必要SAVE另记，本记录不补跑query。
+
+同一现场012的one-day contactfree horizon53288472..53288496/no conflicts只是路线查询输出，不是实际推进一天；006重读heir38822/spouse38718婚姻只是历史恢复，不是新结婚。Old saved6006/G2 5/8/NW2 2/4/natural0保持，只有真实日期／SAVE和独立material到达后再更新；3Unit entry/prefix/firstedge的2rows只授当前query primitive，不授futureaction。这些是本次实际阶段区别，不新增门禁或理论验证范围。
+
 ## 2026-10-08 11:05:03：canonical／首次真实暂停恢复／read-only quote分别闭账
 
 Canonical30实际archiveGREEN.164s/native4e06f945、717owners及既有3Native/3consumer GREEN不需旧重测；R76 **02:54:33.158238UTC**第一次[十二检查恢复GREEN](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST76.json)，明确原Robert29829/H9658/date53288472/saved6006/episode native-29829-2bc2d599f7f9/minimized。本次实际startup stackoverflow未复现，之前R75／M7 RED仍保留；binary归档与真实恢复是两个已执行结论。

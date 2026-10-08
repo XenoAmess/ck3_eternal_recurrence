@@ -2,7 +2,13 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Successor30 canonical and actual R76 restoration at11:05:03 CST
+## Successor30 actual queries and pending release at11:27:25 CST
+
+Actual **2026-10-08T11:27:25+08:00**. PublishedCC1/canonical/R76 packageb3169b00, subsequentM4/phase/typed-entry research docs **8f67ddd50de24e8fc227bbf9d4b47eabc2c3ab29**. R76 remains paused/native2/public3/date53288472.006 independently restores old heir38822/spouse38718 marriage, not a new outcome; termination008 war100663329/claim_cb/duration23/score0 available. Army010 own218104048/native67109093/1833of2367/power6224500000, enemy134218098/native167772499/348of536/power1635200000, both100supply/0attr/+20monthly in this frame. New Unit entry/prefix/firstedge returns2rows onlyqueryprimitive, no future action.
+
+012contactfree route2618→2615 vsenemy2606/horizon53288472..53288496/no conflicts is available, not+1day.013ordinaryauto submitsrelease61540/options[]/mask0/tenzero fees/autoaccept; requestprisoner-release-801d779a60204a83a9100c9af8eb0445 **submitted_verification_pending/materialfalse**,014 independent readback pending. No new release/custody/M6/M4 credit. Faith1554B/2calls, holder465B cache/zero newcalls, Lawnamespace1375B/one rawread are SOURCEresearch only; Runtime31 Army/phase/family candidates build/FIRST NOTRUN. H9658/saved6006/date53288472/G2 5/8/NW2 2/4/M4false/natural0 unchanged, Source31/32 do not borrow live qualification. Root-only minimized actual material/save is next; existing enabled migration not reopened or per-branch inflated.
+
+## Historical successor30 canonical and actual R76 restoration at11:05:03 CST
 
 Actual **2026-10-08T11:05:03+08:00**: canonical30 archiveGREEN.164s, native4e06f9454ef9f0e8173d30d8259625d3396929b9/DLL13,065,216B/SHA5FE7812F072DA8AA7E7A613ACE864D3774A3BC9C1A8BDEB0C311B46DE84C2D00,717owners297Bridge/419Runtime/1Protocol,61recompile/656retained. All three Native/three consumer GREENs reused, no old retest. R76 **02:54:33.158238UTC twelve-check GREEN** [paused restore receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST76.json): minimized Game154492/runner154768/job76f7f47d-b428-4f4c-8968-3f94395693ee, originalRobert29829/H9658/date53288472/saved6006/episode native-29829-2bc2d599f7f9. No stackoverflow this launch; prior REDs preserved. Runtime28 never loaded itself; successor30 now has actual restored-frame primitive, without claiming future stock/movement outcomes.
 

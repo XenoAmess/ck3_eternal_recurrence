@@ -1,6 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 11:05:03 CST：Canonical30归档／R76原Robert暂停恢复GREEN，M7 quote／Council可用
+### 2026-10-08 11:27:25 CST：R76只读／horizon可用，release已提交但后态pending
+
+Canonical30／R76恢复报告与CC1已ordinaryFF发布b3169b00，随后三份scoped研究doc已发布 **8f67ddd50de24e8fc227bbf9d4b47eabc2c3ab29**。R76 paused native2/public3/date53288472，006只恢复旧履约婚姻；008claim_cb终止条件、010双方Army、012contactfree horizon实际available，horizon+1不算date推进。013ordinaryauto已提交prisoner61540 release，request prisoner-release-801d779a60204a83a9100c9af8eb0445／submitted_verification_pending／materialfalse；14独立后态plan待结果，不能授release/M6信用。Faith有限源1554B／2calls及holder465B cache复用、Law1375B新raw source只记research；Runtime31组合build/FIRST NOTRUN，Source31/32不借live。H9658/saved6006/G2 5/8/NW2 2/4/M4false/natural0不变，Root唯一minimized Game，详见[Oct8日报](daily/2026-10-08.md)，本batch待发布。
+
+### 历史2026-10-08 11:05:03 CST：Canonical30归档／R76原Robert暂停恢复GREEN，M7 quote／Council可用
 
 Canonical30实际archive GREEN、717owners（297Bridge/419Runtime/1Protocol）、native4e06f945、61recompile/656retained；R76 **02:54:33.158238UTC十二检查全GREEN**，原Robert29829/H9658/date53288472/saved6006、原episode/minimized，见[首次合格恢复](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST76.json)。本次startup栈溢出未复现，M7 actual quote可用／CanEnact true但未enact，root＋Council可用；仍在war100663329对31050，不能说和平。Normal plan重新核原婚姻，006auto_turn已派发待结果；CC1 construction CLI新compound GREEN6.0983578s/source Rootb9467973未push。G2 5/8/NW2 2/4/M4false/natural0/saved6006未增加，Source31/32不借live，Root唯一minimized Game；本batch待Root发布，详见[Oct8日报](daily/2026-10-08.md)。
 
