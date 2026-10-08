@@ -11677,6 +11677,8 @@ public:
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
     environment.permitted_executor_confucian_assembly12003 =
         &xar::ck3_12003::ExecuteConfucianAssemblyMailbox12003;
+    environment.permitted_executor_actor_cached_succession12004 =
+        &xar::ck3_12004::ExecuteActorCachedSuccessionMailboxV1;
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
     environment.permitted_executor_confucian_religious_title12003 =

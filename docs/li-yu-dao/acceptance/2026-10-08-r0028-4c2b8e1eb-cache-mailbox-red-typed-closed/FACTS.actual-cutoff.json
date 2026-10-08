@@ -1,0 +1,42 @@
+{
+  "source_head": "4c2b8e1eb496ae9167dd23b88fbff3ec9a84b60c",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0028",
+  "whole_mod": "NOT_GREEN",
+  "normal_exit_typed_green": true,
+  "autosave_verified": false,
+  "business_GREEN": false,
+  "formal_factory_T": null,
+  "C3": null,
+  "I4": null,
+  "actual_release_sequence": 3872,
+  "baseline_protected87": true,
+  "baseline_body_reads_total": 1,
+  "original0240_control": "ROOT original control execution0; no formal acceptance credit",
+  "cache_SDK_error": "actor_cached_succession_mailbox_submit_unavailable",
+  "cache_SDK_original_bytes": 497,
+  "cache_original_native_receipts": [],
+  "original_failed_helper_captures": 2,
+  "independent_helper_retainer_existed": false,
+  "source_correction": "prep005 exact unary-plus removal and actual native gate Python ref; later mailbox registration source change is not current DLL qualification",
+  "save_body_reads_by_archive_preparation": 0,
+  "CI_COM_broker_packages": "ROOT already permanently imported nine files; not duplicated or reverified",
+  "closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-root-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3089,
+    "sha256": "f81bced6100fb70f3ab21bb379d0e017d778fb37da2372190620260a3e8bffdb",
+    "role": "ROOT verified actual closed boundary"
+  },
+  "closure_verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-root-typed-close-actual-source-20261008-001/verify_previous_boundary.py",
+    "bytes": 24734,
+    "sha256": "a83579d84c6bbc836492facd366364d813be0425a39fc28f2c00f40172649f6f",
+    "role": "exact ROOT verifier source; archiver does not rerun it"
+  },
+  "closure_check_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-root-typed-close-check-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 1327,
+    "sha256": "3ea9d9bc09165f0d8cac7ae569bc55b7640702eb4463b86d5b6b6ccca0a7a3ec",
+    "role": "ROOT original verifier execution completion"
+  },
+  "closure_status_literal": "ROOT_REVIEWED_ACTUAL_CLOSED_RELEASED_BOUNDARY"
+}

@@ -1,0 +1,122 @@
+{
+  "status": "EXACT_SELECTED_ORIGINAL_BYTES_PERMANENTLY_IMPORTED",
+  "at_utc": "2026-10-08T04:42:34.077744+00:00",
+  "input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-root-selected-permanent-import-INPUT.actual.json",
+    "bytes": 2940,
+    "sha256": "28f1ae6cc02ee4434855c44054aee2b21318ac22c888b165f83fd3a305c1e8f6"
+  },
+  "files": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-4c2b8e1eb-exact-official-ci-20261008-001/INDEX.json",
+        "bytes": 17990,
+        "sha256": "dbb0b573a7a95b20b3cba742c17361bced8dbbdc45c6f8316b20d4fb28a3ae8c"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/ci/INDEX.json",
+        "bytes": 17990,
+        "sha256": "dbb0b573a7a95b20b3cba742c17361bced8dbbdc45c6f8316b20d4fb28a3ae8c"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-4c2b8e1eb-exact-official-ci-20261008-001/REPORT.md",
+        "bytes": 2653,
+        "sha256": "75e73adf08a3ab00bdb3971f49e437dacdda0ffad472fb0da8137d836868f6c1"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/ci/REPORT.md",
+        "bytes": 2653,
+        "sha256": "75e73adf08a3ab00bdb3971f49e437dacdda0ffad472fb0da8137d836868f6c1"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-4c2b8e1eb-exact-official-ci-20261008-001/raw-evidence.zip",
+        "bytes": 105861,
+        "sha256": "ca5dcc34af31f72e5df22440468e2d5c6a72152ce366e8259496028bfa959ba4"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/ci/raw-evidence.zip",
+        "bytes": 105861,
+        "sha256": "ca5dcc34af31f72e5df22440468e2d5c6a72152ce366e8259496028bfa959ba4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-actual-result-20261008-001/INDEX.json",
+        "bytes": 4462,
+        "sha256": "d1b519f846906141a2347fe7ec477098a8e1e8fc8853b89970031fdf7da0a45b"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-com/INDEX.json",
+        "bytes": 4462,
+        "sha256": "d1b519f846906141a2347fe7ec477098a8e1e8fc8853b89970031fdf7da0a45b"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-actual-result-20261008-001/REPORT.md",
+        "bytes": 1929,
+        "sha256": "933237e6b5d5e17edde2dafdaf0e05da67a31892365547bfdee12d22f7b01a8f"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-com/REPORT.md",
+        "bytes": 1929,
+        "sha256": "933237e6b5d5e17edde2dafdaf0e05da67a31892365547bfdee12d22f7b01a8f"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-actual-result-20261008-001/actual-original-evidence.zip",
+        "bytes": 12361,
+        "sha256": "9955159aa29da10aa6a1c11b3f3d2c6abe4c7da697c73e027a8a314e18ad21fe"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-com/actual-original-evidence.zip",
+        "bytes": 12361,
+        "sha256": "9955159aa29da10aa6a1c11b3f3d2c6abe4c7da697c73e027a8a314e18ad21fe"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-defender-broker-request-preparation-20261008-001/INDEX.json",
+        "bytes": 7604,
+        "sha256": "7aa8f595935ac4cbdf2c0c559fd10c3222fa39e6b1179b5fa793680a88836101"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-broker/INDEX.json",
+        "bytes": 7604,
+        "sha256": "7aa8f595935ac4cbdf2c0c559fd10c3222fa39e6b1179b5fa793680a88836101"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-defender-broker-request-preparation-20261008-001/REPORT.md",
+        "bytes": 1851,
+        "sha256": "67d571ea1a178f4321a487efb32a9b662c735bd968e58b90584286dad354d244"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-broker/REPORT.md",
+        "bytes": 1851,
+        "sha256": "67d571ea1a178f4321a487efb32a9b662c735bd968e58b90584286dad354d244"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-defender-broker-request-preparation-20261008-001/source-and-producer-evidence.zip",
+        "bytes": 74783,
+        "sha256": "7e3aa245f80d402b407712ac213a07e05d51aa1b6568ae088c39eb0172f58540"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-broker/source-and-producer-evidence.zip",
+        "bytes": 74783,
+        "sha256": "7e3aa245f80d402b407712ac213a07e05d51aa1b6568ae088c39eb0172f58540"
+      }
+    }
+  ],
+  "SDK_calls": 0,
+  "checkpoint_body_reads": 0,
+  "business_credit": false
+}

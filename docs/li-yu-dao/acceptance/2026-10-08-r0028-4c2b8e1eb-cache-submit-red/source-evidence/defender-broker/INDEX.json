@@ -1,0 +1,145 @@
+{
+  "schema": "lyd.r28.defender-broker-preparation.inventory.v1",
+  "status": "BLOCKED_FIXED_INSTALLED_POLICY_NOT_PRESENT",
+  "source_head": "4c2b8e1eb496ae9167dd23b88fbff3ec9a84b60c",
+  "files": [
+    {
+      "path": "C:/lr28b1/defender-exe-exclusions/20261008T032052Z-0f18cb85/manifest.json",
+      "bytes": 6649,
+      "sha256": "50942211b828ce8b3578f7d71603ed3f17c2308561cf5e45fb0bb38167a68d8c",
+      "zip_entry": "sha256/50942211b828ce8b3578f7d71603ed3f17c2308561cf5e45fb0bb38167a68d8c.raw"
+    },
+    {
+      "path": "C:/lr28b1/native-msvc-result.json",
+      "bytes": 1882,
+      "sha256": "7000c7947528df14975253d4d5c0e5b8222587d2cdf6ab70654d6fdb3388180a",
+      "zip_entry": "sha256/7000c7947528df14975253d4d5c0e5b8222587d2cdf6ab70654d6fdb3388180a.raw"
+    },
+    {
+      "path": "C:/lr28b1/defender-exe-exclusions/20261008T032052Z-0f18cb85/receipt.json",
+      "bytes": 4070,
+      "sha256": "f7db3734594b480447ecc23bfe6bb5a6d2535a79bd834a4d46ba1c553becab64",
+      "zip_entry": "sha256/f7db3734594b480447ecc23bfe6bb5a6d2535a79bd834a4d46ba1c553becab64.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/project-exe-defender-broker.md",
+      "bytes": 8106,
+      "sha256": "a59a7e0588b529ddb0f465c719ecccc5700b2378c3c8d989ac16064d5d8c61eb",
+      "zip_entry": "sha256/a59a7e0588b529ddb0f465c719ecccc5700b2378c3c8d989ac16064d5d8c61eb.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/project-exe-defender-exclusions.md",
+      "bytes": 20823,
+      "sha256": "7657c3c403dab1db1f79d4941b874df4b56916087125e03fad2ddbc9834783db",
+      "zip_entry": "sha256/7657c3c403dab1db1f79d4941b874df4b56916087125e03fad2ddbc9834783db.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/tools/project_exe_broker/README.md",
+      "bytes": 3094,
+      "sha256": "31bbd626bf5cd6abbba0a6b6b9a68b221b9fac67d8df6be856898eefd5e236cf",
+      "zip_entry": "sha256/31bbd626bf5cd6abbba0a6b6b9a68b221b9fac67d8df6be856898eefd5e236cf.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/tools/register_project_exe_exclusions.py",
+      "bytes": 26813,
+      "sha256": "a750bb69c738f930050aa1f939fdaa70805d415a7de5ab48a2e6bb08884645e8",
+      "zip_entry": "sha256/a750bb69c738f930050aa1f939fdaa70805d415a7de5ab48a2e6bb08884645e8.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/tools/project_exe_exclusion_broker_client.py",
+      "bytes": 31474,
+      "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8",
+      "zip_entry": "sha256/7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8.raw"
+    },
+    {
+      "path": "C:/lr28b1/.cmake/api/v1/reply/index-2026-10-08T02-59-54-0337.json",
+      "bytes": 1265,
+      "sha256": "a63fd307bc475c155e35ac8ef23c7433630f40a06faa6b94899b6e8e450ab0bd",
+      "zip_entry": "sha256/a63fd307bc475c155e35ac8ef23c7433630f40a06faa6b94899b6e8e450ab0bd.raw"
+    },
+    {
+      "path": "C:/lr28b1/.cmake/api/v1/reply/codemodel-v2-5bd0f22cb3a0a082d9b8.json",
+      "bytes": 166753,
+      "sha256": "30e65706e9c81bad07454702c4ffa1466aa35a2dd948c8c4698f0a9b0e4549a1",
+      "zip_entry": "sha256/30e65706e9c81bad07454702c4ffa1466aa35a2dd948c8c4698f0a9b0e4549a1.raw"
+    },
+    {
+      "path": "C:/lr28b1/.cmake/api/v1/reply/target-xar_ck3_12004_army_route_binding_test-Release-aa8d3d5bf23705fe3466.json",
+      "bytes": 5204,
+      "sha256": "987291d891e24daae50a5c3e0fcc17d47dc5cea5f0b6954c84f56e7b2f9004e9",
+      "zip_entry": "sha256/987291d891e24daae50a5c3e0fcc17d47dc5cea5f0b6954c84f56e7b2f9004e9.raw"
+    },
+    {
+      "path": "C:/lr28b1/.cmake/api/v1/reply/target-xar_ck3_12002_event_window_context_test-Release-c41f09a0ae1439fa1d37.json",
+      "bytes": 53097,
+      "sha256": "7e3f43098337ebef388c9392990375ceb418494bff146f3226e49c0c345d5dec",
+      "zip_entry": "sha256/7e3f43098337ebef388c9392990375ceb418494bff146f3226e49c0c345d5dec.raw"
+    },
+    {
+      "path": "C:/lr28b1/.cmake/api/v1/reply/target-xar_ck3_main_thread_query_mailbox_v1_test-Release-dedb17b93b65ef590802.json",
+      "bytes": 3412,
+      "sha256": "54ed15cc43b835d2b6333f8f6e4e14e019bb9e285f1f3455501798727c232262",
+      "zip_entry": "sha256/54ed15cc43b835d2b6333f8f6e4e14e019bb9e285f1f3455501798727c232262.raw"
+    },
+    {
+      "path": "C:/lr28b1/.cmake/api/v1/reply/target-xar_confucian_challenger_graph_v1_test-Release-12b8937554921f9757a5.json",
+      "bytes": 5607,
+      "sha256": "4b7f0d3d299d9ced984a10e813d1aa6c8695457a73088eee468e4ecc6d5e01c8",
+      "zip_entry": "sha256/4b7f0d3d299d9ced984a10e813d1aa6c8695457a73088eee468e4ecc6d5e01c8.raw"
+    },
+    {
+      "path": "C:/lr28b1/.cmake/api/v1/reply/target-xar_confucian_religious_title_readback_v1_test-Release-5c37de7b48e66edad3ba.json",
+      "bytes": 5613,
+      "sha256": "35cb2b4d03b70124e10c5f9a63416a6eca476da042b60cb5e822166b8f041c95",
+      "zip_entry": "sha256/35cb2b4d03b70124e10c5f9a63416a6eca476da042b60cb5e822166b8f041c95.raw"
+    },
+    {
+      "path": "C:/lr28b1/.cmake/api/v1/reply/target-xar_confucian_assembly_predicates_v1_test-Release-a8a610fe4f41d3014083.json",
+      "bytes": 3186,
+      "sha256": "9b7c31cbe09742da9c714a3f33e93a33a4cb244937906988d7f8c4dca3a33c7b",
+      "zip_entry": "sha256/9b7c31cbe09742da9c714a3f33e93a33a4cb244937906988d7f8c4dca3a33c7b.raw"
+    },
+    {
+      "path": "C:/lr28b1/.cmake/api/v1/reply/target-xar_ck3_bridge_injector-Release-4e33c9afe75944d150b7.json",
+      "bytes": 3183,
+      "sha256": "e591f77b96eef1f86e0c851c92d5700990ba17b02f852d73529e95cc64a671dd",
+      "zip_entry": "sha256/e591f77b96eef1f86e0c851c92d5700990ba17b02f852d73529e95cc64a671dd.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-defender-broker-request-preparation-20261008-001/SEVEN-EXE-PINS.actual.json",
+      "bytes": 12891,
+      "sha256": "3be4471327f04c4aec2e16d00ccae3f17ac63546af0b9d6d2ebc14352d8c5d5b",
+      "zip_entry": "sha256/3be4471327f04c4aec2e16d00ccae3f17ac63546af0b9d6d2ebc14352d8c5d5b.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-defender-broker-request-preparation-20261008-001/INSTALLED-POLICY.readonly.json",
+      "bytes": 212,
+      "sha256": "a85de5c2623fcf8f5783f5a943e7accd0583aa0368a1acdb9fdd8f3678d37057",
+      "zip_entry": "sha256/a85de5c2623fcf8f5783f5a943e7accd0583aa0368a1acdb9fdd8f3678d37057.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-defender-broker-request-preparation-20261008-001/ROOT-REQUEST-BOUNDARY.json",
+      "bytes": 2431,
+      "sha256": "4579edd836868c07cc6cae222d91b65cff4674f276948e86a6df0f289b331291",
+      "zip_entry": "sha256/4579edd836868c07cc6cae222d91b65cff4674f276948e86a6df0f289b331291.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-defender-broker-request-preparation-20261008-001/REPORT.md",
+      "bytes": 1851,
+      "sha256": "67d571ea1a178f4321a487efb32a9b662c735bd968e58b90584286dad354d244",
+      "zip_entry": "sha256/67d571ea1a178f4321a487efb32a9b662c735bd968e58b90584286dad354d244.raw"
+    }
+  ],
+  "raw_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-defender-broker-request-preparation-20261008-001/source-and-producer-evidence.zip",
+    "bytes": 74783,
+    "sha256": "7e3aa245f80d402b407712ac213a07e05d51aa1b6568ae088c39eb0172f58540"
+  },
+  "large_build_result_external_ref_only": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-native-build-20261008-001/RESULT.json",
+    "bytes": 1059983,
+    "sha256": "a230e48a2f08d599c11fdad87b635e4e0e5beccd9806d76095a8e2fbcc7e8c53"
+  },
+  "EXE_binaries_copied": false,
+  "settings_or_system_actions": 0
+}

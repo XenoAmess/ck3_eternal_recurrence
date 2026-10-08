@@ -1,0 +1,86 @@
+{
+  "schema": "lyd.r28.admin-com.actual-result.inventory.v1",
+  "status": "ACTUAL_SETTINGS_FAILED_SEVEN_EXE_REGISTRATION_UNVERIFIED",
+  "source_head": "4c2b8e1eb496ae9167dd23b88fbff3ec9a84b60c",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-root-admin-com-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1477,
+      "sha256": "de68c9e303c0f3e9e6110109fd3cccf5d746e72b0ebd9fa42ee5d3883568305d",
+      "zip_entry": "sha256/de68c9e303c0f3e9e6110109fd3cccf5d746e72b0ebd9fa42ee5d3883568305d.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-request-preparation-20261008-001/ROOT-ACTUAL-ADMIN-COM-001/RECEIPT.actual.json",
+      "bytes": 5200,
+      "sha256": "05b6a12e5d89240312f576518417a03638907701e0dcb00a9a4ce167284bbd27",
+      "zip_entry": "sha256/05b6a12e5d89240312f576518417a03638907701e0dcb00a9a4ce167284bbd27.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-root-admin-com-original-exec-20261008-001/stdout",
+      "bytes": 409,
+      "sha256": "d72a1dab0a45aa14e75dc774c5eca17403ea7465d9691974daf9b2182918adda",
+      "zip_entry": "sha256/d72a1dab0a45aa14e75dc774c5eca17403ea7465d9691974daf9b2182918adda.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-root-admin-com-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "zip_entry": "sha256/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-request-preparation-20261008-001/ROOT-ARGV.json",
+      "bytes": 4201,
+      "sha256": "474e0fa60a74eca52aa0aaac8c1a8f81ad037e45f039f785607c3cdb5a10657e",
+      "zip_entry": "sha256/474e0fa60a74eca52aa0aaac8c1a8f81ad037e45f039f785607c3cdb5a10657e.raw"
+    },
+    {
+      "path": "C:/lr28b1/defender-exe-exclusions/20261008T032052Z-0f18cb85/manifest.json",
+      "bytes": 6649,
+      "sha256": "50942211b828ce8b3578f7d71603ed3f17c2308561cf5e45fb0bb38167a68d8c",
+      "zip_entry": "sha256/50942211b828ce8b3578f7d71603ed3f17c2308561cf5e45fb0bb38167a68d8c.raw"
+    },
+    {
+      "path": "C:/lr28b1/defender-exe-exclusions/20261008T032052Z-0f18cb85/receipt.json",
+      "bytes": 4070,
+      "sha256": "f7db3734594b480447ecc23bfe6bb5a6d2535a79bd834a4d46ba1c553becab64",
+      "zip_entry": "sha256/f7db3734594b480447ecc23bfe6bb5a6d2535a79bd834a4d46ba1c553becab64.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-actual-result-20261008-001/ACTUAL-RESULT.source-facts.json",
+      "bytes": 5018,
+      "sha256": "519b728fa53e9e87a7fdba0f5348804c1a2236570d75bf5222c66437aea3b2d6",
+      "zip_entry": "sha256/519b728fa53e9e87a7fdba0f5348804c1a2236570d75bf5222c66437aea3b2d6.raw"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-actual-result-20261008-001/REPORT.md",
+      "bytes": 1929,
+      "sha256": "933237e6b5d5e17edde2dafdaf0e05da67a31892365547bfdee12d22f7b01a8f",
+      "zip_entry": "sha256/933237e6b5d5e17edde2dafdaf0e05da67a31892365547bfdee12d22f7b01a8f.raw"
+    }
+  ],
+  "raw_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-actual-result-20261008-001/actual-original-evidence.zip",
+    "bytes": 12361,
+    "sha256": "9955159aa29da10aa6a1c11b3f3d2c6abe4c7da697c73e027a8a314e18ad21fe"
+  },
+  "previous_preparation_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-request-preparation-20261008-001/INDEX.json",
+    "bytes": 7246,
+    "sha256": "1a737ae5446aaac286afa4811d55810d86f39b5367209cd8bdc45eb78c7bed88"
+  },
+  "previous_preparation_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-admin-com-exact-exe-request-preparation-20261008-001/candidate-source-and-evidence.zip",
+    "bytes": 42362,
+    "sha256": "86a5368487264ea493b80588063d61bb9e4f8caf3184d00af720c06e8c9afe7d"
+  },
+  "previous_broker_blocker_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-defender-broker-request-preparation-20261008-001/INDEX.json",
+    "bytes": 7604,
+    "sha256": "7aa8f595935ac4cbdf2c0c559fd10c3222fa39e6b1179b5fa793680a88836101"
+  },
+  "original_execution_exit": 1,
+  "registration_status": "settings_failed",
+  "Defender_registration_complete": false,
+  "SYSTEM_broker_success": false,
+  "new_system_or_MAIN_or_CI_actions_by_archivist": 0
+}

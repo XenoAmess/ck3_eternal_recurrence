@@ -1,0 +1,14 @@
+{
+  "status": "ORIGINAL_BYTES_ZIP_VERIFIED_ONLY",
+  "original_files": 258,
+  "unique_original_sets": 204,
+  "raw_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-final-external-archive-20261008-001/raw-evidence.zip",
+    "bytes": 2198496,
+    "sha256": "82223f23eb1ab07a7dd6ff1dc85fb9ac41cae7a53aaa64b5ebbc1cd882ebc2d9"
+  },
+  "SDK_size_limit": null,
+  "all_original_bytes_sha_match": true,
+  "save_body_reads": 0,
+  "MAIN_SDK_game_process_bus_actions": 0
+}
