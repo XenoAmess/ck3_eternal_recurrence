@@ -455,6 +455,8 @@ public:
           bindings_.phase_commander_side_identity12004, output);
       ck3_12004::AttachPhaseCommanderTriggerConditions12004(
           bindings_.phase_commander_trigger12004, output);
+      ck3_12004::AttachPhaseCommanderChanceWeights12004(
+          bindings_.phase_commander_chance12004, output);
     }
     return result;
   }

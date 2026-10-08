@@ -39,6 +39,7 @@
 #include "xar_bridge/phase_event_role_compatibility_v1.hpp"
 #include "xar_bridge/phase_event_commander_side_identity_v1.hpp"
 #include "xar_bridge/phase_event_commander_trigger_conditions_v1.hpp"
+#include "xar_bridge/phase_event_commander_chance_weights_v1.hpp"
 
 #include <array>
 #include <cstdint>
@@ -1672,6 +1673,8 @@ struct CombatSimulationInputsSnapshot {
       phase_event_commander_side_identity_v1;
   std::optional<PhaseEventCommanderTriggerConditionsV1>
       phase_event_commander_trigger_conditions_v1;
+  std::optional<PhaseEventCommanderChanceWeightsV1>
+      phase_event_commander_chance_weights_v1;
 
   friend bool operator==(const CombatSimulationInputsSnapshot &,
                          const CombatSimulationInputsSnapshot &) = default;

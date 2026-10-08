@@ -199,6 +199,9 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
       ck3_12004::BindPhaseCommanderTriggerImage12004(
           image_base, executable_sha256,
           bindings.phase_event_role_compatibility12004);
+  bindings.phase_commander_chance12004 =
+      ck3_12004::BindPhaseCommanderChanceImage12004(
+          image_base, executable_sha256, bindings.phase_commander_trigger12004);
   bindings.military = ck3_12004::BindMilitaryImage12004(
       image_base, executable_sha256, bindings.commands);
   bindings.native_maa_recruitment =
