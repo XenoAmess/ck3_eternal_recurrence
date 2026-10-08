@@ -1,6 +1,20 @@
 # 实测工作流程（CK3 mod 调试）
 
-## 2026-10-08 14:45:38：普通plan返回证明loop解卡，不替代动作／性能结果
+## 2026-10-08 15:39:51：不同SDK批次编号、sticky worker拒绝与真实保存日分列
+
+hotperf normalbatch01的008是新第二目标56063 applied/free独立receipt/old48cf ACK保留，**不同于hot02 008旧61540/801d retained**，不能只按response ordinal把两批材料混合。下一54235的010实际 `private release terms or request are stale`，native pre-mailbox拒绝/无ACK；Root具体定位workersticky may_have_submitted一次成功后collection未清，最小fix SOURCE_NOTRUN，**没有重发该attempt**。原成功与后一次真实失败都保留，不让新56063材料冒下一54235成功或完整M6credit。
+
+Root独立normalplan11/auto12真实＋1day后，core13/full14 date53288568/public4/native6/pausedtrue，再[普通SAVE15](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-sdk-hotperf03/operator/gameplay-responses/015-r77-afterstale-normal-batch-save01.json) GREEN07:31:13Z/H9715：**这个实际保存日才使6009→6010**，不是先前四turn或horizon的信用。Native34 Stop compile初漏第四64参数RED修后Stopcompile/archive GREEN，DLL CMake wrapper @rsp展开name-too-long是本次实际link HarnessRED，FIRST还未run；保留router/fixture GREEN，不重编/重验其旧资格。Construction新FIRST6.6817379s GREEN只授static-ready，未部署不授M4。这里仅复用Root新事实，未读存档或运行测试/Game。
+
+## 历史2026-10-08 15:12:39：独立retained receipt不补归因，后置查询体积按实际footprint选择
+
+hot02独立receipt008对旧61540 appliedtrue/postverifiedtrue/free/postnative3，同date53288544，原801d request保留不重发；**causationfalse／costverifyfalse**不能由当前自由状态补成true，不授完整M6credit。新010提交56063/48cf…pending是新目标，不混同旧61540重发。四turnbatch结束没有day/SAVE，后继普通六turn未完，不按turn数量更新saved6009。Canonical33已归档GREEN但当前Game仍32，canonical／实际部署分别记录。
+
+Root [ACTUAL005-FOOTPRINT](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r77-after-snapshot-footprint/ACTUAL005-FOOTPRINT.json)显示旧后置full约160MB主要为army stats与MCP双份，不能直接归为nativehistory；Root字段 **reallyomitted0/9702**原样保留。选择**既有corepartial**后，07:09:44／07:10:10实际各约2s、datepaused不变，**没有新production patch/test**。这里只记录该after-snapshot选择的实际收益，不改全snapshot业务合同或宣称所有性能问题已解决；owner未读取Driver/save大体或进程。
+
+Feastnormal ca88一个parser→Service FIRST四subscene GREEN7.47863s，旧Feast03不重跑；hotperf03 SDK82567@a746 snapshotGREEN含qualifiedflag。Normalplan copy70e新FIRST4.7430619s GREEN与当前已有partial查询方式分别有证，publicationaadba4d…／a746待push／Game32身份分列；原所有HarnessRED保留，无报告owner重复测试或Game操作。
+
+## 历史2026-10-08 14:45:38：普通plan返回证明loop解卡，不替代动作／性能结果
 
 Root hot02实际普通plan002完成/toolerrorfalse，phase native_war_termination_query、query-war-termination-options100663329，current_betrothal_fulfillmenttrue/statusmarriage；同SDK6ee已离开旧重复cold family恢复。这个真实plan结果为family时间比较修复提供生产路径互证，**不授新婚姻、完整normal OODA、M6正式材料或性能修复**。003普通war auto查询仍pending，0新动作/day/SAVE；SDK先前CPU/memory观察与性能lane尚无结果，不能因plan返回抹除。
 

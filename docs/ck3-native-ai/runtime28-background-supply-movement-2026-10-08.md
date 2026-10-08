@@ -2,7 +2,19 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## R77 ordinary002 unblocks family recheck; war query next at 14:45:38 CST
+## Normal route advancement saved6010; Native34 pending at 15:39:51 CST
+
+Actual **2026-10-08T15:39:51+08:00**. Following actual stale release010/no native mailbox ACK for54235, Root did not resend. Second target56063 receipt008 in hotperf normalbatch01 is applied/free/old48cf retained, distinct from hot02 retained61540. Normalplan11 selected native_war_route_contact_horizon_progress; normalauto12 advanced one day, core13/full14 date53288568/public4/native6/pausedtrue. [SAVE15](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-sdk-hotperf03/operator/gameplay-responses/015-r77-afterstale-normal-batch-save01.json) materializedH9715/104646533B/ccb8fullSHA, same Robert/episode/Game99872 minimized. Saved6010/36524=16.45% is now credited from the real saved day, not from the previous horizon or turn count; no additional arrival/supply/future result is inferred.
+
+Sticky release worker fix is SOURCE_NOTRUN, M6partial remains. Construction4df FIRST6.6817379s GREEN is static-ready/undeployed; Native34 Stop parameter correction compiled/archived but DLL@rsp wrapper HarnessRED/linkonly03 running/FIRSTNOTRUN, old router/fixture qualified pieces preserved. G2 5/8/NW2 2/4/M4false/natural0 unchanged, canonical33 not live/currentGame32, historicalRuntime28 offline status retained. This report stops at saved6010 and releases without waiting for further milestones.
+
+## Historical Canonical33 GREEN; ordinary Army queries and receipt at 15:12:39 CST
+
+Actual **2026-10-08T15:12:39+08:00**. Native33 [canonical archive](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix33/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json) GREEN.3029441s/720mixed, DLL13123584B/full2d2674ef SHA recorded in the daily report, remains not live. Current Game still32, Hot02 war003/Army004/horizon006 actual queries returned; retained61540 receipt008 applied/postverified/free/postnative3, unchanged date, old801d not resent, causation/costverifyfalse prevents attribution/cost credit. New56063 submit01048cf…pending, not the old release resend. Fourturnbatch ended06:55:49 without day/save.
+
+SDK74599 graceful exit0 kept Game99872; hotperf03 actual82567@a746 snapshotGREEN includes qualified Feastflag. Feast entry FIRST7.47863s/four subscenes and copy70e FIRST4.7430619s GREEN, old qualified scenes not replayed. Existingcorepartial after-snapshot selection gives about2s calls at07:09:44/07:10:10, no new production patch/test; the new sixturn batch remains pending. Publishedaadba4d… versus adopteda746 awaitingpush, saved6009/H9696/G2 5/8/NW2 2/4/M4false/M6partial/natural0 stay distinct. Construction4df/Stop9fe/newchild8d SOURCE_NOTRUN, no new Army/supply/future/material credit. Runtime28 remains historically offline-only.
+
+## Historical R77 ordinary002 unblocks family recheck; war query next at 14:45:38 CST
 
 Actual **2026-10-08T14:45:38+08:00**. Root hot02 plan002 completed/toolerrorfalse and selected query-war-termination-options100663329 in native_war_termination_query, retained-marriage fulfilled status true. The actual old repeated cold-family loop is now bypassed; this is a normal plan recovery, not an Army move/day or new marriage/M6material. Ordinary auto003 war query remains pending. Native33 stays noncanonical/nonlive; Pregnancy/Siege ordinary consumer source complete, no unnecessary new test. Feast flag entryca88d90e source awaits its unique FIRST; old03GREEN reused and hot01RED kept. Game99872 minimized/date53288544/saved6009/H9696/G2 5/8/NW2 2/4/M4 incomplete/M6partial/natural0 persist. Two bounded document inventories and the requested diff are delivered; this batch releases without waiting for future003 or rechecking old qualification.
 

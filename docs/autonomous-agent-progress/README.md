@@ -1,6 +1,14 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 14:45:38 CST：普通plan002解开family重复恢复，转入战争终止条件查询
+### 2026-10-08 15:39:51 CST：真实＋1day／H9715保存，saved6010；重复release sticky拒绝待修
+
+R77 hotperf normalbatch01的008为**第二目标56063 applied／free独立receipt**、保留48cf ACK；010对仅余54235发生stale拒绝、native pre-mailbox无ACK，Native32 sticky may_have_submitted未清的最小修复SOURCE_NOTRUN，Root无重发。随后normalplan11→normalauto12真实advance1day，core13／full14 **date53288568／public4／native6／pausedtrue**，SAVE15 **GREEN07:31:13Z／H9715／104646533B**，见[真实checkpoint](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-sdk-hotperf03/operator/gameplay-responses/015-r77-afterstale-normal-batch-save01.json)。saved **6010/36524＝16.45%**，G2 5/8／NW2 2/4／M4false／M6partial／natural0保持。Construction4df唯一FIRST GREEN6.6817379s、未deploy／无M4credit；Native34 Stop参数修后compile/archive GREEN，但@rsp wrapper name-too-long HarnessRED、link-only03进行／FIRST未run。旧RED与无重跑边界保留，本批快速释放不等后续。
+
+### 历史2026-10-08 15:12:39 CST：Canonical33归档GREEN，普通消费推进／旧release回执独立验证
+
+Canonical33实际 **GREEN0.3029441s／06:53:29→30Z**，720mixed／DLL13123584B，[归档receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix33/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)；**未live，Game仍Native32**。Feastnormal parser→Service FIRST四subscene GREEN7.47863s，已ordinary FF发布 **aadba4d444bc7296935abcd23a0336bd9e6541f0**；plan copy70e新FIRST GREEN4.7430619s／Roota746待push。hot02旧61540 retained receipt008 applied/postverifiedtrue、free/postnative3，同date，保留801d无resend，causation/costverifyfalse不补M6credit；010新56063提交48cf…pending。SDK74599 exit0／Game99872保持，hotperf03@a746 snapshotGREEN含Feast flag；后置full换既有corepartial实测约2s，无新生产patch/test。saved6009/G2 5/8/NW2 2/4/M4false/M6partial/natural0不变，Construction4df／Stop9fe／newchild8d仍SOURCE_NOTRUN；不等新六turn结果，详见[日报](daily/2026-10-08.md)。
+
+### 历史2026-10-08 14:45:38 CST：普通plan002解开family重复恢复，转入战争终止条件查询
 
 Root hot02普通plan002实际完成、**toolerrorfalse**，phase **native_war_termination_query**，选择query-war-termination-options100663329；current_betrothal_fulfillmenttrue／statusmarriage，**已跳出旧cold family重复循环**，历史婚姻不记新材料。003 ck3_auto_turn普通war查询已排、尚pending；无新Game动作／day／SAVE／M6credit。Native33仍非canonical／非live，Preg/Siege普通consumer source已确认完整、无需再造测试；Feast入口source **ca88d90e**待唯一FIRST、旧Feast03GREEN不重跑。Game99872最小化／H9696／saved6009／G2 5/8／NW2 2/4／M4未完／M6partial／natural0保持。本批封至002结果，Root提交diff与fields，后003另增量。
 
