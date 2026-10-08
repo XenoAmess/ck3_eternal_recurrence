@@ -161,3 +161,9 @@ still uses Native42 and Native45 is not deployed. Full Person, Entry, fresh-mode
 association, future weights and live loop remain incomplete. A demanded dynamic
 `9D7060` row still retains its exact missing evaluator input while ready later
 rows remain independently consumable.
+
+The next bounded source input is documented in
+[conditional dynamic weight reuse](battle-person-dynamic-weight-reuse-12004.md):
+the actual row-helper and evaluator bodies are already held, while a complete
+caller-equivalent scope still needs construction/lifetime closure. This follow-up
+does not change or repeat the Native45 qualified implementation.
