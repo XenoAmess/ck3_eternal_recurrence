@@ -618,7 +618,13 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                     # Keep its evidence until a new proposal replaces the ledger.
                     resolved = None
         if resolved is not None:
-            return _plan_existing_resolution(driver, planned, plan, resolved)
+            observed_plan = plan
+            if relation is not None:
+                observed_plan = {
+                    **plan,
+                    "family_marriage_current_relationship": deepcopy(relation),
+                }
+            return _plan_existing_resolution(driver, planned, observed_plan, resolved)
     if relation is not None and _relation_has_partner(relation):
         return {**planned, "plan": {**plan,
             "family_marriage_status": "current_first_heir_already_partnered",
