@@ -1,5 +1,23 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-08 10:08:39：原生继承顺序与canonical wire排序分别断言
+
+Root实际M7 production **read_title_baseline(title102)**返回raw successors **[301,201]**；既有 **realm_law_governance_snapshot_v1.cpp:326–331**会对每个held-title及primary successor vector排序，因此serialized canonical为 **[201,301]**。这是raw读口与wire投影的不同顺序，不能把raw期待直接用于canonical输出，也不应为fixture改生产原生顺序或既有序列化规则。
+
+| 验证对象 | 本次实际值 | 失败／最小修复与当前边界 |
+| --- | --- | --- |
+| Native raw继承向量 | [301,201] | 原读口返回顺序保留，fixture按raw单独断言 |
+| Canonical query body | [201,301] | FIRST01 .3588977s/C0000409 line547混用raw期望且尚未写query body；add4仅fixtureCPP分开raw／wire断言并在断言前写完整query |
+| 后续submit | frame_unavailable | FIRST02顺序验证已过，但line579独立RED0.3870733s仍在定位；不得据顺序通过写整体M7 GREEN |
+
+因果证据为[DIAGNOSIS-AND-SOURCE-TREE](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/m7-formal-crown-12004-migration/runtime30-successor-order-fix/DIAGNOSIS-AND-SOURCE-TREE.md)。Duplicate-symbol/sourcearg/order前阶段失败与必要修复保留；add4 attempt05单fixture＋linkGREEN不替代FIRST成功。记录只复用Root实际字段，无新增测试／query／源码或body核验。
+
+## 2026-10-08 09:28:39：prepare栈溢出的具体构造递归与失败现场closure
+
+Root已定位R75 actualprepare stackoverflow的[source cause](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/startup29-stack-overflow-source/SOURCE-CAUSE.md)：**bridgePrepare27964→fullAdapter10634→Adapter210→Army177→Route army_support21→Army**。Army与Route factory互相构造再次进入Army，而所需callback24AB5A0已经qualified；直接绑定该callback可去掉这条构造递归，不需重跑callback proof。候选c317与upstreamRoot1982837e修复相同、empty cherry skip；scoped Native30的source lineage另记，实际build／startup仍待验，不能把sourcecause定位写成live修复已通过。
+
+09:20:27 Root仅1次fresh inventory确认失败owned Game118644已不在场，R75OP/ROOT-R75-FAILED-STARTUP-OWNED-CLOSURE.json；noKill、不推断watchdogcleanup。此前offline FIRST GREEN与loaded startup RED分别保留；Native28从未加载，最后loaded Game为Root所报24d/R74。此条只复用Root事实，无额外进程／Game／源码／artifact复查。
+
 ## 2026-10-08 09:14:58：preflight／模块加载与remote prepare分别记账
 
 R75 actual preflight GREEN、handoff ACCEPTED之后，launch17.275s的canonical injectorrc3/error1114仍导致jobexit：remote_loadlibrary_exit2541355008显示moduleloaded成功，remote_prepare_exit3221225725 **0xC00000FD stackoverflow**。Root-contained injector已reaped／jobactive0，原job-report保留；无native_session_ready／新SDK／恢复frame。不能用preflight／moduleload或offline FIRST替代实际startup，亦不能据此把Game能力判RED。具体source-only诊断／nextbuild pending，report不追加执行或读取。下方09:14:22门禁与host依赖结果保留为前阶段。

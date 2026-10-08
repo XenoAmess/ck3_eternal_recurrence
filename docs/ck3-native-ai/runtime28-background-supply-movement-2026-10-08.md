@@ -2,7 +2,19 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Successor29 Operator GREEN and actual startup RED at09:14:58 CST
+## Successor30 binary/Army/Chance GREEN and M7 RED at10:08:39 CST
+
+Actual **2026-10-08T10:08:39+08:00**. Scoped source4c7f9bc5/correctedbasecfd fixed717closure DLL/archive actualb2 GREEN (60production/657retained/4fixture/1generator). First713prep omitted four M7 owners and was not compiled; registration-fix02 reused56graph/stage2recipes, with no selector replay. [Runtime30 FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime30-first01/) Army new5native/new10consumer **GREEN0.2393118/73.4104863s**, Chance new3native/soleconsumer **GREEN0.1263228/5.5803556s**. Prior GREENs are retained without replay.
+
+M7 duplicate-symbol/sourcearg/order fixture repairs and add4 attempt05 single-fixture/link passed. The SECOND FIRST still **RED0.3870733s/line579 crown-submit frame_unavailable**; canonical and new Game startup remain pending. Raw title102 [301,201] versus existing serialized canonical[201,301] caused FIRST01 .3588977s/C0000409 line547; fixture-only separate raw/wire checks and query-before-assert passed order verification in FIRST02, without making the independent submit RED GREEN. [Diagnosis](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/m7-formal-crown-12004-migration/runtime30-successor-order-fix/DIAGNOSIS-AND-SOURCE-TREE.md) retained. Source31 arrival976 is a source-only successor. RootHEAD428c7644 unpushed/latestpublished839; Native28 never loaded and original Native29 startup RED remain. H9658/date53288472/saved6006/G2 5/8/NW2 2/4/M4false/natural0 unchanged; source/binary/FIRST do not claim a new restored frame or day.
+
+## Historical successor29 closure and source cause at09:28:39 CST
+
+Actual record **2026-10-08T09:28:39+08:00**. Root's09:20:27 one-query fresh inventory shows failed owned GamePID118644 absent, inR75OP/ROOT-R75-FAILED-STARTUP-OWNED-CLOSURE.json; no kill, watchdogcleanup not inferred. Runtime29 startup RED remains genuine alongside offline3Native/3Service GREEN. Runtime28 was never Game-loaded, and the last loaded Game is Root'sruntime24d/R74; no restored-frame/day credit.
+
+[Startup source cause](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/startup29-stack-overflow-source/SOURCE-CAUSE.md) closes recursiveArmy→Route→Army construction: bridgePrepare27964→fullAdapter10634→Adapter210→Army177→Route army_support21→Army. Already-qualified callback24AB5A0 is bound directly. Candidatec317 matches upstreamRoot1982837e/empty cherry skip, while scoped Native30 c317 lineage is distinct. Completed package published ordinaryFF **839c8367452331991c202450162e036437d19363**, no merge.09:24 source4c7f9bc5/correctedbasecfd is the scoped Native30 prep,717planned objects/3new targets/sole consumers AUTHORED_NOTRUN. No compiler yet; four M7 owner registrations are being added with first-prep evidence retained. H9658/date53288472/saved6006/G2 5/8/NW2 2/4/M4false/natural0 unchanged. Root-only actual qualification/minimized restore is next; source cause is not a passed live repair.
+
+## Historical successor29 Operator GREEN and actual startup RED at09:14:58 CST
 
 Actual **09:14:58 CST**: R75 exited after17.275s, injectorrc3/error1114. Module load succeeded with remote_loadlibrary_exit2541355008; remote_prepare_exit3221225725 means **0xC00000FD stackoverflow**. Root-contained injector reaped/jobactive0, original job-report retained. No native_session_ready/new SDK/restored frame/day. Root's concrete source-only diagnosis and next build are pending. Retain Runtime29's three Native/three Service offline GREEN results; Runtime28 has offline qualification, not a successful Game startup. Root states the last loaded Game wasruntime24d/R74. This actual startup RED does not assert a Game capability failure. Preflight/handoff successes below precede it.
 

@@ -1,6 +1,14 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 09:14:58 CST：Operator／preflight GREEN，R75真实startup RED保留
+### 2026-10-08 10:08:39 CST：Native30 DLL／archive与Army／Chance GREEN，M7第二FIRST仍RED
+
+Root source4c7f9bc5的717objects DLL／archive actualb2 GREEN；Army新5native／新10consumer GREEN0.2393118／73.4104863s，Chance新3native／soleconsumer GREEN0.1263228／5.5803556s，见[Runtime30 FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime30-first01/)。M7 fixture duplicate-symbol／sourcearg／raw-vs-canonical顺序最小修复保留原RED，add4 attempt05单fixture＋link GREEN；SECOND FIRST仍RED0.3870733s、line579 crown-submit frame_unavailable，owner定位中，canonical尚未封、无新Game启动。Raw title102 successors[301,201]与现有wire排序[201,301]分别断言，FIRST02顺序已过但整体M7不GREEN，见[测试知识](../testing-workflow.md)。RootHEAD428c7644未push，latestpublished839；Source31 arrival976单列source-only后继。saved6006/G2 5/8/NW2 2/4/M4false/natural0不变，报告不测试／实机，本batch待Root发布。
+
+### 历史2026-10-08 09:28:39 CST：R75实际空库存、递归source cause已定位，Native30 prep未编译
+
+09:20:27 Root仅1次fresh inventory确认失败owned Game118644已不在场（ROOT-R75-FAILED-STARTUP-OWNED-CLOSURE.json），noKill、不推断watchdog cleanup。Startup source cause为 **Army→Route→Army递归构造**，已qualified callback24AB5A0直接绑定；候选c317与Root现有1982837e相同修复、empty cherry skip，scoped Native30 lineage另列。见[source cause](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/startup29-stack-overflow-source/SOURCE-CAUSE.md)。完成29／Python／Operator＋此前report包已ordinary FF发布 **839c8367452331991c202450162e036437d19363**；09:24 scoped Native30 source4c7f9bc5 correctedbasecfd、717objects预期、3new targets／sole consumers AUTHORED_NOTRUN，metadata prep进行中／compiler未运行、缺4M7owner注册最小补齐中。无新恢复帧／day／Game能力信用，saved6006/G2 5/8/NW2 2/4/M4false/natural0保持；28未加载，29真实startup RED保留，Root下一编译／FIRST／minimized恢复待验。
+
+### 历史2026-10-08 09:14:58 CST：Operator／preflight GREEN，R75真实startup RED保留
 
 新actual R75 job在17.275s后退出：injectorrc3/error1114，remote_loadlibrary_exit2541355008/moduleloaded成功，但remote_prepare_exit3221225725 **0xC00000FD stackoverflow**。Root-contained injector已reaped、jobactive0；未native_session_ready／SDK新帧／新day。此前handoff ACCEPTED不替代启动成功，29 native／Service三组三组offline GREEN保留；Native28仅offline资格，最后loaded Game为Root所报runtime24d/R74，不写28 startup GREEN或Game能力失败。具体source-only诊断进行中，下一build pending；下面09:14:22的preflight事实作为前阶段保留。
 
