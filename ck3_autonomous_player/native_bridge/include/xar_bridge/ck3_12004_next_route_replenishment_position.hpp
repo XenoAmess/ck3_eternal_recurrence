@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 
 #include <cstring>
 #include <string_view>
@@ -20,8 +21,7 @@ inline NextRouteReplenishmentPositionBindings12004
 BindNextRouteReplenishmentPositionImage12004(
     std::uintptr_t base, std::string_view sha) noexcept {
   NextRouteReplenishmentPositionBindings12004 result{};
-  if (base == 0 || sha !=
-      "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518")
+  if (base == 0 || sha != kExecutableSha256)
     return result;
   result.character_storage_slot = reinterpret_cast<void **>(base + 0x5C67568);
   result.character_fallback_slot = reinterpret_cast<void **>(base + 0x5C67570);
