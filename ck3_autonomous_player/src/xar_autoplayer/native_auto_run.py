@@ -6579,12 +6579,16 @@ def _open_private_activity_feast_planner_once(
     exact_build_envelope = False
     if isinstance(envelope, dict) and set(envelope) == envelope_keys:
         from .bridge.nonwar_private_build import private_native_provenance
+        from .bridge.version_identity import CK3_12002, CK3_12003, CK3_12004
 
+        # The admitted Crozier router renders this exact eight-key envelope
+        # on actual4 too; same_frame remains an independently checked snapshot.
         exact_build_envelope = (
             private_native_provenance(after).get("exe_sha256")
             in {
-                "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
-                "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+                CK3_12002.executable_sha256,
+                CK3_12003.executable_sha256,
+                CK3_12004.executable_sha256,
             }
         )
     envelope_shape = bool(

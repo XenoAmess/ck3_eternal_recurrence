@@ -1,8 +1,17 @@
 # Ordinary Feast repeats and lifecycle continuation on actual 1.20.0.4
 
 R77 source repair, 2026-10-08. Base: a59b2df4a2b3ab6a951bfdc4f12845faf27439d7.
-Status: authored; Root FIRST compound is NOT_RUN. No new native ABI, SDK call,
+Status: authored; Root FIRST02 RED, connected repeat pending. No new native ABI, SDK call,
 EXE capture, game launch, project import or build was performed by this source owner.
+
+Root FIRST01 had a PYTHONPATH collection failure; FIRST02 ran the connected
+compound and found the Open Python helper still admitted only .2/.3 SHA pins
+for the router's exact eight-key result envelope. Actual4 uses that same native
+envelope without same_frame; this one helper now also selects canonical .4.
+All native fields and independent paused-frame checks remain strict. The
+connected Stage1/2/destination validators need no parallel SHA-list change.
+The source commit was not adopted before this correction; Root repeat is pending.
+This review does not qualify every historical CLI helper on actual4.
 
 The R76 durable ledger retained an old .3 completed Feast. The original bounded
 consumer always recovered any resolved record, so a later current legal Feast
