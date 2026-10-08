@@ -209,3 +209,15 @@ This work is research/source-only with actual failure inputs. Production
 source changes, compiler/link/FIRST/test/hash/Game/SDK calls and G2 capability
 credit are **0**. No R78 causation is asserted. Root owns report/index adoption,
 live data, commit integration and push.
+
+## R80 actual readonly world, 2026-10-09 03:52 CST
+
+Root adopted the minimal readonly facade as `a3bff501a130872447e415f3240e13a1bf6aa2e1` and switched only the Python SDK to the full frozen source `Z:/gbs-r80-sdk-hot02-source`. The local inbox control is `{"exit_client": true}`; the first attempt incorrectly sent it as an MCP tool, received `Unknown tool`, and is retained. The corrected request closed old exec session 6380 with actual exit code 0. No CK3 restart or restore occurred.
+
+The new SDK observed 214 registered tools once and passed all 13 paused checks on the same minimized Game 65280 / Robert 29829 / original episode. Native revision 4 maps to public revision 2 in this new SDK; public counters must be obtained from its actual snapshot. This qualifies the new readonly facade on Native42 and does not repeat the accepted 1.20.0.4 migration.
+
+The actual `ck3_query_domain_construction_world_private_v1(expected_revision=2)` response completed at 2026-10-08T19:52:38.732345Z. It returned an active construction at **barony 2103 / province 2635 / type 596 / slot 1 / initiator 29829**, remaining work 182500000. The other seven returned holdings had no active construction. The unchanged pending intent expects **type 604 / slot 3** on that same barony and province. Gold is 69417022, exactly 14250000 below its pre-action value. The date remains 53288568, and native proof epoch is 668665.
+
+The mismatch is now an actual observed result, consistent with the documented competing selectors. It is not a transport-timeout diagnosis. Preserve the original pending tuple and both failed ordinary attempts; do not resubmit the action, inherit the originally quoted empty-slot/net-income values for type 596, or count this as a completed M4. The repair owner is aligning future native candidate selection and preparing an explicit reconciliation of the observed mismatch in the existing receipt path. Construction completion and actual income benefit still require later observations.
+
+Actual qualification and the complete query are in `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r80-sdk-hot02/operator/ROOT-R80-HOT02-PAUSED-SNAPSHOT-QUALIFIED.json` and `gameplay-responses/002-r80-actual-construction-world-hot02.json`; the thin actual/pending join is `ROOT-002-ACTUAL-CONSTRUCTION-WORLD-SUMMARY.json` in that operator directory. Scope: **production-live primitive** for the readonly world only; new saved days, SAVE and completed G2 gates remain zero.
