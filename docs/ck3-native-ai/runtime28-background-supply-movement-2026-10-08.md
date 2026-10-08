@@ -2,7 +2,23 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Normal route advancement saved6010; Native34 pending at 15:39:51 CST
+## R78 actual crash and two static compounds at 21:44:25 CST
+
+Actual **2026-10-08T21:44:25+08:00**. [R78 crash fields](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime35-report-coordination/ROOT-R78-ACTUAL-CRASH-NEXT-REPORT-FIELDS.json) record Game146596 exit1 at13:32:11.995918Z after159.848s, cleanup_proven/tree_gone. Twelve data checks passed but windows[] was RED: no qualified new paused frame. C0000005/00007FFD977830C6 and five xar_ck3_bridge.dll background-thread frames are actual; exact cause remains for symbolization. Prepare/bootstrap/launch stage successes do not resolve this failure. SDK29336 exit_client002 is queued, exit pending; no action/day/save or Army transition credit was added.
+
+New economic37 FIRST02 GREEN4.431547s and [foreign-contribution Siege connected FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/siege-foreign-contribution-material38/root-first01/ROOT-FIRST-RESULT.json) GREEN6.2121528s are static-ready. The latter verifies the existing one-day material cadence through Service, independent richSiege and SAVE fixtures; previously qualified Native foreign-leader whole was reused. Economic ledger-shape FIRST01 HarnessRED7.0072s remains. Root adopted9dd/9cec/158 as93533f26/3542cde6/dddc86c8; no actual day, siege, construction or M4/G2 credit follows from these fixtures.
+
+Native36 sourcebf55 four-domain42 compiler inputs are RUNNING/max64, FIRST pending. Runtime28 remains historically offline-only; Native34/35 offline GREEN is retained without replay. Current saved baseline remains H9715/date53288568/saved6010/G2 5/8/NW2 2/4/M4false/M6partial/natural0. Root owns minimal crash repair and the next independent actual qualification, while this report batch releases now.
+
+## Historical Native34/35 qualified offline; R77 exited, cold preparation pending at 21:20:24 CST
+
+**21:29:03 CST addendum:** Root sealed the [legacy cold-restore metadata adapter](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime35-canonical-preparation/legacy-cold-restore-adapter/OCT8-W41-FIELDS.json) GREEN with a2273B manifest and one metadata hash, zero binary hashes/builds/FIRSTs. Original preparation HarnessREDs and Native35 qualification remain distinct. Official rebind is running; no cold/live/day qualification is added, and H9715/date53288568/saved6010 remain unchanged.
+
+Actual **2026-10-08T21:20:24+08:00**. SuccessorNative34 sixwhole/sole sixconsumer FIRST and canonical are now GREEN, no replay of earlier GREEN pieces. Native35 FIRST14checks/0ACK and [canonical35](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix35/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json) are GREEN, DLL13139968B/fullaf9949SHA recorded in the daily report, 721mixed/sourcec61acca3. No newGame35 paused qualification yet. Native28 remains historically offline-only.
+
+OldR77 Game99872/SDK82567 ended by six-hour timeout at11:39:52.502204Z, actual tree_gone/cleanup_proven/oktrue/finalnamedinventoryempty. Historical139512 Wait0-signaled residual is already exited, not a new Game blocker. Current saved6010/H9715 tenstream and extra11 freeze are GREEN, only small changed marriage/Sway pins updated; initial pre-copy Sway-pin HarnessRED remains. Coldmanifest string/object prepare failed before state/packet/start; Root repairs preparation before a real minimized recovery. perf3976.8595477s/incoming92426.8346842s new qualifications stay offline; child/clergy/Chaplain/tax source candidates add no future Army/material/live credit. H9715/date53288568/saved6010/G2 5/8/NW2 2/4/M4false/M6partial/natural0 remain. Public5c88 and unpusheddd4459fe are separate; this report does not run build/test/Game or wait for every package.
+
+## Historical normal route advancement saved6010; Native34 pending at 15:39:51 CST
 
 Actual **2026-10-08T15:39:51+08:00**. Following actual stale release010/no native mailbox ACK for54235, Root did not resend. Second target56063 receipt008 in hotperf normalbatch01 is applied/free/old48cf retained, distinct from hot02 retained61540. Normalplan11 selected native_war_route_contact_horizon_progress; normalauto12 advanced one day, core13/full14 date53288568/public4/native6/pausedtrue. [SAVE15](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-sdk-hotperf03/operator/gameplay-responses/015-r77-afterstale-normal-batch-save01.json) materializedH9715/104646533B/ccb8fullSHA, same Robert/episode/Game99872 minimized. Saved6010/36524=16.45% is now credited from the real saved day, not from the previous horizon or turn count; no additional arrival/supply/future result is inferred.
 

@@ -1,6 +1,22 @@
 # 实测工作流程（CK3 mod 调试）
 
-## 2026-10-08 15:39:51：不同SDK批次编号、sticky worker拒绝与真实保存日分列
+## 2026-10-08 21:44:25：窗口资格RED与实际background-thread crash分列
+
+R78实际cold prepare133.8699075s／bootstrap0.5057323s／launch ACCEPTED3.3258942s成功，但Game146596在13:32:11.995918Z退出1、cleanup_proven／tree_gone。十二snapshot数据checks通过而windows[]RED，**完整paused资格未通过**；启动阶段成功或曾读到snapshot不能代替窗口验收。实际exception C0000005／address00007FFD977830C6／五帧xar_ck3_bridge.dll后台线程stack需要具体符号化，根因尚未查明，不能由windows[]先猜crash因果。[仅消息字段索引](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime35-report-coordination/ROOT-R78-ACTUAL-CRASH-NEXT-REPORT-FIELDS.json)登记dump151430462B而不重复读dump／save／Driver。SDK29336 exit_client002已排，退出pending单独记账；H9715冻结保留，0动作／日／SAVE，不需rollback或rehash。
+
+Economic37首次compound因`construction pending ledger shape unknown` HarnessRED7.0072s保留，仅两行schema修正后的[FIRST02](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/m4-economic-following37/first02/ROOT-FIRST-RESULT.json)实际GREEN4.431547s，不修改production数值断言以掩盖失败。Siege38唯一connected compound GREEN6.2121528s的one-day／独立richSiege／SAVE都是fixture，已qual foreignleader Native whole复用不重跑；只授static-ready，不授真实围城／day／M4／G2结果。Native36实际42编译输入max64 RUNNING，FIRST pending；34／35已成离线GREEN与本次live失败分层保留，Root用实际故障最小修复再验，不全面重测旧资格。
+
+## 历史2026-10-08 21:20:24：session timeout闭环、已exit残留和prepare未启动分别记录
+
+**21:29:03 CST实测后继：**Root已seal [legacy cold-restore metadata adapter](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime35-canonical-preparation/legacy-cold-restore-adapter/OCT8-W41-FIELDS.json)GREEN；旧reader要求`receipt.manifest.path`及`binaries`，canonical35的manifest为string且没有该array。最小外置四row view／clone receipt从held DLL＋qualified injector补metadata shape，新manifest2273B，仅新metadata hash1／binaryhash0，不改原canonical35或重复native资格。首次prepare失败仍保留；metadata seal不代表官方rebind或Game恢复完成，当前rebind进行中。
+
+旧R77实际stdout终态11:39:52.502204Z明确六小时session timeout shutdown，tree_gone/cleanup_proven/oktrue/finalnamedCK3inventoryempty；这是已解释且完成的owned cleanup，不继续写Game99872/SDK82567正在跑。另139512已由R74既有creation1791387224674/Wait0-signaled证据确认exited residual，原Operator误判已最小修正。Root不操作该进程，也不为重复残留观测开启新安全审计或Gameblocker。
+
+真正saved6010/H9715十流freeze与extra11复制已GREEN，原freeze初次在copy前因Sway small pin HarnessRED保留；changed婚姻/Sway实际small pins修正，checkpointSHA沿SAVE15复用，不重复hash大Save。Native35 cold prepare仅manifest **string↔object读取shape**失败，未创建state/packet/start；准备错误不能冒Game startup/capability RED。Actual35 metadata还无旧reader期望的binaries array，compatibility source adapter从held DLL/injector提供runtime_build_result、manifest source_head/binaries path/bytes/sha等读取形状，未新hash、retry未执行；修原失败step再恢复，不重测Native34/35已GREEN FIRST。Native35 registered FIRST14checks/0ACK和canonical721mixed是离线结果，不能授新paused/live/动作或日。
+
+perf3976.8595477s connected FIRST保留完整公开/持久化历史而减少三次deepcopy、仅static-ready；incoming92426.8346842s sole registered Service/NativeDriver/model GREEN的recipe用source_commit/source_tree，generic source_headnull不代表源码缺失，也不需重跑。Child完整Native36source9297609e／clergy／Chaplain／tax SOURCE_NOTRUN阶段各记账；source配方4prod＋1fixture不等实际compile，formalCrown ancestor已采用不需新增FIRST。当前0新增日/材料，报告只复用Root和owner消息，不读进程/EXE、hash或运行测试。原所有RED和混合对象来源保留，Root真实cold恢复另记。
+
+## 历史2026-10-08 15:39:51：不同SDK批次编号、sticky worker拒绝与真实保存日分列
 
 hotperf normalbatch01的008是新第二目标56063 applied/free独立receipt/old48cf ACK保留，**不同于hot02 008旧61540/801d retained**，不能只按response ordinal把两批材料混合。下一54235的010实际 `private release terms or request are stale`，native pre-mailbox拒绝/无ACK；Root具体定位workersticky may_have_submitted一次成功后collection未清，最小fix SOURCE_NOTRUN，**没有重发该attempt**。原成功与后一次真实失败都保留，不让新56063材料冒下一54235成功或完整M6credit。
 

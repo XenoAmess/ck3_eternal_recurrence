@@ -1,6 +1,18 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 15:39:51 CST：真实＋1day／H9715保存，saved6010；重复release sticky拒绝待修
+### 2026-10-08 21:44:25 CST：R78实际crash，两项新Service离线GREEN／Native36编译中
+
+R78 Game146596 **13:32:11.995918Z退出1／cleanup_proven／tree_gone**，exception C0000005、五帧xar_ck3_bridge.dll后台线程stack；符号化根因未查明。[实际故障字段](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime35-report-coordination/ROOT-R78-ACTUAL-CRASH-NEXT-REPORT-FIELDS.json)保留完整边界：12数据checks通过但windows[]RED，**paused snapshot未qualified**；prepare／bootstrap／launch ACCEPTED不能替代此结果。SDK29336 exit_client inbox002已排、退出仍pending。H9715／saved6010／date53288568保持，本次0动作／day／SAVE，原34／35离线GREEN不重开。
+
+M4 economic37 **FIRST02 GREEN4.431547s**、Siege foreign-contribution38 **connected FIRST GREEN6.2121528s**，Root分别采用9dd→93533f26／fixture9cec→3542cde6／158→dddc86c8，**只static-ready，未live／无M4或G2信用**；economic首次ledger shape HarnessRED保留。Native36 bf55四域42编译输入实际RUNNING／max64／FIRST pending；当前Rootdddc86c8报告及发布待统一，详见[日报](daily/2026-10-08.md)。
+
+### 历史2026-10-08 21:20:24 CST：Native34／35 canonical GREEN，旧R77 timeout已清理／cold prepare未启动
+
+**21:29:03 CST增量：**冷恢复兼容元数据已由Root封存GREEN：[adapter字段](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime35-canonical-preparation/legacy-cold-restore-adapter/OCT8-W41-FIELDS.json)。新2273B manifest仅做1次metadata hash、binaryhash0，Native35原资格不变；首次string/object及缺binaries的prepare HarnessRED保留。官方rebind进行中，未授cold恢复／Game35／新日信用。
+
+Native34 [canonical归档](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix34)已GREEN；Native35 **FIRST14checks／0ACK＋[canonical GREEN](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix35/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)**，DLL13139968B／fullaf9949SHA／721mixed／sourcec61acca3，未live。旧R77 **11:39:52.502204Z六小时timeout shutdown tree_gone／cleanup_proven／oktrue**、final namedinventoryempty，旧139512为已证Wait0-signaled exited残留，不是新blocker；**不再称R77运行中**。saved6010/H9715十流freeze＋extra11实际GREEN，初Sway small-pin copy前HarnessRED保留，未rehash Save。新cold prepare仅manifest string/object读取shape失败，未state／packet／启动，Root修正中。perf397／incoming9242新qualified GREEN6.8595477／6.8346842s；child/clergy/Chaplain/tax仍sourceonly，G2 5/8/NW2 2/4/M4false/M6partial/natural0/6010不变。Latestpublished5c88a8de与Rootdd4459fe待push分列，详见[日报](daily/2026-10-08.md)。
+
+### 历史2026-10-08 15:39:51 CST：真实＋1day／H9715保存，saved6010；重复release sticky拒绝待修
 
 R77 hotperf normalbatch01的008为**第二目标56063 applied／free独立receipt**、保留48cf ACK；010对仅余54235发生stale拒绝、native pre-mailbox无ACK，Native32 sticky may_have_submitted未清的最小修复SOURCE_NOTRUN，Root无重发。随后normalplan11→normalauto12真实advance1day，core13／full14 **date53288568／public4／native6／pausedtrue**，SAVE15 **GREEN07:31:13Z／H9715／104646533B**，见[真实checkpoint](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-sdk-hotperf03/operator/gameplay-responses/015-r77-afterstale-normal-batch-save01.json)。saved **6010/36524＝16.45%**，G2 5/8／NW2 2/4／M4false／M6partial／natural0保持。Construction4df唯一FIRST GREEN6.6817379s、未deploy／无M4credit；Native34 Stop参数修后compile/archive GREEN，但@rsp wrapper name-too-long HarnessRED、link-only03进行／FIRST未run。旧RED与无重跑边界保留，本批快速释放不等后续。
 
