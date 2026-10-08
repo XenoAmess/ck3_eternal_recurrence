@@ -49,11 +49,19 @@ def main() -> int:
 
     checks = 0
     inputs = {}
+    packets = {}
     wires = {}
     for case in _CASES:
         path = args.native_fixture_dir / f"{case}.json"
         raw = path.read_bytes()
-        wires[case] = json.loads(raw)
+        packet = json.loads(raw)
+        if (not isinstance(packet, dict)
+                or set(packet) != {"type", "protocol_version", "request_id", "ok", "result"}
+                or packet["type"] != "command_result" or packet["protocol_version"] != 1
+                or packet["ok"] is not True or not isinstance(packet["result"], dict)):
+            raise ValueError(f"{case}: native producer must supply its whole command_result frame")
+        packets[case] = packet
+        wires[case] = packet["result"]
         inputs[case] = {"path": str(path), "bytes": len(raw),
                         "sha256": hashlib.sha256(raw).hexdigest()}
 
@@ -76,8 +84,9 @@ def main() -> int:
     class Endpoint:
         pipe_name = r"\\.\pipe\xar_prisoner_retained_receipt_fixture"
 
-        def __init__(self, wire):
-            self.wire = wire
+        def __init__(self, packet):
+            self.packet = packet
+            self.wire = packet["result"]
             self.requests = []
 
         def start(self, on_frame, on_disconnect):
@@ -97,9 +106,9 @@ def main() -> int:
             check(request["expected_revision"] == leaf["snapshot_revision"],
                   "the actual Driver maps current public revision to native revision")
             self.requests.append(copy.deepcopy(request))
-            self.publish({"type": "command_result", "protocol_version": 1,
-                          "request_id": request["request_id"], "ok": True,
-                          "result": self.wire})
+            frame = copy.deepcopy(self.packet)
+            frame["request_id"] = request["request_id"]
+            self.publish(frame)
 
         def close(self):
             pass
@@ -117,7 +126,7 @@ def main() -> int:
             check(wire["step"] == _QUERY, f"{case}: new whole native collection packet")
             with tempfile.TemporaryDirectory() as temporary:
                 state_dir = Path(temporary)
-                endpoint = Endpoint(wire)
+                endpoint = Endpoint(packets[case])
                 driver = NativeHeadlessGameplayDriver(
                     endpoint.pipe_name, endpoint=endpoint, command_timeout_seconds=.1,
                     state_dir=state_dir,
