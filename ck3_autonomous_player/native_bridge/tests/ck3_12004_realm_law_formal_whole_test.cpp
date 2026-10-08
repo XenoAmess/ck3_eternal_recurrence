@@ -10,7 +10,9 @@
 
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <cassert>
+#include <chrono>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
@@ -20,6 +22,7 @@
 #include <string>
 #include <string_view>
 #include <tuple>
+#include <thread>
 #include <vector>
 #include <windows.h>
 
@@ -421,57 +424,44 @@ void CheckActual4SourceFactory(const actual4::RealmLawActionMailboxState12004 &s
   assert(actual.read_resources == expected.read_resources);
   assert(actual.submit_enact == expected.submit_enact);
 }
+
+void *tls_context = nullptr;
+void *__fastcall FixtureTls() noexcept { return tls_context; }
+
+// Reuse the existing deterministic pump surface used by the qualified raw
+// Crown fixture. Inputs are synthetic; TrySubmit/Wait/Reclaim and the owner
+// drain are the complete production definitions from the full Bridge link.
+struct Pump {
+  std::array<std::byte, 0x28> tls{}, jomini{};
+  std::array<std::byte, 0x10> game_state{};
+  void *jomini_pointer = jomini.data(), *game_state_pointer = game_state.data();
+  std::uint8_t initialized = 1;
+  std::uintptr_t unused_rng = 0;
+
+  explicit Pump(xar::ck3_11906::MainThreadQueryMailboxV1 &mailbox) {
+    namespace api = xar::ck3_11906;
+    tls[api::kMainThreadTlsMarkerOffset] = std::byte{1};
+    jomini[api::kJominiPausedOffset] = std::byte{1};
+    const auto date = static_cast<std::int32_t>(kDate);
+    std::memcpy(game_state.data() + api::kGameStateDateRawOffset, &date, sizeof(date));
+    tls_context = tls.data();
+    mailbox.global_rng_wrapper_slot = reinterpret_cast<std::uintptr_t>(&unused_rng);
+    mailbox.jomini_state_slot = reinterpret_cast<std::uintptr_t>(&jomini_pointer);
+    mailbox.game_state_slot = reinterpret_cast<std::uintptr_t>(&game_state_pointer);
+    mailbox.tls_initialized_flag = reinterpret_cast<std::uintptr_t>(&initialized);
+    mailbox.tls_context_getter = &FixtureTls;
+    mailbox.executor_submission_enabled = true;
+    mailbox.iat_hook_installed = true;
+    mailbox.state = api::MainThreadQueryMailboxStateV1::idle;
+    for (unsigned i = 0; i < 2U; ++i)
+      (void)api::ObserveMainThreadPumpAndDrainV1(
+          mailbox, mailbox.pump_exact_return_rva, GetCurrentThreadId());
+    assert(mailbox.paused_owner_verified_pump_epochs.load(std::memory_order_acquire) >= 2U);
+    assert(mailbox.owner_thread_id.load(std::memory_order_acquire) == GetCurrentThreadId());
+  }
+  ~Pump() { tls_context = nullptr; }
+};
 } // namespace
-
-namespace xar::ck3_12002 {
-// The production handler's WorkerAdapter unwrap is a software-only accessor.
-const game::GameAdapter &NativeAdapter12002(const game::GameAdapter &adapter) noexcept {
-  return adapter;
-}
-} // namespace xar::ck3_12002
-
-namespace xar::ck3_11906 {
-// Scheduling is the sole mailbox substitution. The production envelope still
-// checks the executor, owner, ticket and paused adapter frame for each call.
-MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
-    MainThreadQueryMailboxV1 &mailbox, MainThreadQueryExecutorV1 executor,
-    void *opaque, MainThreadQueryTicketV1 &ticket,
-    MainThreadQueryQueuedWakeTraceV1 *) noexcept {
-  if (mailbox.executor != nullptr ||
-      executor != mailbox.permitted_executor_septentrigintary)
-    return MainThreadQuerySubmitResultV1::mailbox_busy;
-  ticket.sequence = mailbox.published_sequence.fetch_add(1) + 1;
-  mailbox.owner_thread_id = GetCurrentThreadId();
-  mailbox.executor = executor;
-  mailbox.executor_context = opaque;
-  mailbox.state = MainThreadQueryMailboxStateV1::executing;
-  MainThreadExecutionStampV1 stamp{};
-  stamp.pump_epoch = ticket.sequence;
-  stamp.thread_id = GetCurrentThreadId();
-  stamp.paused = true;
-  stamp.date_raw = kDate;
-  stamp.tls_initialized = stamp.tls_main_thread_marker = 1;
-  stamp.tls_context = stamp.jomini_state = stamp.game_state = 1;
-  const bool ok = executor(opaque, stamp);
-  mailbox.state = ok ? MainThreadQueryMailboxStateV1::completed :
-                       MainThreadQueryMailboxStateV1::executor_failed;
-  return MainThreadQuerySubmitResultV1::submitted;
-}
-MainThreadQueryWaitResultV1 WaitForMainThreadQueryV1(
-    MainThreadQueryMailboxV1 &mailbox, const MainThreadQueryTicketV1 &,
-    std::uint32_t, MainThreadQueryQueuedWakeTraceV1 *, std::uint32_t) noexcept {
-  return mailbox.state == MainThreadQueryMailboxStateV1::completed ?
-      MainThreadQueryWaitResultV1::completed :
-      MainThreadQueryWaitResultV1::executor_failed;
-}
-MainThreadQueryReclaimResultV1 ReclaimMainThreadQueryV1(
-    MainThreadQueryMailboxV1 &mailbox, const MainThreadQueryTicketV1 &) noexcept {
-  mailbox.state = MainThreadQueryMailboxStateV1::idle;
-  mailbox.executor = nullptr;
-  mailbox.executor_context = nullptr;
-  return MainThreadQueryReclaimResultV1::reclaimed;
-}
-} // namespace xar::ck3_11906
 
 int main(int argc, char **argv) {
   assert(argc <= 2);
@@ -483,6 +473,7 @@ int main(int argc, char **argv) {
   mailbox.offline_fixture = true;
   mailbox.permitted_executor_septentrigintary =
       &actual4::ExecuteRealmLawPrivateAction12004;
+  Pump pump(mailbox);
   law::AddLawCommandOfflineCallsV1 calls{
       &fixture, Fixture::Validate, Fixture::Clone, Fixture::Queue,
       Fixture::DestroyCommand};
@@ -516,9 +507,24 @@ int main(int argc, char **argv) {
   std::string wire, failure;
   const auto call = [&](std::string_view step, const std::string &payload,
                         std::uint64_t revision, std::string_view request_id) {
-    const bool ok = actual4::HandleRealmLawPrivateWithState12004(
-        *state, adapter, mailbox, adapter.snapshot, revision, step, payload,
-        request_id, wire, failure, &bindings);
+    std::atomic<bool> done{false};
+    bool ok = false, drained = false;
+    std::thread worker([&] {
+      ok = actual4::HandleRealmLawPrivateWithState12004(
+          *state, adapter, mailbox, adapter.snapshot, revision, step, payload,
+          request_id, wire, failure, &bindings);
+      done.store(true, std::memory_order_release);
+    });
+    while (!done.load(std::memory_order_acquire)) {
+      if (mailbox.state.load(std::memory_order_acquire) ==
+          xar::ck3_11906::MainThreadQueryMailboxStateV1::queued)
+        drained = xar::ck3_11906::ObserveMainThreadPumpAndDrainV1(
+            mailbox, mailbox.pump_exact_return_rva, GetCurrentThreadId()) || drained;
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    worker.join();
+    assert(!ok || drained);
+    assert(mailbox.state == xar::ck3_11906::MainThreadQueryMailboxStateV1::idle);
     if (!ok)
       std::cerr << "failure: " << failure << "; source: "
                 << state->source.failure << '\n';
