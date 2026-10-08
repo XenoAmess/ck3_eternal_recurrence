@@ -187,6 +187,52 @@ mapping and the actual selected child role are the next required source
 inputs. The source-only interface inventory is retained at
 `.../consumer-contract/next-source-actual780/`.
 
+The existing read-only MCP entry is
+`ck3_query_character_interaction_ordinary_v1(interaction_key, recipient_id,
+expected_revision)`. For future actual child input, Root can supply
+`interaction_key="educate_child_interaction"`, the observed full child ID
+as `recipient_id` and the current **public** snapshot revision. Its actor
+is the current player; the public request has no explicit
+`secondary_actor` or `secondary_recipient` selectors. Redirect can rebind
+the recipient to an employer, so the input recipient ID must not be called
+the resulting selected ward without observing the actual roles.
+
+The response's `character_interaction_ordinary_context.effective_roles`
+publishes `actor_id`, `recipient_id`, `secondary_actor_id`,
+`secondary_recipient_id`, `intermediary_id` and `sixth_role_id`. The same
+payload publishes `interaction_key` and unsigned `definition_stable_hash`.
+It does not publish definition/database/module pointers, definition
+ordinal, canonical key bytes, compiled AST or a named+0xAE8 member.
+`DefinitionMatches` is an internal native identity check; it does not mean
+Root has acquired those missing source bytes through MCP. The Prepare path
+already resolves and checks the loaded definition, constructs the typed
+two-role context, refreshes/finalizes it and calls named0x3079690. Thus
+the existing query is the first role/term source to reuse, without adopting
+the65-byte helper merely for identity.
+
+The four authored send options can make `ordinary_context_supported=false`
+and `ready_to_initiate=false` while the read-only query still retains
+terms. No initiation support is extended here. Future explicit selected
+guardian/ward handling needs its own source closure; neither a whole
+shown=false nor a redirected role is a HasGuardian observation. If a
+loaded compiled-clause decode really requires source bytes missing from
+this wire, add only that specifically justified capture on the existing
+query, rather than treating the identity candidate as a finished observer.
+
+### Latest actual child receiver boundary
+
+Root's R80 paused family003 evidence is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/managed-full-h9715-r80-abi42restore01/operator/gameplay-responses/003-r80-current-heir-family-native42.json`.
+Root reported Native42/SDKdac, Robert29829, native revision2/public3,
+date53288568, heir38822, primary spouse38718 and bilateral verification.
+The actual descendant leaf is available and complete, Family present,
+native count0 and empty rows; both paired pregnancy observations are
+available false. This lane reuses those Root-supplied fields, with no Game
+or SDK read. There is no actual child ID for an education query. Do not
+substitute Robert or the heir, fabricate a child or award nonempty
+focus/trait/guardian/education readiness. Ordinary gameplay and natural
+birth progression remain Root's independent mainline.
+
 ## Minimal research helper and same-query hook
 
 The admitted actual4 interaction provider already binds database getter,
