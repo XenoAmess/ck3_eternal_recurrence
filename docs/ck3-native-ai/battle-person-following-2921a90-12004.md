@@ -161,3 +161,46 @@ Source review is complete; **build, native FIRST and registered FIRST are
 NOTRUN** in this candidate. The source diff is not native, fixture-live or
 production-live qualification. Root records the actual adopted source, build
 closure and new receipts. Historical Native41 qualified cases are not replayed.
+
+## Native43 actual FIRST qualification — 2026-10-09
+
+Root completed the new source's native and registered-consumer FIRST on adopted
+full source `dac47ba428d524ff201c7aeff295c58243cfa820` at
+`Z:/gbs-runtime43-person-following-source`. Its checkout receipt is exit0,
+full26012 files, non-sparse. The earlier candidate's NOTRUN statements above
+record its delivery state; the following actual receipts supersede that state
+for this new ten-packet fixture and its sole registered compound.
+
+The selected parent is Native42's **BUILD_GREEN_LIVE_PENDING** build with
+730 production owners. Native43's actual compile closure is **429 existing
+production units + 1 new Runtime unit + 1 new fixture = 431 compiler
+invocations**, with jobs64 and BelowNormal priority. The final production
+closure is **731 owners: Bridge299 / Runtime431 / Protocol1**, including
+301 retained parent owners. No parent paused-live qualification is inferred
+from its build status.
+
+The selected successful result is
+`Z:/g2-native43-build01/attempt02/ROOT-NATIVE43-RESULT.json` (**GREEN**).
+The new native FIRST produced its ten ORIGINAL complete `command_result`
+packets and passed in **0.2567488s**. The sole registered Python FIRST compound
+consumed those same ten whole packets through the production query
+normalization/MCP route and genuine emitters and passed in **4.2143959s**.
+These are new Native43 receipts, separate from the historical Native41 carrier
+suite.
+
+The initial failure remains available at
+`Z:/g2-native43-build01/attempt01/ROOT-NATIVE43-RESULT.json`: **precompiler
+schema harness RED, 0.2625799s**. It occurred before compiler execution and is
+retained as a harness failure, with **no capability RED** assigned to the new
+reader. The successful attempt does not erase that failed attempt.
+
+Readiness after this FIRST is **static-ready**. The original whole-packet
+fixture and registered MCP compound now qualify the implemented direct family,
+independently complete rows, observed known-empty conditional family and exact
+nonzero-conditional gap handling described above. They provide **live=false,
+full-person=false and G2 credit0**: the paused snapshot transport seam is offline
+fixture scaffolding, not a paused game artifact. Current R80 work belongs to
+Native42, not Native43, and supplies no Native43 live credit. Actual conditional
+classifier/evaluator/header inputs and the fresh logical baseline/full-person
+merger remain the named construction work before complete Entry or forecast
+readiness.
