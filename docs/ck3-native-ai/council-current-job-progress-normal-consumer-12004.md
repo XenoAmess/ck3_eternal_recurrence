@@ -14,9 +14,14 @@ No EXE bytes or old qualification are reread.
 [Current Council port](council-government-12004-adopted-mcp-port.md) binds the
 active-task lookup at `2916CC0`, seat lookup at `2684EE0`, and effective skill
 at `28B1690`. [Full campaign root](ck3-1.20.0.4-full-campaign-root.md) binds
-value current/max evaluation at `31AB500/31AB820`. The existing reader and
-strict Python contract already publish each current seat's incumbent,
-`task_key`, `task_type`, typed target, frozen state and progress.
+value current/max evaluation at `31AB500/31AB820`. The common reader and strict
+Python contract support each seat's incumbent, task, target, frozen state and
+progress. The current actual4 full-root branch still publishes empty Council
+positions with `actual4_council_position_key_source_unavailable`; this
+consumer qualification does not establish actual4 job rows in production.
+The existing private selected-seat query has a validated current task and
+bypasses the dynamic PositionType key gap. Its numeric/context extension is
+the [next current-task tax input](council-current-task-domain-tax-component-12004.md).
 
 | Existing observation | Valid interpretation | Decision still missing |
 | --- | --- | --- |
@@ -36,7 +41,8 @@ separate from the legacy full-AI-input/action profile.
 
 ```mermaid
 flowchart TD
-    R[Qualified actual4 campaign root] --> T[Current role / incumbent / task / target / frozen]
+    R[Qualified common Council contract and existing root input] --> T[Current role / incumbent / task / target / frozen when supplied]
+    R -. actual4 root dynamic PositionType key still unknown .-> X[Empty actual4 root Council positions]
     T --> K{Native progress kind}
     K --> I[Infinite: retain legal null current/max]
     K --> B[Percentage or value: retain raw current/max and remaining]
