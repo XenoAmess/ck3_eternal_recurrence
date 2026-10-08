@@ -1,6 +1,14 @@
 # Runtime27 background observers — 2026-10-08
 
-## Native37 canonical GREEN; Native38 FIRST GREEN at 22:39:27 CST
+## Native38/39 canonical and rich Worker offline qualification at 23:27:49 CST
+
+Recorded2026-10-08T23:27:49+08:00. Previous14-commit ordinary fetch/rebase/FF publication988d8438b9b23fab13413384fd588f45920f8fef had zero conflicts/merges; current four scoped adoptions3bbe2202 await publication. Canonical38 actualGREEN13209600B/7dadd1fa fullSHA,2308B/b1865265manifest and canonical39 actualGREEN13227008B/54b524ce,2367B/51e7c7e7 have exact pins in the daily report.
+
+39 actual141compiler GREEN/about59.167s/max64,140prod70Bridge+70Runtime/585retained/725 plusfixture1,two archives/DLL+fixturelinks GREEN. One new whole workflow/twoframes GREEN.3913295s; sole [consumer04 GREEN4.9595138s](Z:/g2-native39-build01/root-consumer-retry04/ROOT-ACTUAL-RESULT.json),two MCP snapshots/ping1/gameplay0. Three original ImportError/pipe literal/raw2-vs-normal-public4 HarnessREDs remain; explicit2Native/all4public union/War×Province×occurrence/selection assertions retained,production0,Native/140CPP no replay. Compiled8de andqualification202431e1 are immutable despite Rootadoption/rebase.
+
+Synthetic DTOs exercise real WorkerAdapter observe/cache/copy/formatter and registered Service,offline scope only. R78 actual cause/live fix is not finally confirmed; raw stack candidates are not unwind. Local CK3/live SDK/prepare/R79 remain forbidden,H9715/saved6010/G2 counters unchanged. Release without waiting for Game or crash cause.
+
+## Historical Native37 canonical GREEN; Native38 FIRST GREEN at 22:39:27 CST
 
 **22:43:26 CST addendum:** Stack02 captured realRSP4096B; owner clarified total fresh4332B includes the stack, hash0. Four raw bridge-address candidates/unwindfalse are correlations, not an actual callstack or cause. Stack01 metadata-slice HarnessRED remains. Release now without waiting for canonical38 or the new rich Worker Snapshot fixture.
 

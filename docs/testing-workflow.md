@@ -1,6 +1,12 @@
 # 实测工作流程（CK3 mod 调试）
 
-## 2026-10-08 22:39:27：fixture Hello路由与dump Stack dataRva0实证
+## 2026-10-08 23:27:49：raw snapshot行数与normal public union分别断言
+
+Native39 rich Worker whole一个workflow／两frames GREEN.3913295s，sole registered Service consumer04 GREEN4.9595138s。前三consumer HarnessRED分别ImportError5.0578167s／pipe literal4.620563s／expectedraw2而actualnormal public union4 6.1886433s，原件保留。Native显式2行与normalizer合并Army／War／Province／occurrence得到逐4public Army须分别断言；04保留两层完整union／selection约束，不改production、不以删除业务断言修rowcount。实际两ck3_take_snapshot／ping1／gameplay0，140CPP和Native输出复用，不重编／重跑旧GREEN。
+
+Synthetic DTO确实经过WorkerAdapter observe／cache／copy／formatter和registered Service，能授offline workflow scope，不能据此认定R78 actual Game AV根因或live修复。Canonical38／39已归档，与actual live分层；compiled8de／qualification202431e1不随Rootrebase／adoption变。当前用户禁CK3／live SDK／prepare／R79，后继真实paused验收待授权，报告不查Game／dump或hash。
+
+## 历史2026-10-08 22:39:27：fixture Hello路由与dump Stack dataRva0实证
 
 **22:43:26 CST后继：**Root stack02从MemoryList实际读取真实RSP4096B，owner明确总fresh4332B包含该栈/hash0，bridge raw候选4/unwindfalse。Raw扫描候选即使映射到vectorTidy／PublishSnapshot／RunConnectedSession，也不等于unwind出的callstack或根因。保留stack01 metadata读取HarnessRED，下一只真实rich Worker Snapshot离线复现，不因四候选重扫dump或编造其它frame。
 

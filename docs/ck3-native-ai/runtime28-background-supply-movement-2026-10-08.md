@@ -2,7 +2,15 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Native37 canonical and Native38 FIRST qualified offline at 22:39:27 CST
+## Native38/39 archived; Worker workflow qualified offline at 23:27:49 CST
+
+Actual2026-10-08T23:27:49+08:00. Previous ordinary fetch/rebase/FF published988d8438b9b23fab13413384fd588f45920f8fef,no merge; current scoped adoptions3bbe2202 unpublished. Canonical38 GREEN13209600B/7dadd1fa,2308B/b1865265manifest; canonical39 GREEN13227008B/54b524ce,2367B/51e7c7e7,exact hashes in the daily report.
+
+39 actual141compiler/140prod70Bridge+70Runtime+fixture1/585retained/725 GREEN,max64/about59.167s,two archives/DLL+fixturelinks GREEN. New whole one workflow/twoframes .3913295s,sole [consumer04 GREEN4.9595138s](Z:/g2-native39-build01/root-consumer-retry04/ROOT-ACTUAL-RESULT.json),twoMCP snapshots/ping1/gameplay0. Three HarnessREDs preserved,explicit2Native/all4public union/occurrence/selection assertions retained,production0,Native/140CPP no replay; compiled8de/qualification202431e1 separate from adopted hashes.
+
+Real WorkerAdapter/Service receives synthetic DTOs: static-ready/offline-qualified,not confirmed R78 source cause or live repair. Runtime28 stays historically offline-only; current Game/live SDK/prepare/R79 forbidden,H9715/date53288568/saved6010/G2 5/8/NW2 2/4/M4false/M6partial/natural0 unchanged,no actual Army/day/material credit. Release now for Rootpublication.
+
+## Historical Native37 canonical and Native38 FIRST qualified offline at 22:39:27 CST
 
 **22:43:26 CST addendum:** RealRSP4096B was captured in stack02, total fresh4332B including stack/hash0 per owner. Four raw bridge candidates/unwindfalse are not a true callstack or fault cause; stack01 metadata HarnessRED is retained. Publish the completed qualifiers without waiting for canonical38 or Worker fixture.
 
