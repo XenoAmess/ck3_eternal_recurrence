@@ -68,11 +68,19 @@ class ArmyCacheLocalDetachmentFirst0Tests(unittest.TestCase):
             # ordinary Service planner and registered plan route intact.
             endpoint.publish(_hello("game.state.snapshot", "game.command.query-army-strengths-v1"))
             with driver.state._condition:
-                # This is the already accepted actual SDK semantic frame,
-                # not a reconstruction of a native command_result envelope.
-                driver.state._semantic_snapshot = real_deepcopy(frame)
+                # SDK revision is public; NativeProtocolState stores the
+                # producer's native revision here and exposes public revision
+                # separately. Retain the whole actual frame and adapt only
+                # that existing generated revision projection.
+                native_frame = real_deepcopy(frame)
+                native_frame["revision"] = frame["native_revision"]
+                driver.state._semantic_snapshot = native_frame
                 driver.state._public_revision = frame["revision"]
                 driver.state._connection_generation = frame["diagnostics"]["connection_generation"]
+            projected_frame = driver.state.semantic_snapshot()
+            self.assertEqual(projected_frame["revision"], frame["revision"])
+            self.assertEqual(projected_frame["native_revision"], frame["native_revision"])
+            self.assertEqual(projected_frame["snapshot_id"], frame["snapshot_id"])
             driver._episode_character_id = frame["played_character"]["character_id"]
             driver._episode_run_id = frame["episode_run_id"]
             driver._episode_binding_state = "active_new"
