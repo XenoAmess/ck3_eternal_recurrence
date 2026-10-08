@@ -185,6 +185,8 @@ void AttachHeldPhysicalFixtureInputs(game::ArmyStrengthSnapshot &row, const Scen
   game::ArmyRegimentReplenishmentRecordsSnapshotV1 data{};
   data.status = game::ArmyRegimentReplenishmentRecordsStatusV1::available;
   data.army_regiment_id = kArrg; data.native_data_record_count = 1;
+  // Held ordinary ArRg: refresh must consume known false, not missing/Character1/1.
+  data.native_loss_writer_skipped = false;
   game::ArmyRegimentReplenishmentRecordV1 record{};
   record.available = true; record.record_index = 0; record.persistent_regiment_id = kPersistent;
   record.chunk_index = 0; record.current_soldiers = 80; record.maximum_soldiers = 100;
