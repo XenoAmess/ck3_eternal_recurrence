@@ -1,0 +1,856 @@
+{
+  "schema": "lyd.exact-head.bounded-official-ci.final.v1",
+  "status": "EXACT_HEAD_TRIGGERED_WORKFLOWS_FINAL_SUCCESS",
+  "exact_head": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "sealed_at_utc": "2026-10-08T05:17:59.561869+00:00",
+  "parent_shas": [
+    "ca3888b11393df33425789532b3b6604d658ff55"
+  ],
+  "workflows": [
+    {
+      "id": 37729515030,
+      "name": "Official Runner CI",
+      "head_sha": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+      "head_branch": "master",
+      "event": "push",
+      "path": ".github/workflows/static-ci.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37729515030",
+      "created_at": "2026-10-08T04:51:46Z",
+      "updated_at": "2026-10-08T05:00:34Z",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 113155217275,
+          "name": "static",
+          "head_sha": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37729515030/job/113155217275",
+          "started_at": "2026-10-08T04:51:48Z",
+          "completed_at": "2026-10-08T05:00:34Z",
+          "check_run_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/check-runs/113155217275",
+          "failed_steps": [],
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T04:51:49Z",
+              "completed_at": "2026-10-08T04:51:50Z"
+            },
+            {
+              "name": "Require non-C task workspace and temp",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T04:51:50Z",
+              "completed_at": "2026-10-08T04:51:51Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T04:51:51Z",
+              "completed_at": "2026-10-08T04:52:37Z"
+            },
+            {
+              "name": "Run actions/setup-python@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-08T04:52:37Z",
+              "completed_at": "2026-10-08T04:52:41Z"
+            },
+            {
+              "name": "Install task packages outside C",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-08T04:52:41Z",
+              "completed_at": "2026-10-08T04:52:46Z"
+            },
+            {
+              "name": "Install static dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T04:52:46Z",
+              "completed_at": "2026-10-08T04:52:58Z"
+            },
+            {
+              "name": "Install released promo toolchain",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-08T04:52:58Z",
+              "completed_at": "2026-10-08T04:53:01Z"
+            },
+            {
+              "name": "Compile Python tools",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-10-08T04:53:01Z",
+              "completed_at": "2026-10-08T04:53:11Z"
+            },
+            {
+              "name": "Test CoA runtime-registry claim boundary",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-10-08T04:53:11Z",
+              "completed_at": "2026-10-08T04:53:11Z"
+            },
+            {
+              "name": "Test native research planning and evidence rendering",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-08T04:53:11Z",
+              "completed_at": "2026-10-08T04:53:12Z"
+            },
+            {
+              "name": "Test protected project EXE broker source without privileged actions",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-08T04:53:12Z",
+              "completed_at": "2026-10-08T04:53:12Z"
+            },
+            {
+              "name": "Test offline vanilla event research tools",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-08T04:53:12Z",
+              "completed_at": "2026-10-08T04:53:13Z"
+            },
+            {
+              "name": "Test native verifier evidence scope without CK3",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-08T04:53:13Z",
+              "completed_at": "2026-10-08T04:53:14Z"
+            },
+            {
+              "name": "Test isolated native army route producer without CK3",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-10-08T04:53:14Z",
+              "completed_at": "2026-10-08T04:55:14Z"
+            },
+            {
+              "name": "Test strict army route read-status contract",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-10-08T04:55:14Z",
+              "completed_at": "2026-10-08T04:55:18Z"
+            },
+            {
+              "name": "Test public CUnit zero and decision history contracts without CK3",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-10-08T04:55:18Z",
+              "completed_at": "2026-10-08T04:55:46Z"
+            },
+            {
+              "name": "Preserve decision history growth evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-10-08T04:55:46Z",
+              "completed_at": "2026-10-08T04:55:49Z"
+            },
+            {
+              "name": "Test CLA checker",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-10-08T04:55:49Z",
+              "completed_at": "2026-10-08T04:55:49Z"
+            },
+            {
+              "name": "Test succession GUI projection contract",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-10-08T04:55:49Z",
+              "completed_at": "2026-10-08T04:55:49Z"
+            },
+            {
+              "name": "Test native courtier metadata compatibility",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-10-08T04:55:49Z",
+              "completed_at": "2026-10-08T04:55:49Z"
+            },
+            {
+              "name": "Test release manifest verification",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-10-08T04:55:49Z",
+              "completed_at": "2026-10-08T04:55:49Z"
+            },
+            {
+              "name": "Test Vivhite release tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-10-08T04:55:49Z",
+              "completed_at": "2026-10-08T04:55:52Z"
+            },
+            {
+              "name": "Test independent Vivhite native contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-10-08T04:55:52Z",
+              "completed_at": "2026-10-08T04:55:52Z"
+            },
+            {
+              "name": "Test Ox Here release tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-10-08T04:55:52Z",
+              "completed_at": "2026-10-08T04:55:53Z"
+            },
+            {
+              "name": "Test Mandala Purge release tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-10-08T04:55:53Z",
+              "completed_at": "2026-10-08T04:55:54Z"
+            },
+            {
+              "name": "Test Tributary Expansion Directives release tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-10-08T04:55:54Z",
+              "completed_at": "2026-10-08T04:55:56Z"
+            },
+            {
+              "name": "Test Celestial Commerce and Corruption release tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-10-08T04:55:56Z",
+              "completed_at": "2026-10-08T04:55:59Z"
+            },
+            {
+              "name": "Test Auto Upgrade Buildings release tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-10-08T04:55:59Z",
+              "completed_at": "2026-10-08T04:56:00Z"
+            },
+            {
+              "name": "Test and validate Superman Qiang without CK3",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-10-08T04:56:00Z",
+              "completed_at": "2026-10-08T04:56:10Z"
+            },
+            {
+              "name": "Test machine- and mod-scoped CK3 live-run IDs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-10-08T04:56:10Z",
+              "completed_at": "2026-10-08T04:56:10Z"
+            },
+            {
+              "name": "Test Reclaim the Motherland release tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-10-08T04:56:10Z",
+              "completed_at": "2026-10-08T04:56:12Z"
+            },
+            {
+              "name": "Test ZhongGuo 361 release tooling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-10-08T04:56:12Z",
+              "completed_at": "2026-10-08T04:56:23Z"
+            },
+            {
+              "name": "Test ZhongGuo 361 generators and acceptance contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-10-08T04:56:23Z",
+              "completed_at": "2026-10-08T04:58:41Z"
+            },
+            {
+              "name": "Test ZhongGuo 361 release localization",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-10-08T04:58:41Z",
+              "completed_at": "2026-10-08T04:58:41Z"
+            },
+            {
+              "name": "Verify ZhongGuo 361 generated and static content",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-10-08T04:58:41Z",
+              "completed_at": "2026-10-08T04:58:49Z"
+            },
+            {
+              "name": "Verify ZhongGuo 361 release localization audit",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 36,
+              "started_at": "2026-10-08T04:58:49Z",
+              "completed_at": "2026-10-08T04:58:49Z"
+            },
+            {
+              "name": "Verify ZhongGuo 361 thumbnail and Workshop media",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 37,
+              "started_at": "2026-10-08T04:58:49Z",
+              "completed_at": "2026-10-08T04:58:55Z"
+            },
+            {
+              "name": "Test and validate ZhongGuo 361 promo project",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 38,
+              "started_at": "2026-10-08T04:58:55Z",
+              "completed_at": "2026-10-08T04:59:09Z"
+            },
+            {
+              "name": "Test MiniMax localization caller",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 39,
+              "started_at": "2026-10-08T04:59:09Z",
+              "completed_at": "2026-10-08T04:59:09Z"
+            },
+            {
+              "name": "Test Workshop public readback verifier",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 40,
+              "started_at": "2026-10-08T04:59:09Z",
+              "completed_at": "2026-10-08T04:59:09Z"
+            },
+            {
+              "name": "Test disposable fixture engine identities",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 41,
+              "started_at": "2026-10-08T04:59:09Z",
+              "completed_at": "2026-10-08T04:59:09Z"
+            },
+            {
+              "name": "Test full-agent showcase builder",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 42,
+              "started_at": "2026-10-08T04:59:09Z",
+              "completed_at": "2026-10-08T04:59:10Z"
+            },
+            {
+              "name": "Enforce Python-only Windows automation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 43,
+              "started_at": "2026-10-08T04:59:10Z",
+              "completed_at": "2026-10-08T05:00:12Z"
+            },
+            {
+              "name": "Validate generated and static content",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 44,
+              "started_at": "2026-10-08T05:00:12Z",
+              "completed_at": "2026-10-08T05:00:14Z"
+            },
+            {
+              "name": "Validate Vivhite standalone content",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 45,
+              "started_at": "2026-10-08T05:00:14Z",
+              "completed_at": "2026-10-08T05:00:15Z"
+            },
+            {
+              "name": "Validate Mandala Purge standalone content",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 46,
+              "started_at": "2026-10-08T05:00:15Z",
+              "completed_at": "2026-10-08T05:00:15Z"
+            },
+            {
+              "name": "Validate Tributary Expansion Directives standalone content",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 47,
+              "started_at": "2026-10-08T05:00:15Z",
+              "completed_at": "2026-10-08T05:00:16Z"
+            },
+            {
+              "name": "Validate Celestial Commerce and Corruption standalone content",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 48,
+              "started_at": "2026-10-08T05:00:16Z",
+              "completed_at": "2026-10-08T05:00:16Z"
+            },
+            {
+              "name": "Validate Auto Upgrade Buildings standalone content",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 49,
+              "started_at": "2026-10-08T05:00:16Z",
+              "completed_at": "2026-10-08T05:00:17Z"
+            },
+            {
+              "name": "Validate Reclaim the Motherland standalone content",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 50,
+              "started_at": "2026-10-08T05:00:17Z",
+              "completed_at": "2026-10-08T05:00:18Z"
+            },
+            {
+              "name": "Run scoring reference vectors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 51,
+              "started_at": "2026-10-08T05:00:18Z",
+              "completed_at": "2026-10-08T05:00:18Z"
+            },
+            {
+              "name": "Verify reproducible release",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 52,
+              "started_at": "2026-10-08T05:00:18Z",
+              "completed_at": "2026-10-08T05:00:20Z"
+            },
+            {
+              "name": "Verify reproducible Vivhite release",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 53,
+              "started_at": "2026-10-08T05:00:20Z",
+              "completed_at": "2026-10-08T05:00:20Z"
+            },
+            {
+              "name": "Verify reproducible Ox Here release",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 54,
+              "started_at": "2026-10-08T05:00:20Z",
+              "completed_at": "2026-10-08T05:00:20Z"
+            },
+            {
+              "name": "Verify reproducible Mandala Purge release",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 55,
+              "started_at": "2026-10-08T05:00:20Z",
+              "completed_at": "2026-10-08T05:00:21Z"
+            },
+            {
+              "name": "Verify reproducible Tributary Expansion Directives release",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 56,
+              "started_at": "2026-10-08T05:00:21Z",
+              "completed_at": "2026-10-08T05:00:21Z"
+            },
+            {
+              "name": "Verify reproducible Celestial Commerce and Corruption release",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 57,
+              "started_at": "2026-10-08T05:00:21Z",
+              "completed_at": "2026-10-08T05:00:22Z"
+            },
+            {
+              "name": "Verify reproducible Auto Upgrade Buildings release",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 58,
+              "started_at": "2026-10-08T05:00:22Z",
+              "completed_at": "2026-10-08T05:00:22Z"
+            },
+            {
+              "name": "Verify reproducible Reclaim the Motherland release",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 59,
+              "started_at": "2026-10-08T05:00:22Z",
+              "completed_at": "2026-10-08T05:00:23Z"
+            },
+            {
+              "name": "Verify reproducible ZhongGuo 361 release",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 60,
+              "started_at": "2026-10-08T05:00:23Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build manual release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 61,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build manual Vivhite release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 62,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build manual Ox Here release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 63,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build manual Mandala Purge release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 64,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build manual Tributary Expansion Directives release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 65,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build manual Celestial Commerce and Corruption release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 66,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build manual Auto Upgrade Buildings release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 67,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build manual Reclaim the Motherland release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 68,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build manual ZhongGuo 361 release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 69,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build tagged release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 70,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build tagged Vivhite release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 71,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build tagged Ox Here release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 72,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build tagged Mandala Purge release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 73,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build tagged Tributary Expansion Directives release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 74,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build tagged Celestial Commerce and Corruption release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 75,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build tagged Auto Upgrade Buildings release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 76,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build tagged Reclaim the Motherland release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 77,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Build tagged ZhongGuo 361 release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 78,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Upload release candidate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 79,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Post Run actions/setup-python@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 157,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:29Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 158,
+              "started_at": "2026-10-08T05:00:29Z",
+              "completed_at": "2026-10-08T05:00:31Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 159,
+              "started_at": "2026-10-08T05:00:31Z",
+              "completed_at": "2026-10-08T05:00:31Z"
+            }
+          ],
+          "complete_job_log": null,
+          "producer_stdout": null,
+          "complete_log_download_attempts": 0,
+          "log_scope": "Not requested in this bounded run/job/check proof; prior 4c log failures stay historical"
+        }
+      ],
+      "jobs_API": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/official-jobs-final-001.stdout",
+        "bytes": 16000,
+        "sha256": "5664d955431ed54462f005dddbb3fc66dc12b281cef7db256adb927315944254"
+      }
+    },
+    {
+      "id": 37729515003,
+      "name": "Linear history",
+      "head_sha": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+      "head_branch": "master",
+      "event": "push",
+      "path": ".github/workflows/linear-history.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37729515003",
+      "created_at": "2026-10-08T04:51:46Z",
+      "updated_at": "2026-10-08T04:52:22Z",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 113155217680,
+          "name": "No new merge commits",
+          "head_sha": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37729515003/job/113155217680",
+          "started_at": "2026-10-08T04:51:48Z",
+          "completed_at": "2026-10-08T04:52:22Z",
+          "check_run_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/check-runs/113155217680",
+          "failed_steps": [],
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-08T04:51:49Z",
+              "completed_at": "2026-10-08T04:51:50Z"
+            },
+            {
+              "name": "Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-08T04:51:50Z",
+              "completed_at": "2026-10-08T04:52:19Z"
+            },
+            {
+              "name": "Check actual introduced commits",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-08T04:52:19Z",
+              "completed_at": "2026-10-08T04:52:19Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-08T04:52:19Z",
+              "completed_at": "2026-10-08T04:52:19Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-10-08T04:52:19Z",
+              "completed_at": "2026-10-08T04:52:19Z"
+            }
+          ],
+          "complete_job_log": null,
+          "producer_stdout": null,
+          "complete_log_download_attempts": 0,
+          "log_scope": "Not requested in this bounded run/job/check proof; prior 4c log failures stay historical"
+        }
+      ],
+      "jobs_API": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/linear-jobs-final-001.stdout",
+        "bytes": 1789,
+        "sha256": "19b4d3633f53c93cd51ec443bb8ec55642a346585e03e15337565500671bc943"
+      }
+    },
+    {
+      "name": "Li Yu Dao static checks",
+      "head_sha": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+      "status": "NOT_TRIGGERED",
+      "conclusion": null,
+      "id": null,
+      "html_url": null,
+      "jobs": []
+    }
+  ],
+  "checks_final_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/checks-final-001.stdout",
+    "bytes": 6256,
+    "sha256": "ecc64d45dad1119417832b28234f89d5e64da2a8e08accfdbf8a79b80dcccdea"
+  },
+  "final_runs_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/runs-003.stdout",
+    "bytes": 26502,
+    "sha256": "3d065650ceed885101797c94b91a86ffafc52e069024b006d279681eaab476f5"
+  },
+  "initial_pending_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/runs-001.stdout",
+    "bytes": 26499,
+    "sha256": "fbb54751a87390a7281d6bb3670ee64d4cb1155acd337a0192c73a1c94d7a6d8"
+  },
+  "initial_pending_preserved": true,
+  "LiYu_trigger_path_evidence": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/TRIGGER-PATHS.source-facts.json",
+    "bytes": 5084,
+    "sha256": "ad962ed0746730a3ad5af98bb99037c765417317717314008135eae425f042ca"
+  },
+  "failed_steps": [],
+  "official_API_read_attempt_count": 12,
+  "read_errors": [
+    {
+      "method": "GET",
+      "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs?head_sha=8c0ddff7c477311e18f0a4517566df412e5f49c9&per_page=100",
+      "exact_head": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+      "started_at_utc": "2026-10-08T05:00:30.194981+00:00",
+      "finished_at_utc": "2026-10-08T05:00:32.819689+00:00",
+      "exit_code": 1,
+      "http_status": null,
+      "timed_out": false,
+      "timeout_seconds": 20,
+      "mode": "Read-only public official GitHub REST via urllib; no credentials or network settings changed",
+      "MAIN_writes": 0,
+      "Git_mutations": 0,
+      "rerun_dispatch": false,
+      "SDK_game_process_screen_bus_setting_actions": 0,
+      "stdout_semantics": "Original response body; stdout is the preserved reader convention, not a child stdout claim",
+      "stderr_semantics": "Original urllib exception message encoded by reader",
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/runs-002.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/runs-002.stderr",
+        "bytes": 94,
+        "sha256": "f5f5cabd69224991e6ae16ecb9cc4f78fa319898e0882086b1944c1853edfa47"
+      }
+    }
+  ],
+  "complete_job_logs": null,
+  "complete_job_log_read_attempts": 0,
+  "log_limit": "ROOT bounded run/job/check and step API scope; no repeat of prior 4c full-log/auth timeout attempts",
+  "old_4c_CI_result_used_as_this_HEAD_result": false,
+  "MAIN_Git_SDK_game_process_screen_bus_setting_actions": 0,
+  "rerun_workflow_dispatch_local_test_build": 0,
+  "native_build_live_business_credit": null,
+  "whole_mod": "NOT_GREEN"
+}

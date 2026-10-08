@@ -1,0 +1,94 @@
+{
+  "exact_head": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+  "status": "NOT_TRIGGERED",
+  "conclusion": null,
+  "run_id": null,
+  "official_push_event": {
+    "id": "23338298265",
+    "type": "PushEvent",
+    "actor": {
+      "id": 17455337,
+      "login": "XenoAmess",
+      "display_login": "XenoAmess",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/XenoAmess",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17455337?"
+    },
+    "repo": {
+      "id": 1335903470,
+      "name": "XenoAmess/ck3_eternal_recurrence",
+      "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence"
+    },
+    "payload": {
+      "repository_id": 1335903470,
+      "push_id": 45809275882,
+      "ref": "refs/heads/master",
+      "head": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+      "before": "ca3888b11393df33425789532b3b6604d658ff55"
+    },
+    "public": true,
+    "created_at": "2026-10-08T04:51:44Z"
+  },
+  "official_push_event_API_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/push-events-001.stdout",
+    "bytes": 18511,
+    "sha256": "a2c54710ca456bd71fe6693f3398617c4fa631e1d5fcca05dd0f1311c3e36c81"
+  },
+  "before": "ca3888b11393df33425789532b3b6604d658ff55",
+  "after": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+  "actual_compare_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/push-range-compare-001.stdout",
+    "bytes": 96453,
+    "sha256": "12d5693d086fd73684513fde55941ef0898357c8c823a9fd862e18b482d10bf9"
+  },
+  "compare_ahead": 1,
+  "compare_behind": 0,
+  "commit_count": 1,
+  "changed_paths": [
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "docs/autonomous-agent-progress/daily/2026-10-08.md",
+    "docs/li-yu-dao/2026-10-08-progress.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-mailbox-red-typed-closed/ARCHIVE-VALIDATION.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-mailbox-red-typed-closed/FACTS.actual-cutoff.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-mailbox-red-typed-closed/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-mailbox-red-typed-closed/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-mailbox-red-typed-closed/ROOT-IMPORT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-mailbox-red-typed-closed/raw-evidence.zip",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/ROOT-IMPORT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/ci/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/ci/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/ci/raw-evidence.zip",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-broker/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-broker/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-broker/source-and-producer-evidence.zip",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-com/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-com/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0028-4c2b8e1eb-cache-submit-red/source-evidence/defender-com/actual-original-evidence.zip"
+  ],
+  "path_count": 20,
+  "exact_workflow_blob_sha": "f383249db0221ddd4b6d4a3aa4d44c9d4c6de7b6",
+  "exact_workflow_source_API_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/liyu-workflow-001.stdout",
+    "bytes": 4059,
+    "sha256": "b07270c19eba08a0a9fc46349fdd6e0ed5087b607560fae0cede315ed7bde30e"
+  },
+  "exact_workflow_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/liyu-workflow.exact-head.raw.yml",
+    "bytes": 2050,
+    "sha256": "ea15a2dc333a5502efc9d66a079c52bee2f4782f4b1c86b23209802f6cb67290"
+  },
+  "push_path_filters": [
+    "mod_li_yu_dao/**",
+    "tools/extract_auto_upgrade_buildings.py",
+    "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**",
+    ".github/workflows/li-yu-dao-static.yml"
+  ],
+  "actual_full_push_filter_matches": [],
+  "final_exact_runs_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-8c0ddff7c-exact-official-ci-20261008-001/runs-003.stdout",
+    "bytes": 26502,
+    "sha256": "3d065650ceed885101797c94b91a86ffafc52e069024b006d279681eaab476f5"
+  },
+  "basis": "Actual exact-head terminal run-list absence plus official matching PushEvent before/head and full compare path-set with exact workflow filters; not a GREEN claim"
+}

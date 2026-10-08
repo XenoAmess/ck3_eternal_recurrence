@@ -1,0 +1,262 @@
+{
+  "schema": "lyd.r29.build-only-focused-failure.archive.v1",
+  "source_revision": "8c0ddff7c477311e18f0a4517566df412e5f49c9",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0029",
+  "execution_id": "8492501a-7834-4fe5-af41-c86f65b598cf",
+  "actual_compilation_pass": true,
+  "actual_focused_tests_pass": false,
+  "original_outer_exit_code": 1,
+  "Defender_status": "settings_failed",
+  "game_launched": false,
+  "SDK_runtime": "NOT_RUN",
+  "save_body_reads": 0,
+  "business_credit": false,
+  "originals_retained": true,
+  "raw_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-focused-failure-archive-20261008-001/raw-original-evidence.zip",
+    "bytes": 284010,
+    "sha256": "b1d06fc9ebf95c45e431f28d92527fb5cb0df859224bae30e4ef85612129c5e0"
+  },
+  "files": [
+    {
+      "member": "native-build/actual-graph-native-fixtures/complete-self-sponsor.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/actual-graph-native-fixtures/complete-self-sponsor.json",
+        "bytes": 3759,
+        "sha256": "584b69424cb084508203aaf2c4d55c9f7bf87f051915a10fc9f8fe88d67032a3"
+      }
+    },
+    {
+      "member": "native-build/actual-graph-native-fixtures/old-owner-scope-mismatch.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/actual-graph-native-fixtures/old-owner-scope-mismatch.json",
+        "bytes": 3735,
+        "sha256": "ceebf73c423428ec4df084370cff7ab38751f157909ebadee4b12e5be573832e"
+      }
+    },
+    {
+      "member": "native-build/build.stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/build.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "native-build/build.stdout",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/build.stdout",
+        "bytes": 75011,
+        "sha256": "ccb119032636343f62f1fa3df906940cbcd884706152a8cd7a4860813cb93b9b"
+      }
+    },
+    {
+      "member": "native-build/FRESH-NO-CK3-BEFORE-TESTS.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/FRESH-NO-CK3-BEFORE-TESTS.json",
+        "bytes": 107,
+        "sha256": "ea4badea5e6184839a195c5fea1d2b08fa9de061259b9e35808ec55be1746308"
+      }
+    },
+    {
+      "member": "native-build/FRESH-NO-CK3-BEFORE.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/FRESH-NO-CK3-BEFORE.json",
+        "bytes": 107,
+        "sha256": "9a38b17b9b6b5d59f596bef98ba12ef53af6b4f1959bfa9c3dae1f62a24cfea0"
+      }
+    },
+    {
+      "member": "native-build/INDEX.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/INDEX.json",
+        "bytes": 4836,
+        "sha256": "331a2271cc0e364dec19447736ed20f3d4c902fe86e2f9174921c587225e3da5"
+      }
+    },
+    {
+      "member": "native-build/RESULT.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/RESULT.json",
+        "bytes": 1063094,
+        "sha256": "f68e826202ac6325597f7e7b09b4e127823be2cd42a32b0717aeefe916148a40"
+      }
+    },
+    {
+      "member": "native-build/ROOT-INVOCATION.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/ROOT-INVOCATION.json",
+        "bytes": 293,
+        "sha256": "261be94a1555e55d855b2cb23831c37c45d3c9abf56c52928a780c42940e0a70"
+      }
+    },
+    {
+      "member": "native-build/xar_ck3_12002_event_window_context_test.stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_ck3_12002_event_window_context_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "native-build/xar_ck3_12002_event_window_context_test.stdout",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_ck3_12002_event_window_context_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "native-build/xar_ck3_12004_army_route_binding_test.stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_ck3_12004_army_route_binding_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "native-build/xar_ck3_12004_army_route_binding_test.stdout",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_ck3_12004_army_route_binding_test.stdout",
+        "bytes": 77,
+        "sha256": "a443b0856036a063d270283673c70ca69ac7acc3166d085a3c22a313593fc5a0"
+      }
+    },
+    {
+      "member": "native-build/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+        "bytes": 51,
+        "sha256": "1fb60f08a869aab6f605dbd6ba231d7a52fd8dc50c6136f5c60281cc4a326a13"
+      }
+    },
+    {
+      "member": "native-build/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "native-build/xar_confucian_assembly_predicates_v1_test.stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_confucian_assembly_predicates_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "native-build/xar_confucian_assembly_predicates_v1_test.stdout",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_confucian_assembly_predicates_v1_test.stdout",
+        "bytes": 69,
+        "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+      }
+    },
+    {
+      "member": "native-build/xar_confucian_challenger_graph_v1_test.stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_confucian_challenger_graph_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "native-build/xar_confucian_challenger_graph_v1_test.stdout",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_confucian_challenger_graph_v1_test.stdout",
+        "bytes": 71,
+        "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+      }
+    },
+    {
+      "member": "native-build/xar_confucian_religious_title_readback_v1_test.stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_confucian_religious_title_readback_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "native-build/xar_confucian_religious_title_readback_v1_test.stdout",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001/xar_confucian_religious_title_readback_v1_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "original-exec/RESULT.actual.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-native-build-original-exec-20261008-001/RESULT.actual.json",
+        "bytes": 1413,
+        "sha256": "fa3ca6eba93768b3827878ac746ecf946a43c4bad1a08fe5e91368af8ce8c764"
+      }
+    },
+    {
+      "member": "original-exec/stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-native-build-original-exec-20261008-001/stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "original-exec/stdout",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-native-build-original-exec-20261008-001/stdout",
+        "bytes": 301,
+        "sha256": "27ef535b059045c5ef19413cba0fc13cee338d8628342c22ba455e94740a2b3a"
+      }
+    },
+    {
+      "member": "native-msvc-result.json",
+      "original": {
+        "path": "C:/lr29b1/native-msvc-result.json",
+        "bytes": 1882,
+        "sha256": "2bcafc52d4829232768cbf11348bd6707f3f8b87683d11626b0b86341bfe92e2"
+      }
+    },
+    {
+      "member": "CMakeCache.txt",
+      "original": {
+        "path": "C:/lr29b1/CMakeCache.txt",
+        "bytes": 38501,
+        "sha256": "3295cdef2587285a126049ddba75274b48bb210deca00b9a5af645181f70fbef"
+      }
+    },
+    {
+      "member": "defender/manifest.json",
+      "original": {
+        "path": "C:/lr29b1/defender-exe-exclusions/20261008T051709Z-c0764c84/manifest.json",
+        "bytes": 6649,
+        "sha256": "146955167e7d4750401a32a24ae9e27b996955806046f292ae1402400d01fd54"
+      }
+    },
+    {
+      "member": "defender/receipt.json",
+      "original": {
+        "path": "C:/lr29b1/defender-exe-exclusions/20261008T051709Z-c0764c84/receipt.json",
+        "bytes": 4070,
+        "sha256": "abaad038cf4ba162fd0824bc91b717dce160bb554ff9b1d535bde9f97aa75ac4"
+      }
+    },
+    {
+      "member": "source-export-REPORT.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-head-export-20261008-001/REPORT.json",
+        "bytes": 35444,
+        "sha256": "26ed9b387a466c49ccad4f19a472cdaf737b5a30651a5c6c59968f72949f12c1"
+      }
+    },
+    {
+      "member": "production-manifest.json",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-reviewed-production-release-20261008-001.manifest.json",
+        "bytes": 13130,
+        "sha256": "785732017a935ee8e9654bd1635e4ecef7227d5cccb6575a190371189580838a"
+      }
+    }
+  ]
+}

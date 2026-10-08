@@ -1,0 +1,13 @@
+{
+  "schema": "lyd.r29.build-only-focused-failure.archive-check.v1",
+  "archive": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-focused-failure-archive-20261008-001/raw-original-evidence.zip",
+    "bytes": 284010,
+    "sha256": "b1d06fc9ebf95c45e431f28d92527fb5cb0df859224bae30e4ef85612129c5e0"
+  },
+  "members": 30,
+  "all_members_match_original_refs": true,
+  "binaries_copied": false,
+  "save_body_reads": 0,
+  "runtime_acceptance": "NOT_RUN"
+}

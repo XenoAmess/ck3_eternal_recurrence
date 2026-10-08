@@ -2535,6 +2535,9 @@ bool TitleFixtureExecutor(void* p,const xar::ck3_11906::MainThreadExecutionStamp
 bool GraphFixtureExecutor(void* p,const xar::ck3_11906::MainThreadExecutionStampV1& s) noexcept {
   g_confucian_fixture_identity = 3; return Execute(p,s);
 }
+bool ActorCacheFixtureExecutor(void* p,const xar::ck3_11906::MainThreadExecutionStampV1& s) noexcept {
+  g_confucian_fixture_identity = 4; return Execute(p,s);
+}
 void ConfucianRegistrationCheck(bool condition,const char* message) {
   ++g_confucian_registration_checks;
   if (!condition) { std::fprintf(stderr,"confucian mailbox regression: %s\n",message); std::exit(1); }
@@ -2568,7 +2571,7 @@ bool ConfucianProductionRegistrationSource(const char* bridge_path) {
   if(actual_start==std::string::npos||actual_end==std::string::npos)return false;
   const auto actual_scope=bridge.substr(actual_start,actual_end-actual_start);
   for(const auto assignment:{
-      "#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)\n    environment.permitted_executor_confucian_assembly12003 =\n        &xar::ck3_12003::ExecuteConfucianAssemblyMailbox12003;\n#endif",
+      "#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)\n    environment.permitted_executor_confucian_assembly12003 =\n        &xar::ck3_12003::ExecuteConfucianAssemblyMailbox12003;\n    environment.permitted_executor_actor_cached_succession12004 =\n        &xar::ck3_12004::ExecuteActorCachedSuccessionMailboxV1;\n#endif",
       "#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)\n    environment.permitted_executor_confucian_religious_title12003 =\n        &xar::ck3_12003::ExecuteConfucianReligiousTitleMailbox12003;\n#endif",
       "#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)\n    environment.permitted_executor_confucian_challenger_graph12003 =\n        &xar::ck3_12003::ExecuteConfucianChallengerGraphMailbox12003;\n#endif"}) {
     if(actual_scope.find(assignment)==std::string::npos){
@@ -2589,9 +2592,12 @@ bool TestConfucianPrivateMailboxRegistration(const char* bridge_path) {
   env.permitted_executor=&Execute;
   ExecutorContext context{};
   MainThreadQueryTicketV1 ticket{};
-  const std::array<MainThreadQueryExecutorV1,3> readers{
-    &AssemblyFixtureExecutor,&TitleFixtureExecutor,&GraphFixtureExecutor};
-  ConfucianRegistrationCheck(readers[0]!=readers[1] && readers[0]!=readers[2] && readers[1]!=readers[2],"three distinct fixture callback identities");
+  const std::array<MainThreadQueryExecutorV1,4> readers{
+    &AssemblyFixtureExecutor,&TitleFixtureExecutor,&GraphFixtureExecutor,
+    &ActorCacheFixtureExecutor};
+  for(std::size_t i=0;i<readers.size();++i)
+    for(std::size_t j=i+1;j<readers.size();++j)
+      ConfucianRegistrationCheck(readers[i]!=readers[j],"distinct fixture callback identities");
   ConfucianRegistrationCheck(InstallMainThreadQueryMailboxV1(mailbox,env),"baseline install");
   (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
   (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
@@ -2603,10 +2609,12 @@ bool TestConfucianPrivateMailboxRegistration(const char* bridge_path) {
   env.permitted_executor_confucian_assembly12003=readers[0];
   env.permitted_executor_confucian_religious_title12003=readers[1];
   env.permitted_executor_confucian_challenger_graph12003=readers[2];
+  env.permitted_executor_actor_cached_succession12004=readers[3];
   ConfucianRegistrationCheck(InstallMainThreadQueryMailboxV1(mailbox,env),"registered install");
   ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_assembly12003==readers[0],"assembly installed");
   ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_religious_title12003==readers[1],"title installed");
   ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_challenger_graph12003==readers[2],"graph installed");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_actor_cached_succession12004==readers[3],"actor cache installed");
   for(auto fn:readers) ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,fn,&context,ticket)==MainThreadQuerySubmitResultV1::paused_main_thread_not_observed,"registration preserves paused gate");
   (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
   (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
@@ -2618,15 +2626,34 @@ bool TestConfucianPrivateMailboxRegistration(const char* bridge_path) {
     ConfucianRegistrationCheck(WaitForMainThreadQueryV1(mailbox,ticket,0)==MainThreadQueryWaitResultV1::completed,"completed");
     ConfucianRegistrationCheck(ReclaimMainThreadQueryV1(mailbox,ticket)==MainThreadQueryReclaimResultV1::reclaimed,"reclaimed");
   }
-  ConfucianRegistrationCheck(context.calls==3,"all three fixture callbacks executed once");
+  ConfucianRegistrationCheck(context.calls==4,"all four fixture callbacks executed once");
+  ConfucianRegistrationCheck(g_confucian_fixture_identity==4,"actor cache callback drained");
   ConfucianRegistrationCheck(UninstallMainThreadQueryMailboxV1(mailbox,10)==MainThreadQueryUninstallResultV1::uninstalled,"registered uninstall");
   ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_assembly12003==nullptr,"assembly cleared");
   ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_religious_title12003==nullptr,"title cleared");
   ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_challenger_graph12003==nullptr,"graph cleared");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_actor_cached_succession12004==nullptr,"actor cache cleared");
   env.permitted_executor=nullptr;
   ConfucianRegistrationCheck(InstallMainThreadQueryMailboxV1(mailbox,env),"confucian-only install");
   ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,&Execute,&context,ticket)==MainThreadQuerySubmitResultV1::invalid_request,"new slots enforce whitelist alone");
   ConfucianRegistrationCheck(UninstallMainThreadQueryMailboxV1(mailbox,10)==MainThreadQueryUninstallResultV1::uninstalled,"confucian-only uninstall");
+  env.permitted_executor_confucian_assembly12003=nullptr;
+  env.permitted_executor_confucian_religious_title12003=nullptr;
+  env.permitted_executor_confucian_challenger_graph12003=nullptr;
+  ConfucianRegistrationCheck(InstallMainThreadQueryMailboxV1(mailbox,env),"actor-cache-only install");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_actor_cached_succession12004==readers[3],"actor-cache-only slot installed");
+  ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,&Execute,&context,ticket)==MainThreadQuerySubmitResultV1::invalid_request,"actor-cache-only whitelist rejects unknown executor");
+  ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,readers[3],&context,ticket)==MainThreadQuerySubmitResultV1::paused_main_thread_not_observed,"actor-cache-only preserves paused gate");
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
+  ConfucianRegistrationCheck(ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).ready,"actor-cache-only ready");
+  ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,readers[3],&context,ticket)==MainThreadQuerySubmitResultV1::submitted,"actor-cache-only submitted");
+  ConfucianRegistrationCheck(ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner),"actor-cache-only actual mailbox drains");
+  ConfucianRegistrationCheck(WaitForMainThreadQueryV1(mailbox,ticket,0)==MainThreadQueryWaitResultV1::completed,"actor-cache-only completed");
+  ConfucianRegistrationCheck(ReclaimMainThreadQueryV1(mailbox,ticket)==MainThreadQueryReclaimResultV1::reclaimed,"actor-cache-only reclaimed");
+  ConfucianRegistrationCheck(context.calls==5 && g_confucian_fixture_identity==4,"actor-cache-only callback executed once");
+  ConfucianRegistrationCheck(UninstallMainThreadQueryMailboxV1(mailbox,10)==MainThreadQueryUninstallResultV1::uninstalled,"actor-cache-only uninstall");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_actor_cached_succession12004==nullptr,"actor-cache-only slot cleared");
   if (!ConfucianProductionRegistrationSource(bridge_path)) return false;
   std::printf("PASS checks=%d actual_try_submit=true actual_install_clear=true fixture_callbacks=true live=false old_suite_ran=false source_registration_contract=true\n",g_confucian_registration_checks);
   return true;

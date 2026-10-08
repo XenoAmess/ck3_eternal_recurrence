@@ -1,0 +1,46 @@
+{
+  "schema": "lyd.r29.mailbox.actor-cache-registration-sourcefix-index.v1",
+  "status": "SOURCEFIX_TESTED_FOCUSED63_PASS_ORIGINAL_NEGATIVE_PRESERVED_RUNTIME_NULL",
+  "selected_MAIN_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-actor-cache-mailbox-fixture-sourcefix-20261008-001\\main_thread_query_mailbox_v1_test.fixed.cpp",
+    "bytes": 120735,
+    "sha256": "278d6e796428919dc6bd73b6ecaeb8979bf5eb78b15c5f540f23659022c99fd8"
+  },
+  "original_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-actor-cache-mailbox-fixture-sourcefix-20261008-001\\main_thread_query_mailbox_v1_test.original.cpp",
+    "bytes": 117851,
+    "sha256": "baa5b2dfe42e77044ca96ed584dd60e34f9cb0dfa0aafed3817b10599737560b"
+  },
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-actor-cache-mailbox-fixture-sourcefix-20261008-001\\PATCH.diff",
+    "bytes": 8421,
+    "sha256": "b6f92562adbb1a1566353bc338de5ae60e0745b2912fcd092383525226556e6a"
+  },
+  "report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-actor-cache-mailbox-fixture-sourcefix-20261008-001\\REPORT.actual.json",
+    "bytes": 3202,
+    "sha256": "e68e8c58ead068b1f43017c7dc95331bdb65cfacffa6c6387acfa6f3caa28033"
+  },
+  "focused_originals_zip": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-actor-cache-mailbox-fixture-sourcefix-20261008-001\\FOCUSED-ORIGINALS.actual.zip",
+    "bytes": 53942,
+    "sha256": "79e3d3e468f4bd6fc581748603dc5a3d5f7c7a13d470410f1771d1c9c41c8fb1"
+  },
+  "archive_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-actor-cache-mailbox-fixture-sourcefix-20261008-001\\ARCHIVE-MANIFEST.actual.json",
+    "bytes": 5616,
+    "sha256": "1066516509d0a65ba624edb950c847f1ea7ce3f360debaa246034d91b60fed88"
+  },
+  "raw_focused_result": {
+    "path": "C:\\mq29f1\\RESULT.actual.json",
+    "bytes": 3191,
+    "sha256": "8313ec6c0544ea1bc41de907af7128e80290e85938518e73815af6e8abcf662d"
+  },
+  "exe_ref_only": {
+    "path": "C:\\mq29f1\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+    "bytes": 131584,
+    "sha256": "1c64f964b5da24584e50802ca5e48d2183353576b216d28cdbbd01fb55e564b3"
+  },
+  "runtime_DLL_qualification": null,
+  "whole_mod": "NOT_GREEN"
+}

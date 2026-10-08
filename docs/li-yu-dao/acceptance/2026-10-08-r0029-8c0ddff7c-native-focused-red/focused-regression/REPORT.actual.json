@@ -1,0 +1,68 @@
+{
+  "schema": "lyd.r29.mailbox.actor-cache-registration-fixture-sourcefix.v1",
+  "problem": "the focused fixture required assembly assignment immediately followed by endif, so the valid added actual4 cache assignment made source registration fail",
+  "original_failed_build": "C:/workspace/ck3_lyd_runtime_20261004/r29-native-build-20261008-001",
+  "authorized_MAIN_file": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\main_thread_query_mailbox_v1_test.cpp",
+  "patch": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-actor-cache-mailbox-fixture-sourcefix-20261008-001\\PATCH.diff",
+    "bytes": 8421,
+    "sha256": "b6f92562adbb1a1566353bc338de5ae60e0745b2912fcd092383525226556e6a"
+  },
+  "preimage": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-actor-cache-mailbox-fixture-sourcefix-20261008-001\\PREIMAGE.actual.json",
+    "bytes": 512,
+    "sha256": "6ce10509d7a19c0adc5415db5bdf0570af40bb64120688be060d92c9285dbb66"
+  },
+  "source_inputs": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-actor-cache-mailbox-fixture-sourcefix-20261008-001\\SOURCE-INPUTS.actual.json",
+    "bytes": 2162,
+    "sha256": "802b10ce4d0f440b5a0daef2631cc6a2c7f1e0f711d68d45383d7b89e986ad3b"
+  },
+  "changes": [
+    "actual4 assembly compile gate must contain both assembly and actor-cache registrations",
+    "old3 assembly/title/graph and actual4 title/graph source checks preserved",
+    "four distinct callbacks exercise unregistered rejection, paused owner gate, whitelist, real production submit/drain/reclaim and uninstall clearing",
+    "actor-cache-only environment exercises install admission and the whitelist without other Confucian slots masking it"
+  ],
+  "actual_focused_result": {
+    "path": "C:\\mq29f1\\RESULT.actual.json",
+    "bytes": 3191,
+    "sha256": "8313ec6c0544ea1bc41de907af7128e80290e85938518e73815af6e8abcf662d"
+  },
+  "actual_request": {
+    "path": "C:\\mq29f1\\REQUEST.actual.json",
+    "bytes": 2954,
+    "sha256": "6d766c97f03a33e9678676d023726d23d21f135abb4011e786c348d7f0c06369"
+  },
+  "compile_exit": 0,
+  "positive_exit": 0,
+  "positive_check_count": 63,
+  "source_negative_exit": 1,
+  "source_negative_stderr": {
+    "path": "C:\\mq29f1\\negative_missing_actual4_cache.stderr.bin",
+    "bytes": 51,
+    "sha256": "1fb60f08a869aab6f605dbd6ba231d7a52fd8dc50c6136f5c60281cc4a326a13"
+  },
+  "exe_ref_only": {
+    "path": "C:\\mq29f1\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+    "bytes": 131584,
+    "sha256": "1c64f964b5da24584e50802ca5e48d2183353576b216d28cdbbd01fb55e564b3"
+  },
+  "release_flags": [
+    "/O2",
+    "/DNDEBUG",
+    "/OPT:REF",
+    "/OPT:ICF"
+  ],
+  "historical_source_build_or_failure_modified": false,
+  "MAIN_other_files_or_production_bridge_modified": false,
+  "Git_operations": 0,
+  "SDK_or_CK3_calls": 0,
+  "save_body_reads": 0,
+  "full_native_builds": 0,
+  "unrelated_old_suite_runs": 0,
+  "new_runtime_DLL_qualification": null,
+  "business_pass": null,
+  "whole_mod": "NOT_GREEN",
+  "integration": "ROOT imports this single tested source file and report; fresh canonical build002 must use the newly published exact source HEAD, original build001 failure remains unchanged"
+}

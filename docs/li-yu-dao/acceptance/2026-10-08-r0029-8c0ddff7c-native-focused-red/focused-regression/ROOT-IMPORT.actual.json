@@ -1,0 +1,36 @@
+{
+  "schema": "lyd.r29.mailbox-focused-regression.root-exact-import.v1",
+  "files": [
+    {
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/r29-actor-cache-mailbox-fixture-sourcefix-20261008-001/INDEX.json",
+      "copied_path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/focused-regression/INDEX.json",
+      "bytes": 2225,
+      "sha256": "4a9512ba70a4e96c0e88ea4ba62d5e93a06d8bd1178c17792a5fd5785c3d9bc5",
+      "exact": true
+    },
+    {
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/r29-actor-cache-mailbox-fixture-sourcefix-20261008-001/REPORT.actual.json",
+      "copied_path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/focused-regression/REPORT.actual.json",
+      "bytes": 3202,
+      "sha256": "e68e8c58ead068b1f43017c7dc95331bdb65cfacffa6c6387acfa6f3caa28033",
+      "exact": true
+    },
+    {
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/r29-actor-cache-mailbox-fixture-sourcefix-20261008-001/FOCUSED-ORIGINALS.actual.zip",
+      "copied_path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/focused-regression/FOCUSED-ORIGINALS.actual.zip",
+      "bytes": 53942,
+      "sha256": "79e3d3e468f4bd6fc581748603dc5a3d5f7c7a13d470410f1771d1c9c41c8fb1",
+      "exact": true
+    },
+    {
+      "original_path": "C:/workspace/ck3_lyd_runtime_20261004/r29-actor-cache-mailbox-fixture-sourcefix-20261008-001/PATCH.diff",
+      "copied_path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/focused-regression/PATCH.diff",
+      "bytes": 8421,
+      "sha256": "b6f92562adbb1a1566353bc338de5ae60e0745b2912fcd092383525226556e6a",
+      "exact": true
+    }
+  ],
+  "all_exact": true,
+  "SDK_or_game_calls": 0,
+  "new_DLL_runtime_qualification": null
+}
