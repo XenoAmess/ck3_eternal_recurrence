@@ -103,6 +103,49 @@ def _position(root: Mapping[str, object], position_key: str) -> dict[str, object
                   and row.get("position_key") == position_key), None)
 
 
+def _job_progress_observation(
+    root: Mapping[str, object], snapshot: Mapping[str, object], position_key: str,
+    *, previous: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    """Consume the existing native task fields without assigning utility or ETA."""
+    row = _position(root, position_key)
+    observation = {"position_key": position_key,
+                   "source_native_revision": root.get("snapshot_revision"),
+                   "source_date_raw": root.get("date_raw"),
+                   "episode_run_id": snapshot.get("episode_run_id")}
+    if row is None:
+        return {**observation, "status": "unavailable"}
+    observation.update(status="vacant" if row.get("incumbent_character_id") is None else "available",
+        **{key: copy.deepcopy(row.get(key)) for key in (
+            "incumbent_character_id", "task_key", "task_type", "target", "frozen", "progress")},
+        effect_attribution="not_observed")
+    progress = row.get("progress")
+    if isinstance(progress, Mapping) and progress.get("kind") != "infinite":
+        current, maximum = progress["current"], progress["maximum"]
+        observation["remaining_progress"] = {
+            "raw": maximum["raw"] - current["raw"], "scale": current["scale"]}
+    if previous is not None:
+        prior = previous.get("independent_position")
+        comparison = {"status": "job_changed"}
+        if isinstance(prior, Mapping) and all(row.get(key) == prior.get(key) for key in (
+                "incumbent_character_id", "task_key", "task_type", "target")):
+            comparison["status"] = "same_job"
+            old_progress = prior.get("progress")
+            if (isinstance(progress, Mapping) and isinstance(old_progress, Mapping)
+                    and progress.get("kind") == old_progress.get("kind")
+                    and progress.get("kind") != "infinite"
+                    and progress.get("maximum") == old_progress.get("maximum")):
+                comparison["progress_change"] = {
+                    "raw": progress["current"]["raw"] - old_progress["current"]["raw"],
+                    "scale": progress["current"]["scale"]}
+        previous_date = previous.get("post_date_raw")
+        if type(previous_date) is int and type(root.get("date_raw")) is int:
+            comparison.update(previous_date_raw=previous_date,
+                              elapsed_game_hours=root["date_raw"] - previous_date)
+        observation["following_comparison"] = comparison
+    return observation
+
+
 def _record_position_key(record: Mapping[str, object]) -> str:
     action = record.get("action_ack")
     ack = action.get("council_assign_councillor_ack") if isinstance(action, Mapping) else None
@@ -247,7 +290,11 @@ def plan_council_private(
     current = _snapshot(driver)
     next_plan = {**plan, "council_private_query": query, "council_decision": decision,
                  "council_observation_consumed": decision["outcome"] != "QUERY_UNAVAILABLE"}
-    root = None
+    from .bridge.current_first_heir_relationship_private_transport import (
+        _same_frame_campaign_root_result,
+    )
+    reused_root = _same_frame_campaign_root_result(campaign_root_result, current)
+    root = reused_root.get("campaign_root_context") if reused_root is not None else None
     if isinstance(applied, dict) and applied.get("episode_run_id") == current.get("episode_run_id"):
         root, current = _root(driver, campaign_root_result)
         holder = _position(root, applied_role)
@@ -261,6 +308,8 @@ def plan_council_private(
                        "next_turn_native_revision": current.get("native_revision"),
                        "next_turn_date_raw": current.get("date_raw"),
                        "next_turn_position": holder,
+                       "next_turn_job_progress_observation": _job_progress_observation(
+                           root, current, applied_role, previous=applied),
                        "previous_receipt_post_snapshot_id": receipt.get("post_snapshot_id")}
         next_plan["council_receipt_consumed"] = consumption
         if persists:
@@ -292,6 +341,15 @@ def plan_council_private(
                                   "reason": ("fill the observed Chancellor vacancy with one current native-legal candidate"
                                              if chancellor_decision["outcome"] == "ASSIGN_REQUIRED" else
                                              "replace the observed Chancellor with one current native-legal candidate with higher Diplomacy")})
+    if root is not None:
+        next_plan["council_job_progress_observations"] = [
+            _job_progress_observation(root, current, role)
+            for role in (STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY)]
+        selected_role = next_plan["council_decision"].get("position_key", position_key)
+        job = _job_progress_observation(root, current, selected_role)
+        next_plan["council_job_progress_observation"] = job
+        next_plan["council_decision"] = {**next_plan["council_decision"],
+                                        "current_job_progress_observation": copy.deepcopy(job)}
     return {**planned, "revision": current["revision"], "snapshot_id": current["snapshot_id"], "plan": next_plan}
 
 
@@ -354,6 +412,8 @@ def read_council_receipt_private(
                "action_ack": copy.deepcopy(native_pending), "receipt": copy.deepcopy(result),
                "post_snapshot_id": current.get("snapshot_id"), "post_native_revision": current.get("native_revision"),
                "post_date_raw": current.get("date_raw"), "independent_position": holder,
+               "independent_job_progress_observation": _job_progress_observation(
+                   root, current, _record_position_key(pending)),
                "source_decision": copy.deepcopy(pending["source_decision"]), "next_turn_consumed": False}
     _write(state_dir, {**ledger, "pending": None, "applied": applied})
     return applied
