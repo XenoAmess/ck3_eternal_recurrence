@@ -177,13 +177,16 @@ class NormalArmyProjectedContact12004Tests(unittest.TestCase):
                 self.assertEqual(plan["selected_step"], query_projected_contact_scope_v1_step(11, 31, 30))
                 outputs.append({"case": "stale_capture", "plan": plan})
 
-            with self.subTest("incoming defender preserves native roles without guessing opposing entry"):
+            with self.subTest("incoming defender uses native constructor zero and preserves ordered roles"):
                 plan, intact = _call(_contact_row(side="defender"))
                 self.assertTrue(intact)
-                self.assertEqual(plan["phase"], "native_war_general_battle_opposing_entry_unavailable")
+                self.assertEqual(plan["phase"], "native_war_general_battle_inputs_query")
                 self.assertEqual(plan["encounter"]["attacker_army_ids"], [22, 21])
                 self.assertEqual(plan["encounter"]["defender_army_ids"], [11])
-                self.assertIsNone(plan["selected_step"])
+                self.assertEqual(plan["selected_step"], query_combat_simulation_inputs_step(
+                    31, None, [22, 21], [11], constructor_adjacency_kind_raw=0))
+                self.assertIsNone(plan["encounter"]["attacker_entry_province_id"])
+                self.assertEqual(plan["projected_contact_scope"]["incoming_adjacency_kind_raw"], 1)
                 outputs.append({"case": "incoming_defender", "plan": plan})
 
             with self.subTest("join existing keeps selected Combat binding and resume frontier"):

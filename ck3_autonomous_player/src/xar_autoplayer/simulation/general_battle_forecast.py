@@ -158,7 +158,7 @@ def forecast_fixed_contact(
     payload: Mapping[str, Any],
     *,
     target_province_id: int,
-    attacker_entry_province_id: int,
+    attacker_entry_province_id: int | None,
     attacker_army_ids: tuple[int, ...],
     defender_army_ids: tuple[int, ...],
     capture: Mapping[str, Any],

@@ -3,7 +3,7 @@
   "date": "2026-10-08",
   "iso_week": "2026-W41",
   "readiness": "research",
-  "delivery_status": "source audit complete; no production behavior change",
+  "delivery_status": "historical hot6ee audit retained; incoming-defender consumer source authored, FIRST NOTRUN",
   "source": {
     "base_commit": "6ee7dea1b4d2fa4ecb05223f12c66b7afe72ac2d",
     "frozen_runtime_tree": "Z:/gbs-runtime32-sdk-r77-hot6ee",
@@ -110,12 +110,12 @@
   ],
   "future_consumer_frontier": {
     "id": "endpoint-incoming-defender-ctor0",
-    "status": "SOURCE_NOTRUN; not implemented by this source audit",
+    "status": "SOURCE_NOTRUN; isolated consumer increment authored after the original source audit",
     "blocks_current_r77_committed_route": false,
     "missing_new_native_getter": false,
     "trigger": "new final-hop endpoint move; same-frame complete create_new Contact; subject is defender",
-    "current_stop": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:16655",
-    "current_reason": "native_war_general_battle_opposing_entry_unavailable",
+    "original_stop": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:16655",
+    "original_reason": "native_war_general_battle_opposing_entry_unavailable",
     "existing_registered_query": {
       "name": "ck3_query_combat_simulation_inputs",
       "attacker_entry_province_id": null,
@@ -130,11 +130,27 @@
     "registered_v3_if_advertised": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py:3901",
     "service": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py:14277",
     "bounded_consumer_change": "strategy.py:16661..16735 builder/parser, cache and query identity, forecast/returned-plan null-entry geometry",
-    "unqualified_boundary": "simulation/general_battle_forecast.py:157..239 nullable-entry end-to-end consumption",
+    "unqualified_boundary": "authored nullable-entry model freeze, registered Service and ordinary forecast consumption; sole Root FIRST NOTRUN",
+    "source_increment": {
+      "base_commit": "f75a3dfdcb75517694a8b602b1c5b9fe107b9d47",
+      "isolated_tree": "Z:/gbs-incoming-defender-consumer37",
+      "production_files": [
+        "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+        "ck3_autonomous_player/src/xar_autoplayer/simulation/combat_input.py",
+        "ck3_autonomous_player/src/xar_autoplayer/simulation/general_battle_forecast.py"
+      ],
+      "sole_compound": "test_incoming_defender_service_compound_12004.py::test_registered_incoming_defender_whole_query_cache_model_and_role_change",
+      "first_recipe": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/incoming-defender-consumer37/ROOT-FIRST-RECIPE.json",
+      "native_build_required": false,
+      "query_and_capability_changes": false,
+      "tests_imports_first_executed": false,
+      "readiness": "research/source-authored"
+    },
     "native_body_capture_recipe": null,
     "new_rva": null,
     "new_observer_or_schema": false,
-    "fixture_created": false,
+    "fixture_created": true,
+    "fixture_status": "whole synthetic native/game envelopes, real connected Service/Driver/model; NOTRUN",
     "join_existing": "separate retained frontier; not expanded by this package"
   },
   "cost": {

@@ -205,3 +205,65 @@ only. This audit has **0 EXE reads,0 hash calls,0 cached native-body audits,
 0 decoder runs,0 new captures,0 build/import/test/SDK/game/FIRST runs**.
 The no-behavior-change source delivery needs only one diff check and English
 commit; Root requested no push.
+
+## 2026-10-08: incoming-defender consumer source increment
+
+The later endpoint seam above now has an isolated **SOURCE_NOTRUN** increment
+based on `f75a3dfd` in `Z:/gbs-incoming-defender-consumer37`. The original hot6ee
+audit and its dashed pre-implementation tree remain historical. The current
+R77 committed-route H1 still needs no endpoint forecast or new native input.
+This package adds no observer, schema, native address, privilege or admission
+rule. Root owns the sole FIRST, integration, deployment and actual campaign.
+
+The consumer keeps `entry` for the current route and incoming Contact query.
+For the already strict-normalized `create_new` incoming defender branch, its
+separate combat entry is null and its effective constructor kind is raw0.
+The existing V2 or actually advertised V3 builder encodes `ctor0`; parser,
+same-frame history, snapshot cache and forecast all use the same nullable
+identity and preserve the native ordered sides. The returned plan discloses
+the existing ctor0 scenario fields; the positive incoming route edge stays
+in the projected Contact object. A nonzero incoming adjacency does not change
+the defender constructor kind, and raw0 does not mean advantage0.
+
+```mermaid
+flowchart TD
+    P[Strict current create_new Contact and ordered sides] --> R{Incoming physical role}
+    R -->|attacker| A[Existing positive attacker entry]
+    R -->|defender| D[Existing null entry and native constructor raw0]
+    A --> Q[Advertised existing V2 or V3 query]
+    D --> Q
+    Q --> I[Real Service and NativeDriver exact same-frame cache and history]
+    I --> F[Nullable fixed-contact model freeze]
+    F --> M[Existing bounded forecast and contact admission]
+    U[Unknown future target state and actual contact outcome] -.-> M
+    L[Source increment FIRST and live qualification NOTRUN] -.-> I
+```
+
+The existing model freeze rejected a valid normalized null entry through
+`_positive(None)`. `FixedContactEncounterInput` now retains null for exactly
+the existing `native_defender_constructor_zero`, typed raw0 and two
+`fixed_at_target_hypothetical` policies. Its canonical payload identity already
+includes those scenario fields. Positive-entry behavior uses the existing
+positive validator. No new frozen schema field or fallback estimate is added.
+The final-contact inbound comparison uses the selected attacker/defender
+union so physical role inversion does not relabel selected enemies as absent.
+
+The sole proposed connected compound is
+`tests/unit/test_incoming_defender_service_compound_12004.py::test_registered_incoming_defender_whole_query_cache_model_and_role_change`
+under `ck3_autonomous_player/`. Synthetic game/native envelopes and one
+synthetic proposed move connect actual registered MCP, Service, NativeDriver
+query/cache/history, strict contracts, real forecast and unchanged admission.
+It covers missing input selecting ctor0, whole V2 and V3 base consumption,
+optional V3 phase absence, preserved non-sorted opponents and same-frame
+attacker/defender identity changes. It does not mock a favorable forecast or
+admission. Test, import, build, hash, EXE, SDK and game execution are NOTRUN.
+The sole Root command and Oct8/W41 fields are in
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/incoming-defender-consumer37/`.
+
+The quality boundary remains the existing bounded model: loaded phase-event
+transitions, future daily refresh, reinforcement, voluntary retreat and
+unmodeled character death are not completed by nullable geometry. Existing
+`join_existing` still requires its separate active-combat-resume inputs.
+Contact-free first-hop and already committed-route advances retain their
+original paths. No gameplay day, arrival, battle, victory or G2 milestone is
+credited to this source increment.

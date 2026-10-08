@@ -16481,6 +16481,7 @@ def _general_battle_forecast_ingress(
 
     attackers = (army_id,)
     projected_contact = None
+    constructor_raw = None
 
     def bounded(phase: str, selected_step: str | None, reason: str, **details: object) -> dict[str, object]:
         return {
@@ -16494,6 +16495,11 @@ def _general_battle_forecast_ingress(
                 "attacker_army_ids": list(attackers),
                 "defender_army_ids": list(defenders),
                 "target_province_id": target,
+                **({
+                    "attacker_entry_province_id": None,
+                    "contact_geometry_mode": "native_defender_constructor_zero",
+                    "constructor_adjacency_kind_raw": 0,
+                } if constructor_raw == 0 else {}),
             },
             **({"projected_contact_scope": projected_contact} if projected_contact is not None else {}),
             **details,
@@ -16617,6 +16623,7 @@ def _general_battle_forecast_ingress(
             general_battle_forecast_used_for_decision=False,
             future_contact_authorized=False,
         )
+    combat_entry = entry
     if QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY in bridge_capabilities:
         latest_advance = _latest_life_advance_index(commands)
         projected_inputs = select_normal_army_projected_contact_v1(
@@ -16653,11 +16660,11 @@ def _general_battle_forecast_ingress(
                 required_observation="same-frame-active-combat-resume-inputs",
             )
         if not projected_inputs["incoming_attacker_geometry_ready"]:
-            return bounded(
-                "native_war_general_battle_opposing_entry_unavailable", None,
-                "native incoming defender does not establish the selected opponent's attacker entry",
-                required_observation="native-defender-constructor-zero-or-selected-opponent-entry",
-            )
+            # The native create-new defender branch skips the attacker-entry
+            # scan and chooses constructor raw0. Its positive incoming route
+            # edge remains Contact geometry, not an opposing attacker entry.
+            combat_entry = None
+            constructor_raw = 0
     use_v3 = QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY in bridge_capabilities
     query_capability = (
         QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY if use_v3
@@ -16672,14 +16679,17 @@ def _general_battle_forecast_ingress(
         else parse_query_combat_simulation_inputs_step
     )
     cache_key = "combat_simulation_inputs_v3" if use_v3 else "combat_simulation_inputs"
-    query_step = query_builder(target, entry, list(attackers), list(defenders))
+    query_step = query_builder(
+        target, combat_entry, list(attackers), list(defenders),
+        constructor_adjacency_kind_raw=constructor_raw,
+    )
     payload = snapshot.get(cache_key)
     def current_query_row(row: dict[str, object]) -> bool:
         result = _effective_command_result(row)
         return bool(
             row.get("ok") is True
             and query_parser(_effective_command(row))
-            == (target, entry, list(attackers), list(defenders))
+            == (target, combat_entry, list(attackers), list(defenders))
             and (_native_int(row.get("index")) or 0) > _latest_life_advance_index(commands)
             and isinstance(result, dict)
             and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
@@ -16691,7 +16701,7 @@ def _general_battle_forecast_ingress(
         query_capability in bridge_capabilities
         and isinstance(payload, dict)
         and snapshot.get(f"{cache_key}_target_province_id") == target
-        and snapshot.get(f"{cache_key}_attacker_entry_province_id") == entry
+        and snapshot.get(f"{cache_key}_attacker_entry_province_id") == combat_entry
         and snapshot.get(f"{cache_key}_attacker_army_ids") == list(attackers)
         and snapshot.get(f"{cache_key}_defender_army_ids") == list(defenders)
         and snapshot.get(f"{cache_key}_queried_snapshot_id") == snapshot.get("snapshot_id")
@@ -16721,7 +16731,7 @@ def _general_battle_forecast_ingress(
     }
     forecast = forecast_fixed_contact(
         forecast_payload, target_province_id=target,
-        attacker_entry_province_id=entry,
+        attacker_entry_province_id=combat_entry,
         attacker_army_ids=attackers, defender_army_ids=defenders,
         capture={key: snapshot.get(key) for key in (
             "snapshot_id", "revision", "native_revision", "date_raw"
@@ -16746,7 +16756,7 @@ def _general_battle_forecast_ingress(
         and isinstance(enemy.get("route_province_ids"), list)
         and target in enemy["route_province_ids"]
         and (enemy_id := _public_cunit_int(enemy.get("army_id"))) is not None
-        and enemy_id not in defenders
+        and enemy_id not in attackers and enemy_id not in defenders
     })
     if len(remaining_route) == 1 and inbound_unmodeled:
         return bounded(
@@ -16835,6 +16845,17 @@ def _general_battle_forecast_ingress(
         )
     return {
         **baseline,
+        "encounter": {
+            "target_province_id": target,
+            "attacker_entry_province_id": combat_entry,
+            "attacker_army_ids": list(attackers),
+            "defender_army_ids": list(defenders),
+            **({
+                "contact_geometry_mode": "native_defender_constructor_zero",
+                "constructor_adjacency_kind_raw": 0,
+            } if constructor_raw == 0 else {}),
+        },
+        **({"projected_contact_scope": projected_contact} if projected_contact is not None else {}),
         "general_battle_forecast": forecast,
         "general_battle_contact_admission": admission,
         "general_battle_forecast_used_for_decision": True,

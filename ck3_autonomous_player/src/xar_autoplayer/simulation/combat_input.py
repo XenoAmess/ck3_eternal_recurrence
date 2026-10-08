@@ -173,7 +173,7 @@ class CounterResolutionInput:
 @dataclass(frozen=True, slots=True)
 class FixedContactEncounterInput:
     target_province_id: int
-    attacker_entry_province_id: int
+    attacker_entry_province_id: int | None
     attacker_side: str
     defender_side: str
     attacker_army_ids: tuple[int, ...]
@@ -690,6 +690,20 @@ def freeze_combat_simulation_input(
     scenario = _object(payload.get("scenario"), "combat_simulation_inputs.scenario")
     if scenario.get("kind") != "explicit_hypothetical_contact":
         raise CombatInputError("scenario kind is not explicit hypothetical contact")
+    entry = scenario.get("attacker_entry_province_id")
+    if entry is None:
+        # Preserve the existing bridge ctor0 scenario through model freezing.
+        # Null is not an unavailable or guessed positive attacker entry.
+        if not (
+            scenario.get("contact_geometry_mode") == "native_defender_constructor_zero"
+            and type(scenario.get("constructor_adjacency_kind_raw")) is int
+            and scenario["constructor_adjacency_kind_raw"] == 0
+            and scenario.get("attacker_position_policy") == "fixed_at_target_hypothetical"
+            and scenario.get("defender_position_policy") == "fixed_at_target_hypothetical"
+        ):
+            raise CombatInputError("null attacker entry requires native defender constructor raw0")
+    else:
+        entry = _positive(entry, "scenario.attacker_entry_province_id")
     attackers = _ids(
         scenario.get("attacker_army_ids"), "scenario.attacker_army_ids"
     )
@@ -832,10 +846,7 @@ def freeze_combat_simulation_input(
         input_sha256=hashlib.sha256(canonical).hexdigest(),
         encounter=FixedContactEncounterInput(
             target_province_id=target_id,
-            attacker_entry_province_id=_positive(
-                scenario.get("attacker_entry_province_id"),
-                "scenario.attacker_entry_province_id",
-            ),
+            attacker_entry_province_id=entry,
             attacker_side=str(attacker_side),
             defender_side=str(defender_side),
             attacker_army_ids=attackers,
