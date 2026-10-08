@@ -156,10 +156,52 @@ the previous named resource group at ordinal105/106; it does not assert that
 the tax row is inside. Each pointer record supplies localization VA at0,
 uint16 numeric ID28 and uint32 keyword2C. No pointer is automatically followed.
 
+Root executed that descriptor prefix once: **112 records /6272B /1read**,
+`DESCRIPTOR_PREFIX_CAPTURED_TAX_ID_NOT_HELD`, at
+`tax-id-metadata/prefix-first01/TAX-DESCRIPTOR-PREFIX-CAPTURE.json`. The actual
+record payload and112 concrete label pointers are now cached. No label text
+or script keyword has been read; an unnamed row still does not establish the
+tax ID. The112 pointers form four bounded literal clusters totaling4000B;
+the next metadata plan uses only those declared ranges, not a53KB enclosing
+scan or an automatic pointer chase.
+
+Numeric continuation first01 stopped **before reading**, `NOTMATCHED`,
+fresh0B/0calls. Its exact artifact is
+`numeric-continuation-map01/SELECTED-NUMERIC-CONTINUATION-CAPTURE.json`.
+The candidate correctly agreed at2303705, but its cached unwind row120552 is
+only8B`[2303705,230370D)`. The helper incorrectly required that one local
+unwind shard to cover the entire126B branch. This is a helper range failure,
+not a native semantic mismatch. Source repair retains prefix/ordinal
+agreement and the same declared126B local window, using the central mapper's
+existing image/section bounds; it adds no guard or wider role. The original
+NOREAD artifact remains unchanged. Root's retry02 uses
+`NUMERIC-LOCAL-CONTINUATION-126B-RETRY02-PLAN.json` and fresh output
+`numeric-continuation-map02/`; it has not run at this writing.
+
 A separate metadata lane found no held descriptor-prefix bytes. Record reads alone
 do not name the tax ID: the actual selected localization/keyword association
 still needs its own exact literal/keyword source. There is no guessed tax row,
 piety97 alias, automatic whole609-table scan or automatic pointer-following.
+
+The same metadata lane found an already-held actual4 runtime keyword path:
+`3F4F8E0`, complete292B`[3F4F8E0,3F4FA04)`, cached ordinal215482,
+`const std::string* __fastcall(int32 token)`. Existing actual4
+`ParameterTokenKey-DETAIL.json` and native-government source proof close the
+getter; campaign and county-conversion code already bind it. The result is
+an engine-owned CString, copied through existing size10/capacity18,
+inline<=15/heap-pointer0 handling, with **no destructor/free** of the returned
+object. Exact evidence and current copy seams are recorded in
+`tax-id-metadata/keyword-source-prep/KEYWORD-SOURCE-PREP.json` and
+`ROOT-NATIVE-KEYWORD-LINK-INTERFACE.json`.
+
+After a unique actual`MOD_DOMAIN_TAX_MULT` descriptor label is identified,
+the new leaf can reuse its uint16 numeric ID and uint32 keyword token through
+this already-closed getter, copy and publish the **actual returned script key**,
+then read the component for `domain_tax_mult`. A missing/mismatched returned
+key affects this leaf only, without changing outer query/action readiness.
+No new static keyword table locator/capture is necessary for that runtime
+observation route. The actual returned tax keyword remains **NOT_HELD**:
+no native call, compiled fixture or paused observation has occurred here.
 
 These pending plans use Root central shared claims, retain member/immediate
 operands, and stop on NOTMATCHED. Any additional necessary source gets a
