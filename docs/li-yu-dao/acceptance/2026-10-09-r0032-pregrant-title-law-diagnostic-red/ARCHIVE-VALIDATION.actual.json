@@ -1,0 +1,10 @@
+{
+  "schema": "lyd.r32.diagnostic-archive-validation.v1",
+  "validated_at_utc": "2026-10-08T23:56:38.506336+00:00",
+  "zip_sha256": "04148562b36f17e38d48488907f9bc32b6955c6f873d7e7391fdae47ae63fba4",
+  "zip_bytes": 7373572,
+  "entries_extracted_and_sha_verified": 322,
+  "external_save_refs_verified": 4,
+  "status": "PASS_ARCHIVE_BYTES_ONLY",
+  "formal_I3b_credit": null
+}
