@@ -346,9 +346,12 @@ class Focused(unittest.TestCase):
                 prep.write_json(args.keeper_output/'ready.json',{'sequence':11})
                 prep.write_json(args.keeper_output/'report.json',{'thread_exited':True,'last_sequence':11,'failure':None})
                 return Child()
-            with (patch.dict(sys.modules,{'ck3_live_run_id':ids}),patch.object(allocation,'Selection',return_value=actual),
-                 patch.object(allocation.subprocess,'run',side_effect=run),patch.object(allocation.subprocess,'Popen',side_effect=popen),
-                 patch('psutil.process_iter',return_value=[]),patch('psutil.Process',return_value=SimpleNamespace(create_time=lambda:1.0))):
+            process_provider=SimpleNamespace(process_iter=lambda fields:[],
+                Process=lambda pid:SimpleNamespace(create_time=lambda:1.0))
+            with (patch.dict(sys.modules,{'ck3_live_run_id':ids,'psutil':process_provider}),
+                 patch.object(allocation,'Selection',return_value=actual),
+                 patch.object(allocation.subprocess,'run',side_effect=run),
+                 patch.object(allocation.subprocess,'Popen',side_effect=popen)):
                 answer=allocation.allocate_and_keep(selected,args)
             self.assertEqual(sequence,['REGISTER','KEEPER_POPEN','WAIT_REAL_CHILD'])
             self.assertEqual(answer['keeper_actual_exit_code'],0)

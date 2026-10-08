@@ -993,7 +993,7 @@ def episode_identity_frame(snapshot: object) -> dict[str, object]:
             "bridge_pid": pid, "connection_generation": generation}
 
 
-def campaign_pause_frame_binding(snapshot: object) -> dict[str, object]:
+def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = False) -> dict[str, object]:
     """Bind a complete campaign frame; heartbeat is only an owner guard."""
     if not isinstance(snapshot, dict):
         raise RuntimeError("campaign pause readback lacks a complete snapshot")
@@ -1020,6 +1020,14 @@ def campaign_pause_frame_binding(snapshot: object) -> dict[str, object]:
                "rejections": (diagnostics.get("rejected_state_snapshot_count"), 0, 2**64 - 1)}
     if any(type(v) is not int or not lo <= v <= hi for v, lo, hi in numbers.values()):
         raise RuntimeError("campaign pause readback has malformed identity or clock")
+    running = (allow_running is True and snapshot.get("paused") is False
+               and mailbox.get("ready") is False)
+    if running and (snapshot["speed"] != 1
+            or type(hello.get("connection_generation")) is not int or hello["connection_generation"] != generation
+            or mailbox.get("application_main_observed") is not True or mailbox.get("paused") is not False
+            or mailbox.get("paused_main_thread_observed") is not False or type(mailbox.get("ready")) is not bool
+            or type(mailbox.get("consecutive_verified")) is not int or mailbox["consecutive_verified"] < 0):
+        raise RuntimeError("campaign pause readback lacks the complete running owner stamp")
     if (snapshot.get("episode_projection") != "native_campaign" or snapshot.get("backend_id") != "native-headless"
             or snapshot.get("source") != "injected-dll-named-pipe" or snapshot.get("map_ready") is not True
             or type(snapshot.get("format_version")) is not int or snapshot["format_version"] != 1
@@ -1032,7 +1040,7 @@ def campaign_pause_frame_binding(snapshot: object) -> dict[str, object]:
             or type(hello.get("pid")) is not int or hello["pid"] != pid
             or type(heartbeat.get("pid")) is not int or heartbeat["pid"] != pid
             or not isinstance(diagnostics.get("pipe_name"), str) or not diagnostics["pipe_name"]
-            or mailbox.get("installed") is not True or mailbox.get("ready") is not True
+            or mailbox.get("installed") is not True or (mailbox.get("ready") is not True and not running)
             or mailbox.get("stop") is not False or type(mailbox.get("failure")) is not int or mailbox["failure"] != 0
             or type(mailbox.get("current_tid")) is not int or mailbox["current_tid"] != mailbox["owner_tid"]
             or mailbox.get("stamp_read_success") is not True or type(mailbox.get("date_raw")) is not int
@@ -1044,8 +1052,8 @@ def campaign_pause_frame_binding(snapshot: object) -> dict[str, object]:
             "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"]}
 
 
-def require_campaign_pause_successor(source: dict[str, object], snapshot: object) -> dict[str, object]:
-    current = campaign_pause_frame_binding(snapshot)
+def require_campaign_pause_successor(source: dict[str, object], snapshot: object, *, allow_running: bool = False) -> dict[str, object]:
+    current = campaign_pause_frame_binding(snapshot, allow_running=allow_running)
     if (current["identity"] != source["identity"] or current["rejections"] != source["rejections"]
             or any(current[k] < source[k] for k in ("date", "revision", "native_revision", "pump"))):
         raise RuntimeError("campaign pause readback owner, clock or rejection state changed")
@@ -1281,8 +1289,8 @@ class PlanClient:
             return status
 
         try:
+            source = campaign_pause_frame_binding(starting, allow_running=True)
             ack = await pause({"step": "pause-map"})
-            source = campaign_pause_frame_binding(starting)
             evidence["binding"] = {"bridge_pid": source["identity"][0], "connection_generation": source["identity"][1],
                 "runtime_character_id": source["identity"][2], "owner_tid": source["identity"][6]}
             retry_at = time.monotonic() + 1.0
@@ -1290,7 +1298,7 @@ class PlanClient:
             previous = source
             while True:
                 current = await bounded(self.fresh)
-                observed = require_campaign_pause_successor(previous, current)
+                observed = require_campaign_pause_successor(previous, current, allow_running=True)
                 previous = observed
                 if current["paused"] is True:
                     evidence.update(status="FULL_PAUSED_FRAME_OBSERVED", ending_snapshot_id=current["snapshot_id"],
@@ -1376,8 +1384,11 @@ class PlanClient:
             after = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
         if int(after["date_raw"]) < target:
             raise RuntimeError("pause readback preceded the requested date")
-        return {"before": before, "running_successor": reached, "after": after,
-                "requested_days": row.get("days", 1), "elapsed_hours": int(after["date_raw"]) - start}
+        result = {"before": before, "running_successor": reached, "after": after,
+                  "requested_days": row.get("days", 1), "elapsed_hours": int(after["date_raw"]) - start}
+        if use_campaign_pause_readback:
+            result.update(requested_interval_complete=True, event_boundary=None)
+        return result
 
     async def advance_event_boundary(self, step: dict[str, object]) -> dict[str, object]:
         """Explicit time-or-event observation; an early event is never one-day proof."""

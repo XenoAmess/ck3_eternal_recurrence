@@ -278,32 +278,35 @@ py tools/build_vivhite_release.py --check
 py tools/build_auto_upgrade_buildings_release.py --check
 ```
 
-**全自动验收（默认）**：
+**mod 验收（统一公共入口）**：
 
 创建或更新 `tools\.venv` 后，除 `tools/requirements.txt` 外，必须使用同一解释器单独执行
 `-m pip install -r tools/requirements-promo-toolchain.txt`；该依赖不再由通用 requirements 文件间接引入。
 
+未来新 run 只使用 `tools/ck3_mod_acceptance.py` 的 `plan / prepare / allocate / preflight / run / verify`，
+通过同一份全局 common runtime manifest 的本机路径映射绑定 host/source/native。
+下例中的 JSON 路径须取自当次公共绑定；`plan` 只读，不分配或启动：
+
 ```text
-tools\.venv\Scripts\python.exe tools\run_acceptance.py
-tools\.venv\Scripts\python.exe tools\run_vivhite_acceptance.py
+tools/.venv/Scripts/python.exe -B -X utf8 tools/ck3_mod_acceptance.py plan --runtime <共同runtime的本机映射JSON> --products tools/ck3_mod_acceptance_products.json --product eternal-recurrence --case source-courtier-ui
 ```
 
-一键全流程（备份现场 → **静态 loc 校验** → 同步代码 → 过大厅 → 自测规则档全链断言 → 恢复现场），
-GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-workflow.md`。
-白绮 runner 默认串行验收独立加载及双 mod 两种加载顺序；使用 production projections、外部夹具和一次性
-`-userdir`，不得读写真实工坊缓存。正式矩阵不加 `--keep-userdirs`。
+实际 prepare/allocate/preflight/run/verify 参数见 [公共消费顺序](docs/ck3-mod-upgrade-fast-validation.md#当前公共cli与本机共同版本)。
+既有 builder、静态检查和不启动游戏的 preflight 保持可用；旧 `run_acceptance.py` / `run_vivhite_acceptance.py`
+只供只读历史、library 和原断言复用，不直接启动未来新场。原独立加载、双 mod 顺序及其他产品业务要求保留，
+不能以公共 GREEN 或三个 basic-load case 的加载边界代替产品业务 PASS。原理与历史坐标表见 `docs/testing-workflow.md`。
 
 **CI 边界**：`.github/workflows/static-ci.yml` 使用 GitHub 官方 `windows-latest`，在 push/PR
 执行三套产品 L0，并离线测试 MiniMax 候选调用器；手动触发时生成三套 ZIP/manifest，`v*`、
 `vivhite-v*`、`ox-here-v*` 分别生成对应正式产物。官方 runner 没有 CK3、Steam 授权和
-可靠交互桌面，禁止调用 `run_acceptance.py` / `run_vivhite_acceptance.py` 或声称完成 L1-L3；真实游戏验收必须在本机运行并保存报告。
+可靠交互桌面，只执行既有无 CK3 静态／离线检查，不调用公共 `allocate/run` 或旧 live runner，也不声称完成 L1-L3；真实游戏验收必须在本机通过公共入口运行并保存报告。
 
-**⚠️ 改完代码游戏里看不到，先怀疑这个**：启动器把 dev .mod（带 remote_file_id）和工坊订阅合并，
+**历史缓存混用排查（不作未来同步／启动入口）**：以下是旧现场流程记录。新源码验收通过公共 prepare 的隔离 profile 绑定正式投影；不得按旧流程覆盖已发布缓存或绕过公共 run。启动器把 dev .mod（带 remote_file_id）和工坊订阅合并，
 游戏实际加载的是 **工坊缓存**（`Z:\SteamLibrary\steamapps\workshop\content\1158310\3784706360`，
 播放集里生效的是 `mod/ugc_3784706360.mod`）。runner 每次跑前 robocopy 同步仓库 → 工坊缓存；
 手动测试前也必须先同步（或直接 `robocopy XenoAmess_s_Eternal_Recurrence <工坊缓存> /MIR`）。
 
-手动兜底（runner 不可用时）：
+历史手动兜底记录（未来新场须修复／使用公共入口，不直接执行下列旧启动流程）：
 1. 通过 Python `subprocess.Popen(["binaries/ck3.exe", "-debug_mode"])` 启动
 2. 日志：`Documents\Paradox Interactive\Crusader Kings III\logs\error.log`（解析/运行时错误）、
    `debug.log`（`debug_log` 标记，本项目用 `XAR:` 前缀）
@@ -508,6 +511,6 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 
 ## 全部未来mod验收的公共入口（2026-10-08永久规则）
 
-- 所有未来mod acceptance统一从`tools/ck3_mod_acceptance.py`公共入口选用一份common runtime manifest。产品仅提供fixture、business case data与adapter，不自行选用或复制host/source/native版本；共享问题在共享层修一次。既有产品builder及发布前源码业务合同保持，旧runner/frozen仅保留底层实现和历史证据，不能作为未来新run分叉版本的入口。
+- 所有未来mod acceptance只从`tools/ck3_mod_acceptance.py`的`plan / prepare / allocate / preflight / run / verify`公共入口选用一份全局common runtime manifest及其本机路径映射。产品仅提供fixture、business case data与adapter，不自行选用或复制host/source/native版本；共享问题在共享层修一次。既有产品builder及发布前源码业务合同保持，旧runner/frozen仅保留底层实现和历史证据，不能作为未来新run分叉版本的入口。
 - 旧冻结输入、失败attempt与原证据永久保留。新run使用公共manifest绑定的版本；共同host/native对必要既有capability的实际qualification只做一次并复用，不按产品重复whole build/full matrix，也不因公共GREEN减少原产品业务要求。plan或adapter数据可消费不证明实际adapter可运行，pending能力如实保留。
 - 公共入口记录各phase实际elapsed，区分共享资格、产品业务、GUI-only真实业务及退出/cleanup；导航ACK、正常退出、host GREEN、静态/plan不得授业务PASS。原预算与case合同按真实绑定记录，未来参数不追认旧失败。缓存继续只验实际Steam已发布cache文件exact formal match及CK3实际mounted/loaded，不重复缓存业务。实施边界见[mod升级提速与公共验收](docs/ck3-mod-upgrade-fast-validation.md)。

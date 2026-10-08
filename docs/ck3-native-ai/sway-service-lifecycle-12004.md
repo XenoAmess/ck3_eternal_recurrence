@@ -124,3 +124,11 @@ Sway and target opinion≤50 with an empty context. Fifty is a start ceiling,
 not a continuation or terminal threshold. This package does not automate a new
 target choice or resend the original Start. It adds no counter-policy beyond
 consuming the already closed inputs.
+
+## 2026-10-08 source-specific endcause research (not a new qualification)
+
+The current local five stock inputs (`sway_scheme.txt`, `sway_on_actions.txt`, `00_scheme_scripted_effects.txt`, `00_scheme_values.txt`, `sway_outcome_events.txt`) are byte-equal to the historical .2 stock inputs. This permits reuse of those authored script branches, not reuse of .2 native addresses. Ordinary `.0001/.0002` both call `sway_end_effect` and can reset/continue; success-list `.1004` and failure-list `.2001/.2002` all have options with `end_scheme=yes`. Neither a phase message nor the true/false end-effect class specifies the final outcome.
+
+The dedicated `scheme_sway_opinion >= sway_max_value` (`100`) branch in effects lines15548–15556/15667–15689 sends `sway_complete` and nests `scope:scheme end_scheme=yes`. Total/positive opinion does not prove execution of that branch. The historical phase capturer only recognizes good/bad `send_interface_message`, and the invalidation sink only recognizes `sway_invalidated_title`; they do not capture this completion toast. In scheme lines526–577, dead/war form `if/else_if` but the range condition is a later independent `if`, so selected invalidation notification sources need not be exclusive.
+
+Retained status1 continues to mean `terminated_unattributed`. The optional finite next source remains the existing three transparent termination wrappers, copying pre-state, forwarding the original once and independently resolving the exact post-state. Actual4 named receiver/body/context bindings and any unambiguous executing-branch-to-end invocation join remain unqualified. A selected notification/source, missing row, opinion, ACK, return or nearby timestamp cannot supply terminal cause. Existing retained-row/M4/Service qualification is unchanged; hidden source rings add no prerequisite, live credit or G2 milestone.

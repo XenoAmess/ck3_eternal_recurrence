@@ -18,12 +18,15 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 
 ## 当前公共CLI与本机共同版本
 
-当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。本机[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound05.json)选择唯一[FINAL04 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-04.json)，后者绑定shared Source03/index、canonical host与native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。旧runner和冻结只保留原证据及底层实现。
+当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。本机[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound07.json)选择唯一[FINAL06 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-06.json)，后者绑定shared Source05/index、canonical host与native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。旧runner和冻结只保留原证据及底层实现。
+
+上述六个模式是未来新 mod run 的唯一操作路由。旧 `run_acceptance.py`、`run_vivhite_acceptance.py`、terminal/product runner 及其历史命令只供只读证据、library 与原业务断言复用，不直接作为新启动入口；旧冻结不被改写。产品 builder、静态检查和不启动游戏的原 preflight 继续保留，不能凭这些结果授实机资格。公共 local 映射始终指向当次唯一全局 manifest，不按产品另选 host/source/native。`de-jure-conquest`、`change-holding-types`、`li-yu-dao` 的 basic-load case 只授加载边界，其原玩家功能合同仍待独立业务证据。
+
 
 从仓库根的`cmd.exe`执行，以下只读例子选择当前真实TED case：
 
 ```text
-tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound05.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case saved_gui_tail
+tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound07.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case saved_gui_tail
 ```
 
 后续模式使用相同四项选择参数，按下表替换`plan`并追加参数；尖括号是当次真实路径/新编号占位，不是已有attempt的重跑命令。
@@ -41,10 +44,24 @@ tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/
 
 正常Quit的独立retained OS0/native0及cleanup/thread TRUE成立，但共同client等待host finally才会产生的字段，形成闭场循环等待；Root严格复核原场Event后仅一次finish_hold救援，原run exit2、verify进程exit0但case_acceptance_pass=false/normal_close=NULL保留，正常出口未自动通过。[实际闭场47](C:/workspace/ck3-upgrade-20261008/ted-unified-a121-client-closure-resource-01/ROOT-TED-R0013-A121-COMMON-EXIT-FAILURE-RESCUED-CLOSED-47.md)绑定keeper实际exit0→CAS6461 done/resources[]；原typed/GUI与正常退出事实不被该公共缺口抹除，首次统一整链也不追认PASS。共同done Event消费修复已进入Source03；自动正常出口仍需实际验证，不另造产品host。已消费输入/state/allocation不重放，原失败/历史冻结保留，正式仍6/10（60%）。
 
-## Source03共同版本、无CK3检查与R14实际边界
+## Source03共同版本、无CK3检查与R14实际边界（历史）
 
-当前全局为Source03/host `cd7561f9…`、FINAL04 manifest `91197f38…`、local bound05 `96164…`；上面的当前只读CLI例子已指向bound05。R13/a121所用Source02/FINAL03/bound04保留原冻结历史。产品仍只消费公共版本，不能分叉独立host/source/DLL。
+R14/a122当时全局为Source03/host `cd7561f9…`、FINAL04 manifest `91197f38…`、local bound05 `96164…`；当时CLI选用bound05；当前示例已改为bound06。R13/a121所用Source02/FINAL03/bound04保留原冻结历史。产品仍只消费公共版本，不能分叉独立host/source/DLL。
 
-既有无CK3检查为[entry 10项](../tools/test_ck3_mod_acceptance.py)、[adapter 9项](../tools/test_ck3_mod_acceptance_adapters.py)、[completion 3项](../tools/test_ck3_mod_acceptance_completion.py)：覆盖全部14产品/全部case同host/source/DLL，product与case两层都拒绝8种override（host/source_root/source_index/native/dll/injector/engine/host_args），真实`managed_session_done` Event与原native0/完整cleanup联合判定，[portable资料](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/ROOT-PORTABLE-ADAPTER-TESTS-REVIEW08.md)，以及verify FALSE/null/非严格true返回exit2。本机source guard 10、adapter 9实际exit0，completion 3实际PASS复用；这些既有检查可作为无Steam/无CK3 CI门禁，不授业务PASS。新HEAD官方CI终态在实际commit/push后另记，本文未重跑测试/构建或矩阵。
+既有无CK3检查为[entry 10项](../tools/test_ck3_mod_acceptance.py)、[adapter 9项](../tools/test_ck3_mod_acceptance_adapters.py)、[completion 3项](../tools/test_ck3_mod_acceptance_completion.py)：覆盖全部14产品/全部case同host/source/DLL，product与case两层都拒绝8种override（host/source_root/source_index/native/dll/injector/engine/host_args），真实`managed_session_done` Event与原native0/完整cleanup联合判定，[portable资料](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/ROOT-PORTABLE-ADAPTER-TESTS-REVIEW08.md)，以及verify FALSE/null/非严格true返回exit2。本机source guard 10、adapter 9实际exit0，completion 3实际PASS复用；这些既有检查可作为无Steam/无CK3 CI门禁，不授业务PASS。后继新HEAD官方CI终态按实际回执另记，本文未重跑测试/构建或矩阵。
 
 TED [R14/a122闭场48](C:/workspace/ck3-upgrade-20261008/ted-unified-a122-d1-failed-readonly-resource-01/ROOT-TED-R0014-A122-D1-SHARED-PAUSE-FAILURE-CLOSED-48.md)保留actual startup fixture资格及D0 typed PASS；已提交的首日`case-natural-day-0001`因共同pause读回丢失complete same-owner frame失败，不重播，未到production GUI。host于11:31:23.237773 UTC RED/thread/cleanup闭场，Source03真实done Event TRUE仅证明生命周期结束；原retained PID24956/ctime1791458801.1143658实际exit1、normal ROOT/native0 proof均NULL，未授正常Quit/normal0。共同run exit2、keeper80379实际exit0→CAS6474 done/resources[]保留；`normal-quit-awaiting`早值NULL不证明无host error。共同pause修复仍由shared owner施工，正式仍6/10（60%），不授14产品PASS，不重复缓存业务。
+
+## Source04当时操作指针与R15、CI实证（历史）
+
+R15当时全局统一选[Source04/FINAL05/bound06消费卡](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/ROOT-SHARED-SOURCE04-MANIFEST05-BOUND06-CONSUME-01.md)：host `9e5e0ca4…`、FINAL05 `b6b64d76…`、bound06 `bbc16743…`；旧Source03/FINAL04/bound05与R14失败原证据保持。R15/a123原D1单次stepok TRUE（12:04:54.825233 UTC），但client随后报`ValueError: Original actual day interval/event boundary not proved`，在production GUI前停止；不得把stepok外推为完整日间隔/事件边界或业务PASS，不重播补证。
+
+[R15最终薄卡50](C:/workspace/ck3-upgrade-20261008/ted-unified-a123-day-proof-failed-readonly-resource-01/ROOT-TED-R0015-A123-SHORT-DAY-FAIL-NORMAL0-CLOSED-50.md)确认Root于12:11 UTC正常GUI Quit后，共同自动normal-close已实际qualified：原PID25528/ctime1791460808.2981422 retained OS0/actual_retained_os0 TRUE，原managed_session_done TRUE、native process_exit0及cleanup_proven/treegone TRUE；client自己仅一次`acceptance-normal-exit-finish-hold`于12:11:47.886758 UTC ok TRUE，host于12:11:49.191553 UTC GREEN/thread/cleanup TRUE/error NULL。该实证只关闭自动正常出口缺口；原run74639实际exit2仍是业务day-interval失败，verify实际exit2仅因业务前停未生成`ted-verdict-input.json`，业务/GUI保持未验，不追认case PASS。keeper96664实际exit0/last6494/thread TRUE/failure NULL→CAS6495 done/resources[]；正式仍6/10（60%）。
+
+提交`d705eb32122ed2450cff6d6de0387f14ae457024`的[精确官方CI run 37772066872](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37772066872)在step31真实报`ModuleNotFoundError: No module named 'psutil'`，属于mocked allocator测试的CI依赖，不是host实机错误，该失败保留。CI修复patch已由Root实际apply；本机adapter9 PASS 0.786s、completion3 PASS 1.361s、pause3 PASS 0.292s复用，不重跑旧测试/矩阵或下载原始CI。后继exact SHA官方CI终态仍待实际回执；公共底座与源码业务合同、全部未来产品公共入口及缓存永久两项规则保持，不授release信用。
+
+## Source05统一正常日结果与下一场
+
+R15小原件证实实际完整暂停帧从53144328推进到53144352，但普通host结果未输出客户端及QOL共同要求的`requested_interval_complete`。[中央修复](C:/workspace/ck3-upgrade-20261008/r15-campaign-normal-day-result-schema-01/ROOT-CAMPAIGN-NORMAL-DAY-RESULT-CENTRAL-SCHEMA-FIX-FINAL-02.md)仅在既有`.4 native_campaign`完整暂停、同owner及达到目标日期门禁之后，输出`requested_interval_complete=True / event_boundary=None`。原legacy、one-life事件分支、客户端及产品断言不变；三个真实方法回归一次PASS，旧R15 FAILED不补字段、不追认PASS。
+
+[Source05实际封存](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/ROOT-SHARED-SOURCE05-MANIFEST06-BOUND07-PREPARED-CONSUME-01.md)exit0、10.26秒，仅换一个host并继承6903来源行；host `a460500d…`、FINAL06 `91c97887…`、bound07 `0d518e32…`，native `ed510…`及原预算、launcher、lease保持。未运行的QOL/RMTM仅另建prepared元数据更换顶层manifest pin，其他对象一次核对相同，不重prepare或重hash产品文件。QOL下一场已实际allocate为R32/a124，register6498→keeper READY6499约1.53秒，preflight exit0；尚未授业务或发布PASS。RMTM自然事件中断及真实继承控制流另由共享owner补齐，不能制造one-life anchor或从时间差推死亡结果。
