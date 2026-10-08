@@ -31,6 +31,24 @@ _FIELDS = {
 }
 
 
+def _values_q64(value: object, field: str) -> list[int] | None:
+    """Decode native decimal strings and retain normalized signed64 integers."""
+    if value is None:
+        return None
+    if not isinstance(value, list):
+        raise ValueError(f"{field} must be a list or null")
+    result = []
+    for index, item in enumerate(value):
+        item_field = f"{field}[{index}]"
+        if type(item) is str:
+            digits = item[1:] if item.startswith("-") else item
+            if not digits or not digits.isascii() or not digits.isdecimal():
+                raise ValueError(f"{item_field} must be a native signed64 decimal string or integer")
+            item = int(item, 10)
+        result.append(_integer(item, item_field, 64))
+    return result
+
+
 def normalize_carrier_direct_12004(value: object) -> dict | None:
     """Normalize the optional raw numerical leaf, retaining partial observations."""
     if value is None:
@@ -69,7 +87,7 @@ def normalize_carrier_direct_12004(value: object) -> dict | None:
         block = _dict(block, FIELD_NAME + ".properties", {"keys_u16", "values_q64"})
         block = {
             "keys_u16": _numbers(block["keys_u16"], FIELD_NAME + ".properties.keys_u16", 16, unsigned=True),
-            "values_q64": _numbers(block["values_q64"], FIELD_NAME + ".properties.values_q64", 64),
+            "values_q64": _values_q64(block["values_q64"], FIELD_NAME + ".properties.values_q64"),
         }
     result["properties"] = block
     if result["ready"]:
