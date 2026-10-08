@@ -176,7 +176,8 @@ def priority_construction_receipt(
             return row
     for row in receipts:
         if (row.get("completion_status") == "completed"
-                and row.get("observed_player_monthly_gold_income_raw") is None):
+                and (row.get("observed_player_monthly_gold_income_raw") is None
+                     or not isinstance(row.get("post_cash_v2"), Mapping))):
             return row
     for row in receipts:
         province = row.get("construction_province_income_observation")
@@ -314,16 +315,22 @@ def plan_construction_private(
                     applied, exact_ck3_build=private_native_build_identity(
                         snapshot).game_version)}
         if (applied.get("completion_status") == "completed"
-                and applied.get("observed_player_monthly_gold_income_raw") is None):
+                and (applied.get("observed_player_monthly_gold_income_raw") is None
+                     or not isinstance(applied.get("post_cash_v2"), Mapping))):
             observed = current_cash()
             budget = observed.get("current_cash_scenarios") if isinstance(observed, Mapping) else None
             packet = budget.get("source_cash_resources") if isinstance(budget, Mapping) else None
             gross = packet.get("player_monthly_gross_income") if isinstance(packet, Mapping) else None
             if (isinstance(gross, Mapping) and type(gross.get("raw")) is int
                     and packet["readiness"].get("monthly_gross_income_ready") is True):
+                completed_receipt = dict(applied)
+                if completed_receipt.get("observed_player_monthly_gold_income_raw") is None:
+                    completed_receipt.update(
+                        observed_player_monthly_gold_income_raw=gross["raw"],
+                        income_observed_date_raw=packet["date_raw"],
+                    )
                 fields = completed_construction_cash_fields_v1(
-                    {**applied, "observed_player_monthly_gold_income_raw": gross["raw"],
-                     "income_observed_date_raw": packet["date_raw"]}, packet,
+                    completed_receipt, packet,
                     exact_ck3_build=budget["game_version"],
                 )
                 applied = fields["receipt"]
