@@ -2,8 +2,9 @@
 
 SOURCE_NOTRUN. Root supplies the fresh native projection/serializer packet.
 Only its outer request ID is correlated. The full root body remains intact.
-The normal fixture's chooser and empty Council candidates are explicitly
-synthetic; no candidate, action or independent action receipt is replayed.
+The normal fixture's chooser, plan-only life-advance capability and empty
+Council candidates are explicitly synthetic. No life-advance is submitted;
+no candidate, action or independent action receipt is replayed.
 """
 
 from __future__ import annotations
@@ -134,6 +135,14 @@ class CampaignRootCoreCouncil12004RegisteredCompound(unittest.IsolatedAsyncioTes
             retain_succession_expectation_v1 = None
             reconcile_retained_succession_transition_v1 = None
 
+            def capabilities(self) -> dict[str, object]:
+                capabilities = super().capabilities()
+                # Route the declared synthetic normal baseline. This capability
+                # is planning-only; the endpoint permits only the root read.
+                capabilities["action_steps"] = sorted(
+                    set(capabilities["action_steps"]) | {"life-advance"})
+                return capabilities
+
             def query_council_final_gates_private_v1(self, *, expected_revision: int,
                                                     position_key: str = STEWARD):
                 frame = self.take_internal_semantic_snapshot()
@@ -175,6 +184,7 @@ class CampaignRootCoreCouncil12004RegisteredCompound(unittest.IsolatedAsyncioTes
         driver.synthetic_noop_roles = []
         try:
             before = driver.take_internal_semantic_snapshot()
+            self.assertIn("life-advance", driver.capabilities()["action_steps"])
             server = create_server(driver)
             tools = {tool.name for tool in await server.list_tools()}
             self.assertIn(ROOT_TOOL, tools)
@@ -230,6 +240,10 @@ class CampaignRootCoreCouncil12004RegisteredCompound(unittest.IsolatedAsyncioTes
                 response = await server.call_tool("ck3_plan_turn", {})
             self.assertFalse(response.is_error, response)
             planned = response.structured_content
+            self.evidence.update(registered_normal_plan=deepcopy(planned),
+                synthetic_empty_candidate_roles=list(driver.synthetic_noop_roles),
+                native_ingestions=endpoint.ingestions,
+                native_sent_requests=deepcopy(endpoint.sent))
             self.assertEqual(planned["plan"]["selected_step"], "life-advance")
             self.assertEqual(driver.synthetic_noop_roles, [STEWARD, CHANCELLOR, CHAPLAIN])
             self.assertEqual(planned["plan"]["council_decision"]["position_key"], CHAPLAIN)
@@ -248,6 +262,7 @@ class CampaignRootCoreCouncil12004RegisteredCompound(unittest.IsolatedAsyncioTes
                     "public_frame_hello": "explicit fixture setup for compiled root revision9/date53222304/owner29829",
                     "non_council_native_root_baseline": "declared synthetic by native producer receipt",
                     "normal_chooser": "explicit synthetic life-advance baseline",
+                    "normal_routing_capability": "synthetic plan-only life-advance capability; never submitted",
                     "council_queries": "explicit empty candidate/no-op providers; actual seats taken from the new native root",
                     "initial_succession": "unrelated initial succession retain/reconcile hooks disabled in fixture subclass",
                     "root_reader_protocol_strict_service_and_normal_consumer": "production code, unchanged",
