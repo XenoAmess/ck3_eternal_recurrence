@@ -47,7 +47,7 @@ void Check(bool value, const char *reason) {
   if (!value) throw std::runtime_error(reason);
 }
 void *local_player = nullptr;
-void *definition = nullptr;
+void *fixture_interaction_definition = nullptr;
 void *active_context = nullptr;
 std::size_t constructs = 0;
 std::size_t destroys = 0;
@@ -55,7 +55,7 @@ void *LocalPlayer(void *) { return local_player; }
 void Redirect(void *def, std::int32_t *actor, std::int32_t *recipient,
               std::int32_t *subject, std::int32_t *candidate,
               std::int32_t *intermediary, std::int32_t *sixth) {
-  Check(def == definition && *actor == kActor && *subject == kHeir &&
+  Check(def == fixture_interaction_definition && *actor == kActor && *subject == kHeir &&
             *candidate == kPartner && *recipient == kPartner &&
             *intermediary == -1 && *sixth == -1,
         "current pair keeps actual six-role context");
@@ -103,7 +103,7 @@ std::uint8_t Answer(void *context, std::uint8_t mode, std::uint8_t flag,
   return 0;
 }
 void Cost(const void *block, const void *scope, std::int64_t *out) {
-  Check(block == static_cast<std::byte *>(definition) + 0x40 &&
+  Check(block == static_cast<std::byte *>(fixture_interaction_definition) + 0x40 &&
             static_cast<const std::byte *>(scope) - 8 == active_context,
         "current ten-resource cost uses finalized context");
   for (std::size_t i = 0; i < 10; ++i) out[i] = 0;
@@ -228,7 +228,7 @@ struct Fixture {
     if (!scene.lineage_present)
       Put(houses[0].data(), 0x10, std::int32_t{0x06000064});
     Put(database.data(), 0xF30, def.data());
-    definition = def.data();
+    fixture_interaction_definition = def.data();
     local_player = local.data();
     auto &context = family.context;
     family.enabled = context.enabled = true;
