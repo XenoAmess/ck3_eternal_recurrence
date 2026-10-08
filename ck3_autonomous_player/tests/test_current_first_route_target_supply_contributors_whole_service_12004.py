@@ -276,21 +276,31 @@ class CurrentFirstRouteTargetSupplyContributorsWholeService12004Tests(unittest.T
             endpoint.publish(frame)
             before = driver.take_snapshot()
             receipt["before_current_synthetic_frame"] = deepcopy(before)
-            interesting = {
-                ("mcp_server.py", "ck3_query_army_strengths"),
-                ("service.py", "query_army_strengths"), ("service.py", "execute_step"),
-                ("native_driver.py", "execute_step"), ("native_driver.py", "_execute_army_strength_query"),
-                ("native_driver.py", "_execute_primitive_step"), ("war_contract.py", "normalize_army_strengths"),
-                ("army_current_first_route_target_supply_contributors_contract.py", "normalize_current_first_route_target_supply_contributors_v1"),
-                ("army_current_first_route_target_supply_contributors_projection.py", "project_current_first_route_target_supply_contributors_v1"),
-                ("army_current_province_supply_contributors_contract.py", "normalize_current_province_supply_contributors_v1"),
-            }
+            # The registered query calls Service.query_army_strengths directly,
+            # then Driver.execute_step; the generic Service.execute_step is unused.
+            registered_codes = [code for code in create_server.__code__.co_consts
+                                if getattr(code, "co_name", None) == "ck3_query_army_strengths"]
+            self.assertEqual(len(registered_codes), 1)
+            functions = [
+                registered_codes[0], Service.query_army_strengths.__code__,
+                Driver.execute_step.__code__, Driver._execute_army_strength_query.__code__,
+                Driver._execute_primitive_step.__code__,
+                sys.modules[Service.__module__].normalize_army_strengths.__code__,
+                sys.modules["xar_autoplayer.bridge.army_current_first_route_target_supply_contributors_contract"].normalize_current_first_route_target_supply_contributors_v1.__code__,
+                sys.modules[Service.__module__].project_current_first_route_target_supply_contributors_v1.__code__,
+                sys.modules["xar_autoplayer.bridge.army_current_province_supply_contributors_contract"].normalize_current_province_supply_contributors_v1.__code__,
+            ]
+            interesting = {id(code): (Path(code.co_filename).name, code.co_name) for code in functions}
+            executed = set()
+            receipt["required_call_path"] = [list(key) for key in interesting.values()]
 
             def observe(frame, event, value):
-                key = (Path(frame.f_code.co_filename).name, frame.f_code.co_name)
-                if key not in interesting:
+                code_id = id(frame.f_code)
+                key = interesting.get(code_id)
+                if key is None:
                     return
                 if event == "call":
+                    executed.add(code_id)
                     receipt["call_trace"].append({"source": frame.f_code.co_filename, "function": key[1]})
                     if key == ("service.py", "query_army_strengths"):
                         self.assertIs(type(frame.f_locals["self"]), Service)
@@ -347,8 +357,8 @@ class CurrentFirstRouteTargetSupplyContributorsWholeService12004Tests(unittest.T
                 if key != "request_id":
                     _preserved(self, authority[key], delivered[key], "runtime-whole." + key)
             self.assertEqual(whole, authority)
-            executed = {(Path(item["source"]).name, item["function"]) for item in receipt["call_trace"]}
-            self.assertTrue(interesting <= executed, "actual registered/driver/strict/Service target path must run")
+            missing = [key for code_id, key in interesting.items() if code_id not in executed]
+            self.assertFalse(missing, "actual registered/driver/strict/Service target path must run: " + repr(missing))
             self.assertEqual(sum(item["function"] == "query_army_strengths" and Path(item["source"]).name == "service.py" for item in receipt["call_trace"]), 1)
             receipt.update(status="GREEN", whole_native_body_preserved=True)
         except Exception as error:
