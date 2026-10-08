@@ -20926,6 +20926,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "successor continuation lacks a valid played CharacterID"
             )
+        family_episode_handoff = None
         with self._driver_state_lock:
             completed_terminal = self._completed_terminal_result_locked()
             reconciliation = copy.deepcopy(self._succession_reconciliation)
@@ -20971,6 +20972,17 @@ class NativeHeadlessGameplayDriver:
             if lifecycle == ORDINARY_CAMPAIGN_SUCCESSION:
                 from ..strategy import continue_ordinary_campaign_goal_v1
 
+                from ..family_marriage_episode_handoff_v1 import (
+                    archive_predecessor_family_marriage_v1,
+                )
+
+                family_episode_handoff = archive_predecessor_family_marriage_v1(
+                    self.state_dir,
+                    source_episode_run_id=predecessor_run_id,
+                    successor_episode_run_id=successor_run_id,
+                    predecessor_character_id=predecessor_id,
+                    successor_character_id=actual_successor_id,
+                )
                 self._campaign_goal = continue_ordinary_campaign_goal_v1(
                     self._campaign_goal, reconciliation
                 )
@@ -21019,6 +21031,8 @@ class NativeHeadlessGameplayDriver:
             "source_episode_run_id": predecessor_run_id,
             "episode_run_id": successor_run_id,
             "reconciliation": reconciliation,
+            **({"family_marriage_episode_handoff": family_episode_handoff}
+               if family_episode_handoff is not None else {}),
             "continue_as_heir_after_death": True,
             "heir_gameplay_actions": 0,
             "ck3_command_submitted": False,
