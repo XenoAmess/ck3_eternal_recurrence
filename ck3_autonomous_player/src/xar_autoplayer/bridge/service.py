@@ -514,6 +514,13 @@ from ..construction_formal_consumer import (
     plan_construction_private,
     read_construction_ledger,
 )
+from ..crown_authority_formal_consumer_v1 import (
+    SUBMIT_STEP as PRIVATE_CROWN_SUBMIT_STEP,
+    RECEIPT_STEP as PRIVATE_CROWN_RECEIPT_STEP,
+    plan_crown_authority_private_v1,
+    submit_crown_authority_private_v1,
+    read_crown_authority_receipt_private_v1,
+)
 from ..family_marriage_formal_consumer import (
     SUBMIT_STEP as PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
     RESULT_STEP as PRIVATE_FAMILY_MARRIAGE_RESULT_STEP,
@@ -1725,7 +1732,8 @@ class GameplayBridgeService:
             planned.pop("_private_construction_history_v1", None)
             planned = plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot)
             return finish_release_root_arbitration(
-                self._plan_private_council_normal_v1(planned, available_steps))
+                self._plan_private_crown_normal_v1(
+                    self._plan_private_council_normal_v1(planned, available_steps)))
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
         planned.pop("_private_lifestyle_war_frame_v1", None)
@@ -1801,7 +1809,13 @@ class GameplayBridgeService:
             planned = plan_ransom_private(self.driver, planned, snapshot)
         planned = plan_release_formal(self.driver, planned, snapshot)
         return finish_release_root_arbitration(
-            self._plan_private_council_normal_v1(planned, available_steps))
+            self._plan_private_crown_normal_v1(
+                self._plan_private_council_normal_v1(planned, available_steps)))
+
+    def _plan_private_crown_normal_v1(
+        self, planned: dict[str, object],
+    ) -> dict[str, object]:
+        return plan_crown_authority_private_v1(self.driver, planned)
 
     def _plan_private_council_normal_v1(
         self, planned: dict[str, object], available_steps: set[str],
@@ -3012,6 +3026,15 @@ class GameplayBridgeService:
                 if not isinstance(pending, dict):
                     raise UnsupportedStepError("controlled construction receipt lacks pending identity")
                 result = query_construction_receipt(
+                    self.driver, pending=pending, expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == PRIVATE_CROWN_SUBMIT_STEP:
+                result = submit_crown_authority_private_v1(self.driver, plan=plan)
+            elif selected_step == PRIVATE_CROWN_RECEIPT_STEP:
+                pending = plan.get("crown_pending_action")
+                if not isinstance(pending, dict):
+                    raise UnsupportedStepError("ordinary Crown receipt lacks its pending action identity")
+                result = read_crown_authority_receipt_private_v1(
                     self.driver, pending=pending, expected_revision=int(planned["revision"]),
                 )
             elif selected_step == PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP:

@@ -62,6 +62,12 @@ flowchart TD
 
 ## Why the ordinary campaign does not select Crown yet
 
+This section records the input gap before integration. The subsequent
+[ordinary Service loop candidate](crown-authority-normal-service-loop-12004.md)
+wires both normal tails and retains exact query, pending action and independent
+receipt semantics. Its sole new compound is FIRST0; no live readiness is
+inferred from the source change.
+
 The ordinary campaign goal is `dynasty_continuity` with family and succession
 work. Source search finds formal Crown only in MCP registration, NativeDriver
 wrappers and the private transport; no Crown chooser, dispatch or durable
