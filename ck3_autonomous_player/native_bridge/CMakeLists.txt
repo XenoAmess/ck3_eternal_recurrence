@@ -9439,13 +9439,16 @@ endif()
 # M7 actual4 formal Crown factory whole: unique first-only target.
 if(BUILD_TESTING AND XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
   add_executable(xar_ck3_12004_realm_law_formal_whole_test
-    tests/ck3_12004_realm_law_formal_whole_test.cpp)
+    tests/ck3_12004_realm_law_formal_whole_test.cpp
+    $<TARGET_OBJECTS:xar_ck3_bridge>)
   target_include_directories(xar_ck3_12004_realm_law_formal_whole_test PRIVATE
     include src research)
   target_link_libraries(xar_ck3_12004_realm_law_formal_whole_test PRIVATE
-    xar_ck3_12002_runtime)
+    xar_ck3_12002_runtime xar_bridge_protocol bcrypt
+    $<TARGET_PROPERTY:xar_ck3_bridge,LINK_LIBRARIES>)
   target_compile_features(xar_ck3_12004_realm_law_formal_whole_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_12004_realm_law_formal_whole_test PRIVATE
+    $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
     XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1=1)
   if(MSVC)
