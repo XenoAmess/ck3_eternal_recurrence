@@ -194,6 +194,30 @@ void AppendChildInputs(std::string &json,
       else json += "null";
       json += '}';
     }
+    if (row.education_point_traits) {
+      const auto &education_traits = *row.education_point_traits;
+      json += ",\"education_point_traits\":{\"source\":\"native_character_has_trait\",\"status\":";
+      AppendJsonString(json, education_traits.available ? "available" : "unavailable");
+      json += ",\"unavailable_reason\":";
+      if (education_traits.available) json += "null";
+      else AppendJsonString(json, education_traits.unavailable_reason);
+      json += ",\"queried_trait_keys\":[";
+      for (std::size_t key = 0; key < kChildEducationPointTraitKeysV1.size(); ++key) {
+        if (key != 0) json += ',';
+        AppendJsonString(json, kChildEducationPointTraitKeysV1[key]);
+      }
+      json += "],\"present_trait_keys\":";
+      if (!education_traits.present_trait_keys) json += "null";
+      else {
+        json += '[';
+        for (std::size_t key = 0; key < education_traits.present_trait_keys->size(); ++key) {
+          if (key != 0) json += ',';
+          AppendJsonString(json, (*education_traits.present_trait_keys)[key]);
+        }
+        json += ']';
+      }
+      json += '}';
+    }
     json += '}';
   }
   json += "]}";

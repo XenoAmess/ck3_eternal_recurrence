@@ -1,5 +1,16 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-09: Child education point trait source candidate
+
+[Child education point trait inputs](child-education-point-traits-12004.md)
+closes the nine authored child-side HasTrait dependencies and separate
+eight-key educator role. The existing child query gains an optional private
+education_point_traits observer using the admitted actual4 Trait database,
+Character.HasTrait and full-ID child receiver. Source is ready for one Root
+five-native/six-consumer qualification; new build/FIRST/live are NOTRUN.
+Guardian/educator identity, loaded outcome AST and education actions remain
+unresolved. Qualified Native38 focus and old child fields are reused.
+
 ## 2026-10-08: Ordinary post-birth child education source
 
 [Child education and guardians](education-and-guardians-12004.md) records the

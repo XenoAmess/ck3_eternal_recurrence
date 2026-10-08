@@ -15,6 +15,11 @@ LEAF = "current_first_heir_descendants_v1"
 SUMMARY = "current_first_heir_descendants_summary_v1"
 CHILD_INPUTS = "child_inputs"
 CHILDHOOD_TRAIT_KEYS = ("curious", "rowdy", "bossy", "pensive", "charming")
+EDUCATION_POINT_TRAIT_KEYS = (
+    "intellect_good_1", "intellect_good_2", "intellect_good_3",
+    "intellect_bad_1", "intellect_bad_2", "intellect_bad_3",
+    "shrewd", "dull", "inbred",
+)
 
 
 def _integer(value: object, low: int, high: int) -> bool:
@@ -62,6 +67,24 @@ def _childhood_traits(value: object) -> None:
                 or present != [key for key in CHILDHOOD_TRAIT_KEYS if key in present]
                 if available else present is not None)):
         raise BridgeUnavailableError("current heir childhood trait values are malformed")
+
+
+def _education_point_traits(value: object) -> None:
+    """Validate the child's active predicates used by the stock point effect."""
+    if (not isinstance(value, dict)
+            or not {"source", "status", "unavailable_reason", "queried_trait_keys",
+                    "present_trait_keys"}.issubset(value)
+            or value.get("source") != "native_character_has_trait"
+            or value.get("status") not in ("available", "unavailable")
+            or value.get("queried_trait_keys") != list(EDUCATION_POINT_TRAIT_KEYS)):
+        raise BridgeUnavailableError("current heir education-point trait observation is malformed")
+    reason, present = value["unavailable_reason"], value["present_trait_keys"]
+    if value["status"] == "unavailable":
+        if not isinstance(reason, str) or not reason or present is not None:
+            raise BridgeUnavailableError("unavailable current heir education-point traits are malformed")
+    elif (reason is not None or not isinstance(present, list)
+          or present != [key for key in EDUCATION_POINT_TRAIT_KEYS if key in present]):
+        raise BridgeUnavailableError("available current heir education-point traits are malformed")
 
 
 def _native_focus(value: object) -> None:
@@ -124,6 +147,8 @@ def _child_inputs(value: object, descendants: dict[str, object]) -> None:
             raise BridgeUnavailableError("current heir child input occurrence group is malformed")
         _child_values(row.get("values"))
         _childhood_traits(row.get("childhood_traits"))
+        if "education_point_traits" in row:
+            _education_point_traits(row["education_point_traits"])
         if "native_focus" in row:
             _native_focus(row["native_focus"])
         all_available = (all_available and row["values"]["status"] == "available"

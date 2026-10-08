@@ -22,12 +22,17 @@ inline bool ReadMemory(void *, std::uintptr_t address, void *output,
   return true;
 }
 
-using TraitDefinitions =
-    std::array<const void *, ck3_11906::kChildhoodTraitKeysV1.size()>;
+template <std::size_t Size>
+using TraitDefinitionsForKeys = std::array<const void *, Size>;
 
-inline bool ReadTraitDefinitions(
+using TraitDefinitions =
+    TraitDefinitionsForKeys<ck3_11906::kChildhoodTraitKeysV1.size()>;
+
+template <std::size_t Size>
+inline bool ReadTraitDefinitionsForKeys(
     const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &environment,
-    TraitDefinitions &definitions) noexcept {
+    const std::array<std::string_view, Size> &keys,
+    TraitDefinitionsForKeys<Size> &definitions) noexcept {
   using namespace first_heir_descendants_detail;
   definitions = {};
   if (environment.trait_database == nullptr ||
@@ -48,11 +53,9 @@ inline bool ReadTraitDefinitions(
             reinterpret_cast<std::uintptr_t>(definition) + 0x18, key))
       return false;
     const auto view = lifestyle::PlayerLifestyleStableKeyView12004V1(key);
-    const auto found = std::find(ck3_11906::kChildhoodTraitKeysV1.begin(),
-                                ck3_11906::kChildhoodTraitKeysV1.end(), view);
-    if (found == ck3_11906::kChildhoodTraitKeysV1.end()) continue;
-    const auto slot = static_cast<std::size_t>(
-        found - ck3_11906::kChildhoodTraitKeysV1.begin());
+    const auto found = std::find(keys.begin(), keys.end(), view);
+    if (found == keys.end()) continue;
+    const auto slot = static_cast<std::size_t>(found - keys.begin());
     if (definitions[slot] != nullptr) return false;
     definitions[slot] = definition;
   }
@@ -60,15 +63,24 @@ inline bool ReadTraitDefinitions(
                      [](const void *value) { return value != nullptr; });
 }
 
-inline ck3_11906::CurrentFirstHeirChildTraitsV1 ReadTraits(
+inline bool ReadTraitDefinitions(
     const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &environment,
-    const TraitDefinitions &definitions, void *character) noexcept {
+    TraitDefinitions &definitions) noexcept {
+  return ReadTraitDefinitionsForKeys(
+      environment, ck3_11906::kChildhoodTraitKeysV1, definitions);
+}
+
+template <std::size_t Size>
+inline ck3_11906::CurrentFirstHeirChildTraitsV1 ReadTraitsForKeys(
+    const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &environment,
+    const TraitDefinitionsForKeys<Size> &definitions, void *character,
+    const std::array<std::string_view, Size> &keys) noexcept {
   ck3_11906::CurrentFirstHeirChildTraitsV1 result{};
   if (character == nullptr || environment.character_has_trait == nullptr ||
       std::any_of(definitions.begin(), definitions.end(),
                   [](const void *value) { return value == nullptr; }))
     return result;
-  std::array<bool, ck3_11906::kChildhoodTraitKeysV1.size()> first{}, second{};
+  std::array<bool, Size> first{}, second{};
   for (std::size_t index = 0; index < definitions.size(); ++index)
     first[index] = environment.character_has_trait(character, definitions[index]);
   for (std::size_t index = 0; index < definitions.size(); ++index)
@@ -82,8 +94,15 @@ inline ck3_11906::CurrentFirstHeirChildTraitsV1 ReadTraits(
   result.present_trait_keys.emplace();
   for (std::size_t index = 0; index < second.size(); ++index)
     if (second[index])
-      result.present_trait_keys->push_back(ck3_11906::kChildhoodTraitKeysV1[index]);
+      result.present_trait_keys->push_back(keys[index]);
   return result;
+}
+
+inline ck3_11906::CurrentFirstHeirChildTraitsV1 ReadTraits(
+    const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &environment,
+    const TraitDefinitions &definitions, void *character) noexcept {
+  return ReadTraitsForKeys(environment, definitions, character,
+                           ck3_11906::kChildhoodTraitKeysV1);
 }
 
 // Reuse the admitted generic Character getter, fallback and stable-key source.
@@ -177,7 +196,14 @@ ReadCurrentFirstHeirChildInputsV1(
     }
   }
   TraitDefinitions definitions{};
-  if (!result.rows.empty()) (void)ReadTraitDefinitions(trait_environment, definitions);
+  TraitDefinitionsForKeys<ck3_11906::kChildEducationPointTraitKeysV1.size()>
+      education_definitions{};
+  if (!result.rows.empty()) {
+    (void)ReadTraitDefinitions(trait_environment, definitions);
+    if (!ReadTraitDefinitionsForKeys(trait_environment,
+            ck3_11906::kChildEducationPointTraitKeysV1, education_definitions))
+      education_definitions = {};
+  }
   for (auto &row : result.rows) {
     ck3_12002::family_value::CharacterValue first{}, second{};
     if (ck3_12002::family_value::ReadCharacterValue(
@@ -201,10 +227,14 @@ ReadCurrentFirstHeirChildInputsV1(
         Load<void *>(character, kCharacterDeathDataOffset) == nullptr) {
       row.childhood_traits = ReadTraits(trait_environment, definitions, character);
       row.native_focus = ReadFocus(trait_environment, character);
+      row.education_point_traits = ReadTraitsForKeys(trait_environment,
+          education_definitions, character, ck3_11906::kChildEducationPointTraitKeysV1);
     } else {
       row.childhood_traits.unavailable_reason = "child_full_id_or_liveness_unavailable";
       row.native_focus.emplace();
       row.native_focus->unavailable_reason = "child_full_id_or_liveness_unavailable";
+      row.education_point_traits.emplace();
+      row.education_point_traits->unavailable_reason = "child_full_id_or_liveness_unavailable";
     }
     if (!row.values.available || !row.childhood_traits.available) {
       result.status = "partial";

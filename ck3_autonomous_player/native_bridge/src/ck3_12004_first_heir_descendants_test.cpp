@@ -854,9 +854,200 @@ void EmitChildFocusObservers39(const std::filesystem::path &directory,
   active_child_focus39 = nullptr;
   active_child_traits35 = nullptr;
 }
+
+struct ChildEducationPointTraitFixture40 {
+  static constexpr std::size_t kChildhoodCount =
+      xar::ck3_11906::kChildhoodTraitKeysV1.size();
+  static constexpr std::size_t kEducationCount =
+      xar::ck3_11906::kChildEducationPointTraitKeysV1.size();
+  static constexpr std::size_t kTraitCount = kChildhoodCount + kEducationCount;
+  std::array<std::byte, 0x60> database{};
+  std::array<std::array<std::byte, 0x38>, kTraitCount> definitions{};
+  std::array<const void *, kTraitCount> ordered_definitions{};
+  std::array<void *, 2> child_characters{};
+  std::array<std::array<bool, kTraitCount>, 2> present{};
+  std::array<std::size_t, 2> education_sample_calls{};
+  bool change_second_sample = false;
+
+  void SetKey(std::size_t index, std::string_view key) {
+    Check(index < definitions.size() && !key.empty() && key.size() < 16,
+          "education fixture owns a valid exact native SSO Trait key");
+    auto &bytes = definitions[index];
+    bytes.fill(std::byte{});
+    std::memcpy(bytes.data() + 0x18, key.data(), key.size());
+    Put(bytes.data(), 0x28, static_cast<std::uint64_t>(key.size()));
+    Put(bytes.data(), 0x30, std::uint64_t{15});
+  }
+
+  explicit ChildEducationPointTraitFixture40(Fixture &fixture) {
+    child_characters = {fixture.characters[4].data(), fixture.characters[7].data()};
+    for (std::size_t index = 0; index < definitions.size(); ++index) {
+      SetKey(index, index < kChildhoodCount
+          ? xar::ck3_11906::kChildhoodTraitKeysV1[index]
+          : xar::ck3_11906::kChildEducationPointTraitKeysV1[index - kChildhoodCount]);
+      ordered_definitions[index] = definitions[kTraitCount - 1 - index].data();
+    }
+    Put(database.data(), 0x50, ordered_definitions.data());
+    Put(database.data(), 0x5C, static_cast<std::int32_t>(kTraitCount));
+  }
+};
+
+ChildEducationPointTraitFixture40 *active_child_education_traits40 = nullptr;
+void *ChildEducationPointTraitDatabase40() {
+  return active_child_education_traits40 == nullptr ? nullptr
+      : active_child_education_traits40->database.data();
+}
+bool ChildHasEducationPointTrait40(void *character, const void *trait) {
+  Check(active_child_education_traits40 != nullptr,
+        "education trait callbacks have an owning native dictionary fixture");
+  auto &source = *active_child_education_traits40;
+  std::size_t child_index = source.child_characters.size();
+  std::size_t trait_index = source.definitions.size();
+  for (std::size_t index = 0; index < source.child_characters.size(); ++index)
+    if (character == source.child_characters[index]) child_index = index;
+  for (std::size_t index = 0; index < source.definitions.size(); ++index)
+    if (trait == source.definitions[index].data()) trait_index = index;
+  Check(child_index < source.child_characters.size() &&
+            trait_index < source.definitions.size(),
+        "HasTrait receives the exact descendant child and resolved education definition");
+  if (trait_index >= source.kChildhoodCount) {
+    ++source.education_sample_calls[child_index];
+    if (source.change_second_sample && child_index == 0 &&
+        source.education_sample_calls[child_index] > source.kEducationCount &&
+        trait_index == source.kChildhoodCount + 2)
+      return !source.present[child_index][trait_index];
+  }
+  return source.present[child_index][trait_index];
+}
+
+void EmitChildEducationPointTraits40(const std::filesystem::path &directory,
+                                    std::string_view name) {
+  const bool subsets = name == "education-point-trait-subsets";
+  const bool known_empty = name == "education-point-known-empty";
+  const bool traits_missing = name == "education-point-traits-unavailable";
+  const bool values_missing = name == "education-point-values-unavailable";
+  const bool traits_changed = name == "education-point-traits-changed";
+  Fixture fixture({"current-child-education-traits", subsets ? 18 : 1,
+                   true, true, true, false});
+  std::array<std::int32_t, 1> heir_spouses{kPartner}, partner_spouses{kHeir};
+  Put(fixture.families[1].data(), 0x14, kPartner);
+  Put(fixture.families[2].data(), 0x14, kHeir);
+  Put(fixture.families[1].data(), 0x20, heir_spouses.data());
+  Put(fixture.families[2].data(), 0x20, partner_spouses.data());
+  for (const auto index : {1U, 2U}) {
+    Put(fixture.families[index].data(), 0x28, std::int32_t{1});
+    Put(fixture.families[index].data(), 0x2C, std::int32_t{1});
+  }
+  Put(fixture.characters[4].data(), 0x68,
+      static_cast<std::int16_t>(known_empty ? 0 : 7));
+  Put(fixture.characters[4].data(), 0x1A1,
+      static_cast<std::uint8_t>(values_missing ? 2 : 0));
+  Put(fixture.characters[7].data(), 0x68, std::int16_t{9});
+  Put(fixture.characters[7].data(), 0x1A1, std::uint8_t{1});
+  ChildEducationPointTraitFixture40 traits(fixture);
+  ChildFocusFixture39 focus(fixture);
+  if (!known_empty) {
+    traits.present[0][traits.kChildhoodCount + 2] = true; // intellect_good_3
+    traits.present[0][traits.kChildhoodCount + 6] = true; // shrewd
+  }
+  if (subsets) {
+    traits.present[1][traits.kChildhoodCount + 4] = true; // intellect_bad_2
+    traits.present[1][traits.kChildhoodCount + 7] = true; // dull
+    traits.present[1][traits.kChildhoodCount + 8] = true; // inbred
+  }
+  if (known_empty)
+    Put(fixture.characters[4].data(), 0x1B0, static_cast<void *>(nullptr));
+  if (traits_missing) traits.SetKey(traits.kTraitCount - 1, "other");
+  traits.change_second_sample = traits_changed;
+  active_child_education_traits40 = &traits;
+  active_child_focus39 = &focus;
+  xar::ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 environment{};
+  environment.trait_database = &ChildEducationPointTraitDatabase40;
+  environment.character_has_trait = &ChildHasEducationPointTrait40;
+  environment.current_focus = &ChildCurrentFocus39;
+  environment.focus_fallback_slot_address = reinterpret_cast<std::uintptr_t>(&focus.fallback);
+  auto relation = ReadCurrentFirstHeirRelationshipV1(fixture.family, kHeir);
+  Check(relation.failure == xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none,
+        "education trait observers retain the current reciprocal married pair");
+  relation.betrothal_actionability = ReadCurrentFirstHeirBetrothalActionabilityV1(
+      fixture.family, relation);
+  relation.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
+      fixture.family, kHeir);
+  const auto inputs = xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
+      fixture.family, environment, *relation.descendants);
+  auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
+      name, 7, kHeir, relation, {}, &inputs);
+  const auto &descriptor = xar::game::Ck3_12004AdapterDescriptor();
+  wire = xar::game::Render12004BuildIdentity(std::move(wire), descriptor);
+  Write(directory / (std::string(name) + ".json"), wire);
+  Check(xar::game::IsCk3_12004Descriptor(descriptor) &&
+            inputs.rows.size() == (subsets ? 2U : 1U) &&
+            inputs.status == (values_missing ? "partial" : "available") &&
+            relation.descendants->roster_complete &&
+            relation.descendants->native_child_count_raw == (subsets ? 18 : 1) &&
+            wire.find("\"education_point_traits\":{\"source\":\"native_character_has_trait\"")
+                != std::string::npos,
+        "whole education trait wire uses the canonical descriptor and independent child aggregate");
+  const auto &row = inputs.rows[0];
+  Check(row.character_id == 0x03000005 && row.education_point_traits &&
+            row.childhood_traits.available && row.childhood_traits.present_trait_keys &&
+            row.childhood_traits.present_trait_keys->empty() && row.native_focus &&
+            row.native_focus->available && row.values.available == !values_missing,
+        "education predicates use the actual child and preserve old affinity focus and values");
+  const auto &observed = *row.education_point_traits;
+  if (traits_missing || traits_changed) {
+    Check(!observed.available && !observed.present_trait_keys &&
+              observed.unavailable_reason == (traits_missing
+                  ? "child_trait_definitions_unavailable" : "child_trait_values_changed"),
+          "missing education-only definition and changed real sample remain explicit failures");
+  } else {
+    const auto expected = known_empty ? std::vector<std::string_view>{}
+        : std::vector<std::string_view>{"intellect_good_3", "shrewd"};
+    Check(observed.available && observed.unavailable_reason.empty() &&
+              observed.present_trait_keys && *observed.present_trait_keys == expected,
+          "multiple true child traits and lawful all-false subset survive production collection");
+  }
+  if (known_empty)
+    Check(row.values.age_measure_raw == 0 && row.native_focus->presence == "absent" &&
+              !row.native_focus->key,
+          "newborn zero age and no education trait are values rather than read failures");
+  else if (!values_missing)
+    Check(row.values.age_measure_raw == 7 && row.native_focus->key == "education_diplomacy",
+          "school-age child preserves its independent readable current focus");
+  if (subsets) {
+    const auto &other = inputs.rows[1];
+    Check(row.occurrence_indices == std::vector<std::uint32_t>{
+                  0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16} &&
+              other.character_id == 0x03000008 &&
+              other.occurrence_indices == std::vector<std::uint32_t>{17} &&
+              other.values.age_measure_raw == 9 && other.values.sex_selector_raw == 1 &&
+              other.education_point_traits && other.education_point_traits->available &&
+              other.education_point_traits->present_trait_keys ==
+                  std::vector<std::string_view>{"intellect_bad_2", "dull", "inbred"} &&
+              other.native_focus && other.native_focus->key == "education_learning" &&
+              relation.descendants->rows.size() == 18,
+          "distinct true trait subsets retain full-ID role age duplicate grouping and raw evidence");
+  }
+  Check(relation.relationship.primary_spouse_character_id == kPartner &&
+            relation.relationship.spouse_character_ids == std::vector<std::int32_t>{kPartner} &&
+            constructs == 0 && destroys == 0,
+        "education trait observation dispatches no game or guardian action");
+  active_child_focus39 = nullptr;
+  active_child_education_traits40 = nullptr;
+}
 } // namespace
 int main(int argc, char **argv) {
   try {
+    if (argc == 3 && std::string_view(argv[1]) == "--child-education-point-trait-wire-dir") {
+      const std::filesystem::path directory(argv[2]);
+      std::filesystem::create_directories(directory);
+      for (const std::string_view name : {"education-point-trait-subsets",
+               "education-point-known-empty", "education-point-traits-unavailable",
+               "education-point-values-unavailable", "education-point-traits-changed"})
+        EmitChildEducationPointTraits40(directory, name);
+      std::cout << "PASS actual4 current-child education point traits: five new whole wires\n";
+      return 0;
+    }
     if (argc == 3 && std::string_view(argv[1]) == "--child-focus-observer-wire-dir") {
       const std::filesystem::path directory(argv[2]);
       std::filesystem::create_directories(directory);

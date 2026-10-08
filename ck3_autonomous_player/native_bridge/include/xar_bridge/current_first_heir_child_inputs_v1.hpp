@@ -12,6 +12,13 @@ namespace xar::ck3_11906 {
 inline constexpr std::array<std::string_view, 5> kChildhoodTraitKeysV1{
     "curious", "rowdy", "bossy", "pensive", "charming"};
 
+// These are the child-side HasTrait inputs in the stock education-point
+// effect. The unresolved educator receiver has a separate eight-key branch.
+inline constexpr std::array<std::string_view, 9> kChildEducationPointTraitKeysV1{
+    "intellect_good_1", "intellect_good_2", "intellect_good_3",
+    "intellect_bad_1", "intellect_bad_2", "intellect_bad_3",
+    "shrewd", "dull", "inbred"};
+
 struct CurrentFirstHeirChildValuesV1 {
   bool available = false;
   std::string_view unavailable_reason = "child_character_values_unavailable";
@@ -38,6 +45,7 @@ struct CurrentFirstHeirChildInputRowV1 {
   CurrentFirstHeirChildValuesV1 values{};
   CurrentFirstHeirChildTraitsV1 childhood_traits{};
   std::optional<CurrentFirstHeirChildFocusV1> native_focus{};
+  std::optional<CurrentFirstHeirChildTraitsV1> education_point_traits{};
 };
 
 // This leaf describes distinct living actual children, while the owning
