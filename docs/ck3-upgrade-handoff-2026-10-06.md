@@ -2,7 +2,7 @@
 
 ## 2026-10-08 当前续办路由
 
-用户已要求继续执行并主导统一验收，下面旧“停止新增”和产品private host操作卡只保留历史。后续所有mod的新run从[公共六模式入口](ck3-mod-upgrade-fast-validation.md)选择同一共同manifest；当前本机为Source07/FINAL08/bound09，产品只提供原fixture、adapter、数据和业务合同，禁止另建产品host/source/native版本。正式闭环6/10，QOL、RMTM、TED、361仍未完成；实际场景和失败边界以该专题的逐场记录为准，旧版本的通过不外推。
+用户已要求继续执行并主导统一验收，下面旧“停止新增”和产品private host操作卡只保留历史。后续所有mod的新run从[公共六模式入口](ck3-mod-upgrade-fast-validation.md)选择同一共同manifest；当前本机为Source08/FINAL09/bound10，产品只提供原fixture、adapter、数据和业务合同，禁止另建产品host/source/native版本。正式闭环6/10，QOL、RMTM、TED、361仍未完成；实际场景和失败边界以该专题的逐场记录为准，旧版本的通过不外推。
 
 用户要求的并行[磁盘清理](ck3-native-ai/disk-cleanup-2026-10-08.md)已实际完成，缓存/闲置临时包删除，历史证据无损压缩并保留。当前CK3已安装1.20.0.4，Steam默认离线；根执行者继续独占真实桌面/游戏，后台准备并行。发布缓存沿用以下永久两项政策，不重验游戏业务。
 

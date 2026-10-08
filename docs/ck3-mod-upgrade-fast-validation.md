@@ -18,7 +18,7 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 
 ## 当前公共CLI与本机共同版本
 
-当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。本机[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound09.json)选择唯一[FINAL08 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-08.json)，后者绑定shared Source07/index、canonical host与native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。旧runner和冻结只保留原证据及底层实现。
+当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。本机[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound10.json)选择唯一[FINAL09 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-09.json)，后者绑定shared Source08/index、canonical host与native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。旧runner和冻结只保留原证据及底层实现。
 
 上述六个模式是未来新 mod run 的唯一操作路由。旧 `run_acceptance.py`、`run_vivhite_acceptance.py`、terminal/product runner 及其历史命令只供只读证据、library 与原业务断言复用，不直接作为新启动入口；旧冻结不被改写。产品 builder、静态检查和不启动游戏的原 preflight 继续保留，不能凭这些结果授实机资格。公共 local 映射始终指向当次唯一全局 manifest，不按产品另选 host/source/native。`de-jure-conquest`、`change-holding-types`、`li-yu-dao` 的 basic-load case 只授加载边界，其原玩家功能合同仍待独立业务证据。
 
@@ -26,7 +26,7 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 从仓库根的`cmd.exe`执行，以下只读例子选择当前真实TED case：
 
 ```text
-tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound09.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case production_ui
+tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound10.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case production_ui
 ```
 
 后续模式使用相同四项选择参数，按下表替换`plan`并追加参数；尖括号是当次真实路径/新编号占位，不是已有attempt的重跑命令。
@@ -89,3 +89,15 @@ R32/a124 使用 Source05 实际取得原防御23项/禁止5项和final6本场信
 全局封存实际exit0、2.951秒，6904来源行相对Source06只有9项delta；6903 native-input未改行用hardlink继承，新host独立写入、nlink1。旧host/index/native输入不改写，无全树重hash、无第二生产编译或旧矩阵重跑。RMTM未用prepared仅换顶层manifest pin，其余深字段exact相同；QOL另行公共prepare原unused13输入，已用R32不重放。
 
 TED下一场R16/a125已公共preflight exit0、单次allocate，register6550→keeper6551 READY约1.540秒。首次Steam recovery因前景磁盘旧提示无法SetFocus而失败，原launcher在CK3启动前拒绝；关闭已无实际空间阻点的提示后，新的窗口位移与双nonce原图经Root亲审Steam离线，14:21:17 UTC实际启动Source07。该场production UI和正常退出尚待结果；原R15失败与其独立normal0信用保持。
+
+[R16实际闭场54](C:/workspace/ck3-upgrade-20261008/ted-unified-a125-shared-pause-failure-01/ROOT-TED-R0016-A125-SHARED-PAUSE-FAILED-CLOSED-54.md)随后确认首日请求在初始pause-map `already_paused`之后、set-speed/resume之前，被严格same-owner successor的累计reject变化拒绝。原wire的native5含`stress_points=-1`，Python严格拒绝该帧；当次返回仍是旧native4/reject1，之后native6有效帧恢复。不能将旧帧授当前资格，也不能凭恢复补认原请求成功。host14:26:41 UTC RED/thread/cleanup TRUE，原retained实际OS1、normal-close-qualified FALSE；run55297 exit2、keeper32546 exit0→CAS6561 done/resources[]，无生产Send或AI结果信用。共同修复仅针对任何speed/resume提交前的重新准入，尚待实际采用；不改压力值、原postadvance门禁、deadline或R16失败记录。
+
+精确新提交 `7f6f5e6d7bb738011b57725a41848dc9c24f53c5` 的[官方CI 37792399276](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37792399276)实际success（14:34:40 UTC），[线性历史CI 37792399305](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37792399305)实际success（14:26:47 UTC）。共同代码、portable测试与文档已fetch→rebase→普通push，未生成merge或force push。CI不代替该场实机结果或后续提交；正式仍6/10。
+
+## Source08：提交前有效暂停帧重新准入
+
+Root已采用[共享窄修复](C:/workspace/ck3-upgrade-20261008/shared-preaction-paused-readmission-host-01/ROOT-SHARED-PREACTION-PAUSED-READMISSION-FINAL-02.md)，在`.4 native_campaign`原事件分支、任何speed/resume提交之前，只允许已暂停ACK与单次counter0→1、精确已识别的下一native revision压力值拒绝元数据进入等待。旧cached帧不授资格；必须在原deadline内得到native revision实际超过拒绝帧的完整有效暂停帧，原owner、pipe、generation、actor、日期、speed与monotonic都保持。再次reject、其他拒绝原因、身份变化、超时或取消仍失败；不重发pause，不修改压力值，不改原strict successor及推进后门禁。六项[真实方法portable回归](../tools/test_ck3_mod_acceptance_preaction.py)一次candidate PASS，Root采用后永久路径六项PASS；已接入既有CI。
+
+[唯一Source08/FINAL09/bound10封存](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/ROOT-SHARED-SOURCE08-MANIFEST09-BOUND10-UNUSED-CONSUME-01.md)实际exit0、3.564秒；host215332 B、SHA `24414e9b436b6334fc43019cff2754534afcc62a4cf8d1e40aa33048b81eebd2`，仅一host delta并继承6903行，native d1d4及其原构建不变，无重编译/旧矩阵/全树重hash。旧producer误调用被create-only守卫立即拒绝，exit1历史保留，无旧输出改写。
+
+TED原unused root03已公共prepare exit0、0.763秒，QOL原unused13已公共prepare exit0、0.744秒；各仅新增顶层manifest变化的prepared sibling，其余深字段exact相同。TED下一场R17/a126已preflight exit0、单次allocate，register6562→keeper6563约1.544秒，新的Steam窗口位移与双nonce离线原图经Root亲审后实际启动；业务和新增恢复路径实机结果仍待。production_ui required MCP tools只补原实际依赖的execute_step/current_event_window_context两项，不增加新业务合同。

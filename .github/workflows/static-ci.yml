@@ -174,6 +174,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_poll_reporting.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_preaction.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_song_holding.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_title_holder_stable_key_contract.py

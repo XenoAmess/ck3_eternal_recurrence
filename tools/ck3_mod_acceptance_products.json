@@ -915,7 +915,9 @@
             "ck3_get_capabilities",
             "ck3_query_campaign_root_context_v1",
             "ck3_query_engine_log_literals_v1",
-            "ck3_query_title_holder_v1"
+            "ck3_query_title_holder_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1"
           ],
           "phases": {
             "steps": [

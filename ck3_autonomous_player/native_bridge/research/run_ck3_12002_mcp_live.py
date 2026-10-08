@@ -1507,7 +1507,59 @@ class PlanClient:
             raise RuntimeError("campaign event-boundary preflight received an unadmitted pause ACK")
         before = await bounded(lambda: self.wait_snapshot({"paused": True}, remaining()))
         campaign_event_instance(before)
-        paused = require_campaign_pause_successor(initial, before)
+        try:
+            paused = require_campaign_pause_successor(initial, before)
+        except RuntimeError as error:
+            # No speed or resume has been submitted. Only the specifically
+            # observed already-paused refresh rejection can admit a new start.
+            if str(error) != "campaign pause readback owner, clock or rejection state changed":
+                raise
+            observed = campaign_pause_frame_binding(before)
+            rejected = before["diagnostics"].get("last_rejected_state_snapshot")
+            rejected_revision = rejected.get("revision") if isinstance(rejected, dict) else None
+            if (pause_ack["status"] != "already_paused" or initial["rejections"] != 0
+                    or observed["rejections"] != 1 or observed["identity"] != initial["identity"]
+                    or before["paused"] is not True or observed["date"] != initial["date"]
+                    or before["played_character"].get("source") != "native"
+                    or any(observed[k] < initial[k] for k in ("revision", "native_revision", "pump"))
+                    or not isinstance(rejected, dict) or type(rejected_revision) is not int
+                    or rejected_revision != initial["native_revision"] + 1
+                    or rejected.get("snapshot_id") != "native:" + str(rejected_revision)
+                    or type(rejected.get("date_raw")) is not int or rejected["date_raw"] != initial["date"]
+                    or type(rejected.get("speed")) is not int or rejected["speed"] != before["speed"]
+                    or rejected.get("paused") is not True or rejected.get("map_ready") is not True
+                    or rejected.get("error_type") != "ValueError"
+                    or rejected.get("error") != "native played_character stress_points is malformed"):
+                raise
+            readmission = {"source": "campaign_preaction_already_paused_readmission_once_v1",
+                "started_at": now(), "original_strict_error": str(error), "initial_binding": initial,
+                "observed_rejection_binding": observed, "recognized_rejected_frame": copy.deepcopy(rejected),
+                "pause_ack_status": pause_ack["status"], "refresh_attempt_count": 1,
+                "poll_count": 0, "status": "WAITING_FOR_ACCEPTED_COMPLETE_PAUSED_FRAME",
+                "speed_or_resume_submitted": False, "product_acceptance_proven": False}
+            self.report.setdefault("campaign_preaction_readmissions", []).append(readmission)
+            try:
+                while True:
+                    recovered = await bounded(self.fresh)
+                    readmission["poll_count"] += 1
+                    campaign_event_instance(recovered)
+                    current = require_campaign_pause_successor(observed, recovered)
+                    if (recovered["paused"] is not True or current["date"] != initial["date"]
+                            or recovered["played_character"].get("source") != "native"
+                            or recovered["diagnostics"].get("last_rejected_state_snapshot") != rejected):
+                        raise RuntimeError("campaign pre-action readmission changed its paused start or rejection")
+                    observed = current
+                    # The cached pre-rejection frame never earns admission.
+                    if current["native_revision"] > rejected_revision and current["revision"] > initial["revision"]:
+                        before, paused = recovered, current
+                        readmission.update(status="ACCEPTED_COMPLETE_PAUSED_START_REBOUND", finished_at=now(),
+                            recovered_snapshot_id=before["snapshot_id"], recovered_binding=paused)
+                        break
+                    await asyncio.sleep(min(self.args.poll_interval, remaining()))
+            except BaseException as refresh_error:
+                readmission.update(status="FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED", finished_at=now(),
+                    error_type=type(refresh_error).__name__, error=str(refresh_error))
+                raise
         if before["played_character"].get("source") != "native" or paused["date"] != initial["date"]:
             raise ValueError("campaign event-boundary preflight changed the actual player or date")
         start, target = before["date_raw"], before["date_raw"] + 24
