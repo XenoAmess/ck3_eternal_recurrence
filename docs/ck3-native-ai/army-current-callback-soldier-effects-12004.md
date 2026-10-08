@@ -133,3 +133,22 @@ Until that receipt, the new model is `SOURCE_NOTRUN`; earlier qualified source,
 observers and tests are reused without replay. `actual_loss=false`, actual
 post-stage current is null, and future/full daily/full monthly/live remain false.
 Work began October 8 and finite source closure continued October 9, ISO W41.
+
+## Root registered-Service qualification — October 9
+
+The new current-callback projection is **static-ready**. Root's sole five-scene
+compound passed through the real NativeDriver, registered
+`ck3_query_army_strengths` and Service in **7.5853707 s**, at
+00:45:51.104166–00:45:58.690354 CST. Functional source is `cebd9e9d`, adopted
+as `ae944c41`. [Actual receipt](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/attrition-next-stage/root-first02/RESULT.json)
+and [whole Service outputs](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/attrition-next-stage/root-first02/ACTUAL-SERVICE-OUTPUT.json)
+record crossed budgets, physical aliases, skipped writers, independently
+known zero and missing DATA.
+
+The first attempt failed before assertions because the sparse worktree omitted
+`xar_autoplayer.simulation`; its RED receipt is retained in `root-first01`.
+Restoring the same complete source checkout required no production-code change.
+The successful retry runs only this new compound: no native build, older test
+or wire replay, Game, SDK, process or UI operation. Observed actual loss remains
+false, actual post-stage current remains null, and full daily/monthly execution
+and live qualification remain incomplete.

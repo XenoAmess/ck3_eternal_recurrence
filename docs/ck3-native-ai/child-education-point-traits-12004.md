@@ -110,3 +110,34 @@ New native build/FIRST, actual child snapshot, guardian selection, education
 action/afterstate, birth, natural succession and G2 credits are all zero here.
 Local Game/SDK use is prohibited by the latest user direction; this source
 work and future Root offline qualification do not require local Game access.
+
+## Root offline qualification — October 9
+
+The bounded child observer is now **static-ready**. Root retained the two
+production Bridge compilations from source `2f0a1143` and the successful DLL
+link from attempt02. The heap-backed trait-key fixture at `87f92a92` produced
+all five new whole native frames in **0.2643774 s**. The sole six-scene
+registered-query/Service consumer passed in **12.0609744 s**, at
+00:47:44.748483–00:47:56.809454 CST. It reuses those frames and does not rerun
+the compiler, linker, native fixture or any older qualified test.
+
+Canonical receipt:
+[Native40](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix40/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json).
+The [consumer receipt](Z:/g2-native40-build01/root-consumer-retry04/ROOT-ACTUAL-RESULT.json)
+and its `REGISTERED-CONSUMER.json` retain the actual registered result.
+The qualified DLL is `Z:/g2-native40-build01/attempt02/binaries/xar_ck3_bridge.dll`,
+13,230,080 bytes, SHA-256
+`549031cd489f1403dd79ec1a879af76762b32fd3fc0ca7928a279542b4755909`.
+Root hashed this new DLL and the small new manifest once; older binary pins
+are inherited. The 725-owner production lineage replaces two Bridge objects,
+retains 723, and adds no Runtime rebuild.
+
+Attempt01's shadowed fixture name, attempt02's incorrect short-string-only
+fixture, and attempt03's missing Python tests in a sparse checkout remain
+separate failed harness receipts. The two source corrections affect only
+the fixture; the last retry restores missing checkout files without changing
+source. These failures do not disappear when final qualification passes.
+The nine current-child predicates are observable through the existing query;
+educator identity, loaded education context, point computation, guardian
+selection, live snapshots, actions, births and natural succession remain
+unqualified. No local Game/SDK operation or G2 credit was added.
