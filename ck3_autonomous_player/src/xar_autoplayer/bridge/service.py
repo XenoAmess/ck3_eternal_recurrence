@@ -1856,9 +1856,25 @@ class GameplayBridgeService:
             history_view = getattr(self.driver, "_with_internal_planning_view", None)
             history_snapshot = getattr(self.driver, "_history_snapshot", None)
             if callable(history_view) and callable(history_snapshot):
-                query_history_index = history_view(
-                    snapshot, lambda _frame, history: {"index": len(history)}
-                )["index"]
+                from ..strategy import _effective_command, _effective_command_result
+                from .current_first_heir_relationship_private_transport import (
+                    _same_frame_campaign_root_result,
+                )
+
+                def family_history_input(frame, history):
+                    root = None
+                    if campaign_root_result is None:
+                        root = next((result for row in reversed(history)
+                            if row.get("ok") is True
+                            and _effective_command(row) == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+                            if (result := _same_frame_campaign_root_result(
+                                _effective_command_result(row), frame)) is not None), None)
+                    return {"index": len(history), "campaign_root_result": root}
+
+                family_history = history_view(snapshot, family_history_input)
+                query_history_index = family_history["index"]
+                if campaign_root_result is None:
+                    campaign_root_result = family_history["campaign_root_result"]
             try:
                 current = plan_current_first_heir_betrothal_fulfillment_private(
                     self.driver, planned, snapshot,
