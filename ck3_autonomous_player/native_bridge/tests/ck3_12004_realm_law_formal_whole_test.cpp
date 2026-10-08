@@ -310,6 +310,7 @@ struct Fixture {
 class RouterAdapter final : public game::GameAdapter {
 public:
   game::Snapshot snapshot{};
+  mutable std::uint64_t snapshot_captures = 0;
   RouterAdapter() {
     snapshot.date_raw = kDate;
     snapshot.paused = snapshot.map_ready = snapshot.has_played_character =
@@ -324,6 +325,7 @@ public:
   }
   bool enabled() const noexcept override { return true; }
   bool read_snapshot(game::Snapshot &out) const noexcept override {
+    ++snapshot_captures;
     out = snapshot;
     return true;
   }
@@ -527,6 +529,7 @@ int main(int argc, char **argv) {
   const auto call = [&](std::string_view step, const std::string &payload,
                         std::uint64_t revision, std::string_view request_id) {
     std::atomic<bool> done{false};
+    const auto captures_before = adapter.snapshot_captures;
     bool ok = false, drained = false;
     std::thread worker([&] {
       ok = actual4::HandleRealmLawPrivateWithState12004(
@@ -544,9 +547,50 @@ int main(int argc, char **argv) {
     worker.join();
     assert(!ok || drained);
     assert(mailbox.state == xar::ck3_11906::MainThreadQueryMailboxStateV1::idle);
-    if (!ok)
+    if (!ok) {
       std::cerr << "failure: " << failure << "; source: "
                 << state->source.failure << '\n';
+      const auto diagnostic =
+          xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+      std::cerr << "M7 failure diagnostic: step=" << step
+                << "; exception="
+                << xar::ck3_11906::SerializeMainThreadExecutorExceptionDiagnosticV1(diagnostic)
+                << "; exception_code=" << diagnostic.last_executor_exception_code
+                << "; exception_rva=" << diagnostic.last_executor_exception_rva
+                << "; mailbox_state=" << static_cast<unsigned>(diagnostic.state)
+                << "; failure_flags=" << diagnostic.failure_flags
+                << "; published_sequence=" << diagnostic.published_sequence
+                << "; started_sequence=" << diagnostic.executor_started_sequence
+                << "; completed_sequence=" << diagnostic.completed_sequence
+                << "; started_requests=" << diagnostic.executor_started_requests
+                << "; executed_requests=" << diagnostic.executed_requests
+                << "; pump_epochs=" << diagnostic.pump_epochs
+                << "; owner_epochs=" << diagnostic.owner_verified_pump_epochs
+                << "; paused_owner_epochs=" << diagnostic.paused_owner_verified_pump_epochs
+                << "; owner_thread=" << diagnostic.owner_thread_id
+                << "; observed_thread=" << diagnostic.observed_current_thread_id
+                << "; observed_rng_owner=" << diagnostic.observed_rng_owner_thread_id
+                << "; observed_tls_context=" << diagnostic.observed_tls_context
+                << "; observed_jomini_state=" << diagnostic.observed_jomini_state
+                << "; observed_game_state=" << diagnostic.observed_game_state
+                << "; observed_tls_initialized=" << static_cast<unsigned>(diagnostic.observed_tls_initialized)
+                << "; observed_tls_main=" << static_cast<unsigned>(diagnostic.observed_tls_main_thread_marker)
+                << "; observed_date=" << diagnostic.observed_date_raw
+                << "; observed_paused=" << diagnostic.observed_paused
+                << "; observed_stamp_read=" << diagnostic.observed_stamp_read_success
+                << "; snapshot_captures=" << adapter.snapshot_captures
+                << "; call_snapshot_captures=" << adapter.snapshot_captures - captures_before
+                << "; binder_integrity_failed=" << state->binder.integrity_failed
+                << "; source_transaction_open=" << state->binder.source_transaction_open
+                << "; source_callback_present=" << (state->source.callback_context != nullptr)
+                << "; action_capture_serial=" << state->binder.action_capture_serial
+                << "; last_action_available=" << state->binder.last_action_observation_available
+                << "; submit_pending=" << state->binder.submit_pending
+                << "; has_pending_ack=" << state->has_pending_ack
+                << "; validated=" << fixture.validated
+                << "; cloned=" << fixture.cloned
+                << "; queued=" << fixture.queued << '\n';
+    }
     if (ok) CheckEnvelope(wire, request_id);
     return ok;
   };
