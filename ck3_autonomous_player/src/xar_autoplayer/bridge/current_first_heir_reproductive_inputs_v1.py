@@ -56,6 +56,22 @@ def validate_current_first_heir_reproductive_inputs_v1(
         if (not isinstance(row, dict) or row.get("character_id") != character_id
                 or row.get("roles") != roles or row.get("status") not in {"available", "unavailable"}):
             raise BridgeUnavailableError("household receiver identity changed")
+        if "native_pregnancy" in row:
+            pregnancy = row["native_pregnancy"]
+            if (not isinstance(pregnancy, dict)
+                    or pregnancy.get("source") != "native_is_pregnant"
+                    or pregnancy.get("status") not in {"available", "unavailable"}
+                    or "unavailable_reason" not in pregnancy
+                    or "is_pregnant" not in pregnancy):
+                raise BridgeUnavailableError("native household pregnancy is malformed")
+            if pregnancy["status"] == "available":
+                if (pregnancy["unavailable_reason"] is not None
+                        or type(pregnancy["is_pregnant"]) is not bool):
+                    raise BridgeUnavailableError("available native pregnancy lacks its boolean")
+            elif (pregnancy["is_pregnant"] is not None
+                    or not isinstance(pregnancy["unavailable_reason"], str)
+                    or not pregnancy["unavailable_reason"]):
+                raise BridgeUnavailableError("unavailable native pregnancy became a boolean")
         available = row["status"] == "available"
         all_available = all_available and available
         if available:

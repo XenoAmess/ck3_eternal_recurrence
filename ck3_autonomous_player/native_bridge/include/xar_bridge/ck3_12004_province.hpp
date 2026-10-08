@@ -12,6 +12,7 @@ inline constexpr std::uintptr_t kProvinceSiegeStorageSlotRva = 0x5D1EC88;
 inline constexpr std::uintptr_t kProvinceUnitStorageSlotRva = 0x5D1E380;
 inline constexpr std::uintptr_t kProvinceFallbackSlotRva = 0x5D1E390;
 inline constexpr std::uintptr_t kObjectiveTitleStorageSlotRva = 0x5D1DAF8;
+inline constexpr std::uintptr_t kCurrentBesiegingArmyGetterRva = 0x247DC00;
 
 // An empty Army DTO still permits objective/occupation/fort and independent
 // Siege reads. Callers that have the actual .4 Army profile pass that same

@@ -17,4 +17,8 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME xar_ck3_12004_first_heir_descendants_test
     COMMAND xar_ck3_12004_first_heir_descendants_test
       ${CMAKE_CURRENT_BINARY_DIR}/first-heir-descendants-wire)
+  add_test(NAME xar_ck3_12004_current_first_heir_pregnancy_observer_test
+    COMMAND xar_ck3_12004_first_heir_descendants_test
+      --pregnancy-observer-wire-dir
+      ${CMAKE_CURRENT_BINARY_DIR}/current-first-heir-pregnancy-wire)
 endif()

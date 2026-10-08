@@ -188,6 +188,8 @@ std::string SerializeWarOccupationTargetsV1(
             ? std::to_string(row.garrison_size) : std::string("null")) +
         ",\"besieging_strength\":" + ObservableInt(
             row.besieging_strength_observable, row.besieging_strength) +
+        ",\"current_besieging_army_selection\":" +
+        SerializeProvinceBesiegingArmySelectionV1(row.current_besieging_army_selection) +
         ",\"siege_observable\":" + Bool(row.siege_observable) +
         ",\"active_siege\":" + ActiveSiege(row) + '}';
   }

@@ -29,6 +29,9 @@ ck3_12002::ProvinceBindings BindProvinceImage12004(
       reinterpret_cast<ck3_12002::ProvinceIntGetter>(base + 0x247F350);
   result.besieging_strength =
       reinterpret_cast<ck3_12002::ProvinceIntGetter>(base + 0x247F1B0);
+  result.current_besieging_army =
+      reinterpret_cast<ck3_12002::ProvinceBesiegingArmyGetter>(
+          base + kCurrentBesiegingArmyGetterRva);
   result.eligible_regiment_siege_work =
       reinterpret_cast<ck3_12002::ProvinceFixedGetter>(base + 0x247ECC0);
   result.highest_eligible_siege_tier =

@@ -93,6 +93,15 @@ std::string CurrentFirstHeirReproductiveInputsJsonV1(
           fertility.native_gate_allows ? "true" : "false";
       json += ",\"effective_raw\":" + std::to_string(fertility.effective_raw) + '}';
     }
+    const auto &pregnancy = row.native_pregnancy;
+    json += ",\"native_pregnancy\":{\"source\":\"native_is_pregnant\",\"status\":";
+    AppendJsonString(json, pregnancy.status);
+    json += ",\"unavailable_reason\":";
+    if (pregnancy.status == "available") json += "null";
+    else AppendJsonString(json, pregnancy.unavailable_reason);
+    json += ",\"is_pregnant\":";
+    AppendOptionalBoolean(json, pregnancy.is_pregnant);
+    json += '}';
     json += '}';
   }
   json += "]}";

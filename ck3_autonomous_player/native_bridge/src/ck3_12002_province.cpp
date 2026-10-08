@@ -247,6 +247,31 @@ game::WarObjectiveProvinceState ReadObjectiveProvince(
     const auto value = b.besieging_strength(province);
     if (value >= 0) { out.besieging_strength_observable = true; out.besieging_strength = value; }
   }
+  if (b.current_besieging_army != nullptr) {
+    std::int32_t selected = -1;
+    if (b.current_besieging_army(province, &selected) == &selected && selected >= -1) {
+      auto &selection = out.current_besieging_army_selection;
+      selection.observable = true;
+      selection.native_carmy_id = selected;
+      if (selected == -1) {
+        selection.controllable_observable = true;
+      } else {
+        std::size_t matches = 0;
+        for (const auto &army : armies) {
+          const auto unit = Component(b.unit_storage_slot, army.army_id, 0x10);
+          if (unit == nullptr || Read<std::int32_t>(unit, 0x178) != selected) continue;
+          ++matches;
+          selection.public_unit_id = army.army_id;
+          selection.controllable = army.controllable;
+        }
+        selection.controllable_observable = matches == 1;
+        if (matches != 1) {
+          selection.public_unit_id = -1;
+          selection.controllable = false;
+        }
+      }
+    }
+  }
   if (b.siege_storage_slot == nullptr || b.siege_progress == nullptr ||
       b.siege_total_work == nullptr || b.siege_days_left == nullptr) return out;
   const auto siege_id = Read<std::int32_t>(province, kObjectiveProvinceActiveSiegeIdOffset);

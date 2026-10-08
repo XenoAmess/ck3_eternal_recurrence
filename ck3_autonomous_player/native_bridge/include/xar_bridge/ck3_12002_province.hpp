@@ -40,6 +40,9 @@ inline constexpr std::size_t kObjectiveSiegeAssaultOffset = 0x44C;
 
 using ProvinceOccupiedGetter = bool (*)(void *);
 using ProvinceIntGetter = std::int32_t (*)(void *);
+// Actual .4 CProvince selection returns its caller-owned int32 output pointer;
+// the value is a full native CArmy ID, with -1 meaning no selected army.
+using ProvinceBesiegingArmyGetter = std::int32_t *(*)(void *, std::int32_t *);
 // Exact .3 Province eligible-regiment siege-work accumulator.
 using ProvinceFixedGetter = std::int64_t *(*)(void *, std::int64_t *);
 using SiegeFixedGetter = std::int64_t *(*)(void *, std::int64_t *);
@@ -70,6 +73,7 @@ struct ProvinceBindings {
   ProvinceIntGetter fort_level = nullptr;
   ProvinceIntGetter garrison_size = nullptr;
   ProvinceIntGetter besieging_strength = nullptr;
+  ProvinceBesiegingArmyGetter current_besieging_army = nullptr;
   ProvinceFixedGetter eligible_regiment_siege_work = nullptr;
   ProvinceIntGetter highest_eligible_siege_tier = nullptr;
   SiegeFixedGetter siege_progress = nullptr;

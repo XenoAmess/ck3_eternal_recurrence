@@ -1,0 +1,383 @@
+# Current first-heir pregnancy: exact native status entry
+
+Research packet recorded 2026-10-08 / ISO 2026-W41. The exact game remains
+CK3 1.20.0.4 / Steam 25734779, held SHA-256
+`98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
+This topic supplements the
+[qualified current household inputs](current-first-heir-reproductive-inputs-12004.md)
+and the source-first workflow in [the native AI index](README.md).
+
+## Current independent observation gap
+
+Root's retained R76 original-campaign evidence identifies Robert 29829,
+current first heir 38822, spouse 38718, a complete empty current child roster,
+and zero observed natural successions. This is a retained baseline rather
+than a fresh observation by this source worker. Root subsequently qualified
+the household observer's seven native scenarios and its eight registered
+consumer passes; the qualified Runtime31 source has not been deployed at the
+time of this packet. The original authored FIRST recipe remains NOT RUN;
+Root's later execution records own the actual test result.
+
+Current age, native sex selector and effective fertility are independent
+household inputs. Their qualification does not supply a current pregnancy
+record. Marriage acknowledgement, prospective marriage legality, fertility,
+absence of a visible pregnancy icon, and an empty child roster cannot answer
+the missing current pregnancy question. The existing normal paired-household
+calendar policy continues; this research adds no waiting gate or conception
+probability model.
+
+## Stock native names and lifecycle evidence
+
+The current stock root is
+`Z:/SteamLibrary/steamapps/common/Crusader Kings III/game`.
+The stock source work is independently retained by
+`/root/person_later_suffix/trait_growth_side_source` at
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/current-pregnancy-birth32/stock/`.
+Its `SOURCE-TREE.md`, `SOURCE-READS.json`, `QUERY-PLAN.md` and `DELIVERY.json`
+retain the exact line spans, Mermaid tree, independent query proposal and
+zero EXE/Game/build/test cost.
+
+- `common/scripted_triggers/00_romance_and_seduction_triggers.txt:863`
+  defines `possible_pregnancy_after_sex_with_character_trigger`. Its opposite
+  selector branches require both people to be visibly fertile, fertility at
+  least 0.1, and the maternal receiver's `is_pregnant = no` at lines 876/887.
+  This supplies the exact authored engine status-trigger name
+  `is_pregnant`; it does not supply its registered callback or ABI.
+- `common/scripted_effects/00_romance_effects.txt:498,579` uses the native
+  `make_pregnant = { father = ... }` effect inside a scripted pregnancy-chance
+  branch. The scripted intercourse path is distinct from the stock monthly
+  impregnation defines. Neither chance branch proves an actual pregnancy.
+- `common/on_action/child_birth_on_actions.txt:1500-1541` distinguishes pregnancy
+  revelation from actual birth. `on_pregnancy_mother` and
+  `on_pregnancy_father` are called when a pregnancy reaches revealed status;
+  the father's event list is empty. Absence of a father's popup therefore
+  cannot exclude pregnancy. `on_birth_mother` is a separate actual birth
+  hook with newborn, mother, biological-father and family-father scopes.
+- `common/defines/00_defines.txt:384-385` uses 60 days to reveal and 280
+  pregnancy days. `events/pregnancy_events.txt:162` event `pregnancy.1001`
+  adds the `pregnant` trait in its immediate block. The trait is stock revelation-layer
+  evidence; it cannot substitute for the unresolved native status reader.
+- `pregnancy_real_father` is used as an actual linked native scope.
+  `events/pregnancy_events.txt:593,599` separately references
+  `pregnancy_assumed_father` and `set_pregnancy_assumed_father`. These exact
+  authored names do not establish an invented `pregnancy_father` getter.
+- `pregnancy.2101` checks `is_pregnant = yes` and calls `end_pregnancy = yes`
+  in a premature termination path. Ending pregnancy is not birth evidence.
+  The stock real-father birth hook is only called when biological and family
+  fathers differ; the identities must remain distinct in later verification.
+- `events/birth_events.txt:2733-2789` stillbirth event `birth.3001` retains
+  memory and pregnancy-ending effects, without an actual newborn ID. Its
+  event delivery must not be counted as a successful birth observation.
+
+A bounded current stock GUI search did not establish a Character
+`GetPregnancy` or `IsPregnant` datafunction. The
+`KnightsView.GetKnightPermissions.GetAllowPregnant` setting controls knight
+permissions; it does not observe a character's pregnancy. `msg_known_pregnancy`
+is a toast type rather than a proved native pregnancy getter.
+
+```mermaid
+flowchart TD
+  H[Observed first heir and actual spouse; empty child roster] --> V[Qualified current age and native fertility inputs]
+  V --> C[Stock conception eligibility branches]
+  C --> S[Native make_pregnant effect or independent monthly path]
+  S -. actual native record and reader ABI unknown .-> P[Current maternal is_pregnant status]
+  P --> R[Stock revealed-status on_action after reveal delay]
+  R --> T[pregnancy1001 adds visible pregnant trait]
+  P --> E[Stock premature or termination path]
+  P --> B[Independent actual on_birth scopes]
+  E --> X[Pregnancy ended; no birth credited]
+  B -. later current descendant roster and identity observation .-> D[Actual newborn evidence]
+  D -. later independent original-campaign transition .-> N[Natural succession]
+```
+
+The dotted record-to-status edge is the immediate construction dependency.
+No old pregnancy layout, fertility-based inference or trait proxy closes it.
+
+## One shared actual4 named-literal acquisition
+
+Root owns every new EXE acquisition. This worker has read zero new EXE bytes
+for this package and has run no SDK, native build, tests, production imports,
+or CK3 operations. The finite Root-only locator recipe is:
+
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/actual4-pregnancy-native-entry33/shared-named-literal-locator/ROOT-FIRST-RECIPE.json`
+
+Its unique authored FIRST ID is
+`actual4_shared_pregnancy_warscore_named_literal_locator33_FIRST0`, with
+authored status `NOT_RUN_SOURCE_READY`. The script reads the frozen installed
+EXE's `.rdata` once using existing
+`upstream-build-migration/global-pe-diff/NEW-PE-METADATA.json`: raw offset
+71142912, raw size 17124352, RVA 71147520. It neither hashes the game image
+nor reparses the PE and reads no other game section.
+
+The only pregnancy strings are `is_pregnant` and Root's explicit native-type
+candidate `CPregnancy`. The same acquisition carries the war lane's existing
+stock names `GetTickingWarScoreTooltip`, `GetTickingWarScore`, and
+`attacker_wargoal_percentage`, saving a second read of the same section.
+The first two are authored in `gui/window_war_overview.gui:1988,2001`; the
+third is in `common/casus_belli_types/00_claim.txt:807` and its `.info:10`.
+
+The locator retains exact CString versus substring classification, file
+offsets, RVAs, and finite same-buffer 64-bit preferred-VA pointer references
+to each actually observed literal. Local neighboring qwords are classified
+only as possible held-section addresses. They are not callback registrations.
+The single shared result is
+`shared-named-literal-locator/root-first0/NAMED-LITERAL-OFFSETS.json`.
+Root completed this FIRST once at approximately 2026-10-08 04:16:49 UTC:
+GREEN, 0.314 seconds, one 17124352-byte game-image read and zero image hashes.
+This later actual execution is distinct from the original NOT RUN authored
+recipe; the source worker still acquired zero new EXE bytes.
+
+`is_pregnant` has one exact CString at RVA `0x46DD608`, file offset 74302472.
+Its only same-section VA pointer reference is RVA `0x47001F8`, file offset
+74444792. Adjacent qwords form name/ID pairs, with `0x41B3` immediately
+following this pointer and neighboring IDs `0x41B1`, `0x41B2`, `0x41B4`.
+No neighboring qword is a `.text` address. This proves a concrete literal
+and name-ID-table seam, not a callback. `CPregnancy` has zero matches in this
+bounded `.rdata` pass.
+
+The shared war names have exact literal RVAs `0x44B8360`, `0x44B8380` and
+`0x46C4338`, respectively. The threshold's actual same-section reference
+`0x46EC9E8` is followed by `0x2CFF`; the two GUI getter literals have no
+same-section VA pointer references. These shared source locators add no war
+field or callback credit to this pregnancy topic.
+
+## Next native construction seam and readiness
+
+Reuse the shared result for both lanes. The actual references did not contain
+a callback pointer. The next finite Root-only acquisition recipe is
+`shared-named-literal-locator/ROOT-TEXT-XREF-FIRST-RECIPE.json`, with unique
+ID `actual4_shared_pregnancy_warscore_named_text_xref33_FIRST0` and authored
+status NOT RUN. It looks up code references to only the four actual exact
+CString RVAs and the two actually observed adjacent name-ID values. If Root
+has no retained suitable code cache, one metadata-bounded `.text` read uses
+raw offset 1024, size 71141888 and RVA 4096. There is no repeated `.rdata`
+read, image hash, new PE parse or other game-section read.
+
+Named-hit code windows are retained for decoding without another section
+read. Their RIP-relative instruction candidates and untyped ID byte matches
+remain source locators until actual instruction boundaries and registration
+are proved. Root can then acquire only the actual candidate's precise
+function range and close the receiver, predicate and final native field/call.
+No callback RVA is guessed in advance. A bounded `CPregnancy` miss in
+`.rdata` does not prove type-descriptor absence from `.data`.
+
+Only after the actual4 status reader is closed can the existing current-heir
+household query gain a read-only pregnancy observation with native true,
+native false and failed read distinguished. The receiver must be the actual
+maternal member of the observed current household, resolved by the existing
+current relation evidence. No arbitrary-population query, new AI script,
+birth promise or natural-succession credit is added here.
+
+Current status: **research**, with a finite **source-ready locator recipe**.
+There is no pregnancy runtime or pregnancy fixture credit from this packet.
+
+## Actual named registry construction from retained code
+
+Root subsequently completed the shared text FIRST once: GREEN, 1.1856
+seconds, one 71141888-byte `.text` read and zero image hashes. The source
+worker decoded only its retained named-hit JSON hex windows. The resulting
+`CACHED-NAMED-WINDOWS-DISASSEMBLY.json` and
+`CACHED-NAMED-CLASSIFICATION.json` are in the same shared locator packet.
+No new game-image bytes were read by the source worker.
+
+The one actual literal RIP-relative candidate is instruction RVA `0x5A8381`,
+which loads the exact `is_pregnant` CString at `0x46DD608`. Its retained
+window contains a coherent complete registry construction at
+`0x5A8370` through `0x5A8408` exclusive, 152 bytes. The observed prologue,
+terminal tailcall and subsequent INT3 padding establish this code range;
+no new PE exception-table record is claimed.
+
+The function constructs the 11-byte name, interns it through actual call
+`0x3F4F280`, allocates an 0x18-byte registry object, stores an actual
+LEA-derived description, primary vtable and returned name ID, then tailcalls
+`0x372BD10`. Instruction `0x5A83D4` obtains `0x47F5088`, stored at object
+offset +8. Instruction `0x5A83E9` obtains `0x47F5650`, stored at offset +0.
+The later finite capture resolves their distinct roles: `0x47F5088` is the
+ASCII description `is the character pregnant?`, and `0x47F5650` is the
+primary registry-object vtable. The initial two-window recipe called both
+LEA-derived targets vtable candidates; the actual read corrects that
+interpretation. Neither an address or description alone proves a pregnancy
+evaluator, Character field or live status reading.
+
+The 24 untyped `0x41B3` byte matches provide no pregnancy-ID callback:
+one is a relative call displacement, and 23 are integer-multiplication
+constants. The four war-policy `0x2CFF` candidates are also unrelated byte
+runs: two relative call displacements and two runs crossing a negative MOV
+displacement and its following immediate. The finite War getter LEA/MOV
+lookup has no candidate; this does not prove global code-reference absence.
+
+The next exact Root-only acquisition is
+`shared-named-literal-locator/ROOT-PREGNANCY-VTABLE-FIRST-RECIPE.json`.
+Its unique FIRST ID is
+`actual4_is_pregnant_registered_object_vtables33_FIRST0`, authored NOT RUN.
+It requested only two actual registered-object windows: RVA `0x47F5080`
+size 88 and RVA `0x47F5648` size 88. Each includes its observed vtable's
+preceding cell and ten possible slots; total cost is two reads and 176 bytes,
+without reading a whole section, hashing the image or reparsing the PE.
+Root completed this FIRST: GREEN, 0.191 seconds, two reads totaling 176
+bytes. Its primary table contains three code slots at offsets 0, 8 and 16.
+The first and third slots point to `0xA03BD0` and `0x855AB0`, shared by
+adjacent registered objects, and are not expanded. The middle slot is the
+named independent callback candidate `0x2B6E390`.
+
+The retained actual4 runtime-function table at
+`upstream-build-migration/function-match-core/NEW-RUNTIME-FUNCTIONS.json`
+closes its precise body as `0x2B6E390` through `0x2B6E3F6` exclusive,
+102 bytes, unwind RVA `0x5109DB0`. Resolving that cache acquires no new EXE
+bytes. The next Root-only recipe is
+`shared-named-literal-locator/ROOT-PREGNANCY-CALLBACK-FIRST-RECIPE.json`,
+unique FIRST ID `actual4_is_pregnant_registered_callback33_FIRST0`, authored
+NOT RUN. It requests exactly that 102-byte body at file offset 45537168,
+one read, zero hashes or PE parses. The constructor, whole `.text` and whole
+`.rdata` need no repeated read. The receiver, predicate and final native
+state source remain unresolved until this callback is decoded.
+
+```mermaid
+flowchart LR
+  S[Actual is_pregnant CString 46DD608] --> X[Actual code reference 5A8381]
+  X --> R[Named registry construction 5A8370 to5A8408]
+  R --> A[Object8 ASCII description47F5088]
+  R --> B[Object0 interface vtable47F5650]
+  B --> C[Actual named middle slot2B6E390; exact102B body]
+  C -. receiver and predicate unresolved .-> F[Native trigger evaluator]
+  F -. actual receiver and state predicate unresolved .-> P[Current household pregnancy boolean]
+```
+
+This advances the actual4 source seam while pregnancy capability remains
+**research**. It adds no current-state, birth or natural-succession credit.
+
+## Registered slot is an instance factory, not a state reading
+
+Root's exact 102-byte acquisition is retained in
+`shared-named-literal-locator/root-callback-first0/IS-PREGNANT-CALLBACK.json`.
+Decoding this cache resolves the middle registered-object slot as a factory.
+It allocates **0x128 bytes (296 decimal)**, calls the shared base constructor
+`0x372CA70`, installs intermediate vtable `0x48049E8`, initializes a
+boolean-related member through `0xA03AD0` at object offset +0x40, and finally
+installs the actual derived instance vtable `0x47F5D90`. It copies the
+registered name ID from the registry object +0x10 to the instance +8 and
+writes instance byte +0xC to zero before returning the instance.
+
+Instruction `0x2B6E3D4` supplies the final table by actual RIP-relative LEA;
+this address follows the independently observed named registration and
+factory chain. The factory reads no character pregnancy state. Allocating
+or invoking it is not proposed as a read-only bridge implementation.
+
+The next Root-only recipe is
+`shared-named-literal-locator/ROOT-PREGNANCY-INSTANCE-FIRST-RECIPE.json`,
+unique FIRST ID `actual4_is_pregnant_instance_vtable33_FIRST0`, authored
+NOT RUN. It requests only RVA `0x47F5D88`, 136 bytes: the final instance
+vtable's preceding cell and first 16 possible slots. Real instance slot
+addresses and the retained runtime-function table must identify the actual
+predicate before decoding its receiver and final native status source.
+Intermediate constructors, shared registry slots and neighboring pregnancy
+names are not expanded by this work package.
+
+```mermaid
+flowchart LR
+  R[Named is_pregnant registration] --> F[Actual factory2B6E390 to2B6E3F6]
+  F --> I[Constructed instance final vtable47F5D90]
+  I -. concrete predicate slot unresolved .-> P[Native pregnancy predicate]
+  P -. actual receiver and state source unresolved .-> O[Independent current household pregnancy observation]
+```
+
+The constructed instance is source evidence. Pregnancy state, pregnancy
+fixture qualification, actual birth and natural succession remain open.
+
+## Actual instance predicate and two-array lookup
+
+Root's subsequent finite acquisitions retain the actual instance vtable
+and its callback windows in the same shared packet. The final table has 28
+slots, ending before the next complete-object locator at `0x47F5E70`.
+The selected slot +0x18 initializes a boolean-related member; slot +0x40
+visits a child expression; slot +0x60 copies a four-DWORD constant. These
+functions do not read a Character pregnancy status. Their decoded source
+is retained without expanding the neighboring shared callbacks.
+
+The actual last slot +0xD8 points to `0x2B6DAF0`. The retained runtime
+function row closes its body through `0x2B6DB7D` exclusive, 141 bytes.
+Root captured that body once, GREEN, 0.0807032 seconds. It accepts the
+native Character scope type 4, extracts its full Character ID, and resolves
+that ID through the actual4 Character store. The slot validates both the
+full ID at Character +0x18 and the `0x43686172` Character magic at +0x1C.
+It then reads GameState through the existing actual4 global `0x5C68C50`,
+loads GameState +0xA0, and adds +0x2EE40 to obtain the inline manager.
+At instruction `0x2B6DB65`, it calls `0x28FD1B0` with that manager in RCX
+and the validated Character pointer in RDX. Its boolean result is exactly
+whether the returned pointer is non-null. No sex, trait, fertility,
+marriage, notice or revealed-status condition appears in this predicate.
+
+Root's next 128-byte capture at `0x28FD1B0` was GREEN, 0.0840573 seconds.
+This leaf has no row in the retained runtime-function table, so its range
+is established by actual control flow rather than an invented metadata
+boundary. It first searches the 8-byte record-pointer array at manager
++0x4EA0, using the signed DWORD count at +0x4EAC. Each record's DWORD +8
+is compared with the complete Character ID at Character +0x18. A match
+returns that record pointer immediately.
+
+The first RET is not the end of the lookup. On no first-array match, the
+actual branch at `0x28FD1EF` goes to `0x28FD1F5` and searches a second
+record-pointer array at +0x4E88, count +0x4E94, with the same full-ID
+comparison. The 128-byte prefix ends mid-instruction at `0x28FD22E`;
+Root completed the exact 16-byte tail capture once, GREEN, 0.0723412
+seconds. At `0x28FD22E` the actual instruction loads the matched record
+pointer and returns at `0x28FD231`. The no-match branch returns at
+`0x28FD232`, retaining the null selected by the preceding CMOVE. Subsequent
+INT3 padding establishes the observed function end at `0x28FD233`
+exclusive, 131 bytes. This is an actual control-flow boundary, not a new
+exception-table row. Array labels such as concealed or revealed
+remain unknown; the observation preserves their native search order and
+does not attach a guessed pregnancy phase to either array.
+
+```mermaid
+flowchart TD
+  R[Named is_pregnant registration] --> F[Factory and final instance table]
+  F --> P[Actual slot D8: predicate2B6DAF0]
+  P --> C[Resolve full Character ID and CHAR magic]
+  C --> M[GameState A0 data; inline manager2EE40]
+  M --> A[Search pointer array4EA0; count4EAC; record8 equals full ID]
+  A -->|match| T[Native pregnancy true]
+  A -->|no match| B[Search pointer array4E88; count4E94; same full ID]
+  B -->|match| T
+  B -->|no match| N[Native pregnancy false]
+  M -. monthly conception and phase transitions unresolved .-> L[Native lifecycle]
+```
+
+## Existing-query independent observation
+
+The source candidate adds `native_pregnancy` to each current-household row
+of the existing `current_first_heir_reproductive_inputs_v1` leaf. The
+receiver IDs still come exclusively from the current heir and their
+observed spouse/betrothal relationships. The new result identifies
+`source: native_is_pregnant`, has an independent available/unavailable
+status, and returns either a native boolean or null with a failed-reading
+reason. Both native arrays are searched in their observed order; the
+existing actual4 Core binder and Character resolver are reused. No native
+factory, trigger, conception or event function is invoked.
+
+Pregnancy sampling precedes the existing fertility failure `continue`.
+The serializer publishes it outside the age/fertility availability branch,
+and the strict Python consumer accepts an absent field from older wires
+without converting absence to false. The existing row and leaf status
+retain their age/fertility meaning. Thus pregnancy unavailable can coexist
+with available fertility, and native pregnancy true can coexist with
+unavailable fertility. The paused-frame and current-relation consistency
+checks are the existing collector checks.
+
+The next qualification uses one new mode of the existing native target,
+`--pregnancy-observer-wire-dir`, producing five whole envelopes: first-array
+match, second-array match, no match, unavailable pregnancy array, and
+unavailable fertility with a native pregnancy match. Exact and wrong
+generation IDs in the real fixture arrays exercise the production lookup.
+One new method in the existing registered service test consumes those five
+compiled envelopes plus a legacy wire with the new per-row field absent.
+It verifies the existing query and ordinary already-partnered life-advance
+plan; it does not submit a command or add a children-zero wait gate.
+
+All source-worker Game, SDK, new-image reads, builds, imports and test
+execution remain zero. The native status source is closed, and the
+observation candidate is **static-ready**, with Root's new build/native/
+registered-consumer FIRST still not run. Neither native source closure nor
+these authored fixtures prove
+that spouse 38718 is currently pregnant, that a child has been born, or
+that Robert 29829 has undergone a natural succession.

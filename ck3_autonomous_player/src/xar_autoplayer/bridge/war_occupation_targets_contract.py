@@ -9,6 +9,7 @@ from collections.abc import Mapping
 import copy
 
 from .war_contract import _normalize_active_siege
+from .province_besieging_army_selection_contract import normalize_province_besieging_army_selection
 
 QUERY_WAR_OCCUPATION_TARGETS_V1_CAPABILITY = (
     "game.command.query-war-occupation-targets-v1-N"
@@ -169,6 +170,11 @@ def normalize_war_occupation_targets_v1(
         row["siege_observable"] = _bool(
             row.get("siege_observable", False), "siege_observable"
         )
+        if "current_besieging_army_selection" in row:
+            row["current_besieging_army_selection"] = normalize_province_besieging_army_selection(
+                row["current_besieging_army_selection"],
+                name=f"rows[{index}].current_besieging_army_selection",
+            )
         active_siege = row.get("active_siege")
         if not row["siege_observable"] and active_siege is not None:
             raise ValueError("unobservable siege must not publish an active siege")

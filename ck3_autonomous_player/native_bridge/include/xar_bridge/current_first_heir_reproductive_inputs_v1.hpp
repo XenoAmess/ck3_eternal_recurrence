@@ -9,6 +9,12 @@
 
 namespace xar::ck3_11906 {
 
+struct CurrentCharacterPregnancyReadV1 {
+  std::string_view status = "unavailable";
+  std::string_view unavailable_reason = "native_pregnancy_binding_unavailable";
+  std::optional<bool> is_pregnant{};
+};
+
 struct CurrentFirstHeirReproductiveRowV1 {
   std::int32_t character_id = -1;
   std::vector<std::string_view> roles{};
@@ -17,6 +23,7 @@ struct CurrentFirstHeirReproductiveRowV1 {
   std::optional<std::int16_t> age_measure_raw{};
   std::optional<std::uint8_t> sex_selector_raw{};
   bridge::MarriageCharacterFertilityReadV1 fertility{};
+  CurrentCharacterPregnancyReadV1 native_pregnancy{};
 };
 
 struct CurrentFirstHeirReproductiveInputsV1 {

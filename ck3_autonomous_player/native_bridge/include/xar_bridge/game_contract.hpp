@@ -12,6 +12,7 @@
 
 #include "xar_bridge/war_occupation_targets_v1.hpp"
 #include "xar_bridge/siege_membership_v1.hpp"
+#include "xar_bridge/province_besieging_army_selection_v1.hpp"
 #include "xar_bridge/battle_native_owner_recall_inputs_12003.hpp"
 #include "xar_bridge/ck3_12003_army_supply_timing.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
@@ -1713,6 +1714,7 @@ struct FixedPointValue {
 // handles never cross this contract.
 struct WarObjectiveProvinceState {
   std::int32_t province_id = -1;
+  ProvinceBesiegingArmySelectionV1 current_besieging_army_selection;
   bool occupation_observable = false;
   bool is_occupied = false;
   std::int32_t occupying_character_id = -1;

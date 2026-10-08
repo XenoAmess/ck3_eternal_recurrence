@@ -13,6 +13,7 @@ from .current_native_war_end_conditions_v1 import (
 from .current_replenishment_army_selector_v1 import (
     select_current_replenishment_army_v1,
 )
+from .siege_subject_contribution_v1 import observe_siege_subject_contribution
 
 from .bridge.campaign_root_context_contract import (
     _is_landless_noble_family_no_province_row,
@@ -10991,6 +10992,7 @@ def _choose_one_life_turn_core(
             ),
             objective_state_by_id=exact_objective_state_by_id,
             commands=rows,
+            subject_army=pursuit_army if isinstance(pursuit_army, dict) else None,
         )
         exact_assault_state = _current_exact_assault_state(
             snapshot if isinstance(snapshot, dict) else {},
@@ -15231,6 +15233,7 @@ def _current_exact_siege_status(
     province_id: int | None,
     objective_state_by_id: dict[int, dict[str, object]],
     commands: list[dict[str, object]],
+    subject_army: dict[str, object] | None = None,
 ) -> dict[str, object] | None:
     if (
         province_id is None
@@ -15262,10 +15265,17 @@ def _current_exact_siege_status(
         "total_work": active_siege.get("total_work"),
         "remaining_work": active_siege.get("remaining_work"),
         "days_left": active_siege.get("days_left"),
+        "current_besieging_army_selection": state.get("current_besieging_army_selection"),
     }
     if active_siege.get("player_army_besieging") is not True:
-        result["status"] = "not_player_besieging"
-        return result
+        contribution = observe_siege_subject_contribution(state, subject_army)
+        result["subject_contribution"] = contribution
+        if contribution["status"] != "eligible":
+            result["status"] = (
+                "not_player_besieging" if contribution["status"] == "excluded"
+                else "contribution_unavailable"
+            )
+            return result
     garrison = _native_int(state.get("garrison_size"))
     strength = _native_int(state.get("besieging_strength"))
     if (

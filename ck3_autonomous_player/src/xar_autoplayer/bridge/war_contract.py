@@ -5,6 +5,7 @@ from __future__ import annotations
 from .native_maa_recruitment_inputs_contract import normalize_native_maa_recruitment_inputs_v1
 from .owned_regiments_v1 import normalize_owned_regiments_v1
 from .siege_membership_contract import normalize_siege_province_unit_occurrences
+from .province_besieging_army_selection_contract import normalize_province_besieging_army_selection
 
 from .army_replenishment_records_contract import normalize_regiment_replenishment_records_v1
 from .army_fixed_chunk0_preparation_contract import normalize_fixed_chunk0_preparation_inputs_v1
@@ -686,7 +687,7 @@ def _normalize_objective_province_state(
         active_siege = _normalize_active_siege(
             raw_active_siege, name=f"{name}.active_siege"
         )
-    return {
+    result = {
         "province_id": province_id,
         "occupation_observable": occupation_observable,
         "is_occupied": is_occupied,
@@ -697,6 +698,12 @@ def _normalize_objective_province_state(
         "siege_observable": siege_observable,
         "active_siege": active_siege,
     }
+    if "current_besieging_army_selection" in value:
+        result["current_besieging_army_selection"] = normalize_province_besieging_army_selection(
+            value["current_besieging_army_selection"],
+            name=f"{name}.current_besieging_army_selection",
+        )
+    return result
 
 
 def query_province_local_siege_step(province_id: int) -> str:

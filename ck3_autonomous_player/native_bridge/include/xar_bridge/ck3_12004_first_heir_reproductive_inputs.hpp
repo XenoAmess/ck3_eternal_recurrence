@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
+#include "xar_bridge/ck3_12004_character_pregnancy.hpp"
 #include "xar_bridge/current_first_heir_reproductive_inputs_v1.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
@@ -48,6 +49,11 @@ ReadCurrentFirstHeirReproductiveInputsV1(
   result.status = "available";
   result.unavailable_reason = {};
   for (auto &row : result.rows) {
+    // Pregnancy is an independent status read, including when fertility or
+    // age inputs below are unavailable. The existing row status still names
+    // only the age/fertility result.
+    row.native_pregnancy = ReadCurrentCharacterPregnancyV1(
+        bindings.context.core, row.character_id);
     ck3_12002::family_value::CharacterValue first{}, second{};
     if (!ck3_12002::family_value::ReadCharacterValue(
             bindings.values, row.character_id, first, true,

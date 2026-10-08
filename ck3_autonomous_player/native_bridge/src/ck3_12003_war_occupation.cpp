@@ -256,6 +256,7 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
           const auto rich = ck3_12002::ReadObjectiveProvince(
               b.provinces, row.province_id, known_armies,
               scope.played_character_id, true);
+          row.current_besieging_army_selection = rich.current_besieging_army_selection;
           row.fort_level_observable = rich.fort_level_observable;
           row.fort_level = rich.fort_level;
           row.garrison_size_observable = rich.garrison_size_observable;

@@ -4143,6 +4143,9 @@ void AppendWarObjectiveProvinceState(
   } else {
     result += SignedNumber(state.besieging_strength);
   }
+  result += ",\"current_besieging_army_selection\":";
+  result += xar::game::SerializeProvinceBesiegingArmySelectionV1(
+      state.current_besieging_army_selection);
   result += ",\"siege_observable\":";
   result += state.siege_observable ? "true" : "false";
   result += ",\"active_siege\":";

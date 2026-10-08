@@ -62,27 +62,37 @@ flowchart TD
   A --> O[Optional same-query reproductive inputs]
   Z --> O
   F --> O
+  H --> I[Actual named is_pregnant two-array full-ID lookup]
+  I --> Q[Independent native pregnancy boolean or failed read]
+  Q --> O
   O --> C[Current household evidence, with known empty descendant roster]
-  C -. unknown pregnancy and future conception .-> B[Actual later birth]
+  C -. unknown future conception and lifecycle outcome .-> B[Actual later birth]
   B -. independently observed actual transition .-> N[Natural succession]
 ```
 
-## Pregnancy remains a concrete next native entry
+## Independent native pregnancy entry
 
-No pregnancy or expecting-child getter with exact actual4 proof is present in
-the adopted native interfaces or retained family migration captures. Effective
-fertility, marriage legality and a known empty child roster cannot infer it.
-The next source acquisition must start from the exact actual4 native named
-pregnancy query or trigger registration, then close its receiver and final
-field/getter call. A whole-image scan, old-layout pregnancy pointer, UI icon,
-or guessed field is not proposed. Root owns any new finite EXE acquisition;
-this package requests no segment before a named locator is available.
+The [current pregnancy entry research](current-first-heir-pregnancy-entry-12004.md)
+closes the authored `is_pregnant` status trigger through its actual4 named
+registration, instance predicate and pure two-array full-ID lookup. Root
+acquired each finite source window once; the final lookup tail ends at
+`0x28FD233`. It retains the distinction between native status, revelation
+events, fertility, birth and natural succession. Effective fertility,
+marriage legality and a known empty child roster do not infer pregnancy.
 
-The independent household input can be qualified and used now while that
-separate entry is researched. Its missing pregnancy field is not a new blocker
-for normal calendar progression, marriage, births or actual succession.
+The next source candidate adds independent per-row `native_pregnancy`
+status, reason and boolean before the existing age/fertility failure branch.
+Both results remain separately available: pregnancy can be true when
+fertility cannot be read, and pregnancy failure does not erase fertility.
+Older wires may omit the optional new field; absence never becomes false.
+The existing query, registered service and already-partnered calendar
+progression are reused. No new policy or waiting gate is added.
 
-## Minimal owning path and FIRST seam
+Pregnancy source is **static-ready**; Root's new five-native/six-consumer
+FIRST and actual paused-household observation remain pending. Native status
+source closure gives no live pregnancy, birth or succession credit.
+
+## Original household owning path and FIRST seam
 
 Append `current_first_heir_reproductive_inputs_v1` to the existing native
 current-heir relationship envelope, using the current actual4 mailbox and its

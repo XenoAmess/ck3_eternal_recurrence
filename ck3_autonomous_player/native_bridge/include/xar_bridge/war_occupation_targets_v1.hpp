@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "xar_bridge/siege_membership_v1.hpp"
+#include "xar_bridge/province_besieging_army_selection_v1.hpp"
 
 namespace xar::game {
 
@@ -67,6 +68,7 @@ struct WarOccupationTargetRowV1 {
   // Optional resolved de-jure county full TitleID; -1 serializes as null.
   std::int32_t county_title_id = -1;
   std::int32_t province_id = -1;
+  ProvinceBesiegingArmySelectionV1 current_besieging_army_selection;
   std::int32_t legal_holder_character_id = -1;
   std::string_view territory_side = "unavailable"; // attacker / defender
   bool occupation_observable = false;

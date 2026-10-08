@@ -129,6 +129,9 @@ struct Fixture {
   std::array<std::byte, 16 * 0x10> character_slots{};
   std::array<std::array<std::byte, 0x1D8>, 8> characters{};
   std::array<std::array<std::byte, 0x50>, 8> families{};
+  std::array<std::array<std::byte, 0x10>, 3> pregnancy_records{};
+  std::array<void *, 2> first_pregnancy_records{};
+  std::array<void *, 2> second_pregnancy_records{};
   std::array<std::uint32_t, 18> children{};
   std::array<std::byte, 0x1000> database{};
   std::array<std::byte, 0x2720> def{};
@@ -168,6 +171,7 @@ struct Fixture {
         0x03000005, 0x03000006, 0x03000007, 0x03000008};
     for (std::size_t i = 0; i < ids.size(); ++i) {
       Put(characters[i].data(), 0x18, ids[i]);
+      Put(characters[i].data(), 0x1C, std::uint32_t{0x43686172});
       Put(character_slots.data(), static_cast<std::size_t>(ids[i] & 0xFFFFFF) * 0x10 + 8,
           characters[i].data());
       Put(characters[i].data(), 0x1A8, families[i].data());
@@ -434,9 +438,121 @@ void EmitHousehold(const std::filesystem::path &directory,
             constructs == 0 && destroys == 0,
         "current child baseline and unused betrothal context are unchanged");
 }
+
+void EmitPregnancyHousehold(const std::filesystem::path &directory,
+                           std::string_view name) {
+  Fixture fixture({"current-pregnancy-household", 0, true, true, true, false});
+  std::array<std::byte, 0x2E8> heir_extension{}, partner_extension{};
+  std::array<std::int32_t, 1> heir_spouses{kPartner}, partner_spouses{kHeir};
+  Put(fixture.families[1].data(), 0x14, kPartner);
+  Put(fixture.families[2].data(), 0x14, kHeir);
+  Put(fixture.families[1].data(), 0x20, heir_spouses.data());
+  Put(fixture.families[2].data(), 0x20, partner_spouses.data());
+  for (const auto index : {1U, 2U}) {
+    Put(fixture.families[index].data(), 0x28, std::int32_t{1});
+    Put(fixture.families[index].data(), 0x2C, std::int32_t{1});
+  }
+  Put(fixture.characters[1].data(), 0x68, std::int16_t{32});
+  Put(fixture.characters[2].data(), 0x68, std::int16_t{29});
+  Put(fixture.characters[1].data(), 0x1B0, heir_extension.data());
+  Put(fixture.characters[2].data(), 0x1B0, partner_extension.data());
+  Put(heir_extension.data(), 0x2E0, std::int64_t{80'000});
+  Put(partner_extension.data(), 0x2E0, std::int64_t{60'000});
+  household_gate_allows = true;
+  const bool fertility_missing = name == "fertility-unavailable-pregnant";
+  fixture.family.values.fertility_gate = fertility_missing
+      ? nullptr : &HouseholdFertilityGate;
+
+  // Actual full mother IDs in real pointer arrays; the first decoy has the
+  // partner's index but a different generation and must not match either row.
+  Put(fixture.pregnancy_records[0].data(), 8, std::int32_t{0x07000003});
+  Put(fixture.pregnancy_records[1].data(), 8, kPartner);
+  Put(fixture.pregnancy_records[2].data(), 8, kRecipient);
+  fixture.first_pregnancy_records = {
+      fixture.pregnancy_records[0].data(), fixture.pregnancy_records[2].data()};
+  fixture.second_pregnancy_records = {
+      fixture.pregnancy_records[0].data(), fixture.pregnancy_records[2].data()};
+  if (name == "pregnant-first-array" || fertility_missing)
+    fixture.first_pregnancy_records[1] = fixture.pregnancy_records[1].data();
+  if (name == "pregnant-second-array")
+    fixture.second_pregnancy_records[1] = fixture.pregnancy_records[1].data();
+  auto *manager = fixture.game.data() + 0x2EE40;
+  const bool pregnancy_missing = name == "pregnancy-unavailable";
+  Put(manager, 0x4EA0, pregnancy_missing
+      ? static_cast<void **>(nullptr) : fixture.first_pregnancy_records.data());
+  Put(manager, 0x4EAC, std::int32_t{pregnancy_missing ? 1 : 2});
+  Put(manager, 0x4E88, fixture.second_pregnancy_records.data());
+  Put(manager, 0x4E94, std::int32_t{2});
+
+  auto relation = ReadCurrentFirstHeirRelationshipV1(fixture.family, kHeir);
+  Check(relation.failure == xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none,
+        "pregnancy scene keeps the same reciprocal current married pair");
+  relation.betrothal_actionability = ReadCurrentFirstHeirBetrothalActionabilityV1(
+      fixture.family, relation);
+  relation.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
+      fixture.family, kHeir);
+  relation.reproductive_inputs = xar::ck3_12004::ReadCurrentFirstHeirReproductiveInputsV1(
+      fixture.family, relation);
+  auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
+      name, 7, kHeir, relation);
+  wire = xar::game::Render12004BuildIdentity(
+      std::move(wire), xar::game::Ck3_12004AdapterDescriptor());
+  Write(directory / (std::string(name) + ".json"), wire);
+  Check(wire.find(xar::ck3_12004::kExecutableSha256) != std::string::npos &&
+            wire.find("\"native_pregnancy\":{\"source\":\"native_is_pregnant\"") != std::string::npos,
+        "whole wire uses canonical actual4 identity and native pregnancy source");
+  const auto &household = *relation.reproductive_inputs;
+  Check(household.played_character_id == kActor && household.heir_character_id == kHeir &&
+            household.date_raw == 53220000 && household.rows.size() == 2 &&
+            household.rows[0].character_id == kHeir &&
+            household.rows[1].character_id == kPartner &&
+            household.rows[0].roles == std::vector<std::string_view>{"heir"} &&
+            household.rows[1].roles == std::vector<std::string_view>{"primary_spouse", "spouse"},
+        "pregnancy observations retain actual deduplicated household receivers");
+  for (const auto &row : household.rows) {
+    if (pregnancy_missing) {
+      Check(row.native_pregnancy.status == "unavailable" &&
+                !row.native_pregnancy.unavailable_reason.empty() &&
+                !row.native_pregnancy.is_pregnant.has_value(),
+            "nonempty pregnancy array without data is unavailable, not false");
+    } else {
+      const bool expected = row.character_id == kPartner && name != "not-pregnant";
+      Check(row.native_pregnancy.status == "available" &&
+                row.native_pregnancy.unavailable_reason.empty() &&
+                row.native_pregnancy.is_pregnant == expected,
+            "both native arrays compare exact full mother IDs independently of fertility");
+    }
+    if (fertility_missing) {
+      Check(!row.available && !row.fertility.available &&
+                !row.age_measure_raw.has_value() && !row.unavailable_reason.empty(),
+            "missing fertility gate retains pregnancy but not guessed fertility values");
+    } else {
+      const bool heir_row = row.character_id == kHeir;
+      Check(row.available && row.fertility.available &&
+                row.age_measure_raw == (heir_row ? 32 : 29) &&
+                row.sex_selector_raw == (heir_row ? 0 : 1) &&
+                row.fertility.effective_raw == (heir_row ? 80'000 : 60'000),
+            "unavailable pregnancy does not erase qualified age or fertility inputs");
+    }
+  }
+  Check(household.status == (fertility_missing ? "partial" : "available") &&
+            relation.descendants->roster_complete && relation.descendants->native_child_count_raw == 0 &&
+            relation.betrothal_actionability.unavailable_reason == "current_heir_has_no_betrothal" &&
+            constructs == 0 && destroys == 0,
+        "pregnancy adds independent evidence without changing fertility status or sending actions");
+}
 } // namespace
 int main(int argc, char **argv) {
   try {
+    if (argc == 3 && std::string_view(argv[1]) == "--pregnancy-observer-wire-dir") {
+      const std::filesystem::path directory(argv[2]);
+      std::filesystem::create_directories(directory);
+      for (const std::string_view name : {"pregnant-first-array", "pregnant-second-array",
+               "not-pregnant", "pregnancy-unavailable", "fertility-unavailable-pregnant"})
+        EmitPregnancyHousehold(directory, name);
+      std::cout << "PASS actual4 current household pregnancy: five new whole wires\n";
+      return 0;
+    }
     if (argc == 3 && std::string_view(argv[1]) == "--reproductive-inputs-wire-dir") {
       const std::filesystem::path directory(argv[2]);
       std::filesystem::create_directories(directory);
