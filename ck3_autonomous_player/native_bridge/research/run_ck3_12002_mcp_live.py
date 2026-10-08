@@ -384,6 +384,65 @@ def episode_identity_frame(snapshot: object) -> dict[str, object]:
             "bridge_pid": pid, "connection_generation": generation}
 
 
+def campaign_pause_frame_binding(snapshot: object) -> dict[str, object]:
+    """Bind a complete campaign frame; heartbeat is only an owner guard."""
+    if not isinstance(snapshot, dict):
+        raise RuntimeError("campaign pause readback lacks a complete snapshot")
+    diagnostics = snapshot.get("diagnostics")
+    played = snapshot.get("played_character")
+    if not isinstance(diagnostics, dict) or not isinstance(played, dict):
+        raise RuntimeError("campaign pause readback lacks native identity")
+    hello = diagnostics.get("hello")
+    heartbeat = diagnostics.get("last_heartbeat")
+    mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
+    if not isinstance(hello, dict) or not isinstance(mailbox, dict):
+        raise RuntimeError("campaign pause readback lacks the actual owner")
+    expected = {"expected_ck3_version": "1.20.0.4",
+                "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+                "game_adapter_id": "ck3-1.20.0.4-msvc-x64", "ck3_build_match": True}
+    if any(type(hello.get(k)) is not type(v) or hello[k] != v for k, v in expected.items()):
+        raise RuntimeError("campaign pause readback crossed exact native build identity")
+    pid, generation, actor = diagnostics.get("bridge_pid"), diagnostics.get("connection_generation"), played.get("character_id")
+    numbers = {"pid": (pid, 1, 2**32 - 1), "generation": (generation, 1, 2**64 - 1),
+               "actor": (actor, 1, 2**31 - 1), "date": (snapshot.get("date_raw"), 1, 2**31 - 1),
+               "revision": (snapshot.get("revision"), 1, 2**64 - 1), "native_revision": (snapshot.get("native_revision"), 1, 2**64 - 1),
+               "local_player": (snapshot.get("local_player_id"), 0, 2**31 - 1), "speed": (snapshot.get("speed"), 1, 5),
+               "owner": (mailbox.get("owner_tid"), 1, 2**32 - 1), "pump": (mailbox.get("owner_verified_pump_epochs"), 1, 2**64 - 1),
+               "rejections": (diagnostics.get("rejected_state_snapshot_count"), 0, 2**64 - 1)}
+    if any(type(v) is not int or not lo <= v <= hi for v, lo, hi in numbers.values()):
+        raise RuntimeError("campaign pause readback has malformed identity or clock")
+    if (snapshot.get("episode_projection") != "native_campaign" or snapshot.get("backend_id") != "native-headless"
+            or snapshot.get("source") != "injected-dll-named-pipe" or snapshot.get("map_ready") is not True
+            or type(snapshot.get("format_version")) is not int or snapshot["format_version"] != 1
+            or snapshot.get("complete_snapshot") is False
+            or type(snapshot.get("paused")) is not bool or played.get("alive") is not True
+            or snapshot.get("active_event") is not None or snapshot.get("one_life_terminal_reason") is not None
+            or snapshot.get("snapshot_id") != "native:" + str(snapshot["native_revision"])
+            or diagnostics.get("connected") is not True or diagnostics.get("semantic_state_available") is not True
+            or diagnostics.get("last_error") is not None or diagnostics.get("transport_fatal_error") is not None
+            or type(hello.get("pid")) is not int or hello["pid"] != pid
+            or type(heartbeat.get("pid")) is not int or heartbeat["pid"] != pid
+            or not isinstance(diagnostics.get("pipe_name"), str) or not diagnostics["pipe_name"]
+            or mailbox.get("installed") is not True or mailbox.get("ready") is not True
+            or mailbox.get("stop") is not False or type(mailbox.get("failure")) is not int or mailbox["failure"] != 0
+            or type(mailbox.get("current_tid")) is not int or mailbox["current_tid"] != mailbox["owner_tid"]
+            or mailbox.get("stamp_read_success") is not True or type(mailbox.get("date_raw")) is not int
+            or mailbox["date_raw"] != snapshot["date_raw"]):
+        raise RuntimeError("campaign pause readback lost the complete same-owner frame")
+    return {"identity": (pid, generation, actor, snapshot["local_player_id"], snapshot["speed"],
+                         diagnostics["pipe_name"], mailbox["owner_tid"], snapshot.get("pending_character_interaction")),
+            "date": snapshot["date_raw"], "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
+            "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"]}
+
+
+def require_campaign_pause_successor(source: dict[str, object], snapshot: object) -> dict[str, object]:
+    current = campaign_pause_frame_binding(snapshot)
+    if (current["identity"] != source["identity"] or current["rejections"] != source["rejections"]
+            or any(current[k] < source[k] for k in ("date", "revision", "native_revision", "pump"))):
+        raise RuntimeError("campaign pause readback owner, clock or rejection state changed")
+    return current
+
+
 class PlanClient:
     def __init__(self, session: object, args: argparse.Namespace, report: dict[str, object], write: object) -> None:
         self.session, self.args, self.report, self.write = session, args, report, write
@@ -505,6 +564,76 @@ class PlanClient:
                 raise TimeoutError(f"snapshot did not reach {expected}: {snapshot}")
             await asyncio.sleep(self.args.poll_interval)
 
+    async def pause_campaign_after_advance(self, starting: dict[str, object]) -> dict[str, object]:
+        """At most one idempotent pause refresh under one original deadline."""
+        deadline = time.monotonic() + self.args.command_timeout
+        evidence: dict[str, object] = {"source": "campaign_postpause_same_owner_once_v1",
+            "starting_snapshot_id": starting.get("snapshot_id"), "starting_date_raw": starting.get("date_raw"),
+            "attempts": [], "status": "PENDING", "business_credit_from_heartbeat": False}
+        self.report.setdefault("campaign_pause_readbacks", []).append(evidence)
+
+        def remaining() -> float:
+            value = deadline - time.monotonic()
+            managed_done = getattr(self, "managed_done", None)
+            if managed_done is not None and managed_done.is_set():
+                raise RuntimeError("managed session finished during campaign pause readback")
+            if value <= 0:
+                raise TimeoutError("campaign pause readback exhausted the original command deadline")
+            return value
+
+        async def bounded(factory: object) -> object:
+            timeout = remaining()
+            value = await asyncio.wait_for(factory(), timeout=timeout)
+            remaining()
+            return value
+
+        async def pause(arguments: dict[str, object], *, fresh_revision: bool = True) -> str:
+            attempt: dict[str, object] = {"step": "pause-map", "arguments": arguments, "status": "PENDING", "rpc_started": False}
+            evidence["attempts"].append(attempt)
+            async def invoke() -> object:
+                attempt["rpc_started"] = True
+                return await self.invoke("ck3_execute_step", arguments, fresh_revision=fresh_revision)
+            result = await bounded(invoke)
+            status = result.get("status") if isinstance(result, dict) else None
+            if (not isinstance(result, dict) or result.get("step") != "pause-map" or result.get("accepted") is not True
+                    or status not in ("submitted", "already_paused")):
+                attempt["status"] = "UNADMITTED_ACK"
+                raise RuntimeError("campaign pause readback received an unadmitted pause ACK")
+            attempt["status"] = status
+            return status
+
+        try:
+            ack = await pause({"step": "pause-map"})
+            source = campaign_pause_frame_binding(starting)
+            evidence["binding"] = {"bridge_pid": source["identity"][0], "connection_generation": source["identity"][1],
+                "runtime_character_id": source["identity"][2], "owner_tid": source["identity"][6]}
+            retry_at = time.monotonic() + 1.0
+            retried = False
+            previous = source
+            while True:
+                current = await bounded(self.fresh)
+                observed = require_campaign_pause_successor(previous, current)
+                previous = observed
+                if current["paused"] is True:
+                    evidence.update(status="FULL_PAUSED_FRAME_OBSERVED", ending_snapshot_id=current["snapshot_id"],
+                                    ending_date_raw=current["date_raw"], pause_attempt_count=len(evidence["attempts"]))
+                    return current
+                if ack == "submitted" and not retried and time.monotonic() >= retry_at:
+                    # This is the sole extra action: bind its revision to the frame
+                    # just checked, avoiding an unchecked implicit second fresh().
+                    retried = True
+                    ack = await pause({"step": "pause-map", "expected_revision": current["revision"]}, fresh_revision=False)
+                    continue
+                delay = min(self.args.poll_interval, remaining())
+                if ack == "submitted" and not retried:
+                    delay = min(delay, max(0.0, retry_at - time.monotonic()))
+                await asyncio.sleep(delay)
+        except BaseException as error:
+            evidence.update(status="FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED", error_type=type(error).__name__,
+                            pause_attempt_count=len(evidence["attempts"]))
+            raise
+
+
     async def advance(self, row: dict[str, object]) -> dict[str, object]:
         await self.invoke("ck3_execute_step", {"step": "pause-map"})
         before = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
@@ -557,8 +686,16 @@ class PlanClient:
             if reached is None:
                 raise TimeoutError("running map did not reach the requested date")
         finally:
-            await self.invoke("ck3_execute_step", {"step": "pause-map"})
-        after = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
+            campaign_diagnostics = reached.get("diagnostics") if reached is not None else None
+            campaign_hello = campaign_diagnostics.get("hello") if isinstance(campaign_diagnostics, dict) else None
+            use_campaign_pause_readback = (reached is not None and reached.get("episode_projection") == "native_campaign"
+                and isinstance(campaign_hello, dict) and campaign_hello.get("expected_ck3_version") == "1.20.0.4")
+            if use_campaign_pause_readback:
+                after = await self.pause_campaign_after_advance(reached)
+            else:
+                await self.invoke("ck3_execute_step", {"step": "pause-map"})
+        if not use_campaign_pause_readback:
+            after = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
         if int(after["date_raw"]) < target:
             raise RuntimeError("pause readback preceded the requested date")
         return {"before": before, "running_successor": reached, "after": after,
@@ -1675,6 +1812,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                     listing = await session.list_tools()
                     report["mcp_tools"] = serialized(listing)
                     client = PlanClient(session, args, report, write)
+                    client.managed_done = done if supervisor is not None else None
                     client.tools = {item.name: serialized(item) for item in listing.tools}
                     try:
                         # initialize/list_tools prove the child has already opened its pipe.
