@@ -131,7 +131,9 @@ def _normalize_current_task_tax(
     ):
         raise ValueError("current task owner tax must match the selected seat")
     _integer(value["active_task_id"], "current task ID", minimum=-(2**31), maximum=2**31 - 1)
-    if value["modifier_id"] != 162 or value["keyword_id"] != 11976:
+    modifier_id = _integer(value["modifier_id"], "current task modifier ID", minimum=0, maximum=65535)
+    keyword_id = _integer(value["keyword_id"], "current task keyword ID", minimum=0, maximum=2**31 - 1)
+    if modifier_id != 162 or keyword_id != 11976:
         raise ValueError("current task owner tax descriptor does not match actual4")
     for key in ("task_key", "observed_keyword_key"):
         if value[key] is not None and (
