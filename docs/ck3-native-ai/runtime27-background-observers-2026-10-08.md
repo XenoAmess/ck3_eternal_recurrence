@@ -1,6 +1,12 @@
 # Runtime27 background observers — 2026-10-08
 
-## Native30 binary/Army/Chance GREEN and M7 pending at10:08:39 CST
+## Native30 final three Native/three consumers GREEN at10:30:21 CST
+
+Actual **2026-10-08T10:30:21+08:00**. Preserve M7 FIRST03 **RED0.3917252s/C00000FD/imagegameRVA11055415**, validate/clone/queue0 and captured action frame available true, alongside earlier order/frame failures. Four COFF objects/five≤96B prologues/480codeB prove ObserveSnapshot502592B + nested SetUnavailable502600B stack frames, with Action another23200B; M7 binder has no cycle. This is separate from the earlier R75 Army/Route construction recursion. Production4e→Rootbf6df6a4 changes one CPP to in-place destroy_at/construct_at, retaining defaults/stack size/conditions. Attempt07 necessary1CPP compile1.1861796s/DLLlink.8915526s/M7link.8160437s GREEN, no fixturecompile/Runtimearchive/generator, full717 retained.
+
+[M7 NativeFIRST04](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime30g-first04/m7_formal/) **four fullwires GREEN0.2274838s**, soleMCP/source9f **GREEN3.6877793s**. Army/Chance's2Native+2consumer GREENs are not replayed; effective Native30 final3Native/3consumers GREEN, canonical metadata still closing, no Game load. [M4 normal Council fallback](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/m4-normal-institution-next/first-normal-council-03-env-fix/) solecompound GREEN5.7834902s, fixture-import01/02 collection0 failures retained; explicitPYTHONPATH necessary retry only. It preserves urgent-war priority and grants no M4 loop/live credit. Previous partial package publishedd6d4d7b8 ordinaryFF/no merge; new19e6fa33/bf6df6a4/8ea0188a unpushed. R76 planned Python9f/native4e pins remain distinct. H9658/saved6006/G2 5/8/NW2 2/4/M4false/natural0 unchanged; all startup history retained.
+
+## Historical Native30 binary/Army/Chance GREEN and M7 pending at10:08:39 CST
 
 Actual **2026-10-08T10:08:39+08:00**: source4c7f9bc5/correctedbasecfd fixed717closure (60production/657retained/4fixture/1generator) DLL+archive actualb2 **GREEN**. The first713prep omitted four M7 owners and was not compiled; registration-fix02 reused56graph/stage2recipes with four real owner/header additions, no selector replay. [Runtime30 FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime30-first01/): Army new5native/new10consumer **GREEN0.2393118/73.4104863s**; Chance new3Native/soleconsumer **GREEN0.1263228/5.5803556s**. Canonical cohort is not sealed.
 

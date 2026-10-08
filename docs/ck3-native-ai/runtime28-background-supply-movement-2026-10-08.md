@@ -2,7 +2,13 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Successor30 binary/Army/Chance GREEN and M7 RED at10:08:39 CST
+## Successor30 final offline GREEN at10:30:21 CST
+
+Actual **2026-10-08T10:30:21+08:00**. M7 FIRST03 .3917252s/C00000FD imagegameRVA11055415 remains, with captured action frame available true and validate/clone/queue0. COFF4objects/5smallprologues/480codeB show502592B ObserveSnapshot plus502600B nested SetUnavailable and23200B Action stack, not a M7 binder cycle. Production4e→bf6df6a4 in-place destroy_at/construct_at preserves defaults/stack size/conditions. Attempt07 one CPP compile1.1861796s/DLLlink.8915526s/M7link.8160437s GREEN, zero fixturecompile/Runtimearchive/generator, full717 retained.
+
+[M7 FIRST04](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime30g-first04/m7_formal/) **four Nativewires GREEN.2274838s/soleMCP source9f GREEN3.6877793s**. Army/Chance previous2+2 qualifiers not replayed; final3Native/3consumer GREEN, canonical metadata closing and no Game. [M4 normal Council fallback](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/m4-normal-institution-next/first-normal-council-03-env-fix/) source9f→8ea0188a solecompound GREEN5.7834902s preserves urgentwar; two import-harness/zero-collection failures retained before explicitPYTHONPATH retry. No M4/Game credit. Published previouspartiald6d4d7b8/no merge, new19e/bf6/8ea unpushed; R76 Pythonoverlay9f and native4e separate. H9658/date53288472/saved6006/G2 5/8/NW2 2/4/M4false/natural0 unchanged. Native28 never Game-loaded; original R75 startup and all M7 earlier REDs retained, next actual minimized restore pending.
+
+## Historical successor30 binary/Army/Chance GREEN and M7 RED at10:08:39 CST
 
 Actual **2026-10-08T10:08:39+08:00**. Scoped source4c7f9bc5/correctedbasecfd fixed717closure DLL/archive actualb2 GREEN (60production/657retained/4fixture/1generator). First713prep omitted four M7 owners and was not compiled; registration-fix02 reused56graph/stage2recipes, with no selector replay. [Runtime30 FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime30-first01/) Army new5native/new10consumer **GREEN0.2393118/73.4104863s**, Chance new3native/soleconsumer **GREEN0.1263228/5.5803556s**. Prior GREENs are retained without replay.
 

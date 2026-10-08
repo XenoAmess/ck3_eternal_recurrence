@@ -1,5 +1,13 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-08 10:30:21：生产action的大Snapshot临时栈与fixture导入分别修复
+
+M7 actualFIRST03 **RED0.3917252s／C00000FD／imagegame RVA11055415**，captured action frame available true而validate／clone／queue均0。Root只复用4COFFobjects／5段≤96B prologues、480codeB，确定 **ObserveSnapshot栈502592B与SetUnavailable栈502600B嵌套约1MB**，Action另23200B；这里binder无cycle，与下方R75 Army→Route→Army构造递归是不同故障。大型Snapshot default assignment／初始化产生的临时对象会把该action路径推到栈溢出，不能用capturedframe存在误称command已执行。
+
+实际最小生产修复4e在同一CPP用 **destroy_at／construct_at原位初始化**，保持所有default值，不扩大stacksize、不改条件／业务分支。Attempt07仅该1prodCPP必要compile／DLL与M7link GREEN，0fixture重编／Runtimearchive／generators；[FIRST04](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime30g-first04/m7_formal/)四fullwire NativeGREEN.2274838s／soleMCP GREEN3.6877793s，先前三失败保留，旧Army／ChanceGREEN不重跑。这只授离线资格，未Game加载或真实enactment。
+
+另一独立实证：[M4 normal Council compound](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/m4-normal-institution-next/first-normal-council-03-env-fix/)01／02因pytest根目录／Windows反斜杠option引发实际import harness RED、collection0，不能记为业务执行失败；显式PYTHONPATH后必要env-only retry **GREEN5.7834902s**。启动recipe应明确真正production import root，命令行path使用该runner实际支持的形式；不为导入失败重跑Native或变更生产policy。原两错误和最终结果并存，本知识仅复用Root实证，无额外测试。
+
 ## 2026-10-08 10:08:39：原生继承顺序与canonical wire排序分别断言
 
 Root实际M7 production **read_title_baseline(title102)**返回raw successors **[301,201]**；既有 **realm_law_governance_snapshot_v1.cpp:326–331**会对每个held-title及primary successor vector排序，因此serialized canonical为 **[201,301]**。这是raw读口与wire投影的不同顺序，不能把raw期待直接用于canonical输出，也不应为fixture改生产原生顺序或既有序列化规则。

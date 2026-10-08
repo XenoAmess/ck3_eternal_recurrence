@@ -1,6 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 10:08:39 CST：Native30 DLL／archive与Army／Chance GREEN，M7第二FIRST仍RED
+### 2026-10-08 10:30:21 CST：Native30三native／三consumer最终GREEN，M4 normal Council离线GREEN
+
+M7 action stackoverflow已具体定位为ObserveSnapshot／SetUnavailable两个大Snapshot临时嵌套，binder无cycle；单production CPP原位初始化保持全部defaults，attempt07必要编译／DLL与M7link GREEN。M7四wire NativeFIRST04 **GREEN0.2274838s**、soleMCP/source9f **GREEN3.6877793s**，见[最终FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime30g-first04/m7_formal/)；前三RED保留，Army／Chance原2＋2GREEN不重跑，现三native／三consumer全GREEN、canonical metadata收口中、未Game。M4 normal Council fallback solecompound **GREEN5.7834902s**，01/02 import harness RED保留，未授M4 loop／Game信用。Published d6d4d7b8与新19e6fa33／bf6df6a4／8ea0188a未push分列，R76 purePython/source9f与新native4e分列；saved6006/G2 5/8/NW2 2/4/M4false/natural0不变。见[Oct8日报](daily/2026-10-08.md)、[测试知识](../testing-workflow.md)；Root下一canonical／minimized原战役准备独立进行，本batch待统一发布。
+
+### 历史2026-10-08 10:08:39 CST：Native30 DLL／archive与Army／Chance GREEN，M7第二FIRST仍RED
 
 Root source4c7f9bc5的717objects DLL／archive actualb2 GREEN；Army新5native／新10consumer GREEN0.2393118／73.4104863s，Chance新3native／soleconsumer GREEN0.1263228／5.5803556s，见[Runtime30 FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime30-first01/)。M7 fixture duplicate-symbol／sourcearg／raw-vs-canonical顺序最小修复保留原RED，add4 attempt05单fixture＋link GREEN；SECOND FIRST仍RED0.3870733s、line579 crown-submit frame_unavailable，owner定位中，canonical尚未封、无新Game启动。Raw title102 successors[301,201]与现有wire排序[201,301]分别断言，FIRST02顺序已过但整体M7不GREEN，见[测试知识](../testing-workflow.md)。RootHEAD428c7644未push，latestpublished839；Source31 arrival976单列source-only后继。saved6006/G2 5/8/NW2 2/4/M4false/natural0不变，报告不测试／实机，本batch待Root发布。
 
