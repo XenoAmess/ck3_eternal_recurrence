@@ -10885,6 +10885,7 @@ class NativeHeadlessGameplayDriver:
         request_fields: dict[str, object] | None = None,
         timeout_seconds: float | None = None,
         internal_semantic_snapshot: bool = False,
+        include_native_command_history: bool = True,
         allow_frontend_revision_zero: bool = False,
         protocol_request_id: str | None = None,
         protocol_packet_evidence_path: Path | None = None,
@@ -10940,7 +10941,11 @@ class NativeHeadlessGameplayDriver:
             snapshot = (
                 self.take_internal_semantic_snapshot()
                 if internal_semantic_snapshot
-                else self.take_snapshot()
+                else (
+                    self.take_snapshot()
+                    if include_native_command_history
+                    else self.take_snapshot_without_native_command_history()
+                )
             )
         # Use the same submission snapshot as the primitive.  A second read
         # here would change revision-race behavior for unrelated episodes.
@@ -12493,7 +12498,8 @@ class NativeHeadlessGameplayDriver:
         )
         province_local_siege_id = parse_query_province_local_siege_step(step)
         internal_read_only_query = bool(
-            termination_query_war_id is not None
+            step == QUERY_ARMY_STRENGTHS_STEP
+            or termination_query_war_id is not None
             or prisoner_release_war_id is not None
             or outbound_white_peace_query_war_id is not None
             or termination_terms_query_war_id is not None
@@ -13609,6 +13615,9 @@ class NativeHeadlessGameplayDriver:
         result = self._execute_primitive_step(
             QUERY_ARMY_STRENGTHS_STEP,
             expected_revision=selected_revision,
+            # The query uses the current semantic frame, not the transcript.
+            # Keep ordinary capability/revision checks and durable history.
+            include_native_command_history=False,
             # The native semantic reader can wait 30s for its owning thread.
             # Leave time for that terminal result to reach this caller.
             timeout_seconds=max(self.command_timeout_seconds, 35.0),
@@ -13654,7 +13663,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native army-strength query lacks query_sequence"
             )
-        current = self.take_snapshot()
+        current = self.take_internal_semantic_snapshot()
         if not _same_paused_native_frame(starting, current):
             raise BridgeUnavailableError(
                 "native army-strength query crossed a snapshot revision"
