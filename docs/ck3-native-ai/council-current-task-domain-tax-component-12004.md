@@ -26,8 +26,10 @@ explains why a skill difference or `stewardship/200` is not a native quote.
 | Requested seat, actual task, owner/incumbent | Actual4 private selected-seat reader is source-closed and already qualified | Bind the current task to the existing native/public frame |
 | Task key, frozen, original scopes | Shared actual4 county-conversion ABI: TaskType key18, ActiveTask frozen39, original scopes40 | Reuse the same ActiveTask source proof; no dynamic PositionType key read |
 | Task owner evaluator | Root's first299B capture matched `31ABE10 -> 31ABDF0` | Current method source/ABI roles are now held; a match alone does not close every callee |
-| Sparse numeric getter | Complete held37B mapping `2303700 -> 23036E0` | Read signed component at aggregate+68; absent native ID produces real0 |
-| Owned evaluated modifier cleanup | Old complete173B source held; actual4 public binding NOT_HELD | A separate finite mapping precedes any callback invocation |
+| Numeric getter prefix | Held37B mapping `2303700 -> 23036E0`; ordinary-ID local continuation pending126B | Whole evaluated owner output is the receiver: IDs0/countC, values68 |
+| Owned evaluated modifier cleanup | Root matched complete actual4 `9F24F0..9F259D`,173B | Release the original internal buffers and shared/string objects; outer storage stays caller-owned |
+| Aggregate construction | Root matched actual207 semantic bytes at2872480 | Caller-owned output initialization: ID vector0, value vector68, SSO190, shared1B0 |
+| Descriptor table locator | Root matched actual17B initializer at2C4DC3F, table480C2A0/count609 | Locate actual typed records; this supplies no tax numeric ID |
 | Tax modifier numeric ID/keyword record | NOT_HELD | Resolve the selected typed descriptor; never borrow piety ID97 |
 
 Root executed the owner299B capture once near **06:47:19Z**:
@@ -41,7 +43,46 @@ from the original scopes' incumbent and owner IDs, evaluates collection+438
 through **2872480**, cleans its local context, and returns caller-owned output.
 Source uses shared context helpers889F60,373A0F0,889700,889780. Those role
 references are recorded; new callee source is not implicitly authorized.
-The output itself still requires its matching owned-storage cleanup.
+Root subsequently executed the cleanup173B and table-locator17B captures once,
+both `SOURCE_CAPTURE_MATCHED`, about0.869s and0.696s respectively. These are
+**190B / 2 fresh reads**, native calls0; the tax ID remains unproved. Receipts
+are `cleanup-map01/SELECTED-FOLLOWON-CAPTURE.json` and
+`tax-table-locator-map01/SELECTED-FOLLOWON-CAPTURE.json` in the same package.
+
+Actual cleanup `9F24F0` decrements/releases owned shared object+1B0, destroys
+SSO string+190 through the already-bound shared856050, releases sparse
+numeric buffer+68 through its stored allocator+78, and releases the ID buffer
+at0 through its original allocator+10. It leaves the caller's outer storage
+intact. Shared ScriptContext cleanup889700/889780 remains a different object.
+This method proof does not bind new callees or authorize a native invocation.
+
+The17B actual initializer is at`2C4DC3F..2C4DC50`: its LEA resolves to typed
+descriptor table`480C2A0`; the constructor count remains609. No descriptor,
+localization literal or keyword bytes were included. Existing named cache
+metadata contains no actual descriptor-prefix bytes and no named tax row.
+
+Root then executed only207 semantic bytes of `2872480..287254F`, once,
+`SOURCE_CAPTURE_MATCHED`, about0.8948s/1freshread/nativecalls0. Its result is
+`aggregate-map01/SELECTED-AGGREGATE-CAPTURE.json`. It initializes the output's
+ID and value buffers, evaluates each parsed declaration in the supplied
+ScriptContext, merges/finalizes into that output and returns the output pointer.
+Its constructor/declaration/merge/finalizer calls are recorded roles; this
+capture does not separately qualify their bodies.
+
+The numeric receiver distinction matters for this implementation. Cached
+old ordinary-ID source searches uint16 IDs at`RCX+0`, count`RCX+C`, and reads
+the matching int64 from the pointer at`RCX+68`. Therefore the standalone
+owner output is passed **as a whole**, not as output+68. Existing
+`battle_current_own_nested_modifier_reader.hpp` uses Character's outer
+aggregate+68 to reach its nested modifier object; that outer offset does not
+apply again to the independently constructed task owner output. Cleanup and
+the actual constructor show the standalone0/68 parallel-buffer relationship.
+
+The held37B getter source ends just after the ordinary branch's first
+`movsxd r9,[RCX+C]`; only itsFFFF-to-zero return is wholly inside those37B.
+Real tax IDs take the remaining local binary search. The next126B plan closes
+that local branch without re-reading the prefix, expanding a callee or
+replaying any qualified Army/Battle fixture.
 
 ```mermaid
 flowchart TD
@@ -50,11 +91,14 @@ flowchart TD
     T --> C[Original scopes40 and TaskType / frozen39 shared source]
     C --> E[Root matched owner evaluator31ABDF0,299B]
     E --> M[Owned evaluated modifier aggregate]
-    M --> G[Held numeric getter23036E0 on aggregate+68]
+    M --> G[Held numeric getter23036E0 prefix, whole owner output]
     I[Tax keyword / descriptor numeric ID] -. NOT_HELD: bounded locator then named record .-> G
-    M -. NOT_HELD: matching owned cleanup173B .-> D[Release original internal allocations]
-    G -. pending numeric ID / lifetime / necessary call roles .-> L[One optional current-tax numeric leaf]
-    D -. same pending leaf .-> L
+    E --> A[Matched207B constructor: IDs0 / values68]
+    A --> G
+    G -. ordinary-ID local continuation126B pending .-> N[Binary search and signed int64 / absent zero]
+    M --> D[Matched173B cleanup: release original internal allocations]
+    N -. pending numeric ID .-> L[One optional current-tax numeric leaf]
+    D -. pending ID and local numeric source .-> L
     L -. FIRST NOTRUN .-> W[Whole producer and sole registered consumer]
     W -. Root paused value pending .-> P[Production decision input]
     P -. counterfactual candidate / task-switch growth unknown .-> U[Full tax-versus-development utility]
@@ -93,27 +137,33 @@ the whole DTO. Extend only the optional position field admission in
 `council_composition_candidates_contract.py:58,216,324`; private transport
 already forwards and normalizes complete `position` for both private tools.
 
-## Bounded next mapping, no speculative call
+## Remaining bounded source, no speculative call
 
 External package:
 `Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/council-current-task-domain-tax/`.
 
-1. `NEXT-MODIFIER-CLEANUP-173B-PLAN.json`: reuse complete cached old
-   `[9F24F0,9F259D)`, central held ordinal candidate only, at most173B/1read.
-   Existing scope-tail cleanup is a different object and cannot replace it.
-2. `NEXT-TAX-MODIFIER-TABLE-LOCATOR-17B-PLAN.json`: reuse old cached initializer
-   `[2C4DC5F,2C4DC70)` (LEA descriptor table, constructor argument store,
-   declared609 record count), at most17B/1read. This finds the typed table
-   locator only; it does not read the table, pick a guessed tax row or prove
-   the tax ID. A subsequent named descriptor/keyword record needs its own
-   finite plan after the actual locator is known.
+Completed owner299B/cleanup173B/locator17B/constructor207B receipts are reused;
+no recapture. `NEXT-NUMERIC-LOCAL-CONTINUATION-126B-PLAN.json` declares only
+actual`[2303705,2303783)` corresponding to fully cached old
+`[2303725,23037A3)`. New begin is the next PC of the held getter's ordinary
+branch prefix; corresponding cached ordinal must agree. The126B old local
+continuation has no call and ends atRET. The already-mapped prefix37B,13B
+padding and following membership method are excluded.
 
-Both use the existing Root central mapper/shared claims, retain absolute
-member/immediate operands, and stop on NOTMATCHED. Neither expands a callee,
-padding, full function, metadata scan, whole hash or native invocation.
-The matched owner299B receipt is reused, not recaptured. If a required
-evaluator/lifetime role is still unheld after these results, state its exact
-call edge and prepare the next finite manifest rather than install a callback.
+`tax-id-metadata/NEXT-TAX-DESCRIPTOR-PREFIX-6272B-PLAN.json` declares a fixed
+112 pointer-record prefix`[480C2A0,480DB20)`,56B per row, one read. This covers
+the previous named resource group at ordinal105/106; it does not assert that
+the tax row is inside. Each pointer record supplies localization VA at0,
+uint16 numeric ID28 and uint32 keyword2C. No pointer is automatically followed.
+
+A separate metadata lane found no held descriptor-prefix bytes. Record reads alone
+do not name the tax ID: the actual selected localization/keyword association
+still needs its own exact literal/keyword source. There is no guessed tax row,
+piety97 alias, automatic whole609-table scan or automatic pointer-following.
+
+These pending plans use Root central shared claims, retain member/immediate
+operands, and stop on NOTMATCHED. Any additional necessary source gets a
+separate finite manifest; method match labels do not close all callees.
 
 ## FIRST and capability boundary
 
