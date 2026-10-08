@@ -1159,9 +1159,15 @@ class GameplayBridgeService:
                     raise
                 return self.plan_turn()
             if deferred_release_root and isinstance(plan, dict):
-                return {**planned, "plan": {**plan,
+                planned = {**planned, "plan": {**plan,
                     "prisoner_release_initial_expectation_root_deferred": True}}
-            return planned
+            from ..ordinary_holy_war_defender_observation_v1 import (
+                plan_ordinary_holy_war_defender_observation_v1,
+            )
+
+            return plan_ordinary_holy_war_defender_observation_v1(
+                self, planned=planned, snapshot=snapshot,
+            )
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
         bridge_capabilities = (
