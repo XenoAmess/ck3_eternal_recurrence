@@ -82,10 +82,6 @@ def _binding(driver: object, *, expected_revision: int,
             and snapshot.get("pending_character_interaction") is None
             and isinstance(snapshot.get("active_wars"), list)
             and isinstance(snapshot.get("player_armies"), list)
-            and (material_receipt or wartime_observation
-                 or snapshot["active_wars"] == [])
-            and (material_receipt or wartime_observation
-                 or snapshot["player_armies"] == [])
             and _positive(actor) and played.get("alive") is True
             and _positive(snapshot.get("native_revision"))
             and snapshot.get("snapshot_id") == f"native:{snapshot['native_revision']}"

@@ -1,5 +1,15 @@
 # Normal MCP construction configuration on CK3 1.20.0.4
 
+The later [wartime current-cash repair](m4-wartime-construction-current-cash-12004.md)
+supersedes this package's readonly-only wartime policy. It admits a fresh
+native quote when the ordinary plan would otherwise advance, using current
+and all-raised one-month cash scenarios and the existing 200-gold reserve.
+Selected war work retains priority. Future-war upper bounds remain an
+unclosed quality input and do not prohibit this finite policy. Its single
+new registered compound is authored for Root FIRST; no new live construction
+or M4 credit is recorded here. The CLI change and its original evidence below
+are preserved.
+
 The normal Service already calls `plan_construction_private` when the existing
 Driver option `allow_private_construction_formal_trial` is true. The official
 `native-auto-run` parser exposes `--allow-private-construction-formal-trial`,

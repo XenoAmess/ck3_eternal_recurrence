@@ -17,7 +17,7 @@ from .construction_economic_outcome_v1 import (
     completed_construction_cash_fields_v1, construction_economic_outcome_v1,
     prepare_construction_cash_fields_v1,
 )
-from .lifestyle_formal_consumer import ROOT_QUERY_STEP, same_frame_feudal_peace_scope
+from .lifestyle_formal_consumer import ROOT_QUERY_STEP, _same_frame_feudal_scope
 
 
 SUBMIT_STEP = "private-submit-player-construction-v1"
@@ -51,11 +51,13 @@ def observe_construction_cash_before_quote(
 
 def project_construction_quote_current_cash(
     query: Mapping[str, object], observation: Mapping[str, object] | None,
+    *, wartime: bool = False,
 ) -> tuple[dict[str, object], str | None]:
     """Project only this new quote using the one pre-quote cash packet."""
     quoted = dict(query)
     if observation is None:
-        return quoted, None
+        return quoted, ("current native cash is unavailable for this wartime spend"
+                        if wartime else None)
     budget = observation.get("current_cash_scenarios")
     packet = budget.get("source_cash_resources") if isinstance(budget, Mapping) else None
     candidate = quoted["candidate"]
@@ -63,6 +65,12 @@ def project_construction_quote_current_cash(
     if (not isinstance(treasury, Mapping)
             or treasury.get("raw") != candidate.get("gold_before_raw")):
         return quoted, "current cash and native construction quote are not jointly observed"
+    source = quoted.get("source_frame")
+    if wartime and not (isinstance(source, Mapping)
+            and packet.get("played_character_id") == source.get("actor_character_id")
+            and packet.get("snapshot_revision") == source.get("native_revision")
+            and packet.get("date_raw") == source.get("date_raw")):
+        return quoted, "wartime cash and construction quote belong to different actor frames"
     fields = prepare_construction_cash_fields_v1(
         candidate, packet, reserve_gold_raw=budget["reserve_gold_raw"],
         existing_commitment_gold_raw=0, horizon_months=1,
@@ -70,6 +78,9 @@ def project_construction_quote_current_cash(
     quoted.update(fields)
     if fields["construction_monthly_budget"]["scenarios"]["current"]["scenario_floor_ready"] is not True:
         return quoted, "defer this quote because current one-month cash does not retain the reserve"
+    if (wartime and fields["construction_monthly_budget"]["scenarios"]
+            ["all_raised"]["scenario_floor_ready"] is not True):
+        return quoted, "defer this quote because all-raised one-month cash does not retain the reserve"
     return quoted, None
 
 
@@ -388,12 +399,11 @@ def plan_construction_private(
                 and snapshot["native_revision"] > newest["post_native_revision"]
                 and snapshot["date_raw"] > newest["post_date_raw"]):
             return {**planned, "plan": plan}
-    # A pre-existing construction needs its material/income readback even
-    # while the ordinary strategy is busy with war. Native building choices
-    # can be observed during war, but an unassessed war cash commitment never
-    # admits a new spend or replaces the already selected formal action.
+    # Keep selected war work ahead of a new spend. Otherwise the ordinary
+    # advance opportunity can use observed current/all-raised cash during war.
     wars = snapshot.get("active_wars")
     if (isinstance(wars, list) and wars
+            and not new_action_admitted
             and (original_step is not None or getattr(
                 driver, "allow_private_m5_joint_collector", False) is True)):
         binding = (snapshot.get("episode_run_id"), snapshot.get("snapshot_id"),
@@ -426,11 +436,11 @@ def plan_construction_private(
                     (binding, observation))
         return {**planned, "plan": {**plan,
             "construction_wartime_observation": observation}}
-    # Only a new expenditure remains limited to the life-advance or
-    # peaceful prewar opportunity.
+    # Only an otherwise selected advance or existing prewar opportunity
+    # admits a new expenditure; an active war itself is not a spending ban.
     if not new_action_admitted:
         return {**planned, "plan": plan}
-    scope = same_frame_feudal_peace_scope(snapshot, history)
+    scope = _same_frame_feudal_scope(snapshot, history, require_peace=False)
     if scope["status"] == "root_query_needed":
         if ROOT_QUERY_STEP not in available_steps:
             if prewar:
@@ -475,8 +485,11 @@ def plan_construction_private(
         return {**planned, "plan": {**plan, "selected_step": None,
             "construction_private_query": query,
             "reason": "private construction source unavailable; preserve RED"}}
-    if observed is not None:
-        query, cash_reason = project_construction_quote_current_cash(query, observed)
+    wartime = isinstance(wars, list) and bool(wars)
+    if observed is not None or wartime:
+        query, cash_reason = project_construction_quote_current_cash(
+            query, observed, wartime=wartime,
+        )
         if "construction_monthly_budget" in query:
             plan = {**plan, "construction_monthly_budget": query["construction_monthly_budget"]}
         if cash_reason is not None:
@@ -518,6 +531,7 @@ def plan_construction_private(
                 "additional_shared_gold_commitment_raw": None},
             "reason": "construct one same-frame native-legal positive-income building before war entry"}}
     return {**planned, "plan": {**plan,
-        "phase": "construction_typed_submit", "selected_step": SUBMIT_STEP,
+        "phase": ("construction_wartime_typed_submit" if wartime
+                  else "construction_typed_submit"), "selected_step": SUBMIT_STEP,
         "construction_private_query": query,
         "reason": "submit one native-legal budgeted construction"}}
