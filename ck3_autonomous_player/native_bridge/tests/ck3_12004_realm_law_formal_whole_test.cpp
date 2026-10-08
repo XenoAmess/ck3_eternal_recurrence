@@ -503,6 +503,25 @@ int main(int argc, char **argv) {
   proof.executable_sha256 = actual4::kExecutableSha256;
   proof.manifest_sha256 = law::kRealmLawEnactMutationManifestSha25612004V1;
 
+  // The actual source preserves native successor order. The governance
+  // snapshot deliberately sorts those IDs before publishing its baseline.
+  auto raw_source = std::make_unique<actual4::RealmLawCrownSource12004>();
+  raw_source->module_base = kBase;
+  raw_source->callback_context = &fixture;
+  raw_source->read_memory = Fixture::Memory;
+  raw_source->primary_title = Fixture::Primary;
+  bridge::RealmLawGovernanceSourcePlayerLeaseV1 raw_player{};
+  raw_player.native_address = kActor;
+  raw_player.character_id = kActorId;
+  bridge::RealmLawGovernanceTitleBaselineV1 raw_titles{};
+  const auto operations = actual4::MakeRealmLawCrownSourceOperations12004();
+  assert(operations.read_title_baseline(raw_source.get(), raw_player, raw_titles));
+  assert(raw_titles.held_title_count == 2U);
+  assert(raw_titles.held_titles[1].title_id == kSecondaryId);
+  assert(raw_titles.held_titles[1].successor_count == 2U);
+  assert(raw_titles.held_titles[1].successor_character_ids[0] == kSecondId);
+  assert(raw_titles.held_titles[1].successor_character_ids[1] == kFirstId);
+
   auto state = std::make_unique<actual4::RealmLawActionMailboxState12004>();
   std::string wire, failure;
   const auto call = [&](std::string_view step, const std::string &payload,
@@ -534,6 +553,7 @@ int main(int argc, char **argv) {
 
   assert(call(actual4::kRealmLawCrownActionQueryStep12004, Payload(40) + "}",
               40, "wire-law-crown-query"));
+  Write(output, "wire-law-crown-query.json", wire);
   CheckActual4SourceFactory(*state);
   assert(wire.find("\"status\":\"available\"") != std::string::npos);
   assert(wire.find("\"snapshot_revision\":40,\"native_snapshot_revision\":40,\"proof_epoch\":40") != std::string::npos);
@@ -544,9 +564,12 @@ int main(int argc, char **argv) {
   assert(wire.find("\"currency_key\":\"merit\",\"amount_raw\":13000000") != std::string::npos);
   assert(wire.find("\"currency_key\":\"prestige\",\"cost_raw\":20000000") != std::string::npos);
   assert(wire.find("\"successor_character_ids\":[201,301]") != std::string::npos);
-  assert(wire.find("\"successor_character_ids\":[301,201]") != std::string::npos);
+  const auto secondary_wire = wire.find(
+      "\"title_id\":102,\"primary\":false,\"successor_character_ids\":[201,301]");
+  if (secondary_wire == std::string::npos)
+    std::cerr << "actual query successor diagnostic: " << wire << '\n';
+  assert(secondary_wire != std::string::npos);
   assert(fixture.queued == 0 && !state->has_pending_ack);
-  Write(output, "wire-law-crown-query.json", wire);
 
   const auto submit = Payload(40) + ",\"submitted_request_id\":\"" +
       std::string(kActionId) + "\",\"group_key\":\"crown_authority\","
