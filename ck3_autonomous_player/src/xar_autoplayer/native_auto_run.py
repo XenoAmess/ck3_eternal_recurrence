@@ -471,6 +471,7 @@ def native_auto_run(
     private_activity_feast_stage5_full_cost_read: bool = False,
     private_activity_feast_stage5_start_read: bool = False,
     allow_private_activity_feast_stage5_start_formal_trial: bool = False,
+    allow_private_activity_feast_normal: bool = False,
     private_activity_feast_guest_candidate_read: bool = False,
     private_activity_feast_guest_route_proof_read: bool = False,
     private_activity_feast_guest_target_character_id: int | None = None,
@@ -1119,7 +1120,8 @@ def native_auto_run(
         )
         private_activity_planner_driver_options = (
             {"allow_private_activity_planner_diag_query": True}
-            if private_activity_planner_diag_query is True else {}
+            if (private_activity_planner_diag_query is True
+                or allow_private_activity_feast_normal is True) else {}
         )
         ordinary_succession_driver_options = (
             {
@@ -1170,8 +1172,13 @@ def native_auto_run(
         driver.allow_private_activity_stage5_feast_full_cost_query = (
             private_activity_feast_stage5_full_cost_read is True
         )
+        feast_lifecycle_tracked = (spec.state_dir / PRIVATE_FEAST_START_LEDGER_FILE).exists()
         driver.allow_private_activity_feast_stage5_start_query = (
             private_activity_feast_stage5_start_read is True
+            or allow_private_activity_feast_normal is True or feast_lifecycle_tracked
+        )
+        driver.allow_private_activity_feast_lifecycle_observation = (
+            allow_private_activity_feast_normal is True or feast_lifecycle_tracked
         )
         driver.allow_private_activity_feast_guest_candidate_query = (
             private_activity_feast_guest_candidate_read is True
@@ -1196,6 +1203,7 @@ def native_auto_run(
         driver.allow_private_activity_feast_guest_rule_action = False
         driver.allow_private_activity_feast_stage5_start_action = (
             allow_private_activity_feast_stage5_start_formal_trial is True
+            or allow_private_activity_feast_normal is True
         )
         driver.allow_private_player_child_matrilineal_action = (
             private_child_matrilineal_target is not None
@@ -2374,6 +2382,25 @@ def native_auto_run(
                 current_attempt["exact_war_move_poststate"] = copy.deepcopy(exact_move_poststate)
             semantic_evidence = _semantic_delta(before, after_snapshot, after)
             evidence = list(semantic_evidence)
+            if step == _PRIVATE_ACTIVITY_FEAST_START_STEP:
+                feast_result = outcome.get("result")
+                if (isinstance(feast_result, dict)
+                        and feast_result.get("postcondition_verified") is True):
+                    evidence.append("private_feast_hosted_identity_and_resource_post")
+                else:
+                    # Retain the sent intent/save while the next ordinary turn
+                    # performs only the independent creation receipt query.
+                    checkpoint, _ = _materialize_checkpoint(
+                        service, driver, spec.profile_dir / "save games",
+                        session_done=session_done, session_state=session_state,
+                        timeout_seconds=min(readiness_timeout, max(
+                            0.001, run_deadline - time.monotonic())),
+                        poll_interval_seconds=poll_seconds,
+                        on_checkpoint_submit=mark_checkpoint_submit_started,
+                    )
+                    counts["checkpoint"] += 1
+                    checkpoints.append({"turn_index": turn_index,
+                                        "phase": "private_feast_start_pending", **checkpoint})
             if step == PRIVATE_PRISONER_RANSOM_RECEIPT_STEP:
                 ransom_result = outcome.get("result")
                 if (not isinstance(ransom_result, dict)
@@ -8085,8 +8112,13 @@ def _read_private_activity_feast_stage5_start_once(
             step_result={"step": step, "status": "red", "accepted": False,
                          "postcondition_verified": False, "inputs": inputs},
             selected_step=step)
+    campaign_root = None
+    if post.get("active_wars"):
+        root = service.query_campaign_root_context_v1(expected_revision=post["revision"])
+        campaign_root = root["campaign_root_context"]
+        post = service.snapshot()
     budget_observation = observe_feast_start_budget_v1(
-        post, inputs, state_dir=driver.state_dir)
+        post, inputs, state_dir=driver.state_dir, campaign_root=campaign_root)
     policy = assess_feast_start_private_v1(
         inputs, guest=None,
         budget=(budget_observation.get("budget")
@@ -9134,6 +9166,12 @@ def _turn_class(
         return "terminal"
     if step is None:
         return "terminal" if isinstance(plan, dict) else "gameplay"
+    if step == _PRIVATE_ACTIVITY_FEAST_START_STEP and outcome_status == "pending":
+        return "query"
+    if step == _PRIVATE_ACTIVITY_FEAST_OPEN_STEP:
+        # Configuration has its own typed receipts. It is not a started Feast
+        # or a gameplay outcome; the following ordinary turn values Stage5.
+        return "query"
     if step.startswith("query-") or step == PRIVATE_PRISONER_RANSOM_RECEIPT_STEP:
         return "query"
     if step == "save-checkpoint":

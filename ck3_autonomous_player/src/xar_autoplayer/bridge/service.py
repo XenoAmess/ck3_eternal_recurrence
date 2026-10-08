@@ -1762,8 +1762,9 @@ class GameplayBridgeService:
             planned.pop("_private_construction_history_v1", None)
             planned = plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot)
             return finish_release_root_arbitration(
-                self._plan_private_crown_normal_v1(
-                    self._plan_private_council_normal_v1(planned, available_steps)))
+                self._plan_private_feast_normal_v1(
+                    self._plan_private_crown_normal_v1(
+                        self._plan_private_council_normal_v1(planned, available_steps))))
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
         planned.pop("_private_lifestyle_war_frame_v1", None)
@@ -1839,8 +1840,98 @@ class GameplayBridgeService:
             planned = plan_ransom_private(self.driver, planned, snapshot)
         planned = plan_release_formal(self.driver, planned, snapshot)
         return finish_release_root_arbitration(
-            self._plan_private_crown_normal_v1(
-                self._plan_private_council_normal_v1(planned, available_steps)))
+            self._plan_private_feast_normal_v1(
+                self._plan_private_crown_normal_v1(
+                    self._plan_private_council_normal_v1(planned, available_steps))))
+
+    def _plan_private_feast_normal_v1(
+        self, planned: dict[str, object],
+    ) -> dict[str, object]:
+        """Configure or value one current stock Feast before an ordinary advance."""
+        if getattr(self.driver, "allow_private_activity_feast_stage5_start_action", False) is not True:
+            return planned
+        state_dir = self._strategy_state_dir()
+        plan = planned.get("plan")
+        if state_dir is None or not isinstance(plan, dict):
+            return planned
+        from ..activity_feast_stage5_start_formal_consumer import (
+            assess_feast_start_private_v1, read_feast_start_ledger,
+        )
+        from ..activity_feast_stage5_budget_v1 import observe_feast_start_budget_v1
+        from .activity_feast_stage5_start_private_transport import POST_STEP, START_STEP
+
+        ledger = read_feast_start_ledger(state_dir)
+        if isinstance(ledger["pending"], dict):
+            return {**planned, "plan": {**plan, "selected_step": POST_STEP,
+                    "phase": "activity_feast_pending_receipt",
+                    "reason": "observe the existing Feast intent without another Start"}}
+        if plan.get("selected_step") != "life-advance":
+            return planned
+        try:
+            diag = self.driver.query_activity_planner_diag_private_v1(
+                expected_revision=int(planned["revision"]))
+            if (diag.get("planner_status") == "planner_absent"
+                    or (diag.get("host_view_activity_key") == "activity_feast"
+                        and diag.get("planning_stage") == 1)):
+                # A held Stage1 opportunity gets a normal advance before another
+                # attempt in a new frame; configuration cannot starve time.
+                source_frame = (planned["revision"], diag.get("date_raw"))
+                if getattr(self.driver, "_feast_normal_configuration_frame_v1", None) == source_frame:
+                    return planned
+                post = self.driver.query_activity_feast_hosted_post_private_v1(
+                    expected_revision=int(planned["revision"]))
+                if any(row.get("activity_type_key") == "activity_feast"
+                       and (row.get("terminal_flags_observed") is not True
+                            or not (row.get("native_completed") is True
+                                    or row.get("native_invalidated") is True))
+                       for row in post["hosted_activities"]):
+                    return {**planned, "plan": {**plan, "activity_feast_opportunity": {
+                            "status": "current_feast_unresolved", "hosted_observation": post}}}
+                root = self.query_campaign_root_context_v1(
+                    expected_revision=int(planned["revision"]))["campaign_root_context"]
+                province_id = root.get("capital_province_id")
+                if type(province_id) is not int or not 0 < province_id <= 0x7FFFFFFF:
+                    return {**planned, "plan": {**plan, "activity_feast_opportunity": {
+                            "status": "current_capital_unavailable"}}}
+                from ..activity_feast_ordinary_v1 import OPEN_STEP
+
+                return {**planned, "plan": {**plan, "selected_step": OPEN_STEP,
+                        "phase": "activity_feast_ordinary_configuration",
+                        "reason": "configure the current capital candidate through stock Feast eligibility",
+                        "activity_feast_opportunity": {"configuration": True,
+                            "province_id": province_id, "planner_observation": diag,
+                            "hosted_observation": post, "campaign_root": root,
+                            "source_frame": source_frame}}}
+            if (diag.get("host_view_activity_key") != "activity_feast"
+                    or diag.get("planning_stage") != 5):
+                return {**planned, "plan": {**plan, "activity_feast_opportunity": {
+                        "status": "configuration_not_stage1_or_stage5",
+                        "planner_observation": diag}}}
+            inputs = self.driver.query_activity_feast_stage5_start_inputs_private_v1(
+                expected_revision=int(planned["revision"]))
+            campaign_root = None
+            snapshot = self.snapshot(include_native_command_history=False)
+            if snapshot.get("active_wars"):
+                root = self.query_campaign_root_context_v1(
+                    expected_revision=int(planned["revision"]))
+                campaign_root = root["campaign_root_context"]
+                snapshot = self.snapshot(include_native_command_history=False)
+            budget_observation = observe_feast_start_budget_v1(
+                snapshot, inputs, state_dir=state_dir, campaign_root=campaign_root)
+            budget = (budget_observation.get("budget")
+                      if budget_observation["status"] == "observed" else None)
+            decision = assess_feast_start_private_v1(inputs, guest=None, budget=budget)
+        except (BridgeUnavailableError, UnsupportedStepError, ValueError) as error:
+            return {**planned, "plan": {**plan, "activity_feast_opportunity": {
+                    "status": "unavailable", "error": str(error)}}}
+        opportunity = {"inputs": inputs, "budget": budget,
+                       "budget_observation": budget_observation, "decision": decision}
+        if decision["decision"] != "start":
+            return {**planned, "plan": {**plan, "activity_feast_opportunity": opportunity}}
+        return {**planned, "plan": {**plan, "selected_step": START_STEP,
+                "phase": "activity_feast_ordinary_start",
+                "reason": decision["reason"],
+                "activity_feast_opportunity": {**opportunity, "new_attempt": True}}}
 
     def _plan_private_crown_normal_v1(
         self, planned: dict[str, object],
@@ -2856,8 +2947,23 @@ class GameplayBridgeService:
         | None = None,
     ) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
-        return self._consume_sway_after_turn(
-            self._execute_planned_turn(self.plan_turn(), before_submit=before_submit))
+        return self._consume_feast_after_turn(self._consume_sway_after_turn(
+            self._execute_planned_turn(self.plan_turn(), before_submit=before_submit)))
+
+    def _consume_feast_after_turn(self, outcome: dict[str, object]) -> dict[str, object]:
+        state_dir = self._strategy_state_dir()
+        if outcome.get("status") != "executed" or state_dir is None:
+            return outcome
+        from ..activity_feast_stage5_start_formal_consumer import (
+            LEDGER_FILE, consume_feast_start_following_turn,
+        )
+
+        if not (state_dir / LEDGER_FILE).exists():
+            return outcome
+        following = consume_feast_start_following_turn(
+            state_dir, self.snapshot(include_native_command_history=False))
+        return ({**outcome, "activity_feast_start_following_turn": following}
+                if following is not None else outcome)
 
     def auto_nonwar_turn(
         self, *, before_submit: Callable[[dict[str, object]], dict[str, object] | None] | None = None,
@@ -3083,6 +3189,31 @@ class GameplayBridgeService:
                 result = read_crown_authority_receipt_private_v1(
                     self.driver, pending=pending, expected_revision=int(planned["revision"]),
                 )
+            elif selected_step == "open-activity-feast-planner-v1-private":
+                from ..activity_feast_ordinary_v1 import configure_feast_ordinary_v1
+
+                opportunity = plan.get("activity_feast_opportunity")
+                if not (isinstance(opportunity, dict)
+                        and opportunity.get("configuration") is True):
+                    raise UnsupportedStepError("ordinary Feast configuration lacks its current candidate")
+                self.driver._feast_normal_configuration_frame_v1 = opportunity["source_frame"]
+                result = configure_feast_ordinary_v1(
+                    self.driver, self, province_id=opportunity["province_id"])
+            elif selected_step == "start-activity-feast-stage5-v1-private":
+                from ..activity_feast_stage5_start_formal_consumer import consume_feast_start_private_v1
+
+                opportunity = plan.get("activity_feast_opportunity")
+                if not (isinstance(opportunity, dict)
+                        and opportunity.get("new_attempt") is True):
+                    raise UnsupportedStepError("ordinary Feast Start lacks its selected opportunity")
+                result = {"step": selected_step, **consume_feast_start_private_v1(
+                    self.driver, inputs=opportunity["inputs"],
+                    budget=opportunity["budget"], new_attempt=True)}
+            elif selected_step == "query-activity-feast-hosted-post-v1-private":
+                from ..activity_feast_stage5_start_formal_consumer import reconcile_feast_start_private_v1
+
+                result = {"step": selected_step,
+                          **reconcile_feast_start_private_v1(self.driver)}
             elif selected_step == PRIVATE_CURRENT_BETROTHAL_SUBMIT_STEP:
                 result = submit_current_first_heir_betrothal_fulfillment_private(
                     self.driver, plan=plan, snapshot=self.snapshot())
@@ -3276,7 +3407,8 @@ class GameplayBridgeService:
                 ),
             }
         outcome = {
-            "status": "executed",
+            "status": ("pending" if selected_step == "start-activity-feast-stage5-v1-private"
+                       and result.get("postcondition_verified") is not True else "executed"),
             "selected_step": selected_step,
             "plan": plan,
             "result": result,

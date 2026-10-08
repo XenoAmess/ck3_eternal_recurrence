@@ -31,10 +31,15 @@ def read_feast_start_ledger(state_dir: Path) -> dict[str, object]:
     if not path.exists():
         return {"schema": LEDGER_SCHEMA, "pending": None, "resolved": None}
     data = json.loads(path.read_text(encoding="utf-8"))
-    if (not isinstance(data, dict) or set(data) != {"schema", "pending", "resolved"}
+    if (not isinstance(data, dict) or set(data) not in (
+            {"schema", "pending", "resolved"},
+            {"schema", "pending", "resolved", "history"})
             or data["schema"] != LEDGER_SCHEMA
             or any(data[key] is not None and not isinstance(data[key], dict)
-                   for key in ("pending", "resolved"))):
+                   for key in ("pending", "resolved"))
+            or ("history" in data and (
+                not isinstance(data["history"], list)
+                or any(not isinstance(row, dict) for row in data["history"])))):
         raise ValueError("private feast Start ledger malformed")
     return data
 
@@ -425,19 +430,27 @@ def consume_feast_start_private_v1(
     driver: object, *, inputs: Mapping[str, object],
     guest: Mapping[str, object] | None = None,
     budget: Mapping[str, object] | None = None,
+    new_attempt: bool = False,
 ) -> dict[str, object]:
-    """Use only qualified sources; persist an intent before one native submit."""
+    """Persist one intent; a selected new opportunity retains all old receipts."""
     state_dir = driver.state_dir
     if not isinstance(state_dir, Path):
         raise ValueError("private feast Start requires managed state_dir")
     ledger = read_feast_start_ledger(state_dir)
     if isinstance(ledger["pending"], dict):
         return reconcile_feast_start_private_v1(driver)
-    if isinstance(ledger["resolved"], dict):
+    if isinstance(ledger["resolved"], dict) and not new_attempt:
         return read_feast_start_resolved_private_v1(driver)
     decision = assess_feast_start_private_v1(inputs, guest=guest, budget=budget)
     if decision["decision"] != "start":
         return {**decision, "status": decision["status"]}
+    if isinstance(ledger["resolved"], dict):
+        # Archive only after current native legality, guest route and budget
+        # select a new Start. Keep the entire old receipt, including its native
+        # terminal/counter provenance. The archive and pending intent are one
+        # atomic write below; no empty-ledger interval permits another submit.
+        ledger = {**ledger, "resolved": None,
+                  "history": [*ledger.get("history", []), ledger["resolved"]]}
     reserves = dict(zip(RESOURCE_KEYS, decision["submit_reserve_raw"]))
     pending = {
         "intent_id": "feast-start-" + uuid.uuid4().hex,
@@ -452,6 +465,7 @@ def consume_feast_start_private_v1(
         "pre_outcome_values": inputs.get("outcome_values"),
         "ordinary_guest_route": inputs.get("ordinary_guest_route"),
         "reserved_raw": reserves, "stage": "submission_unresolved",
+        **({"new_attempt": True} if new_attempt else {}),
     }
     _write(state_dir, {**ledger, "pending": pending})
     try:
