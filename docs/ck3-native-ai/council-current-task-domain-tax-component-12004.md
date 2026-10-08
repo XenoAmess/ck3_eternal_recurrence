@@ -26,7 +26,7 @@ explains why a skill difference or `stewardship/200` is not a native quote.
 | Requested seat, actual task, owner/incumbent | Actual4 private selected-seat reader is source-closed and already qualified | Bind the current task to the existing native/public frame |
 | Task key, frozen, original scopes | Shared actual4 county-conversion ABI: TaskType key18, ActiveTask frozen39, original scopes40 | Reuse the same ActiveTask source proof; no dynamic PositionType key read |
 | Task owner evaluator | Root's first299B capture matched `31ABE10 -> 31ABDF0` | Current method source/ABI roles are now held; a match alone does not close every callee |
-| Numeric getter prefix | Held37B mapping `2303700 -> 23036E0`; ordinary-ID local continuation pending126B | Whole evaluated owner output is the receiver: IDs0/countC, values68 |
+| Numeric getter | Held37B mapping plus Root matched local126B retry02 | Whole evaluated owner output is the receiver: IDs0/countC, values68; absent ID is native0 |
 | Owned evaluated modifier cleanup | Root matched complete actual4 `9F24F0..9F259D`,173B | Release the original internal buffers and shared/string objects; outer storage stays caller-owned |
 | Aggregate construction | Root matched actual207 semantic bytes at2872480 | Caller-owned output initialization: ID vector0, value vector68, SSO190, shared1B0 |
 | Descriptor table locator | Root matched actual17B initializer at2C4DC3F, table480C2A0/count609 | Locate actual typed records; this supplies no tax numeric ID |
@@ -95,7 +95,7 @@ flowchart TD
     I[Tax keyword / descriptor numeric ID] -. NOT_HELD: bounded locator then named record .-> G
     E --> A[Matched207B constructor: IDs0 / values68]
     A --> G
-    G -. ordinary-ID local continuation126B pending .-> N[Binary search and signed int64 / absent zero]
+    G --> N[Matched126B local continuation: binary search and signed int64 / absent zero]
     M --> D[Matched173B cleanup: release original internal allocations]
     N -. pending numeric ID .-> L[One optional current-tax numeric leaf]
     D -. pending ID and local numeric source .-> L
@@ -176,7 +176,24 @@ agreement and the same declared126B local window, using the central mapper's
 existing image/section bounds; it adds no guard or wider role. The original
 NOREAD artifact remains unchanged. Root's retry02 uses
 `NUMERIC-LOCAL-CONTINUATION-126B-RETRY02-PLAN.json` and fresh output
-`numeric-continuation-map02/`; it has not run at this writing.
+`numeric-continuation-map02/`. Root executed that retry once: **126B/1read**,
+`SOURCE_CAPTURE_MATCHED`,0.93286s, nativecalls0, with the exact retry receipt
+`SELECTED-NUMERIC-CONTINUATION-CAPTURE.json`. The first01 pre-read failure
+remains preserved and is not relabeled as a native capability mismatch.
+
+Root's name pass executed **4000B/4reads**,112 named records, exact tax label
+matches0: `NO_EXACT_DOMAIN_TAX_LABEL_IN_SELECTED_PREFIX`. Receipt is
+`tax-id-metadata/names-plan01/labels-first01/SELECTED-DESCRIPTOR-LABELS-CAPTURE.json`.
+Cached raw-byte search over all4000B, including bytes not referenced by those
+112 records, also found no exact`MOD_DOMAIN_TAX_MULT`. This real MISS does not
+provide a guessed tax ID or justify replaying the prefix/name capture.
+
+Root subsequently captured the one remaining typed-table range
+`[480DB20,48147D8)`, **497 rows112..608 /27832B /1read**, at
+`tax-id-metadata/remainder-plan01/remaining-first01/REMAINING-DESCRIPTORS-CAPTURE.json`.
+All609 descriptor records are now held without overlapping fresh reads.
+Remaining names will use only the not-yet-held pointer windows, reusing old
+4000B name bytes when they already cover a newly referenced pointer.
 
 A separate metadata lane found no held descriptor-prefix bytes. Record reads alone
 do not name the tax ID: the actual selected localization/keyword association
@@ -209,7 +226,15 @@ separate finite manifest; method match labels do not close all callees.
 
 ## FIRST and capability boundary
 
-Implementation and FIRST remain **NOTRUN**. Once the native numeric input and
+The independent source-closed scalar reader is **AUTHORED_NOTRUN** in
+`ck3_12004_council_task_owner_tax.{hpp,cpp}` with its small POD observation
+model. It reuses original Task scopes40/type/key18/frozen39, copies the borrowed
+native keyword CString, calls owner builder/getter/cleanup in order, and keeps
+legal signed native zero. Its descriptor is an internal typed input; no tax ID
+is guessed, no current MCP field is published, and no new TU is yet registered.
+The current selected-seat DTO/Python hook awaits the actual named descriptor.
+
+Integration and FIRST remain **NOTRUN**. Once the native numeric input and
 owned lifetime close, one new whole producer must exercise actual
 `ReadCouncilCandidates12004`, the leaf, `SerializeCouncilCandidates12004`
 and private mailbox envelope. One new registered consumer consumes those
