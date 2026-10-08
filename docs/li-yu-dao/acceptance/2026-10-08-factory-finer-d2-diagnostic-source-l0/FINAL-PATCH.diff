@@ -1,0 +1,159 @@
+--- a/mod_li_yu_dao/tools/build_factory_diagnostic.py
++++ b/mod_li_yu_dao/tools/build_factory_diagnostic.py
+@@ -10,6 +10,7 @@
+ import textwrap
+ 
+ NAMESPACE = 'lyd_factory_diag'
++STAGE_ORDER = (1, 20, 2, 3, 4, 5, 6)
+ NAME = 'LYD Factory Operation Diagnostic - DEVELOPMENT ONLY'
+ PINS = {
+     'common/scripted_effects/lyd_c3_head_factory.txt': 'bf1b40de272467afd9b1e0eb2e3c59c4f62285d0daef314cb066446467efccc7',
+@@ -61,7 +62,8 @@
+     text += effect('lyd_i3b_commit_effect', opening) + '\n'
+     text += lines(commit, 70, 78) + '\n'
+     chunks = {
+-        2: lines(factory, 23, 36),
++        20: lines(factory, 23, 23) + lines(factory, 25, 32),
++        2: lines(factory, 24, 24) + lines(factory, 33, 36),
+         3: lines(factory, 37, 37),
+         4: lines(factory, 38, 50),
+         5: lines(factory, 51, 51),
+@@ -88,6 +90,14 @@
+         var:lyd_c2_owner_faith = scope:lyd_c3_factory_faith
+     }
+ }
++lyd_factory_diag_unheld_title_trigger = {
++    exists = scope:new_title
++    scope:new_title = {
++        NOT = { exists = holder }
++        var:lyd_c2_owned_head_title = 1
++        var:lyd_c2_owner_faith = scope:lyd_c3_factory_faith
++    }
++}
+ lyd_factory_diag_result_trigger = {
+     lyd_i3b_result_actor_trigger = yes
+     exists = scope:lyd_i3b_actor
+@@ -99,7 +109,7 @@
+ }
+ '''
+     events = '# DEVELOPMENT ONLY: no immediate mutators, no timed continuation.\nnamespace = ' + NAMESPACE + '\n\n'
+-    for stage in range(1, 7):
++    for stage in STAGE_ORDER:
+         if stage == 6:
+             guard = 'lyd_factory_diag_result_trigger = yes\n'
+             operation = 'lyd_i3b_show_result_effect = yes\n'
+@@ -108,11 +118,14 @@
+             if stage == 1:
+                 # Reuse the actual original factory limit before title creation.
+                 guard += factory_guard
++            elif stage == 20:
++                guard += 'lyd_factory_diag_unheld_title_trigger = yes\n'
+             else:
+                 guard += 'lyd_factory_diag_title_trigger = yes\n'
+-            if stage >= 3:
++            if stage in (3, 4, 5):
+                 guard += 'faith.religious_head_title = scope:new_title\n'
+-            operation = f'lyd_factory_diag_d{stage + 1}_effect = yes\n'
++            next_stage = 20 if stage == 1 else (2 if stage == 20 else stage + 1)
++            operation = f'lyd_factory_diag_d{next_stage}_effect = yes\n'
+         events += f'{NAMESPACE}.{stage} = {{\n'
+         events += '    type = character_event\n    theme = faith\n'
+         events += f'    title = lyd_factory_diag_d{stage}_title\n    desc = lyd_factory_diag_d{stage}_desc\n'
+@@ -122,12 +135,12 @@
+         events += '        hidden_effect = {\n            if = {\n                limit = {\n' + indent(guard, 20) + '                }\n'
+         events += indent(operation, 16) + '            }\n        }\n    }\n}\n\n'
+     descriptor = f'version="0.0.1"\nname={json.dumps(NAME)}\nsupported_version="1.20.*"\ndependencies={{ {json.dumps(product_name, ensure_ascii=False)} }}\n'
+-    cn = ['D1：doctrine 与合法授权后', 'D2：create / holder / resolve 后', 'D3：SetHoF 后', 'D4：原条件 cleanup 后', 'D5：COA / Title95 后', 'D6：原 postconditions 与 close 后']
+-    en = ['D1: doctrine and lawful authorization', 'D2: create / holder / resolve', 'D3: SetHoF', 'D4: original conditional cleanup', 'D5: COA / Title95', 'D6: original postconditions and close']
++    cn = ['D1：doctrine 与合法授权后', 'D2a：create / owner / 四属性后；未开 transaction', 'D2b：holder / resolve 后', 'D3：SetHoF 后', 'D4：原条件 cleanup 后', 'D5：COA / Title95 后', 'D6：原 postconditions 与 close 后']
++    en = ['D1: doctrine and lawful authorization', 'D2a: create / owner / properties; no open transaction', 'D2b: holder / resolve', 'D3: SetHoF', 'D4: original conditional cleanup', 'D5: COA / Title95', 'D6: original postconditions and close']
+     locales = {}
+     for language, titles in (('english', en), ('simp_chinese', cn)):
+         rows = [f'l_{language}:']
+-        for number, title in enumerate(titles, 1):
++        for number, title in zip(STAGE_ORDER, titles):
+             rows.append(f' lyd_factory_diag_d{number}_title:0 "{title}"')
+             desc = 'DEVELOPMENT DIAGNOSTIC ONLY. Observe cache and save before advancing; this does not prove political protection.' if language == 'english' else '仅开发诊断。推进前读取缓存并保存；本页不证明政治保护通过。'
+             rows.append(f' lyd_factory_diag_d{number}_desc:0 "{desc}"')
+@@ -207,7 +220,10 @@
+         'diagnostic_business_credit': None,
+         'whole_mod': 'NOT_GREEN',
+         'patch': file_ref(patch_path),
+-        'stage_keys': [f'{NAMESPACE}.{stage}' for stage in range(1, 7)],
++        'stage_keys': [f'{NAMESPACE}.{stage}' for stage in STAGE_ORDER],
++        'stage_labels': {'1': 'D1', '20': 'D2a', '2': 'D2b', '3': 'D3', '4': 'D4', '5': 'D5', '6': 'D6'},
++        'D2a_unheld_title_cross_event_and_SAVE_acceptance': None,
++        'D2b_transaction': 'create/change-holder/resolve atomic; no yield before resolve',
+         'stage_scope': 'lyd_factory_diag_stage',
+         'D6': 'Original bookkeeping/postconditions/close completed; only after observing D6 does its option call the original show_result_effect.',
+     }
+--- a/mod_li_yu_dao/tools/validate_factory_diagnostic.py
++++ b/mod_li_yu_dao/tools/validate_factory_diagnostic.py
+@@ -61,7 +61,7 @@
+     check('original_factory_authorization_AST_exact', node(single(factory, 'limit')) == node(single(initial, 'limit')))
+     check('original_commit_preamble_AST_exact', node(Block(tuple(changed.entries[:-2]))) == node(Block(tuple(original_entries[:call_index]))))
+     actual_parts = [entry for entry in initial.entries if entry.key != 'limit'][:-2]
+-    for number in range(2, 7):
++    for number in (20, 2, 3, 4, 5, 6):
+         helper = single(changed_defs, f'lyd_factory_diag_d{number}_effect')
+         transition = helper.entries[-2:]
+         check(f'D{number}_only_scope_marker_then_event_yield', [entry.key for entry in transition] == ['save_scope_value_as', 'trigger_event'] and single(transition[0].value, 'name') == 'lyd_factory_diag_stage' and single(transition[0].value, 'value') == str(number) and transition[1].value == f'lyd_factory_diag.{number}')
+@@ -71,24 +71,47 @@
+     final_if = single(single(single(final_event, 'option'), 'hidden_effect'), 'if')
+     actual_parts.extend([entry for entry in final_if.entries if entry.key != 'limit'])
+     expected_parts = [entry for entry in factory.entries if entry.key != 'limit'] + original_entries[call_index + 1:]
+-    check('complete_success_operation_AST_inverse_exact', node(Block(tuple(actual_parts))) == node(Block(tuple(expected_parts))))
++    reordered_expected = list(expected_parts)
++    container_index = next(i for i, entry in enumerate(reordered_expected) if entry.key == 'create_title_and_vassal_change')
++    container = reordered_expected.pop(container_index)
++    props_index = next(i for i, entry in enumerate(reordered_expected) if entry.key == 'scope:new_title' and any(child.key == 'set_destroy_if_invalid_heir' for child in entry.value.entries))
++    reordered_expected.insert(props_index + 1, container)
++    check('complete_success_operation_only_declared_container_relocation', node(Block(tuple(actual_parts))) == node(Block(tuple(reordered_expected))))
++    restored = list(actual_parts)
++    moved = restored.pop(next(i for i, entry in enumerate(restored) if entry.key == 'create_title_and_vassal_change'))
++    create_index = next(i for i, entry in enumerate(restored) if entry.key == 'create_dynamic_title')
++    restored.insert(create_index + 1, moved)
++    check('complete_success_operation_AST_inverse_exact', node(Block(tuple(restored))) == node(Block(tuple(expected_parts))))
+     original_factory_definition = single(body(mod / 'common/scripted_effects/lyd_c3_head_factory.txt'), 'lyd_c3_create_owned_temporal_head_effect')
+     expected_reject = list(single(original_factory_definition, 'else').entries) + original_entries[call_index + 1:]
+     check('original_factory_reject_continuation_AST_exact', node(single(changed, 'else')) == node(Block(tuple(expected_reject))))
+     d2 = single(changed_defs, 'lyd_factory_diag_d2_effect')
+     d2_keys = [entry.key for entry in d2.entries]
+     check('D2_transaction_atomic_resolve_before_yield', d2_keys.index('create_title_and_vassal_change') < d2_keys.index('resolve_title_and_vassal_change') < d2_keys.index('trigger_event') and d2_keys.count('trigger_event') == 1)
++    d2a = single(changed_defs, 'lyd_factory_diag_d20_effect')
++    d2a_keys = [entry.key for entry in d2a.entries]
++    check('D2a_create_and_configuration_without_pending_transaction', d2a_keys == ['create_dynamic_title', 'scope:new_title', 'save_scope_value_as', 'trigger_event'])
++    check('D2a_original_two_owner_markers_and_all_four_properties', [entry.key for entry in single(d2a, 'scope:new_title').entries] == ['set_variable', 'set_variable', 'set_destroy_if_invalid_heir', 'set_no_automatic_claims', 'set_definitive_form', 'set_always_follows_primary_heir'])
++    check('D2b_exact_atomic_container_holder_resolve', d2_keys == ['create_title_and_vassal_change', 'scope:new_title', 'resolve_title_and_vassal_change', 'save_scope_value_as', 'trigger_event'] and [entry.key for entry in single(d2, 'scope:new_title').entries] == ['change_title_holder'])
+     original_triggers = body(mod / 'common/scripted_triggers/lyd_i3b_institution_triggers.txt')
+     triggers = body(overlay / 'common/scripted_triggers/lyd_factory_operation_diagnostic.txt')
+     continuation = single(triggers, 'lyd_factory_diag_continue_trigger')
+     check('continuation_reuses_existing_cancel_identity_and_real_authorization', single(continuation, 'lyd_i3b_cancel_context_trigger') == 'yes' and single(continuation, 'has_variable') == 'lyd_c3_head_creation_authorized')
+     check('existing_cancel_scope_contract_has_actual_serial_nonce_phase', all(key in [entry.key for entry in single(original_triggers, 'lyd_i3b_cancel_context_trigger').entries] for key in ('this', 'var:lyd_i3b_serial', 'var:lyd_i3b_nonce', 'var:lyd_i3b_phase')))
+-    for number in range(1, 7):
++    for number in (1, 20, 2, 3, 4, 5, 6):
+         event = single(events, f'lyd_factory_diag.{number}')
+         option = single(event, 'option')
+         guarded_effect = single(single(option, 'hidden_effect'), 'if')
+         check(f'D{number}_display_option_execution_guard_same', node(single(event, 'trigger')) == node(single(option, 'trigger')) == node(single(guarded_effect, 'limit')))
+         check(f'D{number}_no_immediate_or_timed_advance', not any(entry.key in ('immediate', 'after', 'hidden') for entry in event.entries))
++    d1_if = single(single(single(single(events, 'lyd_factory_diag.1'), 'option'), 'hidden_effect'), 'if')
++    d2a_event = single(events, 'lyd_factory_diag.20')
++    d2a_if = single(single(single(d2a_event, 'option'), 'hidden_effect'), 'if')
++    check('D1_routes_to_D2a_then_D2a_routes_to_atomic_D2b', single(d1_if, 'lyd_factory_diag_d20_effect') == 'yes' and single(d2a_if, 'lyd_factory_diag_d2_effect') == 'yes')
++    check('D2a_uses_original_identity_auth_and_true_unheld_title', single(single(d2a_event, 'trigger'), 'lyd_factory_diag_continue_trigger').entries[0].value == '20' and single(single(d2a_event, 'trigger'), 'lyd_factory_diag_unheld_title_trigger') == 'yes' and single(single(single(triggers, 'lyd_factory_diag_unheld_title_trigger'), 'scope:new_title'), 'NOT').entries[0].key == 'exists')
++    unheld = single(single(triggers, 'lyd_factory_diag_unheld_title_trigger'), 'scope:new_title')
++    check('D2a_unheld_actual_owner_markers_and_holder_absence_exact', single(single(triggers, 'lyd_factory_diag_unheld_title_trigger'), 'exists') == 'scope:new_title' and single(single(unheld, 'NOT'), 'exists') == 'holder' and single(unheld, 'var:lyd_c2_owned_head_title') == '1' and single(unheld, 'var:lyd_c2_owner_faith') == 'scope:lyd_c3_factory_faith')
++    check('all_six_runtime_files_follow_legacy_BOM_policy', all(path.read_bytes().startswith(b'\xef\xbb\xbf') for path in overlay.rglob('*') if path.is_file() and path.suffix in ('.txt', '.yml', '.mod')))
+     cancel_map = {entry.key: entry.value for entry in original_triggers.entries if isinstance(entry.value, Block)}
+     check('original_cancel_context_proves_human_player_guard', validate_static.player_guard(single(original_triggers, 'lyd_i3b_cancel_context_trigger'), cancel_map))
+     for path in sorted(overlay.rglob('*.txt')):
+@@ -105,7 +128,7 @@
+             if match is None:
+                 raise ValueError(f'Existing localization grammar rejected {path}: {line}')
+             loc_keys.add(match.group(1))
+-    check('all_diagnostic_event_localization_present', all(f'lyd_factory_diag_d{number}_{suffix}' in loc_keys for number in range(1, 7) for suffix in ('title', 'desc')) and 'lyd_factory_diag_next' in loc_keys)
++    check('all_diagnostic_event_localization_present', all(f'lyd_factory_diag_d{number}_{suffix}' in loc_keys for number in (1, 20, 2, 3, 4, 5, 6) for suffix in ('title', 'desc')) and 'lyd_factory_diag_next' in loc_keys)
+     result = {
+         'schema': 'lyd.factory-operation-diagnostic.static-check.v1',
+         'status': 'PASS_STRUCTURAL_SOURCE_ONLY_RUNTIME_NOT_RUN',

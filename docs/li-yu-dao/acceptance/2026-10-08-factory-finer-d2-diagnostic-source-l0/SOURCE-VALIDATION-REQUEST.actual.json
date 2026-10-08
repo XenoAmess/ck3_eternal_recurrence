@@ -1,0 +1,70 @@
+{
+  "operation": "SOURCE_GENERATE_PURE_FUNCTION_AND_EXISTING_PARSER_VALIDATOR_ONCE",
+  "generator": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/build_factory_diagnostic.py",
+    "bytes": 11726,
+    "sha256": "4897ec559b51584b02e346cb61a37c26f45324a47133e46378f0caeb64fd83e4"
+  },
+  "validator": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/validate_factory_diagnostic.py",
+    "bytes": 11664,
+    "sha256": "de4b49968516ab4942ea83bea1bb06b3b33049568f25c1bff6fb47845051d1e3"
+  },
+  "actual_frozen_source_root": "C:\\lr30s2",
+  "native_build_or_RUNTIME_builder_main_called": false,
+  "validator_function_sys_argv": [
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r31-finer-d2-diagnostic-sourceonly-20261008-001\\validate_factory_diagnostic.py",
+    "--source-root",
+    "C:\\lr30s2",
+    "--overlay",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r31-finer-d2-diagnostic-sourceonly-20261008-001\\source-validation-overlay",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r31-finer-d2-diagnostic-sourceonly-20261008-001\\STATIC-CHECK.actual.json"
+  ],
+  "generated_fixture_rows": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/source-validation-overlay/descriptor.mod",
+      "bytes": 178,
+      "sha256": "a16a4bdff57953a01bc035cffc87aeda7a044dec637fbc7c2682eaf391ebb6a9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/source-validation-overlay/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 10847,
+      "sha256": "1bc34f14d245d2e8f17c05b2dffd4a60242387e44a8ad81d299727d8e59716a3"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/source-validation-overlay/common/scripted_triggers/lyd_factory_operation_diagnostic.txt",
+      "bytes": 1210,
+      "sha256": "249a768bc55d73ec87d29203905f5f7adb35b3bf2821edeb73985e1cf36513eb"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/source-validation-overlay/events/lyd_factory_operation_diagnostic.txt",
+      "bytes": 6747,
+      "sha256": "efd4b502689c46cf56d952dfef9d95f7b83b7f8bf7ed3fd4a18726c2132482c1"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/source-validation-overlay/localization/english/lyd_factory_operation_diagnostic_l_english.yml",
+      "bytes": 1500,
+      "sha256": "83c073842f3687b3980540490b081f1d62c5353a9be33a38193227f02ef3f808"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/source-validation-overlay/localization/simp_chinese/lyd_factory_operation_diagnostic_l_simp_chinese.yml",
+      "bytes": 1343,
+      "sha256": "cb342e94f0f2248fe669cf3487f58939e175f4361814c17a537218e2b55db86d"
+    }
+  ],
+  "additional_AST_preserved_entries": [
+    "lyd_factory_diag.3",
+    "lyd_factory_diag_d3_effect",
+    "lyd_factory_diag.4",
+    "lyd_factory_diag_d4_effect",
+    "lyd_factory_diag.5",
+    "lyd_factory_diag_d5_effect",
+    "lyd_factory_diag.6",
+    "lyd_factory_diag_d6_effect",
+    "lyd_factory_diag_continue_trigger",
+    "lyd_factory_diag_title_trigger",
+    "lyd_factory_diag_result_trigger"
+  ],
+  "historical_fixture_only_no_future_HEAD_or_qualification": true
+}

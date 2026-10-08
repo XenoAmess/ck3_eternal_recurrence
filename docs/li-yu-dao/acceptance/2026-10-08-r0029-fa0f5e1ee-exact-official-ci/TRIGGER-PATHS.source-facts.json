@@ -1,0 +1,134 @@
+{
+  "schema": "exact-head.workflow-trigger.actual.v1",
+  "exact_head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+  "name": "Li Yu Dao static checks",
+  "status": "TRIGGERED",
+  "run_id": 37756034997,
+  "conclusion": "success",
+  "official_push_event": {
+    "id": "23358727551",
+    "type": "PushEvent",
+    "actor": {
+      "id": 17455337,
+      "login": "XenoAmess",
+      "display_login": "XenoAmess",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/XenoAmess",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17455337?"
+    },
+    "repo": {
+      "id": 1335903470,
+      "name": "XenoAmess/ck3_eternal_recurrence",
+      "url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence"
+    },
+    "payload": {
+      "repository_id": 1335903470,
+      "push_id": 45829969467,
+      "ref": "refs/heads/master",
+      "head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+      "before": "57ee1192ce932782a3ae19732db35cba3fe14971"
+    },
+    "public": true,
+    "created_at": "2026-10-08T09:21:05Z"
+  },
+  "official_push_event_API_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-exact-official-ci-20261008-001/push-events-001.stdout",
+    "bytes": 18511,
+    "sha256": "519e7dce35d49ea31a4a15fec8a802d3971e757287507106b96d1d47490814a4"
+  },
+  "before": "57ee1192ce932782a3ae19732db35cba3fe14971",
+  "after": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+  "actual_full_push_compare_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-exact-official-ci-20261008-001/push-range-compare-001.stdout",
+    "bytes": 585821,
+    "sha256": "7b6d656d1d7bb2400c247d5ae11b31cbfaa22ff62fb3a34cf0d7d0bfab513526"
+  },
+  "changed_paths": [
+    "docs/autonomous-agent-progress/daily/2026-10-08.md",
+    "docs/autonomous-agent-progress/weekly/2026-W41.md",
+    "docs/li-yu-dao/2026-10-08-progress.md",
+    "docs/li-yu-dao/README.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/DIAGNOSTIC-SOURCE-INVENTORY.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/PACKAGE-INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/ROOT-IMPORT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/SCOPE-CONTRACT-SOURCE.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/STAGE-CONTROLLER.source-only.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/STATIC-001-FAILURE.tool-transcription.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/STATIC-CHECK-002.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/build-candidate002.RESULT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/diagnostic-mod-002.MANIFEST.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/diagnostic-mod-002.commit-override.patch",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/diagnostic-mod.MANIFEST.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/validate-candidate002.RESULT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/ARCHIVE-CHECK.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/FINAL.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/TRIGGER-PATHS.source-facts.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/raw-official-evidence.zip",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/ARCHIVE-VALIDATION.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/DELIVERY.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/FACTS.actual-cutoff.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/FACTS.original-derived.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/ROOT-IMPORT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/ARCHIVE-ORIGINAL-EXEC.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/COLLECTOR-ONLY-RUN-LABEL.diff",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/COLLECTOR-PROJECTION.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/CREATE-ARGV.sealed.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/CURATION-ADDENDUM.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/REQUEST.sealed.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/author_r29_archive.py",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/create_one_archive.py",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/finalize_selected_request.py",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/prepare_root_import.py",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/archive-source/prepare_selected_archive.py",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/evidence/COMBINED-IMPORT-MANIFEST.source-only.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/evidence/IMPORT-MANIFEST.source-only.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/evidence/REPORT.collector-original.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/evidence/RESULT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/fielddiff/FIELD-DIFF.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/fielddiff/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/fielddiff/SUMMARY.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/fielddiff/classify_retained_json.py",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/raw-evidence.zip",
+    "docs/li-yu-dao/acceptance/r29-build002-metadata002-20261008/EVIDENCE-REFS.actual.json",
+    "docs/li-yu-dao/acceptance/r29-build002-metadata002-20261008/REPORT.zh-CN.md",
+    "docs/li-yu-dao/acceptance/r29-build002-metadata002-20261008/ROOT-BUILD-CI-IMPORT.actual.json",
+    "docs/li-yu-dao/factory-development-stage-diagnostic.md",
+    "mod_li_yu_dao/tools/build_factory_diagnostic.py",
+    "mod_li_yu_dao/tools/validate_factory_diagnostic.py"
+  ],
+  "path_count": 57,
+  "commit_count": 1,
+  "full_push_filter_matches": [
+    "mod_li_yu_dao/tools/build_factory_diagnostic.py",
+    "mod_li_yu_dao/tools/validate_factory_diagnostic.py"
+  ],
+  "push_path_filters": [
+    "mod_li_yu_dao/**",
+    "tools/extract_auto_upgrade_buildings.py",
+    "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**",
+    ".github/workflows/li-yu-dao-static.yml"
+  ],
+  "exact_workflow_blob_sha": "f383249db0221ddd4b6d4a3aa4d44c9d4c6de7b6",
+  "exact_workflow_source_API_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-exact-official-ci-20261008-001/liyu-workflow-001.stdout",
+    "bytes": 4059,
+    "sha256": "ff75de33de4278888d9176768250e50ce71d9287c15bfacaeb9ba8c43db2bf2f"
+  },
+  "exact_workflow_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-exact-official-ci-20261008-001/liyu-workflow.exact-head.raw.yml",
+    "bytes": 2050,
+    "sha256": "ea15a2dc333a5502efc9d66a079c52bee2f4782f4b1c86b23209802f6cb67290"
+  },
+  "exact_run_list_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-exact-official-ci-20261008-001/runs-001.stdout",
+    "bytes": 39704,
+    "sha256": "75813644f321ba32c25b5c7968db39cd56bc6174801dd60a8b97fbfe1b1869ee"
+  },
+  "basis": "Actual exact-head push run plus matching official PushEvent before/head and full compare path matches, with exact workflow source preserved."
+}

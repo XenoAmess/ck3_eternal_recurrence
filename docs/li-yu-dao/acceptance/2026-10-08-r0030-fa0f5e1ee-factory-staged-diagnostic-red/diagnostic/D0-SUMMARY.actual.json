@@ -1,0 +1,57 @@
+{
+  "stage": "D0",
+  "author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/RESULT.json",
+    "bytes": 1105001,
+    "sha256": "b04e4657da1ea14a2d50db55ea027202a2c860206affda5b433601ddd905eb30"
+  },
+  "state": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/STATE.json",
+    "bytes": 2603595,
+    "sha256": "e7f65ef0b8a4d7e3301bab380b7c231724c63c315ce687718e004ae0ea0e0657"
+  },
+  "typed": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/TYPED-PROTECTION.json",
+    "bytes": 1161162,
+    "sha256": "079e4422a694803d227d1d1704e1131e9cc8cefd134f6eba0e7addd8aa1bdca6"
+  },
+  "raw_original87": {
+    "count": 87,
+    "true": 87,
+    "false_names": [],
+    "unknown_names": []
+  },
+  "author_save_body_reads": 1,
+  "author_extra_body_reads": null,
+  "author_actual_pass": null,
+  "author_formal_mandate_credit": null,
+  "identity": {
+    "actor_id": 31254,
+    "faith_id": 107,
+    "main_rite_id": 169,
+    "pid": 22384,
+    "session_id": "3b29fbc8e1d8487996fdc7d0839c8d0b",
+    "revision": 2,
+    "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-030\\userdir\\save games\\xar_checkpoint.ck3"
+  },
+  "actual_frame": {
+    "revision": 3,
+    "native_revision": 2,
+    "date_raw": 53144712,
+    "game_pid": 22384,
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "snapshot_id": "native:2"
+  },
+  "wallet": {
+    "gold": "1043",
+    "piety": "3150",
+    "prestige": "2200"
+  },
+  "round": {
+    "serial": 3,
+    "nonce": 6,
+    "phase": 2,
+    "result_code": null
+  }
+}

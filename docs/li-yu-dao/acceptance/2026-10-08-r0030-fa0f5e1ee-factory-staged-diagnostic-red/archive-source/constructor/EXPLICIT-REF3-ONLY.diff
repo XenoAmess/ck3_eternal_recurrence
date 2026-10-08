@@ -1,0 +1,14 @@
+--- C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-001/prepare_closed_r30_archive.py
++++ C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/prepare_closed_r30_archive.py
+@@ -84,6 +84,11 @@
+   if p.is_dir():tree(p,'explicit selected actual R30 source/runtime wrapper/original execution/closure pack')
+   elif p.is_file():add(p,'explicit actual ROOT R30 source/argv file')
+   else:raise FileNotFoundError(p)
++ for row in roots.get('original_files',[]):
++  if not isinstance(row,dict)or not all(k in row for k in ['path','bytes','sha256','role']):raise ValueError('explicit additional original ref3 and role required')
++  actual=checked(row['path'],row['sha256'])
++  if actual['bytes']!=row['bytes']:raise ValueError('explicit original additional size differs')
++  add(row['path'],row['role'])
+  for row in refs.values():add(row['path'],'actual ROOT late-bound report/facts/export/closure source')
+  external_refs(ex)
+  parent=checked(ROOTCOLLECTOR,ROOTCOLLECTOR_SHA);old=ROOTCOLLECTOR.read_text(encoding='utf-8');source=old.replace('R29','R30').replace('r29','r30')

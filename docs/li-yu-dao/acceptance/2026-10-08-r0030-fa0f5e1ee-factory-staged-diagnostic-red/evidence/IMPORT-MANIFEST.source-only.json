@@ -1,0 +1,41 @@
+{
+  "schema": "lyd.r30.archive-create-only-import-manifest.v1",
+  "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red",
+  "loaded_source_head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+  "archive_is_runtime_closed": true,
+  "whole_mod": "NOT_GREEN",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/ARCHIVE-VALIDATION.actual.json",
+      "bytes": 480,
+      "sha256": "c8b71ce80bd762f96b7207482d6260fdca6c194878aaf7fd25dd8b4308a160cf",
+      "target_relative_file": "ARCHIVE-VALIDATION.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/FACTS.actual-cutoff.json",
+      "bytes": 94115,
+      "sha256": "c723fb830cf69a22df267a69bd0a4c9f0946379324fedd4babb60ff5d2ffac10",
+      "target_relative_file": "FACTS.actual-cutoff.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/INDEX.json",
+      "bytes": 1400924,
+      "sha256": "efb86eeb12dead52888e479b1fd183159f608036e403520d9fa5d6b07303ed5e",
+      "target_relative_file": "INDEX.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/raw-evidence.zip",
+      "bytes": 13500044,
+      "sha256": "98568a7a69c01072a8ddd00de7c1b8fff8adea0427ff0486c852c5ce4b30ca5c",
+      "target_relative_file": "raw-evidence.zip"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/REPORT.md",
+      "bytes": 4769,
+      "sha256": "2f2dbdd125142e4265c1273f290fd0d24811ac72208134fbfd5f51b50e060d39",
+      "target_relative_file": "REPORT.md"
+    }
+  ],
+  "default_MAIN_apply_authorized": false,
+  "MAIN_writes": 0
+}

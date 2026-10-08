@@ -1,0 +1,305 @@
+{
+  "stage": "D4",
+  "author": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-diagnostic-author-001/RESULT.json",
+    "bytes": 1104650,
+    "sha256": "b7d2912058e9dcec8098a59f464cce81ca1103c437a22a6a68ef38946eaaa263"
+  },
+  "state": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-diagnostic-author-001/STATE.json",
+    "bytes": 2400854,
+    "sha256": "335b37082e594ae129f880bbe54c71f06252f97b97e4ed3982205d276c3de2d9"
+  },
+  "typed": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-diagnostic-author-001/TYPED-PROTECTION.json",
+    "bytes": 1182226,
+    "sha256": "49e6e9befe91ffcd53d2670d11bd60d0e7a79362f4008eac83f53fd0b5f067ec"
+  },
+  "raw_original87": {
+    "count": 87,
+    "true": 79,
+    "false_names": [
+      "political_2230_full_AST",
+      "political_2231_full_AST",
+      "political_2235_full_AST",
+      "political_2262_full_AST",
+      "political_2264_full_AST",
+      "actor_complete_protected_landed_projection",
+      "actor_actual_all_held_title_set_except_actual_new_religious_T",
+      "rites_169_complete_tenet_status_projection"
+    ],
+    "unknown_names": []
+  },
+  "author_save_body_reads": 1,
+  "author_extra_body_reads": null,
+  "author_actual_pass": null,
+  "author_formal_mandate_credit": null,
+  "identity": {
+    "actor_id": 31254,
+    "faith_id": 107,
+    "main_rite_id": 169,
+    "pid": 22384,
+    "session_id": "3b29fbc8e1d8487996fdc7d0839c8d0b",
+    "revision": 10,
+    "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-030\\userdir\\save games\\xar_checkpoint.ck3"
+  },
+  "actual_frame": {
+    "revision": 11,
+    "native_revision": 10,
+    "date_raw": 53144712,
+    "game_pid": 22384,
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "snapshot_id": "native:10"
+  },
+  "wallet": {
+    "gold": "1043",
+    "piety": "3150",
+    "prestige": "2200"
+  },
+  "round": {
+    "serial": 3,
+    "nonce": 6,
+    "phase": 2,
+    "result_code": 0
+  },
+  "observations": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-diagnostic-author-001/DIAGNOSTIC-STAGE-OBSERVATIONS.actual.json",
+    "bytes": 729463,
+    "sha256": "8cf0fdf1d01ea19cfaa1fbc778cdde5774c3f469f7f39e4f812e8a4dc69604ef"
+  },
+  "comparison": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-comparison-001/RESULT.actual.json",
+    "bytes": 58917,
+    "sha256": "469bfcd790a17a5f1126d4a62a62766363fcc3d0d1bd713d0247fd497b84b7c0"
+  },
+  "native_stage_before_frame": {
+    "revision": 10,
+    "native_revision": 9,
+    "date_raw": 53144712,
+    "game_pid": 22384,
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "snapshot_id": "native:9"
+  },
+  "native_stage_after_frame": {
+    "revision": 11,
+    "native_revision": 10,
+    "date_raw": 53144712,
+    "game_pid": 22384,
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "snapshot_id": "native:10"
+  },
+  "native_cache_before_SAVE": {
+    "binding": {
+      "revision": 10,
+      "native_revision": 9,
+      "date_raw": 53144712,
+      "game_pid": 22384,
+      "connection_generation": 1,
+      "played_character_id": 31254,
+      "snapshot_id": "native:9"
+    },
+    "complete_cached_successor_ids": [
+      40526,
+      40695,
+      39979,
+      40847,
+      41032,
+      37244,
+      38098,
+      36445,
+      36663,
+      36873,
+      31692,
+      34973,
+      40259,
+      35598,
+      36638,
+      32536,
+      33234,
+      37702,
+      33542,
+      34232,
+      32236,
+      38560,
+      38902,
+      31538,
+      35899,
+      40507,
+      40843,
+      41028,
+      36329,
+      36847,
+      41495,
+      37064,
+      33028,
+      38782,
+      39032,
+      39309,
+      39932,
+      40694,
+      41235,
+      41288
+    ],
+    "native_count": 40,
+    "capture_epoch": 133493,
+    "original_receipts": {
+      "query_request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D4-cache-before-001.request.json",
+        "bytes": 225,
+        "sha256": "35f4f4dd902e9c4b4b27eaf066a65595edadcfc345d9ffa4aaf65574065ecb66"
+      },
+      "query_dispatch": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0033-r30-root-D4-cache-before-001.response.json",
+        "bytes": 1046,
+        "sha256": "8f4d8dc48def5f99db21edd8cded321b72c5ea0e5a826259b1a9ed5014c3f1ba"
+      },
+      "query_sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0033-r30-root-D4-cache-before-001.sdk-result.json",
+        "bytes": 6735,
+        "sha256": "2dd8900fc4e53bf25a4aba2a1ee11ef6fbe16f27a381e274a662c74c58017df7"
+      },
+      "query_native_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0031-actor-cached-succession-query.json",
+        "bytes": 3023,
+        "sha256": "e9cccce6f2c67369049619f6e324a429929cbc767df6ba9b36a20d826abab54d"
+      }
+    }
+  },
+  "native_cache_after_SAVE": {
+    "binding": {
+      "revision": 11,
+      "native_revision": 10,
+      "date_raw": 53144712,
+      "game_pid": 22384,
+      "connection_generation": 1,
+      "played_character_id": 31254,
+      "snapshot_id": "native:10"
+    },
+    "complete_cached_successor_ids": [
+      40526,
+      40695,
+      39979,
+      40847,
+      41032,
+      37244,
+      38098,
+      36445,
+      36663,
+      36873,
+      31692,
+      34973,
+      40259,
+      35598,
+      36638,
+      32536,
+      33234,
+      37702,
+      33542,
+      34232,
+      32236,
+      38560,
+      38902,
+      31538,
+      35899,
+      40507,
+      40843,
+      41028,
+      36329,
+      36847,
+      41495,
+      37064,
+      33028,
+      38782,
+      39032,
+      39309,
+      39932,
+      40694,
+      41235,
+      41288
+    ],
+    "native_count": 40,
+    "capture_epoch": 138223,
+    "original_receipts": {
+      "query_request": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D4-cache-after-001.request.json",
+        "bytes": 224,
+        "sha256": "9098a9529a3c8f58220759c72652e4bf238195646113c12ed383f13b6851d0df"
+      },
+      "query_dispatch": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0035-r30-root-D4-cache-after-001.response.json",
+        "bytes": 1042,
+        "sha256": "141ce7dcd38c65551b6cea251f1c544f4c578b9b1e0f8145736e4ddbc6ef68a7"
+      },
+      "query_sdk_result": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0035-r30-root-D4-cache-after-001.sdk-result.json",
+        "bytes": 6741,
+        "sha256": "027d72d4cba1b2ea856d651450a64ef4a5f5c64034c838c5be6c59b3397d4cc1"
+      },
+      "query_native_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0033-actor-cached-succession-query.json",
+        "bytes": 3026,
+        "sha256": "96c526111a21236c65906685f7c44dfaafe3b36e20fbd9dde5c0d6b5a4e6ae1e"
+      }
+    }
+  },
+  "saved_cache_original_order": [
+    40526,
+    40695,
+    39979,
+    40847,
+    41032,
+    37244,
+    38098,
+    36445,
+    36663,
+    36873,
+    31692,
+    34973,
+    40259,
+    35598,
+    36638,
+    32536,
+    33234,
+    37702,
+    33542,
+    34232,
+    32236,
+    38560,
+    38902,
+    31538,
+    35899,
+    40507,
+    40843,
+    41028,
+    36329,
+    36847,
+    41495,
+    37064,
+    33028,
+    38782,
+    39032,
+    39309,
+    39932,
+    40694,
+    41235,
+    41288
+  ],
+  "after_SAVE_native_saved_equal": true,
+  "cache_same_during_SAVE": true,
+  "faith_head_title_id": 18373,
+  "original87_false_names": [
+    "political_2230_full_AST",
+    "political_2231_full_AST",
+    "political_2235_full_AST",
+    "political_2262_full_AST",
+    "political_2264_full_AST",
+    "actor_complete_protected_landed_projection",
+    "actor_actual_all_held_title_set_except_actual_new_religious_T",
+    "rites_169_complete_tenet_status_projection"
+  ],
+  "comparison_factory_cause_inferred": false,
+  "terminal_formal_observations": null
+}

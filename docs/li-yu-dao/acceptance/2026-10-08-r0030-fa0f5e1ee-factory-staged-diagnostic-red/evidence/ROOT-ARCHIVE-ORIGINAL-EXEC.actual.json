@@ -1,0 +1,51 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001/ROOT-CREATE-ARGV.actual.json",
+    "bytes": 1903,
+    "sha256": "c018921e00d57df6fe9b454d20b80aee160aeeb9e812c47e4e531b253c18ae9c"
+  },
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001/author_r30_archive.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001/REQUEST.actual.json",
+    "--sha256",
+    "1fd7e6e59e4bc0bb623e2db54e4557dc07935b89ac58c88a67f49c177bb566f2",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001",
+    "--closure",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-root-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+    "--closure-sha256",
+    "2944ee5104746377a738ae5c1d625846cdb9bb9691ac5e4ca6504e4162b938da",
+    "--closure-verifier",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-actual-source-20261008-001/verify_previous_boundary.py",
+    "--closure-verifier-sha256",
+    "6239df5be60613f9b39e88ef905880b4652ecd19e5a58c53497d5289af16c510",
+    "--closure-check-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-check-original-exec-20261008-001/RESULT.actual.json",
+    "--closure-check-result-sha256",
+    "fac325396732c201a5f1f5104e7777712c96b780b5455f1b10c781b97a2af880",
+    "--create"
+  ],
+  "child_environment_overrides": {
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "started_at_utc": "2026-10-08T11:42:21.713577+00:00",
+  "finished_at_utc": "2026-10-08T11:42:30.174485+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-permanent-archive-original-exec-20261008-001/stdout",
+    "bytes": 1029,
+    "sha256": "f64a62a8d5319dabb38c1058089b2bd9c2568757d81ef4102b40578e01d608f9"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-permanent-archive-original-exec-20261008-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

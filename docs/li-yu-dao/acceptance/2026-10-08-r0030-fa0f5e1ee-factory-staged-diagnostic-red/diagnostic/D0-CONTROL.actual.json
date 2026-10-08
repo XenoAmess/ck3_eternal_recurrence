@@ -1,0 +1,1038 @@
+{
+  "status": "ACTUAL_DIAGNOSTIC_D0_BASELINE_MATCH",
+  "stage_advance_allowed": true,
+  "conditions": {
+    "actor_45_ordered_ids_match_seed": true,
+    "seven_political_full_AST_holder_heir_match_seed": true,
+    "original87_protection_checks_true": true,
+    "cache_native_saved_same_after_frame_equal_45": true,
+    "signed_seed_round_preserved": true,
+    "no_new_title_before_stage": true
+  },
+  "changed_political_title_ids": [],
+  "actor_successor_before": [
+    40526,
+    40695,
+    39979,
+    40847,
+    41032,
+    37244,
+    38098,
+    36445,
+    36663,
+    36873,
+    31692,
+    34973,
+    40259,
+    35598,
+    36638,
+    32536,
+    38561,
+    39045,
+    39171,
+    39352,
+    39527,
+    33234,
+    37702,
+    33542,
+    34232,
+    32236,
+    38560,
+    38902,
+    31538,
+    35899,
+    40507,
+    40843,
+    41028,
+    36329,
+    36847,
+    41495,
+    37064,
+    33028,
+    38782,
+    39032,
+    39309,
+    39932,
+    40694,
+    41235,
+    41288
+  ],
+  "actor_successor_cold": [
+    40526,
+    40695,
+    39979,
+    40847,
+    41032,
+    37244,
+    38098,
+    36445,
+    36663,
+    36873,
+    31692,
+    34973,
+    40259,
+    35598,
+    36638,
+    32536,
+    38561,
+    39045,
+    39171,
+    39352,
+    39527,
+    33234,
+    37702,
+    33542,
+    34232,
+    32236,
+    38560,
+    38902,
+    31538,
+    35899,
+    40507,
+    40843,
+    41028,
+    36329,
+    36847,
+    41495,
+    37064,
+    33028,
+    38782,
+    39032,
+    39309,
+    39932,
+    40694,
+    41235,
+    41288
+  ],
+  "before_political": {
+    "2230": {
+      "holder": 31254,
+      "full_AST_sha256": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    },
+    "2231": {
+      "holder": 31254,
+      "full_AST_sha256": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    },
+    "2232": {
+      "holder": 31254,
+      "full_AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+      "heir_AST": null
+    },
+    "2235": {
+      "holder": 31254,
+      "full_AST_sha256": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    },
+    "2262": {
+      "holder": 31254,
+      "full_AST_sha256": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    },
+    "2263": {
+      "holder": 31254,
+      "full_AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+      "heir_AST": null
+    },
+    "2264": {
+      "holder": 31254,
+      "full_AST_sha256": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    }
+  },
+  "cold_political": {
+    "2230": {
+      "holder": 31254,
+      "full_AST_sha256": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    },
+    "2231": {
+      "holder": 31254,
+      "full_AST_sha256": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    },
+    "2232": {
+      "holder": 31254,
+      "full_AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+      "heir_AST": null
+    },
+    "2235": {
+      "holder": 31254,
+      "full_AST_sha256": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    },
+    "2262": {
+      "holder": 31254,
+      "full_AST_sha256": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    },
+    "2263": {
+      "holder": 31254,
+      "full_AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+      "heir_AST": null
+    },
+    "2264": {
+      "holder": 31254,
+      "full_AST_sha256": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
+      "heir_AST": [
+        {
+          "key": null,
+          "value": "40695"
+        },
+        {
+          "key": null,
+          "value": "40526"
+        },
+        {
+          "key": null,
+          "value": "39979"
+        },
+        {
+          "key": null,
+          "value": "40847"
+        },
+        {
+          "key": null,
+          "value": "41032"
+        },
+        {
+          "key": null,
+          "value": "37244"
+        },
+        {
+          "key": null,
+          "value": "38098"
+        },
+        {
+          "key": null,
+          "value": "36445"
+        },
+        {
+          "key": null,
+          "value": "36663"
+        },
+        {
+          "key": null,
+          "value": "36873"
+        },
+        {
+          "key": null,
+          "value": "31692"
+        },
+        {
+          "key": null,
+          "value": "34973"
+        },
+        {
+          "key": null,
+          "value": "40259"
+        },
+        {
+          "key": null,
+          "value": "35598"
+        },
+        {
+          "key": null,
+          "value": "36638"
+        },
+        {
+          "key": null,
+          "value": "32536"
+        },
+        {
+          "key": null,
+          "value": "38561"
+        },
+        {
+          "key": null,
+          "value": "39045"
+        },
+        {
+          "key": null,
+          "value": "39171"
+        },
+        {
+          "key": null,
+          "value": "39352"
+        }
+      ]
+    }
+  },
+  "cold_frame": {
+    "revision": 3,
+    "native_revision": 2,
+    "date_raw": 53144712,
+    "game_pid": 22384,
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "snapshot_id": "native:2"
+  },
+  "inputs": {
+    "signed_B3_input": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-signed-B3-input.actual.json",
+      "bytes": 3015,
+      "sha256": "5e5860c2d940da5701b954c1cbe568c5df8831ce5277e48562def029113f56af"
+    },
+    "new_cold_author_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/RESULT.json",
+      "bytes": 1105001,
+      "sha256": "b04e4657da1ea14a2d50db55ea027202a2c860206affda5b433601ddd905eb30"
+    },
+    "new_cold_state": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/STATE.json",
+      "bytes": 2603595,
+      "sha256": "e7f65ef0b8a4d7e3301bab380b7c231724c63c315ce687718e004ae0ea0e0657"
+    },
+    "new_cold_typed_protection": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/TYPED-PROTECTION.json",
+      "bytes": 1161162,
+      "sha256": "079e4422a694803d227d1d1704e1131e9cc8cefd134f6eba0e7addd8aa1bdca6"
+    },
+    "new_cold_qualified_native": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 104651,
+      "sha256": "77df9aa2dca8c1f0177098db1cbdb17ef1b8df7676a6a98a06c54ba79795d7bb"
+    },
+    "new_cold_cache_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/ROOT-D0-CACHE-INPUTS-001/cache-comparison-001/RESULT.actual.json",
+      "bytes": 7046,
+      "sha256": "070769d572af70b22217efe1227dcdceff651096fc4082749e0884869efa99e3"
+    }
+  },
+  "historical_R29_formal_credit": true,
+  "new_formal_acceptance": null,
+  "wholemod_GREEN": false,
+  "factory_cause_inferred": false,
+  "body_reads_by_comparator": 0,
+  "SDK_game_process_bus_calls": 0
+}

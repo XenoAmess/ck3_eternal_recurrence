@@ -1,0 +1,25 @@
+{
+  "status": "R30_EXPLICIT_CI_ORIGINAL_REF_ADDENDUM_SOURCE_READY",
+  "constructor": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/prepare_closed_r30_archive.py",
+    "bytes": 9408,
+    "sha256": "efd4e8f86b4f3bbedf436272c414ab92561c573cc46db450129ecaf2f7705085"
+  },
+  "projection": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/SOURCE-PROJECTION.actual.json",
+    "bytes": 740,
+    "sha256": "4e6bc1a989de198c63223cd9498ffa64527c078d8fc1f2999691ccec73bd3dc1"
+  },
+  "diff": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/EXPLICIT-REF3-ONLY.diff",
+    "bytes": 1140,
+    "sha256": "93566cd7b11d672f8b8b32b84e759fd20634977886139ab64c052e8eb9fef9cb"
+  },
+  "fact_report_inputs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/FREEZE-ARGV.actual.json",
+    "bytes": 3831,
+    "sha256": "df96a76ce0da04a4a95a2d0d17564b05c4f8f1455a5fe8adc56d107e6ae9c99e"
+  },
+  "old001_unchanged": true,
+  "SDK_body_binary_MAIN_calls": 0
+}

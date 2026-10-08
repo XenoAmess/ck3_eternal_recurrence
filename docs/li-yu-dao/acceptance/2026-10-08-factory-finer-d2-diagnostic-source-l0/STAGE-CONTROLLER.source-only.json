@@ -1,0 +1,45 @@
+{
+  "schema": "lyd.factory-finer-d2-diagnostic-controller.source-only.v1",
+  "source_only": true,
+  "stage_order": [
+    "D0",
+    "D1",
+    "D2a",
+    "D2b",
+    "D3",
+    "D4",
+    "D5",
+    "D6"
+  ],
+  "event_sequence": [
+    "lyd.430",
+    "lyd_factory_diag.1",
+    "lyd_factory_diag.20",
+    "lyd_factory_diag.2",
+    "lyd_factory_diag.3",
+    "lyd_factory_diag.4",
+    "lyd_factory_diag.5",
+    "lyd_factory_diag.6"
+  ],
+  "saved_scope_stage_values": {
+    "D1": 1,
+    "D2a": 20,
+    "D2b": 2,
+    "D3": 3,
+    "D4": 4,
+    "D5": 5,
+    "D6": 6
+  },
+  "D1_advance_effect": "lyd_factory_diag_d20_effect",
+  "D2a_advance_effect": "lyd_factory_diag_d2_effect",
+  "D2b_and_later_original_semantic_continuation": true,
+  "request_route": "Use existing typed current native event query, exact actual instance/revision/event key; click actual shown/enabled next option from that query.",
+  "actual_option_index": null,
+  "future_head_export_native_metadata_run_PID_session": null,
+  "D2a_readback_label": "D2a",
+  "D2b_readback_label": "D2b (same original saved scope value2)",
+  "unheld_title_scope_or_entity_missing": "Preserve actual RED, never recreate title or fabricate scope.",
+  "native_actor_cache_compare": "Complete ordered owning-frame IDs beforeSAVE / afterSAVE and independent immutable saved JSON; original87/88 unchanged.",
+  "formal_business_credit": null,
+  "whole_mod": "NOT_GREEN"
+}

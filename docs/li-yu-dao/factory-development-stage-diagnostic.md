@@ -40,3 +40,11 @@ stage controller 是真实六事件源，伴随 `STAGE-CONTROLLER.source-only.js
 33项聚焦静态检查使用现有 Clausewitz parser、player_guard 与 localization grammar，验证原 commit/factory authorization、完整成功操作逆投影 AST、原拒绝 continuation、authority receipt/show_result AST、事务atomic、三处同一option guard及无immediate自动推进。它证明结构/顺序和既有脚本语法，不能证明引擎跨新阶段/SAVE保留 scope。缺失 scope、loader错误或意外其他head必须保留实际RED，不补flag、不重跑create。
 
 生产release staging/upload不能包含overlay。D6与431仍只是原局部 postcondition显示，不能替代政治87/88或正式I3b/C3。本次没有MAIN/source71写入、游戏/SDK/桌面/总线操作、binary/body读取或native编译；整体NOT_GREEN。
+
+## 2026-10-08 19:38 CST 实际 R0030：D2 FIRST DELTA，未获正式验收资格
+
+加载fa0f5e1ee的诊断运行D0原87项保护PASS，native45与saved45完整有序相等。D2的create＋holder操作组合完成后、SAVE前已经出现native缓存45→40，随后saved精确40；五政治Title2230/2231/2235/2262/2264的已比较投影仅heir变化，actor四项法律不变，same_faith_succession_law前后均不存在。D3—D6未产生额外变化。终局原guard不变，保护82/88、保存检查43/48保持RED；D6或局部结果显示不能替代正式B5/newT冷载/C3/I4。
+
+该观察把首次变化收窄至D2组合，尚未把创建与授予分开，也未定位引擎内部producer。下一步10月8日晚仅细分D2a创建与D2b原子授予诊断；未经真实新构建、冷载和观察，不宣称更细分控制器已经实机通过。10月9日上午生产修复及正式B4/B5/newT冷载以原因确认为条件；其后C3和10月10日I4依赖逐项实际PASS。
+
+typed game/Client/keeper/passive正常退出码均0，CAS3950、census[]与新鲜Steam离线证据闭合。FA0官方CI step41三项陈旧测试失败；三个测试候选验证退出码0另列，不能替代下一HEAD官方CI GREEN。[永久诊断报告](acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/REPORT.md)随本轮归档交付；一期仍75%工作量估计、NOT_GREEN，旧源检查和历史证据不重写。

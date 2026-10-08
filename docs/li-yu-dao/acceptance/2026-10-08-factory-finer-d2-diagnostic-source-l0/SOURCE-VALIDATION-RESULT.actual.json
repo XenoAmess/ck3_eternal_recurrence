@@ -1,0 +1,23 @@
+{
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/source-validation.stdout.txt",
+    "bytes": 259,
+    "sha256": "8bcde7b200e81f7b2ca0c0a3b873427c488f21bb6308ed59650ef8cd5fc75022"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/source-validation.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/SOURCE-VALIDATION-REQUEST.actual.json",
+    "bytes": 3475,
+    "sha256": "d09e3e2ebe29c30bf47cd8f38ff59f8165d7ac18899a6a3e9a7d7b4c2ec7fb4e"
+  },
+  "existing_D1_guard_and_D3_to_D6_AST_equal": true,
+  "SDK_process_binary_checkpoint_body_nativebuild_calls": 0,
+  "runtime_qualification": null,
+  "business_PASS": null,
+  "whole_mod": "NOT_GREEN"
+}

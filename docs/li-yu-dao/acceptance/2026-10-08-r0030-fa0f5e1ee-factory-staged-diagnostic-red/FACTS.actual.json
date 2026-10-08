@@ -1,0 +1,3129 @@
+{
+  "schema": "lyd.r30.final-staged-diagnostic-archive-facts.v1",
+  "source_head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+  "run_id": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0030",
+    "execution_id": "cf21bf9e-0b00-43e1-b721-fec5989f6597",
+    "machine_id": "bf-202609141645-5434332d4d",
+    "mod_key": "li-yu-dao",
+    "sequence": 30,
+    "allocated_at_utc": "2026-10-08T10:11:34.328626+00:00",
+    "allocator_pid": 20936,
+    "legacy_alias": "R0030"
+  },
+  "whole_mod": "NOT_GREEN",
+  "business_GREEN": false,
+  "formal_mandate_credit": null,
+  "whole_product_pass": null,
+  "C3_credit": null,
+  "I4_credit": null,
+  "cold_new_T_credit": null,
+  "formal_B4_B5_pass": null,
+  "formal_B3_B4_B5": "NOT_RUN_BY_CURRENT_STAGED_DIAGNOSTIC",
+  "D0_original_comparison": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/ROOT-D0-SIGNED-COMPARISON-INPUTS-001/D0-comparison-001/RESULT.actual.json",
+    "bytes": 20025,
+    "sha256": "80112605ddfb8331400ffd809a241e44b5fe6af1e672529b71773c1a0c707406"
+  },
+  "D0_status": "ACTUAL_DIAGNOSTIC_D0_BASELINE_MATCH",
+  "D0_six_conditions": {
+    "actor_45_ordered_ids_match_seed": true,
+    "seven_political_full_AST_holder_heir_match_seed": true,
+    "original87_protection_checks_true": true,
+    "cache_native_saved_same_after_frame_equal_45": true,
+    "signed_seed_round_preserved": true,
+    "no_new_title_before_stage": true
+  },
+  "D0_cache_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/ROOT-D0-CACHE-INPUTS-001/cache-comparison-001/RESULT.actual.json",
+    "bytes": 7046,
+    "sha256": "070769d572af70b22217efe1227dcdceff651096fc4082749e0884869efa99e3"
+  },
+  "D0_native_saved_cache": {
+    "native_count": 45,
+    "saved_count": 45,
+    "native_to_saved_equality": true
+  },
+  "historical_R29_formal_credit": true,
+  "new_formal_acceptance": null,
+  "stages": [
+    {
+      "stage": "D0",
+      "author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/RESULT.json",
+        "bytes": 1105001,
+        "sha256": "b04e4657da1ea14a2d50db55ea027202a2c860206affda5b433601ddd905eb30"
+      },
+      "state": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/STATE.json",
+        "bytes": 2603595,
+        "sha256": "e7f65ef0b8a4d7e3301bab380b7c231724c63c315ce687718e004ae0ea0e0657"
+      },
+      "typed": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/TYPED-PROTECTION.json",
+        "bytes": 1161162,
+        "sha256": "079e4422a694803d227d1d1704e1131e9cc8cefd134f6eba0e7addd8aa1bdca6"
+      },
+      "raw_original87": {
+        "count": 87,
+        "true": 87,
+        "false_names": [],
+        "unknown_names": []
+      },
+      "author_save_body_reads": 1,
+      "author_extra_body_reads": null,
+      "author_actual_pass": null,
+      "author_formal_mandate_credit": null,
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 22384,
+        "session_id": "3b29fbc8e1d8487996fdc7d0839c8d0b",
+        "revision": 2,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-030\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "actual_frame": {
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:2"
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": 2,
+        "result_code": null
+      }
+    },
+    {
+      "stage": "D1",
+      "author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D1-diagnostic-author-001/RESULT.json",
+        "bytes": 1104632,
+        "sha256": "3d58c9e359be82737d4e597da268e4cb6ab813344d0fa553c1fa33aba1d4f29d"
+      },
+      "state": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D1-diagnostic-author-001/STATE.json",
+        "bytes": 2390775,
+        "sha256": "c53608d301711c6f1503f0508eab64fb2343b2707cba1f426fb4530110cef594"
+      },
+      "typed": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D1-diagnostic-author-001/TYPED-PROTECTION.json",
+        "bytes": 1180723,
+        "sha256": "4e30b2c69b2eb1d446046ca742b851f13865ba9c02081fd49c03b1684a91410c"
+      },
+      "raw_original87": {
+        "count": 87,
+        "true": 86,
+        "false_names": [
+          "rites_169_complete_tenet_status_projection"
+        ],
+        "unknown_names": []
+      },
+      "author_save_body_reads": 1,
+      "author_extra_body_reads": null,
+      "author_actual_pass": null,
+      "author_formal_mandate_credit": null,
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 22384,
+        "session_id": "3b29fbc8e1d8487996fdc7d0839c8d0b",
+        "revision": 4,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-030\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "actual_frame": {
+        "revision": 5,
+        "native_revision": 4,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:4"
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": 2,
+        "result_code": 0
+      },
+      "observations": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D1-diagnostic-author-001/DIAGNOSTIC-STAGE-OBSERVATIONS.actual.json",
+        "bytes": 721176,
+        "sha256": "2a146581f81fd3f3dc92d87db173e54626fdab3b3071dd0c830fdf9993fd31f4"
+      },
+      "comparison": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D1-comparison-001/RESULT.actual.json",
+        "bytes": 65724,
+        "sha256": "e5b72c192d1b283b792aacbf4baf3ab3770838007742d9ba5ada395ef42aca9e"
+      },
+      "native_stage_before_frame": {
+        "revision": 4,
+        "native_revision": 3,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:3"
+      },
+      "native_stage_after_frame": {
+        "revision": 5,
+        "native_revision": 4,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:4"
+      },
+      "native_cache_before_SAVE": {
+        "binding": {
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:3"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352,
+          39527,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 45,
+        "capture_epoch": 66927,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D1-cache-before-001.request.json",
+            "bytes": 224,
+            "sha256": "bf6e4295ca1decb718dd31bb1e28063e98fe81159b37e28a41b6e6e9fe0f3f73"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0012-r30-root-D1-cache-before-001.response.json",
+            "bytes": 1046,
+            "sha256": "7815a05e173f5b33a9f2d3ac8f3c9ee2e8cd330a276c68d5c7555058d6ee1d80"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0012-r30-root-D1-cache-before-001.sdk-result.json",
+            "bytes": 6921,
+            "sha256": "c1254547781d0026adf14f9afded59f26c29fd2095d74251c0fd0082fa30e3b0"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0010-actor-cached-succession-query.json",
+            "bytes": 3111,
+            "sha256": "2fe838d0f2e2980768d9ec4c7de3bc2bc6d938dcd74c0f9fd22812d83bde191c"
+          }
+        }
+      },
+      "native_cache_after_SAVE": {
+        "binding": {
+          "revision": 5,
+          "native_revision": 4,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:4"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352,
+          39527,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 45,
+        "capture_epoch": 70817,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D1-cache-after-001.request.json",
+            "bytes": 223,
+            "sha256": "c00b88265437e12f9ca981ed26a1a24f0a2d20c04dc8f7aa803116b13540ee4b"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0014-r30-root-D1-cache-after-001.response.json",
+            "bytes": 1042,
+            "sha256": "c84ab6e07a5cb701d6c4f011f7d9623e241e8c33db2bd8f45298849b2b585dc8"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0014-r30-root-D1-cache-after-001.sdk-result.json",
+            "bytes": 6921,
+            "sha256": "7075ac7f267ed4d9e038883f9c6c0935517495efe313d5355b85a0216ec20c73"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0012-actor-cached-succession-query.json",
+            "bytes": 3111,
+            "sha256": "e3ee46ee856c4908d1743f8279b3d63f55d031b81d3e55493b4d3815bdc44a0d"
+          }
+        }
+      },
+      "saved_cache_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352,
+        39527,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "after_SAVE_native_saved_equal": true,
+      "cache_same_during_SAVE": true,
+      "faith_head_title_id": null,
+      "original87_false_names": [
+        "rites_169_complete_tenet_status_projection"
+      ],
+      "comparison_factory_cause_inferred": false,
+      "terminal_formal_observations": null
+    },
+    {
+      "stage": "D2",
+      "author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D2-diagnostic-author-001/RESULT.json",
+        "bytes": 1104632,
+        "sha256": "21b06ade4c9f45624253a63c8ffa786c301f0407548bb1012b150483b3872601"
+      },
+      "state": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D2-diagnostic-author-001/STATE.json",
+        "bytes": 2394265,
+        "sha256": "ac32ba202244b6f57aff8b8170909cb786f932b29b5193b276866be6f83f5618"
+      },
+      "typed": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D2-diagnostic-author-001/TYPED-PROTECTION.json",
+        "bytes": 1182235,
+        "sha256": "5d031fb2d8aa4649b76a8398b9c6be8edaaf6167ae5b22fbf7b72c1104999b05"
+      },
+      "raw_original87": {
+        "count": 87,
+        "true": 79,
+        "false_names": [
+          "political_2230_full_AST",
+          "political_2231_full_AST",
+          "political_2235_full_AST",
+          "political_2262_full_AST",
+          "political_2264_full_AST",
+          "actor_complete_protected_landed_projection",
+          "actor_actual_all_held_title_set_except_actual_new_religious_T",
+          "rites_169_complete_tenet_status_projection"
+        ],
+        "unknown_names": []
+      },
+      "author_save_body_reads": 1,
+      "author_extra_body_reads": null,
+      "author_actual_pass": null,
+      "author_formal_mandate_credit": null,
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 22384,
+        "session_id": "3b29fbc8e1d8487996fdc7d0839c8d0b",
+        "revision": 6,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-030\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "actual_frame": {
+        "revision": 7,
+        "native_revision": 6,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:6"
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": 2,
+        "result_code": 0
+      },
+      "observations": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D2-diagnostic-author-001/DIAGNOSTIC-STAGE-OBSERVATIONS.actual.json",
+        "bytes": 729461,
+        "sha256": "dc86d14d6547674bdf7fdc099fdb68095fb9e174be6e56cc2769fbfba1649b5d"
+      },
+      "comparison": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D2-comparison-001/RESULT.actual.json",
+        "bytes": 92772,
+        "sha256": "d76014e84a291e131294755039b37c1a7b71f27868b9fdffbe2c7e19944b94fa"
+      },
+      "native_stage_before_frame": {
+        "revision": 6,
+        "native_revision": 5,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:5"
+      },
+      "native_stage_after_frame": {
+        "revision": 7,
+        "native_revision": 6,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:6"
+      },
+      "native_cache_before_SAVE": {
+        "binding": {
+          "revision": 6,
+          "native_revision": 5,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:5"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 86879,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D2-cache-before-001.request.json",
+            "bytes": 224,
+            "sha256": "469392ffe91f95682c348995157cc58c2f3291eb8aff25b62f524fa1116e3ea2"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0019-r30-root-D2-cache-before-001.response.json",
+            "bytes": 1046,
+            "sha256": "4de3443cbad422446243f5de45b27c70ef659e7b79a7c2245d930e2b10ad47bb"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0019-r30-root-D2-cache-before-001.sdk-result.json",
+            "bytes": 6731,
+            "sha256": "347989c6d9811a33eece8cb6da19dddf9f82cacbcc0b2776f4923b6fa40b54e5"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0017-actor-cached-succession-query.json",
+            "bytes": 3021,
+            "sha256": "acbc387a989c55f07749ada8bedee5d1ea29730532b28b83e96cf973e0b0bf60"
+          }
+        }
+      },
+      "native_cache_after_SAVE": {
+        "binding": {
+          "revision": 7,
+          "native_revision": 6,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:6"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 90505,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D2-cache-after-001.request.json",
+            "bytes": 223,
+            "sha256": "e2f8ec61cd3f3328c8155644de51da68c9395a9106d12123bfeaeec7b34776af"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0021-r30-root-D2-cache-after-001.response.json",
+            "bytes": 1042,
+            "sha256": "a5b8f5210887b12e46282842db509dc08c13780dc3f0263a830bed9d671d04ef"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0021-r30-root-D2-cache-after-001.sdk-result.json",
+            "bytes": 6731,
+            "sha256": "cf7b79feb87c3057904a681f7cb9db0e7a9bb8815770a8158d7ff79e480fd271"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0019-actor-cached-succession-query.json",
+            "bytes": 3021,
+            "sha256": "94fc080b7c2402038c0059b299cc4f277945faed6676b3ef07fbbc45b5e60fc4"
+          }
+        }
+      },
+      "saved_cache_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "after_SAVE_native_saved_equal": true,
+      "cache_same_during_SAVE": true,
+      "faith_head_title_id": null,
+      "original87_false_names": [
+        "political_2230_full_AST",
+        "political_2231_full_AST",
+        "political_2235_full_AST",
+        "political_2262_full_AST",
+        "political_2264_full_AST",
+        "actor_complete_protected_landed_projection",
+        "actor_actual_all_held_title_set_except_actual_new_religious_T",
+        "rites_169_complete_tenet_status_projection"
+      ],
+      "comparison_factory_cause_inferred": false,
+      "terminal_formal_observations": null
+    },
+    {
+      "stage": "D3",
+      "author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D3-diagnostic-author-001/RESULT.json",
+        "bytes": 1104643,
+        "sha256": "6a719b9cd439c2d9fedb7adf4f60279ebf48e6e4dc417762ce70dd38278f446c"
+      },
+      "state": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D3-diagnostic-author-001/STATE.json",
+        "bytes": 2401313,
+        "sha256": "4144cc634ebd5520e56b6a43028573d50d9e26ce064514c4f4033910d2e572e2"
+      },
+      "typed": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D3-diagnostic-author-001/TYPED-PROTECTION.json",
+        "bytes": 1182669,
+        "sha256": "8989549a1ba76993ad715e5513313be48d7f7bf5aab19aa9bf5ab14396a70da3"
+      },
+      "raw_original87": {
+        "count": 87,
+        "true": 79,
+        "false_names": [
+          "political_2230_full_AST",
+          "political_2231_full_AST",
+          "political_2235_full_AST",
+          "political_2262_full_AST",
+          "political_2264_full_AST",
+          "actor_complete_protected_landed_projection",
+          "actor_actual_all_held_title_set_except_actual_new_religious_T",
+          "rites_169_complete_tenet_status_projection"
+        ],
+        "unknown_names": []
+      },
+      "author_save_body_reads": 1,
+      "author_extra_body_reads": null,
+      "author_actual_pass": null,
+      "author_formal_mandate_credit": null,
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 22384,
+        "session_id": "3b29fbc8e1d8487996fdc7d0839c8d0b",
+        "revision": 8,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-030\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "actual_frame": {
+        "revision": 9,
+        "native_revision": 8,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:8"
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": 2,
+        "result_code": 0
+      },
+      "observations": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D3-diagnostic-author-001/DIAGNOSTIC-STAGE-OBSERVATIONS.actual.json",
+        "bytes": 729775,
+        "sha256": "e5ec61048f8e53b402c690999dddccd2ee23bf3617a0c99b53dd819d4d14e8c7"
+      },
+      "comparison": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D3-comparison-001/RESULT.actual.json",
+        "bytes": 59024,
+        "sha256": "12adececa91eb3c71888c422ed73f0cff373f0541676ed95a7f101874c865598"
+      },
+      "native_stage_before_frame": {
+        "revision": 8,
+        "native_revision": 7,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:7"
+      },
+      "native_stage_after_frame": {
+        "revision": 9,
+        "native_revision": 8,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:8"
+      },
+      "native_cache_before_SAVE": {
+        "binding": {
+          "revision": 8,
+          "native_revision": 7,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:7"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 112417,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D3-cache-before-001.request.json",
+            "bytes": 224,
+            "sha256": "bb41d74cd5a1f17bb30bd6111b52a99a8b680b67b4fabcf50d30063994caf3ad"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0026-r30-root-D3-cache-before-001.response.json",
+            "bytes": 1046,
+            "sha256": "2a539be452a2ec9f978f220c31b3dc04ccaead31a1aeb78bf01ce1c752d33240"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0026-r30-root-D3-cache-before-001.sdk-result.json",
+            "bytes": 6733,
+            "sha256": "0132c48d66873e42762e97bcf77b0a494d03f53e7318a142a7306783fd77df8c"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0024-actor-cached-succession-query.json",
+            "bytes": 3022,
+            "sha256": "aacaa0673faac6319b8132cfae47714b1d7190eaa891f9443e3fdd7523b783e3"
+          }
+        }
+      },
+      "native_cache_after_SAVE": {
+        "binding": {
+          "revision": 9,
+          "native_revision": 8,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:8"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 118963,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D3-cache-after-001.request.json",
+            "bytes": 223,
+            "sha256": "781fd512c40fc9611865957406177b10895da37758019451d71528c0a8e5c3d3"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0028-r30-root-D3-cache-after-001.response.json",
+            "bytes": 1042,
+            "sha256": "2b1978c00137692f9763ae5ece36cba8cfb574d8c1e1a0b1c3322be3cca129c9"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0028-r30-root-D3-cache-after-001.sdk-result.json",
+            "bytes": 6733,
+            "sha256": "417e50a246c04fd3626b04a17edb36801d2ed6f8f844f95a850ec9ba8330dc56"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0026-actor-cached-succession-query.json",
+            "bytes": 3022,
+            "sha256": "60503118b46d6f37e4e487fe0cd4e5727dffd0579e0d9706fce115f662f42784"
+          }
+        }
+      },
+      "saved_cache_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "after_SAVE_native_saved_equal": true,
+      "cache_same_during_SAVE": true,
+      "faith_head_title_id": 18373,
+      "original87_false_names": [
+        "political_2230_full_AST",
+        "political_2231_full_AST",
+        "political_2235_full_AST",
+        "political_2262_full_AST",
+        "political_2264_full_AST",
+        "actor_complete_protected_landed_projection",
+        "actor_actual_all_held_title_set_except_actual_new_religious_T",
+        "rites_169_complete_tenet_status_projection"
+      ],
+      "comparison_factory_cause_inferred": false,
+      "terminal_formal_observations": null
+    },
+    {
+      "stage": "D4",
+      "author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-diagnostic-author-001/RESULT.json",
+        "bytes": 1104650,
+        "sha256": "b7d2912058e9dcec8098a59f464cce81ca1103c437a22a6a68ef38946eaaa263"
+      },
+      "state": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-diagnostic-author-001/STATE.json",
+        "bytes": 2400854,
+        "sha256": "335b37082e594ae129f880bbe54c71f06252f97b97e4ed3982205d276c3de2d9"
+      },
+      "typed": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-diagnostic-author-001/TYPED-PROTECTION.json",
+        "bytes": 1182226,
+        "sha256": "49e6e9befe91ffcd53d2670d11bd60d0e7a79362f4008eac83f53fd0b5f067ec"
+      },
+      "raw_original87": {
+        "count": 87,
+        "true": 79,
+        "false_names": [
+          "political_2230_full_AST",
+          "political_2231_full_AST",
+          "political_2235_full_AST",
+          "political_2262_full_AST",
+          "political_2264_full_AST",
+          "actor_complete_protected_landed_projection",
+          "actor_actual_all_held_title_set_except_actual_new_religious_T",
+          "rites_169_complete_tenet_status_projection"
+        ],
+        "unknown_names": []
+      },
+      "author_save_body_reads": 1,
+      "author_extra_body_reads": null,
+      "author_actual_pass": null,
+      "author_formal_mandate_credit": null,
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 22384,
+        "session_id": "3b29fbc8e1d8487996fdc7d0839c8d0b",
+        "revision": 10,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-030\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "actual_frame": {
+        "revision": 11,
+        "native_revision": 10,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:10"
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": 2,
+        "result_code": 0
+      },
+      "observations": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-diagnostic-author-001/DIAGNOSTIC-STAGE-OBSERVATIONS.actual.json",
+        "bytes": 729463,
+        "sha256": "8cf0fdf1d01ea19cfaa1fbc778cdde5774c3f469f7f39e4f812e8a4dc69604ef"
+      },
+      "comparison": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-comparison-001/RESULT.actual.json",
+        "bytes": 58917,
+        "sha256": "469bfcd790a17a5f1126d4a62a62766363fcc3d0d1bd713d0247fd497b84b7c0"
+      },
+      "native_stage_before_frame": {
+        "revision": 10,
+        "native_revision": 9,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:9"
+      },
+      "native_stage_after_frame": {
+        "revision": 11,
+        "native_revision": 10,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:10"
+      },
+      "native_cache_before_SAVE": {
+        "binding": {
+          "revision": 10,
+          "native_revision": 9,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:9"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 133493,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D4-cache-before-001.request.json",
+            "bytes": 225,
+            "sha256": "35f4f4dd902e9c4b4b27eaf066a65595edadcfc345d9ffa4aaf65574065ecb66"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0033-r30-root-D4-cache-before-001.response.json",
+            "bytes": 1046,
+            "sha256": "8f4d8dc48def5f99db21edd8cded321b72c5ea0e5a826259b1a9ed5014c3f1ba"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0033-r30-root-D4-cache-before-001.sdk-result.json",
+            "bytes": 6735,
+            "sha256": "2dd8900fc4e53bf25a4aba2a1ee11ef6fbe16f27a381e274a662c74c58017df7"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0031-actor-cached-succession-query.json",
+            "bytes": 3023,
+            "sha256": "e9cccce6f2c67369049619f6e324a429929cbc767df6ba9b36a20d826abab54d"
+          }
+        }
+      },
+      "native_cache_after_SAVE": {
+        "binding": {
+          "revision": 11,
+          "native_revision": 10,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:10"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 138223,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D4-cache-after-001.request.json",
+            "bytes": 224,
+            "sha256": "9098a9529a3c8f58220759c72652e4bf238195646113c12ed383f13b6851d0df"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0035-r30-root-D4-cache-after-001.response.json",
+            "bytes": 1042,
+            "sha256": "141ce7dcd38c65551b6cea251f1c544f4c578b9b1e0f8145736e4ddbc6ef68a7"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0035-r30-root-D4-cache-after-001.sdk-result.json",
+            "bytes": 6741,
+            "sha256": "027d72d4cba1b2ea856d651450a64ef4a5f5c64034c838c5be6c59b3397d4cc1"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0033-actor-cached-succession-query.json",
+            "bytes": 3026,
+            "sha256": "96c526111a21236c65906685f7c44dfaafe3b36e20fbd9dde5c0d6b5a4e6ae1e"
+          }
+        }
+      },
+      "saved_cache_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "after_SAVE_native_saved_equal": true,
+      "cache_same_during_SAVE": true,
+      "faith_head_title_id": 18373,
+      "original87_false_names": [
+        "political_2230_full_AST",
+        "political_2231_full_AST",
+        "political_2235_full_AST",
+        "political_2262_full_AST",
+        "political_2264_full_AST",
+        "actor_complete_protected_landed_projection",
+        "actor_actual_all_held_title_set_except_actual_new_religious_T",
+        "rites_169_complete_tenet_status_projection"
+      ],
+      "comparison_factory_cause_inferred": false,
+      "terminal_formal_observations": null
+    },
+    {
+      "stage": "D5",
+      "author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D5-diagnostic-author-001/RESULT.json",
+        "bytes": 1104652,
+        "sha256": "96c2a8e03b4ac1ec5082248026f820bbb9cdf9927d8c30dbe268c92ca3a2bea5"
+      },
+      "state": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D5-diagnostic-author-001/STATE.json",
+        "bytes": 2398842,
+        "sha256": "d7019c8040f7be2e81bd22ff142cf40cc16619bf56abec647ae27189c0548f3f"
+      },
+      "typed": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D5-diagnostic-author-001/TYPED-PROTECTION.json",
+        "bytes": 1182226,
+        "sha256": "8a74f2278a3eb6c7b3b0ef3bad43dc757692c0f7a2b188fa265c036d97fad9a0"
+      },
+      "raw_original87": {
+        "count": 87,
+        "true": 79,
+        "false_names": [
+          "political_2230_full_AST",
+          "political_2231_full_AST",
+          "political_2235_full_AST",
+          "political_2262_full_AST",
+          "political_2264_full_AST",
+          "actor_complete_protected_landed_projection",
+          "actor_actual_all_held_title_set_except_actual_new_religious_T",
+          "rites_169_complete_tenet_status_projection"
+        ],
+        "unknown_names": []
+      },
+      "author_save_body_reads": 1,
+      "author_extra_body_reads": null,
+      "author_actual_pass": null,
+      "author_formal_mandate_credit": null,
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 22384,
+        "session_id": "3b29fbc8e1d8487996fdc7d0839c8d0b",
+        "revision": 12,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-030\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "actual_frame": {
+        "revision": 13,
+        "native_revision": 12,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:12"
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": 2,
+        "result_code": 0
+      },
+      "observations": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D5-diagnostic-author-001/DIAGNOSTIC-STAGE-OBSERVATIONS.actual.json",
+        "bytes": 728162,
+        "sha256": "2ead8efd22e8b774b7f9474282c87b8af47a8f5e7dea2308835b6d736edbbed9"
+      },
+      "comparison": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D5-comparison-001/RESULT.actual.json",
+        "bytes": 58524,
+        "sha256": "2a063e313bf263d26e93734613b3b50e58b0c152a8cada8572fcb5c6ea467e69"
+      },
+      "native_stage_before_frame": {
+        "revision": 12,
+        "native_revision": 11,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:11"
+      },
+      "native_stage_after_frame": {
+        "revision": 13,
+        "native_revision": 12,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:12"
+      },
+      "native_cache_before_SAVE": {
+        "binding": {
+          "revision": 12,
+          "native_revision": 11,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:11"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 167191,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D5-cache-before-001.request.json",
+            "bytes": 225,
+            "sha256": "53ad645f45c6f9d86baf832919d556680ba1baa0622945ed74d4ea3b0125959b"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0040-r30-root-D5-cache-before-001.response.json",
+            "bytes": 1046,
+            "sha256": "cf61bbe4006ec785d9324fd5acd7980b2286ca1a60aae875f7c329dd9961faaa"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0040-r30-root-D5-cache-before-001.sdk-result.json",
+            "bytes": 6741,
+            "sha256": "af97cdd11d40a05a4a10a72023273370a636f396162e78f324c9801cbb9330f9"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0038-actor-cached-succession-query.json",
+            "bytes": 3026,
+            "sha256": "4876fcf39d59dbe3481a152cff7bce96636c708f6e978351de4f518a32bd8890"
+          }
+        }
+      },
+      "native_cache_after_SAVE": {
+        "binding": {
+          "revision": 13,
+          "native_revision": 12,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:12"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 169275,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D5-cache-after-001.request.json",
+            "bytes": 224,
+            "sha256": "475b650ac08e6fc999ad509dfefe5ebb7ae7a408dda4cf198b80377e84d61f31"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0042-r30-root-D5-cache-after-001.response.json",
+            "bytes": 1042,
+            "sha256": "5717e9910ef0e1e968cb5b06a89f277169e64558de31ba3517a071a79203a263"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0042-r30-root-D5-cache-after-001.sdk-result.json",
+            "bytes": 6741,
+            "sha256": "d568c2a5e1d188d465e094f4b3d1beb31bab722163807ff5ae790cf37875a6ec"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0040-actor-cached-succession-query.json",
+            "bytes": 3026,
+            "sha256": "c08279fcd772f3704b3a9d38b8e46d15431427c5b7821d479c0b13bfac31e06d"
+          }
+        }
+      },
+      "saved_cache_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "after_SAVE_native_saved_equal": true,
+      "cache_same_during_SAVE": true,
+      "faith_head_title_id": 18373,
+      "original87_false_names": [
+        "political_2230_full_AST",
+        "political_2231_full_AST",
+        "political_2235_full_AST",
+        "political_2262_full_AST",
+        "political_2264_full_AST",
+        "actor_complete_protected_landed_projection",
+        "actor_actual_all_held_title_set_except_actual_new_religious_T",
+        "rites_169_complete_tenet_status_projection"
+      ],
+      "comparison_factory_cause_inferred": false,
+      "terminal_formal_observations": null
+    },
+    {
+      "stage": "D6",
+      "author": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/RESULT.json",
+        "bytes": 1104652,
+        "sha256": "ba86327f3a195145cb1db025818829b4602b7a94e40811a7d59d64ed7a6af02d"
+      },
+      "state": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/STATE.json",
+        "bytes": 1378645,
+        "sha256": "bce4de5ad193c6717fe6b9e7cc5a87cfafe3a0af5e7444dccca31fb4a6898a27"
+      },
+      "typed": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/TYPED-PROTECTION.json",
+        "bytes": 1008737,
+        "sha256": "56b709f3d6c1eb4ff25e0dae212c0cd1571e0fdd250230c7a7a206b5f9f709ad"
+      },
+      "raw_original87": {
+        "count": 87,
+        "true": 79,
+        "false_names": [
+          "political_2230_full_AST",
+          "political_2231_full_AST",
+          "political_2235_full_AST",
+          "political_2262_full_AST",
+          "political_2264_full_AST",
+          "actor_complete_protected_landed_projection",
+          "actor_actual_all_held_title_set_except_actual_new_religious_T",
+          "rites_169_complete_tenet_status_projection"
+        ],
+        "unknown_names": []
+      },
+      "author_save_body_reads": 1,
+      "author_extra_body_reads": null,
+      "author_actual_pass": null,
+      "author_formal_mandate_credit": null,
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 22384,
+        "session_id": "3b29fbc8e1d8487996fdc7d0839c8d0b",
+        "revision": 14,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-030\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "actual_frame": {
+        "revision": 15,
+        "native_revision": 14,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:14"
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": null,
+        "result_code": 1
+      },
+      "observations": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/DIAGNOSTIC-STAGE-OBSERVATIONS.actual.json",
+        "bytes": 606152,
+        "sha256": "6d427178fb66ff15bc7b5f369b8861b327f89358ab3a99da7d19bef3e9ff251d"
+      },
+      "comparison": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-comparison-001/RESULT.actual.json",
+        "bytes": 59261,
+        "sha256": "83b2835564bd493f8418ff97911c6204dd3a9017e929a94fc909d9a2b4c7b56a"
+      },
+      "native_stage_before_frame": {
+        "revision": 14,
+        "native_revision": 13,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:13"
+      },
+      "native_stage_after_frame": {
+        "revision": 15,
+        "native_revision": 14,
+        "date_raw": 53144712,
+        "game_pid": 22384,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:14"
+      },
+      "native_cache_before_SAVE": {
+        "binding": {
+          "revision": 14,
+          "native_revision": 13,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:13"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 185695,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D6-cache-before-001.request.json",
+            "bytes": 225,
+            "sha256": "ecbb945c2e0d64c6ddb32dc79cc338590bdfc290607e36f33927675c8fb47748"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0047-r30-root-D6-cache-before-001.response.json",
+            "bytes": 1046,
+            "sha256": "b7f004f4f113e762fff44ccd3a676e5144f7831a79c6359e1f71100476a80fa6"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0047-r30-root-D6-cache-before-001.sdk-result.json",
+            "bytes": 6741,
+            "sha256": "5423d27fb918c58f847a5e47a327a603cddb110fdc59437524ed02176bcd1586"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0045-actor-cached-succession-query.json",
+            "bytes": 3026,
+            "sha256": "ebde368c6c138cc29d35df1f1d849388fc0037940b1a4c0af9fe25b25a24d608"
+          }
+        }
+      },
+      "native_cache_after_SAVE": {
+        "binding": {
+          "revision": 15,
+          "native_revision": 14,
+          "date_raw": 53144712,
+          "game_pid": 22384,
+          "connection_generation": 1,
+          "played_character_id": 31254,
+          "snapshot_id": "native:14"
+        },
+        "complete_cached_successor_ids": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232,
+          32236,
+          38560,
+          38902,
+          31538,
+          35899,
+          40507,
+          40843,
+          41028,
+          36329,
+          36847,
+          41495,
+          37064,
+          33028,
+          38782,
+          39032,
+          39309,
+          39932,
+          40694,
+          41235,
+          41288
+        ],
+        "native_count": 40,
+        "capture_epoch": 187925,
+        "original_receipts": {
+          "query_request": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D6-cache-after-001.request.json",
+            "bytes": 224,
+            "sha256": "f8ea27b2528b878153c4a0aa026647de201aff3944fbaa8ef530e3e1255a39fb"
+          },
+          "query_dispatch": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0049-r30-root-D6-cache-after-001.response.json",
+            "bytes": 1042,
+            "sha256": "5f70aefc6e170e65589e424923b58eb621baaf5913129ddf06fdf582e56e65f1"
+          },
+          "query_sdk_result": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0049-r30-root-D6-cache-after-001.sdk-result.json",
+            "bytes": 6741,
+            "sha256": "1d8cd41233f261ee5770498370f4cdc6cbf16bd34b8b8826b8b5ab56bef70711"
+          },
+          "query_native_receipt": {
+            "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0047-actor-cached-succession-query.json",
+            "bytes": 3026,
+            "sha256": "5546ac3b7ba043262a09a7759b21e269e1d425ba6f02de35bfb17fdda0b7ff10"
+          }
+        }
+      },
+      "saved_cache_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "after_SAVE_native_saved_equal": true,
+      "cache_same_during_SAVE": true,
+      "faith_head_title_id": 18373,
+      "original87_false_names": [
+        "political_2230_full_AST",
+        "political_2231_full_AST",
+        "political_2235_full_AST",
+        "political_2262_full_AST",
+        "political_2264_full_AST",
+        "actor_complete_protected_landed_projection",
+        "actor_actual_all_held_title_set_except_actual_new_religious_T",
+        "rites_169_complete_tenet_status_projection"
+      ],
+      "comparison_factory_cause_inferred": false,
+      "terminal_formal_observations": {
+        "state": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/D6-TERMINAL-STATE.observed.json",
+          "bytes": 630861,
+          "sha256": "7770e161cc61c21cbc95c9b3a942460a27729c84e58c66182fde9d3984c70866"
+        },
+        "typed_protection": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/D6-TERMINAL-TYPED-PROTECTION.observed.json",
+          "bytes": 1010657,
+          "sha256": "d2c0ecf0952a31fcd61b04145b4c064abed4b11a149bc1d6e5b99a6c9432ff23"
+        },
+        "observation_checks_match": false,
+        "protection_checks_match": false,
+        "protection_count": 88,
+        "actual_result_code": 1,
+        "formal_mandate_credit": null,
+        "formal_B4_B5_pass": null
+      }
+    }
+  ],
+  "D2_first_native_cache_difference_seen_before_SAVE": true,
+  "D2_removed_actor_successor_ids": [
+    38561,
+    39045,
+    39171,
+    39352,
+    39527
+  ],
+  "D2_added_actor_successor_ids": [],
+  "D1_D2_saved_political_field_projection": [
+    {
+      "title_id": 2230,
+      "changed_fields": [
+        "heir"
+      ],
+      "before_heirs_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "after_heirs_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "removed_in_before_order": [
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "added_in_after_order": [
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "all_other_fields_equal": true
+    },
+    {
+      "title_id": 2231,
+      "changed_fields": [
+        "heir"
+      ],
+      "before_heirs_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "after_heirs_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "removed_in_before_order": [
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "added_in_after_order": [
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "all_other_fields_equal": true
+    },
+    {
+      "title_id": 2232,
+      "changed_fields": [],
+      "before_heirs_original_order": [],
+      "after_heirs_original_order": [],
+      "removed_in_before_order": [],
+      "added_in_after_order": [],
+      "all_other_fields_equal": true
+    },
+    {
+      "title_id": 2235,
+      "changed_fields": [
+        "heir"
+      ],
+      "before_heirs_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "after_heirs_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "removed_in_before_order": [
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "added_in_after_order": [
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "all_other_fields_equal": true
+    },
+    {
+      "title_id": 2262,
+      "changed_fields": [
+        "heir"
+      ],
+      "before_heirs_original_order": [
+        40695,
+        40526,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "after_heirs_original_order": [
+        40695,
+        40526,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "removed_in_before_order": [
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "added_in_after_order": [
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "all_other_fields_equal": true
+    },
+    {
+      "title_id": 2263,
+      "changed_fields": [],
+      "before_heirs_original_order": [],
+      "after_heirs_original_order": [],
+      "removed_in_before_order": [],
+      "added_in_after_order": [],
+      "all_other_fields_equal": true
+    },
+    {
+      "title_id": 2264,
+      "changed_fields": [
+        "heir"
+      ],
+      "before_heirs_original_order": [
+        40695,
+        40526,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "after_heirs_original_order": [
+        40695,
+        40526,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "removed_in_before_order": [
+        38561,
+        39045,
+        39171,
+        39352
+      ],
+      "added_in_after_order": [
+        33234,
+        37702,
+        33542,
+        34232
+      ],
+      "all_other_fields_equal": true
+    }
+  ],
+  "realm_laws_by_stage": [
+    {
+      "stage": "D1",
+      "raw_laws": [
+        [
+          {
+            "key": null,
+            "value": "crown_authority_0"
+          },
+          {
+            "key": null,
+            "value": "confederate_partition_succession_law"
+          },
+          {
+            "key": null,
+            "value": "male_preference_law"
+          },
+          {
+            "key": null,
+            "value": "top_liege_redirected_to_border_wars_law"
+          }
+        ]
+      ],
+      "same_faith_succession_law_present": false,
+      "domain_original_rows": [
+        [
+          {
+            "key": null,
+            "value": "2230"
+          },
+          {
+            "key": null,
+            "value": "2231"
+          },
+          {
+            "key": null,
+            "value": "2262"
+          },
+          {
+            "key": null,
+            "value": "2232"
+          },
+          {
+            "key": null,
+            "value": "2263"
+          },
+          {
+            "key": null,
+            "value": "2235"
+          },
+          {
+            "key": null,
+            "value": "2264"
+          }
+        ]
+      ]
+    },
+    {
+      "stage": "D2",
+      "raw_laws": [
+        [
+          {
+            "key": null,
+            "value": "crown_authority_0"
+          },
+          {
+            "key": null,
+            "value": "confederate_partition_succession_law"
+          },
+          {
+            "key": null,
+            "value": "male_preference_law"
+          },
+          {
+            "key": null,
+            "value": "top_liege_redirected_to_border_wars_law"
+          }
+        ]
+      ],
+      "same_faith_succession_law_present": false,
+      "domain_original_rows": [
+        [
+          {
+            "key": null,
+            "value": "2230"
+          },
+          {
+            "key": null,
+            "value": "18373"
+          },
+          {
+            "key": null,
+            "value": "2231"
+          },
+          {
+            "key": null,
+            "value": "2262"
+          },
+          {
+            "key": null,
+            "value": "2232"
+          },
+          {
+            "key": null,
+            "value": "2263"
+          },
+          {
+            "key": null,
+            "value": "2235"
+          },
+          {
+            "key": null,
+            "value": "2264"
+          }
+        ]
+      ]
+    },
+    {
+      "stage": "D3",
+      "raw_laws": [
+        [
+          {
+            "key": null,
+            "value": "crown_authority_0"
+          },
+          {
+            "key": null,
+            "value": "confederate_partition_succession_law"
+          },
+          {
+            "key": null,
+            "value": "male_preference_law"
+          },
+          {
+            "key": null,
+            "value": "same_faith_succession_law"
+          },
+          {
+            "key": null,
+            "value": "top_liege_redirected_to_border_wars_law"
+          }
+        ]
+      ],
+      "same_faith_succession_law_present": true,
+      "domain_original_rows": [
+        [
+          {
+            "key": null,
+            "value": "2230"
+          },
+          {
+            "key": null,
+            "value": "18373"
+          },
+          {
+            "key": null,
+            "value": "2231"
+          },
+          {
+            "key": null,
+            "value": "2262"
+          },
+          {
+            "key": null,
+            "value": "2232"
+          },
+          {
+            "key": null,
+            "value": "2263"
+          },
+          {
+            "key": null,
+            "value": "2235"
+          },
+          {
+            "key": null,
+            "value": "2264"
+          }
+        ]
+      ]
+    },
+    {
+      "stage": "D4",
+      "raw_laws": [
+        [
+          {
+            "key": null,
+            "value": "crown_authority_0"
+          },
+          {
+            "key": null,
+            "value": "confederate_partition_succession_law"
+          },
+          {
+            "key": null,
+            "value": "male_preference_law"
+          },
+          {
+            "key": null,
+            "value": "top_liege_redirected_to_border_wars_law"
+          }
+        ]
+      ],
+      "same_faith_succession_law_present": false,
+      "domain_original_rows": [
+        [
+          {
+            "key": null,
+            "value": "2230"
+          },
+          {
+            "key": null,
+            "value": "18373"
+          },
+          {
+            "key": null,
+            "value": "2231"
+          },
+          {
+            "key": null,
+            "value": "2262"
+          },
+          {
+            "key": null,
+            "value": "2232"
+          },
+          {
+            "key": null,
+            "value": "2263"
+          },
+          {
+            "key": null,
+            "value": "2235"
+          },
+          {
+            "key": null,
+            "value": "2264"
+          }
+        ]
+      ]
+    },
+    {
+      "stage": "D5",
+      "raw_laws": [
+        [
+          {
+            "key": null,
+            "value": "crown_authority_0"
+          },
+          {
+            "key": null,
+            "value": "confederate_partition_succession_law"
+          },
+          {
+            "key": null,
+            "value": "male_preference_law"
+          },
+          {
+            "key": null,
+            "value": "top_liege_redirected_to_border_wars_law"
+          }
+        ]
+      ],
+      "same_faith_succession_law_present": false,
+      "domain_original_rows": [
+        [
+          {
+            "key": null,
+            "value": "2230"
+          },
+          {
+            "key": null,
+            "value": "18373"
+          },
+          {
+            "key": null,
+            "value": "2231"
+          },
+          {
+            "key": null,
+            "value": "2262"
+          },
+          {
+            "key": null,
+            "value": "2232"
+          },
+          {
+            "key": null,
+            "value": "2263"
+          },
+          {
+            "key": null,
+            "value": "2235"
+          },
+          {
+            "key": null,
+            "value": "2264"
+          }
+        ]
+      ]
+    },
+    {
+      "stage": "D6",
+      "raw_laws": [
+        [
+          {
+            "key": null,
+            "value": "crown_authority_0"
+          },
+          {
+            "key": null,
+            "value": "confederate_partition_succession_law"
+          },
+          {
+            "key": null,
+            "value": "male_preference_law"
+          },
+          {
+            "key": null,
+            "value": "top_liege_redirected_to_border_wars_law"
+          }
+        ]
+      ],
+      "same_faith_succession_law_present": false,
+      "domain_original_rows": [
+        [
+          {
+            "key": null,
+            "value": "2230"
+          },
+          {
+            "key": null,
+            "value": "18373"
+          },
+          {
+            "key": null,
+            "value": "2231"
+          },
+          {
+            "key": null,
+            "value": "2262"
+          },
+          {
+            "key": null,
+            "value": "2232"
+          },
+          {
+            "key": null,
+            "value": "2263"
+          },
+          {
+            "key": null,
+            "value": "2235"
+          },
+          {
+            "key": null,
+            "value": "2264"
+          }
+        ]
+      ]
+    }
+  ],
+  "D3_D6_additional_political_or_cache_delta": [
+    {
+      "stage": "D3",
+      "political_deltas": 0,
+      "cache_ids_equal": true,
+      "actor_landed_original_diff_rows": 2,
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D3-comparison-001/RESULT.actual.json",
+        "bytes": 59024,
+        "sha256": "12adececa91eb3c71888c422ed73f0cff373f0541676ed95a7f101874c865598"
+      }
+    },
+    {
+      "stage": "D4",
+      "political_deltas": 0,
+      "cache_ids_equal": true,
+      "actor_landed_original_diff_rows": 2,
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-comparison-001/RESULT.actual.json",
+        "bytes": 58917,
+        "sha256": "469bfcd790a17a5f1126d4a62a62766363fcc3d0d1bd713d0247fd497b84b7c0"
+      }
+    },
+    {
+      "stage": "D5",
+      "political_deltas": 0,
+      "cache_ids_equal": true,
+      "actor_landed_original_diff_rows": 0,
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D5-comparison-001/RESULT.actual.json",
+        "bytes": 58524,
+        "sha256": "2a063e313bf263d26e93734613b3b50e58b0c152a8cada8572fcb5c6ea467e69"
+      }
+    },
+    {
+      "stage": "D6",
+      "political_deltas": 0,
+      "cache_ids_equal": true,
+      "actor_landed_original_diff_rows": 0,
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-comparison-001/RESULT.actual.json",
+        "bytes": 59261,
+        "sha256": "83b2835564bd493f8418ff97911c6204dd3a9017e929a94fc909d9a2b4c7b56a"
+      }
+    }
+  ],
+  "terminal_STATE": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/D6-TERMINAL-STATE.observed.json",
+    "bytes": 630861,
+    "sha256": "7770e161cc61c21cbc95c9b3a942460a27729c84e58c66182fde9d3984c70866"
+  },
+  "terminal_STATE_checks": {
+    "count": 48,
+    "true": 43,
+    "false_names": [
+      "political_2230_full_AST_protected",
+      "political_2231_full_AST_protected",
+      "political_2235_full_AST_protected",
+      "political_2262_full_AST_protected",
+      "political_2264_full_AST_protected"
+    ],
+    "unknown_names": []
+  },
+  "terminal_TYPED": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/D6-TERMINAL-TYPED-PROTECTION.observed.json",
+    "bytes": 1010657,
+    "sha256": "d2c0ecf0952a31fcd61b04145b4c064abed4b11a149bc1d6e5b99a6c9432ff23"
+  },
+  "terminal_TYPED_checks": {
+    "count": 88,
+    "true": 82,
+    "false_names": [
+      "political_2230_full_AST",
+      "political_2231_full_AST",
+      "political_2235_full_AST",
+      "political_2262_full_AST",
+      "political_2264_full_AST",
+      "actor_complete_protected_landed_projection"
+    ],
+    "unknown_names": []
+  },
+  "terminal_round": {
+    "serial": 3,
+    "nonce": 6,
+    "phase": null,
+    "result_code": 1
+  },
+  "terminal_G3_actual_public": {
+    "schema": "ck3-confucian-readonly-public-v1",
+    "operation": "religious_title",
+    "native_result": {
+      "step": "query-confucian-religious-title-v1",
+      "accepted": true,
+      "status": "observed",
+      "private_build": true,
+      "read_only": true,
+      "advertised": false,
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "domain_key": "confucian_religious_title_v1",
+      "backend_id": "ck3-1.20.0.4-native-confucian-religious-title-v1",
+      "snapshot_revision": 14,
+      "date_raw": 53144712,
+      "confucian_religious_title": {
+        "schema": "ck3_12003_confucian_religious_title_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "available": true,
+        "unavailable_reason": null,
+        "capture_epoch": 188551,
+        "date_raw": 53144712,
+        "played_character_id": 31254,
+        "played_character_full_id": 31254,
+        "graph_available": true,
+        "graph_unavailable_reason": null,
+        "legal_head_title_absent": false,
+        "faith_full_id": 107,
+        "head_title_full_id": 18373,
+        "native_title_holder_full_id": 31254,
+        "native_title_holder_absent": false,
+        "native_title_class": "CLandedTitle",
+        "title_holder": {
+          "available": true,
+          "unavailable_reason": null,
+          "title_tier_raw": 3,
+          "title_tier_key": "duchy",
+          "holder_character_full_id": 31254,
+          "holder_is_player": true,
+          "holder_in_player_realm": true,
+          "holder_immediate_liege_character_full_id": null,
+          "holder_top_liege_character_full_id": 31254
+        },
+        "title_properties": {
+          "available": true,
+          "unavailable_reason": null,
+          "destroy_if_invalid_heir": true,
+          "no_automatic_claims": true,
+          "definitive_form": true,
+          "always_follows_primary_heir": true
+        },
+        "title_laws": {
+          "available": true,
+          "unavailable_reason": null,
+          "native_count": 1,
+          "complete_laws": [
+            {
+              "native_definition_id": 95,
+              "key": "temporal_head_of_faith_succession_law"
+            }
+          ],
+          "expected_law_key": "temporal_head_of_faith_succession_law",
+          "temporal_head_of_faith_succession_law_member": true
+        },
+        "mod_owned_marker": null,
+        "mod_owner_faith_variable": null,
+        "qualification": {
+          "kind": "exact_current_static_abi",
+          "title_properties_index_sha256": "5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d",
+          "title_laws_index_sha256": "5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d",
+          "head_getters_index_sha256": "5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d",
+          "faith_reference_identity_offset": 8,
+          "title_full_id_offset": 16,
+          "faith_typed_fallback_slot_rva": "0x5D1E2E0",
+          "runtime_acceptance": null
+        }
+      }
+    },
+    "queried_snapshot_id": "native:14",
+    "queried_revision": 15,
+    "queried_native_revision": 14,
+    "date_raw": 53144712,
+    "game_pid": 22384,
+    "connection_generation": 1,
+    "player_character_id": 31254,
+    "business_postcondition_verified": false,
+    "full_product_acceptance_credit": false
+  },
+  "build_RESULT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/RESULT.json",
+    "bytes": 1070885,
+    "sha256": "e431466176d86a7a77c1edd41fc23ca034810ad79a8533e0e701a681ab4ed4ac"
+  },
+  "native_actual_compilation_pass": true,
+  "native_actual_focused_tests_pass": true,
+  "native_targets": [
+    {
+      "name": "xar_ck3_bridge",
+      "path": "C:/lr30b2/xar_ck3_bridge.dll",
+      "bytes": 9050624,
+      "sha256": "297c4f4d62b3fe69f3128afe3e5c4d7235778213f668fe7b2bc851c775a8c231"
+    },
+    {
+      "name": "xar_ck3_bridge_injector",
+      "path": "C:/lr30b2/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "edf2da67df2aebca8123dae1d1f56822255a3d359c00f5524a164d41b24a2c5f"
+    },
+    {
+      "name": "xar_confucian_assembly_predicates_v1_test",
+      "path": "C:/lr30b2/xar_confucian_assembly_predicates_v1_test.exe",
+      "bytes": 120832,
+      "sha256": "0a2f0f7b197f8877481ea021cca132adc16dfee4eb6014c3e7b89042091b7745"
+    },
+    {
+      "name": "xar_confucian_religious_title_readback_v1_test",
+      "path": "C:/lr30b2/xar_confucian_religious_title_readback_v1_test.exe",
+      "bytes": 130560,
+      "sha256": "9ae6fb465b996d4df07f3a6fba937ed985625efd7b44e0349b4fde190686994e"
+    },
+    {
+      "name": "xar_confucian_challenger_graph_v1_test",
+      "path": "C:/lr30b2/xar_confucian_challenger_graph_v1_test.exe",
+      "bytes": 194048,
+      "sha256": "ed9aa4bce23d7325bbd4e74b24a038e768040adfedd49e0da7a11d2d6b44f706"
+    },
+    {
+      "name": "xar_ck3_main_thread_query_mailbox_v1_test",
+      "path": "C:/lr30b2/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "bytes": 132096,
+      "sha256": "cea45878579e5f14dc75fb99cb15b93bc30acc750c42a15f21b1eabd10e4253b"
+    },
+    {
+      "name": "xar_ck3_12002_event_window_context_test",
+      "path": "C:/lr30b2/xar_ck3_12002_event_window_context_test.exe",
+      "bytes": 9093120,
+      "sha256": "84c271a2ad635d37c257f07e5b17645f3cfb4ca0d55a91284cd8e81ee687f556"
+    },
+    {
+      "name": "xar_ck3_12004_army_route_binding_test",
+      "path": "C:/lr30b2/xar_ck3_12004_army_route_binding_test.exe",
+      "bytes": 39936,
+      "sha256": "ec2939aebee0ed16aa07c1daf30220d790a8a1d1d02998f68d6c2a3afb30d6de"
+    }
+  ],
+  "native_actual_focused_tests": [
+    {
+      "target": "xar_confucian_assembly_predicates_v1_test",
+      "argv": [
+        "C:\\lr30b2\\xar_confucian_assembly_predicates_v1_test.exe"
+      ],
+      "exit_code": 0,
+      "executable": {
+        "path": "C:/lr30b2/xar_confucian_assembly_predicates_v1_test.exe",
+        "bytes": 120832,
+        "sha256": "0a2f0f7b197f8877481ea021cca132adc16dfee4eb6014c3e7b89042091b7745"
+      },
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_confucian_assembly_predicates_v1_test.stdout",
+        "bytes": 69,
+        "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_confucian_assembly_predicates_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "target": "xar_confucian_religious_title_readback_v1_test",
+      "argv": [
+        "C:\\lr30b2\\xar_confucian_religious_title_readback_v1_test.exe"
+      ],
+      "exit_code": 0,
+      "executable": {
+        "path": "C:/lr30b2/xar_confucian_religious_title_readback_v1_test.exe",
+        "bytes": 130560,
+        "sha256": "9ae6fb465b996d4df07f3a6fba937ed985625efd7b44e0349b4fde190686994e"
+      },
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_confucian_religious_title_readback_v1_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_confucian_religious_title_readback_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "target": "xar_confucian_challenger_graph_v1_test",
+      "argv": [
+        "C:\\lr30b2\\xar_confucian_challenger_graph_v1_test.exe",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\r30-native-build-20261008-002\\actual-graph-native-fixtures"
+      ],
+      "exit_code": 0,
+      "executable": {
+        "path": "C:/lr30b2/xar_confucian_challenger_graph_v1_test.exe",
+        "bytes": 194048,
+        "sha256": "ed9aa4bce23d7325bbd4e74b24a038e768040adfedd49e0da7a11d2d6b44f706"
+      },
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_confucian_challenger_graph_v1_test.stdout",
+        "bytes": 71,
+        "sha256": "bcaeea59cbbfcbe10287da2b565cb296a0b69bf65018785642ee0a94ee795ccf"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_confucian_challenger_graph_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+      "argv": [
+        "C:\\lr30b2\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+        "--confucian-registration-only",
+        "C:\\lr30s2\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp"
+      ],
+      "exit_code": 0,
+      "executable": {
+        "path": "C:/lr30b2/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+        "bytes": 132096,
+        "sha256": "cea45878579e5f14dc75fb99cb15b93bc30acc750c42a15f21b1eabd10e4253b"
+      },
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_ck3_main_thread_query_mailbox_v1_test.stdout",
+        "bytes": 153,
+        "sha256": "75e9af08c58ed5e9c7475b2c98a1eda3bbb9a5aa6dbeabe49e5907f0432b96f0"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_ck3_main_thread_query_mailbox_v1_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "target": "xar_ck3_12002_event_window_context_test",
+      "argv": [
+        "C:\\lr30b2\\xar_ck3_12002_event_window_context_test.exe",
+        "--numeric-value-scope"
+      ],
+      "exit_code": 0,
+      "executable": {
+        "path": "C:/lr30b2/xar_ck3_12002_event_window_context_test.exe",
+        "bytes": 9093120,
+        "sha256": "84c271a2ad635d37c257f07e5b17645f3cfb4ca0d55a91284cd8e81ee687f556"
+      },
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_ck3_12002_event_window_context_test.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_ck3_12002_event_window_context_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "target": "xar_ck3_12004_army_route_binding_test",
+      "argv": [
+        "C:\\lr30b2\\xar_ck3_12004_army_route_binding_test.exe"
+      ],
+      "exit_code": 0,
+      "executable": {
+        "path": "C:/lr30b2/xar_ck3_12004_army_route_binding_test.exe",
+        "bytes": 39936,
+        "sha256": "ec2939aebee0ed16aa07c1daf30220d790a8a1d1d02998f68d6c2a3afb30d6de"
+      },
+      "stdout": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_ck3_12004_army_route_binding_test.stdout",
+        "bytes": 77,
+        "sha256": "a443b0856036a063d270283673c70ca69ac7acc3166d085a3c22a313593fc5a0"
+      },
+      "stderr": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-native-build-20261008-002/xar_ck3_12004_army_route_binding_test.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "native_original_outer_exit_code": 1,
+  "Defender_actual": {
+    "status": "settings_failed",
+    "manifest": "C:\\lr30b2\\defender-exe-exclusions\\20261008T095654Z-0e617a46\\manifest.json",
+    "receipt": "C:\\lr30b2\\defender-exe-exclusions\\20261008T095654Z-0e617a46\\receipt.json",
+    "receipt_sha256": "d21b792cfe8f4e44c4c392a0b13edfa4ced924ba181cc88c68a2194b639d6230",
+    "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)"
+  },
+  "Defender_actual_refs": {
+    "receipt": {
+      "path": "C:/lr30b2/defender-exe-exclusions/20261008T095654Z-0e617a46/receipt.json",
+      "bytes": 4070,
+      "sha256": "d21b792cfe8f4e44c4c392a0b13edfa4ced924ba181cc88c68a2194b639d6230"
+    },
+    "manifest": {
+      "path": "C:/lr30b2/defender-exe-exclusions/20261008T095654Z-0e617a46/manifest.json",
+      "bytes": 6649,
+      "sha256": "a1fd892f5423e01f40df4503a446f0d4b0a9e81f143317ce5b27b47f0e744463"
+    }
+  },
+  "official_CI_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-exact-official-ci-20261008-001/INDEX.json",
+    "bytes": 12451,
+    "sha256": "486a8f4382e305c87d7895f7fad565674298b6da5c5748c149cfed6241cc0cb5"
+  },
+  "official_CI_status": "OFFICIAL_STEP41_FAILED_THREE_OBSOLETE_FIXTURE_TESTS",
+  "CI_candidate_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/INDEX.json",
+    "bytes": 15696,
+    "sha256": "7844634093b661fa4bbbec54ca213c905ee98d25dd88be3a119a54158325e8c9"
+  },
+  "CI_candidate_three_test_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/FOCUSED-RESULT.actual.json",
+    "bytes": 1988,
+    "sha256": "bdf9730d0d57656af925e132e25fb2f2d7b1be26c62534ca4749f10fb46c824e"
+  },
+  "CI_candidate_three_test_actual": {
+    "schema": "external.exact-fixture-three-regressions.actual.v1",
+    "exact_source_head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+    "argv": [
+      "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-fa0f5e1ee-official-step41-log-review-20261008-001\\isolated-test-repo\\tools\\test_fixture_engine_prepare.py",
+      "-v"
+    ],
+    "cwd": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/isolated-test-repo",
+    "shell": false,
+    "started_at_utc": "2026-10-08T09:51:25.555973+00:00",
+    "finished_at_utc": "2026-10-08T09:51:50.087349+00:00",
+    "elapsed_seconds": 24.53118980000727,
+    "exit_code": 0,
+    "timeout_seconds": 60,
+    "stdout": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/focused-tests-001.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/focused-tests-001.stderr",
+      "bytes": 570,
+      "sha256": "bc300832bd581576f2c9187b8b061f43318fa9d4e48f4309a859e03be75cfafa"
+    },
+    "test_candidate": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/candidate/tools/test_fixture_engine_prepare.py",
+      "bytes": 4385,
+      "sha256": "cb241944dc79604879bc7cb76b902b81c7d547bb87f8f24dfdbad7b3319243ec"
+    },
+    "patch": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/PATCH.diff",
+      "bytes": 5366,
+      "sha256": "aa25274c5da15ea99732074ed4c88adf3ac49184d767b11f94550b1d5d8f6324"
+    },
+    "run_count": 1,
+    "expected_test_count": 3,
+    "MAIN_Git_SDK_game_process_screen_bus_setting_actions": 0,
+    "actual_CI_result_remains": "fa0 Official Runner FAILURE",
+    "live_business_credit": null
+  },
+  "observed_first_delta_boundary": "D2 create/holder/resolve stage, before its SAVE and before D3 SetHoF; narrower internal instruction cause not inferred",
+  "engine_internal_cause": null,
+  "factory_cause_inferred": false,
+  "diagnostic_unique_author_body_reads": 7,
+  "archive_checkpoint_body_reads": 0,
+  "archive_binary_reads": 0,
+  "archive_new_validation_tests": 0,
+  "archive_SDK_process_game_MAIN_calls": 0,
+  "postclose_CI_BOM_ROOT_actual_import": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-ci-bom-import-20261008-002/RESULT.actual.json",
+    "bytes": 9263,
+    "sha256": "e5a7715b060f4ecf31cee5d3b9d313494128a349511d730f7d0abf8b9776c8b5"
+  },
+  "postclose_CI_BOM_limits": "ROOT imported13files after genuine close; first wrong-preimage attempt failed before writes and second used actual MAIN001 preimage. Loaded FA0 CI/native/runtime facts remain unchanged; no future newHEAD/newbuild credit."
+}

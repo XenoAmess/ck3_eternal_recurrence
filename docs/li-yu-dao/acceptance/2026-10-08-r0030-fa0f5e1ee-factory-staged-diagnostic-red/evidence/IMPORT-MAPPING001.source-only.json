@@ -1,0 +1,321 @@
+{
+  "schema": "lyd.r30.combined-create-only-docs-import-manifest.v1",
+  "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red",
+  "source_head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/ARCHIVE-VALIDATION.actual.json",
+      "bytes": 480,
+      "sha256": "c8b71ce80bd762f96b7207482d6260fdca6c194878aaf7fd25dd8b4308a160cf",
+      "target_relative_file": "ARCHIVE-VALIDATION.actual.json",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/ARCHIVE-VALIDATION.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/FACTS.actual-cutoff.json",
+      "bytes": 94115,
+      "sha256": "c723fb830cf69a22df267a69bd0a4c9f0946379324fedd4babb60ff5d2ffac10",
+      "target_relative_file": "FACTS.actual-cutoff.json",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/FACTS.actual-cutoff.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/INDEX.json",
+      "bytes": 1400924,
+      "sha256": "efb86eeb12dead52888e479b1fd183159f608036e403520d9fa5d6b07303ed5e",
+      "target_relative_file": "INDEX.json",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/INDEX.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/raw-evidence.zip",
+      "bytes": 13500044,
+      "sha256": "98568a7a69c01072a8ddd00de7c1b8fff8adea0427ff0486c852c5ce4b30ca5c",
+      "target_relative_file": "raw-evidence.zip",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/raw-evidence.zip"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/REPORT.md",
+      "bytes": 4769,
+      "sha256": "2f2dbdd125142e4265c1273f290fd0d24811ac72208134fbfd5f51b50e060d39",
+      "target_relative_file": "REPORT.md",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/REPORT.md"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/FACTS.final.actual.json",
+      "bytes": 93077,
+      "sha256": "80443a7883382cc0b0062f3f21b000e7dd20007857012e9f1b8f303ea890061d",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/FACTS.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/ROOT-D0-SIGNED-COMPARISON-INPUTS-001/D0-comparison-001/RESULT.actual.json",
+      "bytes": 20025,
+      "sha256": "80112605ddfb8331400ffd809a241e44b5fe6af1e672529b71773c1a0c707406",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D0-CONTROL.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/ROOT-D0-CACHE-INPUTS-001/cache-comparison-001/RESULT.actual.json",
+      "bytes": 7046,
+      "sha256": "070769d572af70b22217efe1227dcdceff651096fc4082749e0884869efa99e3",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D0-NATIVE-SAVED-CACHE.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-import-ready-20261008-001/D0-SUMMARY.actual.json",
+      "bytes": 1649,
+      "sha256": "fcf76c49d2aeb96fb02051e98b93cae6774a4586d2b8c590d9ceb7ed3d696263",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D0-SUMMARY.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-import-ready-20261008-001/D1-SUMMARY.actual.json",
+      "bytes": 7755,
+      "sha256": "b453e25ff7001129373067b593790d11f1550563fe5908279ebdba7a6aac8fa8",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D1-SUMMARY.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D1-comparison-001/RESULT.actual.json",
+      "bytes": 65724,
+      "sha256": "e5b72c192d1b283b792aacbf4baf3ab3770838007742d9ba5ada395ef42aca9e",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D1-COMPARISON.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-import-ready-20261008-001/D2-SUMMARY.actual.json",
+      "bytes": 8132,
+      "sha256": "28d80a322ec3c3612b06de107521a92978da629bd6d9650651e30e9662d46106",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D2-SUMMARY.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D2-comparison-001/RESULT.actual.json",
+      "bytes": 92772,
+      "sha256": "d76014e84a291e131294755039b37c1a7b71f27868b9fdffbe2c7e19944b94fa",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D2-COMPARISON.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-import-ready-20261008-001/D3-SUMMARY.actual.json",
+      "bytes": 8135,
+      "sha256": "6174c18e2a32faaf4f3691a1c726b388c5f753affedeba75fe2e4b2c13933812",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D3-SUMMARY.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D3-comparison-001/RESULT.actual.json",
+      "bytes": 59024,
+      "sha256": "12adececa91eb3c71888c422ed73f0cff373f0541676ed95a7f101874c865598",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D3-COMPARISON.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-import-ready-20261008-001/D4-SUMMARY.actual.json",
+      "bytes": 8147,
+      "sha256": "fcd406b110b28cde5a648ce44760d2ca6bc2900d5a0a1fcbdbe473faad65ed89",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D4-SUMMARY.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D4-comparison-001/RESULT.actual.json",
+      "bytes": 58917,
+      "sha256": "469bfcd790a17a5f1126d4a62a62766363fcc3d0d1bd713d0247fd497b84b7c0",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D4-COMPARISON.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-import-ready-20261008-001/D5-SUMMARY.actual.json",
+      "bytes": 8151,
+      "sha256": "20278a5edc06a9e2993362e8af821efd907d2e7543f3156dbd50fce2f5df32f0",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D5-SUMMARY.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D5-comparison-001/RESULT.actual.json",
+      "bytes": 58524,
+      "sha256": "2a063e313bf263d26e93734613b3b50e58b0c152a8cada8572fcb5c6ea467e69",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D5-COMPARISON.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-import-ready-20261008-001/D6-SUMMARY.actual.json",
+      "bytes": 8891,
+      "sha256": "e7dbdd654ee9274be190b2b65a3afe5ce495d728765e003e0a3ba0b20bddd7d5",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D6-SUMMARY.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-comparison-001/RESULT.actual.json",
+      "bytes": 59261,
+      "sha256": "83b2835564bd493f8418ff97911c6204dd3a9017e929a94fc909d9a2b4c7b56a",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D6-COMPARISON.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/D6-TERMINAL-STATE.observed.json",
+      "bytes": 630861,
+      "sha256": "7770e161cc61c21cbc95c9b3a942460a27729c84e58c66182fde9d3984c70866",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D6-TERMINAL-STATE.observed.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D6-diagnostic-author-001/D6-TERMINAL-TYPED-PROTECTION.observed.json",
+      "bytes": 1010657,
+      "sha256": "d2c0ecf0952a31fcd61b04145b4c064abed4b11a149bc1d6e5b99a6c9432ff23",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/diagnostic/D6-TERMINAL-TYPED-PROTECTION.observed.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/RESULT.actual.json",
+      "bytes": 1112,
+      "sha256": "7d234c0f5cee3e06b333d677a5ceda86d3622cebea7a5ef91325b00e944bb14d",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/RESULT.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/IMPORT-MANIFEST.source-only.json",
+      "bytes": 1829,
+      "sha256": "f1e9bf953aaac608397693dc63095029ba6c26ec8e6a3705620288a57a9b1541",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/IMPORT-MANIFEST.source-only.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/COMBINED-IMPORT-MANIFEST.source-only.json",
+      "bytes": 3340,
+      "sha256": "de62a0ee966e7e2d511597c37eb1d3b00aeed005f1ac6b1daafd8079261757c5",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/COMBINED-IMPORT-MANIFEST.source-only.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001/author_r30_archive.py",
+      "bytes": 7958,
+      "sha256": "1299b6485678dbec1ffee07a7acce28153577acdc93487d253046c80d3d08426",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/frozen/author_r30_archive.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001/COLLECTOR-LABEL-ONLY.diff",
+      "bytes": 6265,
+      "sha256": "8b746eb43c35312e20a7f0d8268895a887f04ba170ed62d6ec7953f137ea91a6",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/frozen/COLLECTOR-LABEL-ONLY.diff"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001/COLLECTOR-PROJECTION.actual.json",
+      "bytes": 634,
+      "sha256": "b70b64a22cb05198e4d4d9e37c19f358ba5c97b7ff98706172c06e763b39dde4",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/frozen/COLLECTOR-PROJECTION.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001/INDEX.json",
+      "bytes": 4312,
+      "sha256": "7d0bfd7ef1f72b44f867f95a7bd2877bd3f3f0c896d14be077e164cf0ae841ee",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/frozen/INDEX.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001/ROOT-CREATE-ARGV.actual.json",
+      "bytes": 1903,
+      "sha256": "c018921e00d57df6fe9b454d20b80aee160aeeb9e812c47e4e531b253c18ae9c",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/frozen/ROOT-CREATE-ARGV.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/prepare_closed_r30_archive.py",
+      "bytes": 9408,
+      "sha256": "efd4e8f86b4f3bbedf436272c414ab92561c573cc46db450129ecaf2f7705085",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/constructor/prepare_closed_r30_archive.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/SOURCE-PROJECTION.actual.json",
+      "bytes": 740,
+      "sha256": "4e6bc1a989de198c63223cd9498ffa64527c078d8fc1f2999691ccec73bd3dc1",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/constructor/SOURCE-PROJECTION.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/EXPLICIT-REF3-ONLY.diff",
+      "bytes": 1140,
+      "sha256": "93566cd7b11d672f8b8b32b84e759fd20634977886139ab64c052e8eb9fef9cb",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/constructor/EXPLICIT-REF3-ONLY.diff"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/INDEX.json",
+      "bytes": 1140,
+      "sha256": "1ee3290b027c725f3aeec0f744300dccd060828c6d0ecc9c395cf64e5120a02a",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/constructor/INDEX.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/FREEZE-ARGV.final.actual.json",
+      "bytes": 3867,
+      "sha256": "544982676b8dcf3d7088b548b8542824c4c27fd361c1ffb866aab1ff3b7d9a26",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/report-freeze/FREEZE-ARGV.final.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/FREEZE-ORIGINAL-EXEC.actual.json",
+      "bytes": 3373,
+      "sha256": "2b5397b6406fb016d2fa07ba015aa98051ec866fe035cf64d950bc7bd762b43e",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/report-freeze/FREEZE-ORIGINAL-EXEC.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/PACKROOTS.final.closed.actual.json",
+      "bytes": 57474,
+      "sha256": "4434590a38f1dbc69d749769dff2aa60a63c719ed80723ca8c41bef50e6d6a16",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/report-freeze/PACKROOTS.final.closed.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/author_report_and_freeze_inputs.py",
+      "bytes": 17712,
+      "sha256": "7bdc737521c6d5b78f8c4b78f437369e53a835eee1b23a9b7f4f52c0e2dc1bea",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/report-freeze/author_report_and_freeze_inputs.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/finalize_file_only_freeze.py",
+      "bytes": 3204,
+      "sha256": "2a71ac3f2630a0057fa4f03941bd92a3d6cfe0331f18ccf8ec859d5cec815f29",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/report-freeze/finalize_file_only_freeze.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-import-sourceonly-20261008-001/prepare_root_import.py",
+      "bytes": 6648,
+      "sha256": "7f0254351eabb0acd9b0d015d4448a565f0b3d7b76eb931d86d0c5638dc50cea",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/archive-source/prepare_root_import.py"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-permanent-archive-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 2308,
+      "sha256": "6e96d88c2dceb3e8c7f7fe10f2e7731915df6ec23cfe040cf53dd0fb45e62e90",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/ROOT-ARCHIVE-ORIGINAL-EXEC.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-permanent-archive-original-exec-20261008-001/stdout",
+      "bytes": 1029,
+      "sha256": "f64a62a8d5319dabb38c1058089b2bd9c2568757d81ef4102b40578e01d608f9",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/ROOT-ARCHIVE-stdout"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-permanent-archive-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/ROOT-ARCHIVE-stderr"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-ci-bom-import-20261008-002/RESULT.actual.json",
+      "bytes": 9263,
+      "sha256": "e5a7715b060f4ecf31cee5d3b9d313494128a349511d730f7d0abf8b9776c8b5",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/ROOT-POSTCLOSE-CI-BOM-IMPORT.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 3103,
+      "sha256": "2944ee5104746377a738ae5c1d625846cdb9bb9691ac5e4ca6504e4162b938da",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/PREVIOUS-BOUNDARY.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-check-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1327,
+      "sha256": "fac325396732c201a5f1f5104e7777712c96b780b5455f1b10c781b97a2af880",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/ROOT-TYPED-CLOSE-check-ORIGINAL-EXEC.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-create-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1443,
+      "sha256": "4f291903e0b8abcc41e874afec977c13def84dab5269817bb25f620f57ab3e50",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/evidence/ROOT-TYPED-CLOSE-create-ORIGINAL-EXEC.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-import-ready-20261008-001/DELIVERY.actual.json",
+      "bytes": 2635,
+      "sha256": "a17b6e01df0d5df0bf01349663cab03bd2cf03135de4a232f84586d8aa15012c",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/DELIVERY.actual.json"
+    }
+  ],
+  "runtime_closed": true,
+  "whole_mod": "NOT_GREEN",
+  "original_collector_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/COMBINED-IMPORT-MANIFEST.source-only.json",
+    "bytes": 3340,
+    "sha256": "de62a0ee966e7e2d511597c37eb1d3b00aeed005f1ac6b1daafd8079261757c5"
+  },
+  "ZIP_verification_inherited_from_original_ROOT_once_exec": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-permanent-archive-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 2308,
+    "sha256": "6e96d88c2dceb3e8c7f7fe10f2e7731915df6ec23cfe040cf53dd0fb45e62e90"
+  },
+  "no_repeat_archive_validation": true,
+  "default_MAIN_apply_authorized": false,
+  "MAIN_writes": 0
+}

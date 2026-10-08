@@ -1,0 +1,196 @@
+{
+  "schema": "lyd.factory-operation-diagnostic.static-check.v1",
+  "status": "PASS_STRUCTURAL_SOURCE_ONLY_RUNTIME_NOT_RUN",
+  "check_count": 44,
+  "checks": [
+    {
+      "name": "original_commit_authorization_AST_exact",
+      "passed": true
+    },
+    {
+      "name": "lyd_i3b_capture_authority_receipt_effect_AST_exact",
+      "passed": true
+    },
+    {
+      "name": "lyd_i3b_show_result_effect_AST_exact",
+      "passed": true
+    },
+    {
+      "name": "original_factory_authorization_AST_exact",
+      "passed": true
+    },
+    {
+      "name": "original_commit_preamble_AST_exact",
+      "passed": true
+    },
+    {
+      "name": "D20_only_scope_marker_then_event_yield",
+      "passed": true
+    },
+    {
+      "name": "D2_only_scope_marker_then_event_yield",
+      "passed": true
+    },
+    {
+      "name": "D3_only_scope_marker_then_event_yield",
+      "passed": true
+    },
+    {
+      "name": "D4_only_scope_marker_then_event_yield",
+      "passed": true
+    },
+    {
+      "name": "D5_only_scope_marker_then_event_yield",
+      "passed": true
+    },
+    {
+      "name": "D6_only_scope_marker_then_event_yield",
+      "passed": true
+    },
+    {
+      "name": "complete_success_operation_only_declared_container_relocation",
+      "passed": true
+    },
+    {
+      "name": "complete_success_operation_AST_inverse_exact",
+      "passed": true
+    },
+    {
+      "name": "original_factory_reject_continuation_AST_exact",
+      "passed": true
+    },
+    {
+      "name": "D2_transaction_atomic_resolve_before_yield",
+      "passed": true
+    },
+    {
+      "name": "D2a_create_and_configuration_without_pending_transaction",
+      "passed": true
+    },
+    {
+      "name": "D2a_original_two_owner_markers_and_all_four_properties",
+      "passed": true
+    },
+    {
+      "name": "D2b_exact_atomic_container_holder_resolve",
+      "passed": true
+    },
+    {
+      "name": "continuation_reuses_existing_cancel_identity_and_real_authorization",
+      "passed": true
+    },
+    {
+      "name": "existing_cancel_scope_contract_has_actual_serial_nonce_phase",
+      "passed": true
+    },
+    {
+      "name": "D1_display_option_execution_guard_same",
+      "passed": true
+    },
+    {
+      "name": "D1_no_immediate_or_timed_advance",
+      "passed": true
+    },
+    {
+      "name": "D20_display_option_execution_guard_same",
+      "passed": true
+    },
+    {
+      "name": "D20_no_immediate_or_timed_advance",
+      "passed": true
+    },
+    {
+      "name": "D2_display_option_execution_guard_same",
+      "passed": true
+    },
+    {
+      "name": "D2_no_immediate_or_timed_advance",
+      "passed": true
+    },
+    {
+      "name": "D3_display_option_execution_guard_same",
+      "passed": true
+    },
+    {
+      "name": "D3_no_immediate_or_timed_advance",
+      "passed": true
+    },
+    {
+      "name": "D4_display_option_execution_guard_same",
+      "passed": true
+    },
+    {
+      "name": "D4_no_immediate_or_timed_advance",
+      "passed": true
+    },
+    {
+      "name": "D5_display_option_execution_guard_same",
+      "passed": true
+    },
+    {
+      "name": "D5_no_immediate_or_timed_advance",
+      "passed": true
+    },
+    {
+      "name": "D6_display_option_execution_guard_same",
+      "passed": true
+    },
+    {
+      "name": "D6_no_immediate_or_timed_advance",
+      "passed": true
+    },
+    {
+      "name": "D1_routes_to_D2a_then_D2a_routes_to_atomic_D2b",
+      "passed": true
+    },
+    {
+      "name": "D2a_uses_original_identity_auth_and_true_unheld_title",
+      "passed": true
+    },
+    {
+      "name": "D2a_unheld_actual_owner_markers_and_holder_absence_exact",
+      "passed": true
+    },
+    {
+      "name": "all_six_runtime_files_follow_legacy_BOM_policy",
+      "passed": true
+    },
+    {
+      "name": "original_cancel_context_proves_human_player_guard",
+      "passed": true
+    },
+    {
+      "name": "candidate_script_syntax_reuses_existing_parser",
+      "passed": true
+    },
+    {
+      "name": "diagnostic_no_persistent_stage_or_cache_AST_writes",
+      "passed": true
+    },
+    {
+      "name": "lyd_factory_operation_diagnostic_l_english.yml_UTF8_BOM",
+      "passed": true
+    },
+    {
+      "name": "lyd_factory_operation_diagnostic_l_simp_chinese.yml_UTF8_BOM",
+      "passed": true
+    },
+    {
+      "name": "all_diagnostic_event_localization_present",
+      "passed": true
+    }
+  ],
+  "existing_parser": {
+    "path": "C:/lr30s2/tools/extract_auto_upgrade_buildings.py",
+    "bytes": 15976,
+    "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+  },
+  "existing_static_helpers": {
+    "path": "C:/lr30s2/mod_li_yu_dao/tools/validate_static.py",
+    "bytes": 21911,
+    "sha256": "523ea7f5a60b247cbdc3e90de2aa3343797ceec3356f739e89639e774fc4c7d4"
+  },
+  "runtime_scope_serialization_or_command_execution_proven": false,
+  "game_or_SDK_or_binary_or_save_body_calls": 0,
+  "whole_mod": "NOT_GREEN"
+}

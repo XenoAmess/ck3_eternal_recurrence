@@ -1,0 +1,230 @@
+{
+  "schema": "lyd.r30.actor-cache-saved-JSON-equality-result.v1",
+  "native_to_saved_equality": true,
+  "actual_pass": null,
+  "full_product_acceptance_credit": false,
+  "factory_intermediate_trace_observed": false,
+  "SDK_calls": 0,
+  "process_calls": 0,
+  "checkpoint_body_reads": 0,
+  "binary_reads": 0,
+  "main_writes": 0,
+  "input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/ROOT-D0-CACHE-INPUTS-001/CACHE-COMPARATOR.INPUT.actual.json",
+    "bytes": 3894,
+    "sha256": "26ae34f92d75c1139b8eedeb38f8e1f610dbd3fe2bb478cf93bb8d7d0e2c4a4b"
+  },
+  "input_artifacts": {
+    "schema": "lyd.r30.actor-cache-saved-JSON-equality-request.v1",
+    "stage": "B3",
+    "author_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/RESULT.json",
+      "bytes": 1105001,
+      "sha256": "b04e4657da1ea14a2d50db55ea027202a2c860206affda5b433601ddd905eb30"
+    },
+    "state": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/STATE.json",
+      "bytes": 2603595,
+      "sha256": "e7f65ef0b8a4d7e3301bab380b7c231724c63c315ce687718e004ae0ea0e0657"
+    },
+    "qualified_native": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/D0-diagnostic-author-001/native-qualification/QUALIFIED-NATIVE.json",
+      "bytes": 104651,
+      "sha256": "77df9aa2dca8c1f0177098db1cbdb17ef1b8df7676a6a98a06c54ba79795d7bb"
+    },
+    "save_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0003-checkpoint.json",
+      "bytes": 39183,
+      "sha256": "03a14d05a8979c724ffc8e6db565343412f85b3cc47b6e6a002f8157a816c700"
+    },
+    "query_request": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/official-mcp-queue-002/r30-root-D0-cache-after-001.request.json",
+      "bytes": 223,
+      "sha256": "db576ce8a4105cfa24465937382b5a17572e0e05690308ce103bd807a08a6102"
+    },
+    "query_dispatch": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0006-r30-root-D0-cache-after-001.response.json",
+      "bytes": 1041,
+      "sha256": "eeee5eb372b371a788a3543c69e77364c309e7006640b11d9a2e34d17bae5f37"
+    },
+    "query_sdk_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0006-r30-root-D0-cache-after-001.sdk-result.json",
+      "bytes": 6919,
+      "sha256": "fcd3d14453227053e05654878fa1d0ee3f68e7637e63cfeb7d86638408fb841d"
+    },
+    "query_native_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0004-actor-cached-succession-query.json",
+      "bytes": 3110,
+      "sha256": "246dfd22d8c407ea2574a0551097cc40bc0f3a050b9bff3f6d1e0738fc5347ed"
+    },
+    "source_export_report": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-canonical-export-20261008-002/REPORT.json",
+      "bytes": 35495,
+      "sha256": "fb2f0783aa5c39a31d894dafb6ee120fa85d6886e8927183d961f4efa30b704d"
+    },
+    "profile": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-profile-with-exit-inventory.json",
+      "bytes": 1104,
+      "sha256": "ca4b756b048ba8d47d14f2f4adad2dbd1a03e5dd270dff22f1acff8e417da833"
+    },
+    "metadata29": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-actual-metadata-20261008-001/ACTUAL-cache29-profile-all-tools.json",
+      "bytes": 30970,
+      "sha256": "986991193c1113e3d5aceeb5b40e5dafb9a465e956ace22a5c24166f140fb6b3"
+    },
+    "host_identities": {
+      "captured": {
+        "artifact": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/RAW-FILETIME-FROM-LAUNCH.actual.json",
+          "bytes": 1633,
+          "sha256": "3a67d3d4263614f09a3a1fd7adef06e344b13038bbaace7eba0ec5423f616ef6"
+        },
+        "pid_pointer": "/pid",
+        "ctime_pointer": "/actual_psutil_create_time",
+        "executable_pointer": "/actual_executable"
+      },
+      "attached": {
+        "artifact": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/native-evidence/3b29fbc8e1d8487996fdc7d0839c8d0b/0003-checkpoint.json",
+          "bytes": 39183,
+          "sha256": "03a14d05a8979c724ffc8e6db565343412f85b3cc47b6e6a002f8157a816c700"
+        },
+        "pid_pointer": "/observation_after/pid",
+        "ctime_pointer": "/observation_after/process_create_time",
+        "executable_pointer": "/observation_after/executable",
+        "connection_generation_pointer": "/snapshot_after/diagnostics/connection_generation"
+      }
+    }
+  },
+  "status": "AUTHENTICATED_NATIVE_SAVED_CACHE_EQUAL",
+  "stage": "B3",
+  "STATE_stage": "signed_precommit",
+  "checkpoint_sha256": "6e3e67d70f9560550fe44b2c31c400da8a0d7012a29de0cfa93e7bd7d6b16968",
+  "native_count": 45,
+  "saved_count": 45,
+  "complete_native_successor_ids_in_original_order": [
+    40526,
+    40695,
+    39979,
+    40847,
+    41032,
+    37244,
+    38098,
+    36445,
+    36663,
+    36873,
+    31692,
+    34973,
+    40259,
+    35598,
+    36638,
+    32536,
+    38561,
+    39045,
+    39171,
+    39352,
+    39527,
+    33234,
+    37702,
+    33542,
+    34232,
+    32236,
+    38560,
+    38902,
+    31538,
+    35899,
+    40507,
+    40843,
+    41028,
+    36329,
+    36847,
+    41495,
+    37064,
+    33028,
+    38782,
+    39032,
+    39309,
+    39932,
+    40694,
+    41235,
+    41288
+  ],
+  "complete_saved_successor_ids_in_original_order": [
+    40526,
+    40695,
+    39979,
+    40847,
+    41032,
+    37244,
+    38098,
+    36445,
+    36663,
+    36873,
+    31692,
+    34973,
+    40259,
+    35598,
+    36638,
+    32536,
+    38561,
+    39045,
+    39171,
+    39352,
+    39527,
+    33234,
+    37702,
+    33542,
+    34232,
+    32236,
+    38560,
+    38902,
+    31538,
+    35899,
+    40507,
+    40843,
+    41028,
+    36329,
+    36847,
+    41495,
+    37064,
+    33028,
+    38782,
+    39032,
+    39309,
+    39932,
+    40694,
+    41235,
+    41288
+  ],
+  "first_difference_index": null,
+  "after_save_binding": {
+    "revision": 3,
+    "native_revision": 2,
+    "date_raw": 53144712,
+    "game_pid": 22384,
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "snapshot_id": "native:2"
+  },
+  "native_capture_epoch": 6853,
+  "native_recorded_at_utc": "2026-10-08T10:49:51.596134+00:00",
+  "host_identity_observations": {
+    "captured": {
+      "pid": 22384,
+      "ctime": 1791455304.2556586,
+      "executable": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+    },
+    "attached": {
+      "pid": 22384,
+      "ctime": 1791455304.2556586,
+      "executable": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "connection_generation": 1
+    }
+  },
+  "exact_native_DTO_validated": true,
+  "source_head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+  "metadata_tool_count": 29,
+  "missing_fields_or_refs": [],
+  "business_postcondition_verified": false,
+  "formal_mandate_credit": null
+}

@@ -1,0 +1,15 @@
+{
+  "original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/author_r29_archive.py",
+    "bytes": 7958,
+    "sha256": "facd03d6b79e78dbf62088b9a984a805cfd0a3aebcca7cb3a76865f6c48c06cd"
+  },
+  "successor": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001/author_r30_archive.py",
+    "bytes": 7958,
+    "sha256": "1299b6485678dbec1ffee07a7acce28153577acdc93487d253046c80d3d08426"
+  },
+  "inverse_full_AST_equal": true,
+  "change": "R29/r29 literal run labels only",
+  "new_tests_verifiers_SDK_game_body_MAIN_calls": 0
+}

@@ -1,0 +1,76 @@
+{
+  "status": "FINER_D2_DIAGNOSTIC_GENERATOR_SOURCE_ONLY_READY",
+  "parent_generator_source_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-diagnostic-bom-sourceonly-20261008-002/INDEX.json",
+    "bytes": 2900,
+    "sha256": "02e616bea27af0b2af9e959506c05ff7e6a8595115a6b606b10041c67d6428ae"
+  },
+  "actual_D2_source_evidence": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-d2-create-holder-next-boundary-sourceonly-20261008-001/INDEX.json",
+    "bytes": 1582,
+    "sha256": "10adb8bd561435bc88b4cd73680086e63bf812aafc1b4fe47bc538bba611007d"
+  },
+  "actual_D1_D2_law_supplement": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-d2-create-holder-next-boundary-sourceonly-20261008-001/SUPPLEMENT-INDEX.actual-001.json",
+    "bytes": 1257,
+    "sha256": "2ee790ca59b33fd4b2fae898615d0fac5e39d80604adab71e9468abdb7c3d30d"
+  },
+  "generator": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/build_factory_diagnostic.py",
+    "bytes": 11726,
+    "sha256": "4897ec559b51584b02e346cb61a37c26f45324a47133e46378f0caeb64fd83e4"
+  },
+  "validator": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/validate_factory_diagnostic.py",
+    "bytes": 11664,
+    "sha256": "de4b49968516ab4942ea83bea1bb06b3b33049568f25c1bff6fb47845051d1e3"
+  },
+  "controller": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/STAGE-CONTROLLER.source-only.json",
+    "bytes": 1403,
+    "sha256": "9e80465349ba4b49b9e76be8f3429ff190095f9a29a40dc9cdd324b53f370788"
+  },
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/FINAL-PATCH.diff",
+    "bytes": 13275,
+    "sha256": "34f457fad427bbd8a4fa61d4dad86ac8f23e0cfd3b9c2bd353f57c387ca1eb87"
+  },
+  "ROOT_import_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/ROOT-IMPORT-COPY-MANIFEST.json",
+    "bytes": 1256,
+    "sha256": "b1a6f28b17e4c595ace2ceaa337f4df845a3863f9a099b0ad24389bddaf13c47"
+  },
+  "documentation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/factory-finer-d2-diagnostic.md",
+    "bytes": 3536,
+    "sha256": "08995335f9970466d37391ba981923fa3ae06205a85befbd68b5f63486972665"
+  },
+  "late_binding_inputs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/ROOT-LATE-BINDING.inputs.pending.json",
+    "bytes": 1156,
+    "sha256": "048156caae6afb5ce72aca0f8ee0b5b3e78b0e9de1c96d864da397cc6d63386f"
+  },
+  "source_validation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/STATIC-CHECK.actual.json",
+    "bytes": 4880,
+    "sha256": "1c04e76279cc1866d7202083277c630a31eddefab4527755b5f3e38346f9291f"
+  },
+  "source_validation_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/SOURCE-VALIDATION-RESULT.actual.json",
+    "bytes": 973,
+    "sha256": "5f1cc5221a18fbe367f0f416d1ba058ef6f5568313e8ff004ed2cafd5b1d1db0"
+  },
+  "actual_source_check_count": 44,
+  "existing_D3_D4_D5_D6_event_effect_AST_equal": true,
+  "all_original_operations_restored_inverse_exact": true,
+  "D2a_stage_value": 20,
+  "D2b_stage_value": 2,
+  "production71_and_original87_88_changed": false,
+  "new_native_BUILD_SDK_game_binary_save_body_calls": 0,
+  "MAIN_export_Git_writes": 0,
+  "future_source_head": null,
+  "unheld_title_cross_event_SAVE_acceptance": null,
+  "individual_engine_cause_or_production_fix_credit": null,
+  "formal_business_PASS": null,
+  "whole_mod": "NOT_GREEN"
+}

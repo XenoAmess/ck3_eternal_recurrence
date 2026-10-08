@@ -1,0 +1,66 @@
+{
+  "schema": "lyd.root.previous-cold-boundary-review.v3",
+  "status": "ROOT_REVIEWED_ACTUAL_CLOSED_RELEASED_BOUNDARY",
+  "source_head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+  "root_screen_task": "lyd-r0030-fa0-diagnostic-root",
+  "original_process": {
+    "pid": 22384,
+    "process_create_time": 1791455304.2556586,
+    "process_creation_filetime_100ns": 134359289042556586
+  },
+  "launch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/launch.json",
+    "bytes": 2396,
+    "sha256": "66bdddeb46ce7548cc87f16d3495e877a21fb1f151dd23ce72a1f630a8eba6c9"
+  },
+  "original_handle_observation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0059-r30-root-exit-observe-001.sdk-result.json",
+    "bytes": 12819,
+    "sha256": "6093522e3bd02375e996f333768ecf2a8fb324990df29dca930f36f81ae4e1ac"
+  },
+  "original_native_observation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0059-r30-root-exit-observe-001.native-01.json",
+    "bytes": 5908,
+    "sha256": "4c132bc84db108f0f6ac04a290f6427c3bb9d294704168353cafb67e1ab10f6e"
+  },
+  "helpers_closed": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-actual-typed-closed-boundary-20261008-001/HELPERS-CLOSED.actual.json",
+    "bytes": 1262,
+    "sha256": "644036c5e015e289421fcdc678bb657c8fe38de42f9c4c20dfda3a14ac3ab7a8"
+  },
+  "process_absence": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-close-input-author-20261008-001/PROCESS-CENSUS.actual.json",
+    "bytes": 995,
+    "sha256": "394a6372d66a6528f6d0fde8fbf74b16690e4b58c82ca93f422a02bc261a9295"
+  },
+  "keeper_final": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-screen-keeper-20261008-001/FINAL.json",
+    "bytes": 403,
+    "sha256": "41fe2795f868a8748e7c624a6eb4e2bdf97da394386c3825be17f98deb44d86b"
+  },
+  "release_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-release-screen-CAS-original-exec-20261008-002/stdout",
+    "bytes": 1413,
+    "sha256": "91ed681bc73920d63296903c3e7d0df9c1302a17a7e9a456b2c9a2e79f037c11"
+  },
+  "after_list": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-postrelease-list-original-exec-20261008-001/stdout",
+    "bytes": 123374,
+    "sha256": "d06383cf3a0498208443bb1ab23be388b963517bb94868fcb819fce16cde7554"
+  },
+  "consumer_closed": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/session-closed.json",
+    "bytes": 2835,
+    "sha256": "c26f730a8921fdef8376e703e329b09bebb27c42bed36402551c4e22b430e9e8"
+  },
+  "consumer_session": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/session.json",
+    "bytes": 1273,
+    "sha256": "500a788f40a95f6d0dfaf788b0064c7901d9c36bd2e18e5fa4565d70a9700807"
+  },
+  "consumer_close_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-030/persistent-client-001/0060-r30-root-client-close-001.response.json",
+    "bytes": 497,
+    "sha256": "a3821c8744b85bdcfbc5dbc419a5952b7b04eef7ed43d7d31c390ec63b598939"
+  }
+}

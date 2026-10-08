@@ -1066,3 +1066,9 @@ R14已以原game/client/keeper HANDLE exit0及CAS3429 DONE/resources[]闭合，�
 ### 礼与道 R0015 正常闭合、业务RED（2026-10-07）
 
 genuine v3 c519e2c3…原game/helper退出0与CAS空资源闭合；R3B3 saved-G2 357/357，B4/B5实际title18373但STATE43/48、保护82/88，政治继承AST失败，modNOT_GREEN。成功B5重载/C3/I4待修复后新实证。[终局追加](../li-yu-dao/acceptance/2026-10-07-r0015-fea6a2f/cutoffs/closed-business-red-003/REPORT.md)。
+
+## C:/workspace《礼与道》19:38 CST 增量：R0030 D2 首次变化，整体仍 NOT_GREEN
+
+截至2026-10-08 19:38（Asia/Shanghai），一期工作量仍估 **75%**。R30 development 诊断D0原87项及native=saved缓存45通过；D2 create＋holder组合在SAVE前出现缓存45→40，随后saved精确40，五政治Title2230/2231/2235/2262/2264仅heir变化，actor四项法律不变、same_faith法前后不存在。D3—D6没有额外变化；终局82/88保护、43/48保存检查，原guard不变，组合内部原因仍未确认。typed game/Client/keeper/passive退出均0、CAS3950/census[]与新鲜Steam离线闭合。
+
+这项诊断不授正式B5/newT冷载/C3/I4信用。FA0官方CI step41三项陈旧测试失败与三个候选测试退出0分列；下一HEAD的官方CI尚未取得GREEN。10月8日晚细分D2a创建/D2b原子授予；10月9日上午最小修复及正式B4/B5/newT冷载以原因确认为条件，下午C3只用实际验合newT，10月10日I4关键负路径依赖前置PASS，失败即顺延。见[R30永久诊断报告](../li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red/REPORT.md)、[当日日报](daily/2026-10-08.md)与[W41滚动周报](weekly/2026-W41.md)；其他机器和产品记录保持原样。

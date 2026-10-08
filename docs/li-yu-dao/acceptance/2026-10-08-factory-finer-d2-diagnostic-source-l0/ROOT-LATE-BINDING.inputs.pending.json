@@ -1,0 +1,36 @@
+{
+  "status": "SOURCE_ONLY_REQUIRED_FUTURE_ACTUAL_INPUTS_NULL",
+  "generator": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/build_factory_diagnostic.py",
+    "bytes": 11726,
+    "sha256": "4897ec559b51584b02e346cb61a37c26f45324a47133e46378f0caeb64fd83e4"
+  },
+  "validator": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/validate_factory_diagnostic.py",
+    "bytes": 11664,
+    "sha256": "de4b49968516ab4942ea83bea1bb06b3b33049568f25c1bff6fb47845051d1e3"
+  },
+  "generator_required_CLI": [
+    "--source-root",
+    "--source-head",
+    "--export-report",
+    "--export-report-sha256",
+    "--output"
+  ],
+  "validator_required_CLI": [
+    "--source-root",
+    "--overlay",
+    "--output"
+  ],
+  "future_source_head": null,
+  "future_export_root": null,
+  "future_export_report": null,
+  "future_native_result": null,
+  "future_metadata": null,
+  "future_allocation": null,
+  "future_previous_boundary": null,
+  "future_PID_session_generation": null,
+  "future_overlay_inventory": null,
+  "actual_option_index": null,
+  "business_credit": null
+}

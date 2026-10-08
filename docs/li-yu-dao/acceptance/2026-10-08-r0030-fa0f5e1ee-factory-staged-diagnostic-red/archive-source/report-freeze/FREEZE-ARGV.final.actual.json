@@ -1,0 +1,76 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/prepare_closed_r30_archive.py",
+    "--source-head",
+    "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+    "--export-report",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-root-canonical-export-20261008-002/REPORT.json",
+    "--export-report-sha256",
+    "fb2f0783aa5c39a31d894dafb6ee120fa85d6886e8927183d961f4efa30b704d",
+    "--report",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/REPORT.final.actual.md",
+    "--report-sha256",
+    "63c90a8b443ed1be067794a36406e702da7b35ab5dda6f3fbf9a4b61e0e3fa43",
+    "--facts",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/FACTS.final.actual.json",
+    "--facts-sha256",
+    "80443a7883382cc0b0062f3f21b000e7dd20007857012e9f1b8f303ea890061d",
+    "--packroots",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/PACKROOTS.final.closed.actual.json",
+    "--packroots-sha256",
+    "4434590a38f1dbc69d749769dff2aa60a63c719ed80723ca8c41bef50e6d6a16",
+    "--closure",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-root-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+    "--closure-sha256",
+    "2944ee5104746377a738ae5c1d625846cdb9bb9691ac5e4ca6504e4162b938da",
+    "--closure-verifier",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-actual-source-20261008-001/verify_previous_boundary.py",
+    "--closure-verifier-sha256",
+    "6239df5be60613f9b39e88ef905880b4652ecd19e5a58c53497d5289af16c510",
+    "--closure-check-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-check-original-exec-20261008-001/RESULT.actual.json",
+    "--closure-check-result-sha256",
+    "fac325396732c201a5f1f5104e7777712c96b780b5455f1b10c781b97a2af880",
+    "--closure-create-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-create-original-exec-20261008-001/RESULT.actual.json",
+    "--closure-create-result-sha256",
+    "4f291903e0b8abcc41e874afec977c13def84dab5269817bb25f620f57ab3e50",
+    "--output-source",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-frozen-source-20261008-001",
+    "--archive-output",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001",
+    "--target-relative",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0030-fa0f5e1ee-factory-staged-diagnostic-red"
+  ],
+  "constructor": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/prepare_closed_r30_archive.py",
+    "bytes": 9408,
+    "sha256": "efd4e8f86b4f3bbedf436272c414ab92561c573cc46db450129ecaf2f7705085"
+  },
+  "report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/REPORT.final.actual.md",
+    "bytes": 4526,
+    "sha256": "63c90a8b443ed1be067794a36406e702da7b35ab5dda6f3fbf9a4b61e0e3fa43"
+  },
+  "facts": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/FACTS.final.actual.json",
+    "bytes": 93077,
+    "sha256": "80443a7883382cc0b0062f3f21b000e7dd20007857012e9f1b8f303ea890061d"
+  },
+  "packroots": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/PACKROOTS.final.closed.actual.json",
+    "bytes": 57474,
+    "sha256": "4434590a38f1dbc69d749769dff2aa60a63c719ed80723ca8c41bef50e6d6a16"
+  },
+  "closure": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3103,
+    "sha256": "2944ee5104746377a738ae5c1d625846cdb9bb9691ac5e4ca6504e4162b938da"
+  },
+  "collector_executed": false,
+  "MAIN_writes": 0
+}

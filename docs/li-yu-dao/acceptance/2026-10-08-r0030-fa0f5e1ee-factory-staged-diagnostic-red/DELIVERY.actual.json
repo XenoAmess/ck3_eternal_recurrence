@@ -1,0 +1,71 @@
+{
+  "schema": "lyd.r30.actual-closed-archive-delivery.v1",
+  "source_head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+  "whole_mod": "NOT_GREEN",
+  "runtime_closed": true,
+  "original_archive_exec": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-permanent-archive-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 2308,
+    "sha256": "6e96d88c2dceb3e8c7f7fe10f2e7731915df6ec23cfe040cf53dd0fb45e62e90"
+  },
+  "original_archive_files": 3051,
+  "unique_original_byte_sets": 1912,
+  "all_original_bytes_sha_match_inherited": true,
+  "ZIP": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/raw-evidence.zip",
+    "bytes": 13500044,
+    "sha256": "98568a7a69c01072a8ddd00de7c1b8fff8adea0427ff0486c852c5ce4b30ca5c"
+  },
+  "INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/INDEX.json",
+    "bytes": 1400924,
+    "sha256": "efb86eeb12dead52888e479b1fd183159f608036e403520d9fa5d6b07303ed5e"
+  },
+  "REPORT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-candidate-20261008-001/REPORT.md",
+    "bytes": 4769,
+    "sha256": "2f2dbdd125142e4265c1273f290fd0d24811ac72208134fbfd5f51b50e060d39"
+  },
+  "FACTS": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-final-report-sourceonly-20261008-001/FACTS.final.actual.json",
+    "bytes": 93077,
+    "sha256": "80443a7883382cc0b0062f3f21b000e7dd20007857012e9f1b8f303ea890061d"
+  },
+  "diagnostic_body_reads_original_total": 7,
+  "extra_body_reads_by_archiver": 0,
+  "native_binary_priorZIP_reads_by_importer": 0,
+  "D0_diagnostic_control_status": "ACTUAL_DIAGNOSTIC_D0_BASELINE_MATCH",
+  "D2_first_cache_political_delta_before_SAVE": true,
+  "terminal_saved_checks": {
+    "count": 48,
+    "true": 43,
+    "false_names": [
+      "political_2230_full_AST_protected",
+      "political_2231_full_AST_protected",
+      "political_2235_full_AST_protected",
+      "political_2262_full_AST_protected",
+      "political_2264_full_AST_protected"
+    ],
+    "unknown_names": []
+  },
+  "terminal_typed_checks": {
+    "count": 88,
+    "true": 82,
+    "false_names": [
+      "political_2230_full_AST",
+      "political_2231_full_AST",
+      "political_2235_full_AST",
+      "political_2262_full_AST",
+      "political_2264_full_AST",
+      "actor_complete_protected_landed_projection"
+    ],
+    "unknown_names": []
+  },
+  "formal_mandate_credit": null,
+  "whole_product_pass": null,
+  "C3_credit": null,
+  "I4_credit": null,
+  "cold_new_T_credit": null,
+  "factory_internal_cause_inferred": false,
+  "new_tests_SDK_process_game_MAIN_calls": 0
+}

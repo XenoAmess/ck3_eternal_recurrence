@@ -1,0 +1,1 @@
+{"result": {"path": "C:/workspace/ck3_lyd_runtime_20261004/r31-finer-d2-diagnostic-sourceonly-20261008-001/STATIC-CHECK.actual.json", "bytes": 4880, "sha256": "1c04e76279cc1866d7202083277c630a31eddefab4527755b5f3e38346f9291f"}, "checks": 44, "runtime": null}

@@ -1,0 +1,117 @@
+{
+  "schema": "exact-ci.step41.source-cause-and-candidate.actual.v1",
+  "exact_head": "fa0f5e1ee098ab6fab4635bedce939eab857610a",
+  "run_id": 37756034825,
+  "job_id": 113240689583,
+  "original_CI_status": "FAILURE",
+  "step_number": 41,
+  "step_name": "Test disposable fixture engine identities",
+  "actual_command": "python tools/test_fixture_engine_prepare.py",
+  "actual_test_count": 3,
+  "original_test_result": "FAILED (errors=3)",
+  "original_cases": [
+    {
+      "case": "test_common_receipt_uses_the_actual_engine_and_retains_not_run",
+      "source_line": 35,
+      "error": "AttributeError: fixture_engine_prepare has no REVIEWED_BUILDS",
+      "log_lines": [
+        2075,
+        2081
+      ]
+    },
+    {
+      "case": "test_each_reviewed_executable_keeps_its_own_identity",
+      "source_line": 12,
+      "error": "AttributeError: fixture_engine_prepare has no REVIEWED_BUILDS",
+      "log_lines": [
+        2084,
+        2090
+      ]
+    },
+    {
+      "case": "test_unknown_executable_is_rejected_before_output_creation",
+      "source_line": 26,
+      "error": "FileNotFoundError: fake repo lacks ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py",
+      "log_lines": [
+        2093,
+        2108
+      ]
+    }
+  ],
+  "complete_log": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/official-job-log-002.stdout",
+    "bytes": 188521,
+    "sha256": "0ca9a4a544acc54ad8e3442a6ea29460c10c0cb02e52c60f1595c12b31435928"
+  },
+  "successful_log_read": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/official-job-log-002.actual.json",
+    "bytes": 1404,
+    "sha256": "c8a390f5fa73602c6618242b1b9817bbbba6f4f11f505cb84b9592f37ff7d46a"
+  },
+  "first_log_read_escape_guard_failure": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/official-job-log-001.actual.json",
+    "bytes": 1369,
+    "sha256": "8985d05480bb0351454f7369afa1c110e4be50fbaef17d08995cfc9927ad097c"
+  },
+  "original_excerpt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/FAILED-STEP41.original-excerpt.log",
+    "bytes": 5475,
+    "sha256": "26f5b56abcbdf50dae1a78309347120a69f053a20857f0bf9d284f1a0bafcb0a"
+  },
+  "source_change": {
+    "commit": "57ee1192ce932782a3ae19732db35cba3fe14971",
+    "parent": "c8c0f0ab8fe56e633bc59f3cd77de3b9e17e8926",
+    "actual_commit_API": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/commit-57ee-001.stdout",
+      "bytes": 224248,
+      "sha256": "7711eb4ea439b4d2675a6816e22ce6deffbe88e63d88a8a8c5ec9a49bfa48260"
+    },
+    "helper_patch": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/57ee-fixture-helper.original.patch",
+      "bytes": 4462,
+      "sha256": "f93605e37fbdbf665e0102d484f6561c51b83995ada18f4f1533c95f0b0b09a9"
+    },
+    "helper_blob_at_57ee_and_fa0": "677cc6a3350919653a9d0692e1ff29c2eb78f9fd",
+    "test_file_not_updated_in_57ee": true,
+    "observed_change": "Helper removed its duplicate REVIEWED_BUILDS and loads the canonical native registry plus shared Steam parser from the supplied repo."
+  },
+  "cause": "Existing tests retained the removed helper map and created a repo without new canonical dependency files; the test fixture was not adapted to the unified runtime helper.",
+  "real_repo_dependency_proof": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/REAL-REPO-DEPENDENCIES.actual.json",
+    "bytes": 3008,
+    "sha256": "de395cf152703b7da645aaa804c9b4409c237412c039747adb39e54ba95a1816"
+  },
+  "real_repository_path_fault_observed": false,
+  "proof_scope": "Dependency bytes match exact official source; real repo helper called with mocked EXE digest and synthetic ACF only. No real installed EXE, save or live qualification.",
+  "candidate_file": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/candidate/tools/test_fixture_engine_prepare.py",
+    "bytes": 4385,
+    "sha256": "cb241944dc79604879bc7cb76b902b81c7d547bb87f8f24dfdbad7b3319243ec"
+  },
+  "candidate_patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/PATCH.diff",
+    "bytes": 5366,
+    "sha256": "aa25274c5da15ea99732074ed4c88adf3ac49184d767b11f94550b1d5d8f6324"
+  },
+  "candidate_changed_source_paths": [
+    "tools/test_fixture_engine_prepare.py"
+  ],
+  "focused_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-official-step41-log-review-20261008-001/FOCUSED-RESULT.actual.json",
+    "bytes": 1988,
+    "sha256": "bdf9730d0d57656af925e132e25fb2f2d7b1be26c62534ca4749f10fb46c824e"
+  },
+  "focused_run_count": 1,
+  "focused_test_count": 3,
+  "focused_exit_code": 0,
+  "new_CI_rerun_dispatch": 0,
+  "MAIN_Git_runtime_setting_actions": 0,
+  "old_terminal_packet_writes": 0,
+  "whole_mod": "NOT_GREEN",
+  "native_live_business_credit": null,
+  "previous_terminal_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-fa0f5e1ee-exact-official-ci-20261008-001/INDEX.json",
+    "bytes": 12451,
+    "sha256": "486a8f4382e305c87d7895f7fad565674298b6da5c5748c149cfed6241cc0cb5"
+  }
+}

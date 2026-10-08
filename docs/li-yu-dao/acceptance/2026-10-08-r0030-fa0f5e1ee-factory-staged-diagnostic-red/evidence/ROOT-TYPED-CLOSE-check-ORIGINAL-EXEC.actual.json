@@ -1,0 +1,35 @@
+{
+  "argv_input": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-actual-source-20261008-001/ROOT-CHECK-ARGV.actual.json",
+    "bytes": 940,
+    "sha256": "f8b72f6858d09ff18941c8e8b111b542f2b5f84a8253c6558fa9906420873753"
+  },
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-actual-source-20261008-001/author_closed_boundary.py",
+    "--pins-sha256",
+    "17e1537ab425a84235a63ec0159ab33bb452f5da4b5edde6edffc5beea64788b",
+    "--check"
+  ],
+  "child_environment_overrides": {
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "started_at_utc": "2026-10-08T11:34:44.232313+00:00",
+  "finished_at_utc": "2026-10-08T11:34:44.543090+00:00",
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-check-original-exec-20261008-001/stdout",
+    "bytes": 7824,
+    "sha256": "f46a1e6f5927075fd87b573cad602e84aa5b295a23b3d2d0b7b4c35e75db9257"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-root-typed-close-check-original-exec-20261008-001/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "automatic_retry": false
+}

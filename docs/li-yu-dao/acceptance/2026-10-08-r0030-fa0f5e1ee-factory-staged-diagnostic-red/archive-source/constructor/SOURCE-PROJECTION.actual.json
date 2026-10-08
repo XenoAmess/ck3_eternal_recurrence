@@ -1,0 +1,16 @@
+{
+  "before": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-001/prepare_closed_r30_archive.py",
+    "bytes": 9028,
+    "sha256": "fa4fdfba26bfc23210b4c5ca45050582271509864578ec0c0e4a763604fe93a3"
+  },
+  "after": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r30-permanent-archive-plan-sourceonly-20261008-002/prepare_closed_r30_archive.py",
+    "bytes": 9408,
+    "sha256": "efd4e8f86b4f3bbedf436272c414ab92561c573cc46db450129ecaf2f7705085"
+  },
+  "only_change": "explicit original_files ref3/role with exact bytes/SHA for same-FA0 CI originals",
+  "source_AST_parses": true,
+  "all_prior_lines_exact_after_erasing_additive_seam": true,
+  "tests_SDK_body_binary_MAIN_calls": 0
+}
