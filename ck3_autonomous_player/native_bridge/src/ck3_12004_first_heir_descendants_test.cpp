@@ -495,12 +495,13 @@ void EmitPregnancyHousehold(const std::filesystem::path &directory,
       fixture.family, relation);
   auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
       name, 7, kHeir, relation);
+  const auto &descriptor = xar::game::Ck3_12004AdapterDescriptor();
   wire = xar::game::Render12004BuildIdentity(
-      std::move(wire), xar::game::Ck3_12004AdapterDescriptor());
+      std::move(wire), descriptor);
   Write(directory / (std::string(name) + ".json"), wire);
-  Check(wire.find(xar::ck3_12004::kExecutableSha256) != std::string::npos &&
+  Check(xar::game::IsCk3_12004Descriptor(descriptor) &&
             wire.find("\"native_pregnancy\":{\"source\":\"native_is_pregnant\"") != std::string::npos,
-        "whole wire uses canonical actual4 identity and native pregnancy source");
+        "whole wire uses canonical actual4 descriptor and native pregnancy source");
   const auto &household = *relation.reproductive_inputs;
   Check(household.played_character_id == kActor && household.heir_character_id == kHeir &&
             household.date_raw == 53220000 && household.rows.size() == 2 &&
