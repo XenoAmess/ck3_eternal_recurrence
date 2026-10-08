@@ -7,6 +7,10 @@ import json
 from pathlib import Path
 from typing import Iterable
 
+from .current_native_war_end_conditions_v1 import (
+    assess_current_native_war_end_conditions_v1,
+)
+
 from .bridge.campaign_root_context_contract import (
     _is_landless_noble_family_no_province_row,
 )
@@ -8763,6 +8767,19 @@ def _choose_one_life_turn_core(
         }
         for war in active_wars
     ]
+    current_termination_rows = (
+        snapshot.get("war_termination_options", [])
+        if isinstance(snapshot, dict) else []
+    )
+    for war, summary in zip(active_wars, war_summary):
+        current_options = next((
+            row for row in current_termination_rows
+            if isinstance(row, dict)
+            and _same_frame_termination_row(snapshot, row, war.get("war_id"))
+        ), None) if isinstance(current_termination_rows, list) else None
+        summary["native_end_conditions"] = assess_current_native_war_end_conditions_v1(
+            war, current_options,
+        )
     enforceable = next(
         (
             war
@@ -9330,16 +9347,18 @@ def _choose_one_life_turn_core(
                         (
                             "native legality, acceptance, and structured exit "
                             "terms including current primary resource balances "
-                            "are complete, but automatic termination remains "
-                            "disabled until campaign outcomes are observable"
+                            "are complete; full campaign expected-utility "
+                            "comparison still lacks campaign outcomes while "
+                            "the existing minimal end rules remain independent"
                         )
                         if isinstance(exit_terms, dict)
                         else (
                             "native termination legality, score, and per-option "
                             "acceptance evidence are projected for expected-"
-                            "utility evaluation, but automatic termination "
-                            "remains disabled while CB-specific terms and "
-                            "campaign outcomes are unknown"
+                            "utility evaluation; full campaign comparison "
+                            "still lacks CB-specific terms and campaign "
+                            "outcomes while existing minimal end rules "
+                            "remain independent"
                         )
                     ),
                     "eu_inputs": {
@@ -9368,6 +9387,7 @@ def _choose_one_life_turn_core(
                     },
                     "unknown_fields": unknown_fields,
                     "automatic_termination_enabled": False,
+                    "automatic_termination_scope": "full_campaign_expected_utility",
                 }
             elif summary.get("player_side") == "defender":
                 summary["war_exit_assessment"] = {

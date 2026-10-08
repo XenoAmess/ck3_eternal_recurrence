@@ -1,0 +1,75 @@
+{
+  "schema": "xar.current-native-war-end-normal-consumer-source.v1",
+  "date": "2026-10-08",
+  "iso_week": "2026-W41",
+  "readiness": "research/source candidate; SOURCE_NOTRUN",
+  "source_base": "a59b2df4a2b3ab6a951bfdc4f12845faf27439d7",
+  "exact_build": {
+    "game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "reused_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "native_source": {
+    "adopted_header": "native_bridge/include/xar_bridge/ck3_12004_diplomacy.hpp",
+    "adopted_binder": "native_bridge/src/ck3_12004_diplomacy.cpp",
+    "software_reader": "ck3_12002::ReadWarTerminationOptions",
+    "war_score_rva": "0x249AC20",
+    "contains_participant_rva": "0x2494B40",
+    "player_resolution_context_rva": "0xCF57D0",
+    "basic_context_rva": "0x3076C70",
+    "final_cansend_rva": "0x307C020",
+    "answer_score_rva": "0x307C440",
+    "auto_accept_trigger_rva": "0x372DF10",
+    "send_command_rva": "0x2968150",
+    "send_secondary_validate_rva": "0x2968200",
+    "migration_proof_reused_not_reread": true,
+    "final_recipient_response_still_unavailable": true,
+    "actual4_final_recipient_evaluator_rva": null,
+    "historical_ai_scheduler_is_actual4_proof": false
+  },
+  "current_r76_reused_facts": {
+    "war_id": 100663329,
+    "actor_character_id": 29829,
+    "primary_opponent_character_id": 31050,
+    "cb": "claim_cb",
+    "cb_database_index": 11,
+    "war_duration_days": 23,
+    "player_relative_war_score": 0,
+    "cb_white_peace_permission": true,
+    "native_white_peace_available": false,
+    "native_victory_available": false,
+    "native_surrender_available": true,
+    "native_surrender_auto_accept": true,
+    "policy_intent": "continue intended war; legality does not choose surrender",
+    "actual_root_step_after008": "strength query010",
+    "new_live_observation": false
+  },
+  "consumer": {
+    "new_leaf": "src/xar_autoplayer/current_native_war_end_conditions_v1.py",
+    "api": "assess_current_native_war_end_conditions_v1(war, same_frame_options)",
+    "normal_output_path": "plan.active_wars[].native_end_conditions",
+    "registered_tool": "ck3_plan_turn",
+    "currentness_check_reused": "strategy._same_frame_termination_row",
+    "old_full_eu_disabled_scope": "full_campaign_expected_utility",
+    "selected_action_thresholds_changed": false,
+    "new_native_wire_or_schema_added": false,
+    "new_query_or_action_gate": false,
+    "claim80pct_locator_search_stopped": true
+  },
+  "sole_first_recipe": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/war-diplomacy-normal-consumer-next34/ROOT-FIRST-RECIPE.json",
+  "first": "SOURCE_NOTRUN; three new registered consumer scenes; synthetic outer I/O; no native/live qualification",
+  "cost": {
+    "held_source_docs_headers_and_consumer_only": true,
+    "exe_bytes": 0,
+    "image_read_calls": 0,
+    "raw_native_body_rereads": 0,
+    "decoder_runs": 0,
+    "hash_operations": 0,
+    "game_sdk_build_import_test_runs": 0
+  },
+  "parallel_scope": {
+    "strategy_hunks": "top import, war_summary before existing score priority, full-EU assessment wording",
+    "army_general_contact_ingress_touched": false,
+    "runtime33_siege31_paths_touched": false
+  }
+}
