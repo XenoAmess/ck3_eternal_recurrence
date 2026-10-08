@@ -169,6 +169,15 @@ class HolyOrderNativeReadbackV1Tests(unittest.TestCase):
                         "military_expenses": expenses}
 
                 def send(self, request) -> None:
+                    if request["type"] == "ping":
+                        test.assertEqual(set(request), {"type", "protocol_version", "request_id"})
+                        test.assertEqual(request["protocol_version"], 1)
+                        test.assertIsInstance(request["request_id"], str)
+                        response = {"type": "pong", "protocol_version": 1,
+                                    "request_id": request["request_id"]}
+                        self.responses.append({"source": "synthetic_protocol_pong", "packet": deepcopy(response)})
+                        self.publish(response)
+                        return
                     test.assertEqual(request["type"], "execute_step")
                     test.assertEqual(request["expected_revision"], frame["native_revision"])
                     self.requests.append(deepcopy(request))
@@ -240,6 +249,9 @@ class HolyOrderNativeReadbackV1Tests(unittest.TestCase):
                 "expected_ck3_version": CK3_12004.game_version,
                 "expected_ck3_sha256": CK3_12004.executable_sha256,
                 "capabilities": capabilities["bridge_capabilities"]})
+            self.assertEqual(len(endpoint.responses), 1)
+            self.assertEqual(endpoint.responses[0]["source"], "synthetic_protocol_pong")
+            self.assertEqual(driver.state._last_pong, endpoint.responses[0]["packet"])
             baseline = {"policy": "one-life-turn-v1", "phase": "native_war_siege_exit_blocked",
                 "selected_step": None, "siege_state": {"status": "insufficient_strength",
                     "province_id": 2592, "player_army_besieging": True, "garrison_size": 200,
