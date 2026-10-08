@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12004_family.hpp"
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
 #include "xar_bridge/ck3_12004_first_heir_child_inputs.hpp"
+#include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 
@@ -637,10 +638,10 @@ void EmitChildObservers35(const std::filesystem::path &directory,
   relation.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
       fixture.family, kHeir);
   auto &desc = *relation.descendants;
-  desc.child_inputs = xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
+  const auto child_inputs = xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
       fixture.family, trait_environment, desc);
   auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
-      name, 7, kHeir, relation);
+      name, 7, kHeir, relation, {}, &child_inputs);
   const auto &descriptor = xar::game::Ck3_12004AdapterDescriptor();
   wire = xar::game::Render12004BuildIdentity(std::move(wire), descriptor);
   Write(directory / (std::string(name) + ".json"), wire);
@@ -648,7 +649,7 @@ void EmitChildObservers35(const std::filesystem::path &directory,
             wire.find("\"child_inputs\":{") != std::string::npos,
         "genuine whole relationship wire uses canonical actual4 descriptor and child leaf");
 
-  const auto &inputs = *desc.child_inputs;
+  const auto &inputs = child_inputs;
   Check(desc.roster_complete && desc.native_child_count_raw == (empty ? 0 : affinity ? 18 : 1) &&
             inputs.played_character_id == kActor && inputs.heir_character_id == kHeir &&
             inputs.date_raw == 53220000 &&

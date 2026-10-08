@@ -164,6 +164,24 @@ Source construction points:
   optional leaf. Strict validation relates full child IDs and grouped raw
   occurrence indices back to the original native roster.
 
+The source36 amendment keeps this same wire contract as query-local child
+data passed through a private serializer overload. The original public
+`CurrentFirstHeirDescendantsReadV1` and relationship layout are restored to
+their pre-child bytes. This avoids the actual 469-CPP public-layout
+dependency closure reported by Root's source-only incremental planner;
+the changed production owners are the existing bridge and serializer.
+The original serializer signature remains and passes no child data.
+
+The public relationship query manually binds its actual4 mailbox instead
+of calling the shared family binder. Source review found that this path
+also needed the admitted actual4 Trait environment. Both existing binding
+paths now populate it from their own canonical adapter descriptor. This
+closes an actual source-path defect that would leave the formal query's
+child traits unavailable despite the generic reader and fixture being
+ready. It does not weaken either sub-result's availability semantics.
+The prepared five native and six consumer scenes are unchanged and remain
+SOURCE_NOTRUN pending Root's joint qualification.
+
 The source preparation is at
 [child-observer35 packet](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/post-birth-child-observers35/ROOT-SOURCE-DELIVERY.json).
 This publication does not establish biological birth cause, a guardian,

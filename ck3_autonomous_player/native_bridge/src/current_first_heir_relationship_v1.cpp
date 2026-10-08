@@ -1,4 +1,5 @@
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
+#include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include <algorithm>
@@ -184,7 +185,8 @@ void AppendChildInputs(std::string &json,
 
 std::string CurrentFirstHeirDescendantsJsonV1(
     const CurrentFirstHeirDescendantsReadV1 &read,
-    std::uint64_t native_revision) {
+    std::uint64_t native_revision,
+    const CurrentFirstHeirChildInputsReadV1 *child_inputs) {
   using Status = CurrentFirstHeirDescendantsStatusV1;
   std::string json = "{\"status\":";
   AppendJsonString(json, read.status == Status::available ? "available" :
@@ -236,9 +238,9 @@ std::string CurrentFirstHeirDescendantsJsonV1(
     json += '}';
   }
   json += ']';
-  if (read.child_inputs) {
+  if (child_inputs != nullptr) {
     json += ",\"child_inputs\":";
-    AppendChildInputs(json, *read.child_inputs, native_revision);
+    AppendChildInputs(json, *child_inputs, native_revision);
   }
   json += '}';
   return json;
@@ -406,6 +408,16 @@ std::string CurrentFirstHeirRelationshipResultJsonV1(
     std::int32_t heir_character_id,
     const CurrentFirstHeirRelationshipReadV1 &read,
     std::string_view override_unavailable_reason) {
+  return CurrentFirstHeirRelationshipResultJsonV1(request_id, native_revision,
+      heir_character_id, read, override_unavailable_reason, nullptr);
+}
+
+std::string CurrentFirstHeirRelationshipResultJsonV1(
+    std::string_view request_id, std::uint64_t native_revision,
+    std::int32_t heir_character_id,
+    const CurrentFirstHeirRelationshipReadV1 &read,
+    std::string_view override_unavailable_reason,
+    const CurrentFirstHeirChildInputsReadV1 *child_inputs) {
   const bool available = override_unavailable_reason.empty() &&
       read.failure == CurrentFirstHeirRelationshipFailureV1::none;
   std::string result =
@@ -450,7 +462,8 @@ std::string CurrentFirstHeirRelationshipResultJsonV1(
   result += CurrentFirstHeirBetrothalActionabilityJsonV1(read.betrothal_actionability);
   if (read.descendants.has_value()) {
     result += ",\"current_first_heir_descendants_v1\":";
-    result += CurrentFirstHeirDescendantsJsonV1(*read.descendants, native_revision);
+    result += CurrentFirstHeirDescendantsJsonV1(*read.descendants, native_revision,
+                                              child_inputs);
   }
   if (read.reproductive_inputs.has_value()) {
     result += ",\"current_first_heir_reproductive_inputs_v1\":";

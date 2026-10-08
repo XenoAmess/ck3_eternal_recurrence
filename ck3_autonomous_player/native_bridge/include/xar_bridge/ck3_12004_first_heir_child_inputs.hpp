@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
 #include "xar_bridge/ck3_12004_lifestyle.hpp"
+#include "xar_bridge/current_first_heir_child_inputs_v1.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include <algorithm>

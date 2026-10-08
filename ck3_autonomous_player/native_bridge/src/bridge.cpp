@@ -118,6 +118,7 @@
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
 #include "xar_bridge/ck3_12004_first_heir_child_inputs.hpp"
+#include "xar_bridge/current_first_heir_child_inputs_json_v1.hpp"
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
@@ -9486,10 +9487,11 @@ std::string CurrentFirstHeirRelationshipResultFrameV1(
     std::string_view request_id, std::uint64_t native_revision,
     std::int32_t heir_character_id,
     const xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 &read,
-    std::string_view override_unavailable_reason = {}, bool crozier = false) {
+    std::string_view override_unavailable_reason = {}, bool crozier = false,
+    const xar::ck3_11906::CurrentFirstHeirChildInputsReadV1 *child_inputs = nullptr) {
   auto result = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
       request_id, native_revision, heir_character_id, read,
-      override_unavailable_reason);
+      override_unavailable_reason, child_inputs);
   return crozier ? xar::ck3_12002::RenderQueryBuildIdentity(std::move(result))
                  : result;
 }
@@ -9531,6 +9533,7 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   xar::ck3_12002::family_obligations_lineage::Bindings lineage12002{};
   bool observe_descendants12004 = false;
   xar::ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 child_traits12004{};
+  std::optional<xar::ck3_11906::CurrentFirstHeirChildInputsReadV1> child_inputs12004{};
 };
 
 bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
@@ -9579,7 +9582,7 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
       if (query.observe_descendants12004) {
         query.read.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
             query.family12002, query.heir_character_id);
-        query.read.descendants->child_inputs =
+        query.child_inputs12004 =
             xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
                 query.family12002, query.child_traits12004,
                 *query.read.descendants);
@@ -18981,6 +18984,7 @@ void RunConnectedSession(
                       ? *state.observed_primary_heir_character_id : -1;
               std::string_view unavailable_reason;
               xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 read{};
+              std::optional<xar::ck3_11906::CurrentFirstHeirChildInputsReadV1> child_inputs{};
               if (!observed_current) {
                 unavailable_reason =
                     "same_revision_public_campaign_root_query_required";
@@ -18992,6 +18996,9 @@ void RunConnectedSession(
                 if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
                   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
                   query.family12002 = xar::ck3_12004::BindFamilyImage(base, game.descriptor().executable_sha256);
+                  query.child_traits12004 = xar::ck3_12004::lifestyle::
+                      BindPlayerLifestyleSnapshotEnvironment12004V1(
+                          base, true, game.descriptor().executable_sha256);
                   query.lineage12002 = xar::ck3_12004::BindFamilyLineageImage(
                       base, game.descriptor().executable_sha256);
                   query.observe_descendants12004 = true;
@@ -19061,7 +19068,10 @@ void RunConnectedSession(
                   }
                   const bool stable = wait == xar::ck3_11906::
                       MainThreadQueryWaitResultV1::completed && query.frame_observed;
-                  if (stable) read = query.read;
+                  if (stable) {
+                    read = query.read;
+                    child_inputs = query.child_inputs12004;
+                  }
                   const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
                       g_main_thread_query_mailbox_v1, query.ticket);
                   if (reclaimed != xar::ck3_11906::
@@ -19096,7 +19106,8 @@ void RunConnectedSession(
 #endif
                 auto family_frame = CurrentFirstHeirRelationshipResultFrameV1(
                     request_id, state_revision, heir_id, read,
-                    unavailable_reason, xar::game::IsReviewedCrozierAdapter(game));
+                    unavailable_reason, xar::game::IsReviewedCrozierAdapter(game),
+                    child_inputs ? &*child_inputs : nullptr);
                 if (xar::game::IsCk3_12004Descriptor(game.descriptor()))
                   family_frame = xar::game::Render12004BuildIdentity(
                       std::move(family_frame), game.descriptor());
