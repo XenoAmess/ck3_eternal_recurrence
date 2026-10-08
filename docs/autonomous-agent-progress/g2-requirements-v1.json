@@ -187,8 +187,32 @@
         "2026-10-03T10:59:14+08:00 Asia/Shanghai Currentv32 normalstop confirmed0CK3 at3845/res692/day03saved597/goal0. Stop and finalcheckpoint0extra days, original NW-LIFE/NW-FAMILY complete/NW2of4 retained. Sway/faction/Construction no new benefit/terminal/action credit. Pendingclass county/static packets not deployedv33, no M4 milestone promotion."
       ],
       "planner_consumer": "budgeted construction, council and faction response",
-      "visible_outcome": "within two game years perform and verify one construction, one council reassignment and one real vassal or faction intervention",
-      "open_blocker": "Original NW-LIFE TaxMan and NW-FAMILY complete/NW2of4; overallM4 original economic/other visible outcomes in_progress. Current/month maximum church final values are available readonly, not realized income/assignment or new construction. OriginalCanFirefalse/CanReassignfalse primitive valid, no taskyieldloop. Effective tax/type and headless quote input implementation continues only as needed; no new income/warming/secondcold gate."
+      "visible_outcome": "within two game years perform and verify one construction, one useful legal council adjustment and one real vassal or faction intervention",
+      "open_blocker": "R77 preparation is source-ready, not live. The actual vacant-Steward appointment44fa at53286144 has independent applied/incumbent/composition material and may join the owner-selected two-year interval53286144..53303664. A new construction start/material and a new useful vassal/faction intervention within that same window remain. Current Steward32440/11 has no strict improvement in the retained R76 quote; do not manufacture an equal-skill replacement. Older Sway action53220000/first benefit53249664 precedes this interval. Wartime construction is authorized and its normal current-cash/typed-submit/material/cold compound is offline GREEN, not a real new start. M4 requires visible start material, not completed-building ROI or full Sway terminal attribution; NW-ECON realized benefit remains separate.",
+      "current_material_window": {
+        "stage": "prepared_source_only",
+        "start_date_raw": 53286144,
+        "end_date_raw": 53303664,
+        "duration_raw_hours": 17520,
+        "selection_recorded": false,
+        "selected_at_rule": "Record the actual current snapshot date when the owner selects the interval; never backdate selection.",
+        "retained_r76_date_raw": 53288496,
+        "retained_frame_days_remaining": 632,
+        "council_action_request_id": "44fa4b590f844b1e934d60c4d2220b06",
+        "council_source_version": "1.20.0.3",
+        "council_action_and_material_date_raw": 53286144,
+        "council_incumbent_character_id": 32440,
+        "council_route": "assign_vacant",
+        "council_formal_next_turn_consumed": false,
+        "council_historical_new_pid_restore": false,
+        "council_compact": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/council-steward-actual-gen2-01/ROOT-DELIVERY.json",
+        "collector_source_commit": "33c09c8fc178bcb09e0b5e1c34beb4dbb603c6d2",
+        "collector_cli_argument": "--council-material-summary-json",
+        "collector_execution": "not_run",
+        "remaining_materials": ["fresh ordinary construction start and independent material", "new useful vassal or faction intervention in the selected interval"],
+        "packet": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r77-m4-material-preparation/ROOT-DELIVERY.json",
+        "milestone_credit_written": false
+      }
     },
     {
       "id": "G2-M5",
@@ -254,9 +278,26 @@
         "2026-10-03T10:26:56+08:00 Asia/Shanghai Source8cf v32 existing religion MCP type/tax siblings actualavailable at53236176/109732; Christian true and tax7500/Q=.075 vs configuredcap25000/Q=.25. Confession3currentreadonly queries CLOSED53236344: Christiantrue/runtimefeature43true, fixed currentRite tenet_confession status not published; null is not false, shown/takefalse genericreason specific hidden condition unclosed. Holy5orgs=1military4non, order4 hirefalse/affordtrue/106piety, no paid action. Catholic unchanged, full religion OODA false. Prior selectedFeast activity loop/CA1 remains qualified, wholeM6 still pending original valuable Sway terminal/benefit.",
         "2026-10-03T10:59:14+08:00 Asia/Shanghai Vacation close: old religion primitives remain qualified only at their actualframes; new county conversion integrated-query packet static-ready and repentance/excommunication/faction impact native trees research, v33 not built/deployed, no paid/conversion/reform/holyorder action or whole religionOODA/M6credit. Catholic unchanged, full religion user authorization retained. Existing fixture finalnotes in requirements-ledger/DAY03-V32-VACATION-EXISTING-FIXTURE-FINAL-NOTES.json; no new task spawned."
       ],
-      "planner_consumer": "long-horizon non-war objective scheduler",
+      "planner_consumer": "long-horizon objective scheduler",
       "visible_outcome": "complete one scheme, one prisoner or institutional action, one non-religious decision or law project, and one activity lifecycle",
-      "open_blocker": "Original selectedFeast activity/CA1 loops retained; wholeM6 original usefulscheme/terminal pending. Current Sway lastdirect262/353/op-8 at53234760/native15, dedicatedmaterialabsent/terminalcancelfalse; v31cold53235480 only continuation55%/threeemptyrings, oldhiddenfailureseq1 historical. V29 CanPlan/confession/church and V31 HoF completequote58.33566/hidden/CanSendfalse are readonlyprimitives, no paid/faithchange/benefitloop. V30 HoF amountnull is historical after successful currentread, not currentcapabilityblocker. Selectedtrip/fullquote/ETA not yet observed rather than knownabsence."
+      "open_blocker": "Original selected Feast and CA1 loops remain at their original evidence. R76 adds an actual legal CA1->CA2 applied receipt and SAVE024, not whole M6 or M4 completion. Retained Sway134217986/gen8 targeting34333 has independent positive named-modifier material at53249664 with following/cold persistence; the old262/353/no-benefit frame is historical, not the latest material boundary. Full useful scheme terminal/cause attribution remains unclosed; persistence or terminal_unattributed must not imply success. The normal Service Sway exact-instance material/terminal cold-consumption compound is offline GREEN5.2946096s, not a new live terminal or intervention. Other dated religious readonly primitives remain separate from paid action or whole religion OODA. All war restrictions were rescinded; non-war is not a current scheduling limit.",
+      "current_material_evidence": {
+        "crown_authority": "Root-reported R76 actual CA1->CA2 receipt023 and paired SAVE024; original law/institution material only",
+        "crown_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/023-r76-crown-receipt.json",
+        "crown_checkpoint": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/024-r75-ooda-save.json",
+        "sway_scheme_instance_id": 134217986,
+        "sway_scheme_instance_generation": 8,
+        "sway_target_character_id": 34333,
+        "sway_original_action_date_raw": 53220000,
+        "sway_first_named_material_date_raw": 53249664,
+        "sway_cold_material_date_raw": 53249808,
+        "sway_total_opinion_change_not_fully_attributed": true,
+        "sway_full_scheme_terminal_qualified": false,
+        "service_lifecycle_stage": "static-ready",
+        "service_lifecycle_first": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/sway-lifecycle-first01/RESULT.json",
+        "new_r77_live_action": false,
+        "whole_m6_complete": false
+      }
     },
     {
       "id": "G2-M7",
@@ -295,14 +336,27 @@
       ],
       "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
       "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance",
-      "open_blocker": "CURRENT STOP / vacation handover:3845/36524 saveddays,resume692/day03saved597/natural succession0; game normally stopped0CK3, finalpair4639/raw53236608/source8cfv32 archived sixledgers10streams. Original longgame/succession goal incomplete. Unselected faction_demand.1001/event23 requires full surrenderimpact/typed scope5,25 before any choice; API3 surrender/API4war not blindly executed. User instructed finish existing work, no new tasks; futurev33 static packets not built/deployed. Resume from ROOT vacation handover; G25/8NW2/4percentfalse preserved."
+      "open_blocker": "The user cancelled vacation/handoff and resumed G2 parallel work. Root-reported current saved progress is6009/36524 in the original Robert29829 episode, with natural successions0. The original long campaign and same-goal natural succession qualification remain unfinished; wider ruler/seed/government coverage is not implied. The dated3845-day/v32 vacation record and then-unselected faction event remain historical, not current execution holds. Existing211-tool .4 migration acceptance is closed and is not reopened as a new campaign gate. R77 material preparation has no new live turn, save or succession credit. Continue from the current Root-owned qualified restore, not the old4639 vacation checkpoint.",
+      "current_campaign_index": {
+        "source": "Root-reported current facts at the R77 preparation baseline",
+        "source_base": "a59b2df4a2b3ab6a951bfdc4f12845faf27439d7",
+        "actor_character_id": 29829,
+        "episode_run_id": "native-29829-2bc2d599f7f9",
+        "saved_days": 6009,
+        "target_saved_days": 36524,
+        "natural_successions": 0,
+        "vacation_handoff_current": false,
+        "r77_stage": "prepared_source_only",
+        "r77_new_live_credit": false,
+        "historical_v32_record_retained": true
+      }
     }
   ],
   "current_work_package": {
     "id": "NW-2026-09-26",
     "completed_packages": 2,
     "total_packages": 4,
-    "scope": "1/4 counts completed full NW work packages in this current queue. It does not mean zero prior focus, perk, construction, betrothal, or joint-selection actions; those narrower outcomes remain in the package evidence and milestone records.",
+    "scope": "2/4 counts the original completed LIFE and FAMILY packages in this queue. Historical NW names do not impose a current non-war restriction. ECON realized benefit and JOINT resource allocation remain in_progress; narrower material actions do not complete them or M4.",
     "packages": [
       {
         "id": "NW-LIFE",
@@ -314,7 +368,7 @@
         "id": "NW-ECON",
         "name": "affordable construction and realized economic benefit",
         "status": "in_progress",
-        "latest_evidence": "R0081 privately closed one construction submit, material receipt, next turn and new-PID recovery. An independent h90 derived branch started hill_farms_01 and carried the same construction across a cold restore, but completion and realized income remain unproven. R0302 Robert read showed one affordable farm_estates_01 candidate without a formal submit. R9 current1.20 observed65 costs, complete finite19 positive-income-key coverage and23 budgetable empty-slot quotes; the observed one-war/one-army frame remains outside the existing peace construction consumer. No new start, completion or realized income is claimed."
+        "latest_evidence": "R0081 privately closed one construction submit, material receipt, next turn and new-PID recovery. An independent h90 derived branch started hill_farms_01 and carried the same construction across a cold restore, but completion and realized income remain unproven. R0302 Robert read showed one affordable farm_estates_01 candidate without a formal submit. Historical R9 observed65 costs/23 budgetable empty-slot quotes and the then peace-only consumer. Current2026-10-08 wartime current-cash quote/typed-submit/material/cold normal Service compound is offline GREEN5.0902798s; the obsolete unconditional war/army rejection is repaired. R77 fresh ordinary construction remains prepared, not executed. No new start, completed building or realized income is claimed."
       },
       {
         "id": "NW-FAMILY",
@@ -331,5 +385,5 @@
     ]
   },
   "religion_boundary": "2026-10-02 23:33:53 Asia/Shanghai latest explicit user authorization fully opens comprehensive in-depth religious research and requires every earlier religion-deferred ban removed. Generic faith/religion/doctrine/tenet/fervor, conversion, reform, holy-order native AI trees, read-only bridge/MCP observation and corresponding policy research are permitted; the former marriage/holy-war-only exceptions and holy-order hold are no longer current limits. All earlier dated restrictive report sections are historical at-time records and currently rescinded. Exact-build evidence and actual readiness remain required for capability claims; permission itself is not completion. Robert 29829 original ordinary campaign is still the only current autonomous-player live entry. On 2026-10-03 the owner cancelled all nonwar restrictions and fully authorized war/combat native-AI research, read-only bridge/MCP observation, implementation, policy and live execution; former nonwar-only, war-research-stop, war-execution-OFF and other-maintainer-only authorization limits are rescinded. Historical OFF, zero-action and readiness evidence stays at its original source and does not become a new capability claim. Native-AI-first research, exact-build binding, player-only rules and minimized/no-focus operation continue; product publishing rules remain unchanged.",
-  "updated_at": "2026-10-03T10:59:14+08:00"
+  "updated_at": "2026-10-08T13:39:26+08:00"
 }
