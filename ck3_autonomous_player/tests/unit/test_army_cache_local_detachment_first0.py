@@ -18,6 +18,7 @@ from unittest import mock
 
 from test_native_bridge_driver import FakeEndpoint, _hello
 from xar_autoplayer.bridge import mcp_server, native_driver
+from xar_autoplayer.bridge import service as service_module
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 
 
@@ -97,12 +98,22 @@ class ArmyCacheLocalDetachmentFirst0Tests(unittest.TestCase):
                     "episode_run_id": frame["episode_run_id"],
                 },
             }
-            stats = {"projections": 0, "second_full_row_copies": 0}
-            active = {"inside": False, "rows": None}
+            stats = {
+                "projections": 0, "second_full_row_copies": 0,
+                "required_cache_detach_copies": 0,
+                "required_driver_plan_detach_copies": 0,
+                "required_service_plan_detach_copies": 0,
+                "ignored_unbound_none_identity_matches": 0,
+            }
+            active = {"inside": False, "cache_reader": False, "rows": None}
             production_cache = driver._army_strength_cache_for_snapshot
 
             def observe_cache(snapshot, *, episode_run_id):
-                result = production_cache(snapshot, episode_run_id=episode_run_id)
+                active["cache_reader"] = True
+                try:
+                    result = production_cache(snapshot, episode_run_id=episode_run_id)
+                finally:
+                    active["cache_reader"] = False
                 if isinstance(result, dict):
                     stats["projections"] += 1
                     active["rows"] = result["army_strengths"]
@@ -111,12 +122,31 @@ class ArmyCacheLocalDetachmentFirst0Tests(unittest.TestCase):
                 return result
 
             def tracked_deepcopy(value, memo=None):
-                if active["inside"] and value is active["rows"]:
+                # The native module gets its own copy proxy. The stdlib copy
+                # module and Service remain separate, so nested recursive or
+                # public ownership copies cannot masquerade as this call.
+                if active["cache_reader"] and isinstance(value, list):
+                    stats["required_cache_detach_copies"] += 1
+                elif (active["inside"] and isinstance(active["rows"], list)
+                      and value is active["rows"]):
                     stats["second_full_row_copies"] += 1
+                elif active["inside"] and active["rows"] is None and value is None:
+                    # Unbound rows=None is not a row-list identity. The old
+                    # counter mistakenly included ordinary optional-field
+                    # deepcopy(None) calls before the cache reader returned.
+                    stats["ignored_unbound_none_identity_matches"] += 1
+                if isinstance(value, dict) and isinstance(value.get("plan"), dict):
+                    stats["required_driver_plan_detach_copies"] += 1
+                return real_deepcopy(value, memo)
+
+            def service_deepcopy(value, memo=None):
+                if isinstance(value, dict) and isinstance(value.get("plan"), dict):
+                    stats["required_service_plan_detach_copies"] += 1
                 return real_deepcopy(value, memo)
 
             def project(owner, snapshot):
                 active["inside"] = True
+                active["rows"] = None
                 try:
                     result = production_project(owner, snapshot)
                     if legacy_second_copy and result.get("army_strengths"):
@@ -127,11 +157,13 @@ class ArmyCacheLocalDetachmentFirst0Tests(unittest.TestCase):
                     return result
                 finally:
                     active["inside"] = False
+                    active["rows"] = None
 
             try:
                 with mock.patch.object(driver, "_army_strength_cache_for_snapshot", side_effect=observe_cache), \
                      mock.patch.object(NativeHeadlessGameplayDriver, "_with_one_life_episode", project), \
-                     mock.patch.object(native_driver, "copy", SimpleNamespace(deepcopy=tracked_deepcopy)):
+                     mock.patch.object(native_driver, "copy", SimpleNamespace(deepcopy=tracked_deepcopy)), \
+                     mock.patch.object(service_module, "copy", SimpleNamespace(deepcopy=service_deepcopy)):
                     server = mcp_server.create_server(driver)
                     response = asyncio.run(server.call_tool("ck3_plan_turn", {}))
                     self.assertFalse(response.is_error)
@@ -159,6 +191,10 @@ class ArmyCacheLocalDetachmentFirst0Tests(unittest.TestCase):
         self.assertEqual(optimized_stats["projections"], baseline_stats["projections"])
         self.assertEqual(baseline_stats["second_full_row_copies"], baseline_stats["projections"])
         self.assertEqual(optimized_stats["second_full_row_copies"], 0)
+        for observed in (baseline_stats, optimized_stats):
+            self.assertEqual(observed["required_cache_detach_copies"], observed["projections"])
+            self.assertEqual(observed["required_driver_plan_detach_copies"], 1)
+            self.assertEqual(observed["required_service_plan_detach_copies"], 1)
         output = os.environ.get("XAR_ARMY_CACHE_COPY_OUTPUT")
         if output:
             with Path(output).open("x", encoding="utf-8") as handle:
