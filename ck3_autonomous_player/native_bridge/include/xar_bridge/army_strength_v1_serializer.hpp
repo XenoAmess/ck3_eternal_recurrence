@@ -1031,6 +1031,10 @@ inline void AppendArmyStrengthV1(
                   ? number(static_cast<unsigned>(
                         *movement.first_edge_arrival_provider_byte_e_u8))
                   : "null";
+    result += ",\"first_route_target_province_type_tag_u32\":";
+    result += movement.first_route_target_province_type_tag_u32.has_value()
+                  ? number(*movement.first_route_target_province_type_tag_u32)
+                  : "null";
     const auto append_fixed = [&](const std::optional<std::int64_t> &raw) {
       if (raw.has_value()) {
         result += "{\"raw\":";

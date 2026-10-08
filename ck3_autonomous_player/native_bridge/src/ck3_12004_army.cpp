@@ -190,6 +190,8 @@ ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
   // A75D00 returns object5D1E330. Read byte+E without its initialization call.
   result.unit_first_edge_arrival_provider_byte_e =
       reinterpret_cast<const std::uint8_t *>(image_base + 0x5D1E33E);
+  // Source-reached arrival helper compares the resolved target's DWORD85C.
+  result.first_route_target_province_type_tag_enabled = true;
   result.current_detachment_callback_bindings =
       BindCurrentDetachmentCallbackInputs12004(image_base, executable_sha256);
   result.current_detachment_store_bindings =

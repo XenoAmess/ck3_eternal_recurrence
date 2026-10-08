@@ -162,7 +162,8 @@ std::string_view StateName(std::int32_t code) noexcept {
   }
 }
 
-void Route(void *game_data, void *unit, game::ArmySnapshot &row) {
+void Route(void *game_data, void *unit, game::ArmySnapshot &row,
+           void **first_target_province = nullptr) {
   row.route_province_ids.clear();
   row.route_read_status = game::ArmyRouteReadStatus::invalid_header;
   row.route_source_count.reset();
@@ -186,7 +187,10 @@ void Route(void *game_data, void *unit, game::ArmySnapshot &row) {
     void *info = Load<void *>(data, static_cast<std::size_t>(i) * 8);
     if (info == nullptr) return;
     const auto id = Load<std::int32_t>(info, 0);
-    if (Province(game_data, id) == nullptr) return;
+    void *province = Province(game_data, id);
+    if (province == nullptr) return;
+    if (i == 0 && first_target_province != nullptr)
+      *first_target_province = province;
     route.push_back(id);
   }
   row.route_province_ids = std::move(route);
@@ -211,7 +215,8 @@ game::ArmyMovementProgressSnapshot MovementProgress(
   if (bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr)
     game_data = Load<void *>(*bindings.game_state_slot, 0xA0);
   game::ArmySnapshot route{};
-  Route(game_data, unit, route);
+  void *first_target_province = nullptr;
+  Route(game_data, unit, route, &first_target_province);
   if (route.route_read_status == game::ArmyRouteReadStatus::complete_empty) {
     result.status = game::ArmyMovementProgressStatus::not_applicable;
     return result;
@@ -220,6 +225,12 @@ game::ArmyMovementProgressSnapshot MovementProgress(
     result.unavailable_reason = "current_route_unavailable";
     return result;
   }
+
+  // The existing complete route resolves IDs but does not observe this
+  // data-dependent admission DWORD used by actual4's first arrival writer.
+  if (bindings.first_route_target_province_type_tag_enabled)
+    result.first_route_target_province_type_tag_u32 =
+        Load<std::uint32_t>(first_target_province, 0x85C);
 
   if (bindings.read_native_army_movement_admission != nullptr)
     result.native_army_movement_admission =

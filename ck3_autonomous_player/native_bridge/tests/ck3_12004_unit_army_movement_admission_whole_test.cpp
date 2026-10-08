@@ -34,6 +34,8 @@ constexpr std::int32_t kUnit = 0x01000001;
 constexpr std::int32_t kArmy = 0x02000001;
 constexpr std::int32_t kRegiment = 0x03000001;
 constexpr std::int32_t kDate = 53288448;
+constexpr std::int32_t kActor = 29829;
+constexpr std::uint32_t kProvinceMagic = 0x50726F76U;
 constexpr std::uintptr_t kImageBase = 0x140000000ULL;
 struct Scene {
   std::string_view name;
@@ -54,6 +56,12 @@ struct Scene {
   std::int64_t normalized_progress = 0;
   std::int64_t remaining_duration = 0;
   std::optional<bool> expected_branch_selected;
+  bool arrival_transition_scene = false;
+  std::int32_t first_route_province_id = 1;
+  std::uint32_t first_target_type_tag = 0;
+  bool first_target_type_tag_enabled = false;
+  std::optional<bool> expected_first_assignment_selected;
+  std::optional<std::int32_t> expected_conditional_province_id;
 };
 constexpr std::array<Scene, 4> kScenes{{
     {"admission_true", 2, 2, 100, 7, 11, true, true, true, true},
@@ -75,6 +83,24 @@ constexpr std::array<Scene, 5> kEdgeSelectionScenes{{
      true, 107, false, 0, true, 93457, 100000, std::nullopt},
 }};
 
+constexpr std::array<Scene, 5> kArrivalTransitionScenes{{
+    {"arrival_distinct_province", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 106, true, 0, true, 94339, 85714, true,
+     true, 2, kProvinceMagic, true, true, 2},
+    {"arrival_same_province", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 106, true, 0, true, 94339, 85714, true,
+     true, 1, kProvinceMagic, true, false, 1},
+    {"arrival_invalid_target_tag", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 106, true, 0, true, 94339, 85714, true,
+     true, 2, 0, true, false, 1},
+    {"arrival_target_tag_unavailable", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 106, true, 0, true, 94339, 85714, true,
+     true, 2, kProvinceMagic, false, std::nullopt, std::nullopt},
+    {"arrival_not_selected", 2, 2, 100, 7, 11, true, true, true, true,
+     true, 107, true, 0, true, 93457, 100000, false,
+     true, 2, kProvinceMagic, false, false, 1},
+}};
+
 void Check(bool condition, const char *message) {
   if (!condition) throw std::runtime_error(message);
 }
@@ -91,8 +117,8 @@ struct Inputs {
   std::array<std::byte, 0x198> unit{};
   std::array<std::byte, 0x210> army{};
   std::array<std::byte, 0x50> regiment{};
-  std::array<std::byte, 0x18> province{};
-  std::array<void *, 2> provinces{};
+  std::array<std::byte, 0x860> province{}, target_province{}, final_province{};
+  std::array<void *, 4> provinces{};
   std::array<std::int32_t, 2> regiment_ids{kRegiment, kRegiment};
   std::array<std::array<std::byte, 4>, 2> route_nodes{};
   std::array<void *, 2> route_pointers{};
@@ -109,6 +135,7 @@ struct Counters {
   std::size_t current_edge_speed = 0;
   std::size_t army_movement_admission = 0;
   std::size_t first_edge_cost = 0, normalized_progress = 0, remaining_duration = 0;
+  std::size_t unit_state = 0, current_army_context_reader = 0;
   bool abi_matches = true;
 };
 struct Fixture;
@@ -123,6 +150,7 @@ bool ArmyMovementAdmission(void *);
 std::int64_t *FirstEdgeCost(void *, std::int64_t *);
 std::int64_t *NormalizedProgress(void *, std::int64_t *);
 std::int64_t *FirstEdgeRemainingDuration(void *, std::int64_t *, std::int32_t);
+std::int32_t UnitState(void *);
 
 struct Fixture {
   Inputs input{};
@@ -142,7 +170,7 @@ struct Fixture {
     Store(input.game_state, 8, static_cast<std::int64_t>(kDate));
     Store(input.game_state, 0x9C, std::int32_t{12});
     Store(input.game_state, 0xA0, static_cast<void *>(input.game_data.data()));
-    input.provinces = {nullptr, input.province.data()};
+    input.provinces = {nullptr, input.province.data(), nullptr, nullptr};
     Store(input.game_data, 0x140, static_cast<void *>(input.provinces.data()));
     Store(input.game_data, 0x14C, std::int32_t{2});
     Store(input.province, 0x10, std::int32_t{1});
@@ -157,7 +185,7 @@ struct Fixture {
     Store(input.regiment_slots, 0x18, static_cast<void *>(input.regiment.data()));
     Store(input.unit, 0x10, kUnit);
     Store(input.unit, 0x14, std::uint32_t{0x556E6974});
-    Store(input.unit, 0x174, std::int32_t{29829});
+    Store(input.unit, 0x174, kActor);
     Store(input.unit, 0x178, kArmy);
     Store(input.unit, 0x170, scene.state);
     Store(input.unit, 0x168, scene.accumulated_weight);
@@ -227,6 +255,21 @@ struct Fixture {
     }
     Store(input.game_data, 0x2A528, static_cast<const void *>(input.scheduled_unit_ids.data()));
     Store(input.game_data, 0x2A534, std::int32_t{4});
+    if (scene.arrival_transition_scene) {
+      input.provinces[2] = input.target_province.data();
+      input.provinces[3] = input.final_province.data();
+      Store(input.game_data, 0x14C, std::int32_t{4});
+      Store(input.province, 0x85C, kProvinceMagic);
+      Store(input.target_province, 0x10, std::int32_t{2});
+      Store(input.target_province, 0x85C, scene.first_target_type_tag);
+      Store(input.final_province, 0x10, std::int32_t{3});
+      Store(input.final_province, 0x85C, kProvinceMagic);
+      Store(input.route_nodes[0], 0, scene.first_route_province_id);
+      Store(input.route_nodes[1], 0, std::int32_t{3});
+      bindings.get_unit_state = UnitState;
+      bindings.first_route_target_province_type_tag_enabled =
+          scene.first_target_type_tag_enabled;
+    }
   }
 };
 std::int32_t CurrentSoldiers(void *receiver, std::uint8_t flags) {
@@ -297,6 +340,12 @@ std::int64_t *FirstEdgeRemainingDuration(
   f.calls.abi_matches &= receiver == f.input.unit.data() && out != nullptr && index == 0;
   *out = f.remaining_duration;
   return out;
+}
+std::int32_t UnitState(void *receiver) {
+  auto &f = *active;
+  ++f.calls.unit_state;
+  f.calls.abi_matches &= receiver == f.input.unit.data();
+  return 6;
 }
 void AppendString(std::string &out, std::string_view value) {
   out += '"';
@@ -379,9 +428,17 @@ void AssertScene(const Fixture &f, const Inputs &before,
   const std::optional<std::uint8_t> expected_provider =
       scene.edge_selection_scene && scene.provider_byte_bound
       ? std::optional<std::uint8_t>{scene.provider_byte_e} : std::nullopt;
+  const std::optional<std::int32_t> expected_unit_state = scene.arrival_transition_scene
+      ? std::optional<std::int32_t>{6} : std::nullopt;
+  const std::optional<std::uint32_t> expected_target_tag =
+      scene.arrival_transition_scene && scene.first_target_type_tag_enabled
+      ? std::optional<std::uint32_t>{scene.first_target_type_tag} : std::nullopt;
+  Check(movement.first_route_target_province_type_tag_u32 == expected_target_tag,
+      "same-query first target tag omitted, zero collapsed, or disabled value fabricated");
   Check(movement.accumulated_movement_weight_raw == scene.accumulated_weight &&
       movement.cached_edge_speed_raw == scene.cached_speed &&
-      movement.current_edge_movement_rate_raw == expected_rate && !movement.unit_state_raw &&
+      movement.current_edge_movement_rate_raw == expected_rate &&
+      movement.unit_state_raw == expected_unit_state &&
       movement.normalized_edge_progress_raw == expected_progress &&
       movement.first_route_edge_remaining_duration_raw == expected_duration &&
       movement.first_route_edge_weight_cost_raw == expected_cost &&
@@ -407,15 +464,19 @@ void AssertScene(const Fixture &f, const Inputs &before,
       f.calls.first_edge_cost ==
           (scene.edge_selection_scene && scene.first_edge_cost_getter_bound ? 1U : 0U) &&
       f.calls.normalized_progress == (scene.edge_selection_scene ? 1U : 0U) &&
-      f.calls.remaining_duration == (scene.edge_selection_scene ? 1U : 0U),
+      f.calls.remaining_duration == (scene.edge_selection_scene ? 1U : 0U) &&
+      f.calls.unit_state == (scene.arrival_transition_scene ? 2U : 0U) &&
+      f.calls.current_army_context_reader == (scene.arrival_transition_scene ? 1U : 0U),
       "whole reader ABI/count or current getter selection changed");
   Check(f.input == before, "readonly whole reader changed owned Unit/queue/route inputs");
 }
 std::string SerializeWhole(const game::ArmyStrengthSnapshot &row,
-    std::string_view scene, std::size_t sequence, bool edge_selection_scene = false) {
+    std::string_view scene, std::size_t sequence, bool edge_selection_scene = false,
+    bool arrival_transition_scene = false) {
   std::string out = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
-  AppendString(out, std::string(edge_selection_scene ? "unit-first-edge-selection-"
-                                                 : "unit-army-movement-admission-") +
+  AppendString(out, std::string(arrival_transition_scene ? "unit-arrival-transition-"
+                         : edge_selection_scene ? "unit-first-edge-selection-"
+                                                : "unit-army-movement-admission-") +
                     std::string(scene));
   out += ",\"ok\":true,\"result\":{\"step\":\"query-army-strengths-v1\","
          "\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
@@ -521,19 +582,154 @@ std::string EdgeSelectionContext(
          "\"source_derived_branch_is_conditional\":true}";
   return out;
 }
+std::string_view RouteStatusName(game::ArmyRouteReadStatus status) {
+  switch (status) {
+  case game::ArmyRouteReadStatus::not_attempted: return "not_attempted";
+  case game::ArmyRouteReadStatus::complete_empty: return "complete_empty";
+  case game::ArmyRouteReadStatus::complete_nonempty: return "complete_nonempty";
+  case game::ArmyRouteReadStatus::target_only: return "target_only";
+  case game::ArmyRouteReadStatus::invalid_header: return "invalid_header";
+  case game::ArmyRouteReadStatus::unresolved_entry: return "unresolved_entry";
+  }
+  return "not_attempted";
+}
+void AssertCurrentArmyContext(const Fixture &f, const Inputs &before,
+    const std::vector<game::ArmySnapshot> &rows, const Scene &scene) {
+  Check(scene.arrival_transition_scene && rows.size() == 1,
+      "original current Army reader did not return one owned Unit");
+  const auto &row = rows.front();
+  Check(row.army_id == kUnit && row.owner_character_id == kActor &&
+      row.controllable && row.has_current_province && row.current_province_id == 1,
+      "current Army Unit/owner/current Province identity changed");
+  Check(row.route_province_ids ==
+          std::vector<std::int32_t>{scene.first_route_province_id, 3} &&
+      row.route_read_status == game::ArmyRouteReadStatus::complete_nonempty &&
+      row.route_source_count == 2 && row.move_target_observable &&
+      row.move_target_province_id == 3,
+      "original reader lost full ordered route/status/count");
+  Check(row.army_state_code == 6 && row.army_state == "retreating" &&
+      !row.in_combat && row.retreating,
+      "original current state/raw170 context substituted");
+  Check(f.calls.current_army_context_reader == 1 && f.calls.unit_state == 1 &&
+      f.calls.abi_matches && f.input == before,
+      "current Army reader receiver/count or readonly bytes changed");
+}
+void AppendCurrentArmyContext(
+    std::string &out, const std::vector<game::ArmySnapshot> &rows) {
+  out += '[';
+  for (std::size_t index = 0; index < rows.size(); ++index) {
+    if (index != 0) out += ',';
+    const auto &row = rows[index];
+    out += "{\"army_id\":" + std::to_string(row.army_id);
+    out += ",\"owner_character_id\":" + std::to_string(row.owner_character_id);
+    out += ",\"controllable\":";
+    out += row.controllable ? "true" : "false";
+    out += ",\"has_current_province\":";
+    out += row.has_current_province ? "true" : "false";
+    out += ",\"current_province_id\":";
+    out += row.has_current_province ? std::to_string(row.current_province_id) : "null";
+    out += ",\"route_province_ids\":";
+    AppendIds(out, row.route_province_ids);
+    out += ",\"route_read_status\":";
+    AppendString(out, RouteStatusName(row.route_read_status));
+    out += ",\"route_source_count\":";
+    out += row.route_source_count ? std::to_string(*row.route_source_count) : "null";
+    out += ",\"move_target_observable\":";
+    out += row.move_target_observable ? "true" : "false";
+    out += ",\"move_target_province_id\":";
+    out += row.move_target_observable ? std::to_string(row.move_target_province_id) : "null";
+    out += ",\"army_state_code\":" + std::to_string(row.army_state_code);
+    out += ",\"army_state\":";
+    AppendString(out, row.army_state);
+    out += ",\"in_combat\":";
+    out += row.in_combat ? "true" : "false";
+    out += ",\"retreating\":";
+    out += row.retreating ? "true" : "false";
+    out += '}';
+  }
+  out += ']';
+}
+std::string ArrivalTransitionContext(const Fixture &f, const Scene &scene,
+    std::size_t sequence, const std::vector<game::ArmySnapshot> &current_armies) {
+  auto out = EdgeSelectionContext(f, scene, sequence);
+  const auto replace = [&](std::string_view from, std::string_view to) {
+    for (auto at = out.find(from); at != std::string::npos; at = out.find(from, at + to.size())) {
+      out.replace(at, from.size(), to);
+    }
+  };
+  replace("xar.unit-first-edge-selection-native-context.v1",
+          "xar.unit-arrival-transition-native-context.v1");
+  replace("unit-first-edge-selection-12004", "unit-arrival-transition-12004");
+  replace("conditional first edge selection after supplied ADD prefix; actual arrival/effects unobserved",
+          "conditional first local Province assignment after supplied arrival branch; full effects unobserved");
+  replace("\"unit_state\":0", "\"unit_state\":" + std::to_string(f.calls.unit_state));
+  std::string inputs = ",\"unit_state_raw\":6,\"first_route_target_province_type_tag_u32\":";
+  inputs += scene.first_target_type_tag_enabled
+      ? std::to_string(scene.first_target_type_tag) : "null";
+  inputs += ",\"first_route_target_province_type_tag_enabled\":";
+  inputs += scene.first_target_type_tag_enabled ? "true" : "false";
+  inputs += ",\"conditional_first_province_assignment_selected\":";
+  inputs += scene.expected_first_assignment_selected
+      ? (*scene.expected_first_assignment_selected ? "true" : "false") : "null";
+  inputs += ",\"conditional_current_province_id_after_first_assignment\":";
+  inputs += scene.expected_conditional_province_id
+      ? std::to_string(*scene.expected_conditional_province_id) : "null";
+  const bool selected = scene.expected_branch_selected.value_or(false);
+  inputs += ",\"conditional_unit_168_raw_after_arrival_subtraction\":";
+  inputs += std::to_string(selected ? 107 - scene.first_edge_cost : 107);
+  inputs += ",\"conditional_route_province_ids_after_first_pop\":";
+  AppendIds(inputs, selected ? std::vector<std::int32_t>{3}
+                            : std::vector<std::int32_t>{scene.first_route_province_id, 3});
+  inputs += ",\"conditional_unit_route_count_i32_after_first_pop\":";
+  inputs += selected ? "1" : "2";
+  inputs += ",\"conditional_consumed_first_route_province_id\":";
+  inputs += selected ? std::to_string(scene.first_route_province_id) : "null";
+  inputs += ",\"arrival_transition_input_ready\":";
+  inputs += (!selected || scene.first_target_type_tag_enabled) ? "true" : "false";
+  inputs += ",\"target_type_tag_demanded_by_conditional_arrival\":";
+  inputs += selected ? "true" : "false";
+  const auto input_at = out.find(",\"monthly_budget_callbacks_enabled\":");
+  Check(input_at != std::string::npos, "arrival native-input context anchor missing");
+  out.insert(input_at, inputs);
+  const auto callback_at = out.find(",\"monthly_budget_helpers\":");
+  Check(callback_at != std::string::npos, "arrival callback context anchor missing");
+  out.insert(callback_at, ",\"read_armies_for_characters\":" +
+      std::to_string(f.calls.current_army_context_reader) +
+      ",\"arrival_helper\":0,\"first_province_writer\":0");
+  Check(!out.empty() && out.back() == '}', "arrival context object boundary missing");
+  out.pop_back();
+  out += ",\"current_army_context\":";
+  AppendCurrentArmyContext(out, current_armies);
+  out += ",\"current_army_context_producer\":\"ReadArmiesForCharacters12004 -> production ReadArmiesForCharacters\","
+         "\"current_army_context_is_current_not_future\":true,"
+         "\"full_nativeframe_pipeline_exercised\":false,"
+         "\"actual_first_province_assignment_observed\":false,"
+         "\"final_helper_return_current_province_projected\":false,"
+         "\"full_arrival_helper_reconstructed\":false,"
+         "\"full_future_unit_callback_reconstructed\":false,"
+         "\"battle_or_day_effects_reconstructed\":false}";
+  return out;
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
   std::filesystem::path output;
   bool edge_selection_mode = false;
+  bool arrival_transition_mode = false;
   try {
     Check(argc == 3 && (std::string_view(argv[1]) == "--wire-dir" ||
-                       std::string_view(argv[1]) == "--edge-selection-wire-dir"),
+                       std::string_view(argv[1]) == "--edge-selection-wire-dir" ||
+                       std::string_view(argv[1]) == "--arrival-transition-wire-dir"),
         "usage: xar_ck3_12004_unit_army_movement_admission_whole_test "
-        "--wire-dir <fresh-dir> | --edge-selection-wire-dir <fresh-dir>");
+        "--wire-dir <fresh-dir> | --edge-selection-wire-dir <fresh-dir> | "
+        "--arrival-transition-wire-dir <fresh-dir>");
     edge_selection_mode = std::string_view(argv[1]) == "--edge-selection-wire-dir";
-    const Scene *scenes = edge_selection_mode ? kEdgeSelectionScenes.data() : kScenes.data();
-    const auto scene_count = edge_selection_mode ? kEdgeSelectionScenes.size() : kScenes.size();
+    arrival_transition_mode = std::string_view(argv[1]) == "--arrival-transition-wire-dir";
+    const Scene *scenes = arrival_transition_mode ? kArrivalTransitionScenes.data()
+        : edge_selection_mode ? kEdgeSelectionScenes.data() : kScenes.data();
+    const auto scene_count = arrival_transition_mode ? kArrivalTransitionScenes.size()
+        : edge_selection_mode ? kEdgeSelectionScenes.size() : kScenes.size();
     output = argv[2];
     std::filesystem::create_directories(output);
     std::string aggregate = "{\"schema_version\":1,\"scene_order\":[";
@@ -547,6 +743,15 @@ int main(int argc, char **argv) {
       auto fixture = std::make_unique<Fixture>(scene);
       auto before = std::make_unique<Inputs>(fixture->input);
       active = fixture.get();
+      std::vector<game::ArmySnapshot> current_armies;
+      if (arrival_transition_mode) {
+        const std::array<std::int32_t, 1> owners{kActor};
+        ++fixture->calls.current_army_context_reader;
+        Check(current::ReadArmiesForCharacters12004(
+                  fixture->bindings, owners, current_armies, kActor),
+            "original current Army reader failed");
+        AssertCurrentArmyContext(*fixture, *before, current_armies, scene);
+      }
       const std::array<current::ArmyStrengthScope, 1> scope{
           current::ArmyStrengthScope{kUnit, game::ArmyStrengthScopeRole::player, {}}};
       std::vector<game::ArmyStrengthSnapshot> rows;
@@ -554,11 +759,14 @@ int main(int argc, char **argv) {
       Check(result == game::ReadArmyStrengthsResult::available && rows.size() == 1,
           "genuine whole Strength did not produce an available original row");
       AssertScene(*fixture, *before, rows.front(), scene);
-      const auto wire = SerializeWhole(rows.front(), scene.name, index + 1, edge_selection_mode);
+      const auto wire = SerializeWhole(rows.front(), scene.name, index + 1,
+          edge_selection_mode, arrival_transition_mode);
       Write(output / (std::string(scene.name) + ".command-result.json"), wire);
       Write(output / (std::string(scene.name) + ".native-context.json"),
-          edge_selection_mode ? EdgeSelectionContext(*fixture, scene, index + 1)
-                              : Context(*fixture, scene, index + 1));
+          arrival_transition_mode
+              ? ArrivalTransitionContext(*fixture, scene, index + 1, current_armies)
+              : edge_selection_mode ? EdgeSelectionContext(*fixture, scene, index + 1)
+                                    : Context(*fixture, scene, index + 1));
       if (index != 0) aggregate += ',';
       AppendString(aggregate, scene.name);
       aggregate += ':';
@@ -566,9 +774,22 @@ int main(int argc, char **argv) {
       active = nullptr;
     }
     aggregate += "}}";
-    Write(output / (edge_selection_mode ? "unit-first-edge-selection-whole.json"
-                                        : "unit-army-movement-admission-whole.json"), aggregate);
-    if (edge_selection_mode) {
+    Write(output / (arrival_transition_mode ? "unit-arrival-transition-whole.json"
+                 : edge_selection_mode ? "unit-first-edge-selection-whole.json"
+                                       : "unit-army-movement-admission-whole.json"), aggregate);
+    if (arrival_transition_mode) {
+      Write(output / "PRODUCER-RECEIPT.json",
+          "{\"schema\":\"xar.unit-arrival-transition-producer-receipt.v1\","
+          "\"status\":\"PASS\",\"scene_count\":5,\"whole_reader_calls\":5,\"whole_serializer_calls\":5,"
+          "\"current_army_context_reader_calls\":5,\"current_army_context_from_original_reader\":true,"
+          "\"fixture_owned_objects_and_callbacks\":true,\"all_fixture_input_bytes_unchanged\":true,"
+          "\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false,"
+          "\"native_first_edge_provider_getter_invoked\":false,\"actual_arrival_observed\":false,"
+          "\"native_arrival_helper_invoked\":false,\"first_province_writer_invoked\":false,"
+          "\"old_GREEN_replayed\":false,\"old_four_scenes_replayed\":false,"
+          "\"old_edge_selection_scenes_replayed\":false,"
+          "\"full_adapter_snapshot_path_exercised\":false,\"full_nativeframe_pipeline_exercised\":false}");
+    } else if (edge_selection_mode) {
       Write(output / "PRODUCER-RECEIPT.json",
           "{\"schema\":\"xar.unit-first-edge-selection-producer-receipt.v1\","
           "\"status\":\"PASS\",\"scene_count\":5,\"whole_reader_calls\":5,\"whole_serializer_calls\":5,"
@@ -585,16 +806,18 @@ int main(int argc, char **argv) {
           "\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false,"
           "\"old_GREEN_replayed\":false,\"full_adapter_snapshot_path_exercised\":false}");
     }
-    std::cout << (edge_selection_mode ? "five first edge selection whole scenes emitted\n"
-                                     : "four current CArmy admission whole scenes emitted\n");
+    std::cout << (arrival_transition_mode ? "five arrival transition whole scenes emitted\n"
+                 : edge_selection_mode ? "five first edge selection whole scenes emitted\n"
+                                       : "four current CArmy admission whole scenes emitted\n");
     return 0;
   } catch (const std::exception &error) {
     active = nullptr;
     if (!output.empty()) {
       std::string receipt = "{\"schema\":";
-      AppendString(receipt, edge_selection_mode
-          ? "xar.unit-first-edge-selection-producer-receipt.v1"
-          : "xar.unit-army-movement-admission-producer-receipt.v1");
+      AppendString(receipt, arrival_transition_mode
+          ? "xar.unit-arrival-transition-producer-receipt.v1"
+          : edge_selection_mode ? "xar.unit-first-edge-selection-producer-receipt.v1"
+                                : "xar.unit-army-movement-admission-producer-receipt.v1");
       receipt += ",\"status\":\"FAIL\",\"error\":";
       AppendString(receipt, error.what());
       receipt += ",\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false}";
