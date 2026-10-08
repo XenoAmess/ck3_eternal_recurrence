@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "iso_week": "2026-W41",
+  "source_pin": "f3fd6098fa45fa34c1294facf638ae3208b92118",
+  "exact_build": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "work_package": "phase-event-typed-key-source33",
+  "status": "research; typed stable key and observer unimplemented",
+  "decision_value": "Join native loaded phase-event definition names with current per-Commander native admissibility/positive weight, so a later same-query effect-family consumer uses loaded identities rather than stock row order.",
+  "inputs": [
+    {
+      "input": "Actual loaded row identity",
+      "state": "source-closed; reused",
+      "source": "phase-admission-source24/native-admission/SOURCE-CLOSED.json",
+      "shape": "singleton5D27B90 -> DB+50/count+5C, pointerstride8"
+    },
+    {
+      "input": "Actual numerical chance/weight",
+      "state": "Root Native/registered-Service GREEN; reused",
+      "source": "commander-native-chance-source31/ROOT-DELIVERY.json",
+      "shape": "compiledrow+110 -> evaluator3761680 -> signed low32 trunc0 weight"
+    },
+    {
+      "input": "Actual effect-empty operand",
+      "state": "source-closed / candidateSource32; RootRuntime31 FIRST pending",
+      "source": "commander-effect-emptiness-source32/ROOT-DELIVERY.json",
+      "shape": "same selecteddefinition DWORD+19C zero-test; postchoice pointer substitution5D27B80"
+    },
+    {
+      "input": "Typed stable key member/getter",
+      "state": "unknown",
+      "source": "battle_entry9dc correction and commander-loaded-key-source30/native-tree/SOURCE-CLOSED.json",
+      "shape": null
+    },
+    {
+      "input": "Same-row constructor/parser/key store locator",
+      "state": "not held in scoped inspected caches",
+      "source": "ROOT-MINIMAL-TYPED-KEY-ENTRY.json",
+      "shape": null
+    }
+  ],
+  "new_cache_results": [
+    {
+      "lane": "actual4 singleton exact operand",
+      "directories": [
+        "MIG/function-match-core/new-*-INSTRUCTIONS.json",
+        "MIG/shared-span-cache/new-*.json"
+      ],
+      "query": [
+        "5D27B90",
+        "decimal97680272"
+      ],
+      "result": "no parsed actual instruction operand hit; shared-span JSON contains capture metadata only",
+      "limit": "Does not establish executable or type absence; no cache binary or EXE scan"
+    },
+    {
+      "lane": "battle_entry distinct cached exact3 startup registration",
+      "receipt": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/phase-event-parser-caller-frontier/CACHED-STARTUP-CALLER-RESULT.json",
+      "window": "0x8000..0xA000 (8192 retained bytes)",
+      "decoded_end": "0x9FFC",
+      "key": "combat_phase_events",
+      "key_length": 19,
+      "name_candidates": 0,
+      "singleton_operands": 0,
+      "result": "No justified actual registration/initializer capture target; source3 cannot establish actual4 source"
+    }
+  ],
+  "future_same_query_plan": {
+    "container": "existing phase-event loaded rows",
+    "fields": [
+      "optional event_key_source_closed",
+      "per-row event_key",
+      "per-row event_key_unavailable_reason"
+    ],
+    "implementation": "only after same actual loaded-row typed key address/representation proof; reuse existing bounded string copier if actual representation matches",
+    "semantics": "preserve loaded order/duplicates, local naming failure only; no numeric or MC readiness gate"
+  },
+  "source_capture_next": {
+    "manifest": "ROOT-MINIMAL-TYPED-KEY-ENTRY.json",
+    "executable_rows": 0,
+    "new_bytes_budget_now": 0,
+    "reason": "actual source pin unlocated; Root must select a concrete same-row producer/getter before deriving exact finite count"
+  },
+  "remaining": [
+    "actual3/4 typed row name and key member",
+    "actual key bytes in paused frame",
+    "future effect-family consumer",
+    "event selection/RNG/firing and numerical effects"
+  ],
+  "execution": {
+    "new_exe_bytes": 0,
+    "new_exe_reads": 0,
+    "old_exe_reads": 0,
+    "global_scans": 0,
+    "hash_PE_pdata": 0,
+    "native": 0,
+    "imports": 0,
+    "tests": 0,
+    "builds": 0,
+    "game": 0,
+    "sdk": 0,
+    "process_window": 0,
+    "push": 0
+  }
+}
