@@ -18,6 +18,7 @@ from .bridge.observed_heir_marriage_private_action_v1 import RESULT_STEP, SCHEMA
 from .bridge.nonwar_private_build import (
     private_native_provenance, private_native_readback_matches,
 )
+from .environment import same_process_creation_time
 from .family_marriage_formal_consumer import (
     _current_first_heir_relation, _resolved_relation_matches, _write,
     query_family_marriage_result_private, read_family_marriage_ledger,
@@ -177,8 +178,11 @@ def plan_current_first_heir_betrothal_fulfillment_private(
             and resolved.get("heir_character_id") == relation["heir_character_id"]
             and resolved.get("candidate_character_id") == relation["betrothed_character_id"])
         if _resolved_relation_matches(resolved, relation) or same_failed_pair:
-            if resolved.get("status") == "marriage" and (pid, creation) != (
-                    resolved.get("post_bridge_pid"), resolved.get("post_bridge_creation_date")):
+            if resolved.get("status") == "marriage" and (
+                    pid != resolved.get("post_bridge_pid")
+                    or (creation != resolved.get("post_bridge_creation_date")
+                        and not same_process_creation_time(
+                            creation, resolved.get("post_bridge_creation_date")))):
                 return _handled(planned, selected_step=RESULT_STEP,
                     phase="current_first_heir_betrothal_cold_material_recheck",
                     current_betrothal_pending=deepcopy(source),

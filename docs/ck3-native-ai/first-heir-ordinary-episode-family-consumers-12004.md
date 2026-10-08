@@ -40,7 +40,17 @@ flowchart TD
   M -. Natural succession outcome not newly observed here .-> A
 ```
 
-The two reviewed normal paths are source-closed. No new missing decision field or reached dispatch omission was found, so this packet adds no production patch or new compound. Native final legality and actual outcomes continue to decide which existing branch applies. Naturally occurring succession, remarriage, adult wedding, pregnancy, and birth each require their own actual paused observations; none is credited by this source review.
+The earlier review closed the required fields and dispatch routes, without adding a policy. Fresh actual R77 evidence then exposed a repeated cold-material classification within that existing route; its necessary correction is recorded below. Native final legality and actual outcomes continue to decide which existing branch applies. Naturally occurring succession, remarriage, adult wedding, pregnancy, and birth each require their own actual paused observations; none is credited by the earlier source review.
+
+## Actual R77 repeated cold-material read
+
+Actual responses 003 and 007 both observed current marriage, `material_result=true`, `pre_native_revision=0`, and `post_native_revision=2` for heir 38822, candidate 38718, and recipient 32897 at date 53288544. The next ordinary turn selected the same cold material query again. The small ledger already had `pending=null` and `cold_recovery_verified=true`. This was a planner classification failure after successful persistence.
+
+Root's one current process lookup proved PID 99872 creation `20261008134004.201294+480`; the ledger stored `20261008054004.201294+000`. Both are precisely `2026-10-08T05:40:04.201294+00:00`. The fixed-pair resolved-marriage branch had compared raw strings, so WMI local-offset and Toolhelp UTC representations repeatedly appeared to be different process instances.
+
+The candidate correction uses existing `environment.same_process_creation_time` only in that reached resolved-marriage comparison, while preserving direct string equality and the exact PID requirement. A different PID or microsecond still requires a cold material recheck. The native reader, pending proposals, other identity guards, and all marriage action/value decisions are unchanged.
+
+The [actual source/cause tree](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/family-current-decision32/m7-family-current-after-succession/cold-material-recheck/SOURCE-TREE.md) joins the unchanged actual responses, read-only small ledger, and Root's current creation-token proof. One new production-path compound is authored for Root's sole FIRST; it is not a live recovery or new wedding claim.
 
 Evidence packets:
 
