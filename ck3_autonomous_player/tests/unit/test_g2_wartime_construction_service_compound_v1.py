@@ -47,6 +47,10 @@ class WartimeConstructionDriver(NormalConstructionFixtureDriver):
     def take_internal_semantic_snapshot(self):
         return self.take_snapshot()
 
+    def capabilities(self):
+        value = super().capabilities()
+        return {**value, "action_steps": [*value["action_steps"], "query-army-strengths-v1"]}
+
     def wait_for_command_result(self, request_id, timeout):
         request = self.requests[-1]
         if request["step"] != CURRENT_STEP:

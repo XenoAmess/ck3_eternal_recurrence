@@ -148,4 +148,18 @@ the observed all-raised reserve shortfall, an unavailable actual expense,
 selected war priority, one submit, pending duplicate suppression, independent
 active tuple/debit, following consumption and a cold material recheck.
 No Native fixture replay or previous GREEN compound is required. This source
-delivery records `AUTHORED_NOTRUN` until Root supplies its real result.
+delivery initially recorded `AUTHORED_NOTRUN` until Root supplied its result.
+
+Root FIRST01 was RED exit1/8.8844678s at source33c4aab0. The earlier
+quote/submit/material/cold and budget cases reached their assertions, but
+the overall compound failed its final selected-war-work assertion. The
+fixture inherited an action-step list containing only advance/root-query;
+it omitted the selected existing Army query. Production
+`_route_plan_to_available_step` therefore converted that unsupported fixture
+step to advance before construction planning. The fix adds the existing
+Army query to this synthetic capability list and keeps the priority assertion.
+It changes no production code. FIRST01 remains preserved under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/`
+`m4-wartime-construction-first01/ROOT-FIRST-COMPOUND-RESULT.json` and `test.log`.
+Root owns FIRST02 for this fixture change; no successful whole result is
+claimed from the partial FIRST01 assertions.
