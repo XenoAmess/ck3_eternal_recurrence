@@ -1,0 +1,284 @@
+{
+  "schema": "lyd.exact-head.official-ci.final.v4",
+  "status": "EXACT_HEAD_CI_FINAL_NON_SUCCESS",
+  "exact_head": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "sealed_at_utc": "2026-10-07T23:52:26.620822+00:00",
+  "head_parent": [
+    "574c015bd7e6e37eb6cbb3f5b88bdd868b1a4bab"
+  ],
+  "workflows": [
+    {
+      "id": 37704098208,
+      "name": "Official Runner CI",
+      "path": ".github/workflows/static-ci.yml",
+      "workflow_id": 336785267,
+      "head_sha": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+      "head_branch": "master",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098208",
+      "created_at": "2026-10-07T23:45:58Z",
+      "updated_at": "2026-10-07T23:50:15Z",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 113074230660,
+          "name": "static",
+          "head_sha": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+          "status": "completed",
+          "conclusion": "failure",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098208/job/113074230660",
+          "started_at": "2026-10-07T23:46:05Z",
+          "completed_at": "2026-10-07T23:50:14Z",
+          "failed_steps": [
+            {
+              "name": "Test Reclaim the Motherland release tooling",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 31,
+              "started_at": "2026-10-07T23:50:10Z",
+              "completed_at": "2026-10-07T23:50:10Z"
+            }
+          ]
+        }
+      ],
+      "jobs_API_raw": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/official-jobs-final-001.stdout",
+        "bytes": 16000,
+        "sha256": "c3959fea099887ee47c389667e7cba90b88ca8770bf4786d2293afd2ae528dfc"
+      },
+      "jobs_API_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/official-jobs-final-001.actual.json",
+        "bytes": 1282,
+        "sha256": "770de9c5663f1d6a7e19e2c804bb639456fae557f77dbb39de77583e5f04bada"
+      }
+    },
+    {
+      "id": 37704098241,
+      "name": "Linear history",
+      "path": ".github/workflows/linear-history.yml",
+      "workflow_id": 377165366,
+      "head_sha": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+      "head_branch": "master",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098241",
+      "created_at": "2026-10-07T23:45:58Z",
+      "updated_at": "2026-10-07T23:46:52Z",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 113074230426,
+          "name": "No new merge commits",
+          "head_sha": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098241/job/113074230426",
+          "started_at": "2026-10-07T23:46:01Z",
+          "completed_at": "2026-10-07T23:46:51Z",
+          "failed_steps": []
+        }
+      ],
+      "jobs_API_raw": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/linear-jobs-final-001.stdout",
+        "bytes": 1789,
+        "sha256": "5cfe1c21b4570e0c255c369b995121627b2334d663daa6d67d14ac3c7acc3e35"
+      },
+      "jobs_API_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/linear-jobs-final-001.actual.json",
+        "bytes": 1277,
+        "sha256": "fb8463102334c3ef58bf70cab731897d97891a16cad2db3321c835a331067bc1"
+      }
+    },
+    {
+      "id": 37704098239,
+      "name": "Li Yu Dao static checks",
+      "path": ".github/workflows/li-yu-dao-static.yml",
+      "workflow_id": 374176865,
+      "head_sha": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+      "head_branch": "master",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098239",
+      "created_at": "2026-10-07T23:45:58Z",
+      "updated_at": "2026-10-07T23:46:52Z",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 113074230607,
+          "name": "static",
+          "head_sha": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098239/job/113074230607",
+          "started_at": "2026-10-07T23:46:01Z",
+          "completed_at": "2026-10-07T23:46:51Z",
+          "failed_steps": []
+        }
+      ],
+      "jobs_API_raw": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/liyu-jobs-final-001.stdout",
+        "bytes": 2461,
+        "sha256": "f4a3423da38d2e67fb40db8abbeee4ab34af1c3f2bc64be5312ae62b6fe1c101"
+      },
+      "jobs_API_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/liyu-jobs-final-001.actual.json",
+        "bytes": 1273,
+        "sha256": "bf0ff8349627bc8b09825a307388d3c42e0be90fce7887b99160ad71589d3b04"
+      }
+    }
+  ],
+  "failed_steps_primary_source": [
+    {
+      "workflow": "Official Runner CI",
+      "run_id": 37704098208,
+      "job_id": 113074230660,
+      "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098208/job/113074230660",
+      "failed_steps": [
+        {
+          "name": "Test Reclaim the Motherland release tooling",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 31,
+          "started_at": "2026-10-07T23:50:10Z",
+          "completed_at": "2026-10-07T23:50:10Z"
+        }
+      ],
+      "producer_log_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/failed-job-113074230660-001.stdout",
+        "bytes": 138163,
+        "sha256": "302a88ac057b915fcba0952803a7aa1742f80ddcf2f2894197925821e054b786"
+      },
+      "traceback_raw_excerpt": "Traceback (most recent call last):\r\n2026-10-07T23:50:10.8835313Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_reclaim_the_motherland_contract.py\", line 579, in test_phase_three_title_law_and_idempotent_save_migration\r\n2026-10-07T23:50:10.8837167Z     self.assertEqual(text.count(\"add_title_law = single_heir_succession_law\"), 2)\r\n2026-10-07T23:50:10.8837583Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n2026-10-07T23:50:10.8837870Z AssertionError: 3 != 2\r\n2026-10-07T23:50:10.8838007Z \r\n2026-10-07T23:50:10.8838154Z ----------------------------------------------------------------------\r\n2026-10-07T23:50:10.8838456Z Ran 20 tests in 0.113s\r\n2026-10-07T23:50:10.8838584Z \r\n2026-10-07T23:50:10.8838677Z FAILED (failures=1, skipped=2)\r\n2026-10-07T23:50:10.9023046Z ",
+      "actual_error_lines": [
+        "2026-10-07T23:50:10.8837870Z AssertionError: 3 != 2"
+      ],
+      "traceback_file_lines": [
+        [
+          "D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_reclaim_the_motherland_contract.py",
+          "579",
+          "test_phase_three_title_law_and_idempotent_save_migration"
+        ]
+      ],
+      "bounded_actual_reason": "Reclaim the Motherland contract assertion; no RMTM changed path in this commit",
+      "old574_log_reused": false,
+      "local_source_fix_test_rerun": false
+    }
+  ],
+  "actual_changed_paths": [
+    "docs/autonomous-agent-progress/daily/2026-10-08.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/574c-exact-ci/ARCHIVE-CHECK.source-facts.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/574c-exact-ci/FAILED-STEPS.source-facts.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/574c-exact-ci/FINAL.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/574c-exact-ci/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/574c-exact-ci/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/574c-exact-ci/raw-evidence.zip",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/source-checker/BOUNDED-MUTANTS.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/source-checker/INDEX.final002.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/source-checker/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/source-checker/INTEGRATION-MANIFEST.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/source-checker/PREVIEW.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/source-checker/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/source-checker/SOURCE.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-post-r26-preview-scope-ci-fix/source-checker/candidate.patch",
+    "mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py"
+  ],
+  "Li_Yu_trigger": {
+    "status": "TRIGGERED",
+    "workflow_blob": "f383249db0221ddd4b6d4a3aa4d44c9d4c6de7b6",
+    "workflow_raw": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/liyu-workflow-001.raw.yml",
+      "bytes": 2050,
+      "sha256": "ea15a2dc333a5502efc9d66a079c52bee2f4782f4b1c86b23209802f6cb67290"
+    },
+    "push_path_patterns": [
+      "mod_li_yu_dao/**",
+      "tools/extract_auto_upgrade_buildings.py",
+      "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**",
+      ".github/workflows/li-yu-dao-static.yml"
+    ],
+    "matched_paths": [
+      "mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py"
+    ],
+    "basis": "Actual exact-head push run + exact workflow/commit matching paths"
+  },
+  "final_runs_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/runs-001.stdout",
+    "bytes": 39734,
+    "sha256": "38bbeb46150cb0f104ea4ec708fb4ae03541d59d877cf9917f939bd71cc72f94"
+  },
+  "final_runs_receipt": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/runs-001.actual.json",
+    "bytes": 1285,
+    "sha256": "e98e2298aa1f40ebd884e59d3757dfda9ed30776a04422a176fc1096573bcb12"
+  },
+  "commit_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/commit-001.stdout",
+    "bytes": 98664,
+    "sha256": "de8607cfa26eb568889ae87757202a3e109645a73e8c72b7327cf388651a6802"
+  },
+  "API_calls": 9,
+  "read_errors": [],
+  "CLA_server_bypass_is_CI_success": false,
+  "initial_pending_preserved": false,
+  "old574_CI_reused": false,
+  "MAIN_Git_SDK_game_process_screen_bus_actions": 0,
+  "rerun_dispatch_local_test_build": 0,
+  "runtime_business_newT_C3_I4_credit": null,
+  "whole_mod": "NOT_GREEN",
+  "initial_read_already_all_terminal": true,
+  "initial_pending_observed": false,
+  "all_complete_job_logs": [
+    {
+      "workflow": "Official Runner CI",
+      "job_id": 113074230660,
+      "conclusion": "failure",
+      "complete_job_log_raw": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/failed-job-113074230660-001.stdout",
+        "bytes": 138163,
+        "sha256": "302a88ac057b915fcba0952803a7aa1742f80ddcf2f2894197925821e054b786"
+      },
+      "read_once_original_exit_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/failed-job-113074230660-001.actual.json",
+        "bytes": 1244,
+        "sha256": "38a687676287d94f83aafa5729c053add0bedadc56e1efd3a670864d720063bd"
+      }
+    },
+    {
+      "workflow": "Linear history",
+      "job_id": 113074230426,
+      "conclusion": "success",
+      "complete_job_log_raw": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/success-job-113074230426-001.stdout",
+        "bytes": 35849,
+        "sha256": "dfedd00ee7e6f4be1c8929ad6b319651eb31e0bf1205ae9e1c05c4d654a19a78"
+      },
+      "read_once_original_exit_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/success-job-113074230426-001.actual.json",
+        "bytes": 1245,
+        "sha256": "d7de88c5acd3eb1b8a3158e92c1e1d6a49e88641742832ed0f67494ee0b83844"
+      }
+    },
+    {
+      "workflow": "Li Yu Dao static checks",
+      "job_id": 113074230607,
+      "conclusion": "success",
+      "complete_job_log_raw": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/success-job-113074230607-001.stdout",
+        "bytes": 64485,
+        "sha256": "af1214d1d97cb75716d19c59f3f0c394d9a27f9c243f5019c3ce4615ece20f2f"
+      },
+      "read_once_original_exit_receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/success-job-113074230607-001.actual.json",
+        "bytes": 1245,
+        "sha256": "e43c640849619ea92c98a57f97caa8f6565ed13fe66b252413a04f2b33e3e708"
+      }
+    }
+  ],
+  "complete_job_log_reads_once_each": true
+}

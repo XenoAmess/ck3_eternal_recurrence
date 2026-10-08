@@ -1,0 +1,67 @@
+{
+  "status": "ACTUAL_EXACT_CI_PERMANENT_IMPORT_PREPARED_ONLY",
+  "exact_head": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+  "source_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/INDEX.json",
+    "bytes": 11065,
+    "sha256": "684f20b5136104acc8c6ed6b056c2feb3e96e5fdef7e467dba6dcbfd6980cbea"
+  },
+  "source_FINAL": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/FINAL.actual.json",
+    "bytes": 13578,
+    "sha256": "ef890e1cbf93287a86e380a3a775d563cf216debc74e2a65857181ed1d65da78"
+  },
+  "source_raw_ZIP": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/raw-evidence.zip",
+    "bytes": 89586,
+    "sha256": "8a884baa682ac4bebae3a9077d075152d67327dd1011864b1de7c1c6cf56859a"
+  },
+  "original_file_count": 31,
+  "unique_original_sets": 23,
+  "original_SHA_zip_validation": "CI owner already verified once; this preparer does not open, unpack, rehash or recompress ZIP",
+  "workflows": [
+    {
+      "name": "Official Runner CI",
+      "run_id": 37704098208,
+      "head_sha": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098208"
+    },
+    {
+      "name": "Linear history",
+      "run_id": 37704098241,
+      "head_sha": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098241"
+    },
+    {
+      "name": "Li Yu Dao static checks",
+      "run_id": 37704098239,
+      "head_sha": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098239"
+    }
+  ],
+  "Official_failure": {
+    "step": "Test Reclaim the Motherland release tooling",
+    "test": "test_phase_three_title_law_and_idempotent_save_migration",
+    "file": "tools/test_reclaim_the_motherland_contract.py",
+    "line": 579,
+    "error": "AssertionError: 3 != 2",
+    "commit_changed_RMTM_path": false,
+    "primary_log": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/failed-job-113074230660-001.stdout",
+      "bytes": 138163,
+      "sha256": "302a88ac057b915fcba0952803a7aa1742f80ddcf2f2894197925821e054b786"
+    }
+  },
+  "all_CI_success": false,
+  "native_build_completion": null,
+  "R27_runtime": null,
+  "business_newT_C3_I4": null,
+  "whole_mod": "NOT_GREEN",
+  "MAIN_Git_SDK_process_screen_bus_actions": 0
+}

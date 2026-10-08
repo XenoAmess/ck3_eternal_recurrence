@@ -1,0 +1,42 @@
+{
+  "exact_head": "c791914b84b9eb7cf0a83b94d55c25fb24175157",
+  "failures": [
+    {
+      "workflow": "Official Runner CI",
+      "run_id": 37704098208,
+      "job_id": 113074230660,
+      "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37704098208/job/113074230660",
+      "failed_steps": [
+        {
+          "name": "Test Reclaim the Motherland release tooling",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 31,
+          "started_at": "2026-10-07T23:50:10Z",
+          "completed_at": "2026-10-07T23:50:10Z"
+        }
+      ],
+      "producer_log_original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-c791914b8-exact-official-ci-20261008-001/failed-job-113074230660-001.stdout",
+        "bytes": 138163,
+        "sha256": "302a88ac057b915fcba0952803a7aa1742f80ddcf2f2894197925821e054b786"
+      },
+      "traceback_raw_excerpt": "Traceback (most recent call last):\r\n2026-10-07T23:50:10.8835313Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_reclaim_the_motherland_contract.py\", line 579, in test_phase_three_title_law_and_idempotent_save_migration\r\n2026-10-07T23:50:10.8837167Z     self.assertEqual(text.count(\"add_title_law = single_heir_succession_law\"), 2)\r\n2026-10-07T23:50:10.8837583Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n2026-10-07T23:50:10.8837870Z AssertionError: 3 != 2\r\n2026-10-07T23:50:10.8838007Z \r\n2026-10-07T23:50:10.8838154Z ----------------------------------------------------------------------\r\n2026-10-07T23:50:10.8838456Z Ran 20 tests in 0.113s\r\n2026-10-07T23:50:10.8838584Z \r\n2026-10-07T23:50:10.8838677Z FAILED (failures=1, skipped=2)\r\n2026-10-07T23:50:10.9023046Z ",
+      "actual_error_lines": [
+        "2026-10-07T23:50:10.8837870Z AssertionError: 3 != 2"
+      ],
+      "traceback_file_lines": [
+        [
+          "D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_reclaim_the_motherland_contract.py",
+          "579",
+          "test_phase_three_title_law_and_idempotent_save_migration"
+        ]
+      ],
+      "bounded_actual_reason": "Reclaim the Motherland contract assertion; no RMTM changed path in this commit",
+      "old574_log_reused": false,
+      "local_source_fix_test_rerun": false
+    }
+  ],
+  "current_commit_RMTM_changed_paths": [],
+  "runtime_behavior_error_or_source_introducer_attribution": null
+}

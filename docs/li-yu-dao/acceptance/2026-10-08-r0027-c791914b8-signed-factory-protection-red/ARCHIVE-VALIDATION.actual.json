@@ -1,0 +1,14 @@
+{
+  "status": "ORIGINAL_BYTES_ZIP_VERIFIED_ONLY",
+  "original_files": 2051,
+  "unique_original_sets": 1553,
+  "raw_zip": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-live-cutoff-and-closure-archive-sourceonly-20261008-001/payload-external-routing-supplement-005/final-archive-001/raw-evidence.zip",
+    "bytes": 26067217,
+    "sha256": "7db9a9b841c96bee08c4a970bb8240c38715cf1ce53da1f29df5bb21488304ce"
+  },
+  "SDK_size_limit": null,
+  "all_original_bytes_sha_match": true,
+  "save_body_reads": 0,
+  "MAIN_SDK_game_process_bus_actions": 0
+}
