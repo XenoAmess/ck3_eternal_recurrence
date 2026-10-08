@@ -12,6 +12,9 @@ struct PhaseEventCommanderChanceConditionV1 {
   std::optional<std::int64_t> chance_raw;
   std::optional<std::int32_t> selection_weight_raw;
   std::string unavailable_reason;
+  std::optional<std::uint32_t> effect_empty_operand_raw;
+  std::optional<bool> native_effect_empty;
+  std::string effect_emptiness_unavailable_reason;
   friend bool operator==(const PhaseEventCommanderChanceConditionV1 &,
                          const PhaseEventCommanderChanceConditionV1 &) = default;
 };
@@ -35,6 +38,9 @@ struct PhaseEventCommanderChanceWeightsV1 {
   std::string source_ck3_sha256 =
       "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518";
   bool chance_source_closed = false, native_chance_evaluation_observed = false;
+  // Omitted by earlier software factories/frames. This qualification is
+  // independent of the existing numerical observation and its readiness.
+  std::optional<bool> effect_emptiness_source_closed;
   std::vector<PhaseEventCommanderChanceOccurrenceV1> occurrences;
   friend bool operator==(const PhaseEventCommanderChanceWeightsV1 &,
                          const PhaseEventCommanderChanceWeightsV1 &) = default;

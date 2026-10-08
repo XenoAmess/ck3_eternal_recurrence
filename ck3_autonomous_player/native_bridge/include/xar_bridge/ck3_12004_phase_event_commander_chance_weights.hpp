@@ -10,6 +10,7 @@ struct PhaseCommanderChanceBindings12004 {
   bool enabled = false;
   PhaseCommanderTriggerBindings12004 trigger{};
   PhaseCommanderChanceEvaluate12004 evaluate_chance = nullptr;
+  bool effect_emptiness_enabled = false;
 };
 inline PhaseCommanderChanceBindings12004 BindPhaseCommanderChanceImage12004(
     std::uintptr_t base, std::string_view sha,
@@ -17,7 +18,7 @@ inline PhaseCommanderChanceBindings12004 BindPhaseCommanderChanceImage12004(
   if (!base || sha != kPhaseRoleExecutableSha256 || !trigger.enabled) return {};
   // Actual selector suffix53 returns this CALL target. Full actual241 body
   // is already qualified by current4-ransom/support_owner_layout.
-  return {true, trigger, reinterpret_cast<PhaseCommanderChanceEvaluate12004>(base + 0x3761680)};
+  return {true, trigger, reinterpret_cast<PhaseCommanderChanceEvaluate12004>(base + 0x3761680), true};
 }
 inline std::int32_t PhaseCommanderSelectionWeight12004(std::int64_t raw) noexcept {
   // Actual signed MULHI/SAR14/sign correction implements truncation toward
@@ -29,6 +30,7 @@ inline game::PhaseEventCommanderChanceWeightsV1 ReadPhaseCommanderChanceWeights1
     const game::CombatSimulationInputsSnapshot &inputs) {
   game::PhaseEventCommanderChanceWeightsV1 out;
   out.chance_source_closed = b.enabled;
+  if (b.effect_emptiness_enabled) out.effect_emptiness_source_closed = b.enabled;
   if (!inputs.phase_event_commander_trigger_conditions_v1 || !inputs.phase_event_role_compatibility_v1) {
     out.unavailable_reason = "same_query_commander_role_trigger_inputs_not_published"; return out;
   }
@@ -85,6 +87,17 @@ inline game::PhaseEventCommanderChanceWeightsV1 ReadPhaseCommanderChanceWeights1
               value.chance_raw = *result;
               value.selection_weight_raw = PhaseCommanderSelectionWeight12004(*result);
               ++row.evaluated_count; any_known = true;
+              if (b.effect_emptiness_enabled && *value.selection_weight_raw > 0) {
+                // Source32: actual loaded pointer -> candidate pointer array ->
+                // selected pointer; CMP DWORD[event+19C],0 substitutes a RIP
+                // fallback on zero. This observer does not select or call it.
+                std::uint32_t operand = 0;
+                if (read(event + 0x19C, operand)) {
+                  value.effect_empty_operand_raw = operand;
+                  value.native_effect_empty = operand == 0;
+                } else value.effect_emptiness_unavailable_reason =
+                    "loaded_event_effect_empty_operand_unavailable";
+              }
             } else value.unavailable_reason = "native_loaded_chance_value_unavailable";
           }
           if (!value.chance_raw) ++row.unknown_count;

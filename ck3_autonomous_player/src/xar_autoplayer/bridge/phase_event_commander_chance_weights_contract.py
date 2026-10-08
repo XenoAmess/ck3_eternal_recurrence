@@ -34,6 +34,11 @@ _CONDITION_KEYS = {
     "loaded_row_index", "role_and_trigger_valid", "chance_raw",
     "selection_weight_raw", "unavailable_reason",
 }
+_EFFECT_SOURCE_FIELD = "effect_emptiness_source_closed"
+_EFFECT_CONDITION_KEYS = {
+    "effect_empty_operand_raw", "native_effect_empty",
+    "effect_emptiness_unavailable_reason",
+}
 
 
 def _object(value: object, keys: set[str], name: str) -> dict[str, object]:
@@ -97,7 +102,7 @@ def _unavailable(reason: str) -> dict[str, object]:
     }
 
 
-def normalize_phase_event_commander_chance_weights_v1(
+def _normalize_base_phase_event_commander_chance_weights_v1(
     value: object, *, armies: list[dict[str, object]],
     role_compatibility: dict[str, object] | None,
     commander_trigger_conditions: dict[str, object] | None,
@@ -219,6 +224,71 @@ def normalize_phase_event_commander_chance_weights_v1(
         return _unavailable(str(error))
 
 
+def normalize_phase_event_commander_chance_weights_v1(
+    value: object, *, armies: list[dict[str, object]],
+    role_compatibility: dict[str, object] | None,
+    commander_trigger_conditions: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Normalize numeric inputs once, isolating optional native emptiness failures."""
+    base_value = copy.deepcopy(value)
+    extension_present = isinstance(value, dict) and _EFFECT_SOURCE_FIELD in value
+    if isinstance(base_value, dict):
+        base_value.pop(_EFFECT_SOURCE_FIELD, None)
+        occurrences = base_value.get("occurrences")
+        for row in occurrences if isinstance(occurrences, list) else []:
+            conditions = row.get("conditions") if isinstance(row, dict) else None
+            for condition in conditions if isinstance(conditions, list) else []:
+                if isinstance(condition, dict):
+                    extension_present = extension_present or bool(set(condition) & _EFFECT_CONDITION_KEYS)
+                    for field in _EFFECT_CONDITION_KEYS:
+                        condition.pop(field, None)
+    normalized = _normalize_base_phase_event_commander_chance_weights_v1(
+        base_value, armies=armies, role_compatibility=role_compatibility,
+        commander_trigger_conditions=commander_trigger_conditions,
+    )
+    if (not extension_present or normalized is None
+            or (normalized["unavailable_reason"] or "").startswith(
+                "phase_event_commander_chance_weights_fragment_invalid:")):
+        return normalized
+    flag_reason = None
+    try:
+        closed = _boolean(value[_EFFECT_SOURCE_FIELD], _EFFECT_SOURCE_FIELD)
+    except (ValueError, KeyError, TypeError) as error:
+        closed = False
+        flag_reason = f"effect_emptiness_fragment_invalid: {error}"
+    normalized[_EFFECT_SOURCE_FIELD] = closed
+    for row, raw_row in zip(normalized["occurrences"], value["occurrences"], strict=True):
+        for condition, raw_condition in zip(row["conditions"], raw_row["conditions"], strict=True):
+            weight = condition["selection_weight_raw"]
+            demanded = weight is not None and weight > 0
+            try:
+                if flag_reason is not None:
+                    raise ValueError(flag_reason)
+                fragment = _object(raw_condition, _CONDITION_KEYS | _EFFECT_CONDITION_KEYS, "effect condition")
+                operand = _nullable_integer(fragment["effect_empty_operand_raw"], "effect empty operand", 0, 0xFFFFFFFF)
+                empty = fragment["native_effect_empty"]
+                if empty is not None:
+                    _boolean(empty, "native_effect_empty")
+                reason = _reason(fragment["effect_emptiness_unavailable_reason"], "effect emptiness reason")
+                if not demanded:
+                    if operand is not None or empty is not None or reason is not None:
+                        raise ValueError("undemanded rows must not publish emptiness operands")
+                elif operand is None:
+                    if empty is not None or reason is None:
+                        raise ValueError("demanded unread operand requires unknown emptiness and reason")
+                elif not closed or empty is not (operand == 0) or reason is not None:
+                    raise ValueError("native emptiness lacks source closure or differs from DWORD zero test")
+            except (ValueError, KeyError, TypeError) as error:
+                operand = empty = None
+                reason = f"effect_emptiness_fragment_invalid: {error}" if demanded else None
+            condition.update({
+                "effect_empty_operand_raw": operand,
+                "native_effect_empty": empty,
+                "effect_emptiness_unavailable_reason": reason,
+            })
+    return normalized
+
+
 def current_commander_chance_weight_row_sets(occurrence: dict[str, object]) -> dict[str, object]:
     """Keep signed numerical rows and rejected/unknown rows without probabilities."""
     positive: list[dict[str, int]] = []
@@ -238,4 +308,36 @@ def current_commander_chance_weight_row_sets(occurrence: dict[str, object]) -> d
         "chance_weight_observation_ready": occurrence["chance_weight_observation_ready"],
         "positive_rows": positive, "nonpositive_rows": nonpositive,
         "not_admitted_row_indices": not_admitted, "unknown_row_indices": unknown,
+    }
+
+
+def current_commander_positive_weight_effect_emptiness_sets(
+    occurrence: dict[str, object],
+) -> dict[str, object]:
+    """Split observed positive rows without selection, harm or effect claims."""
+    empty_rows: list[dict[str, object]] = []
+    nonempty_rows: list[dict[str, object]] = []
+    unknown_rows: list[dict[str, object]] = []
+    for condition in occurrence["conditions"]:
+        weight = condition["selection_weight_raw"]
+        if weight is None or weight <= 0:
+            continue
+        empty = condition.get("native_effect_empty")
+        reason = condition.get("effect_emptiness_unavailable_reason")
+        if "native_effect_empty" not in condition:
+            reason = "effect_emptiness_extension_not_published"
+        row = {
+            "loaded_row_index": condition["loaded_row_index"],
+            "chance_raw": condition["chance_raw"], "selection_weight_raw": weight,
+            "effect_empty_operand_raw": condition.get("effect_empty_operand_raw"),
+            "native_effect_empty": empty, "effect_emptiness_unavailable_reason": reason,
+        }
+        (empty_rows if empty is True else nonempty_rows if empty is False else unknown_rows).append(row)
+    return {
+        "occurrence_index": occurrence["occurrence_index"],
+        "effect_emptiness_observation_ready": (
+            occurrence["chance_weight_observation_ready"] is True and not unknown_rows
+        ),
+        "empty_positive_rows": empty_rows, "nonempty_positive_rows": nonempty_rows,
+        "unknown_positive_rows": unknown_rows,
     }

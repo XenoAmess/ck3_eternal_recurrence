@@ -11,6 +11,10 @@ inline void AppendPhaseEventCommanderChanceWeightsV1(
   out += ",\"source_ck3_sha256\":"; AppendPhaseRiteStringV1(out, value.source_ck3_sha256);
   out += ",\"chance_source_closed\":"; out += value.chance_source_closed ? "true" : "false";
   out += ",\"native_chance_evaluation_observed\":"; out += value.native_chance_evaluation_observed ? "true" : "false";
+  if (value.effect_emptiness_source_closed) {
+    out += ",\"effect_emptiness_source_closed\":";
+    AppendCommanderSideBoolV1(out, value.effect_emptiness_source_closed);
+  }
   out += ",\"complete_phase_effects_ready\":false,\"unavailable_reason\":";
   AppendCommanderSideReasonV1(out, value.unavailable_reason);
   out += ",\"occurrences\":[";
@@ -34,7 +38,14 @@ inline void AppendPhaseEventCommanderChanceWeightsV1(
       out += ",\"role_and_trigger_valid\":"; AppendCommanderSideBoolV1(out, condition.role_and_trigger_valid);
       out += ",\"chance_raw\":"; AppendCommanderSideIntegerV1(out, condition.chance_raw);
       out += ",\"selection_weight_raw\":"; AppendCommanderSideIntegerV1(out, condition.selection_weight_raw);
-      out += ",\"unavailable_reason\":"; AppendCommanderSideReasonV1(out, condition.unavailable_reason); out += '}';
+      out += ",\"unavailable_reason\":"; AppendCommanderSideReasonV1(out, condition.unavailable_reason);
+      if (value.effect_emptiness_source_closed) {
+        out += ",\"effect_empty_operand_raw\":"; AppendCommanderSideIntegerV1(out, condition.effect_empty_operand_raw);
+        out += ",\"native_effect_empty\":"; AppendCommanderSideBoolV1(out, condition.native_effect_empty);
+        out += ",\"effect_emptiness_unavailable_reason\":";
+        AppendCommanderSideReasonV1(out, condition.effect_emptiness_unavailable_reason);
+      }
+      out += '}';
     }
     out += "],\"admitted_count\":" + std::to_string(row.admitted_count);
     out += ",\"evaluated_count\":" + std::to_string(row.evaluated_count);
