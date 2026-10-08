@@ -32,8 +32,8 @@ bool ReadSample(const RetainedTargetStateBindings12004 &bindings,
                 std::uint32_t actor_id, std::uint32_t target_id,
                 Sample &sample, const char *&reason) noexcept {
   sample = {};
-  sample.actor = ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(actor_id));
-  sample.target = ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(target_id));
+  sample.actor = xar::ck3_12004::ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(actor_id));
+  sample.target = xar::ck3_12004::ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(target_id));
   if (!sample.actor || !sample.target) {
     reason = "retained_target_identity_unavailable"; return false;
   }
@@ -52,15 +52,15 @@ bool ReadSample(const RetainedTargetStateBindings12004 &bindings,
         reason = "retained_target_memory_unavailable"; return false;
       }
       if (sample.jailer_id == 0 || sample.jailer_id == UINT32_MAX ||
-          !(sample.jailer = ResolveCoreCharacter(bindings.core,
+          !(sample.jailer = xar::ck3_12004::ResolveCoreCharacter(bindings.core,
               static_cast<std::int32_t>(sample.jailer_id)))) {
         reason = "retained_target_jailer_identity_unavailable"; return false;
       }
     }
   }
-  if (ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(actor_id)) != sample.actor ||
-      ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(target_id)) != sample.target ||
-      (sample.jailer != nullptr && ResolveCoreCharacter(bindings.core,
+  if (xar::ck3_12004::ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(actor_id)) != sample.actor ||
+      xar::ck3_12004::ResolveCoreCharacter(bindings.core, static_cast<std::int32_t>(target_id)) != sample.target ||
+      (sample.jailer != nullptr && xar::ck3_12004::ResolveCoreCharacter(bindings.core,
           static_cast<std::int32_t>(sample.jailer_id)) != sample.jailer)) {
     reason = "retained_target_identity_changed"; return false;
   }
