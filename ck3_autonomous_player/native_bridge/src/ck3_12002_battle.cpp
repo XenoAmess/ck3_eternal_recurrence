@@ -1608,6 +1608,20 @@ game::BattlePendingDeathQueueSnapshotV1 PendingDeathQueueSample(
 game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     const BattleBindings &b, void *character, std::int32_t character_id) noexcept {
   game::BattleCurrentPersonStateSnapshotV1 observed{};
+  if (b.current_person_carrier_direct.enabled) {
+    observed.carrier_1c8_b70_direct =
+        ck3_12004::ReadPersonCarrierDirectForCharacter12004(
+            b.current_person_carrier_direct,
+            reinterpret_cast<std::uintptr_t>(character));
+    // The actual4 leaf is independent. No old .3 observer is enabled or called.
+    if (!b.current_person_state_enabled) {
+      observed.effective_prowess.unavailable_reason = "current_effective_prowess_not_bound";
+      observed.injury_traits.unavailable_reason = "current_injury_traits_not_bound";
+      observed.injury_traits.wounded_rank_unavailable_reason = "current_wounded_rank_not_bound";
+      observed.death_record.unavailable_reason = "current_death_record_not_bound";
+      return observed;
+    }
+  }
   if (b.current_person_raw_numeric_inputs_enabled)
     observed.raw_numeric_inputs = CurrentRawNumericInputs(b, character, character_id);
   if (b.current_person_context_branch_inputs_enabled)
@@ -1708,7 +1722,8 @@ game::BattleTerminalCharacterCustodySnapshotV1 CharacterObservationSample(
   game::BattleTerminalCharacterCustodySnapshotV1 observed{};
   observed.character_id = id;
   void *const character = Resolve(b.character_storage_slot, id, 0x18);
-  if (include_current_person && b.current_person_state_enabled)
+  if (include_current_person &&
+      (b.current_person_state_enabled || b.current_person_carrier_direct.enabled))
     observed.current_person_state = CurrentPersonSample(b, character, id);
   if (!character) return observed;
   // Exact .3 native 0x28EE9BA compares this eight-byte death-data pointer.

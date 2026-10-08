@@ -2727,7 +2727,7 @@ def create_server(
         after_terminal_sequence: int | None = None,
         character_ids: list[int] | None = None,
     ) -> dict[str, object]:
-        """Read terminal history and requested current characters; null IDs omit battle context."""
+        """Read terminal history and requested current characters; null IDs omit battle context. Actual4 can include the independently ready direct carrier source."""
         return _ck3_query_battle_terminal_transition_v1(
             service,
             prior_combat_id,

@@ -6,6 +6,7 @@
 #include "xar_bridge/battle_current_warscore_caps_v1.hpp"
 #include "xar_bridge/battle_current_own_nested_modifier_dto.hpp"
 #include "xar_bridge/knight_current_model_association_v1.hpp"
+#include "xar_bridge/ck3_12004_person_carrier_direct.hpp"
 
 #include "xar_bridge/ck3_12003_maa_recruitment.hpp"
 #include "xar_bridge/owned_regiments.hpp"
@@ -3639,6 +3640,7 @@ struct BattleCurrentPersonStateSnapshotV1 {
   std::optional<BattleCurrentPersonPriorContextInputsSnapshotV1> current_prior_context_inputs;
   std::optional<BattleCurrentStoredContextStateSnapshotV1> current_stored_context_state;
   std::optional<BattleCurrentPersonContextSourceInputsSnapshotV1> current_context_source_inputs;
+  std::optional<ck3_12004::PersonCarrierDirect12004DTO> carrier_1c8_b70_direct;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
 };

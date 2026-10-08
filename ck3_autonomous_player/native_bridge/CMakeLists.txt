@@ -1175,6 +1175,8 @@ add_library(xar_ck3_12002_runtime STATIC
     src/ck3_12004_adapter.cpp
     src/ck3_12004_abi_profile.cpp
     src/ck3_12004_core_frame_v1.cpp
+  src/ck3_12004_battle.cpp
+  src/ck3_12004_person_carrier_direct.cpp
   src/ck3_12003_commander.cpp
   src/ck3_12003_commander_target_roll.cpp
   src/ck3_12003_current_commander_martial.cpp
@@ -9517,4 +9519,29 @@ if(BUILD_TESTING AND WIN32)
   endif()
   add_test(NAME xar_ck3_12004_title_own_laws_v1_test
     COMMAND $<TARGET_FILE:xar_ck3_12004_title_own_laws_v1_test>)
+endif()
+
+# Same character-only MCP query: actual4 owned model and direct numerical leaf.
+# Reuse the complete production Bridge object closure and runtime archive.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_person_carrier_direct_mcp_test
+    tests/person_carrier_direct12004_mcp_fixture.cpp
+    $<TARGET_OBJECTS:xar_ck3_bridge>)
+  target_include_directories(xar_ck3_12004_person_carrier_direct_mcp_test PRIVATE
+    include src research)
+  target_link_libraries(xar_ck3_12004_person_carrier_direct_mcp_test PRIVATE
+    xar_ck3_12002_runtime xar_bridge_protocol bcrypt
+    $<TARGET_PROPERTY:xar_ck3_bridge,LINK_LIBRARIES>)
+  target_compile_features(xar_ck3_12004_person_carrier_direct_mcp_test PRIVATE
+    cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_person_carrier_direct_mcp_test PRIVATE
+    $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_person_carrier_direct_mcp_test PRIVATE
+      /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+  endif()
+  add_test(NAME xar_ck3_12004_person_carrier_direct_mcp_first
+    COMMAND xar_ck3_12004_person_carrier_direct_mcp_test
+      "${CMAKE_BINARY_DIR}/wire/ck3_12004_person_carrier_direct_mcp_first")
 endif()

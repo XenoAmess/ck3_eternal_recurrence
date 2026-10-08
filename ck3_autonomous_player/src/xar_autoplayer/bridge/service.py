@@ -13828,7 +13828,12 @@ class GameplayBridgeService:
         after_terminal_sequence: int | None = None,
         character_ids: list[int] | None = None,
     ) -> dict[str, object]:
-        """Read terminal history and the subject's same-frame successor state."""
+        """Read terminal history or requested current characters in one frame.
+
+        Character-only actual4 responses preserve the optional direct carrier
+        source leaf through the existing normalized character-observation mirror.
+        Its readiness is independent of complete person or Entry reconstruction.
+        """
         step = query_battle_terminal_transition_v1_step(
             prior_combat_id,
             subject_public_cunit_id,

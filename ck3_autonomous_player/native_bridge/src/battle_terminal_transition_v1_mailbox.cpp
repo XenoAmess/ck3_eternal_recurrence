@@ -1038,4 +1038,30 @@ std::string SerializeBattleTerminalTransitionV1(
   return output;
 }
 
+std::string SerializeBattleTerminalTransitionCommandResultV1(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const game::BattleTerminalTransitionSnapshotV1 &snapshot) {
+  const auto payload = SerializeBattleTerminalTransitionV1(snapshot);
+  if (payload.empty()) return {};
+  const std::string_view status =
+      snapshot.status == game::BattleTerminalTransitionStatusV1::available
+          ? "available" : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  if (!AppendNumber(result, query_sequence)) return {};
+  result += ",\"snapshot_revision\":";
+  if (!AppendNumber(result, snapshot.snapshot_revision)) return {};
+  result += ",\"battle_terminal_transition\":";
+  result += payload;
+  result += "}}";
+  return result;
+}
+
 } // namespace xar::ck3_11906

@@ -13,6 +13,7 @@ inline constexpr char kPersonCarrierDirect12004Schema[] =
     "xar.ck3.person-carrier-direct-12004-v1";
 inline constexpr std::uintptr_t kPersonCarrierDefaultPcRva12004 = 0x5D71200;
 inline constexpr std::uintptr_t kPersonCarrierDefaultGuardRva12004 = 0x5D711F0;
+inline constexpr std::uintptr_t kPersonCarrierContextGetterRva12004 = 0x28C3AC0;
 inline constexpr std::int64_t kPersonCarrierDirectWeight12004 = 100'000;
 
 // Root supplies its guarded copy callback. No native getter, initializer,
@@ -24,6 +25,8 @@ using PersonCarrierDirect12004ReadMemory =
 struct PersonCarrierDirect12004Bindings {
   bool enabled = false;
   std::uintptr_t module_base = 0;
+  // Exact4 getter identity; the memory-only owned branch below never invokes it.
+  std::uintptr_t current_context_getter_identity = 0;
   PersonCarrierDirect12004ReadMemory read_memory = nullptr;
   void *read_context = nullptr;
 };
@@ -33,6 +36,8 @@ struct PersonCarrierDirect12004Properties {
   // Independent failed copies remain null; order/duplicates/FFFF are retained.
   std::optional<std::vector<std::uint16_t>> keys_u16;
   std::optional<std::vector<std::int64_t>> values_q64;
+  friend bool operator==(const PersonCarrierDirect12004Properties &,
+                         const PersonCarrierDirect12004Properties &) = default;
 };
 
 struct PersonCarrierDirect12004DTO {
@@ -59,6 +64,8 @@ struct PersonCarrierDirect12004DTO {
   std::optional<PersonCarrierDirect12004Properties> properties;
   std::optional<std::uint32_t> source_occurrence_count;
   std::int64_t weight_q100000 = kPersonCarrierDirectWeight12004;
+  friend bool operator==(const PersonCarrierDirect12004DTO &,
+                         const PersonCarrierDirect12004DTO &) = default;
 };
 
 // Only the existing exact 1.20.0.4 version/SHA pin is admitted; no old alias.
@@ -68,12 +75,19 @@ PersonCarrierDirect12004Bindings BindPersonCarrierDirect12004(
     PersonCarrierDirect12004ReadMemory read_memory,
     void *read_context = nullptr) noexcept;
 
-// A standalone bounded leaf, awaiting Root's same-selected-person query hook.
+// The bounded model-receiver leaf used by the same-selected-person query hook.
 // Ancillary full-ID copy failure is visible as null; it does not change the
 // numerical branch's readiness or authorize attribution to another Character.
 PersonCarrierDirect12004DTO ReadPersonCarrierDirect12004(
     const PersonCarrierDirect12004Bindings &bindings,
     std::uintptr_t actual_model);
+
+// The cached actual4 getter's owned branch: Character1B0 -> scratch258 ->
+// Model, with Model8 == the requested Character. Its inline-default branch is
+// not a model and is never substituted for an absent or differently owned model.
+PersonCarrierDirect12004DTO ReadPersonCarrierDirectForCharacter12004(
+    const PersonCarrierDirect12004Bindings &bindings,
+    std::uintptr_t actual_character);
 
 // Returns a JSON leaf object. Signed Q64 elements are decimal JSON strings.
 std::string SerializePersonCarrierDirect12004(

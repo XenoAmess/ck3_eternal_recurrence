@@ -7310,32 +7310,8 @@ std::string BattleTerminalTransitionResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
     const xar::game::BattleTerminalTransitionSnapshotV1 &snapshot) {
-  const auto payload =
-      xar::ck3_11906::SerializeBattleTerminalTransitionV1(snapshot);
-  if (payload.empty()) {
-    return {};
-  }
-  const std::string_view status =
-      snapshot.status ==
-              xar::game::BattleTerminalTransitionStatusV1::available
-          ? "available"
-          : "unavailable";
-  std::string result =
-      "{\"type\":\"command_result\",\"protocol_version\":1,"
-      "\"request_id\":";
-  AppendJsonString(result, request_id);
-  result += ",\"ok\":true,\"result\":{\"step\":";
-  AppendJsonString(result, step);
-  result += ",\"accepted\":true,\"status\":";
-  AppendJsonString(result, status);
-  result += ",\"query_sequence\":";
-  result += Number(query_sequence);
-  result += ",\"snapshot_revision\":";
-  result += Number(snapshot.snapshot_revision);
-  result += ",\"battle_terminal_transition\":";
-  result += payload;
-  result += "}}";
-  return result;
+  return xar::ck3_11906::SerializeBattleTerminalTransitionCommandResultV1(
+      request_id, step, query_sequence, snapshot);
 }
 
 std::string BattleReinforcementAssignmentResultFrame(

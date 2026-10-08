@@ -121,6 +121,8 @@ PersonCarrierDirect12004Bindings BindPersonCarrierDirect12004(
   }
   bindings.enabled = true;
   bindings.module_base = module_base;
+  bindings.current_context_getter_identity =
+      module_base + kPersonCarrierContextGetterRva12004;
   bindings.read_memory = read_memory;
   bindings.read_context = read_context;
   return bindings;
@@ -218,6 +220,48 @@ PersonCarrierDirect12004DTO ReadPersonCarrierDirect12004(
   dto.ready = true;
   dto.source_occurrence_count = *dto.selected_pc_count_i32 == 0 ? 0U : 1U;
   return dto;
+}
+
+PersonCarrierDirect12004DTO ReadPersonCarrierDirectForCharacter12004(
+    const PersonCarrierDirect12004Bindings &bindings,
+    std::uintptr_t actual_character) {
+  PersonCarrierDirect12004DTO dto;
+  dto.build_version = kGameVersion;
+  dto.executable_sha256 = kExecutableSha256;
+  dto.character_identity = actual_character;
+  if (!bindings.enabled || bindings.read_memory == nullptr ||
+      bindings.current_context_getter_identity !=
+          bindings.module_base + kPersonCarrierContextGetterRva12004) {
+    dto.reason = "exact_build_binding_unavailable";
+    return dto;
+  }
+  if (actual_character == 0) {
+    dto.reason = "requested_character_unavailable";
+    return dto;
+  }
+  dto.character_id = Copy<std::uint32_t>(
+      bindings, actual_character + kCharacterFullIdOffset);
+  const auto scratch = Copy<std::uintptr_t>(bindings, actual_character + 0x1B0);
+  if (!scratch || *scratch == 0) {
+    dto.reason = scratch ? "current_owned_model_absent_scratch"
+                         : "current_owned_model_scratch_unread";
+    return dto;
+  }
+  const auto model = Copy<std::uintptr_t>(bindings, *scratch + 0x258);
+  if (!model || *model == 0) {
+    dto.reason = model ? "current_owned_model_absent"
+                       : "current_owned_model_pointer_unread";
+    return dto;
+  }
+  dto.selected_model_identity = *model;
+  const auto owner = Copy<std::uintptr_t>(bindings, *model + 8);
+  if (!owner || *owner != actual_character) {
+    dto.reason = owner ? "current_owned_model_owner_mismatch"
+                       : "current_owned_model_owner_unread";
+    return dto;
+  }
+  // Only this source-closed owned branch is an actual selected model receiver.
+  return ReadPersonCarrierDirect12004(bindings, *model);
 }
 
 std::string SerializePersonCarrierDirect12004(

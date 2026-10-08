@@ -1,7 +1,16 @@
 #include "xar_bridge/ck3_12004_battle.hpp"
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
+#include "xar_bridge/ck3_12003_current_stored_context.hpp"
 
 namespace xar::ck3_12004 {
+namespace {
+bool CopyCarrierSource(void *, const void *source, void *destination,
+                       std::size_t bytes) noexcept {
+  // Reuse the existing guarded physical copy, not an older ABI factory.
+  return ck3_12002::current_stored_context_12003::CopyBytes(
+      destination, source, bytes);
+}
+} // namespace
 
 BattleBindings BindBattleImage(
     std::uintptr_t base, std::string_view sha,
@@ -13,6 +22,8 @@ BattleBindings BindBattleImage(
   // Proof: combat-map/pass01..pass04-leaves/FAMILY-MAP.json, plus the current
   // typed operand ledger. Roots owned by GeneralCombat/Province are injected.
   bindings.enabled = true;
+  bindings.current_person_carrier_direct = BindPersonCarrierDirect12004(
+      base, kGameVersion, sha, &CopyCarrierSource);
   bindings.game_state_slot =
       reinterpret_cast<void **>(base + kGameStateSlotRva);
   bindings.jomini_state_slot =

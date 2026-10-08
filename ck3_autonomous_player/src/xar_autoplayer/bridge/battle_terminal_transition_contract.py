@@ -896,6 +896,8 @@ def _normalize_current_person_state(
         fields.add("current_stored_context_state")
     if isinstance(value, dict) and "current_context_source_inputs" in value:
         fields.add("current_context_source_inputs")
+    if isinstance(value, dict) and "carrier_1c8_b70_direct" in value:
+        fields.add("carrier_1c8_b70_direct")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -1002,6 +1004,10 @@ def _normalize_current_person_state(
     if "current_context_task_position_inputs" in state:
         normalized["current_context_task_position_inputs"] = normalize_current_context_task_position_inputs(
             state["current_context_task_position_inputs"], f"{field}.current_context_task_position_inputs")
+    if "carrier_1c8_b70_direct" in state:
+        from .battle_person_carrier_direct_12004 import normalize_carrier_direct_12004
+        normalized["carrier_1c8_b70_direct"] = normalize_carrier_direct_12004(
+            state["carrier_1c8_b70_direct"])
     return normalized
 
 
@@ -1058,6 +1064,10 @@ def _normalize_character_custody_rows(
             sources = normalized["current_person_state"].get("current_context_source_inputs")
             if sources is not None and sources["character_id"] != character_id:
                 raise ValueError(f"{field}[{index}] context source CharacterID disagrees")
+            carrier = normalized["current_person_state"].get("carrier_1c8_b70_direct")
+            if (carrier is not None and carrier["character_id"] is not None
+                    and carrier["character_id"] != character_id):
+                raise ValueError(f"{field}[{index}] direct carrier CharacterID disagrees")
         result.append(normalized)
     return result
 

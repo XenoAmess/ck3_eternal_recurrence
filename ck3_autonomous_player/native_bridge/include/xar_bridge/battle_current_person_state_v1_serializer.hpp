@@ -639,6 +639,11 @@ inline std::string SerializeBattleCurrentPersonStateV1(
     output += SerializeBattleCurrentPersonContextSourceInputsV1(
         *state.current_context_source_inputs);
   }
+  if (state.carrier_1c8_b70_direct) {
+    output += ",\"carrier_1c8_b70_direct\":";
+    output += xar::ck3_12004::SerializePersonCarrierDirect12004(
+        *state.carrier_1c8_b70_direct);
+  }
   output += '}';
   return output;
 }

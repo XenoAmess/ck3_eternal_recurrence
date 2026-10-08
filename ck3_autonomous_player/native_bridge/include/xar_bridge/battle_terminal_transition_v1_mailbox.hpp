@@ -69,6 +69,13 @@ std::string_view BattleTerminalTransitionFailureMessageV1(
 std::string SerializeBattleTerminalTransitionV1(
     const game::BattleTerminalTransitionSnapshotV1 &snapshot);
 
+// Same complete private response formatter used by the production dispatcher
+// and the offline whole-query fixture; callers do not reconstruct its envelope.
+std::string SerializeBattleTerminalTransitionCommandResultV1(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const game::BattleTerminalTransitionSnapshotV1 &snapshot);
+
 static_assert(
     std::is_same_v<
         decltype(&ExecuteBattleTerminalTransitionMailboxQueryV1),
