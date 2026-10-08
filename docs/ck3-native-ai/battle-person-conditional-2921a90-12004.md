@@ -251,3 +251,28 @@ same registered consumer against the twelve retained original packets; no
 native producer, compile, archive, link, or historical GREEN path is replayed.
 The native compiled source and final consumer qualification source are
 recorded separately. This correction has no live or whole-Person credit.
+## Root Native44 qualification
+
+The source-backed conditional sibling is now **static-ready**. Native44's
+431 compiler invocations ran with jobs64 and BelowNormal priority; its fresh
+Runtime432 archive, DLL and sole fixture link passed. The final mixed closure
+has732 owners: Bridge299, Runtime432 and Protocol1, retaining302 actual parent
+objects and replacing429 existing owners. The unchanged qualified following43
+reader is retained. All twelve new original native packets passed in0.2600174s
+on compiled source `31ba621f8a23bd3c72e638d06f1ef957590afafe`.
+
+The same sole registered consumer passed in6.0008355s, pytest5.21s, on
+`fcbec87c8636401da48651c8aed4a928eecb3f30`.
+[Original build result](Z:/g2-native44-build01/attempt01/ROOT-NATIVE44-RESULT.json)
+preserves its initial consumer RED; [consumer-only qualification](Z:/g2-native44-build01/root-consumer-retry03/ROOT-ACTUAL-RESULT.json)
+records the completed retry without recompiling C++ or replaying twelve packets.
+The first consumer argument omitted the outer Character ID; the fixture now
+joins the preserved observed full ID explicitly, as required by the established
+emitter contract. The next failure exposed a legitimate unobserved nonself
+classifier vote emitted as an empty string. The minimal normalizer fix preserves
+that value only with `ready=false`; its reason and null classifier result remain
+unchanged. Ready rows still require a concrete vote. Both RED attempts remain.
+
+R80 continues on Native42. This qualification adds no live observation,
+complete person/Entry, action, natural birth or G2 day credit. Nonself opinion
+and dynamic expression evaluation retain their source entrances.

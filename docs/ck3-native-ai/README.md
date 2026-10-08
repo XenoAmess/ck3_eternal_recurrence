@@ -2,6 +2,23 @@
 
 ## 2026-10-09: Restored original campaign observes current native state
 
+The [conditional person contribution](battle-person-conditional-2921a90-12004.md)
+is subsequently qualified offline: twelve native whole packets and one
+registered consumer, with the actual unread nonself vote preserved. Native44
+has732 production owners and remains static-ready. The
+[ordinary Army cache transfer](ordinary-army-cache-detachment-12004.md)
+also passed its connected actual-input compound, removing three duplicate
+row copies while retaining required cache and public ownership copies.
+
+The current ordinary construction attempt returned an unknown ACK and its
+independent receipt has not matched the expected tuple. Same-date actual gold
+decreased by142.5; that alone adds no M4 credit. The
+[construction source gap](construction-r80-selector-ack-source-gap-12004.md)
+records two different candidate orderings and the missing raw observation
+entrance. Its actual tuple remains to be read; the pending action is retained.
+The [claim-CB source tree](claim-cb-r80-ordinary-terms-observation-12004.md)
+records why current day27/score0 follows the existing ordinary war continuation.
+
 [Mailbox ABI recovery](main-thread-observer-mailbox-abi-12004.md) records the
 actual R79 publication failure and three-owner Native42 rebuild. R80 passed
 all thirteen full paused-frame checks in the original Robert29829 campaign,
