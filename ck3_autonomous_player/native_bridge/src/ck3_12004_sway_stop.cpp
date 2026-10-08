@@ -26,7 +26,7 @@ bool Parse(std::string_view payload, SwayStopMailboxContext12004 &q) noexcept {
       !bridge::JsonUnsignedField(payload, "target_character_id", target) ||
       !bridge::JsonUnsignedField(payload, "scheme_instance_id", id) ||
       !bridge::JsonUnsignedField(payload, "scheme_instance_generation", generation) ||
-      !bridge::JsonStringField(payload, "action_id", q.action_id) ||
+      !bridge::JsonStringField(payload, "action_id", q.action_id, 64) ||
       request.expected_revision == 0 || actor == 0 || target == 0 || actor == target ||
       actor > std::numeric_limits<std::int32_t>::max() ||
       target > std::numeric_limits<std::int32_t>::max() ||
