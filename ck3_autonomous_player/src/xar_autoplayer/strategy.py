@@ -10,6 +10,9 @@ from typing import Iterable
 from .current_native_war_end_conditions_v1 import (
     assess_current_native_war_end_conditions_v1,
 )
+from .current_replenishment_army_selector_v1 import (
+    select_current_replenishment_army_v1,
+)
 
 from .bridge.campaign_root_context_contract import (
     _is_landless_noble_family_no_province_row,
@@ -9982,12 +9985,26 @@ def _choose_one_life_turn_core(
             for army in controlled_armies
             if army.get("army_id") in unsafe_army_ids
         ]
+        replenishment_selection = None
+        quiet_pursuit_army = None
+        if not unsafe_armies and not threatened_stationary_armies:
+            quiet_pursuit_army, replenishment_selection = (
+                select_current_replenishment_army_v1(
+                    controlled_armies,
+                    snapshot if isinstance(snapshot, dict) else {},
+                    active_war_ids=(war.get("war_id") for war in active_wars),
+                )
+            )
+            if replenishment_selection.get("status") != "not_applicable":
+                for summary in war_summary:
+                    if summary.get("war_id") in replenishment_selection["active_war_ids"]:
+                        summary["current_replenishment_selection_v1"] = replenishment_selection
         pursuit_army = (
             _stable_strongest_army(unsafe_armies)
             if unsafe_armies
             else _stable_strongest_army(threatened_stationary_armies)
             if threatened_stationary_armies
-            else _stable_strongest_army(controlled_armies)
+            else quiet_pursuit_army
         )
         unavailable_routes = [
             audit
@@ -10073,7 +10090,13 @@ def _choose_one_life_turn_core(
         )
         if (
             isinstance(tactical_war_id, int)
-            and route_threat_enemy_ids
+            and (
+                route_threat_enemy_ids
+                or (
+                    isinstance(replenishment_selection, dict)
+                    and replenishment_selection.get("query_needed") is True
+                )
+            )
             and strength_balance is None
             and strength_query_status is None
             and isinstance(snapshot, dict)
@@ -10092,8 +10115,9 @@ def _choose_one_life_turn_core(
                 "required_step": QUERY_ARMY_STRENGTHS_STEP,
                 "reason": (
                     "read the exact current soldiers and native AI base "
-                    "power for every published army on both war sides before "
-                    "committing or advancing an offensive route"
+                    "power and current refill inputs for the published war "
+                    "armies before choosing equal-strength idle stacks or "
+                    "committing an offensive route"
                 ),
                 "war_id": tactical_war_id,
                 "army_strength_scope": {
