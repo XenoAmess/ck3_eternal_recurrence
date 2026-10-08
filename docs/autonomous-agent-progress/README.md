@@ -1,6 +1,20 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 02:32:56 CST：29 build GREEN，native2GREEN／LAND1RED待修
+### 2026-10-08 09:14:58 CST：Operator／preflight GREEN，R75真实startup RED保留
+
+新actual R75 job在17.275s后退出：injectorrc3/error1114，remote_loadlibrary_exit2541355008/moduleloaded成功，但remote_prepare_exit3221225725 **0xC00000FD stackoverflow**。Root-contained injector已reaped、jobactive0；未native_session_ready／SDK新帧／新day。此前handoff ACCEPTED不替代启动成功，29 native／Service三组三组offline GREEN保留；Native28仅offline资格，最后loaded Game为Root所报runtime24d/R74，不写28 startup GREEN或Game能力失败。具体source-only诊断进行中，下一build pending；下面09:14:22的preflight事实作为前阶段保留。
+
+Root实际Operator regression **GREEN0.210227s／source3df414f0**，首次fixed host漏拷generated operator_mcp_server.py的启动失败日志保留，复用source-local bootstrap后host retry成立。Managed preflight RETRY01 **GREEN、process gates empty**，R75 handoff **ACCEPTED／job a77e0d1c-5a94-418f-a1bc-80db2dbab01f**；**native_session_ready／恢复snapshot尚未观察，不授恢复帧／动作／新day信用**。29及Python既有GREEN复用、211names不等于全positive branches。M7 formal候选4ce1e187已实现4新TUs／4,832B39reads，Army87b6／Commander484下一批均NOTRUN。H9658/saved6006/G2 5/8/NW2 2/4/M4false/natural0不变；Root唯一minimized Game，详见[Oct8日报](daily/2026-10-08.md)、[Operator回归](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/operator29-host-first01/RESULT.json)与[真实早会](meetings/daily/2026-10-08.md)。本次按09:14实际时间追加，旧RED保留、publication待Root。
+
+### 历史2026-10-08 03:25:45 CST：Python现场／family配置GREEN，R75 prepare完成、Operator门禁仍RED
+
+Env修复g120／46fd2d8d唯一regression GREEN0.2091606s、fresh inventory GREEN空；FamilyCLI g121／cfd6c96f唯一真实registered Service compound GREEN5.5172238s（3configs／5rich rows）。五path纯Python overlay、0Native改动，29三native／三MCP和canonical7d／physical18edd保留。R75 sequence75已分配，官方prepare首次缺稀疏依赖RED后仅原失败step重试，[all10／完整Driver rebind／CLI preflight GREEN](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup29restore01/prepared/ROOT-FULL-PREPARE-REBIND.json)；**Operator独立Toolhelp门禁仍把已exit的PID139512判活，managed preflight仅process_absent:ck3.exe RED**，Wait0最小修复pending，未启动Game／SDK／新paused frame。Root唯一minimized授权有效；H9658/date53288472/saved6006、G2 5/8、NW2 2/4、M4false/natural0/newday0不变。Rootadopt98116995／c866275d与最新publisheda74分列，本批pending Root统一发布，详见[Oct8日报](daily/2026-10-08.md)、[早会追加](meetings/daily/2026-10-08.md)及[实测知识](../testing-workflow.md)。
+
+### 历史2026-10-08 03:01:33 CST：Runtime29三native／三MCP最终离线合格
+
+[Canonical29](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix29/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json) archive GREEN713／460commands／12newinputs；LAND第三native GREEN.216976、唯一MCPcompound GREEN5.9100992s（budgets25/0/0），前两RED保留，另两旧GREEN不重跑。Production18edd与LANDqualification7d／publisheda74分列，Game尚未加载／恢复，新day0；Root唯一minimized权限已恢复，环境sourcefix待后才能O8-5实际原战役OODA。M7完整formal／M5normalfamily wiring在途，H9658/saved6006/G2 5/8/NW2 2/4/M4false/natural0不变，见[Oct8日报](daily/2026-10-08.md)／[真实早会](meetings/daily/2026-10-08.md)。
+
+### 历史2026-10-08 02:32:56 CST：native2GREEN／LAND1RED当时待修
 
 Root29实际55prod4fixture1generator build GREEN；army_admission／commander_trigger native GREEN，land_stock whole ABI/count/order断言RED保留、最小修复中，另两native不重跑、consumer结果pending。29三native／三MCP整体合格前不得加载；新授权允许Root唯一Game且保持最小化不抢焦点，O8-5恢复G2尚待qualified。28及三独立consumer已完成里程碑可先发布；H9658/saved6006/G2 5/8/NW2 2/4/natural0/M4false/newday0不变，见[Oct8日报](daily/2026-10-08.md)／[真实早会](meetings/daily/2026-10-08.md)。
 

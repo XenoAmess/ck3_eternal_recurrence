@@ -1,5 +1,26 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-08 09:14:58：preflight／模块加载与remote prepare分别记账
+
+R75 actual preflight GREEN、handoff ACCEPTED之后，launch17.275s的canonical injectorrc3/error1114仍导致jobexit：remote_loadlibrary_exit2541355008显示moduleloaded成功，remote_prepare_exit3221225725 **0xC00000FD stackoverflow**。Root-contained injector已reaped／jobactive0，原job-report保留；无native_session_ready／新SDK／恢复frame。不能用preflight／moduleload或offline FIRST替代实际startup，亦不能据此把Game能力判RED。具体source-only诊断／nextbuild pending，report不追加执行或读取。下方09:14:22门禁与host依赖结果保留为前阶段。
+
+## 2026-10-08 09:14:22：Operator门禁修复与host bootstrap失败分别记账
+
+Root Operator source3df414f0804b00768b0bfd673bb5b74a2583b0a1的唯一[regression GREEN0.210227s](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/operator29-host-first01/RESULT.json)，R75 managed preflight RETRY01实际GREEN、process gates empty，闭合下方03:25独立Operator仍RED的状态。首次fixed-host启动另因漏拷generated **operator_mcp_server.py** entry失败，日志ROOT-OPERATOR-HOST-REBIND-STDERR.log保留；Root复用并复制source-local已有bootstrap后记ROOT-OPERATOR-HOST-RETRY01.json。Host缺entry属于启动依赖故障，不能改写已GREEN的Operator回归，也不能删初次失败。
+
+Managed handoff ACCEPTED不替代native_session_ready／恢复snapshot；09:14:22二者尚未观察，无新Game日。此条只消费Root实际消息，不读取或重放旧证据／测试／进程。下表保留03:25时态，不把后来GREEN回填旧RED。
+
+## 2026-10-08：退出句柄与两个实际进程消费者
+
+Root实测PID139512的 `WaitForSingleObject(process_handle, 0)` 已返回 `WAIT_OBJECT_0`，但 `GetExitCodeProcess` 返回259。**句柄signaled证明进程已exit，不能仅凭259继续判活。** 这是当前恢复流程误报的实证，不要求额外image读取或全进程sweep。
+
+| 实际消费者 | 现象／修复范围 | 当前验证与证据 |
+| --- | --- | --- |
+| Python环境inventory | 原image查询WinError31／deadentry妨碍恢复；按已退出句柄过滤 | Env145→Root98116995，g12046fd2d8d唯一[regression GREEN0.2091606s](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime29d-python-first01/TEST-RESULT.json)、[fresh inventory GREEN空](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime29d-python-first01/ACTUAL-INVENTORY.json) |
+| Managed Operator named-process gate | 独立Toolhelp raw gate仍将同一已exit PID当活；需要自身最小Wait0 filter | 03:25:45 CST仍唯一process_absent:ck3.exe RED，修复pending；Env GREEN不替代Operator结果，原attempt保留 |
+
+R75官方prepare另有缺稀疏 `ck3_workshop_mcp` module的依赖harness RED；补tracked dependencies后只重试同prepared失败step，[all10 copy／official untrimmed Driver rebind／CLI preflight最终GREEN](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup29restore01/prepared/ROOT-FULL-PREPARE-REBIND.json)。该结果不证明managed gate／Game启动／新paused frame成功；完整Driver格式重排713546501B不是trim。本知识仅复用Root已执行字段，无新增进程／Driver／Game读取或复测。
+
 ## 2026-10-07 R72：用户自行游玩时只关闭 owned 测试进程，保留首次 snapshot RED
 
 用户17:xx要求agent本机 CK3/live SDK OFF后，Root只完成已持有owned测试的关闭：[proof](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9638-joint20restore01/operator/ROOT-USER-PLAYING-OWNED-CLOSURE.json) 09:45:00.703783 UTC为OWNED_TEST_GAME_CLOSED/PID135372，cleanup_proven/treegone true、jobactive0/watchdog absent，SDK5370 exit0、intentionalCK3exit1；未关闭用户游戏，禁令后无新query/launch。不要将测试进程exit1改称正常exit0，也不以全进程核验触碰用户游玩。
