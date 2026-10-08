@@ -213,7 +213,7 @@ class HolyOrderNativeReadbackV1Tests(unittest.TestCase):
                             "snapshot_revision": frame["native_revision"], "date_raw": frame["date_raw"]}
                         if step == _HOLY_STEP:
                             body.update(status="observed", domain_key="player_holy_order_context_v1",
-                                backend_id="ck3-1.20.0.4-msvc-x64-player-holy-order-context-v1",
+                                backend_id=CK3_12004.backend_id("player-holy-order-context-v1"),
                                 player_holy_order_context=self.holy_context())
                         else:
                             test.assertTrue(self.submitted)
@@ -286,6 +286,10 @@ class HolyOrderNativeReadbackV1Tests(unittest.TestCase):
             ):
                 service = GameplayBridgeService(driver)
                 selected = service.plan_turn()
+                report["selected_plan_diagnostic"] = {
+                    key: deepcopy(selected["plan"].get(key)) for key in (
+                        "phase", "selected_step", "reason", "siege_state", "pursuit",
+                        "holy_order_reinforcement_observation", "holy_order_hire_proposal")}
                 self.assertEqual(selected["plan"]["selected_step"], _HIRE_STEP)
                 self.assertEqual(selected["plan"]["holy_order_hire_proposal"]["holy_order_id"], 0)
                 self.assertEqual(selected["plan"]["holy_order_hire_proposal"]["military_need"]["additional_soldiers_required"], 50)
