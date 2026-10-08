@@ -1972,29 +1972,34 @@ class NativeHeadlessGameplayDriver:
             else None
         )
         if isinstance(current_snapshot, dict):
-            action_steps.update(holding_assault_steps(
-                current_snapshot,
-                fresh_holding_siege_states(
+            # These readers return detached action strings. Read one owned
+            # tail under the existing lock instead of cloning every result
+            # three times to build the capability set.
+            with self._history_lock:
+                history_tail = self._command_history[-128:]
+                action_steps.update(holding_assault_steps(
                     current_snapshot,
-                    _native_history_after_latest_restore(self._history_tail_snapshot(128)),
-                ),
-                bridge_capabilities,
-            ))
-            action_steps.update(
-                _fresh_war_occupation_route_steps(
-                    current_snapshot,
-                    self._history_tail_snapshot(128),
+                    fresh_holding_siege_states(
+                        current_snapshot,
+                        _native_history_after_latest_restore(history_tail),
+                    ),
                     bridge_capabilities,
+                ))
+                action_steps.update(
+                    _fresh_war_occupation_route_steps(
+                        current_snapshot,
+                        history_tail,
+                        bridge_capabilities,
+                    )
                 )
-            )
-            action_steps.update(
-                _fresh_preview_first_hop_steps(
-                    current_snapshot,
-                    self._history_tail_snapshot(128),
-                    action_steps,
-                    bridge_capabilities,
+                action_steps.update(
+                    _fresh_preview_first_hop_steps(
+                        current_snapshot,
+                        history_tail,
+                        action_steps,
+                        bridge_capabilities,
+                    )
                 )
-            )
         with self._driver_state_lock:
             marriage_choices = copy.deepcopy(self._arrange_marriage_choices)
             active_retreat_token = copy.deepcopy(
@@ -22318,7 +22323,9 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         revision_validated_at_entry = starting_snapshot is not None
         starting = (
-            copy.deepcopy(starting_snapshot)
+            # The composite receives its already detached semantic entry
+            # frame. Its readers do not mutate nested snapshot fields.
+            dict(starting_snapshot)
             if starting_snapshot is not None
             else self.take_internal_semantic_snapshot()
         )
@@ -22403,9 +22410,15 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "exact one-day advance requires a paused map"
             )
-        starting = _with_fresh_holding_siege_states(
-            starting, self._history_tail_snapshot(128)
-        )
+        with self._history_lock:
+            starting = _with_fresh_holding_siege_states(
+                starting, self._command_history[-128:]
+            )
+            # Only current selected siege fields escape this locked reader;
+            # keep them detached without copying unrelated command results.
+            starting["_queried_holding_siege_states"] = copy.deepcopy(
+                starting["_queried_holding_siege_states"]
+            )
         # Assault lifecycle checks are read-only.  Scan the owned transcript
         # under its lock so a timeline slice does not deep-copy an ever-growing
         # command history merely to decide whether it may resume the map.
