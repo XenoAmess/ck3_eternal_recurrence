@@ -1,5 +1,11 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-08 12:51:02：部分编译／必要修复／并发与实际saved-day计数分列
+
+Runtime32唯一attempt01实际 **RED311.9073s／63compile中62GREEN、1CPP ADL ambiguity**。Root保62已通过对象与原失败，只用repair02b2797e12对 **6calls显式qualification**，下一1fresh／62reuse尚待，不重selector。Source修复本身不等于编译GREEN；并发字段写真实 **64 compile jobs**，不能据此说64个活跃agent。五项新PythonFIRST（Chancellor／战时建设／Army历史copy／prisoner semantics／Army structured保留而text去重）均离线GREEN但未部署R76CC1，不授实机性能或动作后态。
+
+R76正常6turn结束054paused/date53288544/public15/native14，本轮从53288472累计 **3day包含前017的＋1**，saved6009而非6007再加3。SAVE052H9696/104634270B/SHAf07c53befd1b044fa66bd1a1eda5c1d8d3861751726118790417f68d05c5f195是latest；CA2旧material复用不再记新法变，G2/NW2/M4/natural不随turn数增加。历史copy和输出text去重FIRST不替代真实保存／custody／供给未来状态，本知识仅消费Root实际结果，无额外检查或测试。
+
 ## 2026-10-08 12:03:56：真实法变material／保存与另一路release pending分列
 
 R76本次独立receipt023 **crown_authority_1→2 enacted/materialtrue**，nativeprestige305791610→186191610恰好扣119600000，14titles／20successorpairs验证true；随后[普通SAVE024](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/024-r75-ooda-save.json)materializedH9678/date53288496/104617613B/SHAca1002b29a00c99667a3e9e9e3ea17c6be7de6f042bb59014e6b3cfd3f1c714e。前一真day＋1／SAVE01753288472→53288496已使saved6007；因真实日期和SAVE才更新，不将之前one-day horizon query计天数。FormalM7由观察／操作／法律余额后态／save授production-live **scoped** loop，原失败attempt保留。

@@ -1,6 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 12:03:56 CST：R76真实＋1day／saved6007，M7冠权1→2 material闭合
+### 2026-10-08 12:51:02 CST：正常6turn批次结束，saved6009；Runtime32单CPP RED待修
+
+R76 actual054 **paused/date53288544/public15/native14**，本轮累计3day（包含前＋1，不另加3），saved **6009/36524＝16.45%**；SAVE052 latest **H9696/104634270B/SHAf07c53befd1b044fa66bd1a1eda5c1d8d3861751726118790417f68d05c5f195**。CA2 material原样复用，G2 5/8/NW2 2/4/M4false/natural0保持。Runtime32 attempt01实际RED311.9073s，63compile62GREEN／1CPP ADL ambiguity；repair02b2797e12仅6call qualification，1fresh/62reuse待结果、不重selector。五项Python FIRST GREEN（Chancellor／wartime construction／Armyhistory／prisoner semantics／Army text去重），未部署R76CC1，不授新实机性能／建设／Chancellor信用。Root **64 compile jobs**不等于64 active agents；详见[Oct8日报](daily/2026-10-08.md)，本batch待提交、报告无实机或复测。
+
+### 历史2026-10-08 12:03:56 CST：R76真实＋1day／saved6007，M7冠权1→2 material闭合
 
 R76真实day＋1 SAVE017 **53288472→53288496／H9676／saved6007/36524(16.45%)**；独立receipt023冠权1→2 enacted/materialtrue、prestige305791610→186191610/cost119600000，14titles／20successorpairs verified。法变SAVE024 latest **H9678/date53288496**，见[普通save](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/024-r75-ooda-save.json)。FormalM7授production-live scoped loop，普通Crown新策略仍static-ready；G2 5/8/NW2 2/4/M4false/natural0不变，M6release仍pending不记material。Runtime31 source967 fix02全link＋22Native/35registered检查GREEN，未新Game部署；3新Pythoncompound ordinaryCrown/rootreuse/holyfallback GREEN，旧RED全部保留。SourceFaith ed23已SOURCE_READY但新FIRST0不借Runtime31/live。本batch待Root提交，详见[Oct8日报](daily/2026-10-08.md)，报告owner不实机／复测。
 

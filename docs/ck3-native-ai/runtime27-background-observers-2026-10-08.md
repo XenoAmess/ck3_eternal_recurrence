@@ -1,6 +1,12 @@
 # Runtime27 background observers — 2026-10-08
 
-## Actual R76 saved day and formal Crown scoped loop at12:03:56 CST
+## R76 six-turn batch and Runtime32 pending repair at12:51:02 CST
+
+Actual **2026-10-08T12:51:02+08:00**. R76 normal6turn batch ended; snapshot054 paused/date53288544/public15/native14. This run's total3days includes prior+1, yielding **saved6009/36524(16.45%)**. LatestSAVE052 **H9696/104634270B/SHAf07c53befd1b044fa66bd1a1eda5c1d8d3861751726118790417f68d05c5f195**. PriorCA2 material reused without new law credit; G2 5/8/NW2 2/4/M4false/natural0 unchanged, no new release-material evidence in this increment.
+
+Runtime32 attempt01 actual **RED311.9073s/63compile62GREEN1CPP ADL ambiguity**. Repair02b2797e12 qualifies6calls only; required1fresh/62reuse pending, no selector replay. Root's64compile jobs do not demonstrate64active agents. NewPython FIRSTs GREEN: occupiedChancellor7.6899s, wartimeconstructionFIRST02 5.0903s (firstHarnessRED8.8844678 retained), Armyhistorycopy3cases3.5928s, prisonersemantics2.7766s, Army auto fullstructured-preserved/text-dedup6.1668s. None deployedR76CC1, no new actual construction/appointment/performance or custody credit. Pregnancy named-source registration/callback102B entrance remains research/no current truth/ABI/birth credit. Actual baselineH9696/date53288544/saved6009; next necessary Runtime32 repair/qualifier separate from Root-only minimized ongoing Game. No report-owner tests/build/Game/artifact replay.
+
+## Historical actual R76 saved day and formal Crown scoped loop at12:03:56 CST
 
 Recorded **2026-10-08T12:03:56+08:00**. Realday+1/SAVE01753288472→53288496/H9676/hash526b… changes saved days to **6007/36524(16.45%)**; prior horizon query was not credited. Independentreceipt023 **CA1→2 enacted/materialtrue**, nativeprestige305791610→186191610/cost119600000,14titles/20successorpairs verified. Law-changeSAVE024 latest **H9678/date53288496/104617613B/SHAca1002b29a00c99667a3e9e9e3ea17c6be7de6f042bb59014e6b3cfd3f1c714e**, [R76 save with retained r75 basename](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/024-r75-ooda-save.json). FormalM7 now **production-live scoped loop**, ordinaryCrown policy remains static-ready; release/M6 still pending/no material credit, fullM4 false.
 

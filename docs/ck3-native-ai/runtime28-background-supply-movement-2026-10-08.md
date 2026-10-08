@@ -2,7 +2,13 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Successor30 actual saved day/law material at12:03:56 CST
+## Ongoing R76 saved6009 and Runtime32 partial compile at12:51:02 CST
+
+Actual **2026-10-08T12:51:02+08:00**. Sixnormal turns ended,054paused/date53288544/public15/native14, total3days including prior+1 gives **saved6009/36524(16.45%)**. LatestSAVE052H9696/104634270B/SHAf07c53befd1b044fa66bd1a1eda5c1d8d3861751726118790417f68d05c5f195. CA2 material reused, not a new law/M4 outcome; G2 5/8/NW2 2/4/M4false/natural0 unchanged, no new release material in this increment. Saved days do not qualify source-derived future supply/stock transitions.
+
+Runtime32 uniqueattempt01 **RED311.9073s**,63compile62GREEN/one ADL-ambiguousCPP; sixcall qualification repairb2797e12 pending necessary1fresh/62reuse, no selector replay. Record actual64compile jobs, not64active agents. FivePython FIRST GREENs occupiedChancellor7.6899/wartimeconstruction5.0903/Armyhistorycopy3cases3.5928/prisonersemantics2.7766/Armytextdedup6.1668s; complete structured output retained, firstconstructionHarnessRED8.8844678 retained, none deployedR76CC1. No live performance/construction/appointment/custody credit; pregnancy named-source still research. BaselineH9696/date53288544/saved6009, Root-only minimized actual OODA/save ongoing, report execution0 and future Runtime32 result separate.
+
+## Historical successor30 actual saved day/law material at12:03:56 CST
 
 Actual **2026-10-08T12:03:56+08:00**. R76 realday+1/SAVE017 date53288472→53288496/H9676/hash526b… yields **saved6007/36524(16.45%)**. Receipt023 CA1→2 **enacted/materialtrue**, prestige305791610→186191610/cost119600000/14titles20successorpairs verified; SAVE024 latestH9678/date53288496/104617613B/SHAca1002b29a00c99667a3e9e9e3ea17c6be7de6f042bb59014e6b3cfd3f1c714e ([R76save](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/024-r75-ooda-save.json)). FormalM7 gains scoped production-live loop, not all law/calendar/fullM4; M6release still pending. Day/SAVE are actual game facts, not proof of future supply/movement projections.
 
