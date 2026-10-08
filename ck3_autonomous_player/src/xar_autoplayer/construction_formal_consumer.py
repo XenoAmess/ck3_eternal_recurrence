@@ -13,6 +13,7 @@ from typing import Mapping
 from .environment import write_json_atomic
 from .bridge.declaration_contract import is_native_declaration_step
 from .bridge.nonwar_private_build import private_native_build_identity
+from .bridge.war_contract import parse_advance_route_contact_horizon_step
 from .construction_economic_outcome_v1 import (
     completed_construction_cash_fields_v1, construction_economic_outcome_v1,
     prepare_construction_cash_fields_v1,
@@ -207,7 +208,11 @@ def plan_construction_private(
         return planned
     original_step = plan.get("selected_step")
     prewar = prewar_arbitration is True and is_native_declaration_step(original_step)
-    new_action_admitted = original_step == "life-advance" or prewar
+    quiet_route_advance = (
+        plan.get("phase") == "native_war_route_contact_horizon_progress"
+        and parse_advance_route_contact_horizon_step(original_step) is not None
+    )
+    new_action_admitted = original_step == "life-advance" or prewar or quiet_route_advance
     if (not new_action_admitted
             and (snapshot.get("paused") is not True
                  or snapshot.get("map_ready") is not True
@@ -436,6 +441,7 @@ def plan_construction_private(
                     (binding, observation))
         return {**planned, "plan": {**plan,
             "construction_wartime_observation": observation}}
+    # A qualified quiet route clock is also an otherwise selected advance.
     # Only an otherwise selected advance or existing prewar opportunity
     # admits a new expenditure; an active war itself is not a spending ban.
     if not new_action_admitted:
