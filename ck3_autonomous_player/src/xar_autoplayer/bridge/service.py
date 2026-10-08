@@ -1342,6 +1342,16 @@ class GameplayBridgeService:
                     if getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True
                     else None
                 ),
+                "_private_council_snapshot_v1": (
+                    planning_snapshot
+                    if getattr(self.driver, "allow_private_council_action", False) is True
+                    else None
+                ),
+                "_private_council_history_v1": (
+                    history
+                    if getattr(self.driver, "allow_private_council_action", False) is True
+                    else None
+                ),
                 "_private_m5_snapshot_v1": (
                     planning_snapshot
                     if getattr(
@@ -1703,8 +1713,9 @@ class GameplayBridgeService:
             planned.pop("_private_faction_history_v1", None)
             planned.pop("_private_construction_snapshot_v1", None)
             planned.pop("_private_construction_history_v1", None)
+            planned = plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot)
             return finish_release_root_arbitration(
-                plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot))
+                self._plan_private_council_normal_v1(planned, available_steps))
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
         planned.pop("_private_lifestyle_war_frame_v1", None)
@@ -1778,7 +1789,35 @@ class GameplayBridgeService:
         planned = observe_m5_wartime(planned)
         if getattr(self.driver, "allow_private_prisoner_ransom_action", False) is True:
             planned = plan_ransom_private(self.driver, planned, snapshot)
-        return finish_release_root_arbitration(plan_release_formal(self.driver, planned, snapshot))
+        planned = plan_release_formal(self.driver, planned, snapshot)
+        return finish_release_root_arbitration(
+            self._plan_private_council_normal_v1(planned, available_steps))
+
+    def _plan_private_council_normal_v1(
+        self, planned: dict[str, object], available_steps: set[str],
+    ) -> dict[str, object]:
+        """Use the existing Council consumer before an otherwise selected advance."""
+        snapshot = planned.pop("_private_council_snapshot_v1", None)
+        history = planned.pop("_private_council_history_v1", None)
+        plan = planned.get("plan")
+        if (not isinstance(plan, dict) or plan.get("selected_step") != "life-advance"
+                or not isinstance(snapshot, dict) or not isinstance(history, list)):
+            return planned
+        from ..private_council_formal_consumer_v1 import plan_council_private
+        from ..strategy import _effective_command, _effective_command_result
+        from .current_first_heir_relationship_private_transport import (
+            _same_frame_campaign_root_result,
+        )
+
+        root_result = next((result for row in reversed(history)
+            if row.get("ok") is True and _effective_command(row) == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+            if (result := _same_frame_campaign_root_result(
+                _effective_command_result(row), snapshot)) is not None), None)
+        return plan_council_private(
+            self.driver, planned, snapshot, history, available_steps,
+            state_dir=self._strategy_state_dir(),
+            **({"campaign_root_result": root_result} if root_result is not None else {}),
+        )
 
     def _plan_private_family_opportunity_v1(
         self, planned: dict[str, object], snapshot: dict[str, object], *,
