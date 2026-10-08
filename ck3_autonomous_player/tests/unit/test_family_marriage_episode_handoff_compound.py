@@ -41,6 +41,8 @@ class FamilyMarriageEpisodeHandoffCompoundTests(unittest.TestCase):
                 self.current_packet = None
 
             def send(self, request) -> None:
+                if request.get("type") == "ping":
+                    return super().send(request)
                 self.requests.append(deepcopy(request))
                 if request.get("step") != STEP or self.current_packet is None:
                     raise AssertionError("compound permits only current-household query envelopes")
