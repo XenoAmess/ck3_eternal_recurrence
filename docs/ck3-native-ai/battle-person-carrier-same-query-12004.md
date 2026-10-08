@@ -95,3 +95,46 @@ bodies change: `bridge.cpp`, `battle_terminal_transition_v1_mailbox.cpp`,
 `ck3_12002_battle.cpp`, and `ck3_12004_battle.cpp`. Root joins Native40's two
 replacement Bridge objects as the actual next parent. This is a source/include
 dependency list, not a new build result or a replay of historical qualification.
+
+## Root offline qualification — October 9
+
+The bounded direct carrier leaf is now **static-ready** through the existing
+registered character query. Compiled native and fixture source is
+`c928804c8afd61b6ded61c52b191b329e754d2da`; Python qualification source is
+`45ce81348ab7fcdde6900dfa95b9e5fbf546c927` in the complete independent tree
+`Z:/gbs-runtime41-person-mcp-qualified-source`. The sole registered eight-scene
+compound passed in **6.7175118 s**, at 01:26:31.590847–01:26:38.308356 CST.
+It consumes the original eight native command-result packets from attempt04,
+whose native FIRST passed in **0.2673182 s**. Normal readable cases require
+the leaf's readiness to be true; missing initialization and partial numerical
+reads retain their explicit unavailable reason. Requested character67108867
+and fixture player29829 remain distinct through the actual production route.
+
+[Canonical41](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix41/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)
+records the mixed object lineage and actual compiler/link/FIRST receipts.
+[Consumer-only receipt](Z:/g2-native41-build01/root-consumer-retry05/ROOT-ACTUAL-RESULT.json)
+binds the final Python source and original packets. The qualified DLL is
+`Z:/g2-native41-build01/attempt04/binaries/xar_ck3_bridge.dll`, 13,293,056 bytes,
+SHA-256 `81b22f1a91465029a7747aec62c5eb26bb2ccf33491a4cd6c882e4f6a406b7a5`.
+Root hashed this new DLL and its small manifest once; old binary hashes were
+reused. The first 425-input compiler batch had actual peak concurrency64 and
+lasted170.462886 seconds. Four existing implementation files omitted from the
+inherited object ledger were subsequently compiled once, yielding429 unique
+compiler inputs and730 production owners: Bridge299, Runtime430, Protocol1.
+Those four recovered implementations are not new gameplay features.
+
+Failed attempts are retained. Attempt01's basename-based archive removal
+reported LNK4014 and kept old factory/reader definitions, which caused LNK4006
+and the native binding assertion to fail. A fresh archive then exposed missing
+existing PlayerClaims/TitleOwnLaws implementations and their two title helpers;
+attempts02/03 preserve those link failures. Building Runtime430 from its explicit
+objects resolved the actual definition selection without replaying425 compiles.
+Attempt04's native packets passed, but the first Python normalization rejected
+their lossless Q64 decimal strings. The one-file Python fix decodes those strings
+and accepts subsequent normalized integers through the existing signed64 check.
+The final retry runs only the same registered consumer; it changes neither
+native code, the original packets nor their assertions.
+
+Complete person/Entry reconstruction, R78 live crash causality, cold startup,
+paused live observation, actions and G2 outcome credit remain unqualified.
+This work used no local Game, SDK, game pipe or UI operation.

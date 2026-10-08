@@ -1,15 +1,37 @@
 # CK3 原生 AI 决策树索引
 
-## 2026-10-09: Child education point trait source candidate
+## 2026-10-09: Child education point trait observer qualified offline
 
 [Child education point trait inputs](child-education-point-traits-12004.md)
 closes the nine authored child-side HasTrait dependencies and separate
 eight-key educator role. The existing child query gains an optional private
 education_point_traits observer using the admitted actual4 Trait database,
-Character.HasTrait and full-ID child receiver. Source is ready for one Root
-five-native/six-consumer qualification; new build/FIRST/live are NOTRUN.
+Character.HasTrait and full-ID child receiver. Root's five new whole native
+frames and six-scene registered-query/Service compound passed; canonical40
+is static-ready. The actual production build and final qualification pins
+are documented separately in the topic. No new live credit is claimed.
 Guardian/educator identity, loaded outcome AST and education actions remain
 unresolved. Qualified Native38 focus and old child fields are reused.
+
+## 2026-10-09: Current callback soldier effects qualified offline
+
+[Current callback soldier effects](army-current-callback-soldier-effects-12004.md)
+connects the actual4 callback-derived supply budget with the existing four-pass
+conditional soldier model, retaining captured siege/raid budgets and physical
+aliases. The sole five-scene registered NativeDriver/Service compound passed
+in 7.5853707 seconds. This is static-ready; actual post-stage loss, complete
+daily/monthly execution and live outcomes remain unqualified.
+
+## 2026-10-09: Actual4 person carrier on the existing character query
+
+[Same character-query carrier integration](battle-person-carrier-same-query-12004.md)
+connects the bounded [direct numerical source](battle-person-next-direct-carrier-12004.md)
+to the requested character's actual owned model and existing terminal MCP query.
+Native41 is qualified offline: compiled native/fixture source `c928804c`,
+Python qualification `45ce8134`, eight original native packets and the sole
+registered consumer GREEN. The actual peak compiler concurrency was 64.
+Complete person/Entry
+reconstruction, gameplay and live qualification remain incomplete.
 
 ## 2026-10-08: Ordinary post-birth child education source
 
