@@ -186,8 +186,10 @@ std::string SerializeResult(const Query &query, std::string_view step,
       ",\"status\":" + Quote(query.status) + ",\"observation\":" +
       (query.observation ? ck3_12002::SerializeRealmLawCrownActionObservation12002(*query.observation) : "null") +
       ",\"ack\":" + (query.mode == Mode::enact ? ck3_12002::SerializeRealmLawCrownActionAck12002(query.ack) : "null") +
-      ",\"receipt\":" + (query.mode == Mode::receipt ? ck3_12002::SerializeRealmLawCrownActionReceipt12002(query.receipt) : "null") + "}}";
+       ",\"receipt\":" + (query.mode == Mode::receipt ? ck3_12002::SerializeRealmLawCrownActionReceipt12002(query.receipt) : "null") + "}}";
 }
+} // namespace
+
 bool IsRealmLawPrivateActionStep12004(std::string_view step) noexcept {
   return step == kRealmLawCrownActionQueryStep12004 ||
       step == kRealmLawCrownEnactStep12004 || step == kRealmLawCrownReceiptStep12004;
@@ -301,6 +303,6 @@ bool HandleRealmLawPrivate12004(
     std::string &serialized, std::string &failure) noexcept {
   static const auto state = std::make_unique<RealmLawActionMailboxState12004>();
   return HandleRealmLawPrivateWithState12004(*state, adapter, mailbox, published,
-      revision, step, payload, request_id, serialized, failure);
+      revision, step, payload, request_id, serialized, failure, nullptr);
 }
 } // namespace xar::ck3_12004
