@@ -132,3 +132,36 @@ The current local five stock inputs (`sway_scheme.txt`, `sway_on_actions.txt`, `
 The dedicated `scheme_sway_opinion >= sway_max_value` (`100`) branch in effects lines15548–15556/15667–15689 sends `sway_complete` and nests `scope:scheme end_scheme=yes`. Total/positive opinion does not prove execution of that branch. The historical phase capturer only recognizes good/bad `send_interface_message`, and the invalidation sink only recognizes `sway_invalidated_title`; they do not capture this completion toast. In scheme lines526–577, dead/war form `if/else_if` but the range condition is a later independent `if`, so selected invalidation notification sources need not be exclusive.
 
 Retained status1 continues to mean `terminated_unattributed`. The optional finite next source remains the existing three transparent termination wrappers, copying pre-state, forwarding the original once and independently resolving the exact post-state. Actual4 named receiver/body/context bindings and any unambiguous executing-branch-to-end invocation join remain unqualified. A selected notification/source, missing row, opinion, ACK, return or nearby timestamp cannot supply terminal cause. Existing retained-row/M4/Service qualification is unchanged; hidden source rings add no prerequisite, live credit or G2 milestone.
+
+## 2026-10-09 R80 current paused observation
+
+Root executed the two existing registered reads on HOT02 SDK source
+`a3bff501a130872447e415f3240e13a1bf6aa2e1`, Native 42, native revision 4,
+public revision 2 and raw date 53288568. The exact identity was
+player 29829 / target 34333 / full ID 134217986 / generation 8. The
+[005 completion response](Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r80-sdk-hot02/operator/gameplay-responses/005-r80-current-sway-actual-terminal.json)
+reported storage present, exact full ID join, owner 29829 and raw status 0
+(`continue`); terminal was false and cause unknown. Root recorded the 005
+execution interval as 20:08:24.991832–20:09:26.279077 UTC, elapsed 61.287245s.
+This append uses Root's actual fields without reopening the response body or
+repeating the query.
+
+The
+[006 named-material response](Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r80-sdk-hot02/operator/gameplay-responses/006-r80-current-sway-named-material.json)
+had the same native/public frame and date. Target opinion of the actor was 61;
+`scheme_sway_opinion` was observed, present and 45; `sway_blocker_opinion` was
+observed absent. The opinion reader's own terminal flag was false. The existing
+ledger's preceding raw 53288544 baseline also recorded total 61 and named 45.
+These reads establish current relation persistence and the continuing original
+instance, with no new named gain, full scheme completion, terminal cause or
+M4/M6 completion credit. The admitted final-material consumer fix is reused;
+no source consumer or native observer changes are needed for this observation.
+
+Root subsequently switched to HOT03 SDK `b264` and native revision 5. Any next
+normal policy turn must use that session's fresh actual snapshot after the real
+construction mismatch is recovered. This append does not bypass that mismatch,
+request Start/Stop, rewrite an authored event or claim following-turn world
+progress. The
+[thin current fields](Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r80-sway-material-current/ROOT-CURRENT-OBSERVATIONS.json)
+record the current result separately from the earlier SOURCE_NOTRUN recipe.
+This lane performed no live/SDK/EXE/test/build execution and no old GREEN replay.
