@@ -82,3 +82,22 @@ authored outcome, select a current target, or award M4/M6. Root owns any later
 single offline compound execution and future permitted actual observations.
 Source package and Oct8/W41 fields are external under
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r78-sway-material-terminal-value/`.
+
+## Root offline qualification before midnight
+
+Root's sole new compound was **GREEN**, exit0, **6.946936400025152s**,
+2026-10-08T15:59:22.935140Z to15:59:29.882073Z (23:59 CST).
+It ran source `44c94ecef043f2a3deb0fc4eb7abfb6c13da4b79` in the pinned
+`Z:/gbs-sway-material-terminal-value` tree. The
+[actual receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r78-sway-material-terminal-value/root-first01/ROOT-ACTUAL-RESULT.json)
+and [six-case output](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r78-sway-material-terminal-value/root-first01/CONSUMER-RESULT.json)
+retain the exact interpreter, argv and complete synthetic envelopes.
+
+The fixture supplies an ordinary life-advance selection; registered MCP,
+production query wrappers, protocol ingestion, material join and Service's
+following-turn consumer execute their real code. This qualifies the final
+named-gain consumer and its independent controls offline. It does not qualify
+the full planner, native memory reads, terminal cause or real scheme success.
+No C++ build, prior GREEN replay, game/SDK connection, Start/Stop, actual day,
+SAVE or milestone credit was added. The live boundary remains saved6010,
+G2 5/8, NW2 2/4, M4false/M6partial/natural0, with local CK3 use forbidden.
