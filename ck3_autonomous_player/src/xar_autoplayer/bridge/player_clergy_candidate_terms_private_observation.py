@@ -1,11 +1,11 @@
-"""Preserve exact .3 candidate membership and independent appointment terms."""
+"""Preserve exact .3/.4 candidate membership and independent appointment terms."""
 
 from __future__ import annotations
 
 from collections.abc import Mapping
 from copy import deepcopy
 
-from .version_identity import CK3_12003, require_exact_native_build
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 SCHEMA = "xar.ck3.clergy-candidate-terms/v1"
@@ -40,8 +40,9 @@ def normalize_player_clergy_candidate_terms_v1(
         raise ValueError("native clergy candidate terms schema is malformed")
     exact = value["exact_build"]
     if (not isinstance(exact, dict) or set(exact) != {"game_version", "executable_sha256"}
-            or require_exact_native_build(exact["game_version"], exact["executable_sha256"]) != CK3_12003):
-        raise ValueError("native clergy candidate terms require the exact .3 build")
+            or require_exact_native_build(exact["game_version"], exact["executable_sha256"])
+            not in (CK3_12003, CK3_12004)):
+        raise ValueError("native clergy candidate terms require the exact .3 or .4 build")
     if exact != clergy.get("exact_build"):
         raise ValueError("native clergy candidate terms differ from the clergy build")
     for key in ("available", "candidate_collection_available", "final_predicates_available"):

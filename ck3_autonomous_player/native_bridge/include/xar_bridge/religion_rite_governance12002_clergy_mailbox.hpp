@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12003_county_conversion.hpp"
 #include "xar_bridge/ck3_12003_clergy_candidate_terms.hpp"
 #include "xar_bridge/ck3_12004_clergy_appointment.hpp"
+#include "xar_bridge/ck3_12004_clergy_candidate_terms.hpp"
 #include "xar_bridge/ck3_12004_county_conversion.hpp"
 #include "xar_bridge/religion_rite_governance12002_clergy.hpp"
 
@@ -36,6 +37,7 @@ struct PlayerClergyAppointmentMailboxContext12002 {
   std::optional<ck3_12004::religion::county_conversion::Environment> county_conversion_environment12004;
   std::optional<ck3_12003::religion::county_conversion::Observation> county_conversion_observation;
   std::optional<ck3_12003::religion::clergy_candidate_terms::Environment> candidate_terms_environment;
+  std::optional<ck3_12004::religion::clergy_candidate_terms::Environment> candidate_terms_environment12004;
   std::optional<ck3_12003::religion::clergy_candidate_terms::Observation> candidate_terms_observation;
   std::string candidate_terms_snapshot_id;
   bool completed = false;
@@ -44,6 +46,8 @@ struct PlayerClergyAppointmentMailboxContext12002 {
 
 bool IsPlayerClergyCandidateTermsMainThread12002(void *) noexcept;
 bool CapturePlayerClergyCandidateTermsFrame12002(void *, CouncilCandidatesFrameV1 &) noexcept;
+bool IsPlayerClergyCandidateTermsMainThread12004(void *) noexcept;
+bool CapturePlayerClergyCandidateTermsFrame12004(void *, ck3_12004::CouncilCandidatesFrameV1 &) noexcept;
 
 bool IsPlayerClergyAppointmentPrivateStep12002(std::string_view step) noexcept;
 bool ParsePlayerClergyAppointmentRequest12002(
