@@ -202,6 +202,11 @@ class CampaignRootCoreCouncil12004RegisteredCompound(unittest.IsolatedAsyncioTes
                 "task_key": "task_religious_relations", "task_type": "general",
                 "target": None, "frozen": False,
                 "progress": {"kind": "infinite", "current": None, "maximum": None},
+                # Preserve and check the inherited Native36 observation field.
+                "task_owner_monthly_piety_v1": {
+                    "status": "unavailable", "value": None,
+                    "unavailable_reason": "task_owner_monthly_piety_unavailable",
+                },
             })
             self.assertTrue(all(seats[CHANCELLOR][key] is None for key in (
                 "incumbent_character_id", "task_key", "task_type", "target", "frozen", "progress")))
