@@ -1,0 +1,172 @@
+{
+  "schema": "xar.normal-battle-current-input-frontier.v1",
+  "date": "2026-10-08",
+  "iso_week": "2026-W41",
+  "readiness": "research",
+  "delivery_status": "source audit complete; no production behavior change",
+  "source": {
+    "base_commit": "6ee7dea1b4d2fa4ecb05223f12c66b7afe72ac2d",
+    "frozen_runtime_tree": "Z:/gbs-runtime32-sdk-r77-hot6ee",
+    "owned_tree": "Z:/gbs-normal-battle-r77-inputs",
+    "topic": "docs/ck3-native-ai/battle-normal-current-input-frontier-r77-12004.md",
+    "pin_authority": "Root supplied exact source and build identity; no new EXE read or hash"
+  },
+  "exact_build": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "r77_context": {
+    "authority": "Root current-war context, independently bounded003 reply read for war query only",
+    "war_id": 100663329,
+    "casus_belli": "claim_cb",
+    "war_duration_days": 26,
+    "war_score_raw": 0,
+    "subject_unit_id": 218104048,
+    "committed_route": [2618, 2615],
+    "owner_consumed_steps": ["strength004", "route-horizon006", "release008"],
+    "commander_current_and_best_values_observed_by_this_audit": false,
+    "large_turn01_wrapper_body_read": false,
+    "whole_snapshot_read": false
+  },
+  "native_trees_reused": [
+    "docs/ck3-native-ai/commander-candidates-and-assignment-12003.md",
+    "docs/ck3-native-ai/commander-effective-combat-inputs-12003.md",
+    "docs/ck3-native-ai/commander-native-quality-counter-policy-12004.md",
+    "docs/ck3-native-ai/current-assigned-commander-native-base-quality-12004.md",
+    "docs/ck3-native-ai/battle-reinforcement-arrival-bindings-migration-12004.md",
+    "docs/ck3-native-ai/projected-contact-scope-v1-12003.md",
+    "docs/ck3-native-ai/existing-contact-phase-migration-12004.md"
+  ],
+  "current_no_gap_seams": [
+    {
+      "id": "commander-native-quality",
+      "required_new_native_input_count": 0,
+      "actual4_entries": {
+        "ordered_candidate_pool": "0x2C11BF0",
+        "final_mode1_assignment_eligibility": "0x29714F0",
+        "candidate_and_independent_current_base_quality": "0x2C0B250",
+        "effective_generic_modifier": "0xC6DED0",
+        "assigned_identity_getter": "0x24E9EB0",
+        "assigned_identity_offset": "0x120",
+        "current_total_martial": "0x28B1690"
+      },
+      "native_binding": "ck3_autonomous_player/native_bridge/src/ck3_12004_army_support.cpp:207",
+      "native_reader": "ck3_autonomous_player/native_bridge/src/ck3_12003_commander.cpp:166",
+      "native_query": "ck3_autonomous_player/native_bridge/src/ck3_12003_commander_mailbox.cpp:144",
+      "strict_wire": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_commander_candidates.py:90",
+      "normal_hook": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py:1458",
+      "normal_consumer": "ck3_autonomous_player/src/xar_autoplayer/commander_quality_formal_consumer_v1.py:20",
+      "same_query_service": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py:4925",
+      "comparison": "ck3_autonomous_player/src/xar_autoplayer/commander_quality_formal_proposal_v1.py:16",
+      "post_assignment_observation": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py:5067",
+      "semantics": [
+        "actual ordered player candidate pool with native mode1 CanAssign",
+        "current quality observed independently from the candidate pool",
+        "legal zero retained; known absence and unavailable current quality separate",
+        "native row order on ties; strict native base-quality gain",
+        "optional same-query target rolls exist but are not consumed by the generic policy"
+      ],
+      "proof_ledger": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/battle-normal-r77-value36/commander/SOURCE-MANIFEST.json"
+    },
+    {
+      "id": "current-hostile-contact-bindings",
+      "required_new_native_input_count": 0,
+      "binding": "ck3_autonomous_player/native_bridge/src/ck3_12004_contact.cpp::BindContactImage12004",
+      "route_binding": "ck3_autonomous_player/native_bridge/src/ck3_12004_army_support.cpp::BindRouteImage12004",
+      "arrival_binding": "ck3_autonomous_player/native_bridge/src/ck3_12004_battle.cpp:44",
+      "actual4_inputs": {
+        "hostile": "0x2C09620",
+        "empty": "0x24E83A0",
+        "in_combat": "0x24E8340",
+        "game_mode_slot": "0x5CB87F8",
+        "route_duration": "0x24AAD80"
+      },
+      "hostile_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/arrival-readonly-migration/HOSTILE-SOURCE-RECEIPT.json",
+      "hostile_complete_body_bytes_reused": 191,
+      "hostile_body_reread": false,
+      "hostile_abi_scope": "software Hostile(void*,void*,bool); native R8 optional War pointer/null; adopted six route calls and arrival calls pass literal false/null",
+      "route_call_lines": [1454, 1456, 1490, 1492, 1550, 1604],
+      "new_native_callee_expansion": false
+    },
+    {
+      "id": "r77-committed-route-progress",
+      "required_new_native_input_count": 0,
+      "policy_seam": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:11548",
+      "phase": "native_war_route_contact_horizon_progress",
+      "ingress_advance_passthrough": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:16417",
+      "result": "existing next-day advance is selected before endpoint model inputs",
+      "current_endpoint_forecast_required": false
+    },
+    {
+      "id": "new-move-first-hop-and-projected-contact",
+      "required_new_native_input_count": 0,
+      "first_hop_seam": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:16502",
+      "complete_contact_projection": "ck3_autonomous_player/src/xar_autoplayer/normal_army_projected_contact_v1.py:11",
+      "strict_contact_wire": "ck3_autonomous_player/src/xar_autoplayer/bridge/projected_contact_contract.py:139",
+      "result": "actual preview/timed hostile scope and complete ordered native projection already connected",
+      "forecast_quality_boundary": "bounded existing model; no winner probability or future membership proof granted"
+    }
+  ],
+  "future_consumer_frontier": {
+    "id": "endpoint-incoming-defender-ctor0",
+    "status": "SOURCE_NOTRUN; not implemented by this source audit",
+    "blocks_current_r77_committed_route": false,
+    "missing_new_native_getter": false,
+    "trigger": "new final-hop endpoint move; same-frame complete create_new Contact; subject is defender",
+    "current_stop": "ck3_autonomous_player/src/xar_autoplayer/strategy.py:16655",
+    "current_reason": "native_war_general_battle_opposing_entry_unavailable",
+    "existing_registered_query": {
+      "name": "ck3_query_combat_simulation_inputs",
+      "attacker_entry_province_id": null,
+      "constructor_adjacency_kind_raw": 0,
+      "ordered_army_ids": "actual same-frame projection attackers and defenders",
+      "expected_revision": "current paused public revision",
+      "target_province_id": "actual endpoint projection target"
+    },
+    "native_reader": "ck3_autonomous_player/native_bridge/src/ck3_12002_combat.cpp:1945",
+    "strict_request": "ck3_autonomous_player/src/xar_autoplayer/bridge/combat_contract.py:217",
+    "registered_v2": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py:3872",
+    "registered_v3_if_advertised": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py:3901",
+    "service": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py:14277",
+    "bounded_consumer_change": "strategy.py:16661..16735 builder/parser, cache and query identity, forecast/returned-plan null-entry geometry",
+    "unqualified_boundary": "simulation/general_battle_forecast.py:157..239 nullable-entry end-to-end consumption",
+    "native_body_capture_recipe": null,
+    "new_rva": null,
+    "new_observer_or_schema": false,
+    "fixture_created": false,
+    "join_existing": "separate retained frontier; not expanded by this package"
+  },
+  "cost": {
+    "metered_full_source_text_bytes_one_hop": 906991,
+    "metered_full_source_text_breakdown": {"strategy.py": 897176, "projected_contact_contract.py": 9815},
+    "other_selected_source_doc_ledger_bytes": null,
+    "other_source_cost_note": "selected bounded reads were not physically metered; null is not zero",
+    "small003_reply_bytes": 50166,
+    "earlier002_prefix_bytes": null,
+    "large_turn01_wrapper_file_size_bytes": 85311362,
+    "large_turn01_wrapper_body_bytes_read": 0,
+    "whole_snapshot_body_bytes_read": 0,
+    "exe_bytes": 0,
+    "exe_read_calls": 0,
+    "hash_calls": 0,
+    "cached_native_body_audits": 0,
+    "decoder_runs": 0,
+    "new_captures": 0,
+    "game_sdk_process_calls": 0,
+    "build_import_test_first_runs": 0
+  },
+  "report_fields": {
+    "day": "2026-10-08",
+    "week": "2026-W41",
+    "completed": "exact hot6ee current commander and hostile/contact source audit; current committed-route no-gap seam",
+    "why": "advance the ordinary war using existing real native inputs; avoid redundant observers",
+    "readiness_change": "research source ledger only; no new qualified or live capability",
+    "capability_red": null,
+    "source_preparation_notes": "short Git pin and guessed source filename lookup failures corrected; large reply stat-stop preserved; no gameplay failure inferred",
+    "next": "Root continues ordinary committed-route advance; future endpoint defender ctor0 consumer is a bounded optional workpackage",
+    "shared_report_owner": "Root",
+    "push": "not performed; Root requested commit-only"
+  },
+  "external_evidence_root": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/battle-normal-r77-value36"
+}
