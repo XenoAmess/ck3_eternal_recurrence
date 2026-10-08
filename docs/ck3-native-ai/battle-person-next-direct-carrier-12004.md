@@ -138,3 +138,123 @@ family, and saved6010/G2 5/8/Native39/R79 remain unchanged.
 
 The capture belongs to October 8; packaging and the source commit completed
 after midnight on October 9 Asia/Shanghai. Both dates fall in ISO week W41.
+
+## October 9: the two local numeric dependencies are source-closed
+
+The preceding sections preserve the first `42b11b3d` source boundary. The next
+bounded pass closes the actual fallback identity and numerical field accesses.
+The fallback body `[31937A0,3193815)` was first read once: **117B**. Its direct
+entrance is the already captured actual caller's `291CDCF` call, not an ordinal
+guess. It returns inline PC `module+5D71200`; DWORD guard `module+5D711F0`
+controls the thread-safe constructor path. The body reaches `C80030` only on
+initialization, with the same inline PC receiver. This observer never calls the
+getter, constructor or runtime initialization helpers. Raw guard `0` or `-1`
+does not qualify initialized default contents; their actual readable fields
+may be retained while this family stays partial. A completed nonzero/non-minus1
+guard permits the same numerical copy as a mapped PC. No constructor postimage
+or hypothetical empty default is substituted.
+
+The already captured actual aggregate getter `28C3AC0..28C3B9C` (220B) was reused
+without EXE I/O. It proves the owned Model association and context selection,
+but has no key/value load. The source-use ledger therefore captures only these
+six necessary instruction windows, with all old bytes reused from v79:
+
+| Old window | New bytes | Purpose |
+| --- | ---: | --- |
+| `2438858..243886B` | 19 | Source PC count and source/weight/destination registers |
+| `2438984..2438993` | 15 | Same append source/weight to actual numerical merge call |
+| `2303129..2303136` | 13 | Numerical source is incoming RDX, retained in R14 |
+| `2303162..230316F` | 13 | Signed source DWORD count+C |
+| `23031B0..23031B8` | 8 | Source QWORD pointer+68; QWORD elements stride8 |
+| `2303238..230323F` | 7 | Source QWORD pointer+0; U16 elements stride2 |
+
+All six actual4 windows decode completely and match concrete member/literal
+operands and local topology. Their actual targets and addresses are retained in
+`pc-decoder-source03/FAMILY-MAP.json` and the six DETAIL files. The current
+append is `2438830`, and the numerical receiver is `2303100`. This is a raw
+numerical input layout and argument-use closure, not a new complete numerical
+merger arithmetic qualification: intervening allocation/locking/arithmetic
+instructions have not been recaptured or executed. Copies preserve the raw
+physical key/value order and full signed Q64 values; they do not merge, sort,
+deduplicate or evaluate a native callback.
+
+Additional new I/O is **117+75=192B / seven exact reads**, for a cumulative
+**328B / nine reads**. Old EXE, new pdata/unwind, hashes, scans, Game/SDK,
+builds and tests remain 0. Two mapper manifest schema harness errors occurred
+before any span capture and remain external receipts; correcting `rows`/`id`
+produced the sole six-span capture. This is source decoding, not a test GREEN.
+
+```mermaid
+flowchart TD
+  C[Actual carrier branch and signed rank] -->|in range| P[Definition3D8 + rank*340]
+  C -->|negative or out of range| F[Actual inline default PC5D71200]
+  F --> G{Actual guard5D711F0}
+  G -->|0 or minus1 or unread| U[Retain raw physical reads; partial initialization input]
+  G -->|completed initialization observed| P2[Selected default PC]
+  P --> N[Signed selected count C]
+  P2 --> N
+  N -->|0| Z[Known zero source occurrences]
+  N -->|negative or unread| U2[Partial numerical input]
+  N -->|positive| K[Keys pointer0 U16 stride2 / Values pointer68 Q64 stride8]
+  K -->|all demanded reads present| V[One ordered unit100000 source request]
+  K -. actual copy fails .-> U2
+  V -. new reader and whole query not yet built .-> I[Root same-query integration and FIRST]
+```
+
+The machine contract now includes actual default selection/guard and the
+current4 key/value copy. A minimal standalone reader and serializer can be
+integrated into the owning same-selected-person query. Its new source-shaped
+fixture remains NOTRUN and must not claim a historical-stage/fresh-baseline or
+full Entry qualification. Earlier actual4 person-stage migration and owning
+query association remain distinct integration dependencies.
+
+## Authored isolated producer and Root integration
+
+The isolated candidate adds `ck3_12004_person_carrier_direct.hpp/.cpp`, the
+strict Python module `battle_person_carrier_direct_12004.py`, and one new native
+compound fixture plus one actual-produced-wire consumer compound. No existing
+adapter, Snapshot, main normalizer, mailbox, CMake or Service file is changed.
+
+`BindPersonCarrierDirect12004` accepts the existing exact4 version/SHA and Root's
+guarded-copy callback. `ReadPersonCarrierDirect12004(bindings, actual_model)`
+copies Model+8, actual Character full-ID+18 through the already adopted Core
+layout, and only the carrier branch's demanded raw inputs. Model+10 is an
+opaque destination identity; its contents are not copied or supplied as a
+baseline. The selected-PC physical arrays preserve full signed Q64 values,
+physical order, duplicate keys, key0 and keyFFFF. Empty-count arrays require no
+pointer/element/+74 reads. An unread values array retains successfully copied
+keys. Raw initialization-pending default arrays are retained without releasing
+an evaluated occurrence. Ancillary full-ID copy failure does not erase an
+independently read numerical primitive; attributing a request requires the
+owning query's matching full-ID.
+
+`SerializePersonCarrierDirect12004` emits the bounded leaf schema
+`xar.ck3.person-carrier-direct-12004-v1`. It is not a complete command_result or
+MCP packet. `normalize_carrier_direct_12004` retains partial fields;
+`emit_carrier_1c8_b70_direct_requests_from_current_source_inputs_12004` returns
+zero or one source request after the same-query Character join. The reused
+`NativeWeightedContributionRequest12003` dataclass is an operand-only type;
+its historical name supplies no current4 arithmetic or full-chain credit.
+
+The native fixture uses the genuine new reader and serializer, with eight
+controls: carrier absent, magic mismatch, mapped empty, mapped signed Q64,
+initialized fallback, guard0 raw fallback, unread values with keys retained,
+and negative rank without a count read. It checks skipped reads directly.
+Its provenance-only full-ID is `0xAB007485`; no Robert/live state is used.
+The mapped raw key list `[554,65535,554,0]` and I64 extrema are preserved;
+the prowess-key label is source-shaped metadata, not a qualified current4
+six-skill calculation. No test executed. Proposed target
+`person_carrier_direct12004_first_fixture` and CTest
+`person_carrier_direct12004_first` remain **NOTREGISTERED / NOTRUN**.
+
+Root must integrate this leaf into the actual4 same-selected-person query,
+using its actual model receiver and existing guarded copy. The already held
+`28C3AC0` source defines a current owned model association through
+Character1B0→scratch258→Model, with Model8==Character. That is a source recipe,
+not a new observed frame; it must not become a modeled fresh baseline.
+The current full-query factory/dispatch and serializer/normalizer hook are
+**not enabled by this standalone package**. First native production-reader
+qualification and the sole eight-wire Python consumer establish only this
+bounded primitive; whole-query or full Entry promotion requires its own actual
+integration and source scope. No additional source capture is required for
+this bounded numerical reader. Later2921AB0 remains outside this package.
