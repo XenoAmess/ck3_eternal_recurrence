@@ -30,6 +30,8 @@ from .bridge.combat_contract import (
     parse_query_combat_simulation_inputs_step,
     query_combat_simulation_inputs_step,
 )
+from .bridge.projected_contact_contract import QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY
+from .normal_army_projected_contact_v1 import select_normal_army_projected_contact_v1
 from .bridge.battle_control_contract import (
     BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
     BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
@@ -16423,6 +16425,9 @@ def _general_battle_forecast_ingress(
     if origin is None or origin == target or not defenders:
         return baseline
 
+    attackers = (army_id,)
+    projected_contact = None
+
     def bounded(phase: str, selected_step: str | None, reason: str, **details: object) -> dict[str, object]:
         return {
             "policy": "general-battle-forecast-v1",
@@ -16432,10 +16437,11 @@ def _general_battle_forecast_ingress(
             "baseline_phase": baseline.get("phase"),
             "baseline_selected_step": baseline.get("selected_step"),
             "encounter": {
-                "attacker_army_ids": [army_id],
+                "attacker_army_ids": list(attackers),
                 "defender_army_ids": list(defenders),
                 "target_province_id": target,
             },
+            **({"projected_contact_scope": projected_contact} if projected_contact is not None else {}),
             **details,
         }
 
@@ -16557,6 +16563,47 @@ def _general_battle_forecast_ingress(
             general_battle_forecast_used_for_decision=False,
             future_contact_authorized=False,
         )
+    if QUERY_PROJECTED_CONTACT_SCOPE_V1_CAPABILITY in bridge_capabilities:
+        latest_advance = _latest_life_advance_index(commands)
+        projected_inputs = select_normal_army_projected_contact_v1(
+            snapshot,
+            [{"step": _effective_command(row), "ok": row.get("ok"),
+              "result": _effective_command_result(row)}
+             for row in _history_after_latest_restore(commands)
+             if (_native_int(row.get("index")) or 0) > latest_advance],
+            subject_army_id=army_id, target_province_id=target,
+            incoming_entry_province_id=entry, subject_current_province_id=origin,
+            subject_owner_character_id=_native_int(army.get("owner_character_id")),
+        )
+        if projected_inputs["status"] == "query_required":
+            return bounded(
+                "native_war_general_battle_projected_contact_query", projected_inputs["query_step"],
+                "read native current target contact roles before selecting endpoint battle participants",
+                route_preview=preview, route_contact_horizon=contact,
+            )
+        projected_contact = projected_inputs["projection"]
+        attackers = tuple(projected_inputs["attacker_army_ids"])
+        defenders = tuple(projected_inputs["defender_army_ids"])
+        if projected_inputs["transition_kind"] == "none":
+            move_step = move_army_step(army_id, target)
+            return bounded(
+                "native_war_general_battle_projected_no_contact", move_step if move_step in action_steps else None,
+                "native current target projection selects no encounter; retain the ordinary one-hop move",
+                route_preview=preview, route_contact_horizon=contact,
+                general_battle_forecast_used_for_decision=False, future_contact_authorized=False,
+            )
+        if projected_inputs["transition_kind"] == "join_existing":
+            return bounded(
+                "native_war_active_combat_resume_unavailable", None,
+                "native target selects an existing Combat; a new fixed-contact forecast cannot resume it",
+                required_observation="same-frame-active-combat-resume-inputs",
+            )
+        if not projected_inputs["incoming_attacker_geometry_ready"]:
+            return bounded(
+                "native_war_general_battle_opposing_entry_unavailable", None,
+                "native incoming defender does not establish the selected opponent's attacker entry",
+                required_observation="native-defender-constructor-zero-or-selected-opponent-entry",
+            )
     use_v3 = QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY in bridge_capabilities
     query_capability = (
         QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY if use_v3
@@ -16571,14 +16618,14 @@ def _general_battle_forecast_ingress(
         else parse_query_combat_simulation_inputs_step
     )
     cache_key = "combat_simulation_inputs_v3" if use_v3 else "combat_simulation_inputs"
-    query_step = query_builder(target, entry, [army_id], list(defenders))
+    query_step = query_builder(target, entry, list(attackers), list(defenders))
     payload = snapshot.get(cache_key)
     def current_query_row(row: dict[str, object]) -> bool:
         result = _effective_command_result(row)
         return bool(
             row.get("ok") is True
             and query_parser(_effective_command(row))
-            == (target, entry, [army_id], list(defenders))
+            == (target, entry, list(attackers), list(defenders))
             and (_native_int(row.get("index")) or 0) > _latest_life_advance_index(commands)
             and isinstance(result, dict)
             and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
@@ -16591,7 +16638,7 @@ def _general_battle_forecast_ingress(
         and isinstance(payload, dict)
         and snapshot.get(f"{cache_key}_target_province_id") == target
         and snapshot.get(f"{cache_key}_attacker_entry_province_id") == entry
-        and snapshot.get(f"{cache_key}_attacker_army_ids") == [army_id]
+        and snapshot.get(f"{cache_key}_attacker_army_ids") == list(attackers)
         and snapshot.get(f"{cache_key}_defender_army_ids") == list(defenders)
         and snapshot.get(f"{cache_key}_queried_snapshot_id") == snapshot.get("snapshot_id")
         and snapshot.get(f"{cache_key}_queried_revision") == snapshot.get("revision")
@@ -16621,7 +16668,7 @@ def _general_battle_forecast_ingress(
     forecast = forecast_fixed_contact(
         forecast_payload, target_province_id=target,
         attacker_entry_province_id=entry,
-        attacker_army_ids=(army_id,), defender_army_ids=defenders,
+        attacker_army_ids=attackers, defender_army_ids=defenders,
         capture={key: snapshot.get(key) for key in (
             "snapshot_id", "revision", "native_revision", "date_raw"
         )},
