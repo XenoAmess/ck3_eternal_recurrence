@@ -97,7 +97,7 @@ async def consume(wire_dir, result_dir, source_head):
 
     endpoint = OwnedFrameEndpoint()
     driver = NativeHeadlessGameplayDriver(
-        pipe_name="offline-owned-worker-rich-snapshot",
+        pipe_name=r"\\.\pipe\xar_12004_snapshot_offline_fixture",
         endpoint=endpoint, state_dir=result_dir / "state",
         save_dir=result_dir / "unused-save-directory",
         command_timeout_seconds=0.1, episode_projection="native_campaign")
