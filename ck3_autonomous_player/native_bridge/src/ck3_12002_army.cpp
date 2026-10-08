@@ -232,6 +232,34 @@ game::ArmyMovementProgressSnapshot MovementProgress(
     result.first_route_target_province_type_tag_u32 =
         Load<std::uint32_t>(first_target_province, 0x85C);
 
+  // Actual24E23E0 reads these current operands before its fixed Army1D0
+  // write. Reuse the resolved first target and the existing Province resolver;
+  // neither the departure callback nor its native arrival writer is called.
+  if (bindings.current_unit_arrival_prestore_inputs_enabled) {
+    result.unit_kind_18_raw_i32 = Load<std::int32_t>(unit, 0x18);
+    void *current = Load<void *>(unit, 0x20);
+    if (current != nullptr &&
+        Province(game_data, Load<std::int32_t>(current, 0x10)) == current) {
+      result.current_province_type_tag_u32 =
+          Load<std::uint32_t>(current, 0x85C);
+      if (*result.current_province_type_tag_u32 == 0x50726F76) {
+        void *definition = Load<void *>(current, 8);
+        if (definition != nullptr)
+          result.current_province_definition_byte_1b_u8 =
+              Load<std::uint8_t>(definition, 0x1B);
+      }
+    }
+    if (result.first_route_target_province_type_tag_u32 == 0x50726F76) {
+      void *definition = Load<void *>(first_target_province, 8);
+      if (definition != nullptr)
+        result.first_route_target_province_definition_byte_1b_u8 =
+            Load<std::uint8_t>(definition, 0x1B);
+    }
+    if (bindings.loaded_disembark_penalty_days_rule != nullptr)
+      result.loaded_disembark_penalty_days_rule_i32 =
+          *bindings.loaded_disembark_penalty_days_rule;
+  }
+
   if (bindings.read_native_army_movement_admission != nullptr)
     result.native_army_movement_admission =
         bindings.read_native_army_movement_admission(army);

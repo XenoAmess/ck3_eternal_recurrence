@@ -229,6 +229,8 @@ struct ArmyBindings {
   std::int64_t *(*get_unit_first_route_edge_weight_cost)(void *, std::int64_t *) = nullptr;
   const std::uint8_t *unit_first_edge_arrival_provider_byte_e = nullptr;
   bool first_route_target_province_type_tag_enabled = false;
+  bool current_unit_arrival_prestore_inputs_enabled = false;
+  const std::int32_t *loaded_disembark_penalty_days_rule = nullptr;
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

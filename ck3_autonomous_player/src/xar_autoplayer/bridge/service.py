@@ -43,6 +43,7 @@ from .army_next_stock_supply_budget_projection import project_source_derived_nex
 from .army_current_unit_next_movement_prefix_projection import project_current_unit_next_movement_prefix_v1
 from .army_current_unit_next_first_edge_selection_projection import project_current_unit_next_first_edge_selection_v1
 from .army_current_unit_next_arrival_transition_projection import project_current_unit_next_arrival_transition_v1
+from .army_current_unit_arrival_prestore_disembark_write_projection import project_current_unit_arrival_prestore_disembark_write_v1
 from .army_next_land_stock_supply_budget_projection import project_source_derived_next_land_stock_supply_budget_v1
 from .army_current_callback_supply_risk_projection import project_current_callback_supply_risk_v1
 from .army_current_detachment_callback_projection import project_current_detachment_callback_inputs_v1
@@ -3620,6 +3621,7 @@ class GameplayBridgeService:
         prefixes = []
         selections = []
         arrivals = []
+        disembark_writes = []
         provenance = {
             "snapshot_id": result.get("queried_snapshot_id"),
             "revision": result.get("queried_revision"),
@@ -3640,20 +3642,26 @@ class GameplayBridgeService:
             selection = project_current_unit_next_first_edge_selection_v1(
                 row, movement_prefix=prefix,
             )
+            context = contexts.get(row["army_id"])
+            arrival = project_current_unit_next_arrival_transition_v1(
+                row, movement_prefix=prefix, first_edge_selection=selection,
+                army_context=context,
+            )
             wrapper = {"army_id": row["army_id"], "source_provenance": dict(provenance)}
             prefixes.append({**wrapper, "projection": prefix})
             selections.append({**wrapper, "projection": selection})
-            arrivals.append({
+            arrivals.append({**wrapper, "projection": arrival})
+            disembark_writes.append({
                 **wrapper,
-                "projection": project_current_unit_next_arrival_transition_v1(
-                    row, movement_prefix=prefix, first_edge_selection=selection,
-                    army_context=contexts.get(row["army_id"]),
+                "projection": project_current_unit_arrival_prestore_disembark_write_v1(
+                    row, arrival_transition=arrival, army_context=context,
                 ),
             })
         return {
             "current_unit_next_movement_prefix_v1": prefixes,
             "current_unit_next_first_edge_selection_v1": selections,
             "current_unit_next_arrival_transition_v1": arrivals,
+            "current_unit_arrival_prestore_disembark_write_v1": disembark_writes,
         }
 
     def execute_step(

@@ -2240,7 +2240,7 @@ def _normalize_current_movement_progress(
         "first_route_edge_remaining_duration", "unavailable_reason",
     }
     if (not isinstance(value, dict) or not required <= value.keys()
-            or set(value) - required - {"committed_route_timeline", "current_edge_movement_rate_raw", "native_army_movement_admission", "first_route_edge_weight_cost_raw", "first_edge_arrival_provider_byte_e_u8", "first_route_target_province_type_tag_u32"}):
+            or set(value) - required - {"committed_route_timeline", "current_edge_movement_rate_raw", "native_army_movement_admission", "first_route_edge_weight_cost_raw", "first_edge_arrival_provider_byte_e_u8", "first_route_target_province_type_tag_u32", "current_province_type_tag_u32", "unit_kind_18_raw_i32", "current_province_definition_byte_1b_u8", "first_route_target_province_definition_byte_1b_u8", "loaded_disembark_penalty_days_rule_i32"}):
         raise ValueError(f"native {name} schema is malformed")
     if value["status"] not in {"available", "not_applicable", "partial", "unavailable"}:
         raise ValueError(f"native {name}.status is malformed")
@@ -2277,6 +2277,19 @@ def _normalize_current_movement_progress(
         if tag is not None and (type(tag) is not int or not 0 <= tag <= 0xFFFFFFFF):
             raise ValueError(f"native {name}.first_route_target_province_type_tag_u32 must be uint32 or null")
         normalized["first_route_target_province_type_tag_u32"] = tag
+    for field, lower, upper in (
+        ("current_province_type_tag_u32", 0, 0xFFFFFFFF),
+        ("unit_kind_18_raw_i32", -(2**31), 2**31 - 1),
+        ("current_province_definition_byte_1b_u8", 0, 255),
+        ("first_route_target_province_definition_byte_1b_u8", 0, 255),
+        ("loaded_disembark_penalty_days_rule_i32", -(2**31), 2**31 - 1),
+    ):
+        if field not in value:
+            continue
+        raw = value[field]
+        if raw is not None and (type(raw) is not int or not lower <= raw <= upper):
+            raise ValueError(f"native {name}.{field} has invalid integer width")
+        normalized[field] = raw
     for field in ("normalized_edge_progress", "first_route_edge_remaining_duration"):
         amount = value[field]
         normalized[field] = (

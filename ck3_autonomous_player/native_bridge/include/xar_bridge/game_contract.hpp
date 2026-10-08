@@ -261,6 +261,12 @@ struct ArmyMovementProgressSnapshot {
   std::optional<std::int64_t> first_route_edge_weight_cost_raw;
   std::optional<std::uint8_t> first_edge_arrival_provider_byte_e_u8;
   std::optional<std::uint32_t> first_route_target_province_type_tag_u32;
+  // Current operands of the source-qualified pre-store Army departure node.
+  std::optional<std::uint32_t> current_province_type_tag_u32;
+  std::optional<std::int32_t> unit_kind_18_raw_i32;
+  std::optional<std::uint8_t> current_province_definition_byte_1b_u8;
+  std::optional<std::uint8_t> first_route_target_province_definition_byte_1b_u8;
+  std::optional<std::int32_t> loaded_disembark_penalty_days_rule_i32;
 
   friend bool operator==(const ArmyMovementProgressSnapshot &,
                          const ArmyMovementProgressSnapshot &) = default;

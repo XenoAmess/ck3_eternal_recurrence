@@ -1035,6 +1035,26 @@ inline void AppendArmyStrengthV1(
     result += movement.first_route_target_province_type_tag_u32.has_value()
                   ? number(*movement.first_route_target_province_type_tag_u32)
                   : "null";
+    result += ",\"current_province_type_tag_u32\":";
+    result += movement.current_province_type_tag_u32.has_value()
+                  ? number(*movement.current_province_type_tag_u32) : "null";
+    result += ",\"unit_kind_18_raw_i32\":";
+    result += movement.unit_kind_18_raw_i32.has_value()
+                  ? number(*movement.unit_kind_18_raw_i32) : "null";
+    result += ",\"current_province_definition_byte_1b_u8\":";
+    result += movement.current_province_definition_byte_1b_u8.has_value()
+                  ? number(static_cast<unsigned>(
+                        *movement.current_province_definition_byte_1b_u8))
+                  : "null";
+    result += ",\"first_route_target_province_definition_byte_1b_u8\":";
+    result += movement.first_route_target_province_definition_byte_1b_u8.has_value()
+                  ? number(static_cast<unsigned>(
+                        *movement.first_route_target_province_definition_byte_1b_u8))
+                  : "null";
+    result += ",\"loaded_disembark_penalty_days_rule_i32\":";
+    result += movement.loaded_disembark_penalty_days_rule_i32.has_value()
+                  ? number(*movement.loaded_disembark_penalty_days_rule_i32)
+                  : "null";
     const auto append_fixed = [&](const std::optional<std::int64_t> &raw) {
       if (raw.has_value()) {
         result += "{\"raw\":";

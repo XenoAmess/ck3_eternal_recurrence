@@ -192,6 +192,10 @@ ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
       reinterpret_cast<const std::uint8_t *>(image_base + 0x5D1E33E);
   // Source-reached arrival helper compares the resolved target's DWORD85C.
   result.first_route_target_province_type_tag_enabled = true;
+  // Actual24E281C reads this signed DWORD before fixed Army1D0 store24E2822.
+  result.current_unit_arrival_prestore_inputs_enabled = true;
+  result.loaded_disembark_penalty_days_rule =
+      reinterpret_cast<const std::int32_t *>(image_base + 0x5C69984);
   result.current_detachment_callback_bindings =
       BindCurrentDetachmentCallbackInputs12004(image_base, executable_sha256);
   result.current_detachment_store_bindings =

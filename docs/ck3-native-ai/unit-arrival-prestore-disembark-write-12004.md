@@ -51,9 +51,9 @@ flowchart TD
 
 The source tree precedes any counter-policy. Current Army identity, original route/current Province IDs and matching snapshot provenance are reused from Source31. The raw Unit178 reference and resolution witnesses already exist in `native_army_resolution_v1`; GetState is not a substitute for Unit.kind18. Target Province85C is already published by Source31 but cannot substitute for the incoming/current Province tag.
 
-The construction entry is the existing `current_movement_progress` producer and strict normalizer inside `query-army-strengths-v1`. Five optional raw scalars are proposed, with exact4 binding and legal zero distinct from an unread value:
+The implemented construction entry is the existing `current_movement_progress` producer and strict normalizer inside `query-army-strengths-v1`. Five optional raw scalars have exact4 binding; legal zero remains distinct from an unread value:
 
-| Proposed raw key | Type and source |
+| Published raw key | Type and source |
 | --- | --- |
 | `current_province_type_tag_u32` | optionalU32, resolved incoming/current Unit20 Province+85C |
 | `unit_kind_18_raw_i32` | optionalI32, same actual CUnit+18 |
@@ -63,7 +63,33 @@ The construction entry is the existing `current_movement_progress` producer and 
 
 The original current-days leaf, route, IDs, current state, timings and other Army fields stay unchanged. No second native query, new mutator callback or broad rule/provider capture is required. Missing demanded raw values remain a concrete construction gap; they are not completion credit.
 
-A later pure projection can reuse Source31's once-computed branch/first-write context, select the Army departure call from the current tag and Unit kind, then select the fixed store from the two definition bytes. Demand the loaded rule only when the fixed store is selected. Return only conditional write selection and its signed32 write value, carrying observed current remaining_days separately. A skipped node reports no write at this node; it does not promise that all later callbacks preserve the day value. Do not introduce a generic all-effects gate or make this projection a prerequisite for the existing query or action path.
+The pure `project_current_unit_arrival_prestore_disembark_write_v1` reuses Source31's once-computed branch/first-write context, selects the Army departure call from the current tag and Unit kind, then selects the fixed store from the two definition bytes. It demands the loaded rule only when the fixed store is selected. Service adds `current_unit_arrival_prestore_disembark_write_v1` rows containing `{army_id, source_provenance, projection}` to both registered Army query routes. Existing frame matching, primitive arguments and query admission stay unchanged. A skipped node reports no write at this node; it does not promise that later callbacks preserve the day value.
+
+The projection returns conditional call/write selection and the signed32 write value, carrying observed current remaining_days separately. A missing rule leaves a selected write with unknown value and readiness false. Known0 and-1 remain known signed values. Current remaining_days readiness, prior170/descriptor1 and Fleet validity are not demanded by this chosen value node. Its twelve effect/arrival/action boundary flags remain false.
+
+## Implementation and unique FIRST recipe
+
+Private implementation baseline `6a23ce3144b1faf4f2e21deca3c58e223c7e87e8` combines Root's normal Council SDK `9faffa0c8866b395c71a790ac03b80e139c4e2c6`, the eleven Source31 files, only Snapshot production CPP commit `4e06f9454ef9f0e8173d30d8259625d3396929b9`, and this topic's original source findings. The private tree is `C:/codex-ck3-background/a4-unit-arrival-disembark-write32-impl`; it shares the existing Z Git object store and does not edit Root's source or live freeze.
+
+`ArmyMovementProgressSnapshot` appends the five optionals. `ArmyBindings` appends `current_unit_arrival_prestore_inputs_enabled` and `loaded_disembark_penalty_days_rule`; exact4 `BindArmyImage12004` enables the readonly capture and binds the actual loaded DWORD at imagebase+5C69984. The collector reuses the resolved original CUnit, current Province and Source31 first target, then the existing serializer emits the typed values or null. It invokes no departure/arrival writer. Older sources may omit these optional keys. The strict Python normalizer preserves old absence, rejects bool for numeric fields and retains exact uint32/int32/uint8 widths.
+
+The three affected headers are `game_contract.hpp`, `ck3_12002_army.hpp` and `army_strength_v1_serializer.hpp`. Root must reselect affected compilation owners for the appended software DTO and binding layout. No new TU, target, CMake include, Bridge route, public MCP tool or native callback is added.
+
+The existing target `xar_ck3_12004_unit_army_movement_admission_whole_test` gains only `--disembark-write-wire-dir <fresh-native-dir>`. It produces `unit-first-disembark-write-whole.json`, seven original per-scene command packets, current Army reader sidecars and `PRODUCER-RECEIPT.json`. Existing admission/edge/arrival modes are preserved and are not part of this new qualification.
+
+| Scene | Conditional call / fixed write / value / ready |
+| --- | --- |
+| `disembark_rule_positive` | true / true /34 /true |
+| `disembark_rule_zero` | true / true /0 /true |
+| `disembark_rule_negative` | true / true /-1 /true |
+| `disembark_rule_unavailable` | true / true /null /false |
+| `disembark_target_medium_zero` | true /false /null /true; old definition and rule undemanded |
+| `disembark_unit_kind_bypass` | false /false /null /true; media and rule undemanded |
+| `disembark_arrival_not_selected` | false /false /null /true; all five increments undemanded |
+
+The sole new consumer is `CurrentUnitArrivalPrestoreDisembarkWriteWholeService12004Tests.test_loaded_rule_value_reaches_the_conditional_fixed_write_through_registered_routes`. It consumes that one fresh aggregate through actual NativeDriver, normalizers, Service and registered `ck3_execute_step` plus `ck3_query_army_strengths`: seven scenes, fourteen passes. It checks object lineage for once-computed prefix/selection/arrival/write projections, unchanged whole native business values, signed fixed writes and the genuine current-days getter value12. Only hello, paused frame and outer request association are synthetic; the full native Snapshot pipeline is not qualified by this fixture.
+
+Root launcher: `Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe -B -X utf8 Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/unit-arrival-prestore-source32/implementation/consumer-node/launch_disembark_write_consumer.py --source-root <Root-frozen-source> --native-wire <fresh-native-dir>/unit-first-disembark-write-whole.json --output-dir <fresh-consumer-dir>`. The native mode and consumer run once under Root; their receipts, stdout, stderr, elapsed time and exit codes must be retained. Implementation handoff is under the topic's external `implementation/` directory.
 
 ## Remaining arrival boundary and qualification
 
@@ -71,4 +97,4 @@ The actual1679B body has no direct Unit20 store. When both definition bytes are 
 
 Other source-reached branches call24E8440,2A98990 and common callbacks. They remain beyond the selected fixed-write stage. The separate C46100 and2479780 pre-store bodies are not captured in this package. Final helper Province, final penalty days, repeated callbacks, Fleet queue application, future battle/siege effects and full daily/monthly/future frames remain unresolved.
 
-Status is `research`: the one fixed write is source-closed, while its five-field native publication and projection are not implemented or qualified here. No new fixture, target, CMake/header/Bridge hook, build, test, import of production code, Game/SDK/process/window operation or FIRST was run. The external input ledger and needed-value plan provide the next finite implementation entry; they do not grant arrival or gameplay credit.
+Status is `SOURCE_PREPARED_FIRST_NOTRUN`: the one fixed write is source-closed and the five-field native publication, strict normalization, conditional Service projection and unique new whole mode/consumer are authored. Source diff review is not runtime qualification. FIRST remains0; no build, test, production import, Game/SDK/process/window operation, repeated source capture or whole EXE hash was performed for this implementation. Actual future frame, executed pre-store callback, observed fixed write, final penalty/arrival, full Unit callback and native action credit remain false.

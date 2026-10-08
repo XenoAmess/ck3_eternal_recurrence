@@ -2,7 +2,7 @@
 // Actual4 wrapper -> common production Strength collector -> production wire.
 // This observes current operands with owned readonly stubs; it never calls
 // NewDate, the ADD writer, native provider initialization, arrival handlers,
-// or Game. New edge scenes install only fixture-owned readonly observers.
+// or Game. New modes install only fixture-owned readonly observers.
 // Admission is a current readonly bool input; future Combat/Army context is
 // held explicitly by the pure gate-slice projection, not observed as effects.
 #include "xar_bridge/ck3_12004_army.hpp"
@@ -62,6 +62,19 @@ struct Scene {
   bool first_target_type_tag_enabled = false;
   std::optional<bool> expected_first_assignment_selected;
   std::optional<std::int32_t> expected_conditional_province_id;
+  bool disembark_write_scene = false;
+  bool prestore_inputs_enabled = false;
+  std::int32_t unit_kind_18 = 0;
+  std::uint8_t current_definition_byte_1b = 0;
+  std::uint8_t target_definition_byte_1b = 1;
+  bool definition_pointers_present = true;
+  std::int32_t loaded_disembark_days_rule = 34;
+  bool loaded_disembark_days_rule_bound = false;
+  bool expected_prestore_call_selected = false;
+  bool expected_fixed_days_write_selected = false;
+  std::optional<std::int32_t> expected_fixed_days_write_value;
+  bool expected_fixed_write_ready = true;
+  bool expected_loaded_rule_demanded = false;
 };
 constexpr std::array<Scene, 4> kScenes{{
     {"admission_true", 2, 2, 100, 7, 11, true, true, true, true},
@@ -101,6 +114,58 @@ constexpr std::array<Scene, 5> kArrivalTransitionScenes{{
      true, 2, kProvinceMagic, false, false, 1},
 }};
 
+constexpr std::array<Scene, 7> kDisembarkWriteScenes = [] {
+  std::array<Scene, 7> scenes{};
+  constexpr std::array<std::string_view, 7> names{
+      "disembark_rule_positive", "disembark_rule_zero", "disembark_rule_negative",
+      "disembark_rule_unavailable", "disembark_target_medium_zero",
+      "disembark_unit_kind_bypass", "disembark_arrival_not_selected"};
+  for (std::size_t index = 0; index < scenes.size(); ++index) {
+    auto &scene = scenes[index];
+    scene = kArrivalTransitionScenes[0];
+    scene.name = names[index];
+    scene.disembark_write_scene = true;
+    scene.prestore_inputs_enabled = true;
+    scene.loaded_disembark_days_rule_bound = true;
+    scene.expected_prestore_call_selected = true;
+    scene.expected_fixed_days_write_selected = true;
+    scene.expected_fixed_days_write_value = 34;
+    scene.expected_loaded_rule_demanded = true;
+  }
+  scenes[1].loaded_disembark_days_rule = 0;
+  scenes[1].expected_fixed_days_write_value = 0;
+  scenes[2].loaded_disembark_days_rule = -1;
+  scenes[2].expected_fixed_days_write_value = -1;
+  scenes[3].loaded_disembark_days_rule_bound = false;
+  scenes[3].expected_fixed_days_write_value = std::nullopt;
+  scenes[3].expected_fixed_write_ready = false;
+  scenes[4].target_definition_byte_1b = 0;
+  scenes[4].loaded_disembark_days_rule_bound = false;
+  scenes[4].expected_fixed_days_write_selected = false;
+  scenes[4].expected_fixed_days_write_value = std::nullopt;
+  scenes[4].expected_loaded_rule_demanded = false;
+  scenes[5].unit_kind_18 = 1;
+  scenes[5].definition_pointers_present = false;
+  scenes[5].loaded_disembark_days_rule_bound = false;
+  scenes[5].expected_prestore_call_selected = false;
+  scenes[5].expected_fixed_days_write_selected = false;
+  scenes[5].expected_fixed_days_write_value = std::nullopt;
+  scenes[5].expected_loaded_rule_demanded = false;
+  scenes[6].first_edge_cost = 107;
+  scenes[6].normalized_progress = 93457;
+  scenes[6].remaining_duration = 100000;
+  scenes[6].expected_branch_selected = false;
+  scenes[6].expected_first_assignment_selected = false;
+  scenes[6].expected_conditional_province_id = 1;
+  scenes[6].prestore_inputs_enabled = false;
+  scenes[6].loaded_disembark_days_rule_bound = false;
+  scenes[6].expected_prestore_call_selected = false;
+  scenes[6].expected_fixed_days_write_selected = false;
+  scenes[6].expected_fixed_days_write_value = std::nullopt;
+  scenes[6].expected_loaded_rule_demanded = false;
+  return scenes;
+}();
+
 void Check(bool condition, const char *message) {
   if (!condition) throw std::runtime_error(message);
 }
@@ -119,6 +184,8 @@ struct Inputs {
   std::array<std::byte, 0x50> regiment{};
   std::array<std::byte, 0x860> province{}, target_province{}, final_province{};
   std::array<void *, 4> provinces{};
+  std::array<std::byte, 0x20> current_province_definition{}, target_province_definition{};
+  std::int32_t loaded_disembark_days_rule = 34;
   std::array<std::int32_t, 2> regiment_ids{kRegiment, kRegiment};
   std::array<std::array<std::byte, 4>, 2> route_nodes{};
   std::array<void *, 2> route_pointers{};
@@ -136,6 +203,7 @@ struct Counters {
   std::size_t army_movement_admission = 0;
   std::size_t first_edge_cost = 0, normalized_progress = 0, remaining_duration = 0;
   std::size_t unit_state = 0, current_army_context_reader = 0;
+  std::size_t current_disembark_penalty_days = 0;
   bool abi_matches = true;
 };
 struct Fixture;
@@ -151,6 +219,7 @@ std::int64_t *FirstEdgeCost(void *, std::int64_t *);
 std::int64_t *NormalizedProgress(void *, std::int64_t *);
 std::int64_t *FirstEdgeRemainingDuration(void *, std::int64_t *, std::int32_t);
 std::int32_t UnitState(void *);
+std::int32_t CurrentDisembarkPenaltyDays(const void *);
 
 struct Fixture {
   Inputs input{};
@@ -186,6 +255,7 @@ struct Fixture {
     Store(input.unit, 0x10, kUnit);
     Store(input.unit, 0x14, std::uint32_t{0x556E6974});
     Store(input.unit, 0x174, kActor);
+    Store(input.unit, 0x18, scene.unit_kind_18);
     Store(input.unit, 0x178, kArmy);
     Store(input.unit, 0x170, scene.state);
     Store(input.unit, 0x168, scene.accumulated_weight);
@@ -270,6 +340,21 @@ struct Fixture {
       bindings.first_route_target_province_type_tag_enabled =
           scene.first_target_type_tag_enabled;
     }
+    if (scene.disembark_write_scene) {
+      Store(input.province, 8, scene.definition_pointers_present
+          ? static_cast<const void *>(input.current_province_definition.data()) : nullptr);
+      Store(input.target_province, 8, scene.definition_pointers_present
+          ? static_cast<const void *>(input.target_province_definition.data()) : nullptr);
+      Store(input.current_province_definition, 0x1B, scene.current_definition_byte_1b);
+      Store(input.target_province_definition, 0x1B, scene.target_definition_byte_1b);
+      input.loaded_disembark_days_rule = scene.loaded_disembark_days_rule;
+      Store(input.army, 0x1D0, std::int32_t{12});
+      bindings.current_unit_arrival_prestore_inputs_enabled = scene.prestore_inputs_enabled;
+      bindings.loaded_disembark_penalty_days_rule = scene.loaded_disembark_days_rule_bound
+          ? &input.loaded_disembark_days_rule : nullptr;
+      bindings.current_disembark_penalty_enabled = true;
+      bindings.get_army_disembark_penalty_days = CurrentDisembarkPenaltyDays;
+    }
   }
 };
 std::int32_t CurrentSoldiers(void *receiver, std::uint8_t flags) {
@@ -346,6 +431,15 @@ std::int32_t UnitState(void *receiver) {
   ++f.calls.unit_state;
   f.calls.abi_matches &= receiver == f.input.unit.data();
   return 6;
+}
+std::int32_t CurrentDisembarkPenaltyDays(const void *receiver) {
+  auto &f = *active;
+  ++f.calls.current_disembark_penalty_days;
+  f.calls.abi_matches &= receiver == f.input.army.data();
+  Check(receiver == f.input.army.data(), "current days getter received a different CArmy");
+  std::int32_t value = 0;
+  std::memcpy(&value, static_cast<const std::byte *>(receiver) + 0x1D0, sizeof value);
+  return value;
 }
 void AppendString(std::string &out, std::string_view value) {
   out += '"';
@@ -445,6 +539,31 @@ void AssertScene(const Fixture &f, const Inputs &before,
       movement.first_edge_arrival_provider_byte_e_u8 == expected_provider &&
       !movement.committed_route_timeline,
       "movement raw operands or exact current edge observers changed");
+  if (scene.disembark_write_scene) {
+    const auto expected_tag = scene.prestore_inputs_enabled
+        ? std::optional<std::uint32_t>{kProvinceMagic} : std::nullopt;
+    const auto expected_kind = scene.prestore_inputs_enabled
+        ? std::optional<std::int32_t>{scene.unit_kind_18} : std::nullopt;
+    const auto expected_current_definition =
+        scene.prestore_inputs_enabled && scene.definition_pointers_present
+        ? std::optional<std::uint8_t>{scene.current_definition_byte_1b} : std::nullopt;
+    const auto expected_target_definition =
+        scene.prestore_inputs_enabled && scene.definition_pointers_present
+        ? std::optional<std::uint8_t>{scene.target_definition_byte_1b} : std::nullopt;
+    const auto expected_loaded_rule =
+        scene.prestore_inputs_enabled && scene.loaded_disembark_days_rule_bound
+        ? std::optional<std::int32_t>{scene.loaded_disembark_days_rule} : std::nullopt;
+    Check(movement.current_province_type_tag_u32 == expected_tag &&
+        movement.unit_kind_18_raw_i32 == expected_kind &&
+        movement.current_province_definition_byte_1b_u8 == expected_current_definition &&
+        movement.first_route_target_province_definition_byte_1b_u8 == expected_target_definition &&
+        movement.loaded_disembark_penalty_days_rule_i32 == expected_loaded_rule,
+        "production prestore raw observations lost zero/negative/null or owned provenance");
+    Check(row.current_disembark_penalty_v1 &&
+        row.current_disembark_penalty_v1->available &&
+        row.current_disembark_penalty_v1->remaining_days == 12,
+        "original current disembark days were replaced by conditional future rule");
+  }
   if (scene.edge_selection_scene) {
     Check(movement.status == game::ArmyMovementProgressStatus::available,
         "existing current ratio/duration availability lost");
@@ -466,15 +585,17 @@ void AssertScene(const Fixture &f, const Inputs &before,
       f.calls.normalized_progress == (scene.edge_selection_scene ? 1U : 0U) &&
       f.calls.remaining_duration == (scene.edge_selection_scene ? 1U : 0U) &&
       f.calls.unit_state == (scene.arrival_transition_scene ? 2U : 0U) &&
-      f.calls.current_army_context_reader == (scene.arrival_transition_scene ? 1U : 0U),
+      f.calls.current_army_context_reader == (scene.arrival_transition_scene ? 1U : 0U) &&
+      f.calls.current_disembark_penalty_days == (scene.disembark_write_scene ? 1U : 0U),
       "whole reader ABI/count or current getter selection changed");
   Check(f.input == before, "readonly whole reader changed owned Unit/queue/route inputs");
 }
 std::string SerializeWhole(const game::ArmyStrengthSnapshot &row,
     std::string_view scene, std::size_t sequence, bool edge_selection_scene = false,
-    bool arrival_transition_scene = false) {
+    bool arrival_transition_scene = false, bool disembark_write_scene = false) {
   std::string out = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
-  AppendString(out, std::string(arrival_transition_scene ? "unit-arrival-transition-"
+  AppendString(out, std::string(disembark_write_scene ? "unit-first-disembark-write-"
+                          : arrival_transition_scene ? "unit-arrival-transition-"
                          : edge_selection_scene ? "unit-first-edge-selection-"
                                                 : "unit-army-movement-admission-") +
                     std::string(scene));
@@ -711,24 +832,88 @@ std::string ArrivalTransitionContext(const Fixture &f, const Scene &scene,
   return out;
 }
 
+std::string DisembarkWriteContext(const Fixture &f, const Scene &scene,
+    std::size_t sequence, const std::vector<game::ArmySnapshot> &current_armies) {
+  auto out = ArrivalTransitionContext(f, scene, sequence, current_armies);
+  const auto replace = [&](std::string_view from, std::string_view to) {
+    for (auto at = out.find(from); at != std::string::npos; at = out.find(from, at + to.size())) {
+      out.replace(at, from.size(), to);
+    }
+  };
+  replace("xar.unit-arrival-transition-native-context.v1",
+          "xar.unit-first-disembark-write-native-context.v1");
+  replace("unit-arrival-transition-12004", "unit-first-disembark-write-12004");
+  replace("conditional first local Province assignment after supplied arrival branch; full effects unobserved",
+          "conditional first Army1D0 fixed write before outer Province assignment; full effects unobserved");
+  std::string inputs = ",\"current_unit_arrival_prestore_inputs_enabled\":";
+  inputs += scene.prestore_inputs_enabled ? "true" : "false";
+  inputs += ",\"current_province_type_tag_u32\":";
+  inputs += scene.prestore_inputs_enabled ? std::to_string(kProvinceMagic) : "null";
+  inputs += ",\"unit_kind_18_raw_i32\":";
+  inputs += scene.prestore_inputs_enabled ? std::to_string(scene.unit_kind_18) : "null";
+  inputs += ",\"current_province_definition_byte_1b_u8\":";
+  inputs += scene.prestore_inputs_enabled && scene.definition_pointers_present
+      ? std::to_string(scene.current_definition_byte_1b) : "null";
+  inputs += ",\"first_route_target_province_definition_byte_1b_u8\":";
+  inputs += scene.prestore_inputs_enabled && scene.definition_pointers_present
+      ? std::to_string(scene.target_definition_byte_1b) : "null";
+  inputs += ",\"loaded_disembark_penalty_days_rule_i32\":";
+  inputs += scene.prestore_inputs_enabled && scene.loaded_disembark_days_rule_bound
+      ? std::to_string(scene.loaded_disembark_days_rule) : "null";
+  inputs += ",\"loaded_disembark_penalty_days_rule_bound\":";
+  inputs += scene.loaded_disembark_days_rule_bound ? "true" : "false";
+  inputs += ",\"current_disembark_penalty_remaining_days\":12";
+  inputs += ",\"conditional_prestore_24e23e0_call_selected\":";
+  inputs += scene.expected_prestore_call_selected ? "true" : "false";
+  inputs += ",\"conditional_fixed_disembark_days_write_selected\":";
+  inputs += scene.expected_fixed_days_write_selected ? "true" : "false";
+  inputs += ",\"conditional_disembark_days_fixed_write_value_i32\":";
+  inputs += scene.expected_fixed_days_write_value
+      ? std::to_string(*scene.expected_fixed_days_write_value) : "null";
+  inputs += ",\"fixed_disembark_write_input_ready\":";
+  inputs += scene.expected_fixed_write_ready ? "true" : "false";
+  inputs += ",\"loaded_days_rule_demanded_by_conditional_fixed_write\":";
+  inputs += scene.expected_loaded_rule_demanded ? "true" : "false";
+  const auto input_at = out.find(",\"monthly_budget_callbacks_enabled\":");
+  Check(input_at != std::string::npos, "disembark native-input context anchor missing");
+  out.insert(input_at, inputs);
+  const auto callback_at = out.find(",\"monthly_budget_helpers\":");
+  Check(callback_at != std::string::npos, "disembark callback context anchor missing");
+  out.insert(callback_at, ",\"current_disembark_penalty_days\":" +
+      std::to_string(f.calls.current_disembark_penalty_days) +
+      ",\"army_departure_helper\":0,\"fixed_disembark_days_writer\":0");
+  Check(!out.empty() && out.back() == '}', "disembark context object boundary missing");
+  out.pop_back();
+  out += ",\"current_disembark_days_observed_from_original_collector\":true,"
+         "\"actual_fixed_disembark_days_write_observed\":false,"
+         "\"full_army_departure_callback_reconstructed\":false,"
+         "\"conditional_fixed_write_is_first_local_assignment_only\":true}";
+  return out;
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
   std::filesystem::path output;
   bool edge_selection_mode = false;
   bool arrival_transition_mode = false;
+  bool disembark_write_mode = false;
   try {
     Check(argc == 3 && (std::string_view(argv[1]) == "--wire-dir" ||
                        std::string_view(argv[1]) == "--edge-selection-wire-dir" ||
-                       std::string_view(argv[1]) == "--arrival-transition-wire-dir"),
+                       std::string_view(argv[1]) == "--arrival-transition-wire-dir" ||
+                       std::string_view(argv[1]) == "--disembark-write-wire-dir"),
         "usage: xar_ck3_12004_unit_army_movement_admission_whole_test "
         "--wire-dir <fresh-dir> | --edge-selection-wire-dir <fresh-dir> | "
-        "--arrival-transition-wire-dir <fresh-dir>");
+        "--arrival-transition-wire-dir <fresh-dir> | --disembark-write-wire-dir <fresh-dir>");
     edge_selection_mode = std::string_view(argv[1]) == "--edge-selection-wire-dir";
     arrival_transition_mode = std::string_view(argv[1]) == "--arrival-transition-wire-dir";
-    const Scene *scenes = arrival_transition_mode ? kArrivalTransitionScenes.data()
+    disembark_write_mode = std::string_view(argv[1]) == "--disembark-write-wire-dir";
+    const Scene *scenes = disembark_write_mode ? kDisembarkWriteScenes.data()
+        : arrival_transition_mode ? kArrivalTransitionScenes.data()
         : edge_selection_mode ? kEdgeSelectionScenes.data() : kScenes.data();
-    const auto scene_count = arrival_transition_mode ? kArrivalTransitionScenes.size()
+    const auto scene_count = disembark_write_mode ? kDisembarkWriteScenes.size()
+        : arrival_transition_mode ? kArrivalTransitionScenes.size()
         : edge_selection_mode ? kEdgeSelectionScenes.size() : kScenes.size();
     output = argv[2];
     std::filesystem::create_directories(output);
@@ -744,7 +929,7 @@ int main(int argc, char **argv) {
       auto before = std::make_unique<Inputs>(fixture->input);
       active = fixture.get();
       std::vector<game::ArmySnapshot> current_armies;
-      if (arrival_transition_mode) {
+      if (arrival_transition_mode || disembark_write_mode) {
         const std::array<std::int32_t, 1> owners{kActor};
         ++fixture->calls.current_army_context_reader;
         Check(current::ReadArmiesForCharacters12004(
@@ -760,10 +945,12 @@ int main(int argc, char **argv) {
           "genuine whole Strength did not produce an available original row");
       AssertScene(*fixture, *before, rows.front(), scene);
       const auto wire = SerializeWhole(rows.front(), scene.name, index + 1,
-          edge_selection_mode, arrival_transition_mode);
+          edge_selection_mode, arrival_transition_mode, disembark_write_mode);
       Write(output / (std::string(scene.name) + ".command-result.json"), wire);
       Write(output / (std::string(scene.name) + ".native-context.json"),
-          arrival_transition_mode
+          disembark_write_mode
+              ? DisembarkWriteContext(*fixture, scene, index + 1, current_armies)
+              : arrival_transition_mode
               ? ArrivalTransitionContext(*fixture, scene, index + 1, current_armies)
               : edge_selection_mode ? EdgeSelectionContext(*fixture, scene, index + 1)
                                     : Context(*fixture, scene, index + 1));
@@ -774,10 +961,26 @@ int main(int argc, char **argv) {
       active = nullptr;
     }
     aggregate += "}}";
-    Write(output / (arrival_transition_mode ? "unit-arrival-transition-whole.json"
+    Write(output / (disembark_write_mode ? "unit-first-disembark-write-whole.json"
+                 : arrival_transition_mode ? "unit-arrival-transition-whole.json"
                  : edge_selection_mode ? "unit-first-edge-selection-whole.json"
                                        : "unit-army-movement-admission-whole.json"), aggregate);
-    if (arrival_transition_mode) {
+    if (disembark_write_mode) {
+      Write(output / "PRODUCER-RECEIPT.json",
+          "{\"schema\":\"xar.unit-first-disembark-write-producer-receipt.v1\","
+          "\"status\":\"PASS\",\"scene_count\":7,\"whole_reader_calls\":7,\"whole_serializer_calls\":7,"
+          "\"current_army_context_reader_calls\":7,\"current_disembark_penalty_days_getter_calls\":7,"
+          "\"current_army_context_from_original_reader\":true,"
+          "\"current_disembark_days_from_original_collector\":true,"
+          "\"fixture_owned_objects_and_callbacks\":true,\"all_fixture_input_bytes_unchanged\":true,"
+          "\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false,"
+          "\"native_first_edge_provider_getter_invoked\":false,\"actual_arrival_observed\":false,"
+          "\"native_arrival_helper_invoked\":false,\"first_province_writer_invoked\":false,"
+          "\"army_departure_helper_invoked\":false,\"fixed_disembark_days_writer_invoked\":false,"
+          "\"old_GREEN_replayed\":false,\"old_four_scenes_replayed\":false,"
+          "\"old_edge_selection_scenes_replayed\":false,\"old_arrival_transition_scenes_replayed\":false,"
+          "\"full_adapter_snapshot_path_exercised\":false,\"full_nativeframe_pipeline_exercised\":false}");
+    } else if (arrival_transition_mode) {
       Write(output / "PRODUCER-RECEIPT.json",
           "{\"schema\":\"xar.unit-arrival-transition-producer-receipt.v1\","
           "\"status\":\"PASS\",\"scene_count\":5,\"whole_reader_calls\":5,\"whole_serializer_calls\":5,"
@@ -806,7 +1009,8 @@ int main(int argc, char **argv) {
           "\"native_EXE_callback_invoked\":false,\"actual_future_stage_observed\":false,"
           "\"old_GREEN_replayed\":false,\"full_adapter_snapshot_path_exercised\":false}");
     }
-    std::cout << (arrival_transition_mode ? "five arrival transition whole scenes emitted\n"
+    std::cout << (disembark_write_mode ? "seven first disembark write whole scenes emitted\n"
+                 : arrival_transition_mode ? "five arrival transition whole scenes emitted\n"
                  : edge_selection_mode ? "five first edge selection whole scenes emitted\n"
                                        : "four current CArmy admission whole scenes emitted\n");
     return 0;
@@ -814,8 +1018,9 @@ int main(int argc, char **argv) {
     active = nullptr;
     if (!output.empty()) {
       std::string receipt = "{\"schema\":";
-      AppendString(receipt, arrival_transition_mode
-          ? "xar.unit-arrival-transition-producer-receipt.v1"
+      AppendString(receipt, disembark_write_mode
+          ? "xar.unit-first-disembark-write-producer-receipt.v1"
+          : arrival_transition_mode ? "xar.unit-arrival-transition-producer-receipt.v1"
           : edge_selection_mode ? "xar.unit-first-edge-selection-producer-receipt.v1"
                                 : "xar.unit-army-movement-admission-producer-receipt.v1");
       receipt += ",\"status\":\"FAIL\",\"error\":";
