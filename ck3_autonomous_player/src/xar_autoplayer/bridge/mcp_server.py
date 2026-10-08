@@ -77,7 +77,10 @@ from .succession_transition_contract import (
 )
 from .session_driver import DevelopmentSessionDriver
 from .service import GameplayBridgeService
-from .army_strengths_mcp_result import build_army_strengths_mcp_result
+from .army_strengths_mcp_result import (
+    build_army_auto_turn_mcp_result,
+    build_army_strengths_mcp_result,
+)
 from .activity_feast_guest_target_private_transport import (
     query_activity_feast_guest_target_private_v1,
 )
@@ -2378,7 +2381,18 @@ def create_server(
     @server.tool()
     def ck3_auto_turn() -> dict[str, object]:
         """Plan and execute exactly one supported one-life gameplay turn."""
-        return service.auto_nonwar_turn() if getattr(driver, "nonwar_only", False) is True else service.auto_turn()
+        payload = service.auto_nonwar_turn() if getattr(driver, "nonwar_only", False) is True else service.auto_turn()
+        plan = payload.get("plan")
+        result = payload.get("result")
+        if (
+            isinstance(plan, dict)
+            and plan.get("selected_step") == "query-army-strengths-v1"
+            and isinstance(result, dict)
+            and result.get("step") == "query-army-strengths-v1"
+            and isinstance(result.get("army_strengths"), list)
+        ):
+            return build_army_auto_turn_mcp_result(payload)
+        return payload
 
     @server.tool()
     def ck3_execute_step(

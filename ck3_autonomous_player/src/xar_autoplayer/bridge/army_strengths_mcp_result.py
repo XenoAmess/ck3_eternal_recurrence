@@ -26,17 +26,10 @@ _SUMMARY_ARMY_FIELDS = (
 )
 
 
-def build_army_strengths_mcp_result(payload: dict[str, object]) -> CallToolResult:
-    """Keep the complete Service result in structured content and summarize text.
-
-    MCP imports stay lazy so baseline installs do not require the optional SDK.
-    The caller supplies the complete Army result from a direct query or step.
-    """
-    from mcp.types import CallToolResult, TextContent
-
+def _army_strengths_summary(payload: dict[str, object]) -> dict[str, object]:
     source = payload.get("source")
     rows = cast(list[dict[str, object]], payload["army_strengths"])
-    summary = {
+    return {
         "accepted": payload.get("accepted"),
         "status": payload.get("status"),
         "query_sequence": payload.get("query_sequence"),
@@ -63,6 +56,17 @@ def build_army_strengths_mcp_result(payload: dict[str, object]) -> CallToolResul
         ],
         "result_location": "structuredContent",
     }
+
+
+def build_army_strengths_mcp_result(payload: dict[str, object]) -> CallToolResult:
+    """Keep the complete Service result in structured content and summarize text.
+
+    MCP imports stay lazy so baseline installs do not require the optional SDK.
+    The caller supplies the complete Army result from a direct query or step.
+    """
+    from mcp.types import CallToolResult, TextContent
+
+    summary = _army_strengths_summary(payload)
     return CallToolResult(
         content=[
             TextContent(
@@ -70,5 +74,26 @@ def build_army_strengths_mcp_result(payload: dict[str, object]) -> CallToolResul
                 text=json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
             )
         ],
+        structured_content=payload,
+    )
+
+
+def build_army_auto_turn_mcp_result(payload: dict[str, object]) -> CallToolResult:
+    """Preserve the original Army auto-turn packet with a compact text summary."""
+    from mcp.types import CallToolResult, TextContent
+
+    plan = cast(dict[str, object], payload["plan"])
+    result = cast(dict[str, object], payload["result"])
+    summary = {
+        "status": payload.get("status"),
+        "selected_step": payload.get("selected_step"),
+        "plan": {key: plan.get(key) for key in ("selected_step", "phase")},
+        "result": _army_strengths_summary(result),
+        "result_location": "structuredContent",
+    }
+    return CallToolResult(
+        content=[TextContent(
+            type="text", text=json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
+        )],
         structured_content=payload,
     )
