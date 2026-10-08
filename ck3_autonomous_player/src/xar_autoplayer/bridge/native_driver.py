@@ -35,6 +35,7 @@ from typing import Protocol
 import uuid
 
 from ..environment import write_bytes_atomic, write_json_atomic
+from ..siege_subject_contribution_v1 import observe_siege_subject_contribution
 from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
@@ -27208,7 +27209,7 @@ def _life_advance_horizon_days(snapshot: dict[str, object]) -> int:
 
 
 def _observed_player_siege(snapshot: dict[str, object]) -> bool:
-    """Classify a rich paused CSiege row; running null rows are not absence."""
+    """Classify stored leadership or measured own contribution in a paused row."""
     if snapshot.get("paused") is not True:
         return False
     wars = snapshot.get("active_wars")
@@ -27222,6 +27223,13 @@ def _observed_player_siege(snapshot: dict[str, object]) -> bool:
             siege = state.get("active_siege")
             if isinstance(siege, dict) and siege.get("player_army_besieging") is True:
                 return True
+            if isinstance(siege, dict):
+                armies = snapshot.get("player_armies")
+                if any(
+                    observe_siege_subject_contribution(state, army)["status"] == "eligible"
+                    for army in (armies if isinstance(armies, list) else [])
+                ):
+                    return True
     return False
 
 

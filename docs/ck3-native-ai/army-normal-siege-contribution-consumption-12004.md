@@ -1,5 +1,9 @@
 # Ordinary siege contribution consumption — 1.20.0.4
 
+The later downstream cadence consumer repair is recorded separately in
+[foreign-leader material cadence](siege-foreign-leader-material-cadence-12004.md).
+The earlier source/qualification boundaries below remain their original facts.
+
 The ordinary consumer is already connected at source `6ee7dea1b4d2fa4ecb05223f12c66b7afe72ac2d`. No extra policy or query implementation is needed for this entrance. This bounded source review on 2026-10-08 / ISO week 41 reuses the adopted [selected-subject consumer](siege-subject-contribution-consumer-12004.md), [actual4 contribution tree](war-siege-target-contribution-r76-12004.md) and [current Army selection tree](siege-current-army-selection-12004.md).
 
 Exact game identity is CK3 1.20.0.4 / Steam 25734779, executable SHA-256 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`. Native33's new selection observer has Root's four-scene native and registered consumer qualification. Its production-live status remains separate from the existing Runtime32 R77 snapshot.

@@ -1,0 +1,28 @@
+{
+  "schema": "xar.siege-foreign-leader-material-cadence12004.source.v1",
+  "date": "2026-10-08",
+  "week": "2026-W41",
+  "source_base": "dd4459fe0d38951ebdbc899a66c6a1c6608b2409",
+  "source_tree": "Z:/gbs-siege-material-dd445",
+  "exact_build": {"version": "1.20.0.4", "steam_build": 25734779,
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"},
+  "reused_native_tree": [
+    "docs/ck3-native-ai/army-normal-siege-contribution-consumption-12004.md",
+    "docs/ck3-native-ai/siege-current-army-selection-12004.md",
+    "docs/ck3-native-ai/siege-ooda-source-chain-12004.md",
+    "docs/ck3-native-ai/paused-siege-timeline-cadence-12003.md"
+  ],
+  "qualified_input": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime33-incremental-preparation/build/functional-runtime33-90074a79-attempt02/wire/siege-selection-12004/foreign_leader_own_eligible.json",
+  "old_qualification_replayed": false,
+  "mismatch": "Normal strategy accepts observed arrived own eligible contribution under foreign leadership, but NativeDriver daily cadence classifier only recognizes stored player leader",
+  "old_production_path": "route-free war requests seven days and speed five despite normal siege-progress decision",
+  "minimal_repair": "Reuse existing observe_siege_subject_contribution in the same _observed_player_siege classifier; retain stored leader branch and existing exact daily composite",
+  "sole_compound": "test_foreign_leader_siege_material_service_12004.py::test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves",
+  "first_recipe": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/siege-foreign-contribution-material38/ROOT-FIRST-RECIPE.json",
+  "finite_root_inbox_template": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/siege-foreign-contribution-material38/ROOT-FINITE-INBOX-TEMPLATE.json",
+  "readiness": "research/source-authored; FIRST and actual loop NOTRUN",
+  "new_native_reader_schema_gate": false,
+  "source_owner_exe_hash_build_test_project_import_game_sdk_first_calls": 0,
+  "current_r77_route_blocker": false,
+  "claim_limits": ["ACK is not arrival", "eligibility is not work gain", "Siege disappearance is not capture", "source or fixture is not actual day/SAVE", "no G2 milestone credit"]
+}
