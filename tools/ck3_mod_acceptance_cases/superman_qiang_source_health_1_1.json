@@ -1,0 +1,74 @@
+{
+  "case_id": "source-health-1-1",
+  "acceptance_scope": "source_original_health_20_case_matrix_and_real_readback",
+  "fixture_emitter": {
+    "path": "mod_superman_qiang/tools/prepare_health_fixture.py",
+    "arguments": [
+      "--output",
+      "{output}"
+    ],
+    "fixture_subdir": "",
+    "receipt_suffix": ".fixture.json"
+  },
+  "maximum_natural_days": 4,
+  "failure_prefixes": [
+    "SXAT:"
+  ],
+  "gui_phases": [
+    {
+      "id": "original-baseline-before-health-choice",
+      "requirements": [
+        "actual_baseline_save_before_health_begin",
+        "actual_health_baseline_event_current_instance",
+        "original_health_begin_option_once"
+      ],
+      "at_day": 1
+    },
+    {
+      "id": "actual-health-readback-and-trait-ui",
+      "requirements": [
+        "original_twenty_health_case_actual_readback",
+        "actual_trait_hover_and_seven_net_attribute_UI"
+      ],
+      "when_markers": [
+        "SXAT: END health-1.1.0-targeted-matrix"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_superman_qiang/docs/health-native-acceptance-tools-1.1.0.md",
+    "mod_superman_qiang/tools/verify_health_readback.py",
+    "mod_superman_qiang/tools/verify_health_reload.py"
+  ],
+  "uncovered_product_business": [
+    "Mandatory distinct real cold-save/reload cell remains pending; current same-live health case cannot satisfy or replace verify_health_reload.py",
+    "original first-release 42-case fixture is not used as health1.1 expected random distribution"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "superman-qiang",
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "SXAT: TEST FAIL"
+  ],
+  "source_catalogue": {
+    "directory": "mod_superman_qiang",
+    "builder": "mod_superman_qiang/tools/build_release.py",
+    "release_flags": [
+      "--output",
+      "{new-output}",
+      "--git-tag",
+      "{matching-product-tag}",
+      "--workshop-item-id",
+      "3812991990"
+    ],
+    "workshop_item_id": "3812991990"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+}

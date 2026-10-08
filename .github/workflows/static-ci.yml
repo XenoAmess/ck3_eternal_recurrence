@@ -156,6 +156,14 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test machine- and mod-scoped CK3 live-run IDs
         run: python tools/test_ck3_live_run_id.py
+      - name: Test shared CK3 acceptance without installed CK3
+        run: |
+          python -B -X utf8 tools/test_ck3_mod_acceptance.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_adapters.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_completion.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test Reclaim the Motherland release tooling
         run: |
           python tools/test_reclaim_the_motherland_contract.py

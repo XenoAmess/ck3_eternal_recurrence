@@ -1,0 +1,52 @@
+rqaui_prepare_fifty_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+    decision_group_type = rqa_acceptance
+    sort_order = 2
+    ai_check_interval = 0
+    desc = rqaui_prepare_fifty_decision_desc
+    selection_tooltip = rqaui_prepare_fifty_decision_tooltip
+    is_shown = { is_ai = no has_character_flag = rqa120_ui_checkpoint NOT = { has_character_flag = rqaui_fifty_ready } }
+    is_valid = { rmtm_holds_restoration_hegemony_trigger = yes is_independent_ruler = yes is_available_at_peace_adult = yes exists = var:rqa_control_ruler var:rqa_control_ruler = { is_independent_ruler = yes } }
+    effect = { rqaui_prepare_fifty_effect = yes }
+    ai_potential = { always = no }
+}
+
+rqaui_prepare_fiftyone_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+    decision_group_type = rqa_acceptance
+    sort_order = 3
+    ai_check_interval = 0
+    desc = rqaui_prepare_fiftyone_decision_desc
+    selection_tooltip = rqaui_prepare_fiftyone_decision_tooltip
+    is_shown = { is_ai = no has_character_flag = rqaui_fifty_ready NOT = { has_character_flag = rqaui_fiftyone_ready } }
+    is_valid = { rmtm_holds_restoration_hegemony_trigger = yes is_independent_ruler = yes is_available_at_peace_adult = yes rqa_controls_half_of_china_trigger = yes NOT = { rqa_controls_claim_mandate_share_trigger = yes } }
+    effect = { rqaui_prepare_fiftyone_effect = yes }
+    ai_potential = { always = no }
+}
+
+rqaui_verify_actual_restoration_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+    decision_group_type = rqa_acceptance
+    sort_order = 4
+    ai_check_interval = 0
+    desc = rqaui_verify_actual_restoration_decision_desc
+    selection_tooltip = rqaui_verify_actual_restoration_decision_tooltip
+    is_shown = { is_ai = no has_character_flag = rqaui_fiftyone_ready NOT = { has_character_flag = rqaui_finished } }
+    is_valid = { has_title = title:h_china title:h_china = { holder = root } has_character_flag = claimed_the_mandate_of_heaven NOT = { rmtm_holds_restoration_hegemony_trigger = yes } }
+    effect = {
+        if = {
+            limit = {
+                has_title = title:h_china
+                title:h_china = { holder = root }
+                has_character_flag = claimed_the_mandate_of_heaven
+                NOT = { rmtm_holds_restoration_hegemony_trigger = yes }
+                NOT = { exists = var:rqa_later_title.holder }
+            }
+            debug_log = "RQAUI: TEST PASS actual_production_restoration_effect_observed"
+            debug_log = "RQAUI: TEST DONE threshold_ui"
+            add_character_flag = rqaui_finished
+        }
+        else = { debug_log = "RQAUI: TEST FAIL actual_production_restoration_effect_observed" }
+    }
+    ai_potential = { always = no }
+}

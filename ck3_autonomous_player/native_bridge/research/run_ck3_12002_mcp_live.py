@@ -186,14 +186,20 @@ def frontend_native_build_pair(game_version: object, executable_sha256: object):
 def allocated_managed_campaign_run_binding(args: argparse.Namespace) -> dict[str, object]:
     """Read the existing allocator identity for this host/state/pipe, without an episode seed."""
     state = args.state_dir.expanduser().resolve()
-    frozen = state.parent / "frozen-argv.json"
+    if not isinstance(args.output, Path):
+        raise ValueError("managed camera requires this allocated run\'s actual output path")
+    output = args.output.expanduser().resolve()
+    run_root = output.parent
+    frozen = run_root / "frozen-argv.json"
     if frozen.is_symlink() or not frozen.is_file():
         raise ValueError("saved camera requires this allocated run's ordinary frozen-argv.json")
     raw = frozen.read_bytes()
     record = json.loads(raw)
     argv = record.get("argv") if isinstance(record, dict) else None
     if (not isinstance(record, dict) or not isinstance(record.get("run_id"), str)
-            or not record["run_id"] or record["run_id"] != state.parent.name
+            or not record["run_id"] or record["run_id"] != run_root.name
+            or not isinstance(record.get("state_dir"), str) or not record["state_dir"]
+            or Path(record["state_dir"]).resolve() != state
             or not isinstance(argv, list) or len(argv) < 5 or any(not isinstance(x, str) for x in argv)
             or Path(argv[4]).resolve() != Path(__file__).resolve()):
         raise ValueError("saved camera allocated run/host identity differs")
@@ -203,7 +209,7 @@ def allocated_managed_campaign_run_binding(args: argparse.Namespace) -> dict[str
         return argv[argv.index(flag) + 1]
     if (Path(option("--state-dir")).resolve() != state or option("--bridge-pipe") != args.bridge_pipe
             or Path(option("--agent-source-root")).resolve() != args.agent_source_root.expanduser().resolve()
-            or Path(option("--output")).resolve().parent != state.parent):
+            or Path(option("--output")).resolve() != output):
         raise ValueError("saved camera allocated state/pipe/source/output identity differs")
     if args.saved_campaign_server:
         if argv.count("--saved-campaign-save") != 1:
@@ -1939,6 +1945,229 @@ def capture_fixture_startup_notice_evidence(client: PlanClient, stage: str, even
         "used_for_selection_or_acceptance": False}
 
 
+def verify_fixture_startup_case_contract(value: object, state_dir: Path) -> dict[str, object]:
+    """Bind a product's pure proof code/data to this actual fresh fixture state."""
+    if (not isinstance(value, dict) or set(value) != {"schema", "state_dir", "handler", "dependencies"}
+            or value.get("schema") != "ck3-frontend-fixture-startup-case-contract-v1"
+            or not isinstance(value.get("state_dir"), str) or not Path(value["state_dir"]).is_absolute()
+            or Path(value["state_dir"]).resolve() != state_dir.resolve()):
+        raise ValueError("startup case contract must bind the actual fixture state")
+    handler, dependencies = value["handler"], value["dependencies"]
+    if (not isinstance(handler, dict) or set(handler) != {"path", "bytes", "sha256", "function"}
+            or not isinstance(handler.get("function"), str) or not handler["function"].isidentifier()
+            or handler["function"].startswith("_") or not isinstance(dependencies, list)
+            or not 0 <= len(dependencies) <= 32):
+        raise ValueError("startup case must declare one pinned public pure-proof handler")
+    seen = set()
+    for row in [handler, *dependencies]:
+        if (not isinstance(row, dict) or set(row) != ({"path", "bytes", "sha256", "function"} if row is handler
+                else {"path", "bytes", "sha256"}) or not isinstance(row.get("path"), str)
+                or not Path(row["path"]).is_absolute() or type(row.get("bytes")) is not int or row["bytes"] < 1
+                or not isinstance(row.get("sha256"), str) or len(row["sha256"]) != 64
+                or any(char not in "0123456789abcdef" for char in row["sha256"])):
+            raise ValueError("startup case source/data pin is malformed")
+        path = Path(row["path"])
+        if path.is_symlink() or not path.is_file() or path.resolve() in seen:
+            raise ValueError("startup case source/data must be distinct ordinary files")
+        seen.add(path.resolve())
+        raw = path.read_bytes()
+        if len(raw) != row["bytes"] or hashlib.sha256(raw).hexdigest() != row["sha256"]:
+            raise ValueError("startup case source/data differs from its declared pin")
+    if Path(handler["path"]).suffix != ".py":
+        raise ValueError("startup case handler must be a pinned Python source file")
+    return value
+
+
+def load_fixture_startup_case_contract(path: Path, state_dir: Path) -> tuple[dict[str, object], bytes]:
+    if path.is_symlink() or not path.is_file():
+        raise ValueError("startup case contract must be an ordinary file")
+    raw = path.read_bytes()
+    if not 1 <= len(raw) <= 65536:
+        raise ValueError("startup case contract exceeds its bounded descriptor size")
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("startup case contract has duplicate keys")
+            result[key] = value
+        return result
+    return verify_fixture_startup_case_contract(
+        json.loads(raw.decode("utf-8-sig"), object_pairs_hook=unique), state_dir), raw
+
+
+def fixture_startup_case_proof(contract: dict[str, object], snapshot: dict[str, object],
+        event_context: dict[str, object], state_dir: Path) -> dict[str, object]:
+    """Load pinned product proof only; this helper has no client or command surface."""
+    import importlib.util
+    from types import ModuleType
+    verify_fixture_startup_case_contract(contract, state_dir)
+    handler = contract["handler"]
+    path = Path(handler["path"]).resolve()
+    package_name = "_ck3_fixture_startup_case_" + handler["sha256"][:24]
+    module_name = package_name + "." + path.stem
+    package = ModuleType(package_name)
+    package.__path__ = [str(path.parent)]
+    old_path = list(sys.path)
+    old_modules = dict(sys.modules)
+    try:
+        # Relative case dependencies use a private namespace. Absolute helpers
+        # must also come from their declared ordinary pinned file.
+        for row in contract["dependencies"]:
+            dependency = Path(row["path"]).resolve()
+            existing = sys.modules.get(dependency.stem) if dependency.suffix == ".py" else None
+            if existing is not None and Path(getattr(existing, "__file__", "")).resolve() != dependency:
+                raise ValueError("startup case dependency is already loaded from another source")
+        sys.path.insert(0, str(path.parent.parent))
+        sys.modules[package_name] = package
+        spec = importlib.util.spec_from_file_location(module_name, path)
+        if spec is None or spec.loader is None:
+            raise ValueError("startup case proof source cannot be loaded")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[module_name] = module
+        spec.loader.exec_module(module)
+        callback = getattr(module, handler["function"], None)
+        if not callable(callback):
+            raise ValueError("startup case proof handler is absent")
+        # Copy only the bounded event/frame projection, never its audit/history.
+        proof_snapshot = copy.deepcopy({key:snapshot.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw", "played_character",
+            "active_event", "paused", "map_ready", "episode_projection", "local_player_id")})
+        proof = callback({"state_dir": str(state_dir.resolve())}, proof_snapshot, copy.deepcopy(event_context))
+        verify_fixture_startup_case_contract(contract, state_dir)
+        if (not isinstance(proof, dict) or set(proof) != {"event_instance_id", "option_number", "proof", "business_pass"}
+                or type(proof.get("event_instance_id")) is not int or proof["event_instance_id"] < 1
+                or type(proof.get("option_number")) is not int or proof["option_number"] != 1
+                or not isinstance(proof.get("proof"), dict) or not proof["proof"]
+                or proof.get("business_pass") is not False
+                or len(json.dumps(proof, ensure_ascii=False).encode("utf-8")) > 65536):
+            raise ValueError("startup case pure proof returned an invalid selection qualification")
+        return proof
+    finally:
+        sys.path[:] = old_path
+        for name in list(sys.modules):
+            if name == package_name or name.startswith(package_name + "."):
+                if name in old_modules:
+                    sys.modules[name] = old_modules[name]
+                else:
+                    sys.modules.pop(name, None)
+
+
+async def acknowledge_fixture_startup_case(client: PlanClient, snapshot: dict[str, object],
+        submission: dict[str, object], contract: dict[str, object], *, state: dict[str, object],
+        write: object, deadline: float) -> dict[str, object]:
+    """Select a case-qualified sole startup option once under the original owner gate."""
+    if "startup_case" in state:
+        raise RuntimeError("fixture startup case request cannot be replayed")
+    managed_done = getattr(client, "managed_done", None)
+    def within_session():
+        if (time.monotonic() >= deadline or (managed_done is not None and managed_done.is_set())):
+            raise RuntimeError("fixture startup case exceeded its original deadline or managed session")
+    within_session()
+    frame = fixture_whole_root_admission_frame(snapshot, submission, allow_active_event=True)
+    diagnostics = snapshot.get("diagnostics") or {}
+    heartbeat = diagnostics.get("last_heartbeat") or {}
+    observer = heartbeat.get("snapshot_observer_12002") or {}
+    event = snapshot.get("active_event")
+    event_id = event.get("instance_id") if isinstance(event, dict) else None
+    started, completed = observer.get("started_ms"), observer.get("completed_ms")
+    if (frame is None or type(event_id) is not int or event_id < 1
+            or observer.get("read_in_progress") is not False or type(started) is not int
+            or type(completed) is not int or completed < started):
+        raise RuntimeError("fixture startup case lacks a completed actual owner event frame")
+    current = {**frame, "revision": snapshot["revision"], "event_instance_id": event_id,
+        "owner_tid": heartbeat["main_thread_query_mailbox_v1"]["owner_tid"]}
+    admission = state.get("first_startup_query_admission") or {}
+    previous = admission.get("previous_frame") or {}
+    if (admission.get("current_frame") != current or type(previous.get("pump_epoch")) is not int
+            or previous["pump_epoch"] >= current["pump_epoch"]
+            or {k:v for k,v in previous.items() if k != "pump_epoch"} != {k:v for k,v in current.items() if k != "pump_epoch"}):
+        raise RuntimeError("fixture startup case requires the actual two stable owner frames")
+    hello = diagnostics.get("hello") or {}
+    build = frontend_native_build_pair(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+    if (build.game_version != "1.20.0.4" or diagnostics.get("connected") is not True
+            or hello.get("pid") != submission["binding"]["bridge_pid"]
+            or hello.get("connection_generation") != submission["binding"]["connection_generation"]
+            or hello.get("game_adapter_id") != f"ck3-{build.game_version}-msvc-x64"
+            or hello.get("ck3_build_match") is not True):
+        raise RuntimeError("fixture startup case requires the qualified current4 native build")
+    record = {"status": "OBSERVING_TYPED_CASE_STARTUP_EVENT", "selection_attempted": False,
+        "retry_allowed": False, "product_acceptance_proven": False, "snapshot": snapshot,
+        "contract": contract, "original_deadline": deadline}
+    state["startup_case"] = record
+    write()
+    try:
+        packet = await client.call("ck3_query_current_event_window_context_v1", {
+            "event_instance_id": event_id, "expected_revision": snapshot["revision"]})
+        record["event_context"] = packet
+        context = packet.get("current_event_window_context", {}) if isinstance(packet, dict) else {}
+        identity = (context.get("root_scope") or {}).get("typed_identity") or {}
+        options = context.get("options")
+        public = event.get("options")
+        actor = snapshot["played_character"]["character_id"]
+        if (not isinstance(packet, dict) or packet.get("status") != "available"
+                or packet.get("current_event_window_context_ready") is not True
+                or context.get("schema") != "current-event-window-context-v1" or type(context.get("schema_version")) is not int
+                or context["schema_version"] != 1 or context.get("status") != "available"
+                or type(context.get("window_match_count")) is not int or context["window_match_count"] != 1
+                or context.get("current_event_instance_id") != event_id or context.get("snapshot_revision") != snapshot["native_revision"]
+                or context.get("date_raw") != snapshot["date_raw"] or context.get("provenance", {}).get("backend_id") != build.backend_id("event-window-v1")
+                or any(packet.get(key) != snapshot.get(wanted) for key,wanted in {
+                    "queried_snapshot_id":"snapshot_id", "queried_revision":"revision", "queried_native_revision":"native_revision"}.items())
+                or (context.get("root_scope") or {}).get("status") != "available" or (context.get("root_scope") or {}).get("type_key") != "character"
+                or identity.get("status") != "available" or identity.get("kind") != "character" or identity.get("character_id") != actor
+                or not isinstance(options, list) or len(options) != 1 or any(options[0].get(k) != v for k,v in {
+                    "rendered_index":0, "native_option_index":0, "shown":True, "enabled":True, "fallback":False, "cancel":False}.items())
+                or type(options[0].get("native_option_index")) is not int or type(options[0].get("rendered_index")) is not int
+                or not isinstance(public, list) or len(public) != 1 or type(public[0].get("option_number")) is not int
+                or public[0]["option_number"] != 1 or public[0].get("enabled") is not True):
+            raise RuntimeError("fixture startup case typed current event crossed its actual actor/frame/sole option")
+        within_session()
+        proof = fixture_startup_case_proof(contract, snapshot, packet, client.args.state_dir)
+        record["case_qualification"] = proof
+        if proof["event_instance_id"] != event_id:
+            raise RuntimeError("startup case proof selected another actual event instance")
+        within_session()
+        record.update(status="NORMAL_CASE_OPTION_REQUEST_WRITTEN", selection_attempted=True, requested_at=now())
+        write()
+        record["selection_result"] = await client.call("ck3_select_event_option", {
+            "option_number":proof["option_number"], "event_instance_id":event_id, "expected_revision":snapshot["revision"]})
+        after = await client.fresh()
+        record["after_snapshot"] = after
+        within_session()
+        after_diagnostics = after.get("diagnostics") or {}
+        after_hello = after_diagnostics.get("hello") or {}
+        after_observer = (after_diagnostics.get("last_heartbeat") or {}).get("snapshot_observer_12002") or {}
+        if (after.get("active_event") is not None or after.get("map_ready") is not True or after.get("paused") is not True
+                or after.get("date_raw") != snapshot["date_raw"] or after.get("played_character", {}).get("character_id") != actor
+                or after.get("played_character", {}).get("alive") is not True or after.get("played_character", {}).get("source") != "native"
+                or after.get("local_player_id") != snapshot.get("local_player_id") or after_diagnostics.get("connected") is not True
+                or any(after_hello.get(k) != hello.get(k) for k in ("pid", "connection_generation", "game_adapter_id",
+                    "expected_ck3_version", "expected_ck3_sha256", "ck3_build_match"))
+                or after_observer.get("read_in_progress") is not False or type(after_observer.get("started_ms")) is not int
+                or type(after_observer.get("completed_ms")) is not int or after_observer["completed_ms"] < after_observer["started_ms"]
+                or any(after.get("diagnostics", {}).get(k) != v for k,v in submission["binding"].items())
+                or fixture_whole_root_admission_frame(after, submission) is None):
+            raise RuntimeError("case startup option did not independently observe the same paused actual event-free frame")
+        record.update(status="NORMAL_CASE_OPTION_EVENT_GONE_OBSERVED", finished_at=now())
+        write()
+        return after
+    except BaseException as error:
+        record.update(status="CASE_STARTUP_FAILED_NO_RETRY", error=f"{type(error).__name__}: {error}", finished_at=now())
+        write()
+        raise
+
+
+async def acknowledge_fixture_startup_event(client: PlanClient, snapshot: dict[str, object],
+        submission: dict[str, object], *, state: dict[str, object], write: object,
+        deadline: float) -> dict[str, object]:
+    contract = client.report.get("frontend_fixture_startup_case_contract_input", {}).get("contract")
+    if contract is None:
+        return await acknowledge_fixture_startup_notice(client, snapshot, submission, state=state, write=write)
+    return await acknowledge_fixture_startup_case(client, snapshot, submission, contract,
+        state=state, write=write, deadline=deadline)
+
+
+
 async def acknowledge_fixture_startup_notice(client: PlanClient, snapshot: dict[str, object],
         submission: dict[str, object], *, state: dict[str, object], write: object) -> dict[str, object]:
     """Consume registry-reviewed startup presentation through the normal option tool once."""
@@ -2095,7 +2324,8 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                             "current_frame": startup_frame, "qualification": logs,
                             "product_acceptance_proven": False}
                         write()
-                        snapshot = await acknowledge_fixture_startup_notice(client, snapshot, submission, state=state, write=write)
+                        snapshot = await acknowledge_fixture_startup_event(client, snapshot, submission,
+                            state=state, write=write, deadline=deadline)
                         startup_baseline = None
                     else:
                         startup_baseline = (stable_startup, startup_frame["pump_epoch"])
@@ -2432,6 +2662,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         "server_stderr": str(stderr_path), "session": session_state, "error": None}
 
     def write() -> None:
+        report["managed_session_done"] = done.is_set()
         write_atomic_report(args.output, report)
 
     frontend_rules_plan = None
@@ -2457,6 +2688,18 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         report["frontend_fixture_start_policy_input"] = {"source_path": str(args.frontend_fixture_start_policy.resolve()),
             "snapshot_path": str(policy_snapshot), "sha256": hashlib.sha256(policy_bytes).hexdigest(),
             "policy": frontend_fixture_policy, "episode_projection": "native_campaign", "product_acceptance_proven": False}
+        write()
+
+    startup_case_path = getattr(args, "frontend_fixture_startup_case_contract", None)
+    if startup_case_path is not None:
+        startup_case_contract, startup_case_bytes = load_fixture_startup_case_contract(startup_case_path, args.state_dir)
+        startup_case_snapshot = args.output.with_suffix(".frontend-fixture-startup-case-contract.json")
+        with startup_case_snapshot.open("xb") as stream:
+            stream.write(startup_case_bytes)
+        report["frontend_fixture_startup_case_contract_input"] = {
+            "source_path": str(startup_case_path.resolve()), "snapshot_path": str(startup_case_snapshot),
+            "sha256": hashlib.sha256(startup_case_bytes).hexdigest(), "contract": startup_case_contract,
+            "product_acceptance_proven": False, "vanilla_empty_notice_qualification_claimed": False}
         write()
 
     supervisor: threading.Thread | None = None
@@ -2513,7 +2756,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     if args.sdk_smoke_test:
         child_args.append("--fixture-server")
     else:
-        child_args += ["--agent-source-root", str(args.agent_source_root), "--state-dir", str(args.state_dir)]
+        child_args += ["--agent-source-root", str(args.agent_source_root), "--state-dir", str(args.state_dir),
+                       "--output", str(args.output)]
     if frontend_fixture_policy is not None:
         child_args += ["--frontend-fixture-start-policy", str(policy_snapshot),
                        "--frontend-robert-bootstrap", "--fixture-profile"]
@@ -2754,6 +2998,8 @@ def parser() -> argparse.ArgumentParser:
                         help="Use existing typed native stock Robert start before map readiness; no desktop input")
     result.add_argument("--frontend-fixture-start-policy", type=Path,
                         help="Bound external cold fixture inputs; separate once-only Robert Start and actual native_campaign business context")
+    result.add_argument("--frontend-fixture-startup-case-contract", type=Path,
+                        help="Pinned product pure proof for a sole startup option, under the original actual owner/frame gates")
     result.add_argument("--frontend-rules-plan", type=Path,
                         help="Explicit typed rule targets before stock Robert Start; independently prove closure and actual applied values")
     result.add_argument("--frontend-rules-diagnostic", action="store_true",
@@ -2786,6 +3032,9 @@ def main() -> int:
             or args.frontend_rules_diagnostic_new_game or args.cold_start_checkpoint
             or args.sdk_smoke_test or args.sdk_error_smoke_test):
         raise SystemExit("--frontend-fixture-start-policy requires explicit --fixture-profile and --frontend-robert-bootstrap without diagnostic/checkpoint/SDK modes")
+    if getattr(args, "frontend_fixture_startup_case_contract", None) is not None and (
+            args.frontend_fixture_start_policy is None or args.saved_campaign_save is not None or args.server):
+        raise SystemExit("--frontend-fixture-startup-case-contract requires an ordinary bound cold fixture policy, without saved/server modes")
     if args.frontend_rules_plan is not None and (not args.frontend_robert_bootstrap
             or args.frontend_diagnostic_only or args.frontend_rules_diagnostic
             or args.frontend_rules_diagnostic_new_game or args.cold_start_checkpoint

@@ -1,0 +1,42 @@
+{
+  "case_id": "static-and-basicload",
+  "acceptance_scope": "static_and_basicload",
+  "fixture_emitter": null,
+  "maximum_natural_days": 0,
+  "failure_prefixes": [
+    "lyd:"
+  ],
+  "gui_phases": [],
+  "source_contracts": [
+    "mod_li_yu_dao/docs/acceptance-matrix.md",
+    "mod_li_yu_dao/tools/run_acceptance.py"
+  ],
+  "uncovered_product_business": [
+    "faith/rite membership and leadership inspection",
+    "school consent/institution/callback/save-reload business contracts retain NOT_RUN",
+    "development-only null Workshop ID; no publication target"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "li-yu-dao",
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "lyd: TEST FAIL"
+  ],
+  "source_catalogue": {
+    "directory": "mod_li_yu_dao",
+    "builder": "mod_li_yu_dao/tools/build_release.py",
+    "release_flags": [
+      "--output",
+      "{new-output}"
+    ],
+    "workshop_item_id": null
+  },
+  "business_contract_applicable": false,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+}

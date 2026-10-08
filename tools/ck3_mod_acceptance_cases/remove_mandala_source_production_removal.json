@@ -1,0 +1,76 @@
+{
+  "case_id": "source-production-removal",
+  "acceptance_scope": "source_production_removal_fixture_and_UI",
+  "fixture_emitter": {
+    "path": "tools/prepare_remove_mandala_1_20_fixture.py",
+    "arguments": [
+      "--repo",
+      "{repo}",
+      "--output",
+      "{output}"
+    ],
+    "fixture_subdir": "",
+    "receipt_suffix": ".prepare.json"
+  },
+  "marker_inventory": {
+    "path": "tools/run_remove_mandala_acceptance.py",
+    "name": "REQUIRED_MARKERS"
+  },
+  "maximum_natural_days": 8,
+  "failure_prefixes": [
+    "MRMA:",
+    "MRMA120:"
+  ],
+  "gui_phases": [
+    {
+      "id": "production-removal-ui",
+      "requirements": [
+        "actual_enabled_rule_surface",
+        "actual_player_government_and_target_removal_readback"
+      ],
+      "at_day": 8
+    }
+  ],
+  "source_contracts": [
+    "tools/run_remove_mandala_acceptance.py",
+    "tools/prepare_remove_mandala_1_20_fixture.py"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "remove-mandala",
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "MRMA: TEST FAIL",
+    "MRMA120: TEST FAIL"
+  ],
+  "uncovered_product_business": [],
+  "source_catalogue": {
+    "directory": "mod_remove_mandala",
+    "builder": "tools/build_remove_mandala_release.py",
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}",
+      "--workshop-item-id",
+      "3797711947"
+    ],
+    "workshop_item_id": "3797711947"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "legacy runner advance_game_days=8",
+  "frontend_rules": [
+    {
+      "rule_key": "mrm_remove_mandala",
+      "desired_setting_key": "mrm_enabled"
+    }
+  ],
+  "frontend_rules_sources": [
+    "tools/prepare_remove_mandala_1_20_fixture.py:16",
+    "mod_remove_mandala/common/game_rules/mrm_game_rules.txt"
+  ]
+}

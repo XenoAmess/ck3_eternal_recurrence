@@ -136,7 +136,16 @@ def prepare(args: argparse.Namespace) -> dict:
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     for key in order:
         builder = main_builder if key == "main" else vivhite_builder
-        builder.build_release(builder.DEFAULT_SOURCE, content / key, revision=revision)
+        provided = getattr(args, "production_main", None) if key == "main" else getattr(args, "production_vivhite", None)
+        if provided is None:
+            builder.build_release(builder.DEFAULT_SOURCE, content / key, revision=revision)
+        else:
+            provided = provided.resolve()
+            if not (provided / "descriptor.mod").is_file():
+                raise ValueError("Existing exact product projection descriptor missing")
+            if "remote_file_id" in (provided / "descriptor.mod").read_text(encoding="utf-8-sig"):
+                raise ValueError("Existing formal projection contains remote_file_id")
+            shutil.copytree(provided, content / key)
     ui = args.scenario.endswith("ui") or dual
     if ui:
         for source in sorted(SOURCE.rglob("*")):
@@ -276,6 +285,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--scenario", choices=SCENARIOS, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--production-main", type=Path)
+    parser.add_argument("--production-vivhite", type=Path)
     parser.add_argument("--tutorial-from", type=Path)
     parser.add_argument("--expected-record", type=int)
     args = parser.parse_args()

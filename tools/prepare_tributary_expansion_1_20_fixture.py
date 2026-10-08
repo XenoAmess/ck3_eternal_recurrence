@@ -57,7 +57,7 @@ tea120.3 = {
 }
 '''
 
-def prepare(repo: Path, output: Path) -> dict:
+def prepare(repo: Path, output: Path, production_ui: bool = False) -> dict:
     repo, output = checked_output(repo, output)
     source = repo / 'tools/fixtures/tributary_expansion_directives_acceptance'
     files = [source / 'descriptor.mod', source / 'common/scripted_effects/tea_effects.txt', *sorted((source / 'localization').rglob('*.yml'))]
@@ -65,18 +65,29 @@ def prepare(repo: Path, output: Path) -> dict:
         target = output / path.relative_to(source)
         target.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(path,target)
-    for relative, text in (('common/on_action/tea120_on_actions.txt',START), ('events/tea120_events.txt',EVENTS)):
+    generated = () if production_ui else (('common/on_action/tea120_on_actions.txt',START), ('events/tea120_events.txt',EVENTS))
+    for relative, text in generated:
         target = output / relative
         target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text(text,encoding='utf-8-sig',newline='\n')
+    if production_ui:
+        ui_source = source / 'ui'
+        if len([path for path in ui_source.rglob('*') if path.is_file()]) != 3:
+            raise ValueError('all three original production-UI data files are required')
+        for path in sorted(ui_source.rglob('*')):
+            if path.is_file():
+                target = output / path.relative_to(ui_source)
+                target.parent.mkdir(parents=True,exist_ok=True)
+                with target.open('xb') as stream:stream.write(path.read_bytes())
     receipt = {
         'product':'mod_tributary_expansion_directives', **engine_identity(repo),
         'source_fixture':str(source), 'prepared_fixture':str(output),
         'runtime_status':'NOT_RUN', 'native_abi_loaded':False,
-        'entry':'on_game_start_after_lobby -> tea120_start -> tea120.1/2/3',
-        'advance_game_days':2, 'gui_callbacks_mounted':False,
-        'required_additional_marker':'TEA120: TEST BEGIN engine_startup',
-        'coverage':'existing core response effects; production interaction selector UI is not executed',
+        'entry':('on_game_start_after_lobby -> teaui.1/2 -> context only; real production Send remains Root' if production_ui else 'on_game_start_after_lobby -> tea120_start -> tea120.1/2/3'),
+        'production_ui':production_ui,
+        'advance_game_days':1 if production_ui else 2, 'gui_callbacks_mounted':False,
+        'required_additional_marker':('TEAUI: TEST READY production_interaction_no_response_executed' if production_ui else 'TEA120: TEST BEGIN engine_startup'),
+        'coverage':('existing context-only fixture; no response or war effect executed; real interaction GUI required' if production_ui else 'existing core response effects; production interaction selector UI is not executed'),
         'source_file_sha256':{p.relative_to(source).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files},
         'prepared_file_sha256':{p.relative_to(output).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(output.rglob('*')) if p.is_file()},
     }
@@ -87,8 +98,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repo',type=Path,default=Path.cwd())
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--production-ui',action='store_true')
     args = parser.parse_args()
-    receipt = prepare(args.repo,args.output)
+    receipt = prepare(args.repo,args.output,args.production_ui)
     print(json.dumps({'prepared_fixture':receipt['prepared_fixture'],'runtime_status':'NOT_RUN'}))
 
 if __name__ == '__main__':

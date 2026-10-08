@@ -1,0 +1,68 @@
+{
+  "case_id": "source-production-choices",
+  "acceptance_scope": "source_original_decline_recruit_and_arrival",
+  "fixture_emitter": {
+    "path": "tools/prepare_ox_here_1_20_fixture.py",
+    "arguments": [
+      "--repo",
+      "{repo}",
+      "--output",
+      "{output}"
+    ],
+    "fixture_subdir": "",
+    "receipt_suffix": ".prepare.json"
+  },
+  "marker_inventory": {
+    "path": "tools/run_ox_here_acceptance.py",
+    "name": "REQUIRED_MARKERS"
+  },
+  "maximum_natural_days": 0,
+  "failure_prefixes": [
+    "OXA:",
+    "OXA120:"
+  ],
+  "gui_phases": [
+    {
+      "id": "production-choices",
+      "requirements": [
+        "actual_production_decline_choice",
+        "original_fixture_verify_decline",
+        "actual_production_recruit_and_arrival",
+        "original_fixture_verify_recruit_and_summary_option"
+      ],
+      "at_day": 0
+    }
+  ],
+  "source_contracts": [
+    "tools/prepare_ox_here_1_20_fixture.py",
+    "tools/run_ox_here_acceptance.py"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "ox-here",
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "OXA: TEST FAIL",
+    "OXA120: TEST FAIL"
+  ],
+  "uncovered_product_business": [],
+  "source_catalogue": {
+    "directory": "ox_here",
+    "builder": "tools/build_ox_here_release.py",
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}",
+      "--workshop-item-id",
+      "3790635143"
+    ],
+    "workshop_item_id": "3790635143"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "legacy runner advance_game_days=0; all production choices remain actual Root UI"
+}

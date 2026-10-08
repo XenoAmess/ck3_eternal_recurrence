@@ -32,5 +32,18 @@
     "SongS to attackerA direct tributary contract actual relationship",
     "actual same-live GUI Save then Load; before/after current owner/date/PID/generation/full relations separately proved"
   ],
-  "no_added_14day_cap": true
+  "no_added_14day_cap": true,
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "TEA: TEST PASS exact_build_song_emperor",
+    "TEA: TEST PASS switched_to_supported_player"
+  ],
+  "forbidden_startup": [
+    "TEA: TEST FAIL",
+    "TEA120: TEST FAIL"
+  ]
 }

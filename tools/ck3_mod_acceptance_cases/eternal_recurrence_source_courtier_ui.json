@@ -1,0 +1,93 @@
+{
+  "case_id": "source-courtier-ui",
+  "acceptance_scope": "source_courtier_production_ui",
+  "fixture_emitter": {
+    "path": "tools/prepare_courtier_1_20_fixture.py",
+    "arguments": [
+      "--scenario",
+      "main-ui",
+      "--output",
+      "{output}",
+      "--production-main",
+      "{product_dir}"
+    ],
+    "fixture_subdir": "content/fixture",
+    "receipt_relative": "prepare.json"
+  },
+  "maximum_natural_days": 3,
+  "failure_prefixes": [
+    "ERVA:",
+    "CCA120:",
+    "XAR:"
+  ],
+  "gui_phases": [
+    {
+      "id": "production-courtier-ui",
+      "requirements": [
+        "cancel_zero_side_effect",
+        "insufficient_funds_blocked",
+        "default_one_delivery_one_charge",
+        "custom_configuration_retained_and_reopened",
+        "custom_one_delivery_one_charge",
+        "new_trait_catalog_and_legacy_rite_actual_UI"
+      ],
+      "at_day": 1
+    }
+  ],
+  "source_contracts": [
+    "tools/prepare_courtier_1_20_fixture.py",
+    "tools/run_acceptance.py"
+  ],
+  "uncovered_product_business": [
+    "distinct original main-writer/main-reader/no-heir death/restart and progression/scoring cells remain product aggregation obligations"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "eternal-recurrence",
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "ERVA: TEST FAIL",
+    "CCA120: TEST FAIL",
+    "XAR: TEST FAIL"
+  ],
+  "source_catalogue": {
+    "directory": "XenoAmess_s_Eternal_Recurrence",
+    "builder": "tools/build_release.py",
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}"
+    ],
+    "workshop_item_id": "3784706360"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim",
+  "frontend_rules": [
+    {
+      "rule_key": "erva_acceptance_mode",
+      "desired_setting_key": "erva_acceptance_standalone"
+    },
+    {
+      "rule_key": "xar_enabled",
+      "desired_setting_key": "xar_off"
+    },
+    {
+      "rule_key": "xar_inheritance",
+      "desired_setting_key": "xar_inherit_100"
+    },
+    {
+      "rule_key": "xar_score_basis",
+      "desired_setting_key": "xar_score_growth"
+    }
+  ],
+  "frontend_rules_sources": [
+    "tools/prepare_courtier_1_20_fixture.py:252",
+    "tools/fixtures/vivhite_acceptance/common/game_rules/erva_acceptance_game_rules.txt",
+    "XenoAmess_s_Eternal_Recurrence/common/game_rules/xar_game_rules.txt"
+  ]
+}

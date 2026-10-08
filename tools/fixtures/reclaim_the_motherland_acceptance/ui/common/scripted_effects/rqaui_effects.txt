@@ -1,0 +1,71 @@
+# External threshold input only; never executes production restoration.
+rqaui_prepare_fifty_effect = {
+    remove_character_flag = rqa120_ui_checkpoint
+    set_variable = { name = rqa120_stage value = 99 }
+		title:h_china = {
+			every_de_jure_county = {
+				limit = { NOT = { holder = root.var:rqa_control_ruler } }
+				save_scope_as = rqa_county_to_transfer
+				root = { rqa_transfer_county_to_control_effect = yes }
+			}
+		}
+		if = {
+			limit = {
+				NOT = { rqa_controls_half_of_china_trigger = yes }
+				NOT = { rqa_controls_claim_mandate_share_trigger = yes }
+			}
+			debug_log = "RQAUI: TEST PASS china_control_reset"
+		}
+		else = { debug_log = "RQAUI: TEST FAIL china_control_reset" }
+		while = {
+			limit = { NOT = { rqa_controls_half_of_china_trigger = yes } }
+			title:h_china = {
+				ordered_de_jure_county = {
+					limit = { NOT = { holder.top_liege = root } }
+					order_by = development_level
+					save_scope_as = rqa_county_to_transfer
+					root = { rqa_transfer_county_to_root_effect = yes }
+				}
+			}
+		}
+		if = {
+			limit = {
+				rqa_controls_half_of_china_trigger = yes
+				NOT = { rqa_controls_claim_mandate_share_trigger = yes }
+			}
+			debug_log = "RQAUI: TEST PASS fifty_percent_below_claim_threshold"
+		}
+		else = { debug_log = "RQAUI: TEST FAIL fifty_percent_below_claim_threshold" }
+    if = {
+        limit = { rqa_controls_half_of_china_trigger = yes NOT = { rqa_controls_claim_mandate_share_trigger = yes } }
+        add_character_flag = rqaui_fifty_ready
+        debug_log = "RQAUI: TEST READY actual_restoration_50_ui"
+    }
+    else = { debug_log = "RQAUI: TEST FAIL fifty_ui_checkpoint" }
+}
+
+rqaui_prepare_fiftyone_effect = {
+		while = {
+			limit = { NOT = { rqa_controls_claim_mandate_share_trigger = yes } }
+			title:h_china = {
+				ordered_de_jure_county = {
+					limit = { NOT = { holder.top_liege = root } }
+					order_by = development_level
+					save_scope_as = rqa_county_to_transfer
+					root = { rqa_transfer_county_to_root_effect = yes }
+				}
+			}
+		}
+		if = {
+			limit = { rqa_controls_claim_mandate_share_trigger = yes }
+			debug_log = "RQAUI: TEST PASS original_fifty_one_percent_threshold_reached"
+			add_character_flag = rqa_waiting_for_restoration
+			debug_log = "RQAUI: TEST PASS restoration_decision_ready"
+		}
+		else = { debug_log = "RQAUI: TEST FAIL original_fifty_one_percent_threshold_reached" }    if = {
+        limit = { rqa_controls_claim_mandate_share_trigger = yes }
+        add_character_flag = rqaui_fiftyone_ready
+        debug_log = "RQAUI: TEST READY actual_restoration_51_ui"
+    }
+    else = { debug_log = "RQAUI: TEST FAIL fiftyone_ui_checkpoint" }
+}

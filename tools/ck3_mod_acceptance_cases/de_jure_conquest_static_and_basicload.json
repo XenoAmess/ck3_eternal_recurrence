@@ -1,0 +1,45 @@
+{
+  "case_id": "static-and-basicload",
+  "acceptance_scope": "static_and_basicload",
+  "fixture_emitter": null,
+  "maximum_natural_days": 0,
+  "failure_prefixes": [
+    "djct:"
+  ],
+  "gui_phases": [],
+  "source_contracts": [
+    "mod_de_jure_conquest/docs/test-plan.md",
+    "mod_de_jure_conquest/docs/cn-live-acceptance-2026-10-03.md"
+  ],
+  "uncovered_product_business": [
+    "real player production CB declaration/peace legality and fee UI",
+    "original nine-cell 72 semantic assertions",
+    "concurrent wars, low prestige and reload; this load boundary replaces none of them"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "de-jure-conquest",
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "djct: TEST FAIL"
+  ],
+  "source_catalogue": {
+    "directory": "mod_de_jure_conquest",
+    "builder": "mod_de_jure_conquest/tools/build_release.py",
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}",
+      "--workshop-item-id",
+      "3812510217"
+    ],
+    "workshop_item_id": "3812510217"
+  },
+  "business_contract_applicable": false,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+}

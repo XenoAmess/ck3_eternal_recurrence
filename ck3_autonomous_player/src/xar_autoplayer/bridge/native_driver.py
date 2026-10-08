@@ -381,6 +381,7 @@ from .title_map_navigation_contract import (
     TITLE_MAP_NAVIGATION_V1_REJECTION_CODES,
     normalize_native_title_map_navigation_v1_result,
     normalize_title_map_navigation_v1_binding,
+    managed_campaign_title_map_navigation_v1_binding,
     normalize_title_map_navigation_v1_result,
     validate_landed_title_key,
 )
@@ -8122,7 +8123,7 @@ class NativeHeadlessGameplayDriver:
                 "native title-map navigation requires a map-ready snapshot"
             )
         try:
-            binding = _title_map_navigation_binding_from_snapshot(starting)
+            binding = _title_camera_navigation_binding_from_snapshot(starting)
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native title-map navigation lacks a binding: {error}"
@@ -8199,7 +8200,7 @@ class NativeHeadlessGameplayDriver:
             )
         ending = self.take_snapshot()
         try:
-            ending_binding = _title_map_navigation_binding_from_snapshot(
+            ending_binding = _title_camera_navigation_binding_from_snapshot(
                 ending
             )
         except ValueError as error:
@@ -23647,7 +23648,7 @@ class ConfiguredHybridFallbackDriver:
                 "hybrid title-map navigation requires a map-ready snapshot"
             )
         try:
-            binding = _title_map_navigation_binding_from_snapshot(starting)
+            binding = _title_camera_navigation_binding_from_snapshot(starting)
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"hybrid title-map navigation lacks a binding: {error}"
@@ -23677,7 +23678,7 @@ class ConfiguredHybridFallbackDriver:
         )
         ending = self.take_snapshot()
         try:
-            ending_binding = _title_map_navigation_binding_from_snapshot(
+            ending_binding = _title_camera_navigation_binding_from_snapshot(
                 ending
             )
         except ValueError as error:
@@ -28173,6 +28174,32 @@ def _title_map_navigation_binding_from_snapshot(
 ) -> dict[str, object]:
     if not isinstance(snapshot, dict):
         raise ValueError("snapshot must be an object")
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    return normalize_title_map_navigation_v1_binding(
+        {
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+            "date_raw": snapshot.get("date_raw"),
+            "episode_run_id": snapshot.get("episode_run_id"),
+            "connection_generation": connection_generation,
+        }
+    )
+
+
+
+def _title_camera_navigation_binding_from_snapshot(
+    snapshot: object,
+) -> dict[str, object]:
+    if not isinstance(snapshot, dict):
+        raise ValueError("snapshot must be an object")
+    if snapshot.get("episode_projection") == "native_campaign":
+        return managed_campaign_title_map_navigation_v1_binding(snapshot)
     diagnostics = snapshot.get("diagnostics")
     connection_generation = (
         diagnostics.get("connection_generation")

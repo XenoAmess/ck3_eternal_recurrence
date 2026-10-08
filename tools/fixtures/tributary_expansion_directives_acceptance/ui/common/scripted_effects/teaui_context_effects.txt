@@ -1,0 +1,128 @@
+﻿teaui_seed_context_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = tea_setup_pending
+			character:han_8052 = { this = root }
+		}
+		remove_character_flag = tea_setup_pending
+		set_variable = { name = tea_failures value = 0 }
+		save_scope_as = actor
+
+		ordered_independent_ruler = {
+			limit = {
+				is_ai = yes
+				is_alive = yes
+				is_adult = yes
+				is_landed = yes
+				is_playable_character = yes
+				is_at_war = no
+				is_imprisoned = no
+				this != root
+				NOT = { government_has_flag = government_is_mercenary }
+				NOT = { government_has_flag = government_is_holy_order }
+				any_neighboring_top_liege_realm_owner = {
+					is_ai = yes
+					is_alive = yes
+					is_landed = yes
+					is_at_war = no
+					this != root
+				}
+			}
+			order_by = current_military_strength
+			position = 0
+			save_scope_as = recipient
+		}
+
+		if = {
+			limit = { exists = scope:recipient }
+			start_tributary_interaction_effect = {
+				TRIBUTARY = scope:recipient
+				SUZERAIN = root
+			}
+			scope:recipient = {
+				add_character_flag = ted_directed_expansion_authorized
+				every_character_to_title_neighboring_county = {
+					limit = {
+						is_title_created = yes
+						is_landless_type_title = no
+						tier = tier_county
+						save_temporary_scope_as = tea_candidate_target
+						holder ?= {
+							top_liege = {
+								save_temporary_scope_as = tea_candidate_defender
+								is_ai = yes
+								is_alive = yes
+								is_landed = yes
+								is_at_war = no
+								top_liege = this
+								this != scope:actor
+								this != scope:recipient
+								NOT = { is_tributary_of = scope:actor }
+							}
+						}
+						scope:recipient = {
+							can_declare_war = {
+								defender = scope:tea_candidate_defender
+								casus_belli = ted_directed_county_expansion_cb
+								target_titles = { scope:tea_candidate_target }
+							}
+						}
+					}
+					if = {
+						# Vanilla startup can leave a non-title scope named target.
+						# Keep selection private until a legal county/defender pair exists.
+						limit = { NOT = { exists = scope:tea_selected_target } }
+						save_scope_as = tea_selected_target
+						holder = {
+							top_liege = { save_scope_as = secondary_recipient }
+						}
+					}
+				}
+				remove_character_flag = ted_directed_expansion_authorized
+			}
+		}
+
+		if = {
+			limit = { exists = scope:tea_selected_target }
+			scope:tea_selected_target = { save_scope_as = target }
+		}
+
+		if = {
+			limit = {
+				exists = scope:recipient
+				exists = scope:secondary_recipient
+				exists = scope:target
+			}
+			set_variable = { name = tea_recipient value = scope:recipient }
+			set_variable = {
+				name = tea_secondary_recipient
+				value = scope:secondary_recipient
+			}
+			set_variable = { name = tea_target value = scope:target }
+			if = {
+				limit = {
+					scope:recipient = {
+						is_tributary_of = root
+						is_at_war = no
+					}
+					scope:target = {
+						holder ?= { top_liege = scope:secondary_recipient }
+					}
+				}
+				debug_log = "TEA: TEST PASS tributary_context_constructed"
+			}
+			else = { tea_finish_with_failure_effect = yes }
+		}
+		else = { tea_finish_with_failure_effect = yes }
+
+        if = {
+            limit = { var:tea_failures = 0 }
+            # External fixture priming only; neither value changes production.
+            if = { limit = { prestige < 5000 } add_prestige = 5000 }
+            if = { limit = { gold < 1000 } add_gold = 1000 }
+            debug_log = "TEAUI: TEST READY production_interaction_no_response_executed"
+            debug_log_scopes = yes
+        }
+    }
+}

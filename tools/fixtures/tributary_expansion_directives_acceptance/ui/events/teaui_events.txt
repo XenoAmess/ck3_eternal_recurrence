@@ -1,0 +1,21 @@
+﻿namespace = teaui
+teaui.1 = {
+    type = character_event
+    hidden = yes
+    trigger = { NOT = { has_character_flag = tea_fixture_initialized } }
+    immediate = {
+        add_character_flag = tea_initialize_pending
+        tea_initialize_effect = yes
+        character:han_8052 = {
+            if = {
+                limit = { has_character_flag = tea_setup_pending }
+                trigger_event = { id = teaui.2 days = 1 }
+            }
+        }
+    }
+}
+teaui.2 = {
+    type = character_event
+    hidden = yes
+    immediate = { teaui_seed_context_effect = yes }
+}

@@ -1364,9 +1364,7 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1
     XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1
     XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1
-    XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1
     XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1
-    XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1
@@ -2166,9 +2164,20 @@ endif()
 if(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1=1)
 endif()
-if(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
-  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=1)
-endif()
+# These two existing decision flags are consumed only by the bridge and
+# the exact .3/.4 descriptors. Keep their definitions on all three actual
+# consumers so enabling the existing providers preserves unrelated objects.
+foreach(decision_private_flag IN ITEMS
+    XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1
+    XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)
+  if(${decision_private_flag})
+    set_property(SOURCE
+      src/bridge.cpp
+      src/ck3_12003_adapter.cpp
+      src/ck3_12004_adapter.cpp
+      APPEND PROPERTY COMPILE_DEFINITIONS ${decision_private_flag}=1)
+  endif()
+endforeach()
 if(XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1=1)
 endif()
@@ -2184,9 +2193,6 @@ endif()
 
 if(XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1=1)
-endif()
-if(XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)
-  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=1)

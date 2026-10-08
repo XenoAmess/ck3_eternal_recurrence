@@ -25,7 +25,7 @@ def check_evidence(row):
 
 
 def case_config(context):
-    location = context["case_spec"]["adapter"]["config"]
+    location = context["case_spec"]["adapter"]["config"].format(repo_root=str(context["repo_root"]))
     path = Path(location)
     if not path.is_absolute():
         path = Path(context["repo_root"]) / path
@@ -89,7 +89,8 @@ def observe(client, name, allow_actor_change=False):
 
 
 def original_day(client, name, initial_date, limit=None, allow_actor_change=False):
-    row = client.execute_plan([{"id": name, "kind": "advance_day", "days": 1, "timeout": 300}], name, 300)[0]
+    row = client.advance_day(1, timeout=300, allow_event_boundary=True,
+                             allow_actor_change=allow_actor_change)
     value = row["result"]
     before, after = value.get("before"), value.get("after")
     require(isinstance(before, dict) and isinstance(after, dict), "Actual day boundary snapshots missing")

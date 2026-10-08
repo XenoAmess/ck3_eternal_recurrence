@@ -1,0 +1,69 @@
+{
+  "case_id": "source-upgrade-core",
+  "acceptance_scope": "source_representative_upgrade_core_and_original_UI",
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": [
+      "--repo",
+      "{repo}",
+      "--output",
+      "{output}"
+    ],
+    "fixture_subdir": "",
+    "receipt_suffix": ".prepare.json"
+  },
+  "maximum_natural_days": 30,
+  "failure_prefixes": [
+    "AUBT:",
+    "AUBT120:"
+  ],
+  "allow_actor_change": true,
+  "continue_as_heir_requirements": [
+    "actual_original_continue_as_heir_once",
+    "actual_successor_identity_and_active_product_readback"
+  ],
+  "gui_phases": [
+    {
+      "id": "production-upgrade-surfaces",
+      "requirements": [
+        "actual_enable_disable_decision_surface",
+        "actual_decision_cooldown_readback"
+      ],
+      "at_day": 0
+    }
+  ],
+  "source_contracts": [
+    "tools/prepare_aub_1_20_fixture.py",
+    "tools/run_auto_upgrade_buildings_acceptance.py"
+  ],
+  "uncovered_product_business": [
+    "no all-165-chains claim; original representative matrix retained"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "auto-upgrade-buildings",
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "AUBT: TEST FAIL",
+    "AUBT120: TEST FAIL"
+  ],
+  "source_catalogue": {
+    "directory": "mod_auto_upgrade_buildings",
+    "builder": "tools/build_auto_upgrade_buildings_release.py",
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}",
+      "--workshop-item-id",
+      "3800124956"
+    ],
+    "workshop_item_id": "3800124956"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+}

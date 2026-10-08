@@ -1,0 +1,80 @@
+{
+  "case_id": "source-standalone-courtier-ui",
+  "acceptance_scope": "source_standalone_courtier_production_ui",
+  "fixture_emitter": {
+    "path": "tools/prepare_courtier_1_20_fixture.py",
+    "arguments": [
+      "--scenario",
+      "vivhite-ui",
+      "--output",
+      "{output}",
+      "--production-vivhite",
+      "{product_dir}"
+    ],
+    "fixture_subdir": "content/fixture",
+    "receipt_relative": "prepare.json"
+  },
+  "maximum_natural_days": 3,
+  "failure_prefixes": [
+    "ERVA:",
+    "CCA120:"
+  ],
+  "gui_phases": [
+    {
+      "id": "production-courtier-ui",
+      "requirements": [
+        "cancel_zero_side_effect",
+        "insufficient_119_blocked",
+        "default_120_one_delivery_one_charge",
+        "custom_348_configuration_retained_and_reopened",
+        "custom_348_one_delivery_one_charge",
+        "new_trait_and_legacy_rite_actual_UI"
+      ],
+      "at_day": 1
+    }
+  ],
+  "source_contracts": [
+    "tools/prepare_courtier_1_20_fixture.py",
+    "tools/run_vivhite_acceptance.py"
+  ],
+  "uncovered_product_business": [
+    "dual mount-order isolation cases retain their original separate fixture/GUI requirements"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "vivhite-courtier",
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "ERVA: TEST FAIL",
+    "CCA120: TEST FAIL"
+  ],
+  "source_catalogue": {
+    "directory": "Eternal_Recurrence_Vivhite_Courtier",
+    "builder": "tools/build_vivhite_release.py",
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}",
+      "--workshop-item-id",
+      "3787304042"
+    ],
+    "workshop_item_id": "3787304042"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim",
+  "frontend_rules": [
+    {
+      "rule_key": "erva_acceptance_mode",
+      "desired_setting_key": "erva_acceptance_standalone"
+    }
+  ],
+  "frontend_rules_sources": [
+    "tools/prepare_courtier_1_20_fixture.py:252",
+    "tools/fixtures/vivhite_acceptance/common/game_rules/erva_acceptance_game_rules.txt"
+  ]
+}

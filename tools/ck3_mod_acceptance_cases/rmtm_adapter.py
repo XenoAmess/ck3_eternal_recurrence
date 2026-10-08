@@ -12,16 +12,19 @@ from ._business import (case_config, final_root_evidence, literals, observe,
 def prepare_case(context):
     from tools.ck3_mod_acceptance_prepare import invoke_fixture_prepare, materialize_fixture_profile
     config = case_config(context)
-    require(context["case"] == "core", "Independent threshold UI producer is pending; never substitute core")
+    require(context["case"] in ("core", "threshold_ui"), "Unknown original RMTM case")
     days = config["fixture_recent_independence_override_days"]
     require(type(days) is int and 10 <= days <= 30, "Use the existing producer timer admission")
     require(config["natural_game_day_limit"] == 14, "Original fourteen-day cap is required")
     repo = Path(context["repo_root"])
     fixture = Path(context["run_dir"]) / "fixture"
-    emitter = invoke_fixture_prepare(context, repo / "tools/prepare_reclaim_the_motherland_1_20_fixture.py", [
+    arguments = [
         "--repo", repo, "--output", fixture, "--ui-checkpoints",
         "--compressed-days", str(days), "--game-dir", context["game_dir"],
-    ])
+    ]
+    if context["case"] == "threshold_ui":
+        arguments.append("--threshold-ui")
+    emitter = invoke_fixture_prepare(context, repo / "tools/prepare_reclaim_the_motherland_1_20_fixture.py", arguments)
     prepared = materialize_fixture_profile(context, fixture, context["case_inputs"]["product_dir"],
                                            context["case_inputs"]["plain_configuration"])
     return {"startup": {"mode": "fixture", "state_dir": prepared["state_dir"],
@@ -68,7 +71,37 @@ def _law_phase(client, phase):
     return path, verdict
 
 
+def _threshold_ui_case(context, client):
+    config = case_config(context)
+    client.wait_hold()
+    initial, _ = observe(client, "rmtm-threshold-D0-qualified")
+    start = initial["date_raw"]
+    for day in (1, 2, 3):
+        original_day(client, "rmtm-threshold-D" + str(day), start, config["natural_game_day_limit"])
+    d3, law = _law_phase(client, "d3")
+    original_day(client, "rmtm-threshold-D4", start, config["natural_game_day_limit"])
+    literals(client, "rmtm-threshold-stage4-ready", ["RQA120: TEST READY ui_after_chaos"], config["forbidden_markers"])
+    review(client, "rmtm-threshold-50", ["original_fixture_prepare50_confirmed_once", "actual50_production_restoration_unavailable"], {
+        "original_fixture_decision": "rqaui_prepare_fifty_decision",
+        "original_source_boundary": "Setup changes only the original external test county inputs; inspect real production decision validity at50. Never execute production restoration here.",
+    })
+    literals(client, "rmtm-threshold-50-source", ["RQAUI: TEST READY actual_restoration_50_ui"], config["forbidden_markers"])
+    review(client, "rmtm-threshold-51-and-production", [
+        "original_fixture_prepare51_confirmed_once", "actual51_production_restoration_enabled",
+        "actual_stock_claim_mandate_unavailable", "actual_production_confirmation_and_outcome",
+        "original_fixture_verify_actual_outcome_confirmed_once",
+    ], {"original_fixture_decisions": ["rqaui_prepare_fiftyone_decision", "rqaui_verify_actual_restoration_decision"],
+        "production_rule": "Confirm the actual production restoration once; the fixture merely observes the actual title outcome."})
+    source = literals(client, "rmtm-threshold-original-final", config["required_markers"], config["forbidden_markers"])
+    client.checkpoint("rmtm-threshold-verdict-input", {"d3": str(d3), "law": law, "actual_source_row": source,
+                                                     "case": "threshold_ui", "business_pass": False, "normal_close_pending": True})
+    return {"status": "independent_threshold_GUI_observed_normal_close_pending", "business_pass": False,
+            "full36_core_or_death_credit": False}
+
+
 def run_case(context, client):
+    if context["case"] == "threshold_ui":
+        return _threshold_ui_case(context, client)
     config = case_config(context)
     require(context["case"] == "core", "Independent threshold adapter remains pending")
     client.wait_hold()
@@ -127,6 +160,19 @@ def run_case(context, client):
 def verify_case(context):
     from tools import reclaim_the_motherland_effective_law_acceptance as caller
     output = Path(context["output"])
+    if context["case"] == "threshold_ui":
+        data = json.loads((output / "rmtm-threshold-verdict-input.json").read_text(encoding="utf-8-sig"))
+        evidence = caller.phase_evidence(Path(data["d3"]))
+        caller.load_helper().evaluate_phase(evidence)
+        config = case_config(context)
+        matches = data["actual_source_row"]["result"]["matches"]
+        for literal, expected in [(item, 1) for item in config["required_markers"]] + [(item, 0) for item in config["forbidden_markers"]]:
+            found = [row for row in matches if row["literal"] == literal]
+            require(len(found) == 1 and found[0]["line_count"] == expected, "Original independent threshold source gate rejected")
+        proofs = final_root_evidence(context, ["rmtm-threshold-50", "rmtm-threshold-51-and-production"])
+        return {"case_contract_qualified": True, "gui_contract_qualified": True, "business_contract_applicable": True, "actual_threshold_source_and_GUI_observed": True,
+                "actual_review_evidence": proofs, "business_pass": False, "requires_shared_normal_close": True,
+                "full36_core_or_death_credit": False}
     data = json.loads((output / "rmtm-verdict-input.json").read_text(encoding="utf-8-sig"))
     require(pin(data["debug_log"]["path"]) == data["debug_log"], "Original final frozen log changed")
     verdict_path = output / "rmtm-original36-and-effective-law-verdict.json"
@@ -135,6 +181,6 @@ def verify_case(context):
     code = caller.final(args, caller.load_helper())
     require(code == 0, "Original33 plus all three actual physical-gated families rejected")
     proofs = final_root_evidence(context, ["rmtm-C1-C5", "rmtm-Continue-once", "rmtm-real-succession", "rmtm-original-final-business"])
-    return {"case_contract_qualified": True, "marker_and_law_contract_qualified": True, "original_family_count": 36,
+    return {"case_contract_qualified": True, "gui_contract_qualified": True, "business_contract_applicable": True, "marker_and_law_contract_qualified": True, "original_family_count": 36,
             "actual_review_evidence": proofs, "source_pass": False, "business_pass": False,
             "requires_shared_normal_close_and_independent_threshold_UI": True}

@@ -1,1 +1,1 @@
-"""Product business cases for the single shared CK3 acceptance runtime."""
+"""Product business adapters for the one shared CK3 acceptance runtime."""

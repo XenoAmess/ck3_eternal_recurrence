@@ -8,7 +8,7 @@ import re
 import struct
 from typing import Final
 
-from .version_identity import require_exact_native_backend
+from .version_identity import CK3_12004, require_exact_native_backend, require_exact_native_build
 
 
 CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY: Final = (
@@ -171,14 +171,28 @@ def normalize_title_map_navigation_v1_result(
         value,
         expected_title_key=key,
         expected_binding=binding,
-        binding_fields=_PUBLIC_BINDING_FIELDS,
+        binding_fields=set(binding),
     )
 
 
 def normalize_title_map_navigation_v1_binding(
     value: object,
 ) -> dict[str, object]:
-    """Normalize the six fields that bind one presentation-only command."""
+    """Bind one presentation command to an episode or an allocated campaign run."""
+    if isinstance(value, dict) and value.get("mode") == "managed_native_campaign":
+        binding = _exact_object(value, _MANAGED_CAMPAIGN_BINDING_FIELDS, "managed campaign title-map binding")
+        return {
+            "mode": "managed_native_campaign",
+            "managed_run_id": _nonempty_string(binding.get("managed_run_id"), "binding.managed_run_id"),
+            "bridge_pid": _positive_int32(binding.get("bridge_pid"), "binding.bridge_pid"),
+            "local_player_id": _positive_int32(binding.get("local_player_id"), "binding.local_player_id"),
+            "played_character_id": _positive_int32(binding.get("played_character_id"), "binding.played_character_id"),
+            "snapshot_id": _nonempty_string(binding.get("snapshot_id"), "binding.snapshot_id"),
+            "revision": _non_negative_uint64(binding.get("revision"), "binding.revision"),
+            "native_revision": _positive_uint64(binding.get("native_revision"), "binding.native_revision"),
+            "date_raw": _signed_int64(binding.get("date_raw"), "binding.date_raw"),
+            "connection_generation": _positive_uint64(binding.get("connection_generation"), "binding.connection_generation"),
+        }
     binding = _exact_object(
         value, _PUBLIC_BINDING_FIELDS, "title-map binding"
     )
@@ -205,6 +219,69 @@ def normalize_title_map_navigation_v1_binding(
             "binding.connection_generation",
         ),
     }
+
+
+_MANAGED_CAMPAIGN_BINDING_FIELDS = {
+    "mode", "managed_run_id", "bridge_pid", "local_player_id", "played_character_id",
+    "snapshot_id", "revision", "native_revision", "date_raw", "connection_generation",
+}
+
+
+
+def managed_campaign_title_map_navigation_v1_binding(snapshot: dict[str, object]) -> dict[str, object]:
+    """Use the allocated run and actual current native frame; never create an episode anchor."""
+    run = snapshot.get("managed_campaign_run_binding")
+    diagnostics = snapshot.get("diagnostics")
+    played = snapshot.get("played_character")
+    if (snapshot.get("episode_projection") != "native_campaign" or snapshot.get("episode_run_id") is not None
+            or snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+            or snapshot.get("active_event") is not None or type(snapshot.get("format_version")) is not int or snapshot["format_version"] != 1
+            or snapshot.get("backend_id") != "native-headless" or snapshot.get("source") != "injected-dll-named-pipe"
+            or not isinstance(run, dict) or set(run) != {"run_id", "state_dir", "bridge_pipe", "host_path", "frozen_argv_sha256"}
+            or not isinstance(diagnostics, dict) or diagnostics.get("connected") is not True
+            or not isinstance(played, dict) or played.get("alive") is not True or played.get("source") != "native"):
+        raise ValueError("title-map native campaign lacks an allocated run and full current paused frame")
+    for key in ("run_id", "state_dir", "bridge_pipe", "host_path"):
+        _nonempty_string(run.get(key), "managed_campaign_run_binding." + key)
+    if (not isinstance(run.get("frozen_argv_sha256"), str)
+            or re.fullmatch(r"[0-9a-f]{64}", run["frozen_argv_sha256"]) is None
+            or diagnostics.get("pipe_name") != run["bridge_pipe"]):
+        raise ValueError("title-map native campaign allocated transport identity differs")
+    pid = _positive_int32(diagnostics.get("bridge_pid"), "diagnostics.bridge_pid")
+    generation = _positive_uint64(diagnostics.get("connection_generation"), "diagnostics.connection_generation")
+    hello = diagnostics.get("hello")
+    if (not isinstance(hello, dict) or type(hello.get("pid")) is not int or hello["pid"] != pid
+            or type(hello.get("connection_generation")) is not int or hello["connection_generation"] != generation
+            or hello.get("game_adapter_id") != "ck3-1.20.0.4-msvc-x64" or hello.get("ck3_build_match") is not True
+            or require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256")) != CK3_12004
+            or ("game_version" in hello and hello["game_version"] != CK3_12004.game_version)
+            or ("executable_sha256" in hello and (not isinstance(hello["executable_sha256"], str)
+                or hello["executable_sha256"].upper() != CK3_12004.executable_sha256))):
+        raise ValueError("title-map native campaign exact .4 hello/process binding differs")
+    heartbeat = diagnostics.get("last_heartbeat")
+    mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
+    observer = heartbeat.get("snapshot_observer_12002") if isinstance(heartbeat, dict) else None
+    if (not isinstance(heartbeat, dict) or type(heartbeat.get("pid")) is not int or heartbeat["pid"] != pid
+            or not isinstance(mailbox, dict) or not isinstance(observer, dict)
+            or mailbox.get("installed") is not True or mailbox.get("ready") is not True or mailbox.get("stop") is not False
+            or type(mailbox.get("failure")) is not int or mailbox["failure"] != 0
+            or type(mailbox.get("owner_tid")) is not int or mailbox["owner_tid"] < 1
+            or type(mailbox.get("current_tid")) is not int or mailbox["current_tid"] != mailbox["owner_tid"]
+            or type(mailbox.get("pump_epochs")) is not int or mailbox["pump_epochs"] < 1
+            or type(mailbox.get("owner_verified_pump_epochs")) is not int or mailbox["owner_verified_pump_epochs"] != mailbox["pump_epochs"]
+            or mailbox.get("stamp_read_success") is not True or type(mailbox.get("date_raw")) is not int
+            or mailbox["date_raw"] != snapshot.get("date_raw")
+            or observer.get("read_in_progress") is not False or type(observer.get("started_ms")) is not int
+            or type(observer.get("completed_ms")) is not int or observer["completed_ms"] < observer["started_ms"]):
+        raise ValueError("title-map native campaign lacks its current verified application owner")
+    return normalize_title_map_navigation_v1_binding({
+        "mode": "managed_native_campaign", "managed_run_id": run["run_id"], "bridge_pid": pid,
+        "local_player_id": snapshot.get("local_player_id"), "played_character_id": played.get("character_id"),
+        "snapshot_id": snapshot.get("snapshot_id"), "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"), "date_raw": snapshot.get("date_raw"),
+        "connection_generation": generation,
+    })
+
 
 
 def _normalize_result(

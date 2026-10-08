@@ -166,7 +166,7 @@ CHECKPOINT
     return "namespace = rqa120\n\n" + event("rqa120.1", initialize) + "\n" + event("rqa120.2", tick)
 
 
-def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None) -> dict:
+def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None, threshold_ui: bool = False) -> dict:
     repo, output = prep.checked_output(repo, output)
     if not 10 <= duration <= 30:
         raise ValueError("compressed political-memory duration must be between 10 and 30 days")
@@ -194,6 +194,18 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
         ):
             loc = f'l_{language}:\n rqa120_continue_decision:0 "{title}"\n rqa120_continue_decision_desc:0 "{description}"\n rqa120_continue_decision_tooltip:0 "{title}"\n rqa120_continue_decision_confirm:0 "{confirm}"\n'
             prep.write_script(output, f"localization/{language}/rqa120_l_{language}.yml", loc)
+    if threshold_ui:
+        if not ui_checkpoints:
+            raise ValueError("threshold UI requires the original stage4 checkpoint")
+        ui_source = source / "ui"
+        if len([path for path in ui_source.rglob("*") if path.is_file()]) != 4:
+            raise ValueError("all four original threshold UI data files are required")
+        for path in sorted(ui_source.rglob("*")):
+            if path.is_file():
+                target = output / path.relative_to(ui_source)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                with target.open("xb") as stream:
+                    stream.write(path.read_bytes())
     markers = prep.required_markers(repo / "tools/run_reclaim_the_motherland_acceptance.py")
     # These three family credits require the actual managed-row physical gate.
     pending_families = [
@@ -221,9 +233,22 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
                 "RQA120: TEST PASS restoration_later_title_unheld", "RQA120: TEST DONE core"]
     if ui_checkpoints:
         markers.append("RQA120: TEST READY ui_after_chaos")
+    core_markers = list(markers)
+    if threshold_ui:
+        markers = ["RQA120: TEST BEGIN engine_startup", "RQA120: TEST READY ui_after_chaos",
+                   "RQAUI: TEST PASS china_control_reset",
+                   "RQAUI: TEST PASS fifty_percent_below_claim_threshold",
+                   "RQAUI: TEST READY actual_restoration_50_ui",
+                   "RQAUI: TEST PASS original_fifty_one_percent_threshold_reached",
+                   "RQAUI: TEST PASS restoration_decision_ready",
+                   "RQAUI: TEST READY actual_restoration_51_ui",
+                   "RQAUI: TEST PASS actual_production_restoration_effect_observed",
+                   "RQAUI: TEST DONE threshold_ui"]
     return prep.finish_receipt(repo, source, output, files, {
-        "product":"mod_reclaim_the_motherland", "ui_checkpoints":ui_checkpoints,
+        "product":"mod_reclaim_the_motherland", "ui_checkpoints":ui_checkpoints, "threshold_ui":threshold_ui,
         "effective_law_contract":effective_law_contract,
+        "core_marker_inventory":core_markers if threshold_ui else None,
+        "threshold_UI_does_not_credit_core36":threshold_ui,
         "bookmark":"1066-09-15; begin as any human ruler except the Song emperor",
         "entry":"on_game_start_after_lobby -> rqa120.1 -> daily hidden rqa120.2; successor driver is explicitly scheduled before predecessor death",
         "expected_game_days":duration + 2, "max_game_days":14,
@@ -249,8 +274,9 @@ def main() -> None:
     parser.add_argument("--ui-checkpoints", action="store_true")
     parser.add_argument("--compressed-days", type=int, required=True)
     parser.add_argument("--game-dir", type=Path)
+    parser.add_argument("--threshold-ui", action="store_true")
     args = parser.parse_args()
-    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir)
+    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir, args.threshold_ui)
     print(json.dumps({"prepared_fixture":receipt["prepared_fixture"], "runtime_status":"NOT_RUN", "ui_checkpoints":args.ui_checkpoints}))
 
 

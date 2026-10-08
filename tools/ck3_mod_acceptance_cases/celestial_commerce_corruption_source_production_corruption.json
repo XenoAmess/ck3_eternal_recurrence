@@ -1,0 +1,79 @@
+{
+  "case_id": "source-production-corruption",
+  "acceptance_scope": "source_corruption_core_and_original_confirm_cancel_cooldown",
+  "fixture_emitter": {
+    "path": "tools/prepare_xccc_1_20_fixture.py",
+    "arguments": [
+      "--repo",
+      "{repo}",
+      "--output",
+      "{output}"
+    ],
+    "fixture_subdir": "",
+    "receipt_suffix": ".prepare.json"
+  },
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "allow_actor_change": true,
+  "actor_transition_days": [
+    1
+  ],
+  "maximum_natural_days": 13,
+  "failure_prefixes": [
+    "XCA:",
+    "XCA120:"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-fourth-tier-event",
+      "requirements": [
+        "actual_xccc_1001_instance_and_enabled_fourth_option_inspected",
+        "actual_fourth_option_selected_once"
+      ],
+      "at_day": 2
+    },
+    {
+      "id": "production-confirm-cancel-cooldown",
+      "requirements": [
+        "actual_production_GUI_confirm_once",
+        "actual_typed_f_cancel_event_gone",
+        "four_custom_corruption_traits_absent",
+        "original_three_year_disabled_cooldown_tooltip_current_date_without_advancing_three_years"
+      ],
+      "when_markers": [
+        "XCA: TEST PASS scripted_decision_effect_event_result"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "tools/prepare_xccc_1_20_fixture.py",
+    "tools/run_celestial_commerce_corruption_acceptance.py",
+    "docs/celestial-commerce-corruption-acceptance-1.0.0.md"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "celestial-commerce-corruption",
+  "required_startup": [],
+  "forbidden_startup": [
+    "XCA: TEST FAIL",
+    "XCA120: TEST FAIL"
+  ],
+  "uncovered_product_business": [],
+  "source_catalogue": {
+    "directory": "mod_celestial_commerce_corruption",
+    "builder": "tools/build_celestial_commerce_corruption_release.py",
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}",
+      "--workshop-item-id",
+      "3804807463"
+    ],
+    "workshop_item_id": "3804807463"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+}

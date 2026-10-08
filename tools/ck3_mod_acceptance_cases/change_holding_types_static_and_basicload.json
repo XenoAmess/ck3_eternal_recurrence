@@ -1,0 +1,47 @@
+{
+  "case_id": "static-and-basicload",
+  "acceptance_scope": "static_and_basicload",
+  "fixture_emitter": null,
+  "maximum_natural_days": 0,
+  "failure_prefixes": [
+    "cht:"
+  ],
+  "gui_phases": [],
+  "source_contracts": [
+    "mod_change_holding_types/docs/test-plan.md",
+    "mod_change_holding_types/docs/test-report-2026-10-03.md"
+  ],
+  "uncovered_product_business": [
+    "six real production decisions, actual cost400 and conversion readback",
+    "original effect matrix/AI/nonbarony/negative gates",
+    "real GUI building-loss/government-inheritance warnings and Save/Load"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "change-holding-types",
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "cht: TEST FAIL"
+  ],
+  "source_catalogue": {
+    "directory": "mod_change_holding_types",
+    "builder": "mod_change_holding_types/tools/build_release.py",
+    "release_flags": [
+      "--output",
+      "{new-output}",
+      "--git-tag",
+      "{matching-product-tag}",
+      "--workshop-item-id",
+      "3812510834",
+      "--release-localization"
+    ],
+    "workshop_item_id": "3812510834"
+  },
+  "business_contract_applicable": false,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+}

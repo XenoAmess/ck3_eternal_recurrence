@@ -32,8 +32,56 @@
       "workshop_item_id": "3784706360",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/tools/build_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "source-courtier-ui",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/eternal_recurrence_source_courtier_ui.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_advance_days"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "source_courtier_production_ui",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "XenoAmess_s_Eternal_Recurrence",
+            "builder": "tools/build_release.py",
+            "release_flags": [
+              "--release",
+              "--output",
+              "{new-output}"
+            ],
+            "workshop_item_id": "3784706360"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/tools/prepare_courtier_1_20_fixture.py"
@@ -53,15 +101,67 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "eternal-recurrence",
+      "external_mod": false
     },
     "vivhite-courtier": {
       "directory": "Eternal_Recurrence_Vivhite_Courtier",
       "workshop_item_id": "3787304042",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/tools/build_vivhite_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "source-standalone-courtier-ui",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/vivhite_courtier_source_standalone_courtier_ui.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_advance_days"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "source_standalone_courtier_production_ui",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "Eternal_Recurrence_Vivhite_Courtier",
+            "builder": "tools/build_vivhite_release.py",
+            "release_flags": [
+              "--release",
+              "--output",
+              "{new-output}",
+              "--workshop-item-id",
+              "3787304042"
+            ],
+            "workshop_item_id": "3787304042"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/tools/prepare_courtier_1_20_fixture.py"
@@ -80,15 +180,67 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "vivhite-courtier",
+      "external_mod": false
     },
     "remove-mandala": {
       "directory": "mod_remove_mandala",
       "workshop_item_id": "3797711947",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/tools/build_remove_mandala_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "source-production-removal",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/remove_mandala_source_production_removal.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_advance_days"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "source_production_removal_fixture_and_UI",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_remove_mandala",
+            "builder": "tools/build_remove_mandala_release.py",
+            "release_flags": [
+              "--release",
+              "--output",
+              "{new-output}",
+              "--workshop-item-id",
+              "3797711947"
+            ],
+            "workshop_item_id": "3797711947"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "legacy runner advance_game_days=8"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/tools/prepare_remove_mandala_1_20_fixture.py"
@@ -107,18 +259,20 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "remove-mandala",
+      "external_mod": false
     },
     "xqol": {
       "directory": "mod_xenoamess_quality_of_life",
       "workshop_item_id": "3798133925",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/tools/build_xenoamess_quality_of_life_release.py",
-      "integration_status": "business_contract_configured_shared_adapters_pending",
+      "integration_status": "public_case_adapters_implemented_source_adoption_and_actual_acceptance_required",
       "cases": [
         {
           "id": "defense_and_ui",
-          "status": "blocked",
+          "status": "ready",
           "startup": {
             "mode": "fixture",
             "state_dir": "{run_dir}/state",
@@ -148,11 +302,16 @@
               "normal GUI Quit/native OS0"
             ],
             "source_preparer_equivalence": false,
-            "integration_blockers": [
-              "current defense/steppe fixture producer is externally authored; canonical preparation adapter not connected",
-              "product continuous D0/D1/final6/readonly9/UI25 state guards must be transferred to shared entry; no product host reuse"
-            ],
-            "runtime_or_business_pass": false
+            "integration_blockers": [],
+            "runtime_or_business_pass": false,
+            "source_adapter_status": "actual public adapter implemented; source adoption still required; runtime/business NOT_RUN",
+            "actual_phase_order": [
+              "original source23/forbidden5/33days",
+              "original final6",
+              "Root true Song switch",
+              "original readonly9 on Song",
+              "original25 UI stages"
+            ]
           },
           "budgets": {
             "command_timeout": 300,
@@ -224,6 +383,10 @@
             "gui_evidence": "{run_dir}/gui/evidence-index.json",
             "normal_close": "{run_dir}/normal-close.json",
             "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_defense_and_ui.json"
           }
         },
         {
@@ -431,18 +594,19 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "xenoamess-quality-of-life"
     },
     "reclaim-motherland": {
       "directory": "mod_reclaim_the_motherland",
       "workshop_item_id": "3798404599",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/tools/build_reclaim_the_motherland_release.py",
-      "integration_status": "business_contract_configured_shared_adapters_pending",
+      "integration_status": "public_case_adapters_implemented_source_adoption_and_actual_acceptance_required",
       "cases": [
         {
           "id": "core",
-          "status": "blocked",
+          "status": "ready",
           "startup": {
             "mode": "fixture",
             "state_dir": "{run_dir}/state",
@@ -470,16 +634,12 @@
               "D4 original UI READY and C1-C5 actual GUI",
               "Continue once, paused scheduling-checkpoint three-row law evidence",
               "original next-day execute/real predecessor death; original recovery callback/newowner three-row law evidence",
-              "original remaining36/expiry1/50-51/restoration and independent whole-contract verdict",
+              "original remaining36/configured natural expiry10/50-51/restoration and independent whole-contract verdict",
               "normal GUI Quit/native OS0"
             ],
-            "integration_blockers": [
-              "shared fixture_engine_prepare current selected engine identity pending",
-              "canonical --compressed-days accepts10..30; required existing contract uses1-day override and14-day total; do not substitute legacy default14",
-              "canonical emitter must observe natural stock D1 callback without old D2 repeat dispatch",
-              "shared dispatcher for raw law phase rows/final33+3 conjunction pending"
-            ],
-            "runtime_or_business_pass": false
+            "integration_blockers": [],
+            "runtime_or_business_pass": false,
+            "source_adapter_status": "actual public adapter implemented; source adoption still required; runtime/business NOT_RUN"
           },
           "budgets": {
             "command_timeout": 300,
@@ -531,16 +691,20 @@
               "{run_dir}/fixture",
               "--ui-checkpoints",
               "--compressed-days",
-              "14"
+              "10"
             ],
             "output": "{run_dir}/fixture",
-            "execution_status": "declared_only_shared_current_identity_adapter_pending",
-            "automatic_execution": false
+            "execution_status": "shared-selected-identity actual emitter via adapter prepare_case",
+            "automatic_execution": true
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_core.json"
           }
         },
         {
           "id": "threshold_ui",
-          "status": "blocked",
+          "status": "ready",
           "startup": {
             "mode": "fixture",
             "state_dir": "{run_dir}/state",
@@ -562,10 +726,9 @@
             ],
             "source_core_markers_not_ui_credit": true,
             "natural_game_day_limit": 14,
-            "integration_blockers": [
-              "no canonical independent threshold fixture prepare mode or frozen plan producer is connected; do not invent --case threshold"
-            ],
-            "runtime_or_business_pass": false
+            "integration_blockers": [],
+            "runtime_or_business_pass": false,
+            "source_adapter_status": "actual public adapter implemented; source adoption still required; runtime/business NOT_RUN"
           },
           "budgets": {
             "command_timeout": 300,
@@ -598,6 +761,26 @@
             "gui_evidence": "{run_dir}/gui/evidence-index.json",
             "normal_close": "{run_dir}/normal-close.json",
             "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_threshold_ui.json"
+          },
+          "fixture_prepare": {
+            "argv_tokens": [
+              "{repo_root}/tools/prepare_reclaim_the_motherland_1_20_fixture.py",
+              "--repo",
+              "{repo_root}",
+              "--output",
+              "{run_dir}/fixture",
+              "--ui-checkpoints",
+              "--compressed-days",
+              "10",
+              "--threshold-ui"
+            ],
+            "output": "{run_dir}/fixture",
+            "automatic_execution": true,
+            "execution_status": "actual canonical original threshold data mode"
           }
         }
       ],
@@ -619,18 +802,19 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "reclaim-the-motherland"
     },
     "tributary-expansion-directives": {
       "directory": "mod_tributary_expansion_directives",
       "workshop_item_id": "3801490405",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/tools/build_tributary_expansion_directives_release.py",
-      "integration_status": "business_contract_configured_shared_adapters_pending",
+      "integration_status": "public_case_adapters_implemented_source_adoption_and_actual_acceptance_required",
       "cases": [
         {
           "id": "core",
-          "status": "blocked",
+          "status": "ready",
           "startup": {
             "mode": "fixture",
             "state_dir": "{run_dir}/state",
@@ -658,11 +842,9 @@
               "same-live real GUI SaveLoad and independent postload facts",
               "normal GUI Quit/native OS0"
             ],
-            "integration_blockers": [
-              "shared fixture_engine_prepare current selected engine identity pending",
-              "shared war/save-load GUI progress dispatcher and actual evidence join pending; no fabricated typed war/truce/wallet tools"
-            ],
-            "runtime_or_business_pass": false
+            "integration_blockers": [],
+            "runtime_or_business_pass": false,
+            "source_adapter_status": "actual public adapter implemented; source adoption still required; runtime/business NOT_RUN"
           },
           "budgets": {
             "command_timeout": 300,
@@ -710,13 +892,17 @@
               "{run_dir}/fixture"
             ],
             "output": "{run_dir}/fixture",
-            "execution_status": "declared_only_shared_current_identity_adapter_pending",
-            "automatic_execution": false
+            "execution_status": "shared-selected-identity actual emitter via adapter prepare_case",
+            "automatic_execution": true
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/ted_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/ted_core.json"
           }
         },
         {
           "id": "production_ui",
-          "status": "blocked",
+          "status": "ready",
           "startup": {
             "mode": "fixture",
             "state_dir": "{run_dir}/state",
@@ -740,10 +926,9 @@
               "normal GUI Quit/native OS0"
             ],
             "core_effects_not_production_ui_credit": true,
-            "integration_blockers": [
-              "no canonical production-only fixture mode or GUI dispatcher wired; source core preparer runs accept/decline/war and cannot be substituted silently"
-            ],
-            "runtime_or_business_pass": false
+            "integration_blockers": [],
+            "runtime_or_business_pass": false,
+            "source_adapter_status": "actual public adapter implemented; source adoption still required; runtime/business NOT_RUN"
           },
           "budgets": {
             "command_timeout": 300,
@@ -784,11 +969,28 @@
             "gui_evidence": "{run_dir}/gui/evidence-index.json",
             "normal_close": "{run_dir}/normal-close.json",
             "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/ted_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/ted_production_ui.json"
+          },
+          "fixture_prepare": {
+            "argv_tokens": [
+              "{repo_root}/tools/prepare_tributary_expansion_1_20_fixture.py",
+              "--repo",
+              "{repo_root}",
+              "--output",
+              "{run_dir}/fixture",
+              "--production-ui"
+            ],
+            "output": "{run_dir}/fixture",
+            "automatic_execution": true,
+            "execution_status": "actual canonical original context-only mode; no core response or war"
           }
         },
         {
           "id": "saved_gui_tail",
-          "status": "blocked",
+          "status": "ready",
           "startup": {
             "mode": "saved_campaign",
             "state_dir": "{run_dir}/state",
@@ -840,11 +1042,9 @@
               "actual A-to-D directed truce expiry GUI",
               "normalGUI OS0/native0"
             ],
-            "integration_blockers": [
-              "six actual save/profile fields are unbound until Root reviewed run-context supplies them",
-              "shared canonical savedmode/camera managed-run adapter must be qualified; prior per-product saved host is historical only"
-            ],
-            "runtime_or_business_pass": false
+            "integration_blockers": [],
+            "runtime_or_business_pass": false,
+            "source_adapter_status": "actual public adapter implemented; source adoption still required; runtime/business NOT_RUN"
           },
           "budgets": {
             "command_timeout": 300,
@@ -881,6 +1081,10 @@
             "gui_evidence": "{run_dir}/gui/evidence-index.json",
             "normal_close": "{run_dir}/normal-close.json",
             "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/ted_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/ted_core.json"
           }
         }
       ],
@@ -902,7 +1106,8 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "tributary-expansion-directives"
     },
     "celestial-commerce-corruption": {
       "directory": "mod_celestial_commerce_corruption",
@@ -911,8 +1116,58 @@
         "3596263413"
       ],
       "builder": "{repo_root}/tools/build_celestial_commerce_corruption_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "source-production-corruption",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/celestial_commerce_corruption_source_production_corruption.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_advance_days"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "source_corruption_core_and_original_confirm_cancel_cooldown",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_celestial_commerce_corruption",
+            "builder": "tools/build_celestial_commerce_corruption_release.py",
+            "release_flags": [
+              "--release",
+              "--output",
+              "{new-output}",
+              "--workshop-item-id",
+              "3804807463"
+            ],
+            "workshop_item_id": "3804807463"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/tools/prepare_xccc_1_20_fixture.py"
@@ -931,7 +1186,9 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "celestial-commerce-corruption",
+      "external_mod": false
     },
     "auto-upgrade-buildings": {
       "directory": "mod_auto_upgrade_buildings",
@@ -940,8 +1197,58 @@
         "3596580780"
       ],
       "builder": "{repo_root}/tools/build_auto_upgrade_buildings_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "source-upgrade-core",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/auto_upgrade_buildings_source_upgrade_core.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_advance_days"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "source_representative_upgrade_core_and_original_UI",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_auto_upgrade_buildings",
+            "builder": "tools/build_auto_upgrade_buildings_release.py",
+            "release_flags": [
+              "--release",
+              "--output",
+              "{new-output}",
+              "--workshop-item-id",
+              "3800124956"
+            ],
+            "workshop_item_id": "3800124956"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/tools/prepare_aub_1_20_fixture.py"
@@ -961,15 +1268,67 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "auto-upgrade-buildings",
+      "external_mod": false
     },
     "ox-here": {
       "directory": "ox_here",
       "workshop_item_id": "3790635143",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/tools/build_ox_here_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "source-production-choices",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/ox_here_source_production_choices.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_advance_days"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "source_original_decline_recruit_and_arrival",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "ox_here",
+            "builder": "tools/build_ox_here_release.py",
+            "release_flags": [
+              "--release",
+              "--output",
+              "{new-output}",
+              "--workshop-item-id",
+              "3790635143"
+            ],
+            "workshop_item_id": "3790635143"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "legacy runner advance_game_days=0; all production choices remain actual Root UI"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/tools/prepare_ox_here_1_20_fixture.py"
@@ -988,15 +1347,72 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "ox-here",
+      "external_mod": false
     },
     "zhongguo-361": {
       "directory": "mod_zhongguo_style",
       "workshop_item_id": "3792585972",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/tools/build_mod_zhongguo_style_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "source-original-core-and-jingcha",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/zhongguo_361_source_original_core_and_jingcha.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_advance_days"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "source_original_398_marker_core_and_actual_361_UI",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_zhongguo_style",
+            "builder": "tools/build_mod_zhongguo_style_release.py",
+            "release_flags": [
+              "--release",
+              "--output",
+              "{new-output}",
+              "--workshop-item-id",
+              "3792585972"
+            ],
+            "workshop_item_id": "3792585972"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "must_run_after_products": [
+            "xqol",
+            "reclaim-motherland",
+            "tributary-expansion-directives"
+          ],
+          "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/tools/prepare_zhongguo_1_20_fixture.py"
@@ -1016,6 +1432,17 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
+      },
+      "runtime_mod_key": "zhongguo-style",
+      "external_mod": false,
+      "execution_order": {
+        "must_run_last": true,
+        "after_products": [
+          "xqol",
+          "reclaim-motherland",
+          "tributary-expansion-directives"
+        ],
+        "authority": "Existing Root-owned schedule; registry declaration does not allocate or infer completed cases."
       }
     },
     "de-jure-conquest": {
@@ -1025,8 +1452,57 @@
         "3600021457"
       ],
       "builder": "{repo_root}/mod_de_jure_conquest/tools/build_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "static-and-basicload",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/de_jure_conquest_static_and_basicload.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "static_and_basicload",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_de_jure_conquest",
+            "builder": "mod_de_jure_conquest/tools/build_release.py",
+            "release_flags": [
+              "--release",
+              "--output",
+              "{new-output}",
+              "--workshop-item-id",
+              "3812510217"
+            ],
+            "workshop_item_id": "3812510217"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/mod_de_jure_conquest/tools/gen_acceptance_fixture.py"
@@ -1043,7 +1519,9 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "de-jure-conquest",
+      "external_mod": true
     },
     "change-holding-types": {
       "directory": "mod_change_holding_types",
@@ -1052,8 +1530,59 @@
         "3337428403"
       ],
       "builder": "{repo_root}/mod_change_holding_types/tools/build_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "static-and-basicload",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/change_holding_types_static_and_basicload.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "static_and_basicload",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_change_holding_types",
+            "builder": "mod_change_holding_types/tools/build_release.py",
+            "release_flags": [
+              "--output",
+              "{new-output}",
+              "--git-tag",
+              "{matching-product-tag}",
+              "--workshop-item-id",
+              "3812510834",
+              "--release-localization"
+            ],
+            "workshop_item_id": "3812510834"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/mod_change_holding_types/tools/prepare_live_fixture.py"
@@ -1071,15 +1600,68 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "change-holding-types",
+      "external_mod": true
     },
     "superman-qiang": {
       "directory": "mod_superman_qiang",
       "workshop_item_id": "3812991990",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/mod_superman_qiang/tools/build_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "source-health-1-1",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/superman_qiang_source_health_1_1.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_advance_days"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "source_original_health_20_case_matrix_and_real_readback",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_superman_qiang",
+            "builder": "mod_superman_qiang/tools/build_release.py",
+            "release_flags": [
+              "--output",
+              "{new-output}",
+              "--git-tag",
+              "{matching-product-tag}",
+              "--workshop-item-id",
+              "3812991990"
+            ],
+            "workshop_item_id": "3812991990"
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [
           "{repo_root}/mod_superman_qiang/tools/prepare_live_fixture.py",
@@ -1101,15 +1683,63 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "superman-qiang",
+      "external_mod": true
     },
     "li-yu-dao": {
       "directory": "mod_li_yu_dao",
       "workshop_item_id": null,
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/mod_li_yu_dao/tools/build_release.py",
-      "integration_status": "inventory_only_adapter_pending",
-      "cases": [],
+      "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
+      "cases": [
+        {
+          "id": "static-and-basicload",
+          "status": "ready",
+          "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/li_yu_dao_static_and_basicload.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 2100,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "new_shared_case_profile_20261008",
+          "required_mcp_tools": [
+            "ck3_take_snapshot"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "static_and_basicload",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_li_yu_dao",
+            "builder": "mod_li_yu_dao/tools/build_release.py",
+            "release_flags": [
+              "--output",
+              "{new-output}"
+            ],
+            "workshop_item_id": null
+          },
+          "legacy_upper_bounds_preserved": "Original fixture predicates/schedule retained. Explicit legacy advance limits are noted in case config; other calendar guards and native run budgets are explicitly new shared-case bounds.",
+          "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        }
+      ],
       "legacy_inventory": {
         "fixture_prepare_scripts": [],
         "legacy_acceptance_scripts": [
@@ -1129,7 +1759,9 @@
         "inventory_status": "inventory_only_unified_adapter_pending",
         "current_runtime_adapted": false,
         "execute_legacy_runners": false
-      }
+      },
+      "runtime_mod_key": "li-yu-dao",
+      "external_mod": false
     }
   }
 }

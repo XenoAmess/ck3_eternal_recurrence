@@ -1,0 +1,579 @@
+{
+  "initial": {
+    "scope": "Actual D0 native campaign actor crossbound to this fresh startup scope; original whole-root diagnostic is preserved and optional.",
+    "steps": [
+      {
+        "id": "qol-defense-initial-map",
+        "tool": "ck3_take_snapshot",
+        "args": {},
+        "expect": {
+          "paused": true,
+          "map_ready": true,
+          "played_character.alive": true,
+          "played_character.source": "native",
+          "episode_projection": "native_campaign",
+          "active_event": null,
+          "backend_id": "native-headless",
+          "source": "injected-dll-named-pipe",
+          "played_character.character_id": {
+            "$qol_scope_binding": "runtime_character_id"
+          },
+          "diagnostics.bridge_pid": {
+            "$qol_scope_binding": "bridge_pid"
+          },
+          "diagnostics.connection_generation": {
+            "$qol_scope_binding": "connection_generation"
+          },
+          "date_raw": {
+            "$qol_scope_binding": "date_raw"
+          }
+        }
+      },
+      {
+        "id": "qol-defense-initial-root",
+        "tool": "ck3_query_campaign_root_context_v1",
+        "args": {},
+        "continue_on_error": true
+      }
+    ]
+  },
+  "d0": {
+    "scope": "Read only held D0 diagnostic facts, at most2 sampled identities. Not matrix PASS and not permission to advance. Snapshot guards equal initial actual actor/PIDgen/date/source/backend + exact .3/alive/paused/noevent.",
+    "steps": [
+      {
+        "id": "qol-defense-d0-diagnostic-before",
+        "tool": "ck3_take_snapshot",
+        "args": {},
+        "expect": {
+          "paused": true,
+          "map_ready": true,
+          "played_character.alive": true,
+          "played_character.source": "native",
+          "episode_projection": {
+            "$ref": "results.qol-defense-initial-map.episode_projection"
+          },
+          "active_event": null,
+          "played_character.character_id": {
+            "$ref": "results.qol-defense-initial-map.played_character.character_id"
+          },
+          "diagnostics.bridge_pid": {
+            "$ref": "results.qol-defense-initial-map.diagnostics.bridge_pid"
+          },
+          "diagnostics.connection_generation": {
+            "$ref": "results.qol-defense-initial-map.diagnostics.connection_generation"
+          },
+          "source": {
+            "$ref": "results.qol-defense-initial-map.source"
+          },
+          "backend_id": {
+            "$ref": "results.qol-defense-initial-map.backend_id"
+          },
+          "diagnostics.hello.expected_ck3_version": {
+            "$runtime_game": "version"
+          },
+          "diagnostics.hello.ck3_build_match": true,
+          "date_raw": {
+            "$ref": "results.qol-defense-initial-map.date_raw"
+          }
+        }
+      },
+      {
+        "id": "qol-defense-d0-diagnostic-log-01",
+        "tool": "ck3_query_engine_log_literals_v1",
+        "args": {
+          "log_name": "debug.log",
+          "literals": [
+            "ZQD09DIAG: DIAGNOSTIC pool at_least_two",
+            "ZQD09DIAG: DIAGNOSTIC pool exactly_one",
+            "ZQD09DIAG: DIAGNOSTIC pool zero",
+            "ZQD09DIAG: FACT is_tributary no",
+            "ZQD09DIAG: FACT is_tributary yes",
+            "ZQD09DIAG: FACT suzerain_exists no",
+            "ZQD09DIAG: FACT suzerain_exists yes",
+            "ZQD09DIAG: FACT suzerain_self no",
+            "ZQD09DIAG: FACT suzerain_self no_accessor",
+            "ZQD09DIAG: FACT suzerain_self yes",
+            "ZQD09DIAG: GUARD rejected",
+            "ZQD09DIAG: ORIGINAL eligible exists",
+            "ZQD09DIAG: ORIGINAL eligible none",
+            "ZQD09DIAG: ORIGINAL negative exists",
+            "ZQD09DIAG: ORIGINAL negative missing",
+            "ZQD09DIAG: ORIGINAL positive exists"
+          ],
+          "sample_limit": 3
+        },
+        "expect": {
+          "exists": true,
+          "log_name": "debug.log",
+          "read_only": true,
+          "matches.0.literal": "ZQD09DIAG: DIAGNOSTIC pool at_least_two",
+          "matches.1.literal": "ZQD09DIAG: DIAGNOSTIC pool exactly_one",
+          "matches.2.literal": "ZQD09DIAG: DIAGNOSTIC pool zero",
+          "matches.3.literal": "ZQD09DIAG: FACT is_tributary no",
+          "matches.4.literal": "ZQD09DIAG: FACT is_tributary yes",
+          "matches.5.literal": "ZQD09DIAG: FACT suzerain_exists no",
+          "matches.6.literal": "ZQD09DIAG: FACT suzerain_exists yes",
+          "matches.7.literal": "ZQD09DIAG: FACT suzerain_self no",
+          "matches.8.literal": "ZQD09DIAG: FACT suzerain_self no_accessor",
+          "matches.9.literal": "ZQD09DIAG: FACT suzerain_self yes",
+          "matches.10.literal": "ZQD09DIAG: GUARD rejected",
+          "matches.10.line_count": 0,
+          "matches.11.literal": "ZQD09DIAG: ORIGINAL eligible exists",
+          "matches.12.literal": "ZQD09DIAG: ORIGINAL eligible none",
+          "matches.13.literal": "ZQD09DIAG: ORIGINAL negative exists",
+          "matches.13.line_count": 0,
+          "matches.14.literal": "ZQD09DIAG: ORIGINAL negative missing",
+          "matches.14.line_count": 0,
+          "matches.15.literal": "ZQD09DIAG: ORIGINAL positive exists",
+          "matches.15.line_count": 0
+        }
+      },
+      {
+        "id": "qol-defense-d0-diagnostic-log-02",
+        "tool": "ck3_query_engine_log_literals_v1",
+        "args": {
+          "log_name": "debug.log",
+          "literals": [
+            "ZQD09DIAG: ORIGINAL positive missing",
+            "ZQD09DIAG: ROOT BEGIN",
+            "ZQD09DIAG: ROOT END",
+            "ZQD09DIAG: SAMPLE1 BEGIN",
+            "ZQD09DIAG: SAMPLE1 END",
+            "ZQD09DIAG: SAMPLE2 BEGIN",
+            "ZQD09DIAG: SAMPLE2 END",
+            "ZQD10GATE: D0 strict_eligible yes",
+            "ZQD10GATE: D0 strict_eligible no"
+          ],
+          "sample_limit": 3
+        },
+        "expect": {
+          "exists": true,
+          "log_name": "debug.log",
+          "read_only": true,
+          "matches.0.literal": "ZQD09DIAG: ORIGINAL positive missing",
+          "matches.0.line_count": 0,
+          "matches.1.literal": "ZQD09DIAG: ROOT BEGIN",
+          "matches.1.line_count": 1,
+          "matches.2.literal": "ZQD09DIAG: ROOT END",
+          "matches.2.line_count": 1,
+          "matches.3.literal": "ZQD09DIAG: SAMPLE1 BEGIN",
+          "matches.4.literal": "ZQD09DIAG: SAMPLE1 END",
+          "matches.5.literal": "ZQD09DIAG: SAMPLE2 BEGIN",
+          "matches.6.literal": "ZQD09DIAG: SAMPLE2 END",
+          "matches.7.literal": "ZQD10GATE: D0 strict_eligible yes",
+          "matches.8.literal": "ZQD10GATE: D0 strict_eligible no"
+        }
+      },
+      {
+        "id": "qol-defense-d0-diagnostic-after",
+        "tool": "ck3_take_snapshot",
+        "args": {},
+        "expect": {
+          "paused": true,
+          "map_ready": true,
+          "played_character.alive": true,
+          "played_character.source": "native",
+          "episode_projection": {
+            "$ref": "results.qol-defense-initial-map.episode_projection"
+          },
+          "active_event": null,
+          "played_character.character_id": {
+            "$ref": "results.qol-defense-initial-map.played_character.character_id"
+          },
+          "diagnostics.bridge_pid": {
+            "$ref": "results.qol-defense-initial-map.diagnostics.bridge_pid"
+          },
+          "diagnostics.connection_generation": {
+            "$ref": "results.qol-defense-initial-map.diagnostics.connection_generation"
+          },
+          "source": {
+            "$ref": "results.qol-defense-initial-map.source"
+          },
+          "backend_id": {
+            "$ref": "results.qol-defense-initial-map.backend_id"
+          },
+          "diagnostics.hello.expected_ck3_version": {
+            "$runtime_game": "version"
+          },
+          "diagnostics.hello.ck3_build_match": true,
+          "date_raw": {
+            "$ref": "results.qol-defense-initial-map.date_raw"
+          }
+        }
+      }
+    ]
+  },
+  "final6": {
+    "scope": "Same actual initial native campaign actor/owner/build; unchanged 23 required +3 forbidden business gates, additional startup scope3+FAIL1 separately. Additional2 dispatcher rejection markers separately zero; original business23/FAIL3/scope3+1 unchanged.",
+    "steps": [
+      {
+        "id": "qol-defense-final-map",
+        "tool": "ck3_take_snapshot",
+        "args": {},
+        "expect": {
+          "paused": true,
+          "map_ready": true,
+          "played_character.alive": true,
+          "played_character.source": "native",
+          "episode_projection": {
+            "$ref": "results.qol-defense-initial-map.episode_projection"
+          },
+          "active_event": null,
+          "played_character.character_id": {
+            "$ref": "results.qol-defense-initial-map.played_character.character_id"
+          },
+          "diagnostics.bridge_pid": {
+            "$ref": "results.qol-defense-initial-map.diagnostics.bridge_pid"
+          },
+          "diagnostics.connection_generation": {
+            "$ref": "results.qol-defense-initial-map.diagnostics.connection_generation"
+          },
+          "source": {
+            "$ref": "results.qol-defense-initial-map.source"
+          },
+          "backend_id": {
+            "$ref": "results.qol-defense-initial-map.backend_id"
+          },
+          "diagnostics.hello.expected_ck3_version": {
+            "$runtime_game": "version"
+          },
+          "diagnostics.hello.ck3_build_match": true
+        }
+      },
+      {
+        "id": "qol-defense-required-markers-01",
+        "tool": "ck3_query_engine_log_literals_v1",
+        "args": {
+          "log_name": "debug.log",
+          "literals": [
+            "ZQA: TEST BEGIN xqol_defense",
+            "ZQA: TEST PASS exact_build_song_emperor",
+            "ZQA: TEST PASS switched_to_supported_player",
+            "ZQA: TEST PASS defense_fixture_setup",
+            "ZQA: TEST PASS defense_regular_ally_called",
+            "ZQA: TEST PASS defense_overlap_ally_called",
+            "ZQA: TEST PASS defense_paid_dynasty_member_excluded",
+            "ZQA: TEST PASS defense_overlap_dedup_and_replay_idempotent",
+            "ZQA: TEST PASS defense_resources_not_decreased",
+            "ZQA: TEST PASS defense_matrix_done",
+            "ZQA: TEST DONE xqol",
+            "ZQA120DEF: TEST BEGIN engine_startup",
+            "ZQA120DEF: TEST PASS original_verify_readiness",
+            "ZQA120DEF: TEST DONE defense_core",
+            "ZQAREL: TEST PASS reverse_contracts_setup",
+            "ZQAREL: TEST PASS reverse_negative_relationship_rejected"
+          ],
+          "sample_limit": 2
+        },
+        "expect": {
+          "exists": true,
+          "log_name": "debug.log",
+          "read_only": true,
+          "matches.0.literal": "ZQA: TEST BEGIN xqol_defense",
+          "matches.0.line_count": 1,
+          "matches.1.literal": "ZQA: TEST PASS exact_build_song_emperor",
+          "matches.1.line_count": 1,
+          "matches.2.literal": "ZQA: TEST PASS switched_to_supported_player",
+          "matches.2.line_count": 1,
+          "matches.3.literal": "ZQA: TEST PASS defense_fixture_setup",
+          "matches.3.line_count": 1,
+          "matches.4.literal": "ZQA: TEST PASS defense_regular_ally_called",
+          "matches.4.line_count": 1,
+          "matches.5.literal": "ZQA: TEST PASS defense_overlap_ally_called",
+          "matches.5.line_count": 1,
+          "matches.6.literal": "ZQA: TEST PASS defense_paid_dynasty_member_excluded",
+          "matches.6.line_count": 1,
+          "matches.7.literal": "ZQA: TEST PASS defense_overlap_dedup_and_replay_idempotent",
+          "matches.7.line_count": 1,
+          "matches.8.literal": "ZQA: TEST PASS defense_resources_not_decreased",
+          "matches.8.line_count": 1,
+          "matches.9.literal": "ZQA: TEST PASS defense_matrix_done",
+          "matches.9.line_count": 1,
+          "matches.10.literal": "ZQA: TEST DONE xqol",
+          "matches.10.line_count": 1,
+          "matches.11.literal": "ZQA120DEF: TEST BEGIN engine_startup",
+          "matches.11.line_count": 1,
+          "matches.12.literal": "ZQA120DEF: TEST PASS original_verify_readiness",
+          "matches.12.line_count": 1,
+          "matches.13.literal": "ZQA120DEF: TEST DONE defense_core",
+          "matches.13.line_count": 1,
+          "matches.14.literal": "ZQAREL: TEST PASS reverse_contracts_setup",
+          "matches.14.line_count": 1,
+          "matches.15.literal": "ZQAREL: TEST PASS reverse_negative_relationship_rejected",
+          "matches.15.line_count": 1
+        }
+      },
+      {
+        "id": "qol-defense-required-markers-02",
+        "tool": "ck3_query_engine_log_literals_v1",
+        "args": {
+          "log_name": "debug.log",
+          "literals": [
+            "ZQAREL: TEST PASS reverse_negative_target_valid",
+            "ZQAREL: TEST PASS reverse_positive_relationship_admitted",
+            "ZQAREL: TEST PASS reverse_negative_not_auto_called",
+            "ZQAREL: TEST PASS reverse_positive_participating",
+            "ZQAREL: TEST PASS reverse_positive_participant_rejected_as_duplicate",
+            "ZQAREL: TEST PASS reverse_matrix_done",
+            "ZQAREL: TEST DONE reverse_contracts"
+          ],
+          "sample_limit": 2
+        },
+        "expect": {
+          "exists": true,
+          "log_name": "debug.log",
+          "read_only": true,
+          "matches.0.literal": "ZQAREL: TEST PASS reverse_negative_target_valid",
+          "matches.0.line_count": 1,
+          "matches.1.literal": "ZQAREL: TEST PASS reverse_positive_relationship_admitted",
+          "matches.1.line_count": 1,
+          "matches.2.literal": "ZQAREL: TEST PASS reverse_negative_not_auto_called",
+          "matches.2.line_count": 1,
+          "matches.3.literal": "ZQAREL: TEST PASS reverse_positive_participating",
+          "matches.3.line_count": 1,
+          "matches.4.literal": "ZQAREL: TEST PASS reverse_positive_participant_rejected_as_duplicate",
+          "matches.4.line_count": 1,
+          "matches.5.literal": "ZQAREL: TEST PASS reverse_matrix_done",
+          "matches.5.line_count": 1,
+          "matches.6.literal": "ZQAREL: TEST DONE reverse_contracts",
+          "matches.6.line_count": 1
+        }
+      },
+      {
+        "id": "qol-defense-forbidden-markers",
+        "tool": "ck3_query_engine_log_literals_v1",
+        "args": {
+          "log_name": "debug.log",
+          "literals": [
+            "ZQA: TEST FAIL",
+            "ZQA120DEF: TEST FAIL",
+            "ZQAREL: TEST FAIL"
+          ],
+          "sample_limit": 2
+        },
+        "expect": {
+          "exists": true,
+          "log_name": "debug.log",
+          "read_only": true,
+          "matches.0.literal": "ZQA: TEST FAIL",
+          "matches.0.line_count": 0,
+          "matches.1.literal": "ZQA120DEF: TEST FAIL",
+          "matches.1.line_count": 0,
+          "matches.2.literal": "ZQAREL: TEST FAIL",
+          "matches.2.line_count": 0
+        }
+      },
+      {
+        "id": "qol-defense-startup-scope-final",
+        "tool": "ck3_query_engine_log_literals_v1",
+        "args": {
+          "log_name": "debug.log",
+          "literals": [
+            "ZQD120QUAL: SCOPE BEGIN actual_song_actor_D0",
+            "ZQD120QUAL: TEST PASS actual_song_actor_D0",
+            "ZQD120QUAL: SCOPE END actual_song_actor_D0",
+            "ZQD120QUAL: TEST FAIL actual_song_actor_D0"
+          ],
+          "sample_limit": 2
+        },
+        "expect": {
+          "exists": true,
+          "log_name": "debug.log",
+          "read_only": true,
+          "matches.0.literal": "ZQD120QUAL: SCOPE BEGIN actual_song_actor_D0",
+          "matches.0.line_count": 1,
+          "matches.1.literal": "ZQD120QUAL: TEST PASS actual_song_actor_D0",
+          "matches.1.line_count": 1,
+          "matches.2.literal": "ZQD120QUAL: SCOPE END actual_song_actor_D0",
+          "matches.2.line_count": 1,
+          "matches.3.literal": "ZQD120QUAL: TEST FAIL actual_song_actor_D0",
+          "matches.3.line_count": 0
+        }
+      },
+      {
+        "id": "qol-defense-final-strict-dispatch-rejects",
+        "tool": "ck3_query_engine_log_literals_v1",
+        "args": {
+          "log_name": "debug.log",
+          "literals": [
+            "ZQD10GATE: D1 route rejected_actor",
+            "ZQD10GATE: D1 route rejected_predicate"
+          ],
+          "sample_limit": 2
+        },
+        "expect": {
+          "exists": true,
+          "log_name": "debug.log",
+          "read_only": true,
+          "matches.0.literal": "ZQD10GATE: D1 route rejected_actor",
+          "matches.0.line_count": 0,
+          "matches.1.literal": "ZQD10GATE: D1 route rejected_predicate",
+          "matches.1.line_count": 0
+        }
+      }
+    ]
+  },
+  "readonly9": {
+    "scope": "cold18_same_live_post_defense_readonly_once_source_contract_only_not_run",
+    "steps": [
+      {
+        "id": "qol-post-defense-readonly-before-01",
+        "tool": "ck3_take_snapshot",
+        "args": {
+          "include_native_command_history": false
+        },
+        "expect": {
+          "paused": true,
+          "map_ready": true,
+          "played_character.alive": true,
+          "played_character.source": "native",
+          "episode_projection": {
+            "$ref": "results.qol-defense-initial-map.episode_projection"
+          },
+          "active_event": null,
+          "played_character.character_id": {
+            "$ref": "results.qol-defense-song-ui-map.played_character.character_id"
+          },
+          "diagnostics.bridge_pid": {
+            "$ref": "results.qol-defense-initial-map.diagnostics.bridge_pid"
+          },
+          "diagnostics.connection_generation": {
+            "$ref": "results.qol-defense-initial-map.diagnostics.connection_generation"
+          },
+          "source": {
+            "$ref": "results.qol-defense-initial-map.source"
+          },
+          "backend_id": {
+            "$ref": "results.qol-defense-initial-map.backend_id"
+          },
+          "diagnostics.hello.expected_ck3_version": {
+            "$runtime_game": "version"
+          },
+          "diagnostics.hello.ck3_build_match": true,
+          "date_raw": {
+            "$ref": "results.qol-defense-final-map.date_raw"
+          }
+        }
+      },
+      {
+        "id": "qol-post-defense-whole-root-01",
+        "tool": "ck3_query_campaign_root_context_v1",
+        "args": {},
+        "continue_on_error": true
+      },
+      {
+        "id": "qol-post-defense-toggle-model-01",
+        "tool": "ck3_query_ingame_decision_item_v1",
+        "args": {
+          "decision_key": "xqol_enable_auto_appointment_decision"
+        },
+        "continue_on_error": true
+      },
+      {
+        "id": "qol-post-defense-toggle-model-02",
+        "tool": "ck3_query_ingame_decision_item_v1",
+        "args": {
+          "decision_key": "xqol_disable_auto_appointment_decision"
+        },
+        "continue_on_error": true
+      },
+      {
+        "id": "qol-post-defense-toggle-model-03",
+        "tool": "ck3_query_ingame_decision_item_v1",
+        "args": {
+          "decision_key": "xqol_enable_no_vassal_transfers_decision"
+        },
+        "continue_on_error": true
+      },
+      {
+        "id": "qol-post-defense-toggle-model-04",
+        "tool": "ck3_query_ingame_decision_item_v1",
+        "args": {
+          "decision_key": "xqol_disable_no_vassal_transfers_decision"
+        },
+        "continue_on_error": true
+      },
+      {
+        "id": "qol-post-defense-toggle-model-05",
+        "tool": "ck3_query_ingame_decision_item_v1",
+        "args": {
+          "decision_key": "xqol_enable_auto_call_defenders_decision"
+        },
+        "continue_on_error": true
+      },
+      {
+        "id": "qol-post-defense-toggle-model-06",
+        "tool": "ck3_query_ingame_decision_item_v1",
+        "args": {
+          "decision_key": "xqol_disable_auto_call_defenders_decision"
+        },
+        "continue_on_error": true
+      },
+      {
+        "id": "qol-post-defense-readonly-after-01",
+        "tool": "ck3_take_snapshot",
+        "args": {
+          "include_native_command_history": false
+        },
+        "expect": {
+          "paused": true,
+          "map_ready": true,
+          "played_character.alive": true,
+          "played_character.source": "native",
+          "active_event": null,
+          "diagnostics.hello.expected_ck3_version": {
+            "$runtime_game": "version"
+          },
+          "diagnostics.hello.ck3_build_match": true,
+          "episode_projection": {
+            "$ref": "results.qol-post-defense-readonly-before-01.episode_projection"
+          },
+          "played_character.character_id": {
+            "$ref": "results.qol-post-defense-readonly-before-01.played_character.character_id"
+          },
+          "diagnostics.bridge_pid": {
+            "$ref": "results.qol-post-defense-readonly-before-01.diagnostics.bridge_pid"
+          },
+          "diagnostics.connection_generation": {
+            "$ref": "results.qol-post-defense-readonly-before-01.diagnostics.connection_generation"
+          },
+          "source": {
+            "$ref": "results.qol-post-defense-readonly-before-01.source"
+          },
+          "backend_id": {
+            "$ref": "results.qol-post-defense-readonly-before-01.backend_id"
+          },
+          "date_raw": {
+            "$ref": "results.qol-post-defense-readonly-before-01.date_raw"
+          }
+        }
+      }
+    ]
+  },
+  "startup_contract": {
+    "post_start": {
+      "government_key": "steppe_admin_government",
+      "primary_title_tier_key": "empire",
+      "independent": true
+    },
+    "required_startup": [
+      "ZQA120DEF: TEST BEGIN engine_startup",
+      "ZQA: TEST BEGIN xqol_defense",
+      "ZQA: TEST PASS exact_build_song_emperor",
+      "ZQA: TEST PASS switched_to_supported_player",
+      "ZQD120QUAL: SCOPE BEGIN actual_song_actor_D0",
+      "ZQD120QUAL: TEST PASS actual_song_actor_D0",
+      "ZQD120QUAL: SCOPE END actual_song_actor_D0",
+      "ZQD120STEPPEQUAL: SCOPE BEGIN actual_steppe_actor_D0",
+      "ZQD120STEPPEQUAL: TEST PASS actual_steppe_actor_D0",
+      "ZQD120STEPPEQUAL: SCOPE END actual_steppe_actor_D0"
+    ],
+    "forbidden_startup": [
+      "ZQA: TEST FAIL",
+      "ZQA120DEF: TEST FAIL",
+      "ZQAREL: TEST FAIL",
+      "ZQD120QUAL: TEST FAIL actual_song_actor_D0",
+      "ZQD120STEPPEQUAL: TEST FAIL actual_steppe_actor_D0"
+    ]
+  }
+}

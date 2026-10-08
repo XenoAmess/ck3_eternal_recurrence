@@ -1,0 +1,40 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "tributary-expansion-directives",
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "TEA: TEST PASS exact_build_song_emperor",
+    "TEA: TEST PASS switched_to_supported_player"
+  ],
+  "forbidden_startup": [
+    "TEA: TEST FAIL",
+    "TEA120: TEST FAIL"
+  ],
+  "case": "production_ui",
+  "required_exact_count": 1,
+  "required_markers": [
+    "TEAUI: TEST BEGIN ui_context_only",
+    "TEA: TEST BEGIN tributary_expansion_directives",
+    "TEA: TEST PASS exact_build_song_emperor",
+    "TEA: TEST PASS switched_to_supported_player",
+    "TEA: TEST PASS tributary_context_constructed",
+    "TEAUI: TEST READY production_interaction_no_response_executed"
+  ],
+  "forbidden_markers": [
+    "TEA: TEST FAIL",
+    "TEAUI: TEST FAIL",
+    "TEA120: TEST FAIL"
+  ],
+  "original_fixture_priming": {
+    "prestige": "if <5000 add5000",
+    "gold": "if <1000 add1000",
+    "AI_response_not_forced": true
+  },
+  "no_core_response_effect_calls": true,
+  "no_source13_or_SaveLoad_credit": true,
+  "no_added_14day_cap": true
+}

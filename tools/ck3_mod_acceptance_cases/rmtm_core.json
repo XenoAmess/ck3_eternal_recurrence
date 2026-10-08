@@ -186,7 +186,7 @@
     "RQA120: TEST FAIL"
   ],
   "natural_game_day_limit": 14,
-  "fixture_recent_independence_override_days": 1,
+  "fixture_recent_independence_override_days": 10,
   "formal_recent_independence_days": 1825,
   "physical_law_gate": {
     "phases": [
@@ -222,5 +222,64 @@
   ],
   "event_handling": "identify current exact instance and source, select enabled option once, then observe next owner/date/paused/map/event without asserting no next event",
   "no_repeated_D2_chaos_dispatch": true,
-  "no_native_player_death_continue_credit": true
+  "no_native_player_death_continue_credit": true,
+  "timer_source_boundary": {
+    "op17_actual_override_days": 14,
+    "original_tracked_fixture_days": 1,
+    "new_case_explicit_input_days": 10,
+    "producer_admitted_range": [
+      10,
+      30
+    ],
+    "natural_total_day_cap": 14,
+    "source_expected_timeline": [
+      {
+        "day": 0,
+        "action": "initialize, schedule original driver days=1"
+      },
+      {
+        "day": 1,
+        "action": "original Chaos phase and stock natural callback; install title variables days=10"
+      },
+      {
+        "day": 3,
+        "action": "original existence checks and strict D3 law/current-heir AND"
+      },
+      {
+        "day": 4,
+        "action": "original GUI checkpoint and Continue scheduling observer"
+      },
+      {
+        "day": 5,
+        "action": "original execute-time heir, player switch, real predecessor death"
+      },
+      {
+        "day": 7,
+        "action": "original two-day succession probe expected; actual pending rows required"
+      },
+      {
+        "day": 11,
+        "action": "stage6 only after both variables naturally absent: expiry and 50/51 preparation"
+      },
+      {
+        "day": 12,
+        "action": "next stage7 original restoration effect and DONE"
+      }
+    ],
+    "source_expectation_is_actual_PASS": false,
+    "no_duration_or_budget_extension": true
+  },
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "RQA: TEST PASS exact_build_song_emperor",
+    "RQA: TEST PASS switched_to_song_emperor"
+  ],
+  "forbidden_startup": [
+    "RQA: TEST FAIL",
+    "RQA120: TEST FAIL"
+  ]
 }

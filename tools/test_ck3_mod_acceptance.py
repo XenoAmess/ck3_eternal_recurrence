@@ -24,7 +24,7 @@ class SharedEntryTests(unittest.TestCase):
         self.host = self.root / 'one_shared_host.py'
         flags = ['--agent-source-root','--game-dir','--bridge-dll','--bridge-injector','--bridge-pipe',
                  '--output','--state-dir','--plan','--control-plan-dir', *entry.BUDGET_FLAGS.values(),
-                 *entry.SAVED_FLAGS.values()]
+                  *entry.SAVED_FLAGS.values(), '--fixture-profile']
         self.host.write_text("import argparse\np=argparse.ArgumentParser()\n" +
                              ''.join('p.add_argument(' + repr(flag) + ')\n' for flag in flags) +
                              "raise RuntimeError('The host must never execute in these tests')\n")
@@ -90,9 +90,38 @@ class SharedEntryTests(unittest.TestCase):
             self.assertFalse(result['tool_status']['ck3_take_snapshot']['actual_live_qualified'])
 
     def test_product_cannot_override_runtime(self):
-        self.products['products']['xqol']['cases'][0]['host']='old-special-host.py'
-        self.write(self.products_path,self.products)
-        with self.assertRaisesRegex(ValueError,'cannot select shared runtime'):self.select()
+        original = copy.deepcopy(self.products)
+        for location in ('product', 'case'):
+            for key in ('host', 'source_root', 'source_index', 'native', 'dll', 'injector', 'engine', 'host_args'):
+                with self.subTest(location=location, key=key):
+                    self.products = copy.deepcopy(original)
+                    target = self.products['products']['xqol']
+                    if location == 'case': target = target['cases'][0]
+                    target[key] = 'old-special-runtime'
+                    self.write(self.products_path, self.products)
+                    with self.assertRaisesRegex(ValueError, 'cannot select shared runtime'):
+                        self.select()
+
+    def test_all_canonical_products_and_cases_select_the_same_runtime(self):
+        repo = Path(__file__).resolve().parents[1]
+        canonical = {row['key']: row for row in entry.read_json(repo / 'workshop/products.json')['products']}
+        registry_path = repo / 'tools/ck3_mod_acceptance_products.json'
+        products = entry.read_json(registry_path)['products']
+        self.assertEqual(set(products), set(canonical), 'Every player product must use the shared registry')
+        runtime_choices = set()
+        for key, product in products.items():
+            self.assertEqual(product['workshop_item_id'], canonical[key]['workshop_item_id'])
+            self.assertEqual(product['directory'], canonical[key]['directory'])
+            self.assertEqual(product['builder'].removeprefix('{repo_root}/'), canonical[key]['builder'])
+            self.assertTrue(product['cases'])
+            self.assertEqual(len({case['id'] for case in product['cases']}), len(product['cases']))
+            for case in product['cases']:
+                with self.subTest(product=key, case=case['id']):
+                    selected = entry.Selection(self.runtime_path, registry_path, key, case['id'])
+                    argv = selected.argv
+                    runtime_choices.add(tuple(argv[argv.index(flag) + 1] for flag in
+                                              ('--agent-source-root', '--bridge-dll', '--bridge-injector')) + (argv[4],))
+        self.assertEqual(len(runtime_choices), 1)
 
     def test_changed_shared_pin_blocks(self):
         self.host.write_text(self.host.read_text()+'#changed\n')

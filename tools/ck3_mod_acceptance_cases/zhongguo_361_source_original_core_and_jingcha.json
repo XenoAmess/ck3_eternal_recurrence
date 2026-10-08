@@ -1,0 +1,112 @@
+{
+  "case_id": "source-original-core-and-jingcha",
+  "acceptance_scope": "source_original_398_marker_core_and_actual_361_UI",
+  "fixture_emitter": {
+    "path": "tools/prepare_zhongguo_1_20_fixture.py",
+    "arguments": [
+      "--repo",
+      "{repo}",
+      "--output",
+      "{output}"
+    ],
+    "fixture_subdir": "",
+    "receipt_suffix": ".prepare.json"
+  },
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "allow_actor_change": true,
+  "maximum_natural_days": 14,
+  "failure_prefixes": [
+    "ZGA:",
+    "ZGA120:"
+  ],
+  "must_run_after_products": [
+    "xqol",
+    "reclaim-motherland",
+    "tributary-expansion-directives"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-calibration-publication",
+      "requirements": [
+        "actual_zg361_10_instance_and_direct_publication_a",
+        "original_23_person_7_14_2_and_bottom_two_readback"
+      ],
+      "when_markers": [
+        "ZGA120: TEST READY production_calibration"
+      ]
+    },
+    {
+      "id": "actual-scoreboard-ui",
+      "requirements": [
+        "actual_scoreboard_open_tabs_rows_close",
+        "actual_scoreboard_acl_and_geometry",
+        "manual_review_and_same_year_decision_surface"
+      ],
+      "when_markers": [
+        "ZGA120: TEST PASS scripted_review_scoreboard_verified"
+      ]
+    },
+    {
+      "id": "actual-jingcha-ui",
+      "requirements": [
+        "actual_zg361_40_instance_and_a",
+        "actual_free_activity_planner_and_cost",
+        "actual_host_action_and_completion_or_original_refusal_branch",
+        "no_dispatch_marker_substituted_for_actual_activity_outcome"
+      ],
+      "at_day": 12
+    }
+  ],
+  "source_contracts": [
+    "tools/prepare_zhongguo_1_20_fixture.py",
+    "docs/ck3-1.20.0.2-zhongguo-engine-fixture.md",
+    "mod_zhongguo_style/docs/release-checklist.md"
+  ],
+  "uncovered_product_business": [
+    "original D+90 personal-result/promo observers are not mounted by this core entry; do not claim them",
+    "named .4 widget provider qualification cannot be inferred from generic map/event or G2"
+  ],
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "zhongguo-361",
+  "required_startup": [],
+  "forbidden_startup": [
+    "ZGA: TEST FAIL",
+    "ZGA120: TEST FAIL"
+  ],
+  "source_catalogue": {
+    "directory": "mod_zhongguo_style",
+    "builder": "tools/build_mod_zhongguo_style_release.py",
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}",
+      "--workshop-item-id",
+      "3792585972"
+    ],
+    "workshop_item_id": "3792585972"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Only actual selected-bookmark government/tier/independence may fill null fields; common validator/readback owns admission",
+  "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim",
+  "frontend_rules": [
+    {
+      "rule_key": "zg361_enabled",
+      "desired_setting_key": "zg361_on"
+    },
+    {
+      "rule_key": "zg361_frequency",
+      "desired_setting_key": "zg361_freq_yearly"
+    },
+    {
+      "rule_key": "zg361_bottom_ratio",
+      "desired_setting_key": "zg361_ratio_strict"
+    }
+  ],
+  "frontend_rules_sources": [
+    "mod_zhongguo_style/common/game_rules/zg361_game_rules.txt"
+  ]
+}

@@ -8,6 +8,7 @@ import re
 
 from ..ck3_runtime_diagnostics import MAX_LITERAL_CHARS, MAX_LOG_LITERALS
 from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
+from .campaign_root_context_contract import _TIER_KEYS
 
 ROBERT_KEY = "bookmark_rags_to_riches_duke_robert"
 EXE_SHA256 = "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
@@ -104,8 +105,8 @@ def validate_fixture_start_policy(value: object) -> dict[str, object]:
     post = value["post_start"]
     if not isinstance(post, dict) or set(post) != {"government_key", "primary_title_tier_key", "independent"} or (
             post["government_key"] not in {"feudal_government", "celestial_government",
-                                                  "administrative_government", "meritocratic_government"}) or (
-            post["primary_title_tier_key"] not in {"empire", "hegemony"}) or post["independent"] is not True:
+                                                  "administrative_government", "meritocratic_government", "steppe_admin_government"}) or (
+            post["primary_title_tier_key"] not in _TIER_KEYS.values()) or type(post["independent"]) is not bool:
         raise ValueError("fixture policy requires explicit delivered government/tier/independence predicates")
     markers = []
     for name in ("required_log_markers", "forbidden_log_markers"):
@@ -188,11 +189,15 @@ def fixture_business_context_binding(snapshot: object, root: object, policy: dic
     government, title = root.get("government"), root.get("primary_title")
     wanted = policy["post_start"]
     if not isinstance(government, dict) or government.get("key") != wanted["government_key"] or (
-            not isinstance(title, dict) or title.get("tier_key") != wanted["primary_title_tier_key"]) or root.get("independent") is not True:
+            not isinstance(title, dict) or title.get("tier_key") != wanted["primary_title_tier_key"]) or (
+            type(root.get("independent")) is not bool or root["independent"] is not wanted["independent"]):
         return None
-    if type(title.get("title_id")) is not int or title["title_id"] < 1 or title.get("tier_raw") != {
-            "empire": 5, "hegemony": 6}[wanted["primary_title_tier_key"]] or root.get("top_liege_character_id") != actor or (
-            root.get("immediate_liege_character_id") is not None):
+    immediate_liege, top_liege = root.get("immediate_liege_character_id"), root.get("top_liege_character_id")
+    lieges_consistent = (top_liege == actor and immediate_liege is None) if wanted["independent"] else (
+        type(immediate_liege) is int and immediate_liege > 0 and immediate_liege != actor
+        and type(top_liege) is int and top_liege > 0 and top_liege != actor)
+    if (type(title.get("title_id")) is not int or title["title_id"] < 1 or type(title.get("tier_raw")) is not int
+            or _TIER_KEYS.get(title["tier_raw"]) != wanted["primary_title_tier_key"] or not lieges_consistent):
         raise ValueError("fixture actual primary-title/tier/liege identities are inconsistent")
     heartbeat = diagnostics.get("last_heartbeat")
     mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None

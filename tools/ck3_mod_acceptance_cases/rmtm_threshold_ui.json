@@ -1,0 +1,45 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "reclaim-motherland",
+  "natural_game_day_limit": 14,
+  "fixture_recent_independence_override_days": 10,
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "RQA: TEST PASS exact_build_song_emperor",
+    "RQA: TEST PASS switched_to_song_emperor"
+  ],
+  "forbidden_startup": [
+    "RQA: TEST FAIL",
+    "RQA120: TEST FAIL"
+  ],
+  "case": "threshold_ui",
+  "required_exact_count": 1,
+  "required_markers": [
+    "RQAUI: TEST PASS china_control_reset",
+    "RQAUI: TEST PASS fifty_percent_below_claim_threshold",
+    "RQAUI: TEST READY actual_restoration_50_ui",
+    "RQAUI: TEST PASS original_fifty_one_percent_threshold_reached",
+    "RQAUI: TEST PASS restoration_decision_ready",
+    "RQAUI: TEST READY actual_restoration_51_ui",
+    "RQAUI: TEST PASS actual_production_restoration_effect_observed",
+    "RQAUI: TEST DONE threshold_ui"
+  ],
+  "forbidden_markers": [
+    "RQA: TEST FAIL",
+    "RQA: PROBE FAIL",
+    "RQA120: TEST FAIL",
+    "RQAUI: TEST FAIL"
+  ],
+  "preserve_actual_D3_physical_AND": true,
+  "original_fixture_decisions": [
+    "rqaui_prepare_fifty_decision",
+    "rqaui_prepare_fiftyone_decision",
+    "rqaui_verify_actual_restoration_decision"
+  ],
+  "original_real_production_action": "actual restoration decision confirmation; fixture never executes production restoration",
+  "independent_cell_no_core36_or_death_credit": true
+}

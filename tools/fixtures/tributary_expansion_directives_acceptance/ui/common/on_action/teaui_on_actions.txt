@@ -1,0 +1,9 @@
+﻿on_game_start_after_lobby = {
+    on_actions = { teaui_start }
+}
+teaui_start = {
+    effect = {
+        debug_log = "TEAUI: TEST BEGIN ui_context_only"
+        random_player = { trigger_event = { id = teaui.1 } }
+    }
+}

@@ -352,6 +352,7 @@ from .title_map_navigation_contract import (
     CENTER_MAP_ON_LANDED_TITLE_V1_CAPABILITY,
     CENTER_MAP_ON_LANDED_TITLE_V1_STEP,
     normalize_title_map_navigation_v1_binding,
+    managed_campaign_title_map_navigation_v1_binding,
     normalize_title_map_navigation_v1_result,
     validate_landed_title_key,
 )
@@ -15026,6 +15027,8 @@ def _title_map_navigation_binding(
 ) -> dict[str, object]:
     if not isinstance(snapshot, dict):
         raise ValueError("snapshot must be an object")
+    if snapshot.get("episode_projection") == "native_campaign":
+        return managed_campaign_title_map_navigation_v1_binding(snapshot)
     diagnostics = snapshot.get("diagnostics")
     connection_generation = (
         diagnostics.get("connection_generation")
