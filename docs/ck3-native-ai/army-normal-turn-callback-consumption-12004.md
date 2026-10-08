@@ -82,3 +82,43 @@ R77 facts supplied by Root are historical only: war `100663329`, targets
 `controllable=false`. They establish no current stock, loss, or R79 revision.
 R79 full paused Snapshot is not yet proven. No live loss, arrival, battle,
 future frame, gameplay action, or ordinary-loop completion is credited here.
+
+## Root qualification: 2026-10-09 / W41
+
+Root ran the sole new connected consumer. FIRST02 is **GREEN**: CLI wall
+`5.0426864 s`, unittest `4.585 s`. It reused the qualified Native31
+`arrival_distinct_province` whole result through registered MCP, the real
+Service and NativeHeadless Driver. Both `ck3_execute_step` and
+`ck3_query_army_strengths` preserved the original native business body,
+computed risk before effects once, and returned identical callback lists.
+Each route made one fixture transport query; the native producer was not
+rerun. The hello, paused transport frame and request correlation remain
+synthetic context, not a new live paused observation.
+
+The actual retained inputs remain partial on both routes: risk is `partial`,
+`ready=false`, missing `native_unit_in_combat`; effects are `unavailable`,
+`ready=false`, missing `conditional_current_callback_supply_budget`. The
+GREEN result proves the connection and preservation of those semantics. It
+does not close those missing inputs or credit actual losses, a future frame,
+full daily effects, or full monthly effects. Readiness is **static-ready**;
+`full_monthly_ready=false`, no new native capability and no policy change.
+
+FIRST01 remains **harness RED**: CLI `7.095 s`, unittest `6.671 s`, exit `1`,
+`KeyError: army_strengths` at the fixture's public Snapshot cache lookup.
+The `native_campaign` projection intentionally returns the semantic frame
+before one-life public cache publication. This was a fixture assumption,
+not a production cache failure. Fixture-only repair
+`e022c6f0243e48ceb82a4313e7fe89b379e025f0` uses the existing validated Driver
+cache accessor, checks raw Driver rows and frame bindings, and saves the
+registered and delivered responses before later assertions. Production
+source did not change for the retry. Root adoption pins are
+`424ccf26b3b02ceb0e43b47af85a351e18fa0747` and
+`dac47ba428d524ff201c7aeff295c58243cfa820`.
+
+External receipts are retained at:
+
+- `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/army-war-normal-turn/first01/consumer/COMPOUND-RECEIPT.json`
+- `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/army-war-normal-turn/first02/consumer/COMPOUND-RECEIPT.json`
+
+This qualification append is documentation only. No test, native producer,
+build, SDK query, game operation, or hash was repeated by the document owner.
