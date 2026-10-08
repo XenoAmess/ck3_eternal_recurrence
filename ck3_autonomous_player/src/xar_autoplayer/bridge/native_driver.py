@@ -4554,7 +4554,9 @@ class NativeHeadlessGameplayDriver:
             "arrange_marriage_choices": arrange_marriage_choices,
             "arrange_marriage_query_sequence": arrange_marriage_query_sequence,
             "army_strengths": (
-                copy.deepcopy(army_strength_query["army_strengths"])
+                # The cache reader already detached these complete rows.
+                # Transfer its local list into this new semantic snapshot.
+                army_strength_query["army_strengths"]
                 if isinstance(army_strength_query, dict)
                 else []
             ),
