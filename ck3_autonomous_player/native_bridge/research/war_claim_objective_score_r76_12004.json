@@ -1,0 +1,146 @@
+{
+  "schema": "xar.war-claim-objective-source-request.v1",
+  "date": "2026-10-08",
+  "iso_week": "2026-W41",
+  "readiness": "research",
+  "actual_build": {
+    "game_version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_bytes": 101040248,
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "freeze_reused": true
+  },
+  "source_baselines": {
+    "actual_dll_source": {
+      "path": "Z:/gbs1-m7-formal4-stack30",
+      "commit": "4e06f9454ef9f0e8173d30d8259625d3396929b9"
+    },
+    "sdk_planner_source": {
+      "path": "Z:/gbs-m4-construction-cli-35dd",
+      "commit": "cc1e6a9e249ebeffdba1e6c910615041f090bf34"
+    }
+  },
+  "root_observation": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/008-r75-ooda-turn.json",
+    "json_path": "result.structured_content.result",
+    "war_id": 100663329,
+    "actor_character_id": 29829,
+    "primary_opponent_character_id": 31050,
+    "targeted_title_ids": [2132],
+    "root_supplied_objective_candidates": [2606, 2608],
+    "queried_snapshot_id": "native:2",
+    "queried_revision": 3,
+    "queried_native_revision": 2,
+    "queried_connection_generation": 1,
+    "queried_date_raw": 53288472,
+    "cb_identity": {"database_index": 11, "canonical_key": "claim_cb"},
+    "war_duration_days": 23,
+    "all_four_integer_components": 0,
+    "cb_allows_white_peace": true,
+    "native_white_peace_available": false,
+    "native_victory_available": false,
+    "native_surrender_available": true
+  },
+  "selected_missing_input": {
+    "proposed_block": "war_goal_control_v1",
+    "proposed_field": "attacker_controls_native_wargoal",
+    "native_symbol_name_known": false,
+    "actual_rva": null,
+    "abi": null,
+    "runtime_goal_set_known": false,
+    "runtime_threshold_known": false,
+    "stock_claim_threshold": "0.8",
+    "current_verdict": null,
+    "available_requires": "Source-closed native current goal condition returning a real bool in the same War/frame; projected capitals and broad territory occupation counters cannot substitute."
+  },
+  "cached_source_frontier": [
+    {
+      "id": "ticking_integer_getter",
+      "old_rva": "0x2C0EE70",
+      "actual_rva": "0x2C0EE50",
+      "byte_count": 841,
+      "detail": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/diplomacy-map/score-first01/war_score_ticking-DETAIL.json",
+      "complete_body_proof_reused": true,
+      "selected_actual_operands": [
+        {"body_offset": 54, "field": "War+0x78", "width": "byte", "role": "attacker cached contribution validity gate"},
+        {"body_offset": 59, "field": "War+0xD8", "width": "byte", "role": "defender cached contribution validity gate"},
+        {"body_offset": 86, "field": "War+0x40", "width": "signed64", "role": "attacker cached raw contribution"},
+        {"body_offset": 91, "field": "War+0xA0", "width": "signed64", "role": "defender cached raw contribution"}
+      ],
+      "does_not_close": ["native current goal-control condition", "goal-held clock", "goal collector", "loaded CB threshold"]
+    },
+    {
+      "id": "existing_occupation_collection",
+      "detail": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/war-score-membership/actual4-domain/war-map/supplement01/OccupationPackedGetter2C0DDB0-DETAIL.json",
+      "actual_rva": "0x2C0DD90",
+      "byte_count": 4275,
+      "use": "Reuse selected recorded territory/holding counter call frontier; not the CB wargoal denominator. Existing full-body proof retains two image-relative table operand deltas."
+    },
+    {
+      "id": "arrival_hostile",
+      "actual_rva": "0x2C09620",
+      "byte_count": 191,
+      "receipt": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/arrival-readonly-migration/HOSTILE-SOURCE-RECEIPT.json",
+      "body_reread": false,
+      "use": "Existing contact/arrival predicate; no claim goal semantics attributed."
+    }
+  ],
+  "minimum_source_requests": [
+    {
+      "id": "goal_control_entry_cache",
+      "priority": 1,
+      "request": "Reuse existing actual .4 CWar daily ticking/goal-held source receipt, or exact WarOverviewWindow.GetTickingWarScoreTooltip registered callback cache.",
+      "actual_rva": null,
+      "byte_count": null,
+      "capture_authorized_by_this_package": false
+    },
+    {
+      "id": "tooltip_registration_locator_if_no_cached_writer",
+      "priority": 2,
+      "literal": "GetTickingWarScoreTooltip",
+      "native_type": "WarOverviewWindow",
+      "actual_literal_rva": null,
+      "actual_registration_rva": null,
+      "actual_callback_rva": null,
+      "byte_count": null,
+      "required_before_capture": "Exact .4 literal/registration pointer and metadata-declared finite physical spans; historical .1 literal addresses must not be shifted."
+    },
+    {
+      "id": "one_goal_control_body_after_locator",
+      "priority": 3,
+      "actual_rva": null,
+      "byte_count": null,
+      "required_proof": ["complete declared logical body or explicitly bounded fragments", "actual CWar receiver and argument ABI", "current CB goal set and qualification", "actual native verdict/comparison", "title2132 relationship to2606/2608"],
+      "callee_expansion": "Only a direct goal predicate/collector dependency necessary for the current claim verdict; no formatter/allocator or unrelated score family expansion."
+    }
+  ],
+  "existing_consumer_hooks": {
+    "native_dto": "game_contract.hpp::WarTerminationOptionsSnapshot",
+    "native_reader": "ck3_12002_diplomacy.cpp::ReadWarTerminationOptions using actual4 DiplomacyBindings",
+    "native_serializer": "bridge.cpp::AppendWarTerminationOptions and WarTerminationOptionsResultFrame",
+    "sdk_normalizer": "bridge/war_contract.py::normalize_war_termination_options",
+    "registered_mcp": "ck3_query_war_termination_options",
+    "planner_candidates": ["strategy.py::_attacker_siege_objective_province_ids", "strategy.py::_progress_siege_objectives", "strategy.py::_player_occupied_objective_ids", "strategy.py::_rank_exact_objectives"],
+    "planner_changes_made": false
+  },
+  "first_requirements_not_run": [
+    "Projected capital occupied while native goal verdict false",
+    "Native goal verdict true while published ticking integer zero",
+    "Unavailable source distinct from available false",
+    "Retain native extra holding identity/order if supplied by the predicate collection",
+    "Root actual paused current-War observation after deployment"
+  ],
+  "scope_exclusions": ["membership309", "siege stored leader/eligibility duplicate", "whole score forecast", "goal-held clock expansion", "terminal action", "activeRunner modifications"],
+  "cost": {
+    "new_exe_bytes": 0,
+    "new_exe_read_calls": 0,
+    "new_mapping_runs": 0,
+    "hash_operations": 0,
+    "sdk_game_native_calls": 0,
+    "builds_imports_tests": 0,
+    "cached_ticking_complete_body_bytes_reused": 841,
+    "cached_occupation_selected_call_frontier_body_size": 4275,
+    "hostile_receipt_only_existing_body_size": 191,
+    "counts_are_new_capture_credit": false
+  }
+}
