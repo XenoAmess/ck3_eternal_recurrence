@@ -134,3 +134,30 @@ directory and `PYTHONPATH` pointing to the frozen source's
 source package; Root owns their execution. Self-source rows retain the original
 row's readiness, including an unready self observation, rather than manufacturing
 a vote or rejecting the original partial representation.
+
+## Native45 first qualification, 2026-10-09
+
+Root adopted implementation `a3fe001dff2ad385a56e14fd553618a4fcaca7c3` as the
+compiled full source `4606d5590213c87bb874c6304ffc01b6cb5ae69b`. Its 432 compiler
+inputs passed, the five new original whole packets passed their sole native
+FIRST in 0.260043 seconds, and the one registered MCP compound passed its sole
+consumer FIRST in 6.6081474 seconds. The resulting DLL is 13,393,920 bytes,
+SHA-256 `b7c39d0aa2f62f8a571bf750d7a56a6efd68f04ab00d6c663ae4178b22ad4190`.
+These pins are reused from Root's formal qualification; this documentation
+update performs no build, test, native run, or hash. The earlier authored
+NOTRUN record above remains the source-delivery state before Root's FIRST.
+
+The additive external qualification and daily/weekly fields are at
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/person-conditional-opinion/COMPILED-REGISTERED-QUALIFICATION.json`
+and `COMPILED-REGISTERED-OCT9-W41-FIELDS.json`. This subsequent documentation
+commit is separate from the compiled source pin and from a future public
+integration pin.
+
+Readiness is **static-ready** for this bounded current pair-opinion production
+path. The actual pair-reader overload and same-query serializer/registered-MCP
+route were exercised against the five new whole fixtures; the fake-memory pair
+getter is not a live execution of the game function. At qualification the game
+still uses Native42 and Native45 is not deployed. Full Person, Entry, fresh-model
+association, future weights and live loop remain incomplete. A demanded dynamic
+`9D7060` row still retains its exact missing evaluator input while ready later
+rows remain independently consumable.
