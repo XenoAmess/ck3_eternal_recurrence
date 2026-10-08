@@ -10,6 +10,10 @@ from __future__ import annotations
 import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
+from .current_first_heir_reproductive_inputs_v1 import (
+    LEAF as REPRODUCTIVE_INPUTS_LEAF,
+    validate_current_first_heir_reproductive_inputs_v1,
+)
 from .current_first_heir_descendants_v1 import (
     LEAF as DESCENDANTS_LEAF, SUMMARY as DESCENDANTS_SUMMARY,
     summarize_current_first_heir_descendants_v1,
@@ -293,6 +297,11 @@ def query_current_first_heir_relationship_private_v1(
                 or result.get("primary_spouse_character_id") is not None
                 or result.get("spouse_character_ids") is not None):
             raise BridgeUnavailableError("unavailable heir relationship is malformed")
+        if REPRODUCTIVE_INPUTS_LEAF in result:
+            base[REPRODUCTIVE_INPUTS_LEAF] = validate_current_first_heir_reproductive_inputs_v1(
+                result[REPRODUCTIVE_INPUTS_LEAF], actor=played_id, heir=heir_id,
+                native_revision=expected_native_revision, date_raw=before["date_raw"],
+                relation=result)
         return {**base, "status": "unavailable", "unavailable_reason": reason,
                 "betrothal_actionability": _current_pair_actionability(
                     result.get("betrothal_actionability"), actor=played_id,
@@ -316,6 +325,11 @@ def query_current_first_heir_relationship_private_v1(
             (betrothed == primary_spouse or betrothed in spouses))
     ):
         raise BridgeUnavailableError("available heir relationship is malformed")
+    if REPRODUCTIVE_INPUTS_LEAF in result:
+        base[REPRODUCTIVE_INPUTS_LEAF] = validate_current_first_heir_reproductive_inputs_v1(
+            result[REPRODUCTIVE_INPUTS_LEAF], actor=played_id, heir=heir_id,
+            native_revision=expected_native_revision, date_raw=before["date_raw"],
+            relation=result)
     return {**base, "status": "available", "unavailable_reason": None,
             "bilateral_verified": True,
             "betrothed_character_id": betrothed,

@@ -117,6 +117,7 @@
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
+#include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "active_scheme_sway_private_transport_v1.hpp"
@@ -9573,6 +9574,9 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
       if (query.observe_descendants12004) {
         query.read.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
             query.family12002, query.heir_character_id);
+        query.read.reproductive_inputs =
+            xar::ck3_12004::ReadCurrentFirstHeirReproductiveInputsV1(
+                query.family12002, query.read);
       }
     }
     xar::game::Snapshot after{};

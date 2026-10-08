@@ -45,6 +45,60 @@ void AppendOptionalBoolean(std::string &json, const std::optional<bool> &value) 
   json += value.has_value() ? (*value ? "true" : "false") : "null";
 }
 
+std::string CurrentFirstHeirReproductiveInputsJsonV1(
+    const CurrentFirstHeirReproductiveInputsV1 &read,
+    std::uint64_t native_revision) {
+  std::string json = "{\"source\":\"native_current_heir_household_inputs\",\"status\":";
+  AppendJsonString(json, read.status);
+  json += ",\"unavailable_reason\":";
+  if (read.status == "available") json += "null";
+  else AppendJsonString(json, read.unavailable_reason);
+  json += ",\"native_revision\":" + std::to_string(native_revision);
+  json += ",\"played_character_id\":";
+  json += read.played_character_id > 0 ? std::to_string(read.played_character_id) : "null";
+  json += ",\"heir_character_id\":";
+  json += read.heir_character_id > 0 ? std::to_string(read.heir_character_id) : "null";
+  json += ",\"date_raw\":";
+  AppendOptionalNumber(json, read.date_raw);
+  json += ",\"fertility_raw_scale\":100000,\"rows\":[";
+  for (std::size_t index = 0; index < read.rows.size(); ++index) {
+    if (index != 0) json += ',';
+    const auto &row = read.rows[index];
+    json += "{\"character_id\":" + std::to_string(row.character_id);
+    json += ",\"roles\":[";
+    for (std::size_t role = 0; role < row.roles.size(); ++role) {
+      if (role != 0) json += ',';
+      AppendJsonString(json, row.roles[role]);
+    }
+    json += "],\"status\":";
+    AppendJsonString(json, row.available ? "available" : "unavailable");
+    json += ",\"unavailable_reason\":";
+    if (row.available) json += "null";
+    else AppendJsonString(json, row.unavailable_reason);
+    json += ",\"age_measure_raw\":";
+    AppendOptionalNumber(json, row.age_measure_raw);
+    json += ",\"sex_selector_raw\":";
+    AppendOptionalNumber(json, row.sex_selector_raw);
+    json += ",\"native_fertility\":";
+    if (!row.available) {
+      json += "null";
+    } else {
+      const auto &fertility = row.fertility;
+      json += "{\"source\":\"native_marriage_fertility_input\",\"extension_present\":";
+      json += fertility.extension_present ? "true" : "false";
+      json += ",\"native_gate_evaluated\":";
+      json += fertility.native_gate_evaluated ? "true" : "false";
+      json += ",\"native_gate_allows\":";
+      json += !fertility.native_gate_evaluated ? "null" :
+          fertility.native_gate_allows ? "true" : "false";
+      json += ",\"effective_raw\":" + std::to_string(fertility.effective_raw) + '}';
+    }
+    json += '}';
+  }
+  json += "]}";
+  return json;
+}
+
 void AppendDescendantLineage(
     std::string &json, const CurrentFirstHeirDescendantLineageV1 &lineage) {
   json += "{\"status\":";
@@ -323,6 +377,10 @@ std::string CurrentFirstHeirRelationshipResultJsonV1(
   if (read.descendants.has_value()) {
     result += ",\"current_first_heir_descendants_v1\":";
     result += CurrentFirstHeirDescendantsJsonV1(*read.descendants, native_revision);
+  }
+  if (read.reproductive_inputs.has_value()) {
+    result += ",\"current_first_heir_reproductive_inputs_v1\":";
+    result += CurrentFirstHeirReproductiveInputsJsonV1(*read.reproductive_inputs, native_revision);
   }
   result += "}}";
   return result;

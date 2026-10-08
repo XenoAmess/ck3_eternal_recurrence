@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_family.hpp"
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
+#include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 
 #include <array>
@@ -340,9 +341,111 @@ void Emit(const std::filesystem::path &directory, const Scene &scene) {
       std::move(wire), xar::game::Ck3_12004AdapterDescriptor());
   Write(directory / (std::string(scene.name) + ".json"), wire);
 }
+
+bool household_gate_allows = true;
+bool HouseholdFertilityGate(void *) { return household_gate_allows; }
+
+void EmitHousehold(const std::filesystem::path &directory,
+                   std::string_view name) {
+  Fixture fixture({"current-household", 0, true, true, true, false});
+  std::array<std::byte, 0x2E8> heir_extension{}, partner_extension{};
+  std::array<std::int32_t, 1> heir_spouses{kPartner}, partner_spouses{kHeir};
+  const bool partnered = name != "unpartnered";
+  if (partnered) {
+    Put(fixture.families[1].data(), 0x14, kPartner);
+    Put(fixture.families[2].data(), 0x14, kHeir);
+    Put(fixture.families[1].data(), 0x20, heir_spouses.data());
+    Put(fixture.families[2].data(), 0x20, partner_spouses.data());
+    for (const auto index : {1U, 2U}) {
+      Put(fixture.families[index].data(), 0x28, std::int32_t{1});
+      Put(fixture.families[index].data(), 0x2C, std::int32_t{1});
+    }
+  }
+  Put(fixture.characters[1].data(), 0x68, std::int16_t{32});
+  Put(fixture.characters[2].data(), 0x68, std::int16_t{29});
+  Put(fixture.characters[1].data(), 0x1B0, heir_extension.data());
+  Put(fixture.characters[2].data(), 0x1B0, partner_extension.data());
+  Put(heir_extension.data(), 0x2E0, std::int64_t{80'000});
+  const auto partner_raw = name == "signed-negative" ? std::int64_t{-2'500}
+                                                     : std::int64_t{60'000};
+  Put(partner_extension.data(), 0x2E0, partner_raw);
+  household_gate_allows = name != "gate-zero";
+  fixture.family.values.fertility_gate = name == "missing-gate"
+      ? nullptr : &HouseholdFertilityGate;
+  if (name == "extension-zero")
+    Put(fixture.characters[2].data(), 0x1B0, static_cast<void *>(nullptr));
+  if (name == "partner-value-unavailable")
+    Put(fixture.characters[2].data(), 0x1A1, std::uint8_t{2});
+  auto relation = ReadCurrentFirstHeirRelationshipV1(fixture.family, kHeir);
+  Check(relation.failure == xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none,
+        "new household keeps the actual reciprocal current relation");
+  relation.betrothal_actionability = ReadCurrentFirstHeirBetrothalActionabilityV1(
+      fixture.family, relation);
+  relation.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
+      fixture.family, kHeir);
+  relation.reproductive_inputs = xar::ck3_12004::ReadCurrentFirstHeirReproductiveInputsV1(
+      fixture.family, relation);
+  auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
+      name, 7, kHeir, relation);
+  wire = xar::game::Render12004BuildIdentity(
+      std::move(wire), xar::game::Ck3_12004AdapterDescriptor());
+  // Preserve the first emitted production envelope before scene assertions.
+  Write(directory / (std::string(name) + ".json"), wire);
+  const auto &household = *relation.reproductive_inputs;
+  Check(household.played_character_id == kActor && household.heir_character_id == kHeir &&
+            household.date_raw == 53220000 && household.rows.size() == (partnered ? 2U : 1U),
+        "only the current heir and distinct observed partner are captured");
+  Check(household.rows[0].character_id == kHeir &&
+            household.rows[0].roles == std::vector<std::string_view>{"heir"},
+        "current household starts with the current heir");
+  if (partnered)
+    Check(household.rows[1].character_id == kPartner &&
+              household.rows[1].roles == std::vector<std::string_view>{"primary_spouse", "spouse"},
+          "primary and spouse-array membership are one observed receiver");
+  if (name == "missing-gate") {
+    Check(household.status == "partial" && !household.rows[0].available &&
+              !household.rows[1].available && !household.rows[0].age_measure_raw.has_value(),
+          "missing native gate remains unavailable rather than effective zero");
+  } else {
+    Check(household.rows[0].available && household.rows[0].age_measure_raw == 32 &&
+              household.rows[0].sex_selector_raw == 0 &&
+              household.rows[0].fertility.effective_raw == (household_gate_allows ? 80'000 : 0),
+          "current heir preserves raw age and qualified effective input");
+    if (name == "partner-value-unavailable") {
+      Check(household.status == "partial" && !household.rows[1].available &&
+                !household.rows[1].age_measure_raw.has_value(),
+            "one unavailable partner does not erase the known heir input");
+    } else {
+      Check(household.status == "available", "all demanded current values are observed");
+      if (partnered) {
+        const auto &partner = household.rows[1];
+        const bool extension_present = name != "extension-zero";
+        Check(partner.available && partner.age_measure_raw == 29 && partner.sex_selector_raw == 1 &&
+                  partner.fertility.extension_present == extension_present &&
+                  partner.fertility.native_gate_evaluated == extension_present &&
+                  partner.fertility.effective_raw ==
+                      (extension_present && household_gate_allows ? partner_raw : 0),
+              "known native zero and negative signed inputs remain distinct");
+      }
+    }
+  }
+  Check(relation.descendants->roster_complete && relation.descendants->native_child_count_raw == 0 &&
+            relation.betrothal_actionability.unavailable_reason == "current_heir_has_no_betrothal" &&
+            constructs == 0 && destroys == 0,
+        "current child baseline and unused betrothal context are unchanged");
+}
 } // namespace
 int main(int argc, char **argv) {
   try {
+    if (argc == 3 && std::string_view(argv[1]) == "--reproductive-inputs-wire-dir") {
+      const std::filesystem::path directory(argv[2]);
+      std::filesystem::create_directories(directory);
+      for (const std::string_view name : {"married-pair", "gate-zero", "extension-zero",
+               "signed-negative", "missing-gate", "partner-value-unavailable", "unpartnered"})
+        EmitHousehold(directory, name);
+      std::cout << "PASS actual4 current household: seven new whole wires\n";
+      return 0;
+    }
     Check(argc == 2, "supply exactly one new whole-wire directory");
     const std::filesystem::path directory(argv[1]);
     std::filesystem::create_directories(directory);
