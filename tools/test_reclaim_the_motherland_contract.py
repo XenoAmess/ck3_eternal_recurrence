@@ -576,7 +576,28 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertTrue(
             has_assignment(migration, "has_title_law", "single_heir_succession_law")
         )
-        self.assertEqual(text.count("add_title_law = single_heir_succession_law"), 2)
+        finalizer = direct_block(parsed, "rmtm_finalize_restoration_hegemony_effect")
+        primary_keys = [entry.key for entry in finalizer.entries]
+        self.assertEqual(
+            scalar_values(finalizer, "set_primary_title_to", recursive=False),
+            ["scope:rmtm_restoration_hegemony_title"],
+        )
+        self.assertLess(
+            primary_keys.index("set_primary_title_to"),
+            primary_keys.index("scope:rmtm_restoration_hegemony_title"),
+        )
+        post_primary_title = direct_block(finalizer, "scope:rmtm_restoration_hegemony_title")
+        repair = direct_block(post_primary_title, "if")
+        missing_law = direct_block(direct_block(repair, "limit"), "NOT")
+        self.assertEqual(
+            scalar_values(missing_law, "has_title_law", recursive=False),
+            ["single_heir_succession_law"],
+        )
+        self.assertEqual(
+            scalar_values(repair, "add_title_law", recursive=False),
+            ["single_heir_succession_law"],
+        )
+        self.assertEqual(text.count("add_title_law = single_heir_succession_law"), 3)
 
         on_action_text, on_actions = read_script(ON_ACTIONS)
         start = direct_block(on_actions, "on_game_start_after_lobby")
