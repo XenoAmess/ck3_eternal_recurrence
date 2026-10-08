@@ -1,10 +1,18 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-08 13:34:45：compile口径／mixed lineage、consumer-only修复与正式closure
+
+Root纠正原63compile口径为 **59production＋4fixture**，不是63production；报告相应历史短语已改，原ADL／AV／hashcase／shape／nullable失败artifact不删。Runtime32最终有效24新Native＋4sole registered GREEN，不等于重跑所有24：Holy6/M6 5本batch首GREEN0repeat，targetconsumer03只6178真实code-object coverage harness修复、3Native复用；replen03十Native与qualified1dc/unchangedPythonconsumer必要资格GREEN，其sparsefixturetree无Python exit2/0case HarnessRED保留。最后replen fixture17780只补Knownfalse普通场景，不改变production nullable default。
+
+[Canonical32](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix32/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)720owners＝717old＋3new明确 **all_cpp_atnewheadfalse／mixedlineage**；nativeproduction1dc2abf0d6d0342b12f634bd27cee70c4331e146和R77Runner SDKfreeze a59b2df4a2b3ab6a951bfdc4f12845faf27439d7分列，最新RootHEAD不能冒全对象physical编译pin。04必要4compile2prod2fixture与最后1fixture/link必要retry各记账、不重selector。
+
+R76 [正式ownedclosure](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/r76-owned-close-for-runtime32/ROOT-R76-NORMAL-OWNED-CLOSURE.json)实际05:00:35.716Z tree_gone/cleanup_proven/oktrue，**Gameexit1是managed normalstop**，SDK正常exit／11流freeze分别复用；当前closure不pending，13:01旧段代表当时尚未收到proof。R77只有prepare尚无新Game/query，Familyordinarysuccessionhandoff offlineFIRST02 GREEN也不替代naturalsuccession。这里只消费Root新结论，未额外进程核验或测试。
+
 ## 2026-10-08 13:01:34：SDKexit／owned Gameclosure与模块FIRST分别记账
 
 R76normalSDK正常exit／PID137492gone、old10copyfreezeGREEN＋releaseopaque第11stream preserved，不需要再hashSave/Driver。官方normalstopControl虽返回job76f7…，Root尚未给ownedGamecleanup结论；**SDKexit不证明Gameexit**，opaqueledger冻结也不证明release/custody material。当前只记录pending，等待真实closure字段，不追加进程核验。
 
-Runtime32全63productioncompile/archiveDLL及修后2linksGREEN，但两Army FIRST仍RED。TargetAV实因Unit+38的路线数据是 **pointer-array→routeinfo**、fixture误按DWORD；必须按实际source角色修该fixture，不能因名字像route而替换类型。Replenbinder另因 **lowercaseSHA与canonicaluppercaseSHA**比较拒绝；这是本次真实格式不一致故障，最小修复中，不能借hash字符串大小写宣称不同build或写整批通过。已GREEN Holy6native／sole与M6native5／consumer02不重跑；M6consumer01 fullpacketshape KeyError是fixture shape HarnessRED，d9d6只修fullshape后5cases87checks5readonlycalls GREEN，原失败保留。
+Runtime3259production＋4fixture共63compile/archiveDLL及修后2linksGREEN，但两Army FIRST仍RED。TargetAV实因Unit+38的路线数据是 **pointer-array→routeinfo**、fixture误按DWORD；必须按实际source角色修该fixture，不能因名字像route而替换类型。Replenbinder另因 **lowercaseSHA与canonicaluppercaseSHA**比较拒绝；这是本次真实格式不一致故障，最小修复中，不能借hash字符串大小写宣称不同build或写整批通过。已GREEN Holy6native／sole与M6native5／consumer02不重跑；M6consumer01 fullpacketshape KeyError是fixture shape HarnessRED，d9d6只修fullshape后5cases87checks5readonlycalls GREEN，原失败保留。
 
 本知识只复用Root实际故障与结果，不新设计门禁、不测试或读进程。两个Army失败未闭时Runtime32不授fullready/deployed，当前saved6009/H9696/G2/NW2/M4/natural保持。
 

@@ -2,11 +2,17 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## R76 frozen streams and Runtime32 Army FIRST REDs at13:01:34 CST
+## Runtime32 final offline/canonical GREEN and R76 closure at13:34:45 CST
+
+Actual **2026-10-08T13:34:45+08:00**. [Runtime32 four-domain combined](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-first02/ROOT-FOUR-DOMAIN-QUALIFICATION-RESULTS.json)24effective newNative/4sole registered compounds GREEN. Targetconsumer-only03 2.952s/coverage6178 harness repair reuses3Native; replen03 tenNative.25125s + unchangedPythonconsumer4.166s qualified1dc, missingPython sparse-treeexit2/0case HarnessRED retained. Holy6/M6 5 originalGREEN0repeat. Initial63compile=59production+4fixture (corrected),04 necessary2prod2fixture14.2725s/57reuse, finalfixtureonly17780 1CPP/link9.6085s; preserve every AV/hashcase/nullable/shape RED.
+
+Canonical32actual05:27:26.927784Z archiveGREEN.270764s/native1dc2abf0d6d0342b12f634bd27cee70c4331e146/DLL13,118,976B/SHA89997bf352cfa2ad3a4ae73d72e281c49c6a9fde5fe501920491427c090126df,720owners717old+3new, mixedlineage/all_cpp_atnewheadfalse. R76 ownedclosure05:00:35.716Z treegone/cleanup_proven/oktrue, managednormalstop Gameexit1; elevenfrozenstreams/SDKexit retained, currentcleanup notpending. FamilyhandoffFIRST02GREEN4.4433477s/initialHarnessRED preserved, no naturalsuccession. Rootpublished3b1489c3/knowledgea59 unpushed; R77prep91582 SDKfreeze a59fullpin separatedfromnative1dc, noGame/newquery. Siege/pregboolSource33 only, not32restore blocker. H9696/date53288544/saved6009/G2 5/8/NW2 2/4/M4false/natural0 unchanged; future stock/movement credit not borrowed from offline success.
+
+## Historical R76 frozen streams and Runtime32 Army FIRST REDs at13:01:34 CST
 
 Actual **2026-10-08T13:01:34+08:00**. Published4e4c2017c1f0be878227e16584f3e98b71b8596f ordinaryFF. NormalR76SDK exited/PID137492gone; old10copyfreezeGREEN plus opaque release-ledgerstream11 retained, no Save/Driver rehash. NormalstopControl returnedjob76f7…, **ownedGame cleanup stillpending**, not Gameexit. H9696/date53288544/saved6009/G2 5/8/NW2 2/4/M4false/natural0 unchanged; priorCA2material retained/no newM6material.
 
-Runtime32 all63productioncompile/archiveDLL/two necessarylinks GREEN3.4998s; Holy6native.286/sole6.0245 GREEN, M6native5.256/consumer02 fivecases87checks5readonlycalls GREEN after fixture-onlyd9d6 fullshape fix, consumer01KeyError RED retained. ArmytargetAV stems from Unit+38 pointer-array→routeinfo read asDWORD; replenbinder lowercaseSHA vs canonicaluppercase rejects. TwoArmy FIRSTREDs remainunderrepair, full32notready/notGame deployed. No future supply/movement qualification borrowed from othermodules. Pregnancy144Btail only research/namedinstance, Root-only cleanup/new qualification next; report no tests/Game/artifact replay.
+Runtime32 59production+4fixture/all63compile/archiveDLL/two necessarylinks GREEN3.4998s; Holy6native.286/sole6.0245 GREEN, M6native5.256/consumer02 fivecases87checks5readonlycalls GREEN after fixture-onlyd9d6 fullshape fix, consumer01KeyError RED retained. ArmytargetAV stems from Unit+38 pointer-array→routeinfo read asDWORD; replenbinder lowercaseSHA vs canonicaluppercase rejects. TwoArmy FIRSTREDs remainunderrepair, full32notready/notGame deployed. No future supply/movement qualification borrowed from othermodules. Pregnancy144Btail only research/namedinstance, Root-only cleanup/new qualification next; report no tests/Game/artifact replay.
 
 ## Historical ongoing R76 saved6009 and Runtime32 partial compile at12:51:02 CST
 

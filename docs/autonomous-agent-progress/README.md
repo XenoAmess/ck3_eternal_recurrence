@@ -1,8 +1,12 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 13:01:34 CST：R76 SDK退出／11流freeze GREEN，Runtime32两Army FIRST仍RED
+### 2026-10-08 13:34:45 CST：Runtime32最终24 Native／4 sole GREEN，Canonical32归档，R76正式cleanup完成
 
-Rootactual普通FF发布 **4e4c2017c1f0be878227e16584f3e98b71b8596f**。R76 normal SDK exit成功／PID137492gone，old10＋releaseopaque新增流共11实际copy freeze GREEN，[十流freeze](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/normal-r76-h9696-saved6009-freeze01/ROOT-SAVED-TEN-STREAM-FREEZE.json)与release ledger单列；不rehash Save/Driver。Normal stopControl已返回job76f7…，**owned Game cleanup仍pending，未写exit**。Runtime32全63production compile／archiveDLL／修后2links GREEN；Holy6native＋sole GREEN，M6 5native＋consumer02五cases87checks5readonlycalls GREEN，consumer01 shape KeyError HarnessRED保留。TargetUnit+38 pointer-array→routeinfo误作DWORD导致AV及replen binder SHA大小写两Army FIRST RED最小修复中，**不授full32ready／deployed**；pregtail144B只是namedinstance研究。H9696/saved6009/G2 5/8/NW2 2/4/M4false/natural0保持，本batch待Root提交，详见[Oct8日报](daily/2026-10-08.md)。
+[最终四domain qualification](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-first02/ROOT-FOUR-DOMAIN-QUALIFICATION-RESULTS.json)有效24新Native＋4registered sole compounds全GREEN，旧RED／Holy-M6首GREEN保留不重跑。[Canonical32](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix32/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)05:27:26.927784Z archiveGREEN.270764s／720owners，native1dc2abf0、mixedlineage/all_cpp_atnewheadfalse；更正旧63compile为59prod＋4fixture。R76 05:00:35.716Z正式ownedclosure tree_gone/cleanup_proven/oktrue，managednormalstop Gameexit1，不再写cleanup pending；11流freeze／SDK正常exit复用。Family ordinarysuccession ledger handoff FIRST02 GREEN4.4433477s、非自然继承。Latestpublished3b1489c3…，a59b2df4 SDK freeze与native1dc分列，R77 prepare/session91582尚未Game／新query；Source33 Siege／pregbool d326仅source-only。H9696/saved6009/G2 5/8/NW2 2/4/M4false/natural0保持，详见[Oct8日报](daily/2026-10-08.md)，本batch待Root发布。
+
+### 历史2026-10-08 13:01:34 CST：R76 SDK退出／11流freeze GREEN，Runtime32两Army FIRST仍RED
+
+Rootactual普通FF发布 **4e4c2017c1f0be878227e16584f3e98b71b8596f**。R76 normal SDK exit成功／PID137492gone，old10＋releaseopaque新增流共11实际copy freeze GREEN，[十流freeze](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/normal-r76-h9696-saved6009-freeze01/ROOT-SAVED-TEN-STREAM-FREEZE.json)与release ledger单列；不rehash Save/Driver。Normal stopControl已返回job76f7…，**owned Game cleanup仍pending，未写exit**。Runtime3259production＋4fixture共63compile／archiveDLL／修后2links GREEN；Holy6native＋sole GREEN，M6 5native＋consumer02五cases87checks5readonlycalls GREEN，consumer01 shape KeyError HarnessRED保留。TargetUnit+38 pointer-array→routeinfo误作DWORD导致AV及replen binder SHA大小写两Army FIRST RED最小修复中，**不授full32ready／deployed**；pregtail144B只是namedinstance研究。H9696/saved6009/G2 5/8/NW2 2/4/M4false/natural0保持，本batch待Root提交，详见[Oct8日报](daily/2026-10-08.md)。
 
 ### 历史2026-10-08 12:51:02 CST：正常6turn批次结束，saved6009；Runtime32单CPP RED待修
 
