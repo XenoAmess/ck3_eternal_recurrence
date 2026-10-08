@@ -110,7 +110,7 @@ struct Fixture {
   }
 };
 
-bool Contains(void *side, std::int32_t id) {
+bool Contains(const void *side, std::int32_t id) {
   const auto &values = Get<Vector>(side, 8);
   for (std::int32_t index = 0; index < values.count; ++index)
     if (Get<std::int32_t>(values.data[index], 8) == id) return true;
