@@ -125,8 +125,10 @@ def has_pending_sway_following_turn(state_dir: Path) -> bool:
     resolved = read_sway_ledger(state_dir)["resolved"]
     if not isinstance(resolved, Mapping):
         return False
-    if resolved.get("next_turn_consumed") is not True:
-        return True
-    return any(isinstance(resolved.get(key), Mapping)
-               and resolved[key].get("next_turn_consumed") is not True
+    return any(
+        episode.get("next_turn_consumed") is not True
+        or any(isinstance(episode.get(key), Mapping)
+               and episode[key].get("next_turn_consumed") is not True
                for key in ("material_intervention", "terminal_intervention"))
+        for episode in [resolved, *resolved.get("previous_interventions", [])]
+    )

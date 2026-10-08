@@ -151,8 +151,44 @@ def _resolved(ledger: Mapping[str, object], pending: Mapping[str, object],
         "native_receipt": dict(receipt) if receipt is not None else None,
         "next_turn_consumed": False,
     }
+    previous = ledger["resolved"]
+    if isinstance(previous, Mapping):
+        history = list(previous.get("previous_interventions", []))
+        history.append({key: value for key, value in previous.items()
+                        if key != "previous_interventions"})
+        result["previous_interventions"] = history
+    if isinstance(pending.get("followup"), Mapping):
+        result["followup"] = dict(pending["followup"])
     _write(state_dir, {**ledger, "pending": None, "resolved": result})
     return result
+
+
+def _same_target_followup(resolved: Mapping[str, object],
+                          readback: Mapping[str, object]) -> dict[str, object]:
+    """Use the retained end and current named benefit for a new episode only."""
+    followup = {"previous_action_id": resolved["action_id"]}
+    if readback["matching_sway_active"] is True:
+        return {**followup, "decision": "retain_existing_sway"}
+    terminal = resolved.get("terminal_intervention")
+    if (not isinstance(terminal, Mapping)
+            or terminal.get("instance_terminal_outcome_observed") is not True):
+        return {**followup, "decision": "observe_tracked_instance_end"}
+    followup.update({
+        "scheme_instance_id": terminal["scheme_instance_id"],
+        "scheme_instance_generation": terminal["scheme_instance_generation"],
+        "terminal_cause_observed": terminal["terminal_cause_observed"],
+        "terminal_cause": terminal["terminal_cause"],
+    })
+    if readback["active_scheme_count"] != 0:
+        return {**followup, "decision": "defer_occupied_scheme_slot"}
+    if readback["target_opinion_of_actor"] > 50:
+        return {**followup, "decision": "finish_selected_relation"}
+    material = resolved.get("material_intervention")
+    if (not isinstance(material, Mapping)
+            or material.get("dedicated_benefit_observed") is not True
+            or material.get("source_date_raw") != readback["date_raw"]):
+        return {**followup, "decision": "observe_current_named_relation_material"}
+    return {**followup, "decision": "repeat_selected_target"}
 
 
 def consume_sway_private_once(driver: object, *, target_character_id: int,
@@ -178,12 +214,21 @@ def consume_sway_private_once(driver: object, *, target_character_id: int,
         return {"status": "pending_recovery", "pending": pending,
                 "postcondition_verified": False}
     resolved = ledger["resolved"]
+    followup = None
     if (isinstance(resolved, dict)
             and resolved.get("actor_character_id") == actor
             and resolved.get("target_character_id") == target_character_id):
-        return {"status": "already_applied", "resolved": resolved}
+        followup = _same_target_followup(resolved, readback)
+        if followup["decision"] != "repeat_selected_target":
+            return {"status": "already_applied", "resolved": resolved,
+                    "followup": followup}
+    elif isinstance(resolved, dict):
+        followup = {"decision": "retarget_selected_relation",
+                    "previous_action_id": resolved["action_id"]}
     if not should_submit_sway(snapshot, readback, target_character_id):
-        return {"status": "no_positive_opportunity", "readback": dict(readback)}
+        return {"status": "no_positive_opportunity", "readback": dict(readback),
+                **({"followup": {**followup, "decision": "native_start_unavailable"}}
+                   if followup is not None else {})}
 
     action_id = "sway-" + uuid.uuid4().hex
     pending = {
@@ -194,6 +239,7 @@ def consume_sway_private_once(driver: object, *, target_character_id: int,
         "pre_date_raw": readback["date_raw"],
         "pre_native_revision": readback["queried_native_revision"],
         "pre_target_opinion_of_actor": readback["target_opinion_of_actor"],
+        **({"followup": followup} if followup is not None else {}),
     }
     # Durable intent precedes the native call.  If the call times out or the
     # process dies, a later run only reads game state and never resubmits.
@@ -225,13 +271,32 @@ def consume_sway_private_once(driver: object, *, target_character_id: int,
 
 def consume_sway_following_turn(state_dir: Path,
                                 snapshot: Mapping[str, object]) -> dict[str, object] | None:
-    """Consume start, named material and exact-instance observations independently."""
-    from .sway_material_consumer import consume_sway_material_following_turn
-
+    """Consume current and prior episode observations after the ordinary turn."""
     ledger = read_sway_ledger(state_dir)
     resolved = ledger["resolved"]
     if not isinstance(resolved, dict):
         return None
+    current = _consume_episode_following_turn(resolved, snapshot)
+    previous = resolved.get("previous_interventions", [])
+    history = []
+    history_changed = False
+    for episode in previous:
+        consumed = _consume_episode_following_turn(episode, snapshot)
+        history.append(consumed if consumed is not None else episode)
+        history_changed = history_changed or consumed is not None
+    if current is None and not history_changed:
+        return None
+    resolved = dict(current if current is not None else resolved)
+    if previous:
+        resolved["previous_interventions"] = history
+    _write(state_dir, {**ledger, "resolved": resolved})
+    return resolved
+
+
+def _consume_episode_following_turn(resolved: Mapping[str, object],
+                                    snapshot: Mapping[str, object]):
+    from .sway_material_consumer import consume_sway_material_following_turn
+
     try:
         actor_id, _, _, _ = _identity(
             snapshot, resolved.get("target_character_id"))
@@ -260,5 +325,4 @@ def consume_sway_following_turn(state_dir: Path,
         resolved = {**resolved, "material_intervention": material}
     if terminal is not None:
         resolved = {**resolved, "terminal_intervention": terminal}
-    _write(state_dir, {**ledger, "resolved": resolved})
     return resolved
