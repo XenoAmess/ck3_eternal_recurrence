@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_campaign.hpp"
 
 #include <cstddef>
+#include <string>
 
 namespace xar::ck3_12004 {
 
@@ -14,7 +15,12 @@ inline constexpr std::size_t kCampaignRootCharacterLegitimacyDataOffset12004 =
 inline constexpr std::size_t kCampaignRootLegitimacyBalanceOffset12004 = 0x28;
 
 // Shared software contracts; all native bindings are constructed for actual4.
-using CampaignRootNativeEnvironmentV1 = ck3_12002::CampaignRootNativeEnvironmentV1;
+using NativeCampaignRootCouncilPositionLookup12004 =
+    const void *(*)(const void *, const std::string *);
+struct CampaignRootNativeEnvironmentV1 : ck3_12002::CampaignRootNativeEnvironmentV1 {
+  // Actual4 functional provider; the shared historical environment is unchanged.
+  NativeCampaignRootCouncilPositionLookup12004 council_position_lookup = nullptr;
+};
 using CampaignRootAccessV1 = ck3_12002::CampaignRootAccessV1;
 using CampaignRootContextRequestV1 = ck3_12002::CampaignRootContextRequestV1;
 

@@ -27,7 +27,7 @@ using ck3_12002::NonwarRealmProjection12002;
 using ck3_12002::HeldTitlePartitionFailure12002;
 
 namespace campaign_root_detail {
-bool ReadMetricsProjection(const CampaignRootNativeEnvironmentV1&,
+bool ReadMetricsProjection(const ck3_12002::CampaignRootNativeEnvironmentV1&,
     const CampaignRootAccessV1&, void*, NonwarMetricsProjection12002&,
     std::string_view&) noexcept;
 bool ReadRealmProjection(const CampaignRootNativeEnvironmentV1&,
@@ -268,6 +268,7 @@ bool EnvironmentIsExact(
       environment.domain_limit == expected.domain_limit &&
       environment.council_value_progress_current == expected.council_value_progress_current &&
       environment.council_value_progress_maximum == expected.council_value_progress_maximum &&
+      environment.council_position_lookup == expected.council_position_lookup &&
       environment.primary_title == expected.primary_title &&
       environment.title_province == expected.title_province &&
       environment.capital_province == expected.capital_province &&
@@ -1029,7 +1030,7 @@ namespace xar::ck3_12004::campaign_root_detail {
 // Caller has admitted actual4 and constructed an empty software Environment.
 // Capital/top-liege and realm fields are merged from the sibling's saved proof.
 void PopulateEnvironment(
-    ck3_12002::CampaignRootNativeEnvironmentV1 &environment,
+    CampaignRootNativeEnvironmentV1 &environment,
     std::uintptr_t base) noexcept {
   environment.module_base = base;
   environment.game_state_slot = reinterpret_cast<void **>(base + kGameStateSlotRva);
@@ -1066,6 +1067,9 @@ void PopulateEnvironment(
       reinterpret_cast<decltype(environment.council_value_progress_current)>(base + 0x31AB500);
   environment.council_value_progress_maximum =
       reinterpret_cast<decltype(environment.council_value_progress_maximum)>(base + 0x31AB820);
+
+  environment.council_position_lookup =
+      reinterpret_cast<NativeCampaignRootCouncilPositionLookup12004>(base + 0x2684EE0);
 
   // Typed actual4 Government resolver/key/flags and complete script-name body.
   environment.government_fallback_slot = reinterpret_cast<void **>(base + 0x5D1E2A8);
@@ -1223,23 +1227,315 @@ bool ReadMetricsProjection(
   return true;
 }
 
-// External parent fragment; insert in xar::ck3_12004::campaign_root_detail.
-// Current common provider preserves Council's precise optional unsupported state.
-// Returned PositionType raw CString key18 lacks an actual typed source witness.
-// No native object/key/memory is read by this branch. The full copied software
-// implementation is retained in ReadCouncilProjection-deferred-source.txt.
+// Actual4 typed core position lookup restores the deferred software projection.
+namespace council_projection {
+using CampaignRootAccessV1 = ck3_12002::CampaignRootAccessV1;
+using CampaignRootNativeEnvironmentV1 = xar::ck3_12004::CampaignRootNativeEnvironmentV1;
+
+constexpr std::size_t kTaskIdentity = 0x10;
+constexpr std::size_t kTaskType = 0x18;
+constexpr std::size_t kTaskProgress = 0x20;
+constexpr std::size_t kTaskFrozen = 0x39;
+constexpr std::size_t kTaskScopes = 0x40;
+constexpr std::size_t kTaskPositionType = 0x40;
+constexpr std::size_t kTaskKind = 0x48;
+constexpr std::size_t kTaskProgressKind = 0x54;
+constexpr std::int64_t kScale = 100'000;
+constexpr std::int64_t kPercentageMaximum = 10'000'000;
+constexpr std::array<std::string_view, 5> kCoreKeys{
+    "councillor_chancellor", "councillor_steward", "councillor_marshal",
+    "councillor_spymaster", "councillor_court_chaplain"};
+
+bool ReadBytes(const CampaignRootAccessV1 &access, const void *address,
+               void *output, std::size_t size) noexcept {
+  if (address == nullptr || output == nullptr || size == 0) return false;
+  if (access.read_memory != nullptr)
+    return access.read_memory(access.context, address, output, size);
+#if defined(_MSC_VER)
+  __try {
+    std::memcpy(output, address, size);
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#else
+  std::memcpy(output, address, size);
+  return true;
+#endif
+}
+
+bool Address(const void *base, std::size_t offset,
+             const void *&output) noexcept {
+  const auto value = reinterpret_cast<std::uintptr_t>(base);
+  if (base == nullptr || offset > (std::numeric_limits<std::uintptr_t>::max)() - value)
+    return false;
+  output = reinterpret_cast<const void *>(value + offset);
+  return true;
+}
+
+template <typename T>
+bool Read(const CampaignRootAccessV1 &access, const void *base,
+          std::size_t offset, T &output) noexcept {
+  const void *address = nullptr;
+  return Address(base, offset, address) &&
+         ReadBytes(access, address, &output, sizeof(output));
+}
+
+bool ReadKey(const CampaignRootAccessV1 &access, const void *object,
+             std::string &output) noexcept {
+  const void *key = nullptr;
+  if (!Address(object, 0x18, key)) return false;
+  if (access.read_string != nullptr)
+    return access.read_string(access.context, key, output) &&
+           !output.empty() && output.size() <= 1'024;
+  std::size_t size = 0, capacity = 0;
+  if (!Read(access, key, 0x10, size) || !Read(access, key, 0x18, capacity) ||
+      size == 0 || size > capacity || size > 1'024) return false;
+  const void *bytes = key;
+  if (capacity > 0x0F && (!Read(access, key, 0, bytes) || bytes == nullptr))
+    return false;
+  try { output.resize(size); } catch (...) { return false; }
+  return ReadBytes(access, bytes, output.data(), size) &&
+         std::none_of(output.begin(), output.end(), [](unsigned char c) {
+           return c == 0 || c < 0x20U;
+         });
+}
+
+void *Resolve(const CampaignRootAccessV1 &access, void **storage_slot,
+              void **fallback_slot, std::int32_t id,
+              std::size_t identity_offset) noexcept {
+  if (id <= 0) return nullptr;
+  void *storage = nullptr, *fallback = nullptr, *slots = nullptr, *object = nullptr;
+  std::int32_t capacity = 0, observed = -1;
+  if (!Read(access, storage_slot, 0, storage) ||
+      !Read(access, fallback_slot, 0, fallback) || storage == nullptr ||
+      !Read(access, storage, 0x20, slots) || slots == nullptr ||
+      !Read(access, storage, 0x2C, capacity) || capacity <= 0 ||
+      capacity > 4'194'304) return nullptr;
+  const auto index = static_cast<std::uint32_t>(id) & 0x00FFFFFFU;
+  if (index >= static_cast<std::uint32_t>(capacity) ||
+      !Read(access, slots, static_cast<std::size_t>(index) * 0x10 + 0x08, object) ||
+      object == nullptr || object == fallback ||
+      !Read(access, object, identity_offset, observed) || observed != id)
+    return nullptr;
+  return object;
+}
+
+bool EnvironmentExact(const CampaignRootNativeEnvironmentV1 &environment) noexcept {
+  if (!environment.exact_build_admitted ||
+      environment.character_storage_slot == nullptr ||
+      environment.character_fallback_slot == nullptr ||
+      environment.active_council_task_storage_slot == nullptr ||
+      environment.active_council_task_fallback_slot == nullptr ||
+      environment.council_value_progress_current == nullptr ||
+      environment.council_value_progress_maximum == nullptr ||
+      environment.council_position_lookup == nullptr) return false;
+  if (environment.offline_fixture_function_overrides) return true;
+  const auto base = environment.module_base;
+  return base != 0 &&
+      reinterpret_cast<std::uintptr_t>(environment.active_council_task_storage_slot) ==
+          base + 0x5D1DEA0 &&
+      reinterpret_cast<std::uintptr_t>(environment.active_council_task_fallback_slot) ==
+          base + 0x5D1DDF8 &&
+      reinterpret_cast<std::uintptr_t>(environment.council_value_progress_current) ==
+          base + 0x31AB500 &&
+      reinterpret_cast<std::uintptr_t>(environment.council_value_progress_maximum) ==
+          base + 0x31AB820 &&
+      reinterpret_cast<std::uintptr_t>(environment.council_position_lookup) ==
+          base + 0x2684EE0;
+}
+
+bool ValueProgress(ck3_11906::NativeCampaignRootCouncilValueProgressV1 function,
+                   void *type, void *scopes, std::int64_t &output) noexcept {
+  std::int64_t *returned = nullptr;
+#if defined(_MSC_VER)
+  __try { returned = function(type, &output, scopes); }
+  __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#else
+  returned = function(type, &output, scopes);
+#endif
+  return returned == &output;
+}
+
+bool ProvinceValid(const CampaignRootNativeEnvironmentV1 &environment,
+                   const CampaignRootAccessV1 &access, std::int32_t id) noexcept {
+  void *state = nullptr, *data = nullptr, *array = nullptr, *province = nullptr;
+  std::int32_t count = 0, observed = -1;
+  std::uint32_t tag = 0;
+  return id > 0 && Read(access, environment.game_state_slot, 0, state) &&
+         Read(access, state, 0xA0, data) &&
+         Read(access, data, 0x140, array) && array != nullptr &&
+         Read(access, data, 0x14C, count) && count > 0 && count <= 65'536 &&
+         id < count && Read(access, array, static_cast<std::size_t>(id) * 8, province) &&
+         province != nullptr && Read(access, province, 0x10, observed) && observed == id &&
+         Read(access, province, 0x85C, tag) && tag == 0x50726F76U;
+}
+
+bool Position(const CampaignRootNativeEnvironmentV1 &environment,
+              const CampaignRootAccessV1 &access, void *character,
+              std::int32_t character_id, void *task, std::string_view requested_key,
+              game::CampaignRootCouncilPositionV1 &output) noexcept {
+  void *type = nullptr, *position_type = nullptr;
+  std::int32_t incumbent = -1, owner = -1, kind = -1, progress_kind = -1;
+  std::uint8_t frozen = 0;
+  if (!Read(access, task, kTaskType, type) || type == nullptr ||
+      !Read(access, type, kTaskPositionType, position_type) || position_type == nullptr ||
+      !Read(access, task, kTaskScopes, incumbent) ||
+      !Read(access, task, kTaskScopes + 4, owner) || incumbent < -1 ||
+      owner != character_id ||
+      Resolve(access, environment.character_storage_slot,
+              environment.character_fallback_slot, owner, 0x18) != character)
+    return false;
+  output.position_key.assign(requested_key);
+  if (incumbent == -1) return true;
+  if (incumbent <= 0) return false;
+  if (!ReadKey(access, type, output.task_key.emplace()) ||
+      Resolve(access, environment.character_storage_slot,
+              environment.character_fallback_slot, incumbent, 0x18) == nullptr ||
+      !Read(access, type, kTaskKind, kind) || kind < 0 || kind > 2 ||
+      !Read(access, type, kTaskProgressKind, progress_kind) || progress_kind < 0 ||
+      progress_kind > 2 || !Read(access, task, kTaskFrozen, frozen) || frozen > 1)
+    return false;
+  output.incumbent_character_id = incumbent;
+  output.task_type = static_cast<game::CampaignRootCouncilTaskTypeV1>(kind);
+  output.frozen = frozen != 0;
+  if (kind != 0) {
+    std::uint16_t tag = 0;
+    std::int32_t target = -1;
+    if (!Read(access, task, kTaskScopes + 8, tag) ||
+        !Read(access, task, kTaskScopes + 0x10, target)) return false;
+    if (kind == 1) {
+      if (tag != 8 || !ProvinceValid(environment, access, target)) return false;
+      output.target = game::CampaignRootCouncilTargetV1{target, std::nullopt};
+    } else {
+      if (tag != 4 || Resolve(access, environment.character_storage_slot,
+          environment.character_fallback_slot, target, 0x18) == nullptr) return false;
+      output.target = game::CampaignRootCouncilTargetV1{std::nullopt, target};
+    }
+  }
+  game::CampaignRootCouncilProgressV1 progress{};
+  progress.kind = static_cast<game::CampaignRootCouncilProgressKindV1>(progress_kind);
+  if (progress_kind != 0) {
+    std::int64_t current = 0, maximum = kPercentageMaximum;
+    if (progress_kind == 1) {
+      if (!Read(access, task, kTaskProgress, current)) return false;
+    } else {
+      const void *scopes = nullptr;
+      if (!Address(task, kTaskScopes, scopes) ||
+          !ValueProgress(environment.council_value_progress_current, type,
+              const_cast<void *>(scopes), current) ||
+          !ValueProgress(environment.council_value_progress_maximum, type,
+              const_cast<void *>(scopes), maximum)) return false;
+    }
+    if (current < 0 || maximum <= 0 || current > maximum) return false;
+    progress.current = game::FixedPointValue{current, kScale};
+    progress.maximum = game::FixedPointValue{maximum, kScale};
+  }
+  output.progress = progress;
+  const void *scopes = nullptr;
+  std::int64_t piety_raw = 0;
+  if (environment.task_owner_monthly_piety != nullptr &&
+      Address(task, kTaskScopes, scopes) &&
+      environment.task_owner_monthly_piety(environment.module_base, type,
+                                            scopes, piety_raw)) {
+    output.task_owner_monthly_piety_v1 = game::FixedPointValue{piety_raw, kScale};
+  }
+  return true;
+}
+
+bool KeyLess(std::string_view left, std::string_view right) noexcept {
+  return std::lexicographical_compare(left.begin(), left.end(), right.begin(), right.end(),
+      [](char a, char b) { return static_cast<unsigned char>(a) < static_cast<unsigned char>(b); });
+}
+
+bool Lookup(const CampaignRootNativeEnvironmentV1 &environment,
+            const void *character, const std::string &key,
+            const void *&task) noexcept {
+  task = nullptr;
+#if defined(_MSC_VER)
+  __try { task = environment.council_position_lookup(character, &key); }
+  __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#else
+  task = environment.council_position_lookup(character, &key);
+#endif
+  return true;
+}
+
+} // namespace council_projection
+
 bool ReadCouncilProjection(
-    const ck3_12002::CampaignRootNativeEnvironmentV1 &,
-    const ck3_12002::CampaignRootAccessV1 &, void *,
+    const CampaignRootNativeEnvironmentV1 &environment,
+    const ck3_12002::CampaignRootAccessV1 &access, void *character,
     std::int32_t character_id, bool standard_scope_admitted,
     game::CampaignRootCouncilV1 &output, std::string_view &failure) noexcept {
   output = {};
   output.coverage_key = "standard_landed_non_nomadic_core_v1";
   output.owner_character_id = character_id;
+  output.auxiliary_vacancies_complete = false;
   failure = "council_unavailable";
-  output.unavailable_reason = standard_scope_admitted
-      ? "actual4_council_position_key_source_unavailable"
-      : "outside_standard_landed_non_nomadic_core_scope";
+  if (!standard_scope_admitted) {
+    output.unavailable_reason = "outside_standard_landed_non_nomadic_core_scope";
+    return true;
+  }
+  // Existing focused fixtures do not supply this new optional provider.
+  // Production always binds and compares the actual4 lookup below.
+  if (environment.offline_fixture_function_overrides &&
+      environment.council_position_lookup == nullptr) {
+    output.unavailable_reason = "actual4_council_position_key_source_unavailable";
+    return true;
+  }
+  if (!council_projection::EnvironmentExact(environment) || character == nullptr ||
+      council_projection::Resolve(access, environment.character_storage_slot,
+          environment.character_fallback_slot, character_id, 0x18) != character)
+    return false;
+  void *extension = nullptr, *ids = nullptr;
+  std::int32_t count = 0;
+  if (!council_projection::Read(access, character, 0x1C0, extension) ||
+      extension == nullptr || !council_projection::Read(access, extension, 0x230, ids) ||
+      !council_projection::Read(access, extension, 0x23C, count) || count <= 0 ||
+      count > 4'096 || ids == nullptr) return false;
+  try {
+    output.positions.reserve(council_projection::kCoreKeys.size());
+    for (const auto key : council_projection::kCoreKeys) {
+      const std::string requested(key);
+      const void *returned = nullptr;
+      if (!council_projection::Lookup(environment, character, requested, returned) ||
+          returned == nullptr) {
+        failure = "actual4_council_core_lookup_unavailable";
+        return false;
+      }
+      void *task = const_cast<void *>(returned), *type = nullptr, *position = nullptr;
+      std::int32_t task_id = -1;
+      if (!council_projection::Read(access, task, council_projection::kTaskIdentity, task_id) ||
+          council_projection::Resolve(access, environment.active_council_task_storage_slot,
+              environment.active_council_task_fallback_slot, task_id,
+              council_projection::kTaskIdentity) != task ||
+          !council_projection::Read(access, task, council_projection::kTaskType, type) ||
+          type == nullptr || !council_projection::Read(access, type,
+              council_projection::kTaskPositionType, position) || position == nullptr)
+        return false;
+      std::int32_t matches = 0;
+      for (std::int32_t index = 0; index < count; ++index) {
+        std::int32_t listed = -1;
+        if (!council_projection::Read(access, ids,
+                static_cast<std::size_t>(index) * 4, listed)) return false;
+        if (listed == task_id) ++matches;
+      }
+      if (matches != 1) return false;
+      game::CampaignRootCouncilPositionV1 row{};
+      if (!council_projection::Position(environment, access, character,
+              character_id, task, key, row)) return false;
+      output.positions.push_back(std::move(row));
+    }
+    std::sort(output.positions.begin(), output.positions.end(), [](const auto &a, const auto &b) {
+      return council_projection::KeyLess(a.position_key, b.position_key);
+    });
+  } catch (...) { return false; }
+  if (council_projection::Resolve(access, environment.character_storage_slot,
+          environment.character_fallback_slot, character_id, 0x18) != character) return false;
+  output.status = game::CampaignRootCouncilStatusV1::available;
+  output.unavailable_reason.clear();
+  failure = {};
   return true;
 }
 
