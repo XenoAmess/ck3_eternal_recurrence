@@ -114,3 +114,15 @@ demonstrates the lifecycle and material save.
 
 The external source tree, FIRST recipe and report fields are in
 Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r77-feast-normal-loop-repair/.
+
+The real MCP repository entry now also accepts
+--allow-private-activity-feast-normal. Its parser configures the existing driver
+diag/Start-input/lifecycle/action options before create_server constructs the
+ordinary GameplayBridgeService. The prior native_auto_run CLI option alone did
+not cover xar-ck3-mcp, and Root hot6ee01 retained its actual argparse rejection.
+Default and --private-activity-feast-queries remain unchanged; the latter enables
+observation without Start. A separate compact parser/config compound is authored
+for Root, with only the game I/O factory and server.run lifetime substituted.
+This task does not repeat the earlier connected lifecycle case, run SDK/game
+operations or change partial Stage2 recovery. Its source receipt is
+Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/r77-feast-mcp-normal-entry/.

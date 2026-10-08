@@ -4392,6 +4392,10 @@ def parser() -> argparse.ArgumentParser:
         help="enable private Feast observation tools without enabling Start",
     )
     result.add_argument(
+        "--allow-private-activity-feast-normal", action="store_true",
+        help="enable ordinary stock Feast configuration, Start and lifecycle observation",
+    )
+    result.add_argument(
         "--private-war-cash-queries", action="store_true",
         help="enable actual current military expenses and termination send-fee reads",
     )
@@ -4617,7 +4621,8 @@ def main(argv: list[str] | None = None) -> int:
     if (args.private_active_scheme_sway_query or args.private_realm_law_paused_query
             or args.private_government_runtime_adapter_query
             or args.private_prisoner_collection_query
-            or args.private_activity_feast_queries or args.private_war_cash_queries
+            or args.private_activity_feast_queries or args.allow_private_activity_feast_normal
+            or args.private_war_cash_queries
             or args.private_family_obligations_query or args.private_council_query
             or args.allow_private_family_marriage_formal_trial
             or args.allow_private_construction_formal_trial
@@ -4709,6 +4714,11 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_activity_feast_guest_route_proof_query = True
         driver.allow_private_activity_feast_guest_rule_provenance_query = True
         driver.allow_private_activity_feast_lifecycle_observation = True
+    if args.allow_private_activity_feast_normal:
+        driver.allow_private_activity_planner_diag_query = True
+        driver.allow_private_activity_feast_stage5_start_query = True
+        driver.allow_private_activity_feast_lifecycle_observation = True
+        driver.allow_private_activity_feast_stage5_start_action = True
     if args.private_war_cash_queries:
         driver.allow_private_war_cash_query = True
     if args.private_family_obligations_query:
