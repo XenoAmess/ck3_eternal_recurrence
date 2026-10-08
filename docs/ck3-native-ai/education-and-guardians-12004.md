@@ -1,7 +1,9 @@
 # Ordinary child education and guardians after a real birth
 
-Source-first topic, 2026-10-08 / 2026-W41. Status: **research**. Source base
-`a59b2df4a2b3ab6a951bfdc4f12845faf27439d7`; native identity is Root's
+Source-first topic, 2026-10-08 / 2026-W41. The child age/sex and childhood-trait
+publication is **static-ready / FIRST_NOTRUN**; guardian and child focus
+remain **research**. Publication source base
+`6ee7dea1b4d2fa4ecb05223f12c66b7afe72ac2d`; native identity is Root's
 canonical CK3 1.20.0.4 / Steam25734779 freeze. This package performs no
 Game/SDK work, new EXE read/hash, production import, build or test. The
 supplied Robert29829 baseline has heir38822, spouse38718 and children0.
@@ -99,8 +101,8 @@ or guessed newborn ID is introduced for ordinary guardianship.
 | Input | Existing source and boundary | Next construction |
 | --- | --- | --- |
 | Actual child receiver | Current-heir query publishes complete raw descendant occurrences, full-ID validity, alive, parent slots, child-of-heir and lineage | Derive distinct living actual children from that observation; preserve the original raw roster and unavailable occurrences |
-| Child age/sex | Actual4-bound `family_value::ReadCharacterValue(id, read_fertility=false)` is a generic full-ID reader | Publish raw values for those child receivers in the same query; retain reading failure separately from zero |
-| Childhood trait subset | Actual4 HasTrait `0x28BB1D0` and TraitDB `0x89E5B0` are retained source; LIFE's fixed subset contains adult education/personality only | Bind the five named childhood traits as a bounded child subset, with independent availability |
+| Child age/sex | Actual4-bound `family_value::ReadCharacterValue(id, read_fertility=false)` is a generic full-ID reader | Source-ready `descendants.child_inputs` publishes raw values for those child receivers; reading failure remains separate from zero |
+| Childhood trait subset | Actual4 HasTrait `0x28BB1D0` and TraitDB `0x89E5B0` are retained source; LIFE's fixed subset contains adult education/personality only | Source-ready child helper binds the five named childhood traits as a bounded subset with independent availability |
 | Current child focus | Held LIFE ObjectGetter `0x29194B0`, focus fallback `0x5D1E308`, stable key+0x18; present producer uses played_character only | Close its actual child-focus receiver/absence semantics; do not hard-apply the full player LIFE reader |
 | Guardian presence | Stock `Character.HasGuardian` in `gui/shared/lists.gui:1591` | Resolve its actual4 named registration and underlying Character predicate before implementing a boolean |
 | Guardian identity | `CharacterWindow.GetRelationsOfType(GetRelation('guardian'))` at `window_character.gui:2956` | Follow the window wrapper to the real Character relation direction/collection; no guessed `GetGuardian` ABI |
@@ -116,7 +118,57 @@ reproductive leaf's role list is exactly heir/spouses/betrothal. Adding
 child rows to that leaf would violate the existing receiver contract. An
 additive child observation must use its own derived child receivers in the
 same envelope, keeping the existing relation and raw descendant leaf.
-This is a proposed interface boundary, not a published new schema or tool.
+The additive source implementation below follows that boundary. It adds no
+new MCP tool or command and has not yet been qualified in a compiled fixture
+or published to a real CK3 process.
+
+### Same-query child input publication
+
+The optional `descendants.child_inputs` leaf derives its rows from
+generation-valid, living, `child_of_heir=true` occurrences. Rows are distinct
+full IDs in original first-occurrence order and carry every contributing
+`occurrence_indices` value. Dead, stale, duplicate and non-child occurrences
+remain in the original descendants leaf. A complete raw roster with no
+eligible child produces an available, empty child leaf; an unavailable
+roster produces an unavailable leaf, not a guessed empty household.
+
+Each child row has two independent observations:
+
+- `values`, source `native_character_age_and_sex`: signed16
+  `age_measure_raw` and the native 0/1 `sex_selector_raw`. The existing
+  generic `ReadCharacterValue(..., false)` is reused twice for a stable
+  result and retains its full-ID/liveness/lineage/employer read semantics.
+  A legitimate age zero is available; no conception/fertility gate is read.
+- `childhood_traits`, source `native_character_has_trait`: fixed queried
+  keys curious, rowdy, bossy, pensive and charming, and their canonical
+  present subset. An available empty subset differs from unavailable/null.
+  This is a five-key observation, not a complete Character trait census.
+
+The source helper reuses only the public actual4
+`BindPlayerLifestyleSnapshotEnvironment12004V1` TraitDB/HasTrait callbacks
+and its stable-key decoder. Trait DB pointer span+0x50/count+0x5C and Trait
+key+0x18 retain their qualified generic meaning. Definitions are resolved
+once per query; the two five-key presence samples use the actual resolved
+child pointer. Missing definitions or changed trait values leave this
+sub-result unavailable independently of age/sex. The original descendants
+status, reproductive receiver roles and normal calendar plan are unchanged.
+
+Source construction points:
+
+- `ck3_12004_first_heir_child_inputs.hpp` owns the minimal reader;
+  `current_first_heir_child_inputs_v1.hpp` owns the distinct-child DTO.
+- The existing application-thread descendant hook binds the generic trait
+  environment from the admitted actual4 adapter descriptor and attaches
+  the child read in the same relationship envelope.
+- The existing serializer and Python descendants validator retain the
+  optional leaf. Strict validation relates full child IDs and grouped raw
+  occurrence indices back to the original native roster.
+
+The source preparation is at
+[child-observer35 packet](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/post-birth-child-observers35/ROOT-SOURCE-DELIVERY.json).
+This publication does not establish biological birth cause, a guardian,
+child education focus, focus-change authority or a completed education
+operation. No family wait gate, success probability or new script is added.
 
 A full player LIFE snapshot also demands current lifestyle/progress and
 focus→lifestyle bindings. Its qualification does not establish child
@@ -152,9 +204,20 @@ would establish presence only; guardian IDs, control and final native
 interaction remain their separate next source seams. No GUI wrapper is
 invoked as an arbitrary Character observer.
 
-After receiver/source closure, prepare one new native whole-envelope mode
-and one sole registered-consumer compound for child identity, legal
-age-zero, known no-guardian, actual guardian, partial read and unavailable
-focus. Those stages have not been implemented or run. Native command ACK,
+The independent child input FIRST preparation uses the existing native
+descendant target with `--child-observer-wire-dir`: five new whole-envelope
+scenes cover empty children, legal age-zero with no childhood traits,
+distinct children and all five trait keys across duplicate/dead/stale/
+non-child raw occurrences, values unavailable with traits available, and
+traits unavailable with values available. One new registered-consumer
+method consumes those five wires plus a legacy copy with the optional
+child leaf absent. Both preparations are **SOURCE_NOTRUN**, not newly
+passed tests; existing descendant, household and pregnancy scenes are not
+replayed. The fixture uses the canonical adapter descriptor. Raw native
+wire identity still comes from the existing transport's descriptor and
+`private_native_provenance`, not an invented SHA field in raw JSON.
+
+Guardian presence/identity and current child focus remain separate named
+source seams with the bounded Root recipe above. Native command ACK,
 source fields or a compiled fixture never supply birth/guardian/live-loop
 credit. Existing calendar, family and war execution continue independently.

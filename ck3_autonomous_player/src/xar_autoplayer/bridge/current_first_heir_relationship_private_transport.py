@@ -284,6 +284,8 @@ def query_current_first_heir_relationship_private_v1(
         "heir_character_id": heir_id,
     }
     if DESCENDANTS_LEAF in result:
+        # The optional nested child inputs share this roster's bound frame.
+        # Legacy wires without that nested leaf keep their original shape.
         descendants = validate_current_first_heir_descendants_v1(
             result[DESCENDANTS_LEAF], actor=played_id, heir=heir_id,
             native_revision=expected_native_revision, date_raw=before["date_raw"])

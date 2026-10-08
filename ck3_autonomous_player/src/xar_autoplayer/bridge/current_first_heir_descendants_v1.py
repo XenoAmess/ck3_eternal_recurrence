@@ -13,6 +13,8 @@ from .driver import BridgeUnavailableError
 
 LEAF = "current_first_heir_descendants_v1"
 SUMMARY = "current_first_heir_descendants_summary_v1"
+CHILD_INPUTS = "child_inputs"
+CHILDHOOD_TRAIT_KEYS = ("curious", "rowdy", "bossy", "pensive", "charming")
 
 
 def _integer(value: object, low: int, high: int) -> bool:
@@ -29,6 +31,87 @@ def _lineage(value: object) -> None:
                     if available else value.get(key) is not None)
                    for key in ("house_id_raw", "dynasty_id_raw"))):
         raise BridgeUnavailableError("current heir descendant lineage values are malformed")
+
+
+def _child_values(value: object) -> None:
+    if (not isinstance(value, dict)
+            or value.get("source") != "native_character_age_and_sex"
+            or value.get("status") not in {"available", "unavailable"}):
+        raise BridgeUnavailableError("current heir child values are malformed")
+    available = value["status"] == "available"
+    reason = value.get("unavailable_reason")
+    if ((reason is not None if available else not isinstance(reason, str) or not reason)
+            or (not _integer(value.get("age_measure_raw"), -2**15, 2**15)
+                or not _integer(value.get("sex_selector_raw"), 0, 2)
+                if available else value.get("age_measure_raw") is not None
+                or value.get("sex_selector_raw") is not None)):
+        raise BridgeUnavailableError("current heir child age or sex values are malformed")
+
+
+def _childhood_traits(value: object) -> None:
+    if (not isinstance(value, dict)
+            or value.get("source") != "native_character_has_trait"
+            or value.get("status") not in {"available", "unavailable"}
+            or value.get("queried_trait_keys") != list(CHILDHOOD_TRAIT_KEYS)):
+        raise BridgeUnavailableError("current heir childhood trait observation is malformed")
+    available = value["status"] == "available"
+    reason = value.get("unavailable_reason")
+    present = value.get("present_trait_keys")
+    if ((reason is not None if available else not isinstance(reason, str) or not reason)
+            or (not isinstance(present, list)
+                or present != [key for key in CHILDHOOD_TRAIT_KEYS if key in present]
+                if available else present is not None)):
+        raise BridgeUnavailableError("current heir childhood trait values are malformed")
+
+
+def _child_inputs(value: object, descendants: dict[str, object]) -> None:
+    """Bind distinct living-child inputs to their full native occurrence groups."""
+    if (not isinstance(value, dict)
+            or value.get("source") != "native_current_heir_child_inputs"
+            or value.get("status") not in {"available", "partial", "unavailable"}):
+        raise BridgeUnavailableError("current heir child input observation is malformed")
+    status = value["status"]
+    reason = value.get("unavailable_reason")
+    if ((reason is not None if status == "available"
+         else not isinstance(reason, str) or not reason)
+            or any(type(value.get(key)) is not type(descendants.get(key))
+                   or value.get(key) != descendants.get(key)
+                   for key in ("native_revision", "played_character_id",
+                               "heir_character_id", "date_raw"))
+            or not isinstance(value.get("rows"), list)):
+        raise BridgeUnavailableError("current heir child input frame is malformed")
+    rows = value["rows"]
+    if status == "unavailable":
+        if rows:
+            raise BridgeUnavailableError("unavailable current heir child inputs contain rows")
+        return
+    if descendants["roster_complete"] is not True:
+        raise BridgeUnavailableError("current heir child inputs need a complete native roster")
+    groups: dict[int, list[int]] = {}
+    for occurrence in descendants["rows"]:
+        if (occurrence["generation_valid"] is True
+                and occurrence.get("alive") is True
+                and occurrence.get("child_of_heir") is True):
+            raw = occurrence["raw_character_id"]
+            character = raw if raw < 2**31 else raw - 2**32
+            groups.setdefault(character, []).append(occurrence["occurrence_index"])
+    if len(rows) != len(groups):
+        raise BridgeUnavailableError("current heir child input roster is incomplete")
+    all_available = True
+    for row, (character, indices) in zip(rows, groups.items()):
+        if (not isinstance(row, dict)
+                or not _integer(row.get("character_id"), -2**31, 2**31)
+                or row["character_id"] != character
+                or not isinstance(row.get("occurrence_indices"), list)
+                or any(type(index) is not int for index in row["occurrence_indices"])
+                or row["occurrence_indices"] != indices):
+            raise BridgeUnavailableError("current heir child input occurrence group is malformed")
+        _child_values(row.get("values"))
+        _childhood_traits(row.get("childhood_traits"))
+        all_available = (all_available and row["values"]["status"] == "available"
+                         and row["childhood_traits"]["status"] == "available")
+    if (status == "available") is not all_available:
+        raise BridgeUnavailableError("current heir child input status disagrees with its subreads")
 
 
 def validate_current_first_heir_descendants_v1(
@@ -104,6 +187,8 @@ def validate_current_first_heir_descendants_v1(
                     "alive", "parent_family_present", "child_of_heir"))
                 or row["lineage"]["status"] != "unavailable"):
             raise BridgeUnavailableError("unresolved current heir descendant values are malformed")
+    if CHILD_INPUTS in value:
+        _child_inputs(value[CHILD_INPUTS], value)
     return deepcopy(value)
 
 

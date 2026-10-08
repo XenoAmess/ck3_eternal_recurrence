@@ -117,6 +117,7 @@
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
+#include "xar_bridge/ck3_12004_first_heir_child_inputs.hpp"
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
@@ -9529,6 +9530,7 @@ struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   bool frame_observed = false;
   xar::ck3_12002::family_obligations_lineage::Bindings lineage12002{};
   bool observe_descendants12004 = false;
+  xar::ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 child_traits12004{};
 };
 
 bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
@@ -9577,6 +9579,10 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
       if (query.observe_descendants12004) {
         query.read.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
             query.family12002, query.heir_character_id);
+        query.read.descendants->child_inputs =
+            xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
+                query.family12002, query.child_traits12004,
+                *query.read.descendants);
         query.read.reproductive_inputs =
             xar::ck3_12004::ReadCurrentFirstHeirReproductiveInputsV1(
                 query.family12002, query.read);
@@ -9612,6 +9618,8 @@ void BindFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query,
   if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     const auto sha = game.descriptor().executable_sha256;
     query.family12002 = xar::ck3_12004::BindFamilyImage(base, sha);
+    query.child_traits12004 = xar::ck3_12004::lifestyle::
+        BindPlayerLifestyleSnapshotEnvironment12004V1(base, true, sha);
     query.lineage12002 = xar::ck3_12004::BindFamilyLineageImage(base, sha);
     query.subject_bindings12002 = xar::ck3_12004::BindFamilySubjectImage(base, sha);
     query.projection12002 = xar::ck3_12004::BindFamilyProjectionImage(base, sha);

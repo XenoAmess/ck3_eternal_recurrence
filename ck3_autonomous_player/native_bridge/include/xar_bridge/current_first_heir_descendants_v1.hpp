@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/current_first_heir_child_inputs_v1.hpp"
+
 #include <cstdint>
 #include <optional>
 #include <string_view>
@@ -49,6 +51,7 @@ struct CurrentFirstHeirDescendantsReadV1 {
   CurrentFirstHeirDescendantLineageV1 played_lineage{};
   CurrentFirstHeirDescendantLineageV1 heir_lineage{};
   std::vector<CurrentFirstHeirDescendantRowV1> rows{};
+  std::optional<CurrentFirstHeirChildInputsReadV1> child_inputs{};
 };
 
 } // namespace xar::ck3_11906

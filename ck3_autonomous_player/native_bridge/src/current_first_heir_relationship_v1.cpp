@@ -122,6 +122,66 @@ void AppendDescendantLineage(
   json += '}';
 }
 
+void AppendChildInputs(std::string &json,
+                       const CurrentFirstHeirChildInputsReadV1 &read,
+                       std::uint64_t native_revision) {
+  json += "{\"source\":\"native_current_heir_child_inputs\",\"status\":";
+  AppendJsonString(json, read.status);
+  json += ",\"unavailable_reason\":";
+  if (read.status == "available") json += "null";
+  else AppendJsonString(json, read.unavailable_reason);
+  json += ",\"native_revision\":" + std::to_string(native_revision);
+  json += ",\"played_character_id\":";
+  json += read.played_character_id > 0 ? std::to_string(read.played_character_id) : "null";
+  json += ",\"heir_character_id\":";
+  json += read.heir_character_id > 0 ? std::to_string(read.heir_character_id) : "null";
+  json += ",\"date_raw\":";
+  AppendOptionalNumber(json, read.date_raw);
+  json += ",\"rows\":[";
+  for (std::size_t index = 0; index < read.rows.size(); ++index) {
+    if (index != 0) json += ',';
+    const auto &row = read.rows[index];
+    json += "{\"character_id\":" + std::to_string(row.character_id);
+    json += ",\"occurrence_indices\":[";
+    for (std::size_t occurrence = 0; occurrence < row.occurrence_indices.size(); ++occurrence) {
+      if (occurrence != 0) json += ',';
+      json += std::to_string(row.occurrence_indices[occurrence]);
+    }
+    json += "],\"values\":{\"source\":\"native_character_age_and_sex\",\"status\":";
+    AppendJsonString(json, row.values.available ? "available" : "unavailable");
+    json += ",\"unavailable_reason\":";
+    if (row.values.available) json += "null";
+    else AppendJsonString(json, row.values.unavailable_reason);
+    json += ",\"age_measure_raw\":";
+    AppendOptionalNumber(json, row.values.age_measure_raw);
+    json += ",\"sex_selector_raw\":";
+    AppendOptionalNumber(json, row.values.sex_selector_raw);
+    json += "},\"childhood_traits\":{\"source\":\"native_character_has_trait\",\"status\":";
+    const auto &traits = row.childhood_traits;
+    AppendJsonString(json, traits.available ? "available" : "unavailable");
+    json += ",\"unavailable_reason\":";
+    if (traits.available) json += "null";
+    else AppendJsonString(json, traits.unavailable_reason);
+    json += ",\"queried_trait_keys\":[";
+    for (std::size_t key = 0; key < kChildhoodTraitKeysV1.size(); ++key) {
+      if (key != 0) json += ',';
+      AppendJsonString(json, kChildhoodTraitKeysV1[key]);
+    }
+    json += "],\"present_trait_keys\":";
+    if (!traits.present_trait_keys) json += "null";
+    else {
+      json += '[';
+      for (std::size_t key = 0; key < traits.present_trait_keys->size(); ++key) {
+        if (key != 0) json += ',';
+        AppendJsonString(json, (*traits.present_trait_keys)[key]);
+      }
+      json += ']';
+    }
+    json += "}}";
+  }
+  json += "]}";
+}
+
 std::string CurrentFirstHeirDescendantsJsonV1(
     const CurrentFirstHeirDescendantsReadV1 &read,
     std::uint64_t native_revision) {
@@ -175,7 +235,12 @@ std::string CurrentFirstHeirDescendantsJsonV1(
     AppendDescendantLineage(json, row.lineage);
     json += '}';
   }
-  json += "]}";
+  json += ']';
+  if (read.child_inputs) {
+    json += ",\"child_inputs\":";
+    AppendChildInputs(json, *read.child_inputs, native_revision);
+  }
+  json += '}';
   return json;
 }
 } // namespace

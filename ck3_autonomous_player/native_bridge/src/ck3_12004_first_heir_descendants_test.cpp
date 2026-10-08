@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_family.hpp"
 #include "xar_bridge/ck3_12004_first_heir_descendants.hpp"
+#include "xar_bridge/ck3_12004_first_heir_child_inputs.hpp"
 #include "xar_bridge/ck3_12004_first_heir_reproductive_inputs.hpp"
 #include "xar_bridge/current_first_heir_relationship_v1.hpp"
 
@@ -542,9 +543,191 @@ void EmitPregnancyHousehold(const std::filesystem::path &directory,
             constructs == 0 && destroys == 0,
         "pregnancy adds independent evidence without changing fertility status or sending actions");
 }
+
+struct ChildTraitFixture35 {
+  std::array<std::byte, 0x60> database{};
+  std::array<std::array<std::byte, 0x38>, 5> definitions{};
+  std::array<const void *, 5> ordered_definitions{};
+  std::array<void *, 2> child_characters{};
+  std::array<std::array<bool, 5>, 2> present{};
+  std::size_t has_trait_calls = 0;
+
+  void SetKey(std::size_t index, std::string_view key) {
+    Check(index < definitions.size() && !key.empty() && key.size() < 16,
+          "fixture owns a valid native SSO Trait key");
+    auto &definition_bytes = definitions[index];
+    definition_bytes.fill(std::byte{});
+    std::memcpy(definition_bytes.data() + 0x18, key.data(), key.size());
+    Put(definition_bytes.data(), 0x28, static_cast<std::uint64_t>(key.size()));
+    Put(definition_bytes.data(), 0x30, std::uint64_t{15});
+  }
+
+  explicit ChildTraitFixture35(Fixture &fixture) {
+    child_characters = {fixture.characters[4].data(), fixture.characters[7].data()};
+    const std::array<std::size_t, 5> order{3, 0, 4, 2, 1};
+    for (std::size_t index = 0; index < definitions.size(); ++index) {
+      SetKey(index, xar::ck3_11906::kChildhoodTraitKeysV1[index]);
+      ordered_definitions[index] = definitions[order[index]].data();
+    }
+    Put(database.data(), 0x50, ordered_definitions.data());
+    Put(database.data(), 0x5C, std::int32_t{5});
+  }
+};
+
+ChildTraitFixture35 *active_child_traits35 = nullptr;
+void *ChildTraitDatabase35() {
+  return active_child_traits35 == nullptr ? nullptr : active_child_traits35->database.data();
+}
+bool ChildHasTrait35(void *character, const void *trait) {
+  Check(active_child_traits35 != nullptr, "child Trait callbacks have an owning fixture");
+  auto &source = *active_child_traits35;
+  std::size_t child_index = source.child_characters.size();
+  std::size_t trait_index = source.definitions.size();
+  for (std::size_t index = 0; index < source.child_characters.size(); ++index)
+    if (character == source.child_characters[index]) child_index = index;
+  for (std::size_t index = 0; index < source.definitions.size(); ++index)
+    if (trait == source.definitions[index].data()) trait_index = index;
+  Check(child_index < source.child_characters.size() &&
+            trait_index < source.definitions.size(),
+        "generic HasTrait receives the exact child and decoded native definition");
+  ++source.has_trait_calls;
+  return source.present[child_index][trait_index];
+}
+
+void EmitChildObservers35(const std::filesystem::path &directory,
+                          std::string_view name) {
+  const bool empty = name == "empty-children";
+  const bool affinity = name == "childhood-affinity";
+  const bool values_missing = name == "child-values-unavailable";
+  const bool traits_missing = name == "child-traits-unavailable";
+  Fixture fixture({"current-child-inputs", empty ? 0 : affinity ? 18 : 1,
+                   true, true, true, false});
+  std::array<std::int32_t, 1> heir_spouses{kPartner}, partner_spouses{kHeir};
+  Put(fixture.families[1].data(), 0x14, kPartner);
+  Put(fixture.families[2].data(), 0x14, kHeir);
+  Put(fixture.families[1].data(), 0x20, heir_spouses.data());
+  Put(fixture.families[2].data(), 0x20, partner_spouses.data());
+  for (const auto index : {1U, 2U}) {
+    Put(fixture.families[index].data(), 0x28, std::int32_t{1});
+    Put(fixture.families[index].data(), 0x2C, std::int32_t{1});
+  }
+  Put(fixture.characters[4].data(), 0x68, static_cast<std::int16_t>(affinity ? 7 : 0));
+  Put(fixture.characters[4].data(), 0x1A1, static_cast<std::uint8_t>(values_missing ? 2 : 0));
+  Put(fixture.characters[7].data(), 0x68, std::int16_t{9});
+  Put(fixture.characters[7].data(), 0x1A1, std::uint8_t{1});
+
+  ChildTraitFixture35 traits(fixture);
+  if (affinity) {
+    traits.present[0] = {true, false, false, true, false};
+    traits.present[1] = {false, true, true, false, true};
+  } else if (values_missing) {
+    traits.present[0][0] = true;
+  }
+  if (traits_missing) traits.SetKey(4, "other");
+  active_child_traits35 = &traits;
+  xar::ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 trait_environment{};
+  trait_environment.trait_database = &ChildTraitDatabase35;
+  trait_environment.character_has_trait = &ChildHasTrait35;
+
+  auto relation = ReadCurrentFirstHeirRelationshipV1(fixture.family, kHeir);
+  Check(relation.failure == xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none,
+        "child inputs keep the same reciprocal current married pair");
+  relation.betrothal_actionability = ReadCurrentFirstHeirBetrothalActionabilityV1(
+      fixture.family, relation);
+  relation.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
+      fixture.family, kHeir);
+  auto &desc = *relation.descendants;
+  desc.child_inputs = xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
+      fixture.family, trait_environment, desc);
+  auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
+      name, 7, kHeir, relation);
+  const auto &descriptor = xar::game::Ck3_12004AdapterDescriptor();
+  wire = xar::game::Render12004BuildIdentity(std::move(wire), descriptor);
+  Write(directory / (std::string(name) + ".json"), wire);
+  Check(xar::game::IsCk3_12004Descriptor(descriptor) &&
+            wire.find("\"child_inputs\":{") != std::string::npos,
+        "genuine whole relationship wire uses canonical actual4 descriptor and child leaf");
+
+  const auto &inputs = *desc.child_inputs;
+  Check(desc.roster_complete && desc.native_child_count_raw == (empty ? 0 : affinity ? 18 : 1) &&
+            inputs.played_character_id == kActor && inputs.heir_character_id == kHeir &&
+            inputs.date_raw == 53220000 &&
+            inputs.rows.size() == (empty ? 0U : affinity ? 2U : 1U),
+        "child inputs retain owner metadata and distinct actual living children");
+  Check(inputs.status == (values_missing || traits_missing ? "partial" : "available") &&
+            (inputs.unavailable_reason.empty() == !(values_missing || traits_missing)),
+        "independent missing child values or traits retain partial observation");
+  if (empty) {
+    Check(inputs.rows.empty() && traits.has_trait_calls == 0,
+          "known zero children is a complete empty input without trait receivers");
+  } else {
+    const auto &first = inputs.rows[0];
+    const std::vector<std::uint32_t> first_indices = affinity
+        ? std::vector<std::uint32_t>{0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
+        : std::vector<std::uint32_t>{0};
+    Check(first.character_id == 0x03000005 && first.occurrence_indices == first_indices,
+          "first child groups only its eligible original occurrences");
+    if (values_missing) {
+      Check(!first.values.available && !first.values.age_measure_raw.has_value() &&
+                !first.values.sex_selector_raw.has_value() &&
+                first.values.unavailable_reason == "character_sex_selector_unavailable",
+            "invalid selector leaves both child values unavailable rather than default zero");
+    } else {
+      Check(first.values.available && first.values.unavailable_reason.empty() &&
+                first.values.age_measure_raw == (affinity ? 7 : 0) &&
+                first.values.sex_selector_raw == 0,
+            "live child generic values preserve zero age without a fertility callback");
+    }
+    if (traits_missing) {
+      Check(!first.childhood_traits.available &&
+                !first.childhood_traits.unavailable_reason.empty() &&
+                !first.childhood_traits.present_trait_keys.has_value(),
+            "genuine missing required Trait definition is unavailable rather than an empty subset");
+    } else {
+      const auto expected = affinity ? std::vector<std::string_view>{"curious", "pensive"}
+          : values_missing ? std::vector<std::string_view>{"curious"}
+                           : std::vector<std::string_view>{};
+      Check(first.childhood_traits.available && first.childhood_traits.unavailable_reason.empty() &&
+                first.childhood_traits.present_trait_keys.has_value() &&
+                *first.childhood_traits.present_trait_keys == expected,
+            "native definition scan and exact child HasTrait preserve the observed ordered subset");
+    }
+    if (affinity) {
+      const auto &second = inputs.rows[1];
+      Check(second.character_id == 0x03000008 &&
+                second.occurrence_indices == std::vector<std::uint32_t>{17} &&
+                second.values.available && second.values.age_measure_raw == 9 &&
+                second.values.sex_selector_raw == 1 && second.childhood_traits.available &&
+                second.childhood_traits.present_trait_keys.has_value() &&
+                *second.childhood_traits.present_trait_keys ==
+                    std::vector<std::string_view>{"rowdy", "bossy", "charming"},
+            "last living actual child survives duplicate dead stale and nonchild roster entries");
+      Check(desc.rows.size() == 18 && desc.rows[1].alive == false &&
+                !desc.rows[2].generation_valid && !desc.rows[3].generation_valid &&
+                desc.rows[4].child_of_heir == false,
+            "raw descendant evidence remains complete independently of eligible child inputs");
+    }
+  }
+  Check(relation.relationship.betrothed_character_id == -1 &&
+            relation.relationship.primary_spouse_character_id == kPartner &&
+            relation.relationship.spouse_character_ids == std::vector<std::int32_t>{kPartner} &&
+            relation.betrothal_actionability.unavailable_reason == "current_heir_has_no_betrothal" &&
+            constructs == 0 && destroys == 0,
+        "five child scenes keep identical current marriage and send no action");
+  active_child_traits35 = nullptr;
+}
 } // namespace
 int main(int argc, char **argv) {
   try {
+    if (argc == 3 && std::string_view(argv[1]) == "--child-observer-wire-dir") {
+      const std::filesystem::path directory(argv[2]);
+      std::filesystem::create_directories(directory);
+      for (const std::string_view name : {"empty-children", "living-child-no-traits",
+               "childhood-affinity", "child-values-unavailable", "child-traits-unavailable"})
+        EmitChildObservers35(directory, name);
+      std::cout << "PASS actual4 current first-heir child inputs: five new whole wires\n";
+      return 0;
+    }
     if (argc == 3 && std::string_view(argv[1]) == "--pregnancy-observer-wire-dir") {
       const std::filesystem::path directory(argv[2]);
       std::filesystem::create_directories(directory);
