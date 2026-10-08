@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -28,6 +29,28 @@ inline constexpr std::array<std::pair<std::string_view, int>, 19>
     if (building_key == key) return income;
   }
   return 0;
+}
+
+// Retained exact .3/.4 completed-slot values from the SDK. These keys value
+// an existing occupant only; they do not extend the tier-one target table.
+inline constexpr std::array<std::pair<std::string_view, int>, 5>
+    kAuthoredExistingOnlyBuildingIncomeHundredthsV1{{
+        {"farm_estates_02", 115}, {"common_tradeport_02", 55},
+        {"curtain_walls_01", 25}, {"monastic_schools_01", 25},
+        {"military_camps_01", 0},
+    }};
+
+[[nodiscard]] inline std::optional<int> AuthoredExistingIncomeHundredths(
+    std::string_view key) noexcept {
+  for (const auto &[building_key, income] : kAuthoredBuildingIncomeHundredthsV1) {
+    if (building_key == key) return income;
+  }
+  for (const auto &[building_key, income] :
+       kAuthoredExistingOnlyBuildingIncomeHundredthsV1) {
+    if (building_key == key) return income;
+  }
+  // A known zero-income occupant is usable; an unknown key is not zero.
+  return std::nullopt;
 }
 
 } // namespace xar::ck3_11906

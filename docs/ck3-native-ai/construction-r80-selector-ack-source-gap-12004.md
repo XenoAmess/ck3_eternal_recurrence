@@ -278,3 +278,39 @@ then `ck3_plan_turn`, verifies both intent and material, null economic increment
 cleared unresolved queue and zero native submit. It does not rerun old GREEN
 fixtures or claim native/live qualification. Worker test/import/build/hash,
 Game/SDK calls and G2 credit remain **0**; Root owns the unique FIRST and reports.
+
+## Separate future selector alignment
+
+The actual mismatch justifies replacing the native gross-income comparison
+with the existing SDK comparison. The separate source patch values the same
+completed occupant by barony/province/slot, requires a known old income, and
+uses **target income minus old income**. Empty slots are known zero only when
+the native completed inventory is observed. Known `military_camps_01 = 0`
+remains distinct from an unknown old key. Equal net increment and native cost
+prefer an observed empty slot, followed by the same tuple/key tie break as the
+SDK. The existing nineteen target keys remain unchanged; five additional old
+occupant keys live in a separate lookup and do not become target candidates.
+
+```mermaid
+flowchart TD
+    A[Native legal sample and final cost] --> B{Idle holding and affordable}
+    B -->|yes| C[Read observed same-slot completed occupant]
+    C --> D{Known old income or observed empty slot}
+    D -->|yes| E{Target minus old income positive}
+    E -->|yes| F[Rank by net increment, cost, empty slot, numeric tuple and key]
+    F --> G[Existing application-main re-read and submit]
+    D -. unknown .-> U[Unvalued candidate]
+    E -->|no| U
+```
+
+No request fields, DTO layout, public header or native action capability are
+added. The required changed production body is
+`player_world_building_action_candidate_v1.cpp`; its current actual Bridge
+object is `Z:/g2-native41-build01/attempt01/o/n41p0009.obj` with the qualified
+`logs/compile-009.json` command. The private income header also has a direct
+definition-source include, but its existing nineteen-key target table and
+existing lookup are unchanged. The added inline old-occupant helper is consumed
+only by the changed selector. A new narrow fixture checks gross/net divergence,
+empty-slot ties and known zero versus unknown occupant through the production
+selector. Root owns its first compilation/execution. This source change does
+not qualify another live construction or retrofit the original request.

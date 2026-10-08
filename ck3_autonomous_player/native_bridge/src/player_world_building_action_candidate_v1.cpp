@@ -61,6 +61,10 @@ SelectPlayerWorldBuildingActionCandidateV1(
   }
   const PlayerWorldBuildingLegalSampleV1 *selected = nullptr;
   int selected_income = 0;
+  int selected_delta = 0;
+  int selected_old_income = 0;
+  bool selected_empty = false;
+  std::string_view selected_old_key;
   bool saw_gold_only = false;
   bool saw_active = false;
   bool saw_unvalued = false;
@@ -85,15 +89,56 @@ SelectPlayerWorldBuildingActionCandidateV1(
       saw_unvalued = true;
       continue;
     }
+    const PlayerWorldCompletedBuildingV1 *occupant = nullptr;
+    bool multiple_occupants = false;
+    for (const auto &old : source.completed_buildings) {
+      if (old.barony_title_id != sample.barony_title_id ||
+          old.province_id != sample.province_id ||
+          old.slot_index != sample.slot_index) {
+        continue;
+      }
+      if (occupant != nullptr) {
+        multiple_occupants = true;
+        break;
+      }
+      occupant = &old;
+    }
+    const bool empty = occupant == nullptr;
+    if (multiple_occupants || (empty && !source.completed_buildings_observed)) {
+      saw_unvalued = true;
+      continue;
+    }
+    const auto old_income =
+        empty ? std::optional<int>{0}
+              : occupant->building_key
+                    ? AuthoredExistingIncomeHundredths(*occupant->building_key)
+                    : std::nullopt;
+    if (!old_income || income - *old_income <= 0) {
+      saw_unvalued = true;
+      continue;
+    }
+    const auto delta = income - *old_income;
+    const auto old_key = empty ? std::string_view{}
+                               : std::string_view{*occupant->building_key};
+    // Match the SDK's direct authored increment and observed-empty-slot tie
+    // break. Gross target income can select a different replacement slot.
     if (selected == nullptr ||
-        std::tuple{-income, cost, sample.barony_title_id,
+        std::tuple{-delta, cost, !empty, sample.barony_title_id,
                    sample.province_id, sample.building_type_id,
-                   sample.slot_index} <
-            std::tuple{-selected_income, selected->cost_raw_native[0],
-                       selected->barony_title_id, selected->province_id,
-                       selected->building_type_id, selected->slot_index}) {
+                   sample.slot_index, std::string_view{sample.building_key},
+                   income, *old_income, old_key} <
+            std::tuple{-selected_delta, selected->cost_raw_native[0],
+                       !selected_empty, selected->barony_title_id,
+                       selected->province_id, selected->building_type_id,
+                       selected->slot_index,
+                       std::string_view{selected->building_key},
+                       selected_income, selected_old_income, selected_old_key}) {
       selected = &sample;
       selected_income = income;
+      selected_delta = delta;
+      selected_old_income = *old_income;
+      selected_empty = empty;
+      selected_old_key = old_key;
     }
   }
   if (selected == nullptr) {
