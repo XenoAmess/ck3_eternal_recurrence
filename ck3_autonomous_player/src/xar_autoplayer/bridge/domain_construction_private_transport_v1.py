@@ -274,6 +274,14 @@ def query_construction_private(driver: object, *, expected_revision: int,
                              "actor_character_id": starting["played_character"]["character_id"]}}
 
 
+def query_domain_construction_world_private_v1(
+        driver: object, *, expected_revision: int) -> dict[str, object]:
+    """Read the complete bound native world without selecting a pending tuple."""
+    return query_construction_private(
+        driver, expected_revision=expected_revision, material_receipt=True,
+    )
+
+
 def query_construction_wartime_observation_private(
         driver: object, *, expected_revision: int,
         include_world: bool = False) -> dict[str, object]:

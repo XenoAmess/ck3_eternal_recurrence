@@ -1690,6 +1690,20 @@ def create_server(
                 recipient_character_id=recipient_character_id,
             )
 
+    if getattr(driver, "allow_private_construction_formal_trial", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_domain_construction_world_private_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read the complete current native construction world and source proof."""
+            from .domain_construction_private_transport_v1 import (
+                query_domain_construction_world_private_v1,
+            )
+
+            return query_domain_construction_world_private_v1(
+                driver, expected_revision=expected_revision,
+            )
+
     if getattr(driver, "allow_private_war_cash_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_war_cash_current_resources_private_v1(
