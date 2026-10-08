@@ -138,28 +138,31 @@ def test_person_conditional_2921a90_12004_registered_mcp_whole_packets():
                     assert row["character_id"] == ENEMY != PLAYER
                     person = row["current_person_state"]
                     leaf = person[FIELD_NAME]
+                    assert leaf["character_id"] == person["following_2921a90"]["character_id"] == row["character_id"]
+                    source_inputs = {"character_id": row["character_id"],
+                                     "following_2921a90": person["following_2921a90"], FIELD_NAME: leaf}
                     leaves[name] = leaf
                     assert leaf["ready"] is ready and leaf["classifier_result_i32"] == classifier
                     assert leaf["build_version"] == CK3_12004.game_version
                     assert leaf["executable_sha256"] == CK3_12004.executable_sha256
                     for key in ("character_identity", "selected_model_identity", "selected_object_identity"):
                         assert leaf[key] == raw_leaf[key] == person["following_2921a90"][key]
-                    direct = emit_direct(person)
+                    direct = emit_direct(source_inputs)
                     assert len(direct) == 4
                     if ready:
-                        emitted[name] = emit_conditional(person)
-                        combined[name] = emit_complete(person)
+                        emitted[name] = emit_conditional(source_inputs)
+                        combined[name] = emit_complete(source_inputs)
                         assert combined[name][:4] == direct
                         assert len(combined[name]) == 4 + len(emitted[name])
                         assert len(emitted[name]) == leaf["occurrence_count"]
                     else:
-                        unavailable(emit_conditional, leaf["reason"], person)
-                        unavailable(emit_complete, leaf["reason"], person)
+                        unavailable(emit_conditional, leaf["reason"], source_inputs)
+                        unavailable(emit_complete, leaf["reason"], source_inputs)
                     available_rows = {}
                     for source in leaf["rows"]:
                         index = source["native_index"]
                         if source["ready"]:
-                            requests = emit_row(person, index)
+                            requests = emit_row(source_inputs, index)
                             if source["weight_q64"] == 0:
                                 assert requests == ()
                             else:
@@ -169,7 +172,7 @@ def test_person_conditional_2921a90_12004_registered_mcp_whole_packets():
                                 assert requests[0].definition_identity == source["object_identity"]
                             available_rows[index] = requests
                         else:
-                            unavailable(emit_row, source["reason"], person, index)
+                            unavailable(emit_row, source["reason"], source_inputs, index)
                     independent[name] = available_rows
                     assert endpoint.packet == packet
 
