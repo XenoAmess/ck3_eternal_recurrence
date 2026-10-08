@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12004_prisoner_mailbox.hpp"
+#include "xar_bridge/ck3_12004_prisoner_submission_lifecycle.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
@@ -330,7 +331,10 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
       query.material_target != 0 ? &query.keeper : nullptr,
       query.material_target != 0 ? &query.retained_state : nullptr);
   if (serialized.empty()) { failure = "prisoner collection serialization unavailable"; return true; }
+  if (query.completed)
+    (void)ObservePrisonerSubmissionAfterCollection12004(state, query.collection);
   ++state.query_sequence;
+  if (state.may_have_submitted) return true;
   state.current_quote.reset();
   state.quote_revision = state.quote_query_sequence = 0;
   state.current_release.reset();

@@ -3333,6 +3333,14 @@ class GameplayBridgeService:
                 result = submit_ransom_private(self.driver, plan=plan)
             elif selected_step == PRISONER_RELEASE_SUBMIT_STEP:
                 result = submit_release_formal(self.driver, plan=plan)
+            elif (selected_step.startswith("query-player-prisoner-collection-private-v1")
+                  and isinstance(plan.get("prisoner_release_refresh"), dict)):
+                refresh = plan["prisoner_release_refresh"]
+                result = self.driver.query_player_prisoner_collection_private_v1(
+                    expected_revision=int(planned["revision"]),
+                    ransom_ordinal=refresh["source_ordinal"],
+                    release_option_keys=refresh["release_option_keys"] or None,
+                )
             elif selected_step == PRISONER_RELEASE_RECEIPT_STEP:
                 pending = plan.get("prisoner_release_pending")
                 if not isinstance(pending, dict):

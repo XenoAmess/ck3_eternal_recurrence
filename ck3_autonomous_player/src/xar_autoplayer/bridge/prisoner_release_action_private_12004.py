@@ -129,7 +129,10 @@ def submit_player_prisoner_release_private_v1(
             or frame.get("request_id") != request_id):
         raise BridgeUnavailableError("private release command result is malformed")
     if frame.get("ok") is not True:
-        raise BridgeUnavailableError(f"private release native RED: {frame.get('error')!r}")
+        error = BridgeUnavailableError(f"private release native RED: {frame.get('error')!r}")
+        error.native_error = frame.get("error")
+        error.request_id = request_id
+        raise error
     if frame.get("result") != {"step": STEP, "accepted": True,
                               "status": "submitted_verification_pending"}:
         raise BridgeUnavailableError("private release ACK is not a material result")

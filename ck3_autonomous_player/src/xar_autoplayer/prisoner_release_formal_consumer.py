@@ -197,6 +197,16 @@ def plan_release_formal(
         return planned
     try:
         collection, war_reads = _observed_inputs(driver, snapshot)
+        refresh = getattr(driver, "_prisoner_release_requery_required", None)
+        if isinstance(refresh, dict):
+            signature = (collection.get("queried_snapshot_id"), collection.get("snapshot_revision"),
+                         collection.get("observation_revision"), collection.get("query_sequence")) if collection else None
+            if signature == refresh["rejected_query_signature"] or collection is None:
+                ordinal = refresh["source_ordinal"]
+                step = _QUERY_STEP if ordinal == 0 else f"{_QUERY_STEP}-ransom-ordinal-{ordinal}"
+                return {**planned, "plan": {**plan, "phase": "prisoner_release_fresh_query",
+                    "selected_step": step, "prisoner_release_refresh": refresh}}
+            driver._prisoner_release_requery_required = None
         if collection is None:
             return planned
         choice, observation = _observed_choice(snapshot, collection, war_reads)
@@ -218,7 +228,8 @@ def submit_release_formal(driver: object, *, plan: Mapping[str, object]) -> dict
     if not isinstance(choice, Mapping) or not isinstance(choice.get("collection"), Mapping):
         raise BridgeUnavailableError("formal release lacks its observed selected offer")
     state_dir = driver.state_dir
-    if read_release_ledger(state_dir)["pending"] is not None:
+    prior_ledger = read_release_ledger(state_dir)
+    if prior_ledger["pending"] is not None:
         raise BridgeUnavailableError("another prisoner release is unresolved")
     before = driver.take_internal_semantic_snapshot()
     actor, native, date = _frame(before)
@@ -237,9 +248,28 @@ def submit_release_formal(driver: object, *, plan: Mapping[str, object]) -> dict
                "release_option_mask_bits": choice["release_option_mask_bits"],
                "costs": choice["preview"]["costs"],
                "acceptance": choice["preview"]["acceptance"]}
-    write_json_atomic(state_dir / _LEDGER, {"pending": pending})
-    ack = driver.submit_player_prisoner_release_private_v1(
-        collection=choice["collection"], prisoner_character_id=choice["prisoner_character_id"])
+    write_json_atomic(state_dir / _LEDGER, {"pending": pending, "resolved": prior_ledger["resolved"]})
+    try:
+        ack = driver.submit_player_prisoner_release_private_v1(
+            collection=choice["collection"], prisoner_character_id=choice["prisoner_character_id"])
+    except BridgeUnavailableError as error:
+        if getattr(error, "native_error", None) != "private release terms or request are stale":
+            raise
+        write_json_atomic(state_dir / _LEDGER, prior_ledger)
+        collection = choice["collection"]
+        driver._prisoner_release_requery_required = {
+            "source_ordinal": choice["source_ordinal"],
+            "release_option_keys": list(choice["release_option_keys"]),
+            "rejected_query_signature": (collection.get("queried_snapshot_id"),
+                collection.get("snapshot_revision"), collection.get("observation_revision"),
+                collection.get("query_sequence")),
+        }
+        return {"status": "rejected_before_submit", "material_result": False,
+                "native_error": error.native_error, "request_id": error.request_id,
+                "player_character_id": actor,
+                "prisoner_character_id": choice["prisoner_character_id"],
+                "release_query_sequence": collection["query_sequence"],
+                "fresh_query_required": True}
     if (ack.get("status") != "submitted_verification_pending"
             or ack.get("material_result") is not False
             or ack.get("pre_native_revision") != native
@@ -247,5 +277,5 @@ def submit_release_formal(driver: object, *, plan: Mapping[str, object]) -> dict
         raise BridgeUnavailableError("native release submit lacks a pending-only ACK")
     pending.update(stage="receipt_pending", status="submitted_verification_pending",
                    action_ack=ack)
-    write_json_atomic(state_dir / _LEDGER, {"pending": pending})
+    write_json_atomic(state_dir / _LEDGER, {"pending": pending, "resolved": prior_ledger["resolved"]})
     return pending
