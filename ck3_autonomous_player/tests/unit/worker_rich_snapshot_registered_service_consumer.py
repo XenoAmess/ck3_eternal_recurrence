@@ -51,9 +51,19 @@ def require_rich_preservation(raw, result):
     assert result["date_raw"] == state["date_raw"]
     assert result["paused"] is True and result["map_ready"] is True
     assert result["played_character"]["character_id"] == 29829
-    assert len(result["player_armies"]) == len(state["player_armies"]) == 2
-    assert [r["army_id"] for r in result["player_armies"]] == [
-        r["army_id"] for r in state["player_armies"]]
+    # Public Snapshot merges explicit armies with controllable war allies.
+    assert len(state["player_armies"]) == 2
+    assert [r["army_id"] for r in state["player_armies"]] == [1201, 1202]
+    expected_armies = [*state["player_armies"],
+                       state["active_wars"][0]["allied_armies"][0],
+                       state["active_wars"][1]["allied_armies"][0]]
+    assert [r["army_id"] for r in expected_armies] == [1201, 1202, 1301, 1311]
+    assert len(result["player_armies"]) == 4
+    assert [r["army_id"] for r in result["player_armies"]] == [1201, 1202, 1301, 1311]
+    for observed, native in zip(result["player_armies"], expected_armies, strict=True):
+        for key in ("army_id", "owner_character_id", "current_province_id",
+                    "route_province_ids", "move_target_province_id", "controllable"):
+            assert observed[key] == native[key], (key, observed, native)
     wars = result["active_wars"]
     raw_wars = state["active_wars"]
     assert len(wars) == len(raw_wars) == 2
@@ -119,12 +129,15 @@ async def consume(wire_dir, result_dir, source_head):
                 assert response.is_error is False
                 result = response.structured_content
                 assert isinstance(result, dict)
-                require_rich_preservation(original, result)
-                assert raw == original
-                assert driver.state.raw_transport_snapshot()["native_packet"] == original
-                assert driver.state.raw_transport_snapshot()["semantic_packet_accepted"] is True
+                transport = driver.state.raw_transport_snapshot()
+                (result_dir / (name + ".raw-transport.json")).write_text(
+                    json.dumps(transport, indent=2) + "\n", encoding="utf-8")
                 (result_dir / (name + ".registered-snapshot.json")).write_text(
                     json.dumps(result, indent=2) + "\n", encoding="utf-8")
+                require_rich_preservation(original, result)
+                assert raw == original
+                assert transport["native_packet"] == original
+                assert transport["semantic_packet_accepted"] is True
                 samples.append(result)
         assert samples[1]["date_raw"] == samples[0]["date_raw"] + 1
         assert samples[1]["revision"] == samples[0]["revision"] + 1
