@@ -2,6 +2,12 @@
 
 ## 2026-10-09: Child education point trait observer qualified offline
 
+The next [actual linked collection after the person carrier](battle-person-following-2921a90-12004.md)
+has a frozen source tree and explicit remaining branches; implementation qualification is pending.
+The [finite M6 Chaplain live plan](m6-chaplain-native41-r79-live-plan.md)
+uses existing ordinary query and action paths. R79's first complete paused snapshot remains
+unqualified, so neither document adds live or gameplay credit.
+
 [Child education point trait inputs](child-education-point-traits-12004.md)
 closes the nine authored child-side HasTrait dependencies and separate
 eight-key educator role. The existing child query gains an optional private
