@@ -1,0 +1,15 @@
+{
+  "status": "ORIGINAL_BYTES_ZIP_VERIFIED_ONLY",
+  "loaded_source_head": "06159b964d859d30f2f07f4b183284df7d6dac47",
+  "original_files": 3408,
+  "archive": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0031-06159b964-finer-d2-diagnostic-red/raw-evidence.zip",
+    "bytes": 12289535,
+    "sha256": "9ec5087b9ff7c55aaa55bc1f2655b526ce4f4c2757e1203a307ba8503a3f6104"
+  },
+  "all_original_bytes_sha_match": true,
+  "save_body_reads": 0,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "formal_acceptance": null
+}
