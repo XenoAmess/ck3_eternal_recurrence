@@ -29,7 +29,7 @@ ReadCurrentCharacterPregnancyV1(const CoreBindings &core,
   ck3_11906::CurrentCharacterPregnancyReadV1 result{};
   if (!core.enabled || core.game_state_slot == nullptr ||
       *core.game_state_slot == nullptr) return result;
-  const auto *character = ResolveCoreCharacter(core, character_id);
+  const auto *character = xar::ck3_12004::ResolveCoreCharacter(core, character_id);
   if (character == nullptr ||
       Load<std::uint32_t>(character, kCharacterMagicOffset) != kCharacterMagic) {
     result.unavailable_reason = "native_pregnancy_character_unavailable";
