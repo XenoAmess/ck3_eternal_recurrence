@@ -4335,6 +4335,11 @@ def parser() -> argparse.ArgumentParser:
         help="enable the local stdio-only read of the current first-heir relation",
     )
     result.add_argument(
+        "--allow-private-construction-formal-trial",
+        action="store_true",
+        help="enable the existing private construction submit and material receipt Service path",
+    )
+    result.add_argument(
         "--allow-private-family-marriage-formal-trial",
         action="store_true",
         help="enable the existing private first-heir marriage and betrothal Service path",
@@ -4593,6 +4598,7 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_activity_feast_queries or args.private_war_cash_queries
             or args.private_family_obligations_query or args.private_council_query
             or args.allow_private_family_marriage_formal_trial
+            or args.allow_private_construction_formal_trial
             or args.private_realm_law_crown_action
             or args.private_active_scheme_sway_action or args.private_council_action
             or args.private_faction_gift_query or args.private_faction_gift_action
@@ -4650,6 +4656,8 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     driver.nonwar_only = args.nonwar_only
+    if args.allow_private_construction_formal_trial:
+        driver.allow_private_construction_formal_trial = True
     if args.allow_private_family_marriage_formal_trial:
         driver.allow_private_family_marriage_formal_trial = True
         driver.allow_private_current_first_heir_betrothal_fulfillment = True
