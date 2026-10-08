@@ -100,6 +100,80 @@ def clean_imports(source: Path) -> None:
     sys.path.insert(0, str(source))
 
 
+class CampaignSpeedPreSubmissionRevisionError(RuntimeError):
+    """An exact server-side rejection before the speed request was submitted."""
+
+    def __init__(self, receipt: dict[str, object]) -> None:
+        super().__init__(receipt["original_error"])
+        self.receipt = receipt
+
+
+def campaign_speed_presubmission_receipt(payload: object, name: str,
+        arguments: dict[str, object]) -> dict[str, object] | None:
+    schema = "ck3.qol.speed-presubmission-revision.v1"
+    if not isinstance(payload, dict) or payload.get("schema") != schema:
+        return None
+    fields = {"schema", "status", "accepted", "submitted", "step", "expected_revision",
+              "current_revision", "request_sequence_before", "request_sequence_after",
+              "original_error_type", "original_error"}
+    message = re.fullmatch(r"native gameplay revision mismatch: expected ([0-9]+), current ([0-9]+)",
+                           str(payload.get("original_error", "")))
+    if (set(payload) != fields or name != "ck3_execute_step"
+            or arguments.get("step") != "set-speed-1" or payload.get("step") != "set-speed-1"
+            or payload.get("status") != "PRE_SUBMISSION_REVISION_MISMATCH"
+            or payload.get("accepted") is not False or payload.get("submitted") is not False
+            or payload.get("original_error_type") != "PreSubmissionRevisionMismatchError"
+            or type(payload.get("original_error")) is not str
+            or type(arguments.get("expected_revision")) is not int
+            or any(type(payload.get(key)) is not int for key in
+                   ("expected_revision", "current_revision", "request_sequence_before", "request_sequence_after"))
+            or not 1 <= payload["expected_revision"] < payload["current_revision"] <= 2**64 - 1
+            or payload["expected_revision"] != arguments["expected_revision"]
+            or not 0 <= payload["request_sequence_before"] == payload["request_sequence_after"] <= 2**64 - 1
+            or message is None or tuple(map(int, message.groups())) !=
+               (payload["expected_revision"], payload["current_revision"])):
+        raise RuntimeError("malformed speed pre-submission rejection; no retry authorized")
+    return copy.deepcopy(payload)
+
+
+def install_campaign_speed_presubmission_transmission(driver: object, mismatch_type: type) -> None:
+    """Keep the driver's recorded failure and transmit only this proven non-submission."""
+    original = driver.execute_step
+
+    def execute_step(step: str, *, expected_revision: int | None = None) -> dict[str, object]:
+        sequence_before = getattr(driver, "_request_sequence", None)
+        try:
+            return original(step, expected_revision=expected_revision)
+        except mismatch_type as error:
+            diagnostics = driver.state.diagnostics()
+            hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+            if (not isinstance(hello, dict) or diagnostics.get("connected") is not True
+                    or hello.get("expected_ck3_version") != "1.20.0.4"
+                    or hello.get("expected_ck3_sha256") != "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+                    or hello.get("game_adapter_id") != "ck3-1.20.0.4-msvc-x64"
+                    or hello.get("ck3_build_match") is not True):
+                raise
+            sequence_after = getattr(driver, "_request_sequence", None)
+            message = re.fullmatch(r"native gameplay revision mismatch: expected ([0-9]+), current ([0-9]+)", str(error))
+            if (type(error) is not mismatch_type or driver.episode_projection != "native_campaign"
+                    or step != "set-speed-1" or type(expected_revision) is not int
+                    or type(sequence_before) is not int or type(sequence_after) is not int
+                    or not 0 <= sequence_before == sequence_after <= 2**64 - 1
+                    or message is None or int(message[1]) != expected_revision
+                    or not 1 <= expected_revision < int(message[2]) <= 2**64 - 1):
+                raise
+            payload = {"schema": "ck3.qol.speed-presubmission-revision.v1",
+                "status": "PRE_SUBMISSION_REVISION_MISMATCH", "accepted": False, "submitted": False,
+                "step": step, "expected_revision": expected_revision, "current_revision": int(message[2]),
+                "request_sequence_before": sequence_before, "request_sequence_after": sequence_after,
+                "original_error_type": type(error).__name__, "original_error": str(error)}
+            campaign_speed_presubmission_receipt(payload, "ck3_execute_step",
+                {"step": step, "expected_revision": expected_revision})
+            return payload
+
+    driver.execute_step = execute_step
+
+
 def native_server(args: argparse.Namespace) -> None:
     clean_imports(args.agent_source_root)
     from xar_autoplayer.bridge.native_driver import (
@@ -132,6 +206,8 @@ def native_server(args: argparse.Namespace) -> None:
         checkpoint_timeout_seconds=args.command_timeout, **driver_options,
     )
     if fixture_policy is not None:
+        from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
+        install_campaign_speed_presubmission_transmission(driver, PreSubmissionRevisionMismatchError)
         driver.frontend_fixture_start_policy_binding = {"policy_sha256": hashlib.sha256(fixture_policy_bytes).hexdigest(),
             "preparation_sha256": fixture_policy["preparation"]["sha256"]}
         server = create_server(driver, profile_dir=args.state_dir / "profile")
@@ -468,6 +544,9 @@ class PlanClient:
             row["ok"] = not row["is_error"]
             if not row["ok"]:
                 raise RuntimeError(f"MCP tool {name} returned an error: {row['payload']}")
+            rejection = campaign_speed_presubmission_receipt(row["payload"], name, arguments or {})
+            if rejection is not None:
+                raise CampaignSpeedPreSubmissionRevisionError(rejection)
             return row["payload"]
         except BaseException as error:
             row["ok"] = False
@@ -564,6 +643,72 @@ class PlanClient:
                 raise TimeoutError(f"snapshot did not reach {expected}: {snapshot}")
             await asyncio.sleep(self.args.poll_interval)
 
+    async def set_campaign_speed_one_presubmission_once(self, before: dict[str, object]) -> object:
+        """Refresh once only after an exact non-submitted speed rejection, under one deadline."""
+        diagnostics = before.get("diagnostics")
+        hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+        if (before.get("episode_projection") != "native_campaign" or not isinstance(hello, dict)
+                or hello.get("expected_ck3_version") != "1.20.0.4"):
+            return await self.invoke("ck3_execute_step", {"step": "set-speed-1"})
+        deadline = time.monotonic() + self.args.command_timeout
+        source = campaign_pause_frame_binding(before)
+        if before.get("paused") is not True:
+            raise RuntimeError("speed pre-submission guard requires the actual paused frame")
+        evidence: dict[str, object] = {"source": "campaign_speed_presubmission_same_owner_once_v1",
+            "started_at": now(), "deadline_seconds": self.args.command_timeout,
+            "refresh_count": 0, "attempts": [], "initial_snapshot_id": before["snapshot_id"],
+            "product_acceptance_proven": False}
+        self.report.setdefault("campaign_speed_presubmission", []).append(evidence)
+
+        def remaining() -> float:
+            managed_done = getattr(self, "managed_done", None)
+            if managed_done is not None and managed_done.is_set():
+                raise RuntimeError("managed native session ended before speed submission")
+            seconds = deadline - time.monotonic()
+            if seconds <= 0:
+                raise TimeoutError("speed pre-submission refresh exceeded its original deadline")
+            return seconds
+
+        async def full_frame() -> tuple[dict[str, object], dict[str, object]]:
+            seconds = remaining()
+            frame = await asyncio.wait_for(self.fresh(), seconds)
+            bound = require_campaign_pause_successor(source, frame)
+            if frame.get("paused") is not True or bound["date"] != source["date"]:
+                raise RuntimeError("speed pre-submission refresh changed the actual paused date")
+            return frame, bound
+
+        async def attempt(frame: dict[str, object], bound: dict[str, object]) -> object:
+            seconds = remaining()
+            evidence["attempts"].append({"snapshot_id": frame["snapshot_id"],
+                "expected_revision": bound["revision"], "date_raw": bound["date"]})
+            return await asyncio.wait_for(self.invoke("ck3_execute_step",
+                {"step": "set-speed-1", "expected_revision": bound["revision"]},
+                fresh_revision=False), seconds)
+
+        try:
+            frame, bound = await full_frame()
+            try:
+                result = await attempt(frame, bound)
+            except CampaignSpeedPreSubmissionRevisionError as error:
+                receipt = error.receipt
+                if receipt["expected_revision"] != bound["revision"]:
+                    raise RuntimeError("speed rejection crossed its exact submitted expectation") from error
+                evidence["original_rejection"] = copy.deepcopy(receipt)
+                successor, successor_bound = await full_frame()
+                if (successor_bound["revision"] < receipt["current_revision"]
+                        or successor_bound["revision"] <= bound["revision"]):
+                    raise RuntimeError("speed refresh did not reach the server's current full revision") from error
+                evidence["refresh_count"] = 1
+                result = await attempt(successor, successor_bound)
+            # A returned ACK is never replayed. The old full speed/advance/pause readbacks remain mandatory.
+            evidence.update(status="ACK_RETURNED_ORIGINAL_FULL_READBACKS_REQUIRED", finished_at=now())
+            return result
+        except BaseException as error:
+            evidence.update(status="FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED", finished_at=now(),
+                error_type=type(error).__name__, error=str(error))
+            raise
+
+
     async def pause_campaign_after_advance(self, starting: dict[str, object]) -> dict[str, object]:
         """At most one idempotent pause refresh under one original deadline."""
         deadline = time.monotonic() + self.args.command_timeout
@@ -637,7 +782,7 @@ class PlanClient:
     async def advance(self, row: dict[str, object]) -> dict[str, object]:
         await self.invoke("ck3_execute_step", {"step": "pause-map"})
         before = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
-        await self.invoke("ck3_execute_step", {"step": "set-speed-1"})
+        await self.set_campaign_speed_one_presubmission_once(before)
         await self.wait_snapshot({"speed": 1}, self.args.command_timeout)
         wait_for_actor_change = row.get("wait_for_played_character_change") is True
         if wait_for_actor_change and before.get("episode_projection") != "native_campaign":
