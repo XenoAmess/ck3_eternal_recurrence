@@ -82,6 +82,27 @@ a permanent execution restriction.
 
 ## Current opportunity and milestone boundary
 
+The existing denominator is defined in
+[g2-requirements-v1.json](../autonomous-agent-progress/g2-requirements-v1.json).
+Its accepted state is retained:
+
+| Milestone | Required visible outcome | Existing status |
+| --- | --- | --- |
+| M0 | War exit comparison, submit, independent postwar and cold result | Complete |
+| M1 | Ruler/title/capital/liege/vassal/neighbor core observation | Complete |
+| M2 | Three natural events, including two multi-option material outcomes | Complete |
+| M3 | Natural inheritance prediction/reconciliation and successor continuation | Historically complete; current Robert natural succession0 |
+| M4 | Construction, useful Council adjustment and vassal/faction material within two years | In progress |
+| M5 | At least five legal diplomacy/war choices and a verified selected path | Complete |
+| M6 | Scheme, prisoner/institutional action, nonreligious decision/law and activity lifecycle | In progress |
+| M7 | Multiple rulers/seeds/governments with the same intent across checkpoints/inheritance | In progress |
+
+The four-package nonwar queue is LIFE/ECON/FAMILY/JOINT: LIFE and FAMILY are
+complete, ECON and JOINT remain in progress. ECON additionally requires
+realized economic benefit; JOINT requires joint resource allocation. These
+are separate success contracts from M4's material construction start.
+An implementation lane called Crown/M7 does not redefine the original M7.
+
 The retained R76 fields at raw `53288496`, public revision8/native7, show
 Robert29829 alive and paused; SAVE024 preserved saved6007. The earlier
 construction opportunity at native6 on that date is barony2103/province2635,
