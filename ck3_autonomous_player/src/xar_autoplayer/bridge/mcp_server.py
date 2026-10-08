@@ -1539,6 +1539,17 @@ def create_server(
 
     if getattr(driver, "allow_private_active_scheme_sway_action", False) is True:
         @server.tool()
+        def ck3_finish_active_scheme_sway_private_v1(
+            expected_revision: int, target_character_id: int,
+            scheme_instance_id: int, scheme_instance_generation: int,
+        ) -> dict[str, object]:
+            """Finish the beneficial original selected Sway; observe its retained end."""
+            return service.finish_active_scheme_sway_private_v1(
+                expected_revision=expected_revision, target_character_id=target_character_id,
+                scheme_instance_id=scheme_instance_id,
+                scheme_instance_generation=scheme_instance_generation)
+
+        @server.tool()
         def ck3_start_active_scheme_sway_private_v1(
             readback: dict[str, object], action_id: str,
         ) -> dict[str, object]:
@@ -4413,7 +4424,7 @@ def parser() -> argparse.ArgumentParser:
     )
     result.add_argument(
         "--private-active-scheme-sway-action", action="store_true",
-        help="enable explicit private Sway quote, typed start and independent receipt",
+        help="enable explicit private Sway quote, typed start, selected finish and independent receipt",
     )
     result.add_argument(
         "--private-council-action", action="store_true",

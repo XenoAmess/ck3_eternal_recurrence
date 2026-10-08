@@ -744,6 +744,18 @@ class GameplayBridgeService:
             raise UnsupportedStepError("bridge driver does not implement core-frame query")
         return query()
 
+    def finish_active_scheme_sway_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+        scheme_instance_id: int, scheme_instance_generation: int,
+    ) -> dict[str, object]:
+        """Finish one beneficial original player episode, then independently observe."""
+        from ..sway_stop_consumer import finish_selected_sway_private_v1
+
+        return finish_selected_sway_private_v1(
+            self, expected_revision=expected_revision, target_character_id=target_character_id,
+            scheme_instance_id=scheme_instance_id,
+            scheme_instance_generation=scheme_instance_generation)
+
     def query_active_scheme_sway_completion_private_v1(
         self, *, expected_revision: int, target_character_id: int,
         scheme_instance_id: int,

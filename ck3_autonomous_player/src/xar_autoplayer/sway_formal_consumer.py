@@ -312,10 +312,16 @@ def _consume_episode_following_turn(resolved: Mapping[str, object],
         resolved.get("terminal_intervention"), actor_character_id=actor_id,
         native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
     )
+    stop_record = resolved.get("stop_intervention")
+    stop = (consume_sway_material_following_turn(
+        stop_record, actor_character_id=actor_id,
+        native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
+    ) if isinstance(stop_record, Mapping)
+         and stop_record.get("postcondition_verified") is True else None)
     start_consumed = (resolved.get("next_turn_consumed") is not True
                       and (snapshot["native_revision"] > resolved["post_native_revision"]
                            or snapshot["date_raw"] > resolved["post_date_raw"]))
-    if not start_consumed and material is None and terminal is None:
+    if not start_consumed and material is None and terminal is None and stop is None:
         return None
     if start_consumed:
         resolved = {**resolved, "next_turn_consumed": True,
@@ -325,4 +331,6 @@ def _consume_episode_following_turn(resolved: Mapping[str, object],
         resolved = {**resolved, "material_intervention": material}
     if terminal is not None:
         resolved = {**resolved, "terminal_intervention": terminal}
+    if stop is not None:
+        resolved = {**resolved, "stop_intervention": stop}
     return resolved

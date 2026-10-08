@@ -9,6 +9,9 @@
 #include "active_scheme_sway_formal_private_transport_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "xar_bridge/ck3_12004_sway_terminal.hpp"
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+#include "xar_bridge/ck3_12004_sway_stop.hpp"
+#endif
 #endif
 #include "ck3_12002_activity_feast_router.hpp"
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
@@ -334,7 +337,9 @@ void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept 
   out.sway_completion = &ck3_12004::ExecuteSwayTerminalMailbox12004;
   out.sway_state = &ExecuteActiveSwayMailbox12002;
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
-  out.sway_action = &ExecuteActiveSwayMailbox12002;
+  // Dedicated ACTION slot58; the unchanged state slot55 continues to admit
+  // the old target/Start/receipt callback. Never reuse a readonly completion.
+  out.sway_action = &ck3_12004::ExecuteSelectedSwayStop12004;
 #endif
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1)
@@ -481,6 +486,7 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
   if (ck3_11906::ParseActiveSchemeSwayPrivateQueryStepV1(step, sway_target))
     return true;
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+  if (step == ck3_12004::kSwayStopStep12004) return true;
   ck3_11906::ActiveSchemeSwayFormalModeV1 sway_mode{};
   if (ck3_11906::ParseActiveSchemeSwayFormalStepV1(step, sway_mode, sway_target))
     return true;
@@ -876,6 +882,12 @@ bool HandleNonwarPrivate12002(
           step, payload, request_id, serialized, failure);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+    if (game::IsCk3_12004Descriptor(native.descriptor()) &&
+        step == ck3_12004::kSwayStopStep12004)
+      return ck3_12004::HandleSelectedSwayStop12004(native, mailbox, published,
+          revision, step, payload, request_id, serialized, failure);
+#endif
     if (step == kSwayCompletionStepV1) {
       if (game::IsCk3_12004Descriptor(native.descriptor()))
         return ck3_12004::HandleSwayTerminal12004(

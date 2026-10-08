@@ -2913,6 +2913,18 @@ class NativeHeadlessGameplayDriver:
         return submit_active_scheme_sway_private_v1(
             self, readback=readback, action_id=action_id)
 
+    def stop_active_scheme_sway_private_v1(
+        self, *, expected_revision: int, target_character_id: int,
+        scheme_instance_id: int, scheme_instance_generation: int, action_id: str,
+    ) -> dict[str, object]:
+        """Queue a selected owned actual4 instance Stop; independently read its end."""
+        from .active_scheme_sway_stop_private_transport import stop_active_scheme_sway_private_v1
+
+        return stop_active_scheme_sway_private_v1(
+            self, expected_revision=expected_revision, target_character_id=target_character_id,
+            scheme_instance_id=scheme_instance_id,
+            scheme_instance_generation=scheme_instance_generation, action_id=action_id)
+
     def query_active_scheme_sway_receipt_private_v1(
         self, *, target_character_id: int, action_id: str,
         expected_revision: int, pre_capture_epoch: int,

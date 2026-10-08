@@ -129,6 +129,8 @@ def has_pending_sway_following_turn(state_dir: Path) -> bool:
         episode.get("next_turn_consumed") is not True
         or any(isinstance(episode.get(key), Mapping)
                and episode[key].get("next_turn_consumed") is not True
-               for key in ("material_intervention", "terminal_intervention"))
+               and (key != "stop_intervention"
+                    or episode[key].get("postcondition_verified") is True)
+               for key in ("material_intervention", "terminal_intervention", "stop_intervention"))
         for episode in [resolved, *resolved.get("previous_interventions", [])]
     )
