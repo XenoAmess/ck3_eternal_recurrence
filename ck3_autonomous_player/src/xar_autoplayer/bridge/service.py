@@ -12218,6 +12218,27 @@ class GameplayBridgeService:
     def query_confucian_religious_title_v1(self, *, expected_revision: int) -> dict[str, object]:
         return self._query_confucian_readonly_v1("religious_title", expected_revision=expected_revision)
 
+    def query_actor_cached_succession_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .actor_cached_succession_private_v1 import (
+            query_binding, same_query_frame, normalize_public_query,
+        )
+        method = getattr(self.driver, "query_actor_cached_succession_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks private actor cached-succession observation")
+        before = self.driver.take_snapshot()
+        try:
+            binding = query_binding(before, expected_revision)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        result = method(expected_revision=expected_revision)
+        after = self.driver.take_snapshot()
+        if not same_query_frame(before, after, binding):
+            raise BridgeUnavailableError("cached-succession backend crossed its paused owner/frame")
+        try:
+            return normalize_public_query(result, binding)
+        except ValueError as error:
+            raise BridgeUnavailableError("malformed public cached-succession read: " + str(error)) from error
+
     def query_current_actor_stress_adjustment_v1(
         self, base_amount: int, *, expected_revision: int,
     ) -> dict[str, object]:

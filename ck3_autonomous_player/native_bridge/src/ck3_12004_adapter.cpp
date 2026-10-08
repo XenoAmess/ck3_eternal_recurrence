@@ -1,4 +1,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+#include "xar_bridge/actor_cached_succession12004_mailbox.hpp"
+#endif
 #include "xar_bridge/ck3_12004_tactical_daily_sentinel.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
@@ -46,6 +49,9 @@ void ReplaceIdentityToken(std::string &serialized, std::string_view from,
 const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
   static constexpr auto capabilities = std::to_array<std::string_view>({
       "game.query.core-frame.v1",
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+      ck3_12004::kActorCachedSuccessionCapabilityV1,
+#endif
       "game.state.snapshot", "game.state.xar-one-life-settlement",
       "game.state.map-ready", "game.state.played-character",
       "game.state.active-event", "game.state.pending-character-interaction",

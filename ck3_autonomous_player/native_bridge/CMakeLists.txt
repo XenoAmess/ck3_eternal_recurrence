@@ -984,7 +984,9 @@ if(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confucian_assembly_predicates.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12004_confucian_assembly_bindings.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confucian_assembly_mailbox.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confucian_assembly_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/actor_cached_succession12004_v1.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/actor_cached_succession12004_mailbox.cpp")
 endif()
 if(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
@@ -9219,6 +9221,19 @@ include(cmake/current_province73c_classification_12003.cmake)
 include(cmake/current_assault_removal_references_12003.cmake)
 include(cmake/pre_date_pending_and_dated_inputs_12003.cmake)
 include(cmake/current_post_admission_refresh_inputs_12003.cmake)
+# Exact .4 complete actor cached-succession value reader; no game or pipe.
+if(BUILD_TESTING)
+  add_executable(xar_ck3_12004_actor_cached_succession_v1_test
+    src/actor_cached_succession12004_v1.cpp
+    src/actor_cached_succession12004_v1_test.cpp)
+  target_include_directories(xar_ck3_12004_actor_cached_succession_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_actor_cached_succession_v1_test PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_actor_cached_succession_v1_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_12004_actor_cached_succession_v1_test COMMAND xar_ck3_12004_actor_cached_succession_v1_test)
+endif()
+
 # Additive focused fixture: native reads and JSON only, no game or input.
 if(BUILD_TESTING)
   add_executable(xar_confucian_assembly_predicates_v1_test

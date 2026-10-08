@@ -5,6 +5,9 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+#include "xar_bridge/actor_cached_succession12004_mailbox.hpp"
+#endif
 #include "xar_bridge/title_holder_v1_serializer.hpp"
 #include "xar_bridge/player_claims_v1_serializer.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
@@ -470,6 +473,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kWhiteRenderedTextV1Capability;
   } else if (step == ck3_11906::kWhitePlayerBusinessVariablesV1Step) {
     capability = ck3_11906::kWhitePlayerBusinessVariablesV1Capability;
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+  } else if (step == ck3_12004::kActorCachedSuccessionPrivateStepV1) {
+    if (!IsCk3_12004Descriptor(descriptor())) return false;
+    capability = ck3_12004::kActorCachedSuccessionCapabilityV1;
+#endif
   } else if (step == ck3_12003::kNormalExitMapV1Step) {
     if ((descriptor().game_version != ck3_12003::kGameVersion ||
          descriptor().executable_sha256 != ck3_12003::kExecutableSha256) &&

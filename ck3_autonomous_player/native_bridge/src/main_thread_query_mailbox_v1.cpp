@@ -533,6 +533,7 @@ bool InstallMainThreadQueryMailboxV1(
        environment.permitted_executor_regular_maa_create12003 == nullptr &&
        environment.permitted_executor_current_actor_stress_adjustment12003 == nullptr &&
        environment.permitted_executor_confucian_assembly12003 == nullptr &&
+       environment.permitted_executor_actor_cached_succession12004 == nullptr &&
        environment.permitted_executor_confucian_religious_title12003 == nullptr &&
        environment.permitted_executor_confucian_challenger_graph12003 == nullptr &&
        environment.permitted_executor_ordinary_interaction12003 == nullptr &&
@@ -976,6 +977,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_current_actor_stress_adjustment12003;
   mailbox.permitted_executor_confucian_assembly12003 =
       environment.permitted_executor_confucian_assembly12003;
+  mailbox.permitted_executor_actor_cached_succession12004 =
+      environment.permitted_executor_actor_cached_succession12004;
   mailbox.permitted_executor_confucian_religious_title12003 =
       environment.permitted_executor_confucian_religious_title12003;
   mailbox.permitted_executor_confucian_challenger_graph12003 =
@@ -1249,6 +1252,7 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
   mailbox.permitted_executor_regular_maa_create12003 = nullptr;
   mailbox.permitted_executor_current_actor_stress_adjustment12003 = nullptr;
   mailbox.permitted_executor_confucian_assembly12003 = nullptr;
+  mailbox.permitted_executor_actor_cached_succession12004 = nullptr;
   mailbox.permitted_executor_confucian_religious_title12003 = nullptr;
   mailbox.permitted_executor_confucian_challenger_graph12003 = nullptr;
   mailbox.permitted_executor_ordinary_interaction12003 = nullptr;
@@ -1359,6 +1363,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
          mailbox.permitted_executor_regular_maa_create12003 != nullptr ||
          mailbox.permitted_executor_current_actor_stress_adjustment12003 != nullptr ||
          mailbox.permitted_executor_confucian_assembly12003 != nullptr ||
+         mailbox.permitted_executor_actor_cached_succession12004 != nullptr ||
          mailbox.permitted_executor_confucian_religious_title12003 != nullptr ||
          mailbox.permitted_executor_confucian_challenger_graph12003 != nullptr ||
          mailbox.permitted_executor_ordinary_interaction12003 != nullptr ||
@@ -1485,6 +1490,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        executor != mailbox.permitted_executor_regular_maa_create12003 &&
        executor != mailbox.permitted_executor_current_actor_stress_adjustment12003 &&
        executor != mailbox.permitted_executor_confucian_assembly12003 &&
+       executor != mailbox.permitted_executor_actor_cached_succession12004 &&
        executor != mailbox.permitted_executor_confucian_religious_title12003 &&
        executor != mailbox.permitted_executor_confucian_challenger_graph12003 &&
        executor != mailbox.permitted_executor_ordinary_interaction12003 &&

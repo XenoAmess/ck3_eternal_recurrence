@@ -17,6 +17,7 @@ PURE_DTO_FUNCTIONS = (
     'project_native_query', 'normalize_public_query',
 )
 GRAPH_TOOL_NAME = 'ck3_query_profile_confucian_challenger_graph_v1'
+ACTOR_CACHE_TOOL_NAME = 'ck3_query_profile_actor_cached_succession_v1'
 GRANT_TOOL_NAMES = (
     'ck3_query_profile_grant_title_picker_v1',
     'ck3_prepare_profile_grant_title_picker_v1',
@@ -72,9 +73,9 @@ def verify_codec_artifact(descriptor, declared_sha256):
             'source_executed': False, 'actual_acceptance_credit': None}
 
 def verify_metadata_artifact(metadata, descriptor, declared_sha256):
-    """Keep actual factory 23/24/28 identity and exact frozen G2/G3 Tool schemas."""
+    """Keep explicit 23/24/28/29 identities and exact frozen G2/G3 schemas."""
     need(descriptor['sha256'] == declared_sha256, 'actual SDK metadata descriptor SHA differs')
-    need(type(metadata) is list and len(metadata) in (23, 24, 28), 'actual SDK metadata must explicitly contain 23, 24 or 28 tools')
+    need(type(metadata) is list and len(metadata) in (23, 24, 28, 29), 'actual SDK metadata must explicitly contain 23, 24, 28 or 29 tools')
     need(all(type(row) is dict and type(row.get('name')) is str for row in metadata), 'SDK Tool metadata rows')
     rows = {row['name']: row for row in metadata}
     need(len(rows) == len(metadata), 'duplicate SDK Tool metadata names')
@@ -84,11 +85,20 @@ def verify_metadata_artifact(metadata, descriptor, declared_sha256):
     reference = json.loads(reference_raw)
     names = set(reference['readonly23_tool_names'])
     wanted_names = names if len(metadata) == 23 else names | {GRAPH_TOOL_NAME}
-    if len(metadata) == 28:
+    if len(metadata) in (28, 29):
         wanted_names |= set(GRANT_TOOL_NAMES)
-    need(set(rows) == wanted_names and len(wanted_names) == len(metadata), 'actual SDK metadata tool set differs from declared readonly23/challenger24/grant28 factory')
+    if len(metadata) == 29:
+        wanted_names.add(ACTOR_CACHE_TOOL_NAME)
+    need(set(rows) == wanted_names and len(wanted_names) == len(metadata), 'actual SDK metadata tool set differs from declared readonly23/challenger24/grant28/actor-cache29 factory')
     for name, row in reference['G2_G3_tools'].items():
         need(json.dumps(rows[name], sort_keys=True, separators=(',', ':'), allow_nan=False) == json.dumps(row, sort_keys=True, separators=(',', ':'), allow_nan=False), 'actual SDK G2/G3 Tool metadata differs: ' + name)
+    if len(metadata) == 29:
+        actor_cache = json.loads(json.dumps(reference['G2_G3_tools']['ck3_query_profile_confucian_assembly_predicates_v1']))
+        actor_cache['name'] = ACTOR_CACHE_TOOL_NAME
+        actor_cache['description'] = "Read the actor's complete native cached successor IDs in original order."
+        actor_cache['inputSchema']['title'] = ACTOR_CACHE_TOOL_NAME + 'Arguments'
+        actor_cache['outputSchema']['title'] = ACTOR_CACHE_TOOL_NAME + 'DictOutput'
+        need(json.dumps(rows[ACTOR_CACHE_TOOL_NAME], sort_keys=True, separators=(',', ':'), allow_nan=False) == json.dumps(actor_cache, sort_keys=True, separators=(',', ':'), allow_nan=False), 'actual SDK actor-cache Tool metadata differs from its closed readonly revision-only schema')
     return {'actual_artifact': dict(descriptor), 'actual_sha256': declared_sha256,
             'actual_tool_count': len(metadata), 'G2_G3_tools_exact': True,
             'readonly23_reference_sha256': reference['readonly23_source_artifact_sha256'],

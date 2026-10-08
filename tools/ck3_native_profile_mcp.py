@@ -18,6 +18,7 @@ from pydantic import AfterValidator, Field
 
 NormalExitRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
 ConfucianReadonlyRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
+ActorCachedSuccessionRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
 ConfucianFaithFullIdV1 = Annotated[int, Field(strict=True, ge=0, lt=2**32-1)]
 
 def _unique_confucian_faith_ids_v1(value):
@@ -795,6 +796,32 @@ class NativeProfileService:
                 "full_product_acceptance_credit": False,
             })
 
+    def query_actor_cached_succession(self, expected_revision: int) -> dict:
+        from xar_autoplayer.bridge.actor_cached_succession_private_v1 import (
+            PERMISSION, query_binding, same_query_frame, normalize_public_query,
+        )
+        if getattr(self, "_actor_cached_succession_tools_enabled_v1", False) is not True:
+            raise RuntimeError("private actor cached-succession tool is disabled")
+        with self._lock:
+            before = self._bound_frame(expected_revision, paused=True)
+            binding = query_binding(before, expected_revision)
+            gameplay = self._gameplay_service()
+            previous = getattr(self.driver, PERMISSION, False)
+            setattr(self.driver, PERMISSION, True)
+            try:
+                result = gameplay.query_actor_cached_succession_v1(expected_revision=expected_revision)
+            finally:
+                setattr(self.driver, PERMISSION, previous)
+            after = self._bound_frame(expected_revision, paused=True)
+            if not same_query_frame(before, after, binding):
+                raise RuntimeError("profile cached-succession query crossed its paused owner/frame")
+            result = normalize_public_query(result, binding)
+            return self._receipt("actor-cached-succession-query", {
+                "status": "native_actor_cached_succession_" + result["native_result"]["status"],
+                "result": result, "business_effects_verified": False,
+                "full_product_acceptance_credit": False,
+            })
+
     def query_stress_adjustment(self, base_amount: int, expected_revision: int) -> dict:
         from xar_autoplayer.bridge.current_actor_stress_adjustment_contract import (
             validate_base_amount, stress_query_binding, same_stress_query_frame, normalize_public_stress_query,
@@ -1068,7 +1095,10 @@ def create_clock_server(service: NativeClockProfileService):
 
 def create_server(service: NativeProfileService, *, player_control_tools: bool = False,
                   confucian_readonly_tools: bool = False, confucian_challenger_tools: bool = False,
-                  grant_title_picker_tools: bool = False):
+                  grant_title_picker_tools: bool = False, actor_cached_succession_tools: bool = False):
+    if type(actor_cached_succession_tools) is not bool:
+        raise ValueError("actor_cached_succession_tools must be an explicit boolean")
+    service._actor_cached_succession_tools_enabled_v1 = actor_cached_succession_tools
     if type(grant_title_picker_tools) is not bool:
         raise ValueError("grant_title_picker_tools must be an explicit boolean")
     service._grant_title_picker_tools_enabled_v1 = grant_title_picker_tools
@@ -1180,6 +1210,12 @@ def create_server(service: NativeProfileService, *, player_control_tools: bool =
                  "ck3_pause_profile_simulation_v1",
                  "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1"):
         _forbid_unknown_tool_arguments_v1(server, name)
+    if actor_cached_succession_tools:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+        def ck3_query_profile_actor_cached_succession_v1(expected_revision: ActorCachedSuccessionRevisionV1) -> dict[str, object]:
+            """Read the actor's complete native cached successor IDs in original order."""
+            return service.query_actor_cached_succession(expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_profile_actor_cached_succession_v1")
     if confucian_readonly_tools or confucian_challenger_tools:
         @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
         def ck3_query_profile_confucian_assembly_predicates_v1(expected_revision: ConfucianReadonlyRevisionV1) -> dict[str, object]:
@@ -1257,8 +1293,10 @@ def main() -> None:
                         help="Resume the original attached DLL and admit 23 tools only after actual readonly capability/source proof")
     parser.add_argument("--grant-title-picker-tools", action="store_true",
                         help="Explicit four stock grant window tools; each requires new native .3 capability/pins")
+    parser.add_argument("--actor-cached-succession-tools", action="store_true",
+                        help="Add one private exact .4 actor cached-succession observation; disabled by default")
     args = parser.parse_args()
-    if args.clock_only and (args.player_control_tools or args.confucian_readonly_tools or args.confucian_challenger_tools or args.grant_title_picker_tools):
+    if args.clock_only and (args.player_control_tools or args.confucian_readonly_tools or args.confucian_challenger_tools or args.grant_title_picker_tools or args.actor_cached_succession_tools):
         parser.error("private native tools require the native gameplay profile")
     if args.clock_only:
         create_clock_server(NativeClockProfileService(load_clock_profile(args.profile))).run(transport="stdio")
@@ -1272,7 +1310,8 @@ def main() -> None:
         create_server(service, player_control_tools=args.player_control_tools,
                       confucian_readonly_tools=args.confucian_readonly_tools,
                       confucian_challenger_tools=args.confucian_challenger_tools,
-                      grant_title_picker_tools=args.grant_title_picker_tools).run(transport="stdio")
+                      grant_title_picker_tools=args.grant_title_picker_tools,
+                      actor_cached_succession_tools=args.actor_cached_succession_tools).run(transport="stdio")
     finally:
         service.close()
 

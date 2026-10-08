@@ -393,6 +393,7 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
       !game::IsCk3_12004Descriptor(adapter.descriptor())) return false;
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
   if (ck3_12003::IsConfucianAssemblyPrivateStep12003(step)) return true;
+  if (ck3_12004::IsActorCachedSuccessionPrivateStepV1(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
   if (ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step)) return true;
@@ -577,6 +578,7 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
   if (ck3_12003::IsConfucianAssemblyPrivateStep12003(step)) return true;
+  if (ck3_12004::IsActorCachedSuccessionPrivateStepV1(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
   if (ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step)) return true;
@@ -846,6 +848,9 @@ bool HandleNonwarPrivate12002(
           step, payload, request_id, serialized, failure);
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+    if (ck3_12004::IsActorCachedSuccessionPrivateStepV1(step))
+      return ck3_12004::HandleActorCachedSuccessionPrivateV1(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
     if (ck3_12003::IsConfucianAssemblyPrivateStep12003(step))
       return ck3_12003::HandleConfucianAssemblyPrivate12003(native, mailbox, published, revision,
           step, payload, request_id, serialized, failure);

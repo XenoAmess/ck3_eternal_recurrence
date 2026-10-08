@@ -6,6 +6,7 @@
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
+#include "xar_bridge/actor_cached_succession12004_mailbox.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_confucian_religious_title_mailbox.hpp"

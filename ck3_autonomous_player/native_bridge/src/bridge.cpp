@@ -23,6 +23,7 @@
 #include "xar_bridge/state_snapshot_frame_v1.hpp"
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
+#include "xar_bridge/actor_cached_succession12004_mailbox.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_confucian_religious_title_mailbox.hpp"
@@ -11259,6 +11260,10 @@ public:
       environment.permitted_executor_confucian_assembly12003 =
           &xar::ck3_12003::ExecuteConfucianAssemblyMailbox12003;
 #endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+      environment.permitted_executor_actor_cached_succession12004 =
+          &xar::ck3_12004::ExecuteActorCachedSuccessionMailboxV1;
+#endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
       environment.permitted_executor_confucian_religious_title12003 =
           &xar::ck3_12003::ExecuteConfucianReligiousTitleMailbox12003;
@@ -14509,6 +14514,7 @@ void RunConnectedSession(
                        step.starts_with(xar::game::kTitleHolderV1StepPrefix)
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
                        || xar::ck3_12003::IsConfucianAssemblyPrivateStep12003(step)
+                       || xar::ck3_12004::IsActorCachedSuccessionPrivateStepV1(step)
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
                        || xar::ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step)
@@ -14699,6 +14705,12 @@ void RunConnectedSession(
             if (xar::ck3_12002::IsPlayerRiteMembersPrivateStep12002(step)) {
               current_revision_allowed = true;
               revision_parsed = xar::ck3_12002::ParsePlayerRiteMembersRevision12002(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+            if (xar::ck3_12004::IsActorCachedSuccessionPrivateStepV1(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12004::ParseActorCachedSuccessionRevisionV1(incoming.payload, expected_revision);
             } else
 #endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
