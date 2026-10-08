@@ -885,6 +885,7 @@ class GameplayBridgeService:
                     return snapshot
             root_query_retry = None
             query_history_index = None
+            planning_root_result = None
             history_view = getattr(self.driver, "_with_internal_planning_view", None)
             history_snapshot = getattr(self.driver, "_history_snapshot", None)
             if (
@@ -892,14 +893,29 @@ class GameplayBridgeService:
                 and callable(history_view)
                 and callable(history_snapshot)
             ):
-                # Internal semantic frames omit transcript evidence. Keep only
-                # its position here; copy the real prefix on a rejected read.
-                query_history_index = history_view(
-                    snapshot, lambda _frame, history: {"index": len(history)}
-                )["index"]
+                # Keep the current root and history position; copy the full
+                # transcript prefix only when a rejected read needs recovery.
+                from ..strategy import _effective_command, _effective_command_result
+                from .current_first_heir_relationship_private_transport import (
+                    _same_frame_campaign_root_result,
+                )
+
+                def initial_root_history(frame, history):
+                    root = next((result for row in reversed(history)
+                        if row.get("ok") is True
+                        and _effective_command(row) == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+                        if (result := _same_frame_campaign_root_result(
+                            _effective_command_result(row), frame)) is not None), None)
+                    return {"index": len(history), "root": root}
+
+                root_history = history_view(snapshot, initial_root_history)
+                query_history_index = root_history["index"]
+                planning_root_result = root_history["root"]
             try:
                 turn_bundle = self.query_turn_bundle_v1(
-                    expected_revision=revision
+                    expected_revision=revision,
+                    **({"_planning_root_result": planning_root_result}
+                       if planning_root_result is not None else {}),
                 )
             except BridgeUnavailableError as error:
                 if getattr(error, "native_error", None) not in {
@@ -5244,6 +5260,7 @@ class GameplayBridgeService:
         self,
         *,
         expected_revision: int,
+        _planning_root_result: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Read the exact-build local-player campaign root while paused."""
         snapshot = self.snapshot()
@@ -5313,10 +5330,20 @@ class GameplayBridgeService:
             raise UnsupportedStepError(
                 "selected backend cannot query the campaign root context"
             )
-        result = self.execute_step(
-            QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
-            expected_revision=expected_revision,
-        )
+        result = None
+        if _planning_root_result is not None:
+            from .current_first_heir_relationship_private_transport import (
+                _same_frame_campaign_root_result,
+            )
+
+            result = _same_frame_campaign_root_result(
+                _planning_root_result, snapshot,
+            )
+        if result is None:
+            result = self.execute_step(
+                QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+                expected_revision=expected_revision,
+            )
         mirror_keys = {
             "schema_version",
             "date_raw",
@@ -6098,12 +6125,15 @@ class GameplayBridgeService:
         self,
         *,
         expected_revision: int,
+        _planning_root_result: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Aggregate root, player vitals, alerts, pending and war state."""
 
         snapshot = self.snapshot()
         root = self.query_campaign_root_context_v1(
-            expected_revision=expected_revision
+            expected_revision=expected_revision,
+            **({"_planning_root_result": _planning_root_result}
+               if _planning_root_result is not None else {}),
         )
         try:
             return build_turn_bundle_v1(snapshot, root)
