@@ -25,11 +25,14 @@ def construction_economic_outcome_v1(
     """Classify a durable receipt; do not read the game or schedule an action."""
     candidate = receipt.get("candidate")
     candidate = candidate if isinstance(candidate, Mapping) else {}
+    selection_mismatch = receipt.get("status") == "observed_mismatched_construction"
     verified = receipt.get("postcondition_verified") is True
     completed = (receipt.get("status") == "applied" and verified
                  and receipt.get("completion_status") == "completed")
     completion_date = receipt.get("completion_observed_date_raw")
-    if receipt.get("status") == "restored_before_action":
+    if selection_mismatch:
+        phase = "observed_mismatched_construction"
+    elif receipt.get("status") == "restored_before_action":
         phase = "restored_before_action"
     elif completed:
         phase = "completed"
@@ -79,7 +82,10 @@ def construction_economic_outcome_v1(
         "pre_submit_province_income_unavailable" if province_pre is None else
         "post_completion_province_income_unavailable"
     )
-    if phase == "pending":
+    if selection_mismatch:
+        next_observation = ("scheduled_completion_watch"
+                            if receipt.get("completion_status") != "completed" else None)
+    elif phase == "pending":
         next_observation = "independent_construction_material_receipt"
     elif phase == "active":
         next_observation = "scheduled_completion_watch"
@@ -194,8 +200,11 @@ def construction_economic_outcome_v1(
         "exact_ck3_build": exact_ck3_build,
         "material_completed": completed,
         "completion_observed_date_raw": completion_date if completed else None,
-        "authored_direct_monthly_income_delta_hundredths": candidate.get(
-            "authored_monthly_income_delta_hundredths"),
+        "authored_direct_monthly_income_delta_hundredths": (
+            None if selection_mismatch else candidate.get(
+                "authored_monthly_income_delta_hundredths")),
+        "requested_construction_verified": not selection_mismatch and verified,
+        "observed_material_tuple": receipt.get("observed_material_tuple"),
         "player_gross_monthly_income_change": {
             "ready": gross_ready, "unavailable_reason": gross_reason,
             "scale": 100_000, "time_basis": "month",

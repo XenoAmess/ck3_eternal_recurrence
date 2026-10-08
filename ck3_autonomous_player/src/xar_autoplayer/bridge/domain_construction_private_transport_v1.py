@@ -509,6 +509,11 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
     except Exception as error:
         raise StepPostconditionError("construction native submit uncertain; query state before retry",
                                      selected_step=SUBMIT_STEP, step_result=pending) from error
+    # Preserve the actual body before interpreting the ACK. R80 returned a
+    # body, but its failed predicate discarded which ACK field disagreed.
+    # The later readonly world independently exposed a different selection.
+    pending = {**pending, "native_submit_result": dict(result)}
+    write_construction_ledger(state_dir, {**ledger, "pending": pending})
     probe = result.get("private_probe")
     ack = probe.get("private_action") if isinstance(probe, Mapping) else None
     if not (result.get("step") == ACTION_NATIVE and result.get("accepted") is True
@@ -592,14 +597,40 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
     if not (isinstance(world, Mapping) and isinstance(candidate, Mapping)
             and _positive(epoch) and (not same_process or epoch > pending["pre_proof_epoch"])):
         raise BridgeUnavailableError("construction material proof unavailable; keep pending")
+    material_candidate = pending.get("observed_material_tuple")
+    selection_mismatch = (
+        pending.get("status") == "observed_mismatched_construction"
+        and isinstance(material_candidate, Mapping))
+    if not selection_mismatch:
+        material_candidate = candidate
     active = world.get("active_constructions")
     matches = [row for row in active if isinstance(row, Mapping)
                and row.get("active") is True
-               and all(row.get(key) == candidate.get(key) for key in TUPLE_KEYS)
+               and all(row.get(key) == material_candidate.get(key) for key in TUPLE_KEYS)
                and row.get("initiator_character_id") == pending["actor_character_id"]] if isinstance(active, list) else []
     built = world.get("completed_buildings")
     completed = [row for row in built if isinstance(row, Mapping)
-                 and all(row.get(key) == candidate.get(key) for key in TUPLE_KEYS)] if isinstance(built, list) else []
+                 and all(row.get(key) == material_candidate.get(key) for key in TUPLE_KEYS)] if isinstance(built, list) else []
+    if unresolved and not matches and not completed:
+        # The native selector used gross income while the SDK quote used net
+        # increment. Classify the independently observed different selection;
+        # do not replace the original intent or claim its postcondition passed.
+        different = [row for row in active if isinstance(row, Mapping)
+                     and row.get("active") is True
+                     and row.get("barony_title_id") == candidate.get("barony_title_id")
+                     and row.get("province_id") == candidate.get("province_id")
+                     and row.get("initiator_character_id") == pending["actor_character_id"]
+                     and _positive(row.get("building_type_id"))
+                     and type(row.get("slot_index")) is int and row["slot_index"] >= 0
+                     and any(row.get(key) != candidate.get(key) for key in TUPLE_KEYS)
+                     ] if isinstance(active, list) else []
+        before, cost = candidate.get("gold_before_raw"), candidate.get("stock_gold_cost_raw")
+        if (len(different) == 1 and starting["date_raw"] == pending["pre_date_raw"]
+                and type(before) is int and type(cost) is int and cost > 0
+                and world.get("player_gold_raw") == before - cost):
+            matches = different
+            material_candidate = {key: different[0].get(key) for key in TUPLE_KEYS}
+            selection_mismatch = True
     if matches and completed:
         raise BridgeUnavailableError("construction active and completed tuple conflict")
     if matches and starting["date_raw"] == pending["pre_date_raw"]:
@@ -658,7 +689,7 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         "native_progress_divisor_raw": (progress_divisor
                                         if type(progress_divisor) is int else None),
     }
-    province_income = _province_income_observation(world, candidate, starting)
+    province_income = _province_income_observation(world, material_candidate, starting)
     if (cold_recheck and completed and province_income["status"] != "observed"
             and pending.get("completion_status") == "completed"):
         previous = pending.get("construction_province_income_observation")
@@ -697,7 +728,8 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         # A new PID must verify the material slot immediately, but that
         # recovery read must not restart the scheduled completion watch.
         completion_last_check = previous_check
-    receipt = {"status": "applied", "postcondition_verified": True,
+    receipt = {"status": ("observed_mismatched_construction" if selection_mismatch else "applied"),
+               "postcondition_verified": not selection_mismatch,
                "completion_status": "completed" if completed else "in_progress",
                "construction_progress_observation": progress_observation,
                "construction_province_income_observation": province_income,
@@ -731,6 +763,26 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                "post_proof_epoch": epoch, "post_player_gold_raw": world.get("player_gold_raw"),
                "post_bridge_pid": pid, "post_bridge_creation_date": creation,
                "candidate": dict(candidate)}
+    if selection_mismatch:
+        occupants = [dict(row) for row in built if isinstance(row, Mapping)
+                     and all(row.get(key) == material_candidate.get(key)
+                             for key in ("barony_title_id", "province_id", "slot_index"))
+                     ] if isinstance(built, list) else []
+        receipt.update(
+            requested_postcondition_verified=False,
+            material_postcondition_verified=True,
+            observed_material_tuple=dict(material_candidate),
+            observed_material_row=dict(matches[0] if matches else completed[0]),
+            observed_slot_occupants=occupants,
+            original_pending=pending.get("original_pending", dict(pending)),
+            original_quote_gold_debit_observed_raw=(
+                candidate["stock_gold_cost_raw"]
+                if starting["date_raw"] == pending["pre_date_raw"]
+                and world.get("player_gold_raw") == candidate.get("gold_before_raw", 0)
+                - candidate.get("stock_gold_cost_raw", 0) else
+                pending.get("original_quote_gold_debit_observed_raw")),
+            actual_authored_monthly_income_delta_hundredths=None,
+        )
     for field in ("pre_cash_v2", "construction_monthly_budget"):
         if field in pending:
             receipt[field] = pending[field]

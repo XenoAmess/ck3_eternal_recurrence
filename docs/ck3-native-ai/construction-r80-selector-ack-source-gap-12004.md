@@ -221,3 +221,60 @@ The actual `ck3_query_domain_construction_world_private_v1(expected_revision=2)`
 The mismatch is now an actual observed result, consistent with the documented competing selectors. It is not a transport-timeout diagnosis. Preserve the original pending tuple and both failed ordinary attempts; do not resubmit the action, inherit the originally quoted empty-slot/net-income values for type 596, or count this as a completed M4. The repair owner is aligning future native candidate selection and preparing an explicit reconciliation of the observed mismatch in the existing receipt path. Construction completion and actual income benefit still require later observations.
 
 Actual qualification and the complete query are in `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r80-sdk-hot02/operator/ROOT-R80-HOT02-PAUSED-SNAPSHOT-QUALIFIED.json` and `gameplay-responses/002-r80-actual-construction-world-hot02.json`; the thin actual/pending join is `ROOT-002-ACTUAL-CONSTRUCTION-WORLD-SUMMARY.json` in that operator directory. Scope: **production-live primitive** for the readonly world only; new saved days, SAVE and completed G2 gates remain zero.
+The original diagnosis above was research/source-only before the readonly
+world existed. Its failed attempts remain original evidence. The subsequent
+recovery source below is NOTRUN; Root owns qualification and live adoption.
+
+## Actual hot02 material and normal receipt recovery
+
+Root's saved readonly world at
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r80-sdk-hot02/operator/gameplay-responses/002-r80-actual-construction-world-hot02.json`
+is an 88,507-byte capture, read once for the necessary source inputs. It binds
+native **4**, public **2**, actor **29829**, date **53288568** and proof **668665**.
+Its one active row is **2103 / 2635 / type596 / slot1**, initiated by **29829**,
+with remaining work **182500000**, divisor **0** and province income **86200**.
+The other seven holdings are inactive. Gold is **69417022**, exactly the
+original **83667022 - 14250000** debit. The original pending remains
+**type604 / slot3**, `cereal_fields_01`; it has not been rewritten or resubmitted.
+
+The same current world observes completed slot1 **type597 / farm_estates_02**.
+No current legal row contains type596, and the active holding has no new legal
+quotes. The current observation therefore does not identify type596's key,
+original native quote or net income increment. In particular, it cannot inherit
+the original empty slot3 or quoted **50 hundredths** increment. The source
+gross/net ranking disagreement and the observed differing tuple explain the
+missing original-tuple material receipt. The exact original ACK predicate
+remains unclosed because its body was discarded; an ACK timeout is not proven.
+
+The minimal Python recovery uses the existing ordinary receipt and existing
+readonly world. A unique different active tuple in the quoted holding, the
+same initiator, same action date and exact quoted debit classify
+`observed_mismatched_construction`. Existing frame, actor and proof admission
+remain in use. The receipt retains the complete `original_pending` and its
+unchanged `candidate`; `observed_material_tuple` and `observed_material_row`
+carry actual type596/slot1 separately. Clearing the unresolved queue does not
+declare the requested construction successful: `postcondition_verified` and
+`requested_postcondition_verified` are false, while
+`material_postcondition_verified` only means the actual construction is
+observed. A later cold/monthly read follows the actual tuple and keeps this
+classification. The ordinary loop accepts this explicit recovery outcome and
+continues its following turn without another native submit.
+
+The economic consumer reports the mismatch phase, null authored increment and
+no completed requested construction; it does not award M4/G2 capability credit.
+Existing new-spend admission still requires an ordinary `applied` receipt, so
+this recovery alone does not release another construction through the old
+selector. Future native ranking alignment is a separate source commit.
+For future genuine ACK failures, the actual returned submit body is retained
+in the existing pending record before the exact ACK predicate runs. This does
+not recreate the lost R80 ACK or add a general logging/WAL mechanism.
+
+The sole new Root-only qualification node is
+`test_r80_construction_mismatch_registered_consumer.py::test_registered_r80_saved_material_mismatch_recovers_without_resubmit`.
+It reads private copies of the saved world and pending, uses real normal MCP,
+Service, transport, ledger and economic consumer, and supplies only outer
+endpoint/process/baseline fixture seams. It calls registered `ck3_auto_turn`
+then `ck3_plan_turn`, verifies both intent and material, null economic increment,
+cleared unresolved queue and zero native submit. It does not rerun old GREEN
+fixtures or claim native/live qualification. Worker test/import/build/hash,
+Game/SDK calls and G2 credit remain **0**; Root owns the unique FIRST and reports.

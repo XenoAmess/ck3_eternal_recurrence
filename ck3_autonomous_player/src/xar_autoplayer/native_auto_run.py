@@ -2553,6 +2553,17 @@ def native_auto_run(
                     and receipt.get("episode_run_id") == after_snapshot.get("episode_run_id")
                 ):
                     evidence.append("construction_prior_action_rolled_back_by_cold_restore")
+                elif (
+                    isinstance(receipt, dict)
+                    and receipt.get("status") == "observed_mismatched_construction"
+                    and receipt.get("requested_postcondition_verified") is False
+                    and receipt.get("material_postcondition_verified") is True
+                    and receipt.get("postcondition_verified") is False
+                    and receipt.get("post_snapshot_id") == after_snapshot.get("snapshot_id")
+                    and receipt.get("post_public_revision") == after_snapshot.get("revision")
+                    and receipt.get("episode_run_id") == after_snapshot.get("episode_run_id")
+                ):
+                    evidence.append("construction_mismatched_material_independent_later_frame")
                 else:
                     if not (
                         isinstance(receipt, dict)
