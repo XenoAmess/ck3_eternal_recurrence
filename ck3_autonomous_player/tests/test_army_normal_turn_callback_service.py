@@ -214,6 +214,9 @@ class ArmyNormalTurnCallbackServiceTests(unittest.IsolatedAsyncioTestCase):
                     else:
                         kwargs["army_ids"] = ids
                     registered = await server.call_tool(route, kwargs)
+                    _write_json(case_dir / "actual-registered-response.json",
+                                registered.model_dump(mode="json", by_alias=True))
+                    _write_json(case_dir / "actual-delivered-command-results.json", endpoint.delivered)
                     self.assertIs(registered.is_error, False)
                     result = registered.structured_content
                     self.assertEqual(result, observed["service_result"])
@@ -252,9 +255,16 @@ class ArmyNormalTurnCallbackServiceTests(unittest.IsolatedAsyncioTestCase):
                     self.assertIs(risk["actual_supply_update_observed"], False)
                     self.assertIs(risk["future_date_or_day_derived"], False)
                     projections.append({RISK: deepcopy(result[RISK]), EFFECTS: deepcopy(result[EFFECTS])})
-                    cached = driver.take_snapshot()
-                    self.assertEqual(cached["army_strengths"], result["army_strengths"])
-                    self.assertEqual(cached["army_strengths_query_sequence"], native["query_sequence"])
+                    current_frame = driver.take_snapshot()
+                    # native_campaign keeps the public semantic frame unchanged;
+                    # the Driver owns the validated query cache separately.
+                    cached = driver._army_strength_cache_for_snapshot(
+                        current_frame, episode_run_id=current_frame.get("episode_run_id"))
+                    self.assertIsInstance(cached, dict)
+                    self.assertEqual(cached["army_strengths"], observed["driver_result"]["army_strengths"])
+                    self.assertEqual(cached["query_sequence"], native["query_sequence"])
+                    for field in ("snapshot_id", "revision", "native_revision"):
+                        self.assertEqual(cached["queried_" + field], current_frame[field])
                     self.assertNotIn(RISK, cached)
                     self.assertNotIn(EFFECTS, cached)
                     commands = [request for request in endpoint.requests if request["type"] == "execute_step"]
@@ -266,8 +276,6 @@ class ArmyNormalTurnCallbackServiceTests(unittest.IsolatedAsyncioTestCase):
                         if key != "request_id":
                             self.assertEqual(delivered[key], whole[key])
                     self.assertEqual(delivered["request_id"], commands[0]["request_id"])
-                    _write_json(case_dir / "actual-registered-response.json",
-                                registered.model_dump(mode="json", by_alias=True))
                     receipt["passes"].append({
                         "route": route, "service_function": observed["service_function"],
                         "queried_snapshot_id": result["queried_snapshot_id"],
