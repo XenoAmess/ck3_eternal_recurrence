@@ -863,6 +863,7 @@ struct ChildEducationPointTraitFixture40 {
   static constexpr std::size_t kTraitCount = kChildhoodCount + kEducationCount;
   std::array<std::byte, 0x60> database{};
   std::array<std::array<std::byte, 0x38>, kTraitCount> definitions{};
+  std::array<std::array<char, 32>, kTraitCount> key_storage{};
   std::array<const void *, kTraitCount> ordered_definitions{};
   std::array<void *, 2> child_characters{};
   std::array<std::array<bool, kTraitCount>, 2> present{};
@@ -870,13 +871,22 @@ struct ChildEducationPointTraitFixture40 {
   bool change_second_sample = false;
 
   void SetKey(std::size_t index, std::string_view key) {
-    Check(index < definitions.size() && !key.empty() && key.size() < 16,
-          "education fixture owns a valid exact native SSO Trait key");
+    Check(index < definitions.size() && !key.empty() &&
+              key.size() < key_storage[index].size(),
+          "education fixture owns a valid complete native Trait key");
     auto &bytes = definitions[index];
     bytes.fill(std::byte{});
-    std::memcpy(bytes.data() + 0x18, key.data(), key.size());
+    if (key.size() < 16) {
+      std::memcpy(bytes.data() + 0x18, key.data(), key.size());
+      Put(bytes.data(), 0x30, std::uint64_t{15});
+    } else {
+      auto &storage = key_storage[index];
+      storage.fill('\0');
+      std::memcpy(storage.data(), key.data(), key.size());
+      Put(bytes.data(), 0x18, storage.data());
+      Put(bytes.data(), 0x30, static_cast<std::uint64_t>(storage.size() - 1));
+    }
     Put(bytes.data(), 0x28, static_cast<std::uint64_t>(key.size()));
-    Put(bytes.data(), 0x30, std::uint64_t{15});
   }
 
   explicit ChildEducationPointTraitFixture40(Fixture &fixture) {
