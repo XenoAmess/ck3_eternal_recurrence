@@ -1,6 +1,8 @@
 #include "xar_bridge/realm_law_governance_snapshot_v1.hpp"
 
 #include <algorithm>
+#include <memory>
+#include <type_traits>
 
 namespace xar::bridge {
 namespace {
@@ -291,8 +293,16 @@ Failure ValidateFrame(const RealmLawGovernanceFrameV1 &frame) noexcept {
   return Failure::none;
 }
 
+void ResetSnapshot(Snapshot &output) noexcept {
+  static_assert(std::is_trivially_destructible_v<Snapshot>);
+  // Construct directly in the caller's storage. Assigning a value-initialized
+  // temporary here and in Observe exhausted the owner stack during enact.
+  std::destroy_at(&output);
+  std::construct_at(&output);
+}
+
 void SetUnavailable(Snapshot &output, Failure failure) noexcept {
-  output = {};
+  ResetSnapshot(output);
   output.status = RealmLawGovernanceSnapshotV1Status::unavailable;
   output.unavailable_reason = failure;
 }
@@ -422,7 +432,7 @@ bool ObserveRealmLawGovernanceSnapshotV1(
     return false;
   }
 
-  output = {};
+  ResetSnapshot(output);
   output.status = RealmLawGovernanceSnapshotV1Status::available;
   output.unavailable_reason = Failure::none;
   output.public_revision = capture.frame_before.public_revision;
