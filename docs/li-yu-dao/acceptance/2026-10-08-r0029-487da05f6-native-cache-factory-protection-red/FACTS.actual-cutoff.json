@@ -1,0 +1,1904 @@
+{
+  "source_head": "487da05f6c1cf231490fd1fe480ccc704ed0a80f",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0029",
+  "whole_mod": "NOT_GREEN",
+  "business_GREEN": false,
+  "cause": null,
+  "cause_status": "UNKNOWN",
+  "B5": "NOT_RUN",
+  "cold": "NOT_RUN",
+  "C3": "NOT_RUN",
+  "I4": "NOT_RUN",
+  "stages": [
+    {
+      "label": "baseline-original0240-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/baseline-original0240-author-001/STATE.json",
+        "bytes": 1317829,
+        "sha256": "4a51668d681fb0871cb713da66ceb063abdc449d637f2570f61c0fe7fd058e3f"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/baseline-original0240-author-001/TYPED-PROTECTION.json",
+        "bytes": 966756,
+        "sha256": "26e7435b24f1b7c21039b682c32f5ee6fe72fd5d5ef47059a2e99ab078774b79"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/baseline-original0240-author-001/RESULT.json",
+        "bytes": 1102290,
+        "sha256": "a7d86c86314aee47c3c2ad25171ce57c0387d8e57ee84e5f270e3349314796da"
+      },
+      "round": {
+        "serial": null,
+        "nonce": null,
+        "phase": null,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 2,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 0,
+        "true": 0,
+        "false": [],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B1-r1-pending-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B1-r1-pending-author-001/STATE.json",
+        "bytes": 2605635,
+        "sha256": "429099811cd1ff747c6a62d248474e0242b693be10cd4b06a2d6f4e865e5cc35"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B1-r1-pending-author-001/TYPED-PROTECTION.json",
+        "bytes": 1156293,
+        "sha256": "5811ee550ccffeeeee3ac8e2c95680e503a56c4b3489f625f1199079d91f0376"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B1-r1-pending-author-001/RESULT.json",
+        "bytes": 1103471,
+        "sha256": "e19d1e01aee61c6fa9132db9b4f687878b2e74930a00d6daf4205f9a01f7e2b7"
+      },
+      "round": {
+        "serial": 1,
+        "nonce": 1,
+        "phase": 1,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 4,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 297,
+        "true": 297,
+        "false": [],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B2-r1-pending-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B2-r1-pending-author-001/STATE.json",
+        "bytes": 2607113,
+        "sha256": "4a9be8a48f9177f59b22642456705a4cbc2552799c0a1a8ae0689d256910ccec"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B2-r1-pending-author-001/TYPED-PROTECTION.json",
+        "bytes": 1157884,
+        "sha256": "4e58b70acba7872eb192bcc3a278f5c72da8aa47ac0d602f7ca4fb9fdbf4efc3"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B2-r1-pending-author-001/RESULT.json",
+        "bytes": 1103482,
+        "sha256": "4c3ab5965cd99548bdb452a39040e6163bef41f41a481ffe9a65f26ae33c08c0"
+      },
+      "round": {
+        "serial": 1,
+        "nonce": 1,
+        "phase": 1,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 8,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 297,
+        "true": 297,
+        "false": [],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B3-r1-pending-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r1-pending-author-001/STATE.json",
+        "bytes": 2600873,
+        "sha256": "6a9df0895a5bdfec7c7a89f63c6c6512a0d6c75d8f745d53be39e95c6023d225"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r1-pending-author-001/TYPED-PROTECTION.json",
+        "bytes": 1158887,
+        "sha256": "3f4da9ab3083032ff66eda96753167e0c76d3f190210d39d2349ed1f799cf357"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r1-pending-author-001/RESULT.json",
+        "bytes": 1103489,
+        "sha256": "9484c407f03e4a96863348e93e95a53ca7e1d4cf59d4443e685fb85e695f0adb"
+      },
+      "round": {
+        "serial": 1,
+        "nonce": 2,
+        "phase": 2,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 15,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 249,
+        "true": 247,
+        "false": [
+          "rite_169_independent_two_thirds",
+          "rite_169_representative_signature"
+        ],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "OBSERVED_CONTRACT_MISMATCH",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B1-r2-pending-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B1-r2-pending-author-001/STATE.json",
+        "bytes": 2605636,
+        "sha256": "6b9c59fb356a93667ee066212916d6074e836187853a697b50b94723c1373515"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B1-r2-pending-author-001/TYPED-PROTECTION.json",
+        "bytes": 1156294,
+        "sha256": "9a2eab7959c6fc916de66d64056041446ae01c667c4cbf92022712a1bde43760"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B1-r2-pending-author-001/RESULT.json",
+        "bytes": 1103484,
+        "sha256": "a916dbfb6184257ee2115884b5933931b1af378a42cdd6bd7ebe69dd427f722b"
+      },
+      "round": {
+        "serial": 2,
+        "nonce": 3,
+        "phase": 1,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 17,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 297,
+        "true": 297,
+        "false": [],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B2-r2-pending-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B2-r2-pending-author-001/STATE.json",
+        "bytes": 2607114,
+        "sha256": "8c3fc8e04f06df5a1f777c5b9bead90d0d885bc67db2fa6f7ae86ae73d9bfa2e"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B2-r2-pending-author-001/TYPED-PROTECTION.json",
+        "bytes": 1157885,
+        "sha256": "a74f9a1a5fd0a57f05ae72751c3d182842bcbd46633f6023255638b74ff04170"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B2-r2-pending-author-001/RESULT.json",
+        "bytes": 1103493,
+        "sha256": "832110c08d5b497fca08907a0a51dd921e8057824d0edd71f69cff1e91a57e9c"
+      },
+      "round": {
+        "serial": 2,
+        "nonce": 3,
+        "phase": 1,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 21,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 297,
+        "true": 297,
+        "false": [],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B3-r2-pending-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r2-pending-author-001/STATE.json",
+        "bytes": 2600873,
+        "sha256": "008de7a2c6bd09fad1836d787726b9002aea935bbf1d3196d5efe01f7dfd55ed"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r2-pending-author-001/TYPED-PROTECTION.json",
+        "bytes": 1158887,
+        "sha256": "3c1cb7c8119e9806f8e054b21e380f6a5387295c951f7d24c9a91717e17c3249"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r2-pending-author-001/RESULT.json",
+        "bytes": 1103489,
+        "sha256": "c59e38a4a9c3fac5d84b0b50dd2cff81ea834796cf0d34f05587a708d7a55ad8"
+      },
+      "round": {
+        "serial": 2,
+        "nonce": 4,
+        "phase": 2,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 28,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 249,
+        "true": 247,
+        "false": [
+          "rite_169_independent_two_thirds",
+          "rite_169_representative_signature"
+        ],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "OBSERVED_CONTRACT_MISMATCH",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B1-r3-pending-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B1-r3-pending-author-001/STATE.json",
+        "bytes": 2605636,
+        "sha256": "0cdef730bde8a31af7c22bc5d0899d9241a69cda80893cd604792507e58b7ca9"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B1-r3-pending-author-001/TYPED-PROTECTION.json",
+        "bytes": 1156294,
+        "sha256": "0e1f85c6354aab287ab42f4e95dc2d889c3ad4694e57a41711e15a389359b21d"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B1-r3-pending-author-001/RESULT.json",
+        "bytes": 1103484,
+        "sha256": "a5f580b9f1e23dedbd9e6f055edac5efb13a60b959d461ad0ad75636a01b4033"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 5,
+        "phase": 1,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 30,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 297,
+        "true": 297,
+        "false": [],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B2-r3-pending-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B2-r3-pending-author-001/STATE.json",
+        "bytes": 2607114,
+        "sha256": "2850dad662fcb1c8ede2c93a706fa6cd0fa22100bb94bfb341ffdf5c1a70ab4b"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B2-r3-pending-author-001/TYPED-PROTECTION.json",
+        "bytes": 1157885,
+        "sha256": "dbf9137c1792218062cb20ab2fae7de15ffd29c7725269d105ba7410b9609ddd"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B2-r3-pending-author-001/RESULT.json",
+        "bytes": 1103493,
+        "sha256": "e25459fbb7db66d13e2dbd096a38a18ed538f58bed53fde7151fa13df41dc479"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 5,
+        "phase": 1,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 34,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 297,
+        "true": 297,
+        "false": [],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B3-r3-signed-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r3-signed-author-001/STATE.json",
+        "bytes": 2603596,
+        "sha256": "9f64e5e54756e0ee07562d1845daf11d033ed52df3edb9773d7a4829ca810753"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r3-signed-author-001/TYPED-PROTECTION.json",
+        "bytes": 1161163,
+        "sha256": "ae6e960c9577b9fcadf0eb7bce835d14745ef1a754bc7387c925706f251eb679"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r3-signed-author-001/RESULT.json",
+        "bytes": 1106842,
+        "sha256": "c0622f1345dc379ef56db993f6d685133ff4d42b1bdec00de5e0ae718b8b462d"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": 2,
+        "result_code": null
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 41,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 250,
+        "true": 250,
+        "false": [],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 87,
+        "true": 87,
+        "false": [],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "INCOMPLETE_NATIVE_QUALIFICATION",
+      "author_save_body_reads": 1
+    },
+    {
+      "label": "B4-r3-signed-author-001",
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B4-r3-signed-author-001/STATE.json",
+        "bytes": 630861,
+        "sha256": "b8f28537059e04df4a0a75617017be1e81f6682b35764648ea18d271cee9c596"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B4-r3-signed-author-001/TYPED-PROTECTION.json",
+        "bytes": 1010657,
+        "sha256": "3fe9a040018ff32d55d6510d2aa8b96182acc331d4c9a50456fceebd9828515f"
+      },
+      "RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B4-r3-signed-author-001/RESULT.json",
+        "bytes": 1104525,
+        "sha256": "62e7a48cd48297f6e317bb2b5334e6f0feb3fb66ef7c263119e6f36c029773e7"
+      },
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": null,
+        "result_code": 1
+      },
+      "identity": {
+        "actor_id": 31254,
+        "faith_id": 107,
+        "main_rite_id": 169,
+        "pid": 13856,
+        "session_id": "ca0889dbe0d04feeaa9d60be65e926af",
+        "revision": 43,
+        "checkpoint_id": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-029\\userdir\\save games\\xar_checkpoint.ck3"
+      },
+      "STATE_checks": {
+        "total": 48,
+        "true": 43,
+        "false": [
+          "political_2230_full_AST_protected",
+          "political_2231_full_AST_protected",
+          "political_2235_full_AST_protected",
+          "political_2262_full_AST_protected",
+          "political_2264_full_AST_protected"
+        ],
+        "other": []
+      },
+      "typed_checks": {
+        "total": 88,
+        "true": 82,
+        "false": [
+          "political_2230_full_AST",
+          "political_2231_full_AST",
+          "political_2235_full_AST",
+          "political_2262_full_AST",
+          "political_2264_full_AST",
+          "actor_complete_protected_landed_projection"
+        ],
+        "other": []
+      },
+      "wallet": {
+        "gold": "1043",
+        "piety": "3150",
+        "prestige": "2200"
+      },
+      "legacy_actual_pass": null,
+      "legacy_assessment": "OBSERVED_CONTRACT_MISMATCH",
+      "author_save_body_reads": 1
+    }
+  ],
+  "raw_typed_ballots": [
+    {
+      "stage": "B3-r1-pending-author-001",
+      "source_STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r1-pending-author-001/STATE.json",
+        "bytes": 2600873,
+        "sha256": "6a9df0895a5bdfec7c7a89f63c6c6512a0d6c75d8f745d53be39e95c6023d225"
+      },
+      "actual_round": {
+        "serial": 1,
+        "nonce": 2,
+        "phase": 2,
+        "result_code": null
+      },
+      "saved_current_human_ids": [
+        31254
+      ],
+      "members": [
+        {
+          "character_id": 31254,
+          "raw_typed_vote": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_vote"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_elector": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_elector"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_player": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_player"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "character_id": 65865,
+          "raw_typed_vote": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_vote"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_elector": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_elector"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_player": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_player"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "stage": "B3-r2-pending-author-001",
+      "source_STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r2-pending-author-001/STATE.json",
+        "bytes": 2600873,
+        "sha256": "008de7a2c6bd09fad1836d787726b9002aea935bbf1d3196d5efe01f7dfd55ed"
+      },
+      "actual_round": {
+        "serial": 2,
+        "nonce": 4,
+        "phase": 2,
+        "result_code": null
+      },
+      "saved_current_human_ids": [
+        31254
+      ],
+      "members": [
+        {
+          "character_id": 31254,
+          "raw_typed_vote": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_vote"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_elector": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_elector"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_player": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_player"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "character_id": 65865,
+          "raw_typed_vote": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_vote"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_elector": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_elector"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_player": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_player"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "stage": "B3-r3-signed-author-001",
+      "source_STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r3-signed-author-001/STATE.json",
+        "bytes": 2603596,
+        "sha256": "9f64e5e54756e0ee07562d1845daf11d033ed52df3edb9773d7a4829ca810753"
+      },
+      "actual_round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": 2,
+        "result_code": null
+      },
+      "saved_current_human_ids": [
+        31254
+      ],
+      "members": [
+        {
+          "character_id": 31254,
+          "raw_typed_vote": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_vote"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_elector": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_elector"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_player": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_player"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "character_id": 65865,
+          "raw_typed_vote": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_vote"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_elector": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_elector"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          },
+          "raw_typed_was_player": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_i3b_was_player"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "actual_legal_cancel_receipts": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/persistent-client-001/0049-r29-root-r1-cancel-confirm-001.native-01.json",
+        "bytes": 2434558,
+        "sha256": "2f2e4793328c390f0add9431363fd6a6ee34181a602c827c6be3fcd9e2ea1670"
+      },
+      "status": "native_gameplay_postcondition_verified",
+      "before": {
+        "revision": 16,
+        "native_revision": 15,
+        "snapshot_id": "native:15",
+        "date_raw": 53144712,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 104300000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 315000000,
+          "scale": 100000
+        },
+        "active_event": null
+      },
+      "after": {
+        "revision": 16,
+        "native_revision": 15,
+        "snapshot_id": "native:15",
+        "date_raw": 53144712,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 104300000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 315000000,
+          "scale": 100000
+        },
+        "active_event": null
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/persistent-client-001/0087-r29-root-r2-cancel-confirm-001.native-01.json",
+        "bytes": 3346880,
+        "sha256": "ca177a5099082067452946e5063f246ba19116a7c07bf04afed4cb28a11ecc05"
+      },
+      "status": "native_gameplay_postcondition_verified",
+      "before": {
+        "revision": 29,
+        "native_revision": 28,
+        "snapshot_id": "native:28",
+        "date_raw": 53144712,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 104300000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 315000000,
+          "scale": 100000
+        },
+        "active_event": null
+      },
+      "after": {
+        "revision": 29,
+        "native_revision": 28,
+        "snapshot_id": "native:28",
+        "date_raw": 53144712,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 104300000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 315000000,
+          "scale": 100000
+        },
+        "active_event": null
+      }
+    }
+  ],
+  "B3_independent_formal_certificate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r3-signed-author-001/FORMAL-NATIVE-QUALIFICATION.actual-or-pending.json",
+    "bytes": 30387,
+    "sha256": "93ba24f0901f42fae472ad2d6d35ca4cc8c5d32ceaf53ea6306ae9e06dcd3083"
+  },
+  "B3_qualification_status": "FORMAL_NATIVE_CALLBACK_SAVED_MANDATE_PASS",
+  "B3_qualification_pass": true,
+  "B3_formal_mandate_credit": true,
+  "B3_whole_product_pass": null,
+  "cache_equality_original_results": [
+    {
+      "stage": "B0",
+      "status": "AUTHENTICATED_NATIVE_SAVED_CACHE_EQUAL",
+      "native_to_saved_equality": true,
+      "native_count": 45,
+      "saved_count": 45,
+      "complete_native_successor_ids_in_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352,
+        39527,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "complete_saved_successor_ids_in_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352,
+        39527,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "after_save_binding": {
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53144712,
+        "game_pid": 13856,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:2"
+      },
+      "native_capture_epoch": 15303,
+      "full_product_acceptance_credit": false,
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/baseline-cache-saved-comparison-002/RESULT.actual.json",
+        "bytes": 7015,
+        "sha256": "307c96dfc9d9ea700bc3f8fb5519b9028231362b1a5397d8ba484b61543359b0"
+      }
+    },
+    {
+      "stage": "B3",
+      "status": "AUTHENTICATED_NATIVE_SAVED_CACHE_EQUAL",
+      "native_to_saved_equality": true,
+      "native_count": 45,
+      "saved_count": 45,
+      "complete_native_successor_ids_in_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352,
+        39527,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "complete_saved_successor_ids_in_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        38561,
+        39045,
+        39171,
+        39352,
+        39527,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "after_save_binding": {
+        "revision": 42,
+        "native_revision": 41,
+        "date_raw": 53144712,
+        "game_pid": 13856,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:41"
+      },
+      "native_capture_epoch": 562755,
+      "full_product_acceptance_credit": false,
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/R3-B3-NATIVE-SAVED-CACHE-COMPARISON-001/RESULT.actual.json",
+        "bytes": 6994,
+        "sha256": "3977d504f981660e9c63e68f6a56fadcbc8d51f24a3c4c7524e6d1a98935bef5"
+      }
+    },
+    {
+      "stage": "B4",
+      "status": "AUTHENTICATED_NATIVE_SAVED_CACHE_EQUAL",
+      "native_to_saved_equality": true,
+      "native_count": 40,
+      "saved_count": 40,
+      "complete_native_successor_ids_in_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "complete_saved_successor_ids_in_original_order": [
+        40526,
+        40695,
+        39979,
+        40847,
+        41032,
+        37244,
+        38098,
+        36445,
+        36663,
+        36873,
+        31692,
+        34973,
+        40259,
+        35598,
+        36638,
+        32536,
+        33234,
+        37702,
+        33542,
+        34232,
+        32236,
+        38560,
+        38902,
+        31538,
+        35899,
+        40507,
+        40843,
+        41028,
+        36329,
+        36847,
+        41495,
+        37064,
+        33028,
+        38782,
+        39032,
+        39309,
+        39932,
+        40694,
+        41235,
+        41288
+      ],
+      "after_save_binding": {
+        "revision": 44,
+        "native_revision": 43,
+        "date_raw": 53144712,
+        "game_pid": 13856,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:43"
+      },
+      "native_capture_epoch": 695465,
+      "full_product_acceptance_credit": false,
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/R3-B4-NATIVE-SAVED-CACHE-COMPARISON-001/RESULT.actual.json",
+        "bytes": 6885,
+        "sha256": "931da2e1ebec60896b37eee9cde7bc3b5c212ee9cda002ad61147fb1fa82dd14"
+      }
+    }
+  ],
+  "actual_G3_T": {
+    "schema": "ck3_12003_confucian_religious_title_v1",
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "available": true,
+    "unavailable_reason": null,
+    "capture_epoch": 695061,
+    "date_raw": 53144712,
+    "played_character_id": 31254,
+    "played_character_full_id": 31254,
+    "graph_available": true,
+    "graph_unavailable_reason": null,
+    "legal_head_title_absent": false,
+    "faith_full_id": 107,
+    "head_title_full_id": 18373,
+    "native_title_holder_full_id": 31254,
+    "native_title_holder_absent": false,
+    "native_title_class": "CLandedTitle",
+    "title_holder": {
+      "available": true,
+      "unavailable_reason": null,
+      "title_tier_raw": 3,
+      "title_tier_key": "duchy",
+      "holder_character_full_id": 31254,
+      "holder_is_player": true,
+      "holder_in_player_realm": true,
+      "holder_immediate_liege_character_full_id": null,
+      "holder_top_liege_character_full_id": 31254
+    },
+    "title_properties": {
+      "available": true,
+      "unavailable_reason": null,
+      "destroy_if_invalid_heir": true,
+      "no_automatic_claims": true,
+      "definitive_form": true,
+      "always_follows_primary_heir": true
+    },
+    "title_laws": {
+      "available": true,
+      "unavailable_reason": null,
+      "native_count": 1,
+      "complete_laws": [
+        {
+          "native_definition_id": 95,
+          "key": "temporal_head_of_faith_succession_law"
+        }
+      ],
+      "expected_law_key": "temporal_head_of_faith_succession_law",
+      "temporal_head_of_faith_succession_law_member": true
+    },
+    "mod_owned_marker": null,
+    "mod_owner_faith_variable": null,
+    "qualification": {
+      "kind": "exact_current_static_abi",
+      "title_properties_index_sha256": "5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d",
+      "title_laws_index_sha256": "5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d",
+      "head_getters_index_sha256": "5f5a1005711ef523bcd228c1b2ff2822a9767e13c1b9a934f9a3a87f37287e3d",
+      "faith_reference_identity_offset": 8,
+      "title_full_id_offset": 16,
+      "faith_typed_fallback_slot_rva": "0x5D1E2E0",
+      "runtime_acceptance": null
+    }
+  },
+  "field_diff": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-field-diff-actual-20261008-001/FIELD-DIFF.actual.json",
+    "bytes": 63226,
+    "sha256": "8100552c8a1f166ba5c4aef840d0b74016b12d275133b5303ce9c9ae7499ca39"
+  },
+  "field_diff_summary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-field-diff-actual-20261008-001/SUMMARY.actual.json",
+    "bytes": 11019,
+    "sha256": "bd5d6d1dec3f1d7b8e070dcbaeea9a26751f003c67755686e3bf9b5b78299d28"
+  },
+  "missing_optional_source_refs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/formal-client-binding-001",
+      "status": "MISSING_NOT_INVENTED",
+      "role": "actual host original HANDLE evidence/registry/cache comparison; failed attempts retained"
+    }
+  ],
+  "archive_save_body_reads": 0,
+  "archive_binary_reads": 0,
+  "archive_new_tests": 0,
+  "archive_SDK_process_game_MAIN_actions": 0,
+  "B3_actual_source_artifacts": {
+    "reader": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-checkpoint-author-sourceonly-20261008-002\\source-008\\reader\\i3b_checkpoint_reader.py",
+      "bytes": 51455,
+      "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+    },
+    "transition": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-checkpoint-author-sourceonly-20261008-002\\source-008\\reader\\checkpoint_transition_v2.py",
+      "bytes": 9079,
+      "sha256": "19e59023eb94b6b0f39e265de64e51a4dc5c6cdbad0f1f342f75f57bf26b3ee7"
+    },
+    "strict": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-checkpoint-author-sourceonly-20261008-002\\source-008\\reader\\sdk_checkpoint_qualification.py",
+      "bytes": 19996,
+      "sha256": "c16e8492f983e91f11356dc02e6bd701690974a9aa628ceb64b0a47e7f575fb2"
+    },
+    "parser": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-checkpoint-author-sourceonly-20261008-002\\source-008\\reader\\dependencies\\bounded_save_parser.py",
+      "bytes": 1998,
+      "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+    },
+    "save_fields": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-checkpoint-author-sourceonly-20261008-002\\source-008\\reader\\dependencies\\save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+    },
+    "dto_primitives": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-checkpoint-author-sourceonly-20261008-002\\source-008\\reader\\dependencies\\confucian_dto_primitives.py",
+      "bytes": 19519,
+      "sha256": "39c6b004baf91a79db9beaa991a3a4a462ce81418f58b3a7f78c86805f935944"
+    },
+    "event_context": {
+      "path": "C:\\lr29s2\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\event_window_context_contract.py",
+      "bytes": 23733,
+      "sha256": "9deee2902b0b9a61cf515f030a0a9971ecce95feef8f560f92c2f6bee5b3745a"
+    },
+    "version_identity": {
+      "path": "C:\\lr29s2\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\version_identity.py",
+      "bytes": 2114,
+      "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+    }
+  },
+  "closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3082,
+    "sha256": "92e044585d719f37955f8f76cb9411537c812f4d9edd0d09f0a6906ca9467520",
+    "role": "ROOT verified actual closed boundary"
+  },
+  "closure_verifier": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-typed-close-actual-source-20261008-001/verify_previous_boundary.py",
+    "bytes": 24719,
+    "sha256": "d6ed41a15e5c21ef7733d32a010b038157dc4879576a5abcbc31bd5d1993855a",
+    "role": "exact ROOT verifier source; archiver does not rerun it"
+  },
+  "closure_check_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-typed-close-check-original-exec-20261008-001/RESULT.actual.json",
+    "bytes": 1327,
+    "sha256": "571b80209bf6d1ce63feb1f75db1871933086e8eadfea72d259753aba2e71105",
+    "role": "ROOT original verifier execution completion"
+  },
+  "closure_status_literal": "ROOT_REVIEWED_ACTUAL_CLOSED_RELEASED_BOUNDARY"
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "lyd.r29.combined-create-only-docs-import-manifest.v1",
+  "source_head": "487da05f6c1cf231490fd1fe480ccc704ed0a80f",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/ARCHIVE-VALIDATION.actual.json",
+      "bytes": 489,
+      "sha256": "8c9c78ec72a4de1cbe82f8adbe2a864f9feb88f6f74e13e85c31917c9acbd7ae",
+      "target_relative_file": "ARCHIVE-VALIDATION.actual.json",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/ARCHIVE-VALIDATION.actual.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/FACTS.actual-cutoff.json",
+      "bytes": 54076,
+      "sha256": "d01c3553251514853b786b456438858bcea7d8e59d7f9ea054d1b83c74ce3272",
+      "target_relative_file": "FACTS.actual-cutoff.json",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/FACTS.actual-cutoff.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/INDEX.json",
+      "bytes": 715878,
+      "sha256": "8284784db87f482565bb504e05c86c054f74809ab900ffbe5976fee9f1c88f6d",
+      "target_relative_file": "INDEX.json",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/INDEX.json"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/raw-evidence.zip",
+      "bytes": 47905629,
+      "sha256": "4d5d9468b5b72accb1111380a9ac17a5edec82623c737b906c0b0a8f45c3a1b4",
+      "target_relative_file": "raw-evidence.zip",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/raw-evidence.zip"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/REPORT.md",
+      "bytes": 4889,
+      "sha256": "7df48c5bf8eca0811ed94952261cf2ea3be54e0624e4eb43dccdd529ad08bf4e",
+      "target_relative_file": "REPORT.md",
+      "target_relative": "docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-native-cache-factory-protection-red/REPORT.md"
+    }
+  ],
+  "runtime_closed": true,
+  "closure_refs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 3082,
+      "sha256": "92e044585d719f37955f8f76cb9411537c812f4d9edd0d09f0a6906ca9467520",
+      "role": "ROOT verified actual closed boundary"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-typed-close-actual-source-20261008-001/verify_previous_boundary.py",
+      "bytes": 24719,
+      "sha256": "d6ed41a15e5c21ef7733d32a010b038157dc4879576a5abcbc31bd5d1993855a",
+      "role": "exact ROOT verifier source; archiver does not rerun it"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-typed-close-check-original-exec-20261008-001/RESULT.actual.json",
+      "bytes": 1327,
+      "sha256": "571b80209bf6d1ce63feb1f75db1871933086e8eadfea72d259753aba2e71105",
+      "role": "ROOT original verifier execution completion"
+    }
+  ],
+  "whole_mod": "NOT_GREEN",
+  "default_MAIN_apply_authorized": false,
+  "CI_manifest": null,
+  "MAIN_writes": 0
+}

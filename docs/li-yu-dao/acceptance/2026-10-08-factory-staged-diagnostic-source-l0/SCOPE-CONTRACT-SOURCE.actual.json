@@ -1,0 +1,194 @@
+{
+  "sources": [
+    {
+      "source": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-mod-development-paradigm.md",
+        "bytes": 21430,
+        "sha256": "b47e6b51b613b7a9d6bade43cdee18b34422323d657918bc66cc11dba2b4d7f3"
+      },
+      "first_line": 87,
+      "last_line": 95,
+      "claim": "Exact original/script scope and same-key override must be explicit",
+      "lines": [
+        "## 四、原版优先：先证明 CK3 怎样工作",
+        "",
+        "实现任何新机制前，应该先检查当前 exact build 中最接近的原版实现：",
+        "",
+        "- 同类型的 decision、event、interaction、on_action、scripted effect、scripted trigger 或 GUI。",
+        "- 调用者提供的 `root`、`scope:*`、saved scope、目标对象类型和可能为空的对象。",
+        "- 可见条件、可用条件、AI 条件、成本、取消路径和执行时机。",
+        "- 同名条目跨文件的覆盖/合并规则，以及是否真的需要覆盖原版。",
+        "- 原版本地化、图像格式和 GUI provider 怎样绑定运行时对象。"
+      ]
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-mod-development-paradigm.md",
+        "bytes": 21430,
+        "sha256": "b47e6b51b613b7a9d6bade43cdee18b34422323d657918bc66cc11dba2b4d7f3"
+      },
+      "first_line": 180,
+      "last_line": 189,
+      "claim": "Scope type/lifetime/GUI observation limits",
+      "lines": [
+        "## 八、实现时必须明确的运行时合同",
+        "",
+        "每个机制至少审阅以下边界：",
+        "",
+        "### 作用域与对象生命周期",
+        "",
+        "- 当前 scope 的类型是什么，切换后是否仍是预期对象。",
+        "- `root`、saved scope、event target 和 iterator 内 scope 是否被混用。",
+        "- 对象是否可能死亡、失去头衔、被销毁或在延迟事件到达前失效。",
+        "- 同帧写入是否会立即被 GUI、tooltip 或另一个 effect 观察到。"
+      ]
+    },
+    {
+      "source": {
+        "path": "C:/lr29s2/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "bytes": 6758,
+        "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+      },
+      "first_line": 2,
+      "last_line": 14,
+      "claim": "Existing actor scope and actual serial/nonce/phase saved scope values",
+      "lines": [
+        "lyd_i3b_bind_event_effect = {",
+        "    save_scope_as = lyd_i3b_actor",
+        "    # Decision effect tooltips do not materialize the preceding round writes.",
+        "    # Bind numeric event scope values only from a complete existing round.",
+        "    if = { limit = {",
+        "        has_variable = lyd_i3b_serial",
+        "        has_variable = lyd_i3b_nonce",
+        "        has_variable = lyd_i3b_phase",
+        "    }",
+        "        save_scope_value_as = { name = lyd_i3b_event_serial value = var:lyd_i3b_serial }",
+        "        save_scope_value_as = { name = lyd_i3b_event_nonce value = var:lyd_i3b_nonce }",
+        "        save_scope_value_as = { name = lyd_i3b_event_phase value = var:lyd_i3b_phase }",
+        "    }"
+      ]
+    },
+    {
+      "source": {
+        "path": "C:/lr29s2/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "bytes": 6758,
+        "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+      },
+      "first_line": 112,
+      "last_line": 122,
+      "claim": "Existing trigger_event chain using previously bound scopes",
+      "lines": [
+        "    if = { limit = {",
+        "        lyd_i3b_can_seal_trigger = { ACTOR = root }",
+        "    }",
+        "        set_variable = { name = lyd_i3b_phase value = 2 }",
+        "        change_variable = { name = lyd_i3b_nonce add = 1 }",
+        "        lyd_i3b_bind_event_effect = yes",
+        "        every_in_list = { variable = lyd_i3b_members",
+        "            if = { limit = { var:lyd_i3b_was_elector = 1 } trigger_event = lyd.411 }",
+        "            if = { limit = { var:lyd_i3b_was_player = 1 } trigger_event = lyd.412 }",
+        "        }",
+        "        trigger_event = lyd.430"
+      ]
+    },
+    {
+      "source": {
+        "path": "C:/lr29s2/mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+        "bytes": 11389,
+        "sha256": "42e169066766eab63dd1dd51803cbfb6c197f288223e3416a925bd37354fcb2d"
+      },
+      "first_line": 190,
+      "last_line": 205,
+      "claim": "Original headless full event_context versus reusable cancel identity tuple",
+      "lines": [
+        "lyd_i3b_event_context_trigger = {",
+        "    exists = scope:lyd_i3b_actor",
+        "    scope:lyd_i3b_actor = {",
+        "        lyd_i3b_current_trigger = { ACTOR = scope:lyd_i3b_actor }",
+        "        var:lyd_i3b_serial = scope:lyd_i3b_event_serial",
+        "        var:lyd_i3b_nonce = scope:lyd_i3b_event_nonce",
+        "        var:lyd_i3b_phase = scope:lyd_i3b_event_phase",
+        "    }",
+        "}",
+        "lyd_i3b_cancel_context_trigger = {",
+        "    exists = scope:lyd_i3b_actor",
+        "    this = scope:lyd_i3b_actor",
+        "    lyd_i3b_cancel_actor_trigger = yes",
+        "    var:lyd_i3b_serial = scope:lyd_i3b_event_serial",
+        "    var:lyd_i3b_nonce = scope:lyd_i3b_event_nonce",
+        "    var:lyd_i3b_phase = scope:lyd_i3b_event_phase"
+      ]
+    },
+    {
+      "source": {
+        "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_religion_effects.txt",
+        "bytes": 41530,
+        "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931"
+      },
+      "first_line": 347,
+      "last_line": 380,
+      "claim": "Exact installed4 same-transaction create/holder/resolve and original title scope use",
+      "lines": [
+        "set_up_dynamic_temporal_hof_title_effect = {",
+        "\tfaith = { save_scope_as = my_faith }",
+        "\tcreate_dynamic_title = {",
+        "\t\ttier = duchy",
+        "\t\tname = REL_HEAD_TITLE_NAME",
+        "\t\tadj = REL_HEAD_TITLE_ADJ",
+        "\t}",
+        "\tcreate_title_and_vassal_change = {",
+        "\t\ttype = created",
+        "\t\tsave_scope_as = change",
+        "\t\tadd_claim_on_loss = no",
+        "\t}",
+        "\tscope:new_title = {",
+        "\t\tset_destroy_if_invalid_heir = yes",
+        "\t\tset_no_automatic_claims = yes",
+        "\t\tset_definitive_form = yes",
+        "\t\tset_always_follows_primary_heir = yes",
+        "\t\tchange_title_holder = {",
+        "\t\t\tholder = $NEW_HOLDER$",
+        "\t\t\tchange = scope:change",
+        "\t\t}",
+        "\t}",
+        "\tresolve_title_and_vassal_change = scope:change",
+        "\tfaith = { set_religious_head_title = scope:new_title }",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tNOT = { has_realm_law = same_faith_succession_law }",
+        "\t\t}",
+        "\t\tadd_realm_law_skip_effects = same_faith_succession_law",
+        "\t}",
+        "\tscope:new_title = {",
+        "\t\tgenerate_coa = religious_title",
+        "\t\tadd_title_law = temporal_head_of_faith_succession_law",
+        "\t}"
+      ]
+    },
+    {
+      "source": {
+        "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/events/religion_events/head_of_faith_events.txt",
+        "bytes": 23954,
+        "sha256": "3b3817eb662206fb58fb67cef76dee5f70cc577f857bdfeb8705d9f1c92e5cbf"
+      },
+      "first_line": 645,
+      "last_line": 655,
+      "claim": "Actual installed4 scoped follow-up trigger_event syntax",
+      "lines": [
+        "\t\tif = {",
+        "\t\t\tlimit = { is_developer_testing_trigger = yes }",
+        "\t\t\tcustom_tooltip = debug_generic_option_shortened_trigger_can_disable # Actually the opposite",
+        "\t\t\tscope:pledge_target = {",
+        "\t\t\t\ttrigger_event = {",
+        "\t\t\t\t\tid = head_of_faith.0032",
+        "\t\t\t\t\tdays = 2",
+        "\t\t\t\t}",
+        "\t\t\t}",
+        "\t\t}",
+        "\t\telse = { scope:pledge_target = { trigger_event = head_of_faith.0032 } }"
+      ]
+    }
+  ],
+  "claims_prove_source_syntax_and_existing_patterns_only": true,
+  "diagnostic_event_SAVE_serialization_acceptance": null
+}

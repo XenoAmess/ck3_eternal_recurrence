@@ -1,0 +1,23 @@
+{
+  "type": "ORIGINAL_TOOL_RESULT_TRANSCRIPTION_NOT_NEW_EXECUTION",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\validate_diagnostic_overlay.py",
+    "--source-root",
+    "C:/lr29s2",
+    "--overlay",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\diagnostic-mod",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\STATIC-CHECK.actual.json"
+  ],
+  "exit_code": 1,
+  "error": "extract_auto_upgrade_buildings.ExtractionError: unterminated Clausewitz block",
+  "cause": "factory_guard range6-14 included the limit opening at6 and omitted its close15; correct condition body is7-14",
+  "failed_builder_source_sha256": "5d9cff64763f9cb6e3ec6ca9a2e8c1a4d746bbad11ffee66174c600dda40ff9d",
+  "failed_overlay_manifest": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\diagnostic-mod.MANIFEST.json",
+  "failed_overlay_preserved": true,
+  "corrected_builder_source_sha256": "3e1bf87d177506a19b6b15c7a0103518dfd0659b04e79f92633e16eb358839bc"
+}

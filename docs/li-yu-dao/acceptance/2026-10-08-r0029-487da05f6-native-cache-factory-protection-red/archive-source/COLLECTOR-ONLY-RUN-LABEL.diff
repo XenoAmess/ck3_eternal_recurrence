@@ -1,0 +1,43 @@
+--- C:/workspace/ck3_lyd_runtime_20261004/r28-final-archive-sourceonly-20261008-001/author_r28_archive.py
++++ C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/author_r29_archive.py
+@@ -1,4 +1,4 @@
+-"""Create-only R28 reference archive. No SDK, process, save-body or MAIN operations."""
++"""Create-only R29 reference archive. No SDK, process, save-body or MAIN operations."""
+ from pathlib import Path,PurePosixPath
+ from datetime import datetime,timezone
+ import argparse,hashlib,json,re,zipfile
+@@ -32,7 +32,7 @@
+  request_ref=pin(a.request)
+  if request_ref['sha256']!=a.sha256.lower():raise ValueError('request SHA differs')
+  q=json.loads(a.request.read_bytes())
+- if q.get('schema')!='lyd.r28.original-byte-archive-request.v1' or q['facts'].get('whole_mod')!='NOT_GREEN':raise ValueError('R28 archive/NOT_GREEN contract differs')
++ if q.get('schema')!='lyd.r29.original-byte-archive-request.v1' or q['facts'].get('whole_mod')!='NOT_GREEN':raise ValueError('R29 archive/NOT_GREEN contract differs')
+  target(q['target_relative'])
+  closed_inputs=[a.closure,a.closure_sha256,a.closure_verifier,a.closure_verifier_sha256,a.closure_check_result,a.closure_check_result_sha256]
+  if any(v is not None for v in closed_inputs) and not all(v is not None for v in closed_inputs):raise ValueError('three actual closure paths and three SHA pins required together')
+@@ -57,7 +57,7 @@
+  report=checked(q['report']);ci=None
+  # ROOT already permanently imported the CI/COM/broker packages; this packet preserves only the runtime and source-repair evidence.
+  if a.check:
+-  print(json.dumps({'status':'R28_CURATED_INPUTS_CHECKED_ONLY','files':len(selected),'request':request_ref,'closure_refs':closure,'CI_inclusion':'already permanently imported by ROOT; no duplicate old ZIP scan','save_body_reads':0,'MAIN_writes':0}));return 0
++  print(json.dumps({'status':'R29_CURATED_INPUTS_CHECKED_ONLY','files':len(selected),'request':request_ref,'closure_refs':closure,'CI_inclusion':'already permanently imported by ROOT; no duplicate old ZIP scan','save_body_reads':0,'MAIN_writes':0}));return 0
+  a.output.mkdir(parents=True)
+  try:
+   archive=a.output/'raw-evidence.zip';unique={}
+@@ -80,12 +80,12 @@
+    f.write(Path(report['path']).read_text(encoding='utf-8'))
+    f.write('\n本包另绑定 ROOT 已验证的闭合原件状态：`'+str(closure_status)+'`。没有传入时仍为 NULL；归档不执行 verifier、不追认 typed/业务资格，也不代替原 HANDLE 或原执行过程事实。\n')
+   write(a.output/'ARCHIVE-VALIDATION.actual.json',{'status':'ORIGINAL_BYTES_ZIP_VERIFIED_ONLY','original_files':len(selected),'unique_original_sets':len(unique),'raw_zip':pin(archive),'SDK_size_limit':None,'all_original_bytes_sha_match':True,'save_body_reads':0,'MAIN_SDK_game_process_bus_actions':0})
+-  write(a.output/'INDEX.json',{'schema':'lyd.r28.original-byte-inventory.v1','created_at_utc':datetime.now(timezone.utc).isoformat(),'request':request_ref,'source_head':q['facts']['source_head'],'original_files':selected,'external_reference_only':q['external_reference_only'],'CI_manifest':ci,'raw_zip':pin(archive),'closure_refs':closure,'closure_status_literal':closure_status,'whole_mod':'NOT_GREEN','archive_status':'ROOT_CLOSED_ORIGINALS_ARCHIVED'if closure else'LIVE_CUTOFF_DRAFT_ONLY'})
++  write(a.output/'INDEX.json',{'schema':'lyd.r29.original-byte-inventory.v1','created_at_utc':datetime.now(timezone.utc).isoformat(),'request':request_ref,'source_head':q['facts']['source_head'],'original_files':selected,'external_reference_only':q['external_reference_only'],'CI_manifest':ci,'raw_zip':pin(archive),'closure_refs':closure,'closure_status_literal':closure_status,'whole_mod':'NOT_GREEN','archive_status':'ROOT_CLOSED_ORIGINALS_ARCHIVED'if closure else'LIVE_CUTOFF_DRAFT_ONLY'})
+   own=[pin(p)|{'target_relative_file':p.name}for p in sorted(a.output.iterdir())if p.is_file()]
+-  write(a.output/'IMPORT-MANIFEST.source-only.json',{'schema':'lyd.r28.archive-create-only-import-manifest.v1','target_relative':q['target_relative'],'loaded_source_head':q['facts']['source_head'],'archive_is_runtime_closed':bool(closure),'whole_mod':'NOT_GREEN','files':own,'default_MAIN_apply_authorized':False,'MAIN_writes':0})
++  write(a.output/'IMPORT-MANIFEST.source-only.json',{'schema':'lyd.r29.archive-create-only-import-manifest.v1','target_relative':q['target_relative'],'loaded_source_head':q['facts']['source_head'],'archive_is_runtime_closed':bool(closure),'whole_mod':'NOT_GREEN','files':own,'default_MAIN_apply_authorized':False,'MAIN_writes':0})
+   combined=[r|{'target_relative':target(q['target_relative']+'/'+r['target_relative_file'])}for r in own]
+-  write(a.output/'COMBINED-IMPORT-MANIFEST.source-only.json',{'schema':'lyd.r28.combined-create-only-docs-import-manifest.v1','source_head':q['facts']['source_head'],'files':combined,'runtime_closed':bool(closure),'closure_refs':closure,'whole_mod':'NOT_GREEN','default_MAIN_apply_authorized':False,'CI_manifest':ci,'MAIN_writes':0})
+-  result={'status':'R28_EXTERNAL_ARCHIVE_CREATED_ONLY','INDEX':pin(a.output/'INDEX.json'),'REPORT':pin(a.output/'REPORT.md'),'ZIP':pin(archive),'COMBINED_IMPORT_MANIFEST':pin(a.output/'COMBINED-IMPORT-MANIFEST.source-only.json'),'files':len(selected),'runtime_closed':bool(closure),'whole_mod':'NOT_GREEN','MAIN_writes':0}
++  write(a.output/'COMBINED-IMPORT-MANIFEST.source-only.json',{'schema':'lyd.r29.combined-create-only-docs-import-manifest.v1','source_head':q['facts']['source_head'],'files':combined,'runtime_closed':bool(closure),'closure_refs':closure,'whole_mod':'NOT_GREEN','default_MAIN_apply_authorized':False,'CI_manifest':ci,'MAIN_writes':0})
++  result={'status':'R29_EXTERNAL_ARCHIVE_CREATED_ONLY','INDEX':pin(a.output/'INDEX.json'),'REPORT':pin(a.output/'REPORT.md'),'ZIP':pin(archive),'COMBINED_IMPORT_MANIFEST':pin(a.output/'COMBINED-IMPORT-MANIFEST.source-only.json'),'files':len(selected),'runtime_closed':bool(closure),'whole_mod':'NOT_GREEN','MAIN_writes':0}
+   write(a.output/'RESULT.actual.json',result);print(json.dumps(result));return 0
+  except Exception as e:
+   write(a.output/'FAILURE.actual.json',{'status':'FAILED_PARTIAL_PRESERVED','error':repr(e),'request':request_ref,'MAIN_writes':0});raise

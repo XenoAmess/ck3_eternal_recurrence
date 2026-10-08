@@ -1,0 +1,82 @@
+{
+  "schema": "lyd.factory-operation-diagnostic-overlay.v1",
+  "status": "FILE_ONLY_CANDIDATE_NOT_REGISTERED_OR_LAUNCHED",
+  "actual_source_head": "487da05f6c1cf231490fd1fe480ccc704ed0a80f",
+  "actual_export_report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-head-export-20261008-002/REPORT.json",
+    "bytes": 35444,
+    "sha256": "33c1eeb6817d215f62a98189636cf376f593d87150beb3a282847cbe19a60676"
+  },
+  "original_production_source_inputs": [
+    {
+      "path": "C:/lr29s2/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 3022,
+      "sha256": "bf1b40de272467afd9b1e0eb2e3c59c4f62285d0daef314cb066446467efccc7"
+    },
+    {
+      "path": "C:/lr29s2/mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 4751,
+      "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+    }
+  ],
+  "mod_name": "LYD Factory Operation Diagnostic - DEVELOPMENT ONLY",
+  "load_after_product_name": "礼与道：儒家礼仪与学统 / Rites and the Way",
+  "files": [
+    {
+      "relative_path": "descriptor.mod",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod/descriptor.mod",
+      "bytes": 175,
+      "sha256": "c7ba1dec62f97792e673ffa551e12b2a14c08b3585cceb78d640b1835b11d73c"
+    },
+    {
+      "relative_path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 10756,
+      "sha256": "58e72b064b5ce74d7f4caa29ab5d5cbd5fbd0f58192d78a456531e8489315520"
+    },
+    {
+      "relative_path": "common/scripted_triggers/lyd_factory_operation_diagnostic.txt",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod/common/scripted_triggers/lyd_factory_operation_diagnostic.txt",
+      "bytes": 970,
+      "sha256": "2283d68aed8c4edc4e170b50c57e45c3ffdb0a2f4cf7a1e3589b6e8c1f191b89"
+    },
+    {
+      "relative_path": "events/lyd_factory_operation_diagnostic.txt",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod/events/lyd_factory_operation_diagnostic.txt",
+      "bytes": 6124,
+      "sha256": "cc7c22d23ca7598521699b5e17c159d2de29854803f08580688eebc7d195b741"
+    },
+    {
+      "relative_path": "localization/english/lyd_factory_operation_diagnostic_l_english.yml",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod/localization/english/lyd_factory_operation_diagnostic_l_english.yml",
+      "bytes": 1279,
+      "sha256": "1d018e46402e1fb0c8b5a420a0c97d1a227f5e38544387a9c33a780974a35a6c"
+    },
+    {
+      "relative_path": "localization/simp_chinese/lyd_factory_operation_diagnostic_l_simp_chinese.yml",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod/localization/simp_chinese/lyd_factory_operation_diagnostic_l_simp_chinese.yml",
+      "bytes": 1143,
+      "sha256": "78f19b47a8bf5003b61d3de0dd109705ee1fed5150d7c1449f4d28ab81fea87d"
+    }
+  ],
+  "production71_modified": false,
+  "main_writes": 0,
+  "runtime_acceptance": null,
+  "diagnostic_business_credit": null,
+  "whole_mod": "NOT_GREEN",
+  "patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod.commit-override.patch",
+    "bytes": 13398,
+    "sha256": "59c5be63b8cf3da77d9e397fdf4943f08a11b22bb439b1d2498c4091974577af"
+  },
+  "stage_keys": [
+    "lyd_factory_diag.1",
+    "lyd_factory_diag.2",
+    "lyd_factory_diag.3",
+    "lyd_factory_diag.4",
+    "lyd_factory_diag.5",
+    "lyd_factory_diag.6"
+  ],
+  "stage_scope": "lyd_factory_diag_stage",
+  "D6": "Original bookkeeping/postconditions/close completed; only after observing D6 does its option call the original show_result_effect."
+}

@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\validate_diagnostic_overlay.py",
+    "--source-root",
+    "C:/lr29s2",
+    "--overlay",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\diagnostic-mod-002",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\STATIC-CHECK-002.actual.json"
+  ],
+  "exit_code": 0,
+  "stdout": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\validate-candidate002.stdout.bin",
+  "stderr": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\validate-candidate002.stderr.bin"
+}

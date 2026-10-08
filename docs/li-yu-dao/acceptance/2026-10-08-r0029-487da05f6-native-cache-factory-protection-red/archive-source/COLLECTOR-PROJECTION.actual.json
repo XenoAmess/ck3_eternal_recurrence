@@ -1,0 +1,16 @@
+{
+  "original": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r28-final-archive-sourceonly-20261008-001/author_r28_archive.py",
+    "bytes": 7958,
+    "sha256": "aa33a962482a1917d04b5d1b5c2932f2b694a173d034f961927a149a69e69729"
+  },
+  "successor": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/author_r29_archive.py",
+    "bytes": 7958,
+    "sha256": "facd03d6b79e78dbf62088b9a984a805cfd0a3aebcca7cb3a76865f6c48c06cd"
+  },
+  "inverse_full_AST_equal": true,
+  "change": "R28/r28 literal run labels only",
+  "new_tests_or_verifiers_executed": 0,
+  "SDK_body_binary_MAIN_calls": 0
+}

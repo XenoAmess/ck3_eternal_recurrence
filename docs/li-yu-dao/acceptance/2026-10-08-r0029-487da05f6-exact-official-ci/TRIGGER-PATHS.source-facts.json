@@ -1,0 +1,67 @@
+{
+  "exact_head": "487da05f6c1cf231490fd1fe480ccc704ed0a80f",
+  "status": "NOT_TRIGGERED",
+  "conclusion": null,
+  "run_id": null,
+  "official_push_event": null,
+  "official_push_event_API_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/push-events-003.stdout",
+    "bytes": 18511,
+    "sha256": "002bd5826a7e8091eeac5a2dae3c8fb5e871c4bec6151ae677bebc579617bbab"
+  },
+  "before": null,
+  "after": "487da05f6c1cf231490fd1fe480ccc704ed0a80f",
+  "actual_full_push_compare_raw": null,
+  "full_push_changed_paths": null,
+  "full_push_path_count": null,
+  "full_push_filter_matches": null,
+  "tip_parent_shas": [
+    "2b1f502ef8335a9ed16aa794bc3db7907f554f8a"
+  ],
+  "tip_parent_paths": [
+    "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1_test.cpp",
+    "docs/autonomous-agent-progress/daily/2026-10-08.md",
+    "docs/li-yu-dao/2026-10-08-progress.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/ROOT-IMPORT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/ci-evidence/ARCHIVE-CHECK.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/ci-evidence/FINAL.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/ci-evidence/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/ci-evidence/REPORT.md",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/ci-evidence/TRIGGER-PATHS.source-facts.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/ci-evidence/raw-official-evidence.zip",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/focused-regression/FOCUSED-ORIGINALS.actual.zip",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/focused-regression/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/focused-regression/PATCH.diff",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/focused-regression/REPORT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/focused-regression/ROOT-IMPORT.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/source-evidence/ARCHIVE-CHECK.actual.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/source-evidence/INDEX.json",
+    "docs/li-yu-dao/acceptance/2026-10-08-r0029-8c0ddff7c-native-focused-red/source-evidence/raw-original-evidence.zip"
+  ],
+  "tip_parent_filter_matches": [],
+  "tip_parent_is_not_claimed_as_push_before": true,
+  "exact_workflow_blob_sha": "f383249db0221ddd4b6d4a3aa4d44c9d4c6de7b6",
+  "exact_workflow_source_API_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/liyu-workflow-001.stdout",
+    "bytes": 4059,
+    "sha256": "7204422d2869663558e833d44d2566bd58466d8afcaf437a46c41fb23d9be3af"
+  },
+  "exact_workflow_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/liyu-workflow.exact-head.raw.yml",
+    "bytes": 2050,
+    "sha256": "ea15a2dc333a5502efc9d66a079c52bee2f4782f4b1c86b23209802f6cb67290"
+  },
+  "push_path_filters": [
+    "mod_li_yu_dao/**",
+    "tools/extract_auto_upgrade_buildings.py",
+    "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/**",
+    ".github/workflows/li-yu-dao-static.yml"
+  ],
+  "final_exact_runs_raw": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/runs-003.stdout",
+    "bytes": 26510,
+    "sha256": "7962ba36bf773b0e3bdde1591833a55d8801922d990eff89a3b9c0c38770bef1"
+  },
+  "basis": "Exact-head final official run list absence; full push filtering is claimed only when a matching official PushEvent and compare are present; NOT_TRIGGERED is not GREEN."
+}

@@ -1,0 +1,84 @@
+{
+  "schema": "lyd.factory-operation-diagnostic.source-candidate-index.v1",
+  "status": "READY_FOCUSED33_STRUCTURAL_ONLY_RUNTIME_NULL",
+  "builder": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/build_diagnostic_overlay_002.py",
+    "bytes": 10787,
+    "sha256": "3e1bf87d177506a19b6b15c7a0103518dfd0659b04e79f92633e16eb358839bc"
+  },
+  "static_validator": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/validate_diagnostic_overlay.py",
+    "bytes": 8392,
+    "sha256": "4553c5bbed4b2b1bed0c21344cce49888f9ba0cc440b87bc943a706b1066f08f"
+  },
+  "candidate_source_head": "487da05f6c1cf231490fd1fe480ccc704ed0a80f",
+  "candidate_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod-002.MANIFEST.json",
+    "bytes": 4091,
+    "sha256": "d615871bc926aa72f8e009b8819d66b70bbf3adda549d9ce296fcad1b77f2d5a"
+  },
+  "package_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/PACKAGE-INDEX.json",
+    "bytes": 1714,
+    "sha256": "f6c5930da1bd7890b7b3b68ee347338cc9a416e3a2280f77a747b62c3a9e3ec9"
+  },
+  "source_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/DIAGNOSTIC-SOURCE-INVENTORY.json",
+    "bytes": 1271,
+    "sha256": "9d47a77efecf9d7ca4e6d22e1a7c73923091d6d1ce1c2684019e05cad3b6f556"
+  },
+  "stage_controller": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/STAGE-CONTROLLER.source-only.json",
+    "bytes": 3096,
+    "sha256": "3c2d67860a5f6132328816c88d73657956fe42c7d09894055b087c551fd0a641"
+  },
+  "launch_inputs_candidate": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/LAUNCH-INPUTS.pending.json",
+    "bytes": 3130,
+    "sha256": "691d49d2aeb96d6ff203a6fdcdfeee3904f4bbcec86b2a274bbc011403dc900b"
+  },
+  "scope_contract_sources": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/SCOPE-CONTRACT-SOURCE.actual.json",
+    "bytes": 8277,
+    "sha256": "a6c0f0fc8ba530db3f1dac115a854dbd139f9bf877749f4eaf0a1edce7fa2311"
+  },
+  "actual_static_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/STATIC-CHECK-002.actual.json",
+    "bytes": 3785,
+    "sha256": "33e10e33b84f8cc5c335c456332375b5e2b6e943af18aafb8832e5dcbf501dc3"
+  },
+  "actual_static_stdio_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/validate-candidate002.RESULT.actual.json",
+    "bytes": 918,
+    "sha256": "72f5755fcefb3dd6a9ffcb6014b6c90f4a468c5987e595bdeda7ce58f0481be1"
+  },
+  "original_failed_static_tool_transcription": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/STATIC-001-FAILURE.tool-transcription.json",
+    "bytes": 1310,
+    "sha256": "d3a1fca8333d903724b458b9e1d882d8abaa1463aa766ba99d0902e13b3b507e"
+  },
+  "original_failed_candidate_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod.MANIFEST.json",
+    "bytes": 4063,
+    "sha256": "7061dc1cd1e0c33dab27748c96a1e30f1d184e5118b69e3cd00d01ffd09196d5"
+  },
+  "minimal_commit_override_patch": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod-002.commit-override.patch",
+    "bytes": 13339,
+    "sha256": "a3b83b33072548a93ff58b8bc9c0d9a8c5b35e64572df2ba5237bad1ebc70f76"
+  },
+  "ROOT_import_copy_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/ROOT-IMPORT-COPY-MANIFEST.json",
+    "bytes": 1252,
+    "sha256": "ca77c83de47f232ebc2b2ef2e631309dc24781d23c0407e034c6604837fb4083"
+  },
+  "documentation": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/factory-development-stage-diagnostic.md",
+    "bytes": 5578,
+    "sha256": "eb320b3c2882b61e32c0abcb5316a76be13333196c526265786eea1a9812f14b"
+  },
+  "production71_modified": false,
+  "actual_game_calls": 0,
+  "new_run_qualification": null,
+  "whole_mod": "NOT_GREEN"
+}

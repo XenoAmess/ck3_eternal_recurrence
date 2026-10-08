@@ -1,0 +1,143 @@
+{
+  "prior_request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/REQUEST.actual.json",
+    "bytes": 608166,
+    "sha256": "af867315077a4d6382db2f47cb322fcc698bd5adf7936580c239c189802f6d2b"
+  },
+  "added_files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-checkpoint-author-sourceonly-20261008-002/source-008/reader/checkpoint_transition_v2.py",
+      "bytes": 9079,
+      "sha256": "19e59023eb94b6b0f39e265de64e51a4dc5c6cdbad0f1f342f75f57bf26b3ee7",
+      "role": "exact independent formal leaf/source producer artifacts from actual B3 certificate"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-checkpoint-author-sourceonly-20261008-002/source-008/reader/dependencies/bounded_save_parser.py",
+      "bytes": 1998,
+      "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489",
+      "role": "exact independent formal leaf/source producer artifacts from actual B3 certificate"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-checkpoint-author-sourceonly-20261008-002/source-008/reader/dependencies/save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933",
+      "role": "exact independent formal leaf/source producer artifacts from actual B3 certificate"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-checkpoint-author-sourceonly-20261008-002/source-008/reader/dependencies/confucian_dto_primitives.py",
+      "bytes": 19519,
+      "sha256": "39c6b004baf91a79db9beaa991a3a4a462ce81418f58b3a7f78c86805f935944",
+      "role": "exact independent formal leaf/source producer artifacts from actual B3 certificate"
+    },
+    {
+      "path": "C:/lr29s2/ck3_autonomous_player/src/xar_autoplayer/bridge/event_window_context_contract.py",
+      "bytes": 23733,
+      "sha256": "9deee2902b0b9a61cf515f030a0a9971ecce95feef8f560f92c2f6bee5b3745a",
+      "role": "exact independent formal leaf/source producer artifacts from actual B3 certificate"
+    },
+    {
+      "path": "C:/lr29s2/ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py",
+      "bytes": 2114,
+      "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086",
+      "role": "exact independent formal leaf/source producer artifacts from actual B3 certificate"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-cas-release-original-exec-20261008-001/stdout",
+      "bytes": 1462,
+      "sha256": "032881d857c973c03471ee9488af1fcd5b19d0d30d40f8e5f7c0bb7b6f6d6ab6",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-cas-release-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-cas-release-ARGV.actual-001.json",
+      "bytes": 575,
+      "sha256": "4a4dbd5d55bdba44a56eea4102b4f58e61988611b4d65ada39280ff97ecb9c55",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-after-list-original-exec-20261008-001/stdout",
+      "bytes": 122660,
+      "sha256": "3c726594bf383cff2e3bf68bc5465e67415f515d4d3a021e976340b51f32dd09",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-after-list-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-after-list-ARGV.actual-001.json",
+      "bytes": 298,
+      "sha256": "8754def5f928120fde53c053aee787075205364342eae0d8335b9067cddf5a1d",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-official-client-original-exec-20261008-001/stdout",
+      "bytes": 32088,
+      "sha256": "50e4b0c5013123e7f9352322238c039d1cc5b3643b5dcc4325004d348e0cbf69",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-official-client-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-official-client-ARGV.actual-001.json",
+      "bytes": 770,
+      "sha256": "0b90037253e063e094548eb1032b85459a0d5b540dbd7d6d452744a69e71a395",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-screen-keeper-original-exec-20261008-002/stdout",
+      "bytes": 10858,
+      "sha256": "32f2c5bfa734423db0d891524b5dc493d4c6c7ab8f702c6d21b4ccb6985bfd0a",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-screen-keeper-original-exec-20261008-002/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-screen-keeper-ARGV.actual-002.json",
+      "bytes": 551,
+      "sha256": "b2ef4b15da1b8bb4f083892f3f98f7e2c544b30a25197e32d69c75cc64885b7a",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-game-handle-holder-original-exec-20261008-001/stdout",
+      "bytes": 1305,
+      "sha256": "5a1c2417fe3d9f6cceb23a1e125b153aff70ab3ff1047dd2dd8045875c7a2d8c",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-game-handle-holder-original-exec-20261008-001/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-game-handle-holder-ARGV.actual.json",
+      "bytes": 949,
+      "sha256": "bfd948c8b69103acdcdc516571b054ad7e80a13adf6d02cbb28538edfa6fcede",
+      "role": "exact original typed closure execution stdio/argv"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/FACTS.final.original-derived.json",
+      "bytes": 53038,
+      "sha256": "4fa08f9ea41f03055c29c88362001536f81832043ce0e129e29f89dc5f49913f",
+      "role": "final bounded R29 facts including exact actual formal source artifacts"
+    }
+  ],
+  "correct_source_locator": "certificate.source_artifacts original refs; old guessed optional locations remain historical source001 only",
+  "body_binary_SDK_MAIN_calls": 0
+}

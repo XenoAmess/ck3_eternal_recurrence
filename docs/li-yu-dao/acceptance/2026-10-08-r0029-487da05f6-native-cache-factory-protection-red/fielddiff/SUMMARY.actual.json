@@ -1,0 +1,532 @@
+{
+  "inputs": {
+    "B3_STATE": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r3-signed-author-001/STATE.json",
+      "bytes": 2603596,
+      "sha256": "9f64e5e54756e0ee07562d1845daf11d033ed52df3edb9773d7a4829ca810753"
+    },
+    "B4_STATE": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B4-r3-signed-author-001/STATE.json",
+      "bytes": 630861,
+      "sha256": "b8f28537059e04df4a0a75617017be1e81f6682b35764648ea18d271cee9c596"
+    },
+    "B3_TYPED": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r3-signed-author-001/TYPED-PROTECTION.json",
+      "bytes": 1161163,
+      "sha256": "ae6e960c9577b9fcadf0eb7bce835d14745ef1a754bc7387c925706f251eb679"
+    },
+    "B4_TYPED": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B4-r3-signed-author-001/TYPED-PROTECTION.json",
+      "bytes": 1010657,
+      "sha256": "3fe9a040018ff32d55d6510d2aa8b96182acc331d4c9a50456fceebd9828515f"
+    },
+    "B4_AUTHOR_RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B4-r3-signed-author-001/RESULT.json",
+      "bytes": 1104525,
+      "sha256": "62e7a48cd48297f6e317bb2b5334e6f0feb3fb66ef7c263119e6f36c029773e7"
+    },
+    "B3_native_saved_cache_comparison": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/R3-B3-NATIVE-SAVED-CACHE-COMPARISON-001/RESULT.actual.json",
+      "bytes": 6994,
+      "sha256": "3977d504f981660e9c63e68f6a56fadcbc8d51f24a3c4c7524e6d1a98935bef5"
+    },
+    "B4_native_saved_cache_comparison": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/R3-B4-NATIVE-SAVED-CACHE-COMPARISON-001/RESULT.actual.json",
+      "bytes": 6885,
+      "sha256": "931da2e1ebec60896b37eee9cde7bc3b5c212ee9cda002ad61147fb1fa82dd14"
+    }
+  },
+  "B4_typed_counts": {
+    "total": 88,
+    "TRUE": 82,
+    "FALSE": 6
+  },
+  "B4_saved_counts": {
+    "total": 48,
+    "TRUE": 43,
+    "FALSE": 5
+  },
+  "failed_protection_names": [
+    "political_2230_full_AST",
+    "political_2231_full_AST",
+    "political_2235_full_AST",
+    "political_2262_full_AST",
+    "political_2264_full_AST",
+    "actor_complete_protected_landed_projection"
+  ],
+  "failed_saved_names": [
+    "political_2230_full_AST_protected",
+    "political_2231_full_AST_protected",
+    "political_2235_full_AST_protected",
+    "political_2262_full_AST_protected",
+    "political_2264_full_AST_protected"
+  ],
+  "actor_cache": {
+    "before_count": 45,
+    "after_count": 40,
+    "before_complete_original_order": [
+      40526,
+      40695,
+      39979,
+      40847,
+      41032,
+      37244,
+      38098,
+      36445,
+      36663,
+      36873,
+      31692,
+      34973,
+      40259,
+      35598,
+      36638,
+      32536,
+      38561,
+      39045,
+      39171,
+      39352,
+      39527,
+      33234,
+      37702,
+      33542,
+      34232,
+      32236,
+      38560,
+      38902,
+      31538,
+      35899,
+      40507,
+      40843,
+      41028,
+      36329,
+      36847,
+      41495,
+      37064,
+      33028,
+      38782,
+      39032,
+      39309,
+      39932,
+      40694,
+      41235,
+      41288
+    ],
+    "after_complete_original_order": [
+      40526,
+      40695,
+      39979,
+      40847,
+      41032,
+      37244,
+      38098,
+      36445,
+      36663,
+      36873,
+      31692,
+      34973,
+      40259,
+      35598,
+      36638,
+      32536,
+      33234,
+      37702,
+      33542,
+      34232,
+      32236,
+      38560,
+      38902,
+      31538,
+      35899,
+      40507,
+      40843,
+      41028,
+      36329,
+      36847,
+      41495,
+      37064,
+      33028,
+      38782,
+      39032,
+      39309,
+      39932,
+      40694,
+      41235,
+      41288
+    ],
+    "removed_in_before_order": [
+      38561,
+      39045,
+      39171,
+      39352,
+      39527
+    ],
+    "added_in_after_order": [],
+    "order_and_length_equal": false
+  },
+  "titles": {
+    "2230": {
+      "complete_AST_equal": false,
+      "changed_field_names": [
+        "heir"
+      ],
+      "laws_changed_fields": {},
+      "other_changed_fields": {},
+      "heir_ordered_ID_changes": {
+        "before_count": 20,
+        "after_count": 20,
+        "before_complete_original_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_complete_original_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "order_and_length_equal": false
+      }
+    },
+    "2231": {
+      "complete_AST_equal": false,
+      "changed_field_names": [
+        "heir"
+      ],
+      "laws_changed_fields": {},
+      "other_changed_fields": {},
+      "heir_ordered_ID_changes": {
+        "before_count": 20,
+        "after_count": 20,
+        "before_complete_original_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_complete_original_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "order_and_length_equal": false
+      }
+    },
+    "2232": {
+      "complete_AST_equal": true,
+      "changed_field_names": [],
+      "laws_changed_fields": {},
+      "other_changed_fields": {}
+    },
+    "2235": {
+      "complete_AST_equal": false,
+      "changed_field_names": [
+        "heir"
+      ],
+      "laws_changed_fields": {},
+      "other_changed_fields": {},
+      "heir_ordered_ID_changes": {
+        "before_count": 20,
+        "after_count": 20,
+        "before_complete_original_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_complete_original_order": [
+          40526,
+          40695,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "order_and_length_equal": false
+      }
+    },
+    "2262": {
+      "complete_AST_equal": false,
+      "changed_field_names": [
+        "heir"
+      ],
+      "laws_changed_fields": {},
+      "other_changed_fields": {},
+      "heir_ordered_ID_changes": {
+        "before_count": 20,
+        "after_count": 20,
+        "before_complete_original_order": [
+          40695,
+          40526,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_complete_original_order": [
+          40695,
+          40526,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "order_and_length_equal": false
+      }
+    },
+    "2263": {
+      "complete_AST_equal": true,
+      "changed_field_names": [],
+      "laws_changed_fields": {},
+      "other_changed_fields": {}
+    },
+    "2264": {
+      "complete_AST_equal": false,
+      "changed_field_names": [
+        "heir"
+      ],
+      "laws_changed_fields": {},
+      "other_changed_fields": {},
+      "heir_ordered_ID_changes": {
+        "before_count": 20,
+        "after_count": 20,
+        "before_complete_original_order": [
+          40695,
+          40526,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_complete_original_order": [
+          40695,
+          40526,
+          39979,
+          40847,
+          41032,
+          37244,
+          38098,
+          36445,
+          36663,
+          36873,
+          31692,
+          34973,
+          40259,
+          35598,
+          36638,
+          32536,
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "removed_in_before_order": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added_in_after_order": [
+          33234,
+          37702,
+          33542,
+          34232
+        ],
+        "order_and_length_equal": false
+      }
+    }
+  },
+  "cause": null,
+  "cause_status": "UNKNOWN",
+  "business_acceptance": false,
+  "actual_pass": null,
+  "save_body_reads": 0,
+  "SDK_calls": 0,
+  "main_writes": 0
+}

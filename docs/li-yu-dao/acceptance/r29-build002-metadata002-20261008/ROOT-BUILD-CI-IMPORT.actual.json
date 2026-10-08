@@ -1,0 +1,117 @@
+{
+  "status": "EXACT_SELECTED_ORIGINAL_BYTES_IMPORTED",
+  "imported_at_utc": "2026-10-08T08:56:20.606544+00:00",
+  "manifests": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-build-metadata-permanent-report-candidate-20261008-001/COPY-MANIFEST.actual.json",
+      "bytes": 1159,
+      "sha256": "da30c07978639250f0554055662470f374635f8160e3d8f51790bcce66458851"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-permanent-ci-delivery-preparation-20261008-001/COPY-MANIFEST.actual.json",
+      "bytes": 6682,
+      "sha256": "11bfa476723d858386628e6e89b3f7dbf2aa0c0e0318f2133f979e96f458c3b3"
+    }
+  ],
+  "files": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-build-metadata-permanent-report-candidate-20261008-001/REPORT.zh-CN.md",
+        "bytes": 4693,
+        "sha256": "b069e703077d40a00dfc5f2fcadc19b3b058d1d4665e9678a709969e7d5a6f4a"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/r29-build002-metadata002-20261008/REPORT.zh-CN.md",
+        "bytes": 4693,
+        "sha256": "b069e703077d40a00dfc5f2fcadc19b3b058d1d4665e9678a709969e7d5a6f4a"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-build-metadata-permanent-report-candidate-20261008-001/EVIDENCE-REFS.actual.json",
+        "bytes": 26851,
+        "sha256": "362a0051fcc21e35d20e450e5af3413e003a2cb75383bb0c2736d8560429f639"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/r29-build002-metadata002-20261008/EVIDENCE-REFS.actual.json",
+        "bytes": 26851,
+        "sha256": "362a0051fcc21e35d20e450e5af3413e003a2cb75383bb0c2736d8560429f639"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/INDEX.json",
+        "bytes": 13364,
+        "sha256": "9893a8a2656f64a08f229e6967ad59dc99d55afc7672e146a9f7108ef4fd1186"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/INDEX.json",
+        "bytes": 13364,
+        "sha256": "9893a8a2656f64a08f229e6967ad59dc99d55afc7672e146a9f7108ef4fd1186"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/FINAL.actual.json",
+        "bytes": 31674,
+        "sha256": "0abd9875e21fd7375b29504b4be298013364c894b565d6cb2c499cd0320e137f"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/FINAL.actual.json",
+        "bytes": 31674,
+        "sha256": "0abd9875e21fd7375b29504b4be298013364c894b565d6cb2c499cd0320e137f"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/REPORT.md",
+        "bytes": 2013,
+        "sha256": "b09e85d84ed0b70a514b14c56281e781afb394c1bfafaeece9ccec785699c8fd"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/REPORT.md",
+        "bytes": 2013,
+        "sha256": "b09e85d84ed0b70a514b14c56281e781afb394c1bfafaeece9ccec785699c8fd"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/TRIGGER-PATHS.source-facts.json",
+        "bytes": 4066,
+        "sha256": "680ee1449bb5c86fab5b6acbb31283862a84b866e0099698c06b5a759333b323"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/TRIGGER-PATHS.source-facts.json",
+        "bytes": 4066,
+        "sha256": "680ee1449bb5c86fab5b6acbb31283862a84b866e0099698c06b5a759333b323"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/raw-official-evidence.zip",
+        "bytes": 57578,
+        "sha256": "9a8529f85e5e81668ad9e70f3deec94b9ca92439d3d68f435871aaff8df1c588"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/raw-official-evidence.zip",
+        "bytes": 57578,
+        "sha256": "9a8529f85e5e81668ad9e70f3deec94b9ca92439d3d68f435871aaff8df1c588"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-487da05f6-exact-official-ci-20261008-001/ARCHIVE-CHECK.actual.json",
+        "bytes": 206,
+        "sha256": "5a37d4ad9b59e4bb721de84d1b0590a2dfab885089df7927ac5af9bbe88ed4ff"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-r0029-487da05f6-exact-official-ci/ARCHIVE-CHECK.actual.json",
+        "bytes": 206,
+        "sha256": "5a37d4ad9b59e4bb721de84d1b0590a2dfab885089df7927ac5af9bbe88ed4ff"
+      }
+    }
+  ],
+  "checkpoint_body_reads": 0,
+  "SDK_calls": 0,
+  "business_credit": false
+}

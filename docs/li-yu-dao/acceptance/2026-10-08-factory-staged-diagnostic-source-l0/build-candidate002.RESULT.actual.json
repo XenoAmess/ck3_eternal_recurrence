@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\build_diagnostic_overlay_002.py",
+    "--source-root",
+    "C:/lr29s2",
+    "--source-head",
+    "487da05f6c1cf231490fd1fe480ccc704ed0a80f",
+    "--export-report",
+    "C:/workspace/ck3_lyd_runtime_20261004/r29-root-head-export-20261008-002/REPORT.json",
+    "--export-report-sha256",
+    "33c1eeb6817d215f62a98189636cf376f593d87150beb3a282847cbe19a60676",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\diagnostic-mod-002"
+  ],
+  "exit_code": 0,
+  "stdout": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\build-candidate002.stdout.bin",
+  "stderr": "C:\\workspace\\ck3_lyd_runtime_20261004\\r29-factory-development-stage-candidate-20261008-001\\build-candidate002.stderr.bin"
+}

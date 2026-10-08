@@ -1,0 +1,52 @@
+{
+  "schema": "lyd.r29.original-evidence-archive-delivery.v1",
+  "source_head": "487da05f6c1cf231490fd1fe480ccc704ed0a80f",
+  "whole_mod": "NOT_GREEN",
+  "runtime_closed": true,
+  "business_acceptance": false,
+  "cause": null,
+  "cause_status": "UNKNOWN",
+  "B3_independent_formal_pass": true,
+  "B4_typed_true": 82,
+  "B4_typed_total": 88,
+  "B4_saved_true": 43,
+  "B4_saved_total": 48,
+  "cache_B3": {
+    "native": 45,
+    "saved": 45,
+    "ordered_exact_match": true
+  },
+  "cache_B4": {
+    "native": 40,
+    "saved": 40,
+    "ordered_exact_match": true
+  },
+  "B5_cold_C3_I4": "NOT_RUN",
+  "archive_original_files": 1564,
+  "unique_original_byte_sets": 1233,
+  "archive_bytes": 47905629,
+  "archive": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/raw-evidence.zip",
+    "bytes": 47905629,
+    "sha256": "4d5d9468b5b72accb1111380a9ac17a5edec82623c737b906c0b0a8f45c3a1b4"
+  },
+  "INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/INDEX.json",
+    "bytes": 715878,
+    "sha256": "8284784db87f482565bb504e05c86c054f74809ab900ffbe5976fee9f1c88f6d"
+  },
+  "final_REPORT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/REPORT.reviewed.final.md",
+    "bytes": 4910,
+    "sha256": "f8f3be63ab58ec22eb01cabc07ae72026d2f0c3885950e31ab6304f2ac8bf43a"
+  },
+  "closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3082,
+    "sha256": "92e044585d719f37955f8f76cb9411537c812f4d9edd0d09f0a6906ca9467520",
+    "role": "ROOT verified actual closed boundary"
+  },
+  "actual_collector_exit": 0,
+  "source_REPORT_wording_revision": "protected landed actor projection scope made explicit; archived collector report retained unchanged",
+  "archive_body_binary_SDK_process_game_MAIN_calls": 0
+}

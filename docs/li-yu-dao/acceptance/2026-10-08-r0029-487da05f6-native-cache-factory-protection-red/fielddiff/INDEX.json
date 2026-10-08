@@ -1,0 +1,66 @@
+{
+  "schema": "lyd.r29.retained-field-diff-index.v1",
+  "status": "OBSERVED_PROTECTION_MISMATCH_RETAINED_JSON_ONLY",
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-field-diff-actual-20261008-001/FIELD-DIFF.actual.json",
+      "bytes": 63226,
+      "sha256": "8100552c8a1f166ba5c4aef840d0b74016b12d275133b5303ce9c9ae7499ca39"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-field-diff-actual-20261008-001/SUMMARY.actual.json",
+      "bytes": 11019,
+      "sha256": "bd5d6d1dec3f1d7b8e070dcbaeea9a26751f003c67755686e3bf9b5b78299d28"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-field-diff-actual-20261008-001/classify_retained_json.py",
+      "bytes": 9599,
+      "sha256": "e5474611181c690d54a23b53f098deb932e7a9cfc9d5596fe42a09eb8da70ff7"
+    }
+  ],
+  "original_inputs": {
+    "B3_STATE": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r3-signed-author-001/STATE.json",
+      "bytes": 2603596,
+      "sha256": "9f64e5e54756e0ee07562d1845daf11d033ed52df3edb9773d7a4829ca810753"
+    },
+    "B4_STATE": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B4-r3-signed-author-001/STATE.json",
+      "bytes": 630861,
+      "sha256": "b8f28537059e04df4a0a75617017be1e81f6682b35764648ea18d271cee9c596"
+    },
+    "B3_TYPED": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B3-r3-signed-author-001/TYPED-PROTECTION.json",
+      "bytes": 1161163,
+      "sha256": "ae6e960c9577b9fcadf0eb7bce835d14745ef1a754bc7387c925706f251eb679"
+    },
+    "B4_TYPED": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B4-r3-signed-author-001/TYPED-PROTECTION.json",
+      "bytes": 1010657,
+      "sha256": "3fe9a040018ff32d55d6510d2aa8b96182acc331d4c9a50456fceebd9828515f"
+    },
+    "B4_AUTHOR_RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/B4-r3-signed-author-001/RESULT.json",
+      "bytes": 1104525,
+      "sha256": "62e7a48cd48297f6e317bb2b5334e6f0feb3fb66ef7c263119e6f36c029773e7"
+    },
+    "B3_native_saved_cache_comparison": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/R3-B3-NATIVE-SAVED-CACHE-COMPARISON-001/RESULT.actual.json",
+      "bytes": 6994,
+      "sha256": "3977d504f981660e9c63e68f6a56fadcbc8d51f24a3c4c7524e6d1a98935bef5"
+    },
+    "B4_native_saved_cache_comparison": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-029/R3-B4-NATIVE-SAVED-CACHE-COMPARISON-001/RESULT.actual.json",
+      "bytes": 6885,
+      "sha256": "931da2e1ebec60896b37eee9cde7bc3b5c212ee9cda002ad61147fb1fa82dd14"
+    }
+  },
+  "cause": null,
+  "actual_pass": null,
+  "save_body_reads": 0,
+  "SDK_calls": 0,
+  "process_calls": 0,
+  "binary_reads": 0,
+  "main_writes": 0,
+  "tests_rerun": false
+}

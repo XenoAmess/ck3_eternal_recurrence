@@ -1,0 +1,45 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/author_r29_archive.py",
+    "--request",
+    "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/REQUEST.sealed.actual.json",
+    "--sha256",
+    "c6a8ddeaca2730cfd399d1bb2330c1042e3a52f8a17c2f1a7328c27a297305e7",
+    "--output",
+    "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001",
+    "--closure",
+    "C:/workspace/ck3_lyd_runtime_20261004/r29-root-actual-typed-closed-boundary-20261008-001/PREVIOUS-BOUNDARY.actual.json",
+    "--closure-sha256",
+    "92e044585d719f37955f8f76cb9411537c812f4d9edd0d09f0a6906ca9467520",
+    "--closure-verifier",
+    "C:/workspace/ck3_lyd_runtime_20261004/r29-root-typed-close-actual-source-20261008-001/verify_previous_boundary.py",
+    "--closure-verifier-sha256",
+    "d6ed41a15e5c21ef7733d32a010b038157dc4879576a5abcbc31bd5d1993855a",
+    "--closure-check-result",
+    "C:/workspace/ck3_lyd_runtime_20261004/r29-root-typed-close-check-original-exec-20261008-001/RESULT.actual.json",
+    "--closure-check-result-sha256",
+    "571b80209bf6d1ce63feb1f75db1871933086e8eadfea72d259753aba2e71105",
+    "--create"
+  ],
+  "argv_ref": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/CREATE-ARGV.sealed.actual.json",
+    "bytes": 1891,
+    "sha256": "576c26ca33fe6347885eddc1b47468460cf15fff2c648de21b1f3a9b919deb45"
+  },
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/archive.stdout",
+    "bytes": 1064,
+    "sha256": "1d512fd8ae3e945813f98bc465d0b387c02af79bf81887d04e98b93ead776a53"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-sourceonly-20261008-001/archive.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "SDK_process_game_body_binary_MAIN_calls": 0
+}

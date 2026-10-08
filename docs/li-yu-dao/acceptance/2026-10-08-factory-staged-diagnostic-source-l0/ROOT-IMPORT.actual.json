@@ -1,0 +1,160 @@
+{
+  "status": "SELECTED_ORIGINAL_BYTES_IMPORTED",
+  "imported_at_utc": "2026-10-08T09:16:44.414953+00:00",
+  "manifests": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-root-diagnostic-evidence-copy-manifest.actual-001.json",
+      "bytes": 5085,
+      "sha256": "fa2b34f1d321d3570e5f3029b3b0ac49463c2a0fb44998eb9a1afa37b241b3ec"
+    }
+  ],
+  "files": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/INDEX.json",
+        "bytes": 4431,
+        "sha256": "58fb0f77c8c919869750065382f7ea37effd48af9870bb79b1a4c5f5fa86d0f5"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/INDEX.json",
+        "bytes": 4431,
+        "sha256": "58fb0f77c8c919869750065382f7ea37effd48af9870bb79b1a4c5f5fa86d0f5"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/STATIC-CHECK-002.actual.json",
+        "bytes": 3785,
+        "sha256": "33e10e33b84f8cc5c335c456332375b5e2b6e943af18aafb8832e5dcbf501dc3"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/STATIC-CHECK-002.actual.json",
+        "bytes": 3785,
+        "sha256": "33e10e33b84f8cc5c335c456332375b5e2b6e943af18aafb8832e5dcbf501dc3"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/validate-candidate002.RESULT.actual.json",
+        "bytes": 918,
+        "sha256": "72f5755fcefb3dd6a9ffcb6014b6c90f4a468c5987e595bdeda7ce58f0481be1"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/validate-candidate002.RESULT.actual.json",
+        "bytes": 918,
+        "sha256": "72f5755fcefb3dd6a9ffcb6014b6c90f4a468c5987e595bdeda7ce58f0481be1"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/build-candidate002.RESULT.actual.json",
+        "bytes": 1054,
+        "sha256": "4e0b5580b11ed04321a3b8ae4a9f56a499a66b09f534828506f05f77e0eaab36"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/build-candidate002.RESULT.actual.json",
+        "bytes": 1054,
+        "sha256": "4e0b5580b11ed04321a3b8ae4a9f56a499a66b09f534828506f05f77e0eaab36"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/STATIC-001-FAILURE.tool-transcription.json",
+        "bytes": 1310,
+        "sha256": "d3a1fca8333d903724b458b9e1d882d8abaa1463aa766ba99d0902e13b3b507e"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/STATIC-001-FAILURE.tool-transcription.json",
+        "bytes": 1310,
+        "sha256": "d3a1fca8333d903724b458b9e1d882d8abaa1463aa766ba99d0902e13b3b507e"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod.MANIFEST.json",
+        "bytes": 4063,
+        "sha256": "7061dc1cd1e0c33dab27748c96a1e30f1d184e5118b69e3cd00d01ffd09196d5"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/diagnostic-mod.MANIFEST.json",
+        "bytes": 4063,
+        "sha256": "7061dc1cd1e0c33dab27748c96a1e30f1d184e5118b69e3cd00d01ffd09196d5"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod-002.MANIFEST.json",
+        "bytes": 4091,
+        "sha256": "d615871bc926aa72f8e009b8819d66b70bbf3adda549d9ce296fcad1b77f2d5a"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/diagnostic-mod-002.MANIFEST.json",
+        "bytes": 4091,
+        "sha256": "d615871bc926aa72f8e009b8819d66b70bbf3adda549d9ce296fcad1b77f2d5a"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod-002.commit-override.patch",
+        "bytes": 13339,
+        "sha256": "a3b83b33072548a93ff58b8bc9c0d9a8c5b35e64572df2ba5237bad1ebc70f76"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/diagnostic-mod-002.commit-override.patch",
+        "bytes": 13339,
+        "sha256": "a3b83b33072548a93ff58b8bc9c0d9a8c5b35e64572df2ba5237bad1ebc70f76"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/SCOPE-CONTRACT-SOURCE.actual.json",
+        "bytes": 8277,
+        "sha256": "a6c0f0fc8ba530db3f1dac115a854dbd139f9bf877749f4eaf0a1edce7fa2311"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/SCOPE-CONTRACT-SOURCE.actual.json",
+        "bytes": 8277,
+        "sha256": "a6c0f0fc8ba530db3f1dac115a854dbd139f9bf877749f4eaf0a1edce7fa2311"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/STAGE-CONTROLLER.source-only.json",
+        "bytes": 3096,
+        "sha256": "3c2d67860a5f6132328816c88d73657956fe42c7d09894055b087c551fd0a641"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/STAGE-CONTROLLER.source-only.json",
+        "bytes": 3096,
+        "sha256": "3c2d67860a5f6132328816c88d73657956fe42c7d09894055b087c551fd0a641"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/DIAGNOSTIC-SOURCE-INVENTORY.json",
+        "bytes": 1271,
+        "sha256": "9d47a77efecf9d7ca4e6d22e1a7c73923091d6d1ce1c2684019e05cad3b6f556"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/DIAGNOSTIC-SOURCE-INVENTORY.json",
+        "bytes": 1271,
+        "sha256": "9d47a77efecf9d7ca4e6d22e1a7c73923091d6d1ce1c2684019e05cad3b6f556"
+      }
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/PACKAGE-INDEX.json",
+        "bytes": 1714,
+        "sha256": "f6c5930da1bd7890b7b3b68ee347338cc9a416e3a2280f77a747b62c3a9e3ec9"
+      },
+      "permanent": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-08-factory-staged-diagnostic-source-l0/PACKAGE-INDEX.json",
+        "bytes": 1714,
+        "sha256": "f6c5930da1bd7890b7b3b68ee347338cc9a416e3a2280f77a747b62c3a9e3ec9"
+      }
+    }
+  ],
+  "checkpoint_body_reads": 0,
+  "SDK_calls": 0,
+  "new_business_credit": false
+}

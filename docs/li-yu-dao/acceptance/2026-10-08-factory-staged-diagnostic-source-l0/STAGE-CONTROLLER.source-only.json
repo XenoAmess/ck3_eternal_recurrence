@@ -1,0 +1,79 @@
+{
+  "schema": "lyd.factory-operation-diagnostic.stage-controller.v1",
+  "script_controller": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod-002/events/lyd_factory_operation_diagnostic.txt",
+    "bytes": 5958,
+    "sha256": "e13dc114dbe29f6f8c0b6b4b79ed12a7773ee34dfe0246125325bf25b63c7cf9"
+  },
+  "kind": "DECLARATIVE_RECIPE_EXISTING_MCP_ONLY_NO_ENQUEUE",
+  "initial_entry": "Existing actual lyd.430 confirm through the complete original ready/native admission; actual rendered index only",
+  "stages": [
+    {
+      "observed_stage": 1,
+      "event_key": "lyd_factory_diag.1",
+      "scope_value_name": "lyd_factory_diag_stage",
+      "scope_value": 1,
+      "next_option_name_key_from_source": "lyd_factory_diag_next",
+      "next_operation": "D2",
+      "future_actual_event_instance_revision_native_index": null
+    },
+    {
+      "observed_stage": 2,
+      "event_key": "lyd_factory_diag.2",
+      "scope_value_name": "lyd_factory_diag_stage",
+      "scope_value": 2,
+      "next_option_name_key_from_source": "lyd_factory_diag_next",
+      "next_operation": "D3",
+      "future_actual_event_instance_revision_native_index": null
+    },
+    {
+      "observed_stage": 3,
+      "event_key": "lyd_factory_diag.3",
+      "scope_value_name": "lyd_factory_diag_stage",
+      "scope_value": 3,
+      "next_option_name_key_from_source": "lyd_factory_diag_next",
+      "next_operation": "D4",
+      "future_actual_event_instance_revision_native_index": null
+    },
+    {
+      "observed_stage": 4,
+      "event_key": "lyd_factory_diag.4",
+      "scope_value_name": "lyd_factory_diag_stage",
+      "scope_value": 4,
+      "next_option_name_key_from_source": "lyd_factory_diag_next",
+      "next_operation": "D5",
+      "future_actual_event_instance_revision_native_index": null
+    },
+    {
+      "observed_stage": 5,
+      "event_key": "lyd_factory_diag.5",
+      "scope_value_name": "lyd_factory_diag_stage",
+      "scope_value": 5,
+      "next_option_name_key_from_source": "lyd_factory_diag_next",
+      "next_operation": "D6",
+      "future_actual_event_instance_revision_native_index": null
+    },
+    {
+      "observed_stage": 6,
+      "event_key": "lyd_factory_diag.6",
+      "scope_value_name": "lyd_factory_diag_stage",
+      "scope_value": 6,
+      "next_option_name_key_from_source": "lyd_factory_diag_next",
+      "next_operation": "ORIGINAL_show_result_effect_431_or_432",
+      "future_actual_event_instance_revision_native_index": null
+    }
+  ],
+  "observation_before_advance": [
+    "actual_event_query_and_scope_identity",
+    "actor_cache_before_SAVE",
+    "actual_G2_and_G3",
+    "unique_immutable_SAVE_capture",
+    "actor_cache_after_SAVE",
+    "saved_political_heirs_and_unchanged_original87_88_comparison"
+  ],
+  "no_event_index_or_future_Title_hardcoded": true,
+  "no_retry_same_event_or_replay_committed_step": true,
+  "scope_loss_loader_failure_or_unexpected_head": "PRESERVE_ACTUAL_RED_AND_STOP_NO_FLAG_PATCH_OR_REPEAT_CREATE",
+  "whole_mod": "NOT_GREEN",
+  "future_actual_runtime_values": null
+}

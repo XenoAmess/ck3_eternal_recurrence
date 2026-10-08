@@ -1,0 +1,27 @@
+{
+  "status": "R29_EXTERNAL_ARCHIVE_CREATED_ONLY",
+  "INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/INDEX.json",
+    "bytes": 715878,
+    "sha256": "8284784db87f482565bb504e05c86c054f74809ab900ffbe5976fee9f1c88f6d"
+  },
+  "REPORT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/REPORT.md",
+    "bytes": 4889,
+    "sha256": "7df48c5bf8eca0811ed94952261cf2ea3be54e0624e4eb43dccdd529ad08bf4e"
+  },
+  "ZIP": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/raw-evidence.zip",
+    "bytes": 47905629,
+    "sha256": "4d5d9468b5b72accb1111380a9ac17a5edec82623c737b906c0b0a8f45c3a1b4"
+  },
+  "COMBINED_IMPORT_MANIFEST": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r29-business-permanent-archive-candidate-20261008-001/COMBINED-IMPORT-MANIFEST.source-only.json",
+    "bytes": 3414,
+    "sha256": "0fcc6eb716389866f84d0f0741018203d1b82154664b6672890563d79cef5e80"
+  },
+  "files": 1564,
+  "runtime_closed": true,
+  "whole_mod": "NOT_GREEN",
+  "MAIN_writes": 0
+}

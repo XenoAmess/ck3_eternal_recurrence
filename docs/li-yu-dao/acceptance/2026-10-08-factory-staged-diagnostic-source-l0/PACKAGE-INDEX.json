@@ -1,0 +1,42 @@
+{
+  "schema": "lyd.factory-operation-diagnostic.package-index.v1",
+  "source_root": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001/diagnostic-mod-002",
+  "package_root": "C:/workspace/ck3_lyd_runtime_20261004/r29-factory-development-stage-candidate-20261008-001",
+  "files": [
+    {
+      "path": "diagnostic-mod-002/descriptor.mod",
+      "bytes": 175,
+      "sha256": "c7ba1dec62f97792e673ffa551e12b2a14c08b3585cceb78d640b1835b11d73c"
+    },
+    {
+      "path": "diagnostic-mod-002/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 10698,
+      "sha256": "7944641891f15cf5580df5ca9caada90d1b797be6804e3b9bcbb707ffc9f8fa3"
+    },
+    {
+      "path": "diagnostic-mod-002/common/scripted_triggers/lyd_factory_operation_diagnostic.txt",
+      "bytes": 970,
+      "sha256": "2283d68aed8c4edc4e170b50c57e45c3ffdb0a2f4cf7a1e3589b6e8c1f191b89"
+    },
+    {
+      "path": "diagnostic-mod-002/events/lyd_factory_operation_diagnostic.txt",
+      "bytes": 5958,
+      "sha256": "e13dc114dbe29f6f8c0b6b4b79ed12a7773ee34dfe0246125325bf25b63c7cf9"
+    },
+    {
+      "path": "diagnostic-mod-002/localization/english/lyd_factory_operation_diagnostic_l_english.yml",
+      "bytes": 1279,
+      "sha256": "1d018e46402e1fb0c8b5a420a0c97d1a227f5e38544387a9c33a780974a35a6c"
+    },
+    {
+      "path": "diagnostic-mod-002/localization/simp_chinese/lyd_factory_operation_diagnostic_l_simp_chinese.yml",
+      "bytes": 1143,
+      "sha256": "78f19b47a8bf5003b61d3de0dd109705ee1fed5150d7c1449f4d28ab81fea87d"
+    }
+  ],
+  "explicit_production_override": [
+    "common/scripted_effects/lyd_i3b_commit_effects.txt"
+  ],
+  "development_only": true,
+  "release_credit": null
+}
