@@ -101,3 +101,15 @@ Root已采用[共享窄修复](C:/workspace/ck3-upgrade-20261008/shared-preactio
 [唯一Source08/FINAL09/bound10封存](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/ROOT-SHARED-SOURCE08-MANIFEST09-BOUND10-UNUSED-CONSUME-01.md)实际exit0、3.564秒；host215332 B、SHA `24414e9b436b6334fc43019cff2754534afcc62a4cf8d1e40aa33048b81eebd2`，仅一host delta并继承6903行，native d1d4及其原构建不变，无重编译/旧矩阵/全树重hash。旧producer误调用被create-only守卫立即拒绝，exit1历史保留，无旧输出改写。
 
 TED原unused root03已公共prepare exit0、0.763秒，QOL原unused13已公共prepare exit0、0.744秒；各仅新增顶层manifest变化的prepared sibling，其余深字段exact相同。TED下一场R17/a126已preflight exit0、单次allocate，register6562→keeper6563约1.544秒，新的Steam窗口位移与双nonce离线原图经Root亲审后实际启动；业务和新增恢复路径实机结果仍待。production_ui required MCP tools只补原实际依赖的execute_step/current_event_window_context两项，不增加新业务合同。
+
+### R17实际资格与公共日志参数修复
+
+[R17实际薄证据](C:/workspace/ck3-upgrade-20261008/r17-preaction-paused-readmission-actual-qualification-01/ROOT-R17-ACTUAL-SHARED-PREACTION-AND-STRICT-FULL-DAY-QUALIFICATION-FINAL-02.md)确认Source08的提交前重新准入成立：旧native3/reject0之后，精确native4/reject1拒绝帧不授资格，实际完整暂停native5才重新准入。D1在14:53:06–14:53:10 UTC完成24小时，完整native9暂停/map/ready成立；same owner/actor/generation保持，set-speed/resume/结束pause各仅一次。原严格拒绝、counter1与所有动作记录保留。
+
+随后的日志查询因公共consumer缺少必填`log_name`被实际MCP声明拒绝；没有生产Send/AI结果信用。host14:53:20 UTC RED/thread/cleanup TRUE，retained实际OS1、normal-close-qualified FALSE，公共run66470实际exit2。keeper60331实际exit0，最终[a126 release](C:/workspace/ck3-upgrade-20261006/resume-root-01/a126-screen-release-01.json)为CAS6578 done/resources=[]。共同D1资格可复用，原整场失败不改为PASS。
+
+Root已修复`_business.literals`与RMTM `_law_phase`两处实际接点，显式传`log_name="debug.log"`，原marker producer、顺序与业务断言不改。新增[公共日志交叉回归](../tools/test_ck3_mod_acceptance_log_contract.py)连接实际consumer函数、实际MCP参数声明与实际日志provider，核必填参数、精确marker计数/重复/禁止项、大小写和16项上限，并覆盖RMTM三phase及QOL原七批；采用后8项实际PASS（1.386秒），接入原CI。无需重编native或重跑已通过的旧矩阵。
+
+精确前一提交`0cd572f0f88b3fa00012842c0f21eba1b985310b`的[官方CI 37795672799](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37795672799)实际success（14:58:59 UTC），[线性历史CI 37795672808](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37795672808)实际success（14:50:28 UTC）；这两项不外推新增日志修复的下一提交。
+
+下一原unused root04实际公共prepare exit0、0.789秒，仅state_dir改为root04，其余case inputs与原合同相同，继续绑定Source08/FINAL09/bound10。R18/a127已单次allocate（6579→keeper6580 READY 1.538秒），Steam窗口位移与两张实际nonce原图经Root亲审离线，15:15:07 UTC实际启动共同host；生产交互与正常退出仍待该场结果。发布后统一menu-only缓存消费另行施工，不重跑缓存业务、不改变R18已冻结输入。

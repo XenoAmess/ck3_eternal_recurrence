@@ -114,7 +114,7 @@ def original_day(client, name, initial_date, limit=None, allow_actor_change=Fals
 
 def literals(client, name, required, forbidden):
     rows = client.execute_plan([{"id": name, "tool": "ck3_query_engine_log_literals_v1",
-                                 "args": {"literals": list(required) + list(forbidden)}, "fresh_revision": True}], name)
+                                 "args": {"log_name": "debug.log", "literals": list(required) + list(forbidden)}, "fresh_revision": True}], name)
     result = rows[0]["result"]
     require(result.get("read_only") is True and result.get("exists") is True and result.get("case_sensitive") is True,
             "Actual case-sensitive engine log unavailable")

@@ -51,7 +51,7 @@ def _law_phase(client, phase):
         {"id": prefix + "-physical", "tool": "ck3_query_title_own_laws_v1",
          "args": {"title_id": title}, "fresh_revision": True},
         {"id": prefix + "-script", "tool": "ck3_query_engine_log_literals_v1",
-         "args": law.phase_literals(phase), "fresh_revision": True},
+         "args": {"log_name": "debug.log", **law.phase_literals(phase)}, "fresh_revision": True},
     ], prefix + "-witnesses")
     evidence = {"schema": "rmtm-effective-single-heir-phase-actual-rows-v1", "phase": phase,
                 "root_record": root_row, "physical_record": rows[0], "script_record": rows[1]}

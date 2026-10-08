@@ -182,6 +182,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_event_callsite.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_log_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test Reclaim the Motherland release tooling
         run: |
           python tools/test_reclaim_the_motherland_contract.py
