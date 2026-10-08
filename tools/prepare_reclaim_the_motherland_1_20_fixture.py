@@ -27,6 +27,7 @@ CONTINUE = '''rqa120_continue_decision = {
     is_shown = { is_ai = no has_character_flag = rqa120_ui_checkpoint }
     is_valid = { rmtm_holds_restoration_hegemony_trigger = yes }
     effect = {
+        rqa_observe_predeath_law_effect = yes
         remove_character_flag = rqa120_ui_checkpoint
         set_variable = { name = rqa120_stage value = 5 }
         trigger_event = { id = rqa120.2 days = 1 }
@@ -51,7 +52,8 @@ def events(ui_checkpoints: bool) -> str:
     checkpoint = ('''            add_character_flag = rqa120_ui_checkpoint
             set_variable = { name = rqa120_stage value = 90 }
             debug_log = "RQA120: TEST READY ui_after_chaos"''' if ui_checkpoints else
-                  '''            set_variable = { name = rqa120_stage value = 5 }''')
+                  '''            rqa_observe_predeath_law_effect = yes
+            set_variable = { name = rqa120_stage value = 5 }''')
     tick = '''        change_variable = { name = rqa120_ticks add = 1 }
         if = {
             limit = { var:rqa120_stage = 1 has_character_flag = rqa_ready_to_enter_chaos }
@@ -169,12 +171,35 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int) -> di
             loc = f'l_{language}:\n rqa120_continue_decision:0 "{title}"\n rqa120_continue_decision_desc:0 "{description}"\n rqa120_continue_decision_tooltip:0 "{title}"\n rqa120_continue_decision_confirm:0 "{confirm}"\n'
             prep.write_script(output, f"localization/{language}/rqa120_l_{language}.yml", loc)
     markers = prep.required_markers(repo / "tools/run_reclaim_the_motherland_acceptance.py")
+    # These three family credits require the actual managed-row physical gate.
+    pending_families = [
+        ("TEST", "later_dynasty_single_heir_law_and_heir_ready"),
+        ("PROBE", "phase3_succession_title"),
+        ("TEST", "phase3_later_dynasty_realm_and_ministry_inherited"),
+    ]
+    old_law_markers = {f"RQA: {kind} PASS {name}" for kind, name in pending_families}
+    markers = [marker for marker in markers if marker not in old_law_markers]
+    markers += [f"RQA: {kind} PENDING_PHYSICAL {name}" for kind, name in pending_families]
+    effective_law_contract = {
+        "schema": "rmtm-effective-single-heir-actual-rows-v1",
+        "helper": "tools/reclaim_the_motherland_effective_law_contract.py",
+        "helper_sha256": prep.digest(repo / "tools/reclaim_the_motherland_effective_law_contract.py"),
+        "actual_rows_caller": "tools/reclaim_the_motherland_effective_law_acceptance.py",
+        "actual_rows_caller_sha256": prep.digest(repo / "tools/reclaim_the_motherland_effective_law_acceptance.py"),
+        "phases": ["d3", "predeath", "postdeath"],
+        "physical_pending_families": [name for _, name in pending_families],
+        "credit_requires_recomputed_three_phase_AND": True,
+        "predeath_boundary": "Continue/stage4 scheduling checkpoint; original next-day execute-time heir and real predecessor death must be proven separately",
+        "source_pass": False,
+        "business_pass": False,
+    }
     markers += ["RQA120: TEST BEGIN engine_startup", "RQA120: TEST PASS later_ministry_budget_gate",
                 "RQA120: TEST PASS restoration_later_title_unheld", "RQA120: TEST DONE core"]
     if ui_checkpoints:
         markers.append("RQA120: TEST READY ui_after_chaos")
     return prep.finish_receipt(repo, source, output, files, {
         "product":"mod_reclaim_the_motherland", "ui_checkpoints":ui_checkpoints,
+        "effective_law_contract":effective_law_contract,
         "bookmark":"1066-09-15; begin as any human ruler except the Song emperor",
         "entry":"on_game_start_after_lobby -> rqa120.1 -> daily hidden rqa120.2; successor driver is explicitly scheduled before predecessor death",
         "expected_game_days":duration + 5, "max_game_days":120,

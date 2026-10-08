@@ -399,14 +399,40 @@ rqa_verify_chaos_effect = {
 	else = { debug_log = "RQA: TEST FAIL later_dynasty_empty_de_jure_and_personal_land_retained" }
 	if = {
 		limit = {
+			primary_title = var:rqa_later_title
 			var:rqa_later_title = {
-				has_title_law = single_heir_succession_law
+				holder = root
+				OR = {
+					has_title_law = single_heir_succession_law
+					holder = { has_realm_law = single_heir_succession_law }
+				}
 				exists = current_heir
 			}
 		}
-		debug_log = "RQA: TEST PASS later_dynasty_single_heir_law_and_heir_ready"
+		debug_log = "RQA: TEST PENDING_PHYSICAL later_dynasty_single_heir_law_and_heir_ready"
 	}
 	else = { debug_log = "RQA: TEST FAIL later_dynasty_single_heir_law_and_heir_ready" }
+	# Readonly script witnesses; physical complete-array evidence remains mandatory.
+	if = {
+		limit = { primary_title = var:rqa_later_title }
+		debug_log = "RQA_STAGE_DIAG_V3 same_current_primary=TRUE"
+	}
+	else = { debug_log = "RQA_STAGE_DIAG_V3 same_current_primary=FALSE" }
+	if = {
+		limit = { var:rqa_later_title = { exists = holder holder = root } }
+		debug_log = "RQA_STAGE_DIAG_V3 actual_title_holder_is_root=TRUE"
+	}
+	else = { debug_log = "RQA_STAGE_DIAG_V3 actual_title_holder_is_root=FALSE" }
+	if = {
+		limit = { var:rqa_later_title = { has_title_law = single_heir_succession_law } }
+		debug_log = "RQA_STAGE_DIAG_V2 later_dynasty_single_heir_law=TRUE"
+	}
+	else = { debug_log = "RQA_STAGE_DIAG_V2 later_dynasty_single_heir_law=FALSE" }
+	if = {
+		limit = { var:rqa_later_title = { exists = holder holder = { has_realm_law = single_heir_succession_law } } }
+		debug_log = "RQA_STAGE_DIAG_V3 holder_realm_has_single_heir=TRUE"
+	}
+	else = { debug_log = "RQA_STAGE_DIAG_V3 holder_realm_has_single_heir=FALSE" }
 	if = {
 		limit = {
 			tgp_has_access_to_ministry_trigger = yes
@@ -663,6 +689,25 @@ rqa_verify_vassalization_probe_effect = {
 	}
 }
 
+rqa_observe_predeath_law_effect = {
+	# Readonly law evidence; no physical-array or source PASS is inferred here.
+	if = {
+		limit = { primary_title = var:rqa_later_title var:rqa_later_title = { holder = root } }
+		debug_log = "RQA_EFFECTIVE_LAW predeath title_identity=TRUE"
+	}
+	else = { debug_log = "RQA_EFFECTIVE_LAW predeath title_identity=FALSE" }
+	if = {
+		limit = { var:rqa_later_title = { has_title_law = single_heir_succession_law } }
+		debug_log = "RQA_EFFECTIVE_LAW predeath script_own_single_heir=TRUE"
+	}
+	else = { debug_log = "RQA_EFFECTIVE_LAW predeath script_own_single_heir=FALSE" }
+	if = {
+		limit = { var:rqa_later_title = { exists = holder holder = { has_realm_law = single_heir_succession_law } } }
+		debug_log = "RQA_EFFECTIVE_LAW predeath holder_realm_single_heir=TRUE"
+	}
+	else = { debug_log = "RQA_EFFECTIVE_LAW predeath holder_realm_single_heir=FALSE" }
+}
+
 rqa_execute_succession_effect = {
 	if = {
 		limit = { has_character_flag = rqa_succession_pending }
@@ -702,6 +747,22 @@ rqa_verify_succession_effect = {
 		limit = { has_character_flag = rqa_waiting_for_succession }
 		remove_character_flag = rqa_waiting_for_succession
 		save_scope_as = rqa_successor
+		# Readonly law evidence; no physical-array or source PASS is inferred here.
+		if = {
+			limit = { primary_title = var:rqa_later_title var:rqa_later_title = { holder = root } }
+			debug_log = "RQA_EFFECTIVE_LAW postdeath title_identity=TRUE"
+		}
+		else = { debug_log = "RQA_EFFECTIVE_LAW postdeath title_identity=FALSE" }
+		if = {
+			limit = { var:rqa_later_title = { has_title_law = single_heir_succession_law } }
+			debug_log = "RQA_EFFECTIVE_LAW postdeath script_own_single_heir=TRUE"
+		}
+		else = { debug_log = "RQA_EFFECTIVE_LAW postdeath script_own_single_heir=FALSE" }
+		if = {
+			limit = { var:rqa_later_title = { exists = holder holder = { has_realm_law = single_heir_succession_law } } }
+			debug_log = "RQA_EFFECTIVE_LAW postdeath holder_realm_single_heir=TRUE"
+		}
+		else = { debug_log = "RQA_EFFECTIVE_LAW postdeath holder_realm_single_heir=FALSE" }
 		if = {
 			limit = {
 				is_alive = yes
@@ -709,11 +770,14 @@ rqa_verify_succession_effect = {
 				var:rqa_later_title = {
 					holder = scope:rqa_successor
 					has_variable = rmtm_restoration_hegemony
-					has_title_law = single_heir_succession_law
+					OR = {
+						has_title_law = single_heir_succession_law
+						holder = { has_realm_law = single_heir_succession_law }
+					}
 					NOT = { any_de_jure_county = { always = yes } }
 				}
 			}
-			debug_log = "RQA: PROBE PASS phase3_succession_title"
+			debug_log = "RQA: PROBE PENDING_PHYSICAL phase3_succession_title"
 		}
 		else = { debug_log = "RQA: PROBE FAIL phase3_succession_title" }
 		if = {
@@ -771,7 +835,10 @@ rqa_verify_succession_effect = {
 				var:rqa_later_title = {
 					holder = scope:rqa_successor
 					has_variable = rmtm_restoration_hegemony
-					has_title_law = single_heir_succession_law
+					OR = {
+						has_title_law = single_heir_succession_law
+						holder = { has_realm_law = single_heir_succession_law }
+					}
 					NOT = { any_de_jure_county = { always = yes } }
 				}
 				var:rqa_loyal_direct = {
@@ -801,7 +868,7 @@ rqa_verify_succession_effect = {
 				exists = cp:minister_works
 				cp:minister_works = { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
 			}
-			debug_log = "RQA: TEST PASS phase3_later_dynasty_realm_and_ministry_inherited"
+			debug_log = "RQA: TEST PENDING_PHYSICAL phase3_later_dynasty_realm_and_ministry_inherited"
 			add_character_flag = rqa_waiting_for_recent_independence_expiry
 		}
 		else = { debug_log = "RQA: TEST FAIL phase3_later_dynasty_realm_and_ministry_inherited" }
