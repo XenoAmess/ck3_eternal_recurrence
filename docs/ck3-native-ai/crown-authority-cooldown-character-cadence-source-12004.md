@@ -101,3 +101,64 @@ pending delivery snapshots remain unchanged. Keyword names, Character
 daily cadence and calendar_deadline_ready remain unqualified/false. This
 child made no game/SDK/process contact, build, project import or test. Root
 owns shared report integration, adoption, push and the next evidenced G2 task.
+
+## Oct9 finite retry-consumer decision
+
+At **2026-10-09 00:12 CST** (2026-10-08 16:12 UTC), the O9-5 continuation
+reused exact4's frozen build and source
+`f3d9d21f39b3f107474116b8b899ee2ca4165d9b`. No EXE, game, SDK, process,
+hash, build, project import or test was executed in this lane.
+
+The current ordinary Crown consumer already has an executable retry route:
+`crown_authority_formal_consumer_v1.py:57` runs after the existing normal
+priorities have selected life advance; line88 obtains a fresh full native
+law quote at the current public revision. `crown_authority_policy_v1.py:28`
+uses that quote's final `can_enact` result and exact costs. A blocked result
+retains normal advance; the next applicable fallback queries again. This
+route does not consume `query_retry_date_raw` or the pure clock helper.
+`bridge/service.py:1977` delegates to this same consumer. Warm pending IDs
+continue through the existing independent receipt path, which cannot credit
+an ACK as a material outcome.
+
+The stock-positive selector's only authored upgrades are CA0→CA1 and
+CA1→CA2. The original campaign's retained, independently verified CA2
+material result is historical evidence reused here, not a new game query.
+At CA2, this selector has no next positive-score upgrade. Neither this
+current policy nor its fresh final-terms retry requires a calendar cooldown
+conversion. Adding a deadline field, scheduler, gate or another fixture
+would not unlock a current action.
+
+```mermaid
+flowchart TD
+  P[Existing normal priorities select life advance] --> Q[Fresh full native Crown quote]
+  Q --> S[Existing stock-positive selector]
+  S --> B[Final CanEnact and exact costs]
+  B --> A[Existing typed submit and independent receipt]
+  B --> N[Retain normal advance and query on later fallback]
+  S --> Z[CA2 has no authored positive-score upgrade]
+  C[Unheld GameData68 Character daily caller] -. cadence unresolved .-> D[Calendar cooldown deadline]
+```
+
+The finite cache lane reused the three named source indexes above and two
+existing receipt families: Army's selected-writer source-closed pair and
+Character's full-context-return receipt. The former closes its selected
+date arithmetic; the latter closes GameData+68 lookup. Neither attaches
+the Character context to a daily updater invocation. The unique caller
+remains **NOT_HELD in that named scope**. CALL site, RVA and byte range stay
+null; no new capture range is justified. GameData+C8 does not establish
+GameData+68 cadence.
+
+[SOURCE-INDEX-RECEIPT.json](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/o8-3-crown-calendar-retry/source-index/SOURCE-INDEX-RECEIPT.json)
+and [ONE-NECESSARY-SOURCE-ENTRANCE.json](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/o8-3-crown-calendar-retry/source-index/ONE-NECESSARY-SOURCE-ENTRANCE.json)
+record the bounded result and the same future named-caller entrance.
+
+This turn is **NO_NEW_WORK for production/query/schema/fixture**. It closes
+the current consumer-necessity decision and preserves the actual unresolved
+cadence entrance. O8-3's complete calendar/deadline/retry mapping remains
+**research; calendar_deadline_ready=false**. The earlier 2.461592s pure
+helper GREEN is reused without a rerun; it is not calendar or live proof.
+No current-day or live capability credit is added, and qualified Tax work
+is not reopened. If a real future consumer needs an absolute retry date,
+the next source task is the named Character pool caller above, retaining
+the exact receiver, per-item CALL and invocation condition before any
+calendar conversion is implemented.
