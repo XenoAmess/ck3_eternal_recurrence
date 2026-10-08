@@ -336,19 +336,24 @@
       ],
       "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
       "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance",
-      "open_blocker": "The user cancelled vacation/handoff and resumed G2 parallel work. Root-reported current saved progress is6009/36524 in the original Robert29829 episode, with natural successions0. The original long campaign and same-goal natural succession qualification remain unfinished; wider ruler/seed/government coverage is not implied. The dated3845-day/v32 vacation record and then-unselected faction event remain historical, not current execution holds. Existing211-tool .4 migration acceptance is closed and is not reopened as a new campaign gate. R77 material preparation has no new live turn, save or succession credit. Continue from the current Root-owned qualified restore, not the old4639 vacation checkpoint.",
+      "open_blocker": "The user cancelled vacation/handoff and resumed G2 parallel work. The Root-owned normal SAVE and ten-stream freeze establish6010/36524 atH9715/raw53288568 in the original Robert29829 episode, with natural successions0. R78 startup failed with C0000005 and remains retained; Native39 rich-Snapshot repair is offline-qualified, not a confirmed live repair. R79 is source-only and local CK3/live SDK use is currently forbidden. The original long campaign and same-goal natural succession qualification remain unfinished; wider ruler/seed/government coverage is not implied. The dated3845-day/v32 vacation record and then-unselected faction event remain historical, not current execution holds. Existing211-tool .4 migration acceptance is closed and is not reopened as a new campaign gate. Continue from the qualified H9715 saved pair when local game use is allowed; this background batch adds no game day, action, SAVE or succession.",
       "current_campaign_index": {
-        "source": "Root-reported current facts at the R77 preparation baseline",
-        "source_base": "a59b2df4a2b3ab6a951bfdc4f12845faf27439d7",
+        "source": "Root-owned R77 H9715 normal SAVE and ten-stream freeze; R79 recovery remains source-only",
+        "source_base": "9d69a02546edf45331720f7b7632d9387d4dc8ba",
         "actor_character_id": 29829,
         "episode_run_id": "native-29829-2bc2d599f7f9",
-        "saved_days": 6009,
+        "saved_days": 6010,
         "target_saved_days": 36524,
         "natural_successions": 0,
         "vacation_handoff_current": false,
-        "r77_stage": "prepared_source_only",
-        "r77_new_live_credit": false,
-        "historical_v32_record_retained": true
+        "r77_stage": "normal_save_and_ten_stream_freeze_green",
+        "r77_new_live_credit": true,
+        "historical_v32_record_retained": true,
+        "history_index": 9715,
+        "date_raw": 53288568,
+        "saved_frame_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/normal-r77-h9715-saved6010-freeze01/ROOT-SAVED-TEN-STREAM-FREEZE.json",
+        "r79_stage": "prepared_source_only",
+        "r79_new_live_credit": false
       }
     }
   ],
