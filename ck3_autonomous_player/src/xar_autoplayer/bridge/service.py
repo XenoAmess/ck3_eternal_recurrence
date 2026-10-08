@@ -48,6 +48,7 @@ from .army_current_unit_arrival_prestore_disembark_write_projection import proje
 from .army_next_land_stock_supply_budget_projection import project_source_derived_next_land_stock_supply_budget_v1
 from .army_current_first_route_target_supply_contributors_projection import project_current_first_route_target_supply_contributors_v1
 from .army_current_callback_supply_risk_projection import project_current_callback_supply_risk_v1
+from .army_current_callback_soldier_effects_projection import project_current_callback_soldier_effects_v1
 from .army_current_detachment_callback_projection import project_current_detachment_callback_inputs_v1
 from .army_current_detachment_store_projection import project_current_detachment_store_inputs_v1
 from .army_current_character_detachment_projection import project_current_character_detachment_inputs_v1
@@ -5272,6 +5273,9 @@ class GameplayBridgeService:
             {"army_id": row["army_id"], "projection": project_current_assault_first_removal_v1(
                 row, release["projection"])}
             for row, release in zip(selected_rows, daily_assault_releases)]
+        current_callback_supply_risks = [
+            {"army_id": row["army_id"], "projection": project_current_callback_supply_risk_v1(row)}
+            for row in selected_rows]
         return {
             **result,
             "schema_version": 1,
@@ -5356,9 +5360,11 @@ class GameplayBridgeService:
             "source_derived_next_land_stock_supply_budget_v1": [
                 {"army_id": row["army_id"], "projection": project_source_derived_next_land_stock_supply_budget_v1(row)}
                 for row in selected_rows],
-            "current_callback_supply_risk_v1": [
-                {"army_id": row["army_id"], "projection": project_current_callback_supply_risk_v1(row)}
-                for row in selected_rows],
+            "current_callback_supply_risk_v1": current_callback_supply_risks,
+            "current_callback_soldier_effects_v1": [
+                {"army_id": row["army_id"], "projection": project_current_callback_soldier_effects_v1(
+                    row, risk["projection"])}
+                for row, risk in zip(selected_rows, current_callback_supply_risks)],
             "conditional_current_detachment_callback_v1": [
                 {"army_id": row["army_id"], "projection": project_current_detachment_callback_inputs_v1(
                     row.get("current_detachment_callback_inputs_v1"))}
