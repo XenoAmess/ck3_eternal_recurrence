@@ -10,6 +10,7 @@
 #endif
 #include "xar_bridge/title_holder_v1_serializer.hpp"
 #include "xar_bridge/player_claims_v1_serializer.hpp"
+#include "xar_bridge/title_own_laws_v1_serializer.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 #include "xar_bridge/ai_terminal_reentry_dispatch_observer_v1.hpp"
@@ -675,6 +676,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     } else if (step == ck3_11906::kTacticalDailySentinelStatusStepV1) {
       capability = ck3_11906::kTacticalDailySentinelStatusCapabilityV1;
     }
+  }
+  std::uint32_t own_laws_title_id = UINT32_MAX;
+  if (capability.empty() && ParseTitleOwnLawsStepV1(step, own_laws_title_id)) {
+    capability = kTitleOwnLawsV1Capability;
   }
   std::vector<std::int32_t> player_claim_title_ids;
   if (capability.empty() && ParsePlayerClaimsStepV1(step, player_claim_title_ids)) {

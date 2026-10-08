@@ -1163,6 +1163,11 @@ if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_outcome.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002_sway_outcome_mailbox.cpp")
 endif()
+# The shared physical Title properties/laws leaves also serve public own-laws.
+# Their inclusion does not enable Faith selectors or Faith graph capabilities.
+list(APPEND XAR_CK3_12002_SOURCES
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_title_properties_leaf.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_title_laws_leaf.cpp")
 list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
@@ -1176,6 +1181,7 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_war_occupation.cpp
   src/ck3_12003_title_holder.cpp
   src/ck3_12004_player_claims_v1.cpp
+  src/ck3_12004_title_own_laws_v1.cpp
   src/ck3_12003_commander_mailbox.cpp
   src/ck3_12002_prewar_muster.cpp
   src/ck3_12003_default_raise_mailbox.cpp
@@ -1604,6 +1610,7 @@ add_library(xar_ck3_bridge SHARED
   src/war_occupation_targets_v1_serializer.cpp
   src/title_holder_v1_serializer.cpp
   src/player_claims_v1_serializer.cpp
+  src/title_own_laws_v1_serializer.cpp
   src/projected_contact_scope_v1_serializer.cpp
   src/war_entry_assessments_v1_mailbox.cpp
   src/zhongguo_case_snapshot_v1.cpp
@@ -9283,8 +9290,6 @@ if(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
     src/ck3_12003_confucian_challenger_graph_mailbox.cpp)
   if(NOT XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
     target_sources(xar_ck3_12002_runtime PRIVATE
-      src/ck3_12003_title_properties_leaf.cpp
-      src/ck3_12003_title_laws_leaf.cpp
       src/ck3_12003_religious_title_readback.cpp)
   endif()
   target_compile_definitions(xar_ck3_12002_runtime PUBLIC
@@ -9473,4 +9478,26 @@ if(BUILD_TESTING AND XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
   add_test(NAME xar_ck3_12004_realm_law_formal_whole_test
     COMMAND xar_ck3_12004_realm_law_formal_whole_test
       "${CMAKE_BINARY_DIR}/ck3_12004_realm_law_formal_whole_wire")
+endif()
+
+
+# Physical own-law observations exercise the same qualified runtime leaf objects.
+# This target does not link the injected bridge or enable Faith selectors.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_title_own_laws_v1_test
+    src/ck3_12004_title_own_laws_v1_test.cpp
+    src/title_own_laws_v1_serializer.cpp)
+  target_link_libraries(xar_ck3_12004_title_own_laws_v1_test PRIVATE
+    xar_ck3_12002_runtime)
+  target_include_directories(xar_ck3_12004_title_own_laws_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_title_own_laws_v1_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_title_own_laws_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_title_own_laws_v1_test PRIVATE
+      /W4 /WX /Gy /permissive- /EHsc /utf-8 /UNDEBUG)
+    target_link_options(xar_ck3_12004_title_own_laws_v1_test PRIVATE /OPT:REF)
+  endif()
+  add_test(NAME xar_ck3_12004_title_own_laws_v1_test
+    COMMAND $<TARGET_FILE:xar_ck3_12004_title_own_laws_v1_test>)
 endif()

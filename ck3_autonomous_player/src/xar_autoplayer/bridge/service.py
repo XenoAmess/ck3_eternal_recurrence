@@ -436,6 +436,16 @@ from .war_occupation_targets_contract import (
     query_war_occupation_targets_v1_step,
     war_occupation_query_scope,
 )
+from .title_own_laws_contract import (
+    QUERY_TITLE_OWN_LAWS_V1_CAPABILITY,
+    QUERY_TITLE_OWN_LAWS_V1_STEP_PREFIX,
+    normalize_title_own_laws_v1,
+    parse_query_title_own_laws_v1_step,
+    query_title_own_laws_v1_step,
+    title_own_laws_id,
+    title_own_laws_query_actor,
+    title_own_laws_revision,
+)
 from .player_claims_contract import (
     QUERY_PLAYER_CLAIMS_V1_CAPABILITY,
     QUERY_PLAYER_CLAIMS_V1_STEP_PREFIX,
@@ -4265,6 +4275,61 @@ class GameplayBridgeService:
                 step, expected_revision=expected_revision
             ),
             "war_id": war_id,
+        }
+
+    def query_title_own_laws_v1(
+        self, title_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one arbitrary title's complete own-law array on the current paused frame."""
+        title_id = title_own_laws_id(title_id)
+        title_own_laws_revision(expected_revision)
+        step = query_title_own_laws_v1_step(title_id)
+        snapshot = self.snapshot()
+        try:
+            actor_id = title_own_laws_query_actor(snapshot)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = snapshot.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("title own-laws query lacks a public revision")
+        if expected_revision != revision:
+            raise PreSubmissionRevisionMismatchError(
+                f"title own-laws revision mismatch: expected {expected_revision}, current {revision}"
+            )
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not isinstance(capabilities, list) or QUERY_TITLE_OWN_LAWS_V1_CAPABILITY not in capabilities:
+            raise UnsupportedStepError("selected backend cannot query native title own-laws")
+        result = self.execute_step(step, expected_revision=revision)
+        if (
+            not isinstance(result, dict)
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("read_only") is not True
+            or result.get("backend_id") != "native-headless"
+            or type(result.get("snapshot_revision")) is not int
+            or result["snapshot_revision"] != snapshot.get("native_revision")
+            or type(result.get("date_raw")) is not int
+            or result["date_raw"] != snapshot.get("date_raw")
+            or result.get("status") not in {"available", "unavailable"}
+            or type(result.get("query_sequence")) is not int
+            or not 1 <= result["query_sequence"] <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError("title own-laws query returned a malformed envelope")
+        try:
+            value = normalize_title_own_laws_v1(
+                result.get("title_own_laws"), expected_title_id=title_id,
+                expected_actor_character_id=actor_id,
+                expected_snapshot_revision=snapshot.get("native_revision"),
+                expected_date_raw=snapshot.get("date_raw"),
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native title own-laws query is malformed: {error}") from error
+        if (result["status"] == "available") != value["available"]:
+            raise BridgeUnavailableError("title own-laws query status disagrees with availability")
+        return {
+            **result, "title_id": title_id, "title_own_laws": value,
+            "read_only": True, "queried_snapshot_id": snapshot.get("snapshot_id"),
+            "queried_revision": revision, "queried_native_revision": snapshot.get("native_revision"),
         }
 
     def query_player_claims_v1(

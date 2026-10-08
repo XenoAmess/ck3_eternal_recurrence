@@ -3916,6 +3916,14 @@ def create_server(
         )
 
     @server.tool(annotations=read_only_tool)
+    def ck3_query_title_own_laws_v1(
+        title_id: Annotated[int, Field(strict=True, ge=0, lt=4294967295)],
+        expected_revision: Annotated[int, Field(strict=True, ge=0)],
+    ) -> dict[str, object]:
+        """Read the complete own-law array of one full uint32 TitleID; no Faith or holder inference."""
+        return service.query_title_own_laws_v1(title_id, expected_revision=expected_revision)
+
+    @server.tool(annotations=read_only_tool)
     def ck3_query_player_claims_v1(
         title_ids: list[Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]],
         expected_revision: Annotated[int, Field(strict=True, ge=0)],

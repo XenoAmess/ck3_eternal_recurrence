@@ -469,6 +469,15 @@ public:
     return ck3_12002::ReadCombatSimulationInputsV3(bindings_.phase, scope,
                                                   request, output);
   }
+  ReadTitleOwnLawsV1Result read_title_own_laws_v1(
+      std::uint32_t title_id, TitleOwnLawsV1 &output) const noexcept override {
+    output = {};
+    output.title_id = title_id;
+    if (!IsCk3_12004Descriptor(*descriptor_))
+      return ReadTitleOwnLawsV1Result::unavailable;
+    return ck3_12004::ReadTitleOwnLawsV1(
+        bindings_.title_own_laws12004, title_id, output);
+  }
   ReadPlayerClaimsV1Result read_player_claims_v1(
       const std::vector<std::int32_t> &ids, PlayerClaimsV1 &output) const noexcept override {
     output = {};

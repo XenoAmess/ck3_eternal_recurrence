@@ -564,6 +564,16 @@ from .war_occupation_targets_contract import (
 from .assault_holding_observation_v1 import (
     fresh_holding_siege_states, holding_assault_steps,
 )
+from .title_own_laws_contract import (
+    QUERY_TITLE_OWN_LAWS_V1_CAPABILITY,
+    QUERY_TITLE_OWN_LAWS_V1_STEP_PREFIX,
+    normalize_title_own_laws_v1,
+    parse_query_title_own_laws_v1_step,
+    query_title_own_laws_v1_step,
+    title_own_laws_id,
+    title_own_laws_query_actor,
+    title_own_laws_revision,
+)
 from .player_claims_contract import (
     QUERY_PLAYER_CLAIMS_V1_CAPABILITY,
     QUERY_PLAYER_CLAIMS_V1_STEP_PREFIX,
@@ -8836,6 +8846,9 @@ class NativeHeadlessGameplayDriver:
                 "malformed or incomplete route-contact horizon advance step"
             )
         occupation_war_id = parse_query_war_occupation_targets_v1_step(step)
+        title_own_laws_title_id = parse_query_title_own_laws_v1_step(step)
+        if isinstance(step, str) and step.startswith(QUERY_TITLE_OWN_LAWS_V1_STEP_PREFIX) and title_own_laws_title_id is None:
+            raise UnsupportedStepError("malformed full uint32 TitleID own-laws query")
         player_claim_title_ids = parse_query_player_claims_v1_step(step)
         if isinstance(step, str) and step.startswith(QUERY_PLAYER_CLAIMS_V1_STEP_PREFIX) and player_claim_title_ids is None:
             raise UnsupportedStepError("malformed ordered TitleID player claims query")
@@ -9477,6 +9490,8 @@ class NativeHeadlessGameplayDriver:
             return self._execute_war_occupation_targets_v1_query(
                 step, expected_revision=expected_revision,
             )
+        if title_own_laws_title_id is not None:
+            return self._execute_title_own_laws_v1_query(step, expected_revision=expected_revision)
         if player_claim_title_ids is not None:
             return self._execute_player_claims_v1_query(
                 step, expected_revision=expected_revision,
@@ -13824,6 +13839,76 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def query_title_own_laws_v1(
+        self, title_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Explicit read-only query; arbitrary full uint32 TitleIDs never become planner actions."""
+        title_own_laws_revision(expected_revision)
+        return self.execute_step(
+            query_title_own_laws_v1_step(title_id), expected_revision=expected_revision,
+        )
+
+    def _execute_title_own_laws_v1_query(
+        self, step: str, *, expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read complete physical own-law rows without a Faith or holder selector."""
+        title_id = parse_query_title_own_laws_v1_step(step)
+        if title_id is None:
+            raise UnsupportedStepError("malformed full uint32 TitleID own-laws query")
+        if expected_revision is not None:
+            title_own_laws_revision(expected_revision)
+        starting = self.take_snapshot()
+        try:
+            actor_id = title_own_laws_query_actor(starting)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = starting.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("title own-laws query lacks a public revision")
+        result = self._execute_primitive_step(
+            step, expected_revision=expected_revision if expected_revision is not None else revision,
+            required_capability=QUERY_TITLE_OWN_LAWS_V1_CAPABILITY,
+        )
+        if (
+            not isinstance(result, dict)
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("read_only") is not True
+            or result.get("backend_id") != "native-headless"
+            or type(result.get("snapshot_revision")) is not int
+            or result["snapshot_revision"] != starting.get("native_revision")
+            or type(result.get("date_raw")) is not int
+            or result["date_raw"] != starting.get("date_raw")
+            or result.get("status") not in {"available", "unavailable"}
+            or type(result.get("query_sequence")) is not int
+            or not 1 <= result["query_sequence"] <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError("native title own-laws query returned a malformed envelope")
+        try:
+            value = normalize_title_own_laws_v1(
+                result.get("title_own_laws"), expected_title_id=title_id,
+                expected_actor_character_id=actor_id,
+                expected_snapshot_revision=starting.get("native_revision"),
+                expected_date_raw=starting.get("date_raw"),
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"native title own-laws query is malformed: {error}") from error
+        if (result["status"] == "available") != value["available"]:
+            raise BridgeUnavailableError("native title own-laws query status disagrees with availability")
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current) or current.get("date_raw") != starting.get("date_raw"):
+            raise BridgeUnavailableError("native title own-laws query crossed a paused frame")
+        try:
+            if title_own_laws_query_actor(current) != actor_id:
+                raise ValueError("played character identity changed")
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        return {
+            **result, "title_own_laws": value, "read_only": True,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": revision, "queried_native_revision": starting.get("native_revision"),
         }
 
     def _execute_player_claims_v1_query(
@@ -23918,6 +24003,8 @@ class ConfiguredHybridFallbackDriver:
     def execute_step(
         self, step: str, *, expected_revision: int | None = None
     ) -> dict[str, object]:
+        if isinstance(step, str) and step.startswith(QUERY_TITLE_OWN_LAWS_V1_STEP_PREFIX):
+            raise UnsupportedStepError("title own-laws query supports native-headless only; hybrid fallback is unavailable")
         commander_assignment = parse_assign_army_commander_v1_step(step)
         if commander_assignment is not None:
             native_capabilities = self.native.capabilities().get("bridge_capabilities")
@@ -29303,6 +29390,9 @@ def _action_steps(
             # The caller supplies the current full WarID; the -N template is
             # a capability, never an executable action literal.
             continue
+        elif capability == QUERY_TITLE_OWN_LAWS_V1_CAPABILITY:
+            # Full uint32 TitleID is an explicit caller input, never a planner literal.
+            continue
         elif capability == QUERY_PLAYER_CLAIMS_V1_CAPABILITY:
             # Ordered TitleIDs are explicit caller inputs. The -IDS template
             # is a query capability, never an executable planner action.
@@ -29353,6 +29443,7 @@ def _action_steps(
             continue
         elif step.startswith(
             (
+                QUERY_TITLE_OWN_LAWS_V1_STEP_PREFIX,
                 QUERY_PLAYER_CLAIMS_V1_STEP_PREFIX,
                 QUERY_COMBAT_SIMULATION_INPUTS_STEP_PREFIX,
                 QUERY_COMBAT_SIMULATION_INPUTS_V3_STEP_PREFIX,

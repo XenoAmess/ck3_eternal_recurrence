@@ -71,6 +71,8 @@ public:
       const game::CombatSimulationInputsRequest &, game::CombatSimulationInputsV3Snapshot &) const noexcept override;
   game::ReadPlayerClaimsV1Result read_player_claims_v1(
       const std::vector<std::int32_t> &, game::PlayerClaimsV1 &) const noexcept override;
+  game::ReadTitleOwnLawsV1Result read_title_own_laws_v1(
+      std::uint32_t, game::TitleOwnLawsV1 &) const noexcept override;
   game::ReadTitleHolderV1Result read_title_holder_v1(
       std::int32_t, game::TitleHolderV1 &) const noexcept override;
   game::ReadWarOccupationTargetsV1Result read_war_occupation_targets_v1(
