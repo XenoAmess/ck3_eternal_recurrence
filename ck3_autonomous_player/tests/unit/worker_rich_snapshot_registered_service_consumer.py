@@ -18,6 +18,7 @@ class OwnedFrameEndpoint:
         self.on_frame = None
         self.on_disconnect = None
         self.sent = []
+        self.transport_pings = []
 
     def start(self, on_frame, on_disconnect):
         self.on_frame = on_frame
@@ -28,8 +29,14 @@ class OwnedFrameEndpoint:
         self.on_frame(deepcopy(frame))
 
     def send(self, frame, **kwargs):
+        if (frame.get("type") == "ping" and frame.get("protocol_version") == 1
+                and isinstance(frame.get("request_id"), str)):
+            self.transport_pings.append(deepcopy(frame))
+            self.emit({"protocol_version": 1, "type": "pong",
+                       "request_id": frame["request_id"]})
+            return
         self.sent.append(deepcopy(frame))
-        raise AssertionError("offline snapshot consumer must submit zero native commands")
+        raise AssertionError("offline snapshot consumer must submit zero gameplay commands")
 
     def transport_error(self):
         return None
@@ -43,7 +50,7 @@ def require_rich_preservation(raw, result):
     state = raw["state"]
     assert result["date_raw"] == state["date_raw"]
     assert result["paused"] is True and result["map_ready"] is True
-    assert result["played_character"]["id"] == 29829
+    assert result["played_character"]["character_id"] == 29829
     assert len(result["player_armies"]) == len(state["player_armies"]) == 2
     assert [r["army_id"] for r in result["player_armies"]] == [
         r["army_id"] for r in state["player_armies"]]
@@ -79,7 +86,7 @@ def require_rich_preservation(raw, result):
 async def consume(wire_dir, result_dir, source_head):
     from mcp import Client
     from xar_autoplayer.bridge.mcp_server import create_server
-    from xar_autoplayer.bridge.native_driver import NativeBridgeDriver
+    from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 
     context = json.loads((wire_dir / "NATIVE-CONTEXT.json").read_text(encoding="utf-8"))
     assert context["producer"] == "fixture-native-gameadapter-rich-snapshot-v1"
@@ -89,11 +96,11 @@ async def consume(wire_dir, result_dir, source_head):
     assert context["Game_executed"] is False
 
     endpoint = OwnedFrameEndpoint()
-    driver = NativeBridgeDriver(
+    driver = NativeHeadlessGameplayDriver(
         pipe_name="offline-owned-worker-rich-snapshot",
         endpoint=endpoint, state_dir=result_dir / "state",
         save_dir=result_dir / "unused-save-directory",
-        command_timeout_seconds=0.1)
+        command_timeout_seconds=0.1, episode_projection="native_campaign")
     endpoint.emit({
         "protocol_version": 1, "type": "hello", "pid": 1,
         "connection_generation": 1,
@@ -130,6 +137,7 @@ async def consume(wire_dir, result_dir, source_head):
         assert after["active_siege"]["province_unit_occurrences"] != before[
             "active_siege"]["province_unit_occurrences"]
         assert endpoint.sent == []
+        assert len(endpoint.transport_pings) == 1
     finally:
         endpoint.close()
     return {
@@ -137,7 +145,8 @@ async def consume(wire_dir, result_dir, source_head):
         "status": "GREEN", "source_root": str(ROOT.parent),
         "source_head": source_head, "whole_workflows": 1,
         "registered_tool": "ck3_take_snapshot", "registered_MCP_calls": 2,
-        "native_commands_sent": 0, "Game_calls": 0,
+        "native_commands_sent": 0, "transport_pings": len(endpoint.transport_pings),
+        "Game_calls": 0,
         "native_fixture_context": context,
         "synthetic_native_reader": True, "real_game_snapshot_captured": False,
         "live_readiness": False, "old_FIRST_replays": 0,
