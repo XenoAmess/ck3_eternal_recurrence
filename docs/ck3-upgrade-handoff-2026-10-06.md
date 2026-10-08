@@ -228,3 +228,5 @@ R12/a114 D3 actual4/actor34422/primary18371/date53144400/native16 actual availab
 ### 2026-10-08续办：TED普通saved-scene绑定与剩余GUI尾验
 
 TED R11/a117 [camera绑定RED/闭场40](C:/workspace/ck3-upgrade-20261007/ted-r0011-camera-binding-red-readonly-resource-01/ROOT-TED-R0011-A117-MINIMAL-CLOSED-CARD-40.md)因缺少合法`binding.episode_run_id`在native dispatch前拒绝，原RED保留，managed shutdown1非normal0，keeper0/CAS6244 done。R12/a118 [实际normal0闭场41](C:/workspace/ck3-upgrade-20261007/ted-r0012-normal0-pending-gui-readonly-resource-01/ROOT-TED-R0012-A118-MINIMAL-CLOSED-CARD-41.md)的正常GUI/独立retained OS0/native0/cleanup及keeper33645 actualexit0→CAS6315 done/resources[]成立，host GREEN不授业务PASS；复用R11 S/宋帝赵曙及贡臣契约GUI信用，T holder/休战GUI仍未验。合法普通saved-scene MCP binding正在补齐，未写成已实现或实机PASS；仍6/10（60%），不重复已有信用、不冲销历史失败，缓存永久两项规则不变。
+
+2026-10-08续办：[mod升级提速与公共验收入口](ck3-mod-upgrade-fast-validation.md)记录全部未来mod的common manifest统一消费、当前adapter pending及分阶段施工；正常数小时仅工程目标，原源码合同/预算、旧冻结失败与缓存永久两项政策保持。

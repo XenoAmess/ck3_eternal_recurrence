@@ -1,0 +1,226 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "reclaim-motherland",
+  "case": "core",
+  "families": [
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "exact_build_song_emperor"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "fixture_vassal_tree_prepared"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "switched_to_song_emperor"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "custom_rule_before_chaos"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "pre_chaos_movement_identity_prepared"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "chaos_phase_transition_applied"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "original_movement_identity_frozen"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "original_chaos_event_dispatched"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "later_dynasty_empty_de_jure_and_personal_land_retained"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PENDING_PHYSICAL",
+      "name": "later_dynasty_single_heir_law_and_heir_ready"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase3_nine_ministry_incumbents_retained"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase2_loyal_direct_still_attached"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase2_loyal_resolution_retained"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase2_loyal_title_identity_retained"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase2_loyal_subtree_retained"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase2_loyal_title_name_and_subtree_retained"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase2_disloyal_pro_hegemon_defected"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "non_pro_hegemon_direct_released"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase4_recent_independence_titles_bound"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "chaos_matrix_complete"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase4_offer_vassalization_paths_valid"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase4_two_released_rulers_refused_immediate_vassalization"
+    },
+    {
+      "kind": "PROBE",
+      "representation": "PENDING_PHYSICAL",
+      "name": "phase3_succession_title"
+    },
+    {
+      "kind": "PROBE",
+      "representation": "PASS",
+      "name": "phase3_succession_personal_county"
+    },
+    {
+      "kind": "PROBE",
+      "representation": "PASS",
+      "name": "phase3_succession_loyal_realm"
+    },
+    {
+      "kind": "PROBE",
+      "representation": "PASS",
+      "name": "phase3_succession_ministry_entitlement"
+    },
+    {
+      "kind": "PROBE",
+      "representation": "PASS",
+      "name": "phase3_succession_exact_ministers"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PENDING_PHYSICAL",
+      "name": "phase3_later_dynasty_realm_and_ministry_inherited"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "phase4_recent_independence_expired"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "china_control_reset"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "fifty_percent_below_claim_threshold"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "original_fifty_one_percent_threshold_reached"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "restoration_decision_ready"
+    },
+    {
+      "kind": "TEST",
+      "representation": "PASS",
+      "name": "original_mandate_effect_plus_later_title_destroyed"
+    }
+  ],
+  "begin": "RQA: TEST BEGIN reclaim",
+  "done": "RQA: TEST DONE reclaim",
+  "original_family_count": 36,
+  "unchanged_family_count": 33,
+  "physical_qualified_family_count": 3,
+  "required_exact_count": 1,
+  "forbidden_markers": [
+    "RQA: TEST FAIL",
+    "RQA: PROBE FAIL",
+    "RQA120: TEST FAIL"
+  ],
+  "natural_game_day_limit": 14,
+  "fixture_recent_independence_override_days": 1,
+  "formal_recent_independence_days": 1825,
+  "physical_law_gate": {
+    "phases": [
+      "d3",
+      "predeath",
+      "postdeath"
+    ],
+    "helper": "{repo_root}/tools/reclaim_the_motherland_effective_law_contract.py",
+    "actual_rows_caller": "{repo_root}/tools/reclaim_the_motherland_effective_law_acceptance.py",
+    "require_original_rows_verified_against_immutable_source_reports": true,
+    "require_exact_same_owner_title_native_public_frame": true,
+    "accept": [
+      "complete own count1/key single_heir with matching script own bool",
+      "complete own count0/laws[]/memberfalse with scriptownfalse and sameholder realm singletrue"
+    ],
+    "reject": [
+      "unavailable/truncated/unknown additional own keys",
+      "owner/title/frame drift or conflicting physical/script bool",
+      "realm Bool alone or legacy three PASS coexistence"
+    ],
+    "predeath_time_boundary": "Continue scheduling checkpoint precedes next-day original execute; actual execute-time saved heir and real predecessor death remain separately required"
+  },
+  "original_business": [
+    "same dynamic full Later title and original primary/current heir",
+    "empty de_jure/personal county retained",
+    "true loyal direct/subtree and original resolution/title identity",
+    "defecting/control direct independent and bound title timers",
+    "unique ministry entitlement and nine exact incumbents before/after",
+    "original switch to engine heir then predecessor real natural death",
+    "same fulltitle recovery on original following-day callback and actual successor equals independently expected engine heir",
+    "two real Offer paths/refusals with original conditions",
+    "50 insufficient/51 reached/restoration production effects/original Later unheld"
+  ],
+  "event_handling": "identify current exact instance and source, select enabled option once, then observe next owner/date/paused/map/event without asserting no next event",
+  "no_repeated_D2_chaos_dispatch": true,
+  "no_native_player_death_continue_credit": true
+}

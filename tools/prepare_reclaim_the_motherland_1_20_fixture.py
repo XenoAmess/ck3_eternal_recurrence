@@ -8,14 +8,34 @@ from pathlib import Path
 
 import fixture_engine_prepare as prep
 
-START = '''on_game_start_after_lobby = { on_actions = { rqa120_start } }
-rqa120_start = {
-    effect = {
-        debug_log = "RQA120: TEST BEGIN engine_startup"
-        random_player = { trigger_event = { id = rqa120.1 } }
-    }
-}
-'''
+START = 'on_game_start_after_lobby = { on_actions = { rqa120_start } }\nrqa120_start = {\n    effect = {\n        debug_log = "RQA120: TEST BEGIN engine_startup"\n        set_global_variable = rqa120_stock_join_dispatch_armed\n        rqa120_try_dispatch_after_stock_join_effect = yes\n    }\n}\n'
+
+STOCK_JOIN_HELPER = 'rqa120_try_dispatch_after_stock_join_effect = {\n    if = {\n        limit = {\n            exists = global_var:rqa120_stock_join_dispatch_armed\n            NOT = { exists = global_var:rqa120_stock_join_dispatched }\n        }\n        character:han_8052 = {\n            if = {\n                limit = {\n                    has_title = title:h_china\n                    any_character_situation = { situation_type = dynastic_cycle }\n                }\n                if = {\n                    limit = { exists = top_participant_group:dynastic_cycle }\n                    top_participant_group:dynastic_cycle = {\n                        if = {\n                            limit = { participant_group_type = hegemon_ruler }\n                            # Disarm before the original initializer can recalculate groups.\n                            set_global_variable = rqa120_stock_join_dispatched\n                            remove_global_variable = rqa120_stock_join_dispatch_armed\n                            debug_log = "RQA_INIT_DIAG_V1 real_song_membership_dispatch_once"\n                            random_player = { trigger_event = { id = rqa120.1 } }\n                        }\n                        else = { debug_log = "RQA_INIT_DIAG_V1 waiting_song_hegemon_type" }\n                    }\n                }\n                else = { debug_log = "RQA_INIT_DIAG_V1 waiting_song_top_group" }\n            }\n            else = { debug_log = "RQA_INIT_DIAG_V1 waiting_song_real_membership" }\n        }\n    }\n}\n'
+STOCK_JOIN_HOOK = '\t\t\t\t# RQA external fixture: observe real engine membership, never create it.\n\t\t\t\tif = {\n\t\t\t\t\tlimit = { this = character:han_8052 }\n\t\t\t\t\tdebug_log = "RQA_INIT_DIAG_V1 stock_hegemon_on_join_song"\n\t\t\t\t\trqa120_try_dispatch_after_stock_join_effect = yes\n\t\t\t\t}'
+STOCK_START_HOOK = '\t\t# RQA external fixture: observe completed stock initial setup; never create membership.\n\t\tdebug_log = "RQA_INIT_DIAG_V1 stock_on_start_completed_dispatch_check"\n\t\trqa120_try_dispatch_after_stock_join_effect = yes'
+STOCK_NATURAL_CHAOS_HOOK = '\t\t\t\t\t\t# RQA observer only: the preceding stock statement emitted the natural event.\n\t\t\t\t\t\tif = {\n\t\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\t\tthis = character:han_8052\n\t\t\t\t\t\t\t\thas_character_flag = rqa_waiting_for_chaos\n\t\t\t\t\t\t\t\tNOT = { has_character_flag = rqa120_natural_chaos_callback_observed }\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tadd_character_flag = rqa120_natural_chaos_callback_observed\n\t\t\t\t\t\t\tdebug_log = "RQA_INIT_DIAG_V2 natural_chaos_callback_observed_once"\n\t\t\t\t\t\t}'
+
+
+def project_stock_observers(game_dir: Path) -> tuple[str, dict]:
+    """Append only the three qualified observers to the selected actual stock file."""
+    source = game_dir / "game/common/situation/situations/tgp_dynastic_cycle.txt"
+    raw = source.read_bytes()
+    stock = raw.decode("utf-8-sig").replace("\r\n", "\n")
+    if any(token in stock for token in ("rqa120_", "RQA_INIT_DIAG")):
+        raise ValueError("stock input already contains an acceptance overlay")
+    groups = prep.balanced_excerpt(stock, r"^\tparticipant_groups\s*=\s*\{")
+    group = prep.balanced_excerpt(groups, r"^\t\thegemon_ruler\s*=\s*\{")
+    join = prep.balanced_excerpt(group, r"^\s*on_join\s*=\s*\{")
+    joined = join[:join.rfind("}")] + STOCK_JOIN_HOOK + "\n\t\t\t" + join[join.rfind("}"):]
+    stock = prep.replace_once(stock, group, prep.replace_once(group, join, joined))
+    start = prep.balanced_excerpt(stock, r"^\ton_start\s*=\s*\{")
+    started = start[:start.rfind("}")] + STOCK_START_HOOK + "\n\t" + start[start.rfind("}"):]
+    stock = prep.replace_once(stock, start, started)
+    marker = "trigger_event = tgp_dynastic_cycle.0081 # China shatters"
+    stock = prep.replace_once(stock, marker, marker + "\n" + STOCK_NATURAL_CHAOS_HOOK)
+    return stock, {"file": "game/common/situation/situations/tgp_dynastic_cycle.txt",
+                   "stock_file_sha256": prep.digest(source), "observer_hooks": 3,
+                   "changes_membership_or_repeats_event": False}
 
 CONTINUE = '''rqa120_continue_decision = {
     picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
@@ -146,7 +166,7 @@ CHECKPOINT
     return "namespace = rqa120\n\n" + event("rqa120.1", initialize) + "\n" + event("rqa120.2", tick)
 
 
-def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int) -> dict:
+def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None) -> dict:
     repo, output = prep.checked_output(repo, output)
     if not 10 <= duration <= 30:
         raise ValueError("compressed political-memory duration must be between 10 and 30 days")
@@ -160,6 +180,10 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int) -> di
                       f"# External acceptance-only timer compression: production remains 1825 days.\nrmtm_recent_independence_duration_days = {duration}\n")
     body, proof = prep.decision_effect(repo, "mod_reclaim_the_motherland", "common/decisions/rmtm_restoration_decisions.txt", "rmtm_claim_restoration_decision")
     prep.write_script(output, "common/scripted_effects/rqa120_production_effects.txt", f"# Exact production decision-effect excerpt; UI/validity is not executed.\nrqa120_production_restoration_effect = {{\n{body}\n}}\n")
+    stock, stock_proof = project_stock_observers(game_dir or repo / "Crusader Kings III")
+    prep.write_script(output, "common/situation/situations/tgp_dynastic_cycle.txt", stock)
+    with (output / "common/scripted_effects/rqa120_production_effects.txt").open("a", encoding="utf-8", newline="\n") as stream:
+        stream.write("\n" + STOCK_JOIN_HELPER)
     prep.write_script(output, "common/on_action/rqa120_on_actions.txt", START)
     prep.write_script(output, "events/rqa120_events.txt", events(ui_checkpoints))
     if ui_checkpoints:
@@ -202,10 +226,11 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int) -> di
         "effective_law_contract":effective_law_contract,
         "bookmark":"1066-09-15; begin as any human ruler except the Song emperor",
         "entry":"on_game_start_after_lobby -> rqa120.1 -> daily hidden rqa120.2; successor driver is explicitly scheduled before predecessor death",
-        "expected_game_days":duration + 5, "max_game_days":120,
+        "expected_game_days":duration + 2, "max_game_days":14,
+        "completion_within_day_cap":"must be proved by actual markers; configured duration does not grant expiry credit",
         "game_rules":{"rmtm_hegemon_fate":"rmtm_reclaim_the_motherland", "rmtm_pro_hegemon_choice":"rmtm_divided_hearts"},
         "required_markers":markers, "reject_markers":["RQA: TEST FAIL", "RQA120: TEST FAIL"],
-        "production_effect_projections":[proof],
+        "production_effect_projections":[proof], "stock_observer_projection":stock_proof,
         "timer_compression":{"production_days":1825, "prepared_fixture_days":duration, "reason":"preserve recent independence through the daily driver, then observe actual engine expiry"},
         "coverage":"Existing production shattering/offer interaction/succession/restoration consequences and ministry entitlement/budget flags. Government budget UI, numeric acceptance reasons and production decision clicks remain separate UI checks.",
         "ui_steps":["Close the native Chaos notification to allow time to advance.",
@@ -222,9 +247,10 @@ def main() -> None:
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--ui-checkpoints", action="store_true")
-    parser.add_argument("--compressed-days", type=int, default=14)
+    parser.add_argument("--compressed-days", type=int, required=True)
+    parser.add_argument("--game-dir", type=Path)
     args = parser.parse_args()
-    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days)
+    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir)
     print(json.dumps({"prepared_fixture":receipt["prepared_fixture"], "runtime_status":"NOT_RUN", "ui_checkpoints":args.ui_checkpoints}))
 
 

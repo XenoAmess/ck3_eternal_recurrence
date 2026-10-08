@@ -1,0 +1,1135 @@
+{
+  "schema": "ck3-mod-acceptance-products-v1",
+  "product_inventory": "{repo_root}/workshop/products.json",
+  "shared_runtime_selection": "runtime manifest selected once by unified entry; cases contain no source/DLL/host/engine lock copies",
+  "cache_policy": {
+    "independent_from_source_cases": true,
+    "checks": [
+      {
+        "id": "sdk_download_exact_formal",
+        "requirements": [
+          "real native SDK download from canonical item",
+          "strict exact formal manifest file bytes/SHA at actual cachepath"
+        ]
+      },
+      {
+        "id": "game_cache_mounted_and_normal0",
+        "requirements": [
+          "actual CK3 startup proves target cached mod mounted/loaded from SDK cachepath",
+          "menu Quit To Desktop retained OS0 and native cleanup0"
+        ]
+      }
+    ],
+    "forbidden_replay": [
+      "business/event/trait/threshold/matrix source acceptance",
+      "NewGame/Robert/Start/fixture/native-business-ready or map requirement"
+    ],
+    "menu_mount_evidence_sufficient": true
+  },
+  "products": {
+    "eternal-recurrence": {
+      "directory": "XenoAmess_s_Eternal_Recurrence",
+      "workshop_item_id": "3784706360",
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/tools/build_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_courtier_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_acceptance.py"
+        ],
+        "fixture_selector": "--scenario main-ui / main-writer / main-reader / main-no-heir; dual cases retain both products",
+        "boundary": "Kaishek profile defaults ck3-1.19.0.6 at lines214,403; ck3_build accepts XAR_CK3_VERSION at237. No exact EXE allowlist found in this entry. Shared fixture preparation permits only .2/.3. No .4 readiness inferred.",
+        "source_refs": [
+          "tools/run_acceptance.py:65",
+          "tools/run_acceptance.py:211",
+          "tools/run_acceptance.py:396",
+          "tools/run_acceptance.py:532",
+          "tools/prepare_courtier_1_20_fixture.py:18"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "vivhite-courtier": {
+      "directory": "Eternal_Recurrence_Vivhite_Courtier",
+      "workshop_item_id": "3787304042",
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/tools/build_vivhite_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_courtier_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_vivhite_acceptance.py"
+        ],
+        "fixture_selector": "--scenario vivhite-ui / dual-original-first / dual-vivhite-first",
+        "boundary": "EXPECTED_GAME_VERSION 1.19.0.6; preflight and final version checks enforce it. Shared fixture preparation permits only .2/.3.",
+        "source_refs": [
+          "tools/run_vivhite_acceptance.py:32",
+          "tools/run_vivhite_acceptance.py:1374",
+          "tools/run_vivhite_acceptance.py:1653",
+          "tools/prepare_courtier_1_20_fixture.py:18"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "remove-mandala": {
+      "directory": "mod_remove_mandala",
+      "workshop_item_id": "3797711947",
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/tools/build_remove_mandala_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_remove_mandala_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_remove_mandala_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "EXPECTED_GAME_VERSION 1.19.0.6; preflight/final enforce. Shared fixture preparation permits only .2/.3.",
+        "source_refs": [
+          "tools/run_remove_mandala_acceptance.py:43",
+          "tools/run_remove_mandala_acceptance.py:135",
+          "tools/run_remove_mandala_acceptance.py:356",
+          "tools/run_remove_mandala_acceptance.py:439"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "xqol": {
+      "directory": "mod_xenoamess_quality_of_life",
+      "workshop_item_id": "3798133925",
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/tools/build_xenoamess_quality_of_life_release.py",
+      "integration_status": "business_contract_configured_shared_adapters_pending",
+      "cases": [
+        {
+          "id": "defense_and_ui",
+          "status": "blocked",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json",
+            "frontend_rules_plan": "{run_dir}/frontend-rules-plan.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_get_capabilities",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_title_holder_v1"
+          ],
+          "phases": {
+            "contract": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_defense_and_ui.json",
+            "steps": [
+              "actual D0 actor qualification and legal relationship diagnostics",
+              "one original D1 speed/resume/pause with current-owner fresh snapshot",
+              "same-live bounded original defense/reverse progression",
+              "strict23/5 and six original final steps",
+              "Root true Song switch then required readonly9",
+              "all25 original GUI checks",
+              "normal GUI Quit/native OS0"
+            ],
+            "source_preparer_equivalence": false,
+            "integration_blockers": [
+              "current defense/steppe fixture producer is externally authored; canonical preparation adapter not connected",
+              "product continuous D0/D1/final6/readonly9/UI25 state guards must be transferred to shared entry; no product host reuse"
+            ],
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "poll_interval": 0.05,
+            "hold_seconds": 1800
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "checks": [
+              "civic-candidates",
+              "military-candidates",
+              "million-off",
+              "million-on",
+              "million-restored",
+              "civic-appointment",
+              "military-appointment",
+              "guards",
+              "slider-anchor",
+              "cancel0",
+              "cancel1",
+              "cancel49",
+              "cancel50",
+              "cancel51",
+              "cancel99",
+              "cancel100",
+              "save100",
+              "save99",
+              "save51",
+              "save50",
+              "save49",
+              "save1",
+              "save0",
+              "restore-anchor",
+              "map-clean"
+            ],
+            "all_required": true,
+            "missing_typed_surfaces": [
+              "governor candidate selection/filter/score tooltip",
+              "conversion slider draft/save/cancel readback"
+            ],
+            "fallback": "Root actual GUI with original images, fresh owner frame and coordinate mapping receipts",
+            "decision_tools_optional": [
+              "ck3_open_ingame_decisions_v1",
+              "ck3_query_ingame_decision_item_v1",
+              "ck3_select_ingame_decision_item_v1",
+              "ck3_confirm_ingame_decision_item_v1",
+              "ck3_confirm_ingame_decision_outcome_v1"
+            ],
+            "confirm_adapter_must_cover_actual_product": true
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          }
+        },
+        {
+          "id": "legacy_celestial_source",
+          "status": "blocked",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json",
+            "frontend_rules_plan": "{run_dir}/frontend-rules-plan.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_get_capabilities",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option"
+          ],
+          "phases": {
+            "declared_scenario": "celestial",
+            "source_marker_inventory": [
+              "ZQA: TEST BEGIN xqol",
+              "ZQA: TEST PASS exact_build_song_emperor",
+              "ZQA: TEST PASS switched_to_supported_player",
+              "ZQA: TEST PASS product_enable_decisions",
+              "ZQA: TEST PASS transfer_guard_enabled_and_preexisting_preserved",
+              "ZQA: TEST PASS vanilla_baseline_heirs_recorded",
+              "ZQA: TEST PASS enabled_highest_non_player_heir_selected",
+              "ZQA: TEST PASS removal_transferred_to_scored_heir",
+              "ZQA: TEST PASS death_transferred_to_non_player_successor",
+              "ZQA: TEST PASS ready_for_product_disable_decisions",
+              "ZQA: TEST PASS product_disable_decisions",
+              "ZQA: TEST PASS disabled_vanilla_heir_available",
+              "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved",
+              "ZQA: TEST PASS payment_full_only",
+              "ZQA: TEST PASS payment_any_above_one_only",
+              "ZQA: TEST PASS payment_matrix_done",
+              "ZQA: TEST PASS conversion_threshold_50_filtered",
+              "ZQA: TEST PASS ransom_full_only",
+              "ZQA: TEST PASS ransom_any_one_gold",
+              "ZQA: TEST PASS release_priority_matrix",
+              "ZQA: TEST PASS phase2_interaction_matrices_done",
+              "ZQA120: TEST PASS release_conversion_rite_matched",
+              "ZQA120: TEST PASS accepted_conversion_faith_and_rite",
+              "ZQA120: TEST DONE core",
+              "ZQA120: TEST BEGIN engine_startup",
+              "ZQA120: TEST PASS production_enable_effects_invoked",
+              "ZQA120: TEST PASS production_disable_effects_invoked"
+            ],
+            "legacy_max_game_days": 60,
+            "not_equivalent_to_defense_23_5_ui25": true,
+            "coverage_limit": "production effect consequences; GUI decision clicks/slider/nomination remain independent",
+            "integration_blockers": [
+              "shared fixture_engine_prepare current selected engine identity pending",
+              "canonical scenario not actual strict defense23/5/UI25 adapter; retain its distinct coverage"
+            ],
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "poll_interval": 0.05,
+            "hold_seconds": 1800
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "required_original_gui": true,
+            "legacy_source_markers_do_not_credit_ui": true
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "fixture_prepare": {
+            "argv_tokens": [
+              "{repo_root}/tools/prepare_xqol_1_20_fixture.py",
+              "--repo",
+              "{repo_root}",
+              "--output",
+              "{run_dir}/fixture",
+              "--scenario",
+              "celestial"
+            ],
+            "output": "{run_dir}/fixture",
+            "execution_status": "declared_only_shared_current_identity_adapter_pending",
+            "automatic_execution": false
+          }
+        },
+        {
+          "id": "legacy_administrative_source",
+          "status": "blocked",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json",
+            "frontend_rules_plan": "{run_dir}/frontend-rules-plan.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_get_capabilities",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option"
+          ],
+          "phases": {
+            "declared_scenario": "administrative",
+            "source_marker_inventory": "derived by canonical preparer administrative branch",
+            "legacy_max_game_days": 60,
+            "not_equivalent_to_defense_23_5_ui25": true,
+            "coverage_limit": "production effect consequences; GUI decision clicks/slider/nomination remain independent",
+            "integration_blockers": [
+              "shared fixture_engine_prepare current selected engine identity pending",
+              "canonical scenario not actual strict defense23/5/UI25 adapter; retain its distinct coverage"
+            ],
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "poll_interval": 0.05,
+            "hold_seconds": 1800
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "required_original_gui": true,
+            "legacy_source_markers_do_not_credit_ui": true
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "fixture_prepare": {
+            "argv_tokens": [
+              "{repo_root}/tools/prepare_xqol_1_20_fixture.py",
+              "--repo",
+              "{repo_root}",
+              "--output",
+              "{run_dir}/fixture",
+              "--scenario",
+              "administrative"
+            ],
+            "output": "{run_dir}/fixture",
+            "execution_status": "declared_only_shared_current_identity_adapter_pending",
+            "automatic_execution": false
+          }
+        }
+      ],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_xqol_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_xenoamess_quality_of_life_acceptance.py",
+          "{repo_root}/tools/run_xqol_defense_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "Tracked base exact 1.19.0.6 + EXE 2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86; preflight enforces both. Shared fixture preparation permits only .2/.3. Root actual .4 external consumer remains separate from tracked legacy main.",
+        "source_refs": [
+          "tools/run_xenoamess_quality_of_life_acceptance.py:34",
+          "tools/run_xenoamess_quality_of_life_acceptance.py:49",
+          "tools/run_xenoamess_quality_of_life_acceptance.py:50",
+          "tools/run_xenoamess_quality_of_life_acceptance.py:212",
+          "tools/run_xqol_defense_acceptance.py:9"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "reclaim-motherland": {
+      "directory": "mod_reclaim_the_motherland",
+      "workshop_item_id": "3798404599",
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/tools/build_reclaim_the_motherland_release.py",
+      "integration_status": "business_contract_configured_shared_adapters_pending",
+      "cases": [
+        {
+          "id": "core",
+          "status": "blocked",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json",
+            "frontend_rules_plan": "{run_dir}/frontend-rules-plan.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_get_capabilities",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_title_own_laws_v1",
+            "ck3_query_title_holder_v1"
+          ],
+          "phases": {
+            "contract": "{repo_root}/tools/ck3_mod_acceptance_cases/rmtm_core.json",
+            "steps": [
+              "D0 actual Song qualification",
+              "D1 natural stock Chaos callback and individually guarded event acknowledgements",
+              "D2/D3 original progression once each; effective-law D3 actual three-row conjunction",
+              "D4 original UI READY and C1-C5 actual GUI",
+              "Continue once, paused scheduling-checkpoint three-row law evidence",
+              "original next-day execute/real predecessor death; original recovery callback/newowner three-row law evidence",
+              "original remaining36/expiry1/50-51/restoration and independent whole-contract verdict",
+              "normal GUI Quit/native OS0"
+            ],
+            "integration_blockers": [
+              "shared fixture_engine_prepare current selected engine identity pending",
+              "canonical --compressed-days accepts10..30; required existing contract uses1-day override and14-day total; do not substitute legacy default14",
+              "canonical emitter must observe natural stock D1 callback without old D2 repeat dispatch",
+              "shared dispatcher for raw law phase rows/final33+3 conjunction pending"
+            ],
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 5400,
+            "poll_interval": 1.0,
+            "hold_seconds": 3600
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "order": [
+              "C1 Later own title/empty de_jure/personal land/loyal tree",
+              "C2 all9 actual incumbents and ministry budget available; cancel without executing budget",
+              "C3 Continue detail actual A/B names, do not confirm yet",
+              "C4 actual A Offer reasons minus50/valid rankplus10/no hegemony perks/actual total; Cancel",
+              "C5 independent B same actual reasons/total; Cancel",
+              "C6 Continue once after all prior GUI; original next-day true predecessor death and independent successor boundary"
+            ],
+            "all_required": true,
+            "native_readback_never_replaces_gui": true,
+            "original_threshold_ui_is_independent_case": true
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "fixture_prepare": {
+            "argv_tokens": [
+              "{repo_root}/tools/prepare_reclaim_the_motherland_1_20_fixture.py",
+              "--repo",
+              "{repo_root}",
+              "--output",
+              "{run_dir}/fixture",
+              "--ui-checkpoints",
+              "--compressed-days",
+              "14"
+            ],
+            "output": "{run_dir}/fixture",
+            "execution_status": "declared_only_shared_current_identity_adapter_pending",
+            "automatic_execution": false
+          }
+        },
+        {
+          "id": "threshold_ui",
+          "status": "blocked",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json",
+            "frontend_rules_plan": "{run_dir}/frontend-rules-plan.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_get_capabilities",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1"
+          ],
+          "phases": {
+            "required_cells": [
+              "actual 50percent insufficient production GUI",
+              "actual51percent Claim Restoration enabled and Claim Mandate unavailable",
+              "actual production confirmation/outcome and original Later destroyed"
+            ],
+            "source_core_markers_not_ui_credit": true,
+            "natural_game_day_limit": 14,
+            "integration_blockers": [
+              "no canonical independent threshold fixture prepare mode or frozen plan producer is connected; do not invent --case threshold"
+            ],
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 5400,
+            "poll_interval": 1.0,
+            "hold_seconds": 3600
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "all_required": true,
+            "actual_source_ui": "original independent threshold production cell"
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          }
+        }
+      ],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_reclaim_the_motherland_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_reclaim_the_motherland_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "Tracked exact 1.19.0.6 + EXE 2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86; preflight enforces both. Shared fixture preparation permits only .2/.3. Root actual .4 external consumer remains separate.",
+        "source_refs": [
+          "tools/run_reclaim_the_motherland_acceptance.py:45",
+          "tools/run_reclaim_the_motherland_acceptance.py:63",
+          "tools/run_reclaim_the_motherland_acceptance.py:64",
+          "tools/run_reclaim_the_motherland_acceptance.py:291"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "tributary-expansion-directives": {
+      "directory": "mod_tributary_expansion_directives",
+      "workshop_item_id": "3801490405",
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/tools/build_tributary_expansion_directives_release.py",
+      "integration_status": "business_contract_configured_shared_adapters_pending",
+      "cases": [
+        {
+          "id": "core",
+          "status": "blocked",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json",
+            "frontend_rules_plan": "{run_dir}/frontend-rules-plan.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_get_capabilities",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_title_holder_v1"
+          ],
+          "phases": {
+            "contract": "{repo_root}/tools/ck3_mod_acceptance_cases/ted_core.json",
+            "steps": [
+              "D0 Song qualification",
+              "original setup/accept/decline and true attacker role",
+              "13 source rows once/FAIL0 and preserved GAP",
+              "true war surrender + title/tribute/directed-truce facts",
+              "same-live real GUI SaveLoad and independent postload facts",
+              "normal GUI Quit/native OS0"
+            ],
+            "integration_blockers": [
+              "shared fixture_engine_prepare current selected engine identity pending",
+              "shared war/save-load GUI progress dispatcher and actual evidence join pending; no fabricated typed war/truce/wallet tools"
+            ],
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 4800,
+            "poll_interval": 0.05,
+            "hold_seconds": 3600
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "required": [
+              "real war outcome/participants/target county",
+              "attacker to defender direction and exact truce expiry",
+              "same-PID GUI SaveLoad with before/after paused/currentplayer/date binding",
+              "S direct tributary A and true actual contract name/hover"
+            ],
+            "source_effect_markers_not_full_business_credit": true
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "fixture_prepare": {
+            "argv_tokens": [
+              "{repo_root}/tools/prepare_tributary_expansion_1_20_fixture.py",
+              "--repo",
+              "{repo_root}",
+              "--output",
+              "{run_dir}/fixture"
+            ],
+            "output": "{run_dir}/fixture",
+            "execution_status": "declared_only_shared_current_identity_adapter_pending",
+            "automatic_execution": false
+          }
+        },
+        {
+          "id": "production_ui",
+          "status": "blocked",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json",
+            "frontend_rules_plan": "{run_dir}/frontend-rules-plan.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_get_capabilities",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_title_holder_v1"
+          ],
+          "phases": {
+            "steps": [
+              "actual qualified source context with no forced response",
+              "read true selector/cost/wallet/prestige",
+              "single true Send and AI response",
+              "independent accept/decline consequence evidence",
+              "normal GUI Quit/native OS0"
+            ],
+            "core_effects_not_production_ui_credit": true,
+            "integration_blockers": [
+              "no canonical production-only fixture mode or GUI dispatcher wired; source core preparer runs accept/decline/war and cannot be substituted silently"
+            ],
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 4800,
+            "poll_interval": 0.05,
+            "hold_seconds": 3600
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "required": [
+              "peaceful Song and real direct AI tributary, legal foreign neighboring county",
+              "real production interaction county selector and dynamic provided war funding",
+              "before Send actual Song/AI wallets and prestige; cost150prestige",
+              "Send once and actual AI accept or decline",
+              "accept: true war participants/county and actual gold transfer",
+              "decline: prestige spent with no gold transfer/no war"
+            ],
+            "confirm_no_replay": true,
+            "existing_typed_war_truce_wallet_tools": false
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          }
+        },
+        {
+          "id": "saved_gui_tail",
+          "status": "blocked",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_get_capabilities",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_title_holder_v1",
+            "ck3_center_map_on_landed_title_v1"
+          ],
+          "phases": {
+            "steps": [
+              "exact immutable existing save product-only one CLI restore",
+              "fresh current-owner/title/frame snapshot on paused map",
+              "Root actual target-county holder GUI",
+              "Root actual attacker-to-defender direction/expiry GUI",
+              "reuse credited S/contract GUI or finish only missing original view",
+              "normal menu Quit/native OS0"
+            ],
+            "latebind_save_six_fields_from_reviewed_run_context": true,
+            "required_prior_evidence": [
+              "original source13 immutable actual receipt",
+              "already-accepted same-PID true GUI SaveLoad evidence",
+              "exact formal16 product inventory and current immutable save provenance"
+            ],
+            "startup_CLI_restore_is_not_GUI_SaveLoad_credit": true,
+            "no_fixture_registrar": true,
+            "exact_product_inventory_schema": "ck3-saved-campaign-product-only-profile-v1",
+            "formal_product_file_count": 16,
+            "outer_plus_formal_inventory_rows": 17,
+            "not_repeated": [
+              "source13/setup/war",
+              "SaveLoad already completed",
+              "advance5years"
+            ],
+            "remaining_obligations": [
+              "actual T county holder GUI",
+              "actual A-to-D directed truce expiry GUI",
+              "normalGUI OS0/native0"
+            ],
+            "integration_blockers": [
+              "six actual save/profile fields are unbound until Root reviewed run-context supplies them",
+              "shared canonical savedmode/camera managed-run adapter must be qualified; prior per-product saved host is historical only"
+            ],
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 4800,
+            "poll_interval": 0.05,
+            "hold_seconds": 3600
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "required": [
+              "actual target county holder/realm original GUI",
+              "actual A-to-D direction and stated expiry original GUI"
+            ],
+            "actual_current_owner_and_roles_from_saved_frame": true,
+            "no_historical_ids_or_target_name_guessed": true
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          }
+        }
+      ],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_tributary_expansion_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_tributary_expansion_directives_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "configure_harness overrides product/fixture/markers/scenario, not EXPECTED_GAME_VERSION; inherits run_ox_here_acceptance 1.19.0.6 preflight/final lock. Shared fixture preparation permits only .2/.3.",
+        "source_refs": [
+          "tools/run_tributary_expansion_directives_acceptance.py:323",
+          "tools/run_tributary_expansion_directives_acceptance.py:347",
+          "tools/run_ox_here_acceptance.py:28",
+          "tools/run_ox_here_acceptance.py:191"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "celestial-commerce-corruption": {
+      "directory": "mod_celestial_commerce_corruption",
+      "workshop_item_id": "3804807463",
+      "forbidden_upstream_ids": [
+        "3596263413"
+      ],
+      "builder": "{repo_root}/tools/build_celestial_commerce_corruption_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_xccc_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_celestial_commerce_corruption_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "Legacy source check requires supported_version=1.19.0.6 at161 and report labels installed_build 1.19.0.6 at229; harness.main retains Ox 1.19.0.6 lock. Shared fixture preparation permits only .2/.3.",
+        "source_refs": [
+          "tools/run_celestial_commerce_corruption_acceptance.py:161",
+          "tools/run_celestial_commerce_corruption_acceptance.py:229",
+          "tools/run_celestial_commerce_corruption_acceptance.py:274",
+          "tools/run_ox_here_acceptance.py:28"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "auto-upgrade-buildings": {
+      "directory": "mod_auto_upgrade_buildings",
+      "workshop_item_id": "3800124956",
+      "forbidden_upstream_ids": [
+        "3596580780"
+      ],
+      "builder": "{repo_root}/tools/build_auto_upgrade_buildings_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_aub_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_auto_upgrade_buildings_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "EXPECTED_GAME_VERSION 1.19.0.6; preflight/final enforce; GUI launch at run_cell. Shared fixture preparation permits only .2/.3.",
+        "source_refs": [
+          "tools/run_auto_upgrade_buildings_acceptance.py:47",
+          "tools/run_auto_upgrade_buildings_acceptance.py:57",
+          "tools/run_auto_upgrade_buildings_acceptance.py:335",
+          "tools/run_auto_upgrade_buildings_acceptance.py:749",
+          "tools/run_auto_upgrade_buildings_acceptance.py:1066"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "ox-here": {
+      "directory": "ox_here",
+      "workshop_item_id": "3790635143",
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/tools/build_ox_here_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_ox_here_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_ox_here_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "EXPECTED_GAME_VERSION 1.19.0.6 still enforced at191 and648; source descriptor check separately expects 1.20.0.3 at117. This mismatch is retained, not claimed runnable on .4. Shared fixture preparation permits only .2/.3.",
+        "source_refs": [
+          "tools/run_ox_here_acceptance.py:28",
+          "tools/run_ox_here_acceptance.py:117",
+          "tools/run_ox_here_acceptance.py:191",
+          "tools/run_ox_here_acceptance.py:648"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "zhongguo-361": {
+      "directory": "mod_zhongguo_style",
+      "workshop_item_id": "3792585972",
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/tools/build_mod_zhongguo_style_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/tools/prepare_zhongguo_1_20_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/tools/run_zhongguo_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "Tracked exact 1.19.0.6 + EXE 2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86; descriptor/seed/runtime/checkpoint gates also exact. Named product UI provider .4 readiness unqualified. Shared fixture preparation permits only .2/.3; old startup-only external .3 packet is not full .4 core.",
+        "source_refs": [
+          "tools/run_zhongguo_acceptance.py:326",
+          "tools/run_zhongguo_acceptance.py:327",
+          "tools/run_zhongguo_acceptance.py:4982",
+          "tools/run_zhongguo_acceptance.py:5633",
+          "docs/ck3-native-ai/zhongguo-scoreboard-state-v1.md:91"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "de-jure-conquest": {
+      "directory": "mod_de_jure_conquest",
+      "workshop_item_id": "3812510217",
+      "forbidden_upstream_ids": [
+        "3600021457"
+      ],
+      "builder": "{repo_root}/mod_de_jure_conquest/tools/build_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/mod_de_jure_conquest/tools/gen_acceptance_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [],
+        "fixture_selector": null,
+        "boundary": "Fixture generator is not an EXE-admission/launcher. Docs test-plan targets .3/build25652598; product supported_version=1.20.* is metadata, not native qualification. Marker verifier alone is not full source acceptance.",
+        "source_refs": [
+          "mod_de_jure_conquest/tools/gen_acceptance_fixture.py:186",
+          "mod_de_jure_conquest/docs/test-plan.md:3",
+          "mod_de_jure_conquest/docs/test-plan.md:34",
+          "mod_de_jure_conquest/docs/test-plan.md:44"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "change-holding-types": {
+      "directory": "mod_change_holding_types",
+      "workshop_item_id": "3812510834",
+      "forbidden_upstream_ids": [
+        "3337428403"
+      ],
+      "builder": "{repo_root}/mod_change_holding_types/tools/build_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/mod_change_holding_types/tools/prepare_live_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [],
+        "fixture_selector": null,
+        "boundary": "prepare_live_fixture generates fixtures; no EXE-admission/launch there. Historical actual report exact .3/build25652598/94b553..., not .4 qualification. Source effect matrix excludes GUI cost and Save/Load.",
+        "source_refs": [
+          "mod_change_holding_types/tools/prepare_live_fixture.py:22",
+          "mod_change_holding_types/tools/prepare_live_fixture.py:115",
+          "mod_change_holding_types/docs/test-plan.md:29",
+          "mod_change_holding_types/docs/test-plan.md:31",
+          "mod_change_holding_types/docs/test-report-2026-10-03.md:9"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "superman-qiang": {
+      "directory": "mod_superman_qiang",
+      "workshop_item_id": "3812991990",
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/mod_superman_qiang/tools/build_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [
+          "{repo_root}/mod_superman_qiang/tools/prepare_live_fixture.py",
+          "{repo_root}/mod_superman_qiang/tools/prepare_health_fixture.py"
+        ],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/mod_superman_qiang/tools/run_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "Prepare payload labels game_version .3 at97; EnvironmentSpec launch literal .3 at247; product.GAME_VERSION .3. Supplied EXE/DLL/injector SHA frozen at prepare but label is not dynamic version proof. Health 1.1.0 must select its BASELINE_READY marker; default original 1.0.0 end marker is retained.",
+        "source_refs": [
+          "mod_superman_qiang/tools/run_acceptance.py:97",
+          "mod_superman_qiang/tools/run_acceptance.py:116",
+          "mod_superman_qiang/tools/run_acceptance.py:118",
+          "mod_superman_qiang/tools/run_acceptance.py:247",
+          "mod_superman_qiang/tools/run_acceptance.py:276",
+          "mod_superman_qiang/docs/health-native-acceptance-tools-1.1.0.md:3"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    },
+    "li-yu-dao": {
+      "directory": "mod_li_yu_dao",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/mod_li_yu_dao/tools/build_release.py",
+      "integration_status": "inventory_only_adapter_pending",
+      "cases": [],
+      "legacy_inventory": {
+        "fixture_prepare_scripts": [],
+        "legacy_acceptance_scripts": [
+          "{repo_root}/mod_li_yu_dao/tools/run_acceptance.py"
+        ],
+        "fixture_selector": null,
+        "boundary": "EXACT_VERSION .3 and EXE94b553... enforced by inspect_game/inspect_mcp. Docs matrix now targets .4 but runner remains .3. Every runner return keeps live NOT_RUN. Development-only canonical Workshop ID null must remain null.",
+        "source_refs": [
+          "mod_li_yu_dao/tools/run_acceptance.py:28",
+          "mod_li_yu_dao/tools/run_acceptance.py:29",
+          "mod_li_yu_dao/tools/run_acceptance.py:103",
+          "mod_li_yu_dao/tools/run_acceptance.py:181",
+          "mod_li_yu_dao/docs/acceptance-matrix.md:3",
+          "mod_li_yu_dao/docs/acceptance-matrix.md:36",
+          "mod_li_yu_dao/docs/acceptance-matrix.md:46"
+        ],
+        "inventory_status": "inventory_only_unified_adapter_pending",
+        "current_runtime_adapted": false,
+        "execute_legacy_runners": false
+      }
+    }
+  }
+}

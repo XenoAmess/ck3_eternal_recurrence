@@ -3,37 +3,73 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import importlib.util
+import os
+import sys
 import json
 import re
 import shutil
 from pathlib import Path
-
-REVIEWED_BUILDS = {
-    "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d": (
-        "1.20.0.2", "25588574",
-    ),
-    "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6": (
-        "1.20.0.3", "25652598",
-    ),
-}
 
 
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def engine_identity(repo: Path) -> dict[str, str]:
-    """Select preparation metadata from the actual reviewed executable bytes.
+def engine_identity(repo: Path, *, game_dir: Path | None = None,
+                    steam_manifest: Path | None = None) -> dict[str, str]:
+    """Identify preparation input from the one native build registry and Steam.
 
-    This identifies the fixture's engine input, not product or native readiness.
-    The separate .3 ABI evidence is recorded in crozier-1.20.0.3-native-migration.
+    This is exact engine metadata, not product, native ABI or GUI readiness.
+    Optional paths let the shared entry select an installed game explicitly.
     """
-    exe_sha256 = digest(repo / "Crusader Kings III/binaries/ck3.exe")
+    repo = repo.resolve()
+    registry_path = repo / "ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py"
+    module_name = "_fixture_native_build_identity_" + hashlib.sha256(str(registry_path).encode()).hexdigest()[:16]
+    spec = importlib.util.spec_from_file_location(module_name, registry_path)
+    if spec is None or spec.loader is None:
+        raise ValueError("native exact build registry is unavailable")
+    registry = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = registry
     try:
-        version, build = REVIEWED_BUILDS[exe_sha256]
-    except KeyError:
-        raise ValueError("installed EXE differs from the reviewed CK3 1.20.0.2/1.20.0.3 builds") from None
-    return {"game_version": version, "steam_build_id": build, "exe_sha256": exe_sha256}
+        spec.loader.exec_module(registry)
+    finally:
+        sys.modules.pop(module_name, None)
+    configured = os.environ.get("XAR_CK3_GAME_DIR")
+    game = (game_dir or (Path(configured) if configured else repo / "Crusader Kings III")).resolve()
+    exe_sha256 = digest(game / "binaries/ck3.exe")
+    matches = [item for item in registry.NATIVE_BUILD_IDENTITIES
+               if item.executable_sha256.lower() == exe_sha256 and item.game_version.startswith("1.20.")]
+    if len(matches) != 1:
+        raise ValueError("installed EXE differs from the native registry's exact CK3 1.20 builds")
+    build = registry.require_exact_native_build(matches[0].game_version, exe_sha256)
+    configured_manifest = os.environ.get("XAR_CK3_STEAM_MANIFEST")
+    manifest = (steam_manifest or (Path(configured_manifest) if configured_manifest
+                                  else game.parent.parent / "appmanifest_1158310.acf")).resolve()
+    steam_build_id = "unknown"
+    if manifest.is_file():
+        parser_path = repo / "ck3_autonomous_player/src/xar_autoplayer/steam_workshop_status.py"
+        parser_name = module_name + "_steam"
+        parser_spec = importlib.util.spec_from_file_location(parser_name, parser_path)
+        if parser_spec is None or parser_spec.loader is None:
+            raise ValueError("shared Steam manifest parser is unavailable")
+        parser = importlib.util.module_from_spec(parser_spec)
+        sys.modules[parser_name] = parser
+        try:
+            parser_spec.loader.exec_module(parser)
+        finally:
+            sys.modules.pop(parser_name, None)
+        app = parser._parse_vdf(manifest.read_text(encoding="utf-8-sig")).get("AppState", {})
+        if not isinstance(app, dict) or app.get("appid") != "1158310":
+            raise ValueError("Steam manifest is not CK3 app 1158310")
+        value = app.get("buildid")
+        if not isinstance(value, str) or not re.fullmatch(r"[0-9]+", value):
+            raise ValueError("Steam build id must be numeric")
+        steam_build_id = value
+    elif steam_manifest or configured_manifest:
+        raise ValueError("explicit Steam manifest is unavailable")
+    return {"game_version": build.game_version, "steam_build_id": steam_build_id,
+            "exe_sha256": exe_sha256}
 
 
 def checked_output(repo: Path, output: Path) -> tuple[Path, Path]:

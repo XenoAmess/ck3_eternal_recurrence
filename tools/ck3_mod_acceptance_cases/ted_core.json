@@ -1,0 +1,36 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "tributary-expansion-directives",
+  "case": "core",
+  "required_markers": [
+    "TEA: TEST BEGIN tributary_expansion_directives",
+    "TEA: TEST PASS exact_build_song_emperor",
+    "TEA: TEST PASS switched_to_supported_player",
+    "TEA: TEST PASS tributary_context_constructed",
+    "TEA: TEST PASS decline_response_preserved_send_cost_and_gold",
+    "TEA: TEST PASS decline_effect_created_no_war",
+    "TEA: TEST PASS subsidized_accept_spent_prestige_and_transferred_gold",
+    "TEA: TEST PASS accept_effect_started_war",
+    "TEA: TEST PASS switched_to_tributary_attacker",
+    "TEA: TEST PASS war_attacker_defender_binding",
+    "TEA: TEST GAP complete_war_outcomes_save_reload_and_tribute_not_executed",
+    "TEA: TEST DONE tributary_expansion_directives",
+    "TEA120: TEST BEGIN engine_startup"
+  ],
+  "required_exact_count": 1,
+  "forbidden_markers": [
+    "TEA: TEST FAIL",
+    "TEA120: TEST FAIL"
+  ],
+  "original_source_marker_count": 13,
+  "retain_gap": "TEA: TEST GAP complete_war_outcomes_save_reload_and_tribute_not_executed",
+  "source13_does_not_credit_gui_war_outcome_or_save_load": true,
+  "war_tail": [
+    "actual attacker A/defender D/target county full IDs and participant roles",
+    "true surrender and directional attackerA to defenderD truce with actual expiry",
+    "original target county remains actual defender-side holder/realm",
+    "SongS to attackerA direct tributary contract actual relationship",
+    "actual same-live GUI Save then Load; before/after current owner/date/PID/generation/full relations separately proved"
+  ],
+  "no_added_14day_cap": true
+}

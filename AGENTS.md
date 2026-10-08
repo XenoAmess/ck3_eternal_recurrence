@@ -505,3 +505,9 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 - 教程课程自动完成用 `trigger_transition`（课程文件内），不要试图从外部点按钮
 - 游戏语言非英语时，customizable_localization 的 key 必须在**当前语言**的 yml 里存在（不吃英文回退）；
   用于事件选项名时该 key 本身也要有静态 yml 条目，否则运行期显示 raw key
+
+## 全部未来mod验收的公共入口（2026-10-08永久规则）
+
+- 所有未来mod acceptance统一从`tools/ck3_mod_acceptance.py`公共入口选用一份common runtime manifest。产品仅提供fixture、business case data与adapter，不自行选用或复制host/source/native版本；共享问题在共享层修一次。既有产品builder及发布前源码业务合同保持，旧runner/frozen仅保留底层实现和历史证据，不能作为未来新run分叉版本的入口。
+- 旧冻结输入、失败attempt与原证据永久保留。新run使用公共manifest绑定的版本；共同host/native对必要既有capability的实际qualification只做一次并复用，不按产品重复whole build/full matrix，也不因公共GREEN减少原产品业务要求。plan或adapter数据可消费不证明实际adapter可运行，pending能力如实保留。
+- 公共入口记录各phase实际elapsed，区分共享资格、产品业务、GUI-only真实业务及退出/cleanup；导航ACK、正常退出、host GREEN、静态/plan不得授业务PASS。原预算与case合同按真实绑定记录，未来参数不追认旧失败。缓存继续只验实际Steam已发布cache文件exact formal match及CK3实际mounted/loaded，不重复缓存业务。实施边界见[mod升级提速与公共验收](docs/ck3-mod-upgrade-fast-validation.md)。

@@ -10,7 +10,7 @@ from pathlib import Path
 HELPER = Path(__file__).with_name("reclaim_the_motherland_effective_law_contract.py")
 HELPER_SHA = "b0f58cb55dab63887062f1677cd82e05011e23f82f1ced0c12d943194c62349b"
 BASE = Path(__file__).parent / "fixtures/reclaim_the_motherland_acceptance/common/scripted_effects/rqa_effects.txt"
-BASE_SHA = "004615572553a07d62da0405d3e7b7d37f3e2d6c6922b54d632334233ad83407"
+BASE_SHA = "b25240d58d3d160ed12e2a1cd876d63633ebc695776891de91c72fd62ba3f355"
 
 
 def pin(path: Path, raw: bytes | None = None) -> dict:

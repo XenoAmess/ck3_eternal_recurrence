@@ -174,6 +174,523 @@ def install_campaign_speed_presubmission_transmission(driver: object, mismatch_t
     driver.execute_step = execute_step
 
 
+def frontend_native_build_pair(game_version: object, executable_sha256: object):
+    """Preserve frontend .3/.4 domains using the existing single exact-build registry."""
+    from xar_autoplayer.bridge.version_identity import CK3_12003, CK3_12004, require_exact_native_build
+    build = require_exact_native_build(game_version, executable_sha256)
+    if build not in (CK3_12003, CK3_12004):
+        raise ValueError("frontend native build is outside the existing .3/.4 domains")
+    return build
+
+
+def allocated_managed_campaign_run_binding(args: argparse.Namespace) -> dict[str, object]:
+    """Read the existing allocator identity for this host/state/pipe, without an episode seed."""
+    state = args.state_dir.expanduser().resolve()
+    frozen = state.parent / "frozen-argv.json"
+    if frozen.is_symlink() or not frozen.is_file():
+        raise ValueError("saved camera requires this allocated run's ordinary frozen-argv.json")
+    raw = frozen.read_bytes()
+    record = json.loads(raw)
+    argv = record.get("argv") if isinstance(record, dict) else None
+    if (not isinstance(record, dict) or not isinstance(record.get("run_id"), str)
+            or not record["run_id"] or record["run_id"] != state.parent.name
+            or not isinstance(argv, list) or len(argv) < 5 or any(not isinstance(x, str) for x in argv)
+            or Path(argv[4]).resolve() != Path(__file__).resolve()):
+        raise ValueError("saved camera allocated run/host identity differs")
+    def option(flag: str) -> str:
+        if argv.count(flag) != 1 or argv.index(flag) + 1 >= len(argv):
+            raise ValueError("saved camera allocated argv lacks exact " + flag)
+        return argv[argv.index(flag) + 1]
+    if (Path(option("--state-dir")).resolve() != state or option("--bridge-pipe") != args.bridge_pipe
+            or Path(option("--agent-source-root")).resolve() != args.agent_source_root.expanduser().resolve()
+            or Path(option("--output")).resolve().parent != state.parent):
+        raise ValueError("saved camera allocated state/pipe/source/output identity differs")
+    if args.saved_campaign_server:
+        if argv.count("--saved-campaign-save") != 1:
+            raise ValueError("managed camera saved mode differs from its allocated argv")
+    elif args.frontend_fixture_start_policy is not None:
+        if (argv.count("--frontend-fixture-start-policy") != 1 or argv.count("--frontend-robert-bootstrap") != 1
+                or argv.count("--fixture-profile") != 1
+                or file_sha(Path(option("--frontend-fixture-start-policy")).resolve()) != file_sha(args.frontend_fixture_start_policy.resolve())):
+            raise ValueError("managed camera fixture policy differs from its allocated argv")
+    else:
+        raise ValueError("managed camera identity requires an existing campaign startup mode")
+    return {"run_id": record["run_id"], "state_dir": str(state), "bridge_pipe": args.bridge_pipe,
+        "host_path": str(Path(__file__).resolve()), "frozen_argv_sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def finished_native_exit_zero_proof(report: dict[str, object], managed_done: bool,
+                                    episode: dict[str, object] | None = None) -> dict[str, object] | None:
+    """Current managed-session evidence only; missing proof never admits a dead snapshot."""
+    if managed_done is not True or report.get("fixture_only") is not False or "error" not in report or report["error"] is not None:
+        return None
+    session = report.get("session")
+    if not isinstance(session, dict) or "error" not in session or session["error"] is not None:
+        return None
+    native = session.get("report")
+    if not isinstance(native, dict) or native.get("kind") != "ck3_native_headless_session" or native.get("mode") != "native-headless":
+        return None
+    if type(native.get("format_version")) is not int or native["format_version"] != 1:
+        return None
+    if native.get("ok") is not True or "error" not in native or native["error"] is not None or native.get("exit_reason") != "process_exit":
+        return None
+    if type(native.get("process_exit_code")) is not int or native["process_exit_code"] != 0:
+        return None
+    pid = native.get("pid")
+    pipe = report.get("pipe")
+    if type(pid) is not int or pid <= 0 or not isinstance(pipe, str) or not pipe.startswith('\\\\.\\pipe\\') or len(pipe) <= 9 or native.get("pipe") != pipe:
+        return None
+    if episode is not None and (not isinstance(episode, dict) or type(episode.get("bridge_pid")) is not int or episode["bridge_pid"] != pid):
+        return None
+    try:
+        started = datetime.fromisoformat(native["started_at"])
+        finished = datetime.fromisoformat(native["finished_at"])
+        if started.tzinfo is None or finished.tzinfo is None or finished < started:
+            return None
+    except (KeyError, TypeError, ValueError):
+        return None
+    shutdown = native.get("shutdown")
+    if not isinstance(shutdown, dict) or shutdown.get("ok") is not True or shutdown.get("cleanup_proven") is not True or shutdown.get("tree_gone") is not True:
+        return None
+    if type(shutdown.get("ck3_pid")) is not int or shutdown["ck3_pid"] != pid:
+        return None
+    if type(shutdown.get("ck3_exit_code")) is not int or shutdown["ck3_exit_code"] != 0:
+        return None
+    if type(shutdown.get("job_active_processes_final")) is not int or shutdown["job_active_processes_final"] != 0:
+        return None
+    if shutdown.get("contract_errors") != [] or shutdown.get("watchdog_state_after") != "absent":
+        return None
+    if not isinstance(shutdown.get("nonce"), str) or re.fullmatch(r"[0-9a-f]{32}", shutdown["nonce"]) is None:
+        return None
+    if not isinstance(shutdown.get("ck3_creation_date"), str) or not shutdown["ck3_creation_date"]:
+        return None
+    absent = shutdown.get("control_files_absent")
+    if not isinstance(absent, dict) or not absent or any(not isinstance(key, str) or value is not True for key, value in absent.items()):
+        return None
+    inventory = shutdown.get("final_ck3_inventory")
+    if not isinstance(inventory, dict) or type(inventory.get("tasklist_returncode")) is not int or inventory["tasklist_returncode"] != 0:
+        return None
+    if any(inventory.get(key) != [] for key in ("tasklist_pids", "wmi_pids", "native_pids", "processes")):
+        return None
+    return {"status": "not_applicable", "reason": "finished_native_process_exit_zero_cleanup_proven",
+            "alive_or_business_credit": False, "managed_session_done": True,
+            "pid": pid, "pipe": native["pipe"], "started_at": native["started_at"],
+            "finished_at": native["finished_at"], "exit_reason": "process_exit", "process_exit_code": 0,
+            "shutdown": copy.deepcopy(shutdown)}
+
+
+def paused_map_readiness_admitted(snapshot: dict[str, object], report: dict[str, object]) -> bool:
+    """Admit qualified native campaign frames without inventing a one-life identity."""
+    if snapshot.get("map_ready") is not True or snapshot.get("paused") is not True:
+        return False
+    policy_input = report.get("frontend_fixture_start_policy_input")
+    if not isinstance(policy_input, dict) or policy_input.get("episode_projection") != "native_campaign":
+        # Preserve the original default one-life guard exactly.
+        return snapshot.get("episode_identity_pending") is False
+    if not isinstance(policy_input.get("policy"), dict) or snapshot.get("episode_projection") != "native_campaign":
+        return False
+    state = report.get("frontend_fixture_business_context")
+    if not isinstance(state, dict) or any(state.get(key) is not wanted for key, wanted in {
+            "actual_current_actor_bound": True, "qualification_observed": True, "start_resubmitted": False}.items()):
+        return False
+    if (state.get("status") != "ACTUAL_FIXTURE_QUALIFIED_BUSINESS_CONTEXT_BOUND"
+            or state.get("episode_projection") != "native_campaign"):
+        return False
+    binding = state.get("binding")
+    if not isinstance(binding, dict) or any(type(binding.get(key)) is not int or binding[key] < 1
+            for key in ("actor_character_id", "bridge_pid", "connection_generation")):
+        return False
+    played = snapshot.get("played_character")
+    diagnostics = snapshot.get("diagnostics")
+    if (not isinstance(played, dict) or played.get("alive") is not True or played.get("source") != "native"
+            or played.get("character_id") != binding["actor_character_id"]
+            or snapshot.get("date_raw") != binding.get("date_raw") or not isinstance(diagnostics, dict)):
+        return False
+    if any(diagnostics.get(key) != binding[key] for key in ("bridge_pid", "connection_generation")):
+        return False
+    hello = diagnostics.get("hello")
+    if not isinstance(hello, dict):
+        return False
+    try:
+        build = frontend_native_build_pair(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+    except ValueError:
+        return False
+    if any(hello.get(key) != wanted for key, wanted in {
+            "pid": binding["bridge_pid"], "connection_generation": binding["connection_generation"],
+            "game_adapter_id": f"ck3-{build.game_version}-msvc-x64", "expected_ck3_version": build.game_version,
+            "ck3_build_match": True}.items()):
+        return False
+    if str(hello.get("expected_ck3_sha256")).upper() != build.executable_sha256:
+        return False
+    return True
+
+
+def validate_saved_campaign_options(args: argparse.Namespace) -> None:
+    inputs = (args.saved_campaign_save_bytes, args.saved_campaign_save_sha256,
+        args.saved_campaign_player_id, args.saved_campaign_date_raw, args.saved_campaign_product_inventory)
+    if args.saved_campaign_server and not args.server:
+        raise SystemExit("--saved-campaign-server is an internal child-server option")
+    if args.saved_campaign_save is not None:
+        if (any(item is None for item in inputs) or not args.fixture_profile or args.plan is None
+                or args.server or args.sdk_smoke_test or args.sdk_error_smoke_test or args.fixture_server
+                or args.frontend_robert_bootstrap or args.frontend_fixture_start_policy is not None
+                or args.frontend_rules_plan is not None or args.frontend_rules_diagnostic
+                or args.frontend_rules_diagnostic_new_game or args.frontend_diagnostic_only
+                or args.allow_verified_direct_bookmarks or args.cold_start_checkpoint or args.turns
+                or args.native_fixture_inbox or args.print_default_plan):
+            raise SystemExit("saved campaign requires explicit product-only profile/input/tail plan and excludes cold fixture, New Game/Start, rules, SDK, checkpoint, fixture inbox and auto turns")
+        saved_campaign_expected(args)
+        for step in load_plan(args.plan):
+            kind = step.get("kind", "tool")
+            if kind == "wait_snapshot":
+                continue
+            if kind != "tool" or not isinstance(step.get("tool"), str) or not (
+                    step["tool"].startswith("ck3_query_") or step["tool"] in {
+                        "ck3_take_snapshot", "ck3_get_capabilities", "ck3_migration_pipe_diagnostics"}):
+                raise SystemExit("saved campaign initial tail plan permits read-only observations only; normal GUI Save/Load/quit has separate same-live evidence")
+    elif any(item is not None for item in inputs):
+        raise SystemExit("saved-campaign input fields require --saved-campaign-save")
+
+
+def saved_campaign_expected(args: argparse.Namespace) -> dict[str, object] | None:
+    if args.saved_campaign_save is None:
+        return None
+    for name, maximum in (("saved_campaign_save_bytes", 2**63 - 1),
+            ("saved_campaign_player_id", 2**31 - 1), ("saved_campaign_date_raw", 2**31 - 1)):
+        value = getattr(args, name)
+        if type(value) is not int or not 1 <= value <= maximum:
+            raise ValueError(name + " must be a positive bounded integer")
+    if not isinstance(args.saved_campaign_save_sha256, str) or re.fullmatch(
+            r"[0-9a-fA-F]{64}", args.saved_campaign_save_sha256) is None:
+        raise ValueError("saved campaign requires an exact SHA-256")
+    return {"source_path": str(args.saved_campaign_save.expanduser().resolve()),
+        "bytes": args.saved_campaign_save_bytes, "sha256": args.saved_campaign_save_sha256.lower(),
+        "actor_character_id": args.saved_campaign_player_id, "date_raw": args.saved_campaign_date_raw}
+
+
+def prepare_saved_campaign(args: argparse.Namespace, spec: object) -> dict[str, object]:
+    expected = saved_campaign_expected(args)
+    if expected is None:
+        raise ValueError("saved campaign preparation requires its explicit input")
+    source = Path(expected["source_path"])
+    if source.suffix.casefold() != ".ck3" or not source.is_file() or source.is_symlink():
+        raise ValueError("immutable saved campaign must be an ordinary .ck3 file")
+    profile = spec.profile_dir.resolve()
+    save_dir = profile / "save games"
+    if source.is_relative_to(profile) or (save_dir.exists() and any(save_dir.iterdir())):
+        raise ValueError("saved campaign requires a fresh profile with no existing saves")
+    if (spec.state_dir / "runtime.json").exists() or (spec.state_dir / "native-session").exists():
+        raise ValueError("saved campaign state has a prior managed launch or lifecycle queue")
+    dlc = json.loads((profile / "dlc_load.json").read_text(encoding="utf-8-sig"))
+    if not isinstance(dlc, dict) or not isinstance(dlc.get("enabled_mods"), list) or not dlc["enabled_mods"]:
+        raise ValueError("saved campaign requires an explicitly prepared product-only profile")
+    # An explicit product-only inventory is mandatory. The consumer must freeze
+    # its formal release projection; a cold fixture registrar is never reused.
+    inventory_path = args.saved_campaign_product_inventory.expanduser().resolve()
+    inventory_bytes = inventory_path.read_bytes()
+    inventory = json.loads(inventory_bytes)
+    if (not isinstance(inventory, dict) or set(inventory) != {"schema", "profile_path", "enabled_mods", "product_files"}
+            or inventory["schema"] != "ck3-saved-campaign-product-only-profile-v1"
+            or Path(inventory["profile_path"]).resolve() != profile
+            or inventory["enabled_mods"] != dlc["enabled_mods"]
+            or not isinstance(inventory["product_files"], list) or not inventory["product_files"]):
+        raise ValueError("saved campaign product-only inventory does not bind the prepared profile")
+    seen = set()
+    for row in inventory["product_files"]:
+        if not isinstance(row, dict) or set(row) != {"path", "bytes", "sha256"}:
+            raise ValueError("invalid saved campaign product file inventory row")
+        path = Path(row["path"]).resolve()
+        if (str(path) in seen or path.is_symlink() or not path.is_file()
+                or type(row["bytes"]) is not int or not 0 <= row["bytes"] <= 2**63-1
+                or not isinstance(row["sha256"], str) or re.fullmatch(r"[0-9a-fA-F]{64}", row["sha256"]) is None):
+            raise ValueError("invalid or repeated saved campaign product file identity")
+        seen.add(str(path))
+        if path.stat().st_size != row["bytes"] or file_sha(path).lower() != row["sha256"].lower():
+            raise ValueError("saved campaign product inventory file changed: " + str(path))
+        if path.suffix.casefold() == ".txt" and "on_game_start_after_lobby" in path.read_text(encoding="utf-8-sig"):
+            raise ValueError("saved campaign product-only profile contains a cold-start registrar: " + str(path))
+    actual_files = set()
+    for enabled in dlc["enabled_mods"]:
+        if not isinstance(enabled, str) or not enabled:
+            raise ValueError("saved campaign enabled_mods entries must be explicit descriptor paths")
+        descriptor = (profile / enabled).resolve()
+        if not descriptor.is_relative_to(profile) or not descriptor.is_file() or descriptor.is_symlink():
+            raise ValueError("saved campaign descriptor must be an ordinary file in the fresh profile")
+        paths = re.findall(r'(?m)^\s*path\s*=\s*"([^"\r\n]+)"\s*(?:#.*)?$', descriptor.read_text(encoding="utf-8-sig"))
+        if len(paths) != 1:
+            raise ValueError("saved campaign descriptor must resolve exactly one directory product projection")
+        product = Path(paths[0]).resolve()
+        if not product.is_dir() or product.is_symlink():
+            raise ValueError("saved campaign product projection must be an ordinary frozen directory")
+        actual_files.add(str(descriptor))
+        for path in product.rglob("*"):
+            if path.is_symlink():
+                raise ValueError("saved campaign product projection contains a symbolic link")
+            if path.is_file():
+                actual_files.add(str(path.resolve()))
+    if actual_files != seen:
+        raise ValueError("saved campaign inventory is not the complete exact enabled product projection plus outer descriptors")
+    save_dir.mkdir(parents=True, exist_ok=True)
+    target = save_dir / "restored_campaign.ck3"
+    digest = hashlib.sha256()
+    total = 0
+    with source.open("rb") as original, target.open("xb") as copied:
+        while block := original.read(1024 * 1024):
+            digest.update(block)
+            total += len(block)
+            copied.write(block)
+    if total != expected["bytes"] or digest.hexdigest() != expected["sha256"]:
+        raise ValueError("immutable saved campaign input bytes/SHA do not match; failed copy retained")
+    if target.stat().st_size != total or file_sha(target).lower() != expected["sha256"]:
+        raise ValueError("saved campaign destination readback differs from immutable input")
+    return {**expected, "profile_path": str(profile), "copied_save_path": str(target),
+        "load_save_name": target.stem, "product_inventory_path": str(inventory_path),
+        "product_inventory_sha256": hashlib.sha256(inventory_bytes).hexdigest(),
+        "status": "IMMUTABLE_SAVE_COPIED_TO_FRESH_PRODUCT_ONLY_PROFILE",
+        "source_game_state_claimed": False, "product_acceptance_proven": False}
+
+
+def saved_campaign_session(spec: object, config: object, args: argparse.Namespace,
+        stop: threading.Event, *, output_stream: object, launch_record: dict[str, object]) -> dict[str, object]:
+    import importlib
+    from types import FunctionType
+    module = importlib.import_module("xar_autoplayer.native_session")
+    original_launch = module.launch
+    launched = False
+
+    def launch_saved_once(*launch_args: object, **launch_kwargs: object) -> object:
+        nonlocal launched
+        if launched:
+            raise RuntimeError("saved campaign forbids a second launch or lifecycle restore")
+        launched = True
+        launch_kwargs.pop("continue_last_save", None)
+        launch_kwargs["load_save_name"] = "restored_campaign"
+        launch_kwargs["verify_prepared_profile"] = False
+        handle = original_launch(*launch_args, **launch_kwargs)
+        command = getattr(handle, "command", None)
+        process = getattr(handle, "process", None)
+        pid = getattr(process, "pid", None)
+        argv = list(command) if isinstance(command, (list, tuple)) else None
+        argv_admitted = (isinstance(argv, list) and all(isinstance(item, str) for item in argv)
+            and argv.count("-loadsave=restored_campaign") == 1 and "-continuelastsave" not in argv
+            and type(pid) is int and pid > 0)
+        launch_record.update(status="ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED", command=argv,
+            ck3_pid=pid if type(pid) is int else None, argv_admitted=argv_admitted,
+            continue_last_save=False, load_save_name="restored_campaign", captured_at=now())
+        # Return the handle even if command evidence is malformed, so the
+        # existing managed supervisor retains ownership and performs cleanup.
+        return handle
+
+    globals_copy = dict(vars(module))
+    globals_copy["launch"] = launch_saved_once
+    for name in ("_native_session_locked", "native_session"):
+        original = getattr(module, name)
+        bound = FunctionType(original.__code__, globals_copy, original.__name__,
+            original.__defaults__, original.__closure__)
+        bound.__kwdefaults__ = original.__kwdefaults__
+        globals_copy[name] = bound
+    native = globals_copy["native_session"](spec, native_bridge=config,
+        timeout_seconds=args.timeout + args.hold_seconds + 120,
+        cold_start_checkpoint=False, stop_event=stop, input_stream=None, output_stream=output_stream)
+    native["saved_campaign_only"] = True
+    native["single_saved_campaign_launch"] = launched
+    native["saved_campaign_load_name"] = "restored_campaign"
+    native["saved_campaign_launch"] = copy.deepcopy(launch_record)
+    return native
+
+
+def saved_campaign_admission_frame(snapshot: object, expected: dict[str, object],
+        frontend_binding: dict[str, object]) -> dict[str, object] | None:
+    if not isinstance(snapshot, dict) or snapshot.get("map_ready") is not True or snapshot.get("paused") is not True:
+        return None
+    if snapshot.get("active_event") is not None or snapshot.get("episode_projection") != "native_campaign":
+        return None
+    played = snapshot.get("played_character")
+    diagnostics = snapshot.get("diagnostics")
+    if not isinstance(played, dict) or played.get("alive") is not True or played.get("source") != "native":
+        return None
+    if played.get("character_id") != expected["actor_character_id"] or snapshot.get("date_raw") != expected["date_raw"]:
+        return None
+    if not isinstance(diagnostics, dict) or any(diagnostics.get(k) != v for k, v in frontend_binding.items()):
+        raise ValueError("saved campaign crossed its observed frontend process or connection")
+    hello = diagnostics.get("hello")
+    if not isinstance(hello, dict) or any(hello.get(k) != v for k, v in {
+            "pid": frontend_binding["bridge_pid"], "connection_generation": frontend_binding["connection_generation"],
+            "game_adapter_id": "ck3-1.20.0.4-msvc-x64", "expected_ck3_version": "1.20.0.4", "ck3_build_match": True}.items()) or (
+            str(hello.get("expected_ck3_sha256")).upper() != "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"):
+        raise ValueError("saved campaign lacks the exact actual .4 native build binding")
+    if (type(snapshot.get("local_player_id")) is not int or snapshot["local_player_id"] < 1
+            or not isinstance(snapshot.get("snapshot_id"), str) or not snapshot["snapshot_id"]
+            or type(snapshot.get("native_revision")) is not int or snapshot["native_revision"] < 1
+            or type(snapshot.get("revision")) is not int or snapshot["revision"] < 1):
+        return None
+    heartbeat = diagnostics.get("last_heartbeat")
+    mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
+    observer = heartbeat.get("snapshot_observer_12002") if isinstance(heartbeat, dict) else None
+    if not isinstance(mailbox, dict) or not isinstance(observer, dict) or heartbeat.get("pid") != frontend_binding["bridge_pid"]:
+        return None
+    epoch = mailbox.get("pump_epochs")
+    started, completed = observer.get("started_ms"), observer.get("completed_ms")
+    if (mailbox.get("ready") is not True or mailbox.get("stamp_read_success") is not True
+            or type(epoch) is not int or epoch < 1 or mailbox.get("owner_verified_pump_epochs") != epoch
+            or type(mailbox.get("owner_tid")) is not int or mailbox["owner_tid"] < 1
+            or mailbox.get("current_tid") != mailbox["owner_tid"]
+            or observer.get("read_in_progress") is not False or type(started) is not int
+            or type(completed) is not int or completed < started):
+        return None
+    return {"actor_character_id": expected["actor_character_id"], "date_raw": expected["date_raw"],
+        "local_player_id": snapshot["local_player_id"], "snapshot_id": snapshot["snapshot_id"],
+        "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
+        **frontend_binding, "owner_tid": mailbox["owner_tid"], "pump_epoch": epoch}
+
+
+def saved_campaign_root_binding(snapshot: dict[str, object], root: object,
+        frame: dict[str, object]) -> dict[str, object] | None:
+    if not isinstance(root, dict) or root.get("campaign_root_context_ready") is not True:
+        return None
+    if root.get("backend_id") != "native-headless" or any(root.get(k) != snapshot.get(v) for k, v in {
+            "queried_snapshot_id": "snapshot_id", "queried_revision": "revision",
+            "queried_native_revision": "native_revision", "date_raw": "date_raw"}.items()):
+        raise ValueError("saved campaign root is not bound to the observed current paused frame")
+    provenance = root.get("provenance")
+    if (not isinstance(provenance, dict) or provenance.get("game_version") != "1.20.0.4"
+            or str(provenance.get("executable_sha256")).upper() != "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"):
+        raise ValueError("saved campaign root lacks exact .4 native provenance")
+    if root.get("player_character_id") != frame["actor_character_id"] or root.get("player_character_alive") is not True:
+        raise ValueError("saved campaign current native root and snapshot disagree on the living actor")
+    return {**frame, "actual_current_actor_bound": True, "saved_campaign_identity_proven": True,
+        "product_acceptance_proven": False}
+
+
+def saved_campaign_initial_snapshot_state(value: object, pipe: str) -> str:
+    """Recognize only the existing transport's finite pre-snapshot startup states."""
+    if not isinstance(value, dict) or value.get("pipe") != pipe or value.get("transport_error") is not None:
+        raise RuntimeError("saved campaign startup diagnostics lacks its exact pipe or has a transport error")
+    diagnostics = value.get("diagnostics")
+    if (not isinstance(diagnostics, dict) or diagnostics.get("pipe_name") != pipe
+            or diagnostics.get("protocol_version") != 1 or diagnostics.get("transport_fatal_error") is not None
+            or diagnostics.get("last_error") is not None
+            or type(diagnostics.get("connected")) is not bool
+            or type(diagnostics.get("semantic_state_available")) is not bool
+            or type(diagnostics.get("rejected_state_snapshot_count")) is not int
+            or diagnostics["rejected_state_snapshot_count"] != 0):
+        raise RuntimeError("saved campaign startup diagnostics is malformed or reports a fatal/rejected native frame")
+    if diagnostics["connected"] is False:
+        if (diagnostics["semantic_state_available"] is not False or diagnostics.get("hello") is not None
+                or diagnostics.get("bridge_pid") is not None or diagnostics.get("connection_generation") != 0):
+            raise RuntimeError("saved campaign observed a native disconnection after an initial binding")
+        return "WAITING_FOR_INITIAL_NATIVE_CONNECTION"
+    hello = diagnostics.get("hello")
+    pid, generation = diagnostics.get("bridge_pid"), diagnostics.get("connection_generation")
+    if (type(pid) is not int or not 1 <= pid <= 2**32-1
+            or type(generation) is not int or not 1 <= generation <= 2**64-1
+            or not isinstance(hello, dict) or any(hello.get(k) != v for k, v in {
+                "pid": pid, "connection_generation": generation, "game_adapter_id": "ck3-1.20.0.4-msvc-x64",
+                "expected_ck3_version": "1.20.0.4", "ck3_build_match": True}.items())
+            or str(hello.get("expected_ck3_sha256")).upper() != "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+            or not isinstance(hello.get("capabilities"), list) or "game.state.snapshot" not in hello["capabilities"]):
+        raise RuntimeError("saved campaign initial native hello lacks exact .4 identity or snapshot capability")
+    return ("INITIAL_NATIVE_SEMANTIC_FRAME_AVAILABLE" if diagnostics["semantic_state_available"]
+        else "WAITING_FOR_INITIAL_NATIVE_SEMANTIC_FRAME")
+
+
+async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object], *,
+        report: dict[str, object], write: object, timeout: float,
+        managed_done: threading.Event | None, poll_interval: float) -> dict[str, object]:
+    report["phase"] = "saved-campaign-single-command-line-restore"
+    state = {"status": "WAITING_FOR_ACTUAL_SAVED_CAMPAIGN_OWNER_FRAMES", "expected": expected, "observations": [],
+        "load_provider": "runtime.launch(load_save_name):single_-loadsave",
+        "new_game_requested": False, "start_requested": False, "fixture_setup_requested": False,
+        "product_acceptance_proven": False}
+    report["saved_campaign_restore"] = state
+    write()
+    deadline = time.monotonic() + timeout
+    binding = None
+    baseline = None
+    initial_snapshot_available = False
+    state["startup_observations"] = []
+    while True:
+        if managed_done is not None and managed_done.is_set():
+            raise RuntimeError("managed session ended before saved campaign admission")
+        if not initial_snapshot_available:
+            # R9 queried Snapshot before the launch thread had created CK3.
+            # This existing pure diagnostic distinguishes that known startup
+            # state without swallowing an opaque MCP tool error.
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("saved campaign initial native connection/semantic frame was not ready before original readiness deadline")
+            diagnostic = await asyncio.wait_for(client.call("ck3_migration_pipe_diagnostics"), timeout=remaining)
+            startup_status = saved_campaign_initial_snapshot_state(diagnostic, report["pipe"])
+            initial_snapshot_available = startup_status == "INITIAL_NATIVE_SEMANTIC_FRAME_AVAILABLE"
+            state["startup_observations"].append({"at": now(), "status": startup_status,
+                "connected": diagnostic["diagnostics"]["connected"],
+                "semantic_state_available": diagnostic["diagnostics"]["semantic_state_available"],
+                "bridge_pid": diagnostic["diagnostics"].get("bridge_pid"),
+                "connection_generation": diagnostic["diagnostics"].get("connection_generation")})
+            write()
+            if time.monotonic() >= deadline:
+                raise TimeoutError("saved campaign initial native connection/semantic frame was not ready before original readiness deadline")
+            if not initial_snapshot_available:
+                await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
+                continue
+        snapshot = await client.fresh()
+        launch_record = report.get("saved_campaign_launch")
+        if isinstance(launch_record, dict) and launch_record.get("status") == "ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED":
+            if launch_record.get("argv_admitted") is not True:
+                raise RuntimeError("actual saved campaign launch lacks its exact single -loadsave argv/PID evidence")
+        diagnostics = snapshot.get("diagnostics")
+        if binding is None and isinstance(diagnostics, dict):
+            candidate = {k: diagnostics.get(k) for k in ("bridge_pid", "connection_generation")}
+            if all(type(v) is int and 1 <= v <= maximum for v, maximum in (
+                    (candidate["bridge_pid"], 2**32-1), (candidate["connection_generation"], 2**64-1))):
+                binding = candidate
+                state["observed_process_binding"] = binding
+        if binding is None:
+            if time.monotonic() >= deadline:
+                raise TimeoutError("saved campaign native process binding was not observed before original readiness deadline")
+            write()
+            await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
+            continue
+        if (not isinstance(launch_record, dict) or launch_record.get("argv_admitted") is not True
+                or launch_record.get("ck3_pid") != binding["bridge_pid"]):
+            if time.monotonic() >= deadline:
+                raise TimeoutError("saved campaign bridge PID was not bound to the actual single launch before readiness deadline")
+            write()
+            await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
+            continue
+        frame = saved_campaign_admission_frame(snapshot, expected, binding)
+        root, admitted = None, None
+        if frame is not None:
+            stable = {k: v for k, v in frame.items() if k != "pump_epoch"}
+            if baseline is not None and baseline[0] == stable and frame["pump_epoch"] > baseline[1]:
+                root = await client.call("ck3_query_campaign_root_context_v1", {"expected_revision": snapshot["revision"]})
+                after = await client.fresh()
+                after_frame = saved_campaign_admission_frame(after, expected, binding)
+                if (after_frame is not None and isinstance(root, dict)
+                        and root.get("queried_snapshot_id") == after.get("snapshot_id")
+                        and root.get("queried_revision") == after.get("revision")):
+                    admitted = saved_campaign_root_binding(after, root, after_frame)
+                snapshot = after
+            baseline = (stable, frame["pump_epoch"])
+        else:
+            baseline = None
+        state["observations"].append({"snapshot": snapshot, "frame": frame, "campaign_root": root, "binding": admitted})
+        if admitted is not None:
+            state.update(status="ACTUAL_SAVED_CAMPAIGN_CURRENT_CONTEXT_BOUND", binding=admitted,
+                finished_at=now(), actual_current_actor_bound=True)
+            report["readiness"] = snapshot
+            report["readiness_guard"] = {"schema": "ck3-paused-map-readiness-admission-v1",
+                "mode": "saved_campaign_only", "native_campaign_binding": admitted,
+                "one_life_identity_fabricated": False, "product_acceptance_proven": False}
+            write()
+            return state
+        write()
+        if time.monotonic() >= deadline:
+            raise TimeoutError("saved campaign did not reach exact paused event-free native identity/root before original readiness deadline")
+        await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
+
+
+
 def native_server(args: argparse.Namespace) -> None:
     clean_imports(args.agent_source_root)
     from xar_autoplayer.bridge.native_driver import (
@@ -189,6 +706,12 @@ def native_server(args: argparse.Namespace) -> None:
             super().send(frame)
 
     class RecordingDriver(NativeHeadlessGameplayDriver):
+        def _with_one_life_episode(self, snapshot: dict[str, object]) -> dict[str, object]:
+            projected = super()._with_one_life_episode(snapshot)
+            if self.episode_projection == "native_campaign" and managed_campaign_run_binding is not None:
+                return {**projected, "managed_campaign_run_binding": dict(managed_campaign_run_binding)}
+            return projected
+
         def _ingest(self, frame: dict[str, object]) -> None:
             wire.write("dll-to-python", frame)
             super()._ingest(frame)
@@ -198,21 +721,25 @@ def native_server(args: argparse.Namespace) -> None:
         from xar_autoplayer.bridge.frontend_fixture_start_contract import load_bound_fixture_start_policy
         fixture_policy, fixture_policy_bytes = load_bound_fixture_start_policy(
             args.frontend_fixture_start_policy, args.state_dir / "profile")
-    driver_options = {"episode_projection": "native_campaign"} if fixture_policy is not None else {}
+    managed_campaign_run_binding = (allocated_managed_campaign_run_binding(args)
+        if fixture_policy is not None or args.saved_campaign_server else None)
+    driver_options = {"episode_projection": "native_campaign"} if managed_campaign_run_binding is not None else {}
     driver = RecordingDriver(
         args.bridge_pipe, endpoint=RecordingEndpoint(args.bridge_pipe),
         state_dir=args.state_dir, save_dir=args.state_dir / "profile/save games",
         command_timeout_seconds=args.command_timeout,
+        frontend_transition_timeout_seconds=240.0 if args.saved_campaign_server else 120.0,
         checkpoint_timeout_seconds=args.command_timeout, **driver_options,
     )
-    if fixture_policy is not None:
+    if managed_campaign_run_binding is not None:
         from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
         install_campaign_speed_presubmission_transmission(driver, PreSubmissionRevisionMismatchError)
+    if fixture_policy is not None:
         driver.frontend_fixture_start_policy_binding = {"policy_sha256": hashlib.sha256(fixture_policy_bytes).hexdigest(),
             "preparation_sha256": fixture_policy["preparation"]["sha256"]}
         server = create_server(driver, profile_dir=args.state_dir / "profile")
     else:
-        server = create_server(driver)
+        server = create_server(driver, profile_dir=args.state_dir / "profile") if args.saved_campaign_server else create_server(driver)
 
     @server.tool()
     def ck3_migration_pipe_diagnostics() -> dict[str, object]:
@@ -1063,7 +1590,15 @@ class PlanClient:
                         raise ValueError(f"result {path} expected {expected!r}, received {actual!r}")
                 self.results[str(row["id"])] = result
                 if kind not in {"frontend_read_only", "terminal_window_read_only"}:
-                    row["after_snapshot"] = await self.fresh()
+                    managed_done = getattr(self, "managed_done", None)
+                    proof = (finished_native_exit_zero_proof(self.report,
+                        managed_done is not None and managed_done.is_set(), self.episode_identity)
+                        if kind == "finish_hold" else None)
+                    if proof is None:
+                        row["after_snapshot"] = await self.fresh()
+                    else:
+                        row["after_snapshot"] = proof
+                        self.report["post_exit_finish_hold"] = {"step_id": row["id"], "proof": copy.deepcopy(proof)}
                 row["ok"] = True
             except Exception as error:
                 row["error"] = f"{type(error).__name__}: {error}"
@@ -1073,12 +1608,39 @@ class PlanClient:
                 row["finished_at"] = now()
                 self.write()
 
+    async def observe_final(self) -> None:
+        """Only a successful final finish_hold can make post-exit observation inapplicable."""
+        marker = self.report.get("post_exit_finish_hold")
+        rows = self.report.get("steps", [])
+        managed_done = getattr(self, "managed_done", None)
+        proof = finished_native_exit_zero_proof(self.report,
+            managed_done is not None and managed_done.is_set(), self.episode_identity)
+        if (proof is not None and isinstance(marker, dict) and rows
+                and self.report.get("hold_finished_by_control_plan") is True
+                and rows[-1].get("plan", {}).get("kind") == "finish_hold"
+                and marker.get("step_id") == rows[-1].get("id")
+                and marker.get("proof") == proof and all(row.get("ok") is True for row in rows)):
+            self.report["snapshot_final"] = copy.deepcopy(proof)
+            self.report["diagnostics_final"] = copy.deepcopy(proof)
+            self.report["final_observation"] = {"status": "not_applicable",
+                "reason": proof["reason"], "after_finish_hold_step_id": marker["step_id"],
+                "alive_or_business_credit": False}
+            return
+        self.report["snapshot_final"] = await self.fresh()
+        self.report["diagnostics_final"] = await self.call("ck3_migration_pipe_diagnostics")
+
+
     async def hold(self, seconds: float) -> None:
         deadline = time.monotonic() + seconds
         self.report["phase"] = "hold"
         self.report["hold_until_utc_estimated"] = time.time() + seconds
+        managed_done = getattr(self, "managed_done", None)
+        managed_completion_written = managed_done is not None and managed_done.is_set()
         self.write()
         while time.monotonic() < deadline and not self.report.get("hold_finished_by_control_plan", False):
+            if not managed_completion_written and managed_done is not None and managed_done.is_set():
+                self.write()
+                managed_completion_written = True
             if self.control_plan_execution_depth == 0 and self.args.control_plan_dir is not None:
                 for path in sorted(self.args.control_plan_dir.glob("*.json")):
                     identity = (str(path), path.stat().st_mtime_ns)
@@ -1136,9 +1698,10 @@ def require_frontend_rules_native(value: object, schema: str, source: str,
         binding: object = None, *, allow_unavailable: bool = False) -> dict[str, object]:
     if not isinstance(value, dict):
         raise RuntimeError("native rules result is not an object")
+    build = frontend_native_build_pair(value.get("game_version"), value.get("executable_sha256"))
     for key, expected in {"schema": schema, "schema_version": 1,
             "source": source, "backend_id": "native-headless", "read_only": True,
-            "game_version": "1.20.0.3", "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+            "game_version": build.game_version, "executable_sha256": build.executable_sha256,
             "uses_ocr": False, "uses_mouse": False, "uses_keyboard": False}.items():
         if type(value.get(key)) is not type(expected) or value[key] != expected:
             raise RuntimeError("native rules result has an unadmitted " + key)
@@ -1379,8 +1942,6 @@ def capture_fixture_startup_notice_evidence(client: PlanClient, stage: str, even
 async def acknowledge_fixture_startup_notice(client: PlanClient, snapshot: dict[str, object],
         submission: dict[str, object], *, state: dict[str, object], write: object) -> dict[str, object]:
     """Consume registry-reviewed startup presentation through the normal option tool once."""
-    from xar_autoplayer.bridge.frontend_fixture_start_contract import EXE_SHA256
-    from xar_autoplayer.bridge.version_identity import CK3_12003
     event = snapshot.get("active_event")
     if not isinstance(event, dict):
         return snapshot
@@ -1390,13 +1951,16 @@ async def acknowledge_fixture_startup_notice(client: PlanClient, snapshot: dict[
     hello = diagnostics.get("hello", {})
     played = snapshot.get("played_character", {})
     actor, event_id = played.get("character_id"), event.get("instance_id")
+    if not isinstance(hello, dict):
+        raise RuntimeError("fixture startup notice lacks the exact native hello")
+    build = frontend_native_build_pair(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
     if (snapshot.get("map_ready") is not True or snapshot.get("paused") is not True
             or snapshot.get("episode_projection") != "native_campaign"
             or any(diagnostics.get(key) != wanted for key, wanted in submission["binding"].items())
             or snapshot.get("date_raw") != submission["selected_candidate"]["selected_bookmark_start_date_raw"]
             or type(actor) is not int or actor < 1 or played.get("alive") is not True or played.get("source") != "native"
             or type(event_id) is not int or event_id < 1
-            or hello.get("expected_ck3_version") != "1.20.0.3" or hello.get("expected_ck3_sha256") != EXE_SHA256):
+            or hello.get("expected_ck3_version") != build.game_version or hello.get("expected_ck3_sha256") != build.executable_sha256):
         raise RuntimeError("fixture startup notice lacks its actual paused exact-build actor frame")
     notice = {"status": "OBSERVING_TYPED_STARTUP_EVENT", "selection_attempted": False,
         "retry_allowed": False, "snapshot": snapshot, "product_acceptance_proven": False}
@@ -1409,7 +1973,7 @@ async def acknowledge_fixture_startup_notice(client: PlanClient, snapshot: dict[
     notice["event_context"] = packet
     context = packet.get("current_event_window_context", {})
     knowledge = await client.call("ck3_query_vanilla_event_knowledge_v1", {
-        "event_definition_key": context.get("event_definition_key"), "ck3_build": "1.20.0.3"})
+        "event_definition_key": context.get("event_definition_key"), "ck3_build": build.game_version})
     notice["knowledge"] = knowledge
     write()
     contract, analysis = knowledge.get("contract") or {}, knowledge.get("analysis") or {}
@@ -1424,10 +1988,10 @@ async def acknowledge_fixture_startup_notice(client: PlanClient, snapshot: dict[
             or context.get("status") != "available" or context.get("window_match_count") != 1
             or context.get("current_event_instance_id") != event_id
             or context.get("snapshot_revision") != snapshot["native_revision"] or context.get("date_raw") != snapshot["date_raw"]
-            or context.get("provenance", {}).get("backend_id") != CK3_12003.backend_id("event-window-v1")
+            or context.get("provenance", {}).get("backend_id") != build.backend_id("event-window-v1")
             or any(packet.get(key) != snapshot.get(wanted) for key, wanted in {
                 "queried_snapshot_id": "snapshot_id", "queried_revision": "revision", "queried_native_revision": "native_revision"}.items())
-            or knowledge.get("status") != "available" or knowledge.get("ck3_exe_sha256") != EXE_SHA256
+            or knowledge.get("status") != "available" or knowledge.get("ck3_exe_sha256") != build.executable_sha256
             or contract.get("startup_acknowledgement") is not True or contract.get("root_character_id") != "$player"
             or contract.get("option_count") != 1 or contract.get("snapshot_option_count") != 1
             or contract.get("native_option_indices") != [0] or contract.get("selected_option_number") != 1
@@ -1909,6 +2473,12 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                 "production_profile_verified": False}
         else:
             report["profile"] = verify_profile(spec)
+        saved_campaign = None
+        if args.saved_campaign_save is not None:
+            saved_campaign = prepare_saved_campaign(args, spec)
+            report["saved_campaign_input"] = saved_campaign
+            report["saved_campaign_launch"] = {"status": "WAITING_FOR_ACTUAL_SINGLE_CLI_RESTORE_LAUNCH", "argv_admitted": False}
+            write()
         config = NativeBridgeLaunchConfig("native-headless", args.bridge_pipe,
                                          args.bridge_dll.resolve(), args.bridge_injector.resolve())
         report["identity"] = {"game_executable": str(spec.game_exe),
@@ -1919,7 +2489,11 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         def supervise() -> None:
             try:
                 with args.output.with_suffix(".session.log").open("w", encoding="utf-8") as stream:
-                    if args.fixture_profile:
+                    if args.saved_campaign_save is not None:
+                        session_state["report"] = saved_campaign_session(spec, config, args, stop, output_stream=stream,
+                            launch_record=report["saved_campaign_launch"])
+                        stream.write(json.dumps(session_state["report"], ensure_ascii=False) + "\n")
+                    elif args.fixture_profile:
                         session_state["report"] = fixture_session(spec, config, args, stop, output_stream=stream)
                         stream.write(json.dumps(session_state["report"], ensure_ascii=False) + "\n")
                     else:
@@ -1943,7 +2517,11 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     if frontend_fixture_policy is not None:
         child_args += ["--frontend-fixture-start-policy", str(policy_snapshot),
                        "--frontend-robert-bootstrap", "--fixture-profile"]
-    parameters = StdioServerParameters(command=sys.executable, args=child_args, env={"PYTHONUTF8": "1"})
+    if args.saved_campaign_save is not None:
+        child_args.append("--saved-campaign-server")
+    parameters = StdioServerParameters(command=sys.executable, args=child_args,
+        env={"PYTHONUTF8": "1", "PYTHONDONTWRITEBYTECODE": "1",
+             **({"PYTHONPATH": os.environ["PYTHONPATH"]} if "PYTHONPATH" in os.environ else {})})
     client: PlanClient | None = None
     try:
         with stderr_path.open("w", encoding="utf-8") as stderr:
@@ -1963,6 +2541,10 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         # initialize/list_tools prove the child has already opened its pipe.
                         if supervisor is not None:
                             supervisor.start()
+                        if args.saved_campaign_save is not None:
+                            await wait_for_saved_campaign(client, saved_campaign, report=report, write=write,
+                                timeout=args.readiness_timeout, managed_done=done if supervisor is not None else None,
+                                poll_interval=args.poll_interval)
                         if args.frontend_robert_bootstrap:
                             report["phase"] = "native-frontend-robert-bootstrap"
                             report["frontend_bootstrap"] = {"status": "RUNNING", "uses_ocr": False,
@@ -2069,12 +2651,12 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         report["phase"] = "waiting-for-paused-map"
                         write()
                         deadline = time.monotonic() + args.readiness_timeout
-                        while True:
+                        while args.saved_campaign_save is None:
                             if supervisor is not None and done.is_set():
                                 raise RuntimeError(f"managed session ended before readiness: {session_state}")
                             try:
                                 snapshot = await client.fresh()
-                                if snapshot.get("map_ready") is True and snapshot.get("paused") is True and snapshot.get("episode_identity_pending") is False:
+                                if paused_map_readiness_admitted(snapshot, report):
                                     report["readiness"] = snapshot
                                     break
                             except Exception as error:
@@ -2109,8 +2691,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                 report["frontend_diagnostic_hold_error"] = f"{type(hold_error).__name__}: {hold_error}"
                     finally:
                         try:
-                            report["snapshot_final"] = await client.fresh()
-                            report["diagnostics_final"] = await client.call("ck3_migration_pipe_diagnostics")
+                            await client.observe_final()
                         except BaseException as error:
                             report["final_observation_error"] = f"{type(error).__name__}: {error}"
                         stop.set()
@@ -2162,6 +2743,13 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--control-plan-dir", type=Path, help="read new/updated JSON plans during hold")
     result.add_argument("--turns", type=int, default=0, help="MCP ck3_auto_turn count after the plan")
     result.add_argument("--cold-start-checkpoint", action="store_true")
+    result.add_argument("--saved-campaign-save", type=Path)
+    result.add_argument("--saved-campaign-save-bytes", type=int)
+    result.add_argument("--saved-campaign-save-sha256")
+    result.add_argument("--saved-campaign-player-id", type=int)
+    result.add_argument("--saved-campaign-date-raw", type=int)
+    result.add_argument("--saved-campaign-product-inventory", type=Path)
+    result.add_argument("--saved-campaign-server", action="store_true", help=argparse.SUPPRESS)
     result.add_argument("--frontend-robert-bootstrap", action="store_true",
                         help="Use existing typed native stock Robert start before map readiness; no desktop input")
     result.add_argument("--frontend-fixture-start-policy", type=Path,
@@ -2192,6 +2780,7 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    validate_saved_campaign_options(args)
     if args.frontend_fixture_start_policy is not None and (not args.frontend_robert_bootstrap
             or not args.fixture_profile or args.frontend_diagnostic_only or args.frontend_rules_diagnostic
             or args.frontend_rules_diagnostic_new_game or args.cold_start_checkpoint

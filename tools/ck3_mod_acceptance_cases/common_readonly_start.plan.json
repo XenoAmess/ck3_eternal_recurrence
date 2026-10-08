@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "id": "acceptance-initial-snapshot",
+      "tool": "ck3_take_snapshot",
+      "args": {
+        "include_native_command_history": false
+      }
+    },
+    {
+      "id": "acceptance-initial-capabilities",
+      "tool": "ck3_get_capabilities"
+    },
+    {
+      "id": "acceptance-initial-campaign-root",
+      "tool": "ck3_query_campaign_root_context_v1",
+      "fresh_revision": true
+    }
+  ]
+}
