@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12004_prisoner.hpp"
 #include "xar_bridge/ck3_12004_prisoner_keeper_opinion.hpp"
+#include "xar_bridge/ck3_12004_prisoner_retained_target_state.hpp"
 #include "xar_bridge/ck3_12004_prisoner_release_material_opinion.hpp"
 
 namespace xar::ck3_12004 {
@@ -33,6 +34,7 @@ std::string SerializePrisonerCollectionCommandResult12004(
     const PrisonerReleaseMaterialOpinion12004 *material,
     const std::array<PrisonerNegotiatedPreview12004,
         bridge::kPlayerPrisonerMaximumRowsV1> *negotiated_previews,
-    const KeeperOpinion12004 *keeper = nullptr);
+    const KeeperOpinion12004 *keeper = nullptr,
+    const RetainedTargetState12004 *retained_state = nullptr);
 
 } // namespace xar::ck3_12004

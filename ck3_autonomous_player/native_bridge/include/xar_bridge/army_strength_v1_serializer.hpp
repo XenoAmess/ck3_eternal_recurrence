@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/army_current_first_route_target_supply_contributors_v1_serializer.hpp"
 #include "xar_bridge/owned_regiments_v1_serializer.hpp"
 #include "xar_bridge/army_current_helper_domain_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_current_helper_point_store_inputs_v1_serializer.hpp"
@@ -18,6 +19,7 @@
 #include "xar_bridge/army_current_character_detachment_inputs_serializer_v1.hpp"
 #include "xar_bridge/army_current_month_first_refill_call_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1_serializer.hpp"
+#include "xar_bridge/army_next_route_replenishment_position_v1_serializer.hpp"
 #include "xar_bridge/army_fixed_chunk0_preparation_v1_serializer.hpp"
 #include "xar_bridge/army_daily_assault_active_table_serializer_v1.inc.hpp"
 #include "xar_bridge/army_daily_assault_roster_admission_serializer_v1.inc.hpp"
@@ -767,6 +769,14 @@ inline void AppendArmyStrengthV1(
     AppendArmyCurrentProvinceSupplyContributorsV1(
         result, *strength.current_province_supply_contributors_v1, number, append_json_string);
   }
+  if (strength.current_first_route_target_supply_contributors_v1) {
+    result += ",\"current_first_route_target_supply_contributors_v1\":";
+    AppendArmyCurrentFirstRouteTargetSupplyContributorsV1(
+        result, *strength.current_first_route_target_supply_contributors_v1, number, append_json_string,
+        [&](std::string &out, const auto &inputs) {
+          AppendArmyCurrentProvinceSupplyContributorsV1(out, inputs, number, append_json_string);
+        });
+  }
   if (strength.current_province_besieging_contributors_v1) {
     result += ",\"current_province_besieging_contributors_v1\":";
     AppendArmyCurrentProvinceBesiegingContributorsV1(
@@ -801,6 +811,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"scoped_ordered_refill_inputs_v1\":";
     AppendArmyScopedOrderedRefillInputsV1(
         result, *strength.scoped_ordered_refill_inputs_v1, number, append_json_string);
+  }
+  if (strength.next_route_replenishment_position_inputs_v1) {
+    result += ",\"next_route_replenishment_position_inputs_v1\":";
+    AppendArmyNextRouteReplenishmentPositionInputsV1(
+        result, *strength.next_route_replenishment_position_inputs_v1, number, append_json_string);
   }
   if (strength.fixed_chunk0_preparation_inputs_v1) {
     result += ",\"fixed_chunk0_preparation_inputs_v1\":";

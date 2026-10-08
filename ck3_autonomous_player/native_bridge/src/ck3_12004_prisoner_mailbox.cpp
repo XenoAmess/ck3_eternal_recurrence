@@ -37,6 +37,8 @@ struct CollectionQuery {
   PrisonerReleaseMaterialOpinion12004 material{};
   KeeperOpinionBindings12004 keeper_bindings{};
   KeeperOpinion12004 keeper{};
+  RetainedTargetStateBindings12004 retained_state_bindings{};
+  RetainedTargetState12004 retained_state{};
   bool war_retention = false;
   std::int32_t war_id = -1;
   ck3_12002::PrisonerWarRetentionBindings war_bindings{};
@@ -206,6 +208,8 @@ bool ExecutePlayerPrisonerCollection12004(void *opaque,
           access, frame, query.material_target, query.material);
       (void)ReadKeeperOpinion12004(query.keeper_bindings,
           access, frame, query.material_target, query.keeper);
+      (void)ReadRetainedTargetState12004(query.retained_state_bindings,
+          access, frame, query.material_target, query.retained_state);
     }
   }
   (void)ck3_12002::FinishQueryMailbox(*envelope);
@@ -306,6 +310,8 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
         query.module, adapter.descriptor().executable_sha256);
     query.keeper_bindings = BindKeeperOpinionImage12004(
         query.module, adapter.descriptor().executable_sha256);
+    query.retained_state_bindings = BindRetainedTargetStateImage12004(
+        query.module, adapter.descriptor().executable_sha256);
   }
   query.ordinal = ordinal;
   query.envelope.game = &adapter;
@@ -321,7 +327,8 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
       query.collection, query.quotes, query.completed, &query.release_previews,
       query.material_target != 0 ? &query.material : nullptr,
       requested_mask != 0 ? &query.negotiated_previews : nullptr,
-      query.material_target != 0 ? &query.keeper : nullptr);
+      query.material_target != 0 ? &query.keeper : nullptr,
+      query.material_target != 0 ? &query.retained_state : nullptr);
   if (serialized.empty()) { failure = "prisoner collection serialization unavailable"; return true; }
   ++state.query_sequence;
   state.current_quote.reset();

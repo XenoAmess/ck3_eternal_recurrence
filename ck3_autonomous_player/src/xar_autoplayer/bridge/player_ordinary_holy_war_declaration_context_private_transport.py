@@ -11,6 +11,7 @@ from .player_ordinary_holy_war_declaration_context_private_observation import (
     normalize_player_ordinary_holy_war_declaration_context_v1,
     selected_ordinary_holy_war_declaration,
 )
+from .player_holy_war_defender_join_inputs import normalize_holy_war_defender_join_inputs
 from .version_identity import CK3_12003, CK3_12004, require_exact_native_backend
 
 
@@ -54,6 +55,12 @@ def query_player_ordinary_holy_war_declaration_context_private_v1(
         )
         if result.get("status") != ("observed" if value["available"] else "unavailable"):
             raise ValueError("native ordinary holy-war envelope lost its context availability")
+        defender_join = None
+        if "player_holy_war_defender_join_inputs" in result:
+            defender_join = normalize_holy_war_defender_join_inputs(
+                result["player_holy_war_defender_join_inputs"],
+                current_context=value, snapshot=before,
+            )
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
     return {
@@ -61,4 +68,5 @@ def query_player_ordinary_holy_war_declaration_context_private_v1(
         "snapshot_revision": result["snapshot_revision"], "query_date_raw": result["date_raw"],
         "backend_id": result["backend_id"], "domain_key": DOMAIN_KEY,
         "query_status": result["status"], "advertised": False,
+        **({"player_holy_war_defender_join_inputs": defender_join} if defender_join is not None else {}),
     }

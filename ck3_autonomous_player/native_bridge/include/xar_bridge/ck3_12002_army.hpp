@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12003_current_province_besieging_contributors.hpp"
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/ck3_12004_next_route_replenishment_position.hpp"
 #include "xar_bridge/ck3_12003_current_province_supply_contributors.hpp"
 #include "xar_bridge/ck3_12003_current_land_resupply.hpp"
 #include "xar_bridge/ck3_12003_current_land_supply_rate.hpp"
@@ -231,6 +232,7 @@ struct ArmyBindings {
   bool first_route_target_province_type_tag_enabled = false;
   bool current_unit_arrival_prestore_inputs_enabled = false;
   const std::int32_t *loaded_disembark_penalty_days_rule = nullptr;
+  ck3_12004::NextRouteReplenishmentPositionBindings12004 next_route_replenishment_position_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

@@ -17,6 +17,7 @@ from .army_manager_cleanup_inputs_contract import normalize_monthly_first_remova
 from .army_current_helper_domain_inputs_contract import normalize_monthly_current_helper_domain_inputs_v1
 from .army_current_helper_point_store_inputs_contract import normalize_monthly_current_helper_point_store_inputs_v1
 from .army_current_province_supply_contributors_contract import normalize_current_province_supply_contributors_v1
+from .army_current_first_route_target_supply_contributors_contract import normalize_current_first_route_target_supply_contributors_v1
 from .army_province_besieging_contributors_contract import normalize_current_province_besieging_contributors_v1
 from .army_current_land_resupply_contract import normalize_current_land_resupply_v1
 from .army_current_land_supply_rate_contract import normalize_current_land_supply_rate_inputs_v1
@@ -24,6 +25,7 @@ from .army_current_fleet_supply_tick_inputs_contract import normalize_current_fl
 from .army_current_daily_supply_dispatch_inputs_contract import normalize_current_daily_supply_dispatch_inputs_v1
 from .army_current_month_first_refill_call_inputs_contract import normalize_current_month_first_refill_call_inputs_v1
 from .army_scoped_ordered_refill_contract import normalize_scoped_ordered_refill_inputs_v1
+from .army_next_route_replenishment_position_contract import normalize_next_route_replenishment_position_inputs_v1
 from .army_daily_assault_active_table_contract import normalize_current_daily_assault_table_v1
 from .army_daily_assault_roster_admission_contract import normalize_current_daily_assault_roster_admission_v1
 from .army_pre_date_dated_append_contract import normalize_current_pre_date_dated_append_inputs_v1
@@ -331,6 +333,8 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
      "loss_application_inputs_v1", "monthly_loss_budget_inputs_v1", "monthly_caller_effect_inputs_v1", "monthly_daily_queue_inputs_v1", "monthly_first_removal_cleanup_inputs_v1", "monthly_current_helper_domain_inputs_v1", "monthly_current_helper_point_store_inputs_v1", "current_province_supply_contributors_v1", "current_province_besieging_contributors_v1", "current_land_resupply_v1", "current_land_supply_rate_inputs_v1", "scoped_ordered_refill_inputs_v1", "current_daily_assault_table_v1", "current_daily_assault_roster_admission_v1", "county_entry_inputs_v1", "native_army_resolution_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"ordered_besieging_refill_inputs_v1", "current_daily_assault_loss_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"ordered_besieging_fixed_chunk0_preparation_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_first_route_target_supply_contributors_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"next_route_replenishment_position_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_assault_removal_reference_inputs_v1", "current_pre_date_pending_update_inputs_v1", "current_pre_date_dated_append_inputs_v1", "current_post_admission_refresh_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_candidate_detachment_mapper_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_detachment_data_inputs_v1"}
@@ -1958,6 +1962,11 @@ def _normalize_army_strength_row(
         result["current_province_supply_contributors_v1"] = normalize_current_province_supply_contributors_v1(
             value["current_province_supply_contributors_v1"]
         )
+    if "current_first_route_target_supply_contributors_v1" in value:
+        result["current_first_route_target_supply_contributors_v1"] = normalize_current_first_route_target_supply_contributors_v1(
+            value["current_first_route_target_supply_contributors_v1"],
+            expected_army_id=result["army_id"], expected_carmy_id=result["native_carmy_id"],
+        )
     if "current_land_resupply_v1" in value:
         result["current_land_resupply_v1"] = normalize_current_land_resupply_v1(
             value["current_land_resupply_v1"]
@@ -2058,6 +2067,8 @@ def _normalize_army_strength_row(
         result["scoped_ordered_refill_inputs_v1"] = normalize_scoped_ordered_refill_inputs_v1(
             value["scoped_ordered_refill_inputs_v1"]
         )
+    result["next_route_replenishment_position_inputs_v1"] = normalize_next_route_replenishment_position_inputs_v1(
+        value.get("next_route_replenishment_position_inputs_v1"), expected_unit_full_id=result["army_id"])
     if "ordered_besieging_refill_inputs_v1" in value:
         result["ordered_besieging_refill_inputs_v1"] = normalize_ordered_besieging_refill_inputs_v1(
             value["ordered_besieging_refill_inputs_v1"]

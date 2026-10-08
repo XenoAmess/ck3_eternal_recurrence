@@ -166,6 +166,8 @@ ArmyBindings BindArmyImage12004(std::uintptr_t image_base,
   result.enabled = true;
   PopulateClosedCurrentInputs(image_base, result);
   PopulateArmySupportBindings12004(image_base, executable_sha256, result);
+  result.next_route_replenishment_position_bindings =
+      BindNextRouteReplenishmentPositionImage12004(image_base, executable_sha256);
   result.future_daily_supply_schedule_bindings =
       BindFutureDailySupplySchedule12004(image_base, executable_sha256);
   result.source_derived_next_daily_supply_frame_bindings =

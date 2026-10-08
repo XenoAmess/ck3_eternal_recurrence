@@ -6,6 +6,10 @@
 #include <string>
 
 namespace xar::ck3_12002 {
+namespace religion::holy_war_defender_join {
+struct Bindings;
+struct Context;
+}
 inline constexpr std::string_view kOrdinaryHolyWarExactSha12003 =
     "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6";
 inline constexpr std::string_view kOrdinaryHolyWarDeclarationContextSchemaV1 =
@@ -63,5 +67,9 @@ bool ReadOrdinaryHolyWarCbCostV1(const OrdinaryHolyWarCbCostBindingsV1 &, const 
 // Re-evaluates the full selected row and constructs one observation context, without a command.
 bool ReadSelectedOrdinaryHolyWarDeclarationContextV1(const DeclarationsBindings &,
     const OrdinaryHolyWarCbCostBindingsV1 &, const game::DeclarableWarSnapshot &, OrdinaryHolyWarDeclarationContextV1 &) noexcept;
+bool ReadSelectedOrdinaryHolyWarDeclarationContextV1(const DeclarationsBindings &,
+    const OrdinaryHolyWarCbCostBindingsV1 &, const game::DeclarableWarSnapshot &, OrdinaryHolyWarDeclarationContextV1 &,
+    const religion::holy_war_defender_join::Bindings &, religion::holy_war_defender_join::Context &) noexcept;
+std::string SerializeOrdinaryHolyWarSelectedDeclarationV1(const game::DeclarableWarSnapshot &);
 std::string SerializeOrdinaryHolyWarDeclarationContextV1(const OrdinaryHolyWarDeclarationContextV1 &);
 } // namespace xar::ck3_12002

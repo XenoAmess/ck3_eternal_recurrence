@@ -18,6 +18,7 @@ from .army_post_refill_land_supply_rate_projection import project_observed_post_
 from .army_next_admitted_day_fleet_rate_projection import project_next_admitted_day_fleet_rate_v1
 from .army_selected_refill_monthly_assembly import project_selected_refill_monthly_assemblies_v1
 from .army_scoped_ordered_refill_projection import project_scoped_ordered_refills_v1
+from .army_next_route_position_ordered_refill_projection import project_next_route_position_scoped_ordered_refills_v1
 from .army_daily_assault_active_table_projection import project_current_daily_assault_group_inputs_many_v1
 from .army_daily_assault_placement_inputs_projection import project_current_daily_assault_placement_inputs_v1
 from ..simulation.army_daily_assault_roster_admission_12003 import project_current_daily_assault_roster_admission_12003
@@ -45,6 +46,7 @@ from .army_current_unit_next_first_edge_selection_projection import project_curr
 from .army_current_unit_next_arrival_transition_projection import project_current_unit_next_arrival_transition_v1
 from .army_current_unit_arrival_prestore_disembark_write_projection import project_current_unit_arrival_prestore_disembark_write_v1
 from .army_next_land_stock_supply_budget_projection import project_source_derived_next_land_stock_supply_budget_v1
+from .army_current_first_route_target_supply_contributors_projection import project_current_first_route_target_supply_contributors_v1
 from .army_current_callback_supply_risk_projection import project_current_callback_supply_risk_v1
 from .army_current_detachment_callback_projection import project_current_detachment_callback_inputs_v1
 from .army_current_detachment_store_projection import project_current_detachment_store_inputs_v1
@@ -568,6 +570,10 @@ from ..prisoner_release_formal_consumer import (
     SUBMIT_STEP as PRISONER_RELEASE_SUBMIT_STEP,
     plan_release_formal,
     submit_release_formal,
+)
+from ..prisoner_release_receipt_consumer_12004 import (
+    RECEIPT_STEP as PRISONER_RELEASE_RECEIPT_STEP,
+    read_release_receipt_private,
 )
 from .domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
@@ -3149,6 +3155,11 @@ class GameplayBridgeService:
                 result = submit_ransom_private(self.driver, plan=plan)
             elif selected_step == PRISONER_RELEASE_SUBMIT_STEP:
                 result = submit_release_formal(self.driver, plan=plan)
+            elif selected_step == PRISONER_RELEASE_RECEIPT_STEP:
+                pending = plan.get("prisoner_release_pending")
+                if not isinstance(pending, dict):
+                    raise UnsupportedStepError("controlled prisoner release lacks pending identity")
+                result = read_release_receipt_private(self.driver, pending=pending)
             elif selected_step == PRIVATE_PRISONER_RANSOM_RECEIPT_STEP:
                 pending = plan.get("prisoner_ransom_pending")
                 if not isinstance(pending, dict):
@@ -5013,6 +5024,13 @@ class GameplayBridgeService:
             )
         by_id = {int(row["army_id"]): row for row in rows}
         selected_rows = [by_id[army_id] for army_id in requested_ids]
+        first_target_army_contexts = {}
+        for army_context in snapshot["player_armies"]:
+            first_target_army_contexts.setdefault(army_context["army_id"], army_context)
+        for war_context in snapshot["active_wars"]:
+            for lane in ("allied_armies", "enemy_armies"):
+                for army_context in war_context[lane]:
+                    first_target_army_contexts.setdefault(army_context["army_id"], army_context)
         for row in selected_rows:
             row["same_input_conditional_current_pre_date_pending_update_v1"] = project_current_pre_date_pending_update_v1(row)
             row["same_input_conditional_current_pre_date_character_prefix_v1"] = project_current_pre_date_character_prefix_v1(row)
@@ -5096,6 +5114,10 @@ class GameplayBridgeService:
             "ordered_besieging_entry_mode": ordered_besieging_entry_mode,
             "scope_army_ids": scope_ids,
             "army_strengths": selected_rows,
+            "current_first_route_target_supply_contributors_v1": [
+                {"army_id": row["army_id"], "projection": project_current_first_route_target_supply_contributors_v1(
+                    row, armycontext=first_target_army_contexts.get(row["army_id"]))}
+                for row in selected_rows],
             "current_unit_new_date_entry_normalization_v1":
                 self._unit_new_date_entry_normalization_rows(result, selected_rows),
             **self._unit_next_movement_projection_rows(
@@ -5112,6 +5134,8 @@ class GameplayBridgeService:
                 selected_refill_assemblies,
             "same_input_conditional_scoped_ordered_refill_current_v1":
                 ordered_refills,
+            "next_route_position_scoped_ordered_refill_v1":
+                project_next_route_position_scoped_ordered_refills_v1(selected_rows),
             "same_input_conditional_post_refill_besieging_current_v1": conditional_besieging,
             "same_input_conditional_fixed_chunk0_preparation_v1":
                 preparations,

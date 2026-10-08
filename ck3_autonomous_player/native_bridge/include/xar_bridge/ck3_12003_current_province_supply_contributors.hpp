@@ -13,7 +13,9 @@ struct CurrentProvinceSupplyContributorBindings12003 {
   bool (*shares_current_war_side)(void *, void *, void *) = nullptr;
 };
 
-// The caller supplies its same-query validated current Province, not a target.
+// The current path supplies its same-query validated current Province. The
+// actual4 first-route-target wrapper reuses this Province-context algorithm
+// with a separately validated current target and a distinct outer DTO.
 game::ArmyCurrentProvinceSupplyContributorsV1
 ReadCurrentProvinceSupplyContributors12003(
     const ck3_12002::ArmyBindings &, void *subject_army,

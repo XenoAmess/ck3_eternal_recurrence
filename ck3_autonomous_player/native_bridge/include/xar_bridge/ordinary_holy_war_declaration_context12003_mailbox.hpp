@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ordinary_holy_war_cb_cost_v1.hpp"
+#include "xar_bridge/ck3_12003_holy_war_defender_join_inputs.hpp"
 
 namespace xar::ck3_12002 {
 inline constexpr std::string_view kOrdinaryHolyWarDeclarationContextPrivateStep12003 =
@@ -23,6 +24,8 @@ struct OrdinaryHolyWarDeclarationContextMailbox12003 {
   OrdinaryHolyWarDeclarationContextV1 observation{};
   bool completed = false;
   std::string failure;
+  religion::holy_war_defender_join::Bindings defender_join{};
+  religion::holy_war_defender_join::Context defender_join_observation{};
 };
 bool IsOrdinaryHolyWarDeclarationContextPrivateStep12003(std::string_view) noexcept;
 bool ParseOrdinaryHolyWarDeclarationContextRequest12003(std::string_view,

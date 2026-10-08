@@ -2,6 +2,7 @@
 
 #if defined(XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1)
 #include "xar_bridge/ordinary_holy_war_cb_cost_v1.hpp"
+#include "xar_bridge/ck3_12003_holy_war_defender_join_inputs.hpp"
 #endif
 
 #include <array>
@@ -305,9 +306,12 @@ game::DeclareWarResult SubmitDeclareWar(
 }
 
 #if defined(XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1)
-bool ReadSelectedOrdinaryHolyWarDeclarationContextV1(
+namespace {
+bool ReadSelectedOrdinaryHolyWarDeclarationContextImplV1(
     const DeclarationsBindings &b, const OrdinaryHolyWarCbCostBindingsV1 &cost,
-    const game::DeclarableWarSnapshot &selected, OrdinaryHolyWarDeclarationContextV1 &out) noexcept {
+    const game::DeclarableWarSnapshot &selected, OrdinaryHolyWarDeclarationContextV1 &out,
+    const religion::holy_war_defender_join::Bindings *defender_join,
+    religion::holy_war_defender_join::Context *defender_join_out) noexcept {
   // Frame metadata is supplied by the owning mailbox and retained on failure.
   out.selected = selected;
   if (!IsOrdinaryHolyWarKeyV1(selected.casus_belli_key)) {
@@ -406,7 +410,24 @@ bool ReadSelectedOrdinaryHolyWarDeclarationContextV1(
   if (Load<std::uint32_t>(type, 0x38) != 0x4744624FU)
     out.cb_cost.unavailable_reason = "selected_cb_native_tag_unavailable";
   else (void)ReadOrdinaryHolyWarCbCostV1(cost, type, additional, recipient, claimant, titles, out.cb_cost);
+  if (defender_join && defender_join_out)
+    (void)religion::holy_war_defender_join::ReadSelectedHolyWarDefenderJoinInputs12003(
+        *defender_join, type, additional, recipient, out, *defender_join_out);
   return true;
+}
+} // namespace
+bool ReadSelectedOrdinaryHolyWarDeclarationContextV1(
+    const DeclarationsBindings &b, const OrdinaryHolyWarCbCostBindingsV1 &cost,
+    const game::DeclarableWarSnapshot &selected, OrdinaryHolyWarDeclarationContextV1 &out) noexcept {
+  return ReadSelectedOrdinaryHolyWarDeclarationContextImplV1(b, cost, selected, out, nullptr, nullptr);
+}
+bool ReadSelectedOrdinaryHolyWarDeclarationContextV1(
+    const DeclarationsBindings &b, const OrdinaryHolyWarCbCostBindingsV1 &cost,
+    const game::DeclarableWarSnapshot &selected, OrdinaryHolyWarDeclarationContextV1 &out,
+    const religion::holy_war_defender_join::Bindings &defender_join,
+    religion::holy_war_defender_join::Context &defender_join_out) noexcept {
+  return ReadSelectedOrdinaryHolyWarDeclarationContextImplV1(
+      b, cost, selected, out, &defender_join, &defender_join_out);
 }
 #endif
 

@@ -43,7 +43,8 @@ std::string SerializePrisonerCollectionCommandResult12004(
     const PrisonerReleaseMaterialOpinion12004 *material,
     const std::array<PrisonerNegotiatedPreview12004,
         bridge::kPlayerPrisonerMaximumRowsV1> *negotiated_previews,
-    const KeeperOpinion12004 *keeper) {
+    const KeeperOpinion12004 *keeper,
+    const RetainedTargetState12004 *retained_state) {
   const auto value = SerializePlayerPrisonerCollectionPrivateV1(
       collection, snapshot_revision, quotes, quotes_complete, release_previews,
       negotiated_previews);
@@ -61,6 +62,9 @@ std::string SerializePrisonerCollectionCommandResult12004(
         SerializePrisonerReleaseMaterialOpinion12004(*material);
   if (keeper != nullptr)
     out += ",\"prisoner_keeper_opinion\":" + SerializeKeeperOpinion12004(*keeper);
+  if (retained_state != nullptr)
+    out += ",\"prisoner_retained_target_state\":" +
+        SerializeRetainedTargetState12004(*retained_state);
   return out + ",\"private_build\":true,\"read_only\":true,\"advertised\":false,"
       "\"backend_id\":\"native-headless\"}}";
 }

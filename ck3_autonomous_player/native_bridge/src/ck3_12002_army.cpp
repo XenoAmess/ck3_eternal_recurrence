@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12003_current_daily_assault_loss.hpp"
+#include "xar_bridge/ck3_12004_current_first_route_target_supply_contributors.hpp"
 #include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
 #include "xar_bridge/ck3_12003_captured_target_land_supply_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_daily_supply_dispatch_inputs.hpp"
@@ -202,7 +203,8 @@ void Route(void *game_data, void *unit, game::ArmySnapshot &row,
 }
 
 game::ArmyMovementProgressSnapshot MovementProgress(
-    const ArmyBindings &bindings, void *unit, void *army) {
+    const ArmyBindings &bindings, void *unit, void *army,
+    std::optional<game::ArmyNextRouteReplenishmentPositionInputsV1> *next_position = nullptr) {
   game::ArmyMovementProgressSnapshot result{};
   result.accumulated_movement_weight_raw = Load<std::int64_t>(unit, 0x168);
   result.cached_edge_speed_raw = Load<std::int64_t>(unit, 0x190);
@@ -217,6 +219,11 @@ game::ArmyMovementProgressSnapshot MovementProgress(
   game::ArmySnapshot route{};
   void *first_target_province = nullptr;
   Route(game_data, unit, route, &first_target_province);
+  if (next_position != nullptr && bindings.next_route_replenishment_position_bindings.enabled) {
+    g_army_strength_query_diagnostic_v1.reader.store("next_route_replenishment_position_readonly");
+    *next_position = ck3_12004::ReadNextRouteReplenishmentPositionInputs12004(
+        bindings.next_route_replenishment_position_bindings, unit, route, first_target_province);
+  }
   if (route.route_read_status == game::ArmyRouteReadStatus::complete_empty) {
     result.status = game::ArmyMovementProgressStatus::not_applicable;
     return result;
@@ -977,7 +984,8 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       }
     }
     if (bindings.current_movement_progress_enabled)
-      result.current_movement_progress = MovementProgress(bindings, unit, army);
+      result.current_movement_progress = MovementProgress(
+          bindings, unit, army, &result.next_route_replenishment_position_inputs_v1);
     if (bindings.get_army_gathering_days_left != nullptr &&
         bindings.get_unit_state != nullptr) {
       const auto state = bindings.get_unit_state(unit);
@@ -1068,6 +1076,11 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
           Province(game_data, Load<std::int32_t>(province, 0x10)) != province) province = nullptr;
       result.current_province_supply_contributors_v1 =
           ck3_12003::ReadCurrentProvinceSupplyContributors12003(bindings, army, unit, province);
+    }
+    if (bindings.current_province_supply_contributor_bindings.enabled &&
+        bindings.current_movement_progress_enabled) {
+      result.current_first_route_target_supply_contributors_v1 =
+          ck3_12004::ReadCurrentFirstRouteTargetSupplyContributors12004(bindings, army, unit);
     }
     if (bindings.current_province_besieging_bindings.enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("current_province_besieging_contributors_readonly");

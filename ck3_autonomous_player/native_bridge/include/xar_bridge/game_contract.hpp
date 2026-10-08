@@ -16,6 +16,8 @@
 #include "xar_bridge/ck3_12003_army_supply_timing.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp"
+#include "xar_bridge/army_next_route_replenishment_position_inputs_v1.hpp"
+#include "xar_bridge/army_current_first_route_target_supply_contributors_v1.hpp"
 #include "xar_bridge/army_current_fleet_supply_tick_inputs_v1.hpp"
 #include "xar_bridge/army_captured_target_land_supply_inputs_v1.hpp"
 #include "xar_bridge/army_current_daily_supply_dispatch_inputs_v1.hpp"
@@ -676,6 +678,9 @@ struct ArmyCurrentProvinceSupplyContributorsV1 {
                          const ArmyCurrentProvinceSupplyContributorsV1 &) = default;
 };
 
+using ArmyCurrentFirstRouteTargetSupplyContributorsV1 =
+    ArmyCurrentFirstRouteTargetSupplyContributorsSnapshotV1<ArmyCurrentProvinceSupplyContributorsV1>;
+
 struct ArmyCurrentLandResupplyV1 {
   std::string status = "unavailable";
   std::string unavailable_reason;
@@ -843,11 +848,13 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentHelperDomainInputsV1> monthly_current_helper_domain_inputs_v1;
   std::optional<ArmyCurrentHelperPointStoreInputsV1> monthly_current_helper_point_store_inputs_v1;
   std::optional<ArmyCurrentProvinceSupplyContributorsV1> current_province_supply_contributors_v1;
+  std::optional<ArmyCurrentFirstRouteTargetSupplyContributorsV1> current_first_route_target_supply_contributors_v1;
   std::optional<ArmyCurrentProvinceBesiegingContributorsV1> current_province_besieging_contributors_v1;
   std::optional<ArmyCurrentLandResupplyV1> current_land_resupply_v1;
   std::optional<ArmyCurrentLandSupplyRateInputsV1> current_land_supply_rate_inputs_v1;
   std::optional<ArmyCurrentFleetSupplyTickInputsV1> current_fleet_supply_tick_inputs_v1;
   std::optional<ArmyScopedOrderedRefillInputsV1> scoped_ordered_refill_inputs_v1;
+  std::optional<ArmyNextRouteReplenishmentPositionInputsV1> next_route_replenishment_position_inputs_v1;
   std::optional<ArmyOrderedBesiegingRefillInputsV1> ordered_besieging_refill_inputs_v1;
   std::optional<ArmyOrderedBesiegingFixedChunk0PreparationInputsV1> ordered_besieging_fixed_chunk0_preparation_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;

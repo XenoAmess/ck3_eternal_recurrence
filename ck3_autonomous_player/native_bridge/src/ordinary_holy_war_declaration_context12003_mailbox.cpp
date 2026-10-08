@@ -1,4 +1,5 @@
 #include "xar_bridge/ordinary_holy_war_declaration_context12003_mailbox.hpp"
+#include "xar_bridge/ck3_12004_holy_war_defender_join_inputs.hpp"
 
 #if defined(XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1)
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
@@ -116,7 +117,19 @@ bool ExecuteOrdinaryHolyWarDeclarationContextMailbox12003(void *opaque,
     out.date_raw = static_cast<std::int32_t>(envelope->expected_snapshot.date_raw);
     out.played_character_id = static_cast<std::int32_t>(envelope->expected_snapshot.played_character_id);
     out.declaration_id = query.request.declaration_id;
-    (void)ReadSelectedOrdinaryHolyWarDeclarationContextV1(query.declarations, query.cost, query.request.selected, out);
+    auto &join = query.defender_join_observation;
+    join = {};
+    join.capture_epoch = out.capture_epoch;
+    join.native_revision = out.native_revision;
+    join.public_revision = out.public_revision;
+    join.date_raw = out.date_raw;
+    join.played_character_id = out.played_character_id;
+    join.declaration_id = out.declaration_id;
+    join.selected = query.request.selected;
+    join.failure = religion::holy_war_defender_join::Failure::declaration_context_unavailable;
+    (void)ReadSelectedOrdinaryHolyWarDeclarationContextV1(
+        query.declarations, query.cost, query.request.selected, out,
+        query.defender_join, join);
     query.completed = true;
     (void)FinishQueryMailbox(*envelope);
     return true;
@@ -135,7 +148,9 @@ std::string SerializeOrdinaryHolyWarDeclarationContextResult12003(
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"public_revision\":" + std::to_string(query.request.expected_public_revision) +
       ",\"date_raw\":" + std::to_string(query.envelope.expected_snapshot.date_raw) +
-      ",\"player_ordinary_holy_war_declaration_context\":" + SerializeOrdinaryHolyWarDeclarationContextV1(query.observation) + "}}";
+      ",\"player_ordinary_holy_war_declaration_context\":" + SerializeOrdinaryHolyWarDeclarationContextV1(query.observation) +
+      ",\"player_holy_war_defender_join_inputs\":" +
+          religion::holy_war_defender_join::SerializeHolyWarDefenderJoinInputs12003(query.defender_join_observation) + "}}";
   if (query.envelope.game)
     serialized = game::Render12004BuildIdentity(std::move(serialized), query.envelope.game->descriptor());
   return serialized;
@@ -201,10 +216,19 @@ bool HandleOrdinaryHolyWarDeclarationContextPrivate12003(const game::GameAdapter
       query.declarations = *declarations;
       query.cost = ck3_12004::BindOrdinaryHolyWarCbCostImage12004(
           base, adapter.descriptor().executable_sha256);
+      auto faith = ck3_12004::religion::BindReligionContextImage12004(
+          base, adapter.descriptor().executable_sha256);
+      faith.core = query.declarations.core;
+      query.defender_join = ck3_12004::religion::holy_war_defender_join::BindHolyWarDefenderJoinInputsImage12004(
+          base, adapter.descriptor().executable_sha256, faith);
     } else {
       // Archived .3 keeps its separately reviewed declarations ABI.
       query.declarations = BindDeclarationsImage(base, game::ReviewedCrozierAbiSha256(adapter.descriptor()));
       query.cost = BindOrdinaryHolyWarCbCostImageV1(base, adapter.descriptor().executable_sha256);
+      auto faith = religion::BindReligionContextImage12002(base, game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      faith.core = query.declarations.core;
+      query.defender_join = religion::holy_war_defender_join::BindHolyWarDefenderJoinInputsImage12003(
+          base, adapter.descriptor().executable_sha256, faith);
     }
     return RunOrdinaryHolyWarDeclarationContextMailbox12003(query, request_id, serialized, failure);
   } catch (...) { failure = "ordinary_holy_war_declaration_context_handler_exception"; return false; }

@@ -79,6 +79,15 @@ bool ReadOrdinaryHolyWarCbCostV1(const OrdinaryHolyWarCbCostBindingsV1 &b, const
   out.resource_costs_raw = native; // A successfully evaluated zero vector is available.
   out.available = true; out.unavailable_reason.clear(); return true;
 }
+std::string SerializeOrdinaryHolyWarSelectedDeclarationV1(const game::DeclarableWarSnapshot &s) {
+  std::ostringstream out;
+  out << "{\"target_character_id\":" << s.target_character_id
+      << ",\"casus_belli_index\":" << s.casus_belli_index << ",\"casus_belli_key\":"; Quote(out, s.casus_belli_key);
+  out << ",\"configuration_index\":" << s.configuration_index << ",\"claimant_character_id\":" << s.claimant_character_id << ",\"target_title_ids\":[";
+  for (std::size_t i = 0; i < s.target_title_ids.size(); ++i) { if (i) out << ','; out << s.target_title_ids[i]; }
+  out << "]}";
+  return out.str();
+}
 std::string SerializeOrdinaryHolyWarDeclarationContextV1(const OrdinaryHolyWarDeclarationContextV1 &c) {
   std::ostringstream out;
   out << std::boolalpha << "{\"schema\":"; Quote(out, kOrdinaryHolyWarDeclarationContextSchemaV1);
@@ -88,12 +97,8 @@ std::string SerializeOrdinaryHolyWarDeclarationContextV1(const OrdinaryHolyWarDe
   out << ",\"capture_epoch\":" << c.capture_epoch << ",\"native_revision\":" << c.native_revision
       << ",\"public_revision\":" << c.public_revision << ",\"date_raw\":" << c.date_raw
       << ",\"played_character_id\":" << c.played_character_id << ",\"declaration_id\":"; Quote(out, c.declaration_id);
-  const auto &s = c.selected;
-  out << ",\"selected_declaration\":{\"target_character_id\":" << s.target_character_id
-      << ",\"casus_belli_index\":" << s.casus_belli_index << ",\"casus_belli_key\":"; Quote(out, s.casus_belli_key);
-  out << ",\"configuration_index\":" << s.configuration_index << ",\"claimant_character_id\":" << s.claimant_character_id << ",\"target_title_ids\":[";
-  for (std::size_t i = 0; i < s.target_title_ids.size(); ++i) { if (i) out << ','; out << s.target_title_ids[i]; }
-  out << "]},\"context_actor_character_id\":"; Optional(out, c.context_actor_character_id);
+  out << ",\"selected_declaration\":" << SerializeOrdinaryHolyWarSelectedDeclarationV1(c.selected);
+  out << ",\"context_actor_character_id\":"; Optional(out, c.context_actor_character_id);
   out << ",\"context_recipient_character_id\":"; Optional(out, c.context_recipient_character_id);
   out << ",\"context_additional_role_character_id\":"; Optional(out, c.context_additional_role_character_id);
   out << ",\"context_claimant_character_id\":"; Optional(out, c.context_claimant_character_id);

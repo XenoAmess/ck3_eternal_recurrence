@@ -35,12 +35,13 @@ _DISCOVERY_STEPS = {
 def read_release_ledger(state_dir: Path) -> dict[str, object]:
     path = state_dir / _LEDGER
     if not path.exists():
-        return {"pending": None}
+        return {"pending": None, "resolved": None}
     value = json.loads(path.read_text(encoding="utf-8"))
-    if (not isinstance(value, dict) or set(value) != {"pending"}
-            or value["pending"] is not None and not isinstance(value["pending"], dict)):
+    if (not isinstance(value, dict) or set(value) not in ({"pending"}, {"pending", "resolved"})
+            or any(value.get(key) is not None and not isinstance(value[key], dict)
+                   for key in ("pending", "resolved"))):
         raise ValueError("prisoner release pending record is malformed")
-    return value
+    return {"pending": value["pending"], "resolved": value.get("resolved")}
 
 
 def _observed_inputs(
@@ -181,6 +182,16 @@ def plan_release_formal(
         raise ValueError("formal release requires managed state_dir")
     pending = read_release_ledger(state_dir)["pending"]
     if isinstance(pending, dict):
+        _, native, date = _frame(snapshot)
+        if ((pending.get("last_checked_native_revision"), pending.get("last_checked_date_raw"))
+                != (native, date)
+                and (native != pending.get("pre_native_revision")
+                     or date != pending.get("pre_date_raw"))):
+            from .prisoner_release_receipt_consumer_12004 import RECEIPT_STEP
+
+            return {**planned, "plan": {**plan,
+                "phase": "prisoner_release_material_read", "selected_step": RECEIPT_STEP,
+                "prisoner_release_pending": pending}}
         return {**planned, "plan": {**plan, "prisoner_release_pending": pending}}
     if isinstance(read_ransom_ledger(state_dir)["pending"], dict):
         return planned
