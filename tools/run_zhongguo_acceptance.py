@@ -24217,6 +24217,9 @@ def main(
     phase2_product_projection_manifest: str | None = None,
     phase2_endgame_product_switch_title_key: str | None = None,
 ) -> int:
+    if not preflight_only:
+        print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+        return 2
     selected_runtime_modes = sum(
         bool(value)
         for value in (

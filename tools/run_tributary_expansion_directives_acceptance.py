@@ -345,6 +345,9 @@ def configure_harness(source: Path) -> None:
 
 
 def main(args: argparse.Namespace) -> int:
+    if not args.preflight:
+        print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+        return 2
     source = Path(args.source).expanduser().resolve() if args.source else DEFAULT_SOURCE.resolve()
     configure_harness(source)
     return harness.main(

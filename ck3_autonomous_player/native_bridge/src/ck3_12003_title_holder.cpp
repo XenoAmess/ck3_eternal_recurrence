@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12002_campaign.hpp"
 
 #include <cstring>
+#include <utility>
 
 namespace xar::ck3_12003 {
 namespace {
@@ -133,6 +134,18 @@ game::ReadTitleHolderV1Result ReadTitleHolderV1(
   value.title_id = title_id;
   value.title_tier_raw = tier;
   value.title_tier_key = key;
+  std::string stable_key;
+  if (b.read_title_key == nullptr) {
+    value.title_key_unavailable_reason = "title_key_reader_unavailable";
+  } else if (!b.read_title_key(title, stable_key) || stable_key.empty()) {
+    value.title_key_unavailable_reason = "title_key_read_or_format_unavailable";
+  } else if (stable_key[0] != std::string_view(" bcdkeh")[static_cast<std::size_t>(tier)]) {
+    value.title_key_unavailable_reason = "title_key_tier_prefix_unavailable";
+  } else {
+    value.title_key = std::move(stable_key);
+    value.title_key_available = true;
+    value.title_key_unavailable_reason = {};
+  }
   const auto holder_id = Load<std::int32_t>(title, 0x128);
   void *holder = nullptr;
   if (holder_id != -1) {
@@ -143,6 +156,14 @@ game::ReadTitleHolderV1Result ReadTitleHolderV1(
     if (!ReadHolderLieges(b, holder, actor, value))
       return fail("holder_liege_relationship_unavailable");
   }
+  if (value.title_key_available) {
+    std::string current_key;
+    if (!b.read_title_key(title, current_key) || current_key != value.title_key) {
+      value.title_key.clear();
+      value.title_key_available = false;
+      value.title_key_unavailable_reason = "title_key_source_changed";
+    }
+  }
   if (ck3_12002::ResolveObjectiveTitle(b.provinces, title_id) != title ||
       Load<void *>(title, 0x48) != definition ||
       Load<std::int32_t>(definition, 0x64) != tier ||
@@ -152,7 +173,7 @@ game::ReadTitleHolderV1Result ReadTitleHolderV1(
     return fail("title_holder_identity_changed");
   value.available = true;
   value.unavailable_reason = {};
-  out = value;
+  out = std::move(value);
   return Result::available;
 }
 

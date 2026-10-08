@@ -344,7 +344,7 @@ class EndgameSourceProductionEntryRunnerTests(unittest.TestCase):
             runner.acceptance.RunnerError,
             "endgame production entry timeout must be positive",
         ):
-            runner.main(phase2_endgame_production_entry_timeout_seconds=0)
+            runner.main(preflight_only=True, phase2_endgame_production_entry_timeout_seconds=0)
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             with self.assertRaisesRegex(

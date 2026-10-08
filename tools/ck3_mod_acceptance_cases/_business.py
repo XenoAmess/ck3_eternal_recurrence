@@ -71,9 +71,13 @@ def observe(client, name, allow_actor_change=False):
     while frame.get("active_event") is not None:
         event_number += 1
         context_name = name + "-event-" + str(event_number).zfill(3)
+        actual_event = frame["active_event"]
+        require(isinstance(actual_event, dict) and
+                type(actual_event.get("instance_id")) is int and actual_event["instance_id"] > 0,
+                "Actual current event must supply a positive integer instance_id")
         context_rows = client.execute_plan([{
             "id": context_name, "tool": "ck3_query_current_event_window_context_v1",
-            "args": {}, "fresh_revision": True,
+            "args": {"event_instance_id": actual_event["instance_id"]}, "fresh_revision": True,
         }], context_name)
         review(client, context_name + "-review", ["exact_current_event_source_identified", "selected_enabled_option_once"], {
             "actual_event": frame["active_event"], "actual_context": context_rows[0],

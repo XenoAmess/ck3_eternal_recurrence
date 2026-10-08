@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <optional>
+#include <string>
 #include <string_view>
 
 namespace xar::game {
@@ -24,6 +25,10 @@ struct TitleHolderV1 {
   bool holder_in_player_realm = false;
   std::optional<std::int32_t> holder_immediate_liege_character_id;
   std::optional<std::int32_t> holder_top_liege_character_id;
+  // Additive key observation; key failure preserves base holder availability.
+  std::string title_key;
+  bool title_key_available = false;
+  std::string_view title_key_unavailable_reason = "not_read";
 };
 
 enum class ReadTitleHolderV1Result { unavailable, available };

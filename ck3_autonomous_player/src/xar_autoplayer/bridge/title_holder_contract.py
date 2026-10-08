@@ -7,10 +7,13 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 import copy
+import re
 
 QUERY_TITLE_HOLDER_V1_CAPABILITY = "game.command.query-title-holder-v1-N"
 QUERY_TITLE_HOLDER_V1_STEP_PREFIX = "query-title-holder-v1-"
 TITLE_HOLDER_V1_SCHEMA = "xar.ck3.title-holder.v1"
+_TITLE_KEY = re.compile(r"[bcdkeh]_[a-z0-9][a-z0-9_]*", re.ASCII)
+_TITLE_KEY_PREFIX = {1: "b_", 2: "c_", 3: "d_", 4: "k_", 5: "e_", 6: "h_"}
 
 
 def title_holder_id(value: object, name: str = "title_id") -> int:
@@ -103,4 +106,26 @@ def normalize_title_holder_v1(
         "holder_immediate_liege_character_id", "holder_top_liege_character_id",
     )):
         raise ValueError("unavailable title holder must preserve unknown fields as null")
+    key_fields = ("title_key", "title_key_available", "title_key_status",
+                  "title_key_unavailable_reason")
+    # Historical v1 packets may omit this additive observation. Current4
+    # must distinguish a copied key from a factual unavailable key.
+    if value["game_version"] == "1.20.0.4" or any(field in value for field in key_fields):
+        if any(field not in value for field in key_fields):
+            raise ValueError("title holder lacks the complete title-key observation")
+        key_available = value["title_key_available"]
+        if type(key_available) is not bool or value["title_key_status"] != (
+            "available" if key_available else "unavailable"
+        ):
+            raise ValueError("title key status disagrees with availability")
+        title_key = value["title_key"]
+        key_reason = value["title_key_unavailable_reason"]
+        if key_available:
+            if (not available or key_reason is not None or
+                not isinstance(title_key, str) or not title_key.isascii() or
+                not 3 <= len(title_key) <= 1024 or _TITLE_KEY.fullmatch(title_key) is None or
+                not title_key.startswith(_TITLE_KEY_PREFIX[value["title_tier_raw"]])):
+                raise ValueError("available title key lacks an exact canonical tier/key pair")
+        elif title_key is not None or not isinstance(key_reason, str) or not key_reason:
+            raise ValueError("unavailable title key requires null key and explicit reason")
     return copy.deepcopy(value)

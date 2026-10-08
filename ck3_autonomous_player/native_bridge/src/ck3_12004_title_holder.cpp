@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12004_title_holder.hpp"
 #include "xar_bridge/ck3_12004_province.hpp"
+#include "xar_bridge/ck3_12004_title_map.hpp"
 
 namespace xar::ck3_12004 {
 namespace {
@@ -7,6 +8,9 @@ namespace {
 constexpr std::uintptr_t kCharacterFallbackSlotRva = 0x5C67570;
 constexpr std::uintptr_t kImmediateLiegeRva = 0x28BFC50;
 constexpr std::uintptr_t kTopLiegeRva = 0x28BFD80;
+bool ReadTitleKey(const void *title, std::string &output) noexcept {
+  return ReadLandedTitleStableKeyV1({}, title, output, true);
+}
 } // namespace
 
 ck3_12003::TitleHolderBindingsV1 BindTitleHolderImageV1(
@@ -24,6 +28,7 @@ ck3_12003::TitleHolderBindingsV1 BindTitleHolderImageV1(
           image_base + kImmediateLiegeRva);
   bindings.top_liege = reinterpret_cast<decltype(bindings.top_liege)>(
       image_base + kTopLiegeRva);
+  bindings.read_title_key = &ReadTitleKey;
   bindings.enabled = true;
   return bindings;
 }

@@ -96,6 +96,12 @@ TitleMapNavigationNativeEnvironmentV1 BindTitleMapNavigationNativeEnvironmentV1(
 
 bool IsCanonicalLandedTitleKeyV1(std::string_view key) noexcept;
 
+// Read-only exact-title point query. Existing center-map paths keep their
+// original canonical predicate; hegemony is opt-in only for this reader.
+bool ReadLandedTitleStableKeyV1(
+    const TitleMapNavigationAccessV1 &access, const void *landed_title,
+    std::string &output, bool allow_hegemony = false) noexcept;
+
 game::ResolveLandedTitleMapAnchorResultV1 ResolveLandedTitleMapAnchorV1(
     const TitleMapNavigationNativeEnvironmentV1 &environment,
     const TitleMapNavigationAccessV1 &access,

@@ -1744,8 +1744,8 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
 
         The fixture replaces only live CK3, desktop sampling and FFmpeg.  The
         managed producer, eight-span choreography, PromoRecorder clean-hold /
-        timeline implementation, run_cell report, main matrix and evidence
-        index are the production implementations.
+        timeline implementation, run_cell report and evidence index remain
+        production library implementations; the outer report is a unit fixture.
         """
 
         tracked_pid = 4321
@@ -2179,12 +2179,30 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
                 stack.enter_context(
                     mock.patch.object(capture.isolated, "verify_protected_storage")
                 )
-                exit_code = capture.main(
-                    artifacts_dir=str(artifact_root),
-                    keep_userdir=True,
+                stack.enter_context(mock.patch.object(capture, "git_text",
+                    side_effect=lambda *args: "1" * 40 if args == ("rev-parse", "HEAD") else ""))
+                with mock.patch.object(capture, "run_cell") as blocked_cell:
+                    self.assertEqual(capture.main(
+                        artifacts_dir=str(artifact_root), keep_userdir=True,
+                        phase2_promo_capture=True,
+                        phase2_seed_contract=str(root / "canonical-seed.json"),
+                    ), 2)
+                    blocked_cell.assert_not_called()
+                preflight.assert_not_called()
+                self.assertFalse(artifact_root.exists())
+                artifact_root.mkdir()
+                state_dir = artifact_root.with_name(artifact_root.name + "_native_state")
+                cell = capture.run_cell(
+                    artifact_root / "cell", state_dir / "profile", True,
+                    state_dir=state_dir, native_bridge=bridge,
+                    runtime_identity={"native_bridge_runtime": {"identity": "static-unit"}},
                     phase2_promo_capture=True,
-                    phase2_seed_contract=str(root / "canonical-seed.json"),
+                    phase2_seed_contract_path=root / "canonical-seed.json",
                 )
+                outer_fixture = {"schema_version": 1, "result": cell["result"], "cell": cell}
+                capture.write_json(artifact_root / "report.json", outer_fixture)
+                capture.write_evidence_index(artifact_root, outer_fixture)
+                exit_code = 0 if cell["result"] == "GREEN" else 1
 
             strict = footage_intake.validate_footage_intake(artifact_root)
             timeline = json.loads(
@@ -2216,7 +2234,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         self.assertIn("cell/promo/raw/zg361-promo-live-full-take-01.mkv", indexed_paths)
         forbidden_launch.assert_not_called()
         forbidden_ffmpeg.assert_not_called()
-        self.assertTrue(preflight.call_args.kwargs["require_visual_tools"])
+        preflight.assert_not_called()
 
 
 if __name__ == "__main__":

@@ -279,6 +279,9 @@ def main() -> int:
     parser.add_argument('--task-bus',default=r'D:\workspace\.codex-task-bus\bin\codex_task_bus.py');parser.add_argument('--screen-task')
     args=parser.parse_args()
     if args.mcp_server:return mcp_server(args.run_dir)
+    if args.live:
+        print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+        return 2
     try:
         result=prepare(args) if args.prepare else live(args)
         print(json.dumps(result,ensure_ascii=False,indent=2))

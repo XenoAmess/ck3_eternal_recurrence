@@ -228,6 +228,8 @@ def update_report(artifacts, isolation, postflight_error=None):
 
 
 def main(mode, artifacts_dir=None, keep_userdir=False):
+    print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+    return 2
     if acceptance.ck3_is_running():
         raise acceptance.RunnerError(
             "isolated terminal acceptance refuses to run while ck3.exe is active")

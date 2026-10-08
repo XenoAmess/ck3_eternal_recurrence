@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import time
+import sys
 
 import run_acceptance as acceptance
 import run_xenoamess_quality_of_life_acceptance as base
@@ -86,6 +87,9 @@ def run_defense_scenario(
 
 
 def main(args: argparse.Namespace) -> int:
+    if not args.preflight:
+        print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+        return 2
     base.REQUIRED_MARKERS = DEFENSE_MARKERS
     base.run_scenario = run_defense_scenario
     return base.main(args)

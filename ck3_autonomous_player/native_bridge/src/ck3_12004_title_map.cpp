@@ -106,14 +106,26 @@ bool ReadSlot(const TitleMapNavigationAccessV1 &access,
 
 bool ReadNativeString(const TitleMapNavigationAccessV1 &access,
                       const void *native_string,
-                      std::string &output) noexcept {
+                      std::string &output,
+                      bool allow_hegemony = false) noexcept {
+  const auto canonical = [allow_hegemony](std::string_view key) noexcept {
+    if (IsCanonicalLandedTitleKeyV1(key)) return true;
+    if (!allow_hegemony || key.size() < 3 ||
+        key.size() > kMaximumStableKeyBytes || !key.starts_with("h_") ||
+        !((key[2] >= 'a' && key[2] <= 'z') ||
+          (key[2] >= '0' && key[2] <= '9'))) return false;
+    return std::all_of(key.begin() + 3, key.end(), [](char value) noexcept {
+      return (value >= 'a' && value <= 'z') ||
+          (value >= '0' && value <= '9') || value == '_';
+    });
+  };
   output.clear();
   if (native_string == nullptr) {
     return false;
   }
   if (access.read_string != nullptr) {
     return access.read_string(access.context, native_string, output) &&
-           IsCanonicalLandedTitleKeyV1(output);
+           canonical(output);
   }
 
   std::uint64_t size = 0;
@@ -135,7 +147,7 @@ bool ReadNativeString(const TitleMapNavigationAccessV1 &access,
     return false;
   }
   if (!ReadBytes(access, bytes, output.data(), output.size()) ||
-      !IsCanonicalLandedTitleKeyV1(output)) {
+      !canonical(output)) {
     output.clear();
     return false;
   }
@@ -365,6 +377,18 @@ bool IsCanonicalLandedTitleKeyV1(std::string_view key) noexcept {
     return (value >= 'a' && value <= 'z') ||
            (value >= '0' && value <= '9') || value == '_';
   });
+}
+
+bool ReadLandedTitleStableKeyV1(
+    const TitleMapNavigationAccessV1 &access, const void *landed_title,
+    std::string &output, bool allow_hegemony) noexcept {
+  output.clear();
+  void *definition = nullptr;
+  const void *key_address = nullptr;
+  return ReadValue(access, landed_title, kLandedTitleTemplateOffset, definition) &&
+      definition != nullptr &&
+      CheckedAddress(definition, kLandedTitleTemplateKeyOffset, key_address) &&
+      ReadNativeString(access, key_address, output, allow_hegemony);
 }
 
 game::ResolveLandedTitleMapAnchorResultV1 ResolveLandedTitleMapAnchorV1(

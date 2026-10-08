@@ -103,6 +103,84 @@ def admit_startup_event(context,snapshot,event_context):
     return {'event_instance_id':event['instance_id'],'option_number':1,
             'proof':proof,'business_pass':False}
 
+def owned_hegemony_ids(root_packet, frame, song_id):
+    """Query only real current held hegemony IDs; this does not prove their keys."""
+    require(type(song_id) is int and song_id > 0 and
+            frame.get('played_character', {}).get('character_id') == song_id and
+            type(frame.get('date_raw')) is int and frame.get('paused') is True and
+            frame.get('active_event') is None,
+            'Original Song title proof requires its actual full paused event-free frame')
+    root = root_packet.get('campaign_root_context', {})
+    require(root_packet.get('campaign_root_context_ready') is True and
+            type(root.get('player_character_id')) is int and root['player_character_id'] == song_id and
+            type(root.get('date_raw')) is int and root['date_raw'] == frame['date_raw'] and
+            root.get('government', {}).get('key') == 'celestial_government' and root.get('independent') is True,
+            'Actual original Song government/independence/player/date is not proved')
+    held = root.get('held_title_partition')
+    require(isinstance(held, list), 'Actual Song owned-title partition is unavailable')
+    ids = []
+    for row in held:
+        if not isinstance(row, dict) or not isinstance(row.get('title'), dict):
+            continue
+        title = row['title']
+        if title.get('tier_raw') != 6 and title.get('tier_key') != 'hegemony':
+            continue
+        title_id = title.get('title_id')
+        require(type(title_id) is int and 1 <= title_id <= 2**31 - 1 and
+                type(title.get('tier_raw')) is int and title['tier_raw'] == 6 and
+                title.get('tier_key') == 'hegemony' and title_id not in ids,
+                'Actual held hegemony must have a unique full TitleID and exact tier')
+        ids.append(title_id)
+    require(ids, 'Original has_title=h_china requires a current owned hegemony')
+    return ids
+
+def prove_original_song_holding(root_packet, holder_packets, frame, song_id):
+    """Prove original has_title=h_china from actual public title-holder keys.
+
+    The shared current provider must expose title_holder.title_key. Neither
+    primary-title identity, GUI debug mode nor historical IDs substitute for it.
+    """
+    ids = owned_hegemony_ids(root_packet, frame, song_id)
+    require(isinstance(holder_packets, list) and holder_packets,
+            'Current native title-holder key observations are required')
+    seen = []
+    matches = []
+    observations = []
+    for packet in holder_packets:
+        holder = packet.get('title_holder') if isinstance(packet, dict) else None
+        require(isinstance(holder, dict) and holder.get('schema') == 'xar.ck3.title-holder.v1' and
+                type(holder.get('schema_version')) is int and holder['schema_version'] == 1 and
+                holder.get('available') is True and holder.get('status') == 'available' and
+                holder.get('title_key_available') is True and holder.get('title_key_status') == 'available' and
+                holder.get('title_key_unavailable_reason') is None,
+                'Current public title-holder observation is unavailable')
+        title_id = holder.get('title_id')
+        title_key = holder.get('title_key')
+        require(type(title_id) is int and title_id in ids and title_id not in seen and
+                isinstance(title_key, str) and title_key and title_key.isascii() and title_key.strip() == title_key,
+                'Actual title-holder must expose its owned full ID and canonical stable key')
+        seen.append(title_id)
+        require(type(holder.get('actor_character_id')) is int and holder['actor_character_id'] == song_id and
+                type(holder.get('holder_character_id')) is int and holder['holder_character_id'] == song_id and
+                holder.get('holder_is_player') is True and holder.get('holder_in_player_realm') is True and
+                type(holder.get('date_raw')) is int and holder['date_raw'] == frame['date_raw'] and
+                type(holder.get('title_tier_raw')) is int and holder['title_tier_raw'] == 6 and
+                holder.get('title_tier_key') == 'hegemony',
+                'Native current hegemony holder differs from the actual Song actor/date')
+        observations.append({'title_id': title_id, 'title_key': title_key})
+        if title_key == 'h_china':
+            matches.append(holder)
+    require(len(matches) == 1, 'Actual native h_china key is not uniquely proved among owned hegemonies')
+    holder = matches[0]
+    held = root_packet['campaign_root_context']['held_title_partition']
+    matching = [row for row in held if isinstance(row, dict) and isinstance(row.get('title'), dict) and
+                row['title'].get('title_id') == holder['title_id']]
+    require(len(matching) == 1, 'Actual h_china full ID is not unique in the owned partition')
+    return {'title_key': holder['title_key'], 'title_id': holder['title_id'], 'holder_character_id': song_id,
+            'held_not_required_primary': True, 'native_holder': holder, 'held_partition_row': matching[0],
+            'queried_owned_hegemony_keys': observations}
+
+
 def projection(frame):
     return {key:value for key,value in {
         'actor':frame['played_character']['character_id'],'pid':frame['diagnostics']['bridge_pid'],
@@ -219,10 +297,25 @@ def run_case(context,client):
             'Actual Root GUI handoff did not produce the original true Song actor/date/owner')
     root_rows=client.execute_plan([{'id':'qol-actual-song-root-after-root-gui','tool':'ck3_query_campaign_root_context_v1','fresh_revision':True}],
                                  'qol-actual-song-root-after-root-gui')
-    root_packet=root_rows[0]['result'];root_dto=root_packet.get('campaign_root_context',{})
-    require(root_packet.get('campaign_root_context_ready') is True and root_dto.get('player_character_id')==proof['song']['runtime_character_id'] and
-            root_dto.get('government',{}).get('key')=='celestial_government' and root_dto.get('independent') is True and
-            root_dto.get('primary_title',{}).get('key')=='e_song','Actual true Song government/title/independence is not proved')
+    root_frame = client.validate_frame(root_rows[0]['after_snapshot'])
+    require(projection(root_frame) == projection(song), 'Song root readback changed actual owner/actor/date')
+    title_ids = owned_hegemony_ids(root_rows[0]['result'], root_frame, proof['song']['runtime_character_id'])
+    holder_rows = []
+    for ordinal, title_id in enumerate(title_ids, 1):
+        phase = 'qol-actual-song-owned-hegemony-' + str(ordinal)
+        rows = client.execute_plan([{'id': phase, 'tool': 'ck3_query_title_holder_v1',
+            'args': {'title_id': title_id}, 'fresh_revision': True}], phase)
+        require(len(rows) == 1 and rows[0].get('ok') is True, 'Actual owned hegemony holder query failed')
+        holder_frame = client.validate_frame(rows[0]['after_snapshot'])
+        require(projection(holder_frame) == projection(song), 'Song title holder readback changed actual owner/actor/date')
+        holder_rows.append(rows[0])
+        holder = rows[0]['result'].get('title_holder', {})
+        if holder.get('title_key') == 'h_china':
+            break
+    title_proof = prove_original_song_holding(root_rows[0]['result'], [row['result'] for row in holder_rows],
+                                             holder_frame, proof['song']['runtime_character_id'])
+    client.checkpoint('actual-original-song-h-china-title-proof', {'proof': title_proof,
+        'campaign_root_row': root_rows[0], 'title_holder_rows': holder_rows})
     readonly=client.execute_plan(original['readonly9']['steps'],'qol-original-real-song-readonly9')
     require(len(readonly)==9 and readonly[0].get('ok') is True and readonly[-1].get('ok') is True,'Original readonly9 endpoints failed')
     client.validate_frame(readonly[0]['result']);client.validate_frame(readonly[-1]['result'])

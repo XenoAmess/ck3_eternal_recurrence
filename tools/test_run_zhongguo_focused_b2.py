@@ -732,7 +732,7 @@ class FocusedB2MainTests(unittest.TestCase):
         self.assertEqual(result, 0)
         self.assertTrue(seed_preflight.call_args.kwargs["product_only_runtime"])
 
-    def test_main_forwards_flag_accepts_scoped_green_and_rejects_full_claim(
+    def test_main_blocks_focused_b2_before_live_providers(
         self,
     ) -> None:
         green_report = focused_green_cell_report()
@@ -757,7 +757,7 @@ class FocusedB2MainTests(unittest.TestCase):
                     capture,
                     "preflight",
                     return_value={"native_bridge_runtime": {"ready": True}},
-                ),
+                ) as preflight,
                 mock.patch.object(
                     capture.terminal,
                     "steam_userdata_root",
@@ -798,35 +798,12 @@ class FocusedB2MainTests(unittest.TestCase):
                     bridge_pipe=pipe,
                 )
 
-            self.assertEqual(scoped_result, 0)
-            self.assertEqual(invalid_result, 1)
-            self.assertTrue(
-                run_cell.call_args_list[0].kwargs["phase2_b2_same_checkpoint"]
-            )
-            self.assertFalse(run_cell.call_args_list[0].kwargs["phase2_live_batch"])
-
-            scoped = json.loads(
-                (scoped_artifacts / "report.json").read_text(encoding="utf-8")
-            )
-            self.assertEqual(scoped["result"], "GREEN")
-            self.assertTrue(scoped["phase2_b2_same_checkpoint_complete"])
-            self.assertFalse(scoped["phase2_live_batch"])
-            self.assertFalse(
-                scoped["cell"]["scenario_evidence"]["phase2_acceptance_complete"]
-            )
-            self.assertFalse(
-                scoped["cell"]["scenario_evidence"][
-                    "full_phase2_acceptance_claimed"
-                ]
-            )
-
-            rejected = json.loads(
-                (invalid_artifacts / "report.json").read_text(encoding="utf-8")
-            )
-            self.assertEqual(rejected["result"], "RED")
-            self.assertFalse(rejected["phase2_b2_same_checkpoint_complete"])
-            self.assertFalse(rejected["gameplay_green_claimed"])
-            self.assertIn("focused B2 report lacks", rejected["error_reason"])
+            self.assertEqual(scoped_result, 2)
+            self.assertEqual(invalid_result, 2)
+            preflight.assert_not_called()
+            run_cell.assert_not_called()
+            self.assertFalse(scoped_artifacts.exists())
+            self.assertFalse(invalid_artifacts.exists())
 
 
 class FocusedB3ManagerGovernanceTests(unittest.TestCase):
@@ -1149,7 +1126,7 @@ class FocusedB3ManagerGovernanceTests(unittest.TestCase):
         self.assertFalse(kwargs["focused_b2_same_checkpoint"])
         self.assertTrue(kwargs["managed_restore_supervisor"])
 
-    def test_cli_and_main_forward_the_scoped_mode_without_registries(self) -> None:
+    def test_cli_help_and_main_blocks_scoped_b3(self) -> None:
         output = io.StringIO()
         with (
             mock.patch.object(
@@ -1179,7 +1156,7 @@ class FocusedB3ManagerGovernanceTests(unittest.TestCase):
                     capture,
                     "preflight",
                     return_value={"native_bridge_runtime": {"ready": True}},
-                ),
+                ) as preflight,
                 mock.patch.object(
                     capture.terminal,
                     "steam_userdata_root",
@@ -1211,26 +1188,10 @@ class FocusedB3ManagerGovernanceTests(unittest.TestCase):
                     bridge_injector=str(injector),
                     bridge_pipe=(capture.NATIVE_TITLE_PIPE_PREFIX + "c" * 32),
                 )
-                outer = json.loads(
-                    (artifacts / "report.json").read_text(encoding="utf-8")
-                )
-
-        self.assertEqual(result, 0)
-        forwarded = run_cell.call_args.kwargs
-        self.assertTrue(forwarded["phase2_b3_manager_governance_live"])
-        self.assertEqual(
-            forwarded["phase2_frontend_first_load_save_name"], "autosave"
-        )
-        self.assertEqual(
-            forwarded["phase2_frontend_first_timeout_seconds"], 180
-        )
-        self.assertIsNone(forwarded["phase2_source_checkpoint_registry"])
-        self.assertIsNone(
-            forwarded["phase2_scoreboard_surface_checkpoint_registry"]
-        )
-        self.assertEqual(outer["result"], "GREEN")
-        self.assertTrue(outer["phase2_b3_manager_governance_complete"])
-        self.assertFalse(outer["phase2_live_batch"])
+                self.assertEqual(result, 2)
+                preflight.assert_not_called()
+                run_cell.assert_not_called()
+                self.assertFalse(artifacts.exists())
 
     def test_b3_mode_is_mutually_exclusive_with_full_and_b2(self) -> None:
         for conflict in ("phase2_live_batch", "phase2_b2_same_checkpoint"):

@@ -438,7 +438,7 @@ class RouteBLiveEntryTests(unittest.TestCase):
             runner, "resolve_native_bridge_config"
         ) as resolve_bridge:
             with self.assertRaises(runner.acceptance.RunnerError) as raised:
-                runner.main(phase2_hc_workforce_route_b_live=True)
+                runner.main(preflight_only=True, phase2_hc_workforce_route_b_live=True)
         self.assertIn("requires exactly one strict", str(raised.exception))
         resolve_bridge.assert_not_called()
 
@@ -448,6 +448,7 @@ class RouteBLiveEntryTests(unittest.TestCase):
         ) as resolve_bridge:
             with self.assertRaises(runner.acceptance.RunnerError) as raised:
                 runner.main(
+                    preflight_only=True,
                     phase2_hc_workforce_route_b_capture_live=True,
                     phase2_hc_workforce_route_b_checkpoint_output="pre-b.ck3",
                 )
@@ -460,6 +461,7 @@ class RouteBLiveEntryTests(unittest.TestCase):
         ) as resolve_bridge:
             with self.assertRaises(runner.acceptance.RunnerError) as raised:
                 runner.main(
+                    preflight_only=True,
                     phase2_hc_workforce_route_b_checkpoint_output="pre-b.ck3",
                     phase2_hc_workforce_route_b_registry_output="registry.json",
                 )

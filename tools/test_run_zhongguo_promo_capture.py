@@ -6232,20 +6232,10 @@ def main() -> int:
                 bridge_injector=str(injector),
                 bridge_pipe=explicit_pipe,
             )
-            assert main_result == 0
-        selected = preflight.call_args.kwargs["native_bridge"]
-        assert selected == native_config
-        expected_state = launch_artifacts.with_name(
-            launch_artifacts.name + "_native_state"
-        )
-        expected_profile = expected_state / "profile"
-        assert run_cell.call_args.args == (
-            launch_artifacts / "cell",
-            expected_profile,
-            True,
-        )
-        assert run_cell.call_args.kwargs["state_dir"] == expected_state
-        assert run_cell.call_args.kwargs["native_bridge"] == native_config
+            assert main_result == 2
+        preflight.assert_not_called()
+        run_cell.assert_not_called()
+        assert not launch_artifacts.exists()
 
         loader_launch_artifacts = temporary_root / "loader-launch-wiring"
         with (
@@ -6287,23 +6277,10 @@ def main() -> int:
                 bridge_injector=str(injector),
                 bridge_pipe=explicit_pipe,
             )
-            assert loader_main_result == 0
-        assert loader_preflight.call_args.kwargs[
-            "require_visual_tools"
-        ] is False
-        assert loader_run_cell.call_args.kwargs["loader_smoke"] is True
-        assert loader_run_cell.call_args.kwargs["promo_capture"] is False
-        assert loader_run_cell.call_args.kwargs[
-            "promo_camera_probe"
-        ] is False
-        loader_matrix = json.loads(
-            (loader_launch_artifacts / "report.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        assert loader_matrix["loader_smoke_only"] is True
-        assert loader_matrix["gameplay_acceptance_executed"] is False
-        assert loader_matrix["gameplay_green_claimed"] is False
+            assert loader_main_result == 2
+        loader_preflight.assert_not_called()
+        loader_run_cell.assert_not_called()
+        assert not loader_launch_artifacts.exists()
 
         phase2_launch_artifacts = temporary_root / "phase2-live-batch-launch-wiring"
         scoreboard_surface_registry_path = (
@@ -6379,39 +6356,11 @@ def main() -> int:
                 bridge_injector=str(injector),
                 bridge_pipe=explicit_pipe,
             )
-            assert phase2_main_result == 1
-        assert phase2_preflight.call_args.kwargs[
-            "require_visual_tools"
-        ] is True
-        assert phase2_run_cell.call_args.kwargs["phase2_live_batch"] is True
-        assert phase2_run_cell.call_args.kwargs[
-            "phase2_p1_acceptance_evidence"
-        ] == {}
-        assert phase2_run_cell.call_args.kwargs[
-            "phase2_scoreboard_surface_checkpoint_registry"
-        ] == {"registry_kind": "unit-scoreboard-surfaces"}
-        scoreboard_registry_preflight.assert_called_once_with(
-            {"registry_kind": "unit-scoreboard-surfaces"},
-            expected_seed_lineage_id=(
-                "zg361-phase2-seed-" + "a" * 64
-            ),
-        )
-        assert phase2_run_cell.call_args.kwargs["loader_smoke"] is False
-        assert phase2_run_cell.call_args.kwargs["promo_capture"] is False
-        assert phase2_run_cell.call_args.kwargs[
-            "promo_camera_probe"
-        ] is False
-        phase2_matrix = json.loads(
-            (phase2_launch_artifacts / "report.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        assert phase2_matrix["loader_smoke_only"] is False
-        assert phase2_matrix["phase2_live_batch"] is True
-        assert phase2_matrix["loader_gate_executed"] is True
-        assert phase2_matrix["result"] == "RED"
-        assert phase2_matrix["gameplay_acceptance_executed"] is False
-        assert phase2_matrix["gameplay_green_claimed"] is False
+            assert phase2_main_result == 2
+        phase2_preflight.assert_not_called()
+        phase2_run_cell.assert_not_called()
+        scoreboard_registry_preflight.assert_not_called()
+        assert not phase2_launch_artifacts.exists()
 
         false_green_artifacts = temporary_root / "phase2-false-green-rejected"
         false_green_report = {
@@ -6433,7 +6382,7 @@ def main() -> int:
         with (
             mock.patch.object(
                 capture, "preflight", return_value=runtime_identity
-            ),
+            ) as false_green_preflight,
             mock.patch.object(
                 capture.terminal,
                 "steam_userdata_root",
@@ -6457,7 +6406,7 @@ def main() -> int:
             mock.patch.object(capture, "write_evidence_index"),
             mock.patch.object(
                 capture, "run_cell", return_value=false_green_report
-            ),
+            ) as false_green_run_cell,
         ):
             false_green_result = capture.main(
                 artifacts_dir=str(false_green_artifacts),
@@ -6470,18 +6419,10 @@ def main() -> int:
                 bridge_injector=str(injector),
                 bridge_pipe=explicit_pipe,
             )
-            if false_green_result != 1:
-                raise AssertionError(
-                    "phase-two incomplete MCP proof was not downgraded to RED"
-                )
-        false_green_matrix = json.loads(
-            (false_green_artifacts / "report.json").read_text(encoding="utf-8")
-        )
-        assert false_green_matrix["result"] == "RED"
-        assert false_green_matrix["gameplay_green_claimed"] is False
-        assert "complete MCP-only scenario proof" in false_green_matrix[
-            "error_reason"
-        ]
+            assert false_green_result == 2
+        false_green_preflight.assert_not_called()
+        false_green_run_cell.assert_not_called()
+        assert not false_green_artifacts.exists()
 
     camera_probe_cell = inspect.getsource(capture.run_cell)
     for token in (

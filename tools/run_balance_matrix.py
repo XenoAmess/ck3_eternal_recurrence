@@ -53,6 +53,8 @@ def markdown_report(matrix):
 
 
 def main(fixtures, artifacts_dir=None):
+    print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+    return 2
     started_at = datetime.now(timezone.utc).isoformat()
     if artifacts_dir:
         artifacts = Path(artifacts_dir).expanduser().resolve()

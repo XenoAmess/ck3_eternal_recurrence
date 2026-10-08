@@ -12,6 +12,8 @@ struct TitleHolderBindingsV1 {
   void **character_fallback_slot = nullptr;
   void *(*immediate_liege)(void *) = nullptr;
   void *(*top_liege)(void *) = nullptr;
+  // Exact-profile optional point reader; no engine pointer escapes the DTO.
+  bool (*read_title_key)(const void *, std::string &) noexcept = nullptr;
 };
 
 TitleHolderBindingsV1 BindTitleHolderImageV1(

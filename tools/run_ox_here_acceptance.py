@@ -736,6 +736,9 @@ def main(
     preflight_only: bool = False,
 ) -> int:
     global OPEN_KAISHEK_PREFLIGHT_RESULT
+    if not preflight_only:
+        print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+        return 2
     OPEN_KAISHEK_PREFLIGHT_RESULT = None
     preflight()
     if preflight_only:

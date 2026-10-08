@@ -1141,6 +1141,9 @@ def main(
     art_only: bool = False,
     core_only: bool = False,
 ) -> int:
+    if not preflight_only:
+        print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+        return 2
     preflight(skip_open_kaishek)
     if preflight_only:
         print("AUTO UPGRADE BUILDINGS ACCEPTANCE PREFLIGHT: GREEN")

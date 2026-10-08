@@ -3948,6 +3948,8 @@ def write_json_report(artifacts, scenario, result, import_record, timings,
 def main(scenario="selftest", import_record=0, artifacts_dir=None,
          balance_fixture=None, balance_smoke_pairs=0):
     global OPEN_KAISHEK_PREFLIGHT_RESULT
+    print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+    return 2
     RECOVERY_TRACE.clear()
     RESUME_TRACE.clear()
     QUICK_EVIDENCE_KINDS.clear()

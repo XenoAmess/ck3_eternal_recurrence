@@ -41,6 +41,13 @@ std::string SerializeTitleHolderV1(
   const bool available = read_result == ReadTitleHolderV1Result::available &&
       observation.available;
   const auto status = available ? "available" : "unavailable";
+  const bool key_available = available && observation.title_key_available &&
+      !observation.title_key.empty();
+  const auto key_reason = key_available ? std::string("null") : Quote(
+      !available ? std::string_view("title_holder_unavailable") :
+      (observation.title_key_unavailable_reason.empty()
+          ? std::string_view("title_key_unavailable")
+          : observation.title_key_unavailable_reason));
   const auto reason = available ? std::string("null") : Quote(
       observation.unavailable_reason.empty()
           ? std::string_view("native_reader_unavailable")
@@ -64,6 +71,11 @@ std::string SerializeTitleHolderV1(
           ? std::to_string(observation.title_tier_raw) : std::string("null")) +
       ",\"title_tier_key\":" + (available
           ? Quote(observation.title_tier_key) : std::string("null")) +
+      ",\"title_key\":" + (key_available
+          ? Quote(observation.title_key) : std::string("null")) +
+      ",\"title_key_available\":" + Bool(key_available) +
+      ",\"title_key_status\":" + Quote(key_available ? "available" : "unavailable") +
+      ",\"title_key_unavailable_reason\":" + key_reason +
       ",\"holder_character_id\":" + (available
           ? NullableId(observation.holder_character_id) : std::string("null")) +
       ",\"holder_is_player\":" + (available

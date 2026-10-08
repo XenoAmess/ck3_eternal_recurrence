@@ -57,6 +57,22 @@ class JsonLines:
             raise
 
 
+class StartupPollReporting:
+    """Retain completed observations; checkpoint ordinary polling at most every five seconds."""
+    def __init__(self, path: Path, write: object) -> None:
+        self.journal = JsonLines(path)
+        self.write = write
+        self.next_checkpoint = time.monotonic() + 5.0
+
+    def checkpoint(self) -> None:
+        if time.monotonic() >= self.next_checkpoint:
+            self.write()
+            self.next_checkpoint = time.monotonic() + 5.0
+
+    def observe(self, collection: str, index: int, row: dict[str, object]) -> None:
+        self.journal.write("observation", {"collection": collection, "index": index, "observation": row})
+
+
 class RecordedStream:
     def __init__(self, stream: object, log: JsonLines, direction: str) -> None:
         self.stream, self.log, self.direction = stream, log, direction
@@ -993,7 +1009,8 @@ def episode_identity_frame(snapshot: object) -> dict[str, object]:
             "bridge_pid": pid, "connection_generation": generation}
 
 
-def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = False) -> dict[str, object]:
+def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = False,
+                                 allowed_event_instance: int | None = None) -> dict[str, object]:
     """Bind a complete campaign frame; heartbeat is only an owner guard."""
     if not isinstance(snapshot, dict):
         raise RuntimeError("campaign pause readback lacks a complete snapshot")
@@ -1020,6 +1037,12 @@ def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = Fals
                "rejections": (diagnostics.get("rejected_state_snapshot_count"), 0, 2**64 - 1)}
     if any(type(v) is not int or not lo <= v <= hi for v, lo, hi in numbers.values()):
         raise RuntimeError("campaign pause readback has malformed identity or clock")
+    if allowed_event_instance is not None:
+        event = snapshot.get("active_event")
+        if (type(allowed_event_instance) is not int or allowed_event_instance <= 0
+                or not isinstance(event, dict) or type(event.get("instance_id")) is not int
+                or event["instance_id"] != allowed_event_instance):
+            raise RuntimeError("campaign pause readback lost the explicitly admitted event instance")
     running = (allow_running is True and snapshot.get("paused") is False
                and mailbox.get("ready") is False)
     if running and (snapshot["speed"] != 1
@@ -1033,7 +1056,8 @@ def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = Fals
             or type(snapshot.get("format_version")) is not int or snapshot["format_version"] != 1
             or snapshot.get("complete_snapshot") is False
             or type(snapshot.get("paused")) is not bool or played.get("alive") is not True
-            or snapshot.get("active_event") is not None or snapshot.get("one_life_terminal_reason") is not None
+            or (snapshot.get("active_event") is not None and allowed_event_instance is None)
+            or snapshot.get("one_life_terminal_reason") is not None
             or snapshot.get("snapshot_id") != "native:" + str(snapshot["native_revision"])
             or diagnostics.get("connected") is not True or diagnostics.get("semantic_state_available") is not True
             or diagnostics.get("last_error") is not None or diagnostics.get("transport_fatal_error") is not None
@@ -1052,12 +1076,37 @@ def campaign_pause_frame_binding(snapshot: object, *, allow_running: bool = Fals
             "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"]}
 
 
-def require_campaign_pause_successor(source: dict[str, object], snapshot: object, *, allow_running: bool = False) -> dict[str, object]:
-    current = campaign_pause_frame_binding(snapshot, allow_running=allow_running)
-    if (current["identity"] != source["identity"] or current["rejections"] != source["rejections"]
+def require_campaign_pause_successor(source: dict[str, object], snapshot: object, *, allow_running: bool = False,
+                                     allowed_event_instance: int | None = None,
+                                     allow_actor_change: bool = False) -> dict[str, object]:
+    current = campaign_pause_frame_binding(snapshot, allow_running=allow_running, allowed_event_instance=allowed_event_instance)
+    identity_matches = (current["identity"] == source["identity"] if allow_actor_change is not True else
+                        all(current["identity"][i] == source["identity"][i] for i in (0, 1, 3, 4, 5, 6, 7)))
+    if (not identity_matches or current["rejections"] != source["rejections"]
             or any(current[k] < source[k] for k in ("date", "revision", "native_revision", "pump"))):
         raise RuntimeError("campaign pause readback owner, clock or rejection state changed")
     return current
+
+
+def campaign_event_instance(snapshot: object) -> int | None:
+    """Admit an actual campaign frame's optional event; never clear it."""
+    if not isinstance(snapshot, dict):
+        raise RuntimeError("campaign event boundary lacks its full snapshot")
+    diagnostics, played = snapshot.get("diagnostics"), snapshot.get("played_character")
+    hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+    heartbeat = diagnostics.get("last_heartbeat") if isinstance(diagnostics, dict) else None
+    mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
+    if (not isinstance(played, dict) or played.get("source") != "native" or played.get("alive") is not True
+            or not isinstance(hello, dict) or type(hello.get("connection_generation")) is not int
+            or hello["connection_generation"] != diagnostics.get("connection_generation")
+            or not isinstance(mailbox, dict) or mailbox.get("application_main_observed") is not True):
+        raise RuntimeError("campaign event boundary lacks the actual native player or owner generation")
+    event = snapshot.get("active_event")
+    if event is None:
+        return None
+    if not isinstance(event, dict) or type(event.get("instance_id")) is not int or event["instance_id"] <= 0:
+        raise RuntimeError("campaign event boundary lacks a positive actual event instance")
+    return event["instance_id"]
 
 
 class PlanClient:
@@ -1250,9 +1299,17 @@ class PlanClient:
             raise
 
 
-    async def pause_campaign_after_advance(self, starting: dict[str, object]) -> dict[str, object]:
+    async def pause_campaign_after_advance(self, starting: dict[str, object], *, allow_event_boundary: bool = False,
+                                          allow_actor_change: bool = False,
+                                          command_deadline: float | None = None) -> dict[str, object]:
         """At most one idempotent pause refresh under one original deadline."""
+        if allow_actor_change is True and allow_event_boundary is not True:
+            raise ValueError("campaign actor change is exclusive to explicit event-boundary observation")
         deadline = time.monotonic() + self.args.command_timeout
+        if command_deadline is not None:
+            if type(command_deadline) not in (int, float):
+                raise ValueError("campaign pause readback requires the actual command deadline")
+            deadline = min(deadline, command_deadline)
         evidence: dict[str, object] = {"source": "campaign_postpause_same_owner_once_v1",
             "starting_snapshot_id": starting.get("snapshot_id"), "starting_date_raw": starting.get("date_raw"),
             "attempts": [], "status": "PENDING", "business_credit_from_heartbeat": False}
@@ -1289,7 +1346,9 @@ class PlanClient:
             return status
 
         try:
-            source = campaign_pause_frame_binding(starting, allow_running=True)
+            event_instance = campaign_event_instance(starting) if allow_event_boundary is True else None
+            source = campaign_pause_frame_binding(starting, allow_running=True, allowed_event_instance=event_instance)
+            actor_changed = False
             ack = await pause({"step": "pause-map"})
             evidence["binding"] = {"bridge_pid": source["identity"][0], "connection_generation": source["identity"][1],
                 "runtime_character_id": source["identity"][2], "owner_tid": source["identity"][6]}
@@ -1298,7 +1357,15 @@ class PlanClient:
             previous = source
             while True:
                 current = await bounded(self.fresh)
-                observed = require_campaign_pause_successor(previous, current, allow_running=True)
+                if allow_event_boundary is True:
+                    current_event = campaign_event_instance(current)
+                    if event_instance is not None and current_event != event_instance:
+                        raise RuntimeError("campaign pause readback changed or lost the admitted event instance")
+                    if event_instance is None:
+                        event_instance = current_event
+                observed = require_campaign_pause_successor(previous, current, allow_running=True,
+                    allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed)
+                actor_changed = actor_changed or observed["identity"][2] != previous["identity"][2]
                 previous = observed
                 if current["paused"] is True:
                     evidence.update(status="FULL_PAUSED_FRAME_OBSERVED", ending_snapshot_id=current["snapshot_id"],
@@ -1390,10 +1457,126 @@ class PlanClient:
             result.update(requested_interval_complete=True, event_boundary=None)
         return result
 
+    async def advance_campaign_event_boundary(self, step: dict[str, object]) -> dict[str, object]:
+        """Observe one actual campaign day or event; never manufacture an episode."""
+        if step.get("allow_event_boundary") is not True or type(step.get("days", 1)) is not int or step.get("days", 1) != 1:
+            raise ValueError("campaign event-boundary advance requires explicit opt-in and days=1")
+        if type(step.get("allow_actor_change", False)) is not bool:
+            raise ValueError("campaign actor-change observation requires a literal boolean")
+        allow_actor_change = step.get("allow_actor_change") is True
+        budget = step.get("timeout", self.args.command_timeout)
+        if type(budget) not in (int, float) or not 0 < budget <= self.args.command_timeout:
+            raise ValueError("campaign event-boundary timeout exceeds the original command budget")
+        deadline = time.monotonic() + budget
+
+        def remaining() -> float:
+            done = getattr(self, "managed_done", None)
+            if done is not None and done.is_set():
+                raise RuntimeError("managed session finished during campaign event-boundary advance")
+            value = deadline - time.monotonic()
+            if value <= 0:
+                raise TimeoutError("campaign event-boundary advance exhausted the original command deadline")
+            return value
+
+        async def bounded(factory: object) -> object:
+            timeout = remaining()
+            result = await asyncio.wait_for(factory(), timeout=timeout)
+            remaining()
+            return result
+
+        required = {"ck3_get_capabilities", "ck3_take_snapshot", "ck3_execute_step",
+                    "ck3_query_current_event_window_context_v1"}
+        if not required <= set(self.tools):
+            raise ValueError("campaign event-boundary advance lacks actual MCP tools")
+        capabilities = await bounded(lambda: self.call("ck3_get_capabilities"))
+        primitives = {"pause-map", "resume-map", "set-speed-1"}
+        if (not isinstance(capabilities, dict) or capabilities.get("snapshot") is not True
+                or not primitives <= set(capabilities.get("action_steps", []))
+                or capabilities.get("current_event_window_context_v1_query_supported") is not True
+                or "game.command.query-current-event-window-context-v1" not in capabilities.get("bridge_capabilities", [])):
+            raise ValueError("campaign event-boundary advance lacks actual primitives or typed event observer")
+
+        before = await bounded(self.fresh)
+        campaign_event_instance(before)
+        initial = campaign_pause_frame_binding(before)
+        if before["paused"] is not True or before["played_character"].get("source") != "native":
+            raise ValueError("campaign event-boundary advance requires the actual alive paused native player")
+        pause_ack = await bounded(lambda: self.invoke("ck3_execute_step", {"step": "pause-map"}))
+        if (not isinstance(pause_ack, dict) or pause_ack.get("step") != "pause-map"
+                or pause_ack.get("accepted") is not True or pause_ack.get("status") not in ("submitted", "already_paused")):
+            raise RuntimeError("campaign event-boundary preflight received an unadmitted pause ACK")
+        before = await bounded(lambda: self.wait_snapshot({"paused": True}, remaining()))
+        campaign_event_instance(before)
+        paused = require_campaign_pause_successor(initial, before)
+        if before["played_character"].get("source") != "native" or paused["date"] != initial["date"]:
+            raise ValueError("campaign event-boundary preflight changed the actual player or date")
+        start, target = before["date_raw"], before["date_raw"] + 24
+        await bounded(lambda: self.set_campaign_speed_one_presubmission_once(before))
+        before_resume = await bounded(lambda: self.wait_snapshot({"speed": 1, "paused": True}, remaining()))
+        campaign_event_instance(before_resume)
+        source = campaign_pause_frame_binding(before_resume)
+        if (before_resume["paused"] is not True or before_resume["speed"] != 1
+                or before_resume["played_character"].get("source") != "native"
+                or source["date"] != start or source["rejections"] != paused["rejections"]
+                or any(source["identity"][i] != paused["identity"][i] for i in (0, 1, 2, 3, 5, 6, 7))
+                or any(source[k] < paused[k] for k in ("revision", "native_revision", "pump"))):
+            raise ValueError("campaign event-boundary speed preflight lost the actual owner or date")
+        boundary = reached = None
+        actor_changed = False
+        resume_ack = await bounded(lambda: self.invoke("ck3_execute_step", {"step": "resume-map"}))
+        if (not isinstance(resume_ack, dict) or resume_ack.get("step") != "resume-map"
+                or resume_ack.get("accepted") is not True or resume_ack.get("status") not in ("submitted", "already_running")):
+            raise RuntimeError("campaign event-boundary advance received an unadmitted resume ACK")
+        while True:
+            current = await bounded(self.fresh)
+            instance = campaign_event_instance(current)
+            observed = require_campaign_pause_successor(source, current, allow_running=True,
+                allowed_event_instance=instance, allow_actor_change=allow_actor_change and not actor_changed)
+            if current["played_character"].get("source") != "native":
+                raise ValueError("campaign event-boundary player is not native")
+            actor_changed = actor_changed or observed["identity"][2] != source["identity"][2]
+            source = observed
+            if instance is not None:
+                boundary = current
+                break
+            if current["date_raw"] >= target:
+                reached = current
+                break
+            await asyncio.sleep(min(self.args.poll_interval, remaining()))
+        after = await bounded(lambda: self.pause_campaign_after_advance(boundary or reached,
+            allow_event_boundary=True, allow_actor_change=allow_actor_change and not actor_changed,
+            command_deadline=deadline))
+        if after["played_character"].get("source") != "native":
+            raise ValueError("campaign event-boundary paused player is not native")
+        if boundary is None and campaign_event_instance(after) is not None:
+            boundary = after
+        if boundary is not None:
+            if campaign_event_instance(after) != campaign_event_instance(boundary) or after["date_raw"] < boundary["date_raw"]:
+                raise ValueError("campaign paused event boundary lost its actual instance or date")
+            observed_date = boundary["date_raw"]
+            progress = "event_before_target" if observed_date < target else "event_at_target" if observed_date == target else "event_after_target"
+            complete = observed_date >= target and after["date_raw"] >= target
+        else:
+            if after["date_raw"] < target:
+                raise RuntimeError("campaign pause readback preceded the requested date")
+            progress, complete = "target_date_reached", True
+        return {"before": before, "running_successor": reached, "event_boundary": boundary, "after": after,
+                "requested_days": 1, "target_date_raw": target, "elapsed_hours": after["date_raw"] - start,
+                "progress_status": progress, "requested_interval_complete": complete,
+                "event_resolution": "typed_query_required" if boundary is not None else "none",
+                "preflight": {"native_primitives": sorted(primitives), "typed_event_query_supported": True},
+                "selected_event_options": 0,
+                "actor_transition": {"allowed": allow_actor_change,
+                    "observed": before["played_character"]["character_id"] != after["played_character"]["character_id"],
+                    "before": before["played_character"]["character_id"], "after": after["played_character"]["character_id"],
+                    "predecessor_death_proved": False}}
+
     async def advance_event_boundary(self, step: dict[str, object]) -> dict[str, object]:
         """Explicit time-or-event observation; an early event is never one-day proof."""
         if step.get("allow_event_boundary") is not True or type(step.get("days", 1)) is not int or step.get("days", 1) != 1:
             raise ValueError("event-boundary advance requires explicit opt-in and days=1")
+        if self.snapshot.get("episode_projection") == "native_campaign":
+            return await self.advance_campaign_event_boundary(step)
         required_tools = {"ck3_get_capabilities", "ck3_take_snapshot", "ck3_execute_step", "ck3_query_current_event_window_context_v1"}
         if not required_tools <= set(self.tools) or self.episode_identity is None:
             raise ValueError("event-boundary advance lacks actual MCP tools or episode anchor")
@@ -2282,7 +2465,8 @@ async def acknowledge_fixture_startup_notice(client: PlanClient, snapshot: dict[
 async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str, object],
         submission: dict[str, object], *, report: dict[str, object], write: object,
         timeout: float, managed_done: threading.Event | None = None,
-        poll_interval: float = 0.05) -> dict[str, object]:
+        poll_interval: float = 0.05,
+        poll_reporting: StartupPollReporting | None = None) -> dict[str, object]:
     from xar_autoplayer.bridge.frontend_fixture_start_contract import (
         fixture_business_context_binding, require_fixture_start_submission)
     submission = require_fixture_start_submission(submission)
@@ -2370,6 +2554,8 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
             row = {"snapshot": snapshot, "campaign_root": root, "binding": binding, "qualification": logs,
                 "root_query_admission": admission, "startup_query_admission": startup_admission}
             state["observations"].append(row)
+            if poll_reporting is not None:
+                poll_reporting.observe("frontend_fixture_business_context.observations", len(state["observations"]) - 1, row)
             if binding is not None and qualified:
                 stable = {key: value for key, value in binding.items() if key != "pump_epoch"}
                 if baseline is not None and baseline[0] == stable and binding["pump_epoch"] > baseline[1]:
@@ -2380,7 +2566,10 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                 baseline = (stable, binding["pump_epoch"])
             else:
                 baseline = None
-            write()
+            if poll_reporting is None:
+                write()
+            else:
+                poll_reporting.checkpoint()
             if time.monotonic() >= deadline:
                 raise TimeoutError("actual qualified fixture government/tier/player did not stabilize before deadline")
             await asyncio.sleep(poll_interval)
@@ -2520,6 +2709,7 @@ async def wait_for_consistent_frontend(
     client: PlanClient, *, report: dict[str, object], write: object,
     timeout: float, managed_done: object = None, require_route: str | None = None,
     require_rules_button: bool = False, poll_interval: float = 1.0,
+    poll_reporting: StartupPollReporting | None = None,
 ) -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
     """Require two consecutive route/tree/route packets; retain every attempt."""
     deadline = time.monotonic() + timeout
@@ -2528,9 +2718,14 @@ async def wait_for_consistent_frontend(
     while True:
         row: dict[str, object] = {"at": now(), "ready": False}
         report["frontend_bootstrap"]["attempts"].append(row)
-        write()
+        if poll_reporting is None:
+            write()
+        else:
+            poll_reporting.checkpoint()
         if managed_done is not None and managed_done.is_set():
             row["error"] = "managed session ended before consistent frontend readiness"
+            if poll_reporting is not None:
+                poll_reporting.observe("frontend_bootstrap.attempts", len(report["frontend_bootstrap"]["attempts"]) - 1, row)
             write()
             raise RuntimeError(row["error"])
         try:
@@ -2551,15 +2746,24 @@ async def wait_for_consistent_frontend(
             streak = streak + 1 if previous_key == key else 1
             previous_key = key
             row.update(ready=True, proof=proof, consecutive_consistent_observations=streak)
-            write()
             if streak >= 2:
+                write()
                 return row["route_after"], row["tree"], {**proof, "consecutive_consistent_observations": streak}
+            if poll_reporting is None:
+                write()
+            else:
+                poll_reporting.checkpoint()
         except Exception as error:
             row["error"] = f"{type(error).__name__}: {error}"
             previous_key, streak = None, 0
             write()
+        finally:
+            if poll_reporting is not None:
+                poll_reporting.observe("frontend_bootstrap.attempts", len(report["frontend_bootstrap"]["attempts"]) - 1, row)
         remaining = deadline - time.monotonic()
         if remaining <= 0:
+            if poll_reporting is not None:
+                write()
             raise TimeoutError("native frontend did not produce two consistent complete visible route/tree observations")
         # Poll spacing does not establish readiness; only the native packets do.
         await asyncio.sleep(min(poll_interval, remaining))
@@ -2567,7 +2771,7 @@ async def wait_for_consistent_frontend(
 
 async def prepare_rules_diagnostic_bookmarks(
     client, *, route, tree, proof, allow_new_game: bool, report, write,
-    timeout: float, managed_done=None,
+    timeout: float, managed_done=None, poll_reporting: StartupPollReporting | None = None,
 ):
     """Optionally dispatch one explicit New Game, then prove stable Bookmarks.
 
@@ -2601,6 +2805,7 @@ async def prepare_rules_diagnostic_bookmarks(
     result = await wait_for_consistent_frontend(
         client, report=report, write=write, timeout=timeout,
         managed_done=managed_done, require_route="bookmarks", require_rules_button=True,
+        poll_reporting=poll_reporting,
     )
     bootstrap.update(diagnostic_bookmarks_route=result[0],
                      diagnostic_bookmarks_tree=result[1], diagnostic_bookmarks_proof=result[2])
@@ -2675,6 +2880,9 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     def write() -> None:
         report["managed_session_done"] = done.is_set()
         write_atomic_report(args.output, report)
+
+    poll_reporting = StartupPollReporting(args.output.with_suffix(".frontend-observations.jsonl"), write)
+    report["frontend_observations_journal"] = str(poll_reporting.journal.path)
 
     frontend_rules_plan = None
     if args.frontend_rules_plan is not None:
@@ -2812,6 +3020,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                     require_route="bookmarks" if (args.frontend_rules_diagnostic
                                         and not args.frontend_rules_diagnostic_new_game) else None,
                                     require_rules_button=args.frontend_rules_diagnostic,
+                                    poll_reporting=poll_reporting,
                                 )
                             except Exception as error:
                                 report["frontend_bootstrap"].update(
@@ -2833,6 +3042,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                             allow_new_game=args.frontend_rules_diagnostic_new_game,
                                             report=report, write=write, timeout=args.readiness_timeout,
                                             managed_done=done if supervisor is not None else None,
+                                            poll_reporting=poll_reporting,
                                         )
                                         rules_open = await client.call("ck3_activate_frontend_game_rules_v1")
                                         report["frontend_bootstrap"]["rules_open"] = rules_open
@@ -2868,6 +3078,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                 route, entry_tree, entry_proof = await wait_for_consistent_frontend(
                                     client, report=report, write=write, timeout=args.readiness_timeout,
                                     managed_done=done if supervisor is not None else None, require_route="bookmarks",
+                                    poll_reporting=poll_reporting,
                                 )
                                 report["frontend_bootstrap"].update(bookmarks_tree=entry_tree, bookmarks_proof=entry_proof)
                                 write()
@@ -2882,7 +3093,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                     poll_interval=args.poll_interval)
                                 route, entry_tree, entry_proof = await wait_for_consistent_frontend(
                                     client, report=report, write=write, timeout=args.readiness_timeout,
-                                    managed_done=done if supervisor is not None else None, require_route="bookmarks")
+                                    managed_done=done if supervisor is not None else None, require_route="bookmarks",
+                                    poll_reporting=poll_reporting)
                                 report["frontend_bootstrap"].update(post_rules_route=route,
                                     post_rules_tree=entry_tree, post_rules_proof=entry_proof,
                                     post_rules_picker_proof=require_verified_bookmarks_picker(entry_tree))
@@ -2891,7 +3103,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                 started = await submit_fixture_robert_once(client, frontend_fixture_policy, report=report, write=write)
                                 await wait_for_fixture_business_context(client, frontend_fixture_policy, started,
                                     report=report, write=write, timeout=args.readiness_timeout,
-                                    managed_done=done if supervisor is not None else None, poll_interval=args.poll_interval)
+                                    managed_done=done if supervisor is not None else None, poll_interval=args.poll_interval,
+                                    poll_reporting=poll_reporting)
                                 report["frontend_bootstrap"]["status"] = "SINGLE_FIXTURE_START_ACTUAL_BUSINESS_CONTEXT_BOUND"
                                 write()
                             else:

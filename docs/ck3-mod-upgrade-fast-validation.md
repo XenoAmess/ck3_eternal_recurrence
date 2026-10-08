@@ -18,7 +18,7 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 
 ## 当前公共CLI与本机共同版本
 
-当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。本机[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound07.json)选择唯一[FINAL06 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-06.json)，后者绑定shared Source05/index、canonical host与native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。旧runner和冻结只保留原证据及底层实现。
+当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。本机[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound09.json)选择唯一[FINAL08 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-08.json)，后者绑定shared Source07/index、canonical host与native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。旧runner和冻结只保留原证据及底层实现。
 
 上述六个模式是未来新 mod run 的唯一操作路由。旧 `run_acceptance.py`、`run_vivhite_acceptance.py`、terminal/product runner 及其历史命令只供只读证据、library 与原业务断言复用，不直接作为新启动入口；旧冻结不被改写。产品 builder、静态检查和不启动游戏的原 preflight 继续保留，不能凭这些结果授实机资格。公共 local 映射始终指向当次唯一全局 manifest，不按产品另选 host/source/native。`de-jure-conquest`、`change-holding-types`、`li-yu-dao` 的 basic-load case 只授加载边界，其原玩家功能合同仍待独立业务证据。
 
@@ -26,7 +26,7 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 从仓库根的`cmd.exe`执行，以下只读例子选择当前真实TED case：
 
 ```text
-tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound07.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case saved_gui_tail
+tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound09.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case production_ui
 ```
 
 后续模式使用相同四项选择参数，按下表替换`plan`并追加参数；尖括号是当次真实路径/新编号占位，不是已有attempt的重跑命令。
@@ -65,3 +65,27 @@ R15当时全局统一选[Source04/FINAL05/bound06消费卡](C:/workspace/ck3-upg
 R15小原件证实实际完整暂停帧从53144328推进到53144352，但普通host结果未输出客户端及QOL共同要求的`requested_interval_complete`。[中央修复](C:/workspace/ck3-upgrade-20261008/r15-campaign-normal-day-result-schema-01/ROOT-CAMPAIGN-NORMAL-DAY-RESULT-CENTRAL-SCHEMA-FIX-FINAL-02.md)仅在既有`.4 native_campaign`完整暂停、同owner及达到目标日期门禁之后，输出`requested_interval_complete=True / event_boundary=None`。原legacy、one-life事件分支、客户端及产品断言不变；三个真实方法回归一次PASS，旧R15 FAILED不补字段、不追认PASS。
 
 [Source05实际封存](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/ROOT-SHARED-SOURCE05-MANIFEST06-BOUND07-PREPARED-CONSUME-01.md)exit0、10.26秒，仅换一个host并继承6903来源行；host `a460500d…`、FINAL06 `91c97887…`、bound07 `0d518e32…`，native `ed510…`及原预算、launcher、lease保持。未运行的QOL/RMTM仅另建prepared元数据更换顶层manifest pin，其他对象一次核对相同，不重prepare或重hash产品文件。QOL下一场已实际allocate为R32/a124，register6498→keeper READY6499约1.53秒，preflight exit0；尚未授业务或发布PASS。RMTM自然事件中断及真实继承控制流另由共享owner补齐，不能制造one-life anchor或从时间差推死亡结果。
+
+## R32实际结果与公共事件、旧入口整改
+
+R32/a124 使用 Source05 实际取得原防御23项/禁止5项和final6本场信用，五个实际24小时日推进全部通过，日期从53144328到53144448。Root随后经正常GUI切换至原赵曙角色34422，真实native root读回celestial government、independent及持有hegemony14022；尚未提交Root检查点时，原正常Quit预留期限到达，case错误为 `TimeoutError: Original normal Quit reserve reached; pending Root phase remains GAP`。run96522实际exit2，normal-close-qualified FALSE；host于13:15:09 UTC结束、done/thread/cleanup TRUE、进程树消失只授资源收尾，不授正常GUI/native OS0或整场PASS。keeper15899实际exit0→CAS6549 done/resources[]。原失败与已经消费的state保留，不将它标为unused。
+
+迁移适配器原 `primary_title.key=e_song` 断言既不符合normalized DTO，也不符合原 `has_title=h_china` 合同。原11候选提出GUI debug tooltip补齐key/fullID，但共同runtime的debug_mode=False且拒绝debug启动，该候选缺少可执行的取证路径，Root已撤回未提交的11补丁；不能给下一场新增不可取得的门禁。现由共享title-holder补齐只读stable key，后续adapter联合实际key、holder、owned partition、角色/日期/政府/独立性及同owner完整暂停帧核对原持有关系，不要求该title为primary、不猜ID或制造DTO key。补齐与新场业务仍待完成，R32失败不追认PASS。
+
+公共host现已增加显式 `native_campaign` 自然事件边界分支；客户端传递原 `allow_event_boundary` / `allow_actor_change`，事件查询使用当前实际正整数instance ID。提前事件不计完成一天，不选择事件选项，不从角色变化推死亡或继承。原one-life episode合同和默认正常日路径保持；八项实际host方法回归通过。十四个旧直接实机main入口现于分配/启动前返回2，引导公共六模式；只读preflight、prepare、fixture emitter及既有library断言仍保留。产品不能另选一份host处理同一公共缺口。
+
+精确提交 `e287f619c74e36880e9c1b12b3afc837773a13b6` 的[官方CI 37777691611](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37777691611)和[线性历史CI 37777691555](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37777691555)均已实际成功；该结论不外推到后续提交。[并行磁盘清理](ck3-native-ai/disk-cleanup-2026-10-08.md)恢复约13.29 GB可用空间，验收原始证据保留。正式发布仍6/10。
+
+[Source06/FINAL07/bound08实际封存](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/ROOT-SHARED-SOURCE06-MANIFEST07-BOUND08-RMTM-CONSUME-01.md)exit0、7.206秒，仅替换公共host为208994 B、SHA `1ebdd6a2f136543ba1580054bad4b43129cdde214c3f602f17c241a4f84d381e`并继承6903来源行，native `ed510…`、原预算/launcher/lease保持，未重建native或全树重哈。唯一FINAL07 SHA `693002ea…`、bound08 `5624ed2a…`；未运行的RMTM只创建manifest pin变化的prepared sibling，其他深字段一次exact equality TRUE。R32已消费的QOL未创建unused sibling；产品adapter和公共client仍作为当次主仓输入绑定。
+
+## Source07：共同title key与启动报告写入
+
+[Source07/FINAL08/bound09实际消费卡](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/ROOT-SHARED-SOURCE07-MANIFEST08-BOUND09-RMTM-CONSUME-01.md)成为后续全部产品唯一共同版本。新增title-holder只读key沿用既有当前`.4` title模板getter，联合同Title/fullID与两次一致读取；base holder可用性和key可用性分别保留，key不可读不编造值。`h_`只允许显式point reader，center-map既有b/c/d/k/e路由保持。当前`.4` normalizer要求完整四个新增字段；旧`.3`可省略整组，不接受部分字段。QOL adapter按原`has_title=h_china`核实际key、holder及owned partition，不要求primary=e_song。
+
+实际增量构建97 TU、复用473对象，完整570对象DLL链接exit0、159.029秒；新DLL9001472 B、SHA `d1d4dd3f10f545e3cd3f05ae99a44f157848bff13ff12bfc6315d90418ff7d04`。唯一成功的定向CMake测试只编译新fixture一TU，输出9个实际生产代码synthetic packet，真实normalizer23检查通过；前05/06/07链接失败保留，没有执行fixture或游戏。该声明的测试EXE已取得管理员Defender精确实际读回。六项[portable normalizer回归](../tools/test_title_holder_stable_key_contract.py)与四项[QOL原持有关系回归](../tools/test_ck3_mod_acceptance_song_holding.py)实际通过，不代替新增key实机读取。
+
+共同host211316 B、SHA `3dfecfff0bf12548801c4a9fa104bb4f9e7e16131fb3cf0b2865fdb7bd65d487`将每个启动poll的完整观察行append到JSONL；只有普通成功/等待poll把全报告checkpoint限为最多每5秒一次，错误、准入、ready、phase、managed done和最终报告仍即时写入，原最终完整观察列表保留。poll频率、读取与预算不变。六项[真实writer/sidecar回归](../tools/test_ck3_mod_acceptance_poll_reporting.py)及三项completion检查通过；尚无CK3启动前后速度比实测。
+
+全局封存实际exit0、2.951秒，6904来源行相对Source06只有9项delta；6903 native-input未改行用hardlink继承，新host独立写入、nlink1。旧host/index/native输入不改写，无全树重hash、无第二生产编译或旧矩阵重跑。RMTM未用prepared仅换顶层manifest pin，其余深字段exact相同；QOL另行公共prepare原unused13输入，已用R32不重放。
+
+TED下一场R16/a125已公共preflight exit0、单次allocate，register6550→keeper6551 READY约1.540秒。首次Steam recovery因前景磁盘旧提示无法SetFocus而失败，原launcher在CK3启动前拒绝；关闭已无实际空间阻点的提示后，新的窗口位移与双nonce原图经Root亲审Steam离线，14:21:17 UTC实际启动Source07。该场production UI和正常退出尚待结果；原R15失败与其独立normal0信用保持。

@@ -1084,6 +1084,9 @@ def run_cell(
 
 
 def main(args: argparse.Namespace) -> int:
+    if not args.preflight:
+        print('Legacy direct CK3 acceptance launch is disabled. Use tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify with the selected common runtime manifest.', file=sys.stderr)
+        return 2
     config = resolve_native_bridge_config(args.bridge_dll, args.bridge_injector, args.bridge_pipe)
     identity = preflight(config)
     if args.preflight:

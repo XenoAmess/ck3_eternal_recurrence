@@ -205,7 +205,12 @@ class CaseClient:
         require(type(days) is int and days == 1, 'Use one original natural day per submitted step')
         self._seq += 1
         name = 'case-natural-day-' + str(self._seq).zfill(4)
-        row = self.execute_plan([{'id':name,'kind':'advance_day','days':1,'timeout':timeout}], name, timeout)[0]
+        step = {'id':name,'kind':'advance_day','days':1,'timeout':timeout}
+        if allow_event_boundary is True:
+            step['allow_event_boundary'] = True
+            if allow_actor_change is True:
+                step['allow_actor_change'] = True
+        row = self.execute_plan([step], name, timeout)[0]
         value = row['result']
         if allow_event_boundary and value.get('event_boundary') is not None:
             self.validate_frame(value['before'])
