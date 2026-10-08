@@ -82,6 +82,7 @@ def test_registered_completion_gross_then_following_net_is_durable(tmp_path):
             driver = driver_for("completion-then-following")
             original = seed(driver)
             write_construction_ledger(driver.state_dir, {
+                "schema": "xar.ck3.construction_formal_pending_v1",
                 "pending": None, "applied": original, "applied_prior": [],
             })
             async with Client(mcp_server.create_server(driver)) as client:
@@ -137,6 +138,7 @@ def test_registered_completion_gross_then_following_net_is_durable(tmp_path):
                           completion_last_check_date_raw=older.snapshot["date_raw"])
             newest["candidate"].update(barony_title_id=2174, province_id=2629)
             write_construction_ledger(older.state_dir, {
+                "schema": "xar.ck3.construction_formal_pending_v1",
                 "pending": None, "applied": newest, "applied_prior": [prior],
             })
             async with Client(mcp_server.create_server(older)) as client:
