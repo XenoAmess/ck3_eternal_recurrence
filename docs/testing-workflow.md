@@ -1,6 +1,14 @@
 # 实测工作流程（CK3 mod 调试）
 
-## 2026-10-08 13:46:09：恢复receipt模板名与实际源身份、查询与正式receipt分列
+## 2026-10-08 14:20:19：同进程creation token格式差异与raw-wire断言分别定位
+
+R77同Game99872，003／007 auto均在date53288544/public3/native2重复婚姻cold材料恢复，preNative0/postNative2。Root只做一次[WMI proof](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-deployment/ROOT-ACTUAL-R77-PROCESS-CREATION-TOKEN.json)：UTC **20261008054004.201294+000**与rawWMI **20261008134004.201294+480**表示同一创建时刻。生产family最小fix仍SOURCE_NOTRUN；这条知识记录真实episode比较故障和下一修复，不声称已修复、不新增进程审查。重复恢复accepted/materialmarriage true不产生新婚姻、Armyday或release消费，free查询与正式receipt分列。
+
+Native33首次32compile＝30prod＋2fixture，31GREEN／1fixtureC2440RED24.927s；900 constvoid*修复只1CPP/31reuse/archive1/DLL1/2fixturelinks GREEN11.382544s，生产d2e／fixture900／690retained保持实际mixedlineage。Siege四whole/sole已GREEN不重跑。Pregnancy nativeFIRST.263638s HarnessRED的真实原因是fixture把build SHA写进raw-wire期待，而既有raw合同无buildfields；候选920只改fixtureCPP，保留descriptor canonical与numerical assertions，production0changes。下一仅失败fixture/PregEXE必要编译和consumer，不重复生产／DLL／Siege资格；false/true中间输出不能代替整体FIRST GREEN。
+
+七项功能Pythoncompound与Feast lifecycle新GREEN都保持原失败attempt。Warend basetemp、Replen sparse-import、Feast PYTHONPATH是各自实际harness错误；Feast旧Open SHA漏.4的拒绝是实际strict source-gate遗漏，最小修复后offline lifecycle GREEN。区分这两类，不把任一失败抹成未发生，也不借offline结果授当前不可变a59/1dc Game实机成功。此知识只复用Root实际字段，无额外测试／query／process／EXE读取。
+
+## 历史2026-10-08 13:46:09：恢复receipt模板名与实际源身份、查询与正式receipt分列
 
 R77实际full snapshot在 **05:43:03.323739Z**十二检查GREEN，Game99872最小化、原Robertalive/H9696/date53288544/public3/native2。[ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST77.json](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9696-startup32restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST77.json)的Runtime30字样继承旧模板；本次内容实际绑定 **Native32 source1dc2abf0／SDK a59b2df4**。Root public rebase发布f38ea059与冻结SDK/Native源pin分别记账，不能依据文件名或最新publication覆盖实际运行身份。这里复用Root已执行字段，不另读Game或重验旧GREEN。
 

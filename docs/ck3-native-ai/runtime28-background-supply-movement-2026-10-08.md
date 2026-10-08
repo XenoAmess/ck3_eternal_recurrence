@@ -2,7 +2,15 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Successor Runtime32 R77 restore GREEN at 13:46:09 CST
+## R77 family recovery blocked progression; successor33 partial FIRST at 14:20:19 CST
+
+Actual **2026-10-08T14:20:19+08:00**. Root auto003/007 both repeated first-heir marriage cold material recovery at date53288544/public3/native2, accepted/materialtrue/pre0/post2 for38822/38718. Army218104048 remains current2618/committedroute[2615];2606 is a later objective, not a queued second waypoint. This produced no Army day, new marriage or release consumption. Root's single same-process [UTC/WMI creation-token proof](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-deployment/ROOT-ACTUAL-R77-PROCESS-CREATION-TOKEN.json) identifies the concrete formatting mismatch; the minimal family fix is SOURCE_NOTRUN, and the retained-release formal receipt remains pending.
+
+New Root Python compounds for Faith/Sway/Council/Advance/Contact/Warend/Replen and Feast lifecycle are offline GREEN, with basetemp/sparse-import/PYTHONPATH and actual old Open source-gate REDs preserved. LoadedSDK a59/Native32 1dc stays immutable. Native33's initial fixtureC2440 compile failure was repaired by one constvoid*CPP/31reuse; productiond2e and fixture900 remain separate mixed lineage. Siege4whole/sole GREEN; Pregnancy FIRST .263638s raw-wire SHA assertion HarnessRED is retained, fixture-only920 corrected the contract and awaits onefixture/Preglink plus consumer. No full33/live credit or replay of qualified Siege/DLL/production.
+
+Saved6009/H9696/date53288544, G2 5/8, NW2 2/4, M4false/natural0 remain. Latestpublicationa25ca745 versus unpushed4c16 is separate from loaded identities. Root owns the minimal family loop repair and failed Pregnancy qualification; no report-owner Game/SDK/process/EXE/test/build operations. Original28 remains offline-only and is not retrospectively declared loaded.
+
+## Historical successor Runtime32 R77 restore GREEN at 13:46:09 CST
 
 Actual **2026-10-08T13:46:09+08:00**. R77's new original-Robert H9696 full snapshot passed all twelve checks at **05:43:03.323739Z**, date53288544/public3/native2/Robert alive, Game99872 minimized. Sequence77 prepare, eleven-stream restore and bootstrap completed under job **0d2295d1-4836-4e21-9c80-6c85abf4b777**. The [qualified restore receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9696-startup32restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST77.json) has a historical Runtime30 template basename but binds actual **Native32 source1dc /SDK a59**; latest published **f38ea0591ba11f7b99f537e75af7c58325f620a6** does not replace the frozen source identities. Runtime28 remains historically offline-only; this new live frame belongs to successor32.
 
