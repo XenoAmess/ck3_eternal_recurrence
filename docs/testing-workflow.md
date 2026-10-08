@@ -1,5 +1,11 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-08 11:05:03：canonical／首次真实暂停恢复／read-only quote分别闭账
+
+Canonical30实际archiveGREEN.164s/native4e06f945、717owners及既有3Native/3consumer GREEN不需旧重测；R76 **02:54:33.158238UTC**第一次[十二检查恢复GREEN](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST76.json)，明确原Robert29829/H9658/date53288472/saved6006/episode native-29829-2bc2d599f7f9/minimized。本次实际startup stackoverflow未复现，之前R75／M7 RED仍保留；binary归档与真实恢复是两个已执行结论。
+
+M7 quote002实际available／paused／readonly/public3/native2，CA1→2 CanEnacttrue/nativecost119600000/stock305791610/canonical20successors；root003与Council004也available。**Quote不是enactment**，本次没有enact、day或M4循环信用；normalplan005独立重读已婚heir38822/spouse38718/零孩子，auto_turn006派发结果pending。真实还在war100663329对31050，不能把normal Council fallback可用解释为和平。Native source4e、R76 purePythonRunner overlay及publication pins分别保存，只由Root在最小化原战役执行后态／save；此知识仅复用Root新事实，无额外query或旧测试。
+
 ## 2026-10-08 10:30:21：生产action的大Snapshot临时栈与fixture导入分别修复
 
 M7 actualFIRST03 **RED0.3917252s／C00000FD／imagegame RVA11055415**，captured action frame available true而validate／clone／queue均0。Root只复用4COFFobjects／5段≤96B prologues、480codeB，确定 **ObserveSnapshot栈502592B与SetUnavailable栈502600B嵌套约1MB**，Action另23200B；这里binder无cycle，与下方R75 Army→Route→Army构造递归是不同故障。大型Snapshot default assignment／初始化产生的临时对象会把该action路径推到栈溢出，不能用capturedframe存在误称command已执行。

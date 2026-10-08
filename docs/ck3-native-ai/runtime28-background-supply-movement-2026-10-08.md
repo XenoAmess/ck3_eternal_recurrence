@@ -2,7 +2,13 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Successor30 final offline GREEN at10:30:21 CST
+## Successor30 canonical and actual R76 restoration at11:05:03 CST
+
+Actual **2026-10-08T11:05:03+08:00**: canonical30 archiveGREEN.164s, native4e06f9454ef9f0e8173d30d8259625d3396929b9/DLL13,065,216B/SHA5FE7812F072DA8AA7E7A613ACE864D3774A3BC9C1A8BDEB0C311B46DE84C2D00,717owners297Bridge/419Runtime/1Protocol,61recompile/656retained. All three Native/three consumer GREENs reused, no old retest. R76 **02:54:33.158238UTC twelve-check GREEN** [paused restore receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST76.json): minimized Game154492/runner154768/job76f7f47d-b428-4f4c-8968-3f94395693ee, originalRobert29829/H9658/date53288472/saved6006/episode native-29829-2bc2d599f7f9. No stackoverflow this launch; prior REDs preserved. Runtime28 never loaded itself; successor30 now has actual restored-frame primitive, without claiming future stock/movement outcomes.
+
+M7 quote002 actualavailable/read-only/paused/public3/native2 CA1→2 CanEnacttrue/nativecost119600000/stock305791610/20canonicalsuccessors, no enact. Root003/Council004 available, normalplan005 rereads heir38822/spouse38718/no children; auto_turn006 pending. War100663329 vs31050 active/Army218104048 existing2618→2615 route, no peace/new move credit. ConstructionCC1 adoptedb9467973/unpushed compoundGREEN6.0983578s plus actualSDK construction flag, not real construction. G2 5/8/NW2 2/4/M4false/natural0/saved6006/date53288472 unchanged. Source31/32 not live, enabled migration not reopened; Root-only minimized actual OODA/readback/save remains next, no report-owner execution.
+
+## Historical successor30 final offline GREEN at10:30:21 CST
 
 Actual **2026-10-08T10:30:21+08:00**. M7 FIRST03 .3917252s/C00000FD imagegameRVA11055415 remains, with captured action frame available true and validate/clone/queue0. COFF4objects/5smallprologues/480codeB show502592B ObserveSnapshot plus502600B nested SetUnavailable and23200B Action stack, not a M7 binder cycle. Production4e→bf6df6a4 in-place destroy_at/construct_at preserves defaults/stack size/conditions. Attempt07 one CPP compile1.1861796s/DLLlink.8915526s/M7link.8160437s GREEN, zero fixturecompile/Runtimearchive/generator, full717 retained.
 
