@@ -1,5 +1,15 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-08: Ordinary post-birth child education source
+
+[Child education and guardians](education-and-guardians-12004.md) records the
+current stock guardian/focus decision tree and existing same-query receiver
+gaps. Guardian script eligibility has no numeric minimum ward age; focus
+starts at6. Existing descendant IDs and actual4 generic age/sex source are
+reusable, while child focus semantics and the named HasGuardian predicate
+remain unqualified. A sole Root named-entry recipe is SOURCE_NOTRUN; no
+birth, guardian, focus, live or new gameplay credit is claimed.
+
 ## 2026-10-07：本地更新至 Steam build25734779，MCP 迁移中
 
 [actual4 family关系读取](family-relationships-12004.md)闭合当前Family订婚、主配偶、spouse数组与容量字段。新增独立actual4 reader消费实际core/full-ID resolver；Family+28由真实Character1A8→Family20→DWORD数组内核receiver8路径证明。共享field windows复用，capacity有限6663B/9reads，old kernel不重读；source implemented，Root fullSnapshot接线/build/paused资格待执行，不引入未采用9a阈值功能。
