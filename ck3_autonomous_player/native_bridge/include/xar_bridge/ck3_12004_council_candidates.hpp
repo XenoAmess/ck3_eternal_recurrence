@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/ck3_12004_council_task_owner_tax.hpp"
 #include "xar_bridge/council_composition_candidates_public_v1.hpp"
 
 #include <cstddef>
@@ -120,6 +121,7 @@ struct CouncilCandidatesEnvironmentV1 {
   NativeCouncilCandidatesProducer12004 produce_candidates = nullptr;
   NativeCouncilCandidatesRelease12004 release_allocation = nullptr;
   NativeCouncilPositionLookup12004 position_lookup = nullptr;
+  CouncilTaskOwnerTaxBindings12004 task_owner_tax{};
 };
 
 using CouncilCandidatesReadMemoryV1 =

@@ -9423,6 +9423,7 @@ include(cmake/phase_commander_trigger_whole_fixture.cmake)
 include(cmake/first_heir_scorer_age_12004.cmake)
 include(cmake/current_betrothal_prospective_lineage_12004.cmake)
 include(cmake/first_heir_descendants_12004.cmake)
+include(cmake/council_current_task_domain_tax_12004.cmake)
 
 if(TARGET xar_ck3_12002_runtime)
   target_sources(xar_ck3_12002_runtime PRIVATE

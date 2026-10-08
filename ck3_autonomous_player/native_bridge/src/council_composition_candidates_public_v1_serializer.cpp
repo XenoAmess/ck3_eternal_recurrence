@@ -234,6 +234,44 @@ std::string SerializeCouncilCompositionCandidatesPublicV1(
   output += ",\"action_route\":";
   AppendString(output,
                CouncilCompositionCandidateActionRouteKeyV1(value.action_route));
+  if (value.current_task_owner_domain_tax_mult_v1.has_value()) {
+    const auto &tax = *value.current_task_owner_domain_tax_mult_v1;
+    output += ",\"current_task_owner_domain_tax_mult_v1\":{\"status\":";
+    AppendString(output, tax.raw.has_value() ? "available" : "unavailable");
+    output += ",\"unavailable_reason\":";
+    if (tax.raw.has_value()) output += "null";
+    else AppendString(output, game::CouncilCurrentTaskDomainTaxFailureKeyV1(tax.unavailable_reason));
+    output += ",\"active_task_id\":";
+    AppendNumber(output, tax.active_task_id);
+    output += ",\"owner_character_id\":";
+    AppendNumber(output, tax.owner_character_id);
+    output += ",\"incumbent_character_id\":";
+    if (tax.incumbent_character_id <= 0) output += "null";
+    else AppendNumber(output, tax.incumbent_character_id);
+    output += ",\"task_key\":";
+    const auto task_key = FixedString(tax.task_key);
+    if (task_key.empty()) output += "null";
+    else AppendString(output, task_key);
+    output += ",\"frozen\":";
+    if (tax.frozen.has_value()) AppendBool(output, *tax.frozen);
+    else output += "null";
+    output += ",\"modifier_id\":";
+    AppendNumber(output, tax.modifier_id);
+    output += ",\"keyword_id\":";
+    AppendNumber(output, tax.keyword_id);
+    output += ",\"observed_keyword_key\":";
+    const auto keyword = FixedString(tax.observed_keyword_key);
+    if (keyword.empty()) output += "null";
+    else AppendString(output, keyword);
+    output += ",\"value\":";
+    if (!tax.raw.has_value()) output += "null";
+    else {
+      output += "{\"raw\":";
+      AppendNumber(output, *tax.raw);
+      output += ",\"scale\":100000}";
+    }
+    output.push_back('}');
+  }
   output += "},\"candidate_collection_complete\":";
   AppendBool(output, value.candidate_collection_complete);
   output += ",\"candidates\":[";

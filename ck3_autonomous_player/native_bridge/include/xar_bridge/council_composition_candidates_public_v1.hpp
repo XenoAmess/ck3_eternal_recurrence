@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/council_composition_steward_candidates_reader_v1.hpp"
+#include "xar_bridge/council_current_task_domain_tax_v1.hpp"
 
 #include <array>
 #include <cstdint>
@@ -104,6 +105,9 @@ struct CouncilCompositionCandidatesPublicV1 {
              kCouncilCompositionStewardCandidatesMaximumRowsV1>
       candidates{};
   CouncilCompositionCandidatesPublicReadinessV1 readiness{};
+  // Optional actual4 current-task observation. It does not alter CanSend or
+  // candidate readiness; legacy producers leave it absent.
+  std::optional<CouncilCurrentTaskDomainTaxV1> current_task_owner_domain_tax_mult_v1;
 };
 
 } // namespace xar::game

@@ -22,6 +22,10 @@ struct CouncilTaskTaxDescriptor12004 {
   std::uint32_t keyword_id = 0;
 };
 
+// Actual4 named descriptor row 183 at RVA480EAA8, label RVA48174E0:
+// MOD_DOMAIN_TAX_MULT. The runtime name getter still verifies this token.
+inline constexpr CouncilTaskTaxDescriptor12004 kCouncilDomainTaxDescriptor12004{162, 11976};
+
 using NativeCouncilTaskOwnerModifier12004 =
     void *(*)(const void *, void *, const void *);
 using NativeCouncilTaskModifierValue12004 =

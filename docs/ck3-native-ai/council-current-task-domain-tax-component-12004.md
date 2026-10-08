@@ -9,7 +9,8 @@ and runs no build, project import or test.
 The goal is the actual current task's evaluated owner `domain_tax_mult`
 component. It is a multiplier before other owner/global aggregation, not gold
 income and not a quote for another councillor or a task switch. The present
-stage is **research/source capture**. No numeric leaf or live value is claimed.
+stage is **source-authored / FIRST NOTRUN**. The same-query numeric leaf is
+wired in source; no compiled wire, native runtime keyword or live value is claimed.
 
 ## Stock and native source first
 
@@ -30,7 +31,7 @@ explains why a skill difference or `stewardship/200` is not a native quote.
 | Owned evaluated modifier cleanup | Root matched complete actual4 `9F24F0..9F259D`,173B | Release the original internal buffers and shared/string objects; outer storage stays caller-owned |
 | Aggregate construction | Root matched actual207 semantic bytes at2872480 | Caller-owned output initialization: ID vector0, value vector68, SSO190, shared1B0 |
 | Descriptor table locator | Root matched actual17B initializer at2C4DC3F, table480C2A0/count609 | Locate actual typed records; this supplies no tax numeric ID |
-| Tax modifier numeric ID/keyword record | NOT_HELD | Resolve the selected typed descriptor; never borrow piety ID97 |
+| Tax modifier numeric ID/keyword record | Actual4 unique row183, numeric162/keyword11976; label MOD_DOMAIN_TAX_MULT | Bind the captured row, then observe the runtime keyword through3F4F8E0 |
 
 Root executed the owner299B capture once near **06:47:19Z**:
 `SOURCE_CAPTURE_MATCHED`, complete old/new decode, normalized retained operands,
@@ -92,13 +93,15 @@ flowchart TD
     C --> E[Root matched owner evaluator31ABDF0,299B]
     E --> M[Owned evaluated modifier aggregate]
     M --> G[Held numeric getter23036E0 prefix, whole owner output]
-    I[Tax keyword / descriptor numeric ID] -. NOT_HELD: bounded locator then named record .-> G
+    I[Unique actual descriptor row183: uint16 ID162 / keyword11976] --> K[Existing borrowed CString getter3F4F8E0]
+    K --> V[Copy actual keyword and require domain_tax_mult]
+    V --> G
     E --> A[Matched207B constructor: IDs0 / values68]
     A --> G
     G --> N[Matched126B local continuation: binary search and signed int64 / absent zero]
     M --> D[Matched173B cleanup: release original internal allocations]
-    N -. pending numeric ID .-> L[One optional current-tax numeric leaf]
-    D -. pending ID and local numeric source .-> L
+    N --> L[One optional current-tax numeric leaf]
+    D --> L
     L -. FIRST NOTRUN .-> W[Whole producer and sole registered consumer]
     W -. Root paused value pending .-> P[Production decision input]
     P -. counterfactual candidate / task-switch growth unknown .-> U[Full tax-versus-development utility]
@@ -192,8 +195,15 @@ Root subsequently captured the one remaining typed-table range
 `[480DB20,48147D8)`, **497 rows112..608 /27832B /1read**, at
 `tax-id-metadata/remainder-plan01/remaining-first01/REMAINING-DESCRIPTORS-CAPTURE.json`.
 All609 descriptor records are now held without overlapping fresh reads.
-Remaining names will use only the not-yet-held pointer windows, reusing old
-4000B name bytes when they already cover a newly referenced pointer.
+Root's remaining-name pass then captured **17968B /11 disjoint reads** and
+reused the prior4000B cache. It found exactly one named actual row:
+`native_index183`, pointer record`RVA480EAA8`, label`RVA48174E0`
+**MOD_DOMAIN_TAX_MULT**, **uint16 modifier ID162 (0xA2)** and
+**uint32 keyword ID11976 (0x2EC8)**. Receipt:
+`tax-id-metadata/remaining-names-plan01/labels-first01/REMAINING-DESCRIPTOR-LABELS-CAPTURE.json`,
+status`DOMAIN_TAX_DESCRIPTOR_LABEL_IDENTIFIED_KEY_NOT_HELD`. This completes
+the label/record association without another table scan. It does not itself
+observe the engine's returned script key.
 
 A separate metadata lane found no held descriptor-prefix bytes. Record reads alone
 do not name the tax ID: the actual selected localization/keyword association
@@ -226,18 +236,37 @@ separate finite manifest; method match labels do not close all callees.
 
 ## FIRST and capability boundary
 
-The independent source-closed scalar reader is **AUTHORED_NOTRUN** in
+The independent scalar reader is **AUTHORED_NOTRUN** in
 `ck3_12004_council_task_owner_tax.{hpp,cpp}` with its small POD observation
 model. It reuses original Task scopes40/type/key18/frozen39, copies the borrowed
 native keyword CString, calls owner builder/getter/cleanup in order, and keeps
-legal signed native zero. Its descriptor is an internal typed input; no tax ID
-is guessed, no current MCP field is published, and no new TU is yet registered.
-The current selected-seat DTO/Python hook awaits the actual named descriptor.
+legal signed native zero. The production binder installs the captured
+`kCouncilDomainTaxDescriptor12004{162,11976}`. The selected-seat reader reads
+this component before the existing candidate transaction's recapture and
+attaches it only after the common projector succeeds. No outer readiness or
+native CanSend gate depends on this optional component.
 
-Integration and FIRST remain **NOTRUN**. Once the native numeric input and
-owned lifetime close, one new whole producer must exercise actual
+`position.current_task_owner_domain_tax_mult_v1` publishes status/reason,
+active task/owner/incumbent IDs, copied task key, frozen, modifier/keyword IDs,
+the **actual copied** keyword, and signed`value{raw,scale100000}` or null.
+The existing serializer and Python normalizer preserve that field through
+both private composition/final-gates tools. A native zero is available, and
+keyword failure preserves the outer candidate/final-gates result. Frozen is
+provenance; an evaluated frozen component is not asserted to be applied income.
+
+`cmake/council_current_task_domain_tax_12004.cmake` adds one Runtime TU and
+the sole new target`xar_ck3_12004_council_task_domain_tax_whole_test` using the
+actual Bridge/Runtime link closure. The changed DTO/Environment embedding
+requires Root's current actual owner dependency closure, including both
+main-thread owners; old potential855 counts are not a build inventory.
+
+Integration is source-authored; FIRST remains **NOTRUN**. The new whole
+producer exercises actual
 `ReadCouncilCandidates12004`, the leaf, `SerializeCouncilCandidates12004`
-and private mailbox envelope. One new registered consumer consumes those
+and the combined private final-gates mailbox envelope. Its four owned-memory
+cases preserve positive, signed-negative and legal-zero components plus an
+optional keyword mismatch, with original scopes/whole-output/cleanup assertions.
+One new registered consumer consumes those
 same compiled wires through real Driver private transport, strict position
 normalizer, and existing private final-gates MCP tool. No hand-composed outer
 wire or replay of old Council/piety/native GREEN cases supplies tax evidence.

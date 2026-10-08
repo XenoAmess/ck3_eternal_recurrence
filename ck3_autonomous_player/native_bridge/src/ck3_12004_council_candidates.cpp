@@ -323,6 +323,8 @@ CouncilCandidatesEnvironmentV1 BindCouncilCandidates12004(
   output.release_allocation = reinterpret_cast<NativeCouncilCandidatesRelease12004>(module_base + kCouncilCandidatesReleaseRva12004);
   output.position_lookup = reinterpret_cast<NativeCouncilPositionLookup12004>(
       module_base + kCouncilCandidatesPositionLookupRva12004);
+  output.task_owner_tax = BindCouncilTaskOwnerTax12004(
+      module_base, executable_sha256, kCouncilDomainTaxDescriptor12004);
   return output;
 }
 
@@ -409,6 +411,11 @@ ReadCouncilCandidates12004(const CouncilCandidatesEnvironmentV1 &environment,
       return Unavailable(output, private_source, SourceFailure::none, false,
           PublicFailure::incumbent_main_skill_unready);
   }
+
+  const auto task_owner_tax = ReadCouncilTaskOwnerTax12004(
+      environment.task_owner_tax, access,
+      reinterpret_cast<const void *>(before.active_task), before.active_task_id,
+      before.played_character_id, incumbent_id);
 
   alignas(16) std::array<std::byte, kCouncilCandidatesAllocatorSize12004> allocator{};
   CouncilCandidatesNativeVectorV1 vector{};
@@ -514,7 +521,10 @@ ReadCouncilCandidates12004(const CouncilCandidatesEnvironmentV1 &environment,
   enrichment.same_frame_stable = true;
   const auto result = ck3_11906::ProjectCouncilCompositionCandidatesPublicV1(
       pending, enrichment, output, profile.position_key, profile.main_skill_key);
-  if (result == Result::available && private_source != nullptr) *private_source = pending;
+  if (result == Result::available) {
+    output.current_task_owner_domain_tax_mult_v1 = task_owner_tax;
+    if (private_source != nullptr) *private_source = pending;
+  }
   return result;
 }
 

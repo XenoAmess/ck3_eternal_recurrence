@@ -63,6 +63,12 @@ _POSITION_FIELDS: Final = {
     "vacant",
     "action_route",
 }
+_POSITION_OPTIONAL_FIELDS: Final = {"current_task_owner_domain_tax_mult_v1"}
+_CURRENT_TASK_TAX_FIELDS: Final = {
+    "status", "unavailable_reason", "active_task_id", "owner_character_id",
+    "incumbent_character_id", "task_key", "frozen", "modifier_id",
+    "keyword_id", "observed_keyword_key", "value",
+}
 _CANDIDATE_FIELDS: Final = {
     "character_id",
     "native_collection_ordinal",
@@ -112,6 +118,53 @@ def _expected_snapshot_id(value: object) -> str:
     if not isinstance(value, str) or not value:
         raise ValueError("expected_snapshot_id must be a non-empty string")
     return value
+
+
+def _normalize_current_task_tax(
+    value: object, *, owner_character_id: int, incumbent_character_id: int | None
+) -> dict[str, object]:
+    """Keep the current owner component distinct from assignment readiness."""
+    if not isinstance(value, dict) or set(value) != _CURRENT_TASK_TAX_FIELDS:
+        raise ValueError("current task owner tax must contain exactly the v1 fields")
+    if value["owner_character_id"] != owner_character_id or (
+        value["incumbent_character_id"] != incumbent_character_id
+    ):
+        raise ValueError("current task owner tax must match the selected seat")
+    _integer(value["active_task_id"], "current task ID", minimum=-(2**31), maximum=2**31 - 1)
+    if value["modifier_id"] != 162 or value["keyword_id"] != 11976:
+        raise ValueError("current task owner tax descriptor does not match actual4")
+    for key in ("task_key", "observed_keyword_key"):
+        if value[key] is not None and (
+            not isinstance(value[key], str) or not value[key]
+        ):
+            raise ValueError(f"current task owner tax {key} must be a string or null")
+    if value["frozen"] is not None and not isinstance(value["frozen"], bool):
+        raise ValueError("current task owner tax frozen must be a boolean or null")
+    result = dict(value)
+    if value["status"] == "available":
+        numeric = value["value"]
+        if (
+            value["unavailable_reason"] is not None
+            or value["observed_keyword_key"] != "domain_tax_mult"
+            or value["task_key"] is None
+            or value["frozen"] is None
+            or incumbent_character_id is None
+            or not isinstance(numeric, dict)
+            or set(numeric) != {"raw", "scale"}
+            or numeric["scale"] != 100000
+        ):
+            raise ValueError("available current task owner tax needs its native component")
+        result["value"] = {
+            "raw": _integer(numeric["raw"], "current task owner tax raw",
+                            minimum=-(2**63), maximum=2**63 - 1),
+            "scale": 100000,
+        }
+    elif value["status"] == "unavailable":
+        if value["value"] is not None or not isinstance(value["unavailable_reason"], str) or not value["unavailable_reason"]:
+            raise ValueError("unavailable current task owner tax needs a reason and null value")
+    else:
+        raise ValueError("current task owner tax status must be available or unavailable")
+    return result
 
 
 def build_council_composition_candidates_request_v1(
@@ -215,8 +268,12 @@ def normalize_council_composition_candidates_v1(
         raise ValueError("owner_character_id does not match the request")
 
     position = value.get("position")
-    if not isinstance(position, dict) or set(position) != _POSITION_FIELDS:
-        raise ValueError("position must contain exactly the v1 fields")
+    if (
+        not isinstance(position, dict)
+        or not _POSITION_FIELDS <= set(position)
+        or set(position) - _POSITION_FIELDS - _POSITION_OPTIONAL_FIELDS
+    ):
+        raise ValueError("position must contain the v1 fields and supported observations")
     if position.get("position_key") != request["position_key"]:
         raise ValueError("position_key does not match the requested position")
     incumbent_raw = position.get("incumbent_character_id")
@@ -259,6 +316,13 @@ def normalize_council_composition_candidates_v1(
     expected_route = "assign" if vacant else "replace"
     if action_route != expected_route:
         raise ValueError("position.action_route disagrees with vacancy state")
+    current_task_tax = None
+    if "current_task_owner_domain_tax_mult_v1" in position:
+        current_task_tax = _normalize_current_task_tax(
+            position["current_task_owner_domain_tax_mult_v1"],
+            owner_character_id=owner_character_id,
+            incumbent_character_id=incumbent_character_id,
+        )
 
     if value.get("candidate_collection_complete") is not True:
         raise ValueError("candidate_collection_complete must be true")
@@ -330,6 +394,8 @@ def normalize_council_composition_candidates_v1(
             **position,
             "incumbent_character_id": incumbent_character_id,
             "incumbent_main_skill": incumbent_main_skill,
+            **({"current_task_owner_domain_tax_mult_v1": current_task_tax}
+               if "current_task_owner_domain_tax_mult_v1" in position else {}),
         },
         "candidate_collection_complete": True,
         "candidates": candidates,
