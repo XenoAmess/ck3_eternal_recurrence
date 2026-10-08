@@ -1121,6 +1121,10 @@ class GameplayBridgeService:
         return planned
 
     def plan_turn(self) -> dict[str, object]:
+        """Return a detached public plan after its private readers finish."""
+        return copy.deepcopy(self._plan_turn_internal())
+
+    def _plan_turn_internal(self) -> dict[str, object]:
         internal_snapshot = getattr(
             self.driver, "take_internal_semantic_snapshot", None
         )
@@ -1206,6 +1210,8 @@ class GameplayBridgeService:
                 if isinstance(candidate, dict):
                     cross_run_plan = candidate
 
+        private_history_views: dict[str, object] = {}
+
         def plan_from_view(
             planning_snapshot: dict[str, object],
             native_history: list[dict[str, object]],
@@ -1216,8 +1222,16 @@ class GameplayBridgeService:
                 if isinstance(raw_history, list)
                 else []
             )
+            # Capture row/result bindings while the native helper owns its
+            # lock; marriage observation may replace a result's top-level
+            # marriage_result field later. Payload readers below are readonly.
             history.extend(
-                row for row in native_history if isinstance(row, dict)
+                (
+                    {**row, **({"result": dict(row["result"])}
+                              if isinstance(row.get("result"), dict) else {})}
+                    if use_internal_view else row
+                )
+                for row in native_history if isinstance(row, dict)
             )
             played_character = planning_snapshot.get("played_character")
             opening_focus_first = getattr(
@@ -1319,7 +1333,7 @@ class GameplayBridgeService:
                 in available_steps
             ):
                 routable_steps.add(str(selected_step))
-            return {
+            planned = {
                 "snapshot_id": planning_snapshot["snapshot_id"],
                 "revision": planning_snapshot["revision"],
                 "plan": _route_plan_to_available_step(
@@ -1415,9 +1429,23 @@ class GameplayBridgeService:
                     else None
                 ),
             }
+            if use_internal_view:
+                # These consumers only read the captured row/result mappings.
+                # Keep their full history outside the helper's deepcopy of
+                # the selected plan. Public results are detached after all
+                # consumers finish, without cloning unused query payloads.
+                for key in (
+                    "_private_faction_history_v1",
+                    "_private_construction_history_v1",
+                    "_private_council_history_v1",
+                    "_private_m5_history_v1",
+                ):
+                    private_history_views[key] = planned.pop(key)
+            return planned
 
         if use_internal_view:
             planned = internal_planning_view(snapshot, plan_from_view)
+            planned.update(private_history_views)
         else:
             public_native_history = snapshot.get("native_command_history")
             planned = plan_from_view(
