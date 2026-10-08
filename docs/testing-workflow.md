@@ -1,5 +1,22 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-09：R79 observer ABI 修复与 R80 原战役恢复
+
+最新授权允许本机 CK3 实机工作，游戏保持最小化，由 Root 统一操作。
+R79 的 core 可用但完整 Snapshot 不发布：旧 main-thread mailbox 对象按旧
+Environment 布局读取 callback，而新增 succession 指针使 observer 槽后移8字节，
+旧对象读到空 feast 槽。Native42 仅重编三处实际 ABI owner，以430 Runtime对象
+重新建 archive 并链接 DLL；无需重跑已有查询资格或修改生产 C++。
+源码和实际失败边界见[专题](ck3-native-ai/main-thread-observer-mailbox-abi-12004.md)。
+
+R80 在原 Robert29829 战役通过13项完整暂停资格，实测时间
+2026-10-08T18:18:50.431856Z；Game65280 最小化，public3/native2，日期53288568。
+[完整资格收据](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/managed-full-h9715-r80-abi42restore01/operator/ROOT-COLD-H9715-PAUSED-SNAPSHOT-QUALIFIED.json)
+与[Native42 live附记](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix42/ROOT-R80-ACTUAL-PAUSED-LIVE-QUALIFICATION.json)
+分开保存编译资格和实机观察。R78 C0000005 根因仍未由本次修复证明；保留旧失败。
+恢复和查询没有新增游戏日或 SAVE，基线仍6010/H9715。后续按普通
+auto_turn 优先级运行，独立材料、实际后继帧和保存结果各自计账。
+
 ## 2026-10-08 23:27:49：raw snapshot行数与normal public union分别断言
 
 Native39 rich Worker whole一个workflow／两frames GREEN.3913295s，sole registered Service consumer04 GREEN4.9595138s。前三consumer HarnessRED分别ImportError5.0578167s／pipe literal4.620563s／expectedraw2而actualnormal public union4 6.1886433s，原件保留。Native显式2行与normalizer合并Army／War／Province／occurrence得到逐4public Army须分别断言；04保留两层完整union／selection约束，不改production、不以删除业务断言修rowcount。实际两ck3_take_snapshot／ping1／gameplay0，140CPP和Native输出复用，不重编／重跑旧GREEN。

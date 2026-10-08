@@ -138,3 +138,26 @@ native code, the original packets nor their assertions.
 Complete person/Entry reconstruction, R78 live crash causality, cold startup,
 paused live observation, actions and G2 outcome credit remain unqualified.
 This work used no local Game, SDK, game pipe or UI operation.
+
+## R80 actual paused qualification — October 9
+
+After the separate [mailbox ABI repair](main-thread-observer-mailbox-abi-12004.md),
+Native42 restored the original campaign and the existing registered terminal
+query returned the direct carrier for two actual requested characters.
+The [whole response](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/managed-full-h9715-r80-abi42restore01/operator/gameplay-responses/002-r80-person41-real-current-characters.json)
+binds public revision3 to native revision2 in episode
+`native-29829-2bc2d599f7f9`, with Robert29829 alive and the game paused and
+minimized at date53288568. Both leaves have `ready=true`, a mapped row,
+one source occurrence and weight_q100000=100000.
+
+| Actual character | Selected rank | Row count | Selected PC count | Numerical keys | Values |
+| --- | ---: | ---: | ---: | --- | --- |
+| 29829 | 2 | 6 | 1 | 181 | -15000 |
+| 31050 | 0 | 6 | 3 | 127, 181, 531 | -10000, 50000, -1000000 |
+
+The actual owned-model callback verifies the complete character ID; the two
+characters have distinct selected model identities. These are numerical
+carrier observations, without an inferred meaning for the PC keys. This
+bounded leaf is now a **production-live primitive**. Complete person/Entry,
+conditional branches, battle forecasts and a complete action loop remain
+unfinished. No new game day, action or SAVE is attributed to this query.

@@ -1,12 +1,38 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-09: Restored original campaign observes current native state
+
+[Mailbox ABI recovery](main-thread-observer-mailbox-abi-12004.md) records the
+actual R79 publication failure and three-owner Native42 rebuild. R80 passed
+all thirteen full paused-frame checks in the original Robert29829 campaign,
+with the owned game minimized. Public revision3 binds native revision2;
+the saved baseline remains6010 days and H9715.
+
+The [same-query person carrier](battle-person-carrier-same-query-12004.md)
+returned ready numerical rows for actual characters29829 and31050. This is a
+production-live primitive. The [following collection](battle-person-following-2921a90-12004.md)
+passed ten original native packets and the sole registered consumer after a
+64-job build; Native43 remains static-ready and is not the running R80 DLL.
+[Ordinary Army callback consumption](army-normal-turn-callback-consumption-12004.md)
+is also qualified offline. Complete person/Entry and full soldier-loss execution
+remain unfinished.
+
+[Guardian and educator source](guardian-educator-source-entry-12004.md) binds
+the existing education interaction's six roles. R80 observed a bilateral heir
+marriage, zero children and no pregnancy. Its ordinary cold-marriage read
+independently confirmed the recovered material result; no birth, education,
+new day or SAVE is credited by these observations. Current actual context and
+siege observations are indexed in the rolling reports.
+
 ## 2026-10-09: Child education point trait observer qualified offline
 
 The next [actual linked collection after the person carrier](battle-person-following-2921a90-12004.md)
-has a frozen source tree and explicit remaining branches; implementation qualification is pending.
+has a frozen source tree and explicit remaining branches; its later Native43
+qualification is recorded above and in the topic.
 The [finite M6 Chaplain live plan](m6-chaplain-native41-r79-live-plan.md)
-uses existing ordinary query and action paths. R79's first complete paused snapshot remains
-unqualified, so neither document adds live or gameplay credit.
+uses existing ordinary query and action paths. R79's first complete paused
+snapshot failed; R80 subsequently restored observation through Native42.
+Neither source document alone adds gameplay credit.
 
 [Child education point trait inputs](child-education-point-traits-12004.md)
 closes the nine authored child-side HasTrait dependencies and separate

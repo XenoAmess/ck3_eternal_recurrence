@@ -204,3 +204,14 @@ Native42, not Native43, and supplies no Native43 live credit. Actual conditional
 classifier/evaluator/header inputs and the fresh logical baseline/full-person
 merger remain the named construction work before complete Entry or forecast
 readiness.
+
+## Canonical43 binary pin
+
+Root sealed the actual qualified DLL once after both new FIRST stages passed.
+[Canonical43 receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix43/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)
+records 731 mixed production owners, the exact compiler commands, ten native
+whole packets and the sole registered consumer. The DLL is
+`Z:/g2-native43-build01/attempt02/binaries/xar_ck3_bridge.dll`, 13,314,560 bytes,
+SHA-256 `4d097379f7ef13879ac4fcb8db85a1e342282dba8627a58fc75cb31b48c468f5`.
+Parent binaries and existing GREEN tests were reused. This pin is static-ready;
+R80 still runs Native42 and grants no live qualification to this following leaf.
