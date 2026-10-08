@@ -2,7 +2,13 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Ongoing R76 saved6009 and Runtime32 partial compile at12:51:02 CST
+## R76 frozen streams and Runtime32 Army FIRST REDs at13:01:34 CST
+
+Actual **2026-10-08T13:01:34+08:00**. Published4e4c2017c1f0be878227e16584f3e98b71b8596f ordinaryFF. NormalR76SDK exited/PID137492gone; old10copyfreezeGREEN plus opaque release-ledgerstream11 retained, no Save/Driver rehash. NormalstopControl returnedjob76f7…, **ownedGame cleanup stillpending**, not Gameexit. H9696/date53288544/saved6009/G2 5/8/NW2 2/4/M4false/natural0 unchanged; priorCA2material retained/no newM6material.
+
+Runtime32 all63productioncompile/archiveDLL/two necessarylinks GREEN3.4998s; Holy6native.286/sole6.0245 GREEN, M6native5.256/consumer02 fivecases87checks5readonlycalls GREEN after fixture-onlyd9d6 fullshape fix, consumer01KeyError RED retained. ArmytargetAV stems from Unit+38 pointer-array→routeinfo read asDWORD; replenbinder lowercaseSHA vs canonicaluppercase rejects. TwoArmy FIRSTREDs remainunderrepair, full32notready/notGame deployed. No future supply/movement qualification borrowed from othermodules. Pregnancy144Btail only research/namedinstance, Root-only cleanup/new qualification next; report no tests/Game/artifact replay.
+
+## Historical ongoing R76 saved6009 and Runtime32 partial compile at12:51:02 CST
 
 Actual **2026-10-08T12:51:02+08:00**. Sixnormal turns ended,054paused/date53288544/public15/native14, total3days including prior+1 gives **saved6009/36524(16.45%)**. LatestSAVE052H9696/104634270B/SHAf07c53befd1b044fa66bd1a1eda5c1d8d3861751726118790417f68d05c5f195. CA2 material reused, not a new law/M4 outcome; G2 5/8/NW2 2/4/M4false/natural0 unchanged, no new release material in this increment. Saved days do not qualify source-derived future supply/stock transitions.
 

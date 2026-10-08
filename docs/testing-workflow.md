@@ -1,5 +1,13 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-08 13:01:34：SDKexit／owned Gameclosure与模块FIRST分别记账
+
+R76normalSDK正常exit／PID137492gone、old10copyfreezeGREEN＋releaseopaque第11stream preserved，不需要再hashSave/Driver。官方normalstopControl虽返回job76f7…，Root尚未给ownedGamecleanup结论；**SDKexit不证明Gameexit**，opaqueledger冻结也不证明release/custody material。当前只记录pending，等待真实closure字段，不追加进程核验。
+
+Runtime32全63productioncompile/archiveDLL及修后2linksGREEN，但两Army FIRST仍RED。TargetAV实因Unit+38的路线数据是 **pointer-array→routeinfo**、fixture误按DWORD；必须按实际source角色修该fixture，不能因名字像route而替换类型。Replenbinder另因 **lowercaseSHA与canonicaluppercaseSHA**比较拒绝；这是本次真实格式不一致故障，最小修复中，不能借hash字符串大小写宣称不同build或写整批通过。已GREEN Holy6native／sole与M6native5／consumer02不重跑；M6consumer01 fullpacketshape KeyError是fixture shape HarnessRED，d9d6只修fullshape后5cases87checks5readonlycalls GREEN，原失败保留。
+
+本知识只复用Root实际故障与结果，不新设计门禁、不测试或读进程。两个Army失败未闭时Runtime32不授fullready/deployed，当前saved6009/H9696/G2/NW2/M4/natural保持。
+
 ## 2026-10-08 12:51:02：部分编译／必要修复／并发与实际saved-day计数分列
 
 Runtime32唯一attempt01实际 **RED311.9073s／63compile中62GREEN、1CPP ADL ambiguity**。Root保62已通过对象与原失败，只用repair02b2797e12对 **6calls显式qualification**，下一1fresh／62reuse尚待，不重selector。Source修复本身不等于编译GREEN；并发字段写真实 **64 compile jobs**，不能据此说64个活跃agent。五项新PythonFIRST（Chancellor／战时建设／Army历史copy／prisoner semantics／Army structured保留而text去重）均离线GREEN但未部署R76CC1，不授实机性能或动作后态。

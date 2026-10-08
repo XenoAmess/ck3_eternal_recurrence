@@ -1,6 +1,12 @@
 # Runtime27 background observers — 2026-10-08
 
-## R76 six-turn batch and Runtime32 pending repair at12:51:02 CST
+## R76 SDK/freeze and Runtime32 partial FIRSTs at13:01:34 CST
+
+Actual **2026-10-08T13:01:34+08:00**. RootordinaryFFpublished4e4c2017c1f0be878227e16584f3e98b71b8596f. R76normalSDK exited/PID137492gone; old10 actualcopyfreezeGREEN ([receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/normal-r76-h9696-saved6009-freeze01/ROOT-SAVED-TEN-STREAM-FREEZE.json)) plus opaque release-ledger stream11 preserved, no Save/Driver rehash. NormalstopControl returnedjob76f7… but ownedGame cleanup pending; SDKexit does not establish Gameexit. H9696/date53288544/saved6009/G2 5/8/NW2 2/4/M4false/natural0 unchanged, no new release material.
+
+Runtime32 all63productioncompile/archiveDLL GREEN, two necessarynewlinksGREEN3.4998s. Holy6nativeGREEN.286s/soleconsumerGREEN6.0245s; M6native5GREEN.256s, initialconsumerKeyError fullpacketshape retained, fixture-onlyd9d6 shape repair yielded **5cases87checks5readonlycalls GREEN**. TwoArmy FIRSTs remainRED: Unit+38 pointer-array→routeinfo wrongly consumed asDWORD caused targetAV; lowercase/canonical-uppercase SHA mismatch rejected replenbinder. Minimalrepairs pending, no overall32ready/deployed claim or replay of Holy/M6. Pregnancy144Btail remains named-instance research/no currenttruth/birth; FaithR77doc-onlyrecipe not live. Root alone owns upcoming qualified restore and cleanup; report activity0.
+
+## Historical R76 six-turn batch and Runtime32 pending repair at12:51:02 CST
 
 Actual **2026-10-08T12:51:02+08:00**. R76 normal6turn batch ended; snapshot054 paused/date53288544/public15/native14. This run's total3days includes prior+1, yielding **saved6009/36524(16.45%)**. LatestSAVE052 **H9696/104634270B/SHAf07c53befd1b044fa66bd1a1eda5c1d8d3861751726118790417f68d05c5f195**. PriorCA2 material reused without new law credit; G2 5/8/NW2 2/4/M4false/natural0 unchanged, no new release-material evidence in this increment.
 
