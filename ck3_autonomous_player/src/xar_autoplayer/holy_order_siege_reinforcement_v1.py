@@ -192,7 +192,14 @@ def submit_holy_order_siege_reinforcement_v1(
                     if member.get("available") is True and member.get("native_carmy_resolved") is True} if isinstance(association, Mapping) else set()
             public = {row["army_id"]: row for row in after.get("player_armies", []) if isinstance(row, Mapping)}
             if refs and public:
-                strengths = driver.query_army_strengths(army_ids=list(public), expected_revision=after["revision"])
+                query_strengths = getattr(driver, "query_army_strengths", None)
+                if not callable(query_strengths):
+                    # NativeHeadless publishes this normalized query through
+                    # the existing Service rather than a driver convenience method.
+                    from .bridge.service import GameplayBridgeService
+
+                    query_strengths = GameplayBridgeService(driver).query_army_strengths
+                strengths = query_strengths(army_ids=list(public), expected_revision=after["revision"])
                 for row in strengths.get("army_strengths", []):
                     army = public.get(row.get("army_id"))
                     if (row.get("status") == "available" and row.get("native_carmy_id") in refs
