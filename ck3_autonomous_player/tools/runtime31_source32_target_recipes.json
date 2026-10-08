@@ -1,0 +1,140 @@
+{
+  "schema": "xar.runtime31.source31-32.build-target-recipes.v1",
+  "status": "SOURCE_PREPARED_FIRST_NOTRUN",
+  "canonical30_build_recipe": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261008\\runtime30-functional-batch\\frozen30\\target-recipes\\ROOT-TARGET-RECIPES.json",
+  "targets": [
+    {
+      "target": "xar_ck3_12004_unit_army_movement_admission_whole_test",
+      "fixture_sources": [
+        {
+          "cpp": "tests/ck3_12004_unit_army_movement_admission_whole_test.cpp",
+          "path": "{native}/tests/ck3_12004_unit_army_movement_admission_whole_test.cpp",
+          "generated": false
+        }
+      ],
+      "generator_steps": [],
+      "fixture_include_dirs": [
+        "{native}/include"
+      ],
+      "fixture_compile_definitions": [
+        "NOMINMAX",
+        "WIN32_LEAN_AND_MEAN",
+        "UNICODE",
+        "_UNICODE"
+      ],
+      "fixture_compile_template_owner": {
+        "target": "xar_ck3_bridge",
+        "cpp": "src/bridge.cpp"
+      },
+      "link_scope": "whole_bridge",
+      "link_extra_libraries": [
+        "bcrypt.lib"
+      ],
+      "generated_outputs": [],
+      "held_generated_sources": [],
+      "first_modes_only": [
+        "--arrival-transition-wire-dir",
+        "--disembark-write-wire-dir"
+      ],
+      "qualified_old_mode_replay": 0
+    },
+    {
+      "target": "xar_ck3_12004_phase_effect_emptiness_whole_fixture",
+      "fixture_sources": [
+        {
+          "cpp": "src/ck3_12004_phase_event_effect_emptiness_whole_fixture.cpp",
+          "path": "{native}/src/ck3_12004_phase_event_effect_emptiness_whole_fixture.cpp",
+          "generated": false
+        },
+        {
+          "cpp": "effect-emptiness-production-whole-serializer.cpp",
+          "path": "{output_dir}/effect-emptiness-production-whole-serializer.cpp",
+          "generated": true
+        }
+      ],
+      "generator_steps": [
+        {
+          "label": "effect_emptiness-generated-1",
+          "argv": [
+            "{python}",
+            "-B",
+            "-X",
+            "utf8",
+            "{native}/tests/project_phase_effect_emptiness_whole_serializer.py",
+            "--source",
+            "{native}/src/bridge.cpp",
+            "--output",
+            "{output_dir}/effect-emptiness-production-whole-serializer.cpp",
+            "--receipt",
+            "{output_dir}/EFFECT-EMPTINESS-SERIALIZER-PROJECTION.json"
+          ],
+          "cwd": "{native}"
+        }
+      ],
+      "fixture_include_dirs": [
+        "{native}/include",
+        "{output_dir}",
+        "C:\\codex-ck3-background\\migration4-entry-live-fix\\functional-runtime27-r27-attempt01\\generated\\xar_ck3_12004_phase_commander_side_whole_fixture"
+      ],
+      "fixture_compile_definitions": [
+        "NOMINMAX"
+      ],
+      "fixture_compile_template_owner": null,
+      "link_scope": "standalone",
+      "link_extra_libraries": [],
+      "generated_outputs": [
+        "{output_dir}/effect-emptiness-production-whole-serializer.cpp"
+      ],
+      "held_generated_sources": [
+        {
+          "cmake_variable": "_phase_role_seed",
+          "path": "C:/codex-ck3-background/migration4-entry-live-fix/functional-runtime27-r27-attempt01/generated/xar_ck3_12004_phase_commander_side_whole_fixture/phase-role-base-seed.inc",
+          "source_kind": "generated C++ include, recompiled in the new target",
+          "source_head": "3725069765c8e42152fec261e59ac66db6d4430b",
+          "source_root": "C:/codex-ck3-background/migration4-entry-live-fix/g113-r27",
+          "source_build_plan": "C:/codex-ck3-background/migration4-entry-live-fix/functional-runtime27-r27-attempt01/BUILD-PLAN.json",
+          "actual_generator_receipt": "C:/codex-ck3-background/migration4-entry-live-fix/functional-runtime27-r27-attempt01/logs/xar_ck3_12004_phase_commander_side_whole_fixture-commander_side-generated-1.json",
+          "generator_exit_code": 0,
+          "reuse_proof": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/runtime29-functional-batch/HELD-ROLE-SEED.json",
+          "reuse_basis": "Parent-confirmed qualified include default-constructs current DTO and assigns stable named members; the new optional Commander-chance leaf requires no seed source text rewrite. Runtime29 already reused this source; Runtime30 must recompile it under its frozen headers.",
+          "generator_rerun": 0,
+          "old_first_replay": 0
+        }
+      ],
+      "qualified_old_mode_replay": 0
+    },
+    {
+      "target": "xar_ck3_12004_first_heir_descendants_test",
+      "fixture_sources": [
+        {
+          "cpp": "src/ck3_12004_first_heir_descendants_test.cpp",
+          "path": "{native}/src/ck3_12004_first_heir_descendants_test.cpp",
+          "generated": false
+        }
+      ],
+      "generator_steps": [],
+      "fixture_include_dirs": [
+        "{native}/include"
+      ],
+      "fixture_compile_definitions": [],
+      "fixture_compile_template_owner": {
+        "target": "xar_ck3_bridge",
+        "cpp": "src/bridge.cpp"
+      },
+      "link_scope": "whole_bridge",
+      "link_extra_libraries": [
+        "bcrypt.lib"
+      ],
+      "generated_outputs": [],
+      "held_generated_sources": [],
+      "first_modes_only": [
+        "--reproductive-inputs-wire-dir"
+      ],
+      "qualified_old_mode_replay": 0,
+      "source_CMake_evidence": "cmake/first_heir_descendants_12004.cmake:2-16"
+    }
+  ],
+  "builds": 0,
+  "FIRST": 0,
+  "old_green_replays": 0
+}
