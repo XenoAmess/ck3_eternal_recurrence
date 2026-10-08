@@ -152,22 +152,32 @@ def restore_prepared_profile(context,beforelaunch_inventory):
                                     'byte_exact_count':len(rows)-2,'changed_outer_paths':changed})
 
 
-def materialize_product_profile(context,product_dir,plain_configuration):
+def materialize_product_profile(context,product_dir,plain_configuration,*,workshop_cache_files=None):
     state=Path(context['state_dir']).resolve();profile=state/'profile'
     require(not profile.exists(),'New product-only profile required')
     require(set(plain_configuration)==set(CONFIG_NAMES),'Exactly four plain configurations required')
     profile.mkdir(parents=True)
     for relative,row in plain_configuration.items():checked_copy(row,profile/relative)
-    product_dir=Path(product_dir);target=profile/'mod-content/product'
+    product_dir=Path(product_dir).resolve();target=profile/'mod-content/product'
     require((product_dir/'descriptor.mod').is_file(),'Exact formal product descriptor required')
-    shutil.copytree(product_dir,target)
+    if workshop_cache_files is None:
+        shutil.copytree(product_dir,target)
+    else:
+        require(workshop_cache_files,'Exact external Workshop cache inventory required')
+        target=product_dir
     outer=profile/'mod/product.mod';outer.parent.mkdir()
-    with outer.open('x',encoding='utf-8',newline='\n') as stream:stream.write(_outer_from_inner(target/'descriptor.mod',target))
+    text=_outer_from_inner(target/'descriptor.mod',target)
+    if workshop_cache_files is not None:
+        item=context['workshop_cache_item_id']
+        require(re.fullmatch(r'[1-9][0-9]*',item),'Canonical cache item ID required')
+        text+='remote_file_id="'+item+'"\n'
+    with outer.open('x',encoding='utf-8',newline='\n') as stream:stream.write(text)
     write_json(profile/'dlc_load.json',{'enabled_mods':['mod/product.mod'],'disabled_dlcs':[]})
-    products=[outer,*sorted(p for p in target.rglob('*') if p.is_file())]
-    inventory={'schema':'ck3-saved-campaign-product-only-profile-v1','profile_path':str(profile.resolve()),
-               'enabled_mods':['mod/product.mod'],
-               'product_files':[pin(p) for p in products]}
+    products=([pin(outer),*workshop_cache_files] if workshop_cache_files is not None else
+              [pin(p) for p in [outer,*sorted(p for p in target.rglob('*') if p.is_file())]])
+    inventory={'schema':('ck3-workshop-cache-product-only-profile-v1' if workshop_cache_files is not None else
+                         'ck3-saved-campaign-product-only-profile-v1'),'profile_path':str(profile.resolve()),
+               'enabled_mods':['mod/product.mod'],'product_files':products}
     path=Path(context['output'])/'saved-product-inventory.json';write_json(path,inventory)
     rows={p.relative_to(profile).as_posix():pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}
     return {'state_dir':str(state),'profile':str(profile),'product_inventory':pin(path),'files':rows,

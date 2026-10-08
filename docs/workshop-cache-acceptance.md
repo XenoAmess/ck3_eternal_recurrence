@@ -13,6 +13,16 @@
 
 两项成立，缓存验收即通过。随后正常关闭 CK3，保持 Steam 离线并释放进程和屏幕资源；这些是既有现场收尾操作，不新增缓存业务门槛。
 
+## 共用菜单加载入口（2026-10-09）
+
+全部产品复用[公共六模式入口](../tools/ck3_mod_acceptance.py)的`--case workshop_cache`，共同case与[adapter](../tools/ck3_mod_acceptance_cases/workshop_cache_adapter.py)只定义一次。产品身份取[canonical清单](../workshop/products.json)；没有公开item ID的开发版不能推测下载目标。产品不复制host、DLL、启动器、正常退出或SDK下载实现。
+
+`prepare`只消费本次实际SDK下载回执、正式tag的manifest、下载cache路径与四份普通配置。沿用现有严格cache verifier，仅容许正式descriptor中已有的启动器ID注入归一化；缺失、额外、改字节或错误ID均拒绝。新profile只有六份普通输入，外层descriptor直接指向实际Steam下载目录，不复制cache、不挂fixture。SDK下载仍由原发布入口执行，prepare不会下载、启动CK3或授予加载通过。
+
+加载采用既有现场已接受的组合证据：同一实际受管CK3进程的PID、创建时间、真实启动命令和userdir绑定上述单产品profile；native实际读回两次连续、完整且可见的主菜单route/tree，核当前游戏build、pipe和generation，并绑定该profile的只读引擎诊断。它证明这次实际启动已完成目标cache配置的菜单加载；不把单独的配置、ACK或截图当加载通过，也不声称取得独立引擎VFS路径读回。独立VFS字段未知不新增门槛。无需New Game、Start、人物、地图或游戏内业务。
+
+公共客户端沿用原正常GUI Quit、独立retained OS0/native0及清理/keeper/CAS。菜单模式拒绝日推进、载入存档及业务动作；源码功能验收继续使用各原case。新增菜单6项、cache9项离线回归已实际通过并接入原CI；首次公共菜单模式的实际qualification仍待真实发布后run，不将代码采用写成实机PASS。
+
 ## 发布流程中的使用
 
 发布前仍完成对应产品源码/正式 staging 的功能验收。发布后不再重复检查事件、决议按钮、特质、数值、冷却期、任命、存载业务、自然时间链或其他游戏内功能；不挂载业务测试 fixture，不重跑代表业务 cell 或完整业务矩阵。已取得的真实缓存文件核对及实际加载证据直接复用，不为新规则再次启动或下载同一版本。

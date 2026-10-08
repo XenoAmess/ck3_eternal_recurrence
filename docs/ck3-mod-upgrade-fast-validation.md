@@ -18,7 +18,7 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 
 ## 当前公共CLI与本机共同版本
 
-当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。本机[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound10.json)选择唯一[FINAL09 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-09.json)，后者绑定shared Source08/index、canonical host与native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。旧runner和冻结只保留原证据及底层实现。
+当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。后续本机新场使用[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound11.json)和唯一[FINAL10 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-10.json)，绑定shared Source09/index、canonical host与native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。已消费场次继续绑定各自旧冻结输入，旧runner和冻结保留原证据及底层实现。
 
 上述六个模式是未来新 mod run 的唯一操作路由。旧 `run_acceptance.py`、`run_vivhite_acceptance.py`、terminal/product runner 及其历史命令只供只读证据、library 与原业务断言复用，不直接作为新启动入口；旧冻结不被改写。产品 builder、静态检查和不启动游戏的原 preflight 继续保留，不能凭这些结果授实机资格。公共 local 映射始终指向当次唯一全局 manifest，不按产品另选 host/source/native。`de-jure-conquest`、`change-holding-types`、`li-yu-dao` 的 basic-load case 只授加载边界，其原玩家功能合同仍待独立业务证据。
 
@@ -113,3 +113,23 @@ Root已修复`_business.literals`与RMTM `_law_phase`两处实际接点，显式
 精确前一提交`0cd572f0f88b3fa00012842c0f21eba1b985310b`的[官方CI 37795672799](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37795672799)实际success（14:58:59 UTC），[线性历史CI 37795672808](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37795672808)实际success（14:50:28 UTC）；这两项不外推新增日志修复的下一提交。
 
 下一原unused root04实际公共prepare exit0、0.789秒，仅state_dir改为root04，其余case inputs与原合同相同，继续绑定Source08/FINAL09/bound10。R18/a127已单次allocate（6579→keeper6580 READY 1.538秒），Steam窗口位移与两张实际nonce原图经Root亲审离线，15:15:07 UTC实际启动共同host；生产交互与正常退出仍待该场结果。发布后统一menu-only缓存消费另行施工，不重跑缓存业务、不改变R18已冻结输入。
+
+### R18导航失败与共同菜单缓存消费（2026-10-09）
+
+R18/a127随后取得完整D1和实际`debug.log`查询成功，六项原context marker各一次、三个FAIL族为0，实际READY给出本场宋34422、辽34440、西夏37256和天德14684。Root的额外MCP人物导航被[旧episode绑定校验](C:/workspace/ck3-upgrade-20261008/ted-r0018-open-character-error-readonly-33/ROOT-TED-R0018-OPEN-CHARACTER-ERROR-33.md)拒绝，发生在native派发之前；不是人物ID无效或真实GUI失败。15:29:24 UTC host RED/thread/cleanup TRUE，公共run67672实际exit2、retained OS1、normal-close FALSE，无Send/AI结果信用。keeper13708实际exit0→[CAS6597 done/resources=[]](C:/workspace/ck3-upgrade-20261006/resume-root-01/a127-screen-release-01.json)，原失败保留。
+
+Root采用单一`_ingame_ui_v1`窄接线：前后均复用既有camera helper的native_campaign绑定，并核完整managed run binding及实际owner一致；普通episode路径保持。六项[真实函数交叉回归](../tools/test_ingame_ui_managed_binding.py)采用后PASS（3.930秒），加入既有CI。原`.4` UI build-scope只允许army query/select，人物窗口仍明确未准入；不放宽native资格，不给这项修复虚授人物导航信用。R19/a128使用旧冻结Source08、普通GUI人物路线，root05已消费，不能改成新版本的unused输入。
+
+## Source09：统一菜单加载与原 managed UI 绑定
+
+[Source09/FINAL10/bound11 封存](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/ROOT-SHARED-SOURCE09-MANIFEST10-BOUND11-UNUSED-CONSUME-01.md)实际exit0、3.989秒。仅host227490 B（SHA `242c5efeb3968c8f72211def4d32859eedda32c7c9f9e58b4504ab95ee563c4b`）和driver1419062 B两项独立delta，其余6902行继承。native DLL/injector及其构建不变，没有再编译、旧矩阵或全树重hash。
+
+公共菜单加载分支与绑定修复已入主树，六项菜单定向测试和六项绑定交叉回归通过；共享Workshop缓存adapter另有九项定向测试通过。新菜单分支的实机资格仍为NOT_RUN，首次后续正式发布缓存场承担该项验证；不重跑已完成产品。
+
+R19在17:02:39 UTC结束，host报告GREEN、managed thread完成、cleanup TRUE；公共run80125实际exit2，错误为原正常退出预留时限已到且Root业务阶段仍GAP。Root实际确认角色搜索器显示“皇帝，耶律弘基，你的朝贡者”，但未执行Send、未取得AI响应，也未完成Root正常GUI退出；host GREEN不授产品验收信用。[a128 CAS6671](C:/workspace/ck3-upgrade-20261006/resume-root-01/a128-screen-release-01.json)已done/resources=[]，原场输入和失败证据保持。虚拟键输入未改变搜索框，Windows扫描码Ctrl+V后才实际显示完整“弘基”；后续普通GUI输入应沿用已验证扫描码及焦点、英文布局、实际文本读回。
+
+原retained handle在等待截止时为signaled=false、exit_code=null，normal-close-qualified=false，不能声称实际OS1或OS0。[闭场薄卡和新场预算](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-product-specs-01/ted-manual-ui-three-hour-tail-35/ROOT-TED-R19-CLOSURE-AND-THREE-HOUR-TAIL-35.md)绑定四份原始小结果。未来TED production_ui仅将人工hold从3600改为10800秒，command300/readiness900/timeout4800/poll.05及90秒正常退出预留保持；真实D1、Send一次、AI回应、150威望和钱包后果的通过条件保持。三小时是保活上限，业务完成即可提前正常退出，旧场不重新解释。
+
+共用`workshop_cache`已经接入六模式CLI，一份顶层case/adapter供全部产品复用，公开ID取canonical清单，无ID开发版拒绝。唯一共同host新增显式菜单观察支路：不New Game/Start/载入/日推进，实际单次受管launch与两连续完整主菜单观察绑定cache-only六文件profile，原正常GUI/OS0/native0/cleanup沿用。缓存文件直接引用Steam下载目录，原strict helper逐文件核正式manifest；无业务fixture或复制cache。已采用[菜单6项](../tools/test_ck3_mod_acceptance_menu_mod_load.py)实际PASS（2.108秒）及[cache9项](../tools/test_ck3_mod_acceptance_workshop_cache.py)实际PASS（1.068秒），原客户端、allocator和SDK入口保持。详细永久政策见[缓存验收](workshop-cache-acceptance.md)。代码采用不代替首次菜单模式实机资格，后续统一封存供新run消费。
+
+精确日志修复提交`4fa3e50cba036d538ad2c5a7266f60610ea94496`的[官方CI 37799513376](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37799513376)实际success（15:24:15 UTC），[线性历史CI 37799513501](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37799513501)实际success（15:18:09 UTC）。新菜单/绑定采用仍需其精确新提交的CI，不外推旧CI；正式仍6/10。

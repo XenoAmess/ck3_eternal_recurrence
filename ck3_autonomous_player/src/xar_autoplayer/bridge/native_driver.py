@@ -5610,7 +5610,7 @@ class NativeHeadlessGameplayDriver:
         validate_ui_request(operation, kind, subject_id, expected_revision,
             army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt)
         starting = self.take_snapshot()
-        binding = _title_map_navigation_binding_from_snapshot(starting)
+        binding = _title_camera_navigation_binding_from_snapshot(starting)
         if starting.get("paused") is not True or starting.get("map_ready") is not True:
             raise BridgeUnavailableError("native UI navigation requires a paused map-ready snapshot")
         if starting.get("revision") != expected_revision:
@@ -5641,9 +5641,13 @@ class NativeHeadlessGameplayDriver:
                 request_fields=fields)
             ending = self.take_snapshot()
             if (not _same_paused_native_frame(starting, ending) or
-                    _title_map_navigation_binding_from_snapshot(ending) != binding or
+                    _title_camera_navigation_binding_from_snapshot(ending) != binding or
                     ending.get("map_ready") is not True or ending.get("played_character") != played or
-                    ingame_ui_build_binding(ending) != source_binding):
+                    ingame_ui_build_binding(ending) != source_binding
+                    or (starting.get("episode_projection") == "native_campaign" and (
+                        ending.get("managed_campaign_run_binding") != starting.get("managed_campaign_run_binding")
+                        or ending["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["owner_tid"]
+                        != starting["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["owner_tid"]))):
                 raise BridgeUnavailableError("native UI crossed its paused session binding")
             result = normalize_ui_result(raw, operation=operation, kind=kind, subject_id=subject_id,
                 native_revision=int(starting["native_revision"]), date_raw=int(starting["date_raw"]), actor_id=actor,

@@ -102,7 +102,8 @@ class Selection:
             raise ValueError("Unsupported shared runtime manifest schema")
         self.product_key = product_key
         self.product = self.products["products"][product_key]
-        cases = [case for case in self.product["cases"] if case["id"] == case_id]
+        cases = ([self.products["workshop_cache_case"]] if case_id == "workshop_cache"
+                 else [case for case in self.product["cases"] if case["id"] == case_id])
         if len(cases) != 1:
             raise ValueError("Exactly one product case required")
         self.case = json.loads(json.dumps(cases[0]))
@@ -236,6 +237,8 @@ class Selection:
                 argv += ["--frontend-rules-plan", str(self.case_path(startup["frontend_rules_plan"]))]
             if startup.get('startup_case_contract'):
                 argv += ['--frontend-fixture-startup-case-contract',str(self.case_path(startup['startup_case_contract']))]
+        elif startup["mode"] == "workshop_cache":
+            argv += ["--fixture-profile", "--frontend-mod-load-observation"]
         elif startup["mode"] == "saved_campaign":
             argv += ['--fixture-profile']
             saved = dict(startup["saved_campaign"])
@@ -258,7 +261,7 @@ class Selection:
                 argv += [flag, str(value)]
             self.saved = saved
         else:
-            raise ValueError("Only existing fixture and saved_campaign startup modes are supported")
+            raise ValueError("Only existing fixture, saved_campaign and workshop_cache startup modes are supported")
         return argv
 
     def describe(self) -> dict:
@@ -403,6 +406,7 @@ class Selection:
             'product':self.product_key,'case':self.case['id'],'case_spec':self.case,
             'shared_source_root':str(self.manifest_path_key(self.manifest['source_root'])),
             'shared_game':self.manifest['game'],'case_contract':read_json(self.adapter_config),
+            'product_spec':self.product,'canonical_products_path':str(self.case_path(self.products['product_inventory'])),
             'case_inputs':case_inputs,'saved_campaign':self.prepared.get('startup',{}).get('saved_campaign',{}) if self.prepared else self.context.get('saved_campaign',{}),
             'runtime_manifest':pin(self.manifest_path)}
 

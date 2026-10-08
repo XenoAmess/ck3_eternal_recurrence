@@ -160,6 +160,8 @@ jobs:
         run: |
           python -B -X utf8 tools/test_ck3_mod_acceptance.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_workshop_cache.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_adapters.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_completion.py
@@ -176,11 +178,15 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_preaction.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_menu_mod_load.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_song_holding.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_title_holder_stable_key_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_event_callsite.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ingame_ui_managed_binding.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_log_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

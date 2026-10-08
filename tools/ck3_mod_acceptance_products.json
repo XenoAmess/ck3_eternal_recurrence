@@ -937,7 +937,7 @@
             "readiness_timeout": 900,
             "timeout": 4800,
             "poll_interval": 0.05,
-            "hold_seconds": 3600
+            "hold_seconds": 10800
           },
           "normal_close": {
             "route": "shared_managed_normal_gui_quit",
@@ -1765,5 +1765,34 @@
       "runtime_mod_key": "li-yu-dao",
       "external_mod": false
     }
+  },
+  "workshop_cache_case": {
+    "id": "workshop_cache",
+    "status": "ready",
+    "implementation_credit": "Single shared cache boundary; actual SDK/cache/menu/normal0 qualification remains required",
+    "adapter": {
+      "path": "{repo_root}/tools/ck3_mod_acceptance_cases/workshop_cache_adapter.py",
+      "config": "{repo_root}/tools/ck3_mod_acceptance_cases/workshop_cache.json"
+    },
+    "initial_plan": "{run_dir}/prepared/initial-plan.json",
+    "startup": {
+      "mode": "workshop_cache",
+      "state_dir": "{run_dir}/state"
+    },
+    "budgets": {
+      "command_timeout": 300,
+      "readiness_timeout": 400,
+      "timeout": 3600,
+      "poll_interval": 0.5,
+      "hold_seconds": 900
+    },
+    "required_mcp_tools": [
+      "ck3_query_frontend_gui_route_v1",
+      "ck3_inspect_frontend_gui_tree_v1",
+      "ck3_migration_pipe_diagnostics",
+      "ck3_query_engine_diagnostics_v1",
+      "ck3_query_engine_log_literals_v1"
+    ],
+    "business_contract_applicable": false
   }
 }

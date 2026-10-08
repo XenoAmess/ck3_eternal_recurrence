@@ -347,6 +347,112 @@ def paused_map_readiness_admitted(snapshot: dict[str, object], report: dict[str,
     return True
 
 
+def require_menu_observation_step(step: object) -> None:
+    """Menu-only plans can observe their actual profile and native frontend."""
+    tools = {"ck3_query_frontend_gui_route_v1", "ck3_inspect_frontend_gui_tree_v1",
+             "ck3_get_capabilities", "ck3_migration_pipe_diagnostics",
+             "ck3_query_engine_diagnostics_v1", "ck3_query_engine_log_literals_v1"}
+    if not isinstance(step, dict):
+        raise ValueError("menu mod-load observation requires an explicit read-only step")
+    kind = step.get("kind", "tool")
+    if kind == "finish_hold":
+        return
+    if (kind not in {"tool", "frontend_read_only"} or step.get("tool") not in tools
+            or not isinstance(step.get("args", {}), dict)):
+        raise ValueError("menu mod-load observation cannot Start, load, select, advance or execute an action")
+
+
+def validate_menu_observation_options(args: argparse.Namespace) -> None:
+    if not getattr(args, "frontend_mod_load_observation", False):
+        return
+    if (not args.fixture_profile or args.saved_campaign_save is not None or args.saved_campaign_server
+            or args.frontend_robert_bootstrap or args.frontend_fixture_start_policy is not None
+            or args.frontend_fixture_startup_case_contract is not None or args.frontend_rules_plan is not None
+            or args.frontend_rules_diagnostic or args.frontend_rules_diagnostic_new_game
+            or args.frontend_diagnostic_only or args.allow_verified_direct_bookmarks
+            or args.cold_start_checkpoint or args.turns or args.native_fixture_inbox
+            or args.sdk_smoke_test or args.sdk_error_smoke_test or args.fixture_server or args.print_default_plan):
+        raise SystemExit("menu mod-load observation requires its explicit prepared profile and excludes campaign, Start, rules, SDK, checkpoint, fixture-inbox and turns")
+    if args.plan is not None:
+        for step in load_plan(args.plan):
+            require_menu_observation_step(step)
+
+
+def menu_observation_native_identity(packet: object, launch: object, pipe_name: str) -> dict[str, object]:
+    from xar_autoplayer.bridge.version_identity import CK3_12004, require_exact_native_build
+    diagnostics = packet.get("diagnostics") if isinstance(packet, dict) else None
+    hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+    if (not isinstance(hello, dict) or not isinstance(launch, dict)
+            or launch.get("status") != "ACTUAL_SINGLE_MENU_LAUNCH_RECORDED"
+            or type(launch.get("pid")) is not int or not 1 <= launch["pid"] <= 2**32 - 1
+            or diagnostics.get("connected") is not True or packet.get("transport_error") is not None
+            or diagnostics.get("transport_fatal_error") is not None or diagnostics.get("last_error") is not None
+            or type(diagnostics.get("bridge_pid")) is not int or diagnostics["bridge_pid"] != launch["pid"]
+            or type(hello.get("pid")) is not int or hello["pid"] != launch["pid"]
+            or type(diagnostics.get("connection_generation")) is not int
+            or not 1 <= diagnostics["connection_generation"] <= 2**64 - 1
+            or type(hello.get("connection_generation")) is not int
+            or hello["connection_generation"] != diagnostics["connection_generation"]
+            or diagnostics.get("pipe_name") != pipe_name or packet.get("pipe") != pipe_name
+            or hello.get("ck3_build_match") is not True or hello.get("game_adapter_status") != "ready"):
+        raise RuntimeError("menu mod-load observation lacks its actual managed native identity")
+    build = require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+    if build != CK3_12004 or hello.get("game_adapter_id") != "ck3-" + build.game_version + "-msvc-x64":
+        raise RuntimeError("menu mod-load observation requires the actual exact current4 build")
+    return {"bridge_pid": launch["pid"], "connection_generation": diagnostics["connection_generation"],
+            "pipe_name": pipe_name, "native_build": {"version": build.game_version,
+                "executable_sha256": build.executable_sha256, "adapter_id": hello["game_adapter_id"]}}
+
+
+async def observe_frontend_mod_load(client: PlanClient, *, report: dict[str, object], write: object,
+        timeout: float, managed_done: threading.Event | None, poll_interval: float,
+        poll_reporting: StartupPollReporting | None = None) -> dict[str, object]:
+    required = {"ck3_query_frontend_gui_route_v1", "ck3_inspect_frontend_gui_tree_v1",
+                "ck3_migration_pipe_diagnostics", "ck3_query_engine_diagnostics_v1",
+                "ck3_query_engine_log_literals_v1"}
+    if not required <= set(client.tools):
+        raise RuntimeError("menu mod-load observation lacks actual frontend/profile diagnostics tools")
+    report["phase"] = "native-frontend-mod-load-observation"
+    report["frontend_bootstrap"] = {"status": "MENU_ONLY_OBSERVATION_PENDING", "attempts": [],
+        "uses_ocr": False, "uses_keyboard": False, "uses_mouse": False}
+    state = {"status": "WAITING_FOR_ACTUAL_STABLE_MAIN_MENU", "product_acceptance_proven": False,
+             "actual_cache_mount_proven": False, "campaign_started": False, "actions_submitted": 0}
+    report["frontend_mod_load_observation"] = state
+    write()
+    route, tree, proof = await wait_for_consistent_frontend(client, report=report, write=write,
+        timeout=timeout, managed_done=managed_done, require_route="main_menu",
+        poll_interval=poll_interval, poll_reporting=poll_reporting)
+    if managed_done is not None and managed_done.is_set():
+        raise RuntimeError("managed session ended before menu mod-load diagnostics")
+    diagnostics = await client.call("ck3_migration_pipe_diagnostics")
+    launch = report.get("frontend_mod_load_launch")
+    profile = (client.args.state_dir / "profile").resolve()
+    if (not isinstance(launch, dict) or launch.get("profile_dir") != str(profile)
+            or not isinstance(launch.get("ck3_creation_date"), str) or not launch["ck3_creation_date"]
+            or not isinstance(launch.get("actual_command"), list)
+            or any(not isinstance(value, str) for value in launch["actual_command"])
+            or [value for value in launch["actual_command"] if value.startswith("-userdir=")] != [f"-userdir={profile}"]
+            or any(value == "-continuelastsave" or value.startswith("-loadsave") for value in launch["actual_command"])
+            or launch.get("continue_last_save") is not False or launch.get("load_save_name") is not None):
+        raise RuntimeError("menu mod-load observation crossed its actual single-launch profile")
+    identity = menu_observation_native_identity(diagnostics, launch, client.args.bridge_pipe)
+    engine = await client.call("ck3_query_engine_diagnostics_v1", {"fingerprint_limit": 50, "tail_limit": 25})
+    from xar_autoplayer.ck3_runtime_diagnostics import ENGINE_DIAGNOSTICS_SCHEMA_V1
+    if (not isinstance(engine, dict) or engine.get("schema") != ENGINE_DIAGNOSTICS_SCHEMA_V1
+            or engine.get("read_only") is not True or not isinstance(engine.get("profile_dir"), str)
+            or Path(engine["profile_dir"]).resolve() != (client.args.state_dir / "profile").resolve()
+            or not isinstance(engine.get("logs"), dict) or not engine["logs"]
+            or engine.get("path_argument_accepted") is not False or engine.get("regex_argument_accepted") is not False):
+        raise RuntimeError("menu mod-load observation lacks actual profile engine diagnostics")
+    state.update(status="ACTUAL_STABLE_MAIN_MENU_OBSERVED_READ_ONLY", identity=identity,
+        route=route, tree=tree, proof=proof, pipe_diagnostics=diagnostics, engine_diagnostics=engine)
+    report["frontend_bootstrap"]["status"] = "ACTUAL_STABLE_MAIN_MENU_OBSERVED_NO_NEW_GAME_OR_START"
+    report["readiness"] = {"domain": "frontend_mod_load_observation", "status": state["status"],
+        "identity": identity, "map_readiness_claimed": False, "product_acceptance_proven": False}
+    write()
+    return state
+
+
 def validate_saved_campaign_options(args: argparse.Namespace) -> None:
     inputs = (args.saved_campaign_save_bytes, args.saved_campaign_save_sha256,
         args.saved_campaign_player_id, args.saved_campaign_date_raw, args.saved_campaign_product_inventory)
@@ -761,7 +867,8 @@ def native_server(args: argparse.Namespace) -> None:
             "preparation_sha256": fixture_policy["preparation"]["sha256"]}
         server = create_server(driver, profile_dir=args.state_dir / "profile")
     else:
-        server = create_server(driver, profile_dir=args.state_dir / "profile") if args.saved_campaign_server else create_server(driver)
+        server = (create_server(driver, profile_dir=args.state_dir / "profile")
+            if args.saved_campaign_server or getattr(args, "frontend_mod_load_observation", False) else create_server(driver))
 
     @server.tool()
     def ck3_migration_pipe_diagnostics() -> dict[str, object]:
@@ -944,7 +1051,8 @@ def file_sha(path: Path) -> str:
 
 
 def fixture_session(spec: object, config: object, args: argparse.Namespace,
-                    stop: threading.Event, *, output_stream: object = None) -> dict[str, object]:
+                    stop: threading.Event, *, output_stream: object = None,
+                    launch_record: dict[str, object] | None = None) -> dict[str, object]:
     """Run the full session queue with one fixture-only first-launch override."""
     import importlib
     from types import FunctionType
@@ -957,8 +1065,21 @@ def fixture_session(spec: object, config: object, args: argparse.Namespace,
         nonlocal first_launch
         if first_launch:
             launch_kwargs["verify_prepared_profile"] = False
+            if getattr(args, "frontend_mod_load_observation", False):
+                if launch_kwargs.get("load_save_name") is not None:
+                    raise ValueError("menu-only launch cannot load a saved campaign")
+                launch_kwargs["continue_last_save"] = False
             first_launch = False
-        return original_launch(*launch_args, **launch_kwargs)
+        if getattr(args, "frontend_mod_load_observation", False) and (
+                not isinstance(launch_record, dict)
+                or launch_record.get("status") != "WAITING_FOR_ACTUAL_SINGLE_MENU_LAUNCH"):
+            raise RuntimeError("menu-only observation cannot relaunch the game")
+        handle = original_launch(*launch_args, **launch_kwargs)
+        if getattr(args, "frontend_mod_load_observation", False) and launch_record is not None:
+            launch_record.update(status="ACTUAL_SINGLE_MENU_LAUNCH_RECORDED", pid=handle.process.pid,
+                ck3_creation_date=handle.ck3_creation_date, profile_dir=str(spec.profile_dir.resolve()),
+                actual_command=list(handle.command), continue_last_save=False, load_save_name=None)
+        return handle
 
     # Rebind the existing public entry and its queue loop locally.  Production
     # module globals remain untouched while this owned fixture thread runs.
@@ -1777,7 +1898,17 @@ class PlanClient:
             self.write()
             try:
                 kind = step.get("kind", "tool")
-                if kind == "episode_identity_anchor":
+                menu_only = getattr(self.args, "frontend_mod_load_observation", False)
+                if menu_only:
+                    require_menu_observation_step(step)
+                    if kind == "finish_hold":
+                        managed_done = getattr(self, "managed_done", None)
+                        if finished_native_exit_zero_proof(self.report,
+                                managed_done is not None and managed_done.is_set(), self.episode_identity) is None:
+                            raise RuntimeError("menu-only finish_hold requires original actual managed native-zero proof")
+                if menu_only and kind != "finish_hold":
+                    result = await self.call(step["tool"], step.get("args", {}))
+                elif kind == "episode_identity_anchor":
                     result = await self.bind_episode_identity()
                 elif kind == "advance_day":
                     result = await self.advance_event_boundary(step) if step.get("allow_event_boundary") is True else await self.advance(step)
@@ -1841,7 +1972,7 @@ class PlanClient:
                     if actual != expected:
                         raise ValueError(f"result {path} expected {expected!r}, received {actual!r}")
                 self.results[str(row["id"])] = result
-                if kind not in {"frontend_read_only", "terminal_window_read_only"}:
+                if kind not in {"frontend_read_only", "terminal_window_read_only"} and not (menu_only and kind != "finish_hold"):
                     managed_done = getattr(self, "managed_done", None)
                     proof = (finished_native_exit_zero_proof(self.report,
                         managed_done is not None and managed_done.is_set(), self.episode_identity)
@@ -2987,6 +3118,18 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                 "production_profile_verified": False}
         else:
             report["profile"] = verify_profile(spec)
+        if getattr(args, "frontend_mod_load_observation", False):
+            preparation_path = args.state_dir / "preparation.json"
+            preparation = json.loads(preparation_path.read_text(encoding="utf-8-sig"))
+            if (not isinstance(preparation, dict)
+                    or preparation.get("schema") != "ck3-mod-acceptance-profile-startup-evidence-v1"
+                    or not isinstance(preparation.get("profile_dir"), str)
+                    or Path(preparation["profile_dir"]).resolve() != spec.profile_dir.resolve()):
+                raise RuntimeError("menu mod-load observation requires its bound prepared profile evidence")
+            report["frontend_mod_load_profile"] = {"profile_dir": str(spec.profile_dir.resolve()),
+                "preparation_path": str(preparation_path.resolve()),
+                "preparation_sha256": file_sha(preparation_path), "preparation": preparation}
+            report["frontend_mod_load_launch"] = {"status": "WAITING_FOR_ACTUAL_SINGLE_MENU_LAUNCH"}
         saved_campaign = None
         if args.saved_campaign_save is not None:
             saved_campaign = prepare_saved_campaign(args, spec)
@@ -3008,7 +3151,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                             launch_record=report["saved_campaign_launch"])
                         stream.write(json.dumps(session_state["report"], ensure_ascii=False) + "\n")
                     elif args.fixture_profile:
-                        session_state["report"] = fixture_session(spec, config, args, stop, output_stream=stream)
+                        session_state["report"] = fixture_session(spec, config, args, stop, output_stream=stream,
+                            launch_record=report.get("frontend_mod_load_launch"))
                         stream.write(json.dumps(session_state["report"], ensure_ascii=False) + "\n")
                     else:
                         session_state["report"] = native_session(
@@ -3034,6 +3178,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                        "--frontend-robert-bootstrap", "--fixture-profile"]
     if args.saved_campaign_save is not None:
         child_args.append("--saved-campaign-server")
+    if getattr(args, "frontend_mod_load_observation", False):
+        child_args += ["--frontend-mod-load-observation", "--fixture-profile"]
     parameters = StdioServerParameters(command=sys.executable, args=child_args,
         env={"PYTHONUTF8": "1", "PYTHONDONTWRITEBYTECODE": "1",
              **({"PYTHONPATH": os.environ["PYTHONPATH"]} if "PYTHONPATH" in os.environ else {})})
@@ -3056,6 +3202,10 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         # initialize/list_tools prove the child has already opened its pipe.
                         if supervisor is not None:
                             supervisor.start()
+                        if getattr(args, "frontend_mod_load_observation", False):
+                            await observe_frontend_mod_load(client, report=report, write=write,
+                                timeout=args.readiness_timeout, managed_done=done if supervisor is not None else None,
+                                poll_interval=args.poll_interval, poll_reporting=poll_reporting)
                         if args.saved_campaign_save is not None:
                             await wait_for_saved_campaign(client, saved_campaign, report=report, write=write,
                                 timeout=args.readiness_timeout, managed_done=done if supervisor is not None else None,
@@ -3168,10 +3318,11 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                                     raise RuntimeError("native stock Robert Start did not independently verify the map")
                                 report["frontend_bootstrap"]["status"] = "NATIVE_START_VERIFIED_MAP_READINESS_PENDING"
                                 write()
-                        report["phase"] = "waiting-for-paused-map"
+                        report["phase"] = ("frontend-mod-load-menu-observed"
+                            if getattr(args, "frontend_mod_load_observation", False) else "waiting-for-paused-map")
                         write()
                         deadline = time.monotonic() + args.readiness_timeout
-                        while args.saved_campaign_save is None:
+                        while args.saved_campaign_save is None and not getattr(args, "frontend_mod_load_observation", False):
                             if supervisor is not None and done.is_set():
                                 raise RuntimeError(f"managed session ended before readiness: {session_state}")
                             try:
@@ -3189,7 +3340,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         report["phase"] = "executing-plan"
                         write()
                         plan = ([{"id": "expected-sdk-tool-error", "tool": "ck3_migration_fixture_error"}]
-                                if args.sdk_error_smoke_test else load_plan(args.plan) if args.plan else default_plan())
+                                if args.sdk_error_smoke_test else load_plan(args.plan) if args.plan else
+                                [] if getattr(args, "frontend_mod_load_observation", False) else default_plan())
                         await client.execute(plan)
                         if args.turns:
                             await client.execute([{"id": "r2-turns", "kind": "auto_turns", "count": args.turns}])
@@ -3270,6 +3422,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--saved-campaign-date-raw", type=int)
     result.add_argument("--saved-campaign-product-inventory", type=Path)
     result.add_argument("--saved-campaign-server", action="store_true", help=argparse.SUPPRESS)
+    result.add_argument("--frontend-mod-load-observation", action="store_true",
+                        help="Observe a prepared mod profile at the main menu with read-only MCP diagnostics; no New Game/Start/campaign")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",
                         help="Use existing typed native stock Robert start before map readiness; no desktop input")
     result.add_argument("--frontend-fixture-start-policy", type=Path,
@@ -3302,6 +3456,7 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    validate_menu_observation_options(args)
     validate_saved_campaign_options(args)
     if args.frontend_fixture_start_policy is not None and (not args.frontend_robert_bootstrap
             or not args.fixture_profile or args.frontend_diagnostic_only or args.frontend_rules_diagnostic

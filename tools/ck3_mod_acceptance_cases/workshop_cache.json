@@ -1,0 +1,15 @@
+{
+  "schema": "ck3-mod-acceptance-workshop-cache-v1",
+  "acceptance_scope": "sdk_exact_formal_and_combined_managed_menu_load",
+  "checks": [
+    "sdk_download_exact_formal",
+    "game_cache_mounted_and_normal0"
+  ],
+  "menu_observation_status": "ACTUAL_STABLE_MAIN_MENU_OBSERVED_READ_ONLY",
+  "load_evidence_kind": "COMBINED_MANAGED_CACHE_PROFILE_AND_ACTUAL_MAIN_MENU_LOAD",
+  "independent_engine_vfs_path_readback_required": false,
+  "business_contract_applicable": false,
+  "cache_content_copied": false,
+  "fixture_mounted": false,
+  "campaign_started": false
+}
