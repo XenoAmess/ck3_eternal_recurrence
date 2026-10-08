@@ -72,6 +72,7 @@ def _record_sway_material(
     state_dir: Path, *, ledger: Mapping[str, object],
     resolved: Mapping[str, object], opinion_read: Mapping[str, object],
     tracked_active: bool, terminal_observation: Mapping[str, object] | None = None,
+    current_terminal_observed: bool = False,
 ) -> dict[str, object]:
     """Share the named-material projection across census and exact-instance reads."""
     from .sway_formal_consumer import _write
@@ -92,7 +93,10 @@ def _record_sway_material(
     previous = previous if isinstance(previous, Mapping) else None
     old_sway = previous.get("scheme_sway_opinion") if previous else None
     old_points = _points(old_sway) if isinstance(old_sway, Mapping) else None
-    gain = bool(previous and old_points is not None and tracked_active
+    # The last useful phase can end this exact instance. Historical retained
+    # evidence after purge is independent of the current opinion sample.
+    gain = bool(previous and old_points is not None
+                and (tracked_active or current_terminal_observed)
                 and previous.get("tracked_instance_active") is True
                 and opinion_read["date_raw"] > previous["source_date_raw"]
                 and sway_points > old_points)

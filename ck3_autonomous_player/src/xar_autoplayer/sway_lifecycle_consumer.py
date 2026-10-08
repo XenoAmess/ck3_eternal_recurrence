@@ -115,6 +115,7 @@ def record_sway_material_from_completion(
         state_dir, ledger=ledger, resolved=resolved, opinion_read=opinion_read,
         tracked_active=completion["tracked_instance_active"],
         terminal_observation=resolved.get("terminal_intervention"),
+        current_terminal_observed=completion["instance_terminal_outcome_observed"],
     )
 
 
