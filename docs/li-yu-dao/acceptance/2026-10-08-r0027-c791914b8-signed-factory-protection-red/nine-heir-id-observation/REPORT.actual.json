@@ -1,0 +1,4855 @@
+{
+  "schema": "lyd.r27.retained-nine-heir-character-observation.v2",
+  "status": "ACTUAL_JSON_ONLY_CAUSE_NOT_PROVEN",
+  "inputs": {
+    "FIELD_DIFF": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-factory-field-diff-actual-20261008-001/FIELD-DIFF.actual.json",
+      "bytes": 25893,
+      "sha256": "2bb20a6627c5bb9f2480154ad45eb39826becdc7580288ec3a5baf5e53f3d6b2"
+    }
+  },
+  "ids": [
+    38561,
+    39045,
+    39171,
+    39352,
+    39527,
+    33234,
+    37702,
+    33542,
+    34232
+  ],
+  "stages": {
+    "precommit": {
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/B3-r4-signed-author-001/STATE.json",
+        "bytes": 2603596,
+        "sha256": "d972ffef400664c2d0de6c6e7e1494364f7b60d8b5e540582b0dab1001b2e7df"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/B3-r4-signed-author-001/TYPED-PROTECTION.json",
+        "bytes": 1161163,
+        "sha256": "339d37552ab18134e0d231de0c0f43c962a2cd2b93f74aa950c0fc8fa2d36e06"
+      },
+      "original_author_RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/B3-r4-signed-author-001/RESULT.json",
+        "bytes": 1091968,
+        "sha256": "901a9f79de4980640faf8c484245f10dfd543b357d1bbc173206ca8fae095ec5"
+      },
+      "QUALIFIED_NATIVE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/B3-r4-signed-author-001/native-qualification/QUALIFIED-NATIVE.json",
+        "bytes": 2498215,
+        "sha256": "135d34bbdaa2c360146058103d4653d5a8fc3e7f128a2e1f1b3276955ca3cf75"
+      },
+      "native_copy": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/persistent-client-001/0099-r27-root-r3-signed-g2-after-save2.native-01.json",
+        "bytes": 29025,
+        "sha256": "edf9ef3f2947ab280d1caa3bba3d7efb32e8f9b132085401398d2de9b16674ff"
+      },
+      "pinned_original_native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/native-evidence/0c2c53340fad4738ae5c592498ea3b7f/0096-confucian-readonly-assembly_predicates.json",
+        "bytes": 29025,
+        "sha256": "edf9ef3f2947ab280d1caa3bba3d7efb32e8f9b132085401398d2de9b16674ff"
+      },
+      "native_copy_matches_original_author_pin": true,
+      "native_raw_matches_qualified": true,
+      "checkpoint_after_binding": {
+        "revision": 37,
+        "native_revision": 36,
+        "date_raw": 53144712,
+        "game_pid": 13404,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:36"
+      },
+      "recorded_at_utc": "2026-10-08T01:52:27.914732+00:00",
+      "checkpoint_sha256": "ce6d078519a94410568938d0424dd96419540d7d663957d35d4848852386cfc4",
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": 2,
+        "result_code": null
+      },
+      "Faith107_complete_member_count": 51,
+      "capture_epoch": 366121,
+      "saved_roster_member_count": 51,
+      "typed_protection_check_count": 87,
+      "typed_protection_false_checks": [],
+      "typed_protection_match_count": 87,
+      "typed_protection_false_count": 0,
+      "typed_protection_checks_match_literal": true
+    },
+    "postcommit": {
+      "STATE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/B4-r3-signed-author-001/STATE.json",
+        "bytes": 630861,
+        "sha256": "f9f645cc623ba822baabd2551f1dbdce91c2c5ecae772e09b53589cdc417ccfc"
+      },
+      "TYPED": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/B4-r3-signed-author-001/TYPED-PROTECTION.json",
+        "bytes": 1010657,
+        "sha256": "8f9d3be9e7ca62540561c99747bb660f2756ef680deb5444ca57d80fc2e7fc44"
+      },
+      "original_author_RESULT": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/B4-r3-signed-author-001/RESULT.json",
+        "bytes": 1089989,
+        "sha256": "274d23472c19c769425acde2d5b8eb5e8392654353ecf051a878b8b6f4af6d18"
+      },
+      "QUALIFIED_NATIVE": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/B4-r3-signed-author-001/native-qualification/QUALIFIED-NATIVE.json",
+        "bytes": 2589503,
+        "sha256": "5f4cd8386832556e7de9744cbf2130b5383e4aae895aa258671d02d5b007cfb6"
+      },
+      "native_copy": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/persistent-client-001/0105-r27-root-r3-factory-g2.native-01.json",
+        "bytes": 29025,
+        "sha256": "ec9557f39db36f494d966f452546b8e948eb187685e80b57efff4cb9693e6ad5"
+      },
+      "pinned_original_native": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-027/native-evidence/0c2c53340fad4738ae5c592498ea3b7f/0102-confucian-readonly-assembly_predicates.json",
+        "bytes": 29025,
+        "sha256": "ec9557f39db36f494d966f452546b8e948eb187685e80b57efff4cb9693e6ad5"
+      },
+      "native_copy_matches_original_author_pin": true,
+      "native_raw_matches_qualified": true,
+      "checkpoint_after_binding": {
+        "revision": 39,
+        "native_revision": 38,
+        "date_raw": 53144712,
+        "game_pid": 13404,
+        "connection_generation": 1,
+        "played_character_id": 31254,
+        "snapshot_id": "native:38"
+      },
+      "recorded_at_utc": "2026-10-08T02:07:44.350197+00:00",
+      "checkpoint_sha256": "0bd2f7640204d187eaf1911ff265b1a73d627f869db22285ccf1fe27252691d3",
+      "round": {
+        "serial": 3,
+        "nonce": 6,
+        "phase": null,
+        "result_code": 1
+      },
+      "Faith107_complete_member_count": 51,
+      "capture_epoch": 468731,
+      "saved_roster_member_count": 0,
+      "typed_protection_check_count": 88,
+      "typed_protection_false_checks": [
+        {
+          "name": "political_2230_full_AST",
+          "matches": false,
+          "observed": "f1a2efd76287176c9f81a6283dda44da0680dadaae6911c415c36b147cdcef44",
+          "expected": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b"
+        },
+        {
+          "name": "political_2231_full_AST",
+          "matches": false,
+          "observed": "330c5c898977976dbf6717295e2765871c9b89e8172f91cb3843b6dba3c3d75f",
+          "expected": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce"
+        },
+        {
+          "name": "political_2235_full_AST",
+          "matches": false,
+          "observed": "5bdd15ce29f743c186f5220c3f471ccb029bdb2d69317fdad56a2024dbcacbda",
+          "expected": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de"
+        },
+        {
+          "name": "political_2262_full_AST",
+          "matches": false,
+          "observed": "0bc72ee5382a77286e2455a256627c8748882e61acf3272a2d8b92ddd267e0f0",
+          "expected": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e"
+        },
+        {
+          "name": "political_2264_full_AST",
+          "matches": false,
+          "observed": "7399bc8993e655a3d6bc91374b799ba5fb1b148c4e5f76859cc40b5915501c7c",
+          "expected": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9"
+        },
+        {
+          "name": "actor_complete_protected_landed_projection",
+          "matches": false,
+          "observed": [
+            {
+              "key": "domain",
+              "value": [
+                {
+                  "key": null,
+                  "value": "2230"
+                },
+                {
+                  "key": null,
+                  "value": "2231"
+                },
+                {
+                  "key": null,
+                  "value": "2262"
+                },
+                {
+                  "key": null,
+                  "value": "2232"
+                },
+                {
+                  "key": null,
+                  "value": "2263"
+                },
+                {
+                  "key": null,
+                  "value": "2235"
+                },
+                {
+                  "key": null,
+                  "value": "2264"
+                }
+              ]
+            },
+            {
+              "key": "vassal_contracts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "8663"
+                },
+                {
+                  "key": null,
+                  "value": "8691"
+                },
+                {
+                  "key": null,
+                  "value": "8809"
+                },
+                {
+                  "key": null,
+                  "value": "8812"
+                },
+                {
+                  "key": null,
+                  "value": "9402"
+                },
+                {
+                  "key": null,
+                  "value": "16786427"
+                },
+                {
+                  "key": null,
+                  "value": "16786415"
+                }
+              ]
+            },
+            {
+              "key": "became_ruler_date",
+              "value": "1066.9.15"
+            },
+            {
+              "key": "laws",
+              "value": [
+                {
+                  "key": null,
+                  "value": "crown_authority_0"
+                },
+                {
+                  "key": null,
+                  "value": "confederate_partition_succession_law"
+                },
+                {
+                  "key": null,
+                  "value": "male_preference_law"
+                },
+                {
+                  "key": null,
+                  "value": "top_liege_redirected_to_border_wars_law"
+                }
+              ]
+            },
+            {
+              "key": "current_strength",
+              "value": "1205"
+            },
+            {
+              "key": "strength",
+              "value": "1205"
+            },
+            {
+              "key": "strength_without_hires",
+              "value": "1205"
+            },
+            {
+              "key": "power",
+              "value": "40820"
+            },
+            {
+              "key": "max_power",
+              "value": "40820"
+            },
+            {
+              "key": "levy",
+              "value": "891"
+            },
+            {
+              "key": "succession_result_type",
+              "value": "inheritance_child_line"
+            },
+            {
+              "key": "succession",
+              "value": [
+                {
+                  "key": null,
+                  "value": "40526"
+                },
+                {
+                  "key": null,
+                  "value": "40695"
+                },
+                {
+                  "key": null,
+                  "value": "39979"
+                },
+                {
+                  "key": null,
+                  "value": "40847"
+                },
+                {
+                  "key": null,
+                  "value": "41032"
+                },
+                {
+                  "key": null,
+                  "value": "37244"
+                },
+                {
+                  "key": null,
+                  "value": "38098"
+                },
+                {
+                  "key": null,
+                  "value": "36445"
+                },
+                {
+                  "key": null,
+                  "value": "36663"
+                },
+                {
+                  "key": null,
+                  "value": "36873"
+                },
+                {
+                  "key": null,
+                  "value": "31692"
+                },
+                {
+                  "key": null,
+                  "value": "34973"
+                },
+                {
+                  "key": null,
+                  "value": "40259"
+                },
+                {
+                  "key": null,
+                  "value": "35598"
+                },
+                {
+                  "key": null,
+                  "value": "36638"
+                },
+                {
+                  "key": null,
+                  "value": "32536"
+                },
+                {
+                  "key": null,
+                  "value": "33234"
+                },
+                {
+                  "key": null,
+                  "value": "37702"
+                },
+                {
+                  "key": null,
+                  "value": "33542"
+                },
+                {
+                  "key": null,
+                  "value": "34232"
+                },
+                {
+                  "key": null,
+                  "value": "32236"
+                },
+                {
+                  "key": null,
+                  "value": "38560"
+                },
+                {
+                  "key": null,
+                  "value": "38902"
+                },
+                {
+                  "key": null,
+                  "value": "31538"
+                },
+                {
+                  "key": null,
+                  "value": "35899"
+                },
+                {
+                  "key": null,
+                  "value": "40507"
+                },
+                {
+                  "key": null,
+                  "value": "40843"
+                },
+                {
+                  "key": null,
+                  "value": "41028"
+                },
+                {
+                  "key": null,
+                  "value": "36329"
+                },
+                {
+                  "key": null,
+                  "value": "36847"
+                },
+                {
+                  "key": null,
+                  "value": "41495"
+                },
+                {
+                  "key": null,
+                  "value": "37064"
+                },
+                {
+                  "key": null,
+                  "value": "33028"
+                },
+                {
+                  "key": null,
+                  "value": "38782"
+                },
+                {
+                  "key": null,
+                  "value": "39032"
+                },
+                {
+                  "key": null,
+                  "value": "39309"
+                },
+                {
+                  "key": null,
+                  "value": "39932"
+                },
+                {
+                  "key": null,
+                  "value": "40694"
+                },
+                {
+                  "key": null,
+                  "value": "41235"
+                },
+                {
+                  "key": null,
+                  "value": "41288"
+                }
+              ]
+            },
+            {
+              "key": "domain_limit",
+              "value": "6"
+            },
+            {
+              "key": "vassal_limit",
+              "value": "20"
+            },
+            {
+              "key": "vassals_towards_limit",
+              "value": "5"
+            },
+            {
+              "key": "government",
+              "value": "feudal_government"
+            },
+            {
+              "key": "realm_capital",
+              "value": "2232"
+            },
+            {
+              "key": "council",
+              "value": [
+                {
+                  "key": null,
+                  "value": "7870"
+                },
+                {
+                  "key": null,
+                  "value": "7871"
+                },
+                {
+                  "key": null,
+                  "value": "7872"
+                },
+                {
+                  "key": null,
+                  "value": "7873"
+                },
+                {
+                  "key": null,
+                  "value": "7874"
+                },
+                {
+                  "key": null,
+                  "value": "7875"
+                }
+              ]
+            },
+            {
+              "key": "diplo_centers",
+              "value": [
+                {
+                  "key": null,
+                  "value": "1938"
+                },
+                {
+                  "key": null,
+                  "value": "2418"
+                },
+                {
+                  "key": null,
+                  "value": "1895"
+                },
+                {
+                  "key": null,
+                  "value": "2283"
+                },
+                {
+                  "key": null,
+                  "value": "1711"
+                },
+                {
+                  "key": null,
+                  "value": "2539"
+                },
+                {
+                  "key": null,
+                  "value": "1826"
+                },
+                {
+                  "key": null,
+                  "value": "2461"
+                },
+                {
+                  "key": null,
+                  "value": "1796"
+                },
+                {
+                  "key": null,
+                  "value": "2160"
+                },
+                {
+                  "key": null,
+                  "value": "1866"
+                },
+                {
+                  "key": null,
+                  "value": "2381"
+                }
+              ]
+            },
+            {
+              "key": "legend_seeds",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "type",
+                      "value": "holy"
+                    },
+                    {
+                      "key": "chronicle",
+                      "value": "new_faith_legend"
+                    },
+                    {
+                      "key": "properties",
+                      "value": [
+                        {
+                          "key": "\"reformer\"",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "char"
+                            },
+                            {
+                              "key": "identity",
+                              "value": "31254"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "\"faith\"",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "faith"
+                            },
+                            {
+                              "key": "identity",
+                              "value": "105"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "\"religion\"",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "religion"
+                            },
+                            {
+                              "key": "identity",
+                              "value": "9"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "\"reason\"",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "flag"
+                            },
+                            {
+                              "key": "flag",
+                              "value": "\"new_faith\""
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "key": "quality",
+                      "value": "famed"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "barter_goods",
+              "value": []
+            }
+          ],
+          "expected": [
+            {
+              "key": "domain",
+              "value": [
+                {
+                  "key": null,
+                  "value": "2230"
+                },
+                {
+                  "key": null,
+                  "value": "2231"
+                },
+                {
+                  "key": null,
+                  "value": "2262"
+                },
+                {
+                  "key": null,
+                  "value": "2232"
+                },
+                {
+                  "key": null,
+                  "value": "2263"
+                },
+                {
+                  "key": null,
+                  "value": "2235"
+                },
+                {
+                  "key": null,
+                  "value": "2264"
+                }
+              ]
+            },
+            {
+              "key": "vassal_contracts",
+              "value": [
+                {
+                  "key": null,
+                  "value": "8663"
+                },
+                {
+                  "key": null,
+                  "value": "8691"
+                },
+                {
+                  "key": null,
+                  "value": "8809"
+                },
+                {
+                  "key": null,
+                  "value": "8812"
+                },
+                {
+                  "key": null,
+                  "value": "9402"
+                },
+                {
+                  "key": null,
+                  "value": "16786427"
+                },
+                {
+                  "key": null,
+                  "value": "16786415"
+                }
+              ]
+            },
+            {
+              "key": "became_ruler_date",
+              "value": "1066.9.15"
+            },
+            {
+              "key": "laws",
+              "value": [
+                {
+                  "key": null,
+                  "value": "crown_authority_0"
+                },
+                {
+                  "key": null,
+                  "value": "confederate_partition_succession_law"
+                },
+                {
+                  "key": null,
+                  "value": "male_preference_law"
+                },
+                {
+                  "key": null,
+                  "value": "top_liege_redirected_to_border_wars_law"
+                }
+              ]
+            },
+            {
+              "key": "current_strength",
+              "value": "1205"
+            },
+            {
+              "key": "strength",
+              "value": "1205"
+            },
+            {
+              "key": "strength_without_hires",
+              "value": "1205"
+            },
+            {
+              "key": "power",
+              "value": "40820"
+            },
+            {
+              "key": "max_power",
+              "value": "40820"
+            },
+            {
+              "key": "levy",
+              "value": "891"
+            },
+            {
+              "key": "succession_result_type",
+              "value": "inheritance_child_line"
+            },
+            {
+              "key": "succession",
+              "value": [
+                {
+                  "key": null,
+                  "value": "40526"
+                },
+                {
+                  "key": null,
+                  "value": "40695"
+                },
+                {
+                  "key": null,
+                  "value": "39979"
+                },
+                {
+                  "key": null,
+                  "value": "40847"
+                },
+                {
+                  "key": null,
+                  "value": "41032"
+                },
+                {
+                  "key": null,
+                  "value": "37244"
+                },
+                {
+                  "key": null,
+                  "value": "38098"
+                },
+                {
+                  "key": null,
+                  "value": "36445"
+                },
+                {
+                  "key": null,
+                  "value": "36663"
+                },
+                {
+                  "key": null,
+                  "value": "36873"
+                },
+                {
+                  "key": null,
+                  "value": "31692"
+                },
+                {
+                  "key": null,
+                  "value": "34973"
+                },
+                {
+                  "key": null,
+                  "value": "40259"
+                },
+                {
+                  "key": null,
+                  "value": "35598"
+                },
+                {
+                  "key": null,
+                  "value": "36638"
+                },
+                {
+                  "key": null,
+                  "value": "32536"
+                },
+                {
+                  "key": null,
+                  "value": "38561"
+                },
+                {
+                  "key": null,
+                  "value": "39045"
+                },
+                {
+                  "key": null,
+                  "value": "39171"
+                },
+                {
+                  "key": null,
+                  "value": "39352"
+                },
+                {
+                  "key": null,
+                  "value": "39527"
+                },
+                {
+                  "key": null,
+                  "value": "33234"
+                },
+                {
+                  "key": null,
+                  "value": "37702"
+                },
+                {
+                  "key": null,
+                  "value": "33542"
+                },
+                {
+                  "key": null,
+                  "value": "34232"
+                },
+                {
+                  "key": null,
+                  "value": "32236"
+                },
+                {
+                  "key": null,
+                  "value": "38560"
+                },
+                {
+                  "key": null,
+                  "value": "38902"
+                },
+                {
+                  "key": null,
+                  "value": "31538"
+                },
+                {
+                  "key": null,
+                  "value": "35899"
+                },
+                {
+                  "key": null,
+                  "value": "40507"
+                },
+                {
+                  "key": null,
+                  "value": "40843"
+                },
+                {
+                  "key": null,
+                  "value": "41028"
+                },
+                {
+                  "key": null,
+                  "value": "36329"
+                },
+                {
+                  "key": null,
+                  "value": "36847"
+                },
+                {
+                  "key": null,
+                  "value": "41495"
+                },
+                {
+                  "key": null,
+                  "value": "37064"
+                },
+                {
+                  "key": null,
+                  "value": "33028"
+                },
+                {
+                  "key": null,
+                  "value": "38782"
+                },
+                {
+                  "key": null,
+                  "value": "39032"
+                },
+                {
+                  "key": null,
+                  "value": "39309"
+                },
+                {
+                  "key": null,
+                  "value": "39932"
+                },
+                {
+                  "key": null,
+                  "value": "40694"
+                },
+                {
+                  "key": null,
+                  "value": "41235"
+                },
+                {
+                  "key": null,
+                  "value": "41288"
+                }
+              ]
+            },
+            {
+              "key": "domain_limit",
+              "value": "6"
+            },
+            {
+              "key": "vassal_limit",
+              "value": "20"
+            },
+            {
+              "key": "vassals_towards_limit",
+              "value": "5"
+            },
+            {
+              "key": "government",
+              "value": "feudal_government"
+            },
+            {
+              "key": "realm_capital",
+              "value": "2232"
+            },
+            {
+              "key": "council",
+              "value": [
+                {
+                  "key": null,
+                  "value": "7870"
+                },
+                {
+                  "key": null,
+                  "value": "7871"
+                },
+                {
+                  "key": null,
+                  "value": "7872"
+                },
+                {
+                  "key": null,
+                  "value": "7873"
+                },
+                {
+                  "key": null,
+                  "value": "7874"
+                },
+                {
+                  "key": null,
+                  "value": "7875"
+                }
+              ]
+            },
+            {
+              "key": "diplo_centers",
+              "value": [
+                {
+                  "key": null,
+                  "value": "1938"
+                },
+                {
+                  "key": null,
+                  "value": "2418"
+                },
+                {
+                  "key": null,
+                  "value": "1895"
+                },
+                {
+                  "key": null,
+                  "value": "2283"
+                },
+                {
+                  "key": null,
+                  "value": "1711"
+                },
+                {
+                  "key": null,
+                  "value": "2539"
+                },
+                {
+                  "key": null,
+                  "value": "1826"
+                },
+                {
+                  "key": null,
+                  "value": "2461"
+                },
+                {
+                  "key": null,
+                  "value": "1796"
+                },
+                {
+                  "key": null,
+                  "value": "2160"
+                },
+                {
+                  "key": null,
+                  "value": "1866"
+                },
+                {
+                  "key": null,
+                  "value": "2381"
+                }
+              ]
+            },
+            {
+              "key": "legend_seeds",
+              "value": [
+                {
+                  "key": null,
+                  "value": [
+                    {
+                      "key": "type",
+                      "value": "holy"
+                    },
+                    {
+                      "key": "chronicle",
+                      "value": "new_faith_legend"
+                    },
+                    {
+                      "key": "properties",
+                      "value": [
+                        {
+                          "key": "\"reformer\"",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "char"
+                            },
+                            {
+                              "key": "identity",
+                              "value": "31254"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "\"faith\"",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "faith"
+                            },
+                            {
+                              "key": "identity",
+                              "value": "105"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "\"religion\"",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "religion"
+                            },
+                            {
+                              "key": "identity",
+                              "value": "9"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "\"reason\"",
+                          "value": [
+                            {
+                              "key": "type",
+                              "value": "flag"
+                            },
+                            {
+                              "key": "flag",
+                              "value": "\"new_faith\""
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "key": "quality",
+                      "value": "famed"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "barter_goods",
+              "value": []
+            }
+          ]
+        }
+      ],
+      "typed_protection_match_count": 82,
+      "typed_protection_false_count": 6,
+      "typed_protection_checks_match_literal": false
+    }
+  },
+  "rows": {
+    "38561": {
+      "role_in_observed_AST_delta": "removed_from_actor_succession",
+      "native_precommit": {
+        "character_id": 38561,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 9,
+        "adult_measure_raw": 16,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_postcommit": {
+        "character_id": 38561,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 9,
+        "adult_measure_raw": 16,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_rows_equal": true,
+      "native_Faith107_Rite169_at_both_times": true,
+      "saved_precommit": {
+        "JSON_pointer": "/roster/members/18",
+        "AST_sha256": "4e82a110d9d1e2d9eb73c7d5ad98724cc9dd50c6a146a23d8a7bfda4838c4990",
+        "raw_top_rite": "169",
+        "rite_id": 169,
+        "first_name_rows": [
+          {
+            "row_index": 0,
+            "value": "\"Robert\""
+          }
+        ],
+        "birth_rows": [
+          {
+            "row_index": 1,
+            "value": "1050.1.1"
+          }
+        ],
+        "gender_or_sex_rows": {
+          "female": [],
+          "male": [],
+          "sex": [],
+          "gender": []
+        },
+        "organization_rows": [
+          {
+            "row_index": 6,
+            "value": "107"
+          }
+        ],
+        "family_data_rows": [
+          {
+            "row_index": 11,
+            "value": []
+          }
+        ],
+        "alive_data_rows": [
+          {
+            "row_index": 12,
+            "value": [
+              {
+                "key": "variables",
+                "value": [
+                  {
+                    "key": "data",
+                    "value": [
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_vote"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "18446744073709451616"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_player_yes"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_player"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_elector"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_rite"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "rite"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "169"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_serial"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "300000"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_owner"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "char"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "31254"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "changed_rite_flag"
+                          },
+                          {
+                            "key": "data",
+                            "value": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "fertility",
+                "value": "0.5"
+              },
+              {
+                "key": "health",
+                "value": "4.07213"
+              },
+              {
+                "key": "piety",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "48.9"
+                  }
+                ]
+              },
+              {
+                "key": "prestige",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "150"
+                  }
+                ]
+              },
+              {
+                "key": "influence",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "60"
+                  }
+                ]
+              },
+              {
+                "key": "languages",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "language_french"
+                  }
+                ]
+              },
+              {
+                "key": "activity_data",
+                "value": []
+              },
+              {
+                "key": "location",
+                "value": [
+                  {
+                    "key": "location",
+                    "value": "2612"
+                  }
+                ]
+              },
+              {
+                "key": "memories",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "4399"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "landed_data_rows": [],
+        "saved_mandate_was_elector": 0,
+        "saved_mandate_was_player": 0,
+        "saved_mandate_vote": -1
+      },
+      "saved_postcommit_target_row": null,
+      "I3b_elector_eligibility_static_from_observed_predicates": false,
+      "political_succession_eligibility_observed": null,
+      "native_gender_observed": null,
+      "native_landed_observed": null,
+      "conversion_command_or_history_observed": null
+    },
+    "39045": {
+      "role_in_observed_AST_delta": "removed_from_actor_succession",
+      "native_precommit": {
+        "character_id": 39045,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": false,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 4,
+        "adult_measure_raw": 13,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_postcommit": {
+        "character_id": 39045,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": false,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 4,
+        "adult_measure_raw": 13,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_rows_equal": true,
+      "native_Faith107_Rite169_at_both_times": true,
+      "saved_precommit": {
+        "JSON_pointer": "/roster/members/21",
+        "AST_sha256": "af4e115bb613d3cfaecc33020ed655b55d681ff2d4341a5b7129018b16a692ba",
+        "raw_top_rite": "169",
+        "rite_id": 169,
+        "first_name_rows": [
+          {
+            "row_index": 0,
+            "value": "\"Richard\""
+          }
+        ],
+        "birth_rows": [
+          {
+            "row_index": 1,
+            "value": "1053.1.2"
+          }
+        ],
+        "gender_or_sex_rows": {
+          "female": [],
+          "male": [],
+          "sex": [],
+          "gender": []
+        },
+        "organization_rows": [
+          {
+            "row_index": 6,
+            "value": "107"
+          }
+        ],
+        "family_data_rows": [
+          {
+            "row_index": 10,
+            "value": []
+          }
+        ],
+        "alive_data_rows": [
+          {
+            "row_index": 11,
+            "value": [
+              {
+                "key": "variables",
+                "value": [
+                  {
+                    "key": "data",
+                    "value": [
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_vote"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "18446744073709451616"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_player_yes"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_player"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_elector"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_rite"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "rite"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "169"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_serial"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "300000"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_owner"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "char"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "31254"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "changed_rite_flag"
+                          },
+                          {
+                            "key": "data",
+                            "value": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "fertility",
+                "value": "0.5"
+              },
+              {
+                "key": "health",
+                "value": "4.83716"
+              },
+              {
+                "key": "piety",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "50.32"
+                  },
+                  {
+                    "key": "accumulated",
+                    "value": "1000.32"
+                  }
+                ]
+              },
+              {
+                "key": "prestige",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "150"
+                  }
+                ]
+              },
+              {
+                "key": "influence",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "60"
+                  }
+                ]
+              },
+              {
+                "key": "focus",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "education_intrigue"
+                  },
+                  {
+                    "key": "date",
+                    "value": "1066.9.15"
+                  },
+                  {
+                    "key": "changes",
+                    "value": "0"
+                  },
+                  {
+                    "key": "progress",
+                    "value": "7"
+                  }
+                ]
+              },
+              {
+                "key": "languages",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "language_french"
+                  }
+                ]
+              },
+              {
+                "key": "activity_data",
+                "value": []
+              },
+              {
+                "key": "location",
+                "value": [
+                  {
+                    "key": "location",
+                    "value": "2612"
+                  }
+                ]
+              },
+              {
+                "key": "memories",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "4400"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "landed_data_rows": [],
+        "saved_mandate_was_elector": 0,
+        "saved_mandate_was_player": 0,
+        "saved_mandate_vote": -1
+      },
+      "saved_postcommit_target_row": null,
+      "I3b_elector_eligibility_static_from_observed_predicates": false,
+      "political_succession_eligibility_observed": null,
+      "native_gender_observed": null,
+      "native_landed_observed": null,
+      "conversion_command_or_history_observed": null
+    },
+    "39171": {
+      "role_in_observed_AST_delta": "removed_from_actor_succession",
+      "native_precommit": {
+        "character_id": 39171,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": false,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 6,
+        "adult_measure_raw": 12,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_postcommit": {
+        "character_id": 39171,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": false,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 6,
+        "adult_measure_raw": 12,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_rows_equal": true,
+      "native_Faith107_Rite169_at_both_times": true,
+      "saved_precommit": {
+        "JSON_pointer": "/roster/members/22",
+        "AST_sha256": "314682de83db4ed5b5210bdd7f4b5a42417645f74acd3f0df2549995d060cc73",
+        "raw_top_rite": "169",
+        "rite_id": 169,
+        "first_name_rows": [
+          {
+            "row_index": 0,
+            "value": "\"Rainulf\""
+          }
+        ],
+        "birth_rows": [
+          {
+            "row_index": 1,
+            "value": "1054.1.1"
+          }
+        ],
+        "gender_or_sex_rows": {
+          "female": [],
+          "male": [],
+          "sex": [],
+          "gender": []
+        },
+        "organization_rows": [
+          {
+            "row_index": 6,
+            "value": "107"
+          }
+        ],
+        "family_data_rows": [
+          {
+            "row_index": 10,
+            "value": []
+          }
+        ],
+        "alive_data_rows": [
+          {
+            "row_index": 11,
+            "value": [
+              {
+                "key": "variables",
+                "value": [
+                  {
+                    "key": "data",
+                    "value": [
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_vote"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "18446744073709451616"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_player_yes"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_player"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_elector"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_rite"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "rite"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "169"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_serial"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "300000"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_owner"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "char"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "31254"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "changed_rite_flag"
+                          },
+                          {
+                            "key": "data",
+                            "value": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "fertility",
+                "value": "0.5"
+              },
+              {
+                "key": "health",
+                "value": "4.30427"
+              },
+              {
+                "key": "piety",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "51.1"
+                  },
+                  {
+                    "key": "accumulated",
+                    "value": "1001.1"
+                  }
+                ]
+              },
+              {
+                "key": "focus",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "education_intrigue"
+                  },
+                  {
+                    "key": "date",
+                    "value": "1066.9.15"
+                  },
+                  {
+                    "key": "changes",
+                    "value": "0"
+                  },
+                  {
+                    "key": "progress",
+                    "value": "6"
+                  }
+                ]
+              },
+              {
+                "key": "languages",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "language_french"
+                  }
+                ]
+              },
+              {
+                "key": "activity_data",
+                "value": []
+              },
+              {
+                "key": "location",
+                "value": [
+                  {
+                    "key": "location",
+                    "value": "2612"
+                  }
+                ]
+              },
+              {
+                "key": "memories",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "4401"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "landed_data_rows": [],
+        "saved_mandate_was_elector": 0,
+        "saved_mandate_was_player": 0,
+        "saved_mandate_vote": -1
+      },
+      "saved_postcommit_target_row": null,
+      "I3b_elector_eligibility_static_from_observed_predicates": false,
+      "political_succession_eligibility_observed": null,
+      "native_gender_observed": null,
+      "native_landed_observed": null,
+      "conversion_command_or_history_observed": null
+    },
+    "39352": {
+      "role_in_observed_AST_delta": "removed_from_actor_succession",
+      "native_precommit": {
+        "character_id": 39352,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": false,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 9,
+        "adult_measure_raw": 11,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_postcommit": {
+        "character_id": 39352,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": false,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 9,
+        "adult_measure_raw": 11,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_rows_equal": true,
+      "native_Faith107_Rite169_at_both_times": true,
+      "saved_precommit": {
+        "JSON_pointer": "/roster/members/24",
+        "AST_sha256": "8d0b89649adbb329290978d97d13de2efa4f956d26b53e9c8753e08f6f71a64b",
+        "raw_top_rite": "169",
+        "rite_id": 169,
+        "first_name_rows": [
+          {
+            "row_index": 0,
+            "value": "\"Tancred\""
+          }
+        ],
+        "birth_rows": [
+          {
+            "row_index": 1,
+            "value": "1055.1.1"
+          }
+        ],
+        "gender_or_sex_rows": {
+          "female": [],
+          "male": [],
+          "sex": [],
+          "gender": []
+        },
+        "organization_rows": [
+          {
+            "row_index": 6,
+            "value": "107"
+          }
+        ],
+        "family_data_rows": [
+          {
+            "row_index": 10,
+            "value": []
+          }
+        ],
+        "alive_data_rows": [
+          {
+            "row_index": 11,
+            "value": [
+              {
+                "key": "variables",
+                "value": [
+                  {
+                    "key": "data",
+                    "value": [
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_vote"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "18446744073709451616"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_player_yes"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_player"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_elector"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_rite"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "rite"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "169"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_serial"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "300000"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_owner"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "char"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "31254"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "changed_rite_flag"
+                          },
+                          {
+                            "key": "data",
+                            "value": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "fertility",
+                "value": "0.5"
+              },
+              {
+                "key": "health",
+                "value": "4.24663"
+              },
+              {
+                "key": "piety",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "50.9"
+                  },
+                  {
+                    "key": "accumulated",
+                    "value": "1000.9"
+                  }
+                ]
+              },
+              {
+                "key": "focus",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "education_learning"
+                  },
+                  {
+                    "key": "date",
+                    "value": "1066.9.15"
+                  },
+                  {
+                    "key": "changes",
+                    "value": "0"
+                  },
+                  {
+                    "key": "progress",
+                    "value": "5"
+                  }
+                ]
+              },
+              {
+                "key": "languages",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "language_french"
+                  }
+                ]
+              },
+              {
+                "key": "activity_data",
+                "value": []
+              },
+              {
+                "key": "location",
+                "value": [
+                  {
+                    "key": "location",
+                    "value": "2612"
+                  }
+                ]
+              },
+              {
+                "key": "memories",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "4402"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "landed_data_rows": [],
+        "saved_mandate_was_elector": 0,
+        "saved_mandate_was_player": 0,
+        "saved_mandate_vote": -1
+      },
+      "saved_postcommit_target_row": null,
+      "I3b_elector_eligibility_static_from_observed_predicates": false,
+      "political_succession_eligibility_observed": null,
+      "native_gender_observed": null,
+      "native_landed_observed": null,
+      "conversion_command_or_history_observed": null
+    },
+    "39527": {
+      "role_in_observed_AST_delta": "removed_from_actor_succession",
+      "native_precommit": {
+        "character_id": 39527,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": false,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 3,
+        "adult_measure_raw": 10,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_postcommit": {
+        "character_id": 39527,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": false,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 3,
+        "adult_measure_raw": 10,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_rows_equal": true,
+      "native_Faith107_Rite169_at_both_times": true,
+      "saved_precommit": {
+        "JSON_pointer": "/roster/members/25",
+        "AST_sha256": "6d1ca64b5bac52bb761fd1ba252ff2fe25f794b08d9659eac8c09fd46795d18e",
+        "raw_top_rite": "169",
+        "rite_id": 169,
+        "first_name_rows": [
+          {
+            "row_index": 0,
+            "value": "\"William\""
+          }
+        ],
+        "birth_rows": [
+          {
+            "row_index": 1,
+            "value": "1056.1.1"
+          }
+        ],
+        "gender_or_sex_rows": {
+          "female": [],
+          "male": [],
+          "sex": [],
+          "gender": []
+        },
+        "organization_rows": [
+          {
+            "row_index": 6,
+            "value": "107"
+          }
+        ],
+        "family_data_rows": [
+          {
+            "row_index": 10,
+            "value": []
+          }
+        ],
+        "alive_data_rows": [
+          {
+            "row_index": 11,
+            "value": [
+              {
+                "key": "variables",
+                "value": [
+                  {
+                    "key": "data",
+                    "value": [
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_vote"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "18446744073709451616"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_player_yes"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_player"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_elector"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_rite"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "rite"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "169"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_serial"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "300000"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_owner"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "char"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "31254"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "changed_rite_flag"
+                          },
+                          {
+                            "key": "data",
+                            "value": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "fertility",
+                "value": "0.5"
+              },
+              {
+                "key": "health",
+                "value": "4.51798"
+              },
+              {
+                "key": "piety",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "50.3"
+                  },
+                  {
+                    "key": "accumulated",
+                    "value": "1000.3"
+                  }
+                ]
+              },
+              {
+                "key": "focus",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "education_stewardship"
+                  },
+                  {
+                    "key": "date",
+                    "value": "1066.9.15"
+                  },
+                  {
+                    "key": "changes",
+                    "value": "0"
+                  },
+                  {
+                    "key": "progress",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "key": "languages",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "language_french"
+                  }
+                ]
+              },
+              {
+                "key": "activity_data",
+                "value": []
+              },
+              {
+                "key": "location",
+                "value": [
+                  {
+                    "key": "location",
+                    "value": "2612"
+                  }
+                ]
+              },
+              {
+                "key": "memories",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "4403"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "landed_data_rows": [],
+        "saved_mandate_was_elector": 0,
+        "saved_mandate_was_player": 0,
+        "saved_mandate_vote": -1
+      },
+      "saved_postcommit_target_row": null,
+      "I3b_elector_eligibility_static_from_observed_predicates": false,
+      "political_succession_eligibility_observed": null,
+      "native_gender_observed": null,
+      "native_landed_observed": null,
+      "conversion_command_or_history_observed": null
+    },
+    "33234": {
+      "role_in_observed_AST_delta": "present_before_and_replacement_in_five_titles",
+      "native_precommit": {
+        "character_id": 33234,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 0,
+        "adult_measure_raw": 40,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_postcommit": {
+        "character_id": 33234,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 0,
+        "adult_measure_raw": 40,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_rows_equal": true,
+      "native_Faith107_Rite169_at_both_times": true,
+      "saved_precommit": {
+        "JSON_pointer": "/roster/members/45",
+        "AST_sha256": "52aeecf088236da8bcd788d4831d519df3112c9f89308897e7e5b7930baa6889",
+        "raw_top_rite": "169",
+        "rite_id": 169,
+        "first_name_rows": [
+          {
+            "row_index": 0,
+            "value": "\"Humbert\""
+          }
+        ],
+        "birth_rows": [
+          {
+            "row_index": 1,
+            "value": "1026.1.2"
+          }
+        ],
+        "gender_or_sex_rows": {
+          "female": [],
+          "male": [],
+          "sex": [],
+          "gender": []
+        },
+        "organization_rows": [],
+        "family_data_rows": [
+          {
+            "row_index": 10,
+            "value": [
+              {
+                "key": "child",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "37702"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "alive_data_rows": [
+          {
+            "row_index": 11,
+            "value": [
+              {
+                "key": "variables",
+                "value": [
+                  {
+                    "key": "data",
+                    "value": [
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_vote"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "18446744073709451616"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_player_yes"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_player"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_elector"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_rite"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "rite"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "169"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_serial"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "300000"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_owner"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "char"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "31254"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "changed_rite_flag"
+                          },
+                          {
+                            "key": "data",
+                            "value": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "fertility",
+                "value": "0.5"
+              },
+              {
+                "key": "health",
+                "value": "3.94643"
+              },
+              {
+                "key": "piety",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "50"
+                  }
+                ]
+              },
+              {
+                "key": "prestige",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "450"
+                  }
+                ]
+              },
+              {
+                "key": "influence",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "180"
+                  }
+                ]
+              },
+              {
+                "key": "claim",
+                "value": [
+                  {
+                    "key": null,
+                    "value": [
+                      {
+                        "key": "title",
+                        "value": "7219"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "languages",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "language_french"
+                  }
+                ]
+              },
+              {
+                "key": "activity_data",
+                "value": []
+              },
+              {
+                "key": "location",
+                "value": [
+                  {
+                    "key": "location",
+                    "value": "2633"
+                  }
+                ]
+              },
+              {
+                "key": "memories",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "4349"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "landed_data_rows": [],
+        "saved_mandate_was_elector": 0,
+        "saved_mandate_was_player": 0,
+        "saved_mandate_vote": -1
+      },
+      "saved_postcommit_target_row": null,
+      "I3b_elector_eligibility_static_from_observed_predicates": false,
+      "political_succession_eligibility_observed": null,
+      "native_gender_observed": null,
+      "native_landed_observed": null,
+      "conversion_command_or_history_observed": null
+    },
+    "37702": {
+      "role_in_observed_AST_delta": "present_before_and_replacement_in_five_titles",
+      "native_precommit": {
+        "character_id": 37702,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 3,
+        "adult_measure_raw": 20,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_postcommit": {
+        "character_id": 37702,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 3,
+        "adult_measure_raw": 20,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_rows_equal": true,
+      "native_Faith107_Rite169_at_both_times": true,
+      "saved_precommit": {
+        "JSON_pointer": "/roster/members/17",
+        "AST_sha256": "19d518b13c2a2cfbcb7b29977274569cb47d8d9d3b424e39cb5f9fe512a7a83e",
+        "raw_top_rite": "169",
+        "rite_id": 169,
+        "first_name_rows": [
+          {
+            "row_index": 0,
+            "value": "\"Constantine\""
+          }
+        ],
+        "birth_rows": [
+          {
+            "row_index": 1,
+            "value": "1046.1.1"
+          }
+        ],
+        "gender_or_sex_rows": {
+          "female": [],
+          "male": [],
+          "sex": [],
+          "gender": []
+        },
+        "organization_rows": [],
+        "family_data_rows": [
+          {
+            "row_index": 10,
+            "value": []
+          }
+        ],
+        "alive_data_rows": [
+          {
+            "row_index": 11,
+            "value": [
+              {
+                "key": "variables",
+                "value": [
+                  {
+                    "key": "data",
+                    "value": [
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_vote"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "18446744073709451616"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_player_yes"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_player"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_elector"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_rite"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "rite"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "169"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_serial"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "300000"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_owner"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "char"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "31254"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "changed_rite_flag"
+                          },
+                          {
+                            "key": "data",
+                            "value": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "fertility",
+                "value": "0.5"
+              },
+              {
+                "key": "health",
+                "value": "4.41366"
+              },
+              {
+                "key": "piety",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "49.3"
+                  }
+                ]
+              },
+              {
+                "key": "prestige",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "150"
+                  }
+                ]
+              },
+              {
+                "key": "influence",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "60"
+                  }
+                ]
+              },
+              {
+                "key": "languages",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "language_french"
+                  }
+                ]
+              },
+              {
+                "key": "activity_data",
+                "value": []
+              },
+              {
+                "key": "location",
+                "value": [
+                  {
+                    "key": "location",
+                    "value": "2619"
+                  }
+                ]
+              },
+              {
+                "key": "memories",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "4365"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "landed_data_rows": [],
+        "saved_mandate_was_elector": 0,
+        "saved_mandate_was_player": 0,
+        "saved_mandate_vote": -1
+      },
+      "saved_postcommit_target_row": null,
+      "I3b_elector_eligibility_static_from_observed_predicates": false,
+      "political_succession_eligibility_observed": null,
+      "native_gender_observed": null,
+      "native_landed_observed": null,
+      "conversion_command_or_history_observed": null
+    },
+    "33542": {
+      "role_in_observed_AST_delta": "present_before_and_replacement_in_five_titles",
+      "native_precommit": {
+        "character_id": 33542,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 5,
+        "adult_measure_raw": 38,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_postcommit": {
+        "character_id": 33542,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 5,
+        "adult_measure_raw": 38,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_rows_equal": true,
+      "native_Faith107_Rite169_at_both_times": true,
+      "saved_precommit": {
+        "JSON_pointer": "/roster/members/46",
+        "AST_sha256": "7bdc5f67aa892b0c0343795ecd550f50eaa9724028ce3ca4e80bbef700defcb2",
+        "raw_top_rite": "169",
+        "rite_id": 169,
+        "first_name_rows": [
+          {
+            "row_index": 0,
+            "value": "\"Tancred\""
+          }
+        ],
+        "birth_rows": [
+          {
+            "row_index": 1,
+            "value": "1028.1.2"
+          }
+        ],
+        "gender_or_sex_rows": {
+          "female": [],
+          "male": [],
+          "sex": [],
+          "gender": []
+        },
+        "organization_rows": [],
+        "family_data_rows": [
+          {
+            "row_index": 11,
+            "value": []
+          }
+        ],
+        "alive_data_rows": [
+          {
+            "row_index": 12,
+            "value": [
+              {
+                "key": "variables",
+                "value": [
+                  {
+                    "key": "data",
+                    "value": [
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_vote"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "18446744073709451616"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_player_yes"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_player"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_elector"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_rite"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "rite"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "169"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_serial"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "300000"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_owner"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "char"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "31254"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "changed_rite_flag"
+                          },
+                          {
+                            "key": "data",
+                            "value": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "fertility",
+                "value": "0.5"
+              },
+              {
+                "key": "health",
+                "value": "4.06488"
+              },
+              {
+                "key": "piety",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "50"
+                  }
+                ]
+              },
+              {
+                "key": "prestige",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "450"
+                  }
+                ]
+              },
+              {
+                "key": "influence",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "180"
+                  }
+                ]
+              },
+              {
+                "key": "claim",
+                "value": [
+                  {
+                    "key": null,
+                    "value": [
+                      {
+                        "key": "title",
+                        "value": "7219"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "languages",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "language_french"
+                  }
+                ]
+              },
+              {
+                "key": "activity_data",
+                "value": []
+              },
+              {
+                "key": "location",
+                "value": [
+                  {
+                    "key": "location",
+                    "value": "2633"
+                  }
+                ]
+              },
+              {
+                "key": "memories",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "4350"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "landed_data_rows": [],
+        "saved_mandate_was_elector": 0,
+        "saved_mandate_was_player": 0,
+        "saved_mandate_vote": -1
+      },
+      "saved_postcommit_target_row": null,
+      "I3b_elector_eligibility_static_from_observed_predicates": false,
+      "political_succession_eligibility_observed": null,
+      "native_gender_observed": null,
+      "native_landed_observed": null,
+      "conversion_command_or_history_observed": null
+    },
+    "34232": {
+      "role_in_observed_AST_delta": "present_before_and_replacement_in_five_titles",
+      "native_precommit": {
+        "character_id": 34232,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 4,
+        "adult_measure_raw": 35,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_postcommit": {
+        "character_id": 34232,
+        "rite_id": 169,
+        "faith_id": 107,
+        "alive": true,
+        "adult": true,
+        "imprisoned": false,
+        "incapable": false,
+        "is_ai": true,
+        "effective_learning": 4,
+        "adult_measure_raw": 35,
+        "adult_selector_raw": 0,
+        "adult_threshold_raw": 16,
+        "complete": true,
+        "unavailable_reason": null
+      },
+      "native_rows_equal": true,
+      "native_Faith107_Rite169_at_both_times": true,
+      "saved_precommit": {
+        "JSON_pointer": "/roster/members/0",
+        "AST_sha256": "2b1a08ea220a8bfac7ea43fcd680dec77c610ead418d83bee30a0b4b7bad4427",
+        "raw_top_rite": "169",
+        "rite_id": 169,
+        "first_name_rows": [
+          {
+            "row_index": 0,
+            "value": "\"Roger\""
+          }
+        ],
+        "birth_rows": [
+          {
+            "row_index": 1,
+            "value": "1031.1.2"
+          }
+        ],
+        "gender_or_sex_rows": {
+          "female": [],
+          "male": [],
+          "sex": [],
+          "gender": []
+        },
+        "organization_rows": [],
+        "family_data_rows": [
+          {
+            "row_index": 11,
+            "value": [
+              {
+                "key": "primary_spouse",
+                "value": "35386"
+              },
+              {
+                "key": "spouse",
+                "value": "35386"
+              },
+              {
+                "key": "child",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "38925"
+                  },
+                  {
+                    "key": null,
+                    "value": "40694"
+                  },
+                  {
+                    "key": null,
+                    "value": "41235"
+                  },
+                  {
+                    "key": null,
+                    "value": "41288"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "alive_data_rows": [
+          {
+            "row_index": 12,
+            "value": [
+              {
+                "key": "variables",
+                "value": [
+                  {
+                    "key": "data",
+                    "value": [
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_vote"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "18446744073709451616"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_player_yes"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_player"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_was_elector"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_rite"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "rite"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "169"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_serial"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "300000"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "lyd_i3b_member_owner"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "char"
+                              },
+                              {
+                                "key": "identity",
+                                "value": "31254"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "changed_rite_flag"
+                          },
+                          {
+                            "key": "data",
+                            "value": []
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "chancellor_foreign_affairs_opinion_value"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": null,
+                        "value": [
+                          {
+                            "key": "flag",
+                            "value": "court_chaplain_religious_relations_opinion_value"
+                          },
+                          {
+                            "key": "data",
+                            "value": [
+                              {
+                                "key": "type",
+                                "value": "value"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "income",
+                "value": "4.56715"
+              },
+              {
+                "key": "fertility",
+                "value": "0.5"
+              },
+              {
+                "key": "health",
+                "value": "4.50752"
+              },
+              {
+                "key": "gold",
+                "value": [
+                  {
+                    "key": "value",
+                    "value": "164"
+                  }
+                ]
+              },
+              {
+                "key": "piety",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "300"
+                  }
+                ]
+              },
+              {
+                "key": "prestige",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "600"
+                  }
+                ]
+              },
+              {
+                "key": "influence",
+                "value": [
+                  {
+                    "key": "currency",
+                    "value": "120"
+                  }
+                ]
+              },
+              {
+                "key": "focus",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "martial_strategy_focus"
+                  },
+                  {
+                    "key": "date",
+                    "value": "1066.9.15"
+                  },
+                  {
+                    "key": "changes",
+                    "value": "0"
+                  },
+                  {
+                    "key": "progress",
+                    "value": "0"
+                  }
+                ]
+              },
+              {
+                "key": "claim",
+                "value": [
+                  {
+                    "key": null,
+                    "value": [
+                      {
+                        "key": "title",
+                        "value": "7219"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "key": "perk",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "stalwart_leader_perk"
+                  },
+                  {
+                    "key": null,
+                    "value": "courtship_perk"
+                  },
+                  {
+                    "key": null,
+                    "value": "chivalric_dominance_perk"
+                  },
+                  {
+                    "key": null,
+                    "value": "promising_prospects_perk"
+                  },
+                  {
+                    "key": null,
+                    "value": "never_back_down_perk"
+                  },
+                  {
+                    "key": null,
+                    "value": "kingsguard_perk"
+                  }
+                ]
+              },
+              {
+                "key": "languages",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "language_french"
+                  }
+                ]
+              },
+              {
+                "key": "activity_data",
+                "value": []
+              },
+              {
+                "key": "location",
+                "value": [
+                  {
+                    "key": "location",
+                    "value": "2633"
+                  }
+                ]
+              },
+              {
+                "key": "memories",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "4351"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "landed_data_rows": [
+          {
+            "row_index": 14,
+            "value": [
+              {
+                "key": "domain",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "2196"
+                  },
+                  {
+                    "key": null,
+                    "value": "2258"
+                  },
+                  {
+                    "key": null,
+                    "value": "2254"
+                  },
+                  {
+                    "key": null,
+                    "value": "2197"
+                  },
+                  {
+                    "key": null,
+                    "value": "2259"
+                  },
+                  {
+                    "key": null,
+                    "value": "2255"
+                  },
+                  {
+                    "key": null,
+                    "value": "2199"
+                  },
+                  {
+                    "key": null,
+                    "value": "2257"
+                  }
+                ]
+              },
+              {
+                "key": "vassal_contracts",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "16786443"
+                  },
+                  {
+                    "key": null,
+                    "value": "16786420"
+                  },
+                  {
+                    "key": null,
+                    "value": "16786419"
+                  }
+                ]
+              },
+              {
+                "key": "became_ruler_date",
+                "value": "1066.9.15"
+              },
+              {
+                "key": "laws",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "crown_authority_0"
+                  },
+                  {
+                    "key": null,
+                    "value": "confederate_partition_succession_law"
+                  },
+                  {
+                    "key": null,
+                    "value": "male_preference_law"
+                  }
+                ]
+              },
+              {
+                "key": "current_strength",
+                "value": "1116"
+              },
+              {
+                "key": "strength",
+                "value": "1116"
+              },
+              {
+                "key": "strength_for_liege",
+                "value": "75"
+              },
+              {
+                "key": "strength_without_hires",
+                "value": "1116"
+              },
+              {
+                "key": "power",
+                "value": "30960"
+              },
+              {
+                "key": "max_power",
+                "value": "30960"
+              },
+              {
+                "key": "levy",
+                "value": "702"
+              },
+              {
+                "key": "succession_result_type",
+                "value": "inheritance_child_line"
+              },
+              {
+                "key": "succession",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "40694"
+                  },
+                  {
+                    "key": null,
+                    "value": "41235"
+                  },
+                  {
+                    "key": null,
+                    "value": "41288"
+                  },
+                  {
+                    "key": null,
+                    "value": "37244"
+                  },
+                  {
+                    "key": null,
+                    "value": "38098"
+                  },
+                  {
+                    "key": null,
+                    "value": "31254"
+                  },
+                  {
+                    "key": null,
+                    "value": "40526"
+                  },
+                  {
+                    "key": null,
+                    "value": "40695"
+                  },
+                  {
+                    "key": null,
+                    "value": "36445"
+                  },
+                  {
+                    "key": null,
+                    "value": "36663"
+                  },
+                  {
+                    "key": null,
+                    "value": "36873"
+                  },
+                  {
+                    "key": null,
+                    "value": "31692"
+                  },
+                  {
+                    "key": null,
+                    "value": "34973"
+                  },
+                  {
+                    "key": null,
+                    "value": "40259"
+                  },
+                  {
+                    "key": null,
+                    "value": "35598"
+                  },
+                  {
+                    "key": null,
+                    "value": "36638"
+                  },
+                  {
+                    "key": null,
+                    "value": "32536"
+                  },
+                  {
+                    "key": null,
+                    "value": "38561"
+                  },
+                  {
+                    "key": null,
+                    "value": "39045"
+                  },
+                  {
+                    "key": null,
+                    "value": "39171"
+                  },
+                  {
+                    "key": null,
+                    "value": "39352"
+                  },
+                  {
+                    "key": null,
+                    "value": "39527"
+                  },
+                  {
+                    "key": null,
+                    "value": "33234"
+                  },
+                  {
+                    "key": null,
+                    "value": "37702"
+                  },
+                  {
+                    "key": null,
+                    "value": "33542"
+                  },
+                  {
+                    "key": null,
+                    "value": "32236"
+                  },
+                  {
+                    "key": null,
+                    "value": "38560"
+                  },
+                  {
+                    "key": null,
+                    "value": "38902"
+                  },
+                  {
+                    "key": null,
+                    "value": "39979"
+                  },
+                  {
+                    "key": null,
+                    "value": "40847"
+                  },
+                  {
+                    "key": null,
+                    "value": "41032"
+                  },
+                  {
+                    "key": null,
+                    "value": "31538"
+                  },
+                  {
+                    "key": null,
+                    "value": "35899"
+                  },
+                  {
+                    "key": null,
+                    "value": "40507"
+                  },
+                  {
+                    "key": null,
+                    "value": "40843"
+                  },
+                  {
+                    "key": null,
+                    "value": "41028"
+                  },
+                  {
+                    "key": null,
+                    "value": "36329"
+                  },
+                  {
+                    "key": null,
+                    "value": "36847"
+                  },
+                  {
+                    "key": null,
+                    "value": "41495"
+                  },
+                  {
+                    "key": null,
+                    "value": "37064"
+                  },
+                  {
+                    "key": null,
+                    "value": "33028"
+                  },
+                  {
+                    "key": null,
+                    "value": "38782"
+                  },
+                  {
+                    "key": null,
+                    "value": "39032"
+                  },
+                  {
+                    "key": null,
+                    "value": "39309"
+                  },
+                  {
+                    "key": null,
+                    "value": "39932"
+                  }
+                ]
+              },
+              {
+                "key": "vassal_power_value",
+                "value": "1544.3575"
+              },
+              {
+                "key": "domain_limit",
+                "value": "5"
+              },
+              {
+                "key": "government",
+                "value": "feudal_government"
+              },
+              {
+                "key": "realm_capital",
+                "value": "2197"
+              },
+              {
+                "key": "council",
+                "value": [
+                  {
+                    "key": null,
+                    "value": "502"
+                  },
+                  {
+                    "key": null,
+                    "value": "503"
+                  },
+                  {
+                    "key": null,
+                    "value": "504"
+                  },
+                  {
+                    "key": null,
+                    "value": "505"
+                  },
+                  {
+                    "key": null,
+                    "value": "506"
+                  },
+                  {
+                    "key": null,
+                    "value": "507"
+                  }
+                ]
+              },
+              {
+                "key": "barter_goods",
+                "value": []
+              }
+            ]
+          }
+        ],
+        "saved_mandate_was_elector": 0,
+        "saved_mandate_was_player": 0,
+        "saved_mandate_vote": -1
+      },
+      "saved_postcommit_target_row": null,
+      "I3b_elector_eligibility_static_from_observed_predicates": false,
+      "political_succession_eligibility_observed": null,
+      "native_gender_observed": null,
+      "native_landed_observed": null,
+      "conversion_command_or_history_observed": null
+    }
+  },
+  "runtime_qualification_credit": null,
+  "protection_acceptance_credit": null,
+  "whole_product_acceptance_credit": null,
+  "retained_AST_deltas": {
+    "actor_succession": {
+      "before_count": 45,
+      "after_count": 40,
+      "removed": [
+        38561,
+        39045,
+        39171,
+        39352,
+        39527
+      ],
+      "added": [],
+      "remaining_order_equals_before_with_removed_filtered": true
+    },
+    "five_political_titles": {
+      "2230": {
+        "before_count": 20,
+        "after_count": 20,
+        "removed": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added": [
+          33234,
+          33542,
+          34232,
+          37702
+        ],
+        "first16_equal": true,
+        "before_tail4": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_tail4": [
+          33234,
+          37702,
+          33542,
+          34232
+        ]
+      },
+      "2231": {
+        "before_count": 20,
+        "after_count": 20,
+        "removed": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added": [
+          33234,
+          33542,
+          34232,
+          37702
+        ],
+        "first16_equal": true,
+        "before_tail4": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_tail4": [
+          33234,
+          37702,
+          33542,
+          34232
+        ]
+      },
+      "2235": {
+        "before_count": 20,
+        "after_count": 20,
+        "removed": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added": [
+          33234,
+          33542,
+          34232,
+          37702
+        ],
+        "first16_equal": true,
+        "before_tail4": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_tail4": [
+          33234,
+          37702,
+          33542,
+          34232
+        ]
+      },
+      "2262": {
+        "before_count": 20,
+        "after_count": 20,
+        "removed": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added": [
+          33234,
+          33542,
+          34232,
+          37702
+        ],
+        "first16_equal": true,
+        "before_tail4": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_tail4": [
+          33234,
+          37702,
+          33542,
+          34232
+        ]
+      },
+      "2264": {
+        "before_count": 20,
+        "after_count": 20,
+        "removed": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "added": [
+          33234,
+          33542,
+          34232,
+          37702
+        ],
+        "first16_equal": true,
+        "before_tail4": [
+          38561,
+          39045,
+          39171,
+          39352
+        ],
+        "after_tail4": [
+          33234,
+          37702,
+          33542,
+          34232
+        ]
+      }
+    }
+  },
+  "provider_source_refs": {
+    "assembly_reader": {
+      "path": "C:/lr27s1/ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_predicates.cpp",
+      "bytes": 26455,
+      "sha256": "b76027a9f5ba00121fa306e1eb9fb0b7f6f5323773544371f035c3138ae05c35"
+    },
+    "CharacterPredicate_DTO": {
+      "path": "C:/lr27s1/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_assembly_predicates.hpp",
+      "bytes": 4404,
+      "sha256": "a64bd5c856bc8fa7b239a3aab43dfda56543f3d20db0db0956fe48c4649d7cd7"
+    },
+    "adult_measure_selector_contract": {
+      "path": "C:/lr27s1/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_family_query_abi.hpp",
+      "bytes": 1915,
+      "sha256": "e419bc4d7b399bee92ec79065d37b7b38b1f32f5f9db43134b6838dfac17acd3"
+    },
+    "actual_I3b_trigger": {
+      "path": "C:/lr27s1/mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 11389,
+      "sha256": "42e169066766eab63dd1dd51803cbfb6c197f288223e3416a925bd37354fcb2d"
+    },
+    "official_frozen_metadata28": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-metadata-sdk-20261008-001/ACTUAL-grant28-profile-all-tools.json",
+      "bytes": 29956,
+      "sha256": "e823ad0415e6e7e25ea0435765540b78e883cc3bf730b1b64801d969045c12b6"
+    }
+  },
+  "provider_source_lines": {
+    "assembly_read_member": "98-160: exact fullID/rite/faith identity, alive/adult/raw_measure/raw_selector/threshold/AI/effective_learning/incapable/imprisoned; no sex/landed/political eligibility output",
+    "assembly_serializer": "439-445: closed currently emitted member fields",
+    "adult_measure_selector_contract": "14-17,33-36: signed raw int16 measure and runtime signed threshold; selector not named sex in this contract",
+    "CharacterPredicate_DTO": "54-69",
+    "I3b_elector_trigger": "22: alive adult not imprisoned not incapable learning>=15; political successor eligibility is a different unobserved predicate"
+  },
+  "existing_paused_provider": {
+    "name": "ck3_query_profile_confucian_assembly_predicates_v1",
+    "arguments_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expected_revision": {
+          "exclusiveMaximum": 18446744073709551616,
+          "exclusiveMinimum": 0,
+          "title": "Expected Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "expected_revision"
+      ],
+      "title": "ck3_query_profile_confucian_assembly_predicates_v1Arguments"
+    },
+    "available_fields": [
+      "character_id",
+      "rite_id",
+      "faith_id",
+      "alive",
+      "adult",
+      "imprisoned",
+      "incapable",
+      "is_ai",
+      "effective_learning",
+      "adult_measure_raw",
+      "adult_selector_raw",
+      "adult_threshold_raw",
+      "complete",
+      "unavailable_reason"
+    ],
+    "same_pause_query_can_refresh_these_existing_fields": true,
+    "can_observe_gender_landed_political_eligibility_or_succession_cache": false,
+    "SDK_called_by_this_report": false
+  },
+  "missing_actual_fields": [
+    "native gender/sex labelled predicate (adult_selector_raw is not relabelled)",
+    "native is_landed and exact held political title IDs for the nine target characters",
+    "per-target per-political-title legal succession eligibility predicate and rejection reason",
+    "native actor succession fullID list and each protected political title heir fullID list at pre/post frame",
+    "raw cache generation/dirty/invalidated-or-rebuilt state and source guard provenance",
+    "postcommit saved full character AST for the nine target IDs (the retained B4 STATE roster is empty after cleanup)",
+    "conversion command/history or intermediate native Faith/Rite transitions (two stable endpoint membership observations do not prove no intervening conversion)"
+  ],
+  "bounded_conclusion": {
+    "all_nine_native_Faith107_Rite169_pre_and_post": true,
+    "complete_native_rosters_equal": true,
+    "all_nine_native_member_rows_equal": true,
+    "conversion_of_these_nine_at_endpoints_supported": false,
+    "cache_staleness_vs_legitimate_recompute_cause_proven": false,
+    "original_six_protection_failures_preserved": true,
+    "political_succession_eligibility_cannot_be_substituted_by_I3b_elector_model": true
+  },
+  "report_only_correction": {
+    "prior_report": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-nine-heir-id-observation-actual-20261008-001/REPORT.actual.json",
+      "bytes": 118014,
+      "sha256": "f4d5e06dc2de7e6ce88bc9778c447245e57a7fbb2e8080cae078c7d5abb4ee72"
+    },
+    "reason": "Original typed checks use literal matches. The first additive report used match and therefore listed no failing rows; original source checks and facts were never changed.",
+    "actual_schema_key": "matches"
+  },
+  "observed_organization_correlation": {
+    "precommit_saved_raw_field": "organization",
+    "removed_five_single_value": "107",
+    "replacement_four_field_present": false,
+    "organization_reference_resolved_by_native_provider": null,
+    "inference": "A bounded correlation for the next native cache probe, not proof of eligibility or cause."
+  }
+}

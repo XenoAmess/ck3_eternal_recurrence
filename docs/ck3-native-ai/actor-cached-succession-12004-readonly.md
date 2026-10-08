@@ -81,3 +81,8 @@ Fourteen new Python tests check the strict DTO, bindings and independent opt-in
 inventories without SDK or native runtime calls. Full DLL linking and live
 field-to-save agreement remain ROOT's fresh-build and runtime work; whole-mod
 acceptance remains NOT_GREEN.
+# ROOT整合补记
+
+2026-10-08：source普通单父commit `74bc121cd362809942e27ee12ff49dfb61b8e42f`已cherry-pick进master并rebase接收远端增量；未创建merge提交。共享service/router/adapter合并后，ROOT对新14项provider/alias测试及新5项exact29 lineage测试各执行一次，均exit0；原作者的pure native fixture与6个相关TU编译回执继续保留。DLL、真实MCP读取和native/save同一数组资格尚未取得，不能标修复或业务PASS。
+
+R27既有九人对照已[永久入库](../li-yu-dao/acceptance/2026-10-08-r0027-c791914b8-signed-factory-protection-red/nine-heir-id-observation/INDEX.json)：native Faith107/Rite169成员DTO前后未变；五个removed角色的saved raw organization107与四个replacement的该字段absent构成有限研究线索。组织类型、政治继承资格和producer仍未知；不把raw organization ID当Faith scope。新读口完整向量只能先建立实际观测，不能替代六项政治保护或宣称已定位中间factory步骤。

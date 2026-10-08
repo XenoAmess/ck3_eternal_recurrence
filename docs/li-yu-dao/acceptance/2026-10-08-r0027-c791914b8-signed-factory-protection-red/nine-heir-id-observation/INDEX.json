@@ -1,0 +1,40 @@
+{
+  "schema": "lyd.r27.retained-nine-heir-observation-index.v2",
+  "status": "JSON_ONLY_OBSERVATION_SIX_PROTECTION_FAILURES_PRESERVED",
+  "prior_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-nine-heir-id-observation-actual-20261008-001/INDEX.json",
+    "bytes": 1326,
+    "sha256": "db10e6dd975c02a38a15f5b7494421314627403865a1f8fd5f389c9e05bb7174"
+  },
+  "inputs": {
+    "FIELD_DIFF": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-factory-field-diff-actual-20261008-001/FIELD-DIFF.actual.json",
+      "bytes": 25893,
+      "sha256": "2bb20a6627c5bb9f2480154ad45eb39826becdc7580288ec3a5baf5e53f3d6b2"
+    }
+  },
+  "files": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-nine-heir-id-observation-actual-20261008-002/NINE-CHARACTER-COMPACT.actual.json",
+      "bytes": 3309,
+      "sha256": "86581400c7df54dbe224946bf541cb7e344d315a9e23f9894b63bda43162e304"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-nine-heir-id-observation-actual-20261008-002/README.md",
+      "bytes": 2744,
+      "sha256": "45bf0141ca2108da80c4a22329ccada0a790be4aec5e78f2c9a601b04529cd8a"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r27-nine-heir-id-observation-actual-20261008-002/REPORT.actual.json",
+      "bytes": 146314,
+      "sha256": "bd37faa31e68d738d547192f1877bb18560232d275e9ec2b0296e534c6bdd8f2"
+    }
+  ],
+  "reader_body_reads": 0,
+  "SDK_calls": 0,
+  "game_calls": 0,
+  "main_writes": 0,
+  "old_tests_run": 0,
+  "cause_proven": false,
+  "whole_product_acceptance_credit": null
+}

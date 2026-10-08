@@ -1,0 +1,153 @@
+[
+  {
+    "id": 38561,
+    "role": "removed_from_actor_succession",
+    "Faith": 107,
+    "Rite": 169,
+    "raw_measure": 16,
+    "raw_selector": 0,
+    "threshold": 16,
+    "adult": true,
+    "learning": 9,
+    "native_pre_post_equal": true,
+    "I3b_elector_eligible_static": false,
+    "saved_organization_rows": [
+      {
+        "row_index": 6,
+        "value": "107"
+      }
+    ]
+  },
+  {
+    "id": 39045,
+    "role": "removed_from_actor_succession",
+    "Faith": 107,
+    "Rite": 169,
+    "raw_measure": 13,
+    "raw_selector": 0,
+    "threshold": 16,
+    "adult": false,
+    "learning": 4,
+    "native_pre_post_equal": true,
+    "I3b_elector_eligible_static": false,
+    "saved_organization_rows": [
+      {
+        "row_index": 6,
+        "value": "107"
+      }
+    ]
+  },
+  {
+    "id": 39171,
+    "role": "removed_from_actor_succession",
+    "Faith": 107,
+    "Rite": 169,
+    "raw_measure": 12,
+    "raw_selector": 0,
+    "threshold": 16,
+    "adult": false,
+    "learning": 6,
+    "native_pre_post_equal": true,
+    "I3b_elector_eligible_static": false,
+    "saved_organization_rows": [
+      {
+        "row_index": 6,
+        "value": "107"
+      }
+    ]
+  },
+  {
+    "id": 39352,
+    "role": "removed_from_actor_succession",
+    "Faith": 107,
+    "Rite": 169,
+    "raw_measure": 11,
+    "raw_selector": 0,
+    "threshold": 16,
+    "adult": false,
+    "learning": 9,
+    "native_pre_post_equal": true,
+    "I3b_elector_eligible_static": false,
+    "saved_organization_rows": [
+      {
+        "row_index": 6,
+        "value": "107"
+      }
+    ]
+  },
+  {
+    "id": 39527,
+    "role": "removed_from_actor_succession",
+    "Faith": 107,
+    "Rite": 169,
+    "raw_measure": 10,
+    "raw_selector": 0,
+    "threshold": 16,
+    "adult": false,
+    "learning": 3,
+    "native_pre_post_equal": true,
+    "I3b_elector_eligible_static": false,
+    "saved_organization_rows": [
+      {
+        "row_index": 6,
+        "value": "107"
+      }
+    ]
+  },
+  {
+    "id": 33234,
+    "role": "present_before_and_replacement_in_five_titles",
+    "Faith": 107,
+    "Rite": 169,
+    "raw_measure": 40,
+    "raw_selector": 0,
+    "threshold": 16,
+    "adult": true,
+    "learning": 0,
+    "native_pre_post_equal": true,
+    "I3b_elector_eligible_static": false,
+    "saved_organization_rows": []
+  },
+  {
+    "id": 37702,
+    "role": "present_before_and_replacement_in_five_titles",
+    "Faith": 107,
+    "Rite": 169,
+    "raw_measure": 20,
+    "raw_selector": 0,
+    "threshold": 16,
+    "adult": true,
+    "learning": 3,
+    "native_pre_post_equal": true,
+    "I3b_elector_eligible_static": false,
+    "saved_organization_rows": []
+  },
+  {
+    "id": 33542,
+    "role": "present_before_and_replacement_in_five_titles",
+    "Faith": 107,
+    "Rite": 169,
+    "raw_measure": 38,
+    "raw_selector": 0,
+    "threshold": 16,
+    "adult": true,
+    "learning": 5,
+    "native_pre_post_equal": true,
+    "I3b_elector_eligible_static": false,
+    "saved_organization_rows": []
+  },
+  {
+    "id": 34232,
+    "role": "present_before_and_replacement_in_five_titles",
+    "Faith": 107,
+    "Rite": 169,
+    "raw_measure": 35,
+    "raw_selector": 0,
+    "threshold": 16,
+    "adult": true,
+    "learning": 4,
+    "native_pre_post_equal": true,
+    "I3b_elector_eligible_static": false,
+    "saved_organization_rows": []
+  }
+]
