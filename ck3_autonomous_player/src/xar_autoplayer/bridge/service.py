@@ -4805,7 +4805,7 @@ class GameplayBridgeService:
             if expected_revision is not None
             else int(snapshot["revision"])
         )
-        result = self.execute_step(
+        result = self.driver.execute_step(
             QUERY_ARMY_STRENGTHS_STEP,
             expected_revision=selected_revision,
         )
