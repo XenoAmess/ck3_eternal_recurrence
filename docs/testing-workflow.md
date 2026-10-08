@@ -1,6 +1,30 @@
 # 实测工作流程（CK3 mod 调试）
 
-## 2026-10-08 14:20:19：同进程creation token格式差异与raw-wire断言分别定位
+## 2026-10-08 14:45:38：普通plan返回证明loop解卡，不替代动作／性能结果
+
+Root hot02实际普通plan002完成/toolerrorfalse，phase native_war_termination_query、query-war-termination-options100663329，current_betrothal_fulfillmenttrue/statusmarriage；同SDK6ee已离开旧重复cold family恢复。这个真实plan结果为family时间比较修复提供生产路径互证，**不授新婚姻、完整normal OODA、M6正式材料或性能修复**。003普通war auto查询仍pending，0新动作/day/SAVE；SDK先前CPU/memory观察与性能lane尚无结果，不能因plan返回抹除。
+
+Preg/Siege ordinary consumer源已确认完整，无新代码/测试必要，原FIRST复用；Native33仍非canonical/nonlive。Feast parser-entry sourceca88d90e只待一个必要FIRST，旧03GREEN不重跑、hot01实际startup HarnessRED保留。文档止于本条002实际结果、释放供Root统一提交，后续新材料再记，未由报告owner触碰Game/SDK/tests/process。
+
+## 历史2026-10-08 14:43:44：热恢复完整帧与普通plan／性能结果分别闭账
+
+Root hot02 [完整paused snapshot十二检查](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-sdk-hot6ee02/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST77.json)实际06:40:20.783444Z GREEN，Game99872/HWND33040360 mintrue，同date／episode，无relaunch／newday／SAVE；这是SDK6ee热恢复成功，旧hot01 Feastflag argparse启动HarnessRED不删，hot02没有该flag。此前14:41尚未收到fullproof的pending文字保留为历史，不把current restore仍写pending。
+
+普通002 ck3_plan_turn仍pending，paused frame通过不证明familyloop已消除、normalflow完成或M6formal材料消费。Root现场SDK171452约32.65CPU／3.7GB观察只作为ordinarycopy性能lane输入，不把性能研究/候选写成修复结果。Native33仍非canonical／非live，当前Native1dc和SDK6ee身份、source/scene资格、真实plan材料与day分别记账。本知识仅复用Root实际字段，未新读进程或追加query/test。
+
+## 历史2026-10-08 14:41:45：SDK热重启parser入口失败与Game保持分列
+
+R77原SDK73919 graceful exit0，Game99872和Runner保持；新hot01在initialize阶段被实际MCP argparse拒绝新增Feastnormal flag、Connectionclosed。这是本次真实参数入口缺口、owner最小sourcefix待，**没有Game输入／状态推进**；不能把SDK初始化失败误记成Game退出或新Game能力RED。Root hot02只传现有支持flags，冻结SDK完整6ee7dea1b4d2fa4ecb05223f12c66b7afe72ac2d，session74599启动中，尚无qualified fullsnapshot；启动过程不等于热部署GREEN。
+
+PregFIRST02 5/6、Siege4/4与familya7e24 compound离线GREEN仍成立，SDK／Native／publication身份和Game材料阶段分别记录。当前不能凭新源码发布或进程保留声称family真实loop已消除／M6receipt消费完成。旧enabled验收scope与新增flag实际入口故障均保留，不用211listing覆盖未执行参数branch，不扩展理论门禁或重复旧测试。这里只消费Root实际事件、无报告owner query/test/Game/SDK/process操作。
+
+## 历史2026-10-08 14:36:03：两个最小修复的offline通过与部署阶段分列
+
+Family同Game99872的UTC **20261008054004.201294+000**与rawWMI **20261008134004.201294+480**比较故障已由候选[a7e24唯一compound](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/family-current-decision32/m7-family-current-after-succession/cold-material-recheck/compound/first01/RESULT.json) **GREEN3.73s**验证、Root adopted/pushed6ee。**SDK尚未热部署**，Root正准备冻结SDK6ee热重启、Game／Runner保持、NOTRUN；003／007真实重复cold恢复与正式release消费尚待实际后态。离线验证、source采用、发布、当前Game运行身份分列，不把源码已合格写成现场循环已修复；此处只复用Root结果，不重验进程。
+
+Pregnancy fixture误断raw wire包含SHA的原FIRST01 RED保留；最小fixture修正后[FIRST02五Native／六consumer全部GREEN](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime33-pregnancy-first02/root-pair/ROOT-NEW-PAIRS-RESULTS.json)，descriptor canonical和数值断言保留，生产合同未为fixture补字段。Siege4/4旧GREEN **0replay**。Native33尚无canonical／live资格，当前Game仍Native1dc/SDKa59；新的场景通过不授当前怀孕真值／出生／自然继承。报告和外置diff只记录实际新增资格，Game/day/SAVE/M6credit仍0新增。已有enabled迁移accepted与新addon后续阶段分别记账，不加理论门禁或全branch重测。
+
+## 历史2026-10-08 14:20:19：同进程creation token格式差异与raw-wire断言分别定位
 
 R77同Game99872，003／007 auto均在date53288544/public3/native2重复婚姻cold材料恢复，preNative0/postNative2。Root只做一次[WMI proof](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-deployment/ROOT-ACTUAL-R77-PROCESS-CREATION-TOKEN.json)：UTC **20261008054004.201294+000**与rawWMI **20261008134004.201294+480**表示同一创建时刻。生产family最小fix仍SOURCE_NOTRUN；这条知识记录真实episode比较故障和下一修复，不声称已修复、不新增进程审查。重复恢复accepted/materialmarriage true不产生新婚姻、Armyday或release消费，free查询与正式receipt分列。
 

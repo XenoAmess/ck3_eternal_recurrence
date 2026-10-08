@@ -1,6 +1,22 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 14:20:19 CST：R77重复family cold恢复待修，八项Python离线GREEN；Native33 Pregnancy仍待
+### 2026-10-08 14:45:38 CST：普通plan002解开family重复恢复，转入战争终止条件查询
+
+Root hot02普通plan002实际完成、**toolerrorfalse**，phase **native_war_termination_query**，选择query-war-termination-options100663329；current_betrothal_fulfillmenttrue／statusmarriage，**已跳出旧cold family重复循环**，历史婚姻不记新材料。003 ck3_auto_turn普通war查询已排、尚pending；无新Game动作／day／SAVE／M6credit。Native33仍非canonical／非live，Preg/Siege普通consumer source已确认完整、无需再造测试；Feast入口source **ca88d90e**待唯一FIRST、旧Feast03GREEN不重跑。Game99872最小化／H9696／saved6009／G2 5/8／NW2 2/4／M4未完／M6partial／natural0保持。本批封至002结果，Root提交diff与fields，后003另增量。
+
+### 历史2026-10-08 14:43:44 CST：hot02十二检查暂停帧GREEN，ordinary plan仍pending
+
+Root新证据：hot02实际 **06:40:20.783444Z** [完整暂停帧十二检查GREEN](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-sdk-hot6ee02/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST77.json)，Game99872／HWND33040360最小化true，同date53288544／episode，未relaunch／新day／SAVE。SDK6ee已热恢复合格，但002普通ck3_plan_turn尚PENDING，**不先授family loop解卡／normal flow完成／M6material**。hot02未加Feast newflag，hot01 argparse启动HarnessRED另存；Native33仍非canonical／非live。saved6009／G2 5/8／NW2 2/4／M4未完／M6partial／natural0保持。Root另开ordinary copy性能lane，结果未授；七报告与两外置有限清单只记录当前阶段。
+
+### 历史2026-10-08 14:41:45 CST：SDK hot01 Feast参数入口RED，hot02启动pending／Game保留
+
+R77原SDK73919 graceful exit0，Game99872／Runner保持。hot01新增Feastnormal flag被真实MCP argparse拒绝，initialize Connectionclosed，**0Game输入／状态推进**；Feast owner sourcefix待。Root冻结SDK完整source **6ee7dea1b4d2fa4ecb05223f12c66b7afe72ac2d**，fresh **runtime32-r77-sdk-hot6ee02/operator**仅支持flags，session74599启动中、fullsnapshot尚未qualified，**不宣称hot部署GREEN**。Preg FIRST02与family offlineGREEN保留，Native33仍非canonical／非live；saved6009／G2 5/8／NW2 2/4／M4未完／M6partial／natural0不变。后台已封[七个价值包](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime33-report-coordination/G2-REMAINING-VALUE-WORKPACKAGES.json)与[迁移验收边界](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime33-report-coordination/MIGRATION-ACCEPTANCE-CURRENT-BOUNDARIES.json)，不重开Oct7旧accepted范围。
+
+### 历史2026-10-08 14:36:03 CST：Pregnancy FIRST02全GREEN，family时间比较修复离线合格／未部署
+
+Root已普通发布 **6ee7dea1…**。[Pregnancy修正FIRST02](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime33-pregnancy-first02/root-pair/ROOT-NEW-PAIRS-RESULTS.json) **5Native／6consumer全部GREEN**，原raw-wire SHA断言RED保留；Siege **4/4原GREEN复用、不重跑**。Native33仍未canonical／未live。[Family时间比较fix](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/family-current-decision32/m7-family-current-after-succession/cold-material-recheck/compound/first01/RESULT.json) **a7e24唯一compound GREEN3.73s**已采用至6ee，**SDK尚未热部署**，Root正准备新冻结SDK6ee热重启、保持Game／Runner，仍NOTRUN。R77 Game99872最小化／date53288544／saved6009不变，无新day／SAVE／M6材料；G2 5/8／NW2 2/4／M4未完／M6partial／natural0保持。后台两份独立小清单只整理真实剩余价值与accepted迁移边界，不重开旧enabled验收；详见[Oct8日报](daily/2026-10-08.md)。本batch待Root提交，报告owner不Git commit/push、不实机或复测。
+
+### 历史2026-10-08 14:20:19 CST：R77重复family cold恢复待修，八项Python离线GREEN；Native33 Pregnancy仍待
 
 R77 003／007在同date53288544／public3／native2重复 **current_first_heir_betrothal_cold_material_recheck**，38822／38718 marriage materialtrue只是旧材料恢复，未消费M6 release／未推进Army。实际同Game99872 creation token的UTC **20261008054004.201294+000** 与raw WMI **20261008134004.201294+480**表示差异已由[一次WMI proof](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-r77-deployment/ROOT-ACTUAL-R77-PROCESS-CREATION-TOKEN.json)定位，family最小fix SOURCE_NOTRUN。Sway004／005／006 fresh baseline可用，不授新M4／NW2信用。Root七项新Pythoncompound＋Feast lifecycle共八项离线GREEN，原harness／strict gate RED保留；Native33初C2440编译修后GREEN、Siege4whole＋sole GREEN，Pregnancy native原.263638s raw-wire SHA断言RED、fixture-only920待单fixture/link，未live。LiveSDK a59／Native1dc不可变；latestpublisheda25ca745，后继4c16未push。saved6009／H9696／G2 5/8／NW2 2/4／M4false／natural0保持，详见[Oct8日报](daily/2026-10-08.md)。
 
