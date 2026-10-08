@@ -1,6 +1,12 @@
 # 实测工作流程（CK3 mod 调试）
 
-## 2026-10-08 13:34:45：compile口径／mixed lineage、consumer-only修复与正式closure
+## 2026-10-08 13:46:09：恢复receipt模板名与实际源身份、查询与正式receipt分列
+
+R77实际full snapshot在 **05:43:03.323739Z**十二检查GREEN，Game99872最小化、原Robertalive/H9696/date53288544/public3/native2。[ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST77.json](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9696-startup32restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST77.json)的Runtime30字样继承旧模板；本次内容实际绑定 **Native32 source1dc2abf0／SDK a59b2df4**。Root public rebase发布f38ea059与冻结SDK/Native源pin分别记账，不能依据文件名或最新publication覆盖实际运行身份。这里复用Root已执行字段，不另读Game或重验旧GREEN。
+
+新002 retained-release独立查询accepted/available，61540 alive/notimprisoned/nulljailer、releaseopinion20/current−13；正式consumer／receipt还待003 auto。观察到当前自由状态和opinion是本次查询结果，尚不把它替代正式M6材料归因／消费闭环或新release动作。相同date53288544／saved6009说明本条没有新日或SAVE信用；旧ACK／ledger freeze和当前查询各保留阶段事实。Source33新candidate仍SOURCE_NOTRUN，不能借已恢复Native32授资格。
+
+## 历史2026-10-08 13:34:45：compile口径／mixed lineage、consumer-only修复与正式closure
 
 Root纠正原63compile口径为 **59production＋4fixture**，不是63production；报告相应历史短语已改，原ADL／AV／hashcase／shape／nullable失败artifact不删。Runtime32最终有效24新Native＋4sole registered GREEN，不等于重跑所有24：Holy6/M6 5本batch首GREEN0repeat，targetconsumer03只6178真实code-object coverage harness修复、3Native复用；replen03十Native与qualified1dc/unchangedPythonconsumer必要资格GREEN，其sparsefixturetree无Python exit2/0case HarnessRED保留。最后replen fixture17780只补Knownfalse普通场景，不改变production nullable default。
 

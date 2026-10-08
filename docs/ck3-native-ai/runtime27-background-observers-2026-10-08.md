@@ -1,6 +1,12 @@
 # Runtime27 background observers — 2026-10-08
 
-## Runtime32 final qualification/canonical and R77 prep at13:34:45 CST
+## Runtime32 restored paused frame and retained-release query at 13:46:09 CST
+
+Recorded **2026-10-08T13:46:09+08:00** from Root's actual fields. R77 sequence77 restored the original H9696 and eleven preserved streams; job **0d2295d1-4836-4e21-9c80-6c85abf4b777**, Game **99872**, minimized true. The new full snapshot passed all twelve checks at **2026-10-08T05:43:03.323739Z**: Robert alive, date53288544, public3/native2. The [FIRST77 receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9696-startup32restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST77.json) retains a Runtime30 template filename; its actual native identity is qualified **Runtime32 /1dc2abf0**, with immutable **SDK a59b2df4**. Publication **f38ea0591ba11f7b99f537e75af7c58325f620a6** is separate from both source pins.
+
+Query002 independently returned accepted/available retained-release state:61540 alive, not imprisoned, null jailer, release opinion20 and current opinion−13. The formal consumer/receipt remains pending003 auto; no complete M6 material, new release action, day or natural-succession credit is added here. Saved6009/H9696, G2 5/8, NW2 2/4, M4false and natural0 remain. Source33 **21c3 /31paths /six existing direct CPP /zero new production TU /one new fixture** is SOURCE_NOTRUN, separate from the current loaded Native32. Twelve concrete source packages continue in parallel, with local Game/build owned only by Root. Existing enabled migration remains accepted; no tests or old qualification replays were performed by this documentation lane.
+
+## Historical Runtime32 final qualification/canonical and R77 prep at13:34:45 CST
 
 Actual **2026-10-08T13:34:45+08:00**. [Combined Runtime32](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-first02/ROOT-FOUR-DOMAIN-QUALIFICATION-RESULTS.json) effective24newNative/4registered sole compounds **ALLGREEN**. Targetconsumer-only03 GREEN2.952s/code-object coverage6178 harness fix/3Native reused; replen03 tenNativeGREEN.25125s + unchangedPythonconsumerGREEN4.166s againstqualified1dc, sparse-tree missingPythonexit2/0case preserved. Holy6/M6 5 originalbatchGREEN0repeat. Correct initial63compile to59production+4fixture; repair04 necessary4CPP2prod2fixture14.2725s/57reuse, finalfixture-only17780 oneCPP/link9.6085s. All earlier REDs remain.
 

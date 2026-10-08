@@ -1,6 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 13:34:45 CST：Runtime32最终24 Native／4 sole GREEN，Canonical32归档，R76正式cleanup完成
+### 2026-10-08 13:46:09 CST：R77原Robert暂停恢复12checks GREEN，release独立查询可用
+
+R77 sequence77／managed job **0d2295d1-4836-4e21-9c80-6c85abf4b777**实际恢复原H9696及11流；Game **99872／minimized true**，**05:43:03.323739Z** full snapshot十二检查全GREEN，date53288544／public3／native2／Robertalive。见[首次合格恢复](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9696-startup32restore01/operator/ROOT-FULL-RUNTIME30-PAUSED-SNAPSHOT-QUALIFIED-FIRST77.json)：文件名沿用Runtime30模板，实际Native32 source1dc／SDK a59，与publication **f38ea0591ba11f7b99f537e75af7c58325f620a6**分列。002 retained-release查询accepted／available，61540 alive／not imprisoned／null jailer、release opinion20／current opinion−13；正式consumer／receipt仍待003，不提前授M6完整material。Source33 **21c3／31paths／6existing direct CPP／0new production TU／1new fixture**仅SOURCE_NOTRUN，后台12条source包继续，Game/build唯一Root。saved6009／G2 5/8／NW2 2/4／M4false／natural0不变，旧迁移Oct7accepted不重开；详见[Oct8日报](daily/2026-10-08.md)。
+
+### 历史2026-10-08 13:34:45 CST：Runtime32最终24 Native／4 sole GREEN，Canonical32归档，R76正式cleanup完成
 
 [最终四domain qualification](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime32-first02/ROOT-FOUR-DOMAIN-QUALIFICATION-RESULTS.json)有效24新Native＋4registered sole compounds全GREEN，旧RED／Holy-M6首GREEN保留不重跑。[Canonical32](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix32/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)05:27:26.927784Z archiveGREEN.270764s／720owners，native1dc2abf0、mixedlineage/all_cpp_atnewheadfalse；更正旧63compile为59prod＋4fixture。R76 05:00:35.716Z正式ownedclosure tree_gone/cleanup_proven/oktrue，managednormalstop Gameexit1，不再写cleanup pending；11流freeze／SDK正常exit复用。Family ordinarysuccession ledger handoff FIRST02 GREEN4.4433477s、非自然继承。Latestpublished3b1489c3…，a59b2df4 SDK freeze与native1dc分列，R77 prepare/session91582尚未Game／新query；Source33 Siege／pregbool d326仅source-only。H9696/saved6009/G2 5/8/NW2 2/4/M4false/natural0保持，详见[Oct8日报](daily/2026-10-08.md)，本batch待Root发布。
 
