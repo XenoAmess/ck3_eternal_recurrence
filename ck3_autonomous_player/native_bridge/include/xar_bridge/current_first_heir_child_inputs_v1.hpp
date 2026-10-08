@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <optional>
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -24,11 +25,19 @@ struct CurrentFirstHeirChildTraitsV1 {
   std::optional<std::vector<std::string_view>> present_trait_keys{};
 };
 
+struct CurrentFirstHeirChildFocusV1 {
+  bool available = false;
+  std::string_view unavailable_reason = "child_current_focus_bindings_unavailable";
+  std::string_view presence{};
+  std::optional<std::string> key{};
+};
+
 struct CurrentFirstHeirChildInputRowV1 {
   std::int32_t character_id = -1;
   std::vector<std::uint32_t> occurrence_indices{};
   CurrentFirstHeirChildValuesV1 values{};
   CurrentFirstHeirChildTraitsV1 childhood_traits{};
+  std::optional<CurrentFirstHeirChildFocusV1> native_focus{};
 };
 
 // This leaf describes distinct living actual children, while the owning

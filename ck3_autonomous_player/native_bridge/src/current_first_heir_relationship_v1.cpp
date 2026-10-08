@@ -178,7 +178,23 @@ void AppendChildInputs(std::string &json,
       }
       json += ']';
     }
-    json += "}}";
+    json += '}';
+    if (row.native_focus) {
+      const auto &focus = *row.native_focus;
+      json += ",\"native_focus\":{\"source\":\"native_character_current_focus\",\"status\":";
+      AppendJsonString(json, focus.available ? "available" : "unavailable");
+      json += ",\"unavailable_reason\":";
+      if (focus.available) json += "null";
+      else AppendJsonString(json, focus.unavailable_reason);
+      json += ",\"presence\":";
+      if (focus.available) AppendJsonString(json, focus.presence);
+      else json += "null";
+      json += ",\"key\":";
+      if (focus.key) AppendJsonString(json, *focus.key);
+      else json += "null";
+      json += '}';
+    }
+    json += '}';
   }
   json += "]}";
 }

@@ -1,8 +1,9 @@
 # Ordinary child education and guardians after a real birth
 
 Source-first topic, 2026-10-08 / 2026-W41. The child age/sex and childhood-trait
-publication is **static-ready / FIRST_NOTRUN**; guardian and child focus
-remain **research**. Publication source base
+publication has retained **fixture-live** qualification in Root's canonical36;
+child current-focus publication is **static-ready / FIRST_NOTRUN** and guardian
+assignment remains **research**. Original publication source base
 `6ee7dea1b4d2fa4ecb05223f12c66b7afe72ac2d`; native identity is Root's
 canonical CK3 1.20.0.4 / Steam25734779 freeze. This package performs no
 Game/SDK work, new EXE read/hash, production import, build or test. The
@@ -46,8 +47,10 @@ flowchart TD
   E -. current native materializer and action unqualified .-> A[Player-owned ordinary guardian proposal]
   A -. independent relation or travel afterstate required .-> R[Observed guardian result]
   C --> AGE[Observe raw age and evaluated focus edit authority]
+  C --> CF[Source-ready generic Character current focus key and sentinel presence]
+  CF --> F
   AGE --> F[Source focus min age6; childhood affinity and current focus/change budget]
-  F -. child receiver and native selector unresolved .-> X[Child focus observation and eligible focus choice]
+  F -. focus authority change budget and native selector unresolved .-> X[Eligible focus choice]
   X -. command and afterstate unqualified .-> O[Observed focus result]
   R --> P[Native birthday education inputs]
   O --> P
@@ -58,6 +61,49 @@ Solid edges are source dependencies, not a demonstrated live loop. Every
 unclosed native/action/live edge is dashed. This topic adds no waiting gate
 to normal calendar progression and estimates no conception or education
 probability.
+
+## Native38 current-child focus publication
+
+Functional source `1e025bdecff11e157370c8cafff90a37d86817e0` adds optional
+`native_focus` to each existing
+`current_first_heir_descendants_v1.child_inputs.rows[]`. This remains the same
+private current-first-heir relationship query. It publishes source
+`native_character_current_focus`, independent availability/reason, presence
+and the exact owned native key. A non-null fallback return is available
+absence; null getter or key failure is unavailable. Two successful samples
+must agree. An absent field on an older wire remains absent.
+
+The [retained receiver contract](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/post-birth-child-guardian-focus36/focus-next37/RECEIVER-SEMANTIC-CONTRACT.json)
+and [helper interpretation](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/post-birth-child-guardian-focus36/focus-next37/HELPER161-INTERPRETATION.json)
+cover the generic getter/fallback/key decoder, complete Character-compatible
+caller and actual result-pointer packing. The result helper preserves the
+same focus pointer in both storage paths. Its descriptor name and stock
+registration remain unclosed; they do not change that returned pointer or
+stable-key value. This observer reuses the already descriptor-bound
+`child_traits12004.current_focus` and fallback slot, without a whole player
+LIFE read, adult lifestyle/XP/perk assumptions, or an education-key whitelist.
+Existing living adult descendants retain their raw native focus keys too.
+
+The child age/sex/trait aggregation and shared public DTO layouts remain
+unchanged. Root's [canonical36 qualification](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix36/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)
+is retained parent evidence. The new focus FIRST is **SOURCE_NOTRUN**: the
+existing descendants fixture gains only `--child-focus-observer-wire-dir`,
+emitting six new whole relationship wires for empty children, distinct child
+keys, sentinel absence, null return, key failure, and focus independent of
+unavailable age/sex values. One new registered consumer uses those six plus
+a labelled legacy-field-removed scene through the existing private query and
+`ck3_plan_turn`, retaining the whole relationship. The fixture traverses the
+held getter's Character-extension/holder path and stable-key decoder; it does
+not inject a finished positive DTO. Canonical descriptor checks do not demand
+an absent raw-wire SHA. No old child, pregnancy or LIFE qualification is
+replayed.
+
+Although `bridge.cpp` has no textual functional diff, its query-local child
+DTO and inline collector changed; it must recompile alongside the relationship
+serializer and the existing descendants fixture. Runtime/protocol/archive
+inputs and the public Snapshot layout are unchanged by this increment. Actual
+child focus, edit permission, change budget, an education command/afterstate,
+natural birth, succession and G2 completion remain unobserved here.
 
 ## What stock AI considers
 

@@ -64,6 +64,22 @@ def _childhood_traits(value: object) -> None:
         raise BridgeUnavailableError("current heir childhood trait values are malformed")
 
 
+def _native_focus(value: object) -> None:
+    """Keep native focus presence independent of the other child subreads."""
+    if (not isinstance(value, dict)
+            or not {"source", "status", "unavailable_reason", "presence", "key"}.issubset(value)
+            or value.get("source") != "native_character_current_focus"
+            or value.get("status") not in ("available", "unavailable")):
+        raise BridgeUnavailableError("current heir child focus observation is malformed")
+    reason, presence, key = (value["unavailable_reason"], value["presence"], value["key"])
+    if value["status"] == "unavailable":
+        if not isinstance(reason, str) or not reason or presence is not None or key is not None:
+            raise BridgeUnavailableError("unavailable current heir child focus values are malformed")
+    elif (reason is not None or presence not in ("present", "absent")
+          or (not isinstance(key, str) or not key if presence == "present" else key is not None)):
+        raise BridgeUnavailableError("available current heir child focus values are malformed")
+
+
 def _child_inputs(value: object, descendants: dict[str, object]) -> None:
     """Bind distinct living-child inputs to their full native occurrence groups."""
     if (not isinstance(value, dict)
@@ -108,6 +124,8 @@ def _child_inputs(value: object, descendants: dict[str, object]) -> None:
             raise BridgeUnavailableError("current heir child input occurrence group is malformed")
         _child_values(row.get("values"))
         _childhood_traits(row.get("childhood_traits"))
+        if "native_focus" in row:
+            _native_focus(row["native_focus"])
         all_available = (all_available and row["values"]["status"] == "available"
                          and row["childhood_traits"]["status"] == "available")
     if (status == "available") is not all_available:

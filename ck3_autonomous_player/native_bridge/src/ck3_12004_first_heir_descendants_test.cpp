@@ -717,9 +717,156 @@ void EmitChildObservers35(const std::filesystem::path &directory,
         "five child scenes keep identical current marriage and send no action");
   active_child_traits35 = nullptr;
 }
+
+struct ChildFocusFixture39 {
+  std::array<std::array<std::byte, 0x288>, 2> extensions{};
+  std::array<std::array<std::byte, 0x10>, 2> holders{};
+  std::array<std::array<std::byte, 0x38>, 2> definitions{};
+  std::array<std::array<char, 32>, 2> key_storage{};
+  std::array<void *, 2> child_characters{};
+  std::array<std::byte, 8> absent_object{};
+  void *fallback = absent_object.data();
+  std::size_t getter_calls = 0;
+
+  explicit ChildFocusFixture39(Fixture &fixture) {
+    child_characters = {fixture.characters[4].data(), fixture.characters[7].data()};
+    const std::array<std::string_view, 2> keys{
+        "education_diplomacy", "education_learning"};
+    for (std::size_t index = 0; index < keys.size(); ++index) {
+      std::memcpy(key_storage[index].data(), keys[index].data(), keys[index].size());
+      Put(definitions[index].data(), 0x18, key_storage[index].data());
+      Put(definitions[index].data(), 0x28, static_cast<std::uint64_t>(keys[index].size()));
+      Put(definitions[index].data(), 0x30, std::uint64_t{31});
+      Put(child_characters[index], 0x1B0, extensions[index].data());
+      Put(extensions[index].data(), 0x280, holders[index].data());
+      Put(holders[index].data(), 0x8, definitions[index].data());
+    }
+  }
+};
+
+ChildFocusFixture39 *active_child_focus39 = nullptr;
+void *ChildCurrentFocus39(void *character) {
+  Check(active_child_focus39 != nullptr, "focus getter has an owning native fixture");
+  auto &source = *active_child_focus39;
+  Check(std::find(source.child_characters.begin(), source.child_characters.end(), character)
+            != source.child_characters.end(),
+        "focus getter receives the actual descendant child, never the played actor");
+  ++source.getter_calls;
+  const auto extension = Load<void *>(character, 0x1B0);
+  if (extension == nullptr) return source.fallback;
+  const auto holder = Load<void *>(extension, 0x280);
+  if (holder == nullptr) return source.fallback;
+  return Load<void *>(holder, 0x8);
+}
+
+void EmitChildFocusObservers39(const std::filesystem::path &directory,
+                               std::string_view name) {
+  const bool empty = name == "empty-children-focus";
+  const bool distinct = name == "distinct-child-focus-keys";
+  const bool absent = name == "child-focus-sentinel-absent";
+  const bool null_focus = name == "child-focus-null-unavailable";
+  const bool bad_key = name == "child-focus-key-unavailable";
+  const bool bad_values = name == "child-focus-independent-of-values";
+  Fixture fixture({"current-child-focus", empty ? 0 : distinct ? 18 : 1,
+                   true, true, true, false});
+  std::array<std::int32_t, 1> heir_spouses{kPartner}, partner_spouses{kHeir};
+  Put(fixture.families[1].data(), 0x14, kPartner);
+  Put(fixture.families[2].data(), 0x14, kHeir);
+  Put(fixture.families[1].data(), 0x20, heir_spouses.data());
+  Put(fixture.families[2].data(), 0x20, partner_spouses.data());
+  for (const auto index : {1U, 2U}) {
+    Put(fixture.families[index].data(), 0x28, std::int32_t{1});
+    Put(fixture.families[index].data(), 0x2C, std::int32_t{1});
+  }
+  Put(fixture.characters[4].data(), 0x68, std::int16_t{7});
+  Put(fixture.characters[4].data(), 0x1A1, static_cast<std::uint8_t>(bad_values ? 2 : 0));
+  Put(fixture.characters[7].data(), 0x68, std::int16_t{9});
+  Put(fixture.characters[7].data(), 0x1A1, std::uint8_t{1});
+  ChildTraitFixture35 traits(fixture);
+  ChildFocusFixture39 focus(fixture);
+  if (absent) Put(fixture.characters[4].data(), 0x1B0, static_cast<void *>(nullptr));
+  if (null_focus) Put(focus.holders[0].data(), 0x8, static_cast<void *>(nullptr));
+  if (bad_key) Put(focus.definitions[0].data(), 0x28, std::uint64_t{128});
+  active_child_traits35 = &traits;
+  active_child_focus39 = &focus;
+  xar::ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 environment{};
+  environment.trait_database = &ChildTraitDatabase35;
+  environment.character_has_trait = &ChildHasTrait35;
+  environment.current_focus = &ChildCurrentFocus39;
+  environment.focus_fallback_slot_address = reinterpret_cast<std::uintptr_t>(&focus.fallback);
+  auto relation = ReadCurrentFirstHeirRelationshipV1(fixture.family, kHeir);
+  Check(relation.failure == xar::ck3_11906::CurrentFirstHeirRelationshipFailureV1::none,
+        "focus observers retain the same reciprocal current married pair");
+  relation.betrothal_actionability = ReadCurrentFirstHeirBetrothalActionabilityV1(
+      fixture.family, relation);
+  relation.descendants = xar::ck3_12004::ReadCurrentFirstHeirDescendantsV1(
+      fixture.family, kHeir);
+  const auto inputs = xar::ck3_12004::ReadCurrentFirstHeirChildInputsV1(
+      fixture.family, environment, *relation.descendants);
+  auto wire = xar::ck3_11906::CurrentFirstHeirRelationshipResultJsonV1(
+      name, 7, kHeir, relation, {}, &inputs);
+  const auto &descriptor = xar::game::Ck3_12004AdapterDescriptor();
+  wire = xar::game::Render12004BuildIdentity(std::move(wire), descriptor);
+  Write(directory / (std::string(name) + ".json"), wire);
+  Check(xar::game::IsCk3_12004Descriptor(descriptor) &&
+            inputs.rows.size() == (empty ? 0U : distinct ? 2U : 1U) &&
+            inputs.status == (bad_values ? "partial" : "available") &&
+            relation.descendants->native_child_count_raw == (empty ? 0 : distinct ? 18 : 1),
+        "canonical whole child focus wire retains independent original aggregation and raw roster");
+  if (empty) {
+    Check(focus.getter_calls == 0 && traits.has_trait_calls == 0,
+          "empty current-child roster invokes no focus or trait callback");
+  } else {
+    const auto &row = inputs.rows[0];
+    Check(row.character_id == 0x03000005 && row.native_focus.has_value(),
+          "native focus belongs to the exact resolved actual child row");
+    const auto &observed = *row.native_focus;
+    if (null_focus || bad_key) {
+      Check(!observed.available && observed.presence.empty() && !observed.key &&
+                observed.unavailable_reason == (null_focus
+                    ? "child_current_focus_getter_failed" : "child_current_focus_key_read_failed") &&
+                row.values.available && row.childhood_traits.available,
+            "null native return and real key read failure preserve usable age and traits");
+    } else {
+      Check(observed.available && observed.unavailable_reason.empty() &&
+                observed.presence == (absent ? "absent" : "present") &&
+                (absent ? !observed.key : observed.key == "education_diplomacy"),
+            "native focus sentinel absence is distinct from a readable exact education key");
+    }
+    if (bad_values) Check(!row.values.available && observed.available &&
+                            row.childhood_traits.available,
+                        "focus stays readable when the existing sex selector fails");
+    if (distinct) {
+      const auto &other = inputs.rows[1];
+      Check(other.character_id == 0x03000008 && other.native_focus &&
+                other.native_focus->available && other.native_focus->key == "education_learning" &&
+                other.occurrence_indices == std::vector<std::uint32_t>{17} &&
+                row.occurrence_indices.size() == 13 && relation.descendants->rows.size() == 18,
+            "distinct child focus keys retain duplicate grouping and all raw roster evidence");
+    }
+    Check(wire.find("\"source\":\"native_character_current_focus\"") != std::string::npos,
+          "new child focus came through the complete production serializer");
+  }
+  Check(relation.relationship.primary_spouse_character_id == kPartner &&
+            relation.relationship.spouse_character_ids == std::vector<std::int32_t>{kPartner} &&
+            constructs == 0 && destroys == 0,
+        "read-only focus qualification dispatches no game action");
+  active_child_focus39 = nullptr;
+  active_child_traits35 = nullptr;
+}
 } // namespace
 int main(int argc, char **argv) {
   try {
+    if (argc == 3 && std::string_view(argv[1]) == "--child-focus-observer-wire-dir") {
+      const std::filesystem::path directory(argv[2]);
+      std::filesystem::create_directories(directory);
+      for (const std::string_view name : {"empty-children-focus", "distinct-child-focus-keys",
+               "child-focus-sentinel-absent", "child-focus-null-unavailable",
+               "child-focus-key-unavailable", "child-focus-independent-of-values"})
+        EmitChildFocusObservers39(directory, name);
+      std::cout << "PASS actual4 current-child focus: six new whole wires\n";
+      return 0;
+    }
     if (argc == 3 && std::string_view(argv[1]) == "--child-observer-wire-dir") {
       const std::filesystem::path directory(argv[2]);
       std::filesystem::create_directories(directory);

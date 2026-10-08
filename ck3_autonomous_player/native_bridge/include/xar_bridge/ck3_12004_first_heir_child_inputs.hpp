@@ -14,7 +14,7 @@ namespace xar::ck3_12004 {
 namespace first_heir_child_inputs_detail {
 
 // App-thread reads of admitted native objects. The public LIFE key decoder is
-// reused solely for Trait stable keys; no player focus/lifestyle state is read.
+// reused for Trait and Focus stable keys; no whole player LIFE state is read.
 inline bool ReadMemory(void *, std::uintptr_t address, void *output,
                        std::size_t size) noexcept {
   if (address == 0 || output == nullptr) return false;
@@ -86,6 +86,58 @@ inline ck3_11906::CurrentFirstHeirChildTraitsV1 ReadTraits(
   return result;
 }
 
+// Reuse the admitted generic Character getter, fallback and stable-key source.
+// The complete native leaf and its Character wrapper have no age/player gate.
+inline ck3_11906::CurrentFirstHeirChildFocusV1 ReadFocusSample(
+    const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &environment,
+    void *character) noexcept {
+  ck3_11906::CurrentFirstHeirChildFocusV1 result{};
+  if (character == nullptr || environment.current_focus == nullptr ||
+      environment.focus_fallback_slot_address == 0) return result;
+  void *const focus = environment.current_focus(character);
+  if (focus == nullptr) {
+    result.unavailable_reason = "child_current_focus_getter_failed";
+    return result;
+  }
+  std::uintptr_t fallback = 0;
+  if (!ReadMemory(nullptr, environment.focus_fallback_slot_address,
+                  &fallback, sizeof(fallback))) {
+    result.unavailable_reason = "child_current_focus_fallback_read_failed";
+    return result;
+  }
+  if (reinterpret_cast<std::uintptr_t>(focus) == fallback) {
+    result.available = true;
+    result.unavailable_reason = {};
+    result.presence = "absent";
+    return result;
+  }
+  game::PlayerLifestyleStableKeyV1 key{};
+  if (!lifestyle::ReadPlayerLifestyleMsvcStableKey12004V1(
+          nullptr, ReadMemory, reinterpret_cast<std::uintptr_t>(focus) + 0x18, key)) {
+    result.unavailable_reason = "child_current_focus_key_read_failed";
+    return result;
+  }
+  result.available = true;
+  result.unavailable_reason = {};
+  result.presence = "present";
+  result.key = std::string(lifestyle::PlayerLifestyleStableKeyView12004V1(key));
+  return result;
+}
+
+inline ck3_11906::CurrentFirstHeirChildFocusV1 ReadFocus(
+    const ck3_11906::PlayerLifestyleSnapshotEnvironmentV1 &environment,
+    void *character) noexcept {
+  const auto first = ReadFocusSample(environment, character);
+  if (!first.available) return first;
+  auto second = ReadFocusSample(environment, character);
+  if (!second.available) return second;
+  if (first.presence != second.presence || first.key != second.key) {
+    second = {};
+    second.unavailable_reason = "child_current_focus_changed";
+  }
+  return second;
+}
+
 } // namespace first_heir_child_inputs_detail
 
 // Receivers originate in the same current-first-heir raw descendant roster.
@@ -146,10 +198,14 @@ ReadCurrentFirstHeirChildInputsV1(
     void *character = xar::ck3_12004::ResolveCoreCharacter(
         bindings.context.core, row.character_id);
     if (character != nullptr &&
-        Load<void *>(character, kCharacterDeathDataOffset) == nullptr)
+        Load<void *>(character, kCharacterDeathDataOffset) == nullptr) {
       row.childhood_traits = ReadTraits(trait_environment, definitions, character);
-    else
+      row.native_focus = ReadFocus(trait_environment, character);
+    } else {
       row.childhood_traits.unavailable_reason = "child_full_id_or_liveness_unavailable";
+      row.native_focus.emplace();
+      row.native_focus->unavailable_reason = "child_full_id_or_liveness_unavailable";
+    }
     if (!row.values.available || !row.childhood_traits.available) {
       result.status = "partial";
       result.unavailable_reason = "current_heir_child_inputs_partial";
