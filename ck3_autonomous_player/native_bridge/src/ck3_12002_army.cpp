@@ -249,7 +249,7 @@ game::ArmyMovementProgressSnapshot MovementProgress(
               Load<std::uint8_t>(definition, 0x1B);
       }
     }
-    if (result.first_route_target_province_type_tag_u32 == 0x50726F76) {
+    if (result.first_route_target_province_type_tag_u32 == 0x50726F76u) {
       void *definition = Load<void *>(first_target_province, 8);
       if (definition != nullptr)
         result.first_route_target_province_definition_byte_1b_u8 =
