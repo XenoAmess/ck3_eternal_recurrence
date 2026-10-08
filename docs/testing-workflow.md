@@ -1,5 +1,11 @@
 # 实测工作流程（CK3 mod 调试）
 
+## 2026-10-08 12:03:56：真实法变material／保存与另一路release pending分列
+
+R76本次独立receipt023 **crown_authority_1→2 enacted/materialtrue**，nativeprestige305791610→186191610恰好扣119600000，14titles／20successorpairs验证true；随后[普通SAVE024](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/024-r75-ooda-save.json)materializedH9678/date53288496/104617613B/SHAca1002b29a00c99667a3e9e9e3ea17c6be7de6f042bb59014e6b3cfd3f1c714e。前一真day＋1／SAVE01753288472→53288496已使saved6007；因真实日期和SAVE才更新，不将之前one-day horizon query计天数。FormalM7由观察／操作／法律余额后态／save授production-live **scoped** loop，原失败attempt保留。
+
+**M6release仍pending**，法变material不能替它授custody/release信用；ordinaryCrown新normal策略compound7.202s仍static-ready，不能借手头formalM7实机结果。Runtime31四新FIRST22Native/35registered GREEN但0Game部署，也不能借当前Native30的法变。独立holyfallbackFIRST03在两次HarnessRED后GREEN1.94s，Root只必要重试保原失败；本知识不新跑任何测试或query。G2 5/8/NW2 2/4/M4false/natural0仍保持，latestcheckpointH9678/saved6007。
+
 ## 2026-10-08 11:27:25：实际release ACK与后态、horizon与日期分别记账
 
 R76 ordinaryauto013在原paused native2/public3/date53288472实际选submit-player-prisoner-release-v1：61540/options[]/all-offmask0/十fees0/autoaccept，request **prisoner-release-801d779a60204a83a9100c9af8eb0445**只到 **submitted_verification_pending/materialfalse**。14normal-receipt-plan已派发但独立后态未回；因此当前不能授custody改变／release/M6 material／完整M4。参数免费与autoaccept不替代真实后态，Root后续receipt／必要SAVE另记，本记录不补跑query。

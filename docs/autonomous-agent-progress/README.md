@@ -1,6 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 11:27:25 CST：R76只读／horizon可用，release已提交但后态pending
+### 2026-10-08 12:03:56 CST：R76真实＋1day／saved6007，M7冠权1→2 material闭合
+
+R76真实day＋1 SAVE017 **53288472→53288496／H9676／saved6007/36524(16.45%)**；独立receipt023冠权1→2 enacted/materialtrue、prestige305791610→186191610/cost119600000，14titles／20successorpairs verified。法变SAVE024 latest **H9678/date53288496**，见[普通save](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/024-r75-ooda-save.json)。FormalM7授production-live scoped loop，普通Crown新策略仍static-ready；G2 5/8/NW2 2/4/M4false/natural0不变，M6release仍pending不记material。Runtime31 source967 fix02全link＋22Native/35registered检查GREEN，未新Game部署；3新Pythoncompound ordinaryCrown/rootreuse/holyfallback GREEN，旧RED全部保留。SourceFaith ed23已SOURCE_READY但新FIRST0不借Runtime31/live。本batch待Root提交，详见[Oct8日报](daily/2026-10-08.md)，报告owner不实机／复测。
+
+### 历史2026-10-08 11:27:25 CST：R76只读／horizon可用，release已提交但后态pending
 
 Canonical30／R76恢复报告与CC1已ordinaryFF发布b3169b00，随后三份scoped研究doc已发布 **8f67ddd50de24e8fc227bbf9d4b47eabc2c3ab29**。R76 paused native2/public3/date53288472，006只恢复旧履约婚姻；008claim_cb终止条件、010双方Army、012contactfree horizon实际available，horizon+1不算date推进。013ordinaryauto已提交prisoner61540 release，request prisoner-release-801d779a60204a83a9100c9af8eb0445／submitted_verification_pending／materialfalse；14独立后态plan待结果，不能授release/M6信用。Faith有限源1554B／2calls及holder465B cache复用、Law1375B新raw source只记research；Runtime31组合build/FIRST NOTRUN，Source31/32不借live。H9658/saved6006/G2 5/8/NW2 2/4/M4false/natural0不变，Root唯一minimized Game，详见[Oct8日报](daily/2026-10-08.md)，本batch待发布。
 

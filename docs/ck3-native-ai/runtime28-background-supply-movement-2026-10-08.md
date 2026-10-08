@@ -2,7 +2,13 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## Successor30 actual queries and pending release at11:27:25 CST
+## Successor30 actual saved day/law material at12:03:56 CST
+
+Actual **2026-10-08T12:03:56+08:00**. R76 realday+1/SAVE017 date53288472→53288496/H9676/hash526b… yields **saved6007/36524(16.45%)**. Receipt023 CA1→2 **enacted/materialtrue**, prestige305791610→186191610/cost119600000/14titles20successorpairs verified; SAVE024 latestH9678/date53288496/104617613B/SHAca1002b29a00c99667a3e9e9e3ea17c6be7de6f042bb59014e6b3cfd3f1c714e ([R76save](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/024-r75-ooda-save.json)). FormalM7 gains scoped production-live loop, not all law/calendar/fullM4; M6release still pending. Day/SAVE are actual game facts, not proof of future supply/movement projections.
+
+Runtime31 source967/fix02 links and [22newNative/35registered checks](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime31-first01/ROOT-FOUR-NEW-FIRST-RESULTS.json) GREEN,61compiled reuse/one signedliteral fix, old REDs retained. Runtime31 notGame deployed. OrdinaryCrown7.202/rootreuse5.616/holyfallbackFIRST03 1.94s new compounds GREEN, holyfirst2HarnessRED retained; ordinaryCrown static-ready separate from actual formalM7. Faith ed23source implementationSOURCE_READY/newFIRST0/no live,1554B source reused not duplicated. G2 5/8/NW2 2/4/M4false/natural0 unchanged, latestbaselineH9678/saved6007/date53288496. Root-only minimized Game, no report-owner recheck or execution; published8f67 and reportbatchpending distinguish lineages.
+
+## Historical successor30 actual queries and pending release at11:27:25 CST
 
 Actual **2026-10-08T11:27:25+08:00**. PublishedCC1/canonical/R76 packageb3169b00, subsequentM4/phase/typed-entry research docs **8f67ddd50de24e8fc227bbf9d4b47eabc2c3ab29**. R76 remains paused/native2/public3/date53288472.006 independently restores old heir38822/spouse38718 marriage, not a new outcome; termination008 war100663329/claim_cb/duration23/score0 available. Army010 own218104048/native67109093/1833of2367/power6224500000, enemy134218098/native167772499/348of536/power1635200000, both100supply/0attr/+20monthly in this frame. New Unit entry/prefix/firstedge returns2rows onlyqueryprimitive, no future action.
 

@@ -1,6 +1,12 @@
 # Runtime27 background observers — 2026-10-08
 
-## Actual R76 queries and release submission at11:27:25 CST
+## Actual R76 saved day and formal Crown scoped loop at12:03:56 CST
+
+Recorded **2026-10-08T12:03:56+08:00**. Realday+1/SAVE01753288472→53288496/H9676/hash526b… changes saved days to **6007/36524(16.45%)**; prior horizon query was not credited. Independentreceipt023 **CA1→2 enacted/materialtrue**, nativeprestige305791610→186191610/cost119600000,14titles/20successorpairs verified. Law-changeSAVE024 latest **H9678/date53288496/104617613B/SHAca1002b29a00c99667a3e9e9e3ea17c6be7de6f042bb59014e6b3cfd3f1c714e**, [R76 save with retained r75 basename](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/managed-full-h9658-startup30restore01/operator/gameplay-responses/024-r75-ooda-save.json). FormalM7 now **production-live scoped loop**, ordinaryCrown policy remains static-ready; release/M6 still pending/no material credit, fullM4 false.
+
+Runtime31 source967/fix02 fulllinks GREEN, [four new FIRSTs](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime31-first01/ROOT-FOUR-NEW-FIRST-RESULTS.json)22Native/35registered checks GREEN with61compiled reuse/one signedliteral repair and all REDs retained. **No new Game deployment**; offline qualification cannot borrow existingNative30 enactment. New ordinaryCrown/rootreuse/holyfallback compounds GREEN7.202/5.616/1.94s, holyfirst2HarnessRED retained. Faith ed23 sameMCP explicit4 implementationSOURCE_READY/FIRST0/live0 updates research-only implementation status, with1554B Root map reused/no duplicated capture. G2 5/8/NW2 2/4/natural0 unchanged, latestH9678/saved6007. Published8f67/currentbatchpendingRoot; enabled migration accepted not reopened, no report-owner tests or Game.
+
+## Historical actual R76 queries and release submission at11:27:25 CST
 
 Recorded **2026-10-08T11:27:25+08:00**. CC1/canonical30/R76 reports publishedordinaryFFb3169b00; three later scoped research docs published **8f67ddd50de24e8fc227bbf9d4b47eabc2c3ab29** (M4note→bb197acf/phasecaller→97999ee5/typedentry→8f67ddd5). R76 paused/native2/public3/date53288472: query006 restores the historical fulfilled marriage heir38822/spouse38718, no new marriage. Termination008 available war100663329/claim_cb/duration23/score0; Army010 own218104048/native67109093/1833of2367/power6224500000, enemy134218098/native167772499/348of536/power1635200000, both supply100/attr0/monthly+20, scoped to this frame. Three Unit entry/prefix/firstedge interfaces return2rows, query primitive only.
 
