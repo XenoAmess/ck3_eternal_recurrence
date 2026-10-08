@@ -76,10 +76,11 @@ def _float_i32(value):
 
 def _vote(value, field, character):
     raw = _dict(value, field, _VOTE_FIELDS)
+    ready = _boolean(raw["ready"], field + ".ready")
     result = {"native_index": _integer(raw["native_index"], field + ".native_index", 32, unsigned=True),
-              "ready": _boolean(raw["ready"], field + ".ready"),
+              "ready": ready,
               "reason": _string(raw["reason"], field + ".reason", optional=True),
-              "vote": _string(raw["vote"], field + ".vote"),
+              "vote": "" if not ready and raw["vote"] == "" else _string(raw["vote"], field + ".vote"),
               "resolution_selection": _string(raw["resolution_selection"], field + ".resolution_selection")}
     for key in _VOTE_POINTERS:
         result[key] = _string(raw[key], field + "." + key, optional=True)

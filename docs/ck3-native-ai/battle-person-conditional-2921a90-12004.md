@@ -225,3 +225,29 @@ implementation is not native qualification, paused live input, full Person,
 complete Entry, a fresh model baseline, future forecast, or a whole campaign
 loop. The ordinary non-self opinion and actual dynamic expression leaves are
 the two next concrete source inputs; they are not replaced by cached output.
+
+## Actual partial-vote wire correction: 2026-10-09 03:26 +08
+
+Root's first twelve original native whole packets passed in 0.2600174 seconds
+at `2026-10-08T19:17:23.443479Z`. The registered consumer then exposed two
+independent faults; both failed attempts are retained. The first fixture call
+omitted the existing emitter's explicit outer full-Character-ID join. After
+that fixture-only correction, retry02 reached the real non-self row and the
+normalizer rejected its native empty `vote` string.
+
+The original `other-person-opinion.json` has a ready self row with `vote=high`,
+followed by `ready=false`, `vote=""`, and reason
+`classifier_25a1220_directional_opinion_unobserved`. Its classifier is unready
+and `classifier_result_i32` is null. `Vote` returns with its default empty
+string before assigning a vote when an operand is unread; the serializer
+publishes that string directly. The normalizer therefore preserves an empty
+vote only in an unready row. Ready rows still require a nonempty vote and all
+existing source-derived self/clamp/threshold checks. Empty never means middle,
+zero, a supplied classification, or numerical readiness. The row's reason and
+leaf's partial status remain unchanged.
+
+Only Python normalization changes for this correction. Root will retry the
+same registered consumer against the twelve retained original packets; no
+native producer, compile, archive, link, or historical GREEN path is replayed.
+The native compiled source and final consumer qualification source are
+recorded separately. This correction has no live or whole-Person credit.
