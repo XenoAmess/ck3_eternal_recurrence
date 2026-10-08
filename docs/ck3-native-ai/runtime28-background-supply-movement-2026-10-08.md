@@ -2,7 +2,39 @@
 
 Recorded **2026-10-08T02:11:21+08:00 / 2026-10-07T18:11:21Z** from Root's actual selected results. This index records completed background qualifiers and next source-only deltas. It does not run or reread tests,Game,SDK,processes,EXE,saves or Driver bodies.
 
-## R78 actual crash and two static compounds at 21:44:25 CST
+## Native37 canonical and Native38 FIRST qualified offline at 22:39:27 CST
+
+**22:43:26 CST addendum:** RealRSP4096B was captured in stack02, total fresh4332B including stack/hash0 per owner. Four raw bridge candidates/unwindfalse are not a true callstack or fault cause; stack01 metadata HarnessRED is retained. Publish the completed qualifiers without waiting for canonical38 or Worker fixture.
+
+Actual **2026-10-08T22:39:27+08:00**. [37 retry03 GREEN6.4463098s](Z:/g2-native37-build01/root-consumer-retry03/ROOT-ACTUAL-RESULT.json) closes its consumer; both prior HarnessREDs remain. Missing fixture Hello life-advance routing was repaired with plan-only capability, production0/assertions retained; compiledb231 Native is not replayed. Canonical37 actualGREEN13205504B/8d7f8b4dfullSHA,manifest2320B/58278ad6,725=723+2. [38 FIRST](Z:/g2-native38-build01/attempt01/ROOT-NATIVE38-RESULT.json) ALL GREEN3compile/2links/Runtimearchive0/sourcee0dda2f8,6whole .2396031s+7consumer11.9828723s. Canonical38 pending, all qualification offline/static-ready.
+
+Root23b38b26 adopts five scoped packages, publication pending. Existing Siege query already reaches fullSnapshot/normal Service,NO GAP/no new MCP or FIRST; supply inputs are source-qualified/NO_NEW_WORK and no current blocker is proven. Runtime28 stays historically offline-only, no Army/day/material credit is added.
+
+Correct stack01's4348B/4096B interpretation: dataRva0/no MemoryList/64 fallback meant metadata rather than real stack, HarnessRED retained. Cached-descriptor plus real Memory-index/RSP4KB retry is pending; real caller/crash cause is unknown. Local Game/live SDK remain forbidden/R79OFF, H9715/date53288568/saved6010/G2 5/8/NW2 2/4/M4false/M6partial/natural0 unchanged. This completed batch releases without waiting for cause.
+
+## Historical Native37 retry still RED; folded destructor MAP is not cause at 22:31:00 CST
+
+Actual **2026-10-08T22:31:00+08:00**. [Consumer37 retry02](Z:/g2-native37-build01/root-consumer-retry02/ROOT-ACTUAL-RESULT.json) RED4.7585779s passed piety exactdict, then plan.selected_step was None/expected life-advance. Faith investigates the production path, classification pending; both failed consumers remain and qualified Native is not replayed. [Offline MAP02](Z:/g2-r78-map02/ROOT-DIAGNOSTIC-MAP-RESULT.json) one link GREEN/zero compile,hash,dump,Game mapsRVA30C6 to folded vector destructor/_Tidy30C0+6. ICF aliases do not identify a source line or causal owner; original map01 path HarnessRED before link remains. R78 source-consumer closure/four further frame correlations are pending, not a live repair. Native36 stays offline-qualified,37 notqualified, local Game/live SDK forbidden/noR79, H9715/saved6010/G2 5/8/NW2 2/4/M4false/M6partial/natural0 unchanged. Release this small increment without waiting for cause.
+
+## Historical Native36 archive GREEN; new Council consumer RED at 22:25:34 CST
+
+Actual **2026-10-08T22:25:34+08:00**. Root [canonical36](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix36/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json) is GREEN13200384B/cc7a2cd7fullSHA in the daily report,725owners=685retained+40fresh. Existing four-domain FIRSTs are retained without replay. Local CK3/live SDK remain forbidden, owned R78 Game/SDK exited, no R79; no actual Army/day or other Game material is added.
+
+Native37 [attempt01](Z:/g2-native37-build01/attempt01) qualified3 compiles/archive/DLL+fixturelinks and native whole0.2182765s. Consumer5.3766147s RED is a fixture expected-dictionary omission of inherited Native36 `task_owner_monthly_piety_v1` unavailable, with only one necessary consumer repair/retry pending and no Native replay. Complete37 consumer/live status is not claimed. OldWorkerAdapter snapshot ABI consumer is the R78 investigation entrance, with no confirmed fault cause or live fix.
+
+Root eight linear source adoptions7f0ff661 await publication; saved6010/H9715/date53288568/G2 5/8/NW2 2/4/M4false/M6partial/natural0 remain. Runtime28 remains historically offline-only. This batch releases for Root publication while concrete offline research/retry continues.
+
+## Historical Native36 four-domain qualification and exited SDK at 22:05:21 CST
+
+**22:07:42 CST user constraint update:** the user has forbidden local CK3 while playing. Root-owned Game146596/SDK29336 are exited; no new CK3/live SDK or R79 execution, no operations on the user Game or old R74 residual. Source/offline work remains parallel, including Native36 canonical preparation, Council37 research and offline crash symbolization. Previous local-use authorization is historical; there is no current project Game-active claim.
+
+Actual **2026-10-08T22:05:21+08:00**. Native36sourcebf55 has [four Native/four sole consumer FIRSTs GREEN](Z:/g2-native36-build01/attempt02/ROOT-NATIVE36-RESULT.json), finished13:53:43.914831Z; child/candidates/Chaplain/tax durations are recorded in the daily table. Retained attempt01 compiled42/archived2 successfully but lacked two existing serializer providers at DLLlink. Minimal02 compiled only2CPP, reused42/0archive replay and qualified DLL+4fixturelinks, total40prod+4fixture unique44/725mixed=685retained+40new. Static-ready/offline qualification adds no actual Army/day, child education, appointment, tax or other material credit; Game36 is not loaded.
+
+SDK29336 is now confirmed exit0. Actual R78 C0000005 metadata identifies bridgeRVA30C6/read22223A10/thread124816,24562B/hash0, but source symbols are absent and exact source seam pending. No live fix is established. Prior a8c8d836a1aa6ca6fa6ff9e2005894fd799635c7 ordinaryFF publication is complete; current scoped adoptions7f0ff661 are not yet published. Native28 stays historically offline-only and earlier qualified foreign-leader/Army wholes are not replayed.
+
+H9715/date53288568/saved6010/G2 5/8/NW2 2/4/M4false/M6partial/natural0 remain. Root owns the concrete crash repair and future independent paused qualification; new Council/guardian/focus source work remains separate from this four-domain result. This report batch releases now with no Game/SDK/test/EXE operations.
+
+## Historical R78 actual crash and two static compounds at 21:44:25 CST
 
 Actual **2026-10-08T21:44:25+08:00**. [R78 crash fields](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime35-report-coordination/ROOT-R78-ACTUAL-CRASH-NEXT-REPORT-FIELDS.json) record Game146596 exit1 at13:32:11.995918Z after159.848s, cleanup_proven/tree_gone. Twelve data checks passed but windows[] was RED: no qualified new paused frame. C0000005/00007FFD977830C6 and five xar_ck3_bridge.dll background-thread frames are actual; exact cause remains for symbolization. Prepare/bootstrap/launch stage successes do not resolve this failure. SDK29336 exit_client002 is queued, exit pending; no action/day/save or Army transition credit was added.
 

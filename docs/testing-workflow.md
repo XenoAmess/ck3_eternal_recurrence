@@ -1,6 +1,34 @@
 # 实测工作流程（CK3 mod 调试）
 
-## 2026-10-08 21:44:25：窗口资格RED与实际background-thread crash分列
+## 2026-10-08 22:39:27：fixture Hello路由与dump Stack dataRva0实证
+
+**22:43:26 CST后继：**Root stack02从MemoryList实际读取真实RSP4096B，owner明确总fresh4332B包含该栈/hash0，bridge raw候选4/unwindfalse。Raw扫描候选即使映射到vectorTidy／PublishSnapshot／RunConnectedSession，也不等于unwind出的callstack或根因。保留stack01 metadata读取HarnessRED，下一只真实rich Worker Snapshot离线复现，不因四候选重扫dump或编造其它frame。
+
+Native37第二次consumer RED的源因已闭合为fixture Hello缺可路由life-advance；只plan-only capability修正，production0／原assert保留后[retry03 GREEN6.4463098s](Z:/g2-native37-build01/root-consumer-retry03/ROOT-ACTUAL-RESULT.json)，原Native输出复用，两个原HarnessRED保留。未提供production路径需要的fixture capability会让正常plan.selected_step为None，不能通过删除后态断言掩盖；本次37canonical已封／38六whole＋七consumer新FIRST GREEN，但均offline、当前不加载Game。
+
+**Bounded-stack01更正：**ThreadList Stack dataRva＝0时，旧reader未走MemoryList／Memory64 fallback，把4348B读取中的4096B metadata位置当栈，实际HarnessRED；不是“真实栈候选0／unwindfalse”的证据。原目录／bytes保留，最小修复复用cached descriptors，仅待Root Memory index与覆盖实际RSP的4KB读取，不重读完整dump或造其他frame。ICF MAP aliases仍不能给源行或causal owner，R78真实caller／源因未知。用户禁本机Game／live SDK、R79OFF继续，报告不授live修复或新日信用。
+
+## 历史2026-10-08 22:31:00：ICF folded symbol不能指定因果owner；consumer新RED不删断言
+
+Root实际[MAP02](Z:/g2-r78-map02/ROOT-DIAGNOSTIC-MAP-RESULT.json)从heldactual37 compiler environment做一offline link GREEN，0compile/hash/dump/Game；map01 forward-slash vcvars path在link前HarnessRED、0link保留。RVA30C6对应folded `std::vector<uint32_t>` destructor／`_Tidy30C0+6`，ICF aliases含vector<int>/PendingPhysicalReadState。MAP只识别折叠代码位置，既不是源行，也不能从第一owner标签判断stale owning Snapshot故障因果；还需实际消费者closure和其余帧correlation，当前源因未确认。
+
+Native37 consumer retry02 RED4.7585779s已越过piety exactdict，后续ordinary plan.selected_step为None而期望life-advance。保留两次实际失败，沿production Service路径查；当前分类待查，不盲删断言或把前一fixture修复当整体qualified，已GREEN native不重跑。本机Game／live SDK禁止／R79不执行，所有新调查是offline，无新日／SAVE信用。
+
+## 历史2026-10-08 22:25:34：组合root whole须保留继承字段，consumer fixture修复不重跑native
+
+Native37 actual三编译／archive／DLL和fixturelink GREEN，native whole0.2182765s通过；consumer5.3766147s失败是Chaplain expected dict少继承Native36 `task_owner_monthly_piety_v1` unavailable字段。完整root组合必须保留原字段及其合法unavailable状态，不能为了新字段fixture删除production继承项。当前只修fixture并唯一重试consumer，原RED保留、不重跑已GREEN native；整体37尚未全GREEN。[实际attempt目录](Z:/g2-native37-build01/attempt01)为Root执行证据，无报告owner复测。
+
+Native36 canonical已实际归档13200384B／cc7a2cd7fullSHA／725mixed，原四对FIRST复用；canonical与actual live是不同层。R78追踪oldWorkerAdapter snapshot ABI consumer是调查入口，根因未确认、不能冒已修live。当前用户本机禁CK3／live SDK、owned Game／SDK退出，只offline source／必要新consumer retry；不查用户Game或读旧dump。本批无Game／日／SAVE信用。
+
+## 历史2026-10-08 22:05:21：existing serializer provider闭包与实际崩溃source符号分层
+
+**22:07:42 CST当前约束：**用户本机玩CK3，禁止项目使用本机Game／live SDK；Root owned Game146596／SDK29336已实际退出，不碰用户Game或历史R74 residual，R79不执行。允许继续source／offline高并行、Native36 canonical metadata／hash准备和crash离线符号化；这些不能冒新paused/live信用，也不因实机禁止而阻后台或重测旧GREEN。历史恢复授权只保留历史。
+
+Native36 actual attempt01 **42compile／2archive GREEN**仍发生DLL **LNK2019缺两已存在serializer providers**：源声明／定义一致，但父对象账本未带对应Bridge owners。最小02只新增2CPP／复用42／archive0，DLL＋4fixturelinks通过，unique40prod＋4fixture44／725mixed（299Bridge＋425Runtime＋1Protocol），[四Native＋四sole consumer FIRST最终全GREEN](Z:/g2-native36-build01/attempt02/ROOT-NATIVE36-RESULT.json)。应补实际所需的两个provider对象与closure，不改源码回避linkerror，也不重复旧编译／Native FIRST；原失败保留，成功只授offline scope。
+
+Root实际poll确认SDK29336 exit0，与此前queued exit_client pending分列。R78 symbol metadata FIRST01只读取24562B／hash0，bridgebase7FFD97780000／RVA30C6／C0000005 read22223A10／thread124816；PDB缺source符号，源行因果仍pending，不能把数值地址或offline fixtureGREEN冒称live修复。后继由Root/sourceowner找具体source seam；报告owner不重复读dump／DLL／PDB、hash或测试。H9715／saved6010完整保存，新增动作／日／SAVE0；四域Green不代表实际教育、任命、税收益或已修R78。
+
+## 历史2026-10-08 21:44:25：窗口资格RED与实际background-thread crash分列
 
 R78实际cold prepare133.8699075s／bootstrap0.5057323s／launch ACCEPTED3.3258942s成功，但Game146596在13:32:11.995918Z退出1、cleanup_proven／tree_gone。十二snapshot数据checks通过而windows[]RED，**完整paused资格未通过**；启动阶段成功或曾读到snapshot不能代替窗口验收。实际exception C0000005／address00007FFD977830C6／五帧xar_ck3_bridge.dll后台线程stack需要具体符号化，根因尚未查明，不能由windows[]先猜crash因果。[仅消息字段索引](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime35-report-coordination/ROOT-R78-ACTUAL-CRASH-NEXT-REPORT-FIELDS.json)登记dump151430462B而不重复读dump／save／Driver。SDK29336 exit_client002已排，退出pending单独记账；H9715冻结保留，0动作／日／SAVE，不需rollback或rehash。
 

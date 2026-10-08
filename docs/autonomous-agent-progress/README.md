@@ -1,6 +1,32 @@
 # CK3 自动游玩智能体进度中心
 
-### 2026-10-08 21:44:25 CST：R78实际crash，两项新Service离线GREEN／Native36编译中
+### 2026-10-08 22:39:27 CST：37全GREEN并canonical封存／38 FIRST GREEN，crash仍未闭
+
+**22:43:26 CST小补充：**stack02已实际捕获真实RSP4096B（owner说明总fresh4332B包含此栈），bridge raw候选4／unwindfalse；这是raw地址扫描，仍非真实callstack或源因。Stack01 metadata错片HarnessRED保留；不等38canonical或Worker fixture才发布本批。
+
+Native37 [consumer retry03 GREEN6.4463098s](Z:/g2-native37-build01/root-consumer-retry03/ROOT-ACTUAL-RESULT.json)和[canonical GREEN](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix37/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)已成，两个原HarnessRED保留；第二次缺fixture Hello可路由life-advance，仅plan-only capability修正／production0／原assert保留，compiledb231原Native不重跑。Native38 [attempt01全GREEN](Z:/g2-native38-build01/attempt01/ROOT-NATIVE38-RESULT.json)，3compile／2links／0Runtimearchive，新6whole .2396031s＋7consumer11.9828723s，canonical仍未seal，仅static-ready。
+
+Root五scoped cherries已采用到23b38b26尚未pub；Siege普通Snapshot ingress确认NO GAP、补给输入NO_NEW_WORK，不新造MCP／FIRST。Dump stack01实际4348B（其中4096B）读到metadata：ThreadList Stack dataRva0且没MemoryList／64 fallback，**HarnessRED，不是真栈／候选0证据**，真实caller／源因仍未知。本机CK3／live SDK禁令及R79OFF保持，H9715／saved6010／G2计数不变，详见[日报](daily/2026-10-08.md)。
+
+### 历史2026-10-08 22:31:00 CST：37 consumer第二次RED／offline MAP定位未确认crash源因
+
+Native37 [retry02](Z:/g2-native37-build01/root-consumer-retry02/ROOT-ACTUAL-RESULT.json) **RED4.7585779s**，piety exactdict已通过，后续ordinary plan.selected_step预期life-advance而实际None；faith沿production路径定位，不删assert，37仍未qualified，原两RED／native GREEN保留。[offline MAP02](Z:/g2-r78-map02/ROOT-DIAGNOSTIC-MAP-RESULT.json)一link GREEN／0compile/hash/dump/Game，将RVA30C6定位到folded vector destructor `_Tidy30C0+6`；ICF aliases不能按首owner标签判源因，map01 vcvars path link前HarnessRED保留。当前仍禁本机CK3／live SDK、R79不执行，saved6010／G2计数不变，Root本批统一发布不等crash源因。
+
+### 历史2026-10-08 22:25:34 CST：Native36 canonical已封，Native37 native GREEN／consumer fixture RED
+
+当前仍 **用户本机禁CK3，项目仅source／offline高并行**，owned R78 Game／SDK均退出，不操作用户Game／live SDK／R79。Native36 [canonical实际GREEN](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix36/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)，DLL13200384B／cc7a2cd7…／725owners＝685retained＋40fresh，原四对FIRST GREEN复用、不重测。新Native37 [attempt01](Z:/g2-native37-build01/attempt01)三编译／archive／DLL与fixturelink GREEN，native whole **GREEN0.2182765s**；consumer **RED5.3766147s**，仅fixture预期dict遗漏继承Native36的`task_owner_monthly_piety_v1` unavailable字段，最小fixture修正与唯一consumer retry待跑，不重跑native。
+
+Root current7f0ff661八线性source adoptions尚未push；R78追踪旧WorkerAdapter snapshot ABI consumer，**不是已确认故障源因或已修live**。H9715／saved6010／date53288568／G2 5/8／NW2 2/4／M4false／M6partial／natural0不变，详见[日报](daily/2026-10-08.md)。
+
+### 历史2026-10-08 22:05:21 CST：Native36四域离线全GREEN，SDK已退出／R78源因待定位
+
+**22:07:42 CST最新约束：用户再次禁止本机CK3以自行游玩。**Root owned R78 Game146596／SDK29336均已退出；本机不启动或控制CK3／live SDK，不碰用户Game或历史R74残留，R79不执行。后台source／offline高并行继续，Native36 canonical hash准备、root Council37及crash离线定位不受此禁令阻断；旧本机使用授权保留为历史。
+
+Native36实际sourcebf55完成 **四native＋四sole consumer FIRST全GREEN**，首轮42compile／2archive GREEN后DLL缺两已存在serializer provider的LNK2019保留；最小02只新增2CPP、0archive重复，DLL＋4fixturelinks GREEN，总 **40prod＋4fixture／unique44／725mixed（685retained＋40new）**，详见[唯一Root结果](Z:/g2-native36-build01/attempt02/ROOT-NATIVE36-RESULT.json)。Child／clergy候选／Chaplain／tax仅新scope static-ready，未加载Game／未有任命、教育或税收益材料。Root八scoped cherries已采用到7f0ff661、尚待push；上一报告已普通FF发布 **a8c8d836a1aa6ca6fa6ff9e2005894fd799635c7**。
+
+SDK29336已Root poll确认 **exit0**，不再pending。R78 actual symbol metadata FIRST01只读24562B／hash0，bridgeRVA30C6/read22223A10/thread124816，但PDB无source符号、真实源因仍待定位；**不宣称Game crash已修**。H9715／saved6010／date53288568／G2 5/8／NW2 2/4／M4false／M6partial／natural0保持，详见[日报](daily/2026-10-08.md)。
+
+### 历史2026-10-08 21:44:25 CST：R78实际crash，两项新Service离线GREEN／Native36编译中
 
 R78 Game146596 **13:32:11.995918Z退出1／cleanup_proven／tree_gone**，exception C0000005、五帧xar_ck3_bridge.dll后台线程stack；符号化根因未查明。[实际故障字段](Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/runtime35-report-coordination/ROOT-R78-ACTUAL-CRASH-NEXT-REPORT-FIELDS.json)保留完整边界：12数据checks通过但windows[]RED，**paused snapshot未qualified**；prepare／bootstrap／launch ACCEPTED不能替代此结果。SDK29336 exit_client inbox002已排、退出仍pending。H9715／saved6010／date53288568保持，本次0动作／day／SAVE，原34／35离线GREEN不重开。
 
