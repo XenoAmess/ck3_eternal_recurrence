@@ -71,6 +71,7 @@ struct Inputs {
   std::array<std::uint16_t,1> modifier_keys{0x1A9};
   std::array<std::int64_t,1> modifier_values{0};
   std::array<std::int32_t,1> current_ids{kUnit},route_ids{2};
+  std::array<void *,1> route_pointers{};
   std::array<std::int32_t,2> target_ids{},regiment_ids{kRegiment,kRegiment};
   std::int64_t gain=2000000,slope=100000,min_loss=100000,max_loss=500000,floor=100000;
   friend bool operator==(const Inputs &,const Inputs &)=default;
@@ -137,7 +138,8 @@ struct Fixture {
     Store(input.regiment_slots,0x18,static_cast<void *>(input.regiment.data()));
     Store(input.unit,0x10,kUnit);
     Store(input.unit,0x20,static_cast<void *>(input.province.data()));
-    Store(input.unit,0x38,static_cast<void *>(input.route_ids.data()));
+    input.route_pointers[0]=input.route_ids.data();
+    Store(input.unit,0x38,static_cast<void *>(input.route_pointers.data()));
     Store(input.unit,0x40,std::int32_t{1});
     Store(input.unit,0x44,std::int32_t{1});
     Store(input.unit,0x174,std::int32_t{29829});

@@ -75,7 +75,11 @@ ReadCurrentFirstRouteTargetSupplyContributors12004(
   const void *ids = Load<const void *>(unit, 0x38);
   if (count < 0 || ids == nullptr)
     return unavailable("first_route_target_route_descriptor_unavailable");
-  const auto target_id = Load<std::int32_t>(ids, 0);
+  // Unit+38 is an array of route-info pointers, as in the whole Route reader.
+  const void *first_info = Load<const void *>(ids, 0);
+  if (first_info == nullptr)
+    return unavailable("first_route_target_route_descriptor_unavailable");
+  const auto target_id = Load<std::int32_t>(first_info, 0);
   result.first_route_target_province_id = target_id;
   void *target = first_route_target_supply_detail::ResolveProvince(bindings, target_id);
   if (target == nullptr)
