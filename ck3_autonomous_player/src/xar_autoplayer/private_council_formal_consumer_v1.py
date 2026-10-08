@@ -277,18 +277,21 @@ def plan_council_private(
         if root is None:
             root, current = _root(driver, campaign_root_result)
         chancellor = _position(root, CHANCELLOR_POSITION_KEY)
-        if chancellor is not None and chancellor.get("incumbent_character_id") is None:
+        if chancellor is not None:
             chancellor_query = _query_position(driver, CHANCELLOR_POSITION_KEY)
             chancellor_decision = select_council_candidate_v1(
                 chancellor_query, position_key=CHANCELLOR_POSITION_KEY,
+                allow_occupied_chancellor=True,
             )
             current = _snapshot(driver)
             next_plan.update({"council_private_query": chancellor_query,
                               "council_decision": chancellor_decision,
                               "council_observation_consumed": chancellor_decision["outcome"] != "QUERY_UNAVAILABLE"})
-            if chancellor_decision["outcome"] == "ASSIGN_REQUIRED":
+            if chancellor_decision["outcome"] in {"ASSIGN_REQUIRED", "REPLACE_REQUIRED"}:
                 next_plan.update({"phase": "council_private_typed_submit", "selected_step": SUBMIT_STEP,
-                                  "reason": "fill the observed Chancellor vacancy with one current native-legal candidate"})
+                                  "reason": ("fill the observed Chancellor vacancy with one current native-legal candidate"
+                                             if chancellor_decision["outcome"] == "ASSIGN_REQUIRED" else
+                                             "replace the observed Chancellor with one current native-legal candidate with higher Diplomacy")})
     return {**planned, "revision": current["revision"], "snapshot_id": current["snapshot_id"], "plan": next_plan}
 
 
