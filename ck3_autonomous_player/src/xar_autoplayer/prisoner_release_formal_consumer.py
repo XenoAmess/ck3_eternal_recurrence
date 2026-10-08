@@ -209,7 +209,7 @@ def submit_release_formal(driver: object, *, plan: Mapping[str, object]) -> dict
     state_dir = driver.state_dir
     if read_release_ledger(state_dir)["pending"] is not None:
         raise BridgeUnavailableError("another prisoner release is unresolved")
-    before = driver.take_snapshot()
+    before = driver.take_internal_semantic_snapshot()
     actor, native, date = _frame(before)
     refreshed, _ = _observed_choice(before, choice["collection"],
                                      plan.get("prisoner_release_war_reads", []))

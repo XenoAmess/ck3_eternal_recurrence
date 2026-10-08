@@ -43,7 +43,7 @@ def submit_player_prisoner_release_private_v1(
     """Consume the selected same-frame typed offer without choosing new terms."""
     if getattr(driver, "allow_private_prisoner_ransom_action", False) is not True:
         raise UnsupportedStepError("private prisoner release action is disabled")
-    before = driver.take_snapshot()
+    before = driver.take_internal_semantic_snapshot()
     played = before.get("played_character")
     native_revision = before.get("native_revision")
     value = collection.get("player_prisoner_collection")
