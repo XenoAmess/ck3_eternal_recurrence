@@ -7,6 +7,7 @@ from collections.abc import Mapping
 
 from .environment import write_json_atomic
 from .bridge.driver import BridgeUnavailableError
+from .bridge.player_prisoner_collection_private_transport import _semantic_snapshot
 from .bridge.prisoner_retained_target_state_contract_12004 import (
     normalize_prisoner_retained_target_state_12004,
 )
@@ -31,7 +32,7 @@ def read_release_receipt_private(
     ledger = read_release_ledger(state_dir)
     if ledger["pending"] != dict(pending):
         raise BridgeUnavailableError("release pending identity differs from ledger")
-    now = driver.take_snapshot()
+    now = _semantic_snapshot(driver)
     actor, native, date = _frame(now)
     target = pending.get("prisoner_character_id")
     if actor != pending.get("player_character_id") or type(target) is not int:

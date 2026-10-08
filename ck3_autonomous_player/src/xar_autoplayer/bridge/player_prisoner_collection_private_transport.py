@@ -64,6 +64,12 @@ def _lineage_id(value: object) -> bool:
     return value is None or (isinstance(value, int) and not isinstance(value, bool) and value >= 0)
 
 
+def _semantic_snapshot(driver: object) -> dict[str, object]:
+    """Read the paused observation without copying an unused transcript."""
+    reader = getattr(driver, "take_internal_semantic_snapshot", None)
+    return reader() if callable(reader) else driver.take_snapshot()
+
+
 def query_player_prisoner_collection_private_v1(
     driver: object, *, expected_revision: int, ransom_ordinal: int = 0,
     release_option_keys: list[str] | None = None,
@@ -88,7 +94,7 @@ def query_player_prisoner_collection_private_v1(
         requested_release_option_keys = list(release_option_keys)
     if isinstance(timeout_seconds, bool) or not isinstance(timeout_seconds, (int, float)) or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
-    before = driver.take_snapshot()
+    before = _semantic_snapshot(driver)
     native_revision = before.get("native_revision")
     date_raw = before.get("date_raw")
     played = before.get("played_character")
@@ -435,7 +441,7 @@ def query_player_prisoner_collection_private_v1(
                 )
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
-    if _binding(driver.take_snapshot()) != _binding(before):
+    if _binding(_semantic_snapshot(driver)) != _binding(before):
         raise BridgeUnavailableError("private prisoner collection crossed its paused frame")
     result = {**envelope, **provenance,
               "queried_snapshot_id": before.get("snapshot_id"),
