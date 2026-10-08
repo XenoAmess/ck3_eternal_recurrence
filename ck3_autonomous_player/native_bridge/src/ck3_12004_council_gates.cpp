@@ -145,7 +145,8 @@ static bool EvaluateCouncilGatesWithProfile12004(
       frame.active_task_id <= 0 ||
       (observation_only
           ? CouncilCandidatesCompositionProfile12004(frame.position_key).position_key.empty()
-          : CouncilCandidatesProfile12004(frame.position_key).position_key.empty()) ||
+          : (CouncilCandidatesProfile12004(frame.position_key).position_key.empty() &&
+             frame.position_key != kCouncilCandidatesChaplainPosition12004)) ||
       candidate_character_id <= 0 || resolved_candidate == nullptr ||
       (frame.has_incumbent && (!frame.incumbent_identity_round_trip ||
                               frame.incumbent_character_id <= 0)) ||

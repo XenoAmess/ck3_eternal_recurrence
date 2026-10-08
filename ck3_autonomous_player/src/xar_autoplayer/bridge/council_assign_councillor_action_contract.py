@@ -1,4 +1,4 @@
-"""Strict Council action contract for Steward and Chancellor assignments.
+"""Strict Council action contract for Steward, Chancellor and Chaplain assignments.
 
 The native helper ACK only proves invocation.  A successful result requires
 the independently captured, later paused-frame receipt produced by the native
@@ -14,6 +14,7 @@ from typing import Final
 
 from .council_composition_candidates_contract import (
     CHANCELLOR_POSITION_KEY,
+    COURT_CHAPLAIN_POSITION_KEY,
     STEWARD_POSITION_KEY,
 )
 
@@ -168,7 +169,9 @@ def build_assign_councillor_request_v1(
         isinstance(snapshot, dict)
         and snapshot.get("paused") is True
         and isinstance(position, dict)
-        and position.get("position_key") in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}
+        and position.get("position_key") in {
+            STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY, COURT_CHAPLAIN_POSITION_KEY,
+        }
         and isinstance(candidates, list)
         and observation.get("candidate_collection_complete") is True
         and isinstance(readiness, dict)
@@ -337,7 +340,9 @@ def normalize_assign_councillor_receipt_v1(
             and _int32(value.get("post_date_raw"), "post_date_raw")
             >= int(expected_ack["pre_date_raw"])
             and value.get("owner_character_id") == expected_ack.get("owner_character_id")
-            and expected_ack.get("position_key") in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}
+            and expected_ack.get("position_key") in {
+                STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY, COURT_CHAPLAIN_POSITION_KEY,
+            }
             and value.get("position_key") == expected_ack.get("position_key")
             and value.get("incumbent_character_id") == expected_ack.get("candidate_character_id")
             and round_trip is True

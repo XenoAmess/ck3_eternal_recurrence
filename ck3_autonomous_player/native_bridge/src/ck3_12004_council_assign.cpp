@@ -42,9 +42,12 @@ game::CouncilAssignCouncillorAckStatusV1 ExecuteCouncilAssign12004(
     const CouncilAssignAccess12004& access,
     const game::CouncilAssignCouncillorActionRequestV1& request,
     game::CouncilAssignCouncillorActionAckV1& ack) noexcept {
-  // Steward and Chancellor use the same native task-bound assignment routes.
+  // The helper carries the resolved task ID; Chaplain retains the same native
+  // occupied CanConfirm and command-time CanSend appointment authority.
   const auto position = request.position_key == kCouncilAssignChancellorPosition12004 ?
       kCouncilAssignChancellorPosition12004 :
+      request.position_key == kCouncilAssignChaplainPosition12004 ?
+      kCouncilAssignChaplainPosition12004 :
       kCouncilAssignStewardPosition12004;
   return ck3_11906::ExecuteCouncilAssignCouncillorActionForBuildV1(environment,
       access, request, ack, kExecutableSha256, position);

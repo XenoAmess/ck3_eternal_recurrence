@@ -6,6 +6,7 @@ namespace xar::ck3_12004 {
 // Actual 1.20.0.4 helper body and command constructor were mapped in capture01.
 inline constexpr std::string_view kCouncilAssignStewardPosition12004 = "councillor_steward";
 inline constexpr std::string_view kCouncilAssignChancellorPosition12004 = "councillor_chancellor";
+inline constexpr std::string_view kCouncilAssignChaplainPosition12004 = "councillor_court_chaplain";
 inline constexpr std::uintptr_t kCouncilAssignHelperRva12004 = 0x115AAA0;
 using CouncilAssignEnvironment12004 = ck3_11906::CouncilAssignCouncillorNativeEnvironmentV1;
 using CouncilAssignAccess12004 = ck3_11906::CouncilAssignCouncillorActionAccessV1;

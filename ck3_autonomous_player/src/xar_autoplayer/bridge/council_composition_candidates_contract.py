@@ -33,6 +33,7 @@ SPYMASTER_MAIN_SKILL_KEY: Final = "intrigue"
 COURT_CHAPLAIN_POSITION_KEY: Final = "councillor_court_chaplain"
 COURT_CHAPLAIN_MAIN_SKILL_KEY: Final = "learning"
 _PRIVATE_COMPOSITION_STEP: Final = "private-query-council-composition-candidates-v1"
+_PRIVATE_FINAL_GATES_STEP: Final = "private-query-council-final-gates-v1"
 _POSITION_MAIN_SKILL_KEYS: Final = {
     STEWARD_POSITION_KEY: STEWARD_MAIN_SKILL_KEY,
     CHANCELLOR_POSITION_KEY: CHANCELLOR_MAIN_SKILL_KEY,
@@ -130,12 +131,13 @@ def build_council_composition_candidates_request_v1(
     if position_key != STEWARD_POSITION_KEY and not (
         (allow_chancellor_read_only is True and position_key == CHANCELLOR_POSITION_KEY)
         or (allow_spymaster_read_only is True and position_key == SPYMASTER_POSITION_KEY)
-        or (query_step == _PRIVATE_COMPOSITION_STEP and position_key == COURT_CHAPLAIN_POSITION_KEY)
+        or (query_step in {_PRIVATE_COMPOSITION_STEP, _PRIVATE_FINAL_GATES_STEP}
+            and position_key == COURT_CHAPLAIN_POSITION_KEY)
     ):
         raise ValueError(
             "position_key must be councillor_steward or explicitly opted-in "
             "readonly councillor_chancellor or councillor_spymaster, or "
-            "councillor_court_chaplain in the private composition step"
+            "councillor_court_chaplain in the private composition or final-gates step"
         )
     return {
         "expected_snapshot_id": _expected_snapshot_id(expected_snapshot_id),

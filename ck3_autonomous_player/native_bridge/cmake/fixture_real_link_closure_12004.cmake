@@ -75,6 +75,8 @@ foreach(target IN ITEMS
     xar_ck3_12004_faction_adopted_whole_test
     xar_ck3_12004_government_whole_first
     xar_ck3_12004_clergy_appointment_whole_mailbox_test
+    xar_ck3_12004_clergy_candidate_terms_whole_mailbox_test
+    xar_ck3_12004_chaplain_council_action_whole_mailbox_test
     xar_ck3_12004_county_conversion_whole_mailbox_test
     xar_ck3_death_succession_modal_whole_fixture_12004
     xar_ck3_12004_commander_movement_metadata_test)

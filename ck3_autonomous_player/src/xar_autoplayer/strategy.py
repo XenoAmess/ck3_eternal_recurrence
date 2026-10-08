@@ -89,6 +89,7 @@ from .bridge.event_window_context_contract import (
 )
 from .bridge.council_composition_candidates_contract import (
     CHANCELLOR_POSITION_KEY,
+    COURT_CHAPLAIN_POSITION_KEY,
     QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
     QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
     STEWARD_POSITION_KEY,
@@ -3629,12 +3630,15 @@ def _plan_council_composition_v1(
     position_key: str,
     allow_occupied_chancellor: bool = False,
 ) -> dict[str, object]:
-    """Preserve default coverage; allow explicitly configured Chancellor replacement."""
+    """Choose a strict skill improvement or vacancy among native legal candidates."""
 
-    if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}:
+    if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY, COURT_CHAPLAIN_POSITION_KEY}:
         raise ValueError("Council assignment position is outside coverage")
-    policy = ("council-composition-steward-v1" if position_key == STEWARD_POSITION_KEY
-              else "council-composition-chancellor-v1")
+    policy = {
+        STEWARD_POSITION_KEY: "council-composition-steward-v1",
+        CHANCELLOR_POSITION_KEY: "council-composition-chancellor-v1",
+        COURT_CHAPLAIN_POSITION_KEY: "council-composition-chaplain-v1",
+    }[position_key]
 
     position = observation.get("position")
     if not isinstance(position, dict):

@@ -21,6 +21,7 @@ from .bridge.council_assign_councillor_action_contract import (
 )
 from .bridge.council_composition_candidates_contract import (
     CHANCELLOR_POSITION_KEY,
+    COURT_CHAPLAIN_POSITION_KEY,
     STEWARD_POSITION_KEY,
     normalize_council_composition_candidates_v1,
 )
@@ -154,7 +155,7 @@ def _record_position_key(record: Mapping[str, object]) -> str:
     position = payload.get("position") if isinstance(payload, Mapping) else None
     source = ack if isinstance(ack, Mapping) else position
     key = source.get("position_key", STEWARD_POSITION_KEY) if isinstance(source, Mapping) else STEWARD_POSITION_KEY
-    if key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}:
+    if key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY, COURT_CHAPLAIN_POSITION_KEY}:
         raise ValueError("Council ledger position is outside assignment coverage")
     return key
 
@@ -174,11 +175,14 @@ def select_council_candidate_v1(
     allow_occupied_chancellor: bool = False,
 ) -> dict[str, object]:
     """Keep every native row as evidence; rank only rows passing native gates."""
-    if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}:
+    if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY, COURT_CHAPLAIN_POSITION_KEY}:
         raise ValueError("Council assignment position is outside coverage")
     if query.get("status") != "available":
-        policy = ("council-composition-steward-v1" if position_key == STEWARD_POSITION_KEY
-                  else "council-composition-chancellor-v1")
+        policy = {
+            STEWARD_POSITION_KEY: "council-composition-steward-v1",
+            CHANCELLOR_POSITION_KEY: "council-composition-chancellor-v1",
+            COURT_CHAPLAIN_POSITION_KEY: "council-composition-chaplain-v1",
+        }[position_key]
         return {"policy": policy, "outcome": "QUERY_UNAVAILABLE",
                 "reason_code": query.get("unavailable_reason", "private_query_unavailable")}
     payload = query.get("council_composition_candidates")
@@ -235,9 +239,11 @@ def select_council_candidate_v1(
             "legal_candidate_count": len(legal), "native_gate_exclusions": excluded,
             "skill_gain": selected["main_skill"]["value"] - incumbent["value"]
                           if selected and incumbent else None,
-            "value_scope": ("native stewardship points; alternate-candidate tax modifier is not observed"
-                            if position_key == STEWARD_POSITION_KEY else
-                            "native diplomacy points; alternate-task and political utility are not observed")}
+            "value_scope": {
+                STEWARD_POSITION_KEY: "native stewardship points; alternate-candidate tax modifier is not observed",
+                CHANCELLOR_POSITION_KEY: "native diplomacy points; alternate-task and political utility are not observed",
+                COURT_CHAPLAIN_POSITION_KEY: "native learning points; alternate-candidate task yield and political utility are not observed",
+            }[position_key]}
 
 
 def plan_council_private(
@@ -250,7 +256,7 @@ def plan_council_private(
     """Plan one private council turn without public advertisement or war policy."""
     if getattr(driver, "allow_private_council_action", False) is not True:
         return planned
-    if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY}:
+    if position_key not in {STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY, COURT_CHAPLAIN_POSITION_KEY}:
         raise ValueError("Council assignment position is outside coverage")
     plan = planned.get("plan")
     if not isinstance(plan, dict):
@@ -319,7 +325,8 @@ def plan_council_private(
                     "plan": {**next_plan, "selected_step": None,
                              "reason": "current council holder differs from the applied assignment"}}
     if decision["outcome"] in {"ASSIGN_REQUIRED", "REPLACE_REQUIRED"}:
-        role = "steward" if position_key == STEWARD_POSITION_KEY else "chancellor"
+        role = {STEWARD_POSITION_KEY: "steward", CHANCELLOR_POSITION_KEY: "chancellor",
+                COURT_CHAPLAIN_POSITION_KEY: "chaplain"}[position_key]
         next_plan.update({"phase": "council_private_typed_submit", "selected_step": SUBMIT_STEP,
                            "reason": f"assign one current native-legal {role} with higher observed skill"})
     elif position_key == STEWARD_POSITION_KEY and decision["outcome"] != "QUERY_UNAVAILABLE":
@@ -341,10 +348,25 @@ def plan_council_private(
                                   "reason": ("fill the observed Chancellor vacancy with one current native-legal candidate"
                                              if chancellor_decision["outcome"] == "ASSIGN_REQUIRED" else
                                              "replace the observed Chancellor with one current native-legal candidate with higher Diplomacy")})
+        if (next_plan.get("selected_step") == "life-advance"
+                and _position(root, COURT_CHAPLAIN_POSITION_KEY) is not None):
+            chaplain_query = _query_position(driver, COURT_CHAPLAIN_POSITION_KEY)
+            chaplain_decision = select_council_candidate_v1(
+                chaplain_query, position_key=COURT_CHAPLAIN_POSITION_KEY,
+            )
+            current = _snapshot(driver)
+            next_plan.update({"council_private_query": chaplain_query,
+                              "council_decision": chaplain_decision,
+                              "council_observation_consumed": chaplain_decision["outcome"] != "QUERY_UNAVAILABLE"})
+            if chaplain_decision["outcome"] in {"ASSIGN_REQUIRED", "REPLACE_REQUIRED"}:
+                next_plan.update({"phase": "council_private_typed_submit", "selected_step": SUBMIT_STEP,
+                                  "reason": ("fill the observed Chaplain vacancy with one current native-legal candidate"
+                                             if chaplain_decision["outcome"] == "ASSIGN_REQUIRED" else
+                                             "replace the observed Chaplain with one current native-legal candidate with higher Learning")})
     if root is not None:
         next_plan["council_job_progress_observations"] = [
             _job_progress_observation(root, current, role)
-            for role in (STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY)]
+            for role in (STEWARD_POSITION_KEY, CHANCELLOR_POSITION_KEY, COURT_CHAPLAIN_POSITION_KEY)]
         selected_role = next_plan["council_decision"].get("position_key", position_key)
         job = _job_progress_observation(root, current, selected_role)
         next_plan["council_job_progress_observation"] = job
