@@ -133,6 +133,7 @@ struct BattleBindings {
   bool current_person_state_enabled = false;
   // Independent exact4 optional leaf; does not enable historical .3 observers.
   ck3_12004::PersonCarrierDirect12004Bindings current_person_carrier_direct{};
+  ck3_12004::PersonConditionalOpinion12004Bindings current_person_conditional_opinion{};
   bool current_person_effective_prowess_enabled = false;
   phase_character::Bindings current_person_traits{};
   // Exact .3 source operands; category getters have closed readonly RET windows.

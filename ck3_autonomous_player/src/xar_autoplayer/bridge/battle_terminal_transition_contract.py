@@ -902,6 +902,8 @@ def _normalize_current_person_state(
         fields.add("following_2921a90")
     if isinstance(value, dict) and "following_2921a90_conditional" in value:
         fields.add("following_2921a90_conditional")
+    if isinstance(value, dict) and "following_2921a90_opinion" in value:
+        fields.add("following_2921a90_opinion")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -1020,6 +1022,10 @@ def _normalize_current_person_state(
         from .battle_person_conditional_2921a90_12004 import normalize_person_conditional_2921a90_12004
         normalized["following_2921a90_conditional"] = normalize_person_conditional_2921a90_12004(
             state["following_2921a90_conditional"])
+    if "following_2921a90_opinion" in state:
+        from .battle_person_conditional_opinion_12004 import normalize_person_conditional_opinion_12004
+        normalized["following_2921a90_opinion"] = normalize_person_conditional_opinion_12004(
+            state["following_2921a90_opinion"])
     return normalized
 
 
@@ -1088,6 +1094,10 @@ def _normalize_character_custody_rows(
             if (conditional is not None and conditional["character_id"] is not None
                     and conditional["character_id"] != character_id):
                 raise ValueError(f"{field}[{index}] conditional2921a90 CharacterID disagrees")
+            opinion = normalized["current_person_state"].get("following_2921a90_opinion")
+            if (opinion is not None and opinion["character_id"] is not None
+                    and opinion["character_id"] != character_id):
+                raise ValueError(f"{field}[{index}] conditional opinion CharacterID disagrees")
         result.append(normalized)
     return result
 

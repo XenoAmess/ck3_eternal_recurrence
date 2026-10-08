@@ -120,3 +120,17 @@ This is current evaluated pair-opinion input. It does not prove future stage
 weights, fresh-model association, initializer execution, all opinions, a full
 Person/Entry rebuild, live observation, or campaign completion. The already
 qualified Native44 twelve bodies and both old partial leaves remain untouched.
+
+The authored native target is
+`xar_ck3_12004_person_conditional_opinion_mcp_test`; its CTest is
+`xar_ck3_12004_person_conditional_opinion_mcp_first`. It writes five new original
+whole packets: `opinion-high.json`, `opinion-low.json`, `opinion-mixed-tie.json`,
+`opinion-provider-unavailable.json`, and
+`opinion-dynamic-weight-later-ready.json`. The sole registered consumer is
+`test_person_conditional_opinion_12004_registered_mcp.py::test_person_conditional_opinion_12004_registered_mcp_whole_packets`,
+with `CK3_PERSON_CONDITIONAL_OPINION_12004_MCP_WIRE_DIR` pointing to that fresh
+directory and `PYTHONPATH` pointing to the frozen source's
+`ck3_autonomous_player/src`. Native and consumer FIRST are both NOTRUN in this
+source package; Root owns their execution. Self-source rows retain the original
+row's readiness, including an unready self observation, rather than manufacturing
+a vote or rejecting the original partial representation.

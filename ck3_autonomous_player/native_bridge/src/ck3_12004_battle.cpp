@@ -24,6 +24,8 @@ BattleBindings BindBattleImage(
   bindings.enabled = true;
   bindings.current_person_carrier_direct = BindPersonCarrierDirect12004(
       base, kGameVersion, sha, &CopyCarrierSource);
+  bindings.current_person_conditional_opinion =
+      BindPersonConditionalOpinionImage12004(base, sha);
   bindings.game_state_slot =
       reinterpret_cast<void **>(base + kGameStateSlotRva);
   bindings.jomini_state_slot =

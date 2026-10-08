@@ -654,6 +654,11 @@ inline std::string SerializeBattleCurrentPersonStateV1(
     output += xar::ck3_12004::SerializePersonConditional2921a90(
         *state.following_2921a90_conditional);
   }
+  if (state.following_2921a90_opinion) {
+    output += ",\"following_2921a90_opinion\":";
+    output += xar::ck3_12004::SerializePersonConditionalOpinion12004(
+        *state.following_2921a90_opinion);
+  }
   output += '}';
   return output;
 }

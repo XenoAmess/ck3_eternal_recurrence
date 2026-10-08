@@ -1620,6 +1620,13 @@ game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     observed.following_2921a90_conditional =
         ck3_12004::ReadPersonConditional2921a90Inputs12004(
             b.current_person_carrier_direct, *observed.following_2921a90);
+    if (b.current_person_conditional_opinion.enabled) {
+      observed.following_2921a90_opinion =
+          ck3_12004::ReadPersonConditionalOpinionInputs12004(
+              b.current_person_conditional_opinion,
+              b.current_person_carrier_direct, *observed.following_2921a90,
+              *observed.following_2921a90_conditional);
+    }
     // The actual4 leaf is independent. No old .3 observer is enabled or called.
     if (!b.current_person_state_enabled) {
       observed.effective_prowess.unavailable_reason = "current_effective_prowess_not_bound";

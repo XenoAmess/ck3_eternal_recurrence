@@ -409,4 +409,56 @@ std::string SerializePersonConditional2921a90(const PersonConditional2921a90DTO 
   j.out << ']';
   return j.End();
 }
+// Added reuse seams only. The original reader and original JSON leaf above
+// remain unchanged; the new pair-opinion sibling can demand a different list.
+PersonConditional2921a90Row ReadPersonConditional2921a90RowInputs12004(
+    const PersonCarrierDirect12004Bindings &b, std::uintptr_t physical_array,
+    std::uint32_t native_index) {
+  PersonConditional2921a90Row row;
+  row.native_index = native_index;
+  row.object_identity = Copy<std::uintptr_t>(b, physical_array + native_index * 8ULL);
+  if (!row.object_identity || *row.object_identity == 0)
+    row.reason = "conditional_modifier_object_unread";
+  else {
+    Weight(b, row);
+    if (row.weight_q64) {
+      if (*row.weight_q64 == 0) row.ready = true;
+      else Property(b, row);
+    }
+  }
+  return row;
+}
+
+std::string SerializePersonConditional2921a90RowInputs12004(
+    const PersonConditional2921a90Row &r) {
+  Json q;
+  q.Number("native_index", std::optional<std::uint32_t>{r.native_index});
+  q.Bool("ready", r.ready); q.String("reason", r.reason, true);
+#define NUMBER(name) q.Number(#name, r.name)
+#define POINTER(name) q.Pointer(#name, r.name)
+  POINTER(object_identity); NUMBER(expression_flag_280_i32); POINTER(expression_tree_278_identity);
+  POINTER(expression_scoped_268_identity); NUMBER(expression_count_1d4_i32);
+  NUMBER(keys_count_i32); NUMBER(values_count_i32); POINTER(metadata_registry_identity); POINTER(metadata_table_identity);
+#undef NUMBER
+#undef POINTER
+  q.Q64("raw_value_258_q64", r.raw_value_258_q64); q.Q64("weight_q64", r.weight_q64);
+  q.Key("properties");
+  if (!r.properties) q.out << "null";
+  else {
+    Json p; p.Numbers("keys_u16", r.properties->keys_u16, false);
+    p.Numbers("values_q64", r.properties->values_q64, true); q.out << p.End();
+  }
+  q.Key("metadata"); q.out << '['; bool first = true;
+  for (const auto &m : r.metadata) {
+    if (!first) q.out << ',';
+    first = false;
+    Json p; p.Number("native_index", std::optional<std::uint32_t>{m.native_index});
+    p.Bool("ready", m.ready); p.String("reason", m.reason, true);
+    p.Number("key_u16", m.key_u16); p.Pointer("definition_identity", m.definition_identity);
+    p.Number("flag_ba_u8", m.flag_ba_u8); p.Number("flag_b8_u8", m.flag_b8_u8);
+    q.out << p.End();
+  }
+  q.out << ']';
+  return q.End();
+}
 } // namespace xar::ck3_12004
