@@ -898,6 +898,8 @@ def _normalize_current_person_state(
         fields.add("current_context_source_inputs")
     if isinstance(value, dict) and "carrier_1c8_b70_direct" in value:
         fields.add("carrier_1c8_b70_direct")
+    if isinstance(value, dict) and "following_2921a90" in value:
+        fields.add("following_2921a90")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -1008,6 +1010,10 @@ def _normalize_current_person_state(
         from .battle_person_carrier_direct_12004 import normalize_carrier_direct_12004
         normalized["carrier_1c8_b70_direct"] = normalize_carrier_direct_12004(
             state["carrier_1c8_b70_direct"])
+    if "following_2921a90" in state:
+        from .battle_person_following_2921a90_12004 import normalize_person_following_2921a90_12004
+        normalized["following_2921a90"] = normalize_person_following_2921a90_12004(
+            state["following_2921a90"])
     return normalized
 
 
@@ -1068,6 +1074,10 @@ def _normalize_character_custody_rows(
             if (carrier is not None and carrier["character_id"] is not None
                     and carrier["character_id"] != character_id):
                 raise ValueError(f"{field}[{index}] direct carrier CharacterID disagrees")
+            following = normalized["current_person_state"].get("following_2921a90")
+            if (following is not None and following["character_id"] is not None
+                    and following["character_id"] != character_id):
+                raise ValueError(f"{field}[{index}] following2921a90 CharacterID disagrees")
         result.append(normalized)
     return result
 

@@ -258,3 +258,8 @@ qualification and the sole eight-wire Python consumer establish only this
 bounded primitive; whole-query or full Entry promotion requires its own actual
 integration and source scope. No additional source capture is required for
 this bounded numerical reader. Later2921AB0 remains outside this package.
+
+The next actual4 source is now separately documented in
+[the following linked collection](battle-person-following-2921a90-12004.md).
+Its actual caller target was decoded after this package; it does not extend
+the preceding standalone or Native41 qualification to a complete person chain.

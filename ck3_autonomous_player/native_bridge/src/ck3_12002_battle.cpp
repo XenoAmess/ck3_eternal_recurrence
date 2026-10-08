@@ -1613,6 +1613,10 @@ game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
         ck3_12004::ReadPersonCarrierDirectForCharacter12004(
             b.current_person_carrier_direct,
             reinterpret_cast<std::uintptr_t>(character));
+    observed.following_2921a90 =
+        ck3_12004::ReadPersonFollowing2921a90ForCharacter12004(
+            b.current_person_carrier_direct,
+            reinterpret_cast<std::uintptr_t>(character));
     // The actual4 leaf is independent. No old .3 observer is enabled or called.
     if (!b.current_person_state_enabled) {
       observed.effective_prowess.unavailable_reason = "current_effective_prowess_not_bound";

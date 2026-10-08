@@ -115,3 +115,49 @@ will exercise mapped signed/repeated/empty PCs, duplicate pointer rows, actual
 fallback, full-generation-ID mismatch, failed selected magic/ID, independently
 ready rows after partial copies and a demanded conditional family. No new action
 or counter-policy is introduced. Following29226A0 is outside this package.
+
+## Authored production route and sole FIRST recipe
+
+The candidate adds `ck3_12004_person_following_2921a90.hpp/.cpp`. Its reader
+reuses the already installed exact4 `PersonCarrierDirect12004Bindings` guarded
+copy callback, never invoking a getter. `CurrentPersonSample` publishes this
+new sibling before the existing actual4 early return; the private current-person
+serializer appends it to the genuine terminal frame. The main Python normalizer
+adds the optional exact field and full Character-ID join. Existing NativeDriver,
+Service and `ck3_query_battle_terminal_transition_v1` dispatch carry the frame
+unchanged apart from normalizing native decimal Q64 strings into strict integers.
+No new factory, action, Service branch or SDK endpoint is installed.
+
+`normalize_person_following_2921a90_12004` retains independently copied rows.
+The three public emitters require whole-helper readiness, direct-family
+readiness, or one original `native_index` row respectively. Normalization is
+idempotent through Driver, Service and the emitter. A physically empty PC row
+remains one unit request. A partial first/repeated row does not hide the later
+empty or nonempty copied row. Nonzero conditional counts preserve the exact
+classifier/evaluator gap and cannot make the whole helper ready.
+
+New target `xar_ck3_12004_person_following_2921a90_mcp_test`, CTest
+`xar_ck3_12004_person_following_2921a90_mcp_first`, links the complete production
+Bridge and Runtime closure, with no stubs or omitted production objects. It
+authors ten ORIGINAL whole `command_result` controls: mapped ordered `[A,B,A,C]`
+PCs where B is empty; empty direct list; absent carrier selecting a valid actual
+fallback; full generation mismatch fallback; wrong selected magic; fallback
+ID sentinel; unread A values with later B/C preserved; demanded B8C; demanded
+negative BBC after B8C0; and a negative direct count. Both terminal samples use
+the same actual source state. The full requested enemy ID differs from the
+fixture player. These fixture IDs are not real-game query inputs.
+
+The sole registered Python node is
+`test_person_following_2921a90_12004_registered_mcp.py::test_person_following_2921a90_12004_registered_mcp_whole_packets`.
+Root supplies `PYTHONPATH=<adopted-source>/ck3_autonomous_player/src` and
+`CK3_PERSON_FOLLOWING_2921A90_12004_MCP_WIRE_DIR=<new ten-whole directory>`.
+It consumes the complete original packets through actual NativeDriver primitive,
+main normalizer, Service and registered MCP, then the genuine three emitters.
+Only request correlation and the qualified snapshot/hello transport seam are
+fixtures. Original bodies, signed extrema, duplicated PCs/keys and unknown
+conditional values are not repaired or replaced by the consumer.
+
+Source review is complete; **build, native FIRST and registered FIRST are
+NOTRUN** in this candidate. The source diff is not native, fixture-live or
+production-live qualification. Root records the actual adopted source, build
+closure and new receipts. Historical Native41 qualified cases are not replayed.
