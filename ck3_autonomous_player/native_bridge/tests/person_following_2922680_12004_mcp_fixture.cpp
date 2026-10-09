@@ -580,7 +580,7 @@ void Produce(const std::filesystem::path &directory, const Spec &spec,
         ++mapped_count;
         Require(spec.kind == Kind::membership_admitted && !append.ready &&
                     append.admitted == true &&
-                    append.reason == "actual42127e0_input_unobserved",
+                    append.reason == "mapped_query_magic_unread",
                 "admitted mapped input became an invented PC or lost its precise gap");
         continue;
       }

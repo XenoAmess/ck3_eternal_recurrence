@@ -14,8 +14,8 @@ namespace {
 // caller11B, helper314B, list getter164B, pointer getter112B, row consumer568B,
 // participant getter282B (including its cold tail) and membership181B are
 // retained Root evidence. Actual243EA10 returns selected Rite+750, not a PC.
-// Only admitted42127E0 mappings remain an explicit numerical dependency;
-// independently observed primary PCs retain their proved unit100000 calls.
+// Actual42127E0 was subsequently captured as274B through42128F2. Read only
+// the selected current PC; never execute its TLS/default initializer.
 constexpr std::uintptr_t kDefaultHeaderRva = 0x5D67DE0;
 constexpr std::uintptr_t kRiteFallbackSlotRva = 0x5C67670;
 constexpr std::uintptr_t kContextRegistryRva = 0x5D1E300;
@@ -27,6 +27,8 @@ constexpr std::uintptr_t kSourceFallbackSlotRva = 0x5D1ED78;
 constexpr std::uintptr_t kCurrentGameDataSlotRva = 0x5C68C50;
 constexpr std::uintptr_t kGetterValueRegistryRva = 0x5D1FF70;
 constexpr std::uintptr_t kGetterFallbackSlotRva = 0x5D1FF78;
+constexpr std::uintptr_t kMappedDefaultGuardRva = 0x5DC21A4;
+constexpr std::uintptr_t kMappedDefaultPcRva = 0x5DC21B0;
 
 template <typename T>
 std::optional<T> Copy(const PersonCarrierDirect12004Bindings &b,
@@ -156,6 +158,61 @@ void ReadPc(const PersonCarrierDirect12004Bindings &b, std::uintptr_t identity,
   else if (!pc.properties->keys_u16) pc.reason = "pc_keys_unread";
   else if (!pc.properties->values_q64) pc.reason = "pc_values_unread";
   else pc.ready = true;
+}
+
+void ReadMappedPc(const PersonCarrierDirect12004Bindings &b,
+    std::uintptr_t query_key, std::uintptr_t header, PersonFollowing2922680Pc &pc) {
+  // Source first: battle-person-mapped-pc-12004.md. Actual42127E0 compares
+  // full DWORD10 in the WHOLE original header and returns the first QWORD28,
+  // including null. It neither filters candidates by membership nor checks
+  // their magic. Keep selection provenance in this existing domain reason.
+  pc.admitted = true;
+  const auto magic = Copy<std::uint32_t>(b, query_key + 0x38);
+  if (!magic) { pc.reason = "mapped_query_magic_unread"; return; }
+  std::string selection = "mapped_default_wrong_magic";
+  std::optional<std::uintptr_t> selected;
+  if (*magic == 0x4744624FU) {
+    const auto count = Copy<std::int32_t>(b, header + 0xC);
+    if (!count) { pc.reason = "mapped_header_count_unread"; return; }
+    if (*count < 0) { pc.reason = "mapped_header_count_negative"; return; }
+    selection = *count == 0 ? "mapped_default_empty_header" : "mapped_default_no_match";
+    if (*count > 0) {
+      const auto array = Copy<std::uintptr_t>(b, header);
+      if (!array || *array == 0) { pc.reason = "mapped_header_array_unread"; return; }
+      const auto query_id = Copy<std::uint32_t>(b, query_key + 0x10);
+      if (!query_id) { pc.reason = "mapped_query_full_id_unread"; return; }
+      for (std::uint32_t index = 0; index < static_cast<std::uint32_t>(*count); ++index) {
+        const auto descriptor = *array + static_cast<std::uintptr_t>(index) * 0x30;
+        const auto candidate = Copy<std::uintptr_t>(b, descriptor + 0x20);
+        if (!candidate) { pc.reason = "mapped_candidate_key_unread"; return; }
+        const auto candidate_id = Copy<std::uint32_t>(b, *candidate + 0x10);
+        if (!candidate_id) { pc.reason = "mapped_candidate_full_id_unread"; return; }
+        if (*candidate_id == *query_id) {
+          selected = Copy<std::uintptr_t>(b, descriptor + 0x28);
+          if (!selected) { pc.reason = "mapped_matched_pc_pointer_unread"; return; }
+          selection = "mapped_first_full_id_match";
+          break;
+        }
+      }
+    }
+  }
+  if (!selected) {
+    pc.identity = b.module_base + kMappedDefaultPcRva;
+    // A matched PC never needs this global or a default initializer. For a
+    // selected default, only copy an already initialized current operand;
+    // guard0/-1 does not authorize inventing post-initializer contents.
+    const auto guard = Copy<std::int32_t>(b, b.module_base + kMappedDefaultGuardRva);
+    if (!guard) { pc.reason = "mapped_default_guard_unread"; return; }
+    if (*guard == 0 || *guard == -1) {
+      pc.reason = "mapped_default_not_initialized";
+      return;
+    }
+    selected = pc.identity;
+  }
+  pc.identity = *selected;
+  if (*selected == 0) { pc.reason = "mapped_first_full_id_match_null"; return; }
+  ReadPc(b, *selected, pc);
+  pc.reason = pc.ready ? selection : selection + ":" + pc.reason;
 }
 
 void Append(PersonFollowing2922680DTO &dto, const PersonFollowing2922680Pc &pc,
@@ -293,10 +350,10 @@ void ReadMembership(const PersonCarrierDirect12004Bindings &b,
                                *row.key_identity) != m.membership_identities->end();
       if (!*row.admitted) row.ready = true;
       else {
-        row.reason = "actual42127e0_input_unobserved";
         PersonFollowing2922680Pc mapped;
-        mapped.admitted = true;
-        mapped.reason = row.reason;
+        ReadMappedPc(b, *row.key_identity, header, mapped);
+        row.ready = mapped.ready;
+        row.reason = mapped.reason;
         Append(dto, mapped, nested ? "nested_mapped" : "item_mapped", outer, source,
                item, nested, index);
       }

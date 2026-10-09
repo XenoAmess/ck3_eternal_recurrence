@@ -1,8 +1,9 @@
 """Actual4 2922680 observations and independently ready primary operands.
 
 The installed Model is receiver provenance, not a fresh preparation baseline.
-Mapped membership observations retain their unclosed mapper reason; primary
-requests never manufacture that contribution or merge a native context.
+Mapped observations retain the actual first-match/default/null selection and
+copied PC operands. Primary requests remain independently available; neither
+family merges a native context or invents a fresh preparation baseline.
 """
 from __future__ import annotations
 
@@ -19,6 +20,10 @@ from ..simulation.battle_trait_numeric_inputs_12003 import native_wrap32_12003
 FIELD_NAME = "following_2922680"
 SCHEMA = "xar.ck3.person-following-2922680-12004-v1"
 MAPPED_GAP = "actual42127e0_input_unobserved"
+_MAPPED_SELECTION_REASONS = {
+    "mapped_first_full_id_match", "mapped_default_wrong_magic",
+    "mapped_default_no_match", "mapped_default_empty_header",
+}
 _PRIMARY_KINDS = {"item_primary", "nested_primary"}
 _KINDS = _PRIMARY_KINDS | {"item_mapped", "nested_mapped"}
 _PC_FIELDS = {"ready", "reason", "admitted", "identity", "count_i32",
@@ -26,7 +31,7 @@ _PC_FIELDS = {"ready", "reason", "admitted", "identity", "count_i32",
 
 
 def _record(value, field, *, pointers=(), unsigned=(), signed=(), booleans=(),
-            nullable_booleans=(), strings=(), children=None, extra=()):
+            nullable_booleans=(), strings=(), children=None, extra=(), ready_reasons=()):
     children = children or {}
     fields = {"ready", "reason", *pointers, *booleans, *nullable_booleans,
               *strings, *children, *extra,
@@ -48,7 +53,7 @@ def _record(value, field, *, pointers=(), unsigned=(), signed=(), booleans=(),
         result[key] = _string(raw[key], field + "." + key)
     for key, parser in children.items():
         result[key] = parser(raw[key], field + "." + key)
-    if result["ready"] and result["reason"] is not None:
+    if result["ready"] and result["reason"] is not None and result["reason"] not in ready_reasons:
         raise ValueError(field + " ready observation retains an unavailable reason")
     return raw, result
 
@@ -75,7 +80,7 @@ def _resolution(value, field):
 def _pc(value, field):
     raw, row = _record(value, field, pointers=("identity",),
         signed=(("count_i32", 32),), nullable_booleans=("admitted",),
-        extra=("properties", "weight_q100000"))
+        extra=("properties", "weight_q100000"), ready_reasons=_MAPPED_SELECTION_REASONS)
     row["weight_q100000"] = _integer(raw["weight_q100000"], field + ".weight_q100000", 64)
     if row["weight_q100000"] != 100000:
         raise ValueError(field + " weight differs from the actual unit append")
@@ -96,7 +101,8 @@ def _pc(value, field):
 
 def _membership_row(value, field):
     raw, row = _record(value, field, pointers=("key_identity",),
-        nullable_booleans=("admitted",), extra=("native_index",))
+        nullable_booleans=("admitted",), extra=("native_index",),
+        ready_reasons=_MAPPED_SELECTION_REASONS)
     row["native_index"] = _integer(raw["native_index"], field + ".native_index", 32, unsigned=True)
     return row
 
@@ -302,4 +308,14 @@ def emit_following_2922680_primary_occurrence_requests_from_current_source_input
     rows = leaf["append_occurrences"]
     if index >= len(rows) or rows[index]["kind"] not in _PRIMARY_KINDS:
         raise ValueError("Required native input unavailable: " + FIELD_NAME + " primary occurrence")
+    return (_request(rows[index], index),)
+
+
+def emit_following_2922680_mapped_occurrence_requests_from_current_source_inputs_12004(section, native_index):
+    """Release one copied mapped PC without losing its original append ordinal."""
+    leaf = _joined_leaf(section)
+    index = _integer(native_index, FIELD_NAME + ".append_occurrences.native_index", 32, unsigned=True)
+    rows = leaf["append_occurrences"]
+    if index >= len(rows) or rows[index]["kind"] not in {"item_mapped", "nested_mapped"}:
+        raise ValueError("Required native input unavailable: " + FIELD_NAME + " mapped occurrence")
     return (_request(rows[index], index),)

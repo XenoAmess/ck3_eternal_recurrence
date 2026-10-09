@@ -22,7 +22,6 @@ from unittest.mock import patch
 
 from xar_autoplayer.bridge.battle_person_following_2922680_12004 import (
     FIELD_NAME,
-    MAPPED_GAP,
     SCHEMA,
     emit_following_2922680_requests_from_current_source_inputs_12004 as emit_whole,
     emit_following_2922680_primary_requests_from_current_source_inputs_12004 as emit_primary,
@@ -204,7 +203,7 @@ def test_person_following_2922680_12004_registered_mcp_whole_packets():
                     independent[name] = {}
                     for index, append in enumerate(leaf["append_occurrences"]):
                         if append["kind"] in ("item_mapped", "nested_mapped"):
-                            assert append["ready"] is False and append["reason"] == MAPPED_GAP
+                            assert append["ready"] is False and append["reason"] == "mapped_query_magic_unread"
                             continue
                         if not append["ready"]:
                             expect_rejected(emit_occurrence, source, index, reason=append["reason"])
@@ -300,7 +299,7 @@ def test_person_following_2922680_12004_registered_mcp_whole_packets():
     assert nonmatch["items"][0]["membership"]["rows"][0]["admitted"] is False
     admitted = leaves["membership-admitted-primary-usable"]
     mapped = [row for row in admitted["append_occurrences"] if row["kind"] == "item_mapped"]
-    assert len(mapped) == 2 and all(row["reason"] == MAPPED_GAP for row in mapped)
+    assert len(mapped) == 2 and all(row["reason"] == "mapped_query_magic_unread" for row in mapped)
     assert admitted["primary_ready"] is True and admitted["ready"] is False
     assert len(endpoint.requests) == len(endpoint.delivered) == len(CASES)
     assert driver.state._command_results == {}
