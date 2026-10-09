@@ -129,3 +129,36 @@ The standalone launcher takes `--source-root`, `--source-sha`,
 existing Native58 `first/calendar-native-wires`. There is no native
 producer or C++ compile in this qualification. New source tests remain
 NOTRUN until Root executes this sole launcher.
+
+## Root offline qualification
+
+Root adopted author `b44438920ac56e5051cec404e58edfcf282e7cf5` as
+`03092da12b8b01b6b100f88d28c5d4d0fecf2e2e` in `Z:/gb0` and ran the
+sole focused FIRST once. The [actual execution receipt](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/next-policy59/ROOT-ACTUAL-FIRST-EXECUTION.json),
+[result](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/next-policy59/root-first01/RESULT.json)
+and [observations](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/next-policy59/root-first01/OBSERVED.json)
+are GREEN. This supersedes the preceding FIRST_NOTRUN statements for this
+Python-only consumer increment.
+
+The one compound completed all eight scenarios in4.8719773s, including
+five calls to the actual NativeDriver life-advance implementation. Its
+positive horizon/progress consumers stopped at20 and11 days. The other
+advance cases retained their original30-day bound. The four qualified
+Native58 whole packets remained unchanged, and the due frame consumed a
+fresh formal quote through the registered Service/MCP path. There was no
+C++ build, native producer rerun or old consumer replay.
+
+Every ordinary Crown fallback still obtains a fresh formal quote, subject
+to the existing pending/receipt precedence. A matching future hint
+suppresses only the additional cooldown-clock query and supplies the
+actual minimum horizon to the driver's timeline and progress loop. It
+does not suppress formal permission/cost rechecks, declare future CanEnact
+true or authorize an enactment. The previously recorded dynamic-input
+quality boundary remains.
+
+This is an **offline qualified policy consumer**, with explicit local
+outer frames and external primitive seams. Root recorded Game/pipe/law
+action counts0, live=false and M7 complete=false. No paused campaign
+policy loop, real timeline days, enactment, material receipt, natural
+succession or G2 completion credit is added. Worker imports, tests,
+builds, EXE reads and hashes remained0.
