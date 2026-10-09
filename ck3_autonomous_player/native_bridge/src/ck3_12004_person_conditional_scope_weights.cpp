@@ -196,7 +196,7 @@ PersonConditionalScopeWeights12004DTO ReadPersonConditionalScopeWeights12004(
       else {
         d.scope_initialized = scope.Initialize(b, *d.scope_payload_u32);
         if (!d.scope_initialized) scope_reason = "scope_constructor_return_mismatch";
-        else { d.scope_kind_u16 = 4; prefix = true; }
+        else { d.scope_kind_u16 = std::uint16_t{4}; prefix = true; }
       }
     }
   }
