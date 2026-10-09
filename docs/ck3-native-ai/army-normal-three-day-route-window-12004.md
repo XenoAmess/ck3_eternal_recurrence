@@ -1,12 +1,12 @@
 # Normal three-day route window (1.20.0.4)
 
-Source baseline: `e5fd088cde640b0a1ea29ff40888af95d9300c95`. Root completed Native49 native and registered compound-consumer offline qualification on 2026-10-09. Readiness is **static-ready**; Native49 is not deployed and has no live qualification. Root owns execution. The actual HOT05 one-day result advanced raw date `53288568 -> 53288592` and watched zero armies. Its next Army query took 116.77 seconds. Repeating that granularity limits useful ordinary war progress.
+Source baseline: `e5fd088cde640b0a1ea29ff40888af95d9300c95`. Root completed Native49 native and registered compound-consumer offline qualification on 2026-10-09, then deployed the capability through Native51 in ordinary Robert campaign R83. Readiness is **production-live primitive**: two normal planner windows each advanced three days, with actual arrival and native position-change observation in the second window. The narrow route-window OODA ran twice; this does not qualify complete autonomous war. Root owns execution. The earlier HOT05 one-day result advanced raw date `53288568 -> 53288592` and watched zero armies. Its next Army query took 116.77 seconds. Repeating that granularity limits useful ordinary war progress.
 
 ## Native input tree sealed before policy
 
 `RouteContactHorizonRequest` has no day-count operand. The `-h-1-` spelling means one hostile public Unit ID. `ReadRouteContactHorizon` in `ck3_12002_routes.cpp` constructs an exact one-day conflict window, but publishes each subject and hostile's complete committed route and corresponding arrival dates. `BuildTimelineIntervals` / `AppendContactConflicts` use closed occupancy and opposing-edge overlaps. A separate software window can replay those complete same-frame timelines for three days without changing the original H1 observation.
 
-The adopted actual4 tactical daily sentinel binds the mapped core and Unit/Army/Combat storage directly. Its Arm operation accepts a positive whole-day deadline, speed 1–5, and at most 64 watched public Unit IDs. Post-original daily evaluation stops on deadline, native pause, unavailable or changed physical identity, route target, combat, retreat, and combat terminal markers. The existing Unit source proves `CUnit+0x20 -> Province+0x10`; the current fingerprint omits that actual position. Adding that witness lets an intermediate arrival stop this window even when the final route target stays unchanged.
+The adopted actual4 tactical daily sentinel binds the mapped core and Unit/Army/Combat storage directly. Its Arm operation accepts a positive whole-day deadline, speed 1–5, and at most 64 watched public Unit IDs. Post-original daily evaluation stops on deadline, native pause, unavailable or changed physical identity, route target, combat, retreat, and combat terminal markers. The existing Unit source proves `CUnit+0x20 -> Province+0x10`; the pre-Native49 fingerprint omitted that actual position. Native49 adds that witness so an intermediate arrival can stop this window even when the final route target stays unchanged.
 
 ```mermaid
 flowchart TD
@@ -85,13 +85,73 @@ The actual results are
 `Z:/g2-native49-build01/attempt02/ROOT-NATIVE49-RESULT.json`, and
 `Z:/g2-native49-build01/attempt03/ROOT-NATIVE49-RESULT.json`.
 
-This is **static-ready, offline qualification only**. Native49 has no
-deployment, live, fullEntry, action, action-day or G2 credit. Root's actual
-Native48 Game result remains separate and does not establish Native49 live
-behavior. The next capability step is Root's own deployed ordinary-campaign
-route-window result with observed actual elapsed days and stop reason.
+At this offline cutoff the capability was **static-ready** with no deployment
+or live credit. Root's Native48 Game result did not establish Native49 live
+behavior. The later deployed ordinary-campaign results below establish the
+narrow route-window behavior separately; neither result is fullEntry or
+complete autonomous-war qualification.
 
 External source and cost ledger:
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/normal-route-horizon-efficiency/`.
 October 9 / ISO 2026-W41. The source-author and documentation lanes performed
 no compiler, test, FIRST, binary hash, SDK or Game execution.
+
+## Actual ordinary R83 route-window loop, 2026-10-09
+
+Root's minimized Game **4368**, Robert **29829**, ordinary succession and no
+pact, ran the normal planner twice. Both selected
+`advance-route-contact-window-v1-218104048-to-2609-days-3-h-1-134218098`.
+Each used same-frame complete route timelines to establish three contact-free
+days, watched public Unit IDs **134218098 and 218104048**, resumed once, and
+returned paused with actual before/after war state. The original H1 route
+observation remained one day; `-h-1-` denotes one hostile ID, not the selected
+window's duration.
+
+| Actual normal response | UTC start / end | Raw date / actual days | Public / native revision | Native stop |
+| --- | --- | --- | --- | --- |
+| `011-r83-normal-batch01.json` | 12:30:05.515070 / 12:30:39.493419 (33.978349 s) | 53288640 → 53288712 / **3** | 7 / 6 | `date_deadline`, flags **1** |
+| `014-r83-normal-batch01.json` | 12:32:57.876076 / 12:33:33.110627 (35.234551 s) | 53288712 → 53288784 / **3** | 11 / 10 | `date_deadline`, `route_target_changed`, `army_position_changed`, flags **65541** |
+
+The second window directly observed player Unit **218104048** arrive:
+Province **2615 → 2609**, state **moving (7) → regular (1)**, target
+**2609 → null**, and committed route **[2609] → []**. The first window kept
+Province 2615, the target and moving state unchanged. Hostile Unit **134218098**
+remained regular in Province **2606** throughout. Both actual windows had
+three completed daily ticks, zero overshoot, zero intermediate pauses and zero
+external rich queries. Robert remained alive; war **100663329** retained
+player-relative score **0**. Soldier counts were `null` and remain unknown.
+
+The native position marker is **bit index 16, mask 65536 (`1U << 16`)** in
+`tactical_daily_sentinel_v1.hpp:60`; it is not numeric mask 16. The deployed
+source reads current Province at `tactical_daily_sentinel_v1.cpp:178` and
+compares it with the armed witness at line 841. Actual flags **65541** contain
+that mask and publish `army_position_changed`. The arrival and position marker
+occurred **at the three-day deadline**. These observations do not demonstrate
+a two-day early stop or a position change before the deadline. The wire does
+not expose each internal fingerprint; the public before/after Province fields
+provide the independent actual-position observation.
+
+Root's actual `015-r83-save-six-normal-days.json` then saved **H9800**, raw date
+**53288784**, checkpoint **104,745,611 bytes**, SHA-256
+`5e4ed08bd5f09b85d522acc00dec7fcba9303e784d6c7c0627b051af2eb6912e`.
+The saved-normal-day count is **6013 + actual 3 + actual 3 = 6019**; it is
+derived from completed normal `elapsed_days`, not raw date, history or names.
+The SAVE duration was **25.179793 s**. The two windows establish a narrow
+production route-window observe/decide/execute/verify loop and six durable
+normal days, with no battle, war-completion or full-generation claim.
+
+The SDK source was `bf5cc1761d3389907150156c07c41637ce5997bb` at
+`Z:/gbs-r83-native51-sdk-root-source`. Native51 qualified and primary compiled
+source was `0d12fbeaf14641747fd984a068bbd181516346c4`, retaining the Runtime
+archive at `8024d9692d7564a300e96f6e3d76a161a407da79`. This mixed lineage does
+not retag every retained owner to Native51. Its canonical receipt is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix51/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`.
+
+Raw responses remain under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/managed-full-r83-native51restore01/operator/gameplay-responses/`.
+The thin qualification artifact and October 9 / ISO 2026-W41 report fields are
+under `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r83-three-day-route-window-live01/`:
+`ROOT-R83-NATIVE49-THREE-DAY-LIVE-THIN.json` and `OCT9-W41-FIELDS.json`.
+The documentation lane read each of the two newly authorized responses once,
+preserved them, and reused Root's actual SAVE metadata. It performed no new
+query, Driver/save-body read, hash, build, test, SDK or Game operation.
