@@ -1,0 +1,765 @@
+#include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
+#include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/ck3_12003_current_stored_context.hpp"
+
+#include <algorithm>
+#include <cstring>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <sstream>
+#include <utility>
+#if defined(_MSC_VER)
+#include <intrin.h>
+#endif
+
+namespace xar::ck3_12004 {
+namespace {
+
+// Actual2BA95C0 [95C0,95D0): five whole instructions. The saved R11 is
+// the original RSP, and these instructions contain no relative operand.
+constexpr std::array<std::uint8_t, kPersonSixStagePatchBytes12004>
+    kCountPrologue{0x4C, 0x8B, 0xDC, 0x53, 0x48, 0x83, 0xEC, 0x50,
+                   0x49, 0x89, 0x73, 0x18, 0x49, 0x89, 0x7B, 0x20};
+// Actual2438830 [8830,883F): six whole instructions. The CMP flags pass
+// unchanged through the absolute trampoline jump to its later native JE.
+constexpr std::array<std::uint8_t, kPersonSixStageAppendPatchBytes12004>
+    kAppendPrologue{0x40, 0x53, 0x56, 0x57, 0x48, 0x83, 0xEC, 0x30,
+                    0x83, 0x7A, 0x0C, 0x00, 0x49, 0x8B, 0xD8};
+using OwnerKey = std::pair<std::uintptr_t, std::uint32_t>;
+using Record = std::shared_ptr<const PersonSixStageCapture12004DTO>;
+std::map<OwnerKey, Record> g_records;
+std::mutex g_records_mutex;
+std::uint64_t g_latest_sequence = 0;
+PersonSixStageCaptureBindings12004 g_bindings{};
+std::atomic<bool> g_available{false};
+std::atomic<PersonSixStageOriginal12004> g_original{nullptr};
+std::atomic<PersonSixStageAppendOriginal12004> g_append_original{nullptr};
+std::atomic<PersonSixStageCaptureDetourState12004 *> g_active_state{nullptr};
+
+struct PendingStage {
+  bool valid = false;
+  OwnerKey owner{};
+  std::uintptr_t context = 0;
+  std::uint64_t sequence = 0;
+  std::uint32_t index = 0;
+};
+// Both physical call sites belong to the same natural synchronous loop. This
+// joins actual append arguments to its immediately preceding raw-count call.
+thread_local PendingStage g_pending;
+
+template <typename Callback> bool FaultBoundary(Callback callback) noexcept {
+#if defined(_MSC_VER)
+  __try { return callback(); }
+  __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#else
+  return callback();
+#endif
+}
+
+bool CopyNativeSource(void *, const void *source, void *destination,
+                      std::size_t bytes) noexcept {
+  return ck3_12002::current_stored_context_12003::CopyBytes(
+      destination, source, bytes);
+}
+bool BindingReady(const PersonSixStageCaptureBindings12004 &bindings) noexcept {
+  const auto &memory = bindings.memory;
+  return memory.enabled && memory.module_base != 0 &&
+      memory.read_memory != nullptr &&
+      memory.current_context_getter_identity ==
+          memory.module_base + kPersonCarrierContextGetterRva12004;
+}
+bool ReadMemory(std::uintptr_t address, void *output,
+                std::size_t bytes) noexcept {
+  if (address == 0 || g_bindings.memory.read_memory == nullptr) return false;
+  return FaultBoundary([&]() noexcept {
+    return g_bindings.memory.read_memory(
+        g_bindings.memory.read_context,
+        reinterpret_cast<const void *>(address), output, bytes);
+  });
+}
+template <typename T> std::optional<T> Copy(std::uintptr_t address) noexcept {
+  T value{};
+  if (!ReadMemory(address, &value, sizeof(value))) return std::nullopt;
+  return value;
+}
+template <typename T>
+std::optional<std::vector<T>> CopyArray(std::uintptr_t address,
+                                      std::int32_t count) {
+  if (address == 0) return std::nullopt;
+  std::vector<T> values(static_cast<std::size_t>(count));
+  if (!ReadMemory(address, values.data(), values.size() * sizeof(T)))
+    return std::nullopt;
+  return values;
+}
+PersonFollowing2922680Pc CopyPc(std::uintptr_t address,
+                               std::int64_t weight) noexcept {
+  PersonFollowing2922680Pc pc;
+  pc.identity = address;
+  pc.admitted = true;
+  pc.weight_q100000 = weight;
+  try {
+    if (address == 0) {
+      pc.reason = "pc_identity_null";
+      return pc;
+    }
+    pc.count_i32 = Copy<std::int32_t>(address + 0xC);
+    if (!pc.count_i32) {
+      pc.reason = "pc_count_unread";
+      return pc;
+    }
+    const auto count = *pc.count_i32;
+    if (count < 0) {
+      pc.reason = "pc_count_negative";
+      return pc;
+    }
+    pc.properties.emplace();
+    if (count == 0) {
+      pc.properties->keys_u16.emplace();
+      pc.properties->values_q64.emplace();
+      pc.ready = true;
+      return pc;
+    }
+    const auto keys = Copy<std::uintptr_t>(address);
+    const auto values = Copy<std::uintptr_t>(address + 0x68);
+    if (keys) pc.properties->keys_u16 = CopyArray<std::uint16_t>(*keys, count);
+    if (values) pc.properties->values_q64 = CopyArray<std::int64_t>(*values, count);
+    if (!pc.properties->keys_u16 && !pc.properties->values_q64)
+      pc.reason = "pc_keys_and_values_unread";
+    else if (!pc.properties->keys_u16) pc.reason = "pc_keys_unread";
+    else if (!pc.properties->values_q64) pc.reason = "pc_values_unread";
+    else pc.ready = true;
+  } catch (...) {
+    pc.ready = false;
+    pc.reason = "pc_copy_failed";
+  }
+  return pc;
+}
+
+PersonSixStageCapture12004DTO EmptyResult(std::uint32_t full_character_id) {
+  PersonSixStageCapture12004DTO dto;
+  dto.build_version = kGameVersion;
+  dto.executable_sha256 = kExecutableSha256;
+  dto.character_id = full_character_id;
+  for (std::uint32_t i = 0; i < dto.stages.size(); ++i) {
+    auto &stage = dto.stages[i];
+    stage.index = i;
+    stage.first_pc.reason = "native_append_unobserved";
+    stage.second_pc.reason = "native_append_unobserved";
+    stage.first_pc.weight_q100000 = 0;
+    stage.second_pc.weight_q100000 = 0;
+  }
+  return dto;
+}
+void UpdateReadiness(PersonSixStageCapture12004DTO &dto) {
+  dto.raw_counts_ready = std::all_of(dto.stages.begin(), dto.stages.end(),
+      [](const auto &stage) { return stage.observed && stage.raw_count_i32; });
+  dto.ready = dto.capture_complete && dto.raw_counts_ready &&
+      std::all_of(dto.stages.begin(), dto.stages.end(), [](const auto &stage) {
+        return stage.first_pc.ready && stage.second_pc.ready;
+      });
+  if (dto.ready) dto.reason.clear();
+  else if (!dto.capture_complete) dto.reason = "native_six_stage_capture_open";
+  else if (!dto.raw_counts_ready) dto.reason = "native_six_stage_counts_partial";
+  else dto.reason = "native_six_stage_pc_partial";
+}
+bool InitializeRuntime(const PersonSixStageCaptureBindings12004 &bindings,
+                       PersonSixStageOriginal12004 original,
+                       PersonSixStageAppendOriginal12004 append_original) noexcept {
+  if (!BindingReady(bindings) || original == nullptr || append_original == nullptr)
+    return false;
+  g_available.store(false, std::memory_order_release);
+  {
+    const std::lock_guard lock(g_records_mutex);
+    g_bindings = bindings;
+    g_records.clear();
+    g_latest_sequence = 0;
+  }
+  g_pending = {};
+  g_original.store(original, std::memory_order_release);
+  g_append_original.store(append_original, std::memory_order_release);
+  g_available.store(true, std::memory_order_release);
+  return true;
+}
+void WriteAbsoluteJump(std::uint8_t *destination, std::uintptr_t target) noexcept {
+  constexpr std::array<std::uint8_t, 6> prefix{0xFF, 0x25, 0, 0, 0, 0};
+  std::memcpy(destination, prefix.data(), prefix.size());
+  std::memcpy(destination + prefix.size(), &target, sizeof(target));
+}
+bool DefaultFree(void *, void *address, std::size_t size, DWORD type) noexcept {
+  return VirtualFree(address, size, type) != FALSE;
+}
+void *DefaultAlloc(void *, std::size_t size, DWORD type, DWORD protection) noexcept {
+  return VirtualAlloc(nullptr, size, type, protection);
+}
+bool DefaultProtect(void *, void *address, std::size_t size, DWORD protection,
+                    DWORD &old) noexcept {
+  return VirtualProtect(address, size, protection, &old) != FALSE;
+}
+bool DefaultFlush(void *, const void *address, std::size_t size) noexcept {
+  return FlushInstructionCache(GetCurrentProcess(), address, size) != FALSE;
+}
+void Fail(PersonSixStageCaptureDetourState12004 &state,
+          ActualLossWriterJournalInstallFailureV1 flag) noexcept {
+  state.failure_flags.fetch_or(flag, std::memory_order_acq_rel);
+}
+template <std::size_t N>
+std::array<std::uint8_t, N> HookPatch(std::uintptr_t hook) noexcept {
+  std::array<std::uint8_t, N> patch{};
+  patch.fill(0x90);
+  WriteAbsoluteJump(patch.data(), hook);
+  return patch;
+}
+auto CountPatch() noexcept {
+  return HookPatch<kPersonSixStagePatchBytes12004>(
+      reinterpret_cast<std::uintptr_t>(&XarPersonSixStageHook12004V1));
+}
+auto AppendPatch() noexcept {
+  return HookPatch<kPersonSixStageAppendPatchBytes12004>(
+      reinterpret_cast<std::uintptr_t>(&XarPersonSixStageAppendHook12004V1));
+}
+template <std::size_t N>
+bool WritePatch(PersonSixStageCaptureDetourState12004 &state,
+    std::uintptr_t target_identity,
+    const std::array<std::uint8_t, N> &expected,
+    const std::array<std::uint8_t, N> &desired) noexcept {
+  auto *target = reinterpret_cast<void *>(target_identity);
+  if (!FaultBoundary([&]() noexcept {
+        return std::memcmp(target, expected.data(), expected.size()) == 0;
+      })) {
+    Fail(state, actual_loss_install_anchor);
+    return false;
+  }
+  DWORD old = 0;
+  if (!state.virtual_protect(state.memory_context, target, desired.size(),
+                             PAGE_EXECUTE_READWRITE, old)) {
+    Fail(state, actual_loss_install_protection);
+    return false;
+  }
+  std::memcpy(target, desired.data(), desired.size());
+  const bool flushed = state.flush_instruction_cache(
+      state.memory_context, target, desired.size());
+  DWORD ignored = 0;
+  const bool restored = state.virtual_protect(state.memory_context, target,
+                                              desired.size(), old, ignored);
+  if (flushed && restored) return true;
+  Fail(state, flushed ? actual_loss_install_protection : actual_loss_install_flush);
+  DWORD rollback_old = 0;
+  const bool writable = state.virtual_protect(state.memory_context, target,
+      expected.size(), PAGE_EXECUTE_READWRITE, rollback_old);
+  if (writable) std::memcpy(target, expected.data(), expected.size());
+  const bool rollback_flushed = writable && state.flush_instruction_cache(
+      state.memory_context, target, expected.size());
+  const bool rollback_restored = writable && state.virtual_protect(
+      state.memory_context, target, expected.size(), old, ignored);
+  if (!rollback_flushed || !rollback_restored)
+    Fail(state, actual_loss_install_rollback);
+  return false;
+}
+template <std::size_t N>
+void *MakeTrampoline(PersonSixStageCaptureDetourState12004 &state,
+    ActualLossWriterVirtualAllocV1 allocate, std::uintptr_t target,
+    const std::array<std::uint8_t, N> &prologue) noexcept {
+  constexpr auto bytes_count = N + kActualLossWriterAbsoluteJumpBytes12004;
+  auto *result = allocate(state.memory_context, bytes_count,
+                           MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+  if (result == nullptr) {
+    Fail(state, actual_loss_install_allocation);
+    return nullptr;
+  }
+  auto *bytes = static_cast<std::uint8_t *>(result);
+  std::memcpy(bytes, prologue.data(), N);
+  WriteAbsoluteJump(bytes + N, target + N);
+  DWORD old = 0;
+  const bool executable = state.virtual_protect(state.memory_context, result,
+      bytes_count, PAGE_EXECUTE_READ, old);
+  const bool flushed = executable && state.flush_instruction_cache(
+      state.memory_context, result, bytes_count);
+  if (executable && flushed) return result;
+  Fail(state, executable ? actual_loss_install_flush : actual_loss_install_protection);
+  (void)state.virtual_free(state.memory_context, result, 0, MEM_RELEASE);
+  return nullptr;
+}
+
+void String(std::ostream &out, std::string_view value) {
+  constexpr char hex[] = "0123456789abcdef";
+  out << '"';
+  for (const unsigned char c : value) {
+    if (c == '"' || c == '\\') out << '\\' << static_cast<char>(c);
+    else if (c < 0x20) out << "\\u00" << hex[c >> 4] << hex[c & 0xF];
+    else out << static_cast<char>(c);
+  }
+  out << '"';
+}
+void Reason(std::ostream &out, std::string_view value) {
+  if (value.empty()) out << "null";
+  else String(out, value);
+}
+template <typename T>
+void Number(std::ostream &out, const std::optional<T> &value) {
+  if (value) out << +*value;
+  else out << "null";
+}
+void Pointer(std::ostream &out, const std::optional<std::uintptr_t> &value) {
+  if (!value) { out << "null"; return; }
+  out << "\"0x" << std::hex << *value << std::dec << '"';
+}
+void Boolean(std::ostream &out, const std::optional<bool> &value) {
+  if (value) out << (*value ? "true" : "false");
+  else out << "null";
+}
+template <typename T>
+void Array(std::ostream &out, const std::optional<std::vector<T>> &values,
+           bool decimal_strings) {
+  if (!values) { out << "null"; return; }
+  out << '[';
+  bool first = true;
+  for (const auto value : *values) {
+    if (!first) out << ',';
+    first = false;
+    if (decimal_strings) out << '"';
+    out << +value;
+    if (decimal_strings) out << '"';
+  }
+  out << ']';
+}
+void Pc(std::ostream &out, const PersonFollowing2922680Pc &pc, bool observed) {
+  out << "{\"ready\":" << (pc.ready ? "true" : "false") << ",\"reason\":";
+  Reason(out, pc.reason);
+  out << ",\"admitted\":"; Boolean(out, pc.admitted);
+  out << ",\"identity\":"; Pointer(out, pc.identity);
+  out << ",\"count_i32\":"; Number(out, pc.count_i32);
+  out << ",\"properties\":";
+  if (!pc.properties) out << "null";
+  else {
+    out << "{\"keys_u16\":"; Array(out, pc.properties->keys_u16, false);
+    out << ",\"values_q64\":"; Array(out, pc.properties->values_q64, true);
+    out << '}';
+  }
+  out << ",\"weight_q100000\":";
+  if (observed) out << pc.weight_q100000;
+  else out << "null";
+  out << '}';
+}
+
+} // namespace
+
+PersonSixStageCaptureBindings12004 BindPersonSixStageCaptureImage12004(
+    std::uintptr_t image_base, std::string_view executable_sha256) noexcept {
+  PersonSixStageCaptureBindings12004 bindings;
+  bindings.memory = BindPersonCarrierDirect12004(
+      image_base, kGameVersion, executable_sha256, &CopyNativeSource);
+  if (bindings.memory.enabled)
+    bindings.game_state_slot = reinterpret_cast<void **>(
+        image_base + kGameStateSlotRva);
+  return bindings;
+}
+bool InitializePersonSixStageCaptureFixture12004(
+    const PersonSixStageCaptureBindings12004 &bindings,
+    PersonSixStageOriginal12004 original,
+    PersonSixStageAppendOriginal12004 append_original) noexcept {
+  if (g_active_state.load(std::memory_order_acquire) != nullptr) return false;
+  return InitializeRuntime(bindings, original, append_original);
+}
+
+void ObservePersonSixStageCapture12004(
+    std::uintptr_t character, std::uintptr_t context, std::uint32_t index,
+    std::uintptr_t raw_return_bits,
+    std::uintptr_t caller_return_address) noexcept {
+  if (!g_available.load(std::memory_order_acquire) ||
+      caller_return_address !=
+          g_bindings.memory.module_base + kPersonSixStageReturnRva12004 ||
+      character == 0 || context == 0 || index >= kPersonSixStageCount12004)
+    return;
+  try {
+    const auto full_id = Copy<std::uint32_t>(character + kCharacterFullIdOffset);
+    if (!full_id) return;
+    const OwnerKey owner{character, *full_id};
+    const auto low_bits = static_cast<std::uint32_t>(raw_return_bits);
+    std::int32_t raw = 0;
+    std::memcpy(&raw, &low_bits, sizeof(raw));
+    const auto game_state = Copy<std::uintptr_t>(
+        reinterpret_cast<std::uintptr_t>(g_bindings.game_state_slot));
+    const auto date = game_state && *game_state != 0
+        ? Copy<std::int32_t>(*game_state + kGameStateDateOffset) : std::nullopt;
+
+    const std::lock_guard lock(g_records_mutex);
+    const auto found = g_records.find(owner);
+    const bool fresh = index == 0 || found == g_records.end() ||
+        found->second->context_identity != context ||
+        found->second->capture_complete;
+    auto dto = fresh ? EmptyResult(*full_id) : *found->second;
+    if (fresh) {
+      dto.configured = true;
+      dto.capture_observed = true;
+      dto.capture_sequence = ++g_latest_sequence;
+      dto.capture_date_raw = date;
+      dto.capture_thread_id = GetCurrentThreadId();
+      dto.character_identity = character;
+      dto.context_identity = context;
+      dto.source_return_rva = kPersonSixStageReturnRva12004;
+    }
+    auto &stage = dto.stages[index];
+    stage.observed = true;
+    stage.raw_count_i32 = raw;
+    UpdateReadiness(dto);
+    const auto sequence = dto.capture_sequence;
+    auto record = std::make_shared<const PersonSixStageCapture12004DTO>(std::move(dto));
+    g_records.insert_or_assign(owner, std::move(record));
+    g_pending = PendingStage{true, owner, context, sequence, index};
+  } catch (...) {
+    // Capture is auxiliary; it cannot replace or prevent the native callback.
+  }
+}
+
+void ObservePersonSixStageAppend12004(
+    std::uintptr_t context, std::uintptr_t source_pc,
+    std::int64_t weight_q100000,
+    std::uintptr_t caller_return_address) noexcept {
+  if (!g_available.load(std::memory_order_acquire) || !g_pending.valid ||
+      context != g_pending.context) return;
+  const auto base = g_bindings.memory.module_base;
+  const bool first = caller_return_address ==
+      base + kPersonSixStageFirstAppendReturnRva12004;
+  const bool second = caller_return_address ==
+      base + kPersonSixStageSecondAppendReturnRva12004;
+  if (!first && !second) return;
+  try {
+    auto pc = CopyPc(source_pc, weight_q100000);
+    const std::lock_guard lock(g_records_mutex);
+    const auto found = g_records.find(g_pending.owner);
+    if (found == g_records.end() ||
+        found->second->capture_sequence != g_pending.sequence ||
+        found->second->context_identity != context ||
+        found->second->capture_complete) return;
+    auto dto = *found->second;
+    auto &stage = dto.stages[g_pending.index];
+    if (first) {
+      stage.first_append_observed = true;
+      stage.first_pc = std::move(pc);
+    } else {
+      stage.second_append_observed = true;
+      stage.second_pc = std::move(pc);
+    }
+    UpdateReadiness(dto);
+    g_records.insert_or_assign(g_pending.owner,
+        std::make_shared<const PersonSixStageCapture12004DTO>(std::move(dto)));
+  } catch (...) {
+    // The original append still runs exactly once with its untouched arguments.
+  }
+}
+
+void CompletePersonSixStageCapture12004(
+    std::uintptr_t actual_character, std::uint32_t full_character_id,
+    std::uintptr_t actual_context) noexcept {
+  if (!g_available.load(std::memory_order_acquire)) return;
+  try {
+    const OwnerKey owner{actual_character, full_character_id};
+    const auto query_thread = GetCurrentThreadId();
+    const std::lock_guard lock(g_records_mutex);
+    const auto found = g_records.find(owner);
+    if (found == g_records.end() ||
+        found->second->capture_thread_id != query_thread ||
+        !found->second->raw_counts_ready ||
+        (actual_context != 0 &&
+         found->second->context_identity != actual_context)) return;
+    auto dto = *found->second;
+    dto.capture_complete = true;
+    dto.query_thread_id = query_thread;
+    for (auto &stage : dto.stages) {
+      if (!stage.observed) continue;
+      // Only the paused query after this thread's finished natural native loop
+      // turns an absent physical append into a known native gate skip.
+      if (!stage.first_append_observed) {
+        stage.first_pc.ready = true;
+        stage.first_pc.admitted = false;
+        stage.first_pc.reason.clear();
+      }
+      if (!stage.second_append_observed) {
+        stage.second_pc.ready = true;
+        stage.second_pc.admitted = false;
+        stage.second_pc.reason.clear();
+      }
+    }
+    UpdateReadiness(dto);
+    g_records.insert_or_assign(owner,
+        std::make_shared<const PersonSixStageCapture12004DTO>(std::move(dto)));
+    if (g_pending.valid && g_pending.owner == owner) g_pending = {};
+  } catch (...) {
+    // A failed owned copy leaves the prior capture open and explicitly partial.
+  }
+}
+
+PersonSixStageCapture12004DTO ReadPersonSixStageCaptureForCharacter12004(
+    std::uintptr_t actual_character, std::uint32_t full_character_id) noexcept {
+  try {
+    auto dto = EmptyResult(full_character_id);
+    dto.configured = g_available.load(std::memory_order_acquire);
+    if (!dto.configured) {
+      dto.reason = "capture_not_configured";
+      return dto;
+    }
+    const std::lock_guard lock(g_records_mutex);
+    const auto found = g_records.find(OwnerKey{actual_character, full_character_id});
+    if (found == g_records.end()) {
+      dto.reason = "native_six_stage_unobserved";
+      return dto;
+    }
+    return *found->second;
+  } catch (...) {
+    PersonSixStageCapture12004DTO dto;
+    dto.configured = g_available.load(std::memory_order_acquire);
+    dto.character_id = full_character_id;
+    dto.reason = "owned_capture_copy_failed";
+    return dto;
+  }
+}
+
+bool InstallPersonSixStageCapture12004(
+    PersonSixStageCaptureDetourState12004 &state,
+    const PersonSixStageCaptureInstallEnvironment12004 &environment,
+    std::string_view executable_sha256) noexcept {
+  state.failure_flags.store(actual_loss_install_none, std::memory_order_relaxed);
+  if (executable_sha256 != kExecutableSha256 || !BindingReady(environment.bindings)) {
+    Fail(state, actual_loss_install_exact_build);
+    return false;
+  }
+  if (!environment.primary_thread_suspended_proven) {
+    Fail(state, actual_loss_install_quiescence);
+    return false;
+  }
+  if (state.installed.load(std::memory_order_acquire) != 0) return true;
+  PersonSixStageCaptureDetourState12004 *expected = nullptr;
+  if (!g_active_state.compare_exchange_strong(expected, &state,
+                                               std::memory_order_acq_rel)) {
+    Fail(state, actual_loss_install_already_installed);
+    return false;
+  }
+  state.count_target = environment.count_target_override != 0
+      ? environment.count_target_override
+      : environment.bindings.memory.module_base + kPersonSixStageCountRva12004;
+  state.append_target = environment.append_target_override != 0
+      ? environment.append_target_override
+      : environment.bindings.memory.module_base + kPersonSixStageAppendRva12004;
+  state.memory_context = environment.memory_context;
+  state.virtual_free = environment.virtual_free_override != nullptr
+      ? environment.virtual_free_override : &DefaultFree;
+  state.virtual_protect = environment.virtual_protect_override != nullptr
+      ? environment.virtual_protect_override : &DefaultProtect;
+  state.flush_instruction_cache = environment.flush_instruction_cache_override != nullptr
+      ? environment.flush_instruction_cache_override : &DefaultFlush;
+  if (!FaultBoundary([&]() noexcept {
+        return std::memcmp(reinterpret_cast<const void *>(state.count_target),
+                   kCountPrologue.data(), kCountPrologue.size()) == 0 &&
+            std::memcmp(reinterpret_cast<const void *>(state.append_target),
+                   kAppendPrologue.data(), kAppendPrologue.size()) == 0;
+      })) {
+    Fail(state, actual_loss_install_anchor);
+    g_active_state.store(nullptr, std::memory_order_release);
+    return false;
+  }
+  const auto allocate = environment.virtual_alloc_override != nullptr
+      ? environment.virtual_alloc_override : &DefaultAlloc;
+  state.count_trampoline = MakeTrampoline(state, allocate, state.count_target,
+                                         kCountPrologue);
+  state.append_trampoline = state.count_trampoline == nullptr ? nullptr
+      : MakeTrampoline(state, allocate, state.append_target, kAppendPrologue);
+  const bool initialized = state.count_trampoline != nullptr &&
+      state.append_trampoline != nullptr && InitializeRuntime(environment.bindings,
+          reinterpret_cast<PersonSixStageOriginal12004>(state.count_trampoline),
+          reinterpret_cast<PersonSixStageAppendOriginal12004>(state.append_trampoline));
+  const bool count_patched = initialized && WritePatch(state, state.count_target,
+                                                       kCountPrologue, CountPatch());
+  const bool append_patched = count_patched && WritePatch(state, state.append_target,
+                                                       kAppendPrologue, AppendPatch());
+  if (!append_patched) {
+    if (count_patched)
+      (void)WritePatch(state, state.count_target, CountPatch(), kCountPrologue);
+    g_available.store(false, std::memory_order_release);
+    g_original.store(nullptr, std::memory_order_release);
+    g_append_original.store(nullptr, std::memory_order_release);
+    if (state.count_trampoline != nullptr)
+      (void)state.virtual_free(state.memory_context, state.count_trampoline, 0, MEM_RELEASE);
+    if (state.append_trampoline != nullptr)
+      (void)state.virtual_free(state.memory_context, state.append_trampoline, 0, MEM_RELEASE);
+    state.count_trampoline = nullptr;
+    state.append_trampoline = nullptr;
+    g_active_state.store(nullptr, std::memory_order_release);
+    return false;
+  }
+  state.original = kCountPrologue;
+  state.append_original = kAppendPrologue;
+  state.installed.store(1, std::memory_order_release);
+  return true;
+}
+
+bool UninstallPersonSixStageCapture12004(
+    PersonSixStageCaptureDetourState12004 &state,
+    bool primary_thread_suspended_proven) noexcept {
+  if (state.installed.load(std::memory_order_acquire) == 0) return true;
+  if (!primary_thread_suspended_proven) {
+    Fail(state, actual_loss_install_quiescence);
+    return false;
+  }
+  if (!WritePatch(state, state.append_target, AppendPatch(), state.append_original))
+    return false;
+  if (!WritePatch(state, state.count_target, CountPatch(), state.original)) {
+    (void)WritePatch(state, state.append_target, state.append_original, AppendPatch());
+    return false;
+  }
+  state.installed.store(0, std::memory_order_release);
+  g_available.store(false, std::memory_order_release);
+  g_original.store(nullptr, std::memory_order_release);
+  g_append_original.store(nullptr, std::memory_order_release);
+  g_active_state.store(nullptr, std::memory_order_release);
+  const bool count_freed = state.virtual_free(state.memory_context,
+      state.count_trampoline, 0, MEM_RELEASE);
+  const bool append_freed = state.virtual_free(state.memory_context,
+      state.append_trampoline, 0, MEM_RELEASE);
+  if (count_freed) state.count_trampoline = nullptr;
+  if (append_freed) state.append_trampoline = nullptr;
+  if (!count_freed || !append_freed) Fail(state, actual_loss_install_allocation);
+  return count_freed && append_freed;
+}
+
+std::string SerializePersonSixStageCapture12004(
+    const PersonSixStageCapture12004DTO &dto) {
+  std::ostringstream out;
+  out << "{\"schema\":"; String(out, kPersonSixStageCaptureSchema12004);
+  out << ",\"build_version\":"; String(out, dto.build_version);
+  out << ",\"executable_sha256\":"; String(out, dto.executable_sha256);
+  out << ",\"configured\":" << (dto.configured ? "true" : "false");
+  out << ",\"capture_observed\":" << (dto.capture_observed ? "true" : "false");
+  out << ",\"capture_complete\":" << (dto.capture_complete ? "true" : "false");
+  out << ",\"ready\":" << (dto.ready ? "true" : "false");
+  out << ",\"raw_counts_ready\":" << (dto.raw_counts_ready ? "true" : "false");
+  out << ",\"reason\":"; Reason(out, dto.reason);
+  out << ",\"capture_sequence\":" << dto.capture_sequence;
+  out << ",\"capture_date_raw\":"; Number(out, dto.capture_date_raw);
+  out << ",\"capture_thread_id\":"; Number(out, dto.capture_thread_id);
+  out << ",\"query_thread_id\":"; Number(out, dto.query_thread_id);
+  out << ",\"character_id\":"; Number(out, dto.character_id);
+  out << ",\"character_identity\":"; Pointer(out, dto.character_identity);
+  out << ",\"context_identity\":"; Pointer(out, dto.context_identity);
+  out << ",\"source_return_rva\":"; Pointer(out, dto.source_return_rva);
+  out << ",\"stages\":[";
+  bool first = true;
+  for (const auto &stage : dto.stages) {
+    if (!first) out << ',';
+    first = false;
+    out << "{\"index\":" << stage.index;
+    out << ",\"observed\":" << (stage.observed ? "true" : "false");
+    out << ",\"raw_count_i32\":"; Number(out, stage.raw_count_i32);
+    out << ",\"first_append_observed\":"
+        << (stage.first_append_observed ? "true" : "false");
+    out << ",\"second_append_observed\":"
+        << (stage.second_append_observed ? "true" : "false");
+    out << ",\"first_pc\":"; Pc(out, stage.first_pc, stage.first_append_observed);
+    out << ",\"second_pc\":"; Pc(out, stage.second_pc, stage.second_append_observed);
+    out << '}';
+  }
+  out << "]";
+  out << ",\"actual_model_write_performed\":"
+      << (dto.actual_model_write_performed ? "true" : "false");
+  out << ",\"full_helper_ready\":" << (dto.full_helper_ready ? "true" : "false");
+  out << ",\"source_stage\":\"ordered_six_attribute_native_calls\"";
+  out << ",\"historical_capture\":" << (dto.historical_capture ? "true" : "false") << '}';
+  return out.str();
+}
+
+PersonSixStageQuery12004DTO CollectPersonSixStageQuery12004(
+    void **character_storage_slot, std::span<const std::int32_t> requested_ids,
+    std::uint64_t snapshot_revision, std::int64_t observed_date_raw) noexcept {
+  PersonSixStageQuery12004DTO dto;
+  dto.snapshot_revision = snapshot_revision;
+  dto.observed_date_raw = observed_date_raw;
+  try {
+    dto.character_captures.reserve(requested_ids.size());
+    const auto storage = Copy<std::uintptr_t>(
+        reinterpret_cast<std::uintptr_t>(character_storage_slot));
+    const auto rows = storage && *storage != 0
+        ? Copy<std::uintptr_t>(*storage + 0x20) : std::nullopt;
+    const auto capacity = storage && *storage != 0
+        ? Copy<std::uint32_t>(*storage + 0x2C) : std::nullopt;
+    for (const auto requested_id : requested_ids) {
+      const auto full_id = static_cast<std::uint32_t>(requested_id);
+      const auto index = full_id & 0x00FFFFFFU;
+      std::optional<std::uintptr_t> character;
+      if (rows && *rows != 0 && capacity && index < *capacity) {
+        const auto candidate = Copy<std::uintptr_t>(
+            *rows + static_cast<std::uintptr_t>(index) * 16 + 8);
+        if (candidate && *candidate != 0) {
+          const auto actual_id = Copy<std::uint32_t>(
+              *candidate + kCharacterFullIdOffset);
+          if (actual_id && *actual_id == full_id) character = *candidate;
+        }
+      }
+      if (character) {
+        CompletePersonSixStageCapture12004(*character, full_id, 0);
+        dto.character_captures.push_back(
+            ReadPersonSixStageCaptureForCharacter12004(*character, full_id));
+      } else {
+        auto empty = EmptyResult(full_id);
+        empty.configured = g_available.load(std::memory_order_acquire);
+        empty.reason = empty.configured ? "character_resolution_unavailable"
+                                        : "capture_not_configured";
+        dto.character_captures.push_back(std::move(empty));
+      }
+    }
+  } catch (...) {
+    // The owned query can remain partial without replaying native work or
+    // borrowing another generation's capture to fill a failed resolution.
+  }
+  return dto;
+}
+
+std::string SerializePersonSixStageQuery12004(
+    const PersonSixStageQuery12004DTO &dto) {
+  std::ostringstream out;
+  out << "{\"schema\":"; String(out, kPersonSixStageQuerySchema12004);
+  out << ",\"snapshot_revision\":" << dto.snapshot_revision;
+  out << ",\"observed_date_raw\":" << dto.observed_date_raw;
+  out << ",\"character_captures\":[";
+  bool first = true;
+  for (const auto &capture : dto.character_captures) {
+    if (!first) out << ',';
+    first = false;
+    out << SerializePersonSixStageCapture12004(capture);
+  }
+  out << "]}";
+  return out.str();
+}
+
+extern "C" __declspec(noinline) std::uintptr_t __fastcall
+XarPersonSixStageHook12004V1(void *character, void *context,
+                            std::uint32_t index) noexcept {
+  const auto original = g_original.load(std::memory_order_acquire);
+  if (original == nullptr) return 0;
+#if defined(_MSC_VER)
+  const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+#else
+  const auto caller = reinterpret_cast<std::uintptr_t>(__builtin_return_address(0));
+#endif
+  // Native result is obtained exactly once. Its complete RAX representation is
+  // returned untouched; only its low EAX bits are copied as the signed count.
+  const auto result = original(character, context, index);
+  ObservePersonSixStageCapture12004(reinterpret_cast<std::uintptr_t>(character),
+      reinterpret_cast<std::uintptr_t>(context), index, result, caller);
+  return result;
+}
+extern "C" __declspec(noinline) std::uintptr_t __fastcall
+XarPersonSixStageAppendHook12004V1(void *context, void *source_pc,
+                                  std::int64_t weight_q100000) noexcept {
+  const auto original = g_append_original.load(std::memory_order_acquire);
+  if (original == nullptr) return 0;
+#if defined(_MSC_VER)
+  const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+#else
+  const auto caller = reinterpret_cast<std::uintptr_t>(__builtin_return_address(0));
+#endif
+  ObservePersonSixStageAppend12004(reinterpret_cast<std::uintptr_t>(context),
+      reinterpret_cast<std::uintptr_t>(source_pc), weight_q100000, caller);
+  return original(context, source_pc, weight_q100000);
+}
+
+} // namespace xar::ck3_12004

@@ -15115,6 +15115,11 @@ class NativeHeadlessGameplayDriver:
         expected_revision: int | None,
     ) -> dict[str, object]:
         """Read one journal-backed terminal event and its current successor."""
+        from .battle_person_six_stage_capture_12004 import (
+            QUERY_FIELD_NAME as six_stage_field,
+            normalize_person_six_stage_query_12004,
+        )
+
         request = parse_query_battle_terminal_transition_v1_step(step)
         if request is None:
             raise UnsupportedStepError(
@@ -15155,17 +15160,18 @@ class NativeHeadlessGameplayDriver:
             ),
             include_native_command_history=False,
         )
+        required_result_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "battle_terminal_transition",
+            "backend_id",
+        }
         if (
-            set(result)
-            != {
-                "step",
-                "accepted",
-                "status",
-                "query_sequence",
-                "snapshot_revision",
-                "battle_terminal_transition",
-                "backend_id",
-            }
+            not required_result_keys <= set(result)
+            or set(result) - required_result_keys - {six_stage_field}
             or result.get("step") != step
             or result.get("accepted") is not True
             or result.get("snapshot_revision") != native_revision
@@ -15192,6 +15198,15 @@ class NativeHeadlessGameplayDriver:
                 expected_observed_date_raw=date_raw,
                 expected_snapshot_revision=native_revision,
                 expected_character_ids=character_ids,
+            )
+            six_stage_result = (
+                {six_stage_field: normalize_person_six_stage_query_12004(
+                    result[six_stage_field],
+                    expected_snapshot_revision=native_revision,
+                    expected_observed_date_raw=date_raw,
+                    expected_character_ids=character_ids,
+                )}
+                if six_stage_field in result else {}
             )
         except ValueError as error:
             raise BridgeUnavailableError(
@@ -15230,6 +15245,7 @@ class NativeHeadlessGameplayDriver:
             **result,
             "status": normalized["status"],
             "battle_terminal_transition": normalized,
+            **six_stage_result,
             "query_sequence": query_sequence,
             **{
                 key: copy.deepcopy(normalized[key])

@@ -94,6 +94,7 @@
 #include "xar_bridge/ck3_12004_battle_journal.hpp"
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
 #include "xar_bridge/ck3_12004_person_title_tail_capture.hpp"
+#include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12004_routes.hpp"
@@ -618,6 +619,8 @@ static xar::ck3_12004::ActualLossWriterJournalDetourStateV1
     g_actual_loss_writer_journal_12004_v1{};
 static xar::ck3_12004::PersonTitleTailCaptureDetourState12004
     g_person_title_tail_capture_12004{};
+static xar::ck3_12004::PersonSixStageCaptureDetourState12004
+    g_person_six_stage_capture_12004{};
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 static xar::ck3_11906::AiReentryDispatchStateV1
     g_ai_terminal_reentry_dispatch_v1{};
@@ -7325,6 +7328,16 @@ std::string BattleTerminalTransitionResultFrame(
     const xar::game::BattleTerminalTransitionSnapshotV1 &snapshot) {
   return xar::ck3_11906::SerializeBattleTerminalTransitionCommandResultV1(
       request_id, step, query_sequence, snapshot);
+}
+
+std::string BattleTerminalTransitionWithPersonSixStagesResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::BattleTerminalTransitionSnapshotV1 &snapshot,
+    const xar::ck3_12004::PersonSixStageQuery12004DTO &captures) {
+  return xar::ck3_11906::
+      SerializeBattleTerminalTransitionCommandResultWithPersonSixStagesV1(
+          request_id, step, query_sequence, snapshot, captures);
 }
 
 std::string BattleReinforcementAssignmentResultFrame(
@@ -27243,10 +27256,15 @@ void RunConnectedSession(
                       completion_snapshot == current_snapshot &&
                       completion_snapshot == previous_snapshot.value()) {
                     completion_snapshot_stable = true;
-                    response = BattleTerminalTransitionResultFrame(
-                        request_id, step,
-                        battle_terminal_transition_query_sequence + 1,
-                        query.result);
+                    response = query.person_six_stage_captures
+                        ? BattleTerminalTransitionWithPersonSixStagesResultFrame(
+                            request_id, step,
+                            battle_terminal_transition_query_sequence + 1,
+                            query.result, *query.person_six_stage_captures)
+                        : BattleTerminalTransitionResultFrame(
+                            request_id, step,
+                            battle_terminal_transition_query_sequence + 1,
+                            query.result);
                     if (!response.empty()) {
                       ++battle_terminal_transition_query_sequence;
                     }
@@ -28287,6 +28305,15 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     title_tail_environment.primary_thread_suspended_proven = true;
     if (!xar::ck3_12004::InstallPersonTitleTailCapture12004(
             g_person_title_tail_capture_12004, title_tail_environment, sha))
+      return FALSE;
+    xar::ck3_12004::PersonSixStageCaptureInstallEnvironment12004
+        six_stage_environment{};
+    six_stage_environment.bindings =
+        xar::ck3_12004::BindPersonSixStageCaptureImage12004(base, sha);
+    six_stage_environment.bindings.game_state_slot = bindings.game_state_slot;
+    six_stage_environment.primary_thread_suspended_proven = true;
+    if (!xar::ck3_12004::InstallPersonSixStageCapture12004(
+            g_person_six_stage_capture_12004, six_stage_environment, sha))
       return FALSE;
     auto environment = xar::ck3_12004::BindBattleJournalImage12004(base, sha, bindings);
     environment.primary_thread_suspended_proven = true;

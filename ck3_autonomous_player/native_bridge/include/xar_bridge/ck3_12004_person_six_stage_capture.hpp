@@ -1,0 +1,144 @@
+#pragma once
+#include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
+#include "xar_bridge/ck3_12004_person_following_2922680.hpp"
+#include <array>
+#include <atomic>
+#include <span>
+#include <string>
+
+namespace xar::ck3_12004 {
+inline constexpr std::uintptr_t kPersonSixStageCountRva12004 = 0x2BA95C0;
+inline constexpr std::uintptr_t kPersonSixStageReturnRva12004 = 0x291CEA9;
+inline constexpr std::uintptr_t kPersonSixStageAppendRva12004 = 0x2438830;
+inline constexpr std::uintptr_t kPersonSixStageFirstAppendReturnRva12004 = 0x291CEC9;
+inline constexpr std::uintptr_t kPersonSixStageSecondAppendReturnRva12004 = 0x291CEFB;
+inline constexpr std::size_t kPersonSixStagePatchBytes12004 = 16;
+// The append anchor is supplied from the held whole-instruction prologue.
+inline constexpr std::size_t kPersonSixStageAppendPatchBytes12004 = 15;
+inline constexpr std::size_t kPersonSixStageCount12004 = 6;
+inline constexpr char kPersonSixStageCaptureSchema12004[] =
+    "xar.ck3.person-native-six-stage-capture-12004-v1";
+inline constexpr char kPersonSixStageQuerySchema12004[] =
+    "xar.ck3.person-native-six-stage-query-12004-v1";
+using PersonSixStageOriginal12004 =
+    std::uintptr_t(__fastcall *)(void *, void *, std::uint32_t);
+using PersonSixStageAppendOriginal12004 =
+    std::uintptr_t(__fastcall *)(void *, void *, std::int64_t);
+
+struct PersonSixStageCaptureBindings12004 {
+  PersonCarrierDirect12004Bindings memory{};
+  void **game_state_slot = nullptr;
+};
+struct PersonSixStageCaptureStage12004 {
+  std::uint32_t index = 0;
+  bool observed = false;
+  std::optional<std::int32_t> raw_count_i32;
+  bool first_append_observed = false;
+  bool second_append_observed = false;
+  PersonFollowing2922680Pc first_pc;
+  PersonFollowing2922680Pc second_pc;
+  friend bool operator==(const PersonSixStageCaptureStage12004 &,
+                         const PersonSixStageCaptureStage12004 &) = default;
+};
+struct PersonSixStageCapture12004DTO {
+  std::string build_version;
+  std::string executable_sha256;
+  bool configured = false;
+  bool capture_observed = false;
+  bool capture_complete = false;
+  bool ready = false;
+  bool raw_counts_ready = false;
+  std::string reason;
+  std::uint64_t capture_sequence = 0;
+  std::optional<std::int32_t> capture_date_raw;
+  std::optional<std::uint32_t> capture_thread_id;
+  std::optional<std::uint32_t> query_thread_id;
+  std::optional<std::uint32_t> character_id;
+  std::optional<std::uintptr_t> character_identity;
+  std::optional<std::uintptr_t> context_identity;
+  std::optional<std::uintptr_t> source_return_rva;
+  std::array<PersonSixStageCaptureStage12004, kPersonSixStageCount12004> stages{};
+  bool actual_model_write_performed = false;
+  bool full_helper_ready = false;
+  bool historical_capture = true;
+  friend bool operator==(const PersonSixStageCapture12004DTO &,
+                         const PersonSixStageCapture12004DTO &) = default;
+};
+struct PersonSixStageQuery12004DTO {
+  std::uint64_t snapshot_revision = 0;
+  std::int64_t observed_date_raw = 0;
+  std::vector<PersonSixStageCapture12004DTO> character_captures;
+  friend bool operator==(const PersonSixStageQuery12004DTO &,
+                         const PersonSixStageQuery12004DTO &) = default;
+};
+struct PersonSixStageCaptureInstallEnvironment12004 {
+  bool primary_thread_suspended_proven = false;
+  PersonSixStageCaptureBindings12004 bindings{};
+  std::uintptr_t count_target_override = 0;
+  std::uintptr_t append_target_override = 0;
+  void *memory_context = nullptr;
+  ActualLossWriterVirtualAllocV1 virtual_alloc_override = nullptr;
+  ActualLossWriterVirtualFreeV1 virtual_free_override = nullptr;
+  ActualLossWriterVirtualProtectV1 virtual_protect_override = nullptr;
+  ActualLossWriterFlushV1 flush_instruction_cache_override = nullptr;
+};
+struct PersonSixStageCaptureDetourState12004 {
+  std::atomic<std::uint32_t> installed{0};
+  std::atomic<std::uint32_t> failure_flags{0};
+  std::uintptr_t count_target = 0;
+  std::uintptr_t append_target = 0;
+  void *count_trampoline = nullptr;
+  void *append_trampoline = nullptr;
+  std::array<std::uint8_t, kPersonSixStagePatchBytes12004> original{};
+  std::array<std::uint8_t, kPersonSixStageAppendPatchBytes12004> append_original{};
+  void *memory_context = nullptr;
+  ActualLossWriterVirtualFreeV1 virtual_free = nullptr;
+  ActualLossWriterVirtualProtectV1 virtual_protect = nullptr;
+  ActualLossWriterFlushV1 flush_instruction_cache = nullptr;
+};
+PersonSixStageCaptureBindings12004 BindPersonSixStageCaptureImage12004(
+    std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
+bool InstallPersonSixStageCapture12004(
+    PersonSixStageCaptureDetourState12004 &state,
+    const PersonSixStageCaptureInstallEnvironment12004 &environment,
+    std::string_view executable_sha256) noexcept;
+bool UninstallPersonSixStageCapture12004(
+    PersonSixStageCaptureDetourState12004 &state,
+    bool primary_thread_suspended_proven) noexcept;
+bool InitializePersonSixStageCaptureFixture12004(
+    const PersonSixStageCaptureBindings12004 &bindings,
+    PersonSixStageOriginal12004 original,
+    PersonSixStageAppendOriginal12004 append_original) noexcept;
+// Called after the natural callback has returned and before either append.
+// Copies source data only; it never replays the callback or writes its context.
+void ObservePersonSixStageCapture12004(
+    std::uintptr_t character, std::uintptr_t context, std::uint32_t index,
+    std::uintptr_t raw_return_bits,
+    std::uintptr_t caller_return_address) noexcept;
+void ObservePersonSixStageAppend12004(
+    std::uintptr_t context, std::uintptr_t source_pc,
+    std::int64_t weight_q100000,
+    std::uintptr_t caller_return_address) noexcept;
+// The paused AppThread query closes a finished natural capture on that same
+// thread. Context zero selects this Character/full-ID's captured context.
+void CompletePersonSixStageCapture12004(
+    std::uintptr_t actual_character, std::uint32_t full_character_id,
+    std::uintptr_t actual_context = 0) noexcept;
+PersonSixStageCapture12004DTO ReadPersonSixStageCaptureForCharacter12004(
+    std::uintptr_t actual_character, std::uint32_t full_character_id) noexcept;
+std::string SerializePersonSixStageCapture12004(
+    const PersonSixStageCapture12004DTO &dto);
+// Called inside the validated paused AppThread query boundary. Each full ID is
+// resolved through the qualified Character storage before any owned lookup.
+PersonSixStageQuery12004DTO CollectPersonSixStageQuery12004(
+    void **character_storage_slot, std::span<const std::int32_t> requested_ids,
+    std::uint64_t snapshot_revision, std::int64_t observed_date_raw) noexcept;
+std::string SerializePersonSixStageQuery12004(
+    const PersonSixStageQuery12004DTO &dto);
+extern "C" __declspec(noinline) std::uintptr_t __fastcall
+XarPersonSixStageHook12004V1(void *character, void *context,
+                            std::uint32_t index) noexcept;
+extern "C" __declspec(noinline) std::uintptr_t __fastcall
+XarPersonSixStageAppendHook12004V1(void *context, void *source_pc,
+                                  std::int64_t weight_q100000) noexcept;
+} // namespace xar::ck3_12004

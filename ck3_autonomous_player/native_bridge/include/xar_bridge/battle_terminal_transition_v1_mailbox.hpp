@@ -4,9 +4,12 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <string_view>
 #include <type_traits>
+
+namespace xar::ck3_12004 { struct PersonSixStageQuery12004DTO; }
 
 namespace xar::ck3_11906 {
 
@@ -43,6 +46,9 @@ struct BattleTerminalTransitionMailboxContextV1 {
   BattleTerminalTransitionMailboxCompletionV1 completion =
       BattleTerminalTransitionMailboxCompletionV1::not_executed;
   game::BattleTerminalTransitionSnapshotV1 result{};
+  // Bridge-owned typed sibling; the shared Game snapshot ABI stays unchanged.
+  std::shared_ptr<const ck3_12004::PersonSixStageQuery12004DTO>
+      person_six_stage_captures;
   MainThreadExecutionStampV1 execution_stamp{};
   std::uint32_t executor_invocations = 0;
 
@@ -75,6 +81,12 @@ std::string SerializeBattleTerminalTransitionCommandResultV1(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
     const game::BattleTerminalTransitionSnapshotV1 &snapshot);
+
+std::string SerializeBattleTerminalTransitionCommandResultWithPersonSixStagesV1(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const game::BattleTerminalTransitionSnapshotV1 &snapshot,
+    const ck3_12004::PersonSixStageQuery12004DTO &captures);
 
 static_assert(
     std::is_same_v<

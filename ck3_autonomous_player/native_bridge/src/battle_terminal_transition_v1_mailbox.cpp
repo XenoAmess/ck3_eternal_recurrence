@@ -1,6 +1,7 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_current_person_state_v1_serializer.hpp"
+#include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
 
 #include <windows.h>
 
@@ -726,10 +727,22 @@ bool ExecuteBattleTerminalTransitionMailboxQueryV1(
     }
     ReadBattleTerminalTransitionV1(query->bindings, before, query->request,
                                    query->result);
+    // This validated paused AppThread boundary follows the natural loop and
+    // its final append. Collect owned history without replaying a CK3 helper.
+    if (!query->request.character_ids.empty() && query->result.status ==
+            game::BattleTerminalTransitionStatusV1::available) {
+      query->person_six_stage_captures =
+          std::make_shared<const ck3_12004::PersonSixStageQuery12004DTO>(
+              ck3_12004::CollectPersonSixStageQuery12004(
+                  query->bindings.character_storage_slot,
+                  query->request.character_ids,
+                  query->expected_snapshot_revision, stamp.date_raw));
+    }
     game::Snapshot after{};
     if (!ReadSnapshot(query->bindings, after) || after != before ||
         !SameExpectedFrame(after, *query, stamp)) {
       query->result = {};
+      query->person_six_stage_captures.reset();
       query->completion =
           BattleTerminalTransitionMailboxCompletionV1::frame_changed;
       return true;
@@ -744,6 +757,7 @@ bool ExecuteBattleTerminalTransitionMailboxQueryV1(
     return true;
   } catch (...) {
     query->result = {};
+    query->person_six_stage_captures.reset();
     query->result.status = game::BattleTerminalTransitionStatusV1::unavailable;
     query->result.unavailable_reason = "state_changed";
     query->result.snapshot_revision = query->expected_snapshot_revision;
@@ -1038,10 +1052,12 @@ std::string SerializeBattleTerminalTransitionV1(
   return output;
 }
 
-std::string SerializeBattleTerminalTransitionCommandResultV1(
+namespace {
+std::string BuildBattleTerminalTransitionCommandResult(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
-    const game::BattleTerminalTransitionSnapshotV1 &snapshot) {
+    const game::BattleTerminalTransitionSnapshotV1 &snapshot,
+    const ck3_12004::PersonSixStageQuery12004DTO *captures) {
   const auto payload = SerializeBattleTerminalTransitionV1(snapshot);
   if (payload.empty()) return {};
   const std::string_view status =
@@ -1060,8 +1076,33 @@ std::string SerializeBattleTerminalTransitionCommandResultV1(
   if (!AppendNumber(result, snapshot.snapshot_revision)) return {};
   result += ",\"battle_terminal_transition\":";
   result += payload;
+  if (captures != nullptr) {
+    result += ",\"person_six_stage_captures\":";
+    result += ck3_12004::SerializePersonSixStageQuery12004(*captures);
+  }
   result += "}}";
   return result;
+}
+} // namespace
+
+// Preserve the established formatter symbol for retained callers.
+std::string SerializeBattleTerminalTransitionCommandResultV1(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const game::BattleTerminalTransitionSnapshotV1 &snapshot) {
+  return BuildBattleTerminalTransitionCommandResult(
+      request_id, step, query_sequence, snapshot, nullptr);
+}
+
+std::string SerializeBattleTerminalTransitionCommandResultWithPersonSixStagesV1(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const game::BattleTerminalTransitionSnapshotV1 &snapshot,
+    const ck3_12004::PersonSixStageQuery12004DTO &captures) {
+  if (captures.snapshot_revision != snapshot.snapshot_revision ||
+      captures.observed_date_raw != snapshot.observed_date_raw) return {};
+  return BuildBattleTerminalTransitionCommandResult(
+      request_id, step, query_sequence, snapshot, &captures);
 }
 
 } // namespace xar::ck3_11906

@@ -13922,6 +13922,11 @@ class GameplayBridgeService:
         source leaf through the existing normalized character-observation mirror.
         Its readiness is independent of complete person or Entry reconstruction.
         """
+        from .battle_person_six_stage_capture_12004 import (
+            QUERY_FIELD_NAME as six_stage_field,
+            normalize_person_six_stage_query_12004,
+        )
+
         step = query_battle_terminal_transition_v1_step(
             prior_combat_id,
             subject_public_cunit_id,
@@ -14018,6 +14023,7 @@ class GameplayBridgeService:
             "queried_snapshot_id",
             "queried_revision",
             "queried_native_revision",
+            six_stage_field,
         }
         if (
             not required_result_keys <= set(result)
@@ -14048,6 +14054,15 @@ class GameplayBridgeService:
                 expected_observed_date_raw=date_raw,
                 expected_snapshot_revision=native_revision,
                 expected_character_ids=character_ids if character_ids is not None else [],
+            )
+            six_stage_result = (
+                {six_stage_field: normalize_person_six_stage_query_12004(
+                    result[six_stage_field],
+                    expected_snapshot_revision=native_revision,
+                    expected_observed_date_raw=date_raw,
+                    expected_character_ids=character_ids if character_ids is not None else [],
+                )}
+                if six_stage_field in result else {}
             )
         except ValueError as error:
             raise BridgeUnavailableError(
@@ -14127,6 +14142,7 @@ class GameplayBridgeService:
             },
             **mirrors,
             "battle_terminal_transition": normalized,
+            **six_stage_result,
         }
 
     def query_battle_reinforcement_assignment_v1(
