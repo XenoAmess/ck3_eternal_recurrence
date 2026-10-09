@@ -131,7 +131,7 @@ def run(build_dir: Path, requested_vs: Path | None) -> dict:
             raise RuntimeError("vcvars64 did not publish cl.exe")
         executable = build_dir / "xar_ck3_12002_army_test.exe"
         argv = [compiler, "/nologo", "/std:c++20", "/O2", "/MD", "/W4",
-                "/permissive-", "/EHsc", "/utf-8", "/UNDEBUG",
+                "/permissive-", "/EHsc", "/utf-8", "/UNDEBUG", "/DNOMINMAX",
                 f"/I{SOURCE / 'include'}",
                 *(str(SOURCE / name) for name in TRANSLATION_UNITS),
                 f"/Fe{executable}"]
