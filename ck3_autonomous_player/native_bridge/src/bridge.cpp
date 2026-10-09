@@ -92,6 +92,7 @@
 #include "xar_bridge/ck3_12004_war.hpp"
 #include "xar_bridge/ck3_12004_battle.hpp"
 #include "xar_bridge/ck3_12004_battle_journal.hpp"
+#include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12004_routes.hpp"
@@ -609,6 +610,8 @@ static xar::ck3_11906::BattleTerminalJournalDetourStateV1
     g_battle_terminal_journal_v1{};
 static xar::ck3_12002::BattleTerminalJournalDetourStateV1
     g_battle_terminal_journal_12002_v1{};
+static xar::ck3_12004::ActualLossWriterJournalDetourStateV1
+    g_actual_loss_writer_journal_12004_v1{};
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 static xar::ck3_11906::AiReentryDispatchStateV1
     g_ai_terminal_reentry_dispatch_v1{};
@@ -28151,6 +28154,14 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     // Journal capture needs the owned roots, so no stack province callback is
     // retained after this startup call returns.
     const auto bindings = BindBattleForQuery12004(base, sha);
+    xar::ck3_12004::ActualLossWriterJournalInstallEnvironmentV1 loss_environment{};
+    loss_environment.bindings =
+        xar::ck3_12004::BindActualLossWriterJournalImage12004(base, sha);
+    loss_environment.bindings.game_state_slot = bindings.game_state_slot;
+    loss_environment.primary_thread_suspended_proven = true;
+    if (!xar::ck3_12004::InstallActualLossWriterJournal12004(
+            g_actual_loss_writer_journal_12004_v1, loss_environment, sha))
+      return FALSE;
     auto environment = xar::ck3_12004::BindBattleJournalImage12004(base, sha, bindings);
     environment.primary_thread_suspended_proven = true;
     xar::ck3_11906::TacticalDailySentinelInstallEnvironmentV1

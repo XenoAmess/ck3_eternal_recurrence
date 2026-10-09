@@ -8,6 +8,7 @@ from .siege_membership_contract import normalize_siege_province_unit_occurrences
 from .province_besieging_army_selection_contract import normalize_province_besieging_army_selection
 
 from .army_replenishment_records_contract import normalize_regiment_replenishment_records_v1
+from .army_actual_loss_writer_observations_contract import normalize_actual_loss_writer_observations_v1
 from .army_fixed_chunk0_preparation_contract import normalize_fixed_chunk0_preparation_inputs_v1
 
 from .army_update_clock_contract import normalize_army_update_clock_v1
@@ -358,6 +359,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_combat_roles_phase_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_fleet_supply_tick_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_daily_supply_dispatch_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_month_first_refill_call_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"actual_loss_writer_observations_v1"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -2112,6 +2114,12 @@ def _normalize_army_strength_row(
             value["regiment_strengths"], name=f"{name}.regiment_strengths",
             regiment_count=regiment_count, current_soldiers=current_soldiers,
             maximum_soldiers=maximum_soldiers,
+        )
+    if "actual_loss_writer_observations_v1" in value:
+        result["actual_loss_writer_observations_v1"] = normalize_actual_loss_writer_observations_v1(
+            value["actual_loss_writer_observations_v1"],
+            current_regiment_ids=[row["army_regiment_id"]
+                                  for row in result.get("regiment_strengths", [])],
         )
     result.update(_normalize_army_gathering_days(value, name=name))
     if "current_movement_progress" in value:

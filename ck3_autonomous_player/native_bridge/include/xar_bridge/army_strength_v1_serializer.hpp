@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
+
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/army_current_first_route_target_supply_contributors_v1_serializer.hpp"
 #include "xar_bridge/owned_regiments_v1_serializer.hpp"
@@ -585,6 +587,19 @@ inline void AppendArmyStrengthV1(
   result += strength.available ? "available" : "unavailable";
   result += "\",\"army_id\":";
   result += number(strength.army_id);
+  // The journal owns its completed native observations. Only current owned
+  // full regiment IDs cross this readout; no native object is revisited here.
+  if (strength.available && strength.regiment_strengths.has_value()) {
+    std::vector<std::int32_t> current_regiment_ids;
+    current_regiment_ids.reserve(strength.regiment_strengths->size());
+    for (const auto &regiment : *strength.regiment_strengths)
+      current_regiment_ids.push_back(regiment.army_regiment_id);
+    if (const auto observations =
+            ck3_12004::ReadActualLossWriterObservations12004(current_regiment_ids)) {
+      result += ",\"actual_loss_writer_observations_v1\":";
+      AppendArmyActualLossWriterObservationsV1(result, *observations);
+    }
+  }
   result += ",\"native_carmy_id\":";
   if (strength.native_carmy_id_observable) {
     result += number(strength.native_carmy_id);
