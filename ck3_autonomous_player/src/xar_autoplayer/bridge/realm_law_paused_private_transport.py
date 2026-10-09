@@ -75,6 +75,7 @@ COOLDOWN_KEYS = {
 }
 COOLDOWN_EXPIRY_TYPE = "signed32_scalar_clock_counter"
 COOLDOWN_REMAINING_UNIT = "scalar_clock_step_calendar_unqualified"
+COOLDOWN_PROJECTED_REMAINING_UNIT = "scalar_clock_step_calendar_projected"
 COOLDOWN_TURN_TICK_FIELD = "crown_authority_cooldown_turn_tick"
 COOLDOWN_TURN_TICK_SOURCE = "native_variable_manager_turn_tick_context"
 COOLDOWN_TURN_TICK_KEYS = {
@@ -90,13 +91,24 @@ def _signed_integer(value: object, bits: int) -> bool:
 def normalize_crown_authority_cooldown_raw_v1(
     value: object, *, date_raw: int,
 ) -> dict[str, object]:
-    """Validate and retain actual raw timing without inventing calendar units."""
+    """Retain native counter timing and an explicitly published projection."""
     if not isinstance(value, dict) or set(value) != COOLDOWN_KEYS:
         raise ValueError("crown cooldown raw object keys differ")
     if (type(value["read_available"]) is not bool
             or value["expiry_type"] != COOLDOWN_EXPIRY_TYPE
-            or value["remaining_unit"] != COOLDOWN_REMAINING_UNIT):
+            or value["remaining_unit"] not in (
+                COOLDOWN_REMAINING_UNIT, COOLDOWN_PROJECTED_REMAINING_UNIT,
+            )):
         raise ValueError("crown cooldown raw type or unit differs")
+    projected = value["remaining_unit"] == COOLDOWN_PROJECTED_REMAINING_UNIT
+    if projected and (
+        value["read_available"] is not True or value["present"] is not True
+        or value["timed"] is not True
+        or not _signed_integer(value["remaining_raw"], 32)
+        or value["remaining_raw"] <= 0
+        or not _signed_integer(value["retry_date_raw"], 32)
+    ):
+        raise ValueError("projected crown cooldown requires a positive timed native result")
     nullable = ("present", "timed", "expiry_raw", "current_clock_raw",
                 "remaining_raw", "retry_date_raw")
     if value["read_available"] is False:
@@ -117,7 +129,7 @@ def normalize_crown_authority_cooldown_raw_v1(
     expiry = value["expiry_raw"]
     if not _signed_integer(expiry, 32) or value["timed"] != (expiry >= 0):
         raise ValueError("present crown cooldown native expiry classification differs")
-    if value["retry_date_raw"] is not None:
+    if not projected and value["retry_date_raw"] is not None:
         raise ValueError("present raw cooldown has no qualified calendar retry date")
     if value["timed"] is False:
         if value["remaining_raw"] != -1:
@@ -178,11 +190,13 @@ def _valid_payload(value: object, *, revision: int, date_raw: int,
     )
     if set(value) != payload_keys | optional_keys:
         return False
+    cooldown = None
+    turn_tick = None
     if has_cooldown:
         if exact_ck3_build != "1.20.0.4":
             return False
         try:
-            normalize_crown_authority_cooldown_raw_v1(
+            cooldown = normalize_crown_authority_cooldown_raw_v1(
                 value[COOLDOWN_FIELD], date_raw=date_raw,
             )
         except ValueError:
@@ -191,10 +205,28 @@ def _valid_payload(value: object, *, revision: int, date_raw: int,
         if exact_ck3_build != "1.20.0.4":
             return False
         try:
-            normalize_crown_authority_cooldown_turn_tick_v1(
+            turn_tick = normalize_crown_authority_cooldown_turn_tick_v1(
                 value[COOLDOWN_TURN_TICK_FIELD],
             )
         except ValueError:
+            return False
+    if cooldown is not None and (
+        cooldown["remaining_unit"] == COOLDOWN_PROJECTED_REMAINING_UNIT
+    ):
+        if (turn_tick is None or turn_tick["read_available"] is not True
+                or turn_tick["manager_contains_context"] is not True
+                or turn_tick["scalar_tail_allows_tick"] is not True
+                or turn_tick["context_tick_eligible"] is not True):
+            return False
+        # The producer also proves the queried row is in the normalizer's
+        # processed timed suffix. The same-query count validates its date math.
+        quotient, remainder = divmod(
+            cooldown["remaining_raw"], turn_tick["manager_match_count"],
+        )
+        steps = quotient + (remainder != 0)
+        retry_bits = (date_raw + steps * 24) & 0xFFFFFFFF
+        retry_raw = retry_bits if retry_bits < 0x80000000 else retry_bits - 0x100000000
+        if cooldown["retry_date_raw"] != retry_raw:
             return False
     if (value["schema"] != SCHEMA or value["snapshot_revision"] != revision
             or value["date_raw"] != date_raw

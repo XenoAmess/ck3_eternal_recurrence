@@ -30,3 +30,10 @@ endif()
 add_test(NAME crown_authority_cooldown_turn_tick_whole_fixture_12004
     COMMAND xar_crown_authority_cooldown_turn_tick_whole_fixture_12004
       --turn-tick-context-wire-dir "${XAR_CROWN_TURN_TICK_WHOLE_OUTPUT_DIR}")
+
+set(XAR_CROWN_CALENDAR_DEADLINE_WHOLE_OUTPUT_DIR
+    "${CMAKE_CURRENT_BINARY_DIR}/crown_calendar_deadline_12004_new_whole_wires"
+    CACHE PATH "Output for only the four new Character calendar deadline cases")
+add_test(NAME crown_authority_cooldown_calendar_deadline_whole_fixture_12004
+    COMMAND xar_crown_authority_cooldown_turn_tick_whole_fixture_12004
+      --calendar-deadline-wire-dir "${XAR_CROWN_CALENDAR_DEADLINE_WHOLE_OUTPUT_DIR}")

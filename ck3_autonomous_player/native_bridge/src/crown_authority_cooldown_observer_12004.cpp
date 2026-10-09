@@ -140,11 +140,13 @@ bool ReadImpl(const Bindings &bindings, std::int32_t character_id,
   const auto clock = Load<std::int32_t>(context, 0x28);
 
   std::optional<std::int32_t> expiry;
+  std::int32_t expiry_index = -1;
   for (std::int32_t index = 0; index < count; ++index) {
     const std::size_t offset = static_cast<std::size_t>(index) * 0x20;
     if (Load<std::int32_t>(rows, offset + 8) != token) continue;
     // The native helper selects the first matching scalar row.
     expiry = Load<std::int32_t>(rows, offset + 0x0C);
+    expiry_index = index;
     break;
   }
 
@@ -162,7 +164,36 @@ bool ReadImpl(const Bindings &bindings, std::int32_t character_id,
   output.timed = *expiry >= 0;
   output.remaining_raw = *expiry >= 0 ? NativeSubtract(*expiry, clock) : -1;
   // Preserve genuine zero/negative timed values, including computed-1.
-  // A raw counter has no positive calendar deadline until cadence is proved.
+  // Actual date+24 -> UpdateTurnTick, with one increment per matching eligible
+  // context pointer. Normalizer887360 rebases the timed suffix and clock
+  // together, preserving the positive remaining of a surviving suffix row.
+  if (turn_tick_output != nullptr && turn_tick_output->read_available &&
+      turn_tick_output->context_tick_eligible.value_or(false) &&
+      turn_tick_output->manager_match_count.value_or(0) != 0 &&
+      *output.remaining_raw > 0) {
+    bool queried_row_in_timed_suffix = false;
+    for (std::int32_t index = count; index != 0; --index) {
+      const auto row_index = index - 1;
+      const std::size_t offset = static_cast<std::size_t>(row_index) * 0x20;
+      if (Load<std::int32_t>(rows, offset + 0x0C) < 0) break;
+      if (row_index == expiry_index) {
+        queried_row_in_timed_suffix = true;
+        break;
+      }
+    }
+    if (queried_row_in_timed_suffix) {
+      const auto remaining = static_cast<std::uint64_t>(*output.remaining_raw);
+      const auto matches = *turn_tick_output->manager_match_count;
+      const auto whole_steps = remaining / matches +
+          static_cast<std::uint64_t>(remaining % matches != 0);
+      const std::uint32_t future_bits = static_cast<std::uint32_t>(frame_date_raw) +
+          static_cast<std::uint32_t>(whole_steps * 24U);
+      std::int32_t future_raw = 0;
+      std::memcpy(&future_raw, &future_bits, sizeof(future_raw));
+      output.retry_date_raw = static_cast<std::int64_t>(future_raw);
+      output.remaining_unit = "scalar_clock_step_calendar_projected";
+    }
+  }
   return true;
 }
 

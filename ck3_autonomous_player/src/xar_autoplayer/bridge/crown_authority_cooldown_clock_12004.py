@@ -3,8 +3,9 @@
 The actual flag parser374CE20 writes these factors into the duration node
 consumed by374D350. Caller2D567AE forwards that result to3728400 on the same
 Character context+8; its inner clock+20 is the full scalar context clock+28.
-This module interprets that numeric domain. Keyword names, the scalar
-set_variable parser and calendar cadence are separate source dependencies.
+This module interprets that numeric domain. An explicit projected unit also
+retains the producer's same-context calendar retry. Keyword names and the
+scalar set_variable parser remain separate source dependencies.
 """
 
 from __future__ import annotations
@@ -67,12 +68,14 @@ def interpret_crown_cooldown_native_clock_12004(
 ) -> CrownCooldownNativeClock12004:
     """Interpret existing raw9 through its production strict normalizer.
 
-    A timed row has an actual native-counter deadline even when a calendar
-    deadline is unqualified. Timed remaining-1 is retained as timed, while
-    absence and untimed rows retain their distinct native meanings. This
-    does not change the MCP wire or its existing unit/retry admission.
+    Old-unit timed rows retain their native-counter deadline without a
+    calendar claim. The new projected unit retains the producer's positive
+    retry date, whose same-query context/count relationship is checked by
+    the production law transport. No date is inferred from duration factors.
+    Timed remaining-1, absence and untimed rows keep their distinct meanings.
     """
     from .realm_law_paused_private_transport import (
+        COOLDOWN_PROJECTED_REMAINING_UNIT,
         normalize_crown_authority_cooldown_raw_v1,
     )
 
@@ -88,5 +91,8 @@ def interpret_crown_cooldown_native_clock_12004(
     if not value["timed"]:
         return CrownCooldownNativeClock12004("untimed", current, None, remaining, None)
     return CrownCooldownNativeClock12004(
-        "timed", current, value["expiry_raw"], remaining, None,
+        "timed", current, value["expiry_raw"], remaining, value["retry_date_raw"],
+        calendar_deadline_ready=(
+            value["remaining_unit"] == COOLDOWN_PROJECTED_REMAINING_UNIT
+        ),
     )

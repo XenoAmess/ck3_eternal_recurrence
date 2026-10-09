@@ -385,10 +385,11 @@ void AssertTurnTickScene(
   assert(observed.scalar_tail_allows_tick == tail);
   assert(observed.context_tick_eligible == (member && tail));
 }
-int RunTurnTickContextWholeFixture(const std::filesystem::path &directory) {
-  std::filesystem::create_directories(directory);
-  for (const auto &scene : turn_tick_scenes) {
-    TurnTickMemoryFixture fixture(scene.second);
+struct TurnTickWholeCapture {
+  RealmLawReadback12002 readback{};
+  xar::ck3_12004::crown_cooldown::turn_tick::Observation turn_tick{};
+};
+TurnTickWholeCapture CaptureTurnTickMemoryFixture(TurnTickMemoryFixture &fixture) {
     active_turn_tick_fixture = &fixture;
     turn_tick_context_resolves = 0;
     fixture.memory.extra_slot_address = image + xar::ck3_12004::kGameStateSlotRva;
@@ -448,25 +449,150 @@ int RunTurnTickContextWholeFixture(const std::filesystem::path &directory) {
            private_law::RealmLawFinalTerms12002Status::can_enact);
     assert(query.readback.final[1][1].terms.status ==
            private_law::RealmLawFinalTerms12002Status::engine_blocked);
-    AssertTurnTickScene(scene.second, owner.turn_tick);
+    active_turn_tick_fixture = nullptr;
+    return {std::move(query.readback), owner.turn_tick};
+}
+int RunTurnTickContextWholeFixture(const std::filesystem::path &directory) {
+  std::filesystem::create_directories(directory);
+  for (const auto &scene : turn_tick_scenes) {
+    TurnTickMemoryFixture fixture(scene.second);
+    const auto captured = CaptureTurnTickMemoryFixture(fixture);
+    AssertTurnTickScene(scene.second, captured.turn_tick);
     assert(fixture.memory.denied_reads ==
            (scene.second == TurnTickScene::bucket_read_unavailable ? 1U : 0U));
     const auto serialized = SerializeRealmLawReadbackWithTurnTick12004(
-        query.readback, owner.turn_tick);
+        captured.readback, captured.turn_tick);
     WriteTurnTickWholeWire(directory, scene.first, serialized);
     if (scene.second == TurnTickScene::late_exact_context_match) {
       // Same successful capture, original serializer: no old case is executed.
       WriteTurnTickWholeWire(directory, "legacy-leaf-absent",
-                            SerializeRealmLawReadback12002(query.readback));
+                            SerializeRealmLawReadback12002(captured.readback));
     }
-    active_turn_tick_fixture = nullptr;
   }
   WriteTurnTickReceipt(directory);
   std::cout << "PASS: six real-memory same-query TurnTick scenes -> seven whole law wires\n";
   return 0;
 }
+
+enum class CalendarDeadlineScene {
+  single_match_timed_suffix,
+  double_match_odd_remaining,
+  known_not_member,
+  manager_read_unavailable,
+};
+constexpr std::array<std::pair<std::string_view, CalendarDeadlineScene>, 4>
+    calendar_deadline_scenes{{
+        {"single-match-timed-suffix", CalendarDeadlineScene::single_match_timed_suffix},
+        {"double-match-odd-remaining", CalendarDeadlineScene::double_match_odd_remaining},
+        {"known-not-member", CalendarDeadlineScene::known_not_member},
+        {"manager-read-unavailable", CalendarDeadlineScene::manager_read_unavailable},
+    }};
+void ConfigureCalendarDeadlineFixture(TurnTickMemoryFixture &fixture,
+                                     CalendarDeadlineScene scene) {
+  if (scene != CalendarDeadlineScene::single_match_timed_suffix &&
+      scene != CalendarDeadlineScene::double_match_odd_remaining)
+    return;
+  // The cooldown is the last row of the native backward-processed suffix.
+  // The first single-match row is a genuine untimed prefix, not a timed row.
+  StoreNative(fixture.scalar_rows, 0x08, std::int32_t{0x01000007});
+  StoreNative(fixture.scalar_rows, 0x28, std::int32_t{0x01000006});
+  if (scene == CalendarDeadlineScene::single_match_timed_suffix) {
+    StoreNative(fixture.scalar_rows, 0x0C, std::int32_t{-1});
+    StoreNative(fixture.scalar_rows, 0x2C, std::int32_t{27});
+    fixture.late_entries[1] =
+        reinterpret_cast<std::uintptr_t>(fixture.other_context_b.data());
+  } else {
+    StoreNative(fixture.scalar_rows, 0x0C, std::int32_t{37});
+    StoreNative(fixture.scalar_rows, 0x2C, std::int32_t{28});
+  }
+}
+std::string CalendarDeadlineRequestId(std::size_t ordinal) {
+  std::ostringstream out;
+  out << "realm-law-read-" << std::hex << std::setw(32) << std::setfill('0')
+      << ordinal;
+  return out.str();
+}
+void AssertCalendarDeadlineScene(CalendarDeadlineScene scene,
+                                 const TurnTickWholeCapture &captured) {
+  const auto &raw = captured.readback.crown_authority_cooldown;
+  assert(raw.read_available && raw.present == true && raw.timed == true &&
+         raw.current_clock_raw == 7);
+  if (scene == CalendarDeadlineScene::single_match_timed_suffix ||
+      scene == CalendarDeadlineScene::double_match_odd_remaining) {
+    const bool single = scene == CalendarDeadlineScene::single_match_timed_suffix;
+    const auto &tick = captured.turn_tick;
+    assert(tick.read_available && tick.manager_contains_context == true &&
+           tick.scalar_tail_allows_tick == true && tick.context_tick_eligible == true &&
+           tick.unavailable_reason.empty());
+    assert(tick.manager_match_count == (single ? std::uint64_t{1} : std::uint64_t{2}));
+    assert(raw.expiry_raw == (single ? 27 : 28));
+    assert(raw.remaining_raw == (single ? 20 : 21));
+    assert(raw.remaining_unit == "scalar_clock_step_calendar_projected");
+    assert(raw.retry_date_raw == turn_tick_frame.date_raw + (single ? 480 : 264));
+    return;
+  }
+  assert(raw.expiry_raw == 27 && raw.remaining_raw == 20 && !raw.retry_date_raw);
+  assert(raw.remaining_unit == "scalar_clock_step_calendar_unqualified");
+  AssertTurnTickScene(scene == CalendarDeadlineScene::known_not_member
+      ? TurnTickScene::complete_known_not_member
+      : TurnTickScene::bucket_read_unavailable, captured.turn_tick);
+}
+void WriteCalendarDeadlineReceipt(const std::filesystem::path &directory) {
+  std::ofstream out(directory / "fixture-receipt.json", std::ios::binary);
+  out << "{\"schema\":\"xar.ck3.crown-authority-cooldown-calendar-deadline-native-whole-fixture12004/v1\","
+         "\"status\":\"GREEN\",\"live\":false,\"old_cases_executed\":0,"
+         "\"law_action_calls\":0,\"cases\":4,\"whole_wire_files\":[";
+  for (std::size_t i = 0; i < calendar_deadline_scenes.size(); ++i) {
+    if (i != 0) out << ',';
+    out << '\"' << calendar_deadline_scenes[i].first << ".json\"";
+  }
+  out << "],\"frame\":{\"public_revision\":2,\"native_revision\":"
+      << turn_tick_frame.snapshot_revision << ",\"date_raw\":"
+      << turn_tick_frame.date_raw << ",\"actor_character_id\":"
+      << turn_tick_frame.actor_character_id
+      << ",\"paused\":true,\"map_ready\":true},\"case_frames\":[";
+  for (std::size_t i = 0; i < calendar_deadline_scenes.size(); ++i) {
+    if (i != 0) out << ',';
+    out << "{\"file\":\"" << calendar_deadline_scenes[i].first
+        << ".json\",\"request_id\":\"" << CalendarDeadlineRequestId(i + 1)
+        << "\",\"native_revision\":" << turn_tick_frame.snapshot_revision
+        << ",\"date_raw\":" << turn_tick_frame.date_raw
+        << ",\"actor_character_id\":" << turn_tick_frame.actor_character_id << '}';
+  }
+  out << "]}\n";
+  assert(out.good());
+}
+int RunCalendarDeadlineWholeFixture(const std::filesystem::path &directory) {
+  std::filesystem::create_directories(directory);
+  for (std::size_t i = 0; i < calendar_deadline_scenes.size(); ++i) {
+    const auto &scene = calendar_deadline_scenes[i];
+    const auto seed = scene.second == CalendarDeadlineScene::known_not_member
+        ? TurnTickScene::complete_known_not_member
+        : scene.second == CalendarDeadlineScene::manager_read_unavailable
+        ? TurnTickScene::bucket_read_unavailable
+        : TurnTickScene::late_exact_context_match;
+    TurnTickMemoryFixture fixture(seed);
+    ConfigureCalendarDeadlineFixture(fixture, scene.second);
+    const auto captured = CaptureTurnTickMemoryFixture(fixture);
+    AssertCalendarDeadlineScene(scene.second, captured);
+    assert(fixture.memory.denied_reads ==
+           (scene.second == CalendarDeadlineScene::manager_read_unavailable ? 1U : 0U));
+    const auto serialized = SerializeRealmLawReadbackWithTurnTick12004(
+        captured.readback, captured.turn_tick);
+    const auto wire = SerializeRealmLawReadbackCommandResult12002(
+        CalendarDeadlineRequestId(i + 1), serialized, turn_tick_frame.snapshot_revision);
+    std::ofstream out(directory / (std::string(scene.first) + ".json"), std::ios::binary);
+    out << wire << '\n';
+    assert(out.good());
+  }
+  WriteCalendarDeadlineReceipt(directory);
+  std::cout << "PASS: four real-memory same-query calendar-deadline scenes -> four whole law wires\n";
+  return 0;
+}
 }
 int main(int argc, char **argv) {
+  if (argc == 3 && std::string_view(argv[1]) == "--calendar-deadline-wire-dir")
+    return RunCalendarDeadlineWholeFixture(argv[2]);
   if (argc == 3 && std::string_view(argv[1]) == "--turn-tick-context-wire-dir")
     return RunTurnTickContextWholeFixture(argv[2]);
   Memory memory{};
