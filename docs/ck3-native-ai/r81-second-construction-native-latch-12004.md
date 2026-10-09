@@ -1,7 +1,9 @@
 # R81 second construction: retained native latch blocks later legal work
 
-Status: actual functional fault, source-only repair in progress. Game build is
-1.20.0.4; Native46 is compiled `088fed39`, current SDK is `45a3e6a4`.
+Status: Native48 repair is static-ready after Root's actual offline qualification
+on 2026-10-09; production-live behavior awaits a separate live result. The
+original R81 fault was observed on game 1.20.0.4, compiled Native46
+`088fed39` and SDK `45a3e6a4`.
 The repair derives from complete Native47 source
 `e5fd088cde640b0a1ea29ff40888af95d9300c95`. Root owns every build, FIRST,
 new-binary hash, SDK/game operation and live result.
@@ -61,9 +63,9 @@ there is no new ledger, WAL, protocol, broad gate or serializer field. Only
 `bridge.cpp` is a changed production body, with one private inline helper.
 The current f085 pending is not rewritten or replayed by this source change.
 
-The new sole native fixture will call the real actual4 selector/submit path,
-observe first active material through the same latch helper used by Bridge,
-and select/submit a different legal second construction. Separate cases keep
+The sole native fixture calls the real actual4 selector/submit path,
+observes first active material through the same latch helper used by Bridge,
+and selects/submits a different legal second construction. Separate cases keep
 the unresolved state without material and release it on observed completed
 inventory. Native calls use explicit offline callback seams and synthetic
 DTOs, not live definition ordinals. The SDK diagnostic addition only records
@@ -75,5 +77,52 @@ Saved responses are under
 009 and011. Once-only current state/world projections, existing readonly
 recovery recipe and report fields are under
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r81-hot05-construction-submit-uncertain-source/`.
-The new native source remains NOTRUN until Root qualification. No worker
-Game/SDK/CIM/test/import/build/hash calls or capability credit are asserted.
+Root's actual Native48 qualification is recorded below. No worker
+Game/SDK/CIM/test/import/build/binary-hash calls or capability credit are asserted.
+
+## Native48 actual offline qualification, 2026-10-09
+
+Root sealed GREEN at **10:09:15 UTC**. The independent lifecycle fixture
+returned `scenes=3`, `actual4_submit_calls=4`, `live=false`, `game_calls=0`.
+It covers active exact old material releasing a different legal second submit,
+unobserved old material retaining the latch without a second receiver, and
+completed exact old inventory releasing the latch. These are offline callback
+scenes through the actual selector/submit path and shared private helper.
+They do not establish independent live second-construction behavior.
+
+| Source role | Actual pin |
+| --- | --- |
+| Production Bridge compile, reused from attempt01 | `dd302e80ed5eb6513a3bea1f9ea39c6abd305f5f` |
+| Fixture-only ADL repair and retry02 compile | `91da7f983d6896040fc9c5f26975f4422fd2d72f` |
+| Qualification/public adoption | `725e7a569ccd7a178d28a792c6a147986bd6379a` |
+| Retained Native47 Runtime archive | `e5fd088cde640b0a1ea29ff40888af95d9300c95` |
+
+Attempt01 remains RED: the production Bridge compile was GREEN in
+**16.4003045 s**, while the fixture failed with C2668 because unqualified
+`SubmitPlayerWorldBuildingDirectActionV1` was ambiguous through ADL. The
+fixture-only fix explicitly names the actual4 `xar::ck3_12004` function.
+Retry02 reused that exact GREEN production object and receipt, compiled only
+the fixture (**2.8403586 s**), linked the DLL (**0.9568291 s**) and fixture
+(**0.9026962 s**), and ran the sole new native FIRST (**0.2225898 s**).
+No archive, registered MCP consumer, whole-native packet or old FIRST replay
+was run for this increment. The failed attempt is retained separately.
+
+The canonical closure is **734 production owners**: Bridge299, Runtime434,
+Protocol1, with **733 retained owners** and **502 compiler-command rows**.
+The new DLL is **13,418,496 bytes**, Root-recorded SHA-256
+`faab4ed56cb1fe571b2686f6879c838995a20f8be4cae6ad1de02794b3eb23d9`.
+Only Bridge's existing production owner and its private inline latch helper
+changed; Runtime, public DTO and request layouts remain at their prior pins.
+The two SDK fields are existing pending-error diagnostics, with no newly
+qualified consumer behavior.
+
+Canonical metadata is under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix48/`:
+`ROOT-CONSTRUCTION-ONE-SHOT-LATCH-QUALIFICATION.json`,
+`ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`, `manifest.json`, and
+`BUILD-RESULT.json`. The original RED and selected GREEN results are
+`Z:/g2-native48-build01/attempt01/ROOT-NATIVE48-RESULT.json` and
+`Z:/g2-native48-build01/attempt02/ROOT-NATIVE48-RESULT.json`.
+This qualification advances the repair to **static-ready** only. It records
+no deployment, Game call, production-live primitive/loop, fullPerson, action,
+action-day or G2 credit; Root must separately retain the next actual live result.
