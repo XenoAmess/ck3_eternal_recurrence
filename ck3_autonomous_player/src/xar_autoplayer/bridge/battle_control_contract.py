@@ -1933,11 +1933,12 @@ def _normalize_entries(
     result: list[dict[str, object]] = []
     for index, row in enumerate(value):
         row_name = f"{name}[{index}]"
+        row_keys = set(row) - {"physical_entry_identity"} if isinstance(row, dict) else set()
         if not isinstance(row, dict) or (
-            set(row) != _ENTRY_KEYS
+            row_keys != _ENTRY_KEYS
             and not (
                 bucket == "men_at_arms"
-                and set(row) in (
+                and row_keys in (
                     _ENTRY_KEYS | {"knight_character_id_raw"},
                     _ENTRY_KEYS | {"knight_character_id_raw", "accolade_source"},
                 )
@@ -2060,6 +2061,16 @@ def _normalize_entries(
         }
         # Historical receipts have no knight slot field. Preserve their exact
         # shape; a current MAA read keeps both occupied IDs and -1 empty slots.
+        if "physical_entry_identity" in row:
+            identity = row["physical_entry_identity"]
+            if isinstance(identity, str) and identity.startswith("0x"):
+                try:
+                    identity = int(identity, 16)
+                except ValueError as error:
+                    raise ValueError(f"{row_name}.physical_entry_identity must be a uint64 identity") from error
+            normalized["physical_entry_identity"] = _positive_uint64(
+                identity, f"{row_name}.physical_entry_identity",
+            )
         if "knight_character_id_raw" in row:
             normalized["knight_character_id_raw"] = _signed_int32(
                 row["knight_character_id_raw"],

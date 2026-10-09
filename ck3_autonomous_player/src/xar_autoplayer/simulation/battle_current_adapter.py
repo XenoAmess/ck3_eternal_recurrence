@@ -58,6 +58,7 @@ class CurrentBattleEntry:
     knight_character_id_raw: int | None
     backing_components: tuple[BackingComponent, ...] | None
     source_entry: Mapping[str, object]
+    physical_entry_identity: int | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -236,6 +237,7 @@ def adapt_current_battle_condition(
                     hard_casualties_raw=row["hard_casualties_raw"],
                     knight_character_id_raw=row.get("knight_character_id_raw"),
                     backing_components=backing, source_entry=row,
+                    physical_entry_identity=row.get("physical_entry_identity"),
                 ))
         roll = _roll_request(side, index, resume)
         if roll is None:

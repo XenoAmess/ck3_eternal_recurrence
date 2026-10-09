@@ -271,6 +271,9 @@ bool Bucket(const BattleBindings &b, const void *side, std::size_t offset,
   for (std::int32_t i = 0; i < count; ++i) {
     auto *entry = static_cast<const std::byte *>(data) + i * 0x60ULL;
     game::BattleControlRegimentEntrySnapshot r{};
+    // This existing binding is admitted only by the exact actual4 factory.
+    if (b.current_person_carrier_direct.enabled)
+      r.physical_entry_identity = reinterpret_cast<std::uintptr_t>(entry);
     r.bucket = name;
     r.bucket_index = i;
     r.regiment_id = At<std::int32_t>(entry, 8);

@@ -36,6 +36,7 @@ def _identity(entry: CurrentBattleEntry) -> dict[str, Any]:
         "native_carmy_id": entry.native_carmy_id,
         "public_cunit_id": entry.public_cunit_id,
         "owner_character_id": entry.owner_character_id,
+        "physical_entry_identity": entry.physical_entry_identity,
     }
 
 
@@ -97,6 +98,96 @@ _ENTRY_ATTRIBUTE_FIELDS = (
     "effective_toughness_raw", "effective_pursuit_raw", "effective_screen_raw",
 )
 
+_WRITER_CACHE_FIELDS = (
+    "max_size", "siege_value_raw", "damage_raw", "toughness_raw", "pursuit_raw", "screen_raw",
+)
+
+
+def associate_current_physical_entry_writebacks_12004(
+    condition: CurrentBattleCondition,
+    consumption_projection: Mapping[str, object] | None,
+    *,
+    combat_query_source: Mapping[str, object] | None = None,
+    control_query_source: Mapping[str, object] | None = None,
+) -> dict[str, Any]:
+    """Compare an exact current physical row with its owned writer records.
+
+    Records retain their capture date and sequence. Equality compares the six
+    copied cache values with this current row; it never relabels a retained
+    historical record as a current observation or replaces current statistics.
+    """
+    events = consumption_projection.get("events", ()) if consumption_projection is not None else ()
+    source_checks = {
+        "combat_query_native_revision_matches_control": (
+            combat_query_source.get("native_revision") == condition.snapshot_revision
+            if combat_query_source is not None else None),
+        "combat_query_date_matches_control": (
+            combat_query_source.get("date_raw") == condition.observed_date_raw
+            if combat_query_source is not None else None),
+        "control_query_native_revision_matches_control": (
+            control_query_source.get("native_revision") == condition.snapshot_revision
+            if control_query_source is not None else None),
+        "control_query_date_matches_control": (
+            control_query_source.get("date_raw") == condition.observed_date_raw
+            if control_query_source is not None else None),
+    }
+    sides = []
+    for side in condition.sides:
+        rows = []
+        for entry in side.entries:
+            matches = []
+            for event in events:
+                physical = event.get("physical_entry_writeback")
+                if (entry.physical_entry_identity is None or physical is None
+                        or event.get("entry_association_proven") is not True
+                        or physical.get("entry_identity") != entry.physical_entry_identity
+                        or physical.get("regiment_id") != entry.state.regiment_id
+                        or event.get("linked_character_id") != entry.knight_character_id_raw):
+                    continue
+                record = copy.deepcopy(event)
+                cache = physical["entry_cache"]
+                comparisons = {
+                    current: (entry.source_entry.get(current) == cache.get(captured)
+                              if cache["ready"] else None)
+                    for current, captured in zip(_ENTRY_ATTRIBUTE_FIELDS, _WRITER_CACHE_FIELDS)
+                }
+                record.update({
+                    "current_cache_field_matches": comparisons,
+                    "current_cache_matches_writeback": all(comparisons.values()) if cache["ready"] else None,
+                    "capture_date_matches_current_frame": event.get("observed_date_raw") == condition.observed_date_raw,
+                    "writer_province_matches_current_frame": physical.get("province_id") == condition.province_id,
+                    "query_source_coordinate_checks": copy.deepcopy(source_checks),
+                    "historical_record_is_current_cache": False,
+                })
+                matches.append(record)
+            latest = matches[-1] if matches else None
+            rows.append({
+                "identity": _identity(entry),
+                "physical_entry_writeback_association": {
+                    "status": "physical_entry_writeback_observed" if matches else "no_matching_physical_entry_writeback",
+                    "physical_entry_identity": entry.physical_entry_identity,
+                    "matching_events_in_capture_order": matches,
+                    "current_cache_field_matches": copy.deepcopy(latest["current_cache_field_matches"]) if latest else None,
+                    "current_cache_matches_writeback": latest["current_cache_matches_writeback"] if latest else None,
+                    "historical_record_is_current_cache": False,
+                    "stored_stats_replaced": False,
+                },
+            })
+        sides.append({"side_index": side.side_index, "entries_in_native_order": rows})
+    return {
+        "snapshot_revision": condition.snapshot_revision,
+        "observed_date_raw": condition.observed_date_raw,
+        "combat_id": condition.combat_id,
+        "province_id": condition.province_id,
+        "sides": sides,
+        "combat_query_source": copy.deepcopy(combat_query_source),
+        "control_query_source": copy.deepcopy(control_query_source),
+        "query_source_coordinate_checks": source_checks,
+        "fresh_condition_modified": False,
+        "full_person_ready": False,
+        "full_entry_ready": False,
+    }
+
 
 def _current_knight_evaluation(entry, character_id, armies, query_source):
     """Join normalized current observations; this selects no refresh callback."""
@@ -152,6 +243,7 @@ def associate_current_knight_entries(
     control_query_source: Mapping[str, object] | None = None,
     current_combat_armies: Sequence[Mapping[str, object]] | None = None,
     combat_query_source: Mapping[str, object] | None = None,
+    current_knight_stat_consumption_projection: Mapping[str, object] | None = None,
 ) -> KnightEntryRefreshAssociation:
     """Attach existing normalized current-character rows without changing state.
 
@@ -170,13 +262,18 @@ def associate_current_knight_entries(
     people = {row["character_id"]: row for row in rows}
     binding = _binding(current_person_observation, person_query_source,
                        control_query_source, condition)
+    physical_join = associate_current_physical_entry_writebacks_12004(
+        condition, current_knight_stat_consumption_projection,
+        combat_query_source=combat_query_source, control_query_source=control_query_source,
+    )
     sides = []
     for side in condition.sides:
         old_side = next((row for row in previous_condition.sides
                          if row.side_index == side.side_index), None) if same_combat else None
         prior = {(row.bucket, row.state.regiment_id): row for row in old_side.entries} if old_side else {}
         entries = []
-        for entry in side.entries:
+        physical_side = next(row for row in physical_join["sides"] if row["side_index"] == side.side_index)
+        for entry, physical_row in zip(side.entries, physical_side["entries_in_native_order"]):
             old = prior.pop((entry.bucket, entry.state.regiment_id), None)
             knight = _knight(entry)
             old_knight = _knight(old) if old is not None else None
@@ -207,6 +304,7 @@ def associate_current_knight_entries(
                 "current_knight_evaluation": _current_knight_evaluation(
                     entry, knight["raw"], current_combat_armies, combat_query_source)
                     if knight["kind"] == "occupied_positive_full_character_id" else None,
+                "physical_entry_writeback_association": physical_row["physical_entry_writeback_association"],
                 "person_attribution": ("same_paused_native_sample" if binding["status"] == "same_paused_native_sample_coordinates"
                                        else "independent_current_character_observation") if person is not None else None,
             })
@@ -228,6 +326,7 @@ def associate_current_knight_entries(
         "control_query_source": copy.deepcopy(control_query_source), "binding": binding,
         "current_combat_armies_supplied": current_combat_armies is not None,
         "combat_query_source": copy.deepcopy(combat_query_source),
+        "current_physical_entry_writeback_association_v1": physical_join,
         "current_knight_read_grants_selected_receiver": False,
         "current_knight_read_selects_refresh_boundary": False,
         "fresh_condition_modified": False, "draw_consumed": False,

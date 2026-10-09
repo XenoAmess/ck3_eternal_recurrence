@@ -14617,6 +14617,24 @@ class GameplayBridgeService:
         consumed_knight_stats = project_knight_stat_consumption_12004(
             normalized.get("knight_stat_consumption_v1")
         )
+        current_physical_entries = None
+        current_control = current.get("battle_control_snapshot_v1")
+        if isinstance(current_control, dict) and current_control.get("status") == "available":
+            from ..simulation.battle_current_adapter import adapt_current_battle_condition
+            from ..simulation.battle_current_knight_entry_refresh import (
+                associate_current_physical_entry_writebacks_12004,
+            )
+            current_physical_entries = associate_current_physical_entry_writebacks_12004(
+                adapt_current_battle_condition(current_control), consumed_knight_stats,
+                combat_query_source={
+                    "native_revision": snapshot.get("native_revision"),
+                    "date_raw": snapshot.get("date_raw"),
+                },
+                control_query_source={
+                    "native_revision": current_control["snapshot_revision"],
+                    "date_raw": current_control["observed_date_raw"],
+                },
+            )
         completeness = normalized["completeness"]
         diagnostics = snapshot.get("diagnostics")
         hello = (
@@ -14663,6 +14681,7 @@ class GameplayBridgeService:
             ),
             "combat_simulation_inputs": normalized,
             "knight_stat_consumption_projection_v1": consumed_knight_stats,
+            "current_physical_entry_writeback_association_v1": current_physical_entries,
         }
 
     def query_combat_phase_event_trace_v1(

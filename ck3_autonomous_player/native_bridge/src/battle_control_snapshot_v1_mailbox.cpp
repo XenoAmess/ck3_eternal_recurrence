@@ -796,6 +796,17 @@ bool AppendRegimentEntry(
   if (!AppendNumber(output, entry.entry_strength_raw)) {
     return false;
   }
+  if (entry.physical_entry_identity.has_value()) {
+    std::array<char, 2 * sizeof(std::uintptr_t)> buffer{};
+    const auto encoded = std::to_chars(buffer.data(), buffer.data() + buffer.size(),
+                                       *entry.physical_entry_identity, 16);
+    if (encoded.ec != std::errc{}) {
+      return false;
+    }
+    output += ",\"physical_entry_identity\":\"0x";
+    output.append(buffer.data(), encoded.ptr);
+    output.push_back('"');
+  }
   output.push_back('}');
   return true;
 }

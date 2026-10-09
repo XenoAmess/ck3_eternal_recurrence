@@ -2668,6 +2668,8 @@ struct BattleControlRegimentEntrySnapshot {
   std::int64_t effective_pursuit_raw = 0;
   std::int64_t effective_screen_raw = 0;
   std::int32_t entry_strength_raw = 0;
+  // Actual4 physical retained row address; absent on older adapters.
+  std::optional<std::uintptr_t> physical_entry_identity;
 
   friend bool operator==(const BattleControlRegimentEntrySnapshot &,
                          const BattleControlRegimentEntrySnapshot &) = default;
