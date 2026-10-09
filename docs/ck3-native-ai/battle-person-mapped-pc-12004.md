@@ -1,5 +1,13 @@
 # Person mapped PC input on CK3 1.20.0.4
 
+## Actual Root qualification on 2026-10-09
+
+Native52 is static-ready. Root ran the unique native producer once: all 11 whole packets passed in 0.264253 seconds. The sole registered MCP compound consumed those same 11 packets and passed in approximately 7.233 seconds. Root sealed `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix52/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json` at 20:19:58 Asia/Shanghai.
+
+The actual freeze is `0e354f3dca6e0426e0aee2661f9bfd298722bde2`; authored feature is `d32b3c8af8612be8cfc450fb2bb9072aa3de602a`. Root replaced one Runtime owner and added the unique fixture compile, retaining the qualified Native51 parent owners. Physical executor/sealer receipts belong to `/root/native46_canonical`; this author ran no qualification.
+
+This qualifies the memory-only first-match/default observer and registered transport. It adds no production-live, full Person/Entry, fresh baseline, action, day, or save credit. R83 still ran Native51 when Root reported this qualification.
+
 This follows the qualified ordered input observer in
 [battle-person-next-ordered-helper-12004.md](battle-person-next-ordered-helper-12004.md).
 The frozen executable is CK3 1.20.0.4 / Steam25734779, SHA256
