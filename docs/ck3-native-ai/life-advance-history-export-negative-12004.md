@@ -64,3 +64,60 @@ Existing Root runtime observations or separately authorized bounded phase
 timing would be needed to attribute the remaining end-to-end delay. No test
 is required for this documentation-only negative finding. G2, NW2, game-day,
 save, inheritance and capability readiness receive no additional credit.
+
+## Later authorized existing-payload phase diagnosis
+
+After the prefix-only finding above, Root explicitly authorized one complete
+read of the same 307292-byte response. This lane parsed it once and retained
+only bounded selected fields in
+`D:/codex-ck3-background-spill/life-advance-history-source/ACTUAL-EXISTING-PHASE-FIELDS.json`.
+The earlier prefix-only record remains the account of that earlier operation;
+the complete response was not reopened a second time in this phase.
+
+The actual composite requested horizon 1 and `timeline_speed=1`,
+`timeline_policy=player_siege`. Its four actions were `set-speed-1`, sentinel
+arm, `resume-map`, and sentinel status. The native receipt's generation was 8;
+its start, target and stop dates were `53289432`, `53289456`, `53289456`.
+It recorded exactly one completed daily tick, no intermediate pause,
+`date_deadline` as the only trigger reason, no overshoot, no abnormal/terminal
+condition, and an observed native pause. No event was selected and the
+composite reported its normal postcondition. This establishes the actual
+speed and stop cause. It does not establish engine wait duration.
+
+The existing normalized body has **no phase timing fields**: neither an
+action's elapsed wall time, native running-clock interval, nor the required
+Driver persistence duration is present. The end-to-end 289.741968 seconds
+cannot be divided between engine execution, planning/query work, and complete
+state persistence from this payload. In particular, one native daily tick is
+not a duration and cannot be used to assign most of the delay to the engine.
+
+At `f982`, `_life_advance_timeline_policy` chooses speed 1 when it observes a
+player siege without an active enemy route. `_execute_life_advance` then
+reuses the exact-day native sentinel to retain that one-day stop. The source
+constructor's default life-advance timeout is 30 seconds, command timeout
+10 seconds, and resume/pause retry observation interval 1 second. These are
+defaults, not proof of the running SDK's configured values. The receipt itself
+contains no timeout configuration. No native AI cadence research or speed
+policy design was expanded because the necessary phase attribution is absent.
+
+After Root's seven-day gameplay checkpoint, the smallest useful additional
+diagnostic would reuse the existing `army_query_timing.py` writer and
+`XAR_CK3_ARMY_TIMING_JSONL`, without gameplay/history serialization:
+
+1. Time Service planning separately from its life-advance dispatch.
+2. Time the Driver's existing unrecorded life-advance execution separately
+   from the following `_record_command` call. The latter includes the
+   unchanged complete-state encode/write barrier.
+3. Inside `_advance_exact_day_with_sentinel`, time the existing resume plus
+   observed native-stop wait. This separates the running-clock wait from the
+   rest of the composite without adding polling or new native queries.
+
+The current optional timer only finishes `mcp.auto_turn_service` for the Army
+query branch, and its writer hardcodes `step=query-army-strengths-v1`.
+Enabling the environment variable alone therefore cannot answer this
+life-advance question. A future small reuse must label the actual step
+`life-advance`, preserving the existing Army default, and finish the selected
+life-advance stages; it must not mislabel new records as Army measurements.
+These stage additions are an unimplemented proposal, not an executed profile.
+No SDK source, game speed, callback cadence, policy, persistence, cache,
+schema or receipt behavior changed in this diagnosis.
