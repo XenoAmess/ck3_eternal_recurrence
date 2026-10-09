@@ -23,6 +23,7 @@ from . import __version__
 from .errors import AgentError, UnsafeCleanupError
 from .locking import exclusive_state_lock
 from .rules import parsed_preset_settings, render_presets, rule_contract
+from .windows_process import is_process_signaled
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -1237,6 +1238,10 @@ def _toolhelp_process_entries() -> list[dict[str, object]]:
 def _toolhelp_process_identity_from_entry(
     entry: dict[str, object],
 ) -> dict[str, object] | None:
+    pid = int(entry["pid"])
+    # A terminated object can still answer image/time queries successfully.
+    if is_process_signaled(pid):
+        return None
     kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
     kernel32.OpenProcess.argtypes = [
         ctypes.wintypes.DWORD,
@@ -1259,15 +1264,9 @@ def _toolhelp_process_identity_from_entry(
         ctypes.POINTER(ctypes.wintypes.FILETIME),
     ]
     kernel32.GetProcessTimes.restype = ctypes.wintypes.BOOL
-    kernel32.WaitForSingleObject.argtypes = [
-        ctypes.wintypes.HANDLE,
-        ctypes.wintypes.DWORD,
-    ]
-    kernel32.WaitForSingleObject.restype = ctypes.wintypes.DWORD
     kernel32.CloseHandle.argtypes = [ctypes.wintypes.HANDLE]
     kernel32.CloseHandle.restype = ctypes.wintypes.BOOL
 
-    pid = int(entry["pid"])
     handle = kernel32.OpenProcess(0x00001000, False, pid)
     if not handle:
         raise UnsafeCleanupError(
@@ -1283,13 +1282,8 @@ def _toolhelp_process_identity_from_entry(
             image_error = ctypes.get_last_error()
             # A terminated process can still report exit code 259. Only its
             # signaled handle proves that this stale Toolhelp entry is dead.
-            synchronize_handle = kernel32.OpenProcess(0x00100000, False, pid)
-            if synchronize_handle:
-                try:
-                    if kernel32.WaitForSingleObject(synchronize_handle, 0) == 0:
-                        return None
-                finally:
-                    kernel32.CloseHandle(synchronize_handle)
+            if is_process_signaled(pid):
+                return None
             raise UnsafeCleanupError(
                 f"Toolhelp process {pid} image query failed: "
                 f"winerror={image_error}"

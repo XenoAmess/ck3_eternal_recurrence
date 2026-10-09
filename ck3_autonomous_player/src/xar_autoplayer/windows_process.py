@@ -3,8 +3,60 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import ctypes
+import ctypes.wintypes
 import os
 from typing import Any
+
+
+def is_process_signaled(pid: int) -> bool:
+    """Return true only when a zero-time kernel wait proves termination.
+
+    A retained process object can still expose its image and exit code 259.
+    Timeouts, access denial and unreadable wait state do not exclude a PID.
+    """
+    if os.name != "nt":
+        return False
+    try:
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel32.OpenProcess.argtypes = [
+            ctypes.wintypes.DWORD, ctypes.wintypes.BOOL, ctypes.wintypes.DWORD,
+        ]
+        kernel32.OpenProcess.restype = ctypes.wintypes.HANDLE
+        kernel32.WaitForSingleObject.argtypes = [
+            ctypes.wintypes.HANDLE, ctypes.wintypes.DWORD,
+        ]
+        kernel32.WaitForSingleObject.restype = ctypes.wintypes.DWORD
+        kernel32.CloseHandle.argtypes = [ctypes.wintypes.HANDLE]
+        kernel32.CloseHandle.restype = ctypes.wintypes.BOOL
+        handle = kernel32.OpenProcess(0x00100000, False, pid)  # SYNCHRONIZE
+        if not handle:
+            return False
+        try:
+            return kernel32.WaitForSingleObject(handle, 0) == 0  # WAIT_OBJECT_0
+        finally:
+            kernel32.CloseHandle(handle)
+    except (OSError, AttributeError):
+        return False
+
+
+def active_process_pids(
+    image_name: str, *, signaled_dead_pids: set[int] | None = None
+) -> list[int]:
+    """Enumerate matching names, excluding only positively signaled objects."""
+    import psutil
+
+    active = []
+    for process in psutil.process_iter(["pid", "name"]):
+        if (process.info["name"] or "").casefold() != image_name.casefold():
+            continue
+        pid = int(process.info["pid"])
+        if is_process_signaled(pid):
+            if signaled_dead_pids is not None:
+                signaled_dead_pids.add(pid)
+        else:
+            active.append(pid)
+    return sorted(active)
 
 
 @dataclass(frozen=True)

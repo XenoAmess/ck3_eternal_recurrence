@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import sys
 import time
 
 import psutil
@@ -19,6 +20,11 @@ import pyautogui
 from PIL import Image, ImageChops
 import win32gui
 import win32process
+
+_AGENT_SOURCE = Path(__file__).resolve().parents[1] / "ck3_autonomous_player" / "src"
+if str(_AGENT_SOURCE) not in sys.path:
+    sys.path.insert(0, str(_AGENT_SOURCE))
+from xar_autoplayer.windows_process import active_process_pids
 
 
 def _sha256(path: Path) -> str:
@@ -112,8 +118,7 @@ def capture(
     receipt_path = output_dir / "steam-frame-freshness.json"
     if any(path.exists() for path in (before_path, moved_path, receipt_path)):
         raise FileExistsError("capture files already exist; use a new attempt directory")
-    if any(process.info["name"] and process.info["name"].lower() == "ck3.exe"
-           for process in psutil.process_iter(["name"])):
+    if active_process_pids("ck3.exe"):
         raise RuntimeError("CK3 must not be running during Steam preflight")
     windows = _steam_windows()
     if len(windows) != 1:

@@ -22,6 +22,11 @@ import win32gui
 
 import steam_offline_fresh_frame
 
+_AGENT_SOURCE = Path(__file__).resolve().parents[1] / "ck3_autonomous_player" / "src"
+if str(_AGENT_SOURCE) not in sys.path:
+    sys.path.insert(0, str(_AGENT_SOURCE))
+from xar_autoplayer.windows_process import active_process_pids
+
 
 SERVICE = "ToDesk_Service"
 SCREEN_RESOURCE = "ck3-screen:acquired"
@@ -59,8 +64,7 @@ def screen_owners(tasks: list[dict]) -> list[str]:
 
 
 def ck3_pids() -> list[int]:
-    return sorted(process.info["pid"] for process in psutil.process_iter(["pid", "name"])
-                  if (process.info["name"] or "").lower() == "ck3.exe")
+    return active_process_pids("ck3.exe")
 
 
 def recorder_pids() -> list[int]:
