@@ -1,4 +1,4 @@
-"""Exact4 observed knight stat consumption; no Entry or readiness inference."""
+"""Exact4 knight consumption and optional observed physical Entry writeback."""
 from __future__ import annotations
 
 from .battle_context_source_inputs_contract import (
@@ -30,6 +30,13 @@ _EVENT_FIELDS = {
     "linked_character_identity", "linked_prowess_points", "loaded_damage_multiplier",
     "loaded_toughness_multiplier", "output_cache_identity", "native_return_identity",
     "contexts", "observed_output", "entry_association_proven", "capture_reason",
+}
+_WRITEBACK_FIELDS = {
+    "writer_sequence", "entry_identity", "province_identity", "regiment_id",
+    "province_id", "original_return_value", "entry_cache",
+    "output_cache_identity_matches_entry", "wrapper_output_comparison_ready",
+    "wrapper_output_field_matches", "wrapper_output_matches_entry_cache",
+    "regiment_member_at_query", "reason",
 }
 _QUERY_FIELDS = {
     "schema", "build_version", "executable_sha256", "configured", "observer_installed",
@@ -155,8 +162,37 @@ def _output(value: object, path: str) -> dict[str, object]:
     return result
 
 
+def _physical_entry_writeback(value: object, path: str) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _dict(value, path, _WRITEBACK_FIELDS)
+    matches = _array(raw["wrapper_output_field_matches"], path + ".wrapper_output_field_matches")
+    if len(matches) != 6:
+        raise ValueError(path + " must retain the six native output comparison slots")
+    return {
+        "writer_sequence": _raw64(raw["writer_sequence"], path + ".writer_sequence", unsigned=True),
+        "entry_identity": _identity(raw["entry_identity"], path + ".entry_identity", optional=False),
+        "province_identity": _identity(raw["province_identity"], path + ".province_identity", optional=False),
+        "regiment_id": _number(raw["regiment_id"], path + ".regiment_id", 32, unsigned=True),
+        "province_id": _number(raw["province_id"], path + ".province_id", 32),
+        "original_return_value": _raw64(raw["original_return_value"], path + ".original_return_value", unsigned=True),
+        "entry_cache": _output(raw["entry_cache"], path + ".entry_cache"),
+        "output_cache_identity_matches_entry": _boolean(raw["output_cache_identity_matches_entry"], path + ".output_cache_identity_matches_entry"),
+        "wrapper_output_comparison_ready": _boolean(raw["wrapper_output_comparison_ready"], path + ".wrapper_output_comparison_ready"),
+        "wrapper_output_field_matches": [
+            _boolean(match, f"{path}.wrapper_output_field_matches[{index}]", optional=True)
+            for index, match in enumerate(matches)
+        ],
+        "wrapper_output_matches_entry_cache": _boolean(raw["wrapper_output_matches_entry_cache"], path + ".wrapper_output_matches_entry_cache", optional=True),
+        "regiment_member_at_query": _boolean(raw["regiment_member_at_query"], path + ".regiment_member_at_query", optional=True),
+        "reason": _string(raw["reason"], path + ".reason", optional=True),
+    }
+
+
 def _event(value: object, path: str) -> dict[str, object]:
-    raw = _dict(value, path, _EVENT_FIELDS)
+    optional_fields = ({"physical_entry_writeback"}
+                       if isinstance(value, dict) and "physical_entry_writeback" in value else set())
+    raw = _dict(value, path, _EVENT_FIELDS | optional_fields)
     result = {
         "sequence": _raw64(raw["sequence"], path + ".sequence", unsigned=True),
         "thread_id": _integer(raw["thread_id"], path + ".thread_id", 32, unsigned=True),
@@ -169,11 +205,17 @@ def _event(value: object, path: str) -> dict[str, object]:
         "native_return_identity": _identity(raw["native_return_identity"], path + ".native_return_identity"),
         "entry_association_proven": _boolean(raw["entry_association_proven"], path + ".entry_association_proven"),
         "capture_reason": _string(raw["capture_reason"], path + ".capture_reason", optional=True),
+        "physical_entry_writeback": _physical_entry_writeback(
+            raw.get("physical_entry_writeback"), path + ".physical_entry_writeback"),
     }
-    if result["origin"] not in {"bridge_query_scratch", "native_wrapper_output_unclassified"}:
+    if result["origin"] not in {"bridge_query_scratch", "native_wrapper_output_unclassified",
+                                "native_physical_entry_writer"}:
         raise ValueError(path + " contains an unknown native output origin")
-    if result["entry_association_proven"]:
-        raise ValueError(path + " cannot promote this wrapper output to an Entry association")
+    if result["entry_association_proven"] and (
+        result["origin"] != "native_physical_entry_writer"
+        or result["physical_entry_writeback"] is None
+    ):
+        raise ValueError(path + " Entry association requires its observed physical writer sidecar")
     for field in ("regiment_id", "target_province_id", "linked_prowess_points",
                   "loaded_damage_multiplier", "loaded_toughness_multiplier"):
         result[field] = _number(raw[field], path + "." + field, 32)

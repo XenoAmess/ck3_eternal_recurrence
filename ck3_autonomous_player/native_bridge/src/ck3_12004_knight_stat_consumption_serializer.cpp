@@ -116,6 +116,31 @@ void Output(std::ostream &out, const KnightConsumedOutput12004 &output) {
   out << '}';
 }
 
+void PhysicalEntryWriteback(
+    std::ostream &out, const KnightStatPhysicalEntryWriteback12004 &writeback) {
+  out << "{\"writer_sequence\":"; Raw64(out, writeback.writer_sequence);
+  out << ",\"entry_identity\":"; Pointer(out, writeback.entry_identity);
+  out << ",\"province_identity\":"; Pointer(out, writeback.province_identity);
+  out << ",\"regiment_id\":"; Number(out, writeback.regiment_id);
+  out << ",\"province_id\":"; Number(out, writeback.province_id);
+  out << ",\"original_return_value\":"; Raw64(out, writeback.original_return_value);
+  out << ",\"entry_cache\":"; Output(out, writeback.entry_cache);
+  out << ",\"output_cache_identity_matches_entry\":"
+      << (writeback.output_cache_identity_matches_entry ? "true" : "false");
+  out << ",\"wrapper_output_comparison_ready\":"
+      << (writeback.wrapper_output_comparison_ready ? "true" : "false");
+  out << ",\"wrapper_output_field_matches\":[";
+  for (std::size_t index = 0; index < writeback.wrapper_output_field_matches.size(); ++index) {
+    if (index != 0) out << ',';
+    Boolean(out, writeback.wrapper_output_field_matches[index]);
+  }
+  out << "],\"wrapper_output_matches_entry_cache\":";
+  Boolean(out, writeback.wrapper_output_matches_entry_cache);
+  out << ",\"regiment_member_at_query\":"; Boolean(out, writeback.regiment_member_at_query);
+  out << ",\"reason\":"; Reason(out, writeback.reason);
+  out << '}';
+}
+
 void Event(std::ostream &out, const KnightStatConsumptionEvent12004 &event) {
   out << "{\"sequence\":"; Raw64(out, event.sequence);
   out << ",\"thread_id\":" << event.thread_id << ",\"observed_date_raw\":";
@@ -139,6 +164,10 @@ void Event(std::ostream &out, const KnightStatConsumptionEvent12004 &event) {
   out << "],\"observed_output\":"; Output(out, event.observed_output);
   out << ",\"entry_association_proven\":" << (event.entry_association_proven ? "true" : "false");
   out << ",\"capture_reason\":"; Reason(out, event.capture_reason);
+  if (event.physical_entry_writeback) {
+    out << ",\"physical_entry_writeback\":";
+    PhysicalEntryWriteback(out, *event.physical_entry_writeback);
+  }
   out << '}';
 }
 

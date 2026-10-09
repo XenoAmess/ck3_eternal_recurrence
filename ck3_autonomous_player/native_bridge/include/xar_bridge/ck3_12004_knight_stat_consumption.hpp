@@ -6,6 +6,7 @@
 namespace xar::ck3_12004 {
 inline constexpr std::uintptr_t kKnightStatWrapperRva12004 = 0x2C06D10;
 inline constexpr std::uintptr_t kKnightStatContextGetterRva12004 = 0x28C3AC0;
+inline constexpr std::uintptr_t kKnightStatPhysicalEntryWriterRva12004 = 0x2657AA0;
 inline constexpr std::array<std::uintptr_t, 9> kKnightStatContextReturns12004{
     0x2C06B03, 0x2C06B51, 0x2C06B8D, 0x2C06BC4, 0x2C06BFB,
     0x2C06C32, 0x2C06C69, 0x2C06CA0, 0x2C06CD7};
@@ -76,6 +77,27 @@ private:
   void *previous_ = nullptr;
   void *output_cache_ = nullptr;
   std::int32_t regiment_id_ = -1, target_province_id_ = -1;
+  friend void *InvokeKnightStatWrapper12004(void *, void *, std::uintptr_t) noexcept;
+};
+
+// Created only around the actual2657AA0 writer. Complete runs after its original
+// call and stores owned physical caches, without relabelling wrapper scratch.
+class KnightStatPhysicalEntryScope12004 {
+public:
+  KnightStatPhysicalEntryScope12004(void *entry, void *province) noexcept;
+  ~KnightStatPhysicalEntryScope12004();
+  void Complete(std::uint64_t original_return_value) noexcept;
+  KnightStatPhysicalEntryScope12004(const KnightStatPhysicalEntryScope12004 &) = delete;
+  KnightStatPhysicalEntryScope12004 &operator=(const KnightStatPhysicalEntryScope12004 &) = delete;
+private:
+  KnightStatPhysicalEntryScope12004 *previous_ = nullptr;
+  void *entry_ = nullptr, *province_ = nullptr;
+  std::uint64_t writer_sequence_ = 0;
+  std::optional<std::uint32_t> regiment_id_;
+  std::optional<std::int32_t> province_id_;
+  std::array<std::uint64_t, kKnightStatConsumptionCapacity12004> wrapper_sequences_{};
+  std::size_t wrapper_count_ = 0;
+  bool completed_ = false, wrapper_sequence_overflow_ = false;
   friend void *InvokeKnightStatWrapper12004(void *, void *, std::uintptr_t) noexcept;
 };
 

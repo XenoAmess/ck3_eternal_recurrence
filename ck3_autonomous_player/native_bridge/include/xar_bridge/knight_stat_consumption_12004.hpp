@@ -43,6 +43,24 @@ struct KnightConsumedOutput12004 {
                          const KnightConsumedOutput12004 &) = default;
 };
 
+struct KnightStatPhysicalEntryWriteback12004 {
+  std::uint64_t writer_sequence = 0;
+  std::uintptr_t entry_identity = 0, province_identity = 0;
+  std::optional<std::uint32_t> regiment_id;
+  std::optional<std::int32_t> province_id;
+  std::uint64_t original_return_value = 0;
+  KnightConsumedOutput12004 entry_cache;
+  bool output_cache_identity_matches_entry = false;
+  bool wrapper_output_comparison_ready = false;
+  // max_size, siege, damage, toughness, pursuit, screen, independently copied.
+  std::array<std::optional<bool>, 6> wrapper_output_field_matches;
+  std::optional<bool> wrapper_output_matches_entry_cache;
+  std::optional<bool> regiment_member_at_query;
+  std::string reason;
+  friend bool operator==(const KnightStatPhysicalEntryWriteback12004 &,
+                         const KnightStatPhysicalEntryWriteback12004 &) = default;
+};
+
 struct KnightStatConsumptionEvent12004 {
   std::uint64_t sequence = 0;
   std::uint32_t thread_id = 0;
@@ -61,6 +79,7 @@ struct KnightStatConsumptionEvent12004 {
   std::vector<KnightConsumedContext12004> contexts;
   KnightConsumedOutput12004 observed_output;
   bool entry_association_proven = false;
+  std::optional<KnightStatPhysicalEntryWriteback12004> physical_entry_writeback;
   std::string capture_reason;
   friend bool operator==(const KnightStatConsumptionEvent12004 &,
                          const KnightStatConsumptionEvent12004 &) = default;

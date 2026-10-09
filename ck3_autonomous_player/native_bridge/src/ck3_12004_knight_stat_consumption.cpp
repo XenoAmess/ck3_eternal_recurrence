@@ -28,9 +28,11 @@ std::atomic<bool> g_available{false};
 std::mutex g_mutex;
 std::array<std::shared_ptr<const Event>, kKnightStatConsumptionCapacity12004> g_ring;
 std::uint64_t g_sequence = 0;
+std::atomic<std::uint64_t> g_writer_sequence{0};
 std::atomic<std::uint64_t> g_capture_failures{0};
 thread_local Event *g_pending = nullptr;
 thread_local KnightStatBridgeQueryScope12004 *g_query_scope = nullptr;
+thread_local KnightStatPhysicalEntryScope12004 *g_physical_scope = nullptr;
 
 template <class Callback> bool FaultBoundary(Callback callback) noexcept {
 #if defined(_MSC_VER)
@@ -84,6 +86,23 @@ void Output(void *cache, KnightConsumedOutput12004 &result) noexcept {
       result.toughness_raw && result.pursuit_raw && result.screen_raw;
   if (!result.ready) result.reason = "native_output_copy_failed";
 }
+void EntryOutput(void *entry, KnightConsumedOutput12004 &result) noexcept {
+  result.max_size = At<std::int32_t>(entry, 0x30);
+  result.siege_value_raw = At<std::int64_t>(entry, 0x38);
+  result.damage_raw = At<std::int64_t>(entry, 0x40);
+  result.toughness_raw = At<std::int64_t>(entry, 0x48);
+  result.pursuit_raw = At<std::int64_t>(entry, 0x50);
+  result.screen_raw = At<std::int64_t>(entry, 0x58);
+  result.ready = result.max_size && result.siege_value_raw && result.damage_raw &&
+      result.toughness_raw && result.pursuit_raw && result.screen_raw;
+  if (!result.ready) result.reason = "physical_entry_cache_copy_failed";
+}
+template <class T>
+std::optional<bool> EqualObserved(const std::optional<T> &left,
+                                const std::optional<T> &right) noexcept {
+  if (left && right) return *left == *right;
+  return std::nullopt;
+}
 bool Initialize(const KnightStatConsumptionBindings12004 &bindings,
                 KnightStatWrapperOriginal12004 wrapper,
                 KnightStatContextOriginal12004 context) noexcept {
@@ -96,6 +115,7 @@ bool Initialize(const KnightStatConsumptionBindings12004 &bindings,
     for (auto &record : g_ring) record.reset();
   }
   g_capture_failures.store(0, std::memory_order_release);
+  g_writer_sequence.store(0, std::memory_order_release);
   g_wrapper_original.store(wrapper, std::memory_order_release);
   g_context_original.store(context, std::memory_order_release);
   g_available.store(true, std::memory_order_release);
@@ -209,6 +229,73 @@ KnightStatBridgeQueryScope12004::~KnightStatBridgeQueryScope12004() {
   g_query_scope = static_cast<KnightStatBridgeQueryScope12004 *>(previous_);
 }
 
+KnightStatPhysicalEntryScope12004::KnightStatPhysicalEntryScope12004(
+    void *entry, void *province) noexcept
+    : previous_(g_physical_scope), entry_(entry), province_(province),
+      writer_sequence_(g_writer_sequence.fetch_add(1, std::memory_order_acq_rel) + 1),
+      regiment_id_(At<std::uint32_t>(entry, 8)),
+      province_id_(At<std::int32_t>(province, 0x10)) {
+  g_physical_scope = this;
+}
+KnightStatPhysicalEntryScope12004::~KnightStatPhysicalEntryScope12004() {
+  g_physical_scope = previous_;
+}
+void KnightStatPhysicalEntryScope12004::Complete(
+    std::uint64_t original_return_value) noexcept {
+  if (completed_) return;
+  completed_ = true;
+  if (wrapper_count_ == 0) return;
+  try {
+    KnightStatPhysicalEntryWriteback12004 writeback;
+    writeback.writer_sequence = writer_sequence_;
+    writeback.entry_identity = reinterpret_cast<std::uintptr_t>(entry_);
+    writeback.province_identity = reinterpret_cast<std::uintptr_t>(province_);
+    writeback.regiment_id = regiment_id_;
+    writeback.province_id = province_id_;
+    writeback.original_return_value = original_return_value;
+    EntryOutput(entry_, writeback.entry_cache);
+    if (!writeback.entry_cache.ready) writeback.reason = writeback.entry_cache.reason;
+    if (wrapper_sequence_overflow_) writeback.reason = "writer_wrapper_sequence_capacity";
+    const std::lock_guard lock(g_mutex);
+    for (std::size_t index = 0; index < wrapper_count_; ++index) {
+      const auto sequence = wrapper_sequences_[index];
+      auto &retained = g_ring[(sequence - 1) % g_ring.size()];
+      if (!retained || retained->sequence != sequence) continue;
+      // Previously returned query copies remain immutable. Attach only after the
+      // actual writer stores its caches and returns to its observation scope.
+      auto updated = std::make_shared<Event>(*retained);
+      auto sidecar = writeback;
+      sidecar.output_cache_identity_matches_entry =
+          updated->output_cache_identity == sidecar.entry_identity;
+      const auto &output = updated->observed_output;
+      const auto &cache = sidecar.entry_cache;
+      sidecar.wrapper_output_field_matches = {
+          EqualObserved(output.max_size, cache.max_size),
+          EqualObserved(output.siege_value_raw, cache.siege_value_raw),
+          EqualObserved(output.damage_raw, cache.damage_raw),
+          EqualObserved(output.toughness_raw, cache.toughness_raw),
+          EqualObserved(output.pursuit_raw, cache.pursuit_raw),
+          EqualObserved(output.screen_raw, cache.screen_raw)};
+      sidecar.wrapper_output_comparison_ready = std::all_of(
+          sidecar.wrapper_output_field_matches.begin(),
+          sidecar.wrapper_output_field_matches.end(),
+          [](const auto &match) { return match.has_value(); });
+      if (sidecar.wrapper_output_comparison_ready)
+        sidecar.wrapper_output_matches_entry_cache = std::all_of(
+            sidecar.wrapper_output_field_matches.begin(),
+            sidecar.wrapper_output_field_matches.end(),
+            [](const auto &match) { return *match; });
+      updated->origin = "native_physical_entry_writer";
+      updated->entry_association_proven = true;
+      if (sidecar.regiment_id)
+        updated->regiment_id = static_cast<std::int32_t>(*sidecar.regiment_id);
+      if (sidecar.province_id) updated->target_province_id = *sidecar.province_id;
+      updated->physical_entry_writeback = std::move(sidecar);
+      retained = std::move(updated);
+    }
+  } catch (...) { g_capture_failures.fetch_add(1); }
+}
+
 bool InitializeKnightStatConsumptionFixture12004(
     const KnightStatConsumptionBindings12004 &bindings,
     KnightStatWrapperOriginal12004 wrapper, KnightStatContextOriginal12004 context) noexcept {
@@ -254,6 +341,11 @@ void *InvokeKnightStatWrapper12004(void *output_cache, void *linked_character,
       if (event->contexts.size() != 9) event->capture_reason = "consumed_context_calls_incomplete";
       const std::lock_guard lock(g_mutex);
       event->sequence = ++g_sequence;
+      if (g_physical_scope != nullptr) {
+        if (g_physical_scope->wrapper_count_ < g_physical_scope->wrapper_sequences_.size())
+          g_physical_scope->wrapper_sequences_[g_physical_scope->wrapper_count_++] = event->sequence;
+        else g_physical_scope->wrapper_sequence_overflow_ = true;
+      }
       const auto ring_index = (event->sequence - 1) % g_ring.size();
       g_ring[ring_index] = std::shared_ptr<const Event>(std::move(event));
     } catch (...) { g_capture_failures.fetch_add(1); }
@@ -341,7 +433,17 @@ std::optional<KnightStatConsumptionQuery12004> ReadKnightStatConsumptionQuery120
       const bool character_match = !event->regiment_id && event->linked_character_id &&
           std::find(current_linked_character_ids.begin(), current_linked_character_ids.end(),
                     static_cast<std::int32_t>(*event->linked_character_id)) != current_linked_character_ids.end();
-      if (regiment_match || character_match) result.events.push_back(*event);
+      if (event->physical_entry_writeback && event->physical_entry_writeback->regiment_id) {
+        const auto full_id = *event->physical_entry_writeback->regiment_id;
+        const bool physical_member = std::any_of(
+            current_regiment_ids.begin(), current_regiment_ids.end(),
+            [full_id](std::int32_t id) { return static_cast<std::uint32_t>(id) == full_id; });
+        if (physical_member) {
+          auto copy = *event;
+          copy.physical_entry_writeback->regiment_member_at_query = true;
+          result.events.push_back(std::move(copy));
+        }
+      } else if (regiment_match || character_match) result.events.push_back(*event);
     }
     return result;
   } catch (...) { return std::nullopt; }

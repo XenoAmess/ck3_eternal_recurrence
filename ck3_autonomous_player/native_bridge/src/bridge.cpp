@@ -97,6 +97,7 @@
 #include "xar_bridge/ck3_12004_person_title_tail_capture.hpp"
 #include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
 #include "xar_bridge/ck3_12004_knight_stat_consumption.hpp"
+#include "xar_bridge/ck3_12004_physical_entry_writeback.hpp"
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12004_routes.hpp"
@@ -625,6 +626,8 @@ static xar::ck3_12004::PersonSixStageCaptureDetourState12004
     g_person_six_stage_capture_12004{};
 static xar::ck3_12004::KnightStatConsumptionDetourState12004
     g_knight_stat_consumption_12004{};
+static xar::ck3_12004::PhysicalEntryWritebackDetourState12004
+    g_physical_entry_writeback_12004{};
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 static xar::ck3_11906::AiReentryDispatchStateV1
     g_ai_terminal_reentry_dispatch_v1{};
@@ -28330,6 +28333,13 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     knight_stat_environment.primary_thread_suspended_proven = true;
     if (!xar::ck3_12004::InstallKnightStatConsumption12004(
             g_knight_stat_consumption_12004, knight_stat_environment, sha))
+      return FALSE;
+    xar::ck3_12004::PhysicalEntryWritebackInstallEnvironment12004
+        physical_entry_environment{};
+    physical_entry_environment.bindings = knight_stat_environment.bindings;
+    physical_entry_environment.primary_thread_suspended_proven = true;
+    if (!xar::ck3_12004::InstallPhysicalEntryWriteback12004(
+            g_physical_entry_writeback_12004, physical_entry_environment, sha))
       return FALSE;
     auto environment = xar::ck3_12004::BindBattleJournalImage12004(base, sha, bindings);
     environment.primary_thread_suspended_proven = true;

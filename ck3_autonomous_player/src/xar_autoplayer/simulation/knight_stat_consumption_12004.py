@@ -111,6 +111,14 @@ def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
     field_matches = {field: (projected[field] == observed[field]
                             if comparison_ready else None)
                      for field in _CACHE_FIELDS}
+    physical = deepcopy(event.get("physical_entry_writeback"))
+    physical_ready = (calculated.ready and physical is not None
+                      and physical["entry_cache"]["ready"])
+    physical_matches = {
+        field: (projected[field] == physical["entry_cache"][field]
+                if physical_ready else None)
+        for field in _CACHE_FIELDS
+    }
     return {
         "sequence": event["sequence"],
         "thread_id": event["thread_id"],
@@ -139,7 +147,16 @@ def project_consumed_knight_stat_event_12004(event: Mapping) -> dict:
         "comparison_ready": comparison_ready,
         "field_matches": field_matches,
         "matches_observed_output": (all(field_matches.values()) if comparison_ready else None),
-        "entry_association_proven": False,
+        "physical_entry_writeback": physical,
+        "physical_entry_comparison_ready": physical_ready,
+        "physical_entry_field_matches": physical_matches,
+        "projection_matches_physical_entry_cache": (
+            all(physical_matches.values()) if physical_ready else None),
+        "wrapper_output_physical_comparison_ready": (
+            physical["wrapper_output_comparison_ready"] if physical is not None else False),
+        "wrapper_output_matches_physical_entry_cache": (
+            physical["wrapper_output_matches_entry_cache"] if physical is not None else None),
+        "entry_association_proven": event["entry_association_proven"],
         "historical_stage_equivalence_proven": False,
         "shared_native_context_claimed": False,
         "actual_model_write_performed": False,
@@ -165,7 +182,10 @@ def project_knight_stat_consumption_12004(value: object) -> dict | None:
         "reason": normalized["reason"],
         "events": [project_consumed_knight_stat_event_12004(event)
                    for event in normalized["events"]],
-        "entry_association_proven": False,
+        "physical_entry_associated_event_count": sum(
+            bool(event["entry_association_proven"]) for event in normalized["events"]),
+        "entry_association_proven": any(
+            event["entry_association_proven"] for event in normalized["events"]),
         "historical_stage_equivalence_proven": False,
         "actual_model_write_performed": False,
         "full_person_ready": False,
