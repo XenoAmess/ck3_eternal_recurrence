@@ -389,6 +389,8 @@ flowchart LR
 
 - **NW-ECON-R0225（2026-09-26，R0225 实机漏判 → 源码/fixture 修复；未复验实机）**：Robert c2 候选在和平 paused 帧已读出 4 个直辖 barony、981 个原生建筑定义、玩家现金 344.906 金，仍以 512 次最终合法性上限在首个 barony 仅留下四个 `hospices_01` 样本（每个成本 150 金；保留 200 金后均不可负担），`checks_truncated=true`，随后错误地给出全局 `no_legal_budgeted_building` 并推进 18 天。此证据只能证明**已观察样本**不可负担。exact-build 原生树沿已验证 `CBuildingType` manager 的 canonical key 将现有 19 个标称正月收入一级建筑放在检查前列，按标称收入降序，对每个定义先遍历所有直辖 holding/slot，再花有界预算检查其他定义；每项仍经玩家同帧原生最终合法性、原生成本、现金与 200 金储备。新增 `positive_income_coverage_complete` 仅在 manager 所有 key 均可分类且正收益定义的全部直辖槽位已查完时为真；样本上限或检查上限截断正收益阶段时为假。无可选候选且此位为假返回 `evidence_insufficient`，和平正式消费者保留 RED、不推进日期；战前仲裁也阻止原战争步骤，service 先给独立婚配评估机会，无婚配动作则保留建设观测 RED。无候选且覆盖为真才可说该**现有 19-key 窄政策**没有可负担正收益建筑，不能扩大为所有建筑无经济价值。原版动态 AI `ai_value` 与真实完工税收增量未因此计算；本包还需 c3 匹配 DLL 的 paused live 验证，不把源码 GREEN 当新建设动作。
 
+**2026-10-10 R85 correction (source-ready / NOTRUN):** the historical ordinary-clock and prewar block above caused a real Native60 normal-turn halt. Incomplete positive-income coverage now defers only a new construction spend: the query remains RED and the incoming selected step, phase and reason are preserved. This does not force a deferred baseline army move or claim construction readiness. See [the actual failure, minimal consumer change and unique connected reproduction](construction-positive-income-coverage-normal-plan-recovery-12004.md). The dated R0225 result remains historical evidence.
+
 ```mermaid
 flowchart LR
     M[同帧已验证 CBuildingType 定义与直辖领地] --> K[读取 canonical key]
@@ -397,6 +399,7 @@ flowchart LR
     H --> C{正收益覆盖完整且无可负担候选?}
     C -->|是| N[窄政策无可负担建设]
     C -.->|否且无候选| R[观测不足 RED]
+    R --> O[仅延后新建设 保留进入前普通计划]
     H -->|合法且预算满足| A[既有 typed 建设与独立收据]
 ```
 

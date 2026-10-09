@@ -491,15 +491,12 @@ def plan_construction_private(
             return prewar_unchanged("no_positive_budgeted_building", query=query)
         return {**planned, "plan": {**plan, "construction_private_query": query}}
     if query.get("status") == "evidence_insufficient":
+        # Missing coverage defers this optional new spend, not the selected
+        # ordinary action. Keep the native query RED without starving its clock.
         if prewar:
-            observed = prewar_unchanged("positive_income_coverage_incomplete",
-                                        query=query)
-            return {**observed, "plan": {**observed["plan"],
-                "selected_step": None,
-                "reason": "construction positive-income coverage incomplete; preserve RED"}}
-        return {**planned, "plan": {**plan, "selected_step": None,
-            "construction_private_query": query,
-            "reason": "construction positive-income coverage incomplete; preserve RED"}}
+            return prewar_unchanged("positive_income_coverage_incomplete",
+                                   query=query)
+        return {**planned, "plan": {**plan, "construction_private_query": query}}
     if query.get("status") != "selected":
         if prewar:
             return prewar_unchanged("construction_source_red", query=query)

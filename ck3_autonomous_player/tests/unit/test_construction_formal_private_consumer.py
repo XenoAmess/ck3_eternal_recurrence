@@ -16,6 +16,7 @@ from xar_autoplayer.bridge.mcp_server import (
 )
 from xar_autoplayer.bridge.driver import BridgeUnavailableError, StepPostconditionError
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.version_identity import CK3_12004
 from xar_autoplayer.construction_formal_consumer import (
     RECEIPT_STEP, ROOT_QUERY_STEP, SUBMIT_STEP,
     plan_construction_private, read_construction_ledger,
@@ -747,7 +748,7 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(result["plan"]["construction_prewar_arbitration"]["status"],
                              "no_positive_budgeted_building")
 
-    def test_uncovered_positive_definitions_preserve_red_instead_of_advancing(self):
+    def test_uncovered_positive_definitions_preserve_evidence_and_selected_step(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
             driver.no_positive_building = True
@@ -758,14 +759,14 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                              "positive_income_candidate_coverage_incomplete")
             baseline = {"plan": {"selected_step": "life-advance"}, "revision": 3}
             normal = plan_construction_private(driver, baseline, frame(), root(), set())
-            self.assertIsNone(normal["plan"]["selected_step"])
+            self.assertEqual(normal["plan"]["selected_step"], "life-advance")
             self.assertEqual(normal["plan"]["construction_private_query"]["status"],
                              "evidence_insufficient")
             war_step = "declare-war-123-4-0"
             prewar = {"plan": {"selected_step": war_step}, "revision": 3}
             result = plan_construction_private(driver, prewar, frame(), root(), set(),
                                                prewar_arbitration=True)
-            self.assertIsNone(result["plan"]["selected_step"])
+            self.assertEqual(result["plan"]["selected_step"], war_step)
             self.assertEqual(result["plan"]["construction_prewar_arbitration"]["status"],
                              "positive_income_coverage_incomplete")
 
@@ -1017,7 +1018,7 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(outcome["selected_step"], SUBMIT_STEP)
             self.assertEqual(outcome["result"]["status"], "submitted_verification_pending")
 
-    def test_service_preserves_incomplete_construction_red_after_family_chance(self):
+    def test_service_preserves_normal_step_with_incomplete_construction_after_family_chance(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
             driver.allow_private_construction_formal_trial = True
@@ -1034,10 +1035,10 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                                 planned) as family:
                 planned = service.plan_turn()
             family.assert_called_once()
-            self.assertIsNone(planned["plan"]["selected_step"])
+            self.assertEqual(planned["plan"]["selected_step"], "life-advance")
             self.assertEqual(planned["plan"]["construction_private_query"]["status"],
                              "evidence_insufficient")
-            self.assertIn("coverage incomplete", planned["plan"]["reason"])
+            self.assertEqual(planned["plan"]["phase"], "peacetime")
             with mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
                             return_value={"selected_step": "life-advance",
                                           "phase": "peacetime"}), \
@@ -1049,7 +1050,7 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(family_selected["plan"]["selected_step"],
                              "private-family-submit")
 
-    def test_service_prewar_incomplete_construction_blocks_war_after_family_chance(self):
+    def test_service_prewar_incomplete_construction_keeps_war_after_family_chance(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
             driver.allow_private_construction_formal_trial = True
@@ -1070,12 +1071,75 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                                 planned) as family:
                 planned = service.plan_turn()
             family.assert_called_once()
-            self.assertIsNone(planned["plan"]["selected_step"])
+            self.assertEqual(planned["plan"]["selected_step"], war_step)
             self.assertIn("construction_prewar_arbitration", planned["plan"], planned)
             self.assertEqual(planned["plan"]["construction_prewar_arbitration"]
                              ["original_selected_step"], war_step)
             self.assertEqual(planned["plan"]["construction_private_query"]["status"],
                              "evidence_insufficient")
+
+    def test_incomplete_construction_world_preserves_and_executes_normal_advance(self):
+        class OrdinaryAdvanceDriver(Driver):
+            def __init__(self, directory):
+                super().__init__(directory)
+                self.ordinary_executions = []
+
+            def execute_step(self, step, *, expected_revision):
+                if step != "life-advance" or expected_revision != self.snapshot["revision"]:
+                    raise AssertionError("expected the retained ordinary advance")
+                self.ordinary_executions.append((step, expected_revision))
+                self.snapshot.update(
+                    revision=expected_revision + 1,
+                    native_revision=self.snapshot["native_revision"] + 1,
+                    date_raw=self.snapshot["date_raw"] + 24,
+                )
+                self.snapshot["snapshot_id"] = f"native:{self.snapshot['native_revision']}"
+                return {"step": step, "days_advanced": 1}
+
+        with TemporaryDirectory() as location:
+            directory = Path(location)
+            driver = OrdinaryAdvanceDriver(directory)
+            driver.allow_private_construction_formal_trial = True
+            driver.no_positive_building = True
+            driver.positive_coverage_incomplete = True
+            driver.snapshot["diagnostics"] = {"hello": {
+                "expected_ck3_version": CK3_12004.game_version,
+                "expected_ck3_sha256": CK3_12004.executable_sha256,
+            }}
+            driver.snapshot["active_wars"] = [{"war_id": 16777231}]
+            driver.snapshot["player_armies"] = [{"army_id": 218104048}]
+            driver.recorded.extend([(row["command"], row["result"]) for row in root()])
+            write_construction_ledger(directory, read_construction_ledger(directory))
+            ledger_path = directory / "construction-formal-pending-v1.json"
+            ledger_before = ledger_path.read_bytes()
+            date_before = driver.snapshot["date_raw"]
+            # The entering plan is an ordinary clock after movement was deferred;
+            # this fixture does not replace it with the unselected army move.
+            baseline = {"selected_step": "life-advance", "phase": "peacetime",
+                        "reason": "ordinary advance after projected contact deferred movement"}
+            with mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                            return_value=baseline):
+                outcome = GameplayBridgeService(driver).auto_turn()
+
+            self.assertEqual(outcome["status"], "executed")
+            self.assertEqual(outcome["selected_step"], baseline["selected_step"])
+            for field in ("selected_step", "phase", "reason"):
+                self.assertEqual(outcome["plan"][field], baseline[field])
+            query = outcome["plan"]["construction_private_query"]
+            self.assertEqual(query["status"], "evidence_insufficient")
+            self.assertEqual(query["reason"], "positive_income_candidate_coverage_incomplete")
+            self.assertEqual(query["exact_ck3_build"], CK3_12004.game_version)
+            self.assertEqual(query["exe_sha256"], CK3_12004.executable_sha256)
+            self.assertIsNone(query.get("candidate"))
+            self.assertIs(query["world"]["positive_income_coverage_complete"], False)
+            self.assertIs(query["world"]["checks_truncated"], True)
+            self.assertEqual(query["world"]["legal_samples"][0]["building_key"],
+                             "military_camps_01")
+            self.assertEqual([row["step"] for row in driver.requests],
+                             [transport.QUERY_NATIVE])
+            self.assertEqual(driver.ordinary_executions, [("life-advance", 3)])
+            self.assertEqual(driver.snapshot["date_raw"], date_before + 24)
+            self.assertEqual(ledger_path.read_bytes(), ledger_before)
 
     def test_r0060_public_revision_after_native_root_query_reaches_construction(self):
         with TemporaryDirectory() as location:
