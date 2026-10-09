@@ -97,3 +97,37 @@ Bridge, Protocol and the other Runtime owners retain their qualified pins.
 Root will compose this after Native57 and qualify it as Native58. Old6/7
 GREEN scenarios are retained. Worker builds, tests, project imports,
 EXE/hash/Game/SDK calls and new live/day/G2 credit are all0.
+
+## Native58 offline qualification
+
+Root completed this source increment in Native58. The earlier
+SOURCE_READY / FIRST_NOTRUN description records the authoring stage; the
+projection primitive is now **offline qualified GREEN**. The
+[canonical Native58 receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix58/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)
+and [actual attempt01 result](Z:/g2-native58-build01/attempt01/ROOT-NATIVE58-RESULT.json)
+bind production, fixture and registered consumer to full source
+`d8011e87ac72600d09bee854e155e464c6602029`, adopted from author
+`4f6684c7d6c826e8aa42ba9d45bb3d523e7d8531`.
+
+Root compiled only one production Runtime owner and one fixture. The
+complete738-owner lineage retains737 existing objects; the Runtime archive
+contains438 owners with one new and437 retained. All four new complete
+native wires passed in0.2554165s, and the sole registered consumer's four
+cases passed in4.9213101s. Root sealed the canonical increment without old
+test replays, old binary hashes or copies. Worker execution remained0.
+
+The two positive compiled cases establish that the existing interpreter's
+`calendar_deadline_ready` can be true with the corresponding observed
+membership, positive complete match count, eligible scalar tail and proved
+queried-row membership in the processed timed suffix. The computation uses
+ceiling division by that observed count and the actual24-raw-date native
+step. The nonmember and real read-failure cases retain their distinct
+known-zero/unavailable states and do not produce a projected retry date.
+This qualification makes the query's calendar projection usable; it does
+not assert that context membership or future final law terms remain fixed.
+
+No strategy or action caller has been changed by this package. There is no
+new paused live artifact, Game/SDK invocation, calendar action, law change,
+M7 completion, natural succession or G2 credit. The next independent source
+work is to connect the observed retry date to the existing ordinary
+decision's retry queue and request fresh native final terms when due.
