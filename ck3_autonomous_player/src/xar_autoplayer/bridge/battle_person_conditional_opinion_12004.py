@@ -139,6 +139,23 @@ def normalize_person_conditional_opinion_12004(value):
             or [row["native_index"] for row in rows] != list(range(len(rows)))):
         raise ValueError(FIELD_NAME + " physical source occurrence order changed")
     _state(result["ready"], result["reason"], FIELD_NAME)
+    admission_unavailable = (
+        source["admitted"] is not True or source["character_identity"] is None
+        or source["conditional_definition_identity"] in (None, "0x0")
+    )
+    if admission_unavailable and result["selected_family"] == "unavailable":
+        # The production reader returns before reaching the classifier when
+        # preceding admission/receiver inputs are unavailable. Its outer reason
+        # carries that failure; the untouched classifier has no result/reason.
+        expected_reason = source["reason"] or "conditional_admission_unread"
+        if (result["ready"] or result["reason"] != expected_reason
+                or result["classifier_ready"] or result["classifier_reason"] is not None
+                or result["classifier_result_i32"] is not None or opinions or rows
+                or result["selected_array_identity"] is not None
+                or result["selected_count_i32"] is not None
+                or result["occurrence_count"] is not None):
+            raise ValueError(FIELD_NAME + " preclassifier admission failure disagrees with its source inputs")
+        return result
     if result["classifier_ready"] or result["selected_family"] != "not_demanded":
         _state(result["classifier_ready"], result["classifier_reason"], FIELD_NAME + ".classifier")
     classifier = result["classifier_result_i32"]

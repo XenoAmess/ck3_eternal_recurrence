@@ -7,6 +7,8 @@ packet; only correlation and hello/paused-snapshot scaffolding are fixtures.
 Thirteen observations require a live owner. The nonnull1D0 header case requires
 a genuinely dead owner and retains CurrentPersonSample as production publishes
 it independently before the alive read; no missing leaf is manufactured.
+The unchanged opinion leaf retains its real upstream registry-read failure;
+its classifier is not reached, while the independent new leaf remains usable.
 No historical producer, complete Person/Entry or paused-live case is replayed.
 """
 from __future__ import annotations
@@ -147,6 +149,13 @@ def test_person_following_2922680_12004_registered_mcp_whole_packets():
                     assert raw_observations[0]["alive"] is (name != "dead-owner-static-header-zero")
                     raw_leaf = raw_observations[0]["current_person_state"][FIELD_NAME]
                     assert raw_leaf["schema"] == SCHEMA
+                    raw_opinion = raw_observations[0]["current_person_state"]["following_2921a90_opinion"]
+                    assert raw_opinion["ready"] is False
+                    assert raw_opinion["reason"] == raw_opinion["source_inputs"]["reason"] == "registry_slot_unread"
+                    assert raw_opinion["source_inputs"]["admitted"] is None
+                    assert raw_opinion["classifier_ready"] is False
+                    assert raw_opinion["classifier_reason"] is None
+                    assert raw_opinion["classifier_result_i32"] is None
                     endpoint.select(packet)
                     response = await client.call_tool(TOOL, {
                         "prior_combat_id": None,
@@ -167,6 +176,12 @@ def test_person_following_2922680_12004_registered_mcp_whole_packets():
                     observation = frame["character_observations"][0]
                     assert observation["character_id"] == SUBJECT_ID != PLAYER_ID
                     assert observation["alive"] is (name != "dead-owner-static-header-zero")
+                    opinion = observation["current_person_state"]["following_2921a90_opinion"]
+                    assert opinion["ready"] is False and opinion["reason"] == "registry_slot_unread"
+                    assert opinion["selected_family"] == "unavailable"
+                    assert opinion["classifier_ready"] is False
+                    assert opinion["classifier_reason"] is None and opinion["classifier_result_i32"] is None
+                    assert opinion["opinion_rows"] == opinion["rows"] == []
                     leaf = observation["current_person_state"][FIELD_NAME]
                     leaves[name] = leaf
                     assert leaf["character_id"] == observation["character_id"]
