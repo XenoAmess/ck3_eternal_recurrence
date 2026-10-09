@@ -1,0 +1,230 @@
+{
+  "schema": "ck3-r41-shared-runtime-startup-red-actual-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0041",
+  "checkout_head": "6a3affdb87f03f01bdc9f4dc43aeff15960200db",
+  "agent_source_root": "C:\\csr4",
+  "started_at": "2026-10-09T21:48:48.802653+00:00",
+  "finished_at": "2026-10-09T21:59:00.181811+00:00",
+  "readiness_timeout_seconds": 600,
+  "delayed_injection_requested": true,
+  "injection_admitted": false,
+  "startup_observation_count": 714,
+  "startup_first_last": [
+    {
+      "at": "2026-10-09T21:48:58.280401+00:00",
+      "status": "WAITING_FOR_INITIAL_NATIVE_CONNECTION",
+      "connected": false,
+      "semantic_state_available": false,
+      "bridge_pid": null,
+      "connection_generation": 0
+    },
+    {
+      "at": "2026-10-09T21:58:57.428148+00:00",
+      "status": "WAITING_FOR_INITIAL_NATIVE_CONNECTION",
+      "connected": false,
+      "semantic_state_available": false,
+      "bridge_pid": null,
+      "connection_generation": 0
+    }
+  ],
+  "saved_native_frame_count": 0,
+  "command_exit_codes": {
+    "allocate": 0,
+    "run": 2,
+    "verify": 2,
+    "release": 0
+  },
+  "native_status": "RED",
+  "native_error": "TimeoutError: saved campaign initial native connection/semantic frame was not ready before original readiness deadline",
+  "steps": [],
+  "host_original_parent_exit_code": 1,
+  "historical_host_cleanup_ok": false,
+  "historical_session_report": null,
+  "historical_ck3_exit_code": null,
+  "historical_job_final_active_count": null,
+  "normal_exit_zero_proven": false,
+  "source_qualified_cleanup_findings": {
+    "runtime_exception_is_after_cleanup_checks": true,
+    "source_path": "runtime.py:3109-3143",
+    "source_contract": [
+      "retained process no longer alive",
+      "resumed Job active count zero",
+      "injector cleanup attestation required if injected",
+      "job and original process handles closed",
+      "authenticated watchdog absent or pinned/waited exit",
+      "unsafe/ready/pid markers removed"
+    ],
+    "host_summary_gap": "launch throws before returning SessionHandle; native_session raises instead of returning its local report; host session.report remains null and cleanup_ok only accepts report.shutdown.",
+    "historical_job_count_raw_receipt": null,
+    "historical_game_exit_code": null,
+    "normal_game_exit_zero": false,
+    "typed_normal_exit": false,
+    "current_census_is_not_original_handle_exit_evidence": true
+  },
+  "actual_current_closeout": {
+    "at_utc": "2026-10-09T23:29:03.879622+00:00",
+    "ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "case_processes": [],
+    "expected_allocation_supervision": [
+      {
+        "cmdline": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:/workspace/ck3_lyd_runtime_20261004/root-record-command-20261010-001.py",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-003/allocate-command-001",
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-003/runtime.local.json",
+          "--products",
+          "tools/ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-003/prepared/prepared-case.json",
+          "--attempt",
+          "a03",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a03",
+          "--previous-live",
+          "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0040",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a02",
+          "--previous-release",
+          "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0040/release-command-001/stdout.log"
+        ],
+        "pid": 6568,
+        "name": "python.exe",
+        "create_time": 1791582436.703441
+      },
+      {
+        "cmdline": [
+          "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/ck3_mod_acceptance.py",
+          "allocate",
+          "--runtime",
+          "C:/workspace/ck3-common-runtime/20261010-003/runtime.local.json",
+          "--products",
+          "tools/ck3_mod_acceptance_products.json",
+          "--product",
+          "li-yu-dao",
+          "--case",
+          "transaction-only-control",
+          "--prepared-case",
+          "C:/workspace/ck3-common-runtime/cases/lyd-transaction-control-20261010-003/prepared/prepared-case.json",
+          "--attempt",
+          "a03",
+          "--keeper-output",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a03",
+          "--previous-live",
+          "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0040",
+          "--previous-keeper",
+          "C:/workspace/ck3-common-runtime/keepers/20261010-a02",
+          "--previous-release",
+          "C:/workspace/ck3-common-runtime/runs/bf-202609141645-5434332d4d--li-yu-dao--R0040/release-command-001/stdout.log"
+        ],
+        "pid": 7572,
+        "name": "python.exe",
+        "create_time": 1791582436.8210633
+      }
+    ],
+    "process_read_errors": [],
+    "control_files": [
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-003\\state\\control\\ck3.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-003\\state\\control\\unsafe-cleanup.json",
+        "exists": false
+      },
+      {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-003\\state\\control\\ck3.watchdog_error",
+        "exists": false
+      }
+    ],
+    "host_original_exit": {
+      "at_utc": "2026-10-09T21:59:01.575845+00:00",
+      "pid": 14320,
+      "returncode": 1,
+      "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0041",
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "historical_host_cleanup_ok": false,
+    "historical_ck3_exit_code": null,
+    "historical_job_final_active_count": null,
+    "normal_exit_zero_claimed": false,
+    "note": "Fresh empty process/control census permits scene release; it does not replace missing historical native shutdown evidence."
+  },
+  "keeper_original_parent_exit_code": 0,
+  "actual_release_sequence": 4277,
+  "actual_release_resources": [],
+  "final_steam_offline_review": {
+    "at_utc": "2026-10-09T23:29:03.881089+00:00",
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0041\\steam-final-recovery-001\\probe-1\\steam-moved.png",
+    "bytes": 977955,
+    "sha256": "e23b3064bed1fea42dd614e67890c42450d333111d59120114a0eee396bdb103",
+    "direct_original_image_review": true,
+    "visible_offline_text": "离线模式",
+    "steam_offline_confirmed": true,
+    "visible_desktop_clock": "7:01 2026/10/10",
+    "actual_window_move_observed": true
+  },
+  "restored_display": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "public_verify_result": {
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "business_contract_applicable": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "status": "NOT_RUN_OR_PRESERVED_FAILURE",
+    "normal_close": null,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false
+  },
+  "closeout001": {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-closeout-20261010-001.py",
+    "correction_derivation": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-closeout-20261010-001.py",
+      "source_sha256": "42615b02081403156f8e0c0871811874799ce8aa197582cfd29aba99e499151e",
+      "new": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-root-closeout-20261010-002.py",
+      "new_sha256": "b0b0678b632d36c591e6fcfe427c1f9e815ab572426eddf7e245c30da3626314",
+      "reason": "Original census matched the expected still-running public allocate parent and recorder. Classify and preserve them as keeper supervision; do not treat them as game/MCP processes.",
+      "old_failed_before_mutating_display_or_STOP": true
+    },
+    "separate_actual_stdout_stderr_preserved": false,
+    "boundary": "Original producer and source-derived correction preserved; no retrospective failure stdout/stderr is fabricated."
+  },
+  "separate_permanent_packages": [
+    "docs/ck3-native-ai/2026-10-10-shared-delayed-injection-source04.md",
+    "docs/ck3-native-ai/2026-10-10-common-poll-reporting-ci-fixture.md"
+  ],
+  "game_actions_by_this_producer": 0,
+  "business_pass": false,
+  "case_acceptance_pass": false
+}
