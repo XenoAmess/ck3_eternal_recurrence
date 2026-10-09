@@ -3923,7 +3923,10 @@ class GameplayBridgeService:
             return self.assign_army_commander_v1(
                 *commander_assignment, expected_revision=expected_revision,
             )
-        army_snapshot = self.snapshot() if step == QUERY_ARMY_STRENGTHS_STEP else None
+        army_snapshot = (
+            self.snapshot(include_native_command_history=False)
+            if step == QUERY_ARMY_STRENGTHS_STEP else None
+        )
         result = self.driver.execute_step(step, expected_revision=expected_revision)
         if step == QUERY_ARMY_STRENGTHS_STEP and isinstance(result.get("army_strengths"), list):
             return {
