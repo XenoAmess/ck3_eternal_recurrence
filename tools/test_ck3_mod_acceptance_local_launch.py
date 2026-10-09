@@ -177,8 +177,16 @@ class LocalLaunchTests(unittest.TestCase):
     def test_original_harmless_child_returncode_is_preserved(self):
         script = self.root / "harmless.py"; script.write_text("raise SystemExit(7)\n", encoding="utf-8")
         frozen = {"argv": [sys.executable, "-B", str(script)], "lease_anchor": str(self.root), "run_id": "synthetic-only"}
-        result = launcher.retain_host(self.root, frozen, {}, {"lease": {"synthetic": True}})
+        # The portable static runner need not install desktop process tools.
+        # Only optional creation-time metadata is synthetic. Popen, PID, its
+        # retained handle and wait()/returncode all remain the real OS child.
+        metadata_only = SimpleNamespace(
+            Process=lambda _pid: SimpleNamespace(create_time=lambda: None),
+            NoSuchProcess=type("SyntheticNoSuchProcess", (Exception,), {}))
+        with patch.dict(sys.modules, {"psutil": metadata_only}):
+            result = launcher.retain_host(self.root, frozen, {}, {"lease": {"synthetic": True}})
         self.assertEqual(result, 1)
+        self.assertIsNone(keeper.read_json(self.root / "host-started.json")["create_time"])
         actual = keeper.read_json(self.root / "host-original-process-exit.json")
         self.assertEqual(actual["returncode"], 7)
         self.assertIs(actual["actual_original_popen_wait"], True)

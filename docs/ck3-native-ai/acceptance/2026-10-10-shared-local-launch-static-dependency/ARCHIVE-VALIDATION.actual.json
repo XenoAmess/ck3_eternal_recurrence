@@ -1,0 +1,47 @@
+{
+  "schema": "ck3.static-ci-evidence-archive-validation.v1",
+  "archive": {
+    "path": "raw-evidence.zip",
+    "bytes": 31627,
+    "sha256": "7ac0de95857ae535e2de13048f448c971af464d3a6bfef67db1124b6bf669a45"
+  },
+  "every_extracted_entry_matches_source": true,
+  "entries": [
+    {
+      "path": "FINAL.actual.json",
+      "bytes": 1505,
+      "sha256": "38b6888e613388f307fd0fba7c41abbbfd290752fe1dd6f007651b20e0c74aec"
+    },
+    {
+      "path": "exact-head-runs-001.stdout.json",
+      "bytes": 26431,
+      "sha256": "2e49c8b383eb71182e1ba14509c1cff7884d446ba73579b5768dfedfd3df6860"
+    },
+    {
+      "path": "exact-head-runs-001.actual.json",
+      "bytes": 497,
+      "sha256": "7a7f056347dde09a93a3a668f6ea3d564040af41991257052763854c17e7de41"
+    },
+    {
+      "path": "official-failure-001.stdout.log",
+      "bytes": 172964,
+      "sha256": "967d2df55296052f573161360318d321e64bf2f3f5336df130f6c2f719b8d326"
+    },
+    {
+      "path": "official-failure-001.actual.json",
+      "bytes": 482,
+      "sha256": "271478ce0497496c0cacb18f832687bee2f1535a13b9df54161df6142995b3aa"
+    },
+    {
+      "path": "targeted-regression.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "targeted-regression.stderr.log",
+      "bytes": 1840,
+      "sha256": "99667101aad0865f30ca76a163476444bb68e77f01042afd1f9b0858419f5fc5"
+    }
+  ],
+  "original_external_ci_responses_preserved": true
+}
