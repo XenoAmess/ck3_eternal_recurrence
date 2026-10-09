@@ -53,7 +53,7 @@ does not justify removing observations or changing public semantics. This
 package makes no additional Army-response or native modification, and does not
 attribute the remaining construction latency to a measured cause.
 
-## Sole new Root FIRST, NOT RUN
+## Sole new Root FIRST (not executed by the author)
 
 `tests/unit/test_construction_receipt_scalar_history_view.py::test_registered_receipts_sample_starting_income_without_full_history_export`
 is the one new compound. It reuses only helpers and the saved small captures
@@ -77,5 +77,33 @@ both receipt rows and the later root row remain in the eleven-row durable state.
 The public default still returns detached complete history.
 
 No old test, native producer, game, live SDK, build, benchmark or actual Driver
-read/hash was executed by the author. Source status is source-ready; the one
-Root FIRST and subsequent measured ordinary outcome remain pending.
+read/hash was executed by the author. The original source delivery was NOTRUN;
+Root's subsequent single qualification is recorded below. Measured live
+performance remains pending.
+
+## Root qualification: 2026-10-09 / W41
+
+Root adopted the implementation as
+`6d8c2a0a338ac9aa0d0165012c57a06285fba735` and ran the sole new compound once
+from the complete `Z:/gb0` integration source. FIRST is **GREEN**, exit `0`:
+one pytest test passed in `3.70 s`; the recorded outer elapsed time is
+`4.3956618 s`, from `2026-10-09T12:23:58.3442062Z` through
+`2026-10-09T12:24:02.7398680Z`.
+
+The actual compound recorded two registered auto-turns, two native read-only
+fixture queries, zero full-history exports during receipts, two locked scalar
+history reads, two complete durable writes and eleven complete history rows.
+The applied receipt retained initial income `1234567` despite the later
+same-frame history income `2345678`. The public default's complete detached
+history was preserved. Native submits and game calls were both zero; the
+selected-plan/frame/endpoint/process/later-root fixture seams remain explicit.
+
+Actual receipts are retained at:
+
+- `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/construction-receipt-scalar-first01/ROOT-FIRST-RESULT.json`
+- `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/construction-receipt-scalar-first01/COMPOUND-RESULT.json`
+
+Readiness is **static-ready**. R83 still runs SDK `bf5` without this change;
+the qualification establishes the connected behavior and copy counts, not a
+deployed live speedup, new gameplay result or G2 completion credit. This append
+reuses the two small actual receipts once and reruns no test or producer.
