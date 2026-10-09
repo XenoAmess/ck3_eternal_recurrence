@@ -156,20 +156,61 @@ Its older opinion Python source is not the future complete SDK source.
 The bf5 source freeze and Root's R83 work are separate from these static
 receipts; they do not turn this observer into a paused live observation.
 
+## R83 actual paused fixed-window observation
+
+Root's sole R83 family query completed2026-10-09T12:15:38.567245Z to
+12:15:55.431223Z (20:15:55 CST). Its retained thin receipt is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r83-native51-recovery-preparation/R83-FAMILY-TYPED-WINDOWS-THIN.json`;
+the original response remains
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/managed-full-r83-native51restore01/operator/gameplay-responses/002-r83-family-typed-windows01.json`.
+The read-only family response is available at native revision2,
+date53288640, played Robert29829 and first heir38822. Descendants are
+available with a complete roster, and child inputs are independently
+available. No repeated query or UI opening is required by this lane.
+
+All seven registered names, slot objects and copied RTTI names are
+available in that same frame:
+
+| Slot / handler offset | Exact type ID | Actual registered name | Actual decorated object type |
+| --- | --- | --- | --- |
+| 0 / 0x98 | 13092 | `intrigue_window` | `.?AVCIntrigueWindow@@` |
+| 1 / 0xA0 | 11010 | `military` | `.?AVCMilitaryView@@` |
+| 2 / 0xA8 | 11399 | `men_at_arms` | `.?AVCMenAtArmsView@@` |
+| 3 / 0xB0 | 14350 | `men_at_arms_type` | `.?AVCMenAtArmsTypeView@@` |
+| 4 / 0xB8 | 14351 | `select_maa_origin_province` | `.?AVCSelectMAAOriginView@@` |
+| 5 / 0xC0 | 15450 | `select_title_troop_assignment` | `.?AVCSelectTitleTroopAssignmentView@@` |
+| 6 / 0xC8 | 10602 | `army` | `.?AVCArmyWindow@@` |
+
+The thin receipt also retains each actual vtable/COL/type-descriptor RVA.
+The Army6 name and object type agree with the already admitted Army
+anchor. None of these seven registered names or RTTI types identifies a
+CharacterWindow. This is a finite miss for the seven selected slots,
+not an absence claim about every handler window.
+
+Native51's fixed seven-name/RTTI observer is now a
+`production-live primitive`: its same-query paused publication is observed
+in the real R83 game. The actual field is a provider-locating input,
+not a guardian relation, selected educator or CharacterWindow.GetCharacter
+observation. Its offline source/qualification0d and inherited Runtime8024
+remain the source split recorded above; the R83 full SDK source is a
+separate Root freeze, rather than treating Native51's old opinion Python
+as the future complete SDK. Root's R83 baseline paused qualification
+and this new field's live readback do not transfer guardian or action
+credit.
+
 ## Next actual CharacterWindow provider input
 
-The next operation is a **seven-ID runtime name capture through the
-implemented existing paused child query**, after Root's chosen deployment
-checkpoint. Match real registered names and present object RTTI from the
-same query frame; do not reuse fixture spellings as actual names.
+The seven-ID runtime name capture through the existing paused child query
+is complete. The next construction input must come from a literal typed
+registration or a connected native provider/caller, not another query of
+these seven known non-Character slots.
 
 1. Retain each original slot/ID pair and the independent name, handler and
    object-type status published by `typed_windows`.
-2. Match an actual registered CharacterWindow spelling/alias to a slot,
-   preserving the independent Army6/10602 anchor. A matching name yields a
-   candidate window slot only. If these seven names contain no Character
-   window, record that finite miss and obtain the next slot from a literal
-   typed registration or actual caller, rather than scanning all windows.
+2. Preserve the actual seven-name finite miss and Army6/10602 anchor.
+   Obtain a Character candidate from a literal typed registration or
+   actual caller, rather than scanning all windows or guessing slot8.
+   A future matching name yields a candidate window slot only.
 3. Follow that window's actual typed registration to the native
    `CharacterWindow.GetCharacter` callback and prove its window receiver
    and returned full Character identity. Only an actual callback/callsite
@@ -197,7 +238,9 @@ flowchart TD
   P --> N[Admitted3F4F8E0 registered-name resolver]
   N --> D[Native51 fixed private typed_windows observer]
   D --> F[Actual offline native3 and registered Service4 GREEN]
-  D -. paused real-game names and RTTI not captured .-> C[Candidate CharacterWindow typed slot]
+  D --> L[R83 actual paused7 names and RTTI available]
+  L --> M[Seven-slot finite miss: no CharacterWindow]
+  M -. connected native typed provider and registration unclosed .-> C[Candidate CharacterWindow typed slot]
   C -. native typed registration and receiver unclosed .-> G[CharacterWindow.GetCharacter full ID]
   G -. loaded relation object factory unclosed .-> R[GetRelation guardian / ScriptedRelation]
   R -. callback ABI and guardian direction unclosed .-> H[HasRelationBetween]
@@ -211,9 +254,9 @@ factory, canonical guardian key, two-Character argument direction and
 complete guardian collection remain required after GetCharacter closes;
 see [the relation provider topic](scripted-relation-provider-12004.md).
 
-The fixed typed-window observer is `static-ready`; its actual game name
-capture and CharacterWindow/guardian provider remain `research`. There is
-no new guardian/educator observation, production-live capability, action,
-full AST, child/education/birth/succession or G2 credit. This documentation
-update performs no Game/SDK or process action, fixture/FIRST replay, build
-or hash. Existing failures and parent live evidence remain unchanged.
+The fixed typed-window observer is a `production-live primitive`.
+CharacterWindow/GetCharacter and the guardian/educator provider remain
+`research`. There is no new guardian/educator observation, action, full
+AST, child/education/birth/succession or G2 credit. This documentation lane
+performs no Game/SDK or process action, fixture/FIRST replay, build or hash.
+Existing failures and the separate parent live evidence remain unchanged.
