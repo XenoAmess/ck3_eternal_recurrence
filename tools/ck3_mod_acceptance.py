@@ -118,7 +118,7 @@ class Selection:
             self.case['startup'].update(self.prepared['startup'])
             if self.prepared.get('initial_plan'):
                 self.case['initial_plan'] = self.prepared['initial_plan']
-        for forbidden in ("host", "source_root", "source_index", "native", "dll", "injector", "engine", "host_args"):
+        for forbidden in ("host", "source_root", "source_index", "native", "dll", "injector", "engine", "host_args", "host_features"):
             if forbidden in self.product or forbidden in self.case:
                 raise ValueError(f"Product case cannot select shared runtime: {forbidden}")
         self.context_path = context_path.resolve() if context_path else None
@@ -221,6 +221,13 @@ class Selection:
                 "--bridge-pipe", pipe, "--output", str(self.run_dir / "native-report.json"),
                 "--state-dir", str(state), "--plan", str(self.case_path(self.case["initial_plan"])),
                 "--control-plan-dir", str(self.run_dir / "controls")]
+        features = self.manifest.get("host_features", {})
+        if not isinstance(features, dict) or set(features) - {"succession_title_readonly"}:
+            raise ValueError("Unknown shared host feature")
+        if any(type(value) is not bool for value in features.values()):
+            raise ValueError("Shared host features require explicit booleans")
+        if features.get("succession_title_readonly"):
+            argv += ["--private-succession-title-readonly"]
         budgets = self.case["budgets"]
         for key, flag in BUDGET_FLAGS.items():
             value = budgets[key]

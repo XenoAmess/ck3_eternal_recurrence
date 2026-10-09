@@ -1321,6 +1321,29 @@ def _ck3_order_active_combat_retreat_v1(
     )
 
 
+def register_succession_title_readonly_tools(server, service, driver) -> None:
+    """Expose the existing exact-build observers only under explicit shared admission."""
+    from mcp.types import ToolAnnotations
+    readonly = ToolAnnotations(readOnlyHint=True, destructiveHint=False,
+                               idempotentHint=True, openWorldHint=False)
+    if getattr(driver, "allow_private_actor_cached_succession_queries", False) is True:
+        @server.tool(annotations=readonly)
+        def ck3_query_actor_cached_succession_v1(
+            expected_revision: NormalExitRevisionV1,
+        ) -> dict[str, object]:
+            """Read the complete current actor cache; this does not evaluate eligibility."""
+            return service.query_actor_cached_succession_v1(expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_actor_cached_succession_v1")
+    if getattr(driver, "allow_private_confucian_readonly_queries", False) is True:
+        @server.tool(annotations=readonly)
+        def ck3_query_confucian_religious_title_v1(
+            expected_revision: NormalExitRevisionV1,
+        ) -> dict[str, object]:
+            """Read current religious title identity, holder, properties and laws."""
+            return service.query_confucian_religious_title_v1(expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_confucian_religious_title_v1")
+
+
 def _forbid_unknown_tool_arguments_v1(server: object, tool_name: str) -> None:
     """Freeze one pinned MCP 2.0 tool to an exact top-level input object."""
     manager = getattr(server, "_tool_manager", None)
@@ -2346,6 +2369,7 @@ def create_server(
             include_native_command_history=include_native_command_history,
         )
 
+    register_succession_title_readonly_tools(server, service, driver)
     semantic_snapshot = getattr(driver, "take_internal_semantic_snapshot", None)
     if (getattr(driver, "allow_private_semantic_snapshot_readonly", False) is True
             and callable(semantic_snapshot)):

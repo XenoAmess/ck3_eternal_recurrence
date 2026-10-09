@@ -160,5 +160,22 @@ class SharedEntryTests(unittest.TestCase):
         self.write(self.products_path,self.products)
         self.assertTrue(any('explicitly blocked' in x for x in self.select().preflight()['blockers']))
 
+    def test_shared_observer_admission_is_identical_for_all_products(self):
+        self.manifest['host_features'] = {'succession_title_readonly': True}
+        self.write(self.manifest_path, self.manifest)
+        for key in self.products['products']:
+            self.assertEqual(self.select(key).argv.count('--private-succession-title-readonly'), 1)
+        self.products['products']['xqol']['cases'][0]['host_features'] = {'succession_title_readonly': False}
+        self.write(self.products_path, self.products)
+        with self.assertRaisesRegex(ValueError, 'cannot select shared runtime'):
+            self.select()
+
+    def test_unknown_or_coerced_shared_observer_feature_is_rejected(self):
+        for features in ({'unreviewed_native_override': True}, {'succession_title_readonly': 1}, []):
+            with self.subTest(features=features):
+                self.manifest['host_features'] = features
+                self.write(self.manifest_path, self.manifest)
+                with self.assertRaises(ValueError): self.select()
+
 
 if __name__ == '__main__': unittest.main(verbosity=2)

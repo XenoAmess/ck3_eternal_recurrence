@@ -852,6 +852,9 @@ def native_server(args: argparse.Namespace) -> None:
     managed_campaign_run_binding = (allocated_managed_campaign_run_binding(args)
         if fixture_policy is not None or args.saved_campaign_server else None)
     driver_options = {"episode_projection": "native_campaign"} if managed_campaign_run_binding is not None else {}
+    if getattr(args, "private_succession_title_readonly", False):
+        driver_options.update(allow_private_actor_cached_succession_queries=True,
+                              allow_private_confucian_readonly_queries=True)
     driver = RecordingDriver(
         args.bridge_pipe, endpoint=RecordingEndpoint(args.bridge_pipe),
         state_dir=args.state_dir, save_dir=args.state_dir / "profile/save games",
@@ -3178,6 +3181,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                        "--frontend-robert-bootstrap", "--fixture-profile"]
     if args.saved_campaign_save is not None:
         child_args.append("--saved-campaign-server")
+    if getattr(args, "private_succession_title_readonly", False):
+        child_args.append("--private-succession-title-readonly")
     if getattr(args, "frontend_mod_load_observation", False):
         child_args += ["--frontend-mod-load-observation", "--fixture-profile"]
     parameters = StdioServerParameters(command=sys.executable, args=child_args,
@@ -3422,6 +3427,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--saved-campaign-date-raw", type=int)
     result.add_argument("--saved-campaign-product-inventory", type=Path)
     result.add_argument("--saved-campaign-server", action="store_true", help=argparse.SUPPRESS)
+    result.add_argument("--private-succession-title-readonly", action="store_true",
+                        help="Explicit shared admission of existing exact-build readonly actor cache and religious title queries")
     result.add_argument("--frontend-mod-load-observation", action="store_true",
                         help="Observe a prepared mod profile at the main menu with read-only MCP diagnostics; no New Game/Start/campaign")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",
