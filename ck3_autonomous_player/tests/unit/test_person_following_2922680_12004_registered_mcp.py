@@ -4,6 +4,9 @@ Root's sole new native producer supplies fourteen original command_result files.
 Set CK3_PERSON_FOLLOWING_2922680_12004_MCP_WIRE_DIR to that output directory.
 The real Driver, normalizer, Service and registered MCP carry each complete
 packet; only correlation and hello/paused-snapshot scaffolding are fixtures.
+Thirteen observations require a live owner. The nonnull1D0 header case requires
+a genuinely dead owner and retains CurrentPersonSample as production publishes
+it independently before the alive read; no missing leaf is manufactured.
 No historical producer, complete Person/Entry or paused-live case is replayed.
 """
 from __future__ import annotations
@@ -38,7 +41,7 @@ PUBLIC_REVISION, NATIVE_REVISION, DATE_RAW = 97, 49, 53236632
 CASES = (
     ("context-header-zero", True, True),
     ("absent-context-static-zero", True, True),
-    ("gated-context-static-zero", True, True),
+    ("dead-owner-static-header-zero", True, True),
     ("negative-list-count", False, False),
     ("expired-ordered-duplicates", True, True),
     ("zero-source-count", True, True),
@@ -141,6 +144,7 @@ def test_person_following_2922680_12004_registered_mcp_whole_packets():
                     assert raw_frame["observed_date_raw"] == DATE_RAW
                     raw_observations = raw_frame["character_observations"]
                     assert [row["character_id"] for row in raw_observations] == [SUBJECT_ID]
+                    assert raw_observations[0]["alive"] is (name != "dead-owner-static-header-zero")
                     raw_leaf = raw_observations[0]["current_person_state"][FIELD_NAME]
                     assert raw_leaf["schema"] == SCHEMA
                     endpoint.select(packet)
@@ -162,6 +166,7 @@ def test_person_following_2922680_12004_registered_mcp_whole_packets():
                     assert actual["queried_native_revision"] == NATIVE_REVISION
                     observation = frame["character_observations"][0]
                     assert observation["character_id"] == SUBJECT_ID != PLAYER_ID
+                    assert observation["alive"] is (name != "dead-owner-static-header-zero")
                     leaf = observation["current_person_state"][FIELD_NAME]
                     leaves[name] = leaf
                     assert leaf["character_id"] == observation["character_id"]
@@ -214,7 +219,7 @@ def test_person_following_2922680_12004_registered_mcp_whole_packets():
         assert leaves[name]["append_occurrences"] == []
     static_header = hex(0x140000000 + 0x5D67DE0)
     assert leaves["absent-context-static-zero"]["list_header_identity"] == static_header
-    assert leaves["gated-context-static-zero"]["list_header_identity"] == static_header
+    assert leaves["dead-owner-static-header-zero"]["list_header_identity"] == static_header
     assert leaves["negative-list-count"]["list_count_i32"] == -2
     assert leaves["negative-list-count"]["reason"] == "list_count_negative"
     for name, *_ in CASES[4:10]:

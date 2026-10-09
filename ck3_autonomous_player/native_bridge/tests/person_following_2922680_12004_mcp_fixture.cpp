@@ -1,6 +1,10 @@
 // AUTHORED_NOTRUN: fresh guarded-memory worlds through the actual4 Battle
 // factory, CurrentPersonSample, terminal double sample and production formatter.
 // No reader result/DTO is supplied by this fixture and no native getter runs.
+// Character+1D0 is also the production DeathData pointer. Its nonnull header
+// branch is one genuine dead-owner observation; the other13 require alive=true.
+// CurrentPersonSample is independently published before the production alive
+// read (ck3_12002_battle.cpp CharacterObservationSample); it remains present.
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/ck3_12004_battle.hpp"
 #include "xar_bridge/ck3_12004_person_following_2922680.hpp"
@@ -379,7 +383,7 @@ struct World {
     }
     if (partial_primary) memory.Refuse(primary_values, 0, 32, false);
   }
-  game::BattleTerminalTransitionSnapshotV1 Observe() {
+  game::BattleTerminalTransitionSnapshotV1 Observe(bool expected_alive = true) {
     const auto original_bytes = memory.Bytes();
     game::BattleTerminalTransitionRequestV1 request;
     request.character_ids = {kSubject};
@@ -394,7 +398,7 @@ struct World {
             "production query frame, demand or read-only source bytes differ");
     const auto &observed = output.character_observations->front();
     Require(observed.character_id == kSubject && observed.character_id != kPlayer &&
-                observed.alive == true && observed.current_person_state,
+                observed.alive == expected_alive && observed.current_person_state,
             "query did not retain the explicitly requested character");
     const auto &person = *observed.current_person_state;
     Require(person.following_2922680 && !person.raw_numeric_inputs &&
@@ -423,7 +427,7 @@ struct Spec { const char *name; Kind kind; };
 constexpr Spec kCases[] = {
     {"context-header-zero", Kind::zero},
     {"absent-context-static-zero", Kind::absent},
-    {"gated-context-static-zero", Kind::gated},
+    {"dead-owner-static-header-zero", Kind::gated},
     {"negative-list-count", Kind::negative},
     {"expired-ordered-duplicates", Kind::expired},
     {"zero-source-count", Kind::source_zero},
@@ -490,7 +494,7 @@ void Produce(const std::filesystem::path &directory, const Spec &spec,
              spec.kind != Kind::source_negative) {
     world.ExpiredInputsOnly();
   }
-  const auto snapshot = world.Observe();
+  const auto snapshot = world.Observe(spec.kind != Kind::gated);
   const auto &leaf = *snapshot.character_observations->front()
                           .current_person_state->following_2922680;
   const bool partial = spec.kind == Kind::partial || spec.kind == Kind::source_negative ||
