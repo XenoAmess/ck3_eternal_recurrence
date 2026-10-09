@@ -68,7 +68,7 @@ Root's Native60 bridge with the qualified clock capabilities. No new gate or
 fallback policy is added here. Actual speed-five siege timing and behavior
 remain unverified until Root's trial.
 
-## One connected FIRST, prepared only
+## One connected FIRST
 
 Reuse and update the existing meaningful registered node:
 
@@ -91,6 +91,48 @@ fixtures receive matching speed-five expectations; Root need not replay them
 for this focused FIRST.
 
 Root's exact argv and external Oct10/W41 fields are in
-`D:/codex-ck3-background-spill/player-siege-speed5-delivery/`. This lane is
-**research/source-authored; FIRST NOTRUN**. Root will decide the actual SDK
-swap after saving the current paused session and resolving its latest error.
+`D:/codex-ck3-background-spill/player-siege-speed5-delivery/`. Root will decide
+the actual SDK swap after saving the current paused session and resolving its
+latest error. The frozen author source is commit
+`b6a2e12aa988269dfe403889a5b4e2ddfe066a08`; qualification below is a docs-only
+child in `D:/gbs-player-siege-speed5-qualified-doc12004`, with no change to that
+frozen source or the running SDK.
+
+## Root's sole connected FIRST: GREEN, fixture only
+
+Root executed the updated one connected node once. The authoritative receipt
+is
+`D:/codex-ck3-background-spill/player-siege-speed5-delivery/ROOT-FIRST01/ROOT-FIRST-RESULT.json`;
+the complete 15,648-byte connected output is sibling
+`CONNECTED-NORMAL-CLOCK-RESULT.json`. Receipt time is
+**2026-10-09 22:37:05.982201 → 22:37:13.517440 UTC**
+(Oct10 06:37:05.982201 → 06:37:13.517440 Asia/Shanghai), status **GREEN**,
+exit **0**, one connected node, zero producer runs, no old qualification
+replay and zero game operations. Its **7.535239s** is harness elapsed time,
+not a measured game-day duration or a comparison with the actual 289.74s day.
+
+The real registered normal planner chose `native_war_siege_progress` and
+`life-advance`. The real Driver selected `player_siege` at speed **5**, then
+issued exactly `set-speed-5`, arm **53288472 → 53288496** at speed5 in
+`mode-terminal-a-0`, one `resume-map`, and status query. The provider published
+only the next paused day. Armed/stopped generation was **37**; stopped clock
+showed **1** daily tick, `date_deadline`, **0** overshoot and observed pause.
+Requested and observed horizon were both **1 day**.
+
+The retained Native33 input preserved Siege **318767193**, foreign stored
+leadership, eligible own contribution and `matches_current_selection=false`.
+The independently published paused frame reported synthetic work **100000**
+on the same Siege with no occupation change. The full durable action-result
+assertion passed. Real checkpoint materialization reported `saved` at raw
+**53288496**, player **29829**, for a synthetic **51-byte** checkpoint file.
+
+This qualifies the connected registered Service/Driver/native-clock protocol
+and persistence behavior against the declared fixture. The native clock,
+changed work and save bytes remain synthetic. Status is **fixture qualified**,
+with **0 actual game days**, no capture or production-live credit. Actual
+speed-five siege behavior, per-day wall time and speedup remain unknown until
+Root's bounded actual trial. The source owner read each small result once,
+retaining `ACTUAL-FIRST-THIN.json` and
+`OCT10-W41-FIRST-GREEN-FIELDS.json` in the delivery folder; no new test,
+project import, SDK, game or live query was performed in this documentation
+step.
