@@ -1,0 +1,143 @@
+{
+  "schema": "ck3-shared-delayed-load-source04-evidence-v1",
+  "sealed_utc": "2026-10-09T22:56:09.911267+00:00",
+  "author_commit": "1d4468fc35361be5126acd84402ef27b87d71254",
+  "master_head": "6a3affdb87f03f01bdc9f4dc43aeff15960200db",
+  "source04_commit": "919bae0f42def04e6398eb2de4b4afe20dcfc106",
+  "source04_parent": "13d063c81ff706d8bc3f9a8bf81f60c283338042",
+  "source04_changed_paths": [
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+    "ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py",
+    "tools/ck3_mod_acceptance.py",
+    "tools/test_ck3_mod_acceptance.py"
+  ],
+  "native_compiled_inputs_unchanged": true,
+  "historical_author_source_pins": [
+    {
+      "original_path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\runtime.py",
+      "resolution": "exact author Git blob and preserved independent-review author-final-source",
+      "author_commit": "1d4468fc35361be5126acd84402ef27b87d71254",
+      "preserved_copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-delayed-injection-independent-review-20261010-001\\author-final-source\\ck3_autonomous_player\\src\\xar_autoplayer\\runtime.py",
+      "sha256": "f5281563932f127b57b128b3b484643bc7220a81fc3da5f85dae73f39dcb9e79"
+    },
+    {
+      "original_path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "resolution": "exact author Git blob and preserved independent-review author-final-source",
+      "author_commit": "1d4468fc35361be5126acd84402ef27b87d71254",
+      "preserved_copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-delayed-injection-independent-review-20261010-001\\author-final-source\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "sha256": "a01ccda8d86e565f0e30f518383acd6bd7b9e3a93fdbaacbcf90c27db019fefd"
+    },
+    {
+      "original_path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "resolution": "exact author Git blob and preserved independent-review author-final-source",
+      "author_commit": "1d4468fc35361be5126acd84402ef27b87d71254",
+      "preserved_copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-delayed-injection-independent-review-20261010-001\\author-final-source\\tools\\ck3_mod_acceptance.py",
+      "sha256": "6d5690af9a431c83084c81337e6eb98d0d874983959c81b68c8fec4534f98fc2"
+    },
+    {
+      "original_path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance.py",
+      "resolution": "exact author Git blob and preserved independent-review author-final-source",
+      "author_commit": "1d4468fc35361be5126acd84402ef27b87d71254",
+      "preserved_copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-delayed-injection-independent-review-20261010-001\\author-final-source\\tools\\test_ck3_mod_acceptance.py",
+      "sha256": "c7c3bbe7f10c1e34f5ce1809376cfb93d74be623eb3892cfd6f96d61b1779816"
+    },
+    {
+      "original_path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_saved_campaign_delayed_injection.py",
+      "resolution": "exact author Git blob and preserved independent-review author-final-source",
+      "author_commit": "1d4468fc35361be5126acd84402ef27b87d71254",
+      "preserved_copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-delayed-injection-independent-review-20261010-001\\author-final-source\\ck3_autonomous_player\\tests\\unit\\test_saved_campaign_delayed_injection.py",
+      "sha256": "1208a08a31d31770c438f772a8ff93140db7a048f1666159524a53c5dbd74d28"
+    }
+  ],
+  "source04_global_manifest_feature_enabled": true,
+  "implementation_default_off": true,
+  "original_total_readiness_budget_seconds": 600,
+  "two_native_owner_frame_guard_unchanged": true,
+  "main_rebased_test_counts": {
+    "r41-root-rebased-entry-20261010-001": 16,
+    "r41-root-rebased-delayed-20261010-001": 8,
+    "r41-root-rebased-failure-shutdown-20261010-001": 4,
+    "r41-root-rebased-normal-close-20261010-001": 4,
+    "r41-root-rebased-operator-quit-20261010-001": 16
+  },
+  "main_rebased_test_total": 48,
+  "source04_lifecycle_tests": "8 PASS",
+  "source04_entry_suite": "15 tests, 1 ERROR: missing exported workshop/products.json",
+  "source04_global_flag_target": "1 PASS",
+  "source04_host_help_exit_code": 0,
+  "case_prepare_exit_code": 0,
+  "case_preflight_exit_code": 0,
+  "ci_terminal_boundary": {
+    "Official Runner CI": {
+      "id": 37995375811,
+      "status": "completed",
+      "conclusion": "failure",
+      "event": "push",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37995375811",
+      "head_sha": "6a3affdb87f03f01bdc9f4dc43aeff15960200db",
+      "run_attempt": 1,
+      "created_at": "2026-10-09T21:45:43Z",
+      "updated_at": "2026-10-09T21:50:49Z",
+      "all_run_ids": [
+        37995375811
+      ],
+      "jobs": [
+        {
+          "id": 114039926803,
+          "name": "static",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": [],
+          "failed_steps": [
+            "Test shared CK3 acceptance without installed CK3"
+          ]
+        }
+      ]
+    },
+    "Linear history": {
+      "id": 37995375808,
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37995375808",
+      "head_sha": "6a3affdb87f03f01bdc9f4dc43aeff15960200db",
+      "run_attempt": 1,
+      "created_at": "2026-10-09T21:45:43Z",
+      "updated_at": "2026-10-09T21:46:23Z",
+      "all_run_ids": [
+        37995375808
+      ],
+      "jobs": [
+        {
+          "id": 114039926634,
+          "name": "No new merge commits",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": [],
+          "failed_steps": []
+        }
+      ]
+    },
+    "Li Yu Dao static checks": {
+      "status": "NOT_TRIGGERED",
+      "not_counted_as_success": true,
+      "basis": "No matching workflow run in actual exact-head API response"
+    }
+  },
+  "ci_full_evidence_external_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r41-exact-6a3affdb8-ci-20261010-001",
+  "r41_live_files_followed_or_archived": false,
+  "r41_live_result_assessed": false,
+  "build_invoked": false,
+  "native_binaries_rebuilt": false,
+  "business_pass": false,
+  "tracked_changes": false,
+  "repo_before": {
+    "head": "6a3affdb87f03f01bdc9f4dc43aeff15960200db",
+    "status": ""
+  },
+  "repo_after": {
+    "head": "6a3affdb87f03f01bdc9f4dc43aeff15960200db",
+    "status": ""
+  }
+}

@@ -66,3 +66,12 @@ host 原 Popen wait 返回1，CK3 受管退出码为1；native job active0、进
 新profile公共prepare/preflight均exit0，常规R39闭场准入实际分配 `bf-202609141645-5434332d4d--li-yu-dao--R0040`，未重复bootstrap。固定原seed、正式71文件和六项overlay、同一公共host/native，readiness600。run/verify实际exit2，host再次在原始本轮预算内超时，steps=[]。413份观察中前363份map_ready=false，后50份已map_ready=true/local_player1/actor31254/date53144712/event121，但后50份准入帧的pump_epoch均27770，未通过第二独立owner帧推进守卫，campaign-root查询和产品handler仍未进入。日志进入InitPostRead和缓存重算，04:51:05到powerful vassals，至04:56:15结束无In Game/setup completion，error.log仍0字节；日志缺完成行不能覆盖原生已map_ready的事实。此结果证明本次600秒预算没有完成准入，不增加或重跑业务动作。[R40永久记录](2026-10-10-r40-shared-runtime-startup-red.md)保留全部实际输入和失败。
 
 原host/CK3退出码均1，managed session/thread/job/tree/最终空清点及控制文件清理完成，normal0未取得。新鲜Steam原图亲审离线、原1024×768桌面恢复；keeper原父句柄退出0/thread joined，CAS4234→4235实际done/resources=[]。当前无游戏和屏幕占用。下一步核两帧绑定、采样/更新链及实际启动路径，不再次仅增加预算；尚无已验证的底层修复。正式I3b/C3/I4与一期仍NOT_GREEN，工作量估计75%保持。
+
+
+## 2026-10-10 07:31 CST：Source04已交付，R41未到延后注入点
+
+共享默认OFF的same-PID加载后单次注入修正已主线rebase并普通推送为6a3affdb87f03f01bdc9f4dc43aeff15960200db；接远端关闭流程后48项相关回归PASS。固定Source04为919bae0f42def04e6398eb2de4b4afe20dcfc106，单父13d063c81只应用作者1d4468fc五路径Python增量，原生目录仅host Python变化，其余逐文件一致后复用cbr2；新全局manifest 20261010-003显式启用该策略，仍共用600秒绝对deadline及严格两帧/身份/事件守卫。[共享修正及133项证据](2026-10-10-shared-delayed-injection-source04.md)保留作者测试、独立599→600剩余预算probe和冻结边界。冻结export生命周期8PASS，整入口suite因未导出workshop/products.json报ERROR，原件保留；新增globalflag单测1PASS及host help0，正式prepare/preflight0，不修改冻结树追认。
+
+R41实际run/verify2，714次startup观察均未连接/native帧0/steps0；600秒内无Setup completion，因此原策略没有注入，未进入事务对照或任何业务，也没有业务SAVE/day。日志最后强力封臣初始化，error.log0B；此结果未验证延后注入后的效果，不判定早期注入就是根因。原host Popen1；runtime原安全失败异常源链执行清理，但launch没有返回SessionHandle，host session.report=null且cleanup_ok=false，原游戏exit/Jobcount结构化回执缺失，均保留而不称normal0。新的独立进程清点CK3/录制/host/watchdog空、控制文件空；最终新鲜Steam原图7:01离线亲审、桌面恢复1024×768、keeper原allocate Popen0/thread joined，CAS4276→4277实际释放。[R41报告](2026-10-10-r41-shared-runtime-startup-red.md)保存真实边界。
+
+精确6a3 Official37995375811 FAILURE、Linear37995375808 success、LiYu NOT_TRIGGERED。实际失败为旧AST隔离测试漏传生产host已声明的supervisor，6项同NameError；外置一行namespace fixture修正使原6项PASS，等待闭场后独立入库与新精确CI，不能追认6a3成功。当前并行：CI窄修、R41证据归档、root共享报告线性发布、engine加载路径只读诊断；不再仅增加预算或重复bootstrap。缺失ck3-upgrade-20261008不再是依赖。正式I3b/C3/I4及一期仍NOT_GREEN，75%仅工作量估计，不承诺未经实机依据的一期完成日期。

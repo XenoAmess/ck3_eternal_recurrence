@@ -1,0 +1,21 @@
+{
+  "schema": "ck3-source04-evidence-validation-v1",
+  "checked_utc": "2026-10-09T22:56:09.923190+00:00",
+  "archive_entries": 133,
+  "archive_crc_valid": true,
+  "archive_and_original_bytes_sha256_rechecked": true,
+  "author_handoff_index_pins_rechecked": true,
+  "independent_review_index_pins_rechecked": true,
+  "source04_git_single_parent_and_author_delta_checked": true,
+  "five_frozen_source_git_blobs_checked": true,
+  "every_other_native_directory_file_equal": true,
+  "original_native_binary_pins_rechecked": true,
+  "repo_head_and_clean_status_unchanged": true,
+  "r41_live_result_assessed": false,
+  "archive_sha256": "fc5e5deb84a3c2dcbaea8902f59fe9dd3846b09d94e9f6e75af761ecab31f35a",
+  "index_sha256": "d7c7c0358ac430c256b0e3dedc77adc1352841f686e38e8d4ca4d2909b7fb7ac",
+  "facts_sha256": "7bb21cdd7a81c560b25da068762fbfd2ab8d1436232e16c5106f399745be8a7e",
+  "producer_sha256": "16161f30ea5a558c2c418ce9cdbcc5c917ae1338a9254b5827ba3f2a78a0c922",
+  "validation_pass": true,
+  "business_pass": false
+}
