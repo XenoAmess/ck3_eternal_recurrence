@@ -1,6 +1,8 @@
 # Actual-child guardian relation: named Character binding (1.20.0.4)
 
-2026-10-09 / W41. Research. Reuse Root's CK3 1.20.0.4 / Steam
+2026-10-09?10 / W41. Guardian membership remains research; Native61's
+private discovery seam is static-ready on offline fixtures only. Reuse
+Root's CK3 1.20.0.4 / Steam
 build25734779 freeze and executable SHA
 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
 Native54's private CharacterWindow candidate reader is a separate source
@@ -443,8 +445,9 @@ builds, Game/SDK/process operations and new live/G2 credit are all zero.
 
 ## Bounded private discovery job source, October10
 
-The qualified fixed-key reader is now reused by a source-only production
-seam. This is the concrete dependency for selecting the actual guardian
+The qualified fixed-key reader was first integrated as a source-only
+production seam. Root later qualified that seam offline as Native61; the
+actual result and corrected source basis are recorded below. This is the concrete dependency for selecting the actual guardian
 factory's next native source; it does not implement membership. The only
 inputs remain the two stock names `has_relation_guardian` and
 `has_relation_ward`. There is no registry enumeration or caller-supplied
@@ -493,8 +496,9 @@ name/factory tables and synthetic VT/COL/TD metadata. It invokes the same
 production job and completion writer for found, missing, unreadable and
 frame-changed scenes. It produces private sidecars rather than public
 command-result packets, and does not replay the already qualified
-standalone reader fixture. At this source stage the new target has not
-been built or run, and no Game capture has occurred.
+standalone reader fixture. At the original source stage the new target had not
+been built or run. The later Native61 offline qualification below does not
+include a Game capture.
 
 ```mermaid
 flowchart TD
@@ -511,8 +515,100 @@ Only `Bridge/src/bridge.cpp` and
 `Bridge/src/ingame_ui_navigation_v1.cpp` acquire these private dependencies.
 There is no Runtime/archive, protocol, public Snapshot/layout or
 relationship serializer change. The exact two-owner build and unique new
-fixture are Root-owned future execution. New production/live guardian
+fixture were reserved for Root execution; that offline run is now recorded
+below. New production/live guardian
 capability, pair readiness, full child readiness and G2 outcome credit
 remain false/zero. A later authorized capture must provide real registered
 factory metadata before choosing the next bounded factory/evaluator
 body; current-window identity is not substituted for an actual roster child.
+
+
+## Native61 actual offline qualification and source-scope correction
+
+Root completed retry04 on **October10 03:08:32.620449 Asia/Shanghai**
+(`2026-10-09T19:08:32.620449Z`), then sealed canonical61 at approximately
+03:10:06. All three fresh compilations, both links and the unique discovery
+fixture exited0. The fixture printed `SOURCE_FIXTURE_PASS` after checking
+its four private sidecars: found, missing, unreadable and frame-changed.
+These are **4 private fixture scenes/sidecars,0 public whole packets and0
+registered/MCP consumers**. The existing Native60 public-query qualification
+is inherited; its tests were not replayed.
+
+| Actual retry04 stage | Seconds | Result |
+| --- | --- | --- |
+| Bridge `bridge.cpp` compile |18.488889800035395 | GREEN |
+| Bridge `ingame_ui_navigation_v1.cpp` compile |4.566188200027682 | GREEN |
+| New discovery fixture compile |4.697480899980292 | GREEN |
+| DLL link |1.3657507000025362 | GREEN |
+| Fixture link |1.3436820999486372 | GREEN |
+| Unique native fixture FIRST |0.2704391999868676 | GREEN |
+
+The three compiles ran concurrently with BelowNormal priority:64 requested,
+3 actual jobs. Retry04 compiled both production owners and the fixture
+fresh. It reused no object from failed Native61 attempts01?03 and performed
+no Runtime compilation or archive operation. The final closure remains
+**740 production owners: Bridge299/Runtime440/Protocol1;508 actual command
+rows;738 retained parent owners**. Every retained physical source/object
+pin remains inherited from canonical60.
+
+The compiled and qualified source is the private coherent commit
+`4d3ba1d2b8dd8d460a2be3bdd663c859244832b3`, materialized as a complete native
+subtree at
+`D:/codex-ck3-background-spill/gbs-runtime61-guardian-qualified60-source`.
+Its Git parent is the qualified Native60 source
+`30605664d00c845b4fa7a736d157903169a1e70b`. It applies only guardian author
+`39ca664d47251036924b1bb0207c6779265530da`, the standalone guardian lookup
+header prerequisite, and UTF-8 path fix author
+`e0b6fc534511d55377d7f3cb45ec7a46be7efaa1`. The two small existing Python
+transport changes are included. All common native headers retain306's
+basis; the added headers are private guardian headers. Runtime440's
+unchanged archive remains compiled at306.
+
+The public integration commit
+`e4db4db91788f5ab2f0d5573e512cf8f64a78e56` contains guardian plus a separate
+actual12004 truce package. **That whole public native tree was not compiled
+or qualified by Native61.** The private4d3 combination is a build source,
+not a duplicate feature commit for Root to adopt. Root will adopt only the
+UTF-8 fix and this qualification documentation after its tracked-edit
+lease. Public adoption of that fix was pending when canonical61 was sealed.
+
+All three RED attempts remain unchanged:
+
+| Attempt | Actual outcome and correction |
+| --- | --- |
+|01 | Bridge compile C4996/STL4021 under C++20 `/WX` for `std::filesystem::u8path`; UI and fixture compiles GREEN; no links or fixture run. The fix preserves UTF-8 bytes through `std::u8string` and keeps `/WX`. |
+|02 | Bridge compile GREEN, DLL link LNK2019 for `SerializeActualTruceExpiry12004`; fixture link/FIRST0. The initial explanation that the whole author CPP alone introduced truce was unproven. |
+|03 | Rootf998 Bridge blob plus only the UTF-8 patch still produced the same DLL LNK2019. This disproved the whole-author-only explanation. |
+
+Finite source comparison confirmed that Root
+`f9986106afdecfc58b30772c985b3d3ec81f5550` already contained the truce call
+at `bridge.cpp:7855`, its new provider at
+`ck3_12004_actual_truce_expiry.cpp:104`, and changes to adapter bindings and
+semantic override declarations. Canonical60 had no such new Runtime
+provider. Adding only that serializer would not close the changed adapter
+source basis. The correct minimal repair was to put guardian alone on
+qualified306 and freshly compile all three affected inputs. Attempts02/03
+are recorded as harness source-closure REDs, not failed guardian fixture
+scenes. Their actual objects and logs remain evidence; none is substituted
+into retry04.
+
+The actual result and canonical evidence are:
+
+- `D:/codex-ck3-background-spill/g2-native61-build01/attempt04/ROOT-NATIVE61-RESULT.json`, its `ACTUAL-BUILD-PLAN.json`, `ACTUAL-COMPILE-PLAN.json` and `logs/native-FIRST.json`.
+- `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix61/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`, with `ROOT-GUARDIAN-PRIVATE-CAPTURE-QUALIFICATION.json` and `manifest.json`.
+- `Z:/ck3_mod_rewrite_process_assets/g2-background-20261010/runtime61-guardian-private-capture-preparation/ROOT-SOURCE-SCOPE-CORRECTION.json` and `ROOT-QUALIFIED60-GUARDIAN-SOURCE-LEDGER.json`.
+
+Across all attempts the actual cost is8 compiler invocations
+(6 production/2 fixture),3 DLL link attempts,1 fixture link and1 native
+fixture FIRST; the successful qualified inputs are2 production+1 fixture.
+Root hashed the new DLL once and the new manifest once. No old hashes,
+binary copies, Runtime archive operations, old FIRST replays or worker
+builds/tests/hashes were performed.
+
+Readiness is **static-ready for the private discovery job and writer**.
+No Native61 Game capture, Native61 SDK qualification or live deployment is
+included. Local CK3 authorization has been restored; Root owns any later
+live execution. Real registered factory metadata, Create/parsed-trigger/
+Evaluate ABI and actual roster-child guardian membership remain future
+inputs. FullPerson/FullEntry, guardian pair/collection readiness, actor
+credit and new G2 credit remain false/0.
