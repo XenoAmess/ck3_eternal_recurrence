@@ -149,7 +149,7 @@ class Controller:
             if req['action']=='move':
                 region=req.get('reviewed_region');require(isinstance(region,list) and len(region)==4,'Hover requires explicit root reviewed region')
                 argv+=['--reviewed-left',region[0],'--reviewed-top',region[1],'--reviewed-width',region[2],'--reviewed-height',region[3],'--expected-foreground-hwnd',self.hwnd]
-            else:argv+=['--button',req.get('button','left')]
+            else:argv+=['--button',req.get('button','left'),'--expected-foreground-hwnd',self.hwnd,'--max-source-age-seconds','60']
             self.call(prefix,argv);time.sleep(.5);self.guard()
             self.typed('snapshot',{},prefix+'-independent-native-after')
     def pointer_continuation(self,req,prefix,preview,point):
