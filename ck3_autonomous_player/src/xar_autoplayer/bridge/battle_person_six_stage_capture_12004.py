@@ -116,6 +116,52 @@ def _aggregate(value: object, field: str, source_stage: str) -> dict:
     return result
 
 
+def _preparation_model(value: object, leaf: dict) -> dict:
+    field = FIELD_NAME + ".preparation_model"
+    raw = _dict(value, field, {
+        "observed", "ready", "reason", "model_identity",
+        "owner_character_identity", "owner_character_id", "owner_matches_capture",
+        "context_offset", "owner_offset", "source_stage",
+    })
+    result = {
+        "observed": _boolean(raw["observed"], field + ".observed"),
+        "ready": _boolean(raw["ready"], field + ".ready"),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+        "model_identity": _string(raw["model_identity"], field + ".model_identity", optional=True),
+        "owner_character_identity": _string(raw["owner_character_identity"], field + ".owner_character_identity", optional=True),
+        "owner_character_id": _number(raw["owner_character_id"], field + ".owner_character_id", 32, unsigned=True),
+        "owner_matches_capture": _boolean(raw["owner_matches_capture"], field + ".owner_matches_capture", optional=True),
+        "context_offset": _integer(raw["context_offset"], field + ".context_offset", 32, unsigned=True),
+        "owner_offset": _integer(raw["owner_offset"], field + ".owner_offset", 32, unsigned=True),
+        "source_stage": _string(raw["source_stage"], field + ".source_stage"),
+    }
+    if (result["context_offset"] != 0x10 or result["owner_offset"] != 8
+            or result["source_stage"] != "before_first_count_callback"):
+        raise ValueError(field + " changed its actual preparation source")
+    if result["observed"]:
+        if (not leaf["capture_observed"] or not leaf["stages"][0]["observed"]
+                or result["model_identity"] is None
+                or int(result["model_identity"], 16) != int(leaf["context_identity"], 16) - 0x10):
+            raise ValueError(field + " lacks its captured context-minus-10 Model")
+    elif (result["ready"] or any(result[key] is not None for key in (
+            "model_identity", "owner_character_identity", "owner_character_id",
+            "owner_matches_capture"))):
+        raise ValueError(field + " unobserved preparation cannot claim Model operands")
+    if result["ready"]:
+        if (not result["observed"] or result["reason"] is not None
+                or result["owner_character_identity"] is None
+                or int(result["owner_character_identity"], 16) == 0
+                or result["owner_character_id"] is None):
+            raise ValueError(field + " ready preparation lacks its copied owner operands")
+        matches = (int(result["owner_character_identity"], 16) == int(leaf["character_identity"], 16)
+                   and result["owner_character_id"] == leaf["character_id"])
+        if result["owner_matches_capture"] is not matches:
+            raise ValueError(field + " owner comparison differs from its copied operands")
+    elif result["owner_matches_capture"] is not None:
+        raise ValueError(field + " unread preparation cannot claim an owner comparison")
+    return result
+
+
 def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
     """Retain six owned stages, including incomplete and unread observations."""
     if value is None:
@@ -123,6 +169,7 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
     aggregate_fields = {"pre_six_aggregate", "post_six_aggregate",
                         "aggregate_postimage_inputs_ready", "aggregate_postimage_comparison_ready"}
     has_aggregate = isinstance(value, dict) and "pre_six_aggregate" in value
+    has_preparation = isinstance(value, dict) and "preparation_model" in value
     raw = _dict(value, FIELD_NAME, {
         "schema", "build_version", "executable_sha256", "configured",
         "capture_observed", "capture_complete", "ready", "raw_counts_ready",
@@ -130,7 +177,8 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         "capture_thread_id", "query_thread_id",
         *_POINTERS, "stages", "source_stage", "historical_capture",
         "actual_model_write_performed", "full_helper_ready",
-    } | (aggregate_fields if has_aggregate else set()))
+    } | (aggregate_fields if has_aggregate else set())
+      | ({"preparation_model"} if has_preparation else set()))
     if (raw["schema"] != SCHEMA or require_exact_native_build(
             raw["build_version"], raw["executable_sha256"]) != CK3_12004):
         raise ValueError(FIELD_NAME + " requires its exact actual4 source identity")
@@ -216,6 +264,8 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         result.update(pre_six_aggregate=pre, post_six_aggregate=post,
                       aggregate_postimage_inputs_ready=inputs_ready,
                       aggregate_postimage_comparison_ready=comparison_ready)
+    if has_preparation:
+        result["preparation_model"] = _preparation_model(raw["preparation_model"], result)
     return result
 
 
@@ -370,6 +420,32 @@ def emit_captured_person_pre_six_aggregate_12004(section: object) -> dict:
         },
         "historical_capture": True,
         "source_stage": aggregate["source_stage"],
+        "actual_model_write_performed": False,
+        "full_helper_ready": False,
+    }
+
+
+def emit_captured_person_preparation_model_12004(section: object) -> dict:
+    """Publish the Model/owner copied before the first original callback."""
+    character, leaf = _joined_leaf(section)
+    preparation = leaf.get("preparation_model")
+    if preparation is None or not preparation["ready"]:
+        reason = preparation["reason"] if preparation is not None else "preparation_model_unobserved"
+        raise ValueError("Required native input unavailable: " + (reason or "preparation Model"))
+    return {
+        "character_id": character,
+        "capture_sequence": leaf["capture_sequence"],
+        "capture_date_raw": leaf["capture_date_raw"],
+        "capture_thread_id": leaf["capture_thread_id"],
+        "context_identity": leaf["context_identity"],
+        "model_identity": preparation["model_identity"],
+        "owner_character_identity": preparation["owner_character_identity"],
+        "owner_character_id": preparation["owner_character_id"],
+        "owner_matches_capture": preparation["owner_matches_capture"],
+        "context_offset": preparation["context_offset"],
+        "owner_offset": preparation["owner_offset"],
+        "source_stage": preparation["source_stage"],
+        "historical_capture": True,
         "actual_model_write_performed": False,
         "full_helper_ready": False,
     }

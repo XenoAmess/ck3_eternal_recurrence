@@ -46,6 +46,17 @@ struct PersonSixStagePreAggregate12004 {
   friend bool operator==(const PersonSixStagePreAggregate12004 &,
                          const PersonSixStagePreAggregate12004 &) = default;
 };
+struct PersonPreparationModel12004 {
+  bool observed = false;
+  bool ready = false;
+  std::string reason;
+  std::optional<std::uintptr_t> model_identity;
+  std::optional<std::uintptr_t> owner_character_identity;
+  std::optional<std::uint32_t> owner_character_id;
+  std::optional<bool> owner_matches_capture;
+  friend bool operator==(const PersonPreparationModel12004 &,
+                         const PersonPreparationModel12004 &) = default;
+};
 struct PersonSixStageCapture12004DTO {
   std::string build_version;
   std::string executable_sha256;
@@ -54,6 +65,7 @@ struct PersonSixStageCapture12004DTO {
   bool capture_complete = false;
   bool ready = false;
   bool raw_counts_ready = false;
+  PersonPreparationModel12004 preparation_model;
   PersonSixStagePreAggregate12004 pre_six_aggregate;
   PersonSixStagePreAggregate12004 post_six_aggregate;
   bool aggregate_postimage_inputs_ready = false;

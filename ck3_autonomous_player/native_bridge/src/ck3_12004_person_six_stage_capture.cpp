@@ -136,11 +136,35 @@ PersonFollowing2922680Pc CopyPc(std::uintptr_t address,
   return pc;
 }
 
+PersonPreparationModel12004 CopyPreparationModel(std::uintptr_t context) noexcept {
+  PersonPreparationModel12004 result;
+  result.observed = true;
+  result.model_identity = context - 0x10;
+  result.owner_character_identity = Copy<std::uintptr_t>(*result.model_identity + 8);
+  if (!result.owner_character_identity) {
+    result.reason = "preparation_model_owner_unread";
+    return result;
+  }
+  if (*result.owner_character_identity == 0) {
+    result.reason = "preparation_model_owner_null";
+    return result;
+  }
+  result.owner_character_id = Copy<std::uint32_t>(
+      *result.owner_character_identity + kCharacterFullIdOffset);
+  if (!result.owner_character_id) {
+    result.reason = "preparation_model_owner_id_unread";
+    return result;
+  }
+  result.ready = true;
+  return result;
+}
+
 PersonSixStageCapture12004DTO EmptyResult(std::uint32_t full_character_id) {
   PersonSixStageCapture12004DTO dto;
   dto.build_version = kGameVersion;
   dto.executable_sha256 = kExecutableSha256;
   dto.character_id = full_character_id;
+  dto.preparation_model.reason = "preparation_model_unobserved";
   dto.pre_six_aggregate.pc.reason = "pre_six_aggregate_unobserved";
   dto.post_six_aggregate.pc.reason = "post_six_aggregate_unobserved";
   for (std::uint32_t i = 0; i < dto.stages.size(); ++i) {
@@ -372,7 +396,8 @@ static void ObserveSixStageWithBaseline12004(
     std::uintptr_t character, std::uintptr_t context, std::uint32_t index,
     std::uintptr_t raw_return_bits,
     std::uintptr_t caller_return_address,
-    const PersonFollowing2922680Pc *pre_six_aggregate) noexcept {
+    const PersonFollowing2922680Pc *pre_six_aggregate,
+    const PersonPreparationModel12004 *preparation_model) noexcept {
   if (!g_available.load(std::memory_order_acquire) ||
       caller_return_address !=
           g_bindings.memory.module_base + kPersonSixStageReturnRva12004 ||
@@ -405,6 +430,13 @@ static void ObserveSixStageWithBaseline12004(
       dto.character_identity = character;
       dto.context_identity = context;
       dto.source_return_rva = kPersonSixStageReturnRva12004;
+      if (index == 0 && preparation_model != nullptr) {
+        dto.preparation_model = *preparation_model;
+        if (dto.preparation_model.ready)
+          dto.preparation_model.owner_matches_capture =
+              dto.preparation_model.owner_character_identity == character &&
+              dto.preparation_model.owner_character_id == *full_id;
+      }
       if (index == 0 && pre_six_aggregate != nullptr) {
         dto.pre_six_aggregate.observed = true;
         dto.pre_six_aggregate.pc = *pre_six_aggregate;
@@ -428,7 +460,7 @@ void ObservePersonSixStageCapture12004(
     std::uintptr_t raw_return_bits,
     std::uintptr_t caller_return_address) noexcept {
   ObserveSixStageWithBaseline12004(character, context, index, raw_return_bits,
-                                   caller_return_address, nullptr);
+                                   caller_return_address, nullptr, nullptr);
 }
 
 std::uintptr_t InvokePersonSixStageCapture12004(
@@ -437,18 +469,21 @@ std::uintptr_t InvokePersonSixStageCapture12004(
   const auto original = g_original.load(std::memory_order_acquire);
   if (original == nullptr) return 0;
   std::optional<PersonFollowing2922680Pc> pre_six_aggregate;
+  std::optional<PersonPreparationModel12004> preparation_model;
   if (g_available.load(std::memory_order_acquire) && index == 0 &&
       character != nullptr && context != nullptr &&
       caller_return_address ==
           g_bindings.memory.module_base + kPersonSixStageReturnRva12004) {
     // Native2438964 passes this inline PC to2303100. Own it before the
     // first count callback can observe or modify the aggregate.
+    preparation_model = CopyPreparationModel(reinterpret_cast<std::uintptr_t>(context));
     pre_six_aggregate = CopyPc(reinterpret_cast<std::uintptr_t>(context) + 0x68, 0);
   }
   const auto result = original(character, context, index);
   ObserveSixStageWithBaseline12004(reinterpret_cast<std::uintptr_t>(character),
       reinterpret_cast<std::uintptr_t>(context), index, result,
-      caller_return_address, pre_six_aggregate ? &*pre_six_aggregate : nullptr);
+      caller_return_address, pre_six_aggregate ? &*pre_six_aggregate : nullptr,
+      preparation_model ? &*preparation_model : nullptr);
   return result;
 }
 
@@ -686,6 +721,17 @@ std::string SerializePersonSixStageCapture12004(
   out << ",\"character_identity\":"; Pointer(out, dto.character_identity);
   out << ",\"context_identity\":"; Pointer(out, dto.context_identity);
   out << ",\"source_return_rva\":"; Pointer(out, dto.source_return_rva);
+  out << ",\"preparation_model\":{\"observed\":"
+      << (dto.preparation_model.observed ? "true" : "false");
+  out << ",\"ready\":" << (dto.preparation_model.ready ? "true" : "false");
+  out << ",\"reason\":"; Reason(out, dto.preparation_model.reason);
+  out << ",\"model_identity\":"; Pointer(out, dto.preparation_model.model_identity);
+  out << ",\"owner_character_identity\":";
+  Pointer(out, dto.preparation_model.owner_character_identity);
+  out << ",\"owner_character_id\":"; Number(out, dto.preparation_model.owner_character_id);
+  out << ",\"owner_matches_capture\":"; Boolean(out, dto.preparation_model.owner_matches_capture);
+  out << ",\"context_offset\":16,\"owner_offset\":8";
+  out << ",\"source_stage\":\"before_first_count_callback\"}";
   out << ",\"pre_six_aggregate\":{\"observed\":"
       << (dto.pre_six_aggregate.observed ? "true" : "false");
   out << ",\"source_stage\":\"before_first_count_callback\"";
