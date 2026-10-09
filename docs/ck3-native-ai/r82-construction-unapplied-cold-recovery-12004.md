@@ -57,3 +57,30 @@ chooser are fixture seams. Production material parsing, ordinary receipt,
 ledger update and registered follow-up planning remain real. Root alone runs
 FIRST and live SDK recovery. Source preparation does not modify actual state,
 execute Game/SDK/build/tests or claim live readiness.
+
+## Root's unique connected FIRST
+
+Root executed the sole registered compound on combined complete source
+`61819ef19d2cdc35da185fbc8d071c7f3ea3fafd` at
+`Z:/gbs-r82-pending-recovery-hot-root-source`. This source derives from
+compiled Native48/SDK baseline `dd302e80` and adopts recovery author commit
+`6514d889` as `2275...`, plus already qualified compact/Army-copy work. It
+does not include Native49 policy work. The compiled native binary remains
+the existing DD/canonical725e; this is a Python consumer qualification.
+
+The actual Root invocation is **GREEN**, elapsed **5.3788908 seconds**, with
+pytest `1 passed in 4.69s`. It consumes the actual saved WORLD004 and the R82
+small ledger copied into temporary fixture state. Three registered MCP calls
+and two readonly native endpoint queries classify the restored intent without
+material success, independently recheck the first construction (preserving
+its observed zero divisor), and resume the ordinary `life-advance` plan.
+There are **zero submits, zero game calls and zero live-state writes**.
+
+The actual receipts are
+`Z:/g2-r82-construction-recovery-first01/ROOT-ACTUAL-RESULT.json` and
+`Z:/g2-r82-construction-recovery-first01/COMPOUND-RESULT.json`.
+No worker reran or imported the test. Readiness is **static-ready with a
+qualified connected fixture**; same-Game hot SDK recovery and normal live
+outcome remain pending Root verification. This FIRST does not grant M4 or
+production-live-loop credit. Historical ordinary002 failure and the original
+f085 intent/proof remain preserved.
