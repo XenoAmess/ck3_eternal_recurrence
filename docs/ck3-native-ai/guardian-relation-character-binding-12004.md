@@ -204,6 +204,150 @@ flowchart TD
   N -. complete target enumeration unclosed .-> G[Guardian full-ID observation]
 ```
 
+## Actual registrar and registry storage source
+
+The sibling relative-dread cache is historical `.3` evidence, as the
+[law migration ledger](realm-law-active-query-12004-migration.md) records.
+Its callbacks, globals and vtable slots are not transplanted. Matching
+held `.pdata` extents selected `[5AAE90,5AAF28)` as a152-byte actual4
+candidate; Root then captured34 instructions with complete decode at
+**October9 23:57:06.853193 Asia/Shanghai**. Interpretation and the new
+source work occurred on **October10**. The actual receipt stays in the
+October9 controller packet:
+`guardian-trigger-registration66/root-registration01/TRIGGER-REGISTRATION-CANDIDATE-RESULT.json`.
+
+| Actual4 instruction/source | Established operation |
+| --- | --- |
+| `5AAE9A`, fallback`5AAEBF` | Load namepool global`5CBEDE8`; if null call`3F4F7E0`. |
+| `5AAEA1..5AAED7` | Pass opaque literal`47F78F8`, length23 and flag0 to`3F4F280`; retain EAX as name ID. Its literal bytes were not read or identified as guardian. |
+| `5AAEDE..5AAEEF` | Call`372B800`, load trigger registry`5C6A4B8`, allocate24 bytes through`4223B94`. |
+| `5AAEF4..5AAF16` | Factory record`+0 = 47F9BE8` vtable,`+8 = 47F7D10` opaque descriptor,`+10 = nameID`. |
+| `5AAF23` | Tail-call`372BD10`: RCX=registry, EDX=nameID, R8=factory record. |
+
+Root captured actual`[372BD10,372BDF0)` atOctober10 00:06:01.007631:
+224 bytes/59 instructions, complete decode. It locks registry`+70`,
+selects the map at`+48`, hashes the four little-endian name-ID bytes using
+FNV-1a32 seed`811C9DC5`/multiplier`1000193`, then calls`3736D30` at`372BDA0`
+with map, output pair, hash, key pointer and factory-value pointer. The
+returned slot's`+10` receives the factory pointer; registry`+78` is updated
+through`B10CC0`. Slot`+10` and factory record`+10` are different fields.
+This is insertion, not a read query. Its actual receipt is
+`trigger-registry-insertion67/root-insert01/TRIGGER-REGISTRY-INSERT-RESULT.json`.
+
+### Actual existing-name and factory-map read paths
+
+Root captured both direct callees atOctober10 00:10:48:
+`[3F4F280,3F4F7DF)` is1375 bytes/349 instructions;
+`[3736D30,3736F99)` is617 bytes/180 instructions. Both decodes are complete.
+The actual packet is
+`guardian-factory-lookup-sources68/root-lookup01/FACTORY-LOOKUP-SOURCES-RESULT.json`,
+with `NAME-ID-DETAIL.json` and `FACTORY-MAP-DETAIL.json`.
+
+The actual factory map is a contiguous **24-byte Robin-Hood slot array**,
+not a linked-node container. The map at registry`+48` holds table pointer
+`+08` and signed32 mask`+14`. Slots contain stored hash`+00`, one-based
+uint8 probe distance`+04`, uint32 name-ID key`+08` and factory pointer`+10`.
+The initial index is sign-extended32-bit hash AND mask. While the current
+probe is no greater than the slot's distance, the hit prefix compares the
+key, advances24 bytes and increments the uint8 probe. The actual prefix
+contains no wrap/modulo and no stored-hash equality test. A key hit returns
+the slot with inserted=false. Resize, insertion, entry-count and
+load-factor updates belong to mutation branches and are excluded from a
+software reader.
+
+The actual name interner`3F4F280` is **not read-only even on a hit**: it
+changes the pool reader-lock word before finding an existing name and
+releases it afterwards. A miss obtains the writer lock, allocates/copies
+and inserts. The actual flag0 caller passes a16-byte view: pointer`+0`,
+signed32 length`+8`, flagbyte`+C`. Both pre-insertion lookups call the exact
+existing-name function`3F51A90`; success supplies slot`+28` name ID, while
+a sentinel has distancebyte`+04 = FF`. Neither the locked interner nor
+registry insertion belongs in the proposed plain-memory lookup. Event
+ScriptIdentifier`3F8A*` and GenericValue type-name APIs are other domains.
+
+Root captured`[3F51A90,3F51BED)` atOctober10 00:18:47.117729:
+349 bytes/102 instructions, complete decode, with actual receipt
+`existing-name-id-lookup69/root-name01/EXISTING-NAME-ID-RESULT.json`.
+This helper writes only its caller-owned output slot; it does not acquire
+the interner lock, allocate or insert. The actual read contract is:
+
+| Existing-name map or slot | Actual layout/operation |
+| --- | --- |
+| Map=namepool`+08`; map`+08/+14/+18` | Table pointer/signed32 mask/uint8 maximum probe. |
+| Hash | FNV-1a32 over input bytes, folding ASCII`A..Z` to lowercase before each step. This proves hashing, not equality semantics. |
+| Slot stride/`+04` |48 bytes/one-based uint8 probe distance; initial index is sign-extended hash AND mask, advance48 with probe increment. |
+| Slot key`+08` |32-byte native string; signed32 length at slot`+18`, capacity at slot`+20`. Capacity>=16 selects pointer`[slot+08]`; otherwise bytes are inline. |
+| Slot`+28` | uint32 existing name ID. |
+| Miss sentinel | Address`table + (mask + maxprobe + 1)*48`; outer interner tests its distancebyte for`FF`. |
+| Equality call`3F51B83` | Equal lengths, then RCX=input bytes/RDX=stored bytes/R8=length into`423EE28`; zero means equal. Empty equal-length keys require no byte comparison. |
+
+AtOctober10 00:25:44.948066 Root captured the exact6-byte comparator
+prefix. Bytes`48 83 ec 28 83 3d` start a function prologue, **not an FF25
+IAT thunk**; the held-import join is empty. This does not identify
+`memcmp` or a case-insensitive CRT symbol. The actual receipt is
+`name-comparison-thunk70/root-compare01/NAME-COMPARISON-THUNK-RESULT.json`.
+Held actual `.pdata` supplies exact`[423EE28,423EE77)`/79 bytes.
+
+The separately executed71 suffix recipe reused those6 bytes and read
+only73 new bytes atOctober10 00:32:26.374095. The combined79-byte body has
+20 instructions and complete decode. Its actual receipt is
+`name-comparison-body71/root-body01/NAME-COMPARISON-BODY-RESULT.json`.
+For non-null pointers and length<=INT_MAX, it dispatches to`423EDDC` when
+`[5C5D2D8]==0`, otherwise to`423EE78` with R9=0. This establishes the
+wrapper and its exact branch source, not either comparison algorithm or
+a named CRT symbol. No generic CRT/locale recursion is performed. The
+fixed lowercase stock keys remain the functional lookup inputs; arbitrary
+name or locale support is not a guardian prerequisite.
+
+All paths after66 are under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261010/guardian-character-controller-source/`.
+The source-read ledger preserves the natural-day split:
+
+| Actual capture | Asia/Shanghai source-read time | New reads/bytes |
+| --- | --- | --- |
+|66 registrar | Oct9 23:57:06.853193 |1/152; interpreted Oct10 |
+|67 insertion | Oct10 00:06:01.007631 |1/224 |
+|68 two direct callees | Oct10 00:10:48 |2/1992 |
+|69 existing-name lookup | Oct10 00:18:47.117729 |1/349 |
+|70 comparator prefix | Oct10 00:25:44.948066 |1/6 |
+|71 comparator suffix, held prefix reused | Oct10 00:32:26.374095 |1/73 |
+
+Thus66–70 cost6 actual reads/2723 new bytes; Oct10 captures67–70 alone
+cost5 reads/2571 bytes. The later71 increment is1 read/73 bytes. These do
+not repeat the stopped61–63 literal/encoding scans. Worker execution,
+Game/SDK/process operations, hashes and guardian/live/G2 credit remain0.
+
+```mermaid
+flowchart TD
+  N[Stock lowercase guardian and ward trigger keys] --> H[Actual pure existing-name map and hash3F51A90]
+  H -. exact equality semantics still unclosed .-> ID[Existing NameID]
+  ID --> M[Actual24B factory-map hit prefix3736D30]
+  M --> F[Existing factory pointer]
+  R[Actual registration writes and locked interner] -. excluded from pure reader .-> M
+  F -. guardian factory identity and evaluator ABI unclosed .-> E[Named guardian membership predicate]
+  E -. actual-child receiver and guardian target typed args unclosed .-> C[Useful child guardian pair readback]
+```
+
+A useful first fixture can verify a specified child/guardian pair after
+the genuine ABI closes: availability remains separate from true/false,
+with independent true-to-false readback. Complete guardian enumeration
+and random educator selection remain separate inputs. A false pair never
+means no guardian. The opaque registrar's vtable/descriptor cannot be
+assigned to either guardian key.
+
+The next finite input is existing-name lookup for the two stock-proved
+keys followed by their exact factory-map hit. It must record the stored
+name, ID, map key and factory record ID together; two keys sharing a
+factory type are legal. The record's vtable and existing RTTI can select
+the next exact factory source, while`+8` remains opaque. The missing
+actual4 Create slot/ABI, parsed trigger receiver and Evaluate binding are
+not supplied by historical relative-dread slots. If the guardian identity
+requires the registered runtime instance, the concrete next dependency
+is a later authorized same-paused-MCP finite capture of these two hits
+and their actual type metadata. The local Game ban prevents it now.
+No runtime lookup was performed; no factory-availability-only MCP field
+or permanent-null guardian field is published.
+
 ## Required production input after native closure
 
 For every existing admitted actual-child occurrence group, keep the
