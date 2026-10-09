@@ -472,7 +472,8 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
                        });
       PlayerWorldBuildingFailureV1 scan_failure =
           PlayerWorldBuildingFailureV1::none;
-      const auto scan = [&](const std::vector<ScanDefinition> &ordered) {
+      const auto scan = [&](const std::vector<ScanDefinition> &ordered,
+                            std::int32_t max_native_checks) {
         // Definition first distributes each valued option across every held
         // barony before the bounded scan spends checks on unvalued types.
         for (const auto &row : ordered) {
@@ -486,7 +487,7 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
               return false;
             }
             for (std::int32_t slot = 0; slot < slot_count; ++slot) {
-              if (result.final_legality_checks >= request.max_native_checks ||
+              if (result.final_legality_checks >= max_native_checks ||
                   static_cast<std::int32_t>(result.legal_samples.size()) >=
                       request.max_legal_samples) {
                 result.checks_truncated = true;
@@ -533,14 +534,18 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
         }
         return true;
       };
-      const bool positive_scan_complete = scan(positive_definitions);
+      const bool positive_scan_complete =
+          scan(positive_definitions, request.max_native_checks);
       if (scan_failure != PlayerWorldBuildingFailureV1::none) {
         return Failed(scan_failure);
       }
       result.positive_income_coverage_complete =
           all_definition_keys_classified && positive_scan_complete;
       if (positive_scan_complete) {
-        scan(remaining_definitions);
+        // The larger mailbox allowance completes the finite positive-income
+        // input, not the unvalued registry tail. Keep its old total budget.
+        scan(remaining_definitions,
+             std::min(request.max_native_checks, std::int32_t{512}));
         if (scan_failure != PlayerWorldBuildingFailureV1::none) {
           return Failed(scan_failure);
         }

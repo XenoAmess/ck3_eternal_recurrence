@@ -70,9 +70,12 @@ bool ExecuteConstructionMailbox12004(void *context, const Stamp &stamp) noexcept
   access.native_cost = ck3_12004::BindCurrentProcessPlayerWorldBuildingCostV1(native);
   access.native_cost_context = &native;
   q.player_world_building_source_executed = true;
+  // Eight held provinces can exhaust 512 legality checks before the finite
+  // positive-income definitions finish. The reader keeps the unvalued tail
+  // at its old 512 total checks while honoring the existing 4096 ceiling here.
   q.player_world_building_sources = ck3_12004::ReadPlayerWorldBuildingDefinitionSourcesV1(
       q.module_base, true, access,
-      {q.expected_revision, -1, 512, kConstructionWorldLegalSampleBudgetV1});
+      {q.expected_revision, -1, 4096, kConstructionWorldLegalSampleBudgetV1});
   if (q.player_world_building_sources.source_available && Same(*owner)) {
     if (q.request_private_action) {
       q.private_action_candidate = ck3_11906::SelectPlayerWorldBuildingActionCandidateV1(
