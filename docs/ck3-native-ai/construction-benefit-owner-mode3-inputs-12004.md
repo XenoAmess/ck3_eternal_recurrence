@@ -82,9 +82,11 @@ expand a generic modifier or holder-tax tree.
 flowchart TD
     C[Actual completed slot callback246CA40] --> P[Closed context28662F0 / P / mode3]
     P --> X[2866699 owner from P+5D0 / restore mode3]
-    X --> T[Reached target2479F50 / one held207B interval]
-    T -. body not yet captured .-> V[Province718 recomputation or other concrete output]
-    V -. definition contribution and holder transfer unclosed .-> N[Attributed player NET]
+    X --> T[Closed207B body2479F50 to RET247A01E]
+    T --> S[2479FBD calls2468DA0 / owner620 / output storage]
+    S --> V[2479FCD stores returned first qword in owner718]
+    S -. producer body not yet captured .-> D[Individual building contribution and context]
+    V -. holder transfer unclosed .-> N[Attributed player NET]
     A[Existing province aggregate and cash-v2 NET] --> O[Observed aggregate change only]
 ```
 
@@ -93,10 +95,62 @@ Prepared Root-only artifacts are under
 
 - `OWNER-MODE3-REACHED-ENTRY-MANIFEST.json`: the exact old/current entries,
   held runtime rows and 207-byte bounds.
-- `ROOT-READ-ARGV.json`: the existing central finite mapper invocation,
-  output `owner-mode3-root-first01/`. It is **not executed by this package**.
+- `ROOT-READ-ARGV.json`: the original central finite mapper invocation,
+  output `owner-mode3-root-first01/`. Root subsequently executed this once;
+  this package did not execute it.
 
-Until Root supplies that actual generated source detail, the body and its
-relation to Province+0x718/holder NET remain **unclosed**. Ordinary game
-progress, natural completion observations and current cash decisions retain
-their existing behavior; this research adds no new completion or income gate.
+## Root actual207B result: aggregate publisher is now closed
+
+Root reported the unique paired capture **GREEN**, 414 bytes / two new range
+reads (`tool4e819c`). The retained `owner-mode3-root-first01/FAMILY-MAP.json`
+has one `complete_instruction_span_normalized_equal` row, complete old/current
+decodes, matching ordered edges and local topology. This lane consumed only
+its generated text DETAIL, with no further binary or executable reads.
+
+The actual body now closes through normal `RET247A01E`:
+
+| Actual operation | Concrete effect | Semantic boundary |
+| --- | --- | --- |
+| `2479F5F..2479F6C` | Preserve mode; if mode bit1 is set, call `2478EE0(owner)` | Mode3 reaches this helper; its effects remain unexpanded |
+| `2479F71..2479F87` | Save old raw32 `owner+0x850`; call `2479C20(owner,0)`; store EAX to `+0x850`; set `+0x858` to `0xFFFFFFFF` | Units and cache identity remain unknown |
+| `2479F91..2479F9D` | If old `+0x850 > 0` and mode bit0 is set, call `2479EA0(owner)` | No holder-tax semantics are assigned |
+| `2479FA2..2479FBD` | Call `2468DA0` with RCX=`owner+0x620`, RDX=stack output address, R8D=0, R9D=0 and fifth argument0 | This is the precise reached producer of the next stored value |
+| `2479FCA..2479FCD` | Read the first qword at returned RAX and store it to `owner+0x718` | Direct writer of the aggregate field consumed by the existing province income getter |
+| `2479FD4..2479FE3` | Call distinct `246A050(owner+0x620, same output address, R8D=0)`; store its returned first qword to `owner+0x720` | A separate output; do not relabel it as the `+0x718` income field |
+| `2479FEA..247A009` | Nonzero mode plus nonnull global receiver calls its virtual `+0xA0`, with EDX=`0x2DAC`, R8D=`owner+0x10`, R9D=0 | Operation/event semantics remain unknown |
+| `247A00F..247A01E` | Restore registers and stack; return | Complete terminal path within the captured interval |
+
+Thus the completed-slot callback's mode3 path **does reach the aggregate
+`+0x718` write**. The new source closes that data flow; it does not add a new
+independent numerical observation, since the bridge already reads this
+aggregate. It neither supplies an individual definition's effective yield
+nor closes the contribution's transfer into holder NET. No new production
+field or policy change is warranted by the publisher alone.
+
+## Single useful successor: the existing718 producer
+
+The only proposed successor is the actual `2479FBD -> 2468DA0` call whose
+returned first qword feeds `+0x718`. Its concrete old counterpart is
+`2479FDD -> 2468DC0`, directly recorded in Root's paired source DETAIL.
+One exact held runtime-row lookup bounds each entry:
+
+| Image | Held runtime row | Entry interval |
+| --- | --- | --- |
+| `.3` | `[38178240,38182358,86293900]` | `[2468DC0,2469DD6)` /4118 bytes |
+| `.4` | `[38178208,38182326,86294144]` | `[2468DA0,2469DB6)` /4118 bytes |
+
+The five existing central cache directories have no named range covering
+either entry. A Root-only manifest therefore proposes this **one** held
+runtime interval per image, **8236 bytes / two reads**, so the concrete entry
+can be interpreted once without repeated short prefix captures. Full
+function coverage beyond the one interval is not preasserted. The other
+`+0x850` helpers, separate `+0x720` producer and virtual call are excluded.
+
+`PROVINCE718-PRODUCER-MANIFEST.json` and
+`ROOT-PROVINCE718-READ-ARGV.json` in the same external folder are prepared
+but **not executed by this lane**. Inspecting that sole body can establish
+which completed slots, contextual modifiers or other sources actually form
+the aggregate and whether an independent building contribution is available.
+There is no guarantee that it returns such a contribution; ordinary
+completion and cash decisions do not wait on this research. No extra M4
+completion, benefit gate or milestone credit is introduced.
