@@ -1,0 +1,70 @@
+{
+  "schema": "ck3.raw-evidence-archive-validation.v1",
+  "status": "PASS",
+  "archive": {
+    "path": "raw-evidence.zip",
+    "bytes": 393927,
+    "sha256": "de32007049488e04f1996d2924106eb3e21146a828862d0186b4c1a70ab444de"
+  },
+  "checked_entries": 131,
+  "crc": "PASS",
+  "all_source_and_archived_bytes_match": true,
+  "all_source_and_archived_sha256_match": true,
+  "verified_actual_query_pairs": 31,
+  "query_receipts": [
+    "failure-37995375811-attempt-1-api-logs.actual.json",
+    "failure-37995375811-attempt-1-log-failed.actual.json",
+    "poll-001-jobs-37995375808.actual.json",
+    "poll-001-jobs-37995375811.actual.json",
+    "poll-001-runs.actual.json",
+    "poll-002-jobs-37995375808.actual.json",
+    "poll-002-jobs-37995375811.actual.json",
+    "poll-002-runs.actual.json",
+    "poll-003-jobs-37995375808.actual.json",
+    "poll-003-jobs-37995375811.actual.json",
+    "poll-003-runs.actual.json",
+    "poll-004-jobs-37995375808.actual.json",
+    "poll-004-jobs-37995375811.actual.json",
+    "poll-004-runs.actual.json",
+    "poll-005-jobs-37995375808.actual.json",
+    "poll-005-jobs-37995375811.actual.json",
+    "poll-005-runs.actual.json",
+    "poll-006-jobs-37995375808.actual.json",
+    "poll-006-jobs-37995375811.actual.json",
+    "poll-006-runs.actual.json",
+    "poll-007-jobs-37995375808.actual.json",
+    "poll-007-jobs-37995375811.actual.json",
+    "poll-007-runs.actual.json",
+    "poll-008-jobs-37995375808.actual.json",
+    "poll-008-jobs-37995375811.actual.json",
+    "poll-008-runs.actual.json",
+    "poll-009-jobs-37995375808.actual.json",
+    "poll-009-jobs-37995375811.actual.json",
+    "poll-009-runs.actual.json",
+    "terminal-37995375808-full-api-logs-retry-001.actual.json",
+    "terminal-37995375811-full-api-logs-retry-001.actual.json"
+  ],
+  "original_complete_logs_zip_validation": [
+    {
+      "file": "failure-37995375811-attempt-1-api-logs.stdout.zip",
+      "bytes": 80748,
+      "sha256": "6a2f16d6b631914629cd9f304d0ec50af7ba0903e7b54172e170a86a613832ee",
+      "entries": 36,
+      "crc": "PASS"
+    },
+    {
+      "file": "terminal-37995375808-full-api-logs-retry-001.stdout.zip",
+      "bytes": 16616,
+      "sha256": "e26dde1026ec1fa8907fa927aeff52a6b19b5a4fd74b8aa4d82d20c13038ccef",
+      "entries": 7,
+      "crc": "PASS"
+    },
+    {
+      "file": "terminal-37995375811-full-api-logs-retry-001.stdout.zip",
+      "bytes": 80748,
+      "sha256": "6a2f16d6b631914629cd9f304d0ec50af7ba0903e7b54172e170a86a613832ee",
+      "entries": 36,
+      "crc": "PASS"
+    }
+  ]
+}

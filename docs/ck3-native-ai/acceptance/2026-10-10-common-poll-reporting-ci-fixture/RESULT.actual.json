@@ -1,0 +1,51 @@
+{
+  "schema": "ck3.common-poll-reporting-ci-fixture-fix.v1",
+  "original_ci_head": "6a3affdb87f03f01bdc9f4dc43aeff15960200db",
+  "original_official_run_id": 37995375811,
+  "original_official_conclusion": "failure",
+  "original_linear_run_id": 37995375808,
+  "original_linear_history": "success",
+  "original_li_yu_dao_static_checks": "NOT_TRIGGERED",
+  "original_failed_step": "Test shared CK3 acceptance without installed CK3",
+  "original_exception": "NameError: name 'supervisor' is not defined",
+  "original_failed_test_count": 6,
+  "external_original_exit_code": 1,
+  "external_candidate_tests": 6,
+  "external_candidate_exit_code": 0,
+  "actual_repo_tests": 6,
+  "actual_repo_exit_code": 0,
+  "actual_repo_command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/test_ck3_mod_acceptance_poll_reporting.py"
+  ],
+  "actual_repo_receipt": "applied-repo-test/RESULT.actual.json",
+  "fixed_test_source": {
+    "bytes": 15183,
+    "sha256": "42968d19ef4ba557d3ce55dcc28d21ee647d6aa7ebc0cadd1719d55e459642f9"
+  },
+  "unchanged_production_host": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 249088,
+    "sha256": "1f1a9f7a9bb195a0cec11e46137b3931f91b5193265ed69fb32a56f09cf1f8c2"
+  },
+  "fix": "Supply supervisor=None in the AST-isolated test namespace, matching the real host initial closure value.",
+  "actual_write_function_and_all_original_six_test_assertions_preserved": true,
+  "real_game_or_screen_process_started": false,
+  "workflow_dispatch_performed": false,
+  "new_official_ci_success_claimed": false,
+  "shared_runtime_or_product_green_claimed": false,
+  "source04_runtime_repackaged": false,
+  "open_kaishek_prevalidation": {
+    "status": "not-applicable",
+    "reason": "Python AST-isolated reporting fixture; no CK3 script, parser or gameplay semantics changed."
+  },
+  "verified_actual_ci_query_pairs": 31,
+  "raw_evidence": {
+    "path": "raw-evidence.zip",
+    "bytes": 393927,
+    "sha256": "de32007049488e04f1996d2924106eb3e21146a828862d0186b4c1a70ab444de"
+  }
+}
