@@ -18,9 +18,13 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 
 ## 当前公共CLI与本机共同版本
 
-2026-10-10 后继本机映射使用 `runtime.local-entry-bound13.json`（SHA256 `a7f20631fd99395a8e509246850ac7ef47da841352abd0e6db00d48ca6070e2d`），其 FINAL11 / Source10 / d1d4 native 与下方 bound12 相同，只增加公共自动正常退出三 pins。操作合同、真实 reviewer 与当前 source-only 边界见[公共操作接点](ck3-mod-acceptance-operator-quit.md)。17项定向检查通过，下一场验证真实退出；不把代码接入计作实测提速或产品通过。既有场次与旧 bound12 保留，不重解释历史证据。
+2026-10-10 05:45当前新场使用唯一[Source12/mapping03](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-reviewer-03.json)，8076B / SHA256 `8251b000a720092fc8025494946a2d0f627df6f910d4876a6d6d02f6df8d2031`；共同manifest `5d00ca2fc93518151f5b9394a713dab8aae60d7e968abc80a23eabf3838e692a`，native `fd1f33ed63c452ba2fef3313a490db53fd8bfcfc567909c94b4966e1f4f7c5aa`。共同任命/title/PAM/truce和失败生命周期沿用同一份源码及DLL；native仅编20个变化TU、复用552个对象并单次链接。mapping03只换实际reviewer退出helper，既有同manifest prepared复用，不重prepare。
 
-当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。后续本机新场使用[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound12.json)和唯一[FINAL11 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-11.json)，绑定shared Source10/index、canonical host与原d1d4 native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。已消费场次继续绑定各自旧冻结输入，旧runner和冻结保留原证据及底层实现。
+R42原hardgate与R43原head_identity均case qualified，whole business/release=false保持。R43首次实际验证mapping03自动正常Quit及外置v05连续公共run→verify→原keeper→CAS，host结束后约5秒释放资源，真实OS0/native0/thread/cleanup、allocator/keeper0俱全；[原始回执](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/religion_head_identity--a143/POST-RUN-CLOSE-05.json)。v05只编排已有公共入口与close_attempt，不重实现host/业务/keeper/CAS。保留失败fastfinish和任命provider仍待各自真实qualification，不按产品重复共同成功证明。
+
+以下bound13/bound12及后续Source05–10记录保留当时版本与失败，不作为当前新场选择。bound13曾增加公共自动正常退出三pins，公共真实reviewer合同见[公共操作接点](ck3-mod-acceptance-operator-quit.md)。
+
+当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。先前本机bound12使用[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound12.json)和唯一[FINAL11 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-11.json)，绑定shared Source10/index、canonical host与原d1d4 native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。已消费场次继续绑定各自旧冻结输入，旧runner和冻结保留原证据及底层实现。
 
 上述六个模式是未来新 mod run 的唯一操作路由。旧 `run_acceptance.py`、`run_vivhite_acceptance.py`、terminal/product runner 及其历史命令只供只读证据、library 与原业务断言复用，不直接作为新启动入口；旧冻结不被改写。产品 builder、静态检查和不启动游戏的原 preflight 继续保留，不能凭这些结果授实机资格。公共 local 映射始终指向当次唯一全局 manifest，不按产品另选 host/source/native。`de-jure-conquest`、`change-holding-types`、`li-yu-dao` 的 basic-load case 只授加载边界，其原玩家功能合同仍待独立业务证据。
 
@@ -28,7 +32,7 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 从仓库根的`cmd.exe`执行，以下只读例子选择当前真实TED case：
 
 ```text
-tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound12.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case production_ui
+tools/.venv/Scripts/python.exe -B tools/ck3_mod_acceptance.py plan --runtime C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-reviewer-03.json --products tools/ck3_mod_acceptance_products.json --product tributary-expansion-directives --case production_ui
 ```
 
 后续模式使用相同四项选择参数，按下表替换`plan`并追加参数；尖括号是当次真实路径/新编号占位，不是已有attempt的重跑命令。

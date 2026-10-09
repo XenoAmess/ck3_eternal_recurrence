@@ -1,5 +1,11 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 05:45：R43通过，公共连续收尾首次实测
+
+R0043/a143原religion_head_identity使用同一Source12/mapping03，公共run0、verify0，case/contract/gui qualified=true，原whole business/release=false边界保持。[实际连续闭场回执](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/religion_head_identity--a143/POST-RUN-CLOSE-05.json)保留template-automation身份、actual_manual_reviewer=null；自动Quit、retained HANDLE OS0、严格native0、managed thread/cleanup、原allocator/keeper实际0均闭合。host于21:38:23 UTC结束，CAS7978于21:38:27 UTC done/resources=[]，v05公共run→verify→原keeper→CAS首次实际完成，结束后约5秒释放资源。未因此授保留失败fastfinish或任命provider实机资格。
+
+`d70eb9c1`的[官方CI37993569579](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37993569579)于21:32:47 UTC实际failure/step32：上一轮operator/completion修复及新增reviewer2/title-reference2已通过；后续旧poll_reporting AST测试抽取write()缺supervisor。仅补测试namespace中的未启动Thread，六项定向PASS（0.530秒），生产与runtime/fixture不改，不重跑已通过模块；后继官方CI待。本次闭场后继续rite_outcomes、ordinary_async、修正actor的selfpaid及PAM诊断正例，再交唯一UI操作者执行UI23/admin20/merit20。正式仍7/10；G2自然停战独立参照短卡与QOL覆盖增量并行整理，禁止复验已取得适用信用的单元。
+
 ## 2026-10-10 05:25：R42硬门槛合格与退出身份修复
 
 R0042/a142原religion_hardgate已实际公共run0、[公共verify0](C:/workspace/ck3-upgrade-20261010/root-r42-close-01/actual-public-verify-01.json)，原15 required/2 forbidden通过；`case_acceptance_pass=true`，`business_pass=false/product_release_pass=false`的原覆盖边界保留。开始时Robert rev2只是过渡帧，随后实际绑定Song34422、原scope资格与稳定native owner齐备，无fixture修复。正常退出实际reviewer为`/root/qol_original_cells_runner`，retained OS0/native0/thread/cleanup、normal-close-qualified=true；host21:00:52 UTC结束，原allocator实际Popen回执0、stdout keeper_actual_exit_code=0已读回，[CAS7968](C:/workspace/ck3-upgrade-20261006/resume-root-01/a142-screen-release-01.json)于21:19:34 UTC done/resources=[]。Root接回只读verify及闭场，没有代签GUI review。
