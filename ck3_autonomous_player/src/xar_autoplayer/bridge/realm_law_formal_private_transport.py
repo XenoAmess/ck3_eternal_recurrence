@@ -8,6 +8,7 @@ and caller budgets; it does not choose a law or equate its ACK with enactment.
 from __future__ import annotations
 
 from collections.abc import Mapping
+import time
 import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
@@ -37,11 +38,16 @@ def _action_id(value: object) -> bool:
     return isinstance(value, str) and 0 < len(value.encode("utf-8")) <= 63
 
 
+def _take_snapshot(driver: object) -> dict[str, object]:
+    reader = getattr(driver, "take_internal_semantic_snapshot", None)
+    return reader() if callable(reader) else driver.take_snapshot()
+
+
 def _paused(driver: object, *, public_revision: int | None = None,
             native_revision: int | None = None) -> dict[str, object]:
     if getattr(driver, "allow_private_realm_law_action", False) is not True:
         raise UnsupportedStepError("private realm-law action is disabled")
-    before = driver.take_snapshot()
+    before = _take_snapshot(driver)
     actor = before.get("played_character")
     if (before.get("paused") is not True or before.get("map_ready") is not True
             or not isinstance(actor, Mapping) or actor.get("alive") is not True
@@ -53,6 +59,29 @@ def _paused(driver: object, *, public_revision: int | None = None,
             or private_native_build_identity(before) not in (CK3_12002, CK3_12003, CK3_12004)):
         raise BridgeUnavailableError("private crown-law action requires its exact paused 1.20 frame")
     return before
+
+
+class _CrownReadStaleFrameError(BridgeUnavailableError):
+    """The native frame rejected a read before any law operation ran."""
+
+
+def _wait_for_new_read_frame(
+    driver: object, before: Mapping[str, object], *, deadline: float,
+    rejection: _CrownReadStaleFrameError,
+) -> dict[str, object]:
+    while True:
+        fresh = _take_snapshot(driver)
+        native_revision = fresh.get("native_revision")
+        if _positive(native_revision) and native_revision > before["native_revision"]:
+            return _paused(driver, public_revision=fresh.get("revision"))
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise rejection
+        wait = getattr(driver.state, "wait_for_public_change", None)
+        if callable(wait):
+            wait(fresh["revision"], remaining)
+        else:
+            time.sleep(min(0.01, remaining))
 
 
 def _send(driver: object, before: Mapping[str, object], *, step: str,
@@ -73,6 +102,10 @@ def _send(driver: object, before: Mapping[str, object], *, step: str,
             or frame.get("protocol_version") != 1 or frame.get("request_id") != request_id):
         raise BridgeUnavailableError("private crown-law command_result unavailable")
     if frame.get("ok") is not True:
+        if (step == QUERY_STEP and frame.get("ok") is False
+                and frame.get("error") == "nonwar private snapshot revision is stale or malformed"):
+            raise _CrownReadStaleFrameError(
+                "private crown-law native RED: " + frame["error"])
         raise BridgeUnavailableError("private crown-law native RED: " + str(frame.get("error", "unknown")))
     envelope = frame.get("result")
     build = private_native_build_identity(before)
@@ -85,7 +118,7 @@ def _send(driver: object, before: Mapping[str, object], *, step: str,
             or envelope.get("executable_sha256") != build.executable_sha256
             or envelope.get("read_only") is not (step != SUBMIT_STEP)):
         raise BridgeUnavailableError("private crown-law envelope malformed")
-    after = driver.take_snapshot()
+    after = _take_snapshot(driver)
     if (after.get("paused") is not True or after.get("map_ready") is not True
             or after.get("date_raw") != before["date_raw"]
             or after.get("played_character") != before["played_character"]):
@@ -155,8 +188,20 @@ def query_realm_law_crown_action_private_v1(
 ) -> dict[str, object]:
     if not _positive(expected_revision):
         raise ValueError("expected_revision must be positive")
+    if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
+        raise ValueError("timeout_seconds must be positive")
     before = _paused(driver, public_revision=expected_revision)
-    result = _send(driver, before, step=QUERY_STEP, fields={}, timeout_seconds=timeout_seconds)
+    deadline = time.monotonic() + float(timeout_seconds)
+    try:
+        result = _send(driver, before, step=QUERY_STEP, fields={}, timeout_seconds=timeout_seconds)
+    except _CrownReadStaleFrameError as rejection:
+        before = _wait_for_new_read_frame(driver, before, deadline=deadline, rejection=rejection)
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise rejection
+        # Only the rejected read is repeated, using an actually published newer
+        # native frame. Submission and receipt operations retain their behavior.
+        result = _send(driver, before, step=QUERY_STEP, fields={}, timeout_seconds=remaining)
     observation = result.get("observation")
     if (result.get("status") != "available" or result.get("ack") is not None
             or result.get("receipt") is not None or not _valid_observation(observation, before)):
@@ -165,7 +210,7 @@ def query_realm_law_crown_action_private_v1(
         **observation, "schema": READ_SCHEMA, **private_native_provenance(before),
         "read_only": True, "advertised": False,
         "queried_snapshot_id": before.get("snapshot_id"),
-        "queried_revision": expected_revision,
+        "queried_revision": before["revision"],
         "queried_native_revision": before["native_revision"],
     }
 
