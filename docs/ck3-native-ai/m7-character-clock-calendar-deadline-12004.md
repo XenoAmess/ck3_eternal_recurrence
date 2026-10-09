@@ -466,3 +466,38 @@ per eligible matching context entry. This observer package publishes the
 current inputs first. It does not yet replace the original raw9 unit or fill
 a positive calendar retry date, and it does not relabel that remaining
 source-code work as an unlocated native cadence.
+
+## Native56 offline qualification
+
+Root has now qualified the authored same-query context companion. This
+section supersedes the earlier SOURCE_READY / FIRST_NOTRUN statements for
+that companion only; the calendar projection remains separate source work.
+The canonical [Native56 parent receipt](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix56/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json)
+and [focused qualification](Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix56/ROOT-CROWN-COOLDOWN-TURN-TICK-QUALIFICATION.json)
+are GREEN. Root ran six new native scenarios, emitting seven whole wires
+including the legacy wire derived from the same readback, and the sole
+registered consumer passed all seven. Native FIRST took0.2671253s and the
+registered consumer took5.0473829s. No old GREEN scenarios were replayed.
+
+Production compilation remains pinned to
+`7f1dbe472d27c984c832032ea62320c8df0486ea`: its three Runtime owners passed
+in attempt01. That attempt's fixture failed `/WX` with C4244 on two date
+assignments. The fixture-only author fix
+`f2a4c3a39052d517f55981b7f1cd99cb73b285b7` explicitly uses the existing
+native signed32 frame/stamp widths; it does not change production behavior
+or compiler warnings. Root adopted it at qualification source
+`3d860833b1588828e385e79a505bdbb9f50b0996`. Attempt02 reused all three
+production objects, compiled only that fixture, then completed the archive,
+DLL/fixture links and the new FIRST. The original RED artifact is retained.
+
+The initial canonical sealer failed before hash/destination writes because
+its retained basename still selected Native54. Root corrected that harness
+filename and sealed Native56 without rerunning FIRST. The failed sealer
+attempt remains recorded. Mixed retained owner pins remain explicit; this
+does not claim every translation unit was rebuilt at the qualification head.
+
+The companion is now an offline qualified observation primitive whose
+membership and eligibility can be true. There is no new paused live capture,
+Game/SDK use, calendar action, new-day, natural succession or G2 completion
+credit. Absolute-date projection is the next independent source increment
+in [its own topic](m7-character-calendar-projection-12004.md).
