@@ -507,6 +507,9 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
     try:
         result = _send(driver, ACTION_NATIVE, source["native_revision"], request_id)
     except Exception as error:
+        pending = {**pending, "native_submit_error_type": type(error).__name__,
+                   "native_submit_error_message": str(error)}
+        write_construction_ledger(state_dir, {**ledger, "pending": pending})
         raise StepPostconditionError("construction native submit uncertain; query state before retry",
                                      selected_step=SUBMIT_STEP, step_result=pending) from error
     # Preserve the actual body before interpreting the ACK. R80 returned a

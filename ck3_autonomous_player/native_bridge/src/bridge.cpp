@@ -73,6 +73,9 @@
 #include "ck3_12002_construction_mailbox.hpp"
 #include "ck3_12004_construction_mailbox.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
+#include "player_world_building_private_action_latch_v1.hpp"
+#endif
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
@@ -588,8 +591,8 @@ static bool g_active_scheme_sway_may_have_submitted_v1 = false;
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
 // A second private submit is forbidden while the first command's material
 // status is unresolved. Cold recovery must query stock Province state first.
-static bool g_player_world_building_private_action_may_have_submitted_v1 =
-    false;
+static xar::ck3_11906::PlayerWorldBuildingPrivateActionLatchV1
+    g_player_world_building_private_action_latch_v1{};
 #endif
 static xar::bridge::MarriageSharedGlueStateV1 g_marriage_shared_glue_v1{};
 static xar::bridge::MarriageCandidateInternalRouteStateV1
@@ -20716,7 +20719,7 @@ void RunConnectedSession(
           request_private_action =
               step == xar::ck3_11906::kPlayerWorldBuildingActionPrivateStepV1;
           prior_action_unresolved = request_private_action &&
-              g_player_world_building_private_action_may_have_submitted_v1;
+              g_player_world_building_private_action_latch_v1.may_have_submitted;
 #endif
           std::uint64_t expected_revision = 0;
           if (prior_action_unresolved) {
@@ -20797,8 +20800,8 @@ void RunConnectedSession(
               } else {
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
                 if (request_private_action) {
-                  g_player_world_building_private_action_may_have_submitted_v1 =
-                      true;
+                  xar::ck3_11906::BeginPlayerWorldBuildingPrivateActionV1(
+                      g_player_world_building_private_action_latch_v1);
                 }
 #endif
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
@@ -20822,12 +20825,20 @@ void RunConnectedSession(
                       completion_snapshot == current_snapshot &&
                       state_revision == expected_revision));
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
-                if (request_private_action &&
-                    (!query.private_action_candidate.ready ||
-                     (query.private_action_state.materialize_calls == 0 &&
-                      query.private_action_state.receiver_calls == 0))) {
-                  g_player_world_building_private_action_may_have_submitted_v1 =
-                      false;
+                if (request_private_action) {
+                  xar::ck3_11906::RememberPlayerWorldBuildingPrivateActionV1(
+                      g_player_world_building_private_action_latch_v1,
+                      query.private_action_candidate,
+                      query.private_action_state.materialize_calls,
+                      query.private_action_state.receiver_calls);
+                } else if (actual4 && stable &&
+                           query.completion == xar::ck3_11906::
+                               PlayerConstructionViewProbeMailboxCompletionV1::completed &&
+                           query.player_world_building_source_executed) {
+                  (void)xar::ck3_11906::ObservePlayerWorldBuildingPrivateActionMaterialV1(
+                      g_player_world_building_private_action_latch_v1,
+                      query.player_world_building_sources,
+                      query.execution_stamp.pump_epoch);
                 }
 #endif
                 std::string response;
