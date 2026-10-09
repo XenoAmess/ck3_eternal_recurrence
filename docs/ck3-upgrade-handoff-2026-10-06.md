@@ -1,5 +1,11 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 07:54：Source13唯一共同版本已选
+
+Root选定全部后续未消费产品场唯一[mapping05](C:/workspace/ck3-upgrade-20261010/root-source13-adoption-01/runtime.adopted-source13-native-fd1f-queue04-05.json)：10820B / SHA256 `a5aecdf94d6e3dcf35f2462011ba6a743668605729627f6d272542cf8c460e91`；manifest `26b229556f0b97cfac3b7d0172dd55f97f39f410c476de97f01a0eb1c5361c18`、host `59344d4c74e01a5279dece356140b5d59001ff259194940bbfb5a90388e44e2d`，共同queue04/reviewer03 helper与native fd1f均不变。Source13实际增量生产一次exit0/stderr0、8.97秒：6906文件独立copy2及sizecheck，只有host delta重新SHA，其他6905行继承原SHA，不重hash全树或编DLL。旧Source12/所有已用prepared/R45失败不改；原未用prepared只新建manifest-pin sibling，原case inputs/support/断言/预算不变。该选择尚不授新failure-hold自动链、任命/停战或Character-query实机资格。
+
+ordinary_async仅在两原FAIL分支增加只读原子诊断，五项必要离线检查一次PASS；剥离新增内容可逐字节还原原fixture。生产27文件、原复合断言、30步/12日和4500/600预算保持；后继新prepare后补实际失败分量，不能预授PASS，见[诊断合同](xqol-ordinary-async-r45-diagnostics-2026-10-10.md)。新冻结HEAD交runner后，先继续原未消费fixedselfpaid→PAMpositive→rite27，诊断场随后，不重跑已有效单元。
+
 ## 2026-10-10 07:50：R45原失败闭场与共同host修复
 
 R0045/a145 ordinary_async的原startup资格及seeded replies通过，初始6步后完整首日24小时；day001-no-fail实际得到两条FAIL，公共run2、verify2、v05 BLOCKED原样保留。日志仅证明accepted/refused复合计数条件以及low最终faith/Rite/opinion复合条件失败，尚无各原子实际值，不能提前归因为2accept/0refuse或具体ROOT错误。该场原host在initial-plan异常后直接进入supervisor stop，实际shutdown.ck3_exit_code=1、job_active_before=1、process_exit_code=null，不能记为正常退出。原allocator/keeper实际0，CAS8043 done/resources=[]；[原失败与补充资源收口](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/ordinary_async--a145/SUPPLEMENTAL-RESOURCE-CLOSED-07.json)完整保留。

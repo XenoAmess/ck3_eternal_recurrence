@@ -18,6 +18,8 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 
 ## 当前公共CLI与本机共同版本
 
+2026-10-10 07:54后继统一为[Source13/mapping05](C:/workspace/ck3-upgrade-20261010/root-source13-adoption-01/runtime.adopted-source13-native-fd1f-queue04-05.json)（10820B / `a5aecdf94d6e3dcf35f2462011ba6a743668605729627f6d272542cf8c460e91`），只变共同host；实际增量生产8.97秒/0，复用同fd1f/queue04/helper03。原unused prepared仅新manifestpin sibling，不重复准备；全部已用场和旧Source12保持。initial-plan失败使用原hold预算的自动链仍待新场，不以源码或纯测试授实机信用。
+
 2026-10-10 06:18当前新场唯一[mapping04](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-queue-04.json)，8636B / SHA256 `af28777aee895c2134398ca7497dbdc022ae848879259ace15c0d5623e7a682d`。同Source12 manifest/host/fd1f native及reviewer03 helper，仅control_queue换为已在R44首次实际投递失败收尾的不可变共同producer。旧03/frozen/reject保留；R44原case/run/verify仍失败，22:10:20 UTC原RED/error结束并CAS8000释放资源。四项-O producer检查及host实际失败生命周期共同证明可复用，不按产品重做；原完整业务验收仍各自执行。unused prepared不重做，未来allocation冻结新公共support SHA。
 
 2026-10-10 05:45历史后继使用唯一[Source12/mapping03](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-reviewer-03.json)，8076B / SHA256 `8251b000a720092fc8025494946a2d0f627df6f910d4876a6d6d02f6df8d2031`；共同manifest `5d00ca2fc93518151f5b9394a713dab8aae60d7e968abc80a23eabf3838e692a`，native `fd1f33ed63c452ba2fef3313a490db53fd8bfcfc567909c94b4966e1f4f7c5aa`。共同任命/title/PAM/truce和失败生命周期沿用同一份源码及DLL；native仅编20个变化TU、复用552个对象并单次链接。mapping03只换实际reviewer退出helper，既有同manifest prepared复用，不重prepare。

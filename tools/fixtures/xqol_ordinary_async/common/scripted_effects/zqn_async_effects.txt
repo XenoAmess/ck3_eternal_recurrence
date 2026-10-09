@@ -98,7 +98,7 @@ zqn_observe_actual_replies_effect = {
     limit = { var:xqol_mass_conversion_accepted = 1 var:xqol_mass_conversion_refused = 1 }
     debug_log = "ZQN120: TEST PASS actual_accepted1_refused1_pending_removed"
    }
-   else = { debug_log = "ZQN120: TEST FAIL actual_accepted1_refused1_pending_removed" }
+   else = { debug_log = "ZQN120: TEST FAIL actual_accepted1_refused1_pending_removed" zqn_diagnose_original_reply_counts_effect = yes }
    if = {
     limit = { var:zqn_high = { faith = root.faith rite = root.rite } }
     debug_log = "ZQN120: TEST PASS high_final_faith_and_rite"
@@ -113,7 +113,7 @@ zqn_observe_actual_replies_effect = {
     }
     debug_log = "ZQN120: TEST PASS low_actual_refusal_original_faith_and_rite"
    }
-   else = { debug_log = "ZQN120: TEST FAIL low_actual_refusal_original_faith_and_rite" }
+   else = { debug_log = "ZQN120: TEST FAIL low_actual_refusal_original_faith_and_rite" zqn_diagnose_original_low_outcome_effect = yes }
    debug_log = "ZQN120: TEST DONE ordinary_courtier_async_observation"
   }
   else_if = {
@@ -122,5 +122,67 @@ zqn_observe_actual_replies_effect = {
    debug_log = "ZQN120: TEST FAIL async_reply_bounded_12_day_timeout"
   }
   else = { trigger_event = { id = zqn120.2 days = 1 } }
+ }
+}
+
+# Read-only diagnostics run only after the two original FAIL markers.
+# They do not seed/alter replies, identity, faith, Rite, opinions or queue values.
+zqn_diagnose_original_reply_counts_effect = {
+ if = {
+  limit = { has_variable = xqol_mass_conversion_accepted }
+  debug_log = "ZQN120: DIAG accepted_present true"
+  if = { limit = { var:xqol_mass_conversion_accepted = 0 } debug_log = "ZQN120: DIAG accepted_value 0" }
+  else_if = { limit = { var:xqol_mass_conversion_accepted = 1 } debug_log = "ZQN120: DIAG accepted_value 1" }
+  else_if = { limit = { var:xqol_mass_conversion_accepted = 2 } debug_log = "ZQN120: DIAG accepted_value 2" }
+  else = { debug_log = "ZQN120: DIAG accepted_value other" }
+ }
+ else = { debug_log = "ZQN120: DIAG accepted_present false" }
+ if = {
+  limit = { has_variable = xqol_mass_conversion_refused }
+  debug_log = "ZQN120: DIAG refused_present true"
+  if = { limit = { var:xqol_mass_conversion_refused = 0 } debug_log = "ZQN120: DIAG refused_value 0" }
+  else_if = { limit = { var:xqol_mass_conversion_refused = 1 } debug_log = "ZQN120: DIAG refused_value 1" }
+  else_if = { limit = { var:xqol_mass_conversion_refused = 2 } debug_log = "ZQN120: DIAG refused_value 2" }
+  else = { debug_log = "ZQN120: DIAG refused_value other" }
+ }
+ else = { debug_log = "ZQN120: DIAG refused_present false" }
+ if = { limit = { has_variable = xqol_mass_conversion_pending } debug_log = "ZQN120: DIAG pending_present true" }
+ else = { debug_log = "ZQN120: DIAG pending_present false" }
+}
+
+zqn_diagnose_original_low_outcome_effect = {
+ if = {
+  limit = { exists = var:zqn_low }
+  debug_log = "ZQN120: DIAG low_exists true"
+  var:zqn_low = {
+   debug_log = "ZQN120: DIAG SCOPE BEGIN actual_low_and_event_root"
+   debug_log_scopes = yes
+   debug_log = "ZQN120: DIAG SCOPE END actual_low_and_event_root"
+   if = { limit = { is_alive = yes } debug_log = "ZQN120: DIAG low_alive true" }
+   else = { debug_log = "ZQN120: DIAG low_alive false" }
+   if = { limit = { faith = faith:catholic } debug_log = "ZQN120: DIAG low_faith_catholic true" }
+   else = { debug_log = "ZQN120: DIAG low_faith_catholic false" }
+   if = { limit = { rite = rite:roman_rite } debug_log = "ZQN120: DIAG low_rite_roman true" }
+   else = { debug_log = "ZQN120: DIAG low_rite_roman false" }
+   if = {
+    limit = { exists = root }
+    debug_log = "ZQN120: DIAG event_root_exists true"
+    if = { limit = { has_opinion_modifier = { target = root modifier = demanded_my_conversion_opinion } } debug_log = "ZQN120: DIAG low_refusal_opinion_towards_root true" }
+    else = { debug_log = "ZQN120: DIAG low_refusal_opinion_towards_root false" }
+    if = { limit = { faith = root.faith } debug_log = "ZQN120: DIAG low_faith_matches_root true" }
+    else = { debug_log = "ZQN120: DIAG low_faith_matches_root false" }
+    if = { limit = { rite = root.rite } debug_log = "ZQN120: DIAG low_rite_matches_root true" }
+    else = { debug_log = "ZQN120: DIAG low_rite_matches_root false" }
+    if = { limit = { root = { any_courtier = { this = root.var:zqn_low } } } debug_log = "ZQN120: DIAG low_is_root_courtier true" }
+    else = { debug_log = "ZQN120: DIAG low_is_root_courtier false" }
+   }
+   else = { debug_log = "ZQN120: DIAG event_root_exists false" }
+  }
+ }
+ else = {
+  debug_log = "ZQN120: DIAG low_exists false"
+  debug_log = "ZQN120: DIAG SCOPE BEGIN missing_low_observer"
+  debug_log_scopes = yes
+  debug_log = "ZQN120: DIAG SCOPE END missing_low_observer"
  }
 }
