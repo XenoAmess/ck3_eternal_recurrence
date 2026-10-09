@@ -135,6 +135,8 @@ ORIGINAL_DISABLED
     startup = '''on_game_start_after_lobby = { on_actions = { zqag_start } }
 zqag_start = {
     effect = {
+        # set_player_character requires the actual current player scope.
+        random_player = {
         if = {
             limit = {
                 exists = character:han_8052
@@ -160,6 +162,7 @@ zqag_start = {
             }
         }
         else = { debug_log = "ZQAGUARD: TEST FAIL original_song_preconditions" }
+        }
     }
 }
 '''

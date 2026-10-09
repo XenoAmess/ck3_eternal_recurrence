@@ -19,6 +19,8 @@ def project():
     startup = '''on_game_start_after_lobby = { on_actions = { zqauitail_start } }
 zqauitail_start = {
     effect = {
+        # set_player_character requires the actual current player scope.
+        random_player = {
         if = {
             limit = {
                 exists = character:han_8052
@@ -49,6 +51,7 @@ zqauitail_start = {
             }
         }
         else = { debug_log = "ZQAUITAIL: TEST FAIL original_song_preconditions" }
+        }
     }
 }
 '''
