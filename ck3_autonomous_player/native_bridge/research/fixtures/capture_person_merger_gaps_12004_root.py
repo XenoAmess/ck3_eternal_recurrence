@@ -22,6 +22,8 @@ SPANS = (
     (0x230321F, 0x2303276),
     (0x2303380, 0x2303488),
 )
+INDEX_SPANS = ((0x2303900, 0x2303A6F),)
+INSERTION_SPANS = ((0xD87800, 0xD8787D), (0xC8E7E0, 0xC8E8F4))
 EXISTING_SHA = "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
 
 
@@ -29,14 +31,23 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--exe", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    scope = parser.add_mutually_exclusive_group()
+    scope.add_argument("--index-helper", action="store_true",
+                       help="Capture only the actual 2303228 CALL target metadata envelope")
+    scope.add_argument("--insertion-primitives", action="store_true",
+                       help="Capture only the two actual missing-key insertion primitives")
     args = parser.parse_args()
+    spans = (INSERTION_SPANS if args.insertion_primitives else
+             INDEX_SPANS if args.index_helper else SPANS)
+    supplementary = args.index_helper or args.insertion_primitives
+    requested_bytes = sum(end - begin for begin, end in spans)
     started = datetime.now(timezone.utc).isoformat()
     args.output_dir.mkdir(parents=True, exist_ok=False)
     decoder = Cs(CS_ARCH_X86, CS_MODE_64)
     decoder.detail = True
     rows = []
     with args.exe.open("rb") as source:
-        for begin, end in SPANS:
+        for begin, end in spans:
             source.seek(begin - 3072)
             raw = source.read(end - begin)
             instructions, assembly = [], []
@@ -84,10 +95,13 @@ def main() -> int:
         "ended_at_utc": datetime.now(timezone.utc).isoformat(),
         "exe": str(args.exe.resolve()), "existing_exe_sha256_not_rehashed": EXISTING_SHA,
         "section_metadata_reused": {"text_rva": 4096, "text_raw_offset": 1024},
-        "file_offset_formula": "rva-3072", "requested_bytes": 597,
+        "file_offset_formula": "rva-3072", "requested_bytes": requested_bytes,
         "actual_bytes": sum(row["actual_bytes"] for row in rows),
-        "new_exe_reads": len(rows), "held_bytes_not_reread": 284,
-        "metadata_candidate_union_bytes": 881,
+        "new_exe_reads": len(rows), "held_bytes_not_reread": 0 if supplementary else 284,
+        "metadata_candidate_union_bytes": requested_bytes if supplementary else 881,
+        "scope": ("actual-insertion-primitives" if args.insertion_primitives else
+                  "actual2303900-index-helper" if args.index_helper else
+                  "actual2303100-arithmetic-gaps"),
         "semantic_closure_claimed": False,
         "other_target_or_rip_data_reads": 0,
         "PE_pdata_hash_game_SDK_process_compiler_test": 0,

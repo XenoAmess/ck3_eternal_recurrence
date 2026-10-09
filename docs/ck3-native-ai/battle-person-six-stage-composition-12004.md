@@ -1,7 +1,9 @@
 # Actual4 six-stage person composition: the next arithmetic dependency
 
-Recorded on 2026-10-10 (Asia/Shanghai). Status: research, source contract
-closed; the arithmetic capture below is authored and not run. This does not
+Recorded on 2026-10-10 (Asia/Shanghai). Status: research. Root completed the
+597-byte arithmetic batch, 367-byte index-helper batch and 401-byte insertion
+batch once. The narrow Python numerical composition and its single reference
+case are authored, not executed. This does not
 qualify full Person, Entry, a battle terminal result or a gameplay milestone.
 
 ## The useful input already present
@@ -28,19 +30,66 @@ flowchart TD
   A[Original stage 0 through 5 callbacks] --> B[Captured signed raw counts]
   A --> C[Actual append PCs and signed R8 weights]
   C --> D[Ordered requests with native skips and ordinal gaps]
-  D --> E[Actual4 merger 2303100 arithmetic]
-  P[Explicit stage-correct pre-six aggregate] --> E
-  E -. actual4 arithmetic proof pending .-> F[Post-six numeric aggregate]
-  F -. remaining Person and Entry stages .-> G[Full Person and Entry]
+  D --> E[Actual4 merger 2303100 signed arithmetic closed]
+  E --> I[Actual2303900 first-equal and insertion rank]
+  I --> F[Observed realloc parallel insertion postimage]
+  I -. spare-capacity value path not captured .-> U[Native storage-path equivalence]
+  F --> C[Conditional empty-baseline numeric contribution]
+  P[Explicit stage-correct pre-six aggregate] --> T[Total post-six aggregate]
+  C --> T
+  T -. remaining Person and Entry stages .-> G[Full Person and Entry]
 ```
 
 ## One remaining arithmetic closure
 
-Actual `0x2438830` calls `0x2303100`. The held actual4 decoder proof covers
-receiver/member/argument use, not the complete arithmetic. The existing
+Actual `0x2438830` calls `0x2303100`. The earlier actual4 decoder proof covered
+receiver/member/argument use. Root's new batch now closes the main arithmetic
+through RET `0x2303275` and the separate scaler through RET `0x2303487`. The existing
 `simulation.battle_trait_materialized_prefix_12003._fold_property_request`
 is an exact `.3` implementation of `0x2303120` and its cold scaling path.
-It must not silently become an actual4 kernel.
+It must not silently become an actual4 kernel. At `0x23031c7`, CMP compares
+weight with source value; CMOVL at `0x23031d3` selects the signed **maximum**
+for quotient/remainder decomposition, and CMOVG at `0x23031d7` selects the
+minimum multiplier. The scaler repeats this choice at `0x230340f` /
+`0x230341b` / `0x230341f`. The old Python helper instead decomposes the minimum.
+Wrapping the intermediate remainder product can make those results differ.
+
+The actual code uses immediate bounds `3037000499` / `6074000998`, signed high
+multiply by `0x29f16b11c6d1e109`, SAR14 and a sign correction. The two-operand
+IMUL and addition instructions wrap at 64 bits. For source value `INT64_MIN`
+and weight `-1`, the actual large-operand path decomposes `-1`; its remainder
+product wraps to `INT64_MIN`, producing `-92233720368547`. This is an
+instruction-derived reference, not an executed result or unbounded product.
+
+The adjacent `[0x2303280,0x2303373)` is an independent typed setter, with
+returns `0x230330c` and `0x2303372`, rather than a merger continuation.
+The copy helpers are already closed by the outer-copy topic: independent
+source counts, ordered U16 keys and complete QWORD values are retained.
+
+Actual `0x2303228` calls `0x2303900`. Root's 367-byte capture closes that helper
+through RET `0x2303a6e`: unsigned U16 lower_bound yields the first equal key;
+an equal key returns its index. A missing key retains that rank and either
+copies a prefix/new-key/suffix into new storage or rotates the appended key
+into position. The value insertion receives that same rank and a literal
+zero QWORD. Its delegated calls are `0xd87800` (key rotation) and `0xc8e7e0`
+(parallel value insertion). Root's subsequent 401 bytes close the former
+through returns `0xd8782f`, `0xd87847` and `0xd8787c`: it delegates the three
+range reversals to the ordinary library helper `0x42209c4`. The latter's
+reallocation path explicitly copies the QWORD prefix, stores the supplied
+zero at the insertion rank, copies the suffix and increments the count,
+then returns at `0xc8e8f3`. These observed logical postimages support the
+local list insertion used by the Python contribution model.
+
+The value helper's spare-capacity JNE at `0xc8e7fb` targets `0xc8e8f4`, exactly
+outside the captured window. Its body and the ordinary reverse implementation
+are not claimed as newly decoded. This package does not claim complete native
+storage-path equivalence or allocator execution. Root explicitly stopped the
+callee/read chain here. No extra capacity field, RIP read or readiness gate
+is introduced by this local logical composition.
+
+The three new batches total 1365 bytes in nine Root-only reads. Together with
+the 284 held bytes consumed once, they close the arithmetic and observed
+logical insertion paths above. No prior batch was read a second time.
 
 That old implementation distinguishes an empty destination from a nonempty
 one. Its empty branch copies physical key/value order, duplicates and the
@@ -52,7 +101,7 @@ insufficient. The supplied stage-chain module has no retained v77 six-loop
 API locator; that narrow source lookup is recorded as a miss rather than an
 excuse to expand the search.
 
-Cached runtime rows give an 881-byte candidate union for the known old logical
+Cached runtime rows gave an 881-byte candidate union for the known old logical
 interval `[0x2303120,0x23034a4)`. Reuse 284 held bytes and request only 597 new
 bytes. Row boundaries alone do not prove a function: the returned instructions
 must distinguish the main merger, its cold scaling path and the adjacent
@@ -85,8 +134,10 @@ Reuse the complete 243-byte setter `[0x2303280,0x2303373)` from
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/person-historical-model-stage/actual-typed-operands01/SOURCE-CAPTURE.json`.
 Its prior interpretation is
 `person-merged-helper-historical-model-input/native-tree/ACTUAL-TYPED-OPERAND-CONTRACT.json`
-under the same background directory. Neither artifact body was reread for
-this selection.
+under the same background directory. Neither artifact body was reread for the
+original selection. For arithmetic interpretation, these specific 41-byte
+windows and the 243-byte setter were each consumed once alongside Root's
+new captures.
 
 ## Smallest composition after arithmetic proof
 
@@ -103,6 +154,17 @@ stage-correct pre-six aggregate; a full modifier context additionally needs
 its prior weighted rows. A current final Model is not that prior. This is a
 data dependency of the requested total, not an additional execution gate.
 
-No production Python/C++ change or new fixture is proposed before actual4
-arithmetic is established. The current delivery is the exact native tree,
-the reusable emitter contract and one bounded Root-only capture entry.
+The [new kernel](../../ck3_autonomous_player/src/xar_autoplayer/simulation/battle_person_pc_merger_12004.py)
+uses the actual multiply, signed-MAX split, native binary-search iteration
+and observed logical insertion postimage. It never imports the old arithmetic
+helper. `fold_ordered_pc_contribution_12004` preserves the supplied request
+order, first-copy duplicates and FFFF, nonempty sentinel skip and wrap64
+accumulation. `compose_captured_six_stage_contribution_12004` consumes the
+existing Native62 request emitter, retaining its real weights and feedback.
+
+The sole [numeric reference](../../ck3_autonomous_player/tests/unit/test_person_pc_merger_arithmetic_12004.py)
+is synthetic and instruction-derived. It covers the INT64_MIN/-1 maximum
+split, nonunit copy, duplicate-first update, zero insertion, sentinel handling,
+wrap64 additions, ordinal gaps and unchanged input operands. It is
+AUTHORED_NOTRUN; Root owns the single pytest invocation. No native producer,
+C++ build, prior Green fixture, SDK or game is replayed.
