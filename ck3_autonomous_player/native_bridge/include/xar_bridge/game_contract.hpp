@@ -11,6 +11,7 @@
 #include "xar_bridge/ck3_12004_person_conditional_2921a90.hpp"
 #include "xar_bridge/ck3_12004_person_conditional_opinion.hpp"
 #include "xar_bridge/ck3_12004_person_conditional_scope_weights.hpp"
+#include "xar_bridge/ck3_12004_person_following_2922680.hpp"
 
 #include "xar_bridge/ck3_12003_maa_recruitment.hpp"
 #include "xar_bridge/owned_regiments.hpp"
@@ -3649,6 +3650,7 @@ struct BattleCurrentPersonStateSnapshotV1 {
   std::optional<ck3_12004::PersonConditional2921a90DTO> following_2921a90_conditional;
   std::optional<ck3_12004::PersonConditionalOpinion12004DTO> following_2921a90_opinion;
   std::optional<ck3_12004::PersonConditionalScopeWeights12004DTO> following_2921a90_scope_weights;
+  std::optional<ck3_12004::PersonFollowing2922680DTO> following_2922680;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
 };

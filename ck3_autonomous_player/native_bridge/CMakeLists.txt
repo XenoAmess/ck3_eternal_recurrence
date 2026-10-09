@@ -9634,3 +9634,5 @@ if(BUILD_TESTING AND WIN32)
     COMMAND xar_ck3_12004_person_following_2921a90_mcp_test
       "${CMAKE_BINARY_DIR}/wire/ck3_12004_person_following_2921a90_mcp_first")
 endif()
+
+include(cmake/person_following_2922680_12004.cmake)
