@@ -40,6 +40,12 @@ struct PersonSixStageCaptureStage12004 {
   friend bool operator==(const PersonSixStageCaptureStage12004 &,
                          const PersonSixStageCaptureStage12004 &) = default;
 };
+struct PersonSixStagePreAggregate12004 {
+  bool observed = false;
+  PersonFollowing2922680Pc pc;
+  friend bool operator==(const PersonSixStagePreAggregate12004 &,
+                         const PersonSixStagePreAggregate12004 &) = default;
+};
 struct PersonSixStageCapture12004DTO {
   std::string build_version;
   std::string executable_sha256;
@@ -48,6 +54,10 @@ struct PersonSixStageCapture12004DTO {
   bool capture_complete = false;
   bool ready = false;
   bool raw_counts_ready = false;
+  PersonSixStagePreAggregate12004 pre_six_aggregate;
+  PersonSixStagePreAggregate12004 post_six_aggregate;
+  bool aggregate_postimage_inputs_ready = false;
+  bool aggregate_postimage_comparison_ready = false;
   std::string reason;
   std::uint64_t capture_sequence = 0;
   std::optional<std::int32_t> capture_date_raw;
@@ -109,6 +119,11 @@ bool InitializePersonSixStageCaptureFixture12004(
     const PersonSixStageCaptureBindings12004 &bindings,
     PersonSixStageOriginal12004 original,
     PersonSixStageAppendOriginal12004 append_original) noexcept;
+// Shared production dispatch for the natural hook and its connected fixture.
+// Owns context+0x68 before exact stage0, calls original once, then records result.
+std::uintptr_t InvokePersonSixStageCapture12004(
+    void *character, void *context, std::uint32_t index,
+    std::uintptr_t caller_return_address) noexcept;
 // Called after the natural callback has returned and before either append.
 // Copies source data only; it never replays the callback or writes its context.
 void ObservePersonSixStageCapture12004(

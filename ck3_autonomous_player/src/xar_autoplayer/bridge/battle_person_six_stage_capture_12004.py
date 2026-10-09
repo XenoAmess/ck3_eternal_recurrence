@@ -95,10 +95,34 @@ def _stage(value: object, field: str, index: int, capture_complete: bool) -> dic
     return result
 
 
+def _aggregate(value: object, field: str, source_stage: str) -> dict:
+    raw = _dict(value, field, {"observed", "source_stage", "context_pc_offset", "pc"})
+    result = {
+        "observed": _boolean(raw["observed"], field + ".observed"),
+        "source_stage": _string(raw["source_stage"], field + ".source_stage"),
+        "context_pc_offset": _integer(raw["context_pc_offset"], field + ".context_pc_offset", 32, unsigned=True),
+        "pc": _pc(raw["pc"], field + ".pc"),
+    }
+    if result["source_stage"] != source_stage or result["context_pc_offset"] != 0x68:
+        raise ValueError(field + " changed its actual inline PC source")
+    pc = result["pc"]
+    if pc["weight_q100000"] is not None:
+        raise ValueError(field + " aggregate state cannot claim a native append weight")
+    if result["observed"]:
+        if pc["admitted"] is not True or pc["identity"] is None:
+            raise ValueError(field + " observed aggregate lacks its actual PC source")
+    elif pc["ready"] or pc["admitted"] is not None or pc["identity"] is not None:
+        raise ValueError(field + " unobserved aggregate cannot claim PC operands")
+    return result
+
+
 def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
     """Retain six owned stages, including incomplete and unread observations."""
     if value is None:
         return None
+    aggregate_fields = {"pre_six_aggregate", "post_six_aggregate",
+                        "aggregate_postimage_inputs_ready", "aggregate_postimage_comparison_ready"}
+    has_aggregate = isinstance(value, dict) and "pre_six_aggregate" in value
     raw = _dict(value, FIELD_NAME, {
         "schema", "build_version", "executable_sha256", "configured",
         "capture_observed", "capture_complete", "ready", "raw_counts_ready",
@@ -106,7 +130,7 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
         "capture_thread_id", "query_thread_id",
         *_POINTERS, "stages", "source_stage", "historical_capture",
         "actual_model_write_performed", "full_helper_ready",
-    })
+    } | (aggregate_fields if has_aggregate else set()))
     if (raw["schema"] != SCHEMA or require_exact_native_build(
             raw["build_version"], raw["executable_sha256"]) != CK3_12004):
         raise ValueError(FIELD_NAME + " requires its exact actual4 source identity")
@@ -171,6 +195,27 @@ def normalize_person_six_stage_capture_12004(value: object) -> dict | None:
                 or any(not stage[kind + "_pc"]["ready"]
                        for stage in result["stages"] for kind in _APPEND_KINDS)):
             raise ValueError(FIELD_NAME + " ready capture retains an unavailable stage")
+    if has_aggregate:
+        pre = _aggregate(raw["pre_six_aggregate"], FIELD_NAME + ".pre_six_aggregate",
+                         "before_first_count_callback")
+        post = _aggregate(raw["post_six_aggregate"], FIELD_NAME + ".post_six_aggregate",
+                          "same_thread_capture_completion")
+        inputs_ready = _boolean(raw["aggregate_postimage_inputs_ready"], FIELD_NAME + ".aggregate_postimage_inputs_ready")
+        comparison_ready = _boolean(raw["aggregate_postimage_comparison_ready"], FIELD_NAME + ".aggregate_postimage_comparison_ready")
+        if pre["observed"] and (not result["capture_observed"] or not result["stages"][0]["observed"]):
+            raise ValueError(FIELD_NAME + " baseline lacks its actual first callback")
+        if post["observed"] != result["capture_complete"]:
+            raise ValueError(FIELD_NAME + " completion aggregate lacks its same-thread completion")
+        for aggregate in (pre, post):
+            if aggregate["observed"] and int(aggregate["pc"]["identity"], 16) != int(result["context_identity"], 16) + 0x68:
+                raise ValueError(FIELD_NAME + " aggregate PC differs from captured context+68")
+        if inputs_ready != (result["ready"] and pre["observed"] and pre["pc"]["ready"]):
+            raise ValueError(FIELD_NAME + " aggregate input readiness differs from owned baseline and requests")
+        if comparison_ready != (inputs_ready and post["observed"] and post["pc"]["ready"]):
+            raise ValueError(FIELD_NAME + " comparison readiness differs from actual completion PC")
+        result.update(pre_six_aggregate=pre, post_six_aggregate=post,
+                      aggregate_postimage_inputs_ready=inputs_ready,
+                      aggregate_postimage_comparison_ready=comparison_ready)
     return result
 
 
@@ -302,3 +347,29 @@ def emit_captured_person_six_stage_occurrence_requests_12004(
     if index >= STAGE_COUNT:
         raise ValueError("Required native input unavailable: " + FIELD_NAME + " stage")
     return _stage_requests(character, leaf, leaf["stages"][index])
+
+
+def emit_captured_person_pre_six_aggregate_12004(section: object) -> dict:
+    """Publish the owned actual baseline; an older capture cannot supply empty state."""
+    character, leaf = _joined_leaf(section)
+    aggregate = leaf.get("pre_six_aggregate")
+    if not leaf.get("aggregate_postimage_inputs_ready") or aggregate is None:
+        raise ValueError("Required native input unavailable: actual pre-six aggregate baseline")
+    pc = aggregate["pc"]
+    return {
+        "character_id": character,
+        "capture_sequence": leaf["capture_sequence"],
+        "capture_date_raw": leaf["capture_date_raw"],
+        "capture_thread_id": leaf["capture_thread_id"],
+        "context_identity": leaf["context_identity"],
+        "source_pc_identity": pc["identity"],
+        "property_block": {
+            "keys_count": pc["count_i32"],
+            "keys_u16": list(pc["properties"]["keys_u16"]),
+            "values_q64": list(pc["properties"]["values_q64"]),
+        },
+        "historical_capture": True,
+        "source_stage": aggregate["source_stage"],
+        "actual_model_write_performed": False,
+        "full_helper_ready": False,
+    }

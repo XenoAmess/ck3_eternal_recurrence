@@ -141,6 +141,8 @@ PersonSixStageCapture12004DTO EmptyResult(std::uint32_t full_character_id) {
   dto.build_version = kGameVersion;
   dto.executable_sha256 = kExecutableSha256;
   dto.character_id = full_character_id;
+  dto.pre_six_aggregate.pc.reason = "pre_six_aggregate_unobserved";
+  dto.post_six_aggregate.pc.reason = "post_six_aggregate_unobserved";
   for (std::uint32_t i = 0; i < dto.stages.size(); ++i) {
     auto &stage = dto.stages[i];
     stage.index = i;
@@ -158,6 +160,10 @@ void UpdateReadiness(PersonSixStageCapture12004DTO &dto) {
       std::all_of(dto.stages.begin(), dto.stages.end(), [](const auto &stage) {
         return stage.first_pc.ready && stage.second_pc.ready;
       });
+  dto.aggregate_postimage_inputs_ready = dto.ready &&
+      dto.pre_six_aggregate.observed && dto.pre_six_aggregate.pc.ready;
+  dto.aggregate_postimage_comparison_ready = dto.aggregate_postimage_inputs_ready &&
+      dto.post_six_aggregate.observed && dto.post_six_aggregate.pc.ready;
   if (dto.ready) dto.reason.clear();
   else if (!dto.capture_complete) dto.reason = "native_six_stage_capture_open";
   else if (!dto.raw_counts_ready) dto.reason = "native_six_stage_counts_partial";
@@ -362,10 +368,11 @@ bool InitializePersonSixStageCaptureFixture12004(
   return InitializeRuntime(bindings, original, append_original);
 }
 
-void ObservePersonSixStageCapture12004(
+static void ObserveSixStageWithBaseline12004(
     std::uintptr_t character, std::uintptr_t context, std::uint32_t index,
     std::uintptr_t raw_return_bits,
-    std::uintptr_t caller_return_address) noexcept {
+    std::uintptr_t caller_return_address,
+    const PersonFollowing2922680Pc *pre_six_aggregate) noexcept {
   if (!g_available.load(std::memory_order_acquire) ||
       caller_return_address !=
           g_bindings.memory.module_base + kPersonSixStageReturnRva12004 ||
@@ -398,6 +405,10 @@ void ObservePersonSixStageCapture12004(
       dto.character_identity = character;
       dto.context_identity = context;
       dto.source_return_rva = kPersonSixStageReturnRva12004;
+      if (index == 0 && pre_six_aggregate != nullptr) {
+        dto.pre_six_aggregate.observed = true;
+        dto.pre_six_aggregate.pc = *pre_six_aggregate;
+      }
     }
     auto &stage = dto.stages[index];
     stage.observed = true;
@@ -410,6 +421,35 @@ void ObservePersonSixStageCapture12004(
   } catch (...) {
     // Capture is auxiliary; it cannot replace or prevent the native callback.
   }
+}
+
+void ObservePersonSixStageCapture12004(
+    std::uintptr_t character, std::uintptr_t context, std::uint32_t index,
+    std::uintptr_t raw_return_bits,
+    std::uintptr_t caller_return_address) noexcept {
+  ObserveSixStageWithBaseline12004(character, context, index, raw_return_bits,
+                                   caller_return_address, nullptr);
+}
+
+std::uintptr_t InvokePersonSixStageCapture12004(
+    void *character, void *context, std::uint32_t index,
+    std::uintptr_t caller_return_address) noexcept {
+  const auto original = g_original.load(std::memory_order_acquire);
+  if (original == nullptr) return 0;
+  std::optional<PersonFollowing2922680Pc> pre_six_aggregate;
+  if (g_available.load(std::memory_order_acquire) && index == 0 &&
+      character != nullptr && context != nullptr &&
+      caller_return_address ==
+          g_bindings.memory.module_base + kPersonSixStageReturnRva12004) {
+    // Native2438964 passes this inline PC to2303100. Own it before the
+    // first count callback can observe or modify the aggregate.
+    pre_six_aggregate = CopyPc(reinterpret_cast<std::uintptr_t>(context) + 0x68, 0);
+  }
+  const auto result = original(character, context, index);
+  ObserveSixStageWithBaseline12004(reinterpret_cast<std::uintptr_t>(character),
+      reinterpret_cast<std::uintptr_t>(context), index, result,
+      caller_return_address, pre_six_aggregate ? &*pre_six_aggregate : nullptr);
+  return result;
 }
 
 void ObservePersonSixStageAppend12004(
@@ -460,12 +500,16 @@ void CompletePersonSixStageCapture12004(
     const auto found = g_records.find(owner);
     if (found == g_records.end() ||
         found->second->capture_thread_id != query_thread ||
-        !found->second->raw_counts_ready ||
+        !found->second->raw_counts_ready || found->second->capture_complete ||
         (actual_context != 0 &&
          found->second->context_identity != actual_context)) return;
     auto dto = *found->second;
     dto.capture_complete = true;
     dto.query_thread_id = query_thread;
+    // This is the actual same-thread completion observation, not a relabelled
+    // current final Model or a reconstructed immediate-last-append snapshot.
+    dto.post_six_aggregate.observed = true;
+    dto.post_six_aggregate.pc = CopyPc(*dto.context_identity + 0x68, 0);
     for (auto &stage : dto.stages) {
       if (!stage.observed) continue;
       // Only the paused query after this thread's finished natural native loop
@@ -642,6 +686,20 @@ std::string SerializePersonSixStageCapture12004(
   out << ",\"character_identity\":"; Pointer(out, dto.character_identity);
   out << ",\"context_identity\":"; Pointer(out, dto.context_identity);
   out << ",\"source_return_rva\":"; Pointer(out, dto.source_return_rva);
+  out << ",\"pre_six_aggregate\":{\"observed\":"
+      << (dto.pre_six_aggregate.observed ? "true" : "false");
+  out << ",\"source_stage\":\"before_first_count_callback\"";
+  out << ",\"context_pc_offset\":104,\"pc\":";
+  Pc(out, dto.pre_six_aggregate.pc, false);
+  out << "},\"post_six_aggregate\":{\"observed\":"
+      << (dto.post_six_aggregate.observed ? "true" : "false");
+  out << ",\"source_stage\":\"same_thread_capture_completion\"";
+  out << ",\"context_pc_offset\":104,\"pc\":";
+  Pc(out, dto.post_six_aggregate.pc, false);
+  out << "},\"aggregate_postimage_inputs_ready\":"
+      << (dto.aggregate_postimage_inputs_ready ? "true" : "false");
+  out << ",\"aggregate_postimage_comparison_ready\":"
+      << (dto.aggregate_postimage_comparison_ready ? "true" : "false");
   out << ",\"stages\":[";
   bool first = true;
   for (const auto &stage : dto.stages) {
@@ -733,8 +791,6 @@ std::string SerializePersonSixStageQuery12004(
 extern "C" __declspec(noinline) std::uintptr_t __fastcall
 XarPersonSixStageHook12004V1(void *character, void *context,
                             std::uint32_t index) noexcept {
-  const auto original = g_original.load(std::memory_order_acquire);
-  if (original == nullptr) return 0;
 #if defined(_MSC_VER)
   const auto caller = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
 #else
@@ -742,10 +798,7 @@ XarPersonSixStageHook12004V1(void *character, void *context,
 #endif
   // Native result is obtained exactly once. Its complete RAX representation is
   // returned untouched; only its low EAX bits are copied as the signed count.
-  const auto result = original(character, context, index);
-  ObservePersonSixStageCapture12004(reinterpret_cast<std::uintptr_t>(character),
-      reinterpret_cast<std::uintptr_t>(context), index, result, caller);
-  return result;
+  return InvokePersonSixStageCapture12004(character, context, index, caller);
 }
 extern "C" __declspec(noinline) std::uintptr_t __fastcall
 XarPersonSixStageAppendHook12004V1(void *context, void *source_pc,
