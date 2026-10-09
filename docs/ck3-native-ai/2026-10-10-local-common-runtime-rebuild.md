@@ -58,3 +58,11 @@ host 原 Popen wait 返回1，CK3 受管退出码为1；native job active0、进
 仅未来新场的 `transaction-only-control` startup readiness 改为600秒：以实际R38完成417.147秒、R39前半段额外71.617秒为依据，约489秒历史参考加约110秒余量。command300、timeout2100、hold900、poll0.5、终点60秒及正常退出reserve90均保持，host/native、seed、正式71文件、六项overlay与业务谓词不变。这不保证加载成功，也不延长已结束R39或追改其RED；未来必须全新profile和ID，常规前驱闭场准入。
 
 [CI窄修](2026-10-10-common-allocator-ci-fixture.md)已完成，34项相关回归通过：adapters9、bootstrap10、entry15；生产allocator/ID工具逐字节不变。旧00b88fc4d失败保留，后继精确CI需另取实际终态。
+
+## 05:00 CST：R40 仍启动 RED，600秒没有解决加载问题
+
+普通fetch/rebase后的 `598d4855b1a5e7678fa2253e5664acb991c0c825` 已实际推送，接入远端失败启动清理更新后54项相关回归通过。该精确提交 Official Runner CI 37988052013 和 Linear 37988052148 均实际success；Li Yu Dao未触发，单独保留。[原始CI及本地回归证据](acceptance/2026-10-10-exact-598d4855b-ci-and-rebase-tests/REPORT.md)含190项原件；本地旧回执没有独立HEAD字段，不补造其绑定。
+
+新profile公共prepare/preflight均exit0，常规R39闭场准入实际分配 `bf-202609141645-5434332d4d--li-yu-dao--R0040`，未重复bootstrap。固定原seed、正式71文件和六项overlay、同一公共host/native，readiness600。run/verify实际exit2，host再次在原始本轮预算内超时，steps=[]。413份观察中前363份map_ready=false，后50份已map_ready=true/local_player1/actor31254/date53144712/event121，但后50份准入帧的pump_epoch均27770，未通过第二独立owner帧推进守卫，campaign-root查询和产品handler仍未进入。日志进入InitPostRead和缓存重算，04:51:05到powerful vassals，至04:56:15结束无In Game/setup completion，error.log仍0字节；日志缺完成行不能覆盖原生已map_ready的事实。此结果证明本次600秒预算没有完成准入，不增加或重跑业务动作。[R40永久记录](2026-10-10-r40-shared-runtime-startup-red.md)保留全部实际输入和失败。
+
+原host/CK3退出码均1，managed session/thread/job/tree/最终空清点及控制文件清理完成，normal0未取得。新鲜Steam原图亲审离线、原1024×768桌面恢复；keeper原父句柄退出0/thread joined，CAS4234→4235实际done/resources=[]。当前无游戏和屏幕占用。下一步核两帧绑定、采样/更新链及实际启动路径，不再次仅增加预算；尚无已验证的底层修复。正式I3b/C3/I4与一期仍NOT_GREEN，工作量估计75%保持。

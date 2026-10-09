@@ -1,0 +1,587 @@
+{
+  "schema": "ck3.exact-ci-and-rebase-regression-result.v1",
+  "exact_ci_head": "598d4855b1a5e7678fa2253e5664acb991c0c825",
+  "official_ci": "success",
+  "linear_history": "success",
+  "li_yu_dao_static_checks": "NOT_TRIGGERED",
+  "not_triggered_counted_as_success": false,
+  "original_ci_query_groups_verified": 50,
+  "terminal_workflow_evidence": {
+    "Official Runner CI": {
+      "id": 37988052013,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37988052013",
+      "head_sha": "598d4855b1a5e7678fa2253e5664acb991c0c825",
+      "full_log_archive": {
+        "file": "terminal-37988052013-full-api-logs-retry-001.stdout.zip",
+        "bytes": 119776,
+        "sha256": "ff2f14cf2f678ae9487c5fcdef336c0cf00c7eda4199f64e821725bd135b38e8",
+        "entries": [
+          {
+            "path": "0_static.txt",
+            "bytes": 241214,
+            "sha256": "f9df3d10ad1d85e9d1ebee4b19c30a1cbc0fd318ebccfd39d5e0abed3d01e643"
+          },
+          {
+            "path": "static/system.txt",
+            "bytes": 592,
+            "sha256": "ddf5070f69f85855277677b0f248a59ca510c5db05669b5b21d547e552004d05"
+          },
+          {
+            "path": "static/1_Set up job.txt",
+            "bytes": 2348,
+            "sha256": "df0f3a5613ab1e3d0354b45666fcabacc3f9f742c85c02098576834a4c342e7e"
+          },
+          {
+            "path": "static/2_Require non-C task workspace and temp.txt",
+            "bytes": 1712,
+            "sha256": "e045061e4c344eaceaebef5186ca3d38dbbcb2af0e9c3f0ee004ba592a8981f1"
+          },
+          {
+            "path": "static/3_Run actions_checkout@v5.txt",
+            "bytes": 32994,
+            "sha256": "143d712a06dcd4cc85273ba3c32387e4f9485a1d417eae0b90a6273b9f8c26c9"
+          },
+          {
+            "path": "static/4_Run actions_setup-python@v6.txt",
+            "bytes": 2086,
+            "sha256": "99fd23c29c98f6321842e4419307c21435ef1171d542310a224ba31ec41cf337"
+          },
+          {
+            "path": "static/5_Install task packages outside C.txt",
+            "bytes": 1609,
+            "sha256": "2d657992503ed5dce16d6535510fe294129041501661e15053353a97f1547a4f"
+          },
+          {
+            "path": "static/6_Install static dependencies.txt",
+            "bytes": 12950,
+            "sha256": "e6d916cad3e9734b29bbb71d382bf8de01f4ae958a58466333bc0d9e0449fdf0"
+          },
+          {
+            "path": "static/7_Install released promo toolchain.txt",
+            "bytes": 2628,
+            "sha256": "5f5329a7d6911555a7490a1fa51b40d49a1d3c9825a483447a655790ee0339ef"
+          },
+          {
+            "path": "static/8_Compile Python tools.txt",
+            "bytes": 1567,
+            "sha256": "0bf547619734b81ba9c6074b5d2916b62c424452fa01bf43acf14bdde2561029"
+          },
+          {
+            "path": "static/9_Test CoA runtime-registry claim boundary.txt",
+            "bytes": 1603,
+            "sha256": "133f16f1896f892ea58ed12e57538948085c5f2ee002b041754c54e2aea79e16"
+          },
+          {
+            "path": "static/10_Test native research planning and evidence rendering.txt",
+            "bytes": 1586,
+            "sha256": "a1ac6a544b4ec6b9a9ec00fdbe68cddc026b45c2e46dd58caaa76d7b54ab8463"
+          },
+          {
+            "path": "static/11_Test protected project EXE broker source without privileged actions.txt",
+            "bytes": 1685,
+            "sha256": "641090637ba97b61b3a8c5e1a20ca65478d8ebf12f1cb846dc0ebec2cee73ebf"
+          },
+          {
+            "path": "static/12_Test offline vanilla event research tools.txt",
+            "bytes": 1656,
+            "sha256": "1b5a43d4c01464aefd5c40617a3191c5106daae7a61bcb0f91e9d2dfcefab5ed"
+          },
+          {
+            "path": "static/13_Test native verifier evidence scope without CK3.txt",
+            "bytes": 1688,
+            "sha256": "ea476cec8c5c78bfee97687b0a7189b73e6358c9ea0496cf3f33dc3f9bcf50fc"
+          },
+          {
+            "path": "static/14_Test isolated native army route producer without CK3.txt",
+            "bytes": 4579,
+            "sha256": "32ab168f2ccefc90641551e4d58dd1e3dd2c968418c2e1691dae7d2f100c2bf7"
+          },
+          {
+            "path": "static/15_Test strict army route read-status contract.txt",
+            "bytes": 2227,
+            "sha256": "5671e63f67e7277b462ee15d11d605e4aa3eb2e5df5be7ea9e04d7d502a74888"
+          },
+          {
+            "path": "static/16_Test public CUnit zero and decision history contracts without CK3.txt",
+            "bytes": 13928,
+            "sha256": "39bf6e26fbdeaaa3d8aed2d6d1d8dc4bb578af6a1ad913e1d6535c9b88ec3e49"
+          },
+          {
+            "path": "static/17_Preserve decision history growth evidence.txt",
+            "bytes": 3100,
+            "sha256": "198580cfc24006c65d1677b827c6e0dd66f28737f8c0463caf2cb9eaf5066bbe"
+          },
+          {
+            "path": "static/18_Test CLA checker.txt",
+            "bytes": 2857,
+            "sha256": "e9308341ade9d5bc2fefa23ab69df7c7597322135ec15f67d65b8c5c7dcedeb9"
+          },
+          {
+            "path": "static/19_Test succession GUI projection contract.txt",
+            "bytes": 1578,
+            "sha256": "8bbea556ea68fc2745b491b562809d0180b1afec2ab571e55f6e31b8f1e34f98"
+          },
+          {
+            "path": "static/20_Test native courtier metadata compatibility.txt",
+            "bytes": 1575,
+            "sha256": "9593a62f70f5155348ebf420f5e10995ae4c62e9fbca2abf12bf25718c4ce1bf"
+          },
+          {
+            "path": "static/21_Test release manifest verification.txt",
+            "bytes": 1563,
+            "sha256": "77445e3705377835d4c58cbed771947df4a380813cb0ec6db17a450ce2cef14c"
+          },
+          {
+            "path": "static/22_Test Vivhite release tooling.txt",
+            "bytes": 1592,
+            "sha256": "628a0e4866ded7e4a3f03fdb6ce1fcc43969d59f767478fc8ba9ab7896892849"
+          },
+          {
+            "path": "static/23_Test independent Vivhite native contracts.txt",
+            "bytes": 1579,
+            "sha256": "9c5587eaaaab0a228d4ca67d310330a9014210ecff7de8457d21662d463758a9"
+          },
+          {
+            "path": "static/24_Test Ox Here release tooling.txt",
+            "bytes": 1580,
+            "sha256": "0fb620917944fa583e8edfc397fdf890841fe043f34d9648da5763193454cac8"
+          },
+          {
+            "path": "static/25_Test Mandala Purge release tooling.txt",
+            "bytes": 1595,
+            "sha256": "8fe933fb263e49b26c90315784ea811320b0e562fb8ee2dc74764e8dfa09f5ba"
+          },
+          {
+            "path": "static/26_Test Tributary Expansion Directives interaction display contract.txt",
+            "bytes": 1633,
+            "sha256": "459693d8e2382f88dd4d9c080a82742dbfdadaf037bfa06edcf45c252a0045eb"
+          },
+          {
+            "path": "static/27_Test Tributary Expansion Directives release tooling.txt",
+            "bytes": 2851,
+            "sha256": "c3528fd56bb84bdc5d3ce28f1bc46c0af029da428208c2d1ee69c77548b4d2de"
+          },
+          {
+            "path": "static/28_Test Celestial Commerce and Corruption release tooling.txt",
+            "bytes": 2173,
+            "sha256": "ab6a4ec396d1fabe05ccbb77ac8192afd2d5e08cedbc4d7a8a025e56fe333a2d"
+          },
+          {
+            "path": "static/29_Test Auto Upgrade Buildings release tooling.txt",
+            "bytes": 1618,
+            "sha256": "d3ed44a8f45d6ead924078db66d405a683774ed20bdd5e85bb2f312fc6e86228"
+          },
+          {
+            "path": "static/30_Test and validate Superman Qiang without CK3.txt",
+            "bytes": 17459,
+            "sha256": "0892d995458bff9caf6765b2496205e2420078d2feef5551c48c25ead0692b30"
+          },
+          {
+            "path": "static/31_Test machine- and mod-scoped CK3 live-run IDs.txt",
+            "bytes": 1574,
+            "sha256": "7a4cf7963069a65179e489328bc7c70e70b6bf0d44435aa0bc3dd7ccce73efd1"
+          },
+          {
+            "path": "static/32_Test shared CK3 acceptance without installed CK3.txt",
+            "bytes": 22254,
+            "sha256": "c89b2b3ced2968585606173c7ced5c37b335a7078ffa5b1ddf808c8d583631b9"
+          },
+          {
+            "path": "static/33_Test Reclaim the Motherland release tooling.txt",
+            "bytes": 6344,
+            "sha256": "0b271b53e769cb65411b7805a3895f268ffefe0618fcc8b5a83d9fe6f3b347d4"
+          },
+          {
+            "path": "static/34_Test ZhongGuo 361 release tooling.txt",
+            "bytes": 2132,
+            "sha256": "292a9eea4eb74689f36a25e2202873edf5c5c33fc046479dbd59da1dfe32359f"
+          },
+          {
+            "path": "static/35_Test ZhongGuo 361 generators and acceptance contracts.txt",
+            "bytes": 24828,
+            "sha256": "dfe14c930ce5f057a74cb03c575d6ef2bafd63705ba48ce3db3896b831dbab45"
+          },
+          {
+            "path": "static/36_Test ZhongGuo 361 release localization.txt",
+            "bytes": 1649,
+            "sha256": "19812f2a8c8b5fe686cb19e2821aeca10192e454d9fbfbaf6e67cf686fca0187"
+          },
+          {
+            "path": "static/37_Verify ZhongGuo 361 generated and static content.txt",
+            "bytes": 2318,
+            "sha256": "14757a50c8e26cc144b5b1eba9719af14276c6ae0fb4f30c6e3cc204041a4397"
+          },
+          {
+            "path": "static/39_Verify ZhongGuo 361 thumbnail and Workshop media.txt",
+            "bytes": 3501,
+            "sha256": "59a2e5063d86f75059bdc694a191a1585c3babf7b2fee938ee6b92b18cd263da"
+          },
+          {
+            "path": "static/40_Test and validate ZhongGuo 361 promo project.txt",
+            "bytes": 6134,
+            "sha256": "ed2aa3b39b7e7f128ceff879b1e091a08209512b65e5a699ab2003f986c94287"
+          },
+          {
+            "path": "static/41_Test MiniMax localization caller.txt",
+            "bytes": 1618,
+            "sha256": "71f8fbf701693e7ce7738156745dc7cf43a7bad9a0fc061498a843037a842928"
+          },
+          {
+            "path": "static/42_Test Workshop public readback verifier.txt",
+            "bytes": 1589,
+            "sha256": "14ec5bf858b42db4391810e44aa66514738d979c256a9909f11f054d4e15eef7"
+          },
+          {
+            "path": "static/43_Test disposable fixture engine identities.txt",
+            "bytes": 1578,
+            "sha256": "c569dc3108ea66ec7b5b504d974f3fbc7431c5b359113e72cabc8df2e4a278f3"
+          },
+          {
+            "path": "static/44_Test full-agent showcase builder.txt",
+            "bytes": 1593,
+            "sha256": "cbc4498b4b73cd8ed31a0c8f44e17a7927ff7f8ed6db9f0533528d34c11aeac8"
+          },
+          {
+            "path": "static/45_Enforce Python-only Windows automation.txt",
+            "bytes": 1884,
+            "sha256": "a3095b7a01b1119d6beea7f149fbc1c71201c8060508347fc6a26bfd4c2d2dbb"
+          },
+          {
+            "path": "static/46_Validate generated and static content.txt",
+            "bytes": 1526,
+            "sha256": "de4bf87f45359626ea7a388377e1dca8556bf7ae8cf891bf9692f781fa10d078"
+          },
+          {
+            "path": "static/47_Validate Vivhite standalone content.txt",
+            "bytes": 1581,
+            "sha256": "f7134cc5e6d0c148ac4afaa62ae7cb5e0789edc4d827c7d82f8b2f913b93ce24"
+          },
+          {
+            "path": "static/48_Validate Mandala Purge standalone content.txt",
+            "bytes": 1814,
+            "sha256": "b1a20b4378842ca42f6e9e13516e37527a1a1bcfa54d7988e1e8b0c824c999ab"
+          },
+          {
+            "path": "static/49_Validate Tributary Expansion Directives standalone content.txt",
+            "bytes": 2122,
+            "sha256": "cea678f32bbaca9b17f795d15ef92948c967a5e90ec4bb12ada9aa6fecd0a412"
+          },
+          {
+            "path": "static/50_Validate Celestial Commerce and Corruption standalone content.txt",
+            "bytes": 2142,
+            "sha256": "c93f5e8ba8461ec72fa3bea805fdb525c73b8d45a1416c1a1f88fda4c0b236b1"
+          },
+          {
+            "path": "static/51_Validate Auto Upgrade Buildings standalone content.txt",
+            "bytes": 2202,
+            "sha256": "7f88950b3cf058daf294c519aff7960666006f8fb167c272bdfc3826e0d944ae"
+          },
+          {
+            "path": "static/52_Validate Reclaim the Motherland standalone content.txt",
+            "bytes": 2111,
+            "sha256": "16e755396a0f81222b60893d2686e2977e07f8eec9ca838a0339f753d6071082"
+          },
+          {
+            "path": "static/53_Run scoring reference vectors.txt",
+            "bytes": 1580,
+            "sha256": "9fe7a1cec5ff37116bb6d2dca94e23090d3dce47c9054f2778de108c1e03b9d7"
+          },
+          {
+            "path": "static/54_Verify reproducible release.txt",
+            "bytes": 1404,
+            "sha256": "1fd9c343761f8894c5fc093dd464625b0d11b3d2dcc2de92b728cff6cf530ff3"
+          },
+          {
+            "path": "static/55_Verify reproducible Vivhite release.txt",
+            "bytes": 1733,
+            "sha256": "34f2fa32529b5f215ca39eb5a4011dc667352bc986af55a309ff083a723fbbdf"
+          },
+          {
+            "path": "static/56_Verify reproducible Ox Here release.txt",
+            "bytes": 1705,
+            "sha256": "74005c91a013245137b85d14850b6e1fd7488b85c9e9d1166e9d4da2bc7b869d"
+          },
+          {
+            "path": "static/57_Verify reproducible Mandala Purge release.txt",
+            "bytes": 1730,
+            "sha256": "b4c132ca5b1f492bdf995b26f7146486ad53a7b0745f9e87988ea1efe34843cf"
+          },
+          {
+            "path": "static/58_Verify reproducible Tributary Expansion Directives release.txt",
+            "bytes": 1778,
+            "sha256": "9debd90e9b279cde19da6aacd00fefdb4e754a63afe34ec8da8ef62724ea62c5"
+          },
+          {
+            "path": "static/59_Verify reproducible Celestial Commerce and Corruption release.txt",
+            "bytes": 1775,
+            "sha256": "db4181098fec8b184ccf04372245b31d8213fb4620779feed6e23c8b7197809b"
+          },
+          {
+            "path": "static/60_Verify reproducible Auto Upgrade Buildings release.txt",
+            "bytes": 1692,
+            "sha256": "024c7bfb14a6f325a36c0b39295d67846610e95367417beb6186f8918f8d6bbe"
+          },
+          {
+            "path": "static/61_Verify reproducible Reclaim the Motherland release.txt",
+            "bytes": 1754,
+            "sha256": "640602ba4905d701dfed92010d356e74086072796e7f95b34fb35b1ec34ed53c"
+          },
+          {
+            "path": "static/62_Verify reproducible ZhongGuo 361 release.txt",
+            "bytes": 1740,
+            "sha256": "f687da99c43f8c072024185206d80072ae297edaab7f17016346724b76c4706c"
+          },
+          {
+            "path": "static/161_Post Run actions_setup-python@v6.txt",
+            "bytes": 247,
+            "sha256": "437100ddbc7dc5d4385c78424d17f4b41433696d3bdcf7d98b505e3a2c2e2fc0"
+          },
+          {
+            "path": "static/162_Post Run actions_checkout@v5.txt",
+            "bytes": 1740,
+            "sha256": "15bfc73eaf1da3566a1b4b349fbd518a89d27c171dc0d53bb1f65bd9ccb4a540"
+          },
+          {
+            "path": "static/163_Complete job.txt",
+            "bytes": 432,
+            "sha256": "63ea9d73222f115c9d7ade0a99328be35ac50cee1763460d0c0b1c92990f7953"
+          }
+        ]
+      },
+      "terminal_jobs": [
+        {
+          "id": 114014884296,
+          "name": "static",
+          "status": "completed",
+          "conclusion": "success",
+          "failed_steps": [],
+          "shared_acceptance_steps": [
+            {
+              "name": "Test shared CK3 acceptance without installed CK3",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    "Linear history": {
+      "id": 37988052148,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37988052148",
+      "head_sha": "598d4855b1a5e7678fa2253e5664acb991c0c825",
+      "full_log_archive": {
+        "file": "terminal-37988052148-full-api-logs-retry-001.stdout.zip",
+        "bytes": 16390,
+        "sha256": "6b56ad13ff1290d07b1a27d5a3aaede10895e5f695c4a3c07dedd7fedae0d68f",
+        "entries": [
+          {
+            "path": "0_No new merge commits.txt",
+            "bytes": 35886,
+            "sha256": "0f0ae931d4b9b0b2857fcfa6d9a17a6702cffe4d04ce037bc8e06e92b61d5a93"
+          },
+          {
+            "path": "No new merge commits/system.txt",
+            "bytes": 604,
+            "sha256": "9df4b24613074140113114869033e94b9e10232229ea707e31a8e629575ceec2"
+          },
+          {
+            "path": "No new merge commits/1_Set up job.txt",
+            "bytes": 1907,
+            "sha256": "938f37180df3e7b110e50ecb3a04f84214e52099b0c8472de424f7f633b23baf"
+          },
+          {
+            "path": "No new merge commits/2_Run actions_checkout@v5.txt",
+            "bytes": 31874,
+            "sha256": "6c187b4e66d0614f624f15bd177eebc2f02c86e04fb0cb5562812e73f54afa28"
+          },
+          {
+            "path": "No new merge commits/3_Check actual introduced commits.txt",
+            "bytes": 498,
+            "sha256": "05043585f828275b9ffe3acd7e3f058a6ca17b4ea74b614ded9342466e63911e"
+          },
+          {
+            "path": "No new merge commits/6_Post Run actions_checkout@v5.txt",
+            "bytes": 1558,
+            "sha256": "34d84b3ca7e46e66de407adea6cf44c9862f6b71cfe1a0b842eba3c91829f158"
+          },
+          {
+            "path": "No new merge commits/7_Complete job.txt",
+            "bytes": 61,
+            "sha256": "eeabe6a6acb37e4e54d1281eccc36cce33d7303eb033d895c76599df7423df57"
+          }
+        ]
+      },
+      "terminal_jobs": [
+        {
+          "id": 114014884871,
+          "name": "No new merge commits",
+          "status": "completed",
+          "conclusion": "success",
+          "failed_steps": [],
+          "shared_acceptance_steps": []
+        }
+      ]
+    },
+    "Li Yu Dao static checks": {
+      "status": "NOT_TRIGGERED",
+      "not_counted_as_success": true
+    }
+  },
+  "local_rebase_regressions": [
+    {
+      "source_directory": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-002\\rebase-check-001",
+      "test_file": "test_ck3_mod_acceptance_adapters.py",
+      "tests": 9,
+      "exit_code": 0,
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_ck3_mod_acceptance_adapters.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-09T20:30:11.308273+00:00",
+      "finished_at_utc": "2026-10-09T20:30:12.388573+00:00",
+      "original_receipt_has_head_sha": false,
+      "original_receipt_has_source_pins": false,
+      "result_pin": {
+        "bytes": 970,
+        "sha256": "4b44b8ae7fc33cde3550bdbb0b5e84104168477e935d8b51e494d44a4ea6d46d"
+      }
+    },
+    {
+      "source_directory": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-002\\rebase-check-002",
+      "test_file": "test_ck3_mod_acceptance_bootstrap.py",
+      "tests": 10,
+      "exit_code": 0,
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_ck3_mod_acceptance_bootstrap.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-09T20:30:11.307076+00:00",
+      "finished_at_utc": "2026-10-09T20:30:12.608696+00:00",
+      "original_receipt_has_head_sha": false,
+      "original_receipt_has_source_pins": false,
+      "result_pin": {
+        "bytes": 969,
+        "sha256": "39459fbdb84daa1fb34cb3822e1a021545542938706756303b648c45c4294b20"
+      }
+    },
+    {
+      "source_directory": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-002\\rebase-check-003",
+      "test_file": "test_ck3_mod_acceptance.py",
+      "tests": 15,
+      "exit_code": 0,
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_ck3_mod_acceptance.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-09T20:30:11.310587+00:00",
+      "finished_at_utc": "2026-10-09T20:30:12.456398+00:00",
+      "original_receipt_has_head_sha": false,
+      "original_receipt_has_source_pins": false,
+      "result_pin": {
+        "bytes": 959,
+        "sha256": "78b9b7c2872f8b388346ba8f7c387c43cda47a01712c2b70a045d95757d30031"
+      }
+    },
+    {
+      "source_directory": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-002\\rebase-check-004",
+      "test_file": "test_ck3_mod_acceptance_operator_quit.py",
+      "tests": 16,
+      "exit_code": 0,
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_ck3_mod_acceptance_operator_quit.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-09T20:30:11.315013+00:00",
+      "finished_at_utc": "2026-10-09T20:30:13.241809+00:00",
+      "original_receipt_has_head_sha": false,
+      "original_receipt_has_source_pins": false,
+      "result_pin": {
+        "bytes": 976,
+        "sha256": "a57576a1be962ff7981ca7e4549da656989e10ff1b255a6e8d1ea9102f5a7653"
+      }
+    },
+    {
+      "source_directory": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-002\\rebase-check-005",
+      "test_file": "test_ck3_mod_acceptance_normal_close.py",
+      "tests": 4,
+      "exit_code": 0,
+      "argv": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_ck3_mod_acceptance_normal_close.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-09T20:30:11.320163+00:00",
+      "finished_at_utc": "2026-10-09T20:30:12.057846+00:00",
+      "original_receipt_has_head_sha": false,
+      "original_receipt_has_source_pins": false,
+      "result_pin": {
+        "bytes": 973,
+        "sha256": "aa7fad725d92949bbe62518f047be4b1a571e438b9032689ad1763b3032d066b"
+      }
+    }
+  ],
+  "total_local_passed_tests": 54,
+  "local_receipt_provenance_limit": "Original local command receipts do not record HEAD/source pins; preserve this omission and keep them separate from exact-SHA official CI.",
+  "raw_evidence": {
+    "path": "raw-evidence.zip",
+    "bytes": 279014,
+    "sha256": "dda4acc17a83784ca9b8e62b43295ff94961252e1caa76aaa0e56899f94e3c81"
+  },
+  "tests_rerun_during_packaging": false,
+  "ci_api_queries_during_packaging": false,
+  "repository_modified_during_packaging": false,
+  "live_acceptance_or_business_green_claimed": false
+}
