@@ -400,7 +400,7 @@ int RunTurnTickContextWholeFixture(const std::filesystem::path &directory) {
         {&Kind, &Active, &Final, &Cost}, &Reason, &Destroy};
     const auto cooldown = FixtureCooldownBindings();
     TurnTickFrameAdapter adapter;
-    adapter.frame.date_raw = turn_tick_frame.date_raw;
+    adapter.frame.date_raw = static_cast<std::int32_t>(turn_tick_frame.date_raw);
     adapter.frame.speed = 0;
     adapter.frame.paused = true;
     adapter.frame.player_id = 1;
@@ -433,7 +433,7 @@ int RunTurnTickContextWholeFixture(const std::filesystem::path &directory) {
     stamp.thread_id = thread_id;
     stamp.pump_epoch = 3;
     stamp.paused = true;
-    stamp.date_raw = turn_tick_frame.date_raw;
+    stamp.date_raw = static_cast<std::int32_t>(turn_tick_frame.date_raw);
     stamp.tls_initialized = 1;
     stamp.tls_main_thread_marker = 1;
     stamp.tls_context = reinterpret_cast<std::uintptr_t>(&variable_table_cookie);
