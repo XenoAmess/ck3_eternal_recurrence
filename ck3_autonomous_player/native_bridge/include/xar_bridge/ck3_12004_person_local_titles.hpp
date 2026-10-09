@@ -108,7 +108,8 @@ struct PersonLocalTitles12004DTO {
   std::vector<PersonLocalTitlesRow12004> rows;
   // This leaf is only local titles, never the first2B986B0 vector/full helper.
   bool full_helper_ready = false;
-  std::string full_helper_reason = "actual2b986b0_vector_unobserved";
+  std::string full_helper_reason =
+      "historical_post_callback_model_and_final_append_unobserved";
   friend bool operator==(const PersonLocalTitles12004DTO &,
                          const PersonLocalTitles12004DTO &) = default;
 };
@@ -117,5 +118,23 @@ PersonLocalTitles12004DTO ReadPersonLocalTitlesForCharacter12004(
     const PersonCarrierDirect12004Bindings &bindings,
     std::uintptr_t actual_character);
 std::string SerializePersonLocalTitles12004(const PersonLocalTitles12004DTO &dto);
+
+// Direct pointer consumers shared with the first-vector family. These do not
+// perform the local Title ID lookup or130/12C admission wrapper.
+void ReadPersonTitleComposerInputs12004(
+    const PersonCarrierDirect12004Bindings &bindings, std::uintptr_t title,
+    PersonLocalTitlesPcFamily12004 &family);
+void ReadPersonTitlePrimaryInputs12004(
+    const PersonCarrierDirect12004Bindings &bindings, std::uintptr_t title,
+    std::int32_t tier, PersonLocalTitlesPcFamily12004 &family);
+void ReadPersonTitleSupplementalInputs12004(
+    const PersonCarrierDirect12004Bindings &bindings, std::uintptr_t character,
+    std::uintptr_t title, PersonLocalTitlesSupplementalFamily12004 &family);
+std::string SerializePersonTitlePcFamily12004(
+    const PersonLocalTitlesPcFamily12004 &family);
+std::string SerializePersonTitleSupplementalFamily12004(
+    const PersonLocalTitlesSupplementalFamily12004 &family);
+std::string SerializePersonTitleResolution12004(
+    const PersonFollowing2922680Resolution &resolution);
 
 } // namespace xar::ck3_12004

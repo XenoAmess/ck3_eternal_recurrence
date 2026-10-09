@@ -525,6 +525,30 @@ std::string RowJson(const PersonLocalTitlesRow12004 &r) {
 }
 } // namespace
 
+void ReadPersonTitleComposerInputs12004(const PersonCarrierDirect12004Bindings &b,
+    std::uintptr_t title, PersonLocalTitlesPcFamily12004 &family) {
+  ReadPcList(b, title, 0x228, 0x234, 0xD8, family);
+}
+void ReadPersonTitlePrimaryInputs12004(const PersonCarrierDirect12004Bindings &b,
+    std::uintptr_t title, std::int32_t tier, PersonLocalTitlesPcFamily12004 &family) {
+  ReadPrimary(b, title, tier, family);
+}
+void ReadPersonTitleSupplementalInputs12004(const PersonCarrierDirect12004Bindings &b,
+    std::uintptr_t character, std::uintptr_t title,
+    PersonLocalTitlesSupplementalFamily12004 &family) {
+  ReadSupplemental(b, character, title, family);
+}
+std::string SerializePersonTitlePcFamily12004(const PersonLocalTitlesPcFamily12004 &family) {
+  return FamilyJson(family);
+}
+std::string SerializePersonTitleSupplementalFamily12004(
+    const PersonLocalTitlesSupplementalFamily12004 &family) {
+  return SupplementalFamilyJson(family);
+}
+std::string SerializePersonTitleResolution12004(const PersonFollowing2922680Resolution &r) {
+  return ResolutionJson(r);
+}
+
 PersonLocalTitles12004DTO ReadPersonLocalTitlesForCharacter12004(
     const PersonCarrierDirect12004Bindings &b, std::uintptr_t character) {
   PersonLocalTitles12004DTO d; d.build_version = kGameVersion; d.executable_sha256 = kExecutableSha256;

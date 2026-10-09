@@ -912,6 +912,8 @@ def _normalize_current_person_state(
         fields.add("following_291ce01_government_gate")
     if isinstance(value, dict) and "following_291e3a0_local_titles" in value:
         fields.add("following_291e3a0_local_titles")
+    if isinstance(value, dict) and "following_291e3a0_first_title_vector" in value:
+        fields.add("following_291e3a0_first_title_vector")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -1050,6 +1052,10 @@ def _normalize_current_person_state(
         from .battle_person_local_titles_12004 import normalize_person_local_titles_12004
         normalized["following_291e3a0_local_titles"] = normalize_person_local_titles_12004(
             state["following_291e3a0_local_titles"])
+    if "following_291e3a0_first_title_vector" in state:
+        from .battle_person_first_title_vector_12004 import normalize_person_first_title_vector_12004
+        normalized["following_291e3a0_first_title_vector"] = normalize_person_first_title_vector_12004(
+            state["following_291e3a0_first_title_vector"])
     return normalized
 
 
@@ -1138,6 +1144,10 @@ def _normalize_character_custody_rows(
             if (local_titles is not None and local_titles["character_id"] is not None
                     and local_titles["character_id"] != character_id):
                 raise ValueError(f"{field}[{index}] local Title inputs CharacterID disagrees")
+            first_vector = normalized["current_person_state"].get("following_291e3a0_first_title_vector")
+            if (first_vector is not None and first_vector["character_id"] is not None
+                    and first_vector["character_id"] != character_id):
+                raise ValueError(f"{field}[{index}] first Title vector CharacterID disagrees")
         result.append(normalized)
     return result
 
