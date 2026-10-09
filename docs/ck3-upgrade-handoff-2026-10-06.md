@@ -1,5 +1,13 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-09 当前续办增量
+
+本机继续使用 CK3 1.20.0.4 / build25734779。统一验收底座已推进至 Source09 / FINAL10 / bound11；下方 Source08、private host 和旧 pending 仅保留历史，当前操作从[统一入口专题](ck3-mod-upgrade-fast-validation.md)选择同一 runtime。
+
+TED R22/a131 已完成金额与目标标签显示修复、实际单次下令、AI 接受、50 金币转移、150 威望消耗及实际辽攻夏争天德，正常 GUI 退出后 retained OS0/native0/common run0/verify0/keeper0 闭合，CAS7498 done/resources=[]。完整源验收复用原 R7/R10/R11/R13 的各自有效单元，保留旧 RED，见[当前版本源验收汇总](tributary-expansion-directives-1.20.0.4-source-acceptance-2026-10-09.md)。下一步是 TED 1.0.1 正式构建、发布、完整公开 Notes 回读和真实下载缓存加载。
+
+正式发布仍为 6/10；TED、QOL、RMTM、361 未完成发布闭环，361 仍最后。缓存遵守用户永久简化规定，只核实际 Steam 下载文件与正式构建一致、CK3 实际加载，以及正常退出；不重跑游戏内业务。G2 持久停战到期查询的 16 文件源码候选已完成 Python/MCP 局部验证，原生增量构建与实机资格分列为待办。当前没有 CK3 占用；关闭游戏后分页文件自动缩小，08:14 UTC 可用磁盘为 6.256 GB，不把该快照当作下次启动前空间保证。
+
 ## 2026-10-08 当前续办路由
 
 用户已要求继续执行并主导统一验收，下面旧“停止新增”和产品private host操作卡只保留历史。后续所有mod的新run从[公共六模式入口](ck3-mod-upgrade-fast-validation.md)选择同一共同manifest；当前本机为Source08/FINAL09/bound10，产品只提供原fixture、adapter、数据和业务合同，禁止另建产品host/source/native版本。正式闭环6/10，QOL、RMTM、TED、361仍未完成；实际场景和失败边界以该专题的逐场记录为准，旧版本的通过不外推。
