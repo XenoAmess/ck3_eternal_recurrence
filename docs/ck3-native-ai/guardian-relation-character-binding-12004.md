@@ -396,6 +396,34 @@ payload and child/guardian wrapper ABI remain necessary before publishing
 useful pair membership. The actual roster child's full ID remains the
 receiver; the current CharacterWindow subject is not substituted.
 
+### Root standalone fixture qualification
+
+Root executed the unique offline recipe once onOctober10 at
+01:57:27.793882-01:57:28.591777 Asia/Shanghai, against immutable source
+`84eda13df35b47a37a40e14608a4ef495530d011`. The actual result is **GREEN**:
+
+| New stage | Seconds | Result |
+| --- | --- | --- |
+| Standalone fixture compilation |0.562929300009273 | GREEN |
+| Standalone fixture link |0.13224509998690337 | GREEN |
+| Unique sparse-layout fixture run |0.10192269994877279 | GREEN;`SOURCE_FIXTURE_PASS` present |
+
+The actual receipt is
+`Z:/g2-guardian-factory-reader73-build01/attempt01/ROOT-FIXED-GUARDIAN-LOOKUP-FIXTURE-RESULT.json`;
+its `ROOT-ACTUAL-COMPILE-RECIPE.json` and `logs/` preserve the exact commands
+and timings. Root reused the held MSVC environment. Production compiles,
+archives, DLL links, MCP consumers, old FIRST replays, Game/SDK/process
+reads and hashes were all0. No worker reran this result.
+
+This qualifies the private table-layout/hash/default-comparison helper as
+**static-ready** on the fixture-owned sparse memory. The earlier
+source-notrun entry remains the authorship state before this actual run.
+Registered guardian factories have not been observed in Game, the helper
+is not integrated into a production query, and guardian pair readiness,
+guardian collection readiness, live and new G2 credit remain false/0.
+The next input is still the finite two-key registered factory metadata,
+followed by the genuine factory/parsed-trigger/evaluator ABI.
+
 ## Required production input after native closure
 
 For every existing admitted actual-child occurrence group, keep the
