@@ -1,0 +1,268 @@
+{
+  "schema": "ck3-common-runtime-rebuild-archive-v1",
+  "status": "BUILD_READY_LIVE_NOT_RUN",
+  "archive": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-10-local-common-runtime-rebuild\\raw-evidence.zip",
+    "bytes": 1419702,
+    "sha256": "b2bcc5ac522fb67f7e24472c9dd8a158dff0c8d6369f0c1d411009a8444399a1"
+  },
+  "evidence_entries": [
+    {
+      "member": "actual-bootstrap/BUS-LIST.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-actual-common-bootstrap-readonly-20261010-001\\BUS-LIST.actual.json",
+        "bytes": 128088,
+        "sha256": "054c2aa192e64e6010f381e2f0706558a0f0c0c3e90f65a5a030706f6f5afbc7"
+      }
+    },
+    {
+      "member": "actual-bootstrap/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-actual-common-bootstrap-readonly-20261010-001\\RESULT.actual.json",
+        "bytes": 3407,
+        "sha256": "8910d835f6b544dfcbe43cccac82826b596dbd4b69f96804a577b65402898dcb"
+      }
+    },
+    {
+      "member": "actual-bootstrap/UNPREPARED-CASE-PREFLIGHT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-actual-common-bootstrap-readonly-20261010-001\\UNPREPARED-CASE-PREFLIGHT.actual.json",
+        "bytes": 5390,
+        "sha256": "ef3214bd326f819ca1b88f0df778ab839363613c3ae3a9546e07f25f5d79a3a1"
+      }
+    },
+    {
+      "member": "actual-bootstrap/VALIDATED-LEGACY-CLOSURE.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-actual-common-bootstrap-readonly-20261010-001\\VALIDATED-LEGACY-CLOSURE.actual.json",
+        "bytes": 5800,
+        "sha256": "9bb960f4ca0480ab30791fb50b6310a96df66bafdc09c33e061ede696bb8c329"
+      }
+    },
+    {
+      "member": "case-input/plain-configuration-provenance.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\plain-configuration-provenance.json",
+        "bytes": 1814,
+        "sha256": "8ac666e345d497f4bce098c6aedeba289376faf21c871741ed61fad5391310c9"
+      }
+    },
+    {
+      "member": "case-input/prepare-inputs.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepare-inputs.json",
+        "bytes": 1996,
+        "sha256": "cdf3fb3f9d6ba24c8cb8892937f5ebde83be4231ae1542866a6c6c53f812695e"
+      }
+    },
+    {
+      "member": "case-input/product-inventory.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\product-inventory.json",
+        "bytes": 13951,
+        "sha256": "408d43cde96156c5004b0a552ba20bb73fbd2896e794389a8734c669b134d5f2"
+      }
+    },
+    {
+      "member": "common/BUILD-INPUTS.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-INPUTS.actual.json",
+        "bytes": 3608,
+        "sha256": "70ae3c7f22627918cf43c9a9abc279033c0f3ad0a4bb99b71ae7a2b9ca0bab36"
+      }
+    },
+    {
+      "member": "common/BUILD-RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\BUILD-RESULT.actual.json",
+        "bytes": 498,
+        "sha256": "e7ec2bd70cb906573dfe36fbd4b244d0584d9521c3fd4dc7353d59cef15ce01a"
+      }
+    },
+    {
+      "member": "common/SOURCE03-NATIVE-REUSE.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\SOURCE03-NATIVE-REUSE.actual.json",
+        "bytes": 2182,
+        "sha256": "df96d4f93121a7f56ef61eabbdb941c8f0a0800de1110539d50d2a16c662ac87"
+      }
+    },
+    {
+      "member": "common/build.stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\build.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "common/build.stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\build.stdout.log",
+        "bytes": 63842,
+        "sha256": "bcc5cd807caa95384b0b0b56081d42645eacea0a1b872da81bb0cc1d2fe3fa02"
+      }
+    },
+    {
+      "member": "common/first-machine-bootstrap.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\first-machine-bootstrap.json",
+        "bytes": 3111,
+        "sha256": "1c6018b24a6c68f2a56fbbaccde617b456cc2440148e33fb9884d907c1ca8a5d"
+      }
+    },
+    {
+      "member": "common/manifest.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\manifest.json",
+        "bytes": 5056,
+        "sha256": "275bd7bdb8b44e72340e4fb77cc238f43a50dabd532d64f93916d3d0380be51c"
+      }
+    },
+    {
+      "member": "common/native-source-index.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\native-source-index.json",
+        "bytes": 891863,
+        "sha256": "28851d73ce9aa02b4379a74a7397ad54d44d616a726db3c188f878750ccc7222"
+      }
+    },
+    {
+      "member": "common/native-source03-index.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\native-source03-index.json",
+        "bytes": 891863,
+        "sha256": "855024fab658219c3b21879a6c53de00516ec7c7fdb6d01fb587f7e8287e5886"
+      }
+    },
+    {
+      "member": "common/runtime.local.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\runtime.local.json",
+        "bytes": 2011,
+        "sha256": "36e880a0784458fd54c3740c0cf69fcccb66cc3e1ca87a82571dba852482660f"
+      }
+    },
+    {
+      "member": "common/source-index.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\source-index.json",
+        "bytes": 1619048,
+        "sha256": "11b6a1117d4a43327a46ef18f1b8370efb2e1a8716274fb46a9b993780e0f7da"
+      }
+    },
+    {
+      "member": "common/source03-index.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\source03-index.json",
+        "bytes": 1619407,
+        "sha256": "2da162a56e1c16624bb7817cbdc1f10f8bf9e22dfc06fa0813b1406e56dd7c19"
+      }
+    },
+    {
+      "member": "producer/r39-root-bind-common-runtime-20261010-001.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-root-bind-common-runtime-20261010-001.py",
+        "bytes": 4336,
+        "sha256": "addf673ca300a4796cccd65af68a4af479a7f1cc9a654fe31411f03e51f13bea"
+      }
+    },
+    {
+      "member": "producer/r39-root-bind-common-runtime-20261010-002.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-root-bind-common-runtime-20261010-002.py",
+        "bytes": 4317,
+        "sha256": "6ff04d585036002b171ec8d0b7ac7217ce085b75534857f96a1c6144dabc4e5c"
+      }
+    },
+    {
+      "member": "producer/r39-root-freeze-bootstrap-bundle-20261010-001.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-root-freeze-bootstrap-bundle-20261010-001.py",
+        "bytes": 1553,
+        "sha256": "6cadbb9dabb7e5f351c42320db3e7687004114599fbcf3952aff5dadfb82e0ad"
+      }
+    },
+    {
+      "member": "producer/r39-root-freeze-common-source-20261010-002.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-root-freeze-common-source-20261010-002.py",
+        "bytes": 3630,
+        "sha256": "b7a281f98dd04c5471af1778230920fe938e46bb628981c6af5b3c4f35bf9fc8"
+      }
+    },
+    {
+      "member": "producer/r39-root-freeze-common-source03-20261010-001.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-root-freeze-common-source03-20261010-001.py",
+        "bytes": 2813,
+        "sha256": "959cc5358052305a7baabd1abfe1c55c60330bf76f8d5a59a667cbe911199910"
+      }
+    },
+    {
+      "member": "producer/r39-root-freeze-control-inputs-20261010-001.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-root-freeze-control-inputs-20261010-001.py",
+        "bytes": 2939,
+        "sha256": "38c483f1961f4018648ede422e617a2e2a31977e0964dc9e7a298df546a31c1e"
+      }
+    },
+    {
+      "member": "unprepared-plan/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\unprepared-plan-001\\RESULT.actual.json",
+        "bytes": 1063,
+        "sha256": "e44018a2c29caaf03fc188d25d957482d56b23a506c2bb0ca0b0a30a14b5f6dd"
+      }
+    },
+    {
+      "member": "unprepared-plan/stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\unprepared-plan-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "unprepared-plan/stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\unprepared-plan-001\\stdout.log",
+        "bytes": 3420,
+        "sha256": "ee97ce96743615bed694f1613dc6d0acb2928e133a0abc1a7589ad022137e985"
+      }
+    }
+  ],
+  "external_source_archives": [
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\shared-source.zip",
+      "bytes": 53534946,
+      "sha256": "7069733c29c0224fe7d211522b2ebec495cb9476ab613d74523e997e574cc7b0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\shared-source03.zip",
+      "bytes": 53550160,
+      "sha256": "8cd4bb3fafca8771878458a7bfd81668bf9862855fc83b9dc302b020fdc7bff0"
+    }
+  ],
+  "native_artifacts": {
+    "exit_code": 0,
+    "source_commit": "af20455212ed75000ba6136b3be308a9288cb06e",
+    "dll": {
+      "path": "C:\\cbr2\\xar_ck3_bridge.dll",
+      "bytes": 9459712,
+      "sha256": "390506e486f5b19e298070523360d420de255a7811b5e79a5b279d5f9331dbbe"
+    },
+    "injector": {
+      "path": "C:\\cbr2\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "2e22a985ba3166ce50ca1732901f0bac0629e8ff0f068de73330fdd5d09c86a8"
+    },
+    "live_qualification": "NOT_RUN",
+    "business_acceptance": "NOT_ASSESSED"
+  },
+  "original_failed_source01": "C:/workspace/ck3-common-runtime/20261009-001",
+  "live_id_allocated": false,
+  "screen_acquired": false,
+  "game_launched": false,
+  "business_pass": false
+}

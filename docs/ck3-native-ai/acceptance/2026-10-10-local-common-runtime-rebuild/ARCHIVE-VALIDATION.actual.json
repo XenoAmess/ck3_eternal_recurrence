@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "checked_members": 28,
+  "all_member_bytes_and_sha256_equal_original": true,
+  "archive": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-10-local-common-runtime-rebuild\\raw-evidence.zip",
+    "bytes": 1419702,
+    "sha256": "b2bcc5ac522fb67f7e24472c9dd8a158dff0c8d6369f0c1d411009a8444399a1"
+  }
+}

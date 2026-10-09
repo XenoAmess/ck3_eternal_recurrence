@@ -1,0 +1,127 @@
+{
+  "schema": "ck3-common-transaction-control-preparation-v1",
+  "prepare_exit_code": 0,
+  "preflight_exit_code": 0,
+  "preflight_status": "READY_FOR_EXISTING_REVIEWED_LAUNCH",
+  "runtime_manifest": {
+    "path": "C:\\workspace\\ck3-common-runtime\\20261010-002\\manifest.json",
+    "bytes": 5056,
+    "sha256": "275bd7bdb8b44e72340e4fb77cc238f43a50dabd532d64f93916d3d0380be51c"
+  },
+  "prepared_case": {
+    "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepared\\prepared-case.json",
+    "bytes": 37150,
+    "sha256": "7e607db19d7ea33d4f9893c57b6d620796aa241db97537b688f1797a9cbbc55a"
+  },
+  "profile_file_count": 84,
+  "seed_mounted_in_profile": false,
+  "archive": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-10-local-common-runtime-rebuild\\prepare-evidence.zip",
+    "bytes": 32855,
+    "sha256": "cadf465d831116b195d6789ccf87947d46e0f22d259818eb72af837a3891126c"
+  },
+  "entries": [
+    {
+      "member": "preflight-command-001/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\preflight-command-001\\RESULT.actual.json",
+        "bytes": 1267,
+        "sha256": "f71d6e617b50bdc413210d28b7427e3161bfb24b8c3bdbf60973330fc777b5d7"
+      }
+    },
+    {
+      "member": "preflight-command-001/stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\preflight-command-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "preflight-command-001/stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\preflight-command-001\\stdout.log",
+        "bytes": 9528,
+        "sha256": "840ef186e3ba2ab70e0c0ee5aa4c898d4ec6f8fad9052b6c88b77ff05bf45622"
+      }
+    },
+    {
+      "member": "prepare-command-001/RESULT.actual.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepare-command-001\\RESULT.actual.json",
+        "bytes": 1367,
+        "sha256": "6d7c33dee827108b997db24ba8dd92f1acc2ca23f409a3218af2823884d87b7f"
+      }
+    },
+    {
+      "member": "prepare-command-001/stderr.log",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepare-command-001\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "prepare-command-001/stdout.log",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepare-command-001\\stdout.log",
+        "bytes": 34419,
+        "sha256": "a26c0ba6f8c354abcdb4e50ca964bf4a30a570bbdc9ba0f01b9bbe124e1ccbfb"
+      }
+    },
+    {
+      "member": "prepared/initial-plan.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepared\\initial-plan.json",
+        "bytes": 18,
+        "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+      }
+    },
+    {
+      "member": "prepared/prepared-case.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepared\\prepared-case.json",
+        "bytes": 37150,
+        "sha256": "7e607db19d7ea33d4f9893c57b6d620796aa241db97537b688f1797a9cbbc55a"
+      }
+    },
+    {
+      "member": "prepared/profile-preparation.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepared\\profile-preparation.json",
+        "bytes": 33387,
+        "sha256": "b0cd7d62068724ab5ebe0d87eef1184e4c66cc6ab5ce13299b9483c72626b177"
+      }
+    },
+    {
+      "member": "prepared/saved-product-inventory.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepared\\saved-product-inventory.json",
+        "bytes": 24258,
+        "sha256": "2902deba42c6731a97b795e5cc07ef1695e0c91ab582b43597480ab2599e6767"
+      }
+    },
+    {
+      "member": "prepared/saved-startup-case-contract.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\prepared\\saved-startup-case-contract.json",
+        "bytes": 951,
+        "sha256": "d0e8f4c348b775a9dbfc4c39c38e6719c272a17e7256e075ebc8f5975b009341"
+      }
+    },
+    {
+      "member": "state/preparation.json",
+      "source": {
+        "path": "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-001\\state\\preparation.json",
+        "bytes": 18575,
+        "sha256": "3dfd9e068ed33c4f993e008f7ee5e17084a96b5ec1d61b72fdeaf09ef80dea4e"
+      }
+    }
+  ],
+  "archive_member_bytes_and_sha_verified": true,
+  "live_id_allocated": false,
+  "screen_acquired": false,
+  "game_launched": false,
+  "business_pass": false,
+  "product_release_pass": false
+}
