@@ -6781,7 +6781,7 @@ void AppendTacticalDailySentinelTriggerReasons(
     std::uint32_t flag;
     std::string_view name;
   };
-  constexpr std::array<Entry, 16> entries{{
+  constexpr std::array<Entry, 17> entries{{
       {tactical_daily_trigger_date_deadline, "date_deadline"},
       {tactical_daily_trigger_army_unavailable, "army_unavailable"},
       {tactical_daily_trigger_route_target_changed,
@@ -6805,6 +6805,7 @@ void AppendTacticalDailySentinelTriggerReasons(
       {tactical_daily_trigger_combat_winner_changed,
        "combat_winner_changed"},
       {tactical_daily_trigger_evaluation_failure, "evaluation_failure"},
+      {tactical_daily_trigger_army_position_changed, "army_position_changed"},
   }};
   result += '[';
   bool first = true;

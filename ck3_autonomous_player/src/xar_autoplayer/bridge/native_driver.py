@@ -7,6 +7,13 @@ semantic driver interface used by the visual and data-Mod backends.
 
 from __future__ import annotations
 
+from .route_contact_window_contract import (
+    ADVANCE_ROUTE_CONTACT_WINDOW_STEP_PREFIX,
+    advance_route_contact_window_step,
+    parse_advance_route_contact_window_step,
+)
+from .route_contact_window_projection_v1 import project_route_contact_window_v1
+
 from .public_unit_contract import (
     canonical_public_cunit_decimal,
     canonical_public_cunit_token,
@@ -853,6 +860,7 @@ _TACTICAL_DAILY_SENTINEL_TRIGGER_REASONS = (
     "native_pause",
     "combat_winner_changed",
     "evaluation_failure",
+    "army_position_changed",
 )
 _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR = (
     "CK3 battle-control state changed during query"
@@ -2195,6 +2203,13 @@ class NativeHeadlessGameplayDriver:
                 proof_steps = _fresh_route_contact_advance_steps(
                     current_snapshot, self._command_history
                 )
+                if (
+                    _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES <= bridge_capabilities
+                    and f"set-speed-{self.route_contact_effective_timeline_speed}" in action_steps
+                ):
+                    proof_steps.update(_fresh_route_contact_window_advance_proofs(
+                        current_snapshot, self._command_history
+                    ))
             if (
                 isinstance(current_snapshot, dict)
                 and {
@@ -8854,6 +8869,13 @@ class NativeHeadlessGameplayDriver:
                 "malformed province-local-siege ProvinceID step"
             )
         route_contact_advance = parse_advance_route_contact_horizon_step(step)
+        route_window_advance = parse_advance_route_contact_window_step(step)
+        if (
+            isinstance(step, str)
+            and step.startswith(ADVANCE_ROUTE_CONTACT_WINDOW_STEP_PREFIX)
+            and route_window_advance is None
+        ):
+            raise UnsupportedStepError("malformed bounded route-contact window step")
         if (
             isinstance(step, str)
             and step.startswith("query-route-contact-horizon-v1-")
@@ -9704,6 +9726,12 @@ class NativeHeadlessGameplayDriver:
         ):
             return self._execute_continue_as_reconciled_successor(
                 expected_revision=expected_revision
+            )
+        if route_window_advance is not None:
+            if step not in capabilities.get("composite_action_steps", []):
+                raise UnsupportedStepError("route window lacks fresh complete timeline inputs")
+            return self._execute_route_contact_window_advance(
+                step, expected_revision=expected_revision
             )
         if route_contact_advance is not None:
             if step not in capabilities.get("composite_action_steps", []):
@@ -21497,6 +21525,27 @@ class NativeHeadlessGameplayDriver:
                 )
             time.sleep(min(self.checkpoint_poll_interval_seconds, remaining))
 
+    def _execute_route_contact_window_advance(
+        self, step: str, *, expected_revision: int | None,
+    ) -> dict[str, object]:
+        starting = self.take_internal_semantic_snapshot()
+        if expected_revision is not None and expected_revision != starting.get("revision"):
+            raise PreSubmissionRevisionMismatchError("route window starting revision changed")
+        with self._history_lock:
+            proof = _fresh_route_contact_window_advance_proofs(
+                starting, self._command_history
+            ).get(step)
+        if proof is None:
+            raise BridgeUnavailableError("route window complete same-frame inputs changed")
+        result = self._execute_battle_sentinel_advance(
+            step, expected_revision=expected_revision,
+            starting_snapshot=starting, requested_scope="route_contact_window",
+            route_window_proof=proof,
+        )
+        return {**result, "route_contact_window": copy.deepcopy(proof["contact_window"]),
+                "requested_horizon_days": proof["horizon_days"],
+                "route_contact_window_context_basis": "frozen_current_routes"}
+
     def _execute_route_contact_horizon_advance(
         self, step: str, *, expected_revision: int | None
     ) -> dict[str, object]:
@@ -21702,6 +21751,7 @@ class NativeHeadlessGameplayDriver:
         requested_scope: str = "active_battle",
         requested_route: tuple[int, int, int] | None = None,
         requested_objective_hold: tuple[int, int, int, int] | None = None,
+        route_window_proof: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Run one explicitly scoped tactical tranche without Python polling.
 
@@ -21725,7 +21775,13 @@ class NativeHeadlessGameplayDriver:
         parsed_objective_hold_speed = (
             parse_war_objective_hold_sentinel_advance_speed(step)
         )
-        if parsed_objective_hold_request is not None:
+        if route_window_proof is not None:
+            if requested_scope != "route_contact_window" or parse_advance_route_contact_window_step(step) is None:
+                raise UnsupportedStepError("route window sentinel request scope is inconsistent")
+            speed = self.route_contact_effective_timeline_speed
+            wire_mode = "terminal"
+            status_mode = "terminal_or_sentinel"
+        elif parsed_objective_hold_request is not None:
             if (
                 requested_scope != "stationary_objective_hold"
                 or requested_objective_hold
@@ -21822,6 +21878,8 @@ class NativeHeadlessGameplayDriver:
                 f"native {step} cannot bypass a pending player decision"
             )
         watch_army_ids = _battle_sentinel_watch_army_ids(starting)
+        if route_window_proof is not None:
+            watch_army_ids = tuple(route_window_proof["watch_army_ids"])
         if watch_army_ids is None:
             raise BridgeUnavailableError(
                 f"native {step} requires the complete controllable ArmyID set"
@@ -21833,7 +21891,10 @@ class NativeHeadlessGameplayDriver:
             starting, watch_army_ids
         )
         hold_admission: dict[str, object] | None = None
-        if requested_scope == "active_battle":
+        if requested_scope == "route_contact_window":
+            if route_window_proof is None or active_combat_at_start or active_retreat_at_start:
+                raise BridgeUnavailableError("route window requires its current noncombat route inputs")
+        elif requested_scope == "active_battle":
             if not active_combat_at_start:
                 raise BridgeUnavailableError(
                     f"native {step} active-battle scope requires active combat"
@@ -21918,7 +21979,9 @@ class NativeHeadlessGameplayDriver:
             starting_date_raw + _BATTLE_SENTINEL_FALLBACK_DAYS * 24
         )
         target_date_raw = (
-            parsed_objective_hold_request[3]
+            int(route_window_proof["window_end_date_raw"])
+            if route_window_proof is not None
+            else parsed_objective_hold_request[3]
             if parsed_objective_hold_request is not None
             else parsed_route_request[2]
             if parsed_route_request is not None
@@ -21928,7 +21991,9 @@ class NativeHeadlessGameplayDriver:
         )
         target_delta_raw = target_date_raw - starting_date_raw
         maximum_horizon_days = (
-            7
+            3
+            if route_window_proof is not None
+            else 7
             if parsed_objective_hold_request is not None
             else _BATTLE_SENTINEL_FALLBACK_DAYS
         )
@@ -26407,6 +26472,7 @@ def _validate_tactical_daily_sentinel_arm(
         and not isinstance(combat_count, bool)
         and (
             (sentinel_scope == "active_battle" and combat_count > 0)
+            or sentinel_scope == "route_contact_window"
             or (
                 sentinel_scope
                 in {"committed_route", "stationary_objective_hold", "exact_one_day"}
@@ -30192,6 +30258,76 @@ def _fresh_route_contact_advance_steps(
 ) -> set[str]:
     """Return one-shot advances backed by a fresh exact-frame proof."""
     return set(_fresh_route_contact_advance_proofs(snapshot, history))
+
+
+def _fresh_route_contact_window_advance_proofs(
+    snapshot: dict[str, object], history: list[dict[str, object]],
+) -> dict[str, dict[str, object]]:
+    """Join complete same-frame routes into one bounded watched tranche."""
+    one_day_proofs = _fresh_route_contact_advance_proofs(snapshot, history)
+    own_ids = _battle_sentinel_watch_army_ids(snapshot)
+    if own_ids is None:
+        return {}
+    by_subject = {
+        proof["subject_army_id"]: proof for proof in one_day_proofs.values()
+        if proof.get("proof_kind") == "contact_free"
+    }
+    armies = {row.get("army_id"): row for row in snapshot.get("player_armies", [])
+              if isinstance(row, dict) and row.get("controllable") is True}
+    results: dict[str, dict[str, object]] = {}
+    for proof in by_subject.values():
+        horizon = proof["contact_horizon"]
+        if not isinstance(horizon, dict):
+            continue
+        subject = armies.get(proof["subject_army_id"])
+        # This bounded entry advances an actual committed route. Stationary
+        # objective holds retain their separate existing operation.
+        if not isinstance(subject, dict) or not _canonical_remaining_route(subject):
+            continue
+        watch_ids = tuple(sorted(set(own_ids) | set(proof["hostile_army_ids"])))
+        if len(watch_ids) > _BATTLE_SENTINEL_MAXIMUM_ARMIES:
+            continue
+        windows: dict[int, dict[str, object]] = {}
+        for army_id in own_ids:
+            army = armies[army_id]
+            if army_id in by_subject:
+                sibling_horizon = by_subject[army_id]["contact_horizon"]
+                if not isinstance(sibling_horizon, dict) or any(
+                    sibling_horizon.get(field) != horizon.get(field)
+                    for field in ("date_raw", "snapshot_revision", "hostile_army_ids", "hostile_routes")
+                ):
+                    break
+            elif _army_is_known_stationary(army) and _canonical_remaining_route(army) == []:
+                # A stationary actual position needs no invented native route
+                # query; compare its held Province with the same full timelines.
+                sibling_horizon = {**horizon, "subject_route": {
+                    "army_id": army_id,
+                    "current_province_id": army.get("current_province_id"),
+                    "route_province_ids": [], "arrival_date_raws": [],
+                    "timeline_observable": True,
+                }}
+            else:
+                break
+            window = project_route_contact_window_v1(sibling_horizon, horizon_days=3)
+            if window["status"] != "available":
+                break
+            windows[army_id] = window
+        if len(windows) != len(own_ids):
+            continue
+        days = min(int(window["contact_free_whole_days"]) for window in windows.values())
+        if days < 2:
+            continue
+        step = advance_route_contact_window_step(
+            int(proof["subject_army_id"]), int(proof["target_province_id"]),
+            proof["hostile_army_ids"], horizon_days=days,
+        )
+        selected_window = project_route_contact_window_v1(horizon, horizon_days=days)
+        results[step] = {**proof, "proof_kind": "bounded_frozen_route_window",
+                         "contact_window": selected_window, "horizon_days": days,
+                         "window_end_date_raw": selected_window["window_end_date_raw"],
+                         "watch_army_ids": watch_ids, "controlled_windows": windows,
+                         "context_basis": "frozen_current_routes"}
+    return results
 
 
 def _fresh_route_contact_advance_proofs(

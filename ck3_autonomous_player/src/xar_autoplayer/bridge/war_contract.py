@@ -83,6 +83,7 @@ from .title_holder_contract import (
 )
 
 from collections.abc import Iterable
+from .route_contact_window_contract import parse_advance_route_contact_window_step
 
 from .version_identity import (
     CK3_11906, CK3_12002, CK3_12003, CK3_12004, NativeBuildIdentity, require_exact_native_build,
@@ -2949,6 +2950,7 @@ def is_life_advance_step(step: object) -> bool:
         or parse_committed_route_sentinel_advance_step(step) is not None
         or parse_war_objective_hold_sentinel_advance_step(step) is not None
         or parse_advance_route_contact_horizon_step(step) is not None
+        or parse_advance_route_contact_window_step(step) is not None
     )
 
 

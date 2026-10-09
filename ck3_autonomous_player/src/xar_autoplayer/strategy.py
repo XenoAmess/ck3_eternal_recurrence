@@ -13,6 +13,7 @@ from .current_native_war_end_conditions_v1 import (
 from .current_replenishment_army_selector_v1 import (
     select_current_replenishment_army_v1,
 )
+from .bridge.route_contact_window_contract import advance_route_contact_window_step
 from .siege_subject_contribution_v1 import observe_siege_subject_contribution
 
 from .bridge.campaign_root_context_contract import (
@@ -11554,12 +11555,23 @@ def _choose_one_life_turn_core(
                             observed_route_target,
                             route_threat_enemy_ids,
                         )
+                        window_days = 1
+                        for candidate_days in (3, 2):
+                            window_step = advance_route_contact_window_step(
+                                army_id, observed_route_target,
+                                route_threat_enemy_ids, horizon_days=candidate_days,
+                            )
+                            if window_step in available_steps:
+                                advance_step = window_step
+                                window_days = candidate_days
+                                break
                         if advance_step in available_steps:
                             return {
                                 "policy": "one-life-turn-v1",
                                 "phase": "native_war_route_contact_horizon_progress",
                                 "selected_step": advance_step,
-                                "reason": "the fresh same-frame native timeline proves the committed route and every other controllable army contact-free for at most the next day",
+                                "reason": f"same-frame complete timelines cover {window_days} day(s); the watched native clock stops on actual arrival, target, combat, retreat or pause changes",
+                                "route_contact_window_days": window_days,
                                 "route_audit": passive_route_audit,
                                 "stationary_contact_horizons": stationary_contact_horizons,
                                 "moving_contact_horizons": moving_conjunction,

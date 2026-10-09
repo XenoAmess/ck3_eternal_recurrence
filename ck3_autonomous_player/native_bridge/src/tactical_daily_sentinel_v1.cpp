@@ -26,6 +26,7 @@ constexpr std::int32_t kMaximumComponentCapacity = 1'000'000;
 constexpr std::size_t kProvinceIdOffset = 0x10;
 constexpr std::size_t kPublicCunitIdOffset = 0x10;
 constexpr std::size_t kPublicCunitKindOffset = 0x18;
+constexpr std::size_t kPublicCunitCurrentProvinceOffset = 0x20;
 constexpr std::size_t kPublicCunitMoveTargetOffset = 0x30;
 constexpr std::size_t kPublicCunitRetreatStateOffset = 0x170;
 constexpr std::size_t kPublicCunitInternalArmyIdOffset = 0x178;
@@ -51,6 +52,7 @@ constexpr std::int32_t kDateRawPerDay = 24;
 struct ArmyFingerprintV1 {
   std::int32_t public_cunit_id = -1;
   std::int32_t internal_army_id = -1;
+  std::int32_t current_province_id = -1;
   std::int32_t move_target_province_id = -1;
   std::int32_t combat_id = -1;
   bool retreating = false;
@@ -171,6 +173,16 @@ bool ReadArmyFingerprint(const Bindings &bindings, std::int32_t army_id,
   if (internal_army == nullptr ||
       LoadAt<std::int32_t>(internal_army, kInternalArmyPublicCunitIdOffset) !=
           army_id) {
+    return false;
+  }
+  void *const current_province =
+      LoadAt<void *>(unit, kPublicCunitCurrentProvinceOffset);
+  if (current_province == nullptr) {
+    return false;
+  }
+  output.current_province_id =
+      LoadAt<std::int32_t>(current_province, kProvinceIdOffset);
+  if (output.current_province_id <= 0) {
     return false;
   }
   void *const move_target = LoadAt<void *>(unit, kPublicCunitMoveTargetOffset);
@@ -825,6 +837,10 @@ void ProcessTacticalDailySentinelAfterTickV1() noexcept {
       if (current.move_target_province_id !=
           g_payload.armies[index].move_target_province_id) {
         trigger_flags |= tactical_daily_trigger_route_target_changed;
+      }
+      if (current.current_province_id !=
+          g_payload.armies[index].current_province_id) {
+        trigger_flags |= tactical_daily_trigger_army_position_changed;
       }
       if (current.combat_id != g_payload.armies[index].combat_id) {
         trigger_flags |= tactical_daily_trigger_combat_transition;

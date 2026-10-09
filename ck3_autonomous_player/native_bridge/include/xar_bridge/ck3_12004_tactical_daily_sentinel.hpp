@@ -23,6 +23,8 @@ inline constexpr std::uintptr_t kTacticalSentinelSetPausedWrapperRva12004 =
 // the CUnit/CArmy identity pair; a synthetic watched graph uses these roles.
 inline constexpr std::size_t kTacticalSentinelUnitIdOffset12004 = 0x10;
 inline constexpr std::size_t kTacticalSentinelUnitKindOffset12004 = 0x18;
+inline constexpr std::size_t kTacticalSentinelUnitCurrentProvinceOffset12004 =
+    0x20;
 inline constexpr std::size_t kTacticalSentinelUnitDirectTargetOffset12004 = 0x30;
 inline constexpr std::size_t kTacticalSentinelUnitRetreatOffset12004 = 0x170;
 inline constexpr std::size_t kTacticalSentinelUnitOwnerOffset12004 = 0x174;

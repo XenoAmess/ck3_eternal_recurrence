@@ -56,7 +56,7 @@ std::string_view StateName(ck3_11906::TacticalDailySentinelStateV1 state) noexce
 std::string TriggerReasons(std::uint32_t flags) {
   using namespace ck3_11906;
   struct Entry { std::uint32_t flag; std::string_view name; };
-  constexpr std::array<Entry, 16> entries{{
+  constexpr std::array<Entry, 17> entries{{
       {tactical_daily_trigger_date_deadline, "date_deadline"},
       {tactical_daily_trigger_army_unavailable, "army_unavailable"},
       {tactical_daily_trigger_route_target_changed, "route_target_changed"},
@@ -73,6 +73,7 @@ std::string TriggerReasons(std::uint32_t flags) {
       {tactical_daily_trigger_native_pause, "native_pause"},
       {tactical_daily_trigger_combat_winner_changed, "combat_winner_changed"},
       {tactical_daily_trigger_evaluation_failure, "evaluation_failure"},
+      {tactical_daily_trigger_army_position_changed, "army_position_changed"},
   }};
   std::string output = "[";
   bool first = true;

@@ -57,6 +57,7 @@ enum TacticalDailySentinelTriggerV1 : std::uint32_t {
   tactical_daily_trigger_native_pause = 1U << 13,
   tactical_daily_trigger_combat_winner_changed = 1U << 14,
   tactical_daily_trigger_evaluation_failure = 1U << 15,
+  tactical_daily_trigger_army_position_changed = 1U << 16,
 };
 
 enum class TacticalDailySentinelModeV1 : std::uint32_t {
