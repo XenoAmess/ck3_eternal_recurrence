@@ -21,6 +21,8 @@ HOST_SOURCE = REPO / 'ck3_autonomous_player/native_bridge/research/run_ck3_12002
 class NormalCloseReviewRaceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        sys.path.insert(0, str(CLIENT_SOURCE.parent))
+        cls.addClassCleanup(sys.path.remove, str(CLIENT_SOURCE.parent))
         spec = importlib.util.spec_from_file_location('_normal_close_client_under_test', CLIENT_SOURCE)
         cls.module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(cls.module)
@@ -29,9 +31,11 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         module = self.module
         client = module.CaseClient.__new__(module.CaseClient)
         client.output = root
+        client.live = root
+        client.keeper = root / 'synthetic-keeper'
         client._handle = object()
         client._process = {'pid': 2468, 'create_time': 123.5}
-        client.frozen = {'run_id': 'SYNTHETIC_ROOT_REVIEW_RACE'}
+        client.frozen = {'run_id': 'SYNTHETIC_ROOT_REVIEW_RACE', 'screen_task': 'synthetic-screen'}
         client._hold = deadline
         client._started = 0
         client.manifest = {'host': {}}

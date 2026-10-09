@@ -1490,8 +1490,13 @@
           "required_mcp_tools": [
             "ck3_take_snapshot",
             "ck3_get_capabilities",
+            "ck3_execute_step",
             "ck3_query_campaign_root_context_v1",
-            "ck3_query_engine_log_literals_v1"
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_title_own_laws_v1",
+            "ck3_query_title_holder_v1"
           ],
           "phases": {
             "required_cells": [

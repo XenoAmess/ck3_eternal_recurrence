@@ -18,6 +18,8 @@ MCP、native bridge、服务、状态/事件读取及启动/退出管理已经�
 
 ## 当前公共CLI与本机共同版本
 
+2026-10-10 后继本机映射使用 `runtime.local-entry-bound13.json`（SHA256 `a7f20631fd99395a8e509246850ac7ef47da841352abd0e6db00d48ca6070e2d`），其 FINAL11 / Source10 / d1d4 native 与下方 bound12 相同，只增加公共自动正常退出三 pins。操作合同、真实 reviewer 与当前 source-only 边界见[公共操作接点](ck3-mod-acceptance-operator-quit.md)。17项定向检查通过，下一场验证真实退出；不把代码接入计作实测提速或产品通过。既有场次与旧 bound12 保留，不重解释历史证据。
+
 当前`--help`实际提供`plan / prepare / allocate / preflight / run / verify`六个模式，所有模式共用`--runtime / --products / --product / --case`。后续本机新场使用[local映射](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-unified-entry-01/runtime.local-entry-bound12.json)和唯一[FINAL11 manifest](C:/workspace/ck3-upgrade-20261008/ck3-mod-acceptance-shared-runtime-01/SHARED-RUNTIME-MANIFEST-FINAL-11.json)，绑定shared Source10/index、canonical host与原d1d4 native DLL/injector；local文件只提供本机Python、游戏/userdir/artifact根及原launcher/queue/allocator路径。换机器统一绑定本机local路径，产品adapter不传host/source/native/host_args，不复制一套运行时。已消费场次继续绑定各自旧冻结输入，旧runner和冻结保留原证据及底层实现。
 
 上述六个模式是未来新 mod run 的唯一操作路由。旧 `run_acceptance.py`、`run_vivhite_acceptance.py`、terminal/product runner 及其历史命令只供只读证据、library 与原业务断言复用，不直接作为新启动入口；旧冻结不被改写。产品 builder、静态检查和不启动游戏的原 preflight 继续保留，不能凭这些结果授实机资格。公共 local 映射始终指向当次唯一全局 manifest，不按产品另选 host/source/native。`de-jure-conquest`、`change-holding-types`、`li-yu-dao` 的 basic-load case 只授加载边界，其原玩家功能合同仍待独立业务证据。
@@ -177,3 +179,11 @@ R36在原预算内通过正常GUI退出：[原normal-close结果](C:/workspace/c
 六个原followup、宗教三项（含compact27启动证据修正）和ordinary_async已采用到唯一registry；[11个新prepare实际回执](C:/workspace/ck3-upgrade-20261010/qol-common-source10-prepare-01/actual-prepare-group-result.json)全为exit0，含ui_tail。均用同一Source10；只产生输入/profile，未分配或启动这些场次，不授业务信用。原formal27、断言、自然日和各case预算保持。集成33项针对性测试在纠正构造器mock缺少默认opt-in属性后通过（2.224s）；旧失败输出保留。各owner已有精确SDK/原块/来源检查复用，无whole build/full matrix重跑。
 
 G2持久停战查询16文件源码已合入当前施工树，原Python5/MCP13与Native08增量BUILD_ONLY证据复用；未给其DLL产品runtime资格、未交换d1d4产品DLL、未授G2实机信用。正式发布仍7/10，顺序为QOL→RMTM→361最后→廷臣礼仪/G2。以下与此前记录中的时间截点保持历史含义。
+
+## 2026-10-10 R37：直接观测的工具等待与公共退出接点
+
+正式迁移已 **7/10**（TED永久记录 `a767bd` 已推送），产品共同底座仍为 Source10/FINAL11/bound12。QOL R37原入口session63075实际exit2；readonly9实际PASS（初始13步和GUI后2个snapshot步骤），[UI25原记录](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0037/case-output/ui25/actual-same-live-records.json)为空且25项全remaining。[原normal-close](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0037/case-output/normal-close-result.json)为Rootreview NULL/retained OS0 false/qualified false。host于17:15:16.609127 UTC GREEN/thread/cleanup及进程树消失、keeper23244实际0，只授资源收尾；[CAS7844 done/resources=[]](C:/workspace/ck3-upgrade-20261006/resume-root-01/a137-screen-release-01.json)不补业务或正常0信用。
+
+Root两次工具操作之间16:46:52→17:26:50 UTC的**39分58秒平台等待**为直接观测，原因未证实。已开展的改进是[公共自动Quit接点](C:/workspace/ck3-upgrade-20261010/common-operator-latency-real-r37-01/ROOT-NORMAL-QUIT-AUTOMATION-ROUTE-RESOURCE-01.md)和[真实委派操作者边界](C:/workspace/ck3-upgrade-20261010/common-operator-latency-real-r37-01/ROOT-DELEGATED-GUI-OPERATOR-MINIMAL-BOUNDARY-01.md)：helper仅compile/help及纯binding检查通过，client opt-in在准备；Root拟将下一场唯一GUI custody交ccc，尚未实际委派或实跑。模板自动化必须保存 `automation_actor`、`human_review_claimed=false`，GUI人审保存真实reviewer身份，继续原图/sequence/current-run绑定以及独立OS0/native0/thread/cleanup，原25项业务断言与期限不变。现存R37失败不追认为自动链通过。
+
+并发备料分别为QOL [center-title/title-own-laws两路接线](C:/workspace/ck3-upgrade-20261010/qol-ui-existing-typed-navigation-01/ROOT-EXISTING-TYPED-NAVIGATION-01.md)、RMTM [Source10 core/threshold后继](C:/workspace/ck3-upgrade-20261010/rmtm-source10-consume-01/ROOT-RMTM-SOURCE10-CONSUME-01.md)、G2 [Native08最小资格规划](C:/workspace/ck3-upgrade-20261010/g2-runtime-minimal-qualification-01/ROOT-G2-MINIMAL-LIVE-QUALIFICATION-01.md)，其中QOL两路、CCC reviewer、CI psutil及RMTM threshold声明补丁已由Root采用到当前施工树；RMTM core/threshold新prepare各实际exit0，尚无新游戏。均不增加新产品host或提前授livePASS。Root闭场后完成同hash索引刷新、无冲突rebase、本机49测试PASS/3.058s及普通push `9c8f2986b115c7e1c4d7cf807d60802f5eb8e7bc`；该SHA官方静态venv实际缺psutil的原RED保留，修复已采用但后继提交官方CI尚未验证，不外推SUCCESS。缓存仍只一次实际下载exact formal和实际加载/正常退出，不增加缓存业务。

@@ -5,6 +5,7 @@ REPO=PY=COORD=None
 DECISIONS=('xqol_enable_auto_appointment_decision','xqol_disable_auto_appointment_decision','xqol_mass_conversion_decision')
 TOOLS={'snapshot':'ck3_take_snapshot','campaign-root':'ck3_query_campaign_root_context_v1',
        'title-holder':'ck3_query_title_holder_v1','open-decisions':'ck3_open_ingame_decisions_v1',
+       'center-title':'ck3_center_map_on_landed_title_v1','title-own-laws':'ck3_query_title_own_laws_v1',
        'query-decision':'ck3_query_ingame_decision_item_v1','select-decision':'ck3_select_ingame_decision_item_v1',
        'event-context':'ck3_query_current_event_window_context_v1','event-option':'ck3_select_event_option'}
 STAGES=['civic-candidates','military-candidates','million-off','million-on','million-restored','civic-appointment','military-appointment','guards','slider-anchor']
@@ -14,6 +15,11 @@ STAGES += ['restore-anchor','map-clean']
 
 def require(value,message):
     if not value: raise RuntimeError(message)
+
+def _operator_reviewer(client):
+    reviewer=getattr(client,'operator_reviewer','/root')
+    require(type(reviewer) is str and reviewer.strip(),'Actual operator reviewer missing')
+    return reviewer
 
 def read(path): return json.loads(Path(path).read_bytes())
 
@@ -32,7 +38,7 @@ class Controller:
     def __init__(self,context,client,*,prior_final6=None):
             global REPO,PY,COORD
             from types import SimpleNamespace
-            self.context=context;self.client=client
+            self.context=context;self.client=client;self.operator_reviewer=_operator_reviewer(client)
             REPO=Path(context['repo_root']);PY=client.selection.locations['python'];COORD=REPO/'tools/desktop_coordinate_map.py'
             self.a=SimpleNamespace(keeper_root=client.keeper)
             self.out=client.output/'ui25';require(not self.out.exists(),'UI25 output already consumed; never replay')
@@ -61,7 +67,7 @@ class Controller:
             self.kernel.CloseHandle.argtypes=[ctypes.c_void_p]
             self.handle=self.kernel.OpenProcess(0x100000|0x1000,False,self.pid)
             require(self.handle,'Cannot retain actual current UI process handle')
-            write(self.out/'actual-controller-start.json',{'run_id':self.frozen['run_id'],'pending':pin(self.caller/'root-same-live-required-ui-awaiting.json'),'deadline':self.deadline,'shared_host':client.selection.manifest['host'],'root_review_required':True})
+            write(self.out/'actual-controller-start.json',{'run_id':self.frozen['run_id'],'pending':pin(self.caller/'root-same-live-required-ui-awaiting.json'),'deadline':self.deadline,'shared_host':client.selection.manifest['host'],'operator_reviewer':self.operator_reviewer,'root_review_required':True})
     def remaining(self):return self.deadline-time.time()
     def current(self):
             r=self.client.guard()
@@ -101,6 +107,10 @@ class Controller:
             if action=='snapshot':params={'include_native_command_history':False}
             elif action=='title-holder':
                 require(type(args.get('title_id')) is int and args['title_id']>0,'Actual numeric title ID required');params={'title_id':args['title_id']}
+            elif action=='center-title':
+                require(type(args.get('title_key')) is str and args['title_key'] and args['title_key'].isascii(),'Actual ASCII title key required');params={'title_key':args['title_key']}
+            elif action=='title-own-laws':
+                require(type(args.get('title_id')) is int and 0<=args['title_id']<2**32-1,'Actual full uint32 title ID required');params={'title_id':args['title_id']}
             elif action in ('query-decision','select-decision'):
                 require(args.get('decision_key') in DECISIONS,'Actual QOL decision key required');params={'decision_key':args['decision_key']}
             elif action in ('event-context','event-option'):
@@ -123,17 +133,17 @@ class Controller:
             before=self.guard();image=self.gui.screenshot();require(image.size==tuple(self.gui.size()),'PNG/current desktop size differs')
             path=self.out/(name+'.png');require(not path.exists(),'Capture name consumed');image.save(path)
             after=self.guard();require(before['foreground_hwnd']==after['foreground_hwnd'],'Window changed during capture')
-            meta={**pin(path),'size':list(image.size),'pid':self.pid,'create_time':self.ctime,'focus':after,'captured_at_unix':time.time(),'root_review_required':True}
+            meta={**pin(path),'size':list(image.size),'pid':self.pid,'create_time':self.ctime,'focus':after,'captured_at_unix':time.time(),'operator_reviewer':self.operator_reviewer,'root_review_required':True}
             write(path.with_suffix('.image.json'),meta);self.latest=meta;return meta
     def publish(self):
             scene=self.capture('scene-'+str(self.seq).zfill(4))
-            write(self.out/('await-'+str(self.seq).zfill(4)+'.json'),{'sequence':self.seq,'run_id':self.live.name,
+            write(self.out/('await-'+str(self.seq).zfill(4)+'.json'),{'sequence':self.seq,'run_id':self.live.name,'operator_reviewer':self.operator_reviewer,
               'stage':STAGES[self.stage] if self.stage<len(STAGES) else 'all-records-present',
               'original_png':scene,'deadline':self.deadline,'remaining_seconds':self.remaining(),'request_path':str(self.out/'requests'/('request-'+str(self.seq).zfill(4)+'.json')),
               'actions':['click','move','drag','scroll','typed','record','gap','finish'],'no_business_result_from_input_ACK':True})
             print('QOL_SAME_LIVE_SCENE '+str(self.out/('await-'+str(self.seq).zfill(4)+'.json')),flush=True)
     def source_guard(self,req):
-            require(req.get('reviewer')=='/root' and req.get('run_id')==self.live.name and req.get('sequence')==self.seq,'Request is not current root custody')
+            require(req.get('reviewer')==self.operator_reviewer and req.get('run_id')==self.live.name and req.get('sequence')==self.seq,'Request is not current operator custody')
             require(req.get('source')=={k:self.latest[k] for k in ('path','bytes','sha256')},'Root review must bind the latest original PNG')
             require(pin(self.latest['path'])==req['source'],'Root reviewed PNG changed')
             self.guard()
@@ -229,7 +239,7 @@ class Controller:
             elif stage=='map-clean':
                 frame=self.typed('snapshot',{},prefix+'-map');require(frame.get('active_event') is None,'Actual map still has an event')
                 require(o.get('all_panels_physically_closed') is True and o.get('current_map_chrome_reviewed') is True,'Actual map must be reviewed after physical panel closure')
-            row={'stage':stage,'observation':o,'evidence':evidence,'root_review_request':pin(self.out/'requests'/('request-'+str(self.seq).zfill(4)+'.json')),'status':'ROOT_ORIGINAL_REVIEW_RECORDED_NO_PRODUCT_PASS_INFERRED'}
+            row={'stage':stage,'observation':o,'evidence':evidence,'operator_reviewer':self.operator_reviewer,'root_review_request':pin(self.out/'requests'/('request-'+str(self.seq).zfill(4)+'.json')),'status':'ROOT_ORIGINAL_REVIEW_RECORDED_NO_PRODUCT_PASS_INFERRED'}
             write(self.out/(prefix+'.review.json'),row);self.records[stage]=row;self.stage+=1
     def finish(self,reason):
             result={'run_id':self.frozen['run_id'],'records':self.records,'gaps':self.gaps,'remaining_stages':STAGES[self.stage:],'reason':reason,

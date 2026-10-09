@@ -170,6 +170,18 @@ class Selection:
                 raise ValueError("Machine Python environment differs from the one shared manifest")
             self.runtime_environment = shared_environment
         self.required_pins: list[tuple[Path, dict]] = [(self.manifest_path, manifest_ref)]
+        self.normal_quit_automation = None
+        if "normal_quit_automation" in self.runtime:
+            automation = self.runtime["normal_quit_automation"]
+            if not isinstance(automation, dict) or set(automation) != {"helper", "matcher", "templates"}:
+                raise ValueError("Normal Quit automation requires exactly helper/matcher/templates pins")
+            self.normal_quit_automation = {}
+            for key, row in automation.items():
+                if not isinstance(row, dict):
+                    raise ValueError("Normal Quit automation requires exact file pins")
+                path = path_at(row.get("path"), base)
+                self.required_pins.append((path, row))
+                self.normal_quit_automation[key] = {**row, "path": str(path)}
         if self.prepared_path:
             self.required_pins.append((self.prepared_path, pin(self.prepared_path)))
         adapter = self.case.get('adapter')

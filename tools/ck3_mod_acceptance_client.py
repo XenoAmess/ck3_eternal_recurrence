@@ -47,6 +47,7 @@ class CaseClient:
         from ck3_mod_acceptance import path_at
         self.frozen = read_json(path_at(selection.context['frozen_argv']['path'], selection.context_path.parent))
         self.keeper = path_at(self.context['keeper_root'], selection.context_path.parent)
+        self.operator_reviewer = self.resolve_operator_reviewer()
         self._handle = None
         self._kernel = None
         self._process = None
@@ -54,6 +55,41 @@ class CaseClient:
             'run_id': self.frozen['run_id'], 'product': selection.product_key,
             'case': selection.case['id'], 'host_argv': selection.argv,
             'runtime_manifest': str(selection.manifest_path), 'business_acceptance': 'NOT_ASSESSED'})
+
+    def resolve_operator_reviewer(self):
+        """Only the Root-selected exact artifact delegates this run's UI/checkpoints."""
+        reference = self.context.get('operator_delegation')
+        if reference is None:
+            require('operator_delegation' not in self.context, 'Explicit operator delegation cannot be null')
+            return '/root'
+        from ck3_mod_acceptance import path_at, check_pin
+        require(isinstance(reference,dict), 'Exact operator delegation pin required')
+        base = self.selection.context_path.parent
+        path = path_at(reference.get('path'), base)
+        check_pin(path, reference)
+        value = read_json(path)
+        require(isinstance(value,dict) and set(value) == {'schema','run_id','screen_task','frozen_argv',
+            'delegated_by','delegate_reviewer','scopes'} and
+            value.get('schema') == 'ck3-mod-acceptance-operator-delegation-v1', 'Operator delegation contract differs')
+        require(self.context.get('reviewer') == '/root' and value['delegated_by'] == '/root' and
+            value['run_id'] == self.frozen['run_id'] == self.live.name and
+            value['screen_task'] == self.frozen.get('screen_task') and
+            isinstance(value['screen_task'],str) and value['screen_task'], 'Operator delegation crossed Root run or screen')
+        require(isinstance(value['scopes'],list) and len(value['scopes']) == 2 and
+            set(value['scopes']) == {'ui','checkpoint'}, 'Operator delegation is limited to UI/checkpoints')
+        reviewer = value['delegate_reviewer']
+        require(isinstance(reviewer,str) and reviewer.strip() == reviewer and reviewer and reviewer != '/root',
+                'Actual delegate reviewer required; never claim Root review')
+        frozen = self.context['frozen_argv']
+        frozen_path = path_at(frozen['path'],base)
+        actual = check_pin(frozen_path,frozen)
+        declared = value['frozen_argv']
+        require(isinstance(declared,dict) and path_at(declared.get('path'),base) == frozen_path,
+                'Operator delegation selected another frozen argv')
+        check_pin(frozen_path,declared)
+        require(declared['bytes'] == actual['bytes'] and declared['sha256'] == actual['sha256'],
+                'Operator delegation frozen argv pin differs')
+        return reviewer
 
     def read_report(self, allow_error=False):
         # Decode an unchanged multi-MiB report once, not once per polling tick.
@@ -243,14 +279,15 @@ class CaseClient:
 
     def root_checkpoint(self, name, request, reserve=90):
         path = self.checkpoint(name + '-awaiting', {'run_id':self.frozen['run_id'],
-            'original_hold_deadline':self._hold,'reserve_seconds':reserve, **request})
+            'original_hold_deadline':self._hold,'reserve_seconds':reserve, **request,
+            'operator_reviewer':self.operator_reviewer})
         print('CK3_ROOT_CHECKPOINT ' + str(path), flush=True)
         response = self.output / (name + '-root-result.json')
         while self.remaining() > reserve:
             self.guard(reserve)
             if response.is_file():
                 value = read_json(response)
-                require(value.get('run_id') == self.frozen['run_id'] and value.get('reviewer') == '/root', 'Root checkpoint crossed scene')
+                require(value.get('run_id') == self.frozen['run_id'] and value.get('reviewer') == self.operator_reviewer, 'Root checkpoint crossed scene')
                 return value
             time.sleep(.25)
         raise TimeoutError('Original normal Quit reserve reached; pending Root phase remains GAP')
@@ -292,21 +329,97 @@ class CaseClient:
         return namespace[node.name](report,report.get('managed_session_done') is True,
                                     {'bridge_pid':self._process['pid']} if self._process else None)
 
+    def start_normal_quit_automation(self, request, config):
+        from ck3_mod_acceptance import check_pin
+        require(self.remaining() > 0, 'Original normal Quit deadline expired')
+        for row in config.values():check_pin(Path(row['path']), row)
+        result_path = self.output/'normal-quit-automation-result.json'
+        require(not result_path.exists(), 'Normal Quit automation already consumed; never replay')
+        argv = [str(self.selection.locations['python']), '-B', '-X', 'utf8', config['helper']['path'],
+            '--repo-root', str(self.selection.locations['repo_root']),
+            '--matcher', config['matcher']['path'], '--matcher-bytes', str(config['matcher']['bytes']),
+            '--matcher-sha256', config['matcher']['sha256'],
+            '--templates', config['templates']['path'], '--templates-bytes', str(config['templates']['bytes']),
+            '--templates-sha256', config['templates']['sha256'],
+            '--live', str(self.live.resolve()), '--keeper-root', str(self.keeper.resolve()),
+            '--quit-request', str(request.resolve()), '--pid', str(self._process['pid']),
+            '--create-time', str(self._process['create_time']), '--original-deadline', str(self._hold),
+            '--output', str(self.output.resolve()), '--execute']
+        self.checkpoint('normal-quit-automation-dispatch', {'argv':argv, 'pins':config,
+            'human_review_claimed':False, 'original_hold_deadline':self._hold})
+        environment = dict(os.environ); environment.update(self.selection.runtime_environment)
+        with (self.output/'normal-quit-automation.stdout.log').open('xb') as stdout, (self.output/'normal-quit-automation.stderr.log').open('xb') as stderr:
+            return subprocess.Popen(argv, cwd=self.selection.locations['repo_root'], env=environment,
+                                    stdout=stdout, stderr=stderr)
+
+    def validate_normal_quit_automation(self, value, request, config):
+        from ck3_mod_acceptance import check_pin
+        require(isinstance(value, dict) and value.get('schema') == 'ck3.common-normal-quit-automation.v1' and
+            value.get('status') == 'GUI_QUIT_ROUTE_COMPLETE_NATIVE_PROOF_PENDING' and
+            value.get('automation_actor') == 'template-automation', 'Normal Quit automation receipt contract differs')
+        for key, expected in {'route_complete':True, 'human_review_claimed':False,
+                'autosave_unchecked_observed':True, 'final_click_completed':True, 'actual_os0_proven':False,
+                'actual_native0_proven':False, 'finish_hold_dispatched':False, 'business_pass':False}.items():
+            require(value.get(key) is expected, 'Normal Quit automation qualification differs: '+key)
+        require(value.get('run_id') == self.frozen['run_id'] and type(value.get('pid')) is int and
+            value['pid'] == self._process['pid'] and type(value.get('create_time')) in (int,float) and
+            value['create_time'] == self._process['create_time'] and type(value.get('hwnd')) is int and value['hwnd'] > 0 and
+            type(value.get('original_hold_deadline')) in (int,float) and value['original_hold_deadline'] == self._hold,
+            'Normal Quit automation crossed scene or original deadline')
+        for key, expected in {'quit_request':check_pin(request, value.get('quit_request', {})), **config}.items():
+            row = value.get(key)
+            require(isinstance(row,dict) and Path(row.get('path','')).resolve() == Path(expected['path']).resolve(),
+                    'Normal Quit automation source path differs: '+key)
+            require(row.get('bytes') == expected['bytes'] and row.get('sha256') == expected['sha256'],
+                    'Normal Quit automation source pin differs: '+key)
+            check_pin(Path(row['path']),row)
+        require(isinstance(value.get('steps'),list) and value['steps'] and
+            isinstance(value.get('evidence'),list) and value['evidence'], 'Original GUI route evidence required')
+        for row in value['evidence']:check_pin(Path(row['path']),row)
+        final = value.get('final_click')
+        require(isinstance(final,dict) and final in value['evidence'], 'Canonical final mapped click receipt required')
+        check_pin(Path(final['path']),final)
+        mapped = read_json(final['path'])
+        require(mapped.get('click_completed') is True and isinstance(mapped.get('failures'),list) and
+                set(mapped['failures']) <= {'foreground_changed_after_click'},
+                'Canonical final mapped click failed')
+        final_steps = [row for row in value['steps'] if row.get('final') is True]
+        require(len(final_steps) == 1 and final_steps[0].get('mapping_receipt') == final and
+                final_steps[0].get('click_completed') is True, 'Final route step differs from canonical receipt')
+        return value
+
     def normal_close(self, disposition):
-        """Request Root GUI Quit, then prove retained OS0 and shared native0."""
+        """Request normal GUI Quit, then prove retained OS0 and shared native0."""
         import ctypes
         require(self._handle is not None, 'No retained game handle; never manufacture OS exit')
         request=self.checkpoint('normal-quit-awaiting',{'run_id':self.frozen['run_id'],'reviewer':'/root',
             'pid':self._process['pid'],'create_time':self._process['create_time'],
             'original_hold_deadline':self._hold,'disposition':disposition,
+            'live':str(self.live.resolve()),'keeper_root':str(self.keeper.resolve()),'screen_task':self.frozen['screen_task'],
             'action':'Root normal GUI Quit to desktop; preserve actual images and autosave state',
             'host_error_preserved':self.read_report(allow_error=True).get('error')})
         print('CK3_ROOT_CHECKPOINT '+str(request),flush=True)
         response=self.output/'normal-quit-root-result.json'
-        while self.remaining()>0 and not response.is_file():
-            report=self.read_report(allow_error=True)
-            time.sleep(.1)
-        review=read_json(response) if response.is_file() else None
+        config = getattr(self.selection, 'normal_quit_automation', None)
+        automation = None
+        report=self.read_report(allow_error=True)
+        if config is not None:
+            process = self.start_normal_quit_automation(request, config)
+            while self.remaining()>0 and process.poll() is None:
+                report=self.read_report(allow_error=True)
+                time.sleep(.1)
+            exit_code = process.poll()
+            self.checkpoint('normal-quit-automation-process', {'exit_code':exit_code,
+                'original_hold_deadline':self._hold, 'human_review_claimed':False})
+            if exit_code is not None:
+                require(exit_code == 0, 'Normal Quit automation failed; inspect preserved route without replay')
+                automation = self.validate_normal_quit_automation(
+                    read_json(self.output/'normal-quit-automation-result.json'), request, config)
+        else:
+            while self.remaining()>0 and not response.is_file():
+                report=self.read_report(allow_error=True)
+                time.sleep(.1)
+        review=read_json(response) if config is None and response.is_file() else None
         if review is not None:
             require(review.get('run_id')==self.frozen['run_id'] and review.get('reviewer')=='/root' and
                     review.get('normal_gui_quit') is True,'Normal Quit Root review is missing or crossed scene')
@@ -335,11 +448,12 @@ class CaseClient:
             report=self.read_report(allow_error=True)
             if report.get('finished_at'):break
             time.sleep(.1)
-        result={'root_normal_gui_review':review,'retained_handle':retained,'native_zero_proof':proof,
+        result={'root_normal_gui_review':review,'normal_quit_automation':automation,
+            'retained_handle':retained,'native_zero_proof':proof,
             'finish_hold_rows':finished,'host_finished_at':report.get('finished_at'),
             'managed_thread_finished':report.get('managed_session_thread_finished'),
             'cleanup_ok':report.get('cleanup_ok'),'host_error':report.get('error'),
-            'normal_close_qualified':bool(review and os0 and proof is not None and report.get('finished_at') and
+            'normal_close_qualified':bool((review or automation) and os0 and proof is not None and report.get('finished_at') and
                 report.get('managed_session_thread_finished') is True and report.get('cleanup_ok') is True and not report.get('error'))}
         self.checkpoint('normal-close-result',result)
         return result

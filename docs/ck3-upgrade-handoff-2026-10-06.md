@@ -1,5 +1,30 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 公共操作接点已采用，下一场验证
+
+当前新场选择 **Source10 / FINAL11 / bound13**，仍为同一 d1d4 native。bound13 仅增加公共正常退出 helper、matcher 与本机模板包三 pins，见[公共正常退出与实际操作者合同](ck3-mod-acceptance-operator-quit.md)。公共退出、明确委派与 mailbox 共17项定向检查实际 PASS；尚未授自动退出/新委派实机或产品 PASS。QOL 两条已有 typed 导航接线、RMTM threshold 所用工具声明与 CI 缺失 psutil 修复已采用。下方 bound12 与“client在准备”等为先前截止，既有 prepare 仍绑定同一 FINAL11，可按原输入资格选择新机器映射。
+
+正式发布保持 **7/10（70%）**。下一场先用 QOL 原 prison_payment 用例验证公共正常退出；随后继续其他原用例与 UI25，RMTM、361 顺序保持。原 R37/UI0/25、entry2 和未资格正常退出不改。发布前业务、公开 Notes、真实下载缓存两项与永久 changelog 门保持。
+
+## 2026-10-10 当前续办：正式7/10，R37闭场与并行接点
+
+本机为 CK3 **1.20.0.4 / build25734779**，公共产品底座仍为 **Source10 / FINAL11 / bound12**。TED 1.0.1 的正式发布、完整公开 Notes、真实下载缓存加载、正常退出和永久记录已经普通提交推送 `a767bd`，正式迁移进度为 **7/10（70%）**；剩余 QOL、RMTM、361，361 仍为玩家产品最后。见 [TED 永久 changelog](release-changelogs/tributary-expansion-directives/1.0.1.md)。下方10月9日及更早段落的“当前”“6/10”“TED待发布”等保留各自历史截止，不作为本段后继状态。
+
+**QOL R37/a137 已关闭，未授产品通过。** 原入口 session63075 实际 exit2；readonly9 单元实际 PASS（初始13步及GUI后2个snapshot步骤），但 [UI25原记录](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0037/case-output/ui25/actual-same-live-records.json)为 `records={}`、25项全 remaining，原退出预留期限留下 GAP。[normal-close原结果](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0037/case-output/normal-close-result.json)保留 `root_normal_gui_review=NULL`、`actual_retained_os0=false`、`normal_close_qualified=false`。host 于 **2026-10-09 17:15:16.609127 UTC（Oct10 01:15:16 CST）** GREEN/thread/cleanup结束、PID10804树已消失，只证明生命周期收尾，见 [薄盘点](C:/workspace/ck3-upgrade-20261006/resume-root-01/a137-final-inventory-01.json)。原keeper23244实际0/failure NULL/last7843后，[CAS7844](C:/workspace/ck3-upgrade-20261006/resume-root-01/a137-screen-release-01.json)实际 done/resources=[]，不由host GREEN补正常退出或UI信用。
+
+Root 直接观测两次工具操作之间 **16:46:52→17:26:50 UTC，共39分58秒** 的平台等待间隔，原因未证实。后续减少由Root平台排队占用原场预算：公共正常Quit自动接点与单一实际GUI操作者委派并行准备，保留原业务合同、原场期限和独立OS/native退出证据；目前没有新委派或新场实机资格。
+
+| 并行 lane / owner | 当前可消费入口与实际状态 | 后继边界 |
+| --- | --- | --- |
+| 公共client / shared12004_python_host；GUI route / resource_recovery | [实际操作者边界卡](C:/workspace/ck3-upgrade-20261010/common-operator-latency-real-r37-01/ROOT-DELEGATED-GUI-OPERATOR-MINIMAL-BOUNDARY-01.md)、[共用Quit helper卡](C:/workspace/ck3-upgrade-20261010/common-operator-latency-real-r37-01/ROOT-NORMAL-QUIT-AUTOMATION-ROUTE-RESOURCE-01.md)。helper已完成compile/help和纯binding检查，client三pin opt-in/单次调用接点在准备。 | 未执行新GUI自动链；automation记录自身身份，不声称Root亲审，原OS0/native0/thread/cleanup门保持。 |
+| GUI Controller/mailbox / ccc；Root负责明确授权 | 实际reviewer补丁已由Root采用到当前施工树；Root拟将下一场唯一GUI custody明确委派ccc以减少排队。 | 本截止尚未实际委派/启动；原25项与原图/sequence/实际reviewer证据不减少，不复制Root身份。 |
+| QOL / qol12004_continuous_prepare | [已有typed两路卡](C:/workspace/ck3-upgrade-20261010/qol-ui-existing-typed-navigation-01/ROOT-EXISTING-TYPED-NAVIGATION-01.md)：`center-title`、`title-own-laws`接现有公共工具；4项定向测试及apply-check通过，Root已采用接线。 | 主树已采用、尚无新场导航信用；实际ID须来自本场成功结果，原UI25/候选榜/tooltip合同保持。 |
+| RMTM / rmtm_ted12004_prepare | [Source10消费卡](C:/workspace/ck3-upgrade-20261010/rmtm-source10-consume-01/ROOT-RMTM-SOURCE10-CONSUME-01.md)提供core与threshold后继输入，使用共同bound12；Root随后实际prepare两项均exit0。 | 原36、真实死亡/继任/忠诚和14日合同不变；prepare或输入备妥不授业务PASS。 |
+| G2 / native及source owner | [最小资格卡](C:/workspace/ck3-upgrade-20261010/g2-runtime-minimal-qualification-01/ROOT-G2-MINIMAL-LIVE-QUALIFICATION-01.md)复用Native08 BUILD_ONLY，列出真实有/无停战target的点查询与现存入口缺口。 | 未分配/运行，不换产品d1d4 DLL，不授G2 live或里程碑。 |
+| 官方CI / local12004_runtime_build | 精确 `9c8f2986b115c7e1c4d7cf807d60802f5eb8e7bc` 的实际失败为静态venv缺 `psutil`；Root已采用必要依赖修复到当前施工树。 | 尚待本工作包提交后实际官方CI，不以修复采用或本机49项测试PASS代官方成功。 |
+
+R37退出后，Root核对registry内容hash相同，再对该目标 `git add` 刷新索引，status clean；随后rebase origin/master无冲突，本机49项针对性测试PASS（3.058s），普通push **`9c8f2986b115c7e1c4d7cf807d60802f5eb8e7bc`** 成功。旧stat假dirty记录、49远端提交、原失败及冻结输入保留。新场仍经公共六模式入口；缓存永久只核真实SDK下载exact formal与CK3实际加载/正常收尾，不重跑缓存业务。Root独占Git和发布，GUI操作方只能在明确授予唯一custody后执行。
+
 ## 2026-10-09 当前续办增量
 
 本机继续使用 CK3 1.20.0.4 / build25734779。统一验收底座已推进至 Source10 / FINAL11 / bound12；下方 Source09、Source08、private host 和旧 pending 仅保留历史，当前操作从[统一入口专题](ck3-mod-upgrade-fast-validation.md)选择同一 runtime。
