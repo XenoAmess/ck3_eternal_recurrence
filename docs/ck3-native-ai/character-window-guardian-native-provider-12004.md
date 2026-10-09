@@ -1,8 +1,9 @@
 # CharacterWindow guardian provider: actual4 controller entry
 
 2026-10-09 / W41. The fixed typed-window observer is now **static-ready**
-for CK3 1.20.0.4 / Steam build25734779. CharacterWindow/GetCharacter and
-guardian relation observation remain research.
+for CK3 1.20.0.4 / Steam build25734779. Native54's private CharacterWindow
+identity observer is also static-ready after the offline qualification
+below. The callable GetCharacter wrapper and guardian relation remain research.
 The frozen image identity is inherited from Root:
 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
 This documentation update performs no image read/hash, Game/SDK operation,
@@ -420,8 +421,9 @@ full-ID resolution. They all retain the existing reciprocal spouse pair
 and a complete empty child roster. One registered query/Service method
 consumes those five originals and one copy of the new success packet with
 only the optional identity leaf removed. No old producer or GREEN test is
-replayed. These sources and the precise FIRST recipe are **not run** in
-this lane; there is no new static qualification, live, guardian or G2 credit.
+replayed. Root subsequently qualified this exact five-whole/six-scene
+contract offline as Native54; the actual result and original harness
+failure are recorded below. There is no new live, guardian or G2 credit.
 
 The future implementation seam is already localized: the existing
 `ingame_ui_navigation_v1.cpp` ResolveHandler/RTTI helper supplies admitted
@@ -456,15 +458,82 @@ flowchart TD
   F --> Q[Actual ctor caller stores CharacterWindow at owner+D8]
   Q -. factory owner static class unjoined .-> R[Legal handler slot8 candidate]
   R --> D[Authored exact CharacterWindow RTTI and C8 full-ID reader]
-  D -. unique offline FIRST and future paused readback unrun .-> O[Same-query current-window subject]
+  D --> Q54[Native54 unique offline5whole and Service6 GREEN]
+  Q54 -. future paused candidate readback unrun .-> O[Same-query current-window subject]
   O -. GetCharacter wrapper ABI unclosed .-> C[CharacterWindow.GetCharacter full ID]
   C -. guardian kind and directional collection unclosed .-> H[Existing child query guardian input]
 ```
 
-The implementation and unique FIRST packet are under
+The fixed typed-window implementation and its unique FIRST packet are under
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/runtime51-child-typed-windows-preparation/`.
 The earlier optional raw-surface research plan is superseded by this private
 same-query observer. No unclosed Character or relation callback is invoked.
+Native54's separate identity FIRST contract is under
+`guardian-character-controller-source/character-identity-native54/`.
+
+## Native54 actual offline qualification
+
+Root compiled and qualified the identity observer from the full frozen
+tree `Z:/gbs-runtime54-character-root-source` at
+`ff5f919f34033088a6151cbe9c1f607b9c597d9b`. Author commit
+`282f9da31b6760b260abe23bdc9cfe3805288112` and later documentation
+adoptions remain separate source provenance; retained production objects
+are not relabelled as compiled from the new head.
+
+Only Bridge `bridge.cpp`, `ingame_ui_navigation_v1.cpp` and
+`current_first_heir_relationship_v1.cpp`, plus the existing descendant
+fixture, were compiled. All four compiles and both DLL/fixture links passed
+in attempt01. Native54 retains736 owners:299 Bridge,436 Runtime and1
+Protocol, with3 Bridge replacements and733 retained owners. Runtime uses
+the actual53 archive and its existing mixed-source lineage unchanged;
+there is no new Runtime compile, archive, protocol or production TU.
+
+Attempt01's native FIRST stopped after approximately0.22329 seconds,
+before emitting any packet, because the executor manually transcribed the
+unsupported flag `--character-window-full-id-wire-dir`. The author
+contract and C++ already required
+`--child-character-window-identity-wire-dir`. This is **harness RED**,
+with consumer NOTRUN. The original
+`Z:/g2-native54-build01/attempt01/ROOT-NATIVE54-RESULT.json` and
+`logs/native-FIRST.log` remain preserved. The additive diagnosis is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/runtime54-character-preparation/ROOT-ATTEMPT01-HARNESS-RED.json`.
+
+Root's attempt02 reused the four compiled objects, DLL and fixture
+executable. It performed zero compile, link or archive operations and
+ran only the corrected new native FIRST and sole registered consumer:
+
+| Actual selected stage | Result and UTC timing |
+| --- | --- |
+| Five new native whole packets | GREEN,0.0693723s;2026-10-09T14:13:19.728825Z to14:13:19.798195Z. |
+| Sole registered query/Service compound, six scenes | GREEN,10.7538225s;14:13:19.798941Z to14:13:30.552756Z. |
+
+Actual receipts are
+`Z:/g2-native54-build01/attempt02/ROOT-NATIVE54-RESULT.json`,
+`logs/native-FIRST.json` and `logs/consumer-FIRST.json`.
+The five original packets are in `attempt02/first/native-wires/`; the
+Service result is `attempt02/first/consumer/RESULT.json`.
+All five execute the shared production candidate/type/full-ID reader;
+the sixth removes only the optional leaf from the new successful packet.
+The consumer preserves zero-child whole-frame semantics and confirms
+zero submit, action ACK, action and day advance. Existing GREENs are reused.
+
+Root sealed
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix54/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`
+and its `ROOT-CHARACTER-WINDOW-FULL-ID-QUALIFICATION.json`.
+The new `attempt01/binaries/xar_ck3_bridge.dll` is13517312 bytes with
+Root-recorded SHA-256
+`7b368bb893b49a9de3995257b630b5dd22f8f8ab653b728855cb7310bb2ca9b1`.
+The outer `manifest.json` is2731 bytes, SHA-256
+`1b2cf2f7c9b77c828f1e75a61b8e183f158d502012ef25166d7e4a0ab4a49c1a`.
+These hashes are inherited from Root's once-only sealer; this documentation
+update performs no hash or qualification replay.
+
+The identity leaf is now **static-ready**. No Native54 Game/SDK deployment
+or paused live read occurred. The factory-owner class, actual live slot8
+candidate, callable GetCharacter wrapper, actual-child guardian collection
+and selected educator remain unclosed. Native51's prior fixed seven-slot
+live evidence is retained independently. Native54 adds no action, full
+guardian, birth, education, succession, full AST or G2 credit.
 
 ## Guardian dependency after the window provider
 
@@ -495,16 +564,17 @@ flowchart TD
   H -. full actual-child peer coverage unclosed .-> O[Existing query-private child sidecar]
 ```
 
-The production Character-window observation seam currently implements Army
-only despite its broader advertised API. Repeating its known expected
-failure would not resolve the native provider. The separate ScriptedRelation
-factory, canonical guardian key, two-Character argument direction and
-complete guardian collection remain required after GetCharacter closes;
-see [the relation provider topic](scripted-relation-provider-12004.md).
+The preexisting generic Character-window GUI route implements Army.
+Native54's qualified child-query identity leaf uses the private collector
+described above. The ScriptedRelation factory, canonical guardian key,
+two-Character argument direction and complete actual-child guardian
+collection remain required; see [the relation provider topic](scripted-relation-provider-12004.md)
+and [the actual installed named consumer](guardian-relation-character-binding-12004.md).
 
 The fixed typed-window observer is a `production-live primitive`.
-CharacterWindow/GetCharacter and the guardian/educator provider remain
-`research`. There is no new guardian/educator observation, action, full
+Native54's private identity leaf is `static-ready`; the callable GetCharacter
+wrapper and guardian/educator provider remain `research`.
+There is no new guardian/educator observation, action, full
 AST, child/education/birth/succession or G2 credit. This documentation lane
 performs no Game/SDK or process action, fixture/FIRST replay, build or hash.
 Existing failures and the separate parent live evidence remain unchanged.
