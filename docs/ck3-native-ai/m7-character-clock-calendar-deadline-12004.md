@@ -45,18 +45,23 @@ flowchart TD
   C[Full CharacterID and kind4 callback225DFE0] --> G[Getter1D671E0 selects GameData68 context]
   G --> R[Existing raw9 clock28 and scalar expiry0C]
   R --> N[Native signed32 remaining and counter deadline]
-  G -. exact owner and per-item receiver missing .-> P[Character context scheduling caller]
+  G -. observe current pointer membership .-> M[Same-query context identity match]
   TM[Actual ScriptVariableManager UpdateTurnTick] --> E[GameData98 element range worker2AA4ED0]
   E --> CB[Actual callable2AA5060]
   CB --> CW[Actual row worker2AA4010]
-  CW -. same Character context and update not yet closed .-> P
-  P -. invocation cadence and daily ordering missing .-> U[Updater37275E0 increments clock28]
-  U --> R
+  CW --> U[Actual nonempty scalar tail expiry nonnegative]
+  U --> INC[Inline clock28 increment at2AA4090]
+  CW --> B[Actual bucket pointer arrays]
+  B --> M
+  M -. current actor read not implemented .-> EL[Current context membership and scalar-tail eligibility]
   D[Actual4 selected calendar writer raw32 plus24] --> I[Native day index D]
   I --> K[Existing actual4 day/month table converter]
   K --> F[Full CDate storage packing]
+  D --> O[Actual118B month/year notification joins]
+  O --> TM
   N -. calendar relation to D missing .-> X[Calendar retry conversion]
-  P -. next necessary source edge .-> X
+  EL -. minimum current read input .-> X
+  INC -. normalization and absolute conversion remain distinct .-> X
   X -. source closure required .-> Q[Existing retry_date_raw on same realm-law query]
   Q --> T[Fresh native final terms at scheduled retry]
 ```
@@ -168,7 +173,8 @@ The held actual runtime fragment for that emitted callee is precisely
 `2AA4AE0..2AA4ED0`,1008 bytes, ordinal146968. The next
 [Root-only recipe](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/ROOT-VARIABLE-TURNTICK1008-ARGV.json)
 selects only this named task entry, cache first, maximum1008 bytes/one read.
-It is SOURCE_NOTRUN. Its actual row/worker operands must establish the
+It was SOURCE_NOTRUN when prepared; Root's execution is recorded below.
+Its actual row/worker operands must establish the
 Character collection and clock update; `GameData+98` alone is not renamed
 Character and no relation to `GameData+68` is assumed. No unrelated generic
 scheduler callee is selected.
@@ -191,7 +197,8 @@ worker rather than an inferred virtual callback.
 The target has no runtime-function row; the next held row begins at
 `2AA50C0`. The [sole next recipe](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/ROOT-TURNTICK-LEAF96-ARGV.json)
 selects that finite96-byte intervening region, cache first, and does not call
-it a96-byte logical whole function. It remains SOURCE_NOTRUN. The published
+it a96-byte logical whole function. It was SOURCE_NOTRUN at preparation;
+Root's execution is recorded below. The published
 source pin and both unique cached decodes are
 [VARIABLE-TURNTICK-CALLEE1008-DECODE.json](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/VARIABLE-TURNTICK-CALLEE1008-DECODE.json),
 [VARIABLE-TURNTICK-ELEMENT385-DECODE.json](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/VARIABLE-TURNTICK-ELEMENT385-DECODE.json)
@@ -228,7 +235,7 @@ source path is:
 
 | Actual instruction | Input and effect |
 | --- | --- |
-| `2AA4070..2AA408E` | Scalar count must be nonzero and the last20-byte row's expiry0C must be nonnegative. |
+| `2AA4070..2AA408E` | Scalar count must be nonzero and the last0x20-byte row's expiry0C must be nonnegative. |
 | `2AA4090` | Increment this exact full context's clock28 once. |
 | `2AA4094..2AA40A4` | Compare updated clock with that last scalar expiry. |
 | `2AA40A6..2AA40AA` | If due, pass the same context+8 to the already named normalizer887360. |
@@ -259,11 +266,87 @@ dates is an alternative interval observation; no game query is performed.
 Normalization of other due rows must retain its real source meaning; neither
 an authored20-year constant nor a task label substitutes for these inputs.
 
+## Actual calendar-to-task order closure
+
+Root completed that118-byte gap once: `22A0F05..22A0F7B`, one frozen-image
+read,0.6742582s. Its [actual result](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/root-calendar-order-first01/CALENDAR-TO-TURNTICK-ORDER118.json)
+and [sole cached decode](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/CALENDAR-TO-TURNTICK-ORDER118-DECODE.json)
+complete the previously missing control-flow bridge. No end window was
+decoded again.
+
+Actual `22A0F47` skips the month notification to already held `22A0FC7`;
+`22A0F69` and `22A0F78` skip optional logging to already held `22A0FB3`.
+The successful logging fallthrough is the already held `22A0F7B`. All these
+paths then reach `22A0FFD`, followed by the embedded global+C8 update and
+the real variable-manager task. This bridge has no branch bypassing that
+task and no second date write. It therefore closes the order on the selected
+native rawdate+24 path: date write, optional month/year notification and
+logging, then `UpdateTurnTick`. It does not establish every possible caller
+of that path, or an absolute Character deadline formula.
+
+## Minimum same-query membership and eligibility observer
+
+The next implementation is a read-only input on the existing
+`query-realm-law-final-terms-v1-private`, not a new scheduling action. The
+existing `crown_authority_cooldown` nine-field leaf remains intact. A private
+companion leaf named `crown_authority_cooldown_turn_tick` can carry the real
+current-context scheduling input. The full implementation and first-run
+contract is frozen in [SAME-QUERY-OBSERVER-IMPLEMENTATION-CONTRACT.md](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261009/m7-calendar-deadline48/SAME-QUERY-OBSERVER-IMPLEMENTATION-CONTRACT.md).
+
+Resolve the same full played CharacterID with the existing kind4 target and
+native `variable_context` callback once, retaining the exact pointer used
+for the raw cooldown read. Read GameData through the already qualified
+actual4 slot `5C68C50` and GameState+A0. Its embedded+98 container has data
+at+0 and signed count+C; each selected bucket has the same pointer-array
+data/count layout. Compare each nonnull full-context pointer with that
+retained pointer. The comparison is pointer identity within this one paused
+mailbox capture; no pointer is serialized and no bucket is presumed to be
+the Character collection merely because its layout matches.
+
+Read the current context's scalar count+1C, rows+10 and last row expiry
+`rows + (count-1)*0x20 + 0x0C`. Count zero is a legitimate false eligibility
+result without reading a row. For a nonempty readable scalar array, expiry
+>=0 is exactly the source branch that reaches `2AA4090`. An untimed last
+row is a legitimate false result even if another matching row exists.
+Record `manager_contains_context` and `scalar_tail_allows_tick` independently;
+their conjunction is `context_takes_tick_branch`. Do not substitute the
+queried cooldown row's own timed flag, maintenance slot+48, pending flag+4E
+or an arbitrary current actor for either input. Valid empty collections and
+no pointer match produce knownfalse; a read failure produces an unavailable
+result with a concrete reason, preserving the raw9 independently.
+
+The implementation should keep `RealmLawReadback12002`, the existing
+`Observation` and public Snapshot layouts unchanged. A dedicated private
+sidecar is local to the actual4 mailbox owner. A private capture/serializer
+overload carries it through the existing mailbox; legacy entry signatures
+and the old nine-field normalizer remain available. The concrete owning
+source seams are `crown_authority_cooldown_observer_12004.cpp`,
+`ck3_12002_realm_law.cpp` and `ck3_12002_realm_law_mailbox.cpp`, with the
+existing private Python realm-law transport retaining the new known input.
+No dependency count or incremental build qualification is invented before
+those source changes exist.
+
+The unique next FIRST contract consumes whole law wires from the real new
+reader, using fixture-owned GameState, GameData, bucket and full-context
+arrays. It covers a late exact pointer match, legitimate empty/absent
+membership, scalar count zero, an untimed tail, and an actual memory-read
+failure independent of the raw cooldown result. Registered consumption
+must retain the source values while leaving calendar deadline readiness
+false. Previous raw9 GREEN scenes are retained rather than replayed. This
+contract is SOURCE_NOTRUN: no observer implementation, compiled fixture,
+consumer run or live membership observation is claimed here.
+
 ## Execution and readiness
 
-This increment reads source and existing metadata only. Game, SDK, pipe,
-UI, process, runtime prepare/rebind, EXE/bin reads, hashes, builds, project
-imports and tests are all0. Previous raw9 and pure-clock GREEN qualifications
+Worker execution reads source, cached JSON instructions and existing metadata
+only. Worker Game, SDK, pipe, UI, process, runtime prepare/rebind, EXE/bin
+reads, hashes, builds, project imports and tests are all0. Root's source
+captures are distinct:71144491 physical frozen-image bytes/ten reads in
+4.9941309s, comprising one71141888-byte locator read and2603 retained small
+source bytes. These are physical read costs, not unique image coverage;
+small code captures overlap the earlier unpersisted locator buffer. Root
+source costs are counted once, not again for cached JSON decoding.
+Previous raw9 and pure-clock GREEN qualifications
 are reused without a replay. No CA material, guessed20-year countdown,
 flag-set parser factor or constructor default is used as calendar evidence.
 
