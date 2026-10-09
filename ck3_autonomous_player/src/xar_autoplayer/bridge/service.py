@@ -4874,7 +4874,8 @@ class GameplayBridgeService:
         """Read CK3's exact termination contexts for one active WarID."""
         step = query_war_termination_options_step(war_id)
         result = self._execute_typed_war_step(
-            step, expected_revision=expected_revision
+            step, expected_revision=expected_revision,
+            include_native_command_history=False,
         )
         options = result.get("war_termination_options")
         if not isinstance(options, dict) or options.get("war_id") != war_id:
@@ -15125,13 +15126,16 @@ class GameplayBridgeService:
         }
 
     def _execute_typed_war_step(
-        self, step: str, *, expected_revision: int | None
+        self, step: str, *, expected_revision: int | None,
+        include_native_command_history: bool = True,
     ) -> dict[str, object]:
         if step not in action_step_set(self.capabilities()):
             raise UnsupportedStepError(
                 f"selected backend does not implement native war step {step}"
             )
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(
+            include_native_command_history=include_native_command_history,
+        )
         selected_revision = (
             expected_revision
             if expected_revision is not None
