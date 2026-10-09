@@ -394,4 +394,80 @@ class Focused(unittest.TestCase):
             self.assertEqual(closure['run_id'],'synthetic-R0000')
             self.assertEqual(closure['machine'],binding)
 
+class FailedLaunchPredecessor(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.previous=Path(self.temp.name)/'previous';self.previous.mkdir()
+        self.state=Path(self.temp.name)/'played-state';(self.state/'control').mkdir(parents=True)
+        self.freeze={'run_id':'synthetic-R0041','state_dir':str(self.state)}
+        self.report={'status':'RED','finished_at':'actual','managed_session_thread_finished':True,
+            'cleanup_ok':False,'steps':[],'state_dir':str(self.state),'session':{'report':None,
+            'error':'AgentError: native-session failed after 601.543s (launch_error): '
+                    'CK3 launch contract failed safely: saved startup Setup completion marker missed the original readiness deadline'}}
+        self.started={'run_id':self.freeze['run_id'],'pid':71,'actual_popen_retained':True}
+        self.exited={'run_id':self.freeze['run_id'],'pid':71,'returncode':1,
+            'actual_original_popen_wait':True,'normal_ck3_exit_inferred':False}
+        self.save()
+
+    def save(self):
+        for name,value in (('native-report.json',self.report),('host-started.json',self.started),
+                           ('host-original-process-exit.json',self.exited)):
+            (self.previous/name).write_text(json.dumps(value),encoding='utf-8')
+
+    def check(self):
+        self.save()
+        return allocation.previous_session_closure(self.previous,self.freeze,self.report)
+
+    def test_safe_failed_launch_has_separate_credit_without_changing_original_red(self):
+        # The early-start receipt is historical and is allowed to remain.
+        (self.state/'control/ck3.synthetic.watchdog_start.json').write_text('{}')
+        result=self.check()
+        self.assertEqual(result['mode'],'previous-shared-failed-launch')
+        proof=result['failure_cleanup']
+        self.assertFalse(proof['original_cleanup_ok'])
+        self.assertIsNone(proof['original_ck3_exit_code'])
+        self.assertIsNone(proof['original_job_active_processes_final'])
+        self.assertFalse(proof['typed_normal_exit_proven'])
+        self.assertFalse(proof['business_pass'])
+        self.assertEqual(proof['report'],entry.pin(self.previous/'native-report.json'))
+        self.assertFalse(allocation.closed_session(self.report))
+        self.assertIsNone(self.report['session']['report'])
+
+    def test_unsafe_pid_or_ready_marker_still_blocks(self):
+        for name in ('unsafe-cleanup.json','ck3.json','watchdog-synthetic.ready.json'):
+            with self.subTest(marker=name):
+                path=self.state/'control'/name;path.write_text('{}')
+                with self.assertRaisesRegex(ValueError,'controls remain'):self.check()
+                path.unlink()
+
+    def test_nonterminal_or_executed_case_cannot_use_failed_launch_route(self):
+        original=copy.deepcopy(self.report)
+        changes=({'finished_at':None},{'managed_session_thread_finished':False},
+                 {'steps':[{'ok':False}]},{'readiness':{'ready':True}},{'cleanup_ok':None})
+        for changeset in changes:
+            with self.subTest(changes=changeset):
+                self.report={**copy.deepcopy(original),**changeset}
+                with self.assertRaisesRegex(ValueError,'exact safe failed launch'):self.check()
+        self.report=original
+        self.report['session']['error']=self.report['session']['error'].replace('launch_error','readiness_timeout')
+        with self.assertRaisesRegex(ValueError,'exact safe failed launch'):self.check()
+
+    def test_original_host_wait_and_run_pid_binding_are_required(self):
+        original=copy.deepcopy(self.exited)
+        for change in ({'returncode':0},{'returncode':True},{'actual_original_popen_wait':False},
+                       {'run_id':'other'},{'pid':72}):
+            with self.subTest(change=change):
+                self.exited={**original,**change}
+                with self.assertRaisesRegex(ValueError,'original host Popen failure'):self.check()
+
+    def test_current_control_state_cannot_come_from_another_profile(self):
+        self.report['state_dir']=str(self.state.parent/'unrelated-state')
+        with self.assertRaisesRegex(ValueError,'state differs'):self.check()
+
+    def test_returned_native_session_with_incomplete_cleanup_never_falls_back(self):
+        self.report['session']['report']={'finished_at':'actual','shutdown':{'ok':False}}
+        with self.assertRaisesRegex(ValueError,'exact safe failed launch'):self.check()
+        self.report['cleanup_ok']=True
+        with self.assertRaisesRegex(ValueError,'no OS0 inference'):self.check()
+
 if __name__=='__main__':unittest.main()
