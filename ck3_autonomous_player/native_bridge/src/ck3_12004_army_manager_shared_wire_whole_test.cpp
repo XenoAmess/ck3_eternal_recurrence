@@ -89,11 +89,13 @@ struct Registry {
   }
 };
 
-constexpr std::uint32_t kArmyA = 0xAB000001U, kArmyB = 0xE7000002U;
+// Typed strength IDs are non-negative int32 handles. Keep their generation
+// bits and independent public CUnit identities without setting the sign bit.
+constexpr std::uint32_t kArmyA = 0x2B000001U, kArmyB = 0x67000002U;
 constexpr std::uint32_t kCharacterA = 0xFE000003U, kCharacterB = 0x88000004U;
 constexpr std::uint32_t kCombat = 0xD1000005U;
-constexpr std::uint32_t kArRgA = 0xB9000006U, kArRgB = 0xC0000007U;
-constexpr std::int32_t kUnitA = 11, kUnitB = 12;
+constexpr std::uint32_t kArRgA = 0x39000006U, kArRgB = 0x40000007U;
+constexpr std::int32_t kUnitA = 0x6B00000B, kUnitB = 0x7700000C;
 constexpr std::array<std::uint32_t, 5> kOriginalRoster{
     kArmyA, kArmyB, kArmyA, kArmyB, kArmyA};
 
@@ -148,7 +150,7 @@ struct Fixture {
         {kArmyA, kArmyB, kArmyA, kArmyB, kArmyA});
     Ids(static_cast<std::byte *>(army_manager) + 0x68, {kArmyB, kArmyB});
     // Complete physical pending image, including an unrelated full ID and
-    // repeated high-bit ArRg references; no filtering by the requested Army.
+    // repeated full ArRg references; no filtering by the requested Army.
     memory.Put(army_manager, 0x138, pending_entries);
     memory.Put(army_manager, 0x140, std::int32_t{2});
     memory.Put(army_manager, 0x144, std::int32_t{3});
@@ -273,6 +275,9 @@ struct Fixture {
     for (std::size_t index = 0; index < result.rows.size(); ++index) {
       const auto &row = result.rows[index];
       Check(row.available && row.army_id == (index == 0 ? kUnitA : kUnitB) &&
+                row.native_carmy_id_observable &&
+                row.native_carmy_id == static_cast<std::int32_t>(index == 0 ? kArmyA : kArmyB) &&
+                row.native_carmy_id != row.army_id &&
                 row.current_soldiers == (index == 0 ? 20 : 30) &&
                 row.maximum_soldiers == (index == 0 ? 40 : 60) &&
                 row.regiment_count == 1 &&
@@ -331,7 +336,7 @@ void RequireComplete(const Capture &capture) {
         "full ordered ArmyManager roster was cropped");
   for (std::size_t index = 0; index < kOriginalRoster.size(); ++index)
     Check(roster.occurrences[index].raw_full_id_u32 == kOriginalRoster[index],
-          "high-bit full IDs, repeats or native order changed");
+          "full generation IDs, repeats or native order changed");
   const auto &pending = row.current_pre_date_pending_update_inputs_v1->pending_table_frame_v1;
   Check(pending && pending->ready && pending->records.size() == 5 &&
             pending->records[2].key_raw_full_id_u32 == std::uint32_t{0xF1000008U} &&
