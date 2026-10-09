@@ -87,21 +87,57 @@ JSONs and four named-role packets contain no exact `GetRelationsOfType`,
 claim about every cache. Existing generic type-ID/name resolvers do not
 identify the owner/member registration.
 
-The next Root-only source recipe is
+Root subsequently executed the single-target source recipe
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/guardian-character-controller-source/guardian-collection-textrefs62/ROOT-TEXTREFS-ARGV.json`.
-It targets only actual literal`0x451C558` in one frozen `.text` buffer,
-finding common LEA/MOV RIP operands and checking their instruction boundary
-from the held pdata owner. It retains the owner prefix and at most295 bytes
-around each actual reference, including callback-like operands and direct
-calls, then discards the full buffer. It performs no repeated `.rdata`
-capture, whole-text decode, arbitrary registry traversal or unnamed
-Character-helper expansion. This next recipe is **SOURCE_NOTRUN**.
+At2026-10-09T14:33:33.516878Z the locator began, finishing14:33:34.626939Z.
+It read71141888 frozen `.text` bytes once in0.0142385 seconds, targeting
+only actual literal`0x451C558`. The result has **zero aligned references
+and zero unresolved byte candidates**. The tested encoding is specifically
+LEA/MOV register,[RIP+disp32] with optional REX; this is not proof that
+every encoding or data-driven registration lacks a reference. No whole
+text buffer was persisted or decoded; `.rdata`, `.data`, old three-name
+captures, image hashes and Game/process operations were not repeated.
+The actual receipt is
+`guardian-collection-textrefs62/root-textrefs01/GUARDIAN-COLLECTION-TEXTREFS-RESULT.json`.
+
+The next low-cost source check was the actual installed binding material.
+Its `game/data_binding` contains20 text files, without subdirectories;
+`GetRelationsOfType`, `CharacterWindow` and `HasGuardian` have no exact
+match there. `00_script_value_bindings.txt:1-4` and `gui_macros.txt:1-4`
+show authored macro/definition/replace_with expansion, not a native method
+descriptor. The installed game manifest contains masks and the checksum
+manifest lists directories. Neither supplies a function declaration.
+Existing named-role packets prove constructor/destructor-to-RTTI/vtable
+joins, not a method-name registration table. Adjacent filter strings do
+not establish such a table.
+
+Root selected one new encoding/source join rather than replaying this
+completed text pattern: only VA64/RVA32 references to actual literal
+`0x451C558` in the metadata-held `.data` span,8571392 bytes. The recipe is
+`guardian-collection-datarefs63/ROOT-DATAREFS-ARGV.json`. It keeps at most
+136 bytes around actual matches and cannot itself identify a callback or
+guardian layout. Root executed it once at2026-10-09T14:41:47.219292Z:
+8571392 `.data` bytes in0.0102008 seconds, **VA64 matches0 and RVA32
+matches0**. The actual receipt is
+`guardian-collection-datarefs63/root-datarefs01/GUARDIAN-COLLECTION-DATAREFS-RESULT.json`.
+There was no repeated `.text`/`.rdata`, hash, PE parse, process or Game
+operation and no full `.data` persistence.
+
+This closes the selected single-name source/pattern branch: the literal
+exists, but these direct RIP and data-pointer encodings supplied no method
+registration record. It does not prove no callback or guardian collection
+exists. No capture of the same name/sections/patterns is repeated. The next
+independent source work returns to the more specific stock
+`Character.HasGuardian` receiver and held native guardian relation-collection
+structure evidence, retaining the actual roster child as receiver.
 
 ```mermaid
 flowchart TD
   S[Actual stock CharacterWindow.GetRelationsOfType] --> L[Root actual standalone ASCII451C558]
   L --> Z[Same rdata VA64 references0]
-  L -. single-target text RIP locator not run .-> R[Named registration reference and pdata owner]
+  L --> N[Actual common LEA/MOV text references0, unresolved0]
+  N --> D0[Actual data VA64/RVA32 references0]
+  D0 -. named registration owner and encoding still unclosed .-> R[Possible named registration record]
   R -. owner and argument typing unclosed .-> C[Actual collection callback]
   C -. underlying Character receiver and guardian direction unclosed .-> I[Actual-child guardian full-ID collection]
 ```
