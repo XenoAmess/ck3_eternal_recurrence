@@ -1,0 +1,66 @@
+{
+  "schema": "ck3-r40-shared-runtime-startup-red-actual-v1",
+  "run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0040",
+  "checkout_head": "598d4855b1a5e7678fa2253e5664acb991c0c825",
+  "agent_source_root": "C:\\csr3",
+  "started_at": "2026-10-09T20:46:03.761046+00:00",
+  "finished_at": "2026-10-09T20:56:15.281295+00:00",
+  "readiness_timeout_seconds": 600,
+  "command_exit_codes": {
+    "prepare": 0,
+    "preflight": 0,
+    "allocate": 0,
+    "public-run": 2,
+    "public-verify": 2
+  },
+  "native_status": "RED",
+  "native_error": "TimeoutError: saved campaign did not reach its exact paused native identity/root and explicit event policy before original readiness deadline",
+  "steps": [],
+  "host_original_parent_exit_code": 1,
+  "managed_ck3_exit_code": 1,
+  "normal_exit_zero_proven": false,
+  "tree_gone": true,
+  "final_ck3_inventory_empty": true,
+  "control_files_absent": {
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-002\\state\\control\\ck3.json": true,
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-002\\state\\control\\watchdog-64a4152a3e174a04a96009bbe46a6559.ready.json": true,
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-002\\state\\control\\ck3.watchdog_error": true,
+    "C:\\workspace\\ck3-common-runtime\\cases\\lyd-transaction-control-20261010-002\\state\\control\\unsafe-cleanup.json": true
+  },
+  "keeper_original_parent_exit_code": 0,
+  "actual_release_sequence": 4235,
+  "actual_release_resources": [],
+  "final_steam_offline_review": {
+    "at_utc": "2026-10-09T20:57:17.265635+00:00",
+    "path": "C:\\workspace\\ck3-common-runtime\\runs\\bf-202609141645-5434332d4d--li-yu-dao--R0040\\steam-final-recovery-001\\probe-1\\steam-moved.png",
+    "bytes": 977857,
+    "sha256": "c953e2d0f66efde1b7dc57e801211aee570ad66c9fc9600d426729eaeee38ea8",
+    "review_method": "root directly viewed original 1920x1080 screenshot after actual 20 px Steam window movement",
+    "visible_offline_text": "离线模式",
+    "steam_offline_confirmed": true,
+    "visible_desktop_clock": "4:56 2026/10/10"
+  },
+  "restored_display": {
+    "width": 1024,
+    "height": 768,
+    "bits": 32,
+    "frequency": 60
+  },
+  "public_verify_result": {
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "business_contract_applicable": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "status": "NOT_RUN_OR_PRESERVED_FAILURE",
+    "normal_close": null,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false
+  },
+  "failed_monitor001": {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r40-root-observe-shared-run-20261010-001.py",
+    "separate_actual_stdout_stderr_preserved": false,
+    "boundary": "Original producer preserved; no retrospective stdout/stderr is fabricated."
+  },
+  "game_actions_by_this_producer": 0
+}
