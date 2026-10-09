@@ -118,6 +118,7 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
             "registered_calls_completed_this_attempt": 0,
             "registered_calls_first_successful_this_attempt": 0,
             "registered_calls_replayed_without_retained_result": 0,
+            "registered_calls_retried_after_prior_harness_failure": 0,
             "registered_call_receipts": [],
         }
 
@@ -211,12 +212,31 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
         self, whole, route, expected_rows, output_dir, name, variant, report, persist,
     ):
         relative = Path(name) / route / variant
-        replay = bool(_OPTIONS.prior_consumer_dir) and relative.as_posix() == (
-            "available-equal/ck3_query_army_strengths/legacy"
+        prior = (_OPTIONS.prior_consumer_dir.resolve() / relative / "REGISTERED-CALL-RECEIPT.json"
+                 if _OPTIONS.prior_consumer_dir else None)
+        if prior is not None and prior.exists():
+            saved = json.loads(prior.read_text(encoding="utf-8"))
+            self.assertEqual(saved["status"], "GREEN")
+            self.assertEqual(saved["native_dir"], str(_OPTIONS.native_dir.resolve()))
+            self.assertEqual((saved["case"], saved["registered_tool"], saved["wire_variant"]),
+                             (name, route, variant))
+            self.assertEqual(saved["query_sequence"], whole["result"]["query_sequence"])
+            full, route_receipt = saved["expanded_result"], saved["route_receipt"]
+            semantic = full["result"] if route == "ck3_auto_turn" else full
+            self.assertEqual(semantic["army_strengths"], expected_rows)
+            report["registered_calls_reused"] += 1
+            report["registered_call_receipts"].append({
+                "case": name, "registered_tool": route, "wire_variant": variant,
+                "receipt": str(prior), "execution": "retained_actual03_successful_registered_call",
+            })
+            persist()
+            return full, route_receipt
+        retry = bool(_OPTIONS.prior_consumer_dir) and relative.as_posix() == (
+            "presence-fallback/ck3_query_army_strengths/legacy"
         )
         report["registered_calls_executed"] += 1
-        if replay:
-            report["registered_calls_replayed_without_retained_result"] += 1
+        if retry:
+            report["registered_calls_retried_after_prior_harness_failure"] += 1
         full, route_receipt = await self._run_route(
             whole, route, expected_rows, output_dir / relative,
         )
@@ -232,13 +252,12 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
             json.dumps(saved, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
         )
         report["registered_calls_completed_this_attempt"] += 1
-        if not replay:
-            report["registered_calls_first_successful_this_attempt"] += 1
+        report["registered_calls_first_successful_this_attempt"] += 1
         report["registered_call_receipts"].append({
             "case": name, "registered_tool": route, "wire_variant": variant,
             "receipt": str(receipt_path), "execution": (
-                "replay_of_completed_call_without_retained_full_return"
-                if replay else "new_registered_call"
+                "retry_of_registered_return_with_prior_harness_assertion_failure"
+                if retry else "new_registered_call"
             ),
         })
         persist()
@@ -356,7 +375,8 @@ class ArmyManagerSharedRegisteredMcp12004Tests(unittest.IsolatedAsyncioTestCase)
             self.assertNotIn(SHARED_KEY, receipt["driver_result"])
             self.assertNotIn(SHARED_KEY, semantic)
             for field in FIELD_NAMES:
-                if len(expected_rows) > 1 and isinstance(expected_rows[0].get(field), dict):
+                if (len(expected_rows) > 1 and isinstance(expected_rows[0].get(field), dict)
+                        and isinstance(expected_rows[1].get(field), dict)):
                     self.assertIsNot(
                         driver._army_strength_query["army_strengths"][0][field],
                         driver._army_strength_query["army_strengths"][1][field],
@@ -464,7 +484,7 @@ if __name__ == "__main__":
     parser.add_argument("--native-dir", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--prior-consumer-dir", type=Path,
-                        help="Retained attempt02 RED: one completed legacy call lost its full return")
+                        help="Retained actual03 complete call receipts; execute only missing presence-fallback calls")
     _OPTIONS = parser.parse_args()
     _project = _OPTIONS.source_root.resolve() / "ck3_autonomous_player"
     if not _project.is_dir():
