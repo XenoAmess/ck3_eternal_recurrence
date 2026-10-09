@@ -2524,7 +2524,7 @@
         {
           "id": "transaction-only-control",
           "status": "ready",
-          "implementation_credit": "Diagnostic case only; actual run and causal observation NOT_RUN; whole-product credit false",
+          "implementation_credit": "Diagnostic case only; R39 startup RED before business; successor control and causal observation not qualified; whole-product credit false",
           "adapter": {
             "path": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_transaction_control_adapter.py",
             "config": "{repo_root}/tools/ck3_mod_acceptance_cases/lyd_transaction_control.json"
@@ -2544,12 +2544,12 @@
           },
           "budgets": {
             "command_timeout": 300,
-            "readiness_timeout": 400,
+            "readiness_timeout": 600,
             "timeout": 2100,
             "hold_seconds": 900,
             "poll_interval": 0.5
           },
-          "budget_provenance": "Unextended existing li-yu-dao shared case budgets; fresh diagnostic run only; no advance_day",
+          "budget_provenance": "Fresh successor startup readiness 600s from R38 actual launch-to-setup 417.147s and R39 pre-setup delay +71.617s; R39 original 400s RED retained. Other existing li-yu-dao budgets unchanged; no advance_day. Evidence: docs/ck3-native-ai/2026-10-10-r39-shared-runtime-startup-red.md",
           "required_mcp_tools": [
             "ck3_take_snapshot",
             "ck3_query_actor_cached_succession_v1",

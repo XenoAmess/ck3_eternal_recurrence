@@ -50,3 +50,11 @@ Source03 `13d063c81ff706d8bc3f9a8bf81f60c283338042` 在 `C:/csr3`，增加[固�
 host 原 Popen wait 返回1，CK3 受管退出码为1；native job active0、进程树消失、三路最终清点均空、控制文件清空，managed session/thread/cleanup 已结束。这证明失败现场清理，不授正常退出0。最终新鲜1920×1080原图亲审 Steam“离线模式”，原桌面1024×768×32@60实际恢复；keeper 原父句柄退出0、线程已结束，CAS4221→4222实际 done/resources=[]。首次释放因缺少 CLI SHA pin 被拒，补全精确 pin 后释放成功；两份原始回执均保留。[R39 原始证据及诊断](2026-10-10-r39-shared-runtime-startup-red.md)另包归档。
 
 精确 `00b88fc4d` 的 Official CI 已到失败终态，原因是既有 allocation 测试的模拟 `ids` 缺少新机器绑定接口 `MACHINE_ENV`；Linear 通过，Li Yu Dao 未触发。该 CI 夹具修复与原生快照只读诊断并行，生产 allocator 的机器绑定、原现场闭场和唯一 ID 守卫保持。正式 I3b/C3/I4 与一期仍 **NOT_GREEN**，上一工作量估计不因构建、闭场或 CI 修复上调。
+
+## 下一场启动预算与已完成 CI 夹具修复
+
+实际日志精度为1秒。R38启动后185.147秒记录Load Save、228.147秒 powerful vassals、331.147秒 In Game、417.147秒 Setup completion。R39原进程创建后对应前两阶段为240.764及299.764秒，在401.928秒结束前没有后两项。R38是历史独立launch再attach，没有保存同类startup budget字段，不能追认为旧400秒通过。R39的400来自新case复制通用LiYu配置，不是业务谓词。两轮日志及精确来源行已纳入R39原件归档。
+
+仅未来新场的 `transaction-only-control` startup readiness 改为600秒：以实际R38完成417.147秒、R39前半段额外71.617秒为依据，约489秒历史参考加约110秒余量。command300、timeout2100、hold900、poll0.5、终点60秒及正常退出reserve90均保持，host/native、seed、正式71文件、六项overlay与业务谓词不变。这不保证加载成功，也不延长已结束R39或追改其RED；未来必须全新profile和ID，常规前驱闭场准入。
+
+[CI窄修](2026-10-10-common-allocator-ci-fixture.md)已完成，34项相关回归通过：adapters9、bootstrap10、entry15；生产allocator/ID工具逐字节不变。旧00b88fc4d失败保留，后继精确CI需另取实际终态。
