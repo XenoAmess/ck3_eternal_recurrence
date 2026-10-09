@@ -55,3 +55,29 @@ runs this new test; the native producer and earlier compounds are not replayed.
 
 This source correction assigns no new live, FullPerson, Entry or whole-helper
 readiness credit. Runtime latency improvement remains unmeasured at author time.
+
+## Root FIRST qualification
+
+Author source `e997280d50560fcccd1a1c22234467f8d56e06b8` was initially
+AUTHORED_NOTRUN. Root materialized the complete Git SDK at
+`D:/codex-ck3-background-spill/r0084-person-readonly-history-sdk-full-source`
+and qualified that exact same source head with the sole registered compound.
+The correction is now **static-ready**.
+
+The FIRST receipt at
+`D:/codex-ck3-background-spill/r0084-person-readonly-history-first01/RESULT.json`
+records GREEN, exit code 0, start `2026-10-09T19:07:20.368512+00:00` and end
+`2026-10-09T19:07:26.808721+00:00` (6.440209 seconds elapsed). Root reported
+`1 passed in 5.66s`. The invocation used the complete corrected SDK's import
+package and exactly
+`test_battle_terminal_transition_readonly_history.py::test_registered_terminal_query_omits_history_and_preserves_command_evidence`.
+
+The real registered MCP -> Service -> NativeDriver compound consumed only the
+unchanged retained Native60 packet
+`Z:/g2-native60-build01/attempt01/first/native-wires/matching-final-tail-ordered-i64.json`.
+The native producer and earlier compounds were not replayed. The qualification
+covers omission of full transcript copies, normalized Person/captured PC output,
+retained command evidence, explicit detached history export, and preserved frame
+rejection checks. It does not measure live query speedup; the owned Game162360
+hot query remains a separate execution. Live, FullPerson, Entry and whole-helper
+readiness credit remain unchanged.
