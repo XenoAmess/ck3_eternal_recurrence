@@ -1,0 +1,36 @@
+{
+  "schema": "ck3-saved-startup-portable-evidence-v1",
+  "status": "passed_portable_only",
+  "files": {
+    "RESULT.actual.json": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-saved-startup-focused-check-20261010-001\\RESULT.actual.json",
+      "bytes": 1702,
+      "sha256": "c5c8bcd55eab6a96253cca07df37e7f9f5fb473a9baa00e3bf938157fdc7ac96"
+    },
+    "focused-check.py": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-saved-startup-focused-check-20261010-001.py",
+      "bytes": 3384,
+      "sha256": "205ec2ce69c7f344ee5bd982696f068beb52e49667e56fd7daae0c0e8243b510"
+    },
+    "host-help.stderr.bin": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-saved-startup-focused-check-20261010-001\\host-help.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "host-help.stdout.bin": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-saved-startup-focused-check-20261010-001\\host-help.stdout.bin",
+      "bytes": 6570,
+      "sha256": "c9ee1fc178da38959d9afe85693bddfe7c0a29b707651885cad22cfb6d73a876"
+    },
+    "portable-tests.stderr.bin": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-saved-startup-focused-check-20261010-001\\portable-tests.stderr.bin",
+      "bytes": 115,
+      "sha256": "c7785defeaff3d39e56fc5ed9dd2e383a3e9aca54d83e890d8755ad86dc580e1"
+    },
+    "portable-tests.stdout.bin": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-saved-startup-focused-check-20261010-001\\portable-tests.stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
