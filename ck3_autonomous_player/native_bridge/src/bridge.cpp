@@ -93,6 +93,7 @@
 #include "xar_bridge/ck3_12004_battle.hpp"
 #include "xar_bridge/ck3_12004_battle_journal.hpp"
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
+#include "xar_bridge/ck3_12004_person_title_tail_capture.hpp"
 #include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12004_routes.hpp"
@@ -613,6 +614,8 @@ static xar::ck3_12002::BattleTerminalJournalDetourStateV1
     g_battle_terminal_journal_12002_v1{};
 static xar::ck3_12004::ActualLossWriterJournalDetourStateV1
     g_actual_loss_writer_journal_12004_v1{};
+static xar::ck3_12004::PersonTitleTailCaptureDetourState12004
+    g_person_title_tail_capture_12004{};
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
 static xar::ck3_11906::AiReentryDispatchStateV1
     g_ai_terminal_reentry_dispatch_v1{};
@@ -28223,6 +28226,15 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     loss_environment.primary_thread_suspended_proven = true;
     if (!xar::ck3_12004::InstallActualLossWriterJournal12004(
             g_actual_loss_writer_journal_12004_v1, loss_environment, sha))
+      return FALSE;
+    xar::ck3_12004::PersonTitleTailCaptureInstallEnvironment12004
+        title_tail_environment{};
+    title_tail_environment.bindings =
+        xar::ck3_12004::BindPersonTitleTailCaptureImage12004(base, sha);
+    title_tail_environment.bindings.game_state_slot = bindings.game_state_slot;
+    title_tail_environment.primary_thread_suspended_proven = true;
+    if (!xar::ck3_12004::InstallPersonTitleTailCapture12004(
+            g_person_title_tail_capture_12004, title_tail_environment, sha))
       return FALSE;
     auto environment = xar::ck3_12004::BindBattleJournalImage12004(base, sha, bindings);
     environment.primary_thread_suspended_proven = true;

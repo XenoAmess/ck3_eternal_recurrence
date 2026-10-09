@@ -1633,6 +1633,10 @@ game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
         ck3_12004::ReadPersonFirstTitleVectorForCharacter12004(
             b.current_person_carrier_direct,
             reinterpret_cast<std::uintptr_t>(character));
+    observed.following_291e3a0_captured_tail =
+        ck3_12004::ReadPersonTitleTailCaptureForCharacter12004(
+            reinterpret_cast<std::uintptr_t>(character),
+            static_cast<std::uint32_t>(character_id));
     observed.following_2921a90_conditional =
         ck3_12004::ReadPersonConditional2921a90Inputs12004(
             b.current_person_carrier_direct, *observed.following_2921a90);

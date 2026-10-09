@@ -684,6 +684,11 @@ inline std::string SerializeBattleCurrentPersonStateV1(
     output += xar::ck3_12004::SerializePersonFirstTitleVector12004(
         *state.following_291e3a0_first_title_vector);
   }
+  if (state.following_291e3a0_captured_tail) {
+    output += ",\"following_291e3a0_captured_tail\":";
+    output += xar::ck3_12004::SerializePersonTitleTailCapture12004(
+        *state.following_291e3a0_captured_tail);
+  }
   output += '}';
   return output;
 }

@@ -15,6 +15,7 @@
 #include "xar_bridge/ck3_12004_person_government_gate.hpp"
 #include "xar_bridge/ck3_12004_person_local_titles.hpp"
 #include "xar_bridge/ck3_12004_person_first_title_vector.hpp"
+#include "xar_bridge/ck3_12004_person_title_tail_capture.hpp"
 
 #include "xar_bridge/ck3_12003_maa_recruitment.hpp"
 #include "xar_bridge/owned_regiments.hpp"
@@ -3658,6 +3659,8 @@ struct BattleCurrentPersonStateSnapshotV1 {
   std::optional<ck3_12004::PersonLocalTitles12004DTO> following_291e3a0_local_titles;
   std::optional<ck3_12004::PersonFirstTitleVector12004DTO>
       following_291e3a0_first_title_vector;
+  std::optional<ck3_12004::PersonTitleTailCapture12004DTO>
+      following_291e3a0_captured_tail;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
 };
