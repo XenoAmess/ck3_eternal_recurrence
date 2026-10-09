@@ -123,3 +123,28 @@ evidence. The original BOM attempt014 remains unchanged at its original
 path. No source or ledger implementation is modified by this appendix.
 [Thin actual association and Oct9/W41 fields](Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r81-release-bom-normal-actual-association/ROOT-DELIVERY.json)
 record this bounded result and pending work.
+
+## One authorized actual ledger read after Root007
+
+Root later supplied the small fact that ordinary007 executed army-strength
+work at 05:54:24.738232–05:56:21.508698 UTC and its plan contained no
+`prisoner_release_pending` marker. This worker did not read007's full response.
+That marker's absence does not establish a consumed release receipt.
+
+Root separately authorized exactly one read of the current actual
+`player-prisoner-release-formal-v1.json` at the existing state path above.
+The read returned **14,756 B**, current plain UTF-8 with no BOM, and root keys
+`pending`/`resolved`. Only the record bound to the new exact request
+`prisoner-release-f62b0fb089394694ab72e2db8ec1efca` was projected. It was
+still at `/pending`, with `stage=receipt_pending`,
+`status=submitted_verification_pending` and `material_result=false`.
+Actor29829/target54235, pre-public2/native6/raw53288568, sequence2, all-off
+options, ten zero quotes and the original ACK were unchanged in that record.
+It contains no post-date/native revision, retained custody, relation material
+proof or terminal error. No release record was rewritten by this worker.
+
+The actual ledger therefore confirms pending at this read point; neither
+ordinary007's abbreviated plan nor the unchanged quote closes a release
+postcondition or M4 benefit. [Exact current-ACK ledger thin record](Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r81-release-bom-normal-actual-association/CURRENT-ACK-LEDGER-THIN.json)
+preserves its full copied shape. Later ordinary008 was Root-pending when this
+read was authorized and is outside this worker's response-read scope.
