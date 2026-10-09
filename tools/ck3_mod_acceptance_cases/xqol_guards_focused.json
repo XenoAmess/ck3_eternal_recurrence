@@ -1,0 +1,33 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "xqol",
+  "case": "guards_focused",
+  "acceptance_scope": "original_transfer_guards_focused_supplement",
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQAGUARD: SCOPE BEGIN actual_song_actor",
+    "ZQAGUARD: SCOPE PASS actual_song_actor",
+    "ZQAGUARD: SCOPE END actual_song_actor"
+  ],
+  "forbidden_startup": ["ZQAGUARD: TEST FAIL", "ZQA: TEST FAIL"],
+  "original_required_markers": [
+    "ZQA: TEST PASS transfer_guard_enabled_and_preexisting_preserved",
+    "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved"
+  ],
+  "required_exact_count": 1,
+  "forbidden_exact_count": 0,
+  "maximum_natural_days": 2,
+  "formal_file_count": 27,
+  "source_contract": "tools/fixtures/xqol_acceptance/common/scripted_effects/zqa_effects.txt",
+  "subject_contract": "Original preexisting/removal/control setup and owned selection are projected without changing their conditions; only the two original guard if/else assertions execute.",
+  "decision_contract": "Only actual production no-vassal-transfer enable/disable effect bodies are projected. No direct invented substitute for those effects.",
+  "normal_close_required": true,
+  "does_not_replay": ["defense23", "reverse", "appointment", "death", "payment", "conversion", "ransom", "gui25"],
+  "aggregation_boundary": "This fresh cell supplements missing guards evidence; original defense_and_ui raw result/GAP remains historical and is not rewritten. Root owns explicit cross-cell product aggregation.",
+  "business_pass": false,
+  "product_release_pass": false
+}

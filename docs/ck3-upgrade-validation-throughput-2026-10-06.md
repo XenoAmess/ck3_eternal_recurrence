@@ -100,3 +100,10 @@ managed thread/cleanup true、库存空；keeper真实exit0/threadexit末4491后
 下一GUI24仅用本场固定三品徽章锚点定位portrait，及实际底栏pause-menu按钮鼠标打开，去除人脸和Escape依赖；原.92/.05/scale1两项只读定位一次均唯一。复用GUI23业务/原正常Quit后段，整条本地连续并本地核进程/时限，避免模型工具迟到重演。UI25/profile15只新六配置，Source18/runtime31/D1flag/base24/DLL/原预算复用。已完成核心11/FAIL0、其他五发布不重测；正式仍5/10。
 
 已备QOL04b同场final6→原9步→宋任命/slider→正常Quit及后五独立场；赎金原fixture实际FAIL为ZQRS120，下一未消费plan14处expect literal与原args/source对齐，old/new/diff保留，未消耗run或改业务。Git常规fetch遇schannel握手失败，per-command openssl/HTTP1.1同TLS失败；已正常rebase到本地已取得origin/master6866e45eef7600b9e3506ce26453f47f3b253de2，尚需新的成功fetch/普通push，未把缓存ref当新网络成功。并行resource代理只读诊断既有网络入口，inputs准备UI25，root应用本场事实与午夜收口；不阻塞无依赖工作、不新增平台或完整矩阵。
+
+
+## 2026-10-09 QOL R33：复用核心证据，分开补原guard与UI尾部（补记 2026-10-09T19:07:06+08:00）
+
+R33已有 **core23 / day5 / final6** 真实证据；等待Root GUI Switch超时，**readonly9、UI25及正常退出均未资格**，原partial/normalfalse与CAS7599闭场保持，不因核心通过授productPASS。后续公共入口新增`guards_focused`，只执行两日原guard；`ui_tail`以新宋scope只执行原readonly9/UI25。两路各保实际运行身份、输入与结果，已有核心不重跑，原全部业务/正常退出门槛保持；任何partial不授产品通过。
+
+Root后续每次游戏点击显式携带 **`--expected-foreground-hwnd <实际HWND> --max-source-age-seconds 60`**。执行前错窗口/过期源拒绝输入，执行后窗口漂移保一次已点击事实并拒绝读回资格；不自动重试。年龄门仅文件mtime补充，原新鲜原图/预览内容矩形/X-Y独立换算/PNG回执要求继续。既有记录与失败原件保留；本段无游戏、桌面输入或同字节mapper重测。

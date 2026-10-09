@@ -1,0 +1,56 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "xqol",
+  "case": "ui_tail",
+  "acceptance_scope": "original_song_ui_tail",
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "hegemony",
+    "independent": true
+  },
+  "required_startup": [
+    "ZQAUITAIL: SCOPE BEGIN actual_song_actor",
+    "ZQAUITAIL: SCOPE PASS actual_song_actor",
+    "ZQAUITAIL: SCOPE END actual_song_actor"
+  ],
+  "forbidden_startup": [
+    "ZQAUITAIL: TEST FAIL",
+    "ZQA: TEST FAIL"
+  ],
+  "readonly_step_count": 9,
+  "gui25_order": [
+    "civic-candidates",
+    "military-candidates",
+    "million-off",
+    "million-on",
+    "million-restored",
+    "civic-appointment",
+    "military-appointment",
+    "guards",
+    "slider-anchor",
+    "cancel-0",
+    "cancel-1",
+    "cancel-49",
+    "cancel-50",
+    "cancel-51",
+    "cancel-99",
+    "cancel-100",
+    "save-100",
+    "save-99",
+    "save-51",
+    "save-50",
+    "save-49",
+    "save-1",
+    "save-0",
+    "restore-anchor",
+    "map-clean"
+  ],
+  "guards_independent_supplement_required": true,
+  "same_live_ui_scene": true,
+  "prior_core_scope": "Existing actual R33 core23/F5/five-day/final6 only. Source case and normal-close remain incomplete.",
+  "new_scene_scope": "New actual Song owner/actor/title-key; original readonly9 and UI25. No defense/reverse/final6 replay.",
+  "guard_gap_rule": "Original guards cannot be marked true without actual evidence. Preserve UI25 guards GAP and qualify only through the independent original-assertion focused case.",
+  "normal_close_required": true,
+  "business_pass": false,
+  "product_release_pass": false
+}

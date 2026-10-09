@@ -572,6 +572,160 @@
             "execution_status": "declared_only_shared_current_identity_adapter_pending",
             "automatic_execution": false
           }
+        },
+        {
+          "id": "guards_focused",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option"
+          ],
+          "phases": {
+            "steps": [
+              "original Song scope admission",
+              "D1 production transfer enable plus original guard assertion",
+              "D2 production transfer disable plus original guard assertion",
+              "normal GUI Quit and actual native0"
+            ],
+            "coverage": "original_guards_only",
+            "runtime_or_business_pass": false
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "poll_interval": 0.05,
+            "hold_seconds": 1800
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "all_required": true,
+            "scope": "No new GUI business assertions; shared normal GUI Quit required"
+          },
+          "outputs": {
+            "runtime_report": "{run_dir}/native-report.json",
+            "source_evidence": "{run_dir}/source-evidence.json",
+            "business_verdict": "{run_dir}/business-verdict.json",
+            "gui_evidence": "{run_dir}/gui/evidence-index.json",
+            "normal_close": "{run_dir}/normal-close.json",
+            "final_result": "{run_dir}/acceptance-result.json"
+          },
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_guards_focused_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_guards_focused.json"
+          }
+        },
+        {
+          "id": "ui_tail",
+          "status": "ready",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/state/frontend-fixture-start-policy.json"
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/common_readonly_start.plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_get_capabilities",
+            "ck3_execute_step",
+            "ck3_query_campaign_root_context_v1",
+            "ck3_query_engine_log_literals_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_title_holder_v1",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1"
+          ],
+          "phases": [
+            "actual Song scope and native h_china holding proof",
+            "original readonly9",
+            "original UI25 with genuine guard GAP retained",
+            "normal GUI Quit/retained OS0/native0/shared completion"
+          ],
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 400,
+            "timeout": 3000,
+            "poll_interval": 0.05,
+            "hold_seconds": 1800
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "current allocated run/PID/create_time/generation and unchanged owner binding",
+              "all pending controls finished, no cleared or overwritten business error",
+              "Root reviews fresh original image; legal Quit To Desktop GUI with mapped receipt when coordinates are used",
+              "retained actual OS handle signaled with exit code 0",
+              "native cleanup/process_exit 0, host worker/thread complete and managed completion preserved",
+              "original keeper actual exit 0, final CAS done/resources[]"
+            ],
+            "business_credit": false,
+            "forced_or_deadline_stop_is_normal0": false
+          },
+          "gui_contract": {
+            "original_gui25_order": [
+              "civic-candidates",
+              "military-candidates",
+              "million-off",
+              "million-on",
+              "million-restored",
+              "civic-appointment",
+              "military-appointment",
+              "guards",
+              "slider-anchor",
+              "cancel-0",
+              "cancel-1",
+              "cancel-49",
+              "cancel-50",
+              "cancel-51",
+              "cancel-99",
+              "cancel-100",
+              "save-100",
+              "save-99",
+              "save-51",
+              "save-50",
+              "save-49",
+              "save-1",
+              "save-0",
+              "restore-anchor",
+              "map-clean"
+            ],
+            "guards_independent_supplement_required": true,
+            "no_result_from_ACK": true
+          },
+          "outputs": [
+            "actual-original-song-h-china-title-proof.json",
+            "actual-original-readonly9-results.json",
+            "ui25/actual-same-live-records.json",
+            "qol-ui-tail-result.json"
+          ],
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ui_tail_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ui_tail.json"
+          },
+          "description": "Original Song readonly9/UI25 only, with explicit prior actual core evidence and independent guards supplement; no core replay."
         }
       ],
       "legacy_inventory": {

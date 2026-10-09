@@ -270,5 +270,66 @@ class PointerMoveTests(unittest.TestCase):
         self.assertFalse(Path(str(self.receipt) + ".json").exists())
 
 
+class GuardedClickTests(unittest.TestCase):
+    ROOT = Path(__file__).resolve().parents[1] / "pointer-fixtures" / uuid.uuid4().hex
+    FOCUS = PointerMoveTests.FOCUS
+    setUp = PointerMoveTests.setUp
+    argv = PointerMoveTests.argv
+    # Reuse only the existing fake desktop/source setup, not the move test cases.
+    def test_click_wrong_foreground_refuses_before_any_input(self):
+        desktop = FakeDesktop()
+        with patch.dict(sys.modules, {"pyautogui": desktop}), \
+             patch.object(mapper, "foreground_state", return_value={**self.FOCUS, "foreground_hwnd": 999}), \
+             self.assertRaisesRegex(ValueError, "expected HWND for click"):
+            mapper.main(self.argv("--click", "--receipt", str(self.receipt), "--expected-foreground-hwnd", "1001"))
+        self.assertEqual(desktop.inputs, [])
+        self.assertEqual(desktop.screenshots, [])
+        self.assertFalse(self.receipt.exists())
+        self.assertFalse(Path(str(self.receipt) + ".json").exists())
+
+    def test_click_checks_both_sides_and_preserves_failed_post_readback(self):
+        for index, after in enumerate((self.FOCUS, {**self.FOCUS, "foreground_hwnd": 999},
+                                      {**self.FOCUS, "foreground_pid": 99})):
+            with self.subTest(after=after):
+                receipt = self.directory / f"guarded-{index}.png"
+                desktop = FakeDesktop()
+                with patch.dict(sys.modules, {"pyautogui": desktop}), \
+                     patch.object(mapper, "foreground_state", side_effect=[self.FOCUS, after]) as focus, \
+                     contextlib.redirect_stdout(io.StringIO()) as output:
+                    rc = mapper.main(self.argv("--click", "--receipt", str(receipt), "--expected-foreground-hwnd", "0x3e9"))
+                result = json.loads(output.getvalue())
+                self.assertEqual(focus.call_count, 2)
+                self.assertEqual(desktop.inputs, [("click", 50, 30)])
+                self.assertIs(result["click_completed"], True)
+                self.assertEqual(rc, 0 if index == 0 else 3)
+                self.assertEqual(result["focus_before"], self.FOCUS)
+                self.assertEqual(result["focus_after"], after)
+                self.assertEqual(result["expected_foreground_hwnd"], 1001)
+                self.assertEqual(result["failures"], [] if index == 0 else ["foreground_changed_after_click"])
+                self.assertTrue(receipt.is_file())
+                self.assertEqual(json.loads(Path(str(receipt) + ".json").read_text("utf-8")), result)
+
+    def test_explicit_source_age_rejects_expired_images_and_invalid_limits(self):
+        import time
+        observed = time.time()
+        desktop = FakeDesktop()
+        with patch.dict(sys.modules, {"pyautogui": desktop}), \
+             patch("time.time", return_value=observed + 3600), \
+             patch.object(mapper, "foreground_state", side_effect=AssertionError("expired image reached foreground/click")), \
+             self.assertRaisesRegex(ValueError, "expired"):
+            mapper.main(self.argv("--click", "--receipt", str(self.receipt),
+                                  "--expected-foreground-hwnd", "1001", "--max-source-age-seconds", "30"))
+        self.assertEqual((desktop.inputs, desktop.screenshots), ([], []))
+        with patch("time.time", return_value=self.source.stat().st_mtime + 2):
+            age = mapper.source_image_age(self.source, 3)
+        self.assertEqual(age["age_seconds"], 2)
+        for limit in ("0", "-1", "nan", "inf"):
+            with self.subTest(limit=limit), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                mapper.parse_args(self.argv("--click", "--receipt", str(self.receipt), "--max-source-age-seconds", limit))
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            mapper.parse_args(self.argv("--max-source-age-seconds", "30"))
+        self.assertFalse(self.receipt.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

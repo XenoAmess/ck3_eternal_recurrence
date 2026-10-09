@@ -216,6 +216,74 @@ def move_pointer(
     return result
 
 
+def source_image_age(source_image: Path, maximum_seconds: float | None) -> dict[str, float] | None:
+    """Optional file-age check; mtime never proves fresh desktop pixels."""
+    if maximum_seconds is None:
+        return None
+    if not math.isfinite(maximum_seconds) or maximum_seconds <= 0:
+        raise ValueError("maximum source age must be finite and positive")
+    import time
+    modified = source_image.stat().st_mtime
+    observed = time.time()
+    age = observed - modified
+    if not math.isfinite(age) or age < 0 or age > maximum_seconds:
+        raise ValueError("source screenshot is expired or has a future modification time")
+    return {"source_mtime_unix": modified, "checked_at_unix": observed,
+            "age_seconds": age, "maximum_seconds": maximum_seconds}
+
+
+def guarded_click(
+    *, mapping: Mapping, source_image: Path, receipt_path: Path, desktop: object,
+    button: str, expected_foreground_hwnd: int | None,
+    max_source_age_seconds: float | None,
+) -> dict[str, object]:
+    """Send one click only after explicit guards; preserve any failed readback."""
+    validate_receipt_path(receipt_path, sidecar=True)
+    before_size = tuple(desktop.size())
+    if before_size != mapping.live_screen_size:
+        raise ValueError("live screen size changed before guarded click")
+    age = source_image_age(source_image, max_source_age_seconds)
+    before_focus = foreground_state() if expected_foreground_hwnd is not None else None
+    if before_focus is not None and (
+            before_focus["foreground_hwnd"] != expected_foreground_hwnd
+            or type(before_focus.get("foreground_pid")) is not int or before_focus["foreground_pid"] <= 0):
+        raise ValueError("foreground window does not match the expected HWND for click")
+    sidecar = receipt_path.with_name(receipt_path.name + ".json")
+    result = {**asdict(mapping), "action": "click", "button": button,
+        "expected_foreground_hwnd": expected_foreground_hwnd,
+        "source_image": str(source_image.resolve()), "source_age_before": age,
+        "screen_size_before": before_size, "focus_before": before_focus,
+        "receipt_path": str(receipt_path.resolve()), "sidecar_path": str(sidecar.resolve()),
+        "click_completed": False}
+    receipt_path.parent.mkdir(parents=True, exist_ok=True)
+    failures = []
+    try:
+        if button == "left":
+            desktop.click(*mapping.screen_point)
+        else:
+            desktop.click(*mapping.screen_point, button=button)
+        result["click_completed"] = True
+        if before_focus is not None:
+            result["focus_after"] = foreground_state()
+            if any(result["focus_after"][key] != before_focus[key]
+                   for key in ("foreground_hwnd", "foreground_pid")):
+                failures.append("foreground_changed_after_click")
+        result["screen_size_after"] = tuple(desktop.size())
+        if result["screen_size_after"] != mapping.live_screen_size:
+            failures.append("screen_size_changed")
+        receipt = desktop.screenshot(str(receipt_path))
+        result["receipt_image_size"] = receipt.size
+        if receipt.size != mapping.live_screen_size:
+            failures.append("receipt_image_size_changed")
+    except Exception as error:
+        failures.append("action_or_readback_failed")
+        result["error"] = repr(error)
+    result["failures"] = failures
+    result["status"] = "rejected-readback" if failures else "guarded-click-readback-matched"
+    sidecar.write_text(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    return result
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source-image", type=Path, required=True)
@@ -234,7 +302,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--reviewed-top", type=float)
     parser.add_argument("--reviewed-width", type=int)
     parser.add_argument("--reviewed-height", type=int)
-    parser.add_argument("--expected-foreground-hwnd", type=lambda value: int(value, 0))
+    parser.add_argument("--expected-foreground-hwnd", type=lambda value: int(value, 0),
+                        help="Require this actual foreground HWND before/after click or move; never activate it")
+    parser.add_argument("--max-source-age-seconds", type=float,
+                        help="Optional click-only screenshot mtime age limit; does not prove live pixels")
     parser.add_argument("--receipt", type=Path,
                         help="New PNG screenshot path ending in .png (not JSON); parent directories are created before input; mapping JSON is printed separately")
     args = parser.parse_args(argv)
@@ -251,11 +322,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     reviewed = (args.reviewed_left, args.reviewed_top, args.reviewed_width, args.reviewed_height)
     if args.move and any(value is None for value in reviewed):
         parser.error("--move requires an explicit reviewed left/top/width/height region")
-    if not args.move and (any(value is not None for value in reviewed) or args.expected_foreground_hwnd is not None):
-        parser.error("reviewed region and expected HWND are only valid with --move")
+    if not args.move and any(value is not None for value in reviewed):
+        parser.error("reviewed region is only valid with --move")
+    if args.expected_foreground_hwnd is not None and (not (args.click or args.move) or args.expected_foreground_hwnd <= 0):
+        parser.error("expected HWND must be positive and requires --click or --move")
+    if args.max_source_age_seconds is not None and (not args.click
+            or not math.isfinite(args.max_source_age_seconds) or args.max_source_age_seconds <= 0):
+        parser.error("maximum source age must be finite, positive and requires --click")
     if args.receipt is not None and not args.dry_run:
         try:
-            validate_receipt_path(args.receipt, sidecar=args.move)
+            validate_receipt_path(args.receipt, sidecar=args.move or (args.click and (
+                args.expected_foreground_hwnd is not None or args.max_source_age_seconds is not None)))
         except ValueError as error:
             parser.error(str(error))
     return args
@@ -315,6 +392,13 @@ def main(argv: list[str] | None = None) -> int:
                                   expected_foreground_hwnd=args.expected_foreground_hwnd)
         print(json.dumps(output, ensure_ascii=False, sort_keys=True))
         return 0 if args.dry_run or not output["failures"] else 3
+
+    if args.click and (args.expected_foreground_hwnd is not None or args.max_source_age_seconds is not None):
+        output = guarded_click(mapping=result, source_image=args.source_image, receipt_path=args.receipt,
+            desktop=pyautogui, button=args.button, expected_foreground_hwnd=args.expected_foreground_hwnd,
+            max_source_age_seconds=args.max_source_age_seconds)
+        print(json.dumps(output, ensure_ascii=False, sort_keys=True))
+        return 3 if output["failures"] else 0
 
     if args.click:
         validate_receipt_path(args.receipt)

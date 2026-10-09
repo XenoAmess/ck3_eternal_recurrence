@@ -29,7 +29,7 @@ def write(path,value):
 def read_last_line(path):return json.loads(Path(path).read_text(encoding='utf-8').splitlines()[-1])
 
 class Controller:
-    def __init__(self,context,client):
+    def __init__(self,context,client,*,prior_final6=None):
             global REPO,PY,COORD
             from types import SimpleNamespace
             self.context=context;self.client=client
@@ -40,7 +40,15 @@ class Controller:
             self.live=client.live;self.caller=client.output;self.frozen=client.frozen
             self.pending=read(self.caller/'root-same-live-required-ui-awaiting.json')
             require(self.pending['run_id']==self.frozen['run_id'],'Actual UI scene changed')
-            require((self.caller/'actual-original-final6-results.json').is_file() and (self.caller/'actual-original-readonly9-results.json').is_file(),'Original final6/readonly9 not complete')
+            require((self.caller/'actual-original-readonly9-results.json').is_file(),'Original readonly9 not complete')
+            if prior_final6 is None:
+                require((self.caller/'actual-original-final6-results.json').is_file(),'Original final6 not complete')
+            else:
+                require(context['case_contract'].get('acceptance_scope')=='original_song_ui_tail','External prior final6 is only valid for the explicit UI-tail case')
+                require(pin(prior_final6['path'])==prior_final6,'Original frozen prior final6 changed')
+                prior=read(prior_final6['path'])
+                require(prior.get('original23_verified') is True and prior.get('product_pass') is False and len(prior.get('rows',[]))==6 and all(r.get('ok') is True and not r.get('error') and r.get('finished_at') for r in prior['rows']),'Original frozen prior final6 is incomplete')
+                write(self.out/'prior-final6-external-reference.json',{'source':prior_final6,'current_scene_did_not_execute_final6':True,'source_case_is_not_rewritten':True})
             self.pid=self.pending['pid'];self.ctime=self.pending['create_time'];self.deadline=self.pending['original_hold_deadline']
             self.seq=0;self.stage=0;self.records={};self.gaps=[];self.hwnd=None;self.frame_id=None;self.latest=None
             import psutil,pyautogui
