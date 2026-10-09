@@ -461,6 +461,8 @@ def validate_saved_campaign_options(args: argparse.Namespace) -> None:
         raise SystemExit("--saved-campaign-server is an internal child-server option")
     if startup_case is not None and (args.saved_campaign_save is None or args.server):
         raise SystemExit("--saved-campaign-startup-case-contract requires an explicit saved campaign, without server mode")
+    if getattr(args, "saved_campaign_inject_after_load", False) and (args.saved_campaign_save is None or args.server):
+        raise SystemExit("--saved-campaign-inject-after-load requires an explicit saved campaign, without server mode")
     if args.saved_campaign_save is not None:
         if (any(item is None for item in inputs) or not args.fixture_profile or args.plan is None
                 or args.server or args.sdk_smoke_test or args.sdk_error_smoke_test or args.fixture_server
@@ -597,6 +599,10 @@ def saved_campaign_session(spec: object, config: object, args: argparse.Namespac
         launch_kwargs.pop("continue_last_save", None)
         launch_kwargs["load_save_name"] = "restored_campaign"
         launch_kwargs["verify_prepared_profile"] = False
+        if getattr(args, "saved_campaign_inject_after_load", False):
+            launch_kwargs.update(native_bridge_after_saved_load=True,
+                native_bridge_injection_deadline=args._saved_campaign_readiness_deadline,
+                native_bridge_stop_requested=stop.is_set)
         handle = original_launch(*launch_args, **launch_kwargs)
         command = getattr(handle, "command", None)
         process = getattr(handle, "process", None)
@@ -608,6 +614,9 @@ def saved_campaign_session(spec: object, config: object, args: argparse.Namespac
         launch_record.update(status="ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED", command=argv,
             ck3_pid=pid if type(pid) is int else None, argv_admitted=argv_admitted,
             continue_last_save=False, load_save_name="restored_campaign", captured_at=now())
+        if getattr(args, "saved_campaign_inject_after_load", False):
+            launch_record.update(bridge_injection_stage="after_saved_campaign_setup_completion",
+                load_completion_observation=copy.deepcopy(getattr(process, "saved_campaign_load_observation", None)))
         # Return the handle even if command evidence is malformed, so the
         # existing managed supervisor retains ownership and performs cleanup.
         return handle
@@ -736,7 +745,8 @@ def saved_campaign_initial_snapshot_state(value: object, pipe: str) -> str:
 
 async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object], *,
         report: dict[str, object], write: object, timeout: float,
-        managed_done: threading.Event | None, poll_interval: float) -> dict[str, object]:
+        managed_done: threading.Event | None, poll_interval: float,
+        readiness_deadline: float | None = None) -> dict[str, object]:
     report["phase"] = "saved-campaign-single-command-line-restore"
     state = {"status": "WAITING_FOR_ACTUAL_SAVED_CAMPAIGN_OWNER_FRAMES", "expected": expected, "observations": [],
         "load_provider": "runtime.launch(load_save_name):single_-loadsave",
@@ -745,7 +755,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
     report["saved_campaign_restore"] = state
     startup_case = report.get("saved_campaign_startup_case_contract_input", {}).get("contract")
     write()
-    deadline = time.monotonic() + timeout
+    deadline = time.monotonic() + timeout if readiness_deadline is None else readiness_deadline
     binding = None
     baseline = None
     initial_snapshot_available = False
@@ -3382,6 +3392,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                     client.tools = {item.name: serialized(item) for item in listing.tools}
                     try:
                         # initialize/list_tools prove the child has already opened its pipe.
+                        if getattr(args, "saved_campaign_inject_after_load", False):
+                            args._saved_campaign_readiness_deadline = time.monotonic() + args.readiness_timeout
                         if supervisor is not None:
                             supervisor.start()
                         if getattr(args, "frontend_mod_load_observation", False):
@@ -3391,7 +3403,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         if args.saved_campaign_save is not None:
                             await wait_for_saved_campaign(client, saved_campaign, report=report, write=write,
                                 timeout=args.readiness_timeout, managed_done=done if supervisor is not None else None,
-                                poll_interval=args.poll_interval)
+                                poll_interval=args.poll_interval,
+                                readiness_deadline=getattr(args, "_saved_campaign_readiness_deadline", None))
                         if args.frontend_robert_bootstrap:
                             report["phase"] = "native-frontend-robert-bootstrap"
                             report["frontend_bootstrap"] = {"status": "RUNNING", "uses_ocr": False,
@@ -3605,6 +3618,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--saved-campaign-product-inventory", type=Path)
     result.add_argument("--saved-campaign-startup-case-contract", type=Path,
                         help="Explicit pinned pure proof to admit the unchanged current saved startup event; never selects an option")
+    result.add_argument("--saved-campaign-inject-after-load", action="store_true",
+                        help="Shared opt-in: inject once into the same managed PID after this launch's Setup completion log marker; native admission and original readiness deadline remain required")
     result.add_argument("--saved-campaign-server", action="store_true", help=argparse.SUPPRESS)
     result.add_argument("--private-succession-title-readonly", action="store_true",
                         help="Explicit shared admission of existing exact-build readonly actor cache and religious title queries")

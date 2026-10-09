@@ -222,12 +222,14 @@ class Selection:
                 "--state-dir", str(state), "--plan", str(self.case_path(self.case["initial_plan"])),
                 "--control-plan-dir", str(self.run_dir / "controls")]
         features = self.manifest.get("host_features", {})
-        if not isinstance(features, dict) or set(features) - {"succession_title_readonly"}:
+        if not isinstance(features, dict) or set(features) - {"succession_title_readonly", "saved_campaign_inject_after_load"}:
             raise ValueError("Unknown shared host feature")
         if any(type(value) is not bool for value in features.values()):
             raise ValueError("Shared host features require explicit booleans")
         if features.get("succession_title_readonly"):
             argv += ["--private-succession-title-readonly"]
+        if features.get("saved_campaign_inject_after_load") and startup["mode"] == "saved_campaign":
+            argv += ["--saved-campaign-inject-after-load"]
         budgets = self.case["budgets"]
         for key, flag in BUDGET_FLAGS.items():
             value = budgets[key]
