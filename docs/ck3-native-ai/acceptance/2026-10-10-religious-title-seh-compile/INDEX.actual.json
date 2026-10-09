@@ -1,0 +1,43 @@
+{
+  "schema": "xar.religious-title-seh-evidence.v1",
+  "status": "two_targeted_translation_units_compile_passed",
+  "fixture_executed": false,
+  "local_ck3_contacted": false,
+  "files": {
+    "00-ck3_12003_religious_title_readback.stderr.bin": {
+      "source": "C:\\lci39rtseh1\\00-ck3_12003_religious_title_readback.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "00-ck3_12003_religious_title_readback.stdout.bin": {
+      "source": "C:\\lci39rtseh1\\00-ck3_12003_religious_title_readback.stdout.bin",
+      "bytes": 40,
+      "sha256": "0bd9f395cefb5f88b2aeb12bdbef1454a5537477c721d89f8c26846e8db0ffb3"
+    },
+    "01-ck3_12003_religious_title_readback_fixture.stderr.bin": {
+      "source": "C:\\lci39rtseh1\\01-ck3_12003_religious_title_readback_fixture.stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "01-ck3_12003_religious_title_readback_fixture.stdout.bin": {
+      "source": "C:\\lci39rtseh1\\01-ck3_12003_religious_title_readback_fixture.stdout.bin",
+      "bytes": 48,
+      "sha256": "20d6eb4fe6748838440bd728eac3fc3b5be9bb41277f53c68dfb6b441437dca6"
+    },
+    "RESULT.actual.json": {
+      "source": "C:\\lci39rtseh1\\RESULT.actual.json",
+      "bytes": 2700,
+      "sha256": "35074c3e48b82e0e89f9aeac710d534ea55ad6e09ef6f87637543952d316826f"
+    },
+    "source01-failed-msvc-build.log": {
+      "source": "C:\\cbr1\\msvc-build.log",
+      "bytes": 16504,
+      "sha256": "c24f7810d48092b5bf31a573467ef62152d044750d7436aee51ace8304d7a659"
+    },
+    "targeted-compile.py": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r39-religious-title-seh-compile-20261010-001.py",
+      "bytes": 2711,
+      "sha256": "3fd566f7977beee2ea88233212ef0370ea9a2edb4b1abcb431c6e0338cbc954e"
+    }
+  }
+}

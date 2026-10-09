@@ -66,6 +66,22 @@ void *ResolveCharacter(const TitleHolderBindingsV1 &b, std::uint32_t id) noexcep
   return character;
 }
 
+// Keep the SEH boundary free of temporary objects needing C++ unwinding.
+// The caller owns all output resets and string assignments, including failure.
+bool CallLegacyHolder(const Bindings &b, const game::Snapshot &frame,
+                      std::int32_t title_id, game::TitleHolderV1 &out,
+                      bool &available) noexcept {
+#if defined(_MSC_VER)
+  __try {
+#endif
+    available = ReadTitleHolderV1(b.properties.title_holder, frame, title_id, out) ==
+        game::ReadTitleHolderV1Result::available;
+    return true;
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#endif
+}
+
 bool ReadLegacyHolder(const Bindings &b, const game::Snapshot &frame,
                       std::uint32_t title_id, game::TitleHolderV1 &out) noexcept {
   if (std::bit_cast<std::int32_t>(title_id) < 0) {
@@ -76,19 +92,14 @@ bool ReadLegacyHolder(const Bindings &b, const game::Snapshot &frame,
     out.unavailable_reason = "legacy_signed_title_id_boundary";
     return false;
   }
-#if defined(_MSC_VER)
-  __try {
-#endif
-    return ReadTitleHolderV1(b.properties.title_holder, frame,
-        std::bit_cast<std::int32_t>(title_id), out) ==
-        game::ReadTitleHolderV1Result::available;
-#if defined(_MSC_VER)
-  } __except (EXCEPTION_EXECUTE_HANDLER) {
+  bool available = false;
+  if (!CallLegacyHolder(b, frame, std::bit_cast<std::int32_t>(title_id), out,
+                        available)) {
     out = {};
     out.unavailable_reason = "legacy_holder_native_access_failed";
     return false;
   }
-#endif
+  return available;
 }
 
 struct Graph {
