@@ -1944,7 +1944,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["elapsed_days"], 1)
         self.assertEqual(result["timeline_policy"], "player_assault")
 
-    def test_ordinary_siege_one_day_slice_uses_speed_one(self) -> None:
+    def test_ordinary_siege_one_day_slice_uses_speed_five(self) -> None:
         player = _army(101, province_id=2585, army_state="sieging")
         siege = _active_siege(
             assault_observable=False,
@@ -1963,12 +1963,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             extra_capabilities=(
                 "game.state.war-objective-siege-progress",
             ),
-            expected_speed=1,
+            expected_speed=5,
             horizon_days=1,
         )
 
         self.assertEqual(
-            steps, ["set-speed-1", "resume-map", "pause-map"]
+            steps, ["set-speed-5", "resume-map", "pause-map"]
         )
         self.assertEqual(result["elapsed_days"], 1)
         self.assertEqual(result["timeline_policy"], "player_siege")
@@ -15158,7 +15158,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 _snapshot(
                     revision,
                     date_raw=date_raw,
-                    speed=1,
+                    speed=5,
                     paused=False,
                     active_wars=[war(paused_rich=False)],
                     player_armies=[player],
@@ -15178,12 +15178,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "result": {"step": step, "accepted": True},
                 }
             )
-            if step == "set-speed-1":
+            if step == "set-speed-5":
                 endpoint.publish(
                     _snapshot(
                         101,
                         date_raw=start_date,
-                        speed=1,
+                        speed=5,
                         active_wars=[starting_war],
                         player_armies=[player],
                     )
@@ -15196,7 +15196,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     _snapshot(
                         104,
                         date_raw=last_running_date,
-                        speed=1,
+                        speed=5,
                         paused=True,
                         active_wars=[
                             war(paused_rich=True, progressed=True)

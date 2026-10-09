@@ -1,4 +1,4 @@
-"""Sole FIRST: observed own contribution uses the existing daily siege cadence.
+"""Sole FIRST: speed-five siege preserves the existing native one-day clock.
 
 Reuse the qualified Native33 whole foreign-leader input, then connect real
 registered ordinary planning, NativeDriver advance, independent paused siege
@@ -13,9 +13,11 @@ import json
 import os
 from pathlib import Path
 
-from test_native_bridge_driver import FakeEndpoint, _army, _hello, _snapshot, _war
+from test_exact_day_native_clock_paused_next_frame import ClockProvider
+from test_native_bridge_driver import _army, _hello, _snapshot, _war
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.version_identity import CK3_12004
 from xar_autoplayer.bridge.war_contract import normalize_objective_province_states
 from xar_autoplayer.bridge.war_occupation_targets_contract import normalize_war_occupation_targets_v1
 
@@ -43,73 +45,60 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
         move_target_province_id=None, route_province_ids=[], in_combat=False,
         retreating=False)
     start_date = envelope["date_raw"]
-    date_raw, speed, native_revision = start_date, 1, envelope["snapshot_revision"]
     progressed_work = 100_000
-    endpoint = FakeEndpoint()
     save_dir = tmp_path / "isolated-profile" / "save games"
     save_dir.mkdir(parents=True)
+
+    class SiegeClockProvider(ClockProvider):
+        def publish_state(self):
+            observed = copy.deepcopy(original_rows)
+            siege_state = next(row for row in observed if row["province_id"] == 2608)
+            siege = siege_state["active_siege"]
+            if self.date_raw > start_date:
+                siege["current_work"]["raw"] = progressed_work
+                siege["remaining_work"]["raw"] = siege["total_work"]["raw"] - progressed_work
+                siege["progress_fraction"]["raw"] = progressed_work * 100_000 // siege["total_work"]["raw"]
+            self.publish(_snapshot(self.revision, date_raw=self.date_raw, speed=self.speed,
+                paused=self.paused, played_character={"character_id": 29829, "alive": True},
+                active_wars=[_war(100663329, allied_armies=[player], score=0,
+                    war_objective_province_ids=[2606, 2608], objective_province_states=observed)],
+                player_armies=[player]))
+
+        def send(self, request):
+            if request.get("type") == "execute_step" and request["step"] == "save-checkpoint":
+                self.frames.append(request)
+                self.publish({"type": "command_result", "protocol_version": 1,
+                    "request_id": request["request_id"], "ok": True,
+                    "result": {"step": "save-checkpoint", "accepted": True, "status": "submitted",
+                        "submission": {"sequence": len(self.frames),
+                            "requested_save_name": "xar_checkpoint", "date_raw": self.date_raw}}})
+                (save_dir / "xar_checkpoint.ck3").write_bytes(
+                    f"synthetic siege material checkpoint at raw {self.date_raw}".encode("ascii"))
+                return
+            super().send(request)
+
+    endpoint = SiegeClockProvider()
+    endpoint.date_raw, endpoint.revision = start_date, envelope["snapshot_revision"]
     driver = NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint,
         state_dir=tmp_path / "driver-state", save_dir=save_dir,
         command_timeout_seconds=0.1, checkpoint_timeout_seconds=1.0,
         checkpoint_poll_interval_seconds=0.005)
     driver.require_initial_lifestyle_focus_before_date_advance = False
-    endpoint.publish(_hello(
+    hello = _hello(
         "game.state.snapshot", "game.state.active-wars", "game.state.player-armies",
         "game.state.army-routes", "game.state.war-objective-garrison",
         "game.state.war-objective-siege-progress", "game.command.set-speed-1",
         "game.command.set-speed-3", "game.command.set-speed-5",
-        "game.command.resume-map", "game.command.pause-map", "game.command.save-checkpoint"))
+        "game.command.resume-map", "game.command.pause-map", "game.command.save-checkpoint",
+        "game.command.research-arm-tactical-daily-sentinel-v1-N",
+        "game.command.research-query-tactical-daily-sentinel-v1",
+        "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N")
+    hello.update(expected_ck3_version=CK3_12004.game_version,
+        expected_ck3_sha256=CK3_12004.executable_sha256)
+    endpoint.publish(hello)
 
-    def publish(*, paused):
-        nonlocal native_revision
-        native_revision += 1
-        observed = copy.deepcopy(original_rows)
-        siege_state = next(row for row in observed if row["province_id"] == 2608)
-        siege = siege_state["active_siege"]
-        if date_raw > start_date:
-            siege["current_work"]["raw"] = progressed_work
-            siege["remaining_work"]["raw"] = siege["total_work"]["raw"] - progressed_work
-            siege["progress_fraction"]["raw"] = progressed_work * 100_000 // siege["total_work"]["raw"]
-        if not paused:
-            for row in observed:
-                row["siege_observable"] = False
-                row["active_siege"] = None
-        endpoint.publish(_snapshot(native_revision, date_raw=date_raw, speed=speed,
-            paused=paused, played_character={"character_id": 29829, "alive": True},
-            active_wars=[_war(100663329, allied_armies=[player], score=0,
-                war_objective_province_ids=[2606, 2608], objective_province_states=observed)],
-            player_armies=[player]))
-
-    publish(paused=True)
+    endpoint.publish_state()
     assert driver.state.diagnostics()["last_rejected_state_snapshot"] is None
-
-    def answer(request):
-        nonlocal date_raw, speed
-        if request.get("type") != "execute_step":
-            return
-        step = request["step"]
-        result = {"step": step, "accepted": True, "status": "submitted"}
-        if step == "save-checkpoint":
-            result["submission"] = {"sequence": len(endpoint.frames),
-                "requested_save_name": "xar_checkpoint", "date_raw": date_raw}
-        endpoint.publish({"type": "command_result", "protocol_version": 1,
-            "request_id": request["request_id"], "ok": True, "result": result})
-        if step.startswith("set-speed-"):
-            speed = int(step.rsplit("-", 1)[1])
-            publish(paused=True)
-        elif step == "resume-map":
-            # The retained R0047 sparse fast arm is exposed by the old path.
-            # The corrected contribution classifier selects its slow daily arm.
-            date_raw += (13 if speed == 5 else 1) * 24
-            publish(paused=False)
-        elif step == "pause-map":
-            publish(paused=True)
-        elif step == "save-checkpoint":
-            (save_dir / "xar_checkpoint.ck3").write_bytes(
-                f"synthetic siege material checkpoint at raw {date_raw}".encode("ascii"))
-        else:
-            raise AssertionError(f"unexpected extra primitive: {step}")
-    endpoint.send_hook = answer
 
     async def run():
         async with Client(create_server(driver)) as client:
@@ -124,10 +113,23 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
             assert not advanced.is_error, advanced.content
             result = advanced.structured_content["result"]
             assert result["requested_horizon_days"] == result["elapsed_days"] == 1
-            assert result["timeline_speed"] == 1 and result["paused"] is True
-            assert [row["step"] for row in result["actions"]] == ["set-speed-1", "resume-map", "pause-map"]
+            assert result["timeline_speed"] == 5 and result["paused"] is True
+            assert result["timeline_policy"] == "player_siege"
+            commands = [row["step"] for row in result["actions"]]
+            assert commands == ["set-speed-5",
+                f"research-arm-tactical-daily-sentinel-v1-{start_date}-to-{start_date + 24}-speed-5-mode-terminal-a-0",
+                "resume-map", "research-query-tactical-daily-sentinel-v1"]
+            assert commands.count("resume-map") == 1 and "pause-map" not in commands
+            clock = result["exact_day_native_clock"]
+            assert clock["armed"]["speed"] == clock["stopped"]["speed"] == 5
+            assert clock["armed"]["generation"] == clock["stopped"]["generation"] == 37
+            assert clock["stopped"]["completed_daily_ticks"] == 1
+            assert clock["stopped"]["trigger_reasons"] == ["date_deadline"]
+            assert clock["stopped"]["overshoot_days"] == 0
+            assert clock["stopped"]["pause_observed"] is True
             # This is a later independently published rich paused frame. The
-            # running null was not interpreted as a completed siege/capture.
+            # provider publishes only the paused next day, never a running
+            # frame; the original sparse unarmed clock would advance 7 days.
             observed = await client.call_tool("ck3_take_snapshot", {})
             assert not observed.is_error, observed.content
             after = observed.structured_content
@@ -140,6 +142,9 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
             assert after_siege["player_army_besieging"] is False
             assert after_siege["current_work"]["raw"] == progressed_work
             assert after_state["is_occupied"] is False
+            durable = json.loads(driver._native_driver_state_path().read_bytes())
+            recorded = [row for row in durable["command_history"] if row["command"] == "life-advance"]
+            assert len(recorded) == 1 and recorded[0]["result"] == result
             saved = await client.call_tool("ck3_save_checkpoint", {"expected_revision": after["revision"]})
             assert not saved.is_error, saved.content
             checkpoint = saved.structured_content["checkpoint"]
@@ -160,8 +165,8 @@ def test_normal_foreign_leader_contribution_advances_one_day_observes_and_saves(
     if output_path:
         output = Path(output_path)
         output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(json.dumps({"schema": "xar.foreign-siege-material-service-first12004.v1",
+        output.write_text(json.dumps({"schema": "xar.siege-speed5-native-clock-service-first12004.v1",
             "input_packet": str(packet_path), "result": report,
-            "boundary": "reused qualified whole input; synthetic clock/work/file outputs; real registered normal Service, Driver and materialization",
+            "boundary": "reused qualified whole input and ClockProvider; synthetic native clock/work/file outputs; real registered normal Service, Driver, full persistence and checkpoint materialization",
             "production_live": False, "game_days_credit": 0, "capture_credit": False,
             "old_qualification_replay": False}, indent=2) + "\n", encoding="utf-8")

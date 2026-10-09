@@ -27536,7 +27536,7 @@ def _life_advance_timeline_policy(
                 enemy_routes.append(enemy)
 
     if not enemy_routes and _observed_player_siege(snapshot):
-        return 1, "player_siege"
+        return 5, "player_siege"
     if _remote_enemy_routes_speed_three_ready(snapshot, enemy_routes):
         return 3, "remote_enemy_route"
     return 1, "enemy_route_imminent_or_unknown"
