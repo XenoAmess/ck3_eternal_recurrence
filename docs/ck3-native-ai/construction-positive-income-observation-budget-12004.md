@@ -1,13 +1,18 @@
 # R85 positive-income construction observation budget
 
-Status: source-ready / NOTRUN, 2026-10-10. This is a bounded native observation
-improvement following the separately qualified ordinary-plan recovery
-`cff83a869f836a1fa53f16f2e69efa1913622569`. Root alone compiles, runs the unique
-fixture and qualifies any new paused native build.
+Status: static-qualified / not live, 2026-10-10. Root's actual Native64 FIRST
+finished GREEN at `2026-10-09T21:07:32Z`; canonical sealing finished GREEN at
+`2026-10-09T21:09:56Z`. Author source is
+`57a7a77db58cf11bb973dcadc2d5919b8d016ac7`, independently integrated into
+Native64 compiled/qualification source
+`f28f7266e64d048f99b43a7a5f099a7f589bb037` at
+`D:/codex-ck3-background-spill/gbs-native64-construction-person-source` with the
+Person work. The ordinary-plan recovery
+`cff83a869f836a1fa53f16f2e69efa1913622569` remains separately qualified.
 
-Integration must cherry-pick only this package's delta onto Root's current
-qualified Native63 child, preserving Native61/62/63 capabilities and object
-lineage. Native60 is the failure evidence, not the next binary parent.
+Root integrated only this package's delta onto its qualified Native63 child,
+preserving Native61/62/63 capabilities and object lineage. Native60 remains
+failure evidence, not the Native64 binary parent.
 
 ## Actual missing input
 
@@ -56,6 +61,14 @@ existing `cost_ready` / `construction_action_ready` fields are not fabricated
 from coverage; the ordinary candidate consumer still requires actual affordable
 native costs and positive authored increment.
 
+The actual Native64 owner projection is one Bridge owner
+(`ck3_12004_construction_mailbox.cpp`) and one Runtime owner
+(`ck3_12004_construction.cpp`), correcting the preliminary two-Runtime estimate.
+The combined construction/Person package compiled five production owners and
+two fixtures with seven BelowNormal jobs. Its fresh Runtime archive has 441
+members with two replacements across that combined package; no old native
+fixture was replayed for construction qualification.
+
 The [existing construction tree and dated R85 correction](domain-construction-ai.md)
 and [finite quote coverage contract](ck3-1.20.0.2-construction-quote-coverage.md)
 are the source-policy inputs. This package changes observation allocation,
@@ -79,10 +92,16 @@ production reader with synthetic memory/callbacks. Its eight holdings and forty
 slots make the old 512 request stop during the positive phase. The revised
 4096 request observes all 760 positive tuples and 456 legal costs, including the
 last positive option, without evaluating a nonpositive tail tuple. Costs and
-observed completed occupants remain exact. The fixture is authored only and
-has not been compiled or run by the author.
+observed completed occupants remain exact. Root executed this single new
+construction fixture once, with both scenes GREEN in `0.1287s`. Its stdout
+reports `scene_count=2`, `production_reader=true`,
+`old_positive_coverage=false`, `new_positive_coverage=true`,
+`positive_legality_checks=760`, `positive_quotes=456` and
+`tail_legality_checks=0`. Canonical evidence is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/entry-live-fix64/ROOT-PARENT-RUNTIME-INCREMENTAL-DLL.json`.
+Author-side test/build/hash/Game/SDK/process operations remain zero.
 
-After Root qualifies and adopts the new native objects, the existing read-only
+After Root adopts the new native objects into a live paused session, the existing read-only
 `ck3_query_domain_construction_world_private_v1` with the actual current public
 `expected_revision` can show fresh coverage, legal keys/costs, active progress
 and completed occupants. No ledger reset, replay, new MCP or manual submission
@@ -90,3 +109,8 @@ is needed. If fresh complete coverage still has no affordable candidate, normal
 time and the existing natural completion/income watches remain the next useful
 work; coverage alone does not complete M4, attribute tax income or grant G2
 credit. Construction material and useful benefit predicates remain independent.
+
+No Native64 paused coverage read has been observed in this package. The actual
+R85 funds and the unaffordable observed subset above remain the last inputs;
+the synthetic fixture does not replace them. Static qualification grants no
+completed building, useful-income attribution, M4 completion or new G2 credit.
