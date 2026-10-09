@@ -22531,6 +22531,12 @@ class NativeHeadlessGameplayDriver:
                 )
         starting_date_raw = _date_raw(starting, "starting snapshot")
         horizon_days = 1 if exact_one_day else _life_advance_horizon_days(starting)
+        from ..crown_authority_formal_consumer_v1 import (
+            crown_authority_retry_horizon_days_v1,
+        )
+        horizon_days = crown_authority_retry_horizon_days_v1(
+            self, starting, horizon_days,
+        )
         primitive_steps = set(
             _string_list(self.state.capabilities().get("action_steps"))
         )
@@ -22583,7 +22589,7 @@ class NativeHeadlessGameplayDriver:
 
             current = self._resume_life_advance(current, actions)
             progress_deadline = time.monotonic() + self.life_advance_timeout_seconds
-            horizon_days_override = 1 if exact_one_day else None
+            horizon_days_override = 1 if exact_one_day else horizon_days
             native_pause_observed = current.get("paused") is True
             semantic_progress_observed = _life_advance_progressed(
                 current,

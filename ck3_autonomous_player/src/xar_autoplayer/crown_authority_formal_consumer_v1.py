@@ -11,6 +11,8 @@ from pathlib import Path
 from typing import Mapping
 import uuid
 
+from .bridge.crown_authority_cooldown_clock_12004 import interpret_crown_cooldown_native_clock_12004
+from .bridge.driver import BridgeUnavailableError, UnsupportedStepError
 from .bridge.realm_law_formal_private_transport import SUBMIT_STEP, RECEIPT_STEP
 from .crown_authority_policy_v1 import choose_crown_authority_upgrade_v1
 from .environment import write_json_atomic
@@ -21,7 +23,7 @@ _STATE = "crown-authority-formal-v1.json"
 def read_crown_authority_state_v1(state_dir: Path) -> dict[str, object]:
     path = state_dir / _STATE
     if not path.exists():
-        return {"pending": None, "resolved": None}
+        return {"pending": None, "resolved": None, "retry": None}
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
@@ -42,6 +44,44 @@ def _context(driver: object, snapshot: Mapping[str, object]) -> dict[str, object
 def _checked_frame(driver: object, snapshot: Mapping[str, object]) -> dict[str, object]:
     return {**_context(driver, snapshot), "native_revision": snapshot.get("native_revision"),
             "date_raw": snapshot.get("date_raw")}
+
+
+def _matching_future_retry(
+    driver: object, snapshot: Mapping[str, object], state: Mapping[str, object],
+    *, law_key: str | None = None,
+) -> Mapping[str, object] | None:
+    """Match one previously observed retry to this actor and optional target."""
+    retry = state.get("retry")
+    actor = snapshot.get("played_character")
+    date_raw = snapshot.get("date_raw")
+    if (state.get("pending") is not None or not isinstance(retry, Mapping)
+            or retry.get("source_context") != _context(driver, snapshot)
+            or not isinstance(actor, Mapping)
+            or retry.get("actor_character_id") != actor.get("character_id")
+            or type(date_raw) is not int or type(retry.get("retry_date_raw")) is not int
+            or retry["retry_date_raw"] <= date_raw
+            or law_key is not None and retry.get("law_key") != law_key):
+        return None
+    return retry
+
+
+def crown_authority_retry_horizon_days_v1(
+    driver: object, snapshot: Mapping[str, object], horizon_days: int,
+) -> int:
+    """Clip ordinary advance to an observed same-actor Crown re-query date."""
+    if (getattr(driver, "allow_private_realm_law_action", False) is not True
+            or getattr(driver, "allow_private_realm_law_paused_query", False) is not True):
+        return horizon_days
+    state_dir = getattr(driver, "state_dir", None)
+    if not isinstance(state_dir, Path):
+        return horizon_days
+    state = read_crown_authority_state_v1(state_dir)
+    retry = _matching_future_retry(driver, snapshot, state)
+    if retry is None:
+        return horizon_days
+    delta = retry["retry_date_raw"] - snapshot["date_raw"]
+    days, remainder = divmod(delta, 24)
+    return min(horizon_days, days + int(remainder != 0))
 
 
 def _record(driver: object, step: str, result: Mapping[str, object]) -> None:
@@ -100,7 +140,53 @@ def plan_crown_authority_private_v1(
             "next_turn_effective_law_key": readback.get("active_law_key"),
             "next_turn_context": _context(driver, current)}
         fields["crown_result_consumed"] = consumption
-        _write(state_dir, {**state, "resolved": consumption})
+        state = {**state, "resolved": consumption}
+        _write(state_dir, state)
+    retry = None
+    retry_source = None
+    retry_reason = None
+    if choice.status == "native_blocked" and choice.law_key:
+        if getattr(driver, "allow_private_realm_law_paused_query", False) is not True:
+            fields["crown_cooldown_unavailable_reason"] = "private_realm_law_paused_query_disabled"
+        else:
+            cached_retry = _matching_future_retry(driver, current, state, law_key=choice.law_key)
+            if cached_retry is not None:
+                retry = dict(cached_retry)
+                retry_source = "reused_hint"
+                retry_reason = "same actor, episode and target before retry; no new cooldown observation"
+            else:
+                try:
+                    cooldown_readback = driver.query_realm_law_final_terms_private_v1(
+                        expected_revision=current["revision"])
+                except (BridgeUnavailableError, UnsupportedStepError) as exc:
+                    fields["crown_cooldown_unavailable_reason"] = str(exc)
+                    current = _snapshot(driver)
+                else:
+                    fields["crown_cooldown_readback"] = cooldown_readback
+                    raw_clock = cooldown_readback.get("crown_authority_cooldown")
+                    current = _snapshot(driver)
+                    if not isinstance(raw_clock, dict):
+                        fields["crown_cooldown_unavailable_reason"] = "crown_authority_cooldown_unavailable"
+                    else:
+                        clock = interpret_crown_cooldown_native_clock_12004(
+                            raw_clock, date_raw=cooldown_readback["date_raw"])
+                        fields["crown_cooldown_clock"] = asdict(clock)
+                        if (clock.calendar_deadline_ready
+                                and clock.query_retry_date_raw is not None
+                                and clock.query_retry_date_raw > current["date_raw"]):
+                            retry = {"source_context": _context(driver, current),
+                                "actor_character_id": cooldown_readback["actor_character_id"],
+                                "law_key": choice.law_key,
+                                "observed_date_raw": cooldown_readback["date_raw"],
+                                "retry_date_raw": clock.query_retry_date_raw}
+                            retry_source = "current_query"
+                            retry_reason = "future calendar retry from this paused native cooldown observation"
+    fields["crown_calendar_retry"] = retry
+    fields["crown_calendar_retry_source"] = retry_source
+    fields["crown_calendar_retry_reason"] = retry_reason
+    if state.get("retry") != retry:
+        state = {**state, "retry": retry}
+        _write(state_dir, state)
     if choice.status == "ready":
         fields.update(selected_step=SUBMIT_STEP, phase="crown_ordinary_typed_enact",
                       reason="enact the source-backed positive-score Crown upgrade using its final native quote")
