@@ -670,6 +670,54 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                                   pending["action_request_id"]]})
         driver._record_command(RECEIPT_STEP, ok=True, result=classification)
         return classification
+    target_holding = [row for row in active if isinstance(row, Mapping)
+                      and row.get("barony_title_id") == candidate.get("barony_title_id")
+                      and row.get("province_id") == candidate.get("province_id")
+                      ] if isinstance(active, list) else []
+    if (unresolved and not same_process and not matches and not completed
+            and world.get("completed_buildings_observed") is True
+            and isinstance(built, list)
+            and len(target_holding) == 1 and target_holding[0].get("active") is False
+            and starting["date_raw"] == pending.get("pre_date_raw")
+            and type(candidate.get("gold_before_raw")) is int
+            and world.get("player_gold_raw") == candidate["gold_before_raw"]):
+        # R82 restored an opaque pre-submit intent whose command never became
+        # construction material. Old process counters are not comparable;
+        # the current paused holding/inventory/resources prove not applied.
+        # Preserve the intent and independent proof without calling it success.
+        resolution = {
+            "status": "not_applied_after_restore",
+            "postcondition_verified": False,
+            "requested_postcondition_verified": False,
+            "material_postcondition_verified": False,
+            "action_request_id": pending["action_request_id"],
+            "episode_run_id": pending["episode_run_id"],
+            "actor_character_id": pending["actor_character_id"],
+            "candidate": dict(candidate),
+            "original_pending": dict(pending),
+            "post_snapshot_id": starting["snapshot_id"],
+            "post_public_revision": expected_revision,
+            "post_native_revision": starting["native_revision"],
+            "post_date_raw": starting["date_raw"],
+            "post_proof_epoch": epoch,
+            "post_player_gold_raw": world["player_gold_raw"],
+            "post_bridge_pid": pid,
+            "post_bridge_creation_date": creation,
+            "native_query_request_id": query.get("native_query_request_id"),
+            "source_frame": query.get("source_frame"),
+            "observed_target_holding": dict(target_holding[0]),
+            "observed_completed_buildings": [dict(row) for row in built
+                if isinstance(row, Mapping)
+                and row.get("barony_title_id") == candidate.get("barony_title_id")
+                and row.get("province_id") == candidate.get("province_id")],
+            "native_submission_outcome": "unobserved",
+            "new_native_submit_calls": 0,
+            "m4_credit": 0,
+        }
+        write_construction_ledger(state_dir, {
+            **ledger, "pending": None, "last_not_applied_resolution": resolution})
+        driver._record_command(RECEIPT_STEP, ok=True, result=resolution)
+        return resolution
     if not matches and not completed:
         raise BridgeUnavailableError("construction material not yet observed; keep pending")
     # The native row carries work and divisor on this same paused material
