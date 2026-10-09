@@ -320,7 +320,9 @@ Game/SDK/process operations, hashes and guardian/live/G2 credit remain0.
 ```mermaid
 flowchart TD
   N[Stock lowercase guardian and ward trigger keys] --> H[Actual pure existing-name map and hash3F51A90]
-  H -. exact equality semantics still unclosed .-> ID[Existing NameID]
+  H --> A[Actual72 default ASCII equality]
+  A --> ID[Existing NameID]
+  H -. nondefault comparison branch unclosed .-> U[Unknown alternate equality]
   ID --> M[Actual24B factory-map hit prefix3736D30]
   M --> F[Existing factory pointer]
   R[Actual registration writes and locked interner] -. excluded from pure reader .-> M
@@ -347,6 +349,52 @@ is a later authorized same-paused-MCP finite capture of these two hits
 and their actual type metadata. The local Game ban prevents it now.
 No runtime lookup was performed; no factory-availability-only MCP field
 or permanent-null guardian field is published.
+
+### Fixed-key private reader source after actual72
+
+Root captured the actual default tail`[423EDDC,423EE28)` once at
+2026-10-10 00:39:24.380088 Asia/Shanghai:76 new bytes/29 instructions,
+complete decode. The code ends at`423EE24` with three trailing`int3` bytes.
+It loads unsigned bytes, folds only ASCII`A..Z` by`+20`, returns the folded
+byte difference and stops at the first mismatch, NUL or exhausted count.
+It performs no calls. This closes the default equality needed for the two
+stock-proved ASCII keys without identifying or following locale routines.
+The actual receipt is
+`name-comparison-default72/root-default01/DEFAULT-NAME-COMPARISON-RESULT.json`
+under the same October10 controller packet. Together66–72 cost8 actual
+reads/2872 new bytes; Oct10 captures67–72 cost7 reads/2720 bytes.
+
+The new private header
+`ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_guardian_factory_lookup.hpp`
+implements the actual48-byte existing-name and24-byte factory-map hit
+paths with an injected plain-memory reader. It binds the inherited exact4
+SHA descriptor, fixes its inputs to`has_relation_guardian` and
+`has_relation_ward`, hashes the actual key/ID domains, copies the matched
+stored name and returns the actual map/record IDs, factory vtable and
+opaque descriptor. The comparison-mode global must select the proved
+default branch; a different branch is reported separately rather than
+assigned an unproved equality algorithm. A missing name, missing factory
+and unreadable input are distinct results. Shared vtables or differing
+raw record IDs are preserved as metadata, not treated as guardian kinds.
+
+This header invokes no interner, registrar, factory constructor or
+evaluator. It is not included by any existing production translation unit
+and changes no query, public DTO, protocol, Runtime or serializer. Its
+only source consumer is the new standalone fixture
+`native_bridge/tests/ck3_12004_guardian_factory_lookup_test.cpp`.
+The fixture uses explicitly laid-out sparse memory and independent fixed
+hash/slot values to exercise the actual table traversal and comparison,
+including two keys sharing a vtable, real probe-stop misses and separate
+read failures. It has not been compiled or run; no static qualification
+or native guardian predicate is claimed from source authorship.
+
+After a future authorized paused capture, this helper can supply the
+concrete key-to-factory identity needed to select a tiny actual vtable or
+constructor source. No raw arbitrary memory/query protocol or standalone
+factory-availability MCP field is added. The evaluator, parsed trigger
+payload and child/guardian wrapper ABI remain necessary before publishing
+useful pair membership. The actual roster child's full ID remains the
+receiver; the current CharacterWindow subject is not substituted.
 
 ## Required production input after native closure
 
