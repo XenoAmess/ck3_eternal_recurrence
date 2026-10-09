@@ -160,7 +160,7 @@ void ProduceGovernmentGate(const std::filesystem::path &directory,
                                               : world.related_character;
     Require(root.related_context_identity == Address(world.relay) &&
                 root.related_full_id_u32 == GovernmentGateWorld::kRelatedId &&
-                root.registry_count_u32 == 2 &&
+                root.registry_count_u32 == 2U &&
                 root.registry_slots_identity == Address(world.related_slots) &&
                 root.candidate_identity == Address(world.related_character) &&
                 root.candidate_full_id_u32 == (fallback ? 0x04000001U
