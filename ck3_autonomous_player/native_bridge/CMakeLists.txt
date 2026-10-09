@@ -9439,6 +9439,7 @@ endif()
 if(BUILD_TESTING AND WIN32 AND XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
   add_subdirectory(tests/crown_authority_cooldown_whole_fixture_12004)
 endif()
+include(cmake/crown_authority_cooldown_turn_tick_whole_12004.cmake)
 
 
 # Focused current-player claims leaf fixture: no runtime/bridge/SDK linkage.
