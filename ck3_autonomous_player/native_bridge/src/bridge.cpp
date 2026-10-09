@@ -42,6 +42,7 @@
 #include "xar_bridge/player_claims_v1_serializer.hpp"
 #include "xar_bridge/title_own_laws_v1_serializer.hpp"
 #include "xar_bridge/army_strength_v1_serializer.hpp"
+#include "xar_bridge/army_strengths_manager_shared_wire_v1.hpp"
 #include "xar_bridge/projected_contact_scope_v1_serializer.hpp"
 #include "xar_bridge/contextual_advantage_v1.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
@@ -3281,9 +3282,12 @@ void AppendArmyArray(
 
 void AppendArmyStrength(
     std::string &result,
-    const xar::game::ArmyStrengthSnapshot &strength) {
-  xar::game::AppendArmyStrengthV1(
-      result, strength, SignedNumber, AppendInt32Array, AppendJsonString);
+    const xar::game::ArmyStrengthSnapshot &strength,
+    xar::game::ArmyStrengthManagerInputsModeV1 manager_inputs_mode =
+        xar::game::ArmyStrengthManagerInputsModeV1::inline_values) {
+  xar::game::AppendArmyStrengthV1WithManagerInputsMode(
+      result, strength, SignedNumber, AppendInt32Array, AppendJsonString,
+      manager_inputs_mode);
   if (strength.native_owner_recall_inputs_v1.has_value()) {
     result.pop_back();
     result += ",\"native_owner_recall_inputs_v1\":";
@@ -9057,14 +9061,10 @@ std::string ArmyStrengthsResultFrame(
                 : "partial";
   result += "\",\"query_sequence\":";
   result += Number(query_sequence);
-  result += ",\"army_strengths\":[";
-  for (std::size_t index = 0; index < strengths.size(); ++index) {
-    if (index != 0) {
-      result += ',';
-    }
-    AppendArmyStrength(result, strengths[index]);
-  }
-  result += "]}}";
+  xar::game::AppendArmyStrengthsQueryMembersV1(
+      result, std::span<const xar::game::ArmyStrengthSnapshot>(strengths),
+      SignedNumber, AppendInt32Array, AppendJsonString, AppendArmyStrength);
+  result += "}}";
   return result;
 }
 

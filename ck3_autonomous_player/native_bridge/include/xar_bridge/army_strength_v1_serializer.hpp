@@ -578,11 +578,17 @@ inline void AppendArmyCurrentDisembarkPenaltyV1(
   out += '}';
 }
 
+enum class ArmyStrengthManagerInputsModeV1 {
+  inline_values,
+  query_shared,
+};
+
 template <class Number, class Int32Array, class JsonString>
-inline void AppendArmyStrengthV1(
+inline void AppendArmyStrengthV1WithManagerInputsMode(
     std::string &result,
     const ArmyStrengthSnapshot &strength, Number number,
-    Int32Array append_int32_array, JsonString append_json_string) {
+    Int32Array append_int32_array, JsonString append_json_string,
+    ArmyStrengthManagerInputsModeV1 manager_inputs_mode) {
   result += "{\"status\":\"";
   result += strength.available ? "available" : "unavailable";
   result += "\",\"army_id\":";
@@ -654,7 +660,8 @@ inline void AppendArmyStrengthV1(
     AppendArmyCurrentDailyAssaultTableV1(result, *strength.current_daily_assault_table_v1,
                                        number, append_json_string);
   }
-  if (strength.current_daily_assault_roster_admission_v1) {
+  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+      strength.current_daily_assault_roster_admission_v1) {
     result += ",\"current_daily_assault_roster_admission_v1\":";
     AppendArmyCurrentDailyAssaultRosterAdmissionV1(result, *strength.current_daily_assault_roster_admission_v1,
         number, append_json_string);
@@ -722,24 +729,28 @@ inline void AppendArmyStrengthV1(
     AppendArmyCurrentFlag21InputsV1(result, *strength.current_army_flag21_inputs_v1,
         number, append_json_string);
   }
-  if (strength.current_selected_title_holder_owner_relation_v1) {
+  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+      strength.current_selected_title_holder_owner_relation_v1) {
     result += ",\"current_selected_title_holder_owner_relation_v1\":";
     xar::game::AppendArmyCurrentSelectedTitleHolderOwnerRelationV1(
         result, *strength.current_selected_title_holder_owner_relation_v1,
         number, append_json_string);
   }
-  if (strength.current_army_flag31_inputs_v1) {
+  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+      strength.current_army_flag31_inputs_v1) {
     result += ",\"current_army_flag31_inputs_v1\":";
     AppendArmyCurrentFlag31InputsV1(result, *strength.current_army_flag31_inputs_v1,
         number, append_int32_array, append_json_string);
   }
-  if (strength.current_army_combat_roles_phase_inputs_v1) {
+  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+      strength.current_army_combat_roles_phase_inputs_v1) {
     result += ",\"current_army_combat_roles_phase_inputs_v1\":";
     AppendArmyCurrentCombatRolesPhaseInputsV1(
         result, *strength.current_army_combat_roles_phase_inputs_v1,
         number, append_int32_array, append_json_string);
   }
-  if (strength.current_post_admission_refresh_inputs_v1) {
+  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+      strength.current_post_admission_refresh_inputs_v1) {
     result += ",\"current_post_admission_refresh_inputs_v1\":";
     AppendArmyCurrentPostAdmissionRefreshInputsV1(result, *strength.current_post_admission_refresh_inputs_v1,
         number, append_json_string);
@@ -754,7 +765,8 @@ inline void AppendArmyStrengthV1(
     AppendArmyCurrentAssaultRemovalReferenceInputsV1(result, *strength.current_assault_removal_reference_inputs_v1,
                                                    number, append_json_string);
   }
-  if (strength.current_pre_date_pending_update_inputs_v1) {
+  if (manager_inputs_mode == ArmyStrengthManagerInputsModeV1::inline_values &&
+      strength.current_pre_date_pending_update_inputs_v1) {
     result += ",\"current_pre_date_pending_update_inputs_v1\":";
     AppendArmyCurrentPreDatePendingUpdateInputsV1(result, *strength.current_pre_date_pending_update_inputs_v1,
         number, append_json_string);
@@ -1327,6 +1339,17 @@ inline void AppendMoveRoutePreviewV1(
                                append_json_string);
   }
   output += '}';
+}
+
+// Keep the original formatter signature and its full inline representation.
+// Only the query-level transport writer selects shared manager inputs.
+template <class Number, class Int32Array, class JsonString>
+inline void AppendArmyStrengthV1(
+    std::string &result, const ArmyStrengthSnapshot &strength, Number number,
+    Int32Array append_int32_array, JsonString append_json_string) {
+  AppendArmyStrengthV1WithManagerInputsMode(
+      result, strength, number, append_int32_array, append_json_string,
+      ArmyStrengthManagerInputsModeV1::inline_values);
 }
 
 } // namespace xar::game

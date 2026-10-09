@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING, cast
 
+from .army_strengths_manager_shared_wire import pack_army_strengths_manager_inputs
+
 if TYPE_CHECKING:
     from mcp.types import CallToolResult
 
@@ -74,7 +76,7 @@ def build_army_strengths_mcp_result(payload: dict[str, object]) -> CallToolResul
                 text=json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
             )
         ],
-        structured_content=payload,
+        structured_content=pack_army_strengths_manager_inputs(payload),
     )
 
 
@@ -95,5 +97,8 @@ def build_army_auto_turn_mcp_result(payload: dict[str, object]) -> CallToolResul
         content=[TextContent(
             type="text", text=json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
         )],
-        structured_content=payload,
+        structured_content={
+            **payload,
+            "result": pack_army_strengths_manager_inputs(result),
+        },
     )

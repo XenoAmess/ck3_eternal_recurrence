@@ -23,6 +23,10 @@ from .current_actor_stress_adjustment_contract import (
     CAPABILITY as CURRENT_ACTOR_STRESS_ADJUSTMENT_V1_CAPABILITY,
     STEP as CURRENT_ACTOR_STRESS_ADJUSTMENT_V1_STEP,
 )
+from .army_strengths_manager_shared_wire import (
+    SHARED_KEY as ARMY_MANAGER_INPUTS_SHARED_KEY,
+    expand_army_strengths_manager_inputs,
+)
 
 from collections.abc import Callable, Mapping
 import copy
@@ -13755,7 +13759,7 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=max(self.command_timeout_seconds, 35.0),
         )
         if (
-            set(result)
+            set(result) - {ARMY_MANAGER_INPUTS_SHARED_KEY}
             != {
                 "step",
                 "accepted",
@@ -13773,6 +13777,9 @@ class NativeHeadlessGameplayDriver:
             )
         army_normalize_timing = start_army_timing("driver.army_normalize")
         try:
+            # Expand the lossless wire view before the existing independent
+            # per-row normalization. The raw command evidence stays unchanged.
+            result = expand_army_strengths_manager_inputs(result, detached=False)
             rows = normalize_army_strengths(
                 result.get("army_strengths"),
                 expected_scope=expected_scope,

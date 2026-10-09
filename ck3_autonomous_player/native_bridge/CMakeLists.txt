@@ -9675,3 +9675,5 @@ if(BUILD_TESTING AND WIN32)
     COMMAND xar_ck3_12004_guardian_factory_discovery_job_test
       "${CMAKE_BINARY_DIR}/wire/ck3_12004_guardian_factory_discovery_job_first")
 endif()
+
+include(cmake/army_manager_shared_wire_12004.cmake)
