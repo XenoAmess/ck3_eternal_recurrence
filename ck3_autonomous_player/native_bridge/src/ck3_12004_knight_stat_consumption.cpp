@@ -254,7 +254,8 @@ void *InvokeKnightStatWrapper12004(void *output_cache, void *linked_character,
       if (event->contexts.size() != 9) event->capture_reason = "consumed_context_calls_incomplete";
       const std::lock_guard lock(g_mutex);
       event->sequence = ++g_sequence;
-      g_ring[(event->sequence - 1) % g_ring.size()] = std::shared_ptr<const Event>(std::move(event));
+      const auto ring_index = (event->sequence - 1) % g_ring.size();
+      g_ring[ring_index] = std::shared_ptr<const Event>(std::move(event));
     } catch (...) { g_capture_failures.fetch_add(1); }
   }
   return result;
