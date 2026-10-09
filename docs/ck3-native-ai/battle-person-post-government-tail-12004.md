@@ -25,9 +25,13 @@ flowchart TD
 
 ## One Root-only file capture
 
+Root executed that 11-byte capture once at 2026-10-09 13:16:18 UTC. `actual-merged-call01/SOURCE-CAPTURE.json` is decode-complete: `291CE75 MOV RDX,R14`, `291CE78 MOV RCX,R13`, and `291CE7B CALL291E3A0`. This closes the actual target and argument direction without using a global version delta. The callee's numerical role and return contract remain unobserved.
+
 The prepared argv is `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/person-entry-after-government53/ROOT-CAPTURE-ARGV.json`. It requests only `[291CE75,291CE80)`, 11 bytes, using held `.text RVA4096/raw1024` and file offset `RVA-3072`. It does not read PE/PDATA/unwind metadata, rehash the EXE, inspect process memory, or launch anything. Root alone executes it with the already available Capstone interpreter.
 
 The resulting literal CALL determines the next helper. Only after that decode may the exact known runtime row or existing complete cache supply the necessary callee extent. The manifest requests no positive-path bytes, no guessed callee body, and no other target. A decode-complete caller window is not a whole-function or helper-semantics claim.
+
+The actual target exactly matches cached NEW runtime row `[43115424,43117734,86526344]`: `[291E3A0,291ECA6)`, 2,310 bytes, one-based ordinal141239 / zero-based index141238. The scoped actual complete-body filename search is a finite MISS. `ROOT-HELPER-BODY-CAPTURE-ARGV.json` and `HELPER-BODY-CAPTURE-MANIFEST.json` in the same external package therefore request one necessary actual body read, using file offset43112352. They request no old body, neighboring function, positive Government path, PE, PDATA, or hash. Actual control-flow closure still requires decoding that body; a runtime extent alone is not semantic proof.
 
 ## Minimum future integration
 
