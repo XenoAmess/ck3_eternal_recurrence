@@ -99,6 +99,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.command.acknowledge-pending-character-interaction",
       ck3_11906::kIngameUiNavigationV1Capability,
       ck3_11906::kIngameUiWindowQueryV1Capability,
+      ck3_11906::kCurrentTitleAppointmentCapabilityV1,
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1) && \
     defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
       ck3_11906::kFrontendGuiRouteV1Capability,

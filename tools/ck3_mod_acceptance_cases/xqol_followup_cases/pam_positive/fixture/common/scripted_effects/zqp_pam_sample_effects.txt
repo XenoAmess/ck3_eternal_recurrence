@@ -88,7 +88,10 @@ zqp_setup_positive_effect = {
    debug_log_scopes = yes
    zqp_seed_one_async_reply_effect = yes
   }
-  else = { debug_log = "ZQP120: TEST FAIL actual_positive_doctrines_landed_recipient" }
+  else = {
+   zqp_diagnose_positive_setup_guard_effect = yes
+   debug_log = "ZQP120: TEST FAIL actual_positive_doctrines_landed_recipient"
+  }
  }
  else = { debug_log = "ZQP120: TEST FAIL no_eligible_landed_vassal_sample" }
 }
@@ -133,4 +136,69 @@ zqp_observe_actual_reply_effect = {
   else_if = { limit = { var:zqp_observation_days >= 12 } remove_character_flag = zqp_async_observing debug_log = "ZQP120: TEST FAIL bounded12_natural_reply_timeout" }
   else = { trigger_event = { id = zqp120.2 days = 1 } }
  }
+}
+
+
+# Failure-only read-only diagnostics. Original setup, compound guard and FAIL remain authoritative.
+zqp_diagnose_positive_setup_guard_effect = {
+ debug_log = "ZQP120: DIAG BEGIN original_positive_setup_guard"
+ if = { limit = { faith = faith:nestorian } debug_log = "ZQP120: DIAG actor_faith_nestorian TRUE" }
+ else = { debug_log = "ZQP120: DIAG actor_faith_nestorian FALSE" }
+ if = { limit = { rite = rite:nestorian } debug_log = "ZQP120: DIAG actor_rite_nestorian TRUE" }
+ else = { debug_log = "ZQP120: DIAG actor_rite_nestorian FALSE" }
+ if = { limit = { var:zqp_stock_sp_major = 10 } debug_log = "ZQP120: DIAG stock_sp_major10 TRUE" }
+ else = { debug_log = "ZQP120: DIAG stock_sp_major10 FALSE" }
+ if = { limit = { var:zqp_stock_sp_minor = 3 } debug_log = "ZQP120: DIAG stock_sp_minor3 TRUE" }
+ else = { debug_log = "ZQP120: DIAG stock_sp_minor3 FALSE" }
+ if = { limit = { spiritual_fulfillment >= 0 } debug_log = "ZQP120: DIAG actor_sf_ge0 TRUE" }
+ else = { debug_log = "ZQP120: DIAG actor_sf_ge0 FALSE" }
+ if = { limit = { spiritual_fulfillment <= 0 } debug_log = "ZQP120: DIAG actor_sf_le0 TRUE" }
+ else = { debug_log = "ZQP120: DIAG actor_sf_le0 FALSE" }
+ if = { limit = { is_valid_for_legitimacy_change = yes } debug_log = "ZQP120: DIAG actor_legitimacy_valid TRUE" }
+ else = { debug_log = "ZQP120: DIAG actor_legitimacy_valid FALSE" }
+ if = { limit = { rite = { rite_has_parameter = tenet_acts_of_apostles_legitimacy_from_converts } } debug_log = "ZQP120: DIAG actor_rite_acts_legitimacy TRUE" }
+ else = { debug_log = "ZQP120: DIAG actor_rite_acts_legitimacy FALSE" }
+ if = { limit = { rite = { rite_has_parameter = tenet_acts_of_apostles_piety_from_converts } } debug_log = "ZQP120: DIAG actor_rite_acts_piety TRUE" }
+ else = { debug_log = "ZQP120: DIAG actor_rite_acts_piety FALSE" }
+ if = { limit = { has_personal_tenet_flag = tenet_acts_of_apostles_fulfillment_from_converts } debug_log = "ZQP120: DIAG actor_personal_acts_fulfillment TRUE" }
+ else = { debug_log = "ZQP120: DIAG actor_personal_acts_fulfillment FALSE" }
+ if = { limit = { has_personal_tenet_flag = tenet_mendicant_preachers_conversion_fulfillment } debug_log = "ZQP120: DIAG actor_personal_mendicant_fulfillment TRUE" }
+ else = { debug_log = "ZQP120: DIAG actor_personal_mendicant_fulfillment FALSE" }
+ if = { limit = { NOT = { has_variable = xqol_mass_conversion_pending } } debug_log = "ZQP120: DIAG no_pending TRUE" }
+ else = { debug_log = "ZQP120: DIAG no_pending FALSE" }
+ if = { limit = { NOT = { any_courtier = { has_character_flag = xqol_conversion_courtier_candidate } } } debug_log = "ZQP120: DIAG no_courtier_candidate TRUE" }
+ else = { debug_log = "ZQP120: DIAG no_courtier_candidate FALSE" }
+ if = { limit = { NOT = { any_vassal_or_below = { has_character_flag = xqol_conversion_ruler_candidate } } } debug_log = "ZQP120: DIAG no_vassal_candidate TRUE" }
+ else = { debug_log = "ZQP120: DIAG no_vassal_candidate FALSE" }
+ if = { limit = { NOT = { any_tributary = { has_character_flag = xqol_conversion_ruler_candidate } } } debug_log = "ZQP120: DIAG no_tributary_candidate TRUE" }
+ else = { debug_log = "ZQP120: DIAG no_tributary_candidate FALSE" }
+ if = { limit = { is_character_interaction_valid = { recipient = var:zqp_target interaction = xqol_mass_conversion_ruler_interaction } } debug_log = "ZQP120: DIAG ruler_interaction_valid TRUE" }
+ else = { debug_log = "ZQP120: DIAG ruler_interaction_valid FALSE" }
+ if = { limit = { var:zqp_target = { is_ai = yes } } debug_log = "ZQP120: DIAG target_ai TRUE" }
+ else = { debug_log = "ZQP120: DIAG target_ai FALSE" }
+ if = { limit = { var:zqp_target = { is_alive = yes } } debug_log = "ZQP120: DIAG target_alive TRUE" }
+ else = { debug_log = "ZQP120: DIAG target_alive FALSE" }
+ if = { limit = { var:zqp_target = { is_landed = yes } } debug_log = "ZQP120: DIAG target_landed TRUE" }
+ else = { debug_log = "ZQP120: DIAG target_landed FALSE" }
+ if = { limit = { var:zqp_target = { faith = faith:catholic } } debug_log = "ZQP120: DIAG target_faith_catholic TRUE" }
+ else = { debug_log = "ZQP120: DIAG target_faith_catholic FALSE" }
+ if = { limit = { var:zqp_target = { rite = rite:roman_rite } } debug_log = "ZQP120: DIAG target_rite_roman TRUE" }
+ else = { debug_log = "ZQP120: DIAG target_rite_roman FALSE" }
+ if = { limit = { this = scope:xqol_startup_actor } debug_log = "ZQP120: DIAG current_matches_qualified_actor TRUE" }
+ else = { debug_log = "ZQP120: DIAG current_matches_qualified_actor FALSE" }
+ if = { limit = { this = scope:actor } debug_log = "ZQP120: DIAG saved_actor_matches_current TRUE" }
+ else = { debug_log = "ZQP120: DIAG saved_actor_matches_current FALSE" }
+ if = { limit = { has_pam_dlc_trigger = yes } debug_log = "ZQP120: DIAG pam_dlc_enabled TRUE" }
+ else = { debug_log = "ZQP120: DIAG pam_dlc_enabled FALSE" }
+ if = { limit = { exists = var:zqp_target } debug_log = "ZQP120: DIAG target_exists TRUE" }
+ else = { debug_log = "ZQP120: DIAG target_exists FALSE" }
+ debug_log = "ZQP120: DIAG SCOPE BEGIN actual_actor_after_setup"
+ debug_log_scopes = yes
+ debug_log = "ZQP120: DIAG SCOPE END actual_actor_after_setup"
+ var:zqp_target = {
+  debug_log = "ZQP120: DIAG SCOPE BEGIN actual_landed_target_after_setup"
+  debug_log_scopes = yes
+  debug_log = "ZQP120: DIAG SCOPE END actual_landed_target_after_setup"
+ }
+ debug_log = "ZQP120: DIAG END original_positive_setup_guard"
 }

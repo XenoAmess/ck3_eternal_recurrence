@@ -32,6 +32,7 @@ SAVED_FLAGS = {
     "date_raw": "--saved-campaign-date-raw", "product_inventory": "--saved-campaign-product-inventory",
 }
 CASE_READ_ONLY_MCP_TOOLS = frozenset({
+    "ck3_query_current_title_appointment_v1",
     "ck3_query_player_religion_context_v1",
     "ck3_query_player_religion_personal_parameters_v1",
 })

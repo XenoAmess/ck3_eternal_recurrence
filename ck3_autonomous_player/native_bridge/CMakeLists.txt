@@ -1607,6 +1607,7 @@ add_library(xar_ck3_bridge SHARED
   src/tactical_daily_sentinel_v1.cpp
   src/title_map_navigation_v1.cpp
   src/ingame_ui_navigation_v1.cpp
+  src/appointment_window_snapshot_v1.cpp
   src/title_map_navigation_v1_camera.cpp
   src/title_map_navigation_v1_mailbox.cpp
   src/title_map_navigation_v1_serializer.cpp

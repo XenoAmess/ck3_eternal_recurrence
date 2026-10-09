@@ -73,6 +73,31 @@ def template_profile(path):
     return templates, sizes.pop()
 
 
+def wait_for_known_route(current, inspect, capture, guard, *, original_deadline,
+                         now=time.time, sleep=time.sleep):
+    """Read only until known navigation appears; reserve the original last 90s.
+
+    No desktop import or input occurs here. Every poll retains the original
+    PID/focus/keeper guard and an actual capture/matching receipt via callbacks.
+    """
+    state = inspect(current, '03-current')
+    wait_until = original_deadline - 90
+    index = 0
+    while not (state['menu'] or state['dialog'] or state['chrome']):
+        guard()
+        remaining = wait_until - now()
+        require(remaining > 0, 'Known Quit navigation absent at original deadline-90; no input/extension')
+        sleep(min(5, remaining))
+        guard()
+        require(now() < wait_until, 'Original read-only Quit wait reached deadline-90; no input/extension')
+        index += 1
+        label = '03-wait-' + str(index).zfill(4)
+        current = capture(label)
+        state = inspect(current, label)
+        require(now() < wait_until, 'Original read-only Quit wait reached deadline-90; no input/extension')
+    return current, state
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repo-root', type=Path, required=True)
@@ -226,10 +251,13 @@ def main():
             gui.click(x, y, button='left')
 
     active_source = [None]
-    def click(label, name, final=False):
+    def click(label, name, final=False, context=None):
         image = capture(label+'-before')
         match, match_pin = locate(image, name, label)
         require(match['matched_uniquely'], 'Current unique template missing/ambiguous; no input/retry')
+        if context:
+            require(found(image, context, label+'-context-same-source'),
+                    'Known map/intro context changed in current click source; no input/retry')
         if final:
             require(found(image, 'quit-autosave-unchecked', label+'-unchecked-same-source')
                     and not found(image, 'quit-autosave-checked', label+'-checked-rejected-same-source'),
@@ -269,15 +297,29 @@ def main():
                 if found(current, panel, '0'+str(index)+'-known-panel'):
                     click('0'+str(index)+'-close-known-panel', panel)
                     current = capture('0'+str(index)+'-closed-panel-current')
-            menu = found(current, 'quit-menu-button', '03-current-menu')
-            dialog = found(current, 'quit-to-desktop', '03-current-dialog')
-            require(not (dialog and menu), 'Ambiguous panel close result; no input')
+            def inspect_start(image, label):
+                dialog = found(image, 'quit-to-desktop', label+'-dialog')
+                menu = found(image, 'quit-menu-button', label+'-menu')
+                require(not (dialog and menu), 'Ambiguous current menu/dialog; no input')
+                chrome = None
+                if not dialog and not menu and found(image, 'map-pause-menu-button', label+'-map-menu'):
+                    if found(image, 'decisions-quill', label+'-map-quill'):
+                        chrome = 'decisions-quill'
+                    elif 'intro-r40-title' in templates and found(image, 'intro-r40-title', label+'-intro'):
+                        chrome = 'intro-r40-title'
+                return {'dialog': dialog, 'menu': menu, 'chrome': chrome}
+
+            if 'intro-r40-title' in templates:
+                current, state = wait_for_known_route(current, inspect_start, capture, guard,
+                                                     original_deadline=args.original_deadline)
+            else:
+                state = inspect_start(current, '03-current')
+            menu, dialog = state['menu'], state['dialog']
             if not menu and not dialog:
-                require(found(current, 'decisions-quill', '03-map-quill')
-                        and found(current, 'map-pause-menu-button', '03-map-menu'),
-                        'Current known map chrome missing; no unknown-panel/modal selection, Escape or blind input')
-                # Chrome proves navigation location only, never event-free state.
-                click('04-open-map-menu', 'map-pause-menu-button')
+                require(state['chrome'], 'Current known map/intro chrome missing; no modal selection, Escape or blind input')
+                # The R40 intro title admits only its proven menu route, never its choice.
+                # Recheck the admitted context in the SAME fresh source as the menu click.
+                click('04-open-map-menu', 'map-pause-menu-button', context=state['chrome'])
                 current = capture('04-current-menu')
                 require(found(current, 'quit-menu-button', '04-menu-readback'), 'Actual menu did not open; no replay')
                 menu = True

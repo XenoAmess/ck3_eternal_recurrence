@@ -656,7 +656,8 @@
             "ck3_query_title_holder_v1",
             "ck3_open_ingame_decisions_v1",
             "ck3_query_ingame_decision_item_v1",
-            "ck3_select_ingame_decision_item_v1"
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_query_current_title_appointment_v1"
           ],
           "phases": [
             "actual Song scope and native h_china holding proof",
@@ -725,7 +726,10 @@
             "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ui_tail_adapter.py",
             "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ui_tail.json"
           },
-          "description": "Original Song readonly9/UI25 only, with explicit prior actual core evidence and independent guards supplement; no core replay."
+          "description": "Original Song readonly9/UI25 only, with explicit prior actual core evidence and independent guards supplement; no core replay.",
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_current_title_appointment_v1"
+          ]
         },
         {
           "id": "religion_hardgate",
@@ -919,7 +923,8 @@
             "ck3_execute_step",
             "ck3_query_campaign_root_context_v1",
             "ck3_query_engine_log_literals_v1",
-            "ck3_query_title_holder_v1"
+            "ck3_query_title_holder_v1",
+            "ck3_query_current_title_appointment_v1"
           ],
           "phases": {
             "coverage": "original_administrative_appointments_only",
@@ -963,7 +968,10 @@
           "adapter": {
             "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_government_adapter.py",
             "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_administrative_appointments.json"
-          }
+          },
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_current_title_appointment_v1"
+          ]
         },
         {
           "id": "meritocratic_appointments",
@@ -979,7 +987,8 @@
             "ck3_execute_step",
             "ck3_query_campaign_root_context_v1",
             "ck3_query_engine_log_literals_v1",
-            "ck3_query_title_holder_v1"
+            "ck3_query_title_holder_v1",
+            "ck3_query_current_title_appointment_v1"
           ],
           "phases": {
             "coverage": "original_meritocratic_appointments_only",
@@ -1024,7 +1033,10 @@
           "adapter": {
             "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_government_adapter.py",
             "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_meritocratic_appointments.json"
-          }
+          },
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_current_title_appointment_v1"
+          ]
         },
         {
           "id": "prison_payment",

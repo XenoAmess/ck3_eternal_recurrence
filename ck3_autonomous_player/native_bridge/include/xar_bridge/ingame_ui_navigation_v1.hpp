@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/appointment_window_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include <cstdint>
 #include <string>
@@ -22,7 +23,7 @@ inline constexpr std::uintptr_t kUiOpenViewRvaV1 = 0xA79200;
 inline constexpr std::uintptr_t kUiOpenViewDataRvaV1 = 0xA79700;
 inline constexpr std::uintptr_t kUiIdAnyTypeGetterRvaV1 = 0x998130;
 
-enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3 };
+enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4 };
 enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, select_army=2, open_combat=3, open_knights=4,
   hover_left_knights=5, hover_right_knights=6, fit_combat_window=7,
   hover_army_tooltip=8, leave_army_tooltip=9 };
@@ -43,6 +44,7 @@ struct IngameUiRequestV1 {
   IngameUiOperationV1 operation = IngameUiOperationV1::query;
   IngameUiWindowKindV1 window_kind = IngameUiWindowKindV1::character;
   std::uint32_t subject_id = 0;
+  AppointmentWindowRequestV1 appointment{};
   // Fixed semantic fields only; complete child paths stay provider-private.
   std::string army_tooltip_kind;
   std::string army_tooltip_receipt;
@@ -148,6 +150,7 @@ struct IngameUiResultV1 {
   CombatUiGeometryV1 combat_geometry{};
   NamedGuiTreeInspectionV1 tree{};
   ArmyTooltipObservationV1 army_tooltip{};
+  AppointmentWindowSnapshotV1 title_appointment{};
   std::string status = "unavailable";
   std::string unavailable_reason;
 };

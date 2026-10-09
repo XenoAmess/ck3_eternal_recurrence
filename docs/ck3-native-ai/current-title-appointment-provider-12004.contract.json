@@ -1,0 +1,77 @@
+{
+  "schema": "ck3-current-title-appointment-v1",
+  "status": "CANDIDATE_NOT_LIVE",
+  "transport": "existing query-ingame-ui-window-v1 mailbox; window_kind=title_appointment",
+  "mcp_tool": "ck3_query_current_title_appointment_v1",
+  "capability": "game.command.query-current-title-appointment-v1",
+  "exact_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "request": {
+    "expected_revision": "uint64",
+    "requested_title_id": "optional full uint32, 0=absent",
+    "candidate_offset": "uint32 <=4096",
+    "candidate_limit": "1..64",
+    "breakdown_character_id": "optional full uint32, 0=absent; must be in complete current pool"
+  },
+  "scope": [
+    "requested_title_id",
+    "requested_holder_character_id",
+    "native_group_branch",
+    "group_first_title_id",
+    "resolved_title_id",
+    "current_window_title_id",
+    "requested_resolves_to_current"
+  ],
+  "observations": [
+    "current_title_key",
+    "resolved_title_key",
+    "current_holder_character_id",
+    "effective_succession_law_key",
+    "full_candidate_count",
+    "source_pool_count",
+    "pool_consistency_token",
+    "candidate_page(full character IDs, stable list index, native rank, score_raw)",
+    "optional native recursive score breakdown"
+  ],
+  "score_fixed_point_scale": 100000,
+  "policy": [
+    "current visible original window only; never open or switch",
+    "full IDs validated in native storage",
+    "all source-pool characters joined to complete base list and cache, re-read after query",
+    "pagination is explicit; a page is not the full pool",
+    "effective law is window GetSuccessionLaw, not own-law count",
+    "existing score getter can refresh GUI-only breakdown cache; reported explicitly",
+    "no OCR, names, scripts, or guessed IDs",
+    "not a live acceptance claim",
+    "Actual common human-player roster getter 0x2BAA6F0; alive and human independent; is_ai matches existing native phase-character evaluator"
+  ],
+  "native_evidence": {
+    "open_handler_rva": "0x171C790",
+    "window_handler_slot": "0x518",
+    "window_title_offset": "0xC8",
+    "effective_law_getter_rva": "0x171B8D0",
+    "score_breakdown_getter_rva": "0x171CD50",
+    "full_list": "window+0xD0: items+0x18,count+0x24; item ID+8,index+C",
+    "score_cache": "list+0x9F8,count+0xA04,stride0x2F8; ID+0x40,score+0x38,rank+0x28",
+    "normalization": "input Title+0x128 full holder -> Character+0x1C0 (count+0x1EC,pointer+0x1E0) else Character+0x1D0 (count+0x74,pointer+0x68) -> first full TitleID -> window+0xC8",
+    "is_human_player_rva": "0x2BAA6F0"
+  },
+  "revises": "TYPED-CONTRACT-05.json (original AI unknown research boundary retained)",
+  "limits": {
+    "pool": 4096,
+    "page": 64,
+    "score_nodes": 128,
+    "score_depth": 8,
+    "score_string_bytes": 512,
+    "score_total_text_bytes": 12000,
+    "serialized_appointment_bytes": 44000
+  },
+  "acceptance_eligibility": {
+    "definition": "engine candidate pool after 273AA40 rule rejection, complete source/base join",
+    "pool_builder_rva": "273A390",
+    "reject_loop": "273A741..273A790",
+    "sort_does_not_modify_base": "vtable sort171BFA0 + generic DA8A30 use list+48 only",
+    "score_present_is_not_eligibility": true,
+    "adapter_only_derived_eligible": true,
+    "provider_wire_has_no_eligible_field": true
+  }
+}

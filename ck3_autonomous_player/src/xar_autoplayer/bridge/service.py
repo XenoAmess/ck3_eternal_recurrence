@@ -10616,6 +10616,22 @@ class GameplayBridgeService:
     def query_ingame_ui_window_v1(self, window_kind: str, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("query", window_kind, 0, expected_revision)
 
+    def query_current_title_appointment_v1(self, *, expected_revision: int,
+            requested_title_id: int | None = None, candidate_offset: int = 0,
+            candidate_limit: int = 32, breakdown_character_id: int | None = None) -> dict[str, object]:
+        from .appointment_window_contract import CAPABILITY, validate_request
+        validate_request(expected_revision, requested_title_id, candidate_offset, candidate_limit, breakdown_character_id)
+        capabilities = self.capabilities()
+        if capabilities.get("backend_id") != "native-headless" or CAPABILITY not in capabilities.get("bridge_capabilities", []):
+            raise UnsupportedStepError("capability_not_available: appointment query has no desktop fallback")
+        method = getattr(self.driver, "query_current_title_appointment_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks the current appointment provider")
+        return method(expected_revision=expected_revision, requested_title_id=requested_title_id,
+            candidate_offset=candidate_offset, candidate_limit=candidate_limit,
+            breakdown_character_id=breakdown_character_id)
+
+
     def hover_combat_knights_v1(self, combat_id: int, ui_side: str, *, expected_revision: int) -> dict[str, object]:
         if ui_side not in {"left", "right"}:
             raise ValueError("ui_side must be left or right in the original CombatWindow")

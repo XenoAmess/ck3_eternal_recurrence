@@ -1,5 +1,17 @@
 # CK3 1.20 维护交接：2026-10-06
 
+## 2026-10-10 04:35：Source12统一绑定，R41失败闭场
+
+正式发布仍 **7/10（70%）**，后续顺序仍为QOL、重整河山、361。R0041/a141的PAM正例在`actual_positive_doctrines_landed_recipient`原复合条件失败，生产操作未执行；尚无逐项证据证明具体原因。保留原失败，仅在同一FAIL分支加入25项只读原子诊断；原断言、36步、12日及4500/600秒预算不改。该场实际菜单退出、retained HANDLE OS0；原host error和不合格normal-close保留，keeper实际0、[CAS7937闭场](C:/workspace/ck3-upgrade-20261010/qol-original-cells-runner-01/pam_positive--a141/ACTUAL-CLOSED-RESULT-03.json)。PAM负例暂不消费，待正例前提原因闭合。
+
+Root已create-only选择唯一共同[Source12映射](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-01.json)，SHA256 `a75a5d99ec0971a00fb459e5f2684451752235bf95587f34e09fed9a85c3b1e9`，共同manifest `5d00ca2fc93518151f5b9394a713dab8aae60d7e968abc80a23eabf3838e692a`，native `fd1f33ed63c452ba2fef3313a490db53fd8bfcfc567909c94b4966e1f4f7c5aa`。它统一保留title/PAM/truce并新增任命查询及失败生命周期证明；native仅20个受影响TU增量编译、复用552个对象，37秒单次链接，无产品私有host或DLL。exact B13退出helper/matcher复制到不可变外置路径，旧包原样保留。以上为构建及选择事实，24项capability均未由此取得新实机资格。
+
+六个原用例已在该映射下独立并行prepare，实际全部exit0；原plan、27文件产品、marker及预算均已核对，仅selfpaid实际actor修复与PAM正例诊断是授权fixture差异。下一场先religion_hardgate；任命公共consumer和失败后的人工退出兜底仍分别施工，不以prepare、自动退出或host状态代业务通过。最终发布缓存继续只核真实下载exact正式构建和CK3实际加载。
+
+主线`0b744e850f1a7ed85a47e569068a3afb297f7333`的[官方CI37986537072](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37986537072)已实际completed/success，64步全部成功，updatedAt Oct10 04:28:33 CST；旧361版本断言失败保留，成功只覆盖该最小静态修复及该SHA。
+
+随后闭场窗口采用共同任命provider与公共完整pool接线，Root新10项实际PASS（0.055秒）；无delegation实际context reviewer和保留helper失败的人工正常退出兜底新4项实际PASS（0.460秒）。旧退出/委派/UI reviewer整合23/24通过，唯一旧mock缺少持久context，补测试初始化后定向单项PASS（0.177秒），未降低生产准入。canonical host窄合回保留当前master其余新功能，新增纯失败收尾4项PASS（0.095秒），这三组检查已接入官方CI。新的有限intro退出helper离线通过原R40图与四等待场景，最后选择[immutable mapping02](C:/workspace/ck3-upgrade-20261010/root-source12-adoption-01/runtime.adopted-source12-native-fd1f-intro-02.json)，8149B/SHA256 `034900c921b5df2cbbce344226f1ca131ad9e52a976f3efa2e06a17723429409`；仅退出pins变化，共同manifest完全不变，全部既有Source12 prepared复用，不重做准备。上述新路线均待实际新场验证。
+
 ## 2026-10-10 03:55：R39/R40失败保全，公共修复与后续用例
 
 正式发布仍 **7/10（70%）**。R0039/a139的action0016在截图后290.916秒提交，原60秒检查在点击前拒绝，records0/GAP8、slider无信用；公共自动Quit成功，实际verify2且normal_close_qualified=true，keeper实际0、[CAS7897](C:/workspace/ck3-upgrade-20261006/resume-root-01/a139-screen-release-01.json)已释放。原失败不覆盖。

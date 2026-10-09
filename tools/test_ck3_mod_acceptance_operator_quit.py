@@ -147,7 +147,7 @@ class OperatorQuitTests(unittest.TestCase):
                 client, clock, fake_time, _ = self.make_client(Path(directory), review_at=None, deadline=.4)
                 popen = self.automation(client, clock, fake_time, exit_code=exit_code, complete_at=complete_at, emit=emit)
                 with patch.object(self.module, 'time', fake_time), patch.object(self.module.subprocess, 'Popen', popen):
-                    if complete_at is None:
+                    if complete_at is None or exit_code != 0:
                         result = client.normal_close('SYNTHETIC_PENDING_UNTIL_DEADLINE')
                         self.assertFalse(result['normal_close_qualified'])
                         self.assertLess(clock.now, .51)
@@ -202,6 +202,7 @@ class OperatorQuitTests(unittest.TestCase):
             context['operator_delegation'] = self.entry.pin(artifact)
         selection=SimpleNamespace(context=context,context_path=root/'context.json',run_dir=live,state_dir=root/'state',
             manifest={},product_key='SYNTHETIC',case={'id':'SYNTHETIC'},argv=['SYNTHETIC ONLY'],manifest_path=root/'manifest.json')
+        self.module.write_once(selection.context_path, context)
         return self.module.CaseClient(selection)
 
     def test_delegation_is_explicit_and_checkpoint_records_actual_operator(self):

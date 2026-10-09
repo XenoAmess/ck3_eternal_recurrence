@@ -3193,6 +3193,15 @@ def create_server(
         return service.query_ingame_ui_window_v1(window_kind, expected_revision=expected_revision)
 
     @server.tool()
+    def ck3_query_current_title_appointment_v1(expected_revision: IngameUiRevisionV1,
+            requested_title_id: int | None = None, candidate_offset: int = 0,
+            candidate_limit: int = 32, breakdown_character_id: int | None = None) -> dict[str, object]:
+        """Read the currently visible native appointment title, full-ID candidate page, scores, effective law and optional score tree. Does not open or switch windows. Fetch all pages with an identical pool token to cover the complete candidate pool."""
+        return service.query_current_title_appointment_v1(expected_revision=expected_revision,
+            requested_title_id=requested_title_id, candidate_offset=candidate_offset,
+            candidate_limit=candidate_limit, breakdown_character_id=breakdown_character_id)
+
+    @server.tool()
     def ck3_hover_combat_knights_v1(combat_id: IngameUiHandleV1, ui_side: Literal["left", "right"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Native enter/leave of fixed knight-count text; verify hover and original pixels independently."""
         return service.hover_combat_knights_v1(combat_id, ui_side, expected_revision=expected_revision)

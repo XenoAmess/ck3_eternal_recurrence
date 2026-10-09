@@ -62,6 +62,30 @@ def verify_slots(slots,contract,actor):
     return True
 
 
+def verify_native_slots(client,slots,contract,actor,frame):
+    """Bind unchanged human review assertions to this client's actual typed receipts."""
+    from ck3_mod_acceptance_appointment import bind_observation,target_score
+    require(isinstance(slots,list) and len(slots)==len(contract['appointment_laws']),
+            'All original native government slots required')
+    for slot,law in zip(slots,contract['appointment_laws']):
+        pools=[client.appointment_receipt(slot.get('appointment_pool_'+phase),frame,completed_score_phase=True)
+               for phase in ('off','on','restored')]
+        bind_observation(slot,pools[0],law=law)
+        fields=('requested_title_id','requested_title_key','current_window_title_id','current_title_key',
+                'effective_succession_law_key','requested_holder_character_id')
+        require(all(all(pool.get(k)==pools[0].get(k) for k in fields) for pool in pools),
+                'Original off/on/off native window/law/holder crossed slots')
+        require(all({c['character_id'] for c in pool['candidates']}==
+                    {c['character_id'] for c in pools[0]['candidates']} for pool in pools),
+                'Original off/on/off complete candidate pool changed')
+        raw=[target_score(pool,actor,slot.get('score_'+phase))
+             for pool,phase in zip(pools,('off','on','restored'))]
+        require(raw[1]==raw[0]-100000000000 and raw[2]==raw[0],
+                'Actual native fixed point million penalty/off restoration failed')
+        slot['score_raw_off'],slot['score_raw_on'],slot['score_raw_restored']=raw
+    return True
+
+
 def run_case(context,client):
     c=context['case_contract'];result=common.run_plan(context,client);frame=result['after']
     root=client.execute_plan([{'id':'qolf-government-root','tool':'ck3_query_campaign_root_context_v1',
@@ -80,9 +104,14 @@ def run_case(context,client):
           'independent human naturally in candidate pool; exact off/on/off million scores and original switch restore',
           'actual eligible AI chosen and actual successor/appointment confirmed',
           'fresh original images plus mapped input receipts when coordinates used; no guessed title/character IDs'],
-        'required_response':{'completed':True,'current_scene_reviewed':True,'slots':[],'evidence':[]}})
+        'required_response':{'completed':True,'current_scene_reviewed':True,'slots':[],'evidence':[]},
+        'typed_slot_fields':['requested_title_id','requested_title_key','title_id','title_key','law',
+            'appointment_pool_off','appointment_pool_on','appointment_pool_restored'],
+        'typed_query_scope':'qualification data only; original human/AI/score/successor/switch assertions all remain required'
+        },read_only_appointment=True)
     require(response.get('completed') is True and response.get('current_scene_reviewed') is True,
             'Original government GUI block incomplete/GAP')
+    verify_native_slots(client,response.get('slots'),c,actor,client.snapshot())
     verify_slots(response.get('slots'),c,actor)
     evidence=response.get('evidence',[])
     require(evidence and all(pin(row['path'])==row for row in evidence),'Actual government original GUI evidence missing')

@@ -241,10 +241,13 @@ def allocated_managed_campaign_run_binding(args: argparse.Namespace) -> dict[str
         "host_path": str(Path(__file__).resolve()), "frozen_argv_sha256": hashlib.sha256(raw).hexdigest()}
 
 
-def finished_native_exit_zero_proof(report: dict[str, object], managed_done: bool,
-                                    episode: dict[str, object] | None = None) -> dict[str, object] | None:
-    """Current managed-session evidence only; missing proof never admits a dead snapshot."""
-    if managed_done is not True or report.get("fixture_only") is not False or "error" not in report or report["error"] is not None:
+def finished_native_process_exit_zero_proof(report: dict[str, object], managed_done: bool,
+                                    episode: dict[str, object] | None = None, *,
+                                            require_managed_thread_finished: bool = True) -> dict[str, object] | None:
+    """Complete native process/cleanup proof; top-level business errors remain independent."""
+    if managed_done is not True or report.get("fixture_only") is not False:
+        return None
+    if require_managed_thread_finished and report.get("managed_session_thread_finished") is not True:
         return None
     session = report.get("session")
     if not isinstance(session, dict) or "error" not in session or session["error"] is not None:
@@ -299,6 +302,31 @@ def finished_native_exit_zero_proof(report: dict[str, object], managed_done: boo
             "pid": pid, "pipe": native["pipe"], "started_at": native["started_at"],
             "finished_at": native["finished_at"], "exit_reason": "process_exit", "process_exit_code": 0,
             "shutdown": copy.deepcopy(shutdown)}
+
+
+def finished_native_exit_zero_proof(report: dict[str, object], managed_done: bool,
+                                    episode: dict[str, object] | None = None) -> dict[str, object] | None:
+    """Original success predicate: a top-level error still rejects qualification."""
+    if managed_done is not True or report.get("fixture_only") is not False or "error" not in report or report["error"] is not None:
+        return None
+    return finished_native_process_exit_zero_proof(
+        report, managed_done, episode, require_managed_thread_finished=False)
+
+
+def finished_native_failure_shutdown_proof(report: dict[str, object], managed_done: bool,
+                                         episode: dict[str, object] | None = None) -> dict[str, object] | None:
+    """A preserved failure can finish lifecycle only after actual native/thread cleanup."""
+    error = report.get("error")
+    if not isinstance(error, str) or not error:
+        return None
+    process = finished_native_process_exit_zero_proof(report, managed_done, episode)
+    if process is None:
+        return None
+    return {"status": "failure_shutdown_lifecycle_only",
+            "reason": "preserved_failure_native_process_exit_zero_cleanup_proven",
+            "failure_preserved": True, "host_error": error,
+            "alive_or_business_credit": False, "business_pass": False,
+            "normal_close_qualified": False, "process_exit_zero_proof": process}
 
 
 def paused_map_readiness_admitted(snapshot: dict[str, object], report: dict[str, object]) -> bool:
@@ -1927,11 +1955,21 @@ class PlanClient:
             try:
                 kind = step.get("kind", "tool")
                 menu_only = getattr(self.args, "frontend_mod_load_observation", False)
+                failure_shutdown = step.get("failure_shutdown") is True
+                failure_proof = None
+                if failure_shutdown:
+                    if kind != "finish_hold" or self.report.get("post_failure_exit_finish_hold") is not None:
+                        raise RuntimeError("failure shutdown is a once-only finish_hold lifecycle control")
+                    managed_done = getattr(self, "managed_done", None)
+                    failure_proof = finished_native_failure_shutdown_proof(self.report,
+                        managed_done is not None and managed_done.is_set(), self.episode_identity)
+                    if failure_proof is None:
+                        raise RuntimeError("failure finish_hold requires preserved error and actual native/thread cleanup")
                 if menu_only:
                     require_menu_observation_step(step)
                     if kind == "finish_hold":
                         managed_done = getattr(self, "managed_done", None)
-                        if finished_native_exit_zero_proof(self.report,
+                        if failure_proof is None and finished_native_exit_zero_proof(self.report,
                                 managed_done is not None and managed_done.is_set(), self.episode_identity) is None:
                             raise RuntimeError("menu-only finish_hold requires original actual managed native-zero proof")
                 if menu_only and kind != "finish_hold":
@@ -1973,6 +2011,9 @@ class PlanClient:
                 elif kind == "finish_hold":
                     self.report["hold_finished_by_control_plan"] = True
                     result = {"hold_finished": True}
+                    if failure_proof is not None:
+                        result.update(failure_preserved=True, host_error=failure_proof["host_error"],
+                            business_pass=False, normal_close_qualified=False)
                 elif kind == "terminal_window_read_only":
                     result = await self.observe_terminal_window(step)
                 elif kind == "frontend_read_only":
@@ -2002,14 +2043,16 @@ class PlanClient:
                 self.results[str(row["id"])] = result
                 if kind not in {"frontend_read_only", "terminal_window_read_only"} and not (menu_only and kind != "finish_hold"):
                     managed_done = getattr(self, "managed_done", None)
-                    proof = (finished_native_exit_zero_proof(self.report,
-                        managed_done is not None and managed_done.is_set(), self.episode_identity)
+                    proof = (failure_proof if failure_shutdown else
+                        finished_native_exit_zero_proof(self.report,
+                            managed_done is not None and managed_done.is_set(), self.episode_identity)
                         if kind == "finish_hold" else None)
                     if proof is None:
                         row["after_snapshot"] = await self.fresh()
                     else:
                         row["after_snapshot"] = proof
-                        self.report["post_exit_finish_hold"] = {"step_id": row["id"], "proof": copy.deepcopy(proof)}
+                        marker = "post_failure_exit_finish_hold" if failure_shutdown else "post_exit_finish_hold"
+                        self.report[marker] = {"step_id": row["id"], "proof": copy.deepcopy(proof)}
                 row["ok"] = True
             except Exception as error:
                 row["error"] = f"{type(error).__name__}: {error}"
@@ -2020,7 +2063,26 @@ class PlanClient:
                 self.write()
 
     async def observe_final(self) -> None:
-        """Only a successful final finish_hold can make post-exit observation inapplicable."""
+        """Proved lifecycle completion avoids a dead snapshot without clearing failures."""
+        failure_marker = self.report.get("post_failure_exit_finish_hold")
+        rows = self.report.get("steps", [])
+        managed_done = getattr(self, "managed_done", None)
+        failure_proof = finished_native_failure_shutdown_proof(self.report,
+            managed_done is not None and managed_done.is_set(), self.episode_identity)
+        if (failure_proof is not None and isinstance(failure_marker, dict) and rows
+                and self.report.get("hold_finished_by_control_plan") is True
+                and rows[-1].get("plan", {}).get("kind") == "finish_hold"
+                and rows[-1].get("plan", {}).get("failure_shutdown") is True
+                and rows[-1].get("ok") is True and all(row.get("finished_at") for row in rows)
+                and failure_marker.get("step_id") == rows[-1].get("id")
+                and failure_marker.get("proof") == failure_proof):
+            self.report["snapshot_final"] = copy.deepcopy(failure_proof)
+            self.report["diagnostics_final"] = copy.deepcopy(failure_proof)
+            self.report["final_observation"] = {"status": "not_applicable",
+                "reason": failure_proof["reason"], "after_finish_hold_step_id": failure_marker["step_id"],
+                "failure_preserved": True, "host_error": failure_proof["host_error"],
+                "alive_or_business_credit": False, "business_pass": False, "normal_close_qualified": False}
+            return
         marker = self.report.get("post_exit_finish_hold")
         rows = self.report.get("steps", [])
         managed_done = getattr(self, "managed_done", None)
@@ -2046,12 +2108,13 @@ class PlanClient:
         self.report["phase"] = "hold"
         self.report["hold_until_utc_estimated"] = time.time() + seconds
         managed_done = getattr(self, "managed_done", None)
-        managed_completion_written = managed_done is not None and managed_done.is_set()
+        managed_completion_written = (managed_done is not None and managed_done.is_set()
+            and self.report.get("managed_session_thread_finished") is True)
         self.write()
         while time.monotonic() < deadline and not self.report.get("hold_finished_by_control_plan", False):
             if not managed_completion_written and managed_done is not None and managed_done.is_set():
                 self.write()
-                managed_completion_written = True
+                managed_completion_written = self.report.get("managed_session_thread_finished") is True
             if self.control_plan_execution_depth == 0 and self.args.control_plan_dir is not None:
                 for path in sorted(self.args.control_plan_dir.glob("*.json")):
                     identity = (str(path), path.stat().st_mtime_ns)
@@ -3226,8 +3289,12 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         "mcp_wire": str(rpc_wire.path), "mcp_calls": str(args.output.with_suffix(".mcp-calls.jsonl")),
         "server_stderr": str(stderr_path), "session": session_state, "error": None}
 
+    supervisor: threading.Thread | None = None
+
     def write() -> None:
         report["managed_session_done"] = done.is_set()
+        report["managed_session_thread_finished"] = (supervisor is None or
+            supervisor.ident is not None and not supervisor.is_alive())
         write_atomic_report(args.output, report)
 
     poll_reporting = StartupPollReporting(args.output.with_suffix(".frontend-observations.jsonl"), write)
@@ -3287,7 +3354,6 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
             "selection_permitted":False, "product_acceptance_proven":False}
         write()
 
-    supervisor: threading.Thread | None = None
     if not args.sdk_smoke_test:
         clean_imports(args.agent_source_root)
         from xar_autoplayer.environment import make_spec, verify_profile
@@ -3601,7 +3667,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--hold-seconds", type=float, default=0)
     result.add_argument("--control-plan-dir", type=Path, help="read new/updated JSON plans during hold")
     result.add_argument("--case-read-only-mcp-tool", action="append", default=[], choices=(
-        "ck3_query_player_religion_context_v1", "ck3_query_player_religion_personal_parameters_v1"),
+        "ck3_query_player_religion_context_v1", "ck3_query_player_religion_personal_parameters_v1",
+        "ck3_query_current_title_appointment_v1"),
         help="Explicit case-declared read-only tool; default off, no related private tools enabled")
     result.add_argument("--turns", type=int, default=0, help="MCP ck3_auto_turn count after the plan")
     result.add_argument("--cold-start-checkpoint", action="store_true")

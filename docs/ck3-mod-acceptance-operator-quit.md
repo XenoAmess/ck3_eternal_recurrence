@@ -1,5 +1,15 @@
 # 公共验收的正常退出与单一 GUI 操作者
 
+## R41后继：保留失败的收尾与真实 reviewer
+
+R40/R41已实际证明启动业务失败后，CK3可以正常菜单退出且retained HANDLE OS0，而旧strict成功证明因顶层error保持NULL，原hold仍需等满。Source12为此增加独立`finished_native_failure_shutdown_proof`：保留原error、failed steps和normal-close不合格，只在相同native/session/process身份、实际退出0、managed thread结束、cleanup及空进程树完整时接受单次`finish_hold(failure_shutdown=true)`。它不授业务PASS；原成功proof仍要求无error，不把失败收尾追认为正常验收成功。当前为源码/离线资格，尚待实机证明新的快速收尾。
+
+公共client无delegation时使用已保存的实际run-context reviewer，并核对持久context及存在时的frozen reviewer；显式七字段Root delegation保持原精确合同。helper非零或首次聚焦失败时保存原回执，不重放，保留HANDLE，在原deadline内发布`manual-quit-awaiting.json`。唯一获授权操作者亲审原图、按canonical mapper正常退出后，写原`normal-quit-root-result.json`路径；文件名是历史接口，`reviewer`必须是实际操作者。fallback核对同PID/ctime/deadline、原始未勾选autosave图、最终mapped click和after图的精确pins；伪Root、缺证据或exit0伪automation回执仍拒绝。
+
+Root采用后新portable4项实际PASS（0.460秒，使用冻结Source12 host），另正常退出/委派/UI reviewer整合24项中23项通过；唯一旧mock未写实际context文件，已补测试初始化并定向单项PASS（0.177秒），生产检查未削弱。原R40/R41失败、原600秒hold和不合格退出结果原样保留。
+
+后继有限intro helper已采用：原八模板定义不改，仅加入已审R40 intro标题作为已知菜单上下文，不点击intro选项。加载时只读等首次已知map/intro/menu/dialog，最迟原deadline−90停止；同一fresh点击源再次核对上下文，原60秒mapper、阈值、PID/keeper和预算不变。四等待场景及真实R40 matcher/历史mapped回执离线检查通过，新helper SHA256 `51937437951ba3bf690c8caacbfe35ff3d4f242aefb364637491ccb66a33da59`；该后继尚未实机资格。mapping02将helper/matcher固定到外置不可变文件，template pack仍是本机外置输入，不进入产品正式staging。
+
 ## R39/R40后继修复
 
 R39的原图到action0016请求相隔290.916秒，原60秒mapper在点击前拒绝。共用`tools/ck3_mod_acceptance_template_click.py`因此提供一次fresh-template动作：操作者真正审阅的原图只用于目标和有意义pane/context模板，当次fresh图必须唯一匹配并保持像素及相对布局，随后调用原canonical mapper点一次，保存前后原图和真实回执。`xqol_ui`与公共mailbox接入`template-click`；实际业务仍由原native读回和adapter判定，结果明确automation、无human review或business PASS，不自动重试。8项离线检查PASS不等于实机资格。

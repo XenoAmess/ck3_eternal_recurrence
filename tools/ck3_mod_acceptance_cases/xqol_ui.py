@@ -7,7 +7,8 @@ TOOLS={'snapshot':'ck3_take_snapshot','campaign-root':'ck3_query_campaign_root_c
        'title-holder':'ck3_query_title_holder_v1','open-decisions':'ck3_open_ingame_decisions_v1',
        'center-title':'ck3_center_map_on_landed_title_v1','title-own-laws':'ck3_query_title_own_laws_v1',
        'query-decision':'ck3_query_ingame_decision_item_v1','select-decision':'ck3_select_ingame_decision_item_v1',
-       'event-context':'ck3_query_current_event_window_context_v1','event-option':'ck3_select_event_option'}
+       'event-context':'ck3_query_current_event_window_context_v1','event-option':'ck3_select_event_option',
+       'appointment-full-pool':'ck3_query_current_title_appointment_v1'}
 STAGES=['civic-candidates','military-candidates','million-off','million-on','million-restored','civic-appointment','military-appointment','guards','slider-anchor']
 STAGES += ['cancel-'+str(p) for p in (0,1,49,50,51,99,100)]
 STAGES += ['save-'+str(p) for p in (100,99,51,50,49,1,0)]
@@ -103,6 +104,13 @@ class Controller:
             if name!='request-original-normal-quit':self.guard()
     def typed(self,action,args,prefix):
             require(action in TOOLS,'Typed action is not an existing QOL capability')
+            if action=='appointment-full-pool':
+                required={'requested_title_id','requested_title_key','expected_law','navigation_step_id'}
+                require(isinstance(args,dict) and required<=set(args)<=required|{'breakdown_character_id'},
+                        'Explicit current requested navigation/law and optional breakdown target required')
+                result=self.client.query_appointment_pool(**args)
+                write(self.out/(prefix+'.actual-result.json'),result)
+                return result
             params={}
             if action=='snapshot':params={'include_native_command_history':False}
             elif action=='title-holder':
@@ -210,21 +218,35 @@ class Controller:
             require(any(r['path']==self.latest['path'] for r in evidence),'Current original PNG must be part of actual review')
             require(o.get('direct_original_review') is True,'Root must directly inspect the original business PNG')
             if stage in ('civic-candidates','military-candidates'):
+                from ck3_mod_acceptance_appointment import bind_observation
                 kind='civic' if stage.startswith('civic') else 'military';key='d_zhexi' if kind=='civic' else 'e_minister_grand_marshal'
                 law='celestial_appointment_succession_law' if kind=='civic' else 'celestial_grand_marshal_appointment_succession_law'
-                require(o.get('title_key')==key and o.get('law')==law and o.get('title_id',0)>0,'Actual requested title/law binding missing')
+                frame=self.client.snapshot();self.check_frame(frame)
+                pool=self.client.appointment_receipt(o.get('appointment_pool'),frame)
+                bind_observation(o,pool,requested_key=key,law=law)
                 require(o.get('full_candidates_reviewed') is True and isinstance(o.get('candidates'),list) and o['candidates'],'Actual complete native candidate list required')
                 require(o.get('eligibility_and_score_breakdown_reviewed') is True,'Full qualification/score review required')
                 o['native_title_holder_readback']=self.typed('title-holder',{'title_id':o['title_id']},prefix+'-holder')
                 require(o['native_title_holder_readback'].get('available') is True,'Actual native title holder readback unavailable')
             elif stage.startswith('million-'):
+                from ck3_mod_acceptance_appointment import bind_observation,target_score
+                frame=self.client.snapshot();self.check_frame(frame)
+                pool=self.client.appointment_receipt(o.get('appointment_pool'),frame)
+                bind_observation(o,pool)
+                require(any(pool['requested_title_id']==self.records[s]['observation']['requested_title_id'] and
+                            pool['current_window_title_id']==self.records[s]['observation']['title_id'] and
+                            pool['effective_succession_law_key']==self.records[s]['observation']['law']
+                            for s in ('civic-candidates','military-candidates')), 'Million query crossed original native title/law')
                 require(o.get('candidate_character_id')==self.frame_id[3] and o.get('independent_human_candidate') is True,'Original independent player must be a natural native candidate')
                 require(o.get('complete_same_title_candidate_row') is True and type(o.get('score')) in (int,float),'Actual complete score breakdown required')
+                o['score_raw']=target_score(pool,self.frame_id[3],o['score'])
                 if stage=='million-off':require(type(o.get('original_switch_enabled')) is bool,'Original appointment switch must be recorded')
                 else:
                     base=self.records['million-off']['observation'];require(o.get('title_id')==base.get('title_id'),'Million check crossed title')
                     expected=base['score']-1000000 if stage=='million-on' else base['score']
                     require(o['score']==expected,'Actual million penalty/restoration is not exact')
+                    require(o['score_raw']==base['score_raw']-(100000000000 if stage=='million-on' else 0),
+                            'Actual native fixed point million penalty/restoration is not exact')
                 require(o.get('auto_appointment_enabled')==(stage=='million-on'),'Actual decision switch state differs')
                 if stage=='million-restored':
                     require(o.get('original_switch_restored') is True and o.get('final_switch_enabled')==base['original_switch_enabled'],'Original appointment switch not restored after off-score readback')

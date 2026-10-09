@@ -5719,6 +5719,53 @@ class NativeHeadlessGameplayDriver:
     def query_ingame_ui_window_v1(self, window_kind: str, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("query", window_kind, 0, expected_revision=expected_revision)
 
+    def query_current_title_appointment_v1(self, *, expected_revision: int,
+            requested_title_id: int | None = None, candidate_offset: int = 0,
+            candidate_limit: int = 32, breakdown_character_id: int | None = None) -> dict[str, object]:
+        from .appointment_window_contract import CAPABILITY, STEP, EXE_SHA256, validate_request, normalize_result
+        from .ingame_ui_contract import ingame_ui_build_binding
+        fields = validate_request(expected_revision, requested_title_id, candidate_offset, candidate_limit, breakdown_character_id)
+        starting = self.take_snapshot()
+        binding = _title_camera_navigation_binding_from_snapshot(starting)
+        if starting.get("paused") is not True or starting.get("map_ready") is not True:
+            raise BridgeUnavailableError("appointment query requires the current paused map")
+        if starting.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("appointment query public revision differs")
+        played = starting.get("played_character")
+        actor = played.get("character_id") if isinstance(played, dict) else None
+        if isinstance(actor, bool) or not isinstance(actor, int) or actor <= 0:
+            raise BridgeUnavailableError("appointment query lacks played actor")
+        source_binding = ingame_ui_build_binding(starting)
+        if source_binding[0].game_version != "1.20.0.4" or source_binding[0].executable_sha256 != EXE_SHA256:
+            raise UnsupportedStepError("appointment provider requires exact CK3 1.20.0.4")
+        raw = None
+        try:
+            raw = self._execute_primitive_step(STEP, expected_revision=expected_revision,
+                required_capability=CAPABILITY, request_fields=fields)
+            ending = self.take_snapshot()
+            if (not _same_paused_native_frame(starting, ending) or
+                    _title_camera_navigation_binding_from_snapshot(ending) != binding or
+                    ending.get("map_ready") is not True or ending.get("played_character") != played or
+                    ingame_ui_build_binding(ending) != source_binding or
+                    (starting.get("episode_projection") == "native_campaign" and (
+                        ending.get("managed_campaign_run_binding") != starting.get("managed_campaign_run_binding") or
+                        ending["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["owner_tid"] !=
+                        starting["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["owner_tid"]))):
+                raise BridgeUnavailableError("appointment query crossed its paused session binding")
+            result = normalize_result(raw, fields=fields, native_revision=int(starting["native_revision"]),
+                date_raw=int(starting["date_raw"]), actor_id=actor)
+        except Exception as error:
+            self._record_command("query-current-title-appointment-v1", ok=False,
+                result={"raw_native_ui_result": copy.deepcopy(raw)} if raw is not None else None,
+                error=f"{type(error).__name__}: {error}")
+            raise
+        result.update({"queried_snapshot_id": starting.get("snapshot_id"), "queried_revision": expected_revision,
+            "queried_native_revision": starting.get("native_revision"), "episode_run_id": starting.get("episode_run_id"),
+            "queried_connection_generation": binding.get("connection_generation")})
+        self._record_command("query-current-title-appointment-v1", ok=True, result=result)
+        return result
+
+
     def hover_combat_knights_v1(self, combat_id: int, ui_side: str, *, expected_revision: int) -> dict[str, object]:
         if ui_side not in {"left", "right"}:
             raise ValueError("ui_side must be left or right in the original CombatWindow")
@@ -23762,6 +23809,18 @@ class ConfiguredHybridFallbackDriver:
 
     def query_ingame_ui_window_v1(self, window_kind: str, *, expected_revision: int) -> dict[str, object]:
         return self._native_ingame_ui_v1("query", window_kind, 0, expected_revision)
+
+    def query_current_title_appointment_v1(self, *, expected_revision: int,
+            requested_title_id: int | None = None, candidate_offset: int = 0,
+            candidate_limit: int = 32, breakdown_character_id: int | None = None) -> dict[str, object]:
+        from .appointment_window_contract import CAPABILITY, validate_request
+        validate_request(expected_revision, requested_title_id, candidate_offset, candidate_limit, breakdown_character_id)
+        if CAPABILITY not in self.native.capabilities().get("bridge_capabilities", []):
+            raise UnsupportedStepError("capability_not_available: current appointment query")
+        return self.native.query_current_title_appointment_v1(expected_revision=expected_revision,
+            requested_title_id=requested_title_id, candidate_offset=candidate_offset,
+            candidate_limit=candidate_limit, breakdown_character_id=breakdown_character_id)
+
 
     def hover_combat_knights_v1(self, combat_id: int, ui_side: str, *, expected_revision: int) -> dict[str, object]:
         if ui_side not in {"left", "right"}:

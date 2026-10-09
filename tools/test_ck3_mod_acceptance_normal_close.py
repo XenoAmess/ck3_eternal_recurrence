@@ -40,6 +40,9 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         client._started = 0
         client.manifest = {'host': {}}
         client.selection = SimpleNamespace(case={'budgets': {}}, manifest_path_key=lambda _: HOST_SOURCE)
+        client.context = {'reviewer': '/root'}
+        client.selection.context_path = root / 'actual-run-context.json'
+        client.selection.context_path.write_text(json.dumps(client.context), encoding='utf-8')
         client.execute_plan = Mock(side_effect=AssertionError('No finish/control submission after terminal host'))
         clock = SimpleNamespace(now=0.0, review_written=False)
         image = root / 'synthetic-reviewed-quit.not-image'

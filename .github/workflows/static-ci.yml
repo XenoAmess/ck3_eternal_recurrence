@@ -163,6 +163,9 @@ jobs:
           python -B -X utf8 tools/test_ck3_mod_acceptance.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest tools.test_ck3_mod_acceptance_normal_close tools.test_ck3_mod_acceptance_operator_quit tools.test_ck3_mod_acceptance_ui_reviewer tools.test_ck3_mod_acceptance_template_click
+          python -B -X utf8 tools/test_ck3_mod_acceptance_appointment.py
+          python -B -X utf8 tools/test_ck3_mod_acceptance_failure_shutdown.py
+          python -B -X utf8 tools/test_ck3_mod_acceptance_manual_fallback.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_readonly_observers.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

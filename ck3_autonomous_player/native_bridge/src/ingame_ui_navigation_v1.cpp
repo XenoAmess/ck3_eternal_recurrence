@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12003_succession_modal.hpp"
 #include "xar_bridge/ck3_12004_ingame_ui.hpp"
+#include "xar_bridge/ck3_12004_title_map.hpp"
 #include "xar_bridge/title_map_navigation_v1_camera.hpp"
 #include "xar_bridge/current_first_heir_typed_windows_v1.hpp"
 #include "xar_bridge/current_first_heir_character_window_identity_v1.hpp"
@@ -720,7 +721,9 @@ bool ComputeCombatUiFitTranslationV1(const UiRectV1 &viewport,const UiRectV1 &co
 }
 bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);
-  if(k>3 || o>9 || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
+  if(k>4 || o>9 || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
+  if(k==4)return o==0 && r.subject_id==0 && r.army_tooltip_kind.empty() && r.army_tooltip_receipt.empty() && ValidateAppointmentWindowRequestV1(r.appointment);
+  if(r.appointment.requested_title_id || r.appointment.candidate_offset || r.appointment.candidate_limit!=32 || r.appointment.breakdown_character_id)return false;
   if(!r.army_tooltip_kind.empty() || o==8 || o==9) {
     return k==1 && (o==0 || o==8 || o==9) && r.subject_id<=static_cast<std::uint32_t>((std::numeric_limits<std::int32_t>::max)()) &&
         (r.army_tooltip_kind=="supply_state" || r.army_tooltip_kind=="attrition") &&
@@ -734,6 +737,7 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
 }
 bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiRequestV1 &r) noexcept {
   if(!ValidateIngameUiRequestV1(r))return false;
+  if(r.window_kind==IngameUiWindowKindV1::title_appointment)return revision==GuiAbiRevisionV1::crozier12004 && r.operation==IngameUiOperationV1::query;
   if(revision==GuiAbiRevisionV1::legacy11906)return r.army_tooltip_kind.empty() && r.army_tooltip_receipt.empty() &&
       r.operation!=IngameUiOperationV1::hover_army_tooltip && r.operation!=IngameUiOperationV1::leave_army_tooltip;
   return IsModernArmyUiV1(revision) && r.window_kind==IngameUiWindowKindV1::army &&
@@ -742,11 +746,12 @@ bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiReques
 }
 bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &r) noexcept {
   r={};std::string kind,operation;std::uint64_t id=0;
-  if(!bridge::JsonStringField(json,"window_kind",kind,16))return false;
+  if(!bridge::JsonStringField(json,"window_kind",kind,24))return false;
   if(kind=="character")r.window_kind=IngameUiWindowKindV1::character;
   else if(kind=="army")r.window_kind=IngameUiWindowKindV1::army;
   else if(kind=="combat")r.window_kind=IngameUiWindowKindV1::combat;
   else if(kind=="knights")r.window_kind=IngameUiWindowKindV1::knights;
+  else if(kind=="title_appointment")r.window_kind=IngameUiWindowKindV1::title_appointment;
   else return false;
   if(!bridge::JsonUnsignedField(json,"subject_id",id) || id>(std::numeric_limits<std::uint32_t>::max)())return false;
   r.subject_id=static_cast<std::uint32_t>(id);
@@ -768,11 +773,18 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
       !bridge::JsonStringField(json,"army_tooltip_kind",r.army_tooltip_kind,16))return false;
   if(json.find("\"army_tooltip_receipt\"")!=std::string_view::npos &&
       !bridge::JsonStringField(json,"army_tooltip_receipt",r.army_tooltip_receipt,32))return false;
+  for(const auto &[name,target]:std::array<std::pair<std::string_view,std::uint32_t *>,4>{{
+      {"requested_title_id",&r.appointment.requested_title_id},{"candidate_offset",&r.appointment.candidate_offset},
+      {"candidate_limit",&r.appointment.candidate_limit},{"breakdown_character_id",&r.appointment.breakdown_character_id}}}) {
+    if(json.find(std::string("\"")+std::string(name)+"\"")!=std::string_view::npos) {
+      std::uint64_t value=0;if(!bridge::JsonUnsignedField(json,name,value)||value>0xFFFFFFFF)return false;*target=std::uint32_t(value);
+    }
+  }
   return ValidateIngameUiRequestV1(r);
 }
 std::string_view IngameUiWindowNameV1(IngameUiWindowKindV1 k) noexcept {
   switch(k){case IngameUiWindowKindV1::character:return "character_window";case IngameUiWindowKindV1::army:return "army_window";
-    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";default:return "unavailable";}
+    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";case IngameUiWindowKindV1::title_appointment:return "title_appointment";default:return "unavailable";}
 }
 bool ReadIngameUiGuiOwnerBindingV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
                                 IngameUiGuiOwnerBindingV1 &out) noexcept {
@@ -785,6 +797,57 @@ bool ReadIngameUiGuiOwnerBindingV1(const ZhongguoScoreboardNativeEnvironmentV1 &
      !ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,second.context,second.owner) ||
      first!=second)return false;
   out=first;return true;
+}
+namespace {
+bool AppointmentRead(void *,std::uintptr_t p,void *out,std::size_t n) noexcept {return Read(reinterpret_cast<void *>(p),out,n);}
+bool AppointmentTitleKey(void *,std::uintptr_t p,std::string &out) noexcept {
+  return ck3_12004::ReadLandedTitleStableKeyV1({},reinterpret_cast<void *>(p),out,true);
+}
+bool AppointmentHuman(void *ctx,std::uint32_t id,bool &out) noexcept {
+  const auto base=static_cast<const ZhongguoScoreboardNativeEnvironmentV1 *>(ctx)->module_base;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    out=reinterpret_cast<bool(__fastcall *)(std::uint32_t)>(base+0x2BAA6F0)(id);return true;
+#if defined(_MSC_VER)
+  } __except(EXCEPTION_EXECUTE_HANDLER) {return false;}
+#endif
+}
+bool AppointmentBreakdown(void *ctx,std::uintptr_t window,std::uintptr_t character,std::uintptr_t &out) noexcept {
+  const auto base=static_cast<const ZhongguoScoreboardNativeEnvironmentV1 *>(ctx)->module_base;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    out=reinterpret_cast<std::uintptr_t(__fastcall *)(void *,void *)>(base+0x171CD50)(reinterpret_cast<void *>(window),reinterpret_cast<void *>(character));return true;
+#if defined(_MSC_VER)
+  } __except(EXCEPTION_EXECUTE_HANDLER) {out=0;return false;}
+#endif
+}
+bool QueryAppointment(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,const IngameUiRequestV1 &r,IngameUiResultV1 &out) noexcept {
+  ZhongguoScoreboardAccessV1 access{};void *root=nullptr,*widget=nullptr,*window=nullptr;
+  std::string name;void *vt=nullptr;
+  if(!Value(handler,0x518,window)||!window||!TypedObject(env.module_base,window,0x57DBDC0,0x61C5000)) {
+    out.unavailable_reason="current_appointment_window_type_unverified";return true;
+  }
+  out.window_exists=true;
+  if(!ResolveNamedGuiWidgetV1(env,access,"title_appointment","title_appointment",root,widget)||!root||root!=widget||
+     !ReadGuiWidgetRuntimeV1(access,root,name,vt,out.effective_visible,out.enabled)||name!="title_appointment"||!out.effective_visible||!out.enabled) {
+    out.unavailable_reason="current_appointment_window_not_visible_and_enabled";return true;
+  }
+  AppointmentWindowAccessV1 reader{const_cast<ZhongguoScoreboardNativeEnvironmentV1 *>(&env),AppointmentRead,AppointmentTitleKey,AppointmentBreakdown,AppointmentHuman,
+    env.module_base,reinterpret_cast<std::uintptr_t>(handler),reinterpret_cast<std::uintptr_t>(window),reinterpret_cast<std::uintptr_t>(root)};
+  if(!ReadAppointmentWindowSnapshotV1(reader,r.appointment,out.title_appointment)) {
+    out.unavailable_reason=out.title_appointment.unavailable_reason;return true;
+  }
+  std::string later;void *later_vt=nullptr;bool visible=false,enabled=false;void *later_window=nullptr;
+  if(!Value(handler,0x518,later_window)||later_window!=window||!ReadGuiWidgetRuntimeV1(access,root,later,later_vt,visible,enabled)||
+    later!=name||later_vt!=vt||!visible||!enabled) {
+    out.title_appointment={};out.unavailable_reason="appointment_visibility_or_window_changed_during_query";return true;
+  }
+  out.subject_id_available=true;out.current_subject_id=out.title_appointment.current_window_title_id;
+  out.owner_character_id_available=true;out.owner_character_id=out.title_appointment.current_holder_character_id;
+  out.available=true;out.status="observed";return true;
+}
 }
 bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,const IngameUiRequestV1 &request,
                                 const game::Snapshot &snapshot,const MainThreadExecutionStampV1 &stamp,
@@ -806,6 +869,7 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   }
   void *handler=nullptr;
   if(!ResolveHandler(env,handler)){out.unavailable_reason="ingame_handler_unverified";return true;}
+  if(request.window_kind==IngameUiWindowKindV1::title_appointment)return QueryAppointment(env,handler,request,out);
   const bool current_select=IsModernArmyUiV1(env.gui_abi_revision) && request.operation==IngameUiOperationV1::select_army;
   // Original SelectUnit creates/opens view6 itself. A not-yet-created or hidden
   // panel cannot block the action; only the subsequent independent query can
@@ -929,7 +993,7 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
   std::ostringstream o;o<<std::boolalpha<<std::setprecision(std::numeric_limits<float>::max_digits10);
   o<<"{\"schema\":\"ck3-ingame-ui-window-v1\",\"accepted\":"<<v.available<<",\"available\":"<<v.available
    <<",\"status\":\""<<v.status<<"\",\"window_kind\":\"";
-  constexpr std::array<std::string_view,4> kinds{"character","army","combat","knights"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
+  constexpr std::array<std::string_view,5> kinds{"character","army","combat","knights","title_appointment"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
    <<"\",\"window_name\":\""<<IngameUiWindowNameV1(r.window_kind)<<"\",\"requested_subject_id\":"<<r.subject_id
    <<",\"window_exists\":"<<v.window_exists<<",\"effective_visible\":"<<v.effective_visible<<",\"enabled\":"<<v.enabled
    <<",\"subject_id_available\":"<<v.subject_id_available<<",\"current_subject_id\":"<<v.current_subject_id
@@ -989,7 +1053,9 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
     o<<"{\"runtime_name\":\""<<JsonEscape(w.runtime_name)<<"\",\"child_path\":\""<<JsonEscape(w.child_path)
      <<"\",\"depth\":"<<w.depth<<",\"child_count\":"<<w.child_count<<",\"vtable_rva\":"<<w.vtable_rva
      <<",\"effective_visible\":"<<w.effective_visible<<",\"enabled\":"<<w.enabled<<'}';
-   }o<<"]}";SerializeArmyTooltip(o,v.army_tooltip,v.unavailable_reason);o<<'}';return o.str();
+    }o<<"]}";SerializeArmyTooltip(o,v.army_tooltip,v.unavailable_reason);
+   if(r.window_kind==IngameUiWindowKindV1::title_appointment)o<<",\"title_appointment\":"<<SerializeAppointmentWindowSnapshotV1(v.title_appointment);
+   o<<'}';return o.str();
 }
 } // namespace xar::ck3_11906
 
