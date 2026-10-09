@@ -1,7 +1,7 @@
 # R81 repeated construction cold read: actual process-time encoding mismatch
 
-Status: source-ready, NOTRUN. Root owns the sole registered consumer FIRST
-and hotSDK/live continuation. This patch changes no construction tuple,
+Status: registered FIRST GREEN and ordinary live consumption verified. Root
+continues the same campaign after hotSDK. This patch changes no construction tuple,
 native code, schema, ACK, snapshot revision or game date.
 
 After the release-ledger BOM repair's Root FIRST, R81 hot04 ordinary attempts
@@ -57,3 +57,34 @@ are explicit seams, and no Game/CIM/SDK process is queried. All worker
 test/import/build/hash/Game calls and capability credit are zero. Root owns
 FIRST and subsequent real ordinary continuation; the original loops remain
 saved failure evidence.
+
+## Root qualification and ordinary continuation, 2026-10-09
+
+Root adopted the source linearly as `97321e7b`; the independent full SDK tree
+remains pinned to `45a3e6a4eb04900ea4c1de42bc808e9ae5e34a9d`, based on the
+qualified BOM-fixed `af6c1f46`. The sole registered compound passed once at
+05:43:11.316031–05:43:17.010467 UTC, **5.6944395 s**, with one pytest result
+and four registered plan calls. Root's actual receipt and original stdout are
+`Z:/g2-r81-construction-creation-first01/ROOT-ACTUAL-RESULT.json` and
+`stdout.log`. This fixture made no native request, Game or SDK call.
+
+Root closed SDK exec session73061 with the local inbox control and observed
+actual exit0. HOT05 exec session72345 uses the same Game175696, Native46
+compiled `088fed39`, original state and saved H9725/6010-day baseline. At
+05:46:55.381318 UTC all thirteen paused checks passed, including the original
+Robert29829/date/episode and minimized HWND297411564. Registry evidence was
+reused; no Game restart, checkpoint restore, new allocation or tool listing
+occurred. Evidence is under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/r81-sdk-process-time-hot05/`.
+
+The genuine ordinary request `002-r81-timefixed-normal-turn01.json` completed
+at 05:47:34.043024–05:48:24.463479 UTC (**50.420455 s**), consumed the existing
+verified construction receipt and selected the current war-termination query.
+Requests003 and004 then returned current army strengths and the route-contact
+horizon. None selected the erroneous cold construction loop. Request005
+naturally reached the prisoner-release branch and submitted its accepted
+terms; its independent material receipt is a separate capability result.
+This is real consumption by the ordinary planner, not another fixture or a
+fabricated revision. It grants no completed-building income, game-day, SAVE,
+M4 or complete OODA credit by itself. The original HOT04 repeated-query
+responses, raw creation timestamps and construction start remain preserved.
