@@ -153,8 +153,9 @@ No artifact is rehashed by this documentation lane.
 
 Native51's 0d qualification is specific to this new typed-window observer.
 Its older opinion Python source is not the future complete SDK source.
-The bf5 source freeze and Root's R83 work are separate from these static
-receipts; they do not turn this observer into a paused live observation.
+The bf5 source freeze is separate from these static receipts. Static
+receipts alone do not prove a paused live observation; the separate
+actual R83 family receipt below supplies that observation.
 
 ## R83 actual paused fixed-window observation
 
@@ -216,6 +217,105 @@ these seven known non-Character slots.
    and returned full Character identity. Only an actual callback/callsite
    justifies the next finite image span. No next EXE span is guessed here.
 
+### Actual connected Army context and its stopping point
+
+The cached actual4 `army_window_init_root-DETAIL.json` supplies a real
+connection:0x1345ECA stores the GUI root at native-window+0x60;
+0x1345ED3/0x1345ED6 pass the CArmyWindow and GUI-root operands in RDX/RCX,
+then0x1345EDE tail-jumps0x1351A90. Root read its held
+`[0x1351A90,0x1351DCA)` extent once at
+2026-10-09T12:26:46.457071Z to12:26:46.477197Z:826 bytes,207 decoded
+instructions,0.0011772 seconds for the source read. The actual result and
+DETAIL are in
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/guardian-character-controller-source/connected-provider52/root-provider01/`.
+
+The body saves the native-window operand in RBX and GUI root in RDI:
+
+| Actual operand or call | Established dataflow |
+| --- | --- |
+| 0x1351AD0 | Copies the32-bit context key at image RVA0x5D56DC4 to local `[RBP+0x90]`. |
+| 0x1351B04 -> 0x3AC4500 | RCX=original native window, RDX=&local context key, R8=&temporary value at `[RSP+0x20]`. |
+| 0x1351B09-0x1351B61 | Obtains/creates GUIroot+0xE0's container, then calls0x3AC2080 with that container and the same key. |
+| 0x1351B72-0x1351CFC | Stores/copies the temporary value according to byte tags-1/0/1/2/3, then sets entry+0x4C to1. |
+| 0x1351D3F | Calls the already cached generic GUI event-delivery0x3AA5A00. |
+
+Static initialization at0x1351DA5-0x1351DB3 takes and increments the
+counter at RVA0x5C5FDA8; its initialization-state slot is0x5D56DC0.
+The actual dynamic context key is a different, unjoined domain from the
+seven fixed registered-name IDs. It is not passed to0x3F4F8E0 or called a
+Character/relation identifier.
+
+This body connects the Army root to generic context but supplies no
+Character literal or registration. That branch stops here: no expansion
+of0x3AC4500, container lookup, generic IR, allocation, copy or destruction.
+These bytes do not qualify CharacterWindow.GetCharacter or guardian truth.
+
+### Actual named CCharacterWindow type entry
+
+Root's exact decorated-name locator now supplies a Character-specific
+native anchor. Its actual receipt is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/guardian-character-controller-source/exact-character-rtti53/root-locator01/EXACT-CHARACTER-WINDOW-RTTI-RESULT.json`.
+Root read the existing `.data` source once,8,571,392 bytes in0.0088564
+seconds,2026-10-09T12:37:01.845923Z. There is exactly one match:
+
+| Actual named record | Value |
+| --- | --- |
+| Exact decorated name | `.?AVCCharacterWindow@@` |
+| Name RVA | `0x5723020` |
+| Candidate type descriptor, name minus0x10 | `0x5723010` |
+| Retained16-byte header | `a0104244010000000000000000000000` |
+| Header first preferred-image pointer | `0x1444210A0` |
+
+This actual name/record is not borrowed from11906, a guessed slot8 or a
+fixture. The named TD candidate is an entry for COL/vtable/constructor
+source work, not an admitted callback or a captured Character-window
+object in the R83 frame. The old selected `VTABLE-CANDIDATES.json` and
+`VTABLE-RTTI-CLOSED.json` metadata contain no row for this newly located TD.
+
+Root then followed only this named TD in the frozen `.rdata` source.
+The actual receipt is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/guardian-character-controller-source/character-col54/root-col01/CHARACTER-COL-VTABLE-RESULT.json`.
+The read began2026-10-09T12:42:29.993099Z and completed at12:42:30.062970Z:
+17,124,352 bytes,0.0135669 seconds for the read. It found two
+signature1/self-relative COL records and one vtable reference for each:
+
+| Actual subobject | COL RVA / offset | Vtable RVA | First observed virtual entry |
+| --- | --- | --- | --- |
+| Primary object | `0x4AEF4B8` / 0 | `0x451BA18` | `0x106C040` |
+| Secondary subobject | `0x4AEF4E0` / 0x10 | `0x451BAE8` | `0x1083094` |
+
+Both COLs name TD0x5723010 and class-hierarchy descriptor0x4AEE870.
+The primary table's next entries include0x106C4F0,0x102EED0 and0x106CC20.
+These are actual virtual pointers; their callback meanings are not guessed.
+
+The next source input is the constructor/vptr-store reference to these
+two exact named tables. The Root-only recipe is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/guardian-character-controller-source/character-vptr55/ROOT-VPTR-ARGV.json`.
+It searches only RIP-relative64-bit LEA references to0x451BA18/0x451BAE8,
+then retains the local forward instructions and existing runtime-function
+extent for each hit. It uses one frozen `.text` buffer, not a whole-code
+decode or other-type inventory. The actual result remains pending under
+`character-vptr55/root-vptr01/`; no first virtual entry is relabelled
+as GetCharacter.
+
+A real COL/vtable chain can identify the subsequent Character constructor
+vptr store or typed registration. GetCharacter still needs its actual
+receiver, callable ABI and returned full-ID proof. Robert29829 and heir38822
+remain the observed family anchors; neither substitutes for an unobserved
+child or selected educator.
+
+```mermaid
+flowchart TD
+  S[R83 actual7 windows: no CharacterWindow] --> A[Actual826-byte Army root/context body]
+  A --> X[Army generic context branch stopped]
+  G[Stock CharacterWindow.GetCharacter consumer] --> N[Root actual CCharacterWindow name5723020]
+  N --> T[Named TD candidate5723010]
+  T --> V[Actual primary451BA18 and secondary451BAE8]
+  V -. exact constructor vptr stores and typed registration unclosed .-> R[Character-specific receiver provider]
+  R -. callback receiver and full ID unclosed .-> C[CharacterWindow.GetCharacter full ID]
+  C -. guardian kind and directional collection unclosed .-> H[Existing child query guardian input]
+```
+
 The implementation and unique FIRST packet are under
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261009/runtime51-child-typed-windows-preparation/`.
 The earlier optional raw-surface research plan is superseded by this private
@@ -240,7 +340,8 @@ flowchart TD
   D --> F[Actual offline native3 and registered Service4 GREEN]
   D --> L[R83 actual paused7 names and RTTI available]
   L --> M[Seven-slot finite miss: no CharacterWindow]
-  M -. connected native typed provider and registration unclosed .-> C[Candidate CharacterWindow typed slot]
+  M --> T2[Actual CCharacterWindow TD5723010 and two COL/vtables]
+  T2 -. constructor and handler slot registration unclosed .-> C[Candidate CharacterWindow typed slot]
   C -. native typed registration and receiver unclosed .-> G[CharacterWindow.GetCharacter full ID]
   G -. loaded relation object factory unclosed .-> R[GetRelation guardian / ScriptedRelation]
   R -. callback ABI and guardian direction unclosed .-> H[HasRelationBetween]
