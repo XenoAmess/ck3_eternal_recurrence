@@ -910,6 +910,8 @@ def _normalize_current_person_state(
         fields.add("following_2922680")
     if isinstance(value, dict) and "following_291ce01_government_gate" in value:
         fields.add("following_291ce01_government_gate")
+    if isinstance(value, dict) and "following_291e3a0_local_titles" in value:
+        fields.add("following_291e3a0_local_titles")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -1044,6 +1046,10 @@ def _normalize_current_person_state(
         from .battle_person_government_gate_12004 import normalize_person_government_gate_12004
         normalized["following_291ce01_government_gate"] = normalize_person_government_gate_12004(
             state["following_291ce01_government_gate"])
+    if "following_291e3a0_local_titles" in state:
+        from .battle_person_local_titles_12004 import normalize_person_local_titles_12004
+        normalized["following_291e3a0_local_titles"] = normalize_person_local_titles_12004(
+            state["following_291e3a0_local_titles"])
     return normalized
 
 
@@ -1128,6 +1134,10 @@ def _normalize_character_custody_rows(
             if (government_gate is not None and government_gate["character_id"] is not None
                     and government_gate["character_id"] != character_id):
                 raise ValueError(f"{field}[{index}] government gate CharacterID disagrees")
+            local_titles = normalized["current_person_state"].get("following_291e3a0_local_titles")
+            if (local_titles is not None and local_titles["character_id"] is not None
+                    and local_titles["character_id"] != character_id):
+                raise ValueError(f"{field}[{index}] local Title inputs CharacterID disagrees")
         result.append(normalized)
     return result
 

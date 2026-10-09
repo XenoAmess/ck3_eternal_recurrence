@@ -13,6 +13,7 @@
 #include "xar_bridge/ck3_12004_person_conditional_scope_weights.hpp"
 #include "xar_bridge/ck3_12004_person_following_2922680.hpp"
 #include "xar_bridge/ck3_12004_person_government_gate.hpp"
+#include "xar_bridge/ck3_12004_person_local_titles.hpp"
 
 #include "xar_bridge/ck3_12003_maa_recruitment.hpp"
 #include "xar_bridge/owned_regiments.hpp"
@@ -3653,6 +3654,7 @@ struct BattleCurrentPersonStateSnapshotV1 {
   std::optional<ck3_12004::PersonConditionalScopeWeights12004DTO> following_2921a90_scope_weights;
   std::optional<ck3_12004::PersonFollowing2922680DTO> following_2922680;
   std::optional<ck3_12004::PersonGovernmentGate12004DTO> following_291ce01_government_gate;
+  std::optional<ck3_12004::PersonLocalTitles12004DTO> following_291e3a0_local_titles;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
 };
