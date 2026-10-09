@@ -1,0 +1,20 @@
+{
+  "schema": "lyd.r37.interrupted-archive-validation.v1",
+  "result": "PASS",
+  "entry_count": 272,
+  "zip": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0037-transaction-control-interrupted-red/raw-evidence.zip",
+    "bytes": 28883816,
+    "sha256": "396cdd785c9109619327ef9c2205fe95f557302061f2a762294016d463ae7709"
+  },
+  "index": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0037-transaction-control-interrupted-red/INDEX.json",
+    "bytes": 97933,
+    "sha256": "c504ac6733f876788e7da4fda074539b832307db8f43aa85a83b2ce536b7211a"
+  },
+  "report": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-09-r0037-transaction-control-interrupted-red/REPORT.md",
+    "bytes": 2297,
+    "sha256": "5ee79617caa1938545a39a2a1d942f703925d39a53f541452b6c836ed2717f03"
+  }
+}

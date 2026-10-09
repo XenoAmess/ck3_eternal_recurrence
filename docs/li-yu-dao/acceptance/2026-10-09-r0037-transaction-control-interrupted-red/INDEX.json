@@ -1,0 +1,2204 @@
+{
+  "schema": "lyd.r37.interrupted-transaction-control-archive.v1",
+  "status": "INTERRUPTED_RED_NO_D2B_RESULT",
+  "live_run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0037",
+  "source_production_head": "06159b964d859d30f2f07f4b183284df7d6dac47",
+  "checkout_head_at_launch": "3060221434724ef021492ac23796dad21d4d6699",
+  "external_save_bodies": [
+    {
+      "role": "original_D2a",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-034/checkpoints/D2a/checkpoint.ck3",
+      "bytes": 91711686,
+      "sha256": "a6db85e38ba0648eca4b7e835c79d867b96ca26099698f4d4ee5269b818d822c",
+      "tracked_zip_included": false
+    },
+    {
+      "role": "R37_copy",
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/save games/lyd_r37_D2a_transaction_only_diagnostic.ck3",
+      "bytes": 91711686,
+      "sha256": "a6db85e38ba0648eca4b7e835c79d867b96ca26099698f4d4ee5269b818d822c",
+      "tracked_zip_included": false
+    }
+  ],
+  "normal_exit_verified": null,
+  "D2b_executed_verified": false,
+  "formal_acceptance_credit": false,
+  "evidence_entries": [
+    {
+      "archive_path": "candidate/CANDIDATE-MANIFEST.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-transaction-only-overlay-sourceonly-20261009-001/CANDIDATE-MANIFEST.json",
+        "bytes": 2387,
+        "sha256": "96f32b315141911eb9b2368e8733969e5536854da493a5ec1f8717d1ae87657b"
+      }
+    },
+    {
+      "archive_path": "candidate/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-transaction-only-overlay-sourceonly-20261009-001/common/scripted_effects/lyd_i3b_commit_effects.txt",
+        "bytes": 10689,
+        "sha256": "4b4f10733c701984faddcc746f76438b4c270e9562f5bb1705e25e5a2b7e96e4"
+      }
+    },
+    {
+      "archive_path": "candidate/common/scripted_triggers/lyd_factory_operation_diagnostic.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-transaction-only-overlay-sourceonly-20261009-001/common/scripted_triggers/lyd_factory_operation_diagnostic.txt",
+        "bytes": 1210,
+        "sha256": "249a768bc55d73ec87d29203905f5f7adb35b3bf2821edeb73985e1cf36513eb"
+      }
+    },
+    {
+      "archive_path": "candidate/descriptor.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-transaction-only-overlay-sourceonly-20261009-001/descriptor.mod",
+        "bytes": 178,
+        "sha256": "a16a4bdff57953a01bc035cffc87aeda7a044dec637fbc7c2682eaf391ebb6a9"
+      }
+    },
+    {
+      "archive_path": "candidate/events/lyd_factory_operation_diagnostic.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-transaction-only-overlay-sourceonly-20261009-001/events/lyd_factory_operation_diagnostic.txt",
+        "bytes": 6747,
+        "sha256": "efd4b502689c46cf56d952dfef9d95f7b83b7f8bf7ed3fd4a18726c2132482c1"
+      }
+    },
+    {
+      "archive_path": "candidate/localization/english/lyd_factory_operation_diagnostic_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-transaction-only-overlay-sourceonly-20261009-001/localization/english/lyd_factory_operation_diagnostic_l_english.yml",
+        "bytes": 1500,
+        "sha256": "83c073842f3687b3980540490b081f1d62c5353a9be33a38193227f02ef3f808"
+      }
+    },
+    {
+      "archive_path": "candidate/localization/simp_chinese/lyd_factory_operation_diagnostic_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-transaction-only-overlay-sourceonly-20261009-001/localization/simp_chinese/lyd_factory_operation_diagnostic_l_simp_chinese.yml",
+        "bytes": 1343,
+        "sha256": "cb342e94f0f2248fe669cf3487f58939e175f4361814c17a537218e2b55db86d"
+      }
+    },
+    {
+      "archive_path": "preparation/r37-root-launch-profile-derivation-20261009-001.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-launch-profile-derivation-20261009-001.json",
+        "bytes": 4822,
+        "sha256": "7c31a797102f2546e9c6e4f8773315439332f41c1fa82dbbeece0b1ae8603e9e"
+      }
+    },
+    {
+      "archive_path": "preparation/r37-root-native-client-derivation-20261009-001.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-native-client-derivation-20261009-001.json",
+        "bytes": 2531,
+        "sha256": "be21cd8d8cbabae52aa6d3a686ab01dfd678da3e2a55bf8125ede525c29ec668"
+      }
+    },
+    {
+      "archive_path": "preparation/r37-transaction-only-overlay-static-20261009-001.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-transaction-only-overlay-static-20261009-001.json",
+        "bytes": 459,
+        "sha256": "3212df51cd49d2b4f4bd2b5d2bc5ca1cd9db37672022b52fce42d8851e81fa45"
+      }
+    },
+    {
+      "archive_path": "run/COLD-MATERIALIZED.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/COLD-MATERIALIZED.json",
+        "bytes": 83770,
+        "sha256": "127b29b860c72b57682fe1e887f2c21f4f522f906ccdcb76b451f738015e46de"
+      }
+    },
+    {
+      "archive_path": "run/INTERRUPTED-CENSUS.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/INTERRUPTED-CENSUS.actual.json",
+        "bytes": 858,
+        "sha256": "18f694e1da2cb32b04459b596a3fab172abfe777129085364b892806969d74cb"
+      }
+    },
+    {
+      "archive_path": "run/INTERRUPTED-CLOSEOUT-TASK.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/INTERRUPTED-CLOSEOUT-TASK.actual.json",
+        "bytes": 528,
+        "sha256": "b59755828a537ef23ea2f7d66af3018541fd1efd959cdadc8fd79f2896799867"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-001.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-001.json",
+        "bytes": 371,
+        "sha256": "65da14875109c4c81ce65bf0399c4d5dfba474ea9120ab8293fae363fe2d05f9"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-001.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-001.png",
+        "bytes": 2222217,
+        "sha256": "c8393342eca3b44347db1e488ec9b32e4d02ce5f04a5c2ae45438f2cda241eae"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-003.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-003.json",
+        "bytes": 371,
+        "sha256": "b84cb230e391b2281dab864bb7dedce5659211c0d5166fa7adb04449aae33c06"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-003.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-003.png",
+        "bytes": 2716312,
+        "sha256": "859f5fb71f3c570bdb0490234379997ea176978c6de7e35f27f9499206cd6a47"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-004.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-004.json",
+        "bytes": 371,
+        "sha256": "f7aceb4955fa5d3bf9380c4f911b117d041cde92844b58a68f5d4c00c00fc1e5"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-004.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-004.png",
+        "bytes": 2716046,
+        "sha256": "73b684d81730d38e7a1b87a45164fa022987a21e4e322f50061ec6ecc07cdd85"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-005.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-005.json",
+        "bytes": 371,
+        "sha256": "9033903c59b6c137f7a830f770bec1825ba6fc40f6d87f0c90ed65c13bdfaf89"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-005.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-005.png",
+        "bytes": 2760588,
+        "sha256": "3ed8ba3d4180efa1eb3c1a7cd97da4ce9ede85fa82c5dbd974ccad5fb08c1d96"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-006.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-006.json",
+        "bytes": 371,
+        "sha256": "6690db367fdfefa07b6f2650be2019b034aa78a4a0e3a07a748e539744a92fca"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-006.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-006.png",
+        "bytes": 2760728,
+        "sha256": "1b823c7089e99ab39364061619c7e989ee9482d98d4cd4e68e2b55575d0dcc5c"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-007.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-007.json",
+        "bytes": 371,
+        "sha256": "0b74abae58d3f560a99b6238eab03595cf8c2329ee3b0bf2d71ed7ed7def428b"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-007.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-007.png",
+        "bytes": 2760655,
+        "sha256": "96e7ea3db141db661b623b59c5b5d344ed148bd94d675fb77e8c4f9d16458d66"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-008.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-008.json",
+        "bytes": 371,
+        "sha256": "7dc5c59dd8ef6650d1bef194e5b3e7c0fe20783b77729d16d682e25fa0765282"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-008.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-008.png",
+        "bytes": 2760576,
+        "sha256": "c08d14f6342dcd8d5561f3726f92c557b8134a3a3a7cc3c7df0d32804e4b5452"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-009.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-009.json",
+        "bytes": 371,
+        "sha256": "3588e43893be6883b3cbab5b5a65d9d07fa3ffcdad0b356fff5f5a9ffdfce809"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-009.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-009.png",
+        "bytes": 2760750,
+        "sha256": "7a6d1ee4fdbcee315725530f6b943d5263708b582d17df5888d4dd75ac9b90be"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-010.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-010.json",
+        "bytes": 371,
+        "sha256": "6ffeb0ea5dab8f0c91935fc990b350cf526e7dea6e34c5e304a23956f41954ba"
+      }
+    },
+    {
+      "archive_path": "run/R37-LOAD-STATE-010.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/R37-LOAD-STATE-010.png",
+        "bytes": 2342948,
+        "sha256": "f5acd117f8621526f391726ed6ebb1a3fe7688a2af1611b4fbb3ded9efbae017"
+      }
+    },
+    {
+      "archive_path": "run/RESUME-OBSERVATION-001.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/RESUME-OBSERVATION-001.json",
+        "bytes": 173,
+        "sha256": "e5df4667efc1e47247dc53dbd0b1ba6d7d5a1893ce47f3601b80c768a328fe58"
+      }
+    },
+    {
+      "archive_path": "run/ck3-stderr.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/ck3-stderr.txt",
+        "bytes": 132,
+        "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+      }
+    },
+    {
+      "archive_path": "run/ck3-stdout.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/ck3-stdout.txt",
+        "bytes": 4786420,
+        "sha256": "643e463dd45a7edd1950166c5945eabc21396abbfa761c67aba1e105bfe9eb9c"
+      }
+    },
+    {
+      "archive_path": "run/content/charter/common/decisions/lyd_cp_decisions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/charter/common/decisions/lyd_cp_decisions.txt",
+        "bytes": 1627,
+        "sha256": "e16fd91c0ad3b1aed6940aaf527def226ec5b6fa7bf726d01a05f232f0155a4b"
+      }
+    },
+    {
+      "archive_path": "run/content/charter/common/scripted_effects/lyd_cp_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/charter/common/scripted_effects/lyd_cp_effects.txt",
+        "bytes": 1799,
+        "sha256": "b148aeda930d29b53ec251f2a3506f46a8418462995d7f96a95abafd1910c9ac"
+      }
+    },
+    {
+      "archive_path": "run/content/charter/common/scripted_triggers/lyd_cp_triggers.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/charter/common/scripted_triggers/lyd_cp_triggers.txt",
+        "bytes": 7526,
+        "sha256": "9bace9e9493dc3d19ff14b7a361022adafb7f336a0020a423e3e5594e5855a31"
+      }
+    },
+    {
+      "archive_path": "run/content/charter/descriptor.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/charter/descriptor.mod",
+        "bytes": 129,
+        "sha256": "66b9c4bc79babd063280d61af6586c5c7d455bb3b532d352632dbfeb346911d2"
+      }
+    },
+    {
+      "archive_path": "run/content/charter/localization/english/lyd_cp_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/charter/localization/english/lyd_cp_l_english.yml",
+        "bytes": 1699,
+        "sha256": "4df977dd74a12c1276fa59385f6fbc9313842b680f31e98a558c775055fc1ee4"
+      }
+    },
+    {
+      "archive_path": "run/content/charter/localization/simp_chinese/lyd_cp_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/charter/localization/simp_chinese/lyd_cp_l_simp_chinese.yml",
+        "bytes": 1526,
+        "sha256": "a017a58c78928eb7d8937e78d9618aeb3176d659967068ef21d99fc59b88c261"
+      }
+    },
+    {
+      "archive_path": "run/content/diagnostic_stage/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/diagnostic_stage/common/scripted_effects/lyd_i3b_commit_effects.txt",
+        "bytes": 10689,
+        "sha256": "4b4f10733c701984faddcc746f76438b4c270e9562f5bb1705e25e5a2b7e96e4"
+      }
+    },
+    {
+      "archive_path": "run/content/diagnostic_stage/common/scripted_triggers/lyd_factory_operation_diagnostic.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/diagnostic_stage/common/scripted_triggers/lyd_factory_operation_diagnostic.txt",
+        "bytes": 1210,
+        "sha256": "249a768bc55d73ec87d29203905f5f7adb35b3bf2821edeb73985e1cf36513eb"
+      }
+    },
+    {
+      "archive_path": "run/content/diagnostic_stage/descriptor.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/diagnostic_stage/descriptor.mod",
+        "bytes": 178,
+        "sha256": "a16a4bdff57953a01bc035cffc87aeda7a044dec637fbc7c2682eaf391ebb6a9"
+      }
+    },
+    {
+      "archive_path": "run/content/diagnostic_stage/events/lyd_factory_operation_diagnostic.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/diagnostic_stage/events/lyd_factory_operation_diagnostic.txt",
+        "bytes": 6747,
+        "sha256": "efd4b502689c46cf56d952dfef9d95f7b83b7f8bf7ed3fd4a18726c2132482c1"
+      }
+    },
+    {
+      "archive_path": "run/content/diagnostic_stage/localization/english/lyd_factory_operation_diagnostic_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/diagnostic_stage/localization/english/lyd_factory_operation_diagnostic_l_english.yml",
+        "bytes": 1500,
+        "sha256": "83c073842f3687b3980540490b081f1d62c5353a9be33a38193227f02ef3f808"
+      }
+    },
+    {
+      "archive_path": "run/content/diagnostic_stage/localization/simp_chinese/lyd_factory_operation_diagnostic_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/diagnostic_stage/localization/simp_chinese/lyd_factory_operation_diagnostic_l_simp_chinese.yml",
+        "bytes": 1343,
+        "sha256": "cb342e94f0f2248fe669cf3487f58939e175f4361814c17a537218e2b55db86d"
+      }
+    },
+    {
+      "archive_path": "run/content/entry/common/decisions/lyd_r3_fixture_decisions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/entry/common/decisions/lyd_r3_fixture_decisions.txt",
+        "bytes": 794,
+        "sha256": "d2f0324b39c47b3a4950c0f8959501e0e4b09868ba7df48f34f14b4b3e0fc289"
+      }
+    },
+    {
+      "archive_path": "run/content/entry/common/scripted_effects/lyd_r3_fixture_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/entry/common/scripted_effects/lyd_r3_fixture_effects.txt",
+        "bytes": 768,
+        "sha256": "5a79a925992d3a55586e5558d5c6300d608986467259b3f9b1ec17c8f08096da"
+      }
+    },
+    {
+      "archive_path": "run/content/entry/common/scripted_triggers/lyd_r3_fixture_triggers.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/entry/common/scripted_triggers/lyd_r3_fixture_triggers.txt",
+        "bytes": 415,
+        "sha256": "bc0f586a245377fb1d2660651f04ce2c16f85fcc113250f323da4fd7fbbb5bda"
+      }
+    },
+    {
+      "archive_path": "run/content/entry/descriptor.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/entry/descriptor.mod",
+        "bytes": 123,
+        "sha256": "56257504a8f873e43a20ab5c3096c9607647e205d28db17f4c3b13cb54f94a8f"
+      }
+    },
+    {
+      "archive_path": "run/content/entry/events/lyd_r3_fixture_events.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/entry/events/lyd_r3_fixture_events.txt",
+        "bytes": 707,
+        "sha256": "0f5cae24b3d938cc9ece2af2a8a889dbf42d8b234d41cdc94c6c16adc7f05a9b"
+      }
+    },
+    {
+      "archive_path": "run/content/entry/localization/english/lyd_r3_fixture_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/entry/localization/english/lyd_r3_fixture_l_english.yml",
+        "bytes": 1729,
+        "sha256": "25dbd64ed8d61ba7f6f474e1e3cd9abf8d7e3e944ebc2db865d324bba4504e44"
+      }
+    },
+    {
+      "archive_path": "run/content/entry/localization/simp_chinese/lyd_r3_fixture_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/entry/localization/simp_chinese/lyd_r3_fixture_l_simp_chinese.yml",
+        "bytes": 1554,
+        "sha256": "007ef993fbb92d8b5c94855a1de601a90e355ea3967128a0ddac3b6554e23252"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/decisions/lyd_im_decisions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/decisions/lyd_im_decisions.txt",
+        "bytes": 622,
+        "sha256": "6a823c3409d9a1e0cd2bca88b3e0cd332b420a5abcc4a5a1602d3209a492c5b7"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_dispatch_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_dispatch_effects.txt",
+        "bytes": 23432,
+        "sha256": "93df65d9edcc9b40b0a0f434fbd1c21a1ce6775dd4f10272f1d5e5db544577cf"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_10_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_10_effects.txt",
+        "bytes": 13139,
+        "sha256": "b0f2d7d2049b30a275a93e38673d20fa04f4903db526ed791f953aaa3eec315d"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_11_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_11_effects.txt",
+        "bytes": 13139,
+        "sha256": "700130dd3da366b54884fedeeb79267ecd02f07902ab1a5a68da6f757a178dc7"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_12_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_12_effects.txt",
+        "bytes": 13155,
+        "sha256": "bb9831e6f2727ed5ac0852cf273caed1b7bb6a8defb1180e8843bd463a0afd2f"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_13_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_13_effects.txt",
+        "bytes": 13333,
+        "sha256": "c2a9f8d6af81c8154bdf1516403383bb7c7cc0b7222d775e9f5bfbd36acb7eff"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_14_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_14_effects.txt",
+        "bytes": 13291,
+        "sha256": "d195df047afab2e04c39fc61c44cfe452ac696db11410b2c1028ce334df14626"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_15_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_15_effects.txt",
+        "bytes": 13259,
+        "sha256": "9e955328f6b3f3e56659b03eae1f6eb283b924268a0a13eab8b9c3bbc3b4e70c"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_16_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_16_effects.txt",
+        "bytes": 13227,
+        "sha256": "cbbf63dec72b93ad25730612404c7c770c0236c75435e9bf57d143ad16007b4d"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_17_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_17_effects.txt",
+        "bytes": 13163,
+        "sha256": "ad705a3e20ee56d30aa09f3b843ce390c2cc5879e5db0aefbea51ac640253d35"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_18_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_18_effects.txt",
+        "bytes": 13227,
+        "sha256": "4e988df9a32a4f6a1c47648e3ccea1a35317f6fab61260395b3c1cf8a2d099bf"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_1_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_1_effects.txt",
+        "bytes": 13067,
+        "sha256": "3c200d40cdcf78ae28764c129214190413d8e0c9745276d20fb54ee7e867e8f1"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_2_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_2_effects.txt",
+        "bytes": 13131,
+        "sha256": "b33c79a048455503004c7dca04e82ba97e90d4db6af539db7ac0c2cfa108ae49"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_3_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_3_effects.txt",
+        "bytes": 13123,
+        "sha256": "f92cc590a4e249f06e195f6f0b214c2ac9aabe70f91e53311ff3ba1218c04392"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_4_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_4_effects.txt",
+        "bytes": 13139,
+        "sha256": "2f1a0daff6def15388e4c66c7d15b1b2f0664919400686ef8926da6e5ddadf17"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_5_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_5_effects.txt",
+        "bytes": 13187,
+        "sha256": "7274cf60669fd3b3cd63593388137359bf7c6c0438f2e37fd601654cc839a378"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_6_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_6_effects.txt",
+        "bytes": 13139,
+        "sha256": "f09c4b20c2122d0148e4458dad6bde2c83dd47eda21a7a4b71c728398b96097c"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_7_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_7_effects.txt",
+        "bytes": 13059,
+        "sha256": "c0c4fee59886cf771183d743578f4cf63c4201580d1bdc5f16c15b5b40693a65"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_8_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_8_effects.txt",
+        "bytes": 13267,
+        "sha256": "43486446a75e944a844032f707ced316f6cc7496629f1ec68c573b2e657dde1d"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_effects/lyd_im_prepare_9_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_effects/lyd_im_prepare_9_effects.txt",
+        "bytes": 13171,
+        "sha256": "389fd1addcc83e4cdae5a56d3c8ef8f44d036c2895776edf9830622d16185de6"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/common/scripted_triggers/lyd_im_triggers.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/common/scripted_triggers/lyd_im_triggers.txt",
+        "bytes": 780,
+        "sha256": "4b5fcb680ad33d6f3403a4717610b742aab1eb5c0b83249be75c6382127d0f2d"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/descriptor.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/descriptor.mod",
+        "bytes": 128,
+        "sha256": "30daa9a5d0865374862e7670a5c5a926ef5c9ac956c60b76ab28a9ec98824e35"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/events/lyd_im_cases_1.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/events/lyd_im_cases_1.txt",
+        "bytes": 23516,
+        "sha256": "a41be8b7d5dd303d4ad86e3f55a221ce8beb1d8135b32f21337c05702c46ba15"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/events/lyd_im_cases_2.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/events/lyd_im_cases_2.txt",
+        "bytes": 23590,
+        "sha256": "d59fd9b983f033c3730766cb81bb25a68f4b604e50383fd9e3d121a598fee81a"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/events/lyd_im_cases_3.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/events/lyd_im_cases_3.txt",
+        "bytes": 23598,
+        "sha256": "22a88b61d0377e85d11f0f0aa3910cf0fbb11832cef558ab1fd90d0baba8d683"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/events/lyd_im_cases_4.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/events/lyd_im_cases_4.txt",
+        "bytes": 23582,
+        "sha256": "b35f0620c4d1b384b41e6260e5384371832b31a0b6e931327dc2d97743764ade"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/events/lyd_im_cases_5.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/events/lyd_im_cases_5.txt",
+        "bytes": 23784,
+        "sha256": "4cd7481af5a7a9036f6ce123ebe33f482bea82fe3a904fe88a640222706276e9"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/events/lyd_im_cases_6.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/events/lyd_im_cases_6.txt",
+        "bytes": 23730,
+        "sha256": "28e4a9f089a5156c25618d0c4ca2c84d7b7f4a16b9c9d9f04389396f98027488"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/events/lyd_im_menu_events.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/events/lyd_im_menu_events.txt",
+        "bytes": 448,
+        "sha256": "f23d30314f5eec2fa288b0d5211413697ce3eac260a7d1ab66f3eaa4860bbab1"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/localization/english/lyd_im_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/localization/english/lyd_im_l_english.yml",
+        "bytes": 58252,
+        "sha256": "196ca53b76a5691e3b66e8ec61fe6c970bac9cadd85188fc6ef763ffe251863a"
+      }
+    },
+    {
+      "archive_path": "run/content/i4_single_event/localization/simp_chinese/lyd_im_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/i4_single_event/localization/simp_chinese/lyd_im_l_simp_chinese.yml",
+        "bytes": 54911,
+        "sha256": "9028a59a7f0001f7c8e446f3d502ec36e9da2c75b98bba38f0db9101ff05acba"
+      }
+    },
+    {
+      "archive_path": "run/content/observer/common/decisions/lyd_r4_fixture_decisions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/observer/common/decisions/lyd_r4_fixture_decisions.txt",
+        "bytes": 3442,
+        "sha256": "32988ae762939ed77bb5dc03fd3581aff725f3e2fb697af51cc0eeb6f600f48f"
+      }
+    },
+    {
+      "archive_path": "run/content/observer/common/script_values/lyd_r4_fixture_values.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/observer/common/script_values/lyd_r4_fixture_values.txt",
+        "bytes": 160,
+        "sha256": "0dd22e38634f020c1a69a1fc1ebfe645fed9bb2011cb68ea1e32d39694073c33"
+      }
+    },
+    {
+      "archive_path": "run/content/observer/common/scripted_effects/lyd_r4_fixture_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/observer/common/scripted_effects/lyd_r4_fixture_effects.txt",
+        "bytes": 13017,
+        "sha256": "b64d3635d9ad0f2deb2085acede380d2b27df00bd983ebbe069a1a6a5a602b9b"
+      }
+    },
+    {
+      "archive_path": "run/content/observer/common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/observer/common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+        "bytes": 8208,
+        "sha256": "a45bd6552d45314603a213ad0a4fd68de1c67fcfec62a6411d14a9fe7b2acad8"
+      }
+    },
+    {
+      "archive_path": "run/content/observer/descriptor.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/observer/descriptor.mod",
+        "bytes": 123,
+        "sha256": "2b7f18a5ae3a30f68ad52de4013b85af507faf619e536e4225de30d698bf62a4"
+      }
+    },
+    {
+      "archive_path": "run/content/observer/events/lyd_r4_fixture_events.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/observer/events/lyd_r4_fixture_events.txt",
+        "bytes": 1532,
+        "sha256": "9433428c0af3548061bfe9f6efe4fe8f2c3da0986fdfdb2ca44b48a0ca560c42"
+      }
+    },
+    {
+      "archive_path": "run/content/observer/localization/english/lyd_r4_fixture_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/observer/localization/english/lyd_r4_fixture_l_english.yml",
+        "bytes": 7826,
+        "sha256": "799b64d1c65322f82d06a3238d278295101af39c867ff6ab50d9b6a0ca27f1d6"
+      }
+    },
+    {
+      "archive_path": "run/content/observer/localization/simp_chinese/lyd_r4_fixture_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/observer/localization/simp_chinese/lyd_r4_fixture_l_simp_chinese.yml",
+        "bytes": 7016,
+        "sha256": "1b6963753219910c3e5515ef12f7eda20b15948e5ed69cc555bc90b4ed2dffd0"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/character_interactions/lyd_c2_consent_interactions.txt",
+        "bytes": 986,
+        "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/character_interactions/lyd_c3_teacher_interactions.txt",
+        "bytes": 4931,
+        "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+        "bytes": 954,
+        "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/character_interactions/lyd_interactions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/character_interactions/lyd_interactions.txt",
+        "bytes": 127,
+        "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/decisions/lyd_c2_consent_decisions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/decisions/lyd_c2_consent_decisions.txt",
+        "bytes": 2408,
+        "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/decisions/lyd_c3_leadership_decisions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/decisions/lyd_c3_leadership_decisions.txt",
+        "bytes": 8528,
+        "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/decisions/lyd_decisions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/decisions/lyd_decisions.txt",
+        "bytes": 1774,
+        "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/decisions/lyd_i3b_institution_decisions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/decisions/lyd_i3b_institution_decisions.txt",
+        "bytes": 4599,
+        "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+        "bytes": 544,
+        "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/religion/faith_types/lyd_faiths.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/religion/faith_types/lyd_faiths.txt",
+        "bytes": 424,
+        "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/religion/rite_types/lyd_rites.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/religion/rite_types/lyd_rites.txt",
+        "bytes": 13028,
+        "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/religion/tenet_types/lyd_tenets.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/religion/tenet_types/lyd_tenets.txt",
+        "bytes": 19451,
+        "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/script_values/lyd_c2_consent_values.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/script_values/lyd_c2_consent_values.txt",
+        "bytes": 533,
+        "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/script_values/lyd_i3b_institution_values.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/script_values/lyd_i3b_institution_values.txt",
+        "bytes": 205,
+        "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c2_close_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c2_commit_effects.txt",
+        "bytes": 5885,
+        "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c2_head_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c2_head_effects.txt",
+        "bytes": 1352,
+        "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c2_response_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c2_response_effects.txt",
+        "bytes": 1369,
+        "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c2_setup_effects.txt",
+        "bytes": 12698,
+        "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+        "bytes": 22655,
+        "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c2_vote_effects.txt",
+        "bytes": 5368,
+        "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c3_challenger_effects.txt",
+        "bytes": 9550,
+        "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c3_council_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c3_council_effects.txt",
+        "bytes": 9687,
+        "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c3_head_factory.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c3_head_factory.txt",
+        "bytes": 3022,
+        "sha256": "bf1b40de272467afd9b1e0eb2e3c59c4f62285d0daef314cb066446467efccc7"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+        "bytes": 5360,
+        "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_c3_migration_hooks.txt",
+        "bytes": 1366,
+        "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_entry_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_entry_effects.txt",
+        "bytes": 3415,
+        "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_i3b_commit_effects.txt",
+        "bytes": 4751,
+        "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_i3b_response_effects.txt",
+        "bytes": 4939,
+        "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "bytes": 6758,
+        "sha256": "1642d32f82334a97a760a53e22d072d8f1b6ffcb1ba29a8ee71af21a8c071207"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_i3b_terms_effects.txt",
+        "bytes": 3842,
+        "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_10_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_10_effects.txt",
+        "bytes": 3002,
+        "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_11_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_11_effects.txt",
+        "bytes": 2887,
+        "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_12_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_12_effects.txt",
+        "bytes": 2948,
+        "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_13_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_13_effects.txt",
+        "bytes": 3035,
+        "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_14_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_14_effects.txt",
+        "bytes": 1526,
+        "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_1_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_1_effects.txt",
+        "bytes": 2798,
+        "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_2_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_2_effects.txt",
+        "bytes": 2703,
+        "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_3_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_3_effects.txt",
+        "bytes": 2756,
+        "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_4_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_4_effects.txt",
+        "bytes": 2990,
+        "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_5_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_5_effects.txt",
+        "bytes": 2901,
+        "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_6_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_6_effects.txt",
+        "bytes": 2926,
+        "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_7_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_7_effects.txt",
+        "bytes": 2972,
+        "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_8_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_8_effects.txt",
+        "bytes": 2912,
+        "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_practice_9_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_practice_9_effects.txt",
+        "bytes": 2983,
+        "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_school_2_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_school_2_effects.txt",
+        "bytes": 3902,
+        "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_school_3_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_school_3_effects.txt",
+        "bytes": 3877,
+        "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_school_4_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_school_4_effects.txt",
+        "bytes": 3982,
+        "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_school_5_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_school_5_effects.txt",
+        "bytes": 1968,
+        "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_effects/lyd_school_effects.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_effects/lyd_school_effects.txt",
+        "bytes": 3872,
+        "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "bytes": 17081,
+        "sha256": "7d79760cc3e6eb63cc67b1a10efd84d38cda098a7bff2276612f82939ad4615f"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+        "bytes": 8361,
+        "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+        "bytes": 11389,
+        "sha256": "42e169066766eab63dd1dd51803cbfb6c197f288223e3416a925bd37354fcb2d"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_triggers/lyd_m3_faith_asset_triggers.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_triggers/lyd_m3_faith_asset_triggers.txt",
+        "bytes": 1298,
+        "sha256": "29e7070d62e94e35b83f5b9cbbfab7fda1139a5d8c73982cd357bffed3086baa"
+      }
+    },
+    {
+      "archive_path": "run/content/production/common/scripted_triggers/lyd_player_triggers.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/common/scripted_triggers/lyd_player_triggers.txt",
+        "bytes": 2885,
+        "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+      }
+    },
+    {
+      "archive_path": "run/content/production/descriptor.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/descriptor.mod",
+        "bytes": 156,
+        "sha256": "20f413d234c3c42c3f797c2cad72995ea7d41debd583dc31e7a6d326f769383b"
+      }
+    },
+    {
+      "archive_path": "run/content/production/events/lyd_c2_consent_events.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/events/lyd_c2_consent_events.txt",
+        "bytes": 6892,
+        "sha256": "55a9a51e144b23c5b0942e054b44626372ffd63a6817b3ec1d90114d0a237496"
+      }
+    },
+    {
+      "archive_path": "run/content/production/events/lyd_c3_leadership_events.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/events/lyd_c3_leadership_events.txt",
+        "bytes": 3260,
+        "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062"
+      }
+    },
+    {
+      "archive_path": "run/content/production/events/lyd_events.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/events/lyd_events.txt",
+        "bytes": 50504,
+        "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+      }
+    },
+    {
+      "archive_path": "run/content/production/events/lyd_i3b_institution_events.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/events/lyd_i3b_institution_events.txt",
+        "bytes": 5606,
+        "sha256": "954219d1bfee6242d0135c7d4426202259e63f01989c22153cf19036bbfbe116"
+      }
+    },
+    {
+      "archive_path": "run/content/production/history/faiths/lyd_faith_history.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/history/faiths/lyd_faith_history.txt",
+        "bytes": 1171,
+        "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/english/lyd_c2_consent_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/english/lyd_c2_consent_l_english.yml",
+        "bytes": 15844,
+        "sha256": "fedcf23c88738a5d9bfa8b11c27868e32d3152f36ad005ee81da352e761f0c17"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/english/lyd_c3_leadership_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/english/lyd_c3_leadership_l_english.yml",
+        "bytes": 11285,
+        "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/english/lyd_content_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/english/lyd_content_l_english.yml",
+        "bytes": 66904,
+        "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/english/lyd_i3b_institution_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/english/lyd_i3b_institution_l_english.yml",
+        "bytes": 11134,
+        "sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/english/lyd_runtime_l_english.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/english/lyd_runtime_l_english.yml",
+        "bytes": 4461,
+        "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+        "bytes": 13780,
+        "sha256": "12dfc97d4176f31ba33bbc78defe2bdd5100ac99dbabba945e6dcfa93fc16797"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+        "bytes": 10389,
+        "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+        "bytes": 52952,
+        "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+        "bytes": 9819,
+        "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439"
+      }
+    },
+    {
+      "archive_path": "run/content/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/content/production/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+        "bytes": 3707,
+        "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0001-r37-inventory-002.request.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0001-r37-inventory-002.request.json",
+        "bytes": 85,
+        "sha256": "8825fe52bfaf74df9e21003464b385fbf5755f4466c15a039d541e1b212ac55d"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0001-r37-inventory-002.response.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0001-r37-inventory-002.response.json",
+        "bytes": 564,
+        "sha256": "a8ddb4de42e0137a904f8202ebc1441d13451a65def0931c6ae5b8a6c6179a40"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0001-r37-inventory-002.sdk-result.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0001-r37-inventory-002.sdk-result.json",
+        "bytes": 33607,
+        "sha256": "e68eb0c3448140fa58df8dee3f8d18aa319ee4cee84049cbad031e35c5c3c533"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0002-r37-attach-002.native-01.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0002-r37-attach-002.native-01.json",
+        "bytes": 23944,
+        "sha256": "093fa606aad92a6514fa415c407bfe70fc018f4b6ed824e8a399b99ca9fa64ee"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0002-r37-attach-002.request.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0002-r37-attach-002.request.json",
+        "bytes": 109,
+        "sha256": "382bd7c3683cf05ca6b156df3e77f216dc9c8514788d9d09c868d8c4a3904a8b"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0002-r37-attach-002.response.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0002-r37-attach-002.response.json",
+        "bytes": 995,
+        "sha256": "bccc0040cb3673476b2a6054b90b975b5da4b64558e6e0a6a80c59e6ca9409d7"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0002-r37-attach-002.sdk-result.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0002-r37-attach-002.sdk-result.json",
+        "bytes": 50257,
+        "sha256": "482f2bdc8b82a2ac90bbc44f0ec7561541503ab880e445d82cf1b678d984206a"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0003-r37-D2a-cache-before-001.native-01.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0003-r37-D2a-cache-before-001.native-01.json",
+        "bytes": 3111,
+        "sha256": "6bcb3eedd1cffa46108027865b3379bb948f0d37f30a231b531e94fc951ea34c"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0003-r37-D2a-cache-before-001.request.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0003-r37-D2a-cache-before-001.request.json",
+        "bytes": 156,
+        "sha256": "533d883bc0d6a67eb1c32643220dac0825f0716900f219cc7684462f09cde476"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0003-r37-D2a-cache-before-001.response.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0003-r37-D2a-cache-before-001.response.json",
+        "bytes": 1053,
+        "sha256": "5d27f45077eb2aed7b627a0e6ca1f0ab345cf699e5e94323f39a326d28b12f4a"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0003-r37-D2a-cache-before-001.sdk-result.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0003-r37-D2a-cache-before-001.sdk-result.json",
+        "bytes": 6802,
+        "sha256": "09c52e1c973a5c46d0e6f03348c25d1e1191237a1061b0399a24e1bcff558ac7"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0004-r37-D2a-window-001.native-01.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0004-r37-D2a-window-001.native-01.json",
+        "bytes": 16491,
+        "sha256": "73f1a607b4627d05a3f2af1c60be07d8b8ff17b1fe7ecbcd7e860571197f985b"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0004-r37-D2a-window-001.request.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0004-r37-D2a-window-001.request.json",
+        "bytes": 163,
+        "sha256": "500d4b65e874b72a142c6239c88551d22f6ab7c1def2100edc4e60d3dad04bb5"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0004-r37-D2a-window-001.response.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0004-r37-D2a-window-001.response.json",
+        "bytes": 1013,
+        "sha256": "2ec9d8299e62596becaffe020c5f89ee8be12585010f86ebb90897c51f02c7d0"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/0004-r37-D2a-window-001.sdk-result.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/0004-r37-D2a-window-001.sdk-result.json",
+        "bytes": 35092,
+        "sha256": "d7299a0745e036cdc451a884bfc86f7cd429928731e11321d3058bb6871e0789"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/ready.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/ready.json",
+        "bytes": 759,
+        "sha256": "55d28a710f3fdcac50655df9918b2f81e60add0de9525122136669265097536b"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/server.stderr.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/server.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-client-001/session.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-client-001/session.json",
+        "bytes": 653,
+        "sha256": "43462c77823e0f3dcba631d524beeb5a99283a17571dacf6288cb9f558b51a63"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-queue-001/r37-D2a-cache-before-001.request.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-queue-001/r37-D2a-cache-before-001.request.json",
+        "bytes": 156,
+        "sha256": "533d883bc0d6a67eb1c32643220dac0825f0716900f219cc7684462f09cde476"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-queue-001/r37-D2a-window-001.request.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-queue-001/r37-D2a-window-001.request.json",
+        "bytes": 163,
+        "sha256": "500d4b65e874b72a142c6239c88551d22f6ab7c1def2100edc4e60d3dad04bb5"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-queue-001/r37-D2b-select-001.request.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-queue-001/r37-D2b-select-001.request.json",
+        "bytes": 182,
+        "sha256": "d56d121efa7294ecf638865a785721a7c233dccdcc0861367095c7f0aacc7061"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-queue-001/r37-attach-002.request.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-queue-001/r37-attach-002.request.json",
+        "bytes": 109,
+        "sha256": "382bd7c3683cf05ca6b156df3e77f216dc9c8514788d9d09c868d8c4a3904a8b"
+      }
+    },
+    {
+      "archive_path": "run/diagnostic-mcp-queue-001/r37-inventory-002.request.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/diagnostic-mcp-queue-001/r37-inventory-002.request.json",
+        "bytes": 85,
+        "sha256": "8825fe52bfaf74df9e21003464b385fbf5755f4466c15a039d541e1b212ac55d"
+      }
+    },
+    {
+      "archive_path": "run/launch-attempt.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/launch-attempt.json",
+        "bytes": 1216,
+        "sha256": "71dd08b284e7289396de4eeaf808ee984db0df78283023ece371e101442e480e"
+      }
+    },
+    {
+      "archive_path": "run/launch.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/launch.json",
+        "bytes": 1452,
+        "sha256": "347e731ca64b139226dca9105dfd5bffe16504e6b2dc1e96e3190c0e501fdb32"
+      }
+    },
+    {
+      "archive_path": "run/live-run-id.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/live-run-id.json",
+        "bytes": 364,
+        "sha256": "145c9a1bc94f3ffacfc702460730f88ee8023f1d099fdc11d45f78982fd715c8"
+      }
+    },
+    {
+      "archive_path": "run/native-actions-reference-only.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-actions-reference-only.json",
+        "bytes": 435,
+        "sha256": "cfeebdf361ab92e39be76afc43ca6f06b06a88a2adc9bcd8636d708d6e07ab81"
+      }
+    },
+    {
+      "archive_path": "run/native-attach-focus-001.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-attach-focus-001.json",
+        "bytes": 312,
+        "sha256": "7ce349365fddc824743b651dd7c5c65bafac175d19f92ccb56ae7eaeb01c7751"
+      }
+    },
+    {
+      "archive_path": "run/native-evidence/attach-claim.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-evidence/attach-claim.json",
+        "bytes": 703,
+        "sha256": "4f40513f8a64379d6982c27cc76698f525e12a25edcec88988bb4466c437af9b"
+      }
+    },
+    {
+      "archive_path": "run/native-evidence/c6bead9a7c8b472eb0fc594e2cd90536/0001-attach.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-evidence/c6bead9a7c8b472eb0fc594e2cd90536/0001-attach.json",
+        "bytes": 23944,
+        "sha256": "093fa606aad92a6514fa415c407bfe70fc018f4b6ed824e8a399b99ca9fa64ee"
+      }
+    },
+    {
+      "archive_path": "run/native-evidence/c6bead9a7c8b472eb0fc594e2cd90536/0002-actor-cached-succession-query.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-evidence/c6bead9a7c8b472eb0fc594e2cd90536/0002-actor-cached-succession-query.json",
+        "bytes": 3111,
+        "sha256": "6bcb3eedd1cffa46108027865b3379bb948f0d37f30a231b531e94fc951ea34c"
+      }
+    },
+    {
+      "archive_path": "run/native-evidence/c6bead9a7c8b472eb0fc594e2cd90536/0003-event-query.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-evidence/c6bead9a7c8b472eb0fc594e2cd90536/0003-event-query.json",
+        "bytes": 16491,
+        "sha256": "73f1a607b4627d05a3f2af1c60be07d8b8ff17b1fe7ecbcd7e860571197f985b"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-freeze-001/profile-build-receipt.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-freeze-001/profile-build-receipt.json",
+        "bytes": 568,
+        "sha256": "c4162b798113eb119d0c32f98261e8ec2eee6f5e8850d3150dadfc5710b9a59c"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-freeze-002/guard-profile.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-freeze-002/guard-profile.json",
+        "bytes": 2010,
+        "sha256": "a6fb7335e865fc3047654bef5d4ecc3d18125c64260aa09ffecdbd782d425d93"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-freeze-002/lease.snapshot.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-freeze-002/lease.snapshot.json",
+        "bytes": 126634,
+        "sha256": "195a38a1b03a8408702a637161aa10eef921fa81e8b6be638a9ea0f3116817bf"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-freeze-002/native-profile.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-freeze-002/native-profile.json",
+        "bytes": 859,
+        "sha256": "b801690d7f1e9844579b07393b31e8554254b04addcf501e4e341a88fde45bc4"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-freeze-002/native-template.snapshot.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-freeze-002/native-template.snapshot.json",
+        "bytes": 678,
+        "sha256": "df820f0bec623017cf350fbdef6b89057759179c652112b6a9f3f0f3c8099dbf"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-freeze-002/offline-frame.snapshot.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-freeze-002/offline-frame.snapshot.json",
+        "bytes": 1230,
+        "sha256": "cac582ff2fd4f0ef65fa1079c5e9e4685b0d25e5b9a028b22769ff222844f9cb"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-freeze-002/offline-review.snapshot.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-freeze-002/offline-review.snapshot.json",
+        "bytes": 590,
+        "sha256": "1304be18702118dbfb6871eeb6f05c4b6856c34749f83a843b3843455d038344"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-freeze-002/profile-build-receipt.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-freeze-002/profile-build-receipt.json",
+        "bytes": 3221,
+        "sha256": "bf28dae089b2245c78e7d8ee4ca1a234bcd1481b61c29e399bbee4a534e4caa2"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-freeze-002/reviewed-actions.snapshot.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-freeze-002/reviewed-actions.snapshot.json",
+        "bytes": 435,
+        "sha256": "cfeebdf361ab92e39be76afc43ca6f06b06a88a2adc9bcd8636d708d6e07ab81"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-lease-readback-001.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-lease-readback-001.json",
+        "bytes": 126634,
+        "sha256": "195a38a1b03a8408702a637161aa10eef921fa81e8b6be638a9ea0f3116817bf"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-process-observation-001.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-process-observation-001.json",
+        "bytes": 848,
+        "sha256": "49d12ac0fdd6b213cc6ffc8af16d8bcf5cbf59926a57a70bc9660295fff656a7"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-request-001.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-request-001.json",
+        "bytes": 1073,
+        "sha256": "c6979057aa143cc9352e18153bb1be44e5d78e2b8b82495f3e931dc3e53d94ff"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-request-002.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-request-002.json",
+        "bytes": 1073,
+        "sha256": "95998ca276aea50144e659d8428bad5a0f97f1ce9db43a16a9868f0cdd42d2bf"
+      }
+    },
+    {
+      "archive_path": "run/native-profile-with-exit-inventory.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile-with-exit-inventory.json",
+        "bytes": 1079,
+        "sha256": "b46a7a1a1a30d6e74f98e0bb280ef08a20c44bd455613bf362bbad29dbd9aad1"
+      }
+    },
+    {
+      "archive_path": "run/native-profile.UNBOUND.template.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/native-profile.UNBOUND.template.json",
+        "bytes": 678,
+        "sha256": "df820f0bec623017cf350fbdef6b89057759179c652112b6a9f3f0f3c8099dbf"
+      }
+    },
+    {
+      "archive_path": "run/r37-D2a-cache-before-001.source.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/r37-D2a-cache-before-001.source.json",
+        "bytes": 156,
+        "sha256": "533d883bc0d6a67eb1c32643220dac0825f0716900f219cc7684462f09cde476"
+      }
+    },
+    {
+      "archive_path": "run/r37-D2a-window-001.source.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/r37-D2a-window-001.source.json",
+        "bytes": 163,
+        "sha256": "500d4b65e874b72a142c6239c88551d22f6ab7c1def2100edc4e60d3dad04bb5"
+      }
+    },
+    {
+      "archive_path": "run/r37-D2b-select-001.source.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/r37-D2b-select-001.source.json",
+        "bytes": 182,
+        "sha256": "d56d121efa7294ecf638865a785721a7c233dccdcc0861367095c7f0aacc7061"
+      }
+    },
+    {
+      "archive_path": "run/r37-attach-002.source.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/r37-attach-002.source.json",
+        "bytes": 109,
+        "sha256": "382bd7c3683cf05ca6b156df3e77f216dc9c8514788d9d09c868d8c4a3904a8b"
+      }
+    },
+    {
+      "archive_path": "run/r37-inventory-002.source.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/r37-inventory-002.source.json",
+        "bytes": 85,
+        "sha256": "8825fe52bfaf74df9e21003464b385fbf5755f4466c15a039d541e1b212ac55d"
+      }
+    },
+    {
+      "archive_path": "run/userdir/dlc_load.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/dlc_load.json",
+        "bytes": 231,
+        "sha256": "e39c2057e5e20bfb29cb3abd5788bf6baa7ed291b9171d60cbdbcabf5f915c77"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/code_revisions.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/code_revisions.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/custom_automated_stats.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/custom_automated_stats.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/database_conflicts.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/database_conflicts.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/debug.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/debug.log",
+        "bytes": 467709,
+        "sha256": "268c2ffff4b9dce70f1983f1dd65acffb168fc6b2591f25b45937275fe4918b0"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/dedicated_server.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/dedicated_server.log",
+        "bytes": 70,
+        "sha256": "f36d02df8531c659202a9c5f63f55a8dd04781d64466ef90ddb7f3ea590f5f03"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/error.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/error.log",
+        "bytes": 138556,
+        "sha256": "476227263534725109663cb06d46db3060ab666a21714ad7bf4ed43da7098617"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/game.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/game.log",
+        "bytes": 2127,
+        "sha256": "688c484936b0a5d6f2f5b4f98799eab30e07ee68f9f2bc1ca1566f544a028ecf"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/gui_warnings.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/gui_warnings.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/memory.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/memory.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/message.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/message.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/multiplayer.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/multiplayer.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/pdxsdk.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/pdxsdk.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/profile.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/profile.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/setup.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/setup.log",
+        "bytes": 36864,
+        "sha256": "bb36ed344274dc785303b11c0659a6e0686588666073d744b97307a991157634"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/system.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/system.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/logs/text.log",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/logs/text.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "archive_path": "run/userdir/mod/lyd_charter.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/mod/lyd_charter.mod",
+        "bytes": 207,
+        "sha256": "5d505010a6cf3745af2c802f00882cebe2a384a274a0706c3e1f3fd88c941e3c"
+      }
+    },
+    {
+      "archive_path": "run/userdir/mod/lyd_diagnostic_stage.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/mod/lyd_diagnostic_stage.mod",
+        "bytes": 265,
+        "sha256": "71aa14839af2bb656524ed21a0daafd2853fa2bbb32ede6ba130259379d02afa"
+      }
+    },
+    {
+      "archive_path": "run/userdir/mod/lyd_entry.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/mod/lyd_entry.mod",
+        "bytes": 199,
+        "sha256": "ce361ef9157685826ff24f1a165a8fc70350e748b48099f8548769fcfa845a0c"
+      }
+    },
+    {
+      "archive_path": "run/userdir/mod/lyd_i4_single_event.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/mod/lyd_i4_single_event.mod",
+        "bytes": 214,
+        "sha256": "8c8782c213aecd78f1a8fd3e83748c57594bab2e8286e85c7948658aa6ed4bad"
+      }
+    },
+    {
+      "archive_path": "run/userdir/mod/lyd_observer.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/mod/lyd_observer.mod",
+        "bytes": 202,
+        "sha256": "3e4af1a68d0ff02374415ff38090dc6d54b816c3483abb309d6af05f231ecabc"
+      }
+    },
+    {
+      "archive_path": "run/userdir/mod/lyd_production.mod",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/mod/lyd_production.mod",
+        "bytes": 237,
+        "sha256": "07cf6f5abd0f40d352990c09852878ab3e5b55b5304d745c459944a314c67057"
+      }
+    },
+    {
+      "archive_path": "run/userdir/normal-exit-source-inventory-v1.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/normal-exit-source-inventory-v1.json",
+        "bytes": 25578,
+        "sha256": "d3b0eb556ece369d0db3d13f9de0a386f883842fc7cb2c13eb75fedfe3d133d4"
+      }
+    },
+    {
+      "archive_path": "run/userdir/pdx_settings.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/pdx_settings.txt",
+        "bytes": 7135,
+        "sha256": "2c784b081521c8c8e2129c5304734bbb7fd184f70cba78fb03e42907330e3a90"
+      }
+    },
+    {
+      "archive_path": "run/userdir/tutorial.txt",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-037/userdir/tutorial.txt",
+        "bytes": 57,
+        "sha256": "de93ebed7d262c2450ac9fd18543e0890d8e5d3661cc773b62f707fc310a2075"
+      }
+    },
+    {
+      "archive_path": "screen-lease/ADMITTED.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-screen-keeper-20261009-001/ADMITTED.json",
+        "bytes": 673,
+        "sha256": "7aa9c026b0587e9bbf1f414d5aaacf587368448db9362359a388ec157b39f1a0"
+      }
+    },
+    {
+      "archive_path": "screen-lease/INPUTS.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-screen-keeper-20261009-001/INPUTS.json",
+        "bytes": 2803,
+        "sha256": "3e1e47d9f24141a9c532e083b49ebf38fd376f0f67b3a691d407e9756a191813"
+      }
+    },
+    {
+      "archive_path": "screen-lease/READY.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-screen-keeper-20261009-001/READY.json",
+        "bytes": 758,
+        "sha256": "2503442938f4cd7f7108a886838212aea77130e1d9b62a1c7bee9e8429aecb6b"
+      }
+    },
+    {
+      "archive_path": "screen-lease/poll.jsonl",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-screen-keeper-20261009-001/poll.jsonl",
+        "bytes": 4000786,
+        "sha256": "d153c92cb8c6b65f702c9fb945eaaf89e41ceec6e94867abe6e0548ec94f17e7"
+      }
+    },
+    {
+      "archive_path": "screen-lease/screen-lease.jsonl",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-screen-keeper-20261009-001/screen-lease.jsonl",
+        "bytes": 9399,
+        "sha256": "0d2e8d31da971f4abe91a91e80d81caaa4b708ece5fe7d2f1d56dc55619b63b6"
+      }
+    },
+    {
+      "archive_path": "steam/prelaunch/OFFLINE-REVIEW.actual.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-steam-offline-recovery-20261009-001/OFFLINE-REVIEW.actual.json",
+        "bytes": 590,
+        "sha256": "1304be18702118dbfb6871eeb6f05c4b6856c34749f83a843b3843455d038344"
+      }
+    },
+    {
+      "archive_path": "steam/prelaunch/events.jsonl",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-steam-offline-recovery-20261009-001/events.jsonl",
+        "bytes": 1931,
+        "sha256": "4a29248e0f8b44d855e8b4f75a115e28479711c735dbf0a2a50cbf2f1640d531"
+      }
+    },
+    {
+      "archive_path": "steam/prelaunch/probe-1/steam-before.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-steam-offline-recovery-20261009-001/probe-1/steam-before.png",
+        "bytes": 1590364,
+        "sha256": "702a5c1ac741ef296c8084a67a43dde9675f76a00466d76c68dbd414f627155f"
+      }
+    },
+    {
+      "archive_path": "steam/prelaunch/probe-1/steam-frame-freshness.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-steam-offline-recovery-20261009-001/probe-1/steam-frame-freshness.json",
+        "bytes": 1230,
+        "sha256": "cac582ff2fd4f0ef65fa1079c5e9e4685b0d25e5b9a028b22769ff222844f9cb"
+      }
+    },
+    {
+      "archive_path": "steam/prelaunch/probe-1/steam-moved.png",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-steam-offline-recovery-20261009-001/probe-1/steam-moved.png",
+        "bytes": 1596313,
+        "sha256": "61149d48407ddb4accceb89efb759c46a23ee165c7a86e113d1f6cfde610aece"
+      }
+    },
+    {
+      "archive_path": "steam/prelaunch/recovery.json",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-steam-offline-recovery-20261009-001/recovery.json",
+        "bytes": 1477,
+        "sha256": "e19510634915da9b4b5f25f1ff1edb6c1bdbdee898450fea95fadaad8a5b3486"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-archive-interrupted-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-archive-interrupted-20261009-001.py",
+        "bytes": 7814,
+        "sha256": "d56ea880a4d5f0bf67dad33e8bd0eb490b241619c993e5aed0ff099dcbac922b"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-bind-normal-exit-profile-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-bind-normal-exit-profile-20261009-001.py",
+        "bytes": 822,
+        "sha256": "ce1f135ba66e37072c31a53ed04374c6f2e19b142a72703a9164c90a9fa647d1"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-build-transaction-only-overlay-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-build-transaction-only-overlay-20261009-001.py",
+        "bytes": 2628,
+        "sha256": "31ce0ee19cf2bdeee05287d0b51154a93ecea3016e836b2ee58e2b7ef0df33ab"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-bus-closeout-observe-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-bus-closeout-observe-20261009-001.py",
+        "bytes": 1786,
+        "sha256": "e59669f198e6a9924e244ed9644d6afda9a9660ecbd97860670b18dcdcd6ea47"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-capture-load-state-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-capture-load-state-20261009-001.py",
+        "bytes": 1376,
+        "sha256": "cb5f67fdd937af3aede71668e0daa3bf0c318c28faf74b3f22d94b3dbf1ee0b4"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-capture-load-state-repeat-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-capture-load-state-repeat-20261009-001.py",
+        "bytes": 1468,
+        "sha256": "a16a49d1c32f0e3a63d095d401c593f2ab7d46ebc239be082a8985fc8ed26000"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-derive-launch-profile-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-derive-launch-profile-20261009-001.py",
+        "bytes": 2152,
+        "sha256": "97c25c77649d0c701084329cacaa52b396393e2d70ae1b0a4c7df2532dab4361"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-derive-native-client-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-derive-native-client-20261009-001.py",
+        "bytes": 2447,
+        "sha256": "57fc22c9033ae24d97c97cd9ca99b187f2239db8791002428bc1c2f692beb6e9"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-diagnostic-mcp-client-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-diagnostic-mcp-client-20261009-001.py",
+        "bytes": 8869,
+        "sha256": "3c601480554bebde653415fd052ab2acadfb007e08383187f4fadf9b3eeeba1e"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-focus-and-enqueue-attach-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-focus-and-enqueue-attach-20261009-001.py",
+        "bytes": 2243,
+        "sha256": "b82a48df14a2666da4ad211219531a78804847f2753a395890557c7aeee57068"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-focus-game-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-focus-game-20261009-001.py",
+        "bytes": 1795,
+        "sha256": "76e28fc56793b0dc255f5d2aadd0935c26552aef748f5cd025807f2fbf5af0df"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-launch-diagnostic-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-launch-diagnostic-20261009-001.py",
+        "bytes": 5283,
+        "sha256": "aa21ca7fdedd7300c62f7075612a1a7d2e8c3fd3c22bda7b22db730c86464a32"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-materialize-transaction-only-cold-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-materialize-transaction-only-cold-20261009-001.py",
+        "bytes": 5216,
+        "sha256": "e62ea730b294809a673ce0dfdec12d3f883beda5b20602eabcac960ccdc644f0"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-normal-exit-inventory-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-normal-exit-inventory-20261009-001.py",
+        "bytes": 609,
+        "sha256": "047645ed52d577d7fedfdf2ae6730d59898df2ff1011f6761ac34f6f84b1a063"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-prepare-native-profile-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-prepare-native-profile-20261009-001.py",
+        "bytes": 5291,
+        "sha256": "4b6f9cfc471ee3c644909e585891d58013e8c69cc0fc4b6881dea8f49ec5e313"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-queue-request-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-queue-request-20261009-001.py",
+        "bytes": 910,
+        "sha256": "24607fa59eea4ebf7a80f202f358ca7ca679d57452e23152372257fdc3d68383"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-read-sdk-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-read-sdk-20261009-001.py",
+        "bytes": 2209,
+        "sha256": "ce76d5b0c1675c39de7a4f43a86b5ae123a3aed9e935ada7a475030748dee3b7"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-resume-observe-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-resume-observe-20261009-001.py",
+        "bytes": 1243,
+        "sha256": "5d40a578137c3b0dcf17cb1edc427f8d7850d6158bf0b664d75021536f5b3d48"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-retry-current-build-profile-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-retry-current-build-profile-20261009-001.py",
+        "bytes": 938,
+        "sha256": "7d0af8b73d88b0a10cee8d3941b20deda1616a624f0ea35bcfe9842729da983c"
+      }
+    },
+    {
+      "archive_path": "tools/r37-root-validate-transaction-only-overlay-20261009-001.py",
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r37-root-validate-transaction-only-overlay-20261009-001.py",
+        "bytes": 3910,
+        "sha256": "7322446b9b9210eacf7c931a0c364000dfe29378074ef3f72cdb330dc7a14e1f"
+      }
+    }
+  ]
+}

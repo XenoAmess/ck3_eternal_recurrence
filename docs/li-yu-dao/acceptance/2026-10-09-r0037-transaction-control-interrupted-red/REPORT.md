@@ -1,0 +1,11 @@
+# R0037 transaction-only control — interrupted RED
+
+R37 prepared one development-only change against R34: omit the `change_title_holder` block from D2b while retaining `create_title_and_vassal_change` and `resolve_title_and_vassal_change` in the same event. Exactly one of six overlay files changed; independent syntax and AST checks passed. The 71 production files were unchanged. A new isolated CK3 1.20.0.4 run loaded the exact R34 D2a checkpoint, SHA-256 `a6db85e38ba0648eca4b7e835c79d867b96ca26099698f4d4ee5269b818d822c`.
+
+The official native session attached at public revision 2. Its cache query returned 45 successor IDs and its event-window query independently identified `lyd_factory_diag.20`, instance 121. No D2b result was acquired. At resumption, a newly queued event-option request remained unconsumed: client evidence ends at request 0004, with no request 0005 dispatch or SDK response.
+
+A read-only census at 11:59 UTC found none of the original CK3, original-handle holder, MCP client, screen keeper, recorder or other CK3 processes. OS boot time was 11:32:13 UTC, after the last recorded lease renewal at 05:11 UTC. This demonstrates interruption across a machine reboot. There is no final process-handle receipt, client-close receipt, normal-exit receipt or post-exit offline review; these remain unknown. The stale own lease was CAS-released at sequence 4142 and the interrupted task closed at 4143 with no resources. No process signal or game input was sent during recovery.
+
+An earlier profile freeze mistakenly used the old 1.20.0.3 helper and was rejected before input or injection. Its RED receipt is preserved under `native-profile-freeze-001`; a separate current-build helper successfully froze `native-profile-freeze-002`. The original prelaunch Steam image was directly reviewed as offline. This does not replace fresh evidence after reboot.
+
+R37 grants no causal conclusion about D2b and no I3b, C3, I4 or whole-mod acceptance credit. R35 and R36 retain their independently archived cold-load control results. Repeat the transaction-only experiment in a new run with fresh offline evidence and a new source/profile/session, keeping R37 immutable. Save bodies remain external and are pinned in `INDEX.json`; the archive was validated against every extracted entry.
