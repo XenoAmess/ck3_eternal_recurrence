@@ -41,6 +41,13 @@ independently confirmed the recovered material result; no birth, education,
 new day or SAVE is credited by these observations. Current actual context and
 siege observations are indexed in the rolling reports.
 
+The [guardian relation and executing educator ledger](guardian-relation-and-educator-owner-12004.md)
+is the prior source entry for Character+1B0 peer material and the05:19
+negative named-reference receipts. The [named Character binding follow-up](guardian-relation-character-binding-12004.md)
+records the late61-63 duplicate acquisitions:3 actual reads,96837632 bytes,
+and zero additional observation credit. Guardian/educator binding remains
+research; the separate Native54 identity observer is qualified offline.
+
 ## 2026-10-09: Child education point trait observer qualified offline
 
 The next [actual linked collection after the person carrier](battle-person-following-2921a90-12004.md)

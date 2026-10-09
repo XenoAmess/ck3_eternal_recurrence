@@ -61,7 +61,28 @@ flowchart TD
   O -. random effect selection not observed .-> E[Actual educator identity]
 ```
 
-## Finite native binding entry
+## Correction: late locators repeated the earlier source ledger
+
+The [guardian relation and executing educator ledger](guardian-relation-and-educator-owner-12004.md#root-locator-result-and-the-typed-provider-alternative)
+already records the actual4 standalone names `HasGuardian` at`0x4761EE0`,
+`GetRelationsOfType` at`0x451C558` and `GetRelation` at`0x4520880`, their
+negative `.rdata`/named `.text` results, and Root's05:19:54 UTC `.data`
+VA64/RVA32 zero-reference result. The specific prior actual receipt is
+`Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261008/post-birth-guardian-direct44/native-getter/root-data-named-first01/GUARDIAN-NAMED-DATA-REFERENCES.json`;
+its adjacent `ROOT-EXECUTION-RECEIPT.json` retains that original execution.
+
+This continuation missed that ledger and incorrectly treated the late
+61-63 acquisitions as a fresh named frontier. They repeated existing
+source conclusions. Their actual cost is **3 frozen-image reads and
+96837632 bytes**:61 read17124352,62 read71141888 and63 read8571392.
+Their receipts below remain unchanged; they provide **zero additional
+observation credit**. This is an additive provenance correction, not a
+rewrite of earlier history or of Native54's separate, genuinely new
+five-whole/six-scene offline qualification. All further scans of these
+same literals/encodings/sections stop. Subsequent work must reuse the
+held Character+1B0/IsAllied structure or a genuinely more specific input.
+
+## Retained actual late locator results and their bounds
 
 The previous HasGuardian/GetRelation/HasRelationBetween literal work and
 its retained zero-reference result are reused. Their old locator is not
@@ -71,7 +92,7 @@ relation-definition databases. The cached CharacterWindow body at
 objects or full IDs, but none has a guardian semantic name. They are not
 expanded to search for a convenient field.
 
-Root executed the sole `GetRelationsOfType` name locator at
+Root repeated the `GetRelationsOfType` name locator at
 2026-10-09T14:27:58.990843Z. One `.rdata` read obtained17124352 bytes in
 0.0116496 seconds, with no hash, PE parse, `.text`/`.data`, process or Game
 operation. The retained
@@ -100,7 +121,7 @@ captures, image hashes and Game/process operations were not repeated.
 The actual receipt is
 `guardian-collection-textrefs62/root-textrefs01/GUARDIAN-COLLECTION-TEXTREFS-RESULT.json`.
 
-The next low-cost source check was the actual installed binding material.
+The source follow-up also checked the actual installed binding material.
 Its `game/data_binding` contains20 text files, without subdirectories;
 `GetRelationsOfType`, `CharacterWindow` and `HasGuardian` have no exact
 match there. `00_script_value_bindings.txt:1-4` and `gui_macros.txt:1-4`
@@ -111,8 +132,7 @@ Existing named-role packets prove constructor/destructor-to-RTTI/vtable
 joins, not a method-name registration table. Adjacent filter strings do
 not establish such a table.
 
-Root selected one new encoding/source join rather than replaying this
-completed text pattern: only VA64/RVA32 references to actual literal
+Root then repeated the named `.data` source join: only VA64/RVA32 references to actual literal
 `0x451C558` in the metadata-held `.data` span,8571392 bytes. The recipe is
 `guardian-collection-datarefs63/ROOT-DATAREFS-ARGV.json`. It keeps at most
 136 bytes around actual matches and cannot itself identify a callback or
