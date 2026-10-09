@@ -9637,3 +9637,4 @@ endif()
 
 include(cmake/person_following_2922680_12004.cmake)
 include(cmake/person_mapped_pc_42127e0_12004.cmake)
+include(cmake/person_following_291ce01_government_gate_12004.cmake)

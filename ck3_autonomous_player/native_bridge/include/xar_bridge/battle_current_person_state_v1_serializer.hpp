@@ -669,6 +669,11 @@ inline std::string SerializeBattleCurrentPersonStateV1(
     output += xar::ck3_12004::SerializePersonFollowing2922680(
         *state.following_2922680);
   }
+  if (state.following_291ce01_government_gate) {
+    output += ",\"following_291ce01_government_gate\":";
+    output += xar::ck3_12004::SerializePersonGovernmentGate12004(
+        *state.following_291ce01_government_gate);
+  }
   output += '}';
   return output;
 }

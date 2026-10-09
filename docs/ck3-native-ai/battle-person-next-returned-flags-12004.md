@@ -50,6 +50,16 @@ A successful clear bit differs from a failed copy and from a demanded positive b
 
 The public Person structure has typed optional leaves and no generic extension container. A typed new leaf changes its embedded layout and requires actual dependent production owners to rebuild. PC append rows and reason strings cannot carry an unrelated Government gate. Domain header/TU isolation does not remove that ABI dependency.
 
+## Authored observer and unique FIRST
+
+The new domain header/TU is `ck3_12004_person_government_gate.hpp/.cpp`. `CurrentPersonSample` collects it with the existing exact4 guarded-copy binding and serializes `following_291ce01_government_gate` in the same query. Its typed public DTO records every related-Character resolution step. The Python normalizer preserves the complete leaf and full Character-ID join. `ready=true` means the raw gate is observed, including a set bit; only `known_no_contribution=true` closes the skipped numerical branch.
+
+The single new target is `xar_ck3_12004_person_following_291ce01_government_gate_mcp_test <fresh-wire-directory>`. It authors seven fresh whole packets: living clear/set, null-selected/default, invalid-Character/default, related full-ID match, related generation mismatch/fallback, and unread flags. A separate assertion in the same native invocation exercises the real death-context+88 getter directly; it does not manufacture an alive whole-query packet. All worlds use the actual production reader, current-person collector, and whole result formatter. The earlier synthetic World setup is reused without invoking its producer or test.
+
+The sole new registered MCP compound is `test_person_following_291ce01_government_gate_12004_registered_mcp.py::test_person_following_291ce01_government_gate_12004_registered_mcp_whole_packets`, with `CK3_PERSON_FOLLOWING_291CE01_GOVERNMENT_GATE_12004_MCP_WIRE_DIR` pointing at those seven untouched packets and the final source `src` on `PYTHONPATH`. It uses the real registered callback, Service, Driver, normalizer, all required nullable arguments, and preserves the original whole bodies. It leaves full Person/Entry and battle-terminal readiness false.
+
+The shared header dependency projection belongs to the Root builder. It found 449 existing owners (Bridge152/Runtime297), plus one new Runtime TU and one fixture compile. These are source-planned dependencies; no new compilation or FIRST has run in this author lane.
+
 ## Readiness and next boundary
 
 The 20-byte caller gate and reused Government getter are source closed. No new observer compiler, FIRST, or production-live result is claimed. Full Person and Entry remain false. Fresh baseline/stage association and later Entry transfer are separate gaps.

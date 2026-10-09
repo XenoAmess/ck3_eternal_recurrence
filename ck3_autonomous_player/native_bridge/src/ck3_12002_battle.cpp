@@ -1621,6 +1621,10 @@ game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
         ck3_12004::ReadPersonFollowing2922680ForCharacter12004(
             b.current_person_carrier_direct,
             reinterpret_cast<std::uintptr_t>(character));
+    observed.following_291ce01_government_gate =
+        ck3_12004::ReadPersonGovernmentGateForCharacter12004(
+            b.current_person_carrier_direct,
+            reinterpret_cast<std::uintptr_t>(character));
     observed.following_2921a90_conditional =
         ck3_12004::ReadPersonConditional2921a90Inputs12004(
             b.current_person_carrier_direct, *observed.following_2921a90);
