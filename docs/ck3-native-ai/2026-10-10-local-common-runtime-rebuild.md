@@ -40,3 +40,13 @@ Source03 `13d063c81ff706d8bc3f9a8bf81f60c283338042` 在 `C:/csr3`，增加[固�
 公共 `prepare` 实际 exit0，完整 profile 为84文件（79项 mod/outer 加四配置、dlc_load），seed未写进 profile。公共 `preflight` 实际 exit0，状态 `READY_FOR_EXISTING_REVIEWED_LAUNCH`；包括安装游戏 SHA、共同 host CLI、固定保存、startup handler/data、adapter 和 native pins。[12项准备和预检原件](acceptance/2026-10-10-local-common-runtime-rebuild/PREPARE-PREFLIGHT.actual.json)另行归档，前28项历史归档不覆盖。原未准备 `plan` 的6项 unbound 阻点及 exit2 也保留，不改写旧结果。
 
 截至此版记录，公共运行时为 **BUILD_READY / LIVE_NOT_RUN**。新实机仍需当次实际无占用检查、唯一 ID/屏幕租约及新鲜 Steam 离线原图亲审；不能由 manifest、bootstrap 或 preflight 推导 live GREEN。事务对照和正式 I3b/C3/I4/整体验收未通过。
+
+## 04:07 CST 后续：R39 已实际启动，启动检查 RED，现场已释放
+
+上节 `LIVE_NOT_RUN` 保留为启动前记录。本次公共入口已实际分配并启动 `bf-202609141645-5434332d4d--li-yu-dao--R0039`；owner checkout 固定为 `00b88fc4df0b8b4cea8b15ff85de8f244825a329`，仍消费上述同一全局 manifest 和 Source03。首次本机 bootstrap 已消耗，后继不得重复 bootstrap 或清理 machine admission ledger。
+
+公共 `run` 实际 exit2；host 的固定存档检查在原400秒 readiness 预算内超时，最终原生报告 RED。146份观察均未取得就绪地图、玩家角色和当前事件；日期53144712及暂停状态存在，query mailbox 在工作，但 `map_ready=false`、`played_character=null`、`local_player_id=0`、`active_event=null`。原守卫逐件只读重放与保存的 `frame=null` 一致，尚未进入 campaign-root 查询或产品启动 handler。`steps=[]`，事务选项、业务保存及天数推进均为0；不能据此判断事务或继承缓存的业务结果，底层未提供完整快照的原因继续排查。公共 `verify` 实际 exit2，保持原失败，未制造成功 case 记录。
+
+host 原 Popen wait 返回1，CK3 受管退出码为1；native job active0、进程树消失、三路最终清点均空、控制文件清空，managed session/thread/cleanup 已结束。这证明失败现场清理，不授正常退出0。最终新鲜1920×1080原图亲审 Steam“离线模式”，原桌面1024×768×32@60实际恢复；keeper 原父句柄退出0、线程已结束，CAS4221→4222实际 done/resources=[]。首次释放因缺少 CLI SHA pin 被拒，补全精确 pin 后释放成功；两份原始回执均保留。[R39 原始证据及诊断](2026-10-10-r39-shared-runtime-startup-red.md)另包归档。
+
+精确 `00b88fc4d` 的 Official CI 已到失败终态，原因是既有 allocation 测试的模拟 `ids` 缺少新机器绑定接口 `MACHINE_ENV`；Linear 通过，Li Yu Dao 未触发。该 CI 夹具修复与原生快照只读诊断并行，生产 allocator 的机器绑定、原现场闭场和唯一 ID 守卫保持。正式 I3b/C3/I4 与一期仍 **NOT_GREEN**，上一工作量估计不因构建、闭场或 CI 修复上调。
