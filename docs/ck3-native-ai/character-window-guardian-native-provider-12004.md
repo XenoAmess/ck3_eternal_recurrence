@@ -332,14 +332,42 @@ It performs no+0xC8 read and no typed Character resolution. This method
 does not establish GetCharacter; the virtual and generic tail targets
 are not expanded.
 
-The next literal class-member entry is the same-receiver direct call
-at0x106CC54. Its held runtime row bounds
-`[0x1070130,0x1070778)`,1608 bytes. Only that body is selected to identify
-actual subject-field or full-ID semantics; EDX=0 is not given a guessed
-meaning. Primary slot1's1831-byte entry and the generic base/context
-branches remain outside this read. The source-only Root recipe is
-`character-field-entry58/ROOT-FIELD-ENTRY-ARGV.json`; it does not invoke
-the member in Game.
+Root followed only the same-receiver direct call at0x106CC54. The actual
+`[0x1070130,0x1070778)` body contains396 instructions,1608 bytes with a
+complete decode. Root read it once2026-10-09T13:16:18.089789Z in0.0001507
+seconds; `character-field-entry58/root-field01/` retains
+`CHARACTER-FIELD-ENTRY-RESULT.json` and `CHARACTER-FIELD-ENTRY-DETAIL.json`.
+The member writes+0xD0 from EDX, clears several local states and constructs
+scope/typed values. It must not be invoked as a read-only getter.
+
+Its initial subject resolution now establishes the field meaning:
+
+| Actual instruction span | Proven identity operation |
+| --- | --- |
+| 0x1070211 / 0x1070218 | Loads Character storage at image0x5C67568 and fallback at0x5C67570. |
+| 0x1070224 | Reads the32-bit field at CCharacterWindow+0xC8. |
+| 0x107022B-0x1070248 | Uses only low24 bits as an index; validates capacity+0x2C and obtains the pointer from vector+0x20 with16-byte rows and pointer+8. |
+| 0x107024A / 0x107024D | Compares the object's full32-bit ID at+0x18 with the original+0xC8 field, including its generation bits. |
+| 0x1070252-0x1070263 | Requires object+0x1C equal0x43686172 (`Char`) and a non-FFFFFFFF full ID before constructing the typed subject. |
+
+The named window's+0xC8 is therefore a full Character identity, rather than
+the constructor-only unknown it was earlier. The admitted actual4
+descriptor uses the same Character storage global and offsets. The
+existing child collector already calls
+`xar::ck3_12004::ResolveCoreCharacter(bindings.context.core, character_id)`;
+a private window reader can reuse it with
+`std::bit_cast<std::int32_t>(raw_id_at_C8)` and retain the observed magic
+and full-ID checks. No new generic resolver or old12002 getter is needed.
+This does not name the later relationship-like operands in the body,
+qualify a guardian collection or prove a callable GetCharacter wrapper.
+
+The remaining immediate input is the actual window receiver, not its ID
+offset. The next bounded source entry is the already captured primary
+vtable slot1 pointer0x106C4F0, held extent
+`[0x106C4F0,0x106CC17)`,1831 bytes. Its method name is not guessed. The
+source-only Root recipe `character-receiver-entry59/ROOT-RECEIVER-ARGV.json`
+seeks its actual owner/root/provider connection; it does not invoke the
+member, scan all handler slots or expand generic context.
 
 The future implementation seam is already localized: the existing
 `ingame_ui_navigation_v1.cpp` ResolveHandler/RTTI helper supplies admitted
@@ -347,14 +375,17 @@ handler infrastructure, while `bridge.cpp` collects the private child
 sidecar inside the same paused callback and publishes it only after the
 before/after frame matches. Its relationship serializer is the third
 Bridge owner if a new optional field is published. These are integration
-inputs, not a manufactured unavailable-only capability. An implementation
-still needs the actual Character-window receiver and generation-aware
-full-ID reader before exposing any subject. The constructor and this
-slot3 body do not permit publishing an unproved+0xC8 value as Character ID.
+inputs, not a manufactured unavailable-only capability. A finite identity
+reader can now use the proved+0xC8 semantics and existing generation-aware
+resolver. Production publication still needs an actual Character-window
+receiver. The window's subject remains independent of Robert, the heir
+and each actual roster child; it cannot substitute for any of them.
 
-The named type and constructor now supply the exact Character-specific
-source entry. GetCharacter still needs its actual admitted receiver,
-callable ABI and returned full-ID proof. Robert29829 and heir38822
+The named type, constructor and initial subject resolution now supply
+the exact Character-specific field semantics. GetCharacter still needs
+its actual admitted receiver and callable wrapper ABI; the read-only
+field path is separate from invoking the state-mutating member.
+Robert29829 and heir38822
 remain the observed family anchors; neither substitutes for an unobserved
 child or selected educator.
 
@@ -367,8 +398,9 @@ flowchart TD
   T --> V[Actual primary451BA18 and secondary451BAE8]
   V --> K[Actual constructor106BC80 and vptr stores]
   K --> M[Actual70B slot3: same-this call1070130, no identity read]
-  M -. direct member field semantics and handler receiver unclosed .-> R[Character-specific receiver provider]
-  R -. readable full-ID getter unclosed .-> C[CharacterWindow.GetCharacter full ID]
+  M --> F[Actual1070130: C8 full Character ID plus generation and Char checks]
+  F -. named slot1 owner and handler receiver unclosed .-> R[Character-specific receiver provider]
+  R -. GetCharacter wrapper ABI unclosed .-> C[CharacterWindow.GetCharacter full ID]
   C -. guardian kind and directional collection unclosed .-> H[Existing child query guardian input]
 ```
 
@@ -398,7 +430,8 @@ flowchart TD
   L --> M[Seven-slot finite miss: no CharacterWindow]
   M --> T2[Actual CCharacterWindow TD5723010 and two COL/vtables]
   T2 --> K2[Actual CharacterWindow constructor106BC80]
-  K2 -. handler slot registration unclosed .-> C[Candidate CharacterWindow typed slot]
+  K2 --> F2[Actual1070130 proves C8 full Character ID resolution]
+  F2 -. handler slot registration unclosed .-> C[Candidate CharacterWindow typed slot]
   C -. native typed registration and receiver unclosed .-> G[CharacterWindow.GetCharacter full ID]
   G -. loaded relation object factory unclosed .-> R[GetRelation guardian / ScriptedRelation]
   R -. callback ABI and guardian direction unclosed .-> H[HasRelationBetween]
